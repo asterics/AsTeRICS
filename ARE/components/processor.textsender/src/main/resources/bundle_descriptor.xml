@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.TextSender"
+                   canonical_name="eu.asterics.component.processor.textsender.TextSenderInstance">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>Send text when gets event</description>
+        <ports>
+            <outputPort id="output">
+                <description>Output text</description>
+                <dataType>string</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="sendText">
+                <description>Trigger event</description>
+            </eventListenerPort>
+        </events>        
+        <properties>
+            <property name="text"
+                      type="string"
+                      value="This is a sample text."
+                      description="Text to send"/>
+                      
+        </properties>
+    </componentType>
+
+</componentTypes>

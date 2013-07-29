@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.PhoneControl"
+                   canonical_name="eu.asterics.component.actuator.phonecontrol.PhoneControlInstance">
+        <type subtype="Phone Interface">actuator</type>
+        <singleton>true</singleton>
+        <description>Phone plugin</description>
+        <ports>
+            <inputPort id="phoneID">
+                <description>Phone ID for the phone connection or send SMS</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="SMSContent">
+                <description>SMS content to send</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="command">
+                <description>String command</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <outputPort id="remotePhoneID">
+                <description>remote Phone ID</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="receivedSMS">
+                <description>Received SMS content</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="errorNumber">
+                <description>Error number out</description>
+                <dataType>integer</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="sendSMS">
+                <description>Send SMS</description>
+            </eventListenerPort>
+            <eventListenerPort id="makePhoneCall">
+                <description>Make Phone Call</description>
+            </eventListenerPort>
+            <eventListenerPort id="acceptPhoneCall">
+                <description>Accept phone call</description>
+            </eventListenerPort>
+            <eventListenerPort id="dropPhoneCall">
+                <description>Drop phone call</description>
+            </eventListenerPort>
+            <eventListenerPort id="reconnect">
+                <description>Reconnect to the phone</description>
+            </eventListenerPort>
+            <eventTriggererPort id="idleState">
+                <description>Phone is in the idle state</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="ringState">
+                <description>Ring state</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="connectedState">
+                <description>Phone is connected</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="newSMS">
+                <description>There is a new message</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="error">
+                <description>Error event</description>
+            </eventTriggererPort>
+        </events>    
+        <properties>
+        	<property name="defaultPhoneID"
+                      type="string"
+                      value=""
+                      description="Default phone number"/>
+            <property name="bluetoothPhoneName"
+                      type="string"
+                      value=""
+                      description="Bluetooth phone name"/>
+            <property name="port"
+                      type="integer"
+                      value="-1"
+                      description="Phone server port number"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

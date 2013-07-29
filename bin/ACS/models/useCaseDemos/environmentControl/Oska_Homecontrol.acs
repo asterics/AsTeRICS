@@ -1,0 +1,642 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="21.11.2011_1247" version="20130320">
+  <modelDescription>
+    <shortDescription>Comprehensive Home Control solution involving IR control and KNX,
+controlled via head-mouse or touchscreen input .
+</shortDescription>
+    <requirements>The IRTrans universal IR remote control module (USB-, Lan-, or WiFi version) 
+has to be connected to the system, the driver has to be installed.
+A KNX infrastructure has to be connected via KNXnet/IP router.
+A webcam has to be connected, alternatively a touchscreen can be used.
+</requirements>
+    <description>This model allows to control different functions of a smart home (lights via KNX, music player and TV  via IR remote control)
+The functions are selected via head-controlled mouse or via touchscreen input.
+
+The user interface is established via OSKA, where the main menu for function selection 
+is the "aat_homcontrol.xml" grid. Please see these grids for the utilized IR commands 
+and KNX group addresses.
+</description>
+  </modelDescription>
+  <components>
+    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
+      <description>Webcamera-based face tracking sensor</description>
+      <ports>
+        <outputPort portTypeID="noseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="noseY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraSelection" value="0" />
+        <property name="cameraResolution" value="1" />
+        <property name="cameraDisplayUpdate" value="100" />
+        <property name="cameraProfile" value="" />
+      </properties>
+      <layout>
+        <posX>17</posX>
+        <posY>181</posY>
+      </layout>
+      <gui>
+        <posX>8500</posX>
+        <posY>0</posY>
+        <width>1500</width>
+        <height>2444</height>
+      </gui>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="False" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="2000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1024" />
+      </properties>
+      <layout>
+        <posX>439</posX>
+        <posY>205</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="7" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Oscilloscope" />
+      </properties>
+      <layout>
+        <posX>138</posX>
+        <posY>33</posY>
+      </layout>
+      <gui>
+        <posX>213</posX>
+        <posY>933</posY>
+        <width>5900</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="7" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Oscilloscope" />
+      </properties>
+      <layout>
+        <posX>150</posX>
+        <posY>319</posY>
+      </layout>
+      <gui>
+        <posX>213</posX>
+        <posY>2556</posY>
+        <width>5900</width>
+        <height>1300</height>
+      </gui>
+    </component>
+    <component id="Deadzone.1" type_id="asterics.Deadzone">
+      <description>Defines active/passive Zone for x/y values</description>
+      <ports>
+        <inputPort portTypeID="inX" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inY" sync="true">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="radius">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="xCenter" value="0" />
+        <property name="yCenter" value="0" />
+        <property name="radius" value="18" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>301</posX>
+        <posY>59</posY>
+      </layout>
+    </component>
+    <component id="IrTrans.1" type_id="asterics.IrTrans">
+      <description>IR Transmission Module</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="" />
+        <property name="port" value="21000" />
+        <property name="prestring" value="" />
+        <property name="send1" value="" />
+        <property name="send2" value="" />
+        <property name="send3" value="" />
+        <property name="send4" value="" />
+        <property name="send5" value="" />
+        <property name="send6" value="" />
+        <property name="send7" value="" />
+        <property name="send8" value="" />
+        <property name="send9" value="" />
+        <property name="send10" value="" />
+        <property name="send11" value="" />
+        <property name="send12" value="" />
+        <property name="send13" value="" />
+        <property name="send14" value="" />
+        <property name="send15" value="" />
+        <property name="send16" value="" />
+        <property name="send17" value="" />
+        <property name="send18" value="" />
+        <property name="send19" value="" />
+        <property name="send20" value="" />
+        <property name="send21" value="" />
+        <property name="send22" value="" />
+        <property name="send23" value="" />
+        <property name="send24" value="" />
+      </properties>
+      <layout>
+        <posX>589</posX>
+        <posY>430</posY>
+      </layout>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>Timer</description>
+      <ports>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="1000" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>465</posX>
+        <posY>9</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="bar-graph" />
+      </properties>
+      <layout>
+        <posX>594</posX>
+        <posY>12</posY>
+      </layout>
+      <gui>
+        <posX>6275</posX>
+        <posY>1000</posY>
+        <width>850</width>
+        <height>4644</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>720</posX>
+        <posY>22</posY>
+      </layout>
+      <gui>
+        <posX>200</posX>
+        <posY>4044</posY>
+        <width>5900</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="DigitalOut.1" type_id="asterics.DigitalOut">
+      <description>Digital Output control of GPIO-CIM</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="pullupStateOut3" value="false" />
+        <property name="pullupStateOut4" value="false" />
+        <property name="pullupStateOut5" value="false" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>459</posX>
+        <posY>497</posY>
+      </layout>
+    </component>
+    <component id="Knx.1" type_id="asterics.Knx">
+      <description>My Plugin description</description>
+      <ports>
+        <inputPort portTypeID="command">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="slider6">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="localIP" value="192.168.1.117" />
+        <property name="KNXNetIP" value="192.168.1.119" />
+        <property name="NAT" value="False" />
+        <property name="groupAddress1" value="1/0/0" />
+        <property name="dataType1" value="boolean" />
+        <property name="dataValue1" value="0" />
+        <property name="groupAddress2" value="1/0/0" />
+        <property name="dataType2" value="boolean" />
+        <property name="dataValue2" value="1" />
+        <property name="groupAddress3" value="1/1/0" />
+        <property name="dataType3" value="boolean" />
+        <property name="dataValue3" value="0" />
+        <property name="groupAddress4" value="1/1/0" />
+        <property name="dataType4" value="boolean" />
+        <property name="dataValue4" value="1" />
+        <property name="groupAddress5" value="1/1/1" />
+        <property name="dataType5" value="boolean" />
+        <property name="dataValue5" value="0" />
+        <property name="groupAddress6" value="1/1/1" />
+        <property name="dataType6" value="boolean" />
+        <property name="dataValue6" value="1" />
+        <property name="groupAddressSlider1" value="1/1/1" />
+        <property name="groupAddressSlider2" value="1/1/1" />
+        <property name="groupAddressSlider3" value="1/1/1" />
+        <property name="groupAddressSlider4" value="1/1/1" />
+        <property name="groupAddressSlider5" value="1/1/1" />
+        <property name="groupAddressSlider6" value="1/1/1" />
+        <property name="groupAddressTrigger1" value="1/1/1" />
+        <property name="groupAddressTrigger2" value="1/1/1" />
+        <property name="groupAddressTrigger3" value="1/1/1" />
+        <property name="groupAddressTrigger4" value="1/1/1" />
+        <property name="groupAddressTrigger5" value="1/1/1" />
+        <property name="groupAddressTrigger6" value="1/1/1" />
+      </properties>
+      <layout>
+        <posX>702</posX>
+        <posY>228</posY>
+      </layout>
+    </component>
+    <component id="DigitalIn.1" type_id="asterics.DigitalIn">
+      <description>GPIO CIM sensor for inputs</description>
+      <ports />
+      <properties>
+        <property name="activateEventIn1" value="false" />
+        <property name="activateEventIn2" value="false" />
+        <property name="activateEventIn3" value="false" />
+        <property name="activateEventIn4" value="false" />
+        <property name="activateEventIn5" value="false" />
+        <property name="activateEventIn6" value="false" />
+        <property name="periodicUpdate" value="0" />
+        <property name="uniqueID" value="0xb01-0x8000001" />
+      </properties>
+      <layout>
+        <posX>67</posX>
+        <posY>556</posY>
+      </layout>
+    </component>
+    <component id="OskaInternalScanning.1" type_id="OskaInternalScanning">
+      <description>Component communicating with OSKA</description>
+      <ports>
+        <outputPort portTypeID="action">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="keycodes">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="port" value="4546" />
+        <property name="title" value="OSKA keyboard" />
+        <property name="oskaPath" value="..\oska\start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards\homeControl\aat_homecontrol.xml" />
+        <property name="scanSpeed" value="4" />
+        <property name="highlightStyle" value="1" />
+        <property name="settingsFile" value="settings\internal_tcp.kst" />
+        <property name="windowDecorated" value="true" />
+        <property name="resizeEnabled" value="True" />
+      </properties>
+      <layout>
+        <posX>301</posX>
+        <posY>320</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>6222</posY>
+        <width>9738</width>
+        <height>3778</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseX" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseX" />
+      </source>
+      <target>
+        <component id="Deadzone.1" />
+        <port id="inX" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="Deadzone.1" />
+        <port id="inY" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="Timer.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="OskaInternalScanning.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="action" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="OskaInternalScanning.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="IrTrans.1" />
+        <port id="action" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="OskaInternalScanning.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="DigitalOut.1" />
+        <port id="action" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="OskaInternalScanning.1" />
+        <port id="action" />
+      </source>
+      <target>
+        <component id="Knx.1" />
+        <port id="command" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="enterZone_start">
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_stop">
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_reset">
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="enterZone_eventDisplay">
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="enterZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="exitZone_eventDisplay">
+      <sources>
+        <source>
+          <component id="Deadzone.1" />
+          <eventPort id="exitZone" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_leftClick">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_pressSwitch2">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="OskaInternalScanning.1" />
+          <eventPort id="pressSwitch2" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>38</posX>
+      <posY>111</posY>
+      <width>7850</width>
+      <height>5844</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

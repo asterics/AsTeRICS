@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Deadzone"
+                   canonical_name="eu.asterics.component.processor.deadzone.DeadzoneInstance">
+        <type subtype="Signal Shaping">processor</type>
+        <singleton>false</singleton>
+        <description>Defines active/passive Zone for x/y values</description>
+        <ports>
+            <inputPort id="inX">
+                <description>Input port for x value</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="inY">
+                <description>Input port for y value</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="radius">
+                <description>Input port for deadzone radius</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <outputPort id="outX">
+                <description>Output port for x value</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="outY">
+                <description>Output port for y value</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="setCenter">
+                <description>Incoming Event stores current x/y values as center values</description>
+            </eventListenerPort>
+            <eventTriggererPort id="enterZone">
+                <description>Event fired if zone is entered</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="exitZone">
+                <description>Event fired if zone is left</description>
+            </eventTriggererPort>
+            
+        </events>
+        
+        <properties>
+            <property name="xCenter"
+                      type="double"
+                      value="0"
+                      description="x offset of the center"/>
+            <property name="yCenter"
+                      type="double"
+                      value="0"
+                      description="y offset of the center"/>
+            <property name="radius"
+                      type="double"
+                      value="10"
+                      description="Radius of the zone"/>
+            <property name="mode"
+                      type="integer"
+                      value="0"
+                      combobox="only inner values//only outer values//deadzone"
+                      description="Mode of operation (deadzone: starts with 0 when outer zone reached)"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

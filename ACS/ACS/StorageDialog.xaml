@@ -1,0 +1,46 @@
+﻿<!--
+/*
+ *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
+ * 
+ * 
+ *        d8888      88888888888       8888888b.  8888888 .d8888b.   .d8888b. 
+ *       d88888          888           888   Y88b   888  d88P  Y88b d88P  Y88b
+ *      d88P888          888           888    888   888  888    888 Y88b.     
+ *     d88P 888 .d8888b  888   .d88b.  888   d88P   888  888         "Y888b.  
+ *    d88P  888 88K      888  d8P  Y8b 8888888P"    888  888            "Y88b.
+ *   d88P   888 "Y8888b. 888  88888888 888 T88b     888  888    888       "888
+ *  d8888888888      X88 888  Y8b.     888  T88b    888  Y88b  d88P Y88b  d88P
+ * d88P     888  88888P' 888   "Y8888  888   T88b 8888888 "Y8888P"   "Y8888P" 
+ *
+ *
+ *                    homepage: http://www.asterics.org 
+ *
+ *         This project has been partly funded by the European Commission, 
+ *                      Grant Agreement Number 247730
+ *  
+ *  
+ *    License: LGPL v3.0 (GNU Lesser General Public License Version 3.0)
+ *                 http://www.gnu.org/licenses/lgpl.html
+ * 
+ */    
+-->
+<Window x:Class="Asterics.ACS.StorageDialog"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:properties="clr-namespace:Asterics.ACS.Properties"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            mc:Ignorable="d" 
+            Height="390" Width="400"         
+            ResizeMode="CanResizeWithGrip"
+            ShowInTaskbar="False"
+            WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow">
+    <Grid Height="355" Width="383">
+        <Label Content="{x:Static properties:Resources.StorageDialogHeading}" Height="28" HorizontalAlignment="Left" Margin="37,12,0,0" Name="listLabel" VerticalAlignment="Top" Width="316" />
+        <ListBox Height="159" HorizontalAlignment="Left" Margin="37,46,0,0" Name="filenameListbox" VerticalAlignment="Top" Width="316" AutomationProperties.Name="{x:Static properties:Resources.StorageDialogHeading}" />
+        <Label Content="{x:Static properties:Resources.StorageDialogFilename}" Height="28" HorizontalAlignment="Left" Margin="37,227,0,0" Name="modelNameLabel" VerticalAlignment="Top" Width="171" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="37,251,0,0" Name="filenameTextbox" VerticalAlignment="Top" Width="234" KeyDown="filenameTextbox_KeyDown" AutomationProperties.Name="{x:Static properties:Resources.StorageDialogFilename}"/>
+        <Button Content="{x:Static properties:Resources.OkButton}" Height="23" HorizontalAlignment="Left" Margin="188,301,0,0" Name="okButton" VerticalAlignment="Top" Width="75" Click="okButton_Click" />
+        <Button Content="{x:Static properties:Resources.CancelButton}" Height="23" HorizontalAlignment="Left" Margin="278,0,0,31" Name="cancelButton" VerticalAlignment="Bottom" Width="75" IsCancel="True" Click="cancelButton_Click" />
+    </Grid>
+</Window>

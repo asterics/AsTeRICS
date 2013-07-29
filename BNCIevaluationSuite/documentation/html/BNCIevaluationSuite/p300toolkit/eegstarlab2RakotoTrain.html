@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of eegstarlab2RakotoTrain</title>
+  <meta name="keywords" content="eegstarlab2RakotoTrain">
+  <meta name="description" content="----------------------------------------------------------">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300toolkit -->
+<h1>eegstarlab2RakotoTrain
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>----------------------------------------------------------</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function convertedData = eegstarlab2RakotoTrain(data) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">----------------------------------------------------------
+ EEGStarlab Toolbox
+ (C) Starlab S.L.
+----------------------------------------------------------
+ eegstarlab2Rakoto
+ Performs a format conversion between EEGStarlab toolbox and Rakotomamonjy
+ code formats
+----------------------------------------------------------
+Inputs
+ data:    structure with data set signals and ground truth
+       signals: EEG data in Starlab Data Cube format - matrix channels X
+                samples X epochs  (e.g. in the paper 64 x N x 15300)
+       GT:      ground truth for each epoch. In case of p300 data we have agreed the following
+                GT structure:
+                - First column: 0 means unattended stimuli, 1 means attended stimuli
+                - Second Column: Linear code (k) of the image shown in presentation protocol.
+                This maps into a row (i) or column (j) index through the expression:
+                   i=k if k&lt;=R for rows, and j=R+k for columns, where R is the number of  
+                   rows and being rows indexed from left to right and columns from top to bottom.
+                - Third Column: Code of the attended stimuli (character/image/icon) for the duration of
+                each run. This is the code of what we are trying to detect through the
+                p300 wave analysis.
+               Data type - matrix epochs x 3 ()
+ decimationFactor: Factor to be applied in the decimation. In the Rakotomamonjy code this
+                   is 12, which delivers sequences of 14 samples as output of this function
+----------------------------------------------------------
+Outputs
+ convertedData: structure with data set signals and ground truth after
+ preprocessing and converted to Rakotomamonjy's code format
+                
+----------------------------------------------------------
+Dependencies
+ 
+----------------------------------------------------------
+ Version    Date        Author        Changes 
+ v1        2011/01/11   AAE         First version
+----------------------------------------------------------
+ EX.
+ 
+--------------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="svmModelSelection.html" class="code" title="function [svmRecallParameters]=svmModelSelection(trainingData,validationData,Cvalues)">svmModelSelection</a>	----------------------------------------------------------</li><li><a href="svmRecallAndP300Averages.html" class="code" title="function [symbolMemberships]=svmRecallAndP300Averages(testData,svmRecallParameters,numberSequencesAverage,spellerMatrixNumberElements)">svmRecallAndP300Averages</a>	----------------------------------------------------------</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function convertedData = eegstarlab2RakotoTrain(data)</a>
+0002 <span class="comment">%----------------------------------------------------------</span>
+0003 <span class="comment">% EEGStarlab Toolbox</span>
+0004 <span class="comment">% (C) Starlab S.L.</span>
+0005 <span class="comment">%----------------------------------------------------------</span>
+0006 <span class="comment">% eegstarlab2Rakoto</span>
+0007 <span class="comment">% Performs a format conversion between EEGStarlab toolbox and Rakotomamonjy</span>
+0008 <span class="comment">% code formats</span>
+0009 <span class="comment">%----------------------------------------------------------</span>
+0010 <span class="comment">%Inputs</span>
+0011 <span class="comment">% data:    structure with data set signals and ground truth</span>
+0012 <span class="comment">%       signals: EEG data in Starlab Data Cube format - matrix channels X</span>
+0013 <span class="comment">%                samples X epochs  (e.g. in the paper 64 x N x 15300)</span>
+0014 <span class="comment">%       GT:      ground truth for each epoch. In case of p300 data we have agreed the following</span>
+0015 <span class="comment">%                GT structure:</span>
+0016 <span class="comment">%                - First column: 0 means unattended stimuli, 1 means attended stimuli</span>
+0017 <span class="comment">%                - Second Column: Linear code (k) of the image shown in presentation protocol.</span>
+0018 <span class="comment">%                This maps into a row (i) or column (j) index through the expression:</span>
+0019 <span class="comment">%                   i=k if k&lt;=R for rows, and j=R+k for columns, where R is the number of</span>
+0020 <span class="comment">%                   rows and being rows indexed from left to right and columns from top to bottom.</span>
+0021 <span class="comment">%                - Third Column: Code of the attended stimuli (character/image/icon) for the duration of</span>
+0022 <span class="comment">%                each run. This is the code of what we are trying to detect through the</span>
+0023 <span class="comment">%                p300 wave analysis.</span>
+0024 <span class="comment">%               Data type - matrix epochs x 3 ()</span>
+0025 <span class="comment">% decimationFactor: Factor to be applied in the decimation. In the Rakotomamonjy code this</span>
+0026 <span class="comment">%                   is 12, which delivers sequences of 14 samples as output of this function</span>
+0027 <span class="comment">%----------------------------------------------------------</span>
+0028 <span class="comment">%Outputs</span>
+0029 <span class="comment">% convertedData: structure with data set signals and ground truth after</span>
+0030 <span class="comment">% preprocessing and converted to Rakotomamonjy's code format</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%----------------------------------------------------------</span>
+0033 <span class="comment">%Dependencies</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">%----------------------------------------------------------</span>
+0036 <span class="comment">% Version    Date        Author        Changes</span>
+0037 <span class="comment">% v1        2011/01/11   AAE         First version</span>
+0038 <span class="comment">%----------------------------------------------------------</span>
+0039 <span class="comment">% EX.</span>
+0040 <span class="comment">%</span>
+0041 <span class="comment">%--------------------------------------------------------------</span>
+0042 
+0043 dimensions = size(data.signal);
+0044 nSamples = dimensions(2);
+0045 nChannels = dimensions(1);
+0046 <span class="comment">% WE NEED TO DECIMATE THE SIGNAL, AS IT'S TOO LONG</span>
+0047 firstDecimationFactor = 8;
+0048 freq=2048.0;
+0049 freq = freq / firstDecimationFactor;
+0050 lowcut = 0.1;
+0051 highcut = 20;
+0052 R=0.5;
+0053 W = [lowcut*2/freq highcut*2/freq];
+0054 order = 4;
+0055 [b,a] = cheby1(order,R,W);
+0056 gradient = [1 find(diff(data.GT(:,3)')~=0)+1];
+0057 nEpochs = length(gradient);
+0058 indexes = [gradient, dimensions(3)+1];
+0059 fooData = [];
+0060 fooGT = [];
+0061 dictionary = [<span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZ'</span>];
+0062 x = [];
+0063 oneGT = [];
+0064 oneCode = [];
+0065 oneTarget = [];
+0066 <span class="keyword">for</span> i=1:nEpochs
+0067     <span class="comment">% follow from index(i) to index(i+1) and extract samples</span>
+0068     <span class="keyword">for</span> k=indexes(i):indexes(i+1)-1
+0069         xaux = [];
+0070         <span class="keyword">for</span> j=1:nChannels
+0071             <span class="comment">%oneNotCut = data.signal(j,:,k);</span>
+0072             <span class="comment">%oneSample = oneNotCut(options.beginCut:options.endCut);</span>
+0073             <span class="comment">%firstDecimated = decimate(double(oneSample),firstDecimationFactor);</span>
+0074             <span class="comment">%filtered = filter(b,a,firstDecimated);</span>
+0075             decimated = double(data.signal(j,:,k));
+0076             xaux = [xaux,decimated];    
+0077         <span class="keyword">end</span>
+0078         x = [x;xaux];
+0079     <span class="keyword">end</span>
+0080     oneGT=[oneGT; data.GT(indexes(i):indexes(i+1)-1,1)];
+0081     oneCode=[oneCode; data.GT(indexes(i):indexes(i+1)-1,2)];
+0082     oneTarget= [oneTarget; dictionary(data.GT(indexes(i),3))];
+0083     
+0084 <span class="keyword">end</span>
+0085 fooData{1}.x = x;
+0086 fooData{1}.y = oneGT*2-1;
+0087 fooData{1}.code = oneCode;
+0088 fooData{1}.target = oneTarget;
+0089 fooData{1}.nbChannels = nChannels;
+0090 fooData{1}.channel = [1:nChannels];
+0091 fooData{1}.triallength = 49;
+0092 convertedData = fooData;</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

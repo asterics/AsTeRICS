@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.BlinkDetectorTrainer"
+                   canonical_name="com.starlab.component.processor.blinkdetectortrainer.BlinkDetectorTrainerInstance">
+        <type subtype="DSP and Feature Detection">processor</type>
+        <singleton>true</singleton>
+        <description>Blink detector trainer</description>
+        <ports>
+			<inputPort id="Input">
+				<description>EOG signal with blinks</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="Protocol">
+				<description>Instruction and results to the GUI</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+			<outputPort id="Results">
+				<description>Parameters to be used in the Blink detector</description>
+				<dataType>string</dataType>
+			</outputPort>
+		</ports>
+		<events>
+			<eventListenerPort id="StartProtocol">
+				<description>Start protocol event listener</description>
+			</eventListenerPort>
+
+
+			<eventListenerPort id="StopProtocol">
+				<description>Stop protocol event listener</description>
+				</eventListenerPort>
+		</events>			
+        <properties>
+			<property name="language"
+				type="integer"
+				value="0"
+				combobox="English//Spanish"
+				description="Instrucion language"/>
+
+			<property name="sampleRate"
+				type="integer"
+				value="250"
+				description="Sample rate of the incoming signal (in samples / second)"/>
+		</properties>
+
+    </componentType>
+</componentTypes>

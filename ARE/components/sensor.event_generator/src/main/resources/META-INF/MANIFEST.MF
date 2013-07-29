@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-sensors.event_generator
+Bundle-SymbolicName: eu.asterics.component.sensor.event_generator
+Bundle-Version: 0.1.0
+DynamicImport-Package: *
+Import-Package: eu.asterics.mw.services

@@ -1,0 +1,2809 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="09.07.2013_1553" version="20130320">
+  <components>
+    <component id="EventStateMachine.1" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,1,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>794</posX>
+        <posY>62</posY>
+      </layout>
+    </component>
+    <component id="DigitalIn.1" type_id="asterics.DigitalIn">
+      <description>GPIO CIM sensor for inputs</description>
+      <ports />
+      <properties>
+        <property name="activateEventIn1" value="True" />
+        <property name="activateEventIn2" value="false" />
+        <property name="activateEventIn3" value="false" />
+        <property name="activateEventIn4" value="false" />
+        <property name="activateEventIn5" value="false" />
+        <property name="activateEventIn6" value="false" />
+        <property name="periodicUpdate" value="0" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>177</posX>
+        <posY>956</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="s" />
+        <property name="slot2" value="o" />
+        <property name="slot3" value="a" />
+        <property name="slot4" value="b" />
+        <property name="slot5" value="c" />
+        <property name="slot6" value="d" />
+        <property name="slot7" value="e" />
+        <property name="slot8" value="f" />
+        <property name="slot9" value="g" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>1167</posX>
+        <posY>163</posY>
+      </layout>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="800" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>651</posX>
+        <posY>383</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.1" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,2,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>907</posX>
+        <posY>68</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Morse Letter" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>1701</posX>
+        <posY>589</posY>
+      </layout>
+      <gui>
+        <posX>350</posX>
+        <posY>2356</posY>
+        <width>3113</width>
+        <height>1889</height>
+      </gui>
+    </component>
+    <component id="SyntheticVoice.1" type_id="asterics.SyntheticVoice">
+      <description>Uses SAPI technology to generate synthetic voice</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="volume" value="100" />
+        <property name="speed" value="0" />
+        <property name="voice" value="" />
+        <property name="xmlTags" value="false" />
+      </properties>
+      <layout>
+        <posX>1705</posX>
+        <posY>795</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.1.1" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>1030</posX>
+        <posY>68</posY>
+      </layout>
+    </component>
+    <component id="Timer.1.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="4" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="1000" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>227</posX>
+        <posY>778</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="button time (&lt;250ms = dit, &gt;250ms=dah)" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>322</posX>
+        <posY>415</posY>
+      </layout>
+      <gui>
+        <posX>638</posX>
+        <posY>933</posY>
+        <width>2500</width>
+        <height>1267</height>
+      </gui>
+    </component>
+    <component id="IntToString.1" type_id="asterics.IntToString">
+      <description>Converts int to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hexadecimalOutput" value="false" />
+      </properties>
+      <layout>
+        <posX>207</posX>
+        <posY>404</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="1" />
+        <property name="threshold" value="0" />
+        <property name="threshold2" value="250" />
+      </properties>
+      <layout>
+        <posX>650</posX>
+        <posY>65</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.2" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,1,1,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>799</posX>
+        <posY>225</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="1" />
+        <property name="threshold" value="250" />
+        <property name="threshold2" value="800" />
+      </properties>
+      <layout>
+        <posX>649</posX>
+        <posY>219</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.2.1" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,1,2,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>917</posX>
+        <posY>228</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.2.2" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,1,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>1040</posX>
+        <posY>228</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.3" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>797</posX>
+        <posY>389</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.3.1" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,1,2,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>924</posX>
+        <posY>391</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.3.2" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,2,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>1051</posX>
+        <posY>394</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.4" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,1,1,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>809</posX>
+        <posY>579</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="h" />
+        <property name="slot2" value="i" />
+        <property name="slot3" value="j" />
+        <property name="slot4" value="k" />
+        <property name="slot5" value="l" />
+        <property name="slot6" value="m" />
+        <property name="slot7" value="n" />
+        <property name="slot8" value="p" />
+        <property name="slot9" value="q" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>1183</posX>
+        <posY>675</posY>
+      </layout>
+    </component>
+    <component id="Timer.1.2" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="800" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>667</posX>
+        <posY>895</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.1.2" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>928</posX>
+        <posY>580</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.1.1.1" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,2,2,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>1047</posX>
+        <posY>580</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1.2" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="1" />
+        <property name="threshold" value="0" />
+        <property name="threshold2" value="250" />
+      </properties>
+      <layout>
+        <posX>666</posX>
+        <posY>577</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.2.3" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,1,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>815</posX>
+        <posY>737</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1.1.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="1" />
+        <property name="threshold" value="250" />
+        <property name="threshold2" value="800" />
+      </properties>
+      <layout>
+        <posX>665</posX>
+        <posY>731</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.2.1.1" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,2,1,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>933</posX>
+        <posY>740</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.2.2.1" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>1056</posX>
+        <posY>740</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.3.3" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>812</posX>
+        <posY>902</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.3.1.1" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,2,2,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>937</posX>
+        <posY>901</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.3.2.1" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,2,1,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>1064</posX>
+        <posY>907</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.5" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,2,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>810</posX>
+        <posY>1118</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1.2" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="r" />
+        <property name="slot2" value="t" />
+        <property name="slot3" value="u" />
+        <property name="slot4" value="v" />
+        <property name="slot5" value="w" />
+        <property name="slot6" value="x" />
+        <property name="slot7" value="y" />
+        <property name="slot8" value="z" />
+        <property name="slot9" value="1" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>1185</posX>
+        <posY>1217</posY>
+      </layout>
+    </component>
+    <component id="Timer.1.3" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="800" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>669</posX>
+        <posY>1436</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.1.3" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>930</posX>
+        <posY>1121</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.1.1.2" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,1,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>1044</posX>
+        <posY>1125</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1.3" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="1" />
+        <property name="threshold" value="0" />
+        <property name="threshold2" value="250" />
+      </properties>
+      <layout>
+        <posX>668</posX>
+        <posY>1118</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.2.4" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,1,1,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>816</posX>
+        <posY>1279</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1.1.2" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="6" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="1" />
+        <property name="threshold" value="250" />
+        <property name="threshold2" value="800" />
+      </properties>
+      <layout>
+        <posX>667</posX>
+        <posY>1272</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.2.1.2" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,2,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>935</posX>
+        <posY>1281</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.2.2.2" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,1,1,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>1058</posX>
+        <posY>1281</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.3.4" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,1,2,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>815</posX>
+        <posY>1442</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.3.1.2" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,2,2,1,1,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>942</posX>
+        <posY>1441</posY>
+      </layout>
+    </component>
+    <component id="EventStateMachine.1.3.2.2" type_id="asterics.EventStateMachine">
+      <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>
+      <ports />
+      <properties>
+        <property name="stateSequence" value="3,1,2,2,2,2,3" />
+        <property name="stateTiming" value="" />
+        <property name="resetOnIncorrectEvent" value="true" />
+        <property name="skipFirstEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>1066</posX>
+        <posY>1446</posY>
+      </layout>
+    </component>
+    <component id="MultiSourceString.1" type_id="asterics.MultiSourceString">
+      <description>Passes strings from input ports to the one output port</description>
+      <ports>
+        <inputPort portTypeID="input1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input4">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>1403</posX>
+        <posY>657</posY>
+      </layout>
+    </component>
+    <component id="StringAppend.1" type_id="asterics.StringAppend">
+      <description>This plugin allows assembly of a string from single characters or substrings. The current and final results are sent to output ports.</description>
+      <ports>
+        <inputPort portTypeID="inStr">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inChar">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="actResult">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="finalResult">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="autoSendAtEnter" value="false" />
+        <property name="defaultValue" value="" />
+      </properties>
+      <layout>
+        <posX>1534</posX>
+        <posY>659</posY>
+      </layout>
+    </component>
+    <component id="Timer.2" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="1500" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>1396</posX>
+        <posY>941</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.14">
+      <source>
+        <component id="StringAppend.1" />
+        <port id="finalResult" />
+      </source>
+      <target>
+        <component id="SyntheticVoice.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="StringAppend.1" />
+        <port id="actResult" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="IntToString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Timer.1.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="IntToString.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Timer.1.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="Comparator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Timer.1.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="Comparator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="Timer.1.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="Comparator.1.2" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Timer.1.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="Comparator.1.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="Timer.1.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="Comparator.1.3" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="Timer.1.1" />
+        <port id="time" />
+      </source>
+      <target>
+        <component id="Comparator.1.1.2" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input1" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="StringDispatcher.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input2" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="StringDispatcher.1.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="MultiSourceString.1" />
+        <port id="input3" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="MultiSourceString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="StringAppend.1" />
+        <port id="inStr" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="finalStateReached_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.1" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_start">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_stop">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_reset">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_start">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_reset">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_stop">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.1.1" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.1" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.1" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.1" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot4">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.2" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot5">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.2.1" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot6">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.2.2" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot7">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.3" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot8">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.3.1" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot9">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.3.2" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot9" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.1" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.2" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.1" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.2" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.1" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.2" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.1" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.2" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.1" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.2" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.1" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.2" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.4" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.4" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.1.2" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.2" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.4" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.2" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.2" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.4" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.1.1.1" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.1.1" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.1.1" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.1.1" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot4">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.2.3" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot5">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.2.1.1" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot6">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.2.2.1" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot7">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.3.3" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot8">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.3.1.1" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot9">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.3.2.1" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot9" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.3" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.1.1" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.2.1" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.3" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.1.1" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.2.1" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.3" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.1.1" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.2.1" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.3" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.1.1" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.2.1" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.3" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.1.1" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.2.1" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.3" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.1.1" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.2.1" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.5" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.5" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.1.3" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.3" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.3" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.5" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.3" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.3" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.3" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.5" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.1.1.2" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.3" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.1.2" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.1.2" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.1.1.2" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot4">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.2.4" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot5">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.2.1.2" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot6">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.2.2.2" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot7">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.3.4" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot8">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.3.1.2" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="finalStateReached_dispatchSlot9">
+      <sources>
+        <source>
+          <component id="EventStateMachine.1.3.2.2" />
+          <eventPort id="finalStateReached" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.2" />
+          <eventPort id="dispatchSlot9" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.3" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.4" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.3" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.1.2" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.3" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.2.2" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.3" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.4" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.3" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.1.2" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in1">
+      <sources>
+        <source>
+          <component id="Comparator.1.3" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.2.2" />
+          <eventPort id="in1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.4" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.1.2" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.2.2" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.4" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.1.2" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_in2">
+      <sources>
+        <source>
+          <component id="Comparator.1.1.2" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.2.2" />
+          <eventPort id="in2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.4" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.1.2" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.2.2.2" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.4" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.1.2" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_in3">
+      <sources>
+        <source>
+          <component id="Timer.1.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventStateMachine.1.3.2.2" />
+          <eventPort id="in3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_start">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.2" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_stop">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.2" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_reset">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.2" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_start">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.3" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_stop">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.3" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in2High_reset">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.3" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_sendNowAndClear">
+      <sources>
+        <source>
+          <component id="Timer.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringAppend.1" />
+          <eventPort id="sendNowAndClear" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_start">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.2" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_stop">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.2" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_reset">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.2" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4112</width>
+      <height>4556</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

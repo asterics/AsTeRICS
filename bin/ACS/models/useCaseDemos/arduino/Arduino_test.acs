@@ -1,0 +1,377 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="11.11.2011_2352" version="20130320">
+  <components>
+    <component id="Arduino.1" type_id="asterics.Arduino">
+      <description>Arduino Microcontroller CIM</description>
+      <ports>
+        <inputPort portTypeID="pwm3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pwm5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pwm6">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="A0">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A5">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="periodicADCUpdate" value="10" />
+        <property name="pin2Mode" value="0" />
+        <property name="pin3Mode" value="0" />
+        <property name="pin4Mode" value="0" />
+        <property name="pin5Mode" value="0" />
+        <property name="pin6Mode" value="0" />
+        <property name="pin7Mode" value="2" />
+        <property name="pin8Mode" value="0" />
+        <property name="pin9Mode" value="0" />
+        <property name="pin10Mode" value="0" />
+        <property name="pin11Mode" value="3" />
+        <property name="pin12Mode" value="0" />
+        <property name="pin13Mode" value="4" />
+      </properties>
+      <layout>
+        <posX>184</posX>
+        <posY>78</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Oscilloscope" />
+      </properties>
+      <layout>
+        <posX>404</posX>
+        <posY>65</posY>
+      </layout>
+      <gui>
+        <posX>175</posX>
+        <posY>800</posY>
+        <width>4900</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>442</posX>
+        <posY>239</posY>
+      </layout>
+      <gui>
+        <posX>2537</posX>
+        <posY>2667</posY>
+        <width>2400</width>
+        <height>2600</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="buttonCaption1" value="Internal Led On (Set Pin13)" />
+        <property name="buttonCaption2" value="Clear Pin13" />
+        <property name="buttonCaption3" value="Set Pin11" />
+        <property name="buttonCaption4" value="Clear Pin11" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>18</posX>
+        <posY>199</posY>
+      </layout>
+      <gui>
+        <posX>188</posX>
+        <posY>2578</posY>
+        <width>2300</width>
+        <height>2700</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="bar-graph" />
+      </properties>
+      <layout>
+        <posX>600</posX>
+        <posY>144</posY>
+      </layout>
+      <gui>
+        <posX>5212</posX>
+        <posY>778</posY>
+        <width>1300</width>
+        <height>4500</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A0" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A0" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="pin2ChangedLowToHigh_eventDisplay">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin2ChangedLowToHigh" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin2ChangedHighToLow_eventDisplay">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin2ChangedHighToLow" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_setPin13">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Arduino.1" />
+          <eventPort id="setPin13" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_clearPin13">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Arduino.1" />
+          <eventPort id="clearPin13" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_eventDisplay">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_eventDisplay">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin7ChangedLowToHigh_eventDisplay">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin7ChangedLowToHigh" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin7ChangedHighToLow_eventDisplay">
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin7ChangedHighToLow" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_clearPin11">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Arduino.1" />
+          <eventPort id="clearPin11" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_setPin11">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Arduino.1" />
+          <eventPort id="setPin11" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_eventDisplay">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_eventDisplay">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>7275</width>
+      <height>5911</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Enobio"
+                   canonical_name="com.starlab.component.sensor.enobio.EnobioInstance">
+        <type subtype="Bioelectric Measurement">sensor</type>
+        <singleton>true</singleton>
+        <description>Enobio sensor (ECG, EEG and EMG)</description>
+        <ports>
+            <outputPort id="Channel1">
+                <description>Output port of channel 1</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="Channel2">
+                <description>Output port of channel 2</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="Channel3">
+                <description>Output port of channel 3</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="Channel4">
+                <description>Output port of channel 4</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="Status">
+                <description>Output port of status channel</description>
+                <dataType>integer</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventTriggererPort id="externalSignalPosEdgeEvent">
+                <description>This event is fired if the external signal toggles from low to high level</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="externalSignalNegEdgeEvent">
+                <description>Event port triggers if the external signal toggles from high to low level</description>
+            </eventTriggererPort>
+        </events>
+        <properties>
+            <property name="IsChannel1Activated"
+                      type="boolean"
+                      value="true"
+                      description="Defines if the channel 1 is activated"/>
+            <property name="IsChannel2Activated"
+                      type="boolean"
+                      value="true"
+                      description="Defines if the channel 2 is activated"/>
+            <property name="IsChannel3Activated"
+                      type="boolean"
+                      value="true"
+                      description="Defines if the channel 3 is activated"/>
+            <property name="IsChannel4Activated"
+                      type="boolean"
+                      value="true"
+                      description="Defines if the channel 4 is activated"/>
+            <property name="HighPassFilterInChannel1"
+                      type="boolean"
+                      value="false"
+                      description="Defines if a high pass filter is applied to the channel 1"/>
+            <property name="HighPassFilterInChannel2"
+                      type="boolean"
+                      value="false"
+                      description="Defines if a high pass filter is applied to the channel 2"/>
+            <property name="HighPassFilterInChannel3"
+                      type="boolean"
+                      value="false"
+                      description="Defines if a high pass filter is applied to the channel 3"/>
+            <property name="HighPassFilterInChannel4"
+                      type="boolean"
+                      value="false"
+                      description="Defines if a high pass filter is applied to the channel 4"/>
+            <property name="LineNoiseFilter"
+                      type="boolean"
+                      value="false"
+                      description="Defines if the 50 Hz band-stop filter is applied to all four channels"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.MultiSource"
+                   canonical_name="eu.asterics.component.processor.multisource.MultiSourceInstance">
+        <type subtype="Signal Pathways">processor</type>
+        <singleton>false</singleton>
+        <description>Passes signal from input ports to the one output port</description>
+        <ports>
+			<inputPort id="input1">
+				<description>input port 1</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="input2">
+				<description>input port 2</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="input3">
+				<description>input port 3</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="input4">
+				<description>input port 4</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="output">
+				<description>output port</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

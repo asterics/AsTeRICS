@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.SignalGenerator"
+                   canonical_name="eu.asterics.component.sensor.signalgenerator.SignalGeneratorInstance">
+        <type subtype="Simulation">sensor</type>
+        <singleton>false</singleton>
+        <description>Signal Generator</description>
+        <ports>
+            <outputPort id="out">
+                <description>signal output</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <properties>
+            <property name="sendInterval"
+                      type="integer"
+                      value="20"
+                      description="The interval for sending values (ms)"/>
+            <property name="waveForm"
+                      type="integer"
+                      value="1"
+                      description="0:random 1:sine 2:sawtooth 3:rectangle"
+                      combobox="random//sine//sawtooth//rectangle"/>
+            <property name="frequency"
+                      type="double"
+                      value="2"
+                      description="cycles per second"/>
+            <property name="amplitude"
+                      type="double"
+                      value="100"
+                      description="signal amplitude"/>
+            <property name="phaseShift"
+                      type="double"
+                      value="0"
+                      description="phase offset (in milliseconds)"/>
+            <property name="offset"
+                      type="double"
+                      value="0"
+                      description="signal offset (constant)"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

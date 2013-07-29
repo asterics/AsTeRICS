@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.SignalShaper"
+                   canonical_name="eu.asterics.component.sensor.signalshaper.SignalShaperInstance">
+        <type subtype="Simulation">sensor</type>
+        <singleton>false</singleton>
+        <description>This component allow to shape signal from the lines</description>
+        <ports>
+
+			<outputPort id="output">
+				<description>Signal output port</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="start">
+				<description>Start signal generation.</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="interval"
+				type="integer"
+				value="20"
+				description="Send interval [ms]"/>
+			<property name="numberOfLines"
+				type="integer"
+				value="0"
+				combobox="1//2//3//4//5"
+				description="The number of lines used for the signal generation"/>
+			<property name="behaviourAfterFinish"
+				type="integer"
+				value="0"
+				combobox="do nothing//repeat//send the last value"
+				description="What the component should do after send  signal."/>
+			<property name="beginValue1"
+				type="double"
+				value="0"
+				description="Begin value of the line 1"/>
+			<property name="endValue1"
+				type="double"
+				value="0"
+				description="End value of the line 1"/>
+			<property name="time1"
+				type="integer"
+				value="0"
+				description="The time fo the line 1 [ms]"/>
+			<property name="beginValue2"
+				type="double"
+				value="0"
+				description="Begin value of the line 2"/>
+			<property name="endValue2"
+				type="double"
+				value="0"
+				description="End value of the line 2"/>
+			<property name="time2"
+				type="integer"
+				value="0"
+				description="The time fo the line 2 [ms]"/>
+			<property name="beginValue3"
+				type="double"
+				value="0"
+				description="Begin value of the line 3"/>
+			<property name="endValue3"
+				type="double"
+				value="0"
+				description="End value of the line 3"/>
+			<property name="time3"
+				type="integer"
+				value="0"
+				description="The time fo the line 3 [ms]"/>
+			<property name="beginValue4"
+				type="double"
+				value="0"
+				description="Begin value of the line 4"/>
+			<property name="endValue4"
+				type="double"
+				value="0"
+				description="End value of the line 4"/>
+			<property name="time4"
+				type="integer"
+				value="0"
+				description="The time fo the line 4 [ms]"/>
+			<property name="beginValue5"
+				type="double"
+				value="0"
+				description="Begin value of the line 5"/>
+			<property name="endValue5"
+				type="double"
+				value="0"
+				description="End value of the line 5"/>
+			<property name="time5"
+				type="integer"
+				value="0"
+				description="The time fo the line 5 [ms]"/>
+			
+        </properties>
+
+    </componentType>
+</componentTypes>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.TobiTiC"
+                   canonical_name="eu.asterics.component.sensor.tobitic.TobiTiCInstance">
+        <type subtype="Bioelectric Measurement">sensor</type>
+        <singleton>false</singleton>
+        <description>Implements a simple TOBI TiC  interface and outputs classifier values</description>
+        <ports>
+
+			<outputPort id="value1">
+				<description>value of first class label</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="value2">
+				<description>value of second class label</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="value3">
+				<description>value of third class label</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="value4">
+				<description>value of forth class label</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="value5">
+				<description>value of fifth class label</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="tcpPort"
+				type="integer"
+				value="52000"
+				description="IP port to listen to"/>
+			<property name="classLabel1"
+				type="string"
+				value="label1"
+				description="name of the first class label"/>
+			<property name="classLabel2"
+				type="string"
+				value="label2"
+				description="name of the second class label"/>
+			<property name="classLabel3"
+				type="string"
+				value="label3"
+				description="name of the third class label"/>
+			<property name="classLabel4"
+				type="string"
+				value="label4"
+				description="name of the forth class label"/>
+			<property name="classLabel5"
+				type="string"
+				value="label5"
+				description="name of the fifth class label"/>
+
+        </properties>
+    </componentType>
+</componentTypes>

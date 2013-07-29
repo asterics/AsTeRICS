@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of main_Asterics_Test2_wl_anova_OVR_v1</title>
+  <meta name="keywords" content="main_Asterics_Test2_wl_anova_OVR_v1">
+  <meta name="description" content="matlab routine to go through the folders,">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html motorImageryDemos -->
+<h1>main_Asterics_Test2_wl_anova_OVR_v1
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>matlab routine to go through the folders,</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">matlab routine to go through the folders,
+and call the diferent steps involved in the feature extraction
+procedure
+
+ developed by Ivan Cester and Joan Llobera 08
+ v.13 we pre-process the data</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../BNCIevaluationSuite/featureExtraction/OVRtrain_v6.html" class="code" title="function varargout=OVRtrain_v6(dataset,m)">OVRtrain_v6</a>	----------------------------------------------------------</li><li><a href="../../BNCIevaluationSuite/multiclass/bciOVRframework.html" class="code" title="function [kap,kapTest,classLabelSamples,classLabelSamplesTest,classPrediction,classPredictionTest,labelClass,labelClassTest]=bciOVRframework(xTrain,xTest,baggingRuns,homogeneousBagging,standardizeClassifierOutputs,subtractMeanMembership)">bciOVRframework</a>	v. 2 adding decision stage and kappa computation</li><li><a href="../../BNCIevaluationSuite/multiclass/openFiles.html" class="code" title="function [dataTrain,dataTest]=openFiles(dirPath,filePrefix)">openFiles</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%matlab routine to go through the folders,</span>
+0002 <span class="comment">%and call the diferent steps involved in the feature extraction</span>
+0003 <span class="comment">%procedure</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% developed by Ivan Cester and Joan Llobera 08</span>
+0006 <span class="comment">% v.13 we pre-process the data</span>
+0007 
+0008 <span class="comment">%%%tested by asf 04/08 on aureli's desktop. Result error:</span>
+0009 <span class="comment">% ??? Undefined function or method 'svmclass' for input</span>
+0010 <span class="comment">% arguments of type 'double'.</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Error in ==&gt; starClassify at 220</span>
+0013 <span class="comment">%             [xsup,w,b,pos]=svmclass(sampleData,yapp,c,epsilon,kernel,kerneloption,verbose);</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% Error in ==&gt; baggingFusion at 98</span>
+0016 <span class="comment">%     [yTrain4Fusion,yDataStar]=starClassify(xTrain,testDataAll);</span>
+0017 <span class="comment">%     %data is only used for recalling</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% Error in ==&gt; bciOVRframework at 43</span>
+0020 <span class="comment">%         [trainBaggingPrediction,testBaggingPrediction]=baggingFusion(xTrain(k),xTest(k),baggingRuns,homogeneousBagging);</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">% Error in ==&gt; main_Asterics_Test2_wl_anova_OVR_v1 at 136</span>
+0023 <span class="comment">%                 [kap,kapTest,classLabelSamples,classLabelSamplesTest,classPrediction,classPredictionTest]=bciOVRframework(dataTrain,dataTest,2);</span>
+0024 
+0025 
+0026 training=1;
+0027 recall=1;
+0028 
+0029 Nclass=4;
+0030 feature_dirs={<span class="string">'features subject k3b/'</span>,<span class="string">'features subject k6b/'</span>,<span class="string">'features subject l1b/'</span>};
+0031 load(<span class="string">'coord_BCIcomp3-3b.mat'</span>);
+0032 subj=1;
+0033 
+0034 <span class="comment">%% %%we first select the most significant coefficients with the result of</span>
+0035 <span class="comment">%%%%the anova%%%%%%%%%%%%</span>
+0036 
+0037 load ([<span class="string">'WlmoduleS'</span>,int2str(subj),<span class="string">'_P.mat'</span>]);
+0038 NerCoefs=100;
+0039 
+0040 <span class="comment">%%%COEFFICIENTS SELECTION 1%%%%</span>
+0041 <span class="comment">% for each time sample the NerCoefs coefficients with lower p are selected</span>
+0042 <span class="comment">% coef=zeros(NerCoefs,length(p(1,:)));</span>
+0043 <span class="comment">% for i=1:length(p(1,:))</span>
+0044 <span class="comment">%     coefs_sampl=p(:,i);</span>
+0045 <span class="comment">%     for j=1:NerCoefs</span>
+0046 <span class="comment">%         [m,ind]=min(coefs_sampl);</span>
+0047 <span class="comment">%         coef(j,i)=ind(1);</span>
+0048 <span class="comment">%         coefs_sampl(ind)=[];</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">%     end</span>
+0051 <span class="comment">% end</span>
+0052 
+0053 <span class="comment">%%%COEFFICIENTS SELECTION 2%%%%</span>
+0054 <span class="comment">% the same coefficients will be chosen for all samples. The criteria to</span>
+0055 <span class="comment">% select the coeeficients takes into account the maximum</span>
+0056 stdP=std(p(:,250:end),0,2);
+0057 sumP=sum(p(:,250:end),2);
+0058 [pVal,ind]=sort(sumP);
+0059 coef=ind(1:NerCoefs);
+0060 <span class="comment">%% %%%%%%%%%%%%%%%%</span>
+0061 
+0062 <span class="keyword">for</span> m1=5
+0063     <span class="keyword">for</span> m2=5
+0064         <span class="keyword">for</span> m3=5
+0065             <span class="keyword">for</span> m4=5
+0066                 m=[m1 m2 m3 m4]
+0067                 <span class="keyword">if</span> training==1
+0068                     data_dir=<span class="string">'data/data Asterics/'</span>;     
+0069                     
+0070                     <span class="comment">%% %now, we train for the features (OVR)</span>
+0071                     <span class="keyword">for</span> s=subj<span class="comment">%length(subjects)!!!!</span>
+0072                         <span class="comment">%we  check we don't need to train the system</span>
+0073                         fid=-1;
+0074                         <span class="keyword">if</span> fid==-1 <span class="comment">%there is no such file</span>
+0075                             mkdir([feature_dirs{s}]);
+0076                             <span class="comment">%disp(sprintf('Now preparing data for OVRTraining for subject %d in folder %s',  s, subjects{s}));</span>
+0077                             load(sprintf([<span class="string">'WldataS%d.mat'</span>],s));
+0078                             <span class="keyword">for</span> i=1:Nclass
+0079                                 <span class="comment">%mean_data{i}=zeros(size(data.trial{1}));</span>
+0080                                 mat_data{i}=[];
+0081                                 eval([<span class="string">'len=WlModdataS'</span>,int2str(s),<span class="string">'C'</span>,int2str(i),<span class="string">'.dim(3);'</span>]);
+0082                                 <span class="keyword">for</span> j=1:len
+0083                                     eval(sprintf(<span class="string">'new_trial=WlModdataS%dC%d(coef,250:end,j)'';'</span>,s,i));                                    
+0084                                     <span class="keyword">if</span>(isfinite(sum(sum(new_trial)))) <span class="comment">%there are no infinite numbers</span>
+0085                                         mat_data{i}=cat(1,mat_data{i},new_trial);
+0086                                     <span class="keyword">end</span>
+0087                                 <span class="keyword">end</span>
+0088                                 <span class="comment">%mean_data{i}=mean(mat_data,3);</span>
+0089                                 clear data new_trial
+0090                             <span class="keyword">end</span>
+0091                             pack
+0092                             <span class="comment">%disp(sprintf('OVRTraining for subject %d in folder %s', s, subjects{s}));</span>
+0093                             <span class="comment">%if we wanted a training specific for each subject:</span>
+0094                             <span class="comment">%extractor=OVRtrain_v3(mean_data);</span>
+0095                             [extractor]=<a href="../../BNCIevaluationSuite/featureExtraction/OVRtrain_v6.html" class="code" title="function varargout=OVRtrain_v6(dataset,m)">OVRtrain_v6</a>(mat_data,m);
+0096                             save(sprintf(<span class="string">'%sfeature_parameters.mat'</span>,feature_dirs{s}),<span class="string">'extractor'</span>);
+0097                             <span class="comment">%save(sprintf('//skat/Projects/UCONTROL-P20070527-01/BCI competition iii/OVR_aproach/%sfeature_training.mat',feature_dirs{s}),'dataset_filt');</span>
+0098                             clear mat_data
+0099                         <span class="keyword">end</span>
+0100                     <span class="keyword">end</span>
+0101 
+0102                     <span class="comment">%we extract the features for the training set (for the classification training):</span>
+0103 
+0104                     <span class="keyword">for</span> s=subj<span class="comment">%length(subjects)!!!!!!</span>
+0105                         load(sprintf(<span class="string">'%sfeature_parameters.mat'</span>,feature_dirs{s})); <span class="comment">%we load the extractor</span>
+0106                         <span class="comment">%disp(sprintf('Now extracting features of Training Set for subject %d in folder %s',s,subjects{s}));</span>
+0107                         load(sprintf([<span class="string">'WldataS%d.mat'</span>],s));<span class="comment">%we load the data</span>
+0108                         <span class="keyword">for</span> i=1:Nclass
+0109                             eval([<span class="string">'len=WlModdataS'</span>,int2str(s),<span class="string">'C'</span>,int2str(i),<span class="string">'.dim(3);'</span>]);
+0110                             <span class="keyword">for</span> l=1:len
+0111                                 <span class="keyword">for</span> j=1:Nclass
+0112                                     A=extractor{j};
+0113                                     eval(sprintf(<span class="string">'B=WlModdataS%dC%d(coef,250:end,l);'</span>,s,i));
+0114                                     Z{j}{l}=A*B; <span class="comment">%for each class and trial, we have a 750*60 matrix</span>
+0115                                 <span class="keyword">end</span>
+0116                             <span class="keyword">end</span>
+0117                             save(sprintf(<span class="string">'%sfeatures_class%d.mat'</span>,feature_dirs{s},i),<span class="string">'Z'</span>);
+0118                             clear Z
+0119                         <span class="keyword">end</span>
+0120                     <span class="keyword">end</span>
+0121                    
+0122                 <span class="keyword">end</span>
+0123 
+0124                 <span class="keyword">if</span> recall==1
+0125                     data_dir=<span class="string">'data/data Asterics/'</span>;
+0126                     subjects={<span class="string">'k3b'</span>,<span class="string">'k6b'</span>,<span class="string">'l1b'</span>};
+0127                     <span class="comment">%features extraction:.............................................</span>
+0128                     <span class="keyword">for</span> s=subj<span class="comment">%length(subjects)</span>
+0129                         load(sprintf([<span class="string">'WldataS%d.mat'</span>],s));<span class="comment">%we load the data</span>
+0130                         load(sprintf(<span class="string">'%sfeature_parameters.mat'</span>,feature_dirs{s}));<span class="comment">%%%%</span>
+0131                         load(sprintf([<span class="string">'%s_test_GT_reject.mat'</span>],subjects{s}))
+0132                         <span class="keyword">for</span> clas=1:Nclass     
+0133                             fid=-1;
+0134                             <span class="keyword">if</span> fid==-1
+0135                                 tr=find(test_GT==clas)';
+0136                                 count=1;
+0137                                 <span class="keyword">for</span> trials=tr
+0138                                     <span class="keyword">for</span> j=1:Nclass
+0139                                         A=extractor{j};
+0140                                         eval(sprintf(<span class="string">'B=WlModdataS%d_test(coef,250:end,trials);'</span>,s));
+0141                                         Z{j}{count}=A*B; <span class="comment">%for each class and trial, we have a 750*60 matrix</span>
+0142                                     <span class="keyword">end</span>
+0143                                     count=count+1;
+0144                                 <span class="keyword">end</span>
+0145                                 save(sprintf(<span class="string">'%srecall_features_s%d_c%d.mat'</span>,feature_dirs{s},s,clas),<span class="string">'Z'</span>);
+0146                                 clear Z
+0147                             <span class="keyword">end</span>
+0148                         <span class="keyword">end</span>
+0149                    <span class="keyword">end</span>
+0150 
+0151                 <span class="keyword">end</span>
+0152                 reformat4classification(feature_dirs{subj},subj)
+0153                 [dataTrain,dataTest]=<a href="../../BNCIevaluationSuite/multiclass/openFiles.html" class="code" title="function [dataTrain,dataTest]=openFiles(dirPath,filePrefix)">openFiles</a>(feature_dirs{subj})
+0154                 [kap,kapTest,classLabelSamples,classLabelSamplesTest,classPrediction,classPredictionTest]=<a href="../../BNCIevaluationSuite/multiclass/bciOVRframework.html" class="code" title="function [kap,kapTest,classLabelSamples,classLabelSamplesTest,classPrediction,classPredictionTest,labelClass,labelClassTest]=bciOVRframework(xTrain,xTest,baggingRuns,homogeneousBagging,standardizeClassifierOutputs,subtractMeanMembership)">bciOVRframework</a>(dataTrain,dataTest,2);
+0155                 kapMajTrain(m1,m2,m3,m4)=kap(1);
+0156                 kapAveTrain(m1,m2,m3,m4)=kap(2)
+0157                 kapMajTest(m1,m2,m3,m4)=kapTest(1);
+0158                 kapAveTest(m1,m2,m3,m4)=kapTest(2)                
+0159                 toc
+0160             <span class="keyword">end</span>
+0161         <span class="keyword">end</span>
+0162     <span class="keyword">end</span>
+0163 <span class="keyword">end</span>
+0164 <span class="comment">%save ('resultsMtune\KappaTuningMtestSoA.mat','kapMajTrain','kapAveTrain','kapMajTest','kapAveTest')</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

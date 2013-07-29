@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.AudioSelector"
+                   canonical_name="com.starlab.component.processor.audioselector.AudioSelectorInstance">
+        <type subtype="Audio and Voice">processor</type>
+        <singleton>true</singleton>
+        <description>This plug-in manages the audio tracks present in the data/music folder and different external request working as an interface with the wavefileplayer plug-in</description>
+        <ports>
+
+			<outputPort id="TrackName">
+				<description>Name of the Track to be played</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="StartStop">
+				<description>Togle between play stop state</description>
+			</eventListenerPort>
+			<eventListenerPort id="NextTrack">
+				<description>Play next track</description>
+			</eventListenerPort>
+			<eventListenerPort id="VolumeUp">
+				<description>Put the volume up</description>
+			</eventListenerPort>
+			<eventListenerPort id="VolumeDown">
+				<description>Put the volume down</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="Play">
+				<description>Play Track Request</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Pause">
+				<description>Stop Track Request</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="VolumeUp">
+				<description>Volume Up request</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="VolumeDown">
+				<description>Volume Down Request</description>
+			</eventTriggererPort>
+						<eventTriggererPort id="NextTrack">
+				<description>Play Next Track Request</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.SpaceNavigator3DMouse"
+                   canonical_name="eu.asterics.component.sensor.spacenavigtor3Dmouse.SpaceNavigtor3DMouseInstance">
+        <type subtype="Standard Input Devices">sensor</type>
+        <singleton>true</singleton>
+        <description>Captures inputs from the 3D-Connexion SpaceNavigator Mouse</description>
+        <ports>
+            <outputPort id="mouseX">
+                <description>Axis X</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="mouseY">
+                <description>Axis Y</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="mouseZ">
+                <description>Axis Z</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="mouseRx">
+                <description>Axis X rotation</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="mouseRy">
+            	<description>Axis Y rotation</description>
+            	<dataType>integer</dataType></outputPort>
+            <outputPort id="mouseRz">
+            	<description>Axis Z rotation</description>
+            	<dataType>integer</dataType></outputPort>
+            <outputPort id="buttons">
+            	<description>Buttons combination</description>
+            	<dataType>integer</dataType></outputPort>
+        </ports>
+        <properties>
+            <property name="interval"
+                      type="integer"
+                      value="300"
+                      description="The interval for capturing 3D mouse state (ms)"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

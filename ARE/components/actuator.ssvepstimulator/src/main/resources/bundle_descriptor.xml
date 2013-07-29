@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.SSVEPStimulator"
+                   canonical_name="eu.asterics.component.actuator.ssvepstimulator.SSVEPStimulatorInstance">
+        <type subtype="Brain Computer Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>SSVEP flickering stimulator</description>
+        <ports>
+        	<inputPort id="frequency">
+				<description>Frequency input for panel</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="startStim">
+                <description>On incoming event, flickering starts</description>
+            </eventListenerPort>
+            <eventListenerPort id="stopStim">
+                <description>On incoming event, flickering stops</description>
+            </eventListenerPort>
+            <eventTriggererPort id="stimPeriodFinished">
+				<description>Stimulation period finished</description>
+			</eventTriggererPort>
+        </events>        
+        <properties>
+            <property name="onBitmapFile"
+                      type="string"
+                      value="arrow_up"
+                      description="bitmap file for stimulation on-phase"/>
+            <property name="offBitmapFile"
+                      type="string"
+                      value=""
+                      description="bitmap file for stimulation off-phase (if not specified, black color is used)"/>
+            <property name="xPosition"
+                      type="integer"
+                      value="100"
+                      description="x-position of the flashing icon"/>
+            <property name="yPosition"
+                      type="integer"
+                      value="100"
+                      description="y-position of the flashing icon"/>
+            <property name="frequency"
+                      type="integer"
+                      value="10"
+                      description="the flickering frequency in Hz"/>
+            <property name="msec"
+                      type="integer"
+                      value="3000"
+                      description="the stimulation duration in milliseconds"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

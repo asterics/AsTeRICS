@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-processors.neuralnetworkloader
+Bundle-SymbolicName: eu.asterics.component.processor.neuralnetworkloader
+Bundle-Version: 0.1.0
+Bundle-ClassPath: . , lib/encog-core-3.0.1.jar
+DynamicImport-Package: *

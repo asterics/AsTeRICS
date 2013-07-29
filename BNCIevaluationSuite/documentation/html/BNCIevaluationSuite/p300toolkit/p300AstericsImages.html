@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of p300AstericsImages</title>
+  <meta name="keywords" content="p300AstericsImages">
+  <meta name="description" content="this function loads BDF data format into matlab, applies some filters and">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300toolkit -->
+<h1>p300AstericsImages
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>this function loads BDF data format into matlab, applies some filters and</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function data=p300AstericsImages(subject,session,block) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">this function loads BDF data format into matlab, applies some filters and
+extracts the P300 (between attended vs unattended stimuli) in the SDC (Starlab Data Cube Format)
+It also plots the attended and unattended stimuli for each channel in a
+single figure
+pop_biosig function needed (install EEGlab toolbox first)
+before use, type eeglab in the command line.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function data=p300AstericsImages(subject,session,block)</a>
+0002 
+0003 <span class="comment">%this function loads BDF data format into matlab, applies some filters and</span>
+0004 <span class="comment">%extracts the P300 (between attended vs unattended stimuli) in the SDC (Starlab Data Cube Format)</span>
+0005 <span class="comment">%It also plots the attended and unattended stimuli for each channel in a</span>
+0006 <span class="comment">%single figure</span>
+0007 <span class="comment">%pop_biosig function needed (install EEGlab toolbox first)</span>
+0008 <span class="comment">%before use, type eeglab in the command line.</span>
+0009 
+0010 <span class="comment">%OUTPUTS:</span>
+0011 <span class="comment">%data: Structure with 2 fields</span>
+0012 
+0013 <span class="comment">%data.signal: 3D matrix (32*3073*500) 32 channel*epoch length*number of epochs</span>
+0014 
+0015 <span class="comment">%data.GT: 500*3 matrix.</span>
+0016 <span class="comment">%First column: 0 means unattended stimuli, 1 means attended stimuli</span>
+0017 <span class="comment">%Second Column: Image code (from 1 to 10)</span>
+0018 <span class="comment">%Third Column: Attended Image code for the duration of each trial</span>
+0019 
+0020 <span class="comment">%example:  data=p300AstericsImages(1,1,1)</span>
+0021 
+0022 <span class="comment">%localRoute</span>
+0023 localRoute=[<span class="string">'../data/asterics/'</span>];
+0024 <span class="comment">%absoluteRoute</span>
+0025 absoluteRoute=[<span class="string">'/subject'</span>,num2str(subject),<span class="string">'/session'</span>,num2str(session),<span class="string">'/s'</span>,num2str(subject),<span class="string">'b'</span>,num2str(block),<span class="string">'im.bdf'</span>];
+0026 
+0027 dataPath=[localRoute absoluteRoute];
+0028 
+0029 <span class="comment">%parameters</span>
+0030 fs=2048;
+0031 HighPassFc=1;
+0032 LowPassFc=30;
+0033 
+0034 codes1stBlock=[10,9,8,7,6,5,4,3,1,2];
+0035 codes2ndBlock=[9,7,6,10,5,4,1,8,2,3];
+0036 codes3rdBlock=[1,2,8,5,10,4,3,9,6,7];
+0037 codes4thBlock=[6,4,2,8,9,3,5,7,10,1];
+0038 imagesNames={<span class="string">'Balconwoman'</span>,<span class="string">'birds'</span>,<span class="string">'busboy'</span>,<span class="string">'clouds'</span>,<span class="string">'elephant'</span>,<span class="string">'face'</span>,<span class="string">'ghosthouse'</span>,<span class="string">'iceberg'</span>,<span class="string">'lakewoman'</span>,<span class="string">'lizard'</span>};
+0039 
+0040 <span class="comment">%I select the correct block (depends in input 'block')</span>
+0041 <span class="keyword">if</span> block==1
+0042     codesActualBlock=codes1stBlock;
+0043 <span class="keyword">elseif</span> block==2
+0044     codesActualBlock=codes2ndBlock;
+0045 <span class="keyword">elseif</span> block==3
+0046     codesActualBlock=codes3rdBlock;
+0047 <span class="keyword">elseif</span> block==4
+0048     codesActualBlock=codes4thBlock;
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="comment">%I load the data</span>
+0052 OUTEEG = pop_biosig(dataPath);
+0053 signal=OUTEEG.data;
+0054 [a,b]=size(signal);
+0055 
+0056 <span class="comment">%I Reference to the right mastoid</span>
+0057 <span class="comment">%33: nose</span>
+0058 <span class="comment">%34: vertical EOG</span>
+0059 <span class="comment">%35: horizontal EOG</span>
+0060 <span class="comment">%36: right mastoid</span>
+0061 <span class="comment">%37: left mastoid</span>
+0062 <span class="comment">%38: right ear</span>
+0063 <span class="comment">%39: left ear</span>
+0064 signalRefer=[];
+0065 <span class="keyword">for</span> i=1:a
+0066     signalRefer=[signalRefer; signal(i,:)-signal(36,:)];
+0067 <span class="keyword">end</span>
+0068 
+0069 <span class="comment">%FIlters</span>
+0070 signalFilt=[];
+0071 <span class="keyword">for</span> i=1:a
+0072 feeg2=StarFilterHighEEG(signalRefer(i,:),fs,HighPassFc);
+0073 feeg=StarFilterLowEEG(feeg2,fs,LowPassFc);
+0074 signalFilt=[signalFilt; feeg];
+0075 <span class="keyword">end</span>
+0076 
+0077 
+0078 <span class="comment">%I extract all the codes and their latencies</span>
+0079 TypeAndLatency=[];
+0080 <span class="keyword">for</span> i=1:length(OUTEEG.event)
+0081 TypeAndLatency=[TypeAndLatency;OUTEEG.event(i).type OUTEEG.event(i).latency]; 
+0082 <span class="keyword">end</span>
+0083 
+0084 <span class="comment">%I extract the attended and unattended codes and latencies for each image</span>
+0085 TypeAndLatencyTemp=TypeAndLatency;
+0086 fixCrossTemp= TypeAndLatencyTemp(:,1)==15;
+0087     <span class="keyword">if</span> length(TypeAndLatencyTemp)&gt;520
+0088     TypeAndLatencyTemp(fixCrossTemp(end+1):<span class="keyword">end</span>,:)=[];<span class="comment">%I erase the posible extra stimuli after last fixation cross (if any)</span>
+0089     <span class="keyword">end</span>
+0090 TypeAndLatencyTemp(fixCrossTemp,:)=[];
+0091 
+0092 <span class="keyword">for</span> i=1:10
+0093     TypeAndLat{i}=TypeAndLatencyTemp(1+50*(i-1):50*i,:);
+0094 <span class="keyword">end</span>
+0095 
+0096 <span class="keyword">for</span> i=1:10
+0097 asd=find(TypeAndLat{i}(:,1)==codesActualBlock(i));
+0098 attendedStimuliCodes{i}=TypeAndLat{i}(asd,1);
+0099 attendedStimuliLat{i}=TypeAndLat{i}(asd,2);
+0100 
+0101 qwe=find(TypeAndLat{i}(:,1)~=codesActualBlock(i));
+0102 unattendedStimuliCodes{i}=TypeAndLat{i}(qwe,1);
+0103 unattendedStimuliLat{i}=TypeAndLat{i}(qwe,2);
+0104 <span class="keyword">end</span>
+0105 
+0106 <span class="comment">%I extract the right epochs (for the 32 channels for the 10 images)</span>
+0107 SDC=[];<span class="comment">%to build StarlabDataCube format</span>
+0108 close all
+0109 <span class="keyword">for</span> k=1:10 <span class="comment">%image loop</span>
+0110 figure
+0111 set(k,<span class="string">'name'</span>,imagesNames{codesActualBlock(k)})
+0112 SDC1=[];<span class="comment">%to build StarlabDataCube format</span>
+0113     <span class="keyword">for</span> j=1:32 <span class="comment">%channel loop</span>
+0114             attendedEpoch=[];
+0115             <span class="keyword">for</span> i=1:length(attendedStimuliLat{k})                               <span class="comment">%I cut 0.5 sec (1024 samples) before the stimuli onset and 1 sec after</span>
+0116             attendedEpoch=[attendedEpoch; signalFilt(j,attendedStimuliLat{k}(i)-1024:attendedStimuliLat{k}(i)+2048)];                             
+0117             <span class="keyword">end</span>                                                                                                 
+0118             SDC1=[SDC1; attendedEpoch];<span class="comment">%building StarlabDataCube format</span>
+0119             attendedEpoch=mean(attendedEpoch);
+0120             
+0121             unattendedEpoch=[];
+0122             <span class="keyword">for</span> i=1:length(unattendedStimuliLat{1})                                   <span class="comment">%I cut 0.5 sec (1024 samples) before the stimuli onset and 1 sec after</span>
+0123             unattendedEpoch=[unattendedEpoch; signalFilt(j,unattendedStimuliLat{k}(i)-1024:unattendedStimuliLat{k}(i)+2048)];
+0124             <span class="keyword">end</span>
+0125             SDC1=[SDC1; unattendedEpoch];<span class="comment">%building StarlabDataCube format</span>
+0126             unattendedEpoch=mean(unattendedEpoch);
+0127 
+0128         subplot(4,8,j)
+0129         plot((-1024:2048)/2048,attendedEpoch)
+0130         xlim([-0.5 1]) 
+0131         hold all 
+0132         plot((-1024:2048)/2048,unattendedEpoch)
+0133         xlim([-0.5 1]) 
+0134         xVal = 0; 
+0135         yMin = min([attendedEpoch unattendedEpoch]); 
+0136         yMax = max([attendedEpoch unattendedEpoch]);
+0137         plot([xVal xVal], [yMin, yMax]) <span class="comment">%I plot a vertical line at stimulus onset (0 sec)</span>
+0138         plot([0.3 0.3], [yMin, yMax],<span class="string">'-.'</span>) <span class="comment">%Iplot a vertical line at 300ms</span>
+0139         tit=[<span class="string">'Channel'</span>,num2str(j)];
+0140         title(tit)
+0141     <span class="keyword">end</span> <span class="comment">%end channel loop</span>
+0142     
+0143     <span class="comment">%building StarlabDataCube format</span>
+0144     <span class="keyword">for</span> epoch=1:50
+0145     <span class="keyword">for</span> channel=1:32
+0146     SDC2(channel,:,epoch)=SDC1(1+50*(channel-1)+(epoch-1),:);
+0147         <span class="keyword">end</span>
+0148     <span class="keyword">end</span>
+0149     SDC=cat(3,SDC,SDC2);
+0150 
+0151 <span class="keyword">end</span> <span class="comment">%end image loop</span>
+0152 
+0153 <span class="comment">%Building Ground Truth of SDC</span>
+0154 GT1=[];
+0155 GT2=[];
+0156 GT3=[];
+0157 <span class="keyword">for</span> i=1:10
+0158 GT1=[GT1;[ones(5,1); zeros(45,1)]];
+0159 GT2=[GT2;attendedStimuliCodes{i};unattendedStimuliCodes{i}];
+0160 GT3=[GT3;codesActualBlock(i)*ones(50,1)];
+0161 <span class="keyword">end</span>
+0162 
+0163 GT=[GT1 GT2 GT3];
+0164 
+0165 data.signal=SDC;
+0166 data.GT=GT;
+0167</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

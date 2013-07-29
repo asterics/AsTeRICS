@@ -1,0 +1,2 @@
+show_side_bar:0
+fullscreen:1

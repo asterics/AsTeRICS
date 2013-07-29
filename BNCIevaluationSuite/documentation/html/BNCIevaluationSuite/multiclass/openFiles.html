@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of openFiles</title>
+  <meta name="keywords" content="openFiles">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html multiclass -->
+<h1>openFiles
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [dataTrain,dataTest]=openFiles(dirPath,filePrefix) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../BNCIevaluationSuite/motorImageryDemos/main_Asterics_Test1_wl_OVR_v1.html" class="code" title="">main_Asterics_Test1_wl_OVR_v1</a>	matlab routine to go through the folders,</li><li><a href="../../BNCIevaluationSuite/motorImageryDemos/main_Asterics_Test2_wl_anova_OVR_v1.html" class="code" title="">main_Asterics_Test2_wl_anova_OVR_v1</a>	matlab routine to go through the folders,</li><li><a href="../../BNCIevaluationSuite/motorImageryDemos/main_TestDeciimationTPR112_v4_SoA.html" class="code" title="">main_TestDeciimationTPR112_v4_SoA</a>	matlab routine to go through the folders,</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [dataTrain,dataTest]=openFiles(dirPath,filePrefix)</a>
+0002 <span class="keyword">if</span> nargin&lt;1
+0003     dirPath=<span class="string">'Z:\UCONTROL-P20070527-01\BCI competition iii\OVR_aproach\features subject k3b\'</span>;
+0004 <span class="keyword">end</span>
+0005 <span class="keyword">if</span> nargin&lt;2
+0006     filePrefix=<span class="string">''</span>;
+0007 <span class="keyword">end</span>
+0008 
+0009 <span class="keyword">for</span> i=1:4
+0010     disp(i)
+0011     filename=[dirPath,filePrefix,<span class="string">'features4aproach1_c'</span>,int2str(i)]
+0012     load(filename)
+0013     dataTrain(i)=data
+0014     filename=[dirPath,filePrefix,<span class="string">'test_features4aproach1_c'</span>,int2str(i)]
+0015     load(filename)
+0016     dataTest(i)=data
+0017 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

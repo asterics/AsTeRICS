@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<keyboard rows="1" cols="3" bgcolor="#FFFFFF">
+	<painter method="border" fontcolor="#FF0000" bgcolor="#00FF00" 
+	    bordercolor="#0000FF" bordersize="12.0f"/>
+    <scanner method="single" timeoutrounds="3" scantime="1500" repeattime="0"/>
+    <tcp enable="1" port="4444"/>
+	<rows>
+		<row>
+			<button bgColor="#FF00FF">
+				<text>On</text>
+				<action>lighton</action>
+			</button>
+			<button>
+				<text>Off</text>
+				<action>lightoff</action>
+			</button>
+			<button>
+				<text>Back</text>
+				<action>@load:default.xml</action>
+			</button>
+		</row>
+	</rows>
+</keyboard>

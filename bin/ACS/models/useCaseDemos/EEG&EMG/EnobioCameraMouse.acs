@@ -1,0 +1,549 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="02/08/2012_718" version="20130320">
+  <modelDescription>
+    <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
+This model is described in the AsTeRICS User Manual 
+(Section 4, Step-by-Step Guid to Model Creation)</shortDescription>
+    <requirements>A webcamera has to be connected to the system.</requirements>
+    <description>The x/y position of the user's nose is calculated by the FacetrackerLK plugin.
+These positions are directly mapped to the X/Y coordinates of the local 
+computer mouse cursor. 
+Mouse clicks are created by dwell time (not moving for a defined time)
+A Slider GUI element provides adjustment of mouse speed.
+A ButtonGrid GUI elements allows to select the type of the next mouse click. </description>
+  </modelDescription>
+  <components>
+    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
+      <description>Webcamera-based face tracking sensor</description>
+      <ports>
+        <outputPort portTypeID="noseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="noseY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraSelection" value="0" />
+        <property name="cameraResolution" value="1" />
+        <property name="cameraDisplayUpdate" value="100" />
+        <property name="cameraProfile" value="" />
+      </properties>
+      <layout>
+        <posX>19</posX>
+        <posY>446</posY>
+      </layout>
+      <gui>
+        <posX>8225</posX>
+        <posY>67</posY>
+        <width>1775</width>
+        <height>2311</height>
+      </gui>
+    </component>
+    <component id="Integrate.2" type_id="asterics.Integrate">
+      <description>Integration with upper and lower bounds and reset</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="resetValue" value="600" />
+        <property name="upperLimit" value="1200" />
+        <property name="lowerLimit" value="0" />
+        <property name="wrapAround" value="false" />
+      </properties>
+      <layout>
+        <posX>459</posX>
+        <posY>546</posY>
+      </layout>
+    </component>
+    <component id="Integrate.1" type_id="asterics.Integrate">
+      <description>Integration with upper and lower bounds and reset</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="resetValue" value="950" />
+        <property name="upperLimit" value="1900" />
+        <property name="lowerLimit" value="0" />
+        <property name="wrapAround" value="false" />
+      </properties>
+      <layout>
+        <posX>440</posX>
+        <posY>279</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="True" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="1900" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1200" />
+      </properties>
+      <layout>
+        <posX>740</posX>
+        <posY>316</posY>
+      </layout>
+    </component>
+    <component id="Enobio.1" type_id="asterics.Enobio">
+      <description>Enobio sensor (ECG, EEG and EMG)</description>
+      <ports>
+        <outputPort portTypeID="Channel1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Status">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="IsChannel1Activated" value="True" />
+        <property name="IsChannel2Activated" value="True" />
+        <property name="IsChannel3Activated" value="True" />
+        <property name="IsChannel4Activated" value="True" />
+        <property name="HighPassFilterInChannel1" value="True" />
+        <property name="HighPassFilterInChannel2" value="True" />
+        <property name="HighPassFilterInChannel3" value="True" />
+        <property name="HighPassFilterInChannel4" value="True" />
+        <property name="LineNoiseFilter" value="True" />
+      </properties>
+      <layout>
+        <posX>332</posX>
+        <posY>58</posY>
+      </layout>
+    </component>
+    <component id="EnobioDisplay.1" type_id="asterics.EnobioDisplay">
+      <description>Enobio actuator which displays the Enobio data</description>
+      <ports>
+        <inputPort portTypeID="Channel1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Channel2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Channel3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Channel4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Status">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>708</posX>
+        <posY>19</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>1711</posY>
+        <width>5350</width>
+        <height>6867</height>
+      </gui>
+    </component>
+    <component id="BlinkDetector.1" type_id="asterics.BlinkDetector">
+      <description>Blink detector. It detects both a simple and a double blinks</description>
+      <ports>
+        <inputPort portTypeID="Input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="Filtered Sample">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Differential">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="SampleRate" value="250" />
+        <property name="maxThreshold" value="10000" />
+        <property name="BlinkLength" value="300" />
+        <property name="DoubleBlinkSeparation" value="500" />
+        <property name="minThreshold" value="-10000" />
+      </properties>
+      <layout>
+        <posX>599</posX>
+        <posY>190</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*b/20" />
+      </properties>
+      <layout>
+        <posX>303</posX>
+        <posY>270</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.2" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*b/20" />
+      </properties>
+      <layout>
+        <posX>314</posX>
+        <posY>542</posY>
+      </layout>
+    </component>
+    <component id="Slider.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="0" />
+        <property name="max" value="100" />
+        <property name="default" value="100" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="Speed mouse X" />
+        <property name="majorTickSpacing" value="20" />
+        <property name="minorTickSpacing" value="5" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+      </properties>
+      <layout>
+        <posX>154</posX>
+        <posY>279</posY>
+      </layout>
+      <gui>
+        <posX>5462</posX>
+        <posY>1533</posY>
+        <width>2200</width>
+        <height>1200</height>
+      </gui>
+    </component>
+    <component id="Slider.2" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="0" />
+        <property name="max" value="100" />
+        <property name="default" value="100" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="Speed mouse Y" />
+        <property name="majorTickSpacing" value="20" />
+        <property name="minorTickSpacing" value="5" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+      </properties>
+      <layout>
+        <posX>172</posX>
+        <posY>552</posY>
+      </layout>
+      <gui>
+        <posX>5450</posX>
+        <posY>2911</posY>
+        <width>2200</width>
+        <height>1200</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>910</posX>
+        <posY>558</posY>
+      </layout>
+      <gui>
+        <posX>5525</posX>
+        <posY>4400</posY>
+        <width>2200</width>
+        <height>4356</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.14">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Integrate.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="Integrate.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="Integrate.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Channel1" />
+      </source>
+      <target>
+        <component id="EnobioDisplay.1" />
+        <port id="Channel1" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Channel2" />
+      </source>
+      <target>
+        <component id="EnobioDisplay.1" />
+        <port id="Channel2" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Channel3" />
+      </source>
+      <target>
+        <component id="EnobioDisplay.1" />
+        <port id="Channel3" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Channel4" />
+      </source>
+      <target>
+        <component id="EnobioDisplay.1" />
+        <port id="Channel4" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Status" />
+      </source>
+      <target>
+        <component id="EnobioDisplay.1" />
+        <port id="Status" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Channel4" />
+      </source>
+      <target>
+        <component id="BlinkDetector.1" />
+        <port id="Input" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseX" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="MathEvaluator.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Integrate.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="Slider.2" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2" />
+        <port id="inB" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="BlinkDetected_leftClick">
+      <sources>
+        <source>
+          <component id="BlinkDetector.1" />
+          <eventPort id="BlinkDetected" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="DoubleblinkDetected_rightClick">
+      <sources>
+        <source>
+          <component id="BlinkDetector.1" />
+          <eventPort id="DoubleblinkDetected" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="BlinkDetected_eventDisplay">
+      <sources>
+        <source>
+          <component id="BlinkDetector.1" />
+          <eventPort id="BlinkDetected" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="DoubleblinkDetected_eventDisplay">
+      <sources>
+        <source>
+          <component id="BlinkDetector.1" />
+          <eventPort id="DoubleblinkDetected" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>8250</width>
+      <height>9133</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

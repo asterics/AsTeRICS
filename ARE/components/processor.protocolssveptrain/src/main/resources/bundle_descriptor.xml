@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.ProtocolSSVEPTrain"
+                   canonical_name="com.starlab.component.processor.protocolssveptrain.ProtocolSSVEPTrainInstance">
+        <type subtype="DSP and Feature Detection">processor</type>
+        <singleton>true</singleton>
+        <description>This plugin is in charge of managing and configuring the SSVEP trainng recording protocol </description>
+        <ports>
+
+			<outputPort id="StimFrequency">
+				<description>Current stimulation frequency in Hz</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			
+			<outputPort id="Freq2">
+				<description>Background stimulation frequency in Hz for panel 2</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			
+			<outputPort id="Freq3">
+				<description>Background stimulation frequency in Hz for panel 2</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			
+			<outputPort id="Freq4">
+				<description>Background stimulation frequency in Hz for panel 2</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="StartProt">
+				<description>Start protocol request</description>
+			</eventListenerPort>
+			<eventListenerPort id="StopProt">
+				<description>Stop protocol requestn</description>
+			</eventListenerPort>
+			<eventListenerPort id="Continue">
+				<description>Next Stimulation trial request</description>
+			</eventListenerPort>
+			<eventListenerPort id="Repeat">
+				<description>Repeat last stimulation trial request</description>
+			</eventListenerPort>
+			<eventListenerPort id="Stop">
+				<description>Stop current stimulation trial request</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="StartTrial">
+				<description>Event sent when a stimulation trial starts</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="StopTrial">
+				<description>Event sent when a stimulation trial ends</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="StartStim">
+				<description>Event sent when a stimulation period starts</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="StopStim">
+				<description>Event sent when a stimulation period ends</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="ReadyStim">
+				<description>Event sent 1 second befor the stimulation periods starts</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="UpdatePanelConfig">
+				<description>Event sent requesting a stimulation panels re-configuration</description>
+			</eventTriggererPort>
+			
+
+		</events>			
+        <properties>
+			<property name="NumRepetitions"
+				type="integer"
+				value="0"
+				description="Number of stimulation periods per trial"/>
+			<property name="RepStimDuration"
+				type="integer"
+				value="0"
+				description="Stimulation period duration in seconds"/>
+			<property name="RepNonStimDuration"
+				type="integer"
+				value="0"
+				description="Non-Stimulation period duration in seconds"/>
+			<property name="freqStim1"
+				type="integer"
+				value="0"
+				description="Stimulation frequency number 1 in Hz"/>
+			<property name="freqStim2"
+				type="integer"
+				value="0"
+				description="Stimulation frequency number 2 in Hz"/>
+			<property name="freqStim3"
+				type="integer"
+				value="0"
+				description="Stimulation frequency number 3 in Hz"/>
+			<property name="freqStim4"
+				type="integer"
+				value="0"
+				description="Stimulation frequency number 4 in Hz"/>
+			<property name="freqStim5"
+				type="integer"
+				value="0"
+				description="Stimulation frequency number 5 in Hz"/>
+			<property name="freqStim6"
+				type="integer"
+				value="0"
+				description="Stimulation frequency number 6 in Hz"/>
+			<property name="freqStim7"
+				type="integer"
+				value="0"
+				description="Stimulation frequency number 7 in Hz"/>
+			<property name="freqStim8"
+				type="integer"
+				value="0"
+				description="Stimulation frequency number 8 in Hz"/>
+			<property name="freqStim9"
+				type="integer"
+				value="0"
+				description="Stimulation frequency number 9 in Hz"/>
+			<property name="freqStim10"
+				type="integer"
+				value="0"
+				description="Stimulation frequency number 10 in Hz"/>
+			<property name="RandomizeFreq"
+				type="boolean"
+				value="true"
+				description="Randomize stimulation frequencies order"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.AndroidPhoneControl"
+                   canonical_name="eu.asterics.component.actuator.androidphonecontrol.AndroidPhoneControlInstance">
+        <type subtype="Phone Interface">actuator</type>
+        <singleton>true</singleton>
+        <description>Control Android phone with AsTeRICS  application running</description>
+        <ports>
+			<inputPort id="PhoneID">
+				<description>Phone number for the call</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="SMSContent">
+				<description>SMS for send</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="action">
+				<description>Command port for action strings</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="RemotePhoneID">
+				<description>The number of the remote phone.</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="ReceivedSMS">
+				<description>Received SMS</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="ErrorNumber">
+				<description>Number of the error</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="SendSMS">
+				<description>Send SMS</description>
+			</eventListenerPort>
+			<eventListenerPort id="MakePhoneCall">
+				<description>Make phone call</description>
+			</eventListenerPort>
+			<eventListenerPort id="AcceptPhoneCall">
+				<description>Accept phone call</description>
+			</eventListenerPort>
+			<eventListenerPort id="DropPhoneCall">
+				<description>Drop phone call</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="idleState">
+				<description>Phone is in the idle state</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="ringState">
+				<description>Ring state</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="connectedState">
+				<description>Phone is connected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="newSMS">
+				<description>There is a new message</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="error">
+				<description>Error event</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="connectionType"
+				type="integer"
+				value="0"
+				combobox="server//client"
+				description="Type of the connection for this plugin: server or client"/>
+			<property name="IP"
+				type="string"
+				value="localhost"
+				description="IP of the remote server"/>
+			<property name="port"
+				type="integer"
+				value="21111"
+				description="Port used in IP/TCP connection"/>
+			<property name="defaultPhoneID"
+				type="string"
+				value=""
+				description="Default phone number"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

@@ -1,0 +1,244 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-06-19_657" version="20130320">
+  <components>
+    <component id="EditBox.1" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Put the phone number" />
+        <property name="default" value="" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="1" />
+      </properties>
+      <layout>
+        <posX>17</posX>
+        <posY>10</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>511</posY>
+        <width>3200</width>
+        <height>800</height>
+      </gui>
+    </component>
+    <component id="GSMModem.1" type_id="asterics.GSMModem">
+      <description>My Plugin description</description>
+      <ports>
+        <inputPort portTypeID="phoneID">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="SMSContent">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="remotePhoneID">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="receivedSMS">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="errorNumber">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="serialPort" value="" />
+        <property name="pin" value="" />
+        <property name="smsCenterID" value="" />
+        <property name="defaultPhoneID" value="" />
+      </properties>
+      <layout>
+        <posX>244</posX>
+        <posY>70</posY>
+      </layout>
+    </component>
+    <component id="EditBox.2" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Put the SMS content" />
+        <property name="default" value="" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="1" />
+      </properties>
+      <layout>
+        <posX>17</posX>
+        <posY>179</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>1378</posY>
+        <width>3200</width>
+        <height>900</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="buttonCaption1" value="Send SMS" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>20</posX>
+        <posY>378</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>2333</posY>
+        <width>1500</width>
+        <height>800</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Sender:" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>410</posX>
+        <posY>50</posY>
+      </layout>
+      <gui>
+        <posX>3300</posX>
+        <posY>533</posY>
+        <width>3200</width>
+        <height>900</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="SMS content:" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>415</posX>
+        <posY>229</posY>
+      </layout>
+      <gui>
+        <posX>3300</posX>
+        <posY>1578</posY>
+        <width>3200</width>
+        <height>900</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="EditBox.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="GSMModem.1" />
+        <port id="phoneID" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="EditBox.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="GSMModem.1" />
+        <port id="SMSContent" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="GSMModem.1" />
+        <port id="remotePhoneID" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="GSMModem.1" />
+        <port id="receivedSMS" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_sendSMS">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="GSMModem.1" />
+          <eventPort id="sendSMS" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>7088</width>
+      <height>3600</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

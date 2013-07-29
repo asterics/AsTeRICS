@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of fastFuzIntVectorMeasVector</title>
+  <meta name="keywords" content="fastFuzIntVectorMeasVector">
+  <meta name="description" content="----------------------------------------------------------">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html multiclass -->
+<h1>fastFuzIntVectorMeasVector
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>----------------------------------------------------------</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function fuzInt=fastFuzIntVectorMeasVector(arr,muMeas) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">----------------------------------------------------------
+ StarEEGlab Toolbox
+ (C) Starlab S.L.
+----------------------------------------------------------
+ fastFuzIntVectorMeasVector
+     Compute fuzzy integrals of M vectors of dimension N with respect to K
+     different fuzzy measures. I.e. the function computes K*M integrals in a run.
+     Each fuzzy measure is given in a row vector,
+     where the coefficints of the measures are
+     organized as following:
+     muMeas_i=[coeff_1,coeff_2,coeff_1_2,coeff_3,coeff_1_3,coeff_2_3,coeff_1_2_3,coeff_4,....,coeff_1_2_3_4_..._N]
+     since N is the dimensions of the vectors to be fused and therefore 
+     the fuzzy measures present 2^(N-1) coefficients.
+ 
+     This function is in vectorized form. Being
+     vectorized allows using it as vectorized in the GA Toolbox
+
+ [Fast Fuzzy integral algorithm as described in:
+ Aggregation Functions: A Guide for Practitioners
+ Beliakov, Pradera, and Calvo
+ Studies in Fuzziness and Soft Computing, Vol. 221, 2007
+ ISBN: 978-3-540-73720-9]
+----------------------------------------------------------
+Inputs
+ arr:    data in matrix form of M vectors to be fused with dimensions N - matrix N x M
+ muMeas: K fuzzy measures of 2^(N-1) coefficients - matrix K x 2^(N-1)
+         (theoretically fuzzy measure coefficients are defined in the interval [0,inf],
+           and regular fuzzy measures, which are the most used ones, in [0,1])
+----------------------------------------------------------
+Outputs
+ fuzInt: Fuzzy integral results organized in a matrix - matrix K x M.
+       You find in position (i,j) of this martrix the fuzzy integral result of vector j 
+       (which was given in arr(:,j)) with respect to the fuzzy measure i (whose 
+       coefficients were given in muMeas(i,:)).
+       
+----------------------------------------------------------
+Dependencies
+ None
+----------------------------------------------------------
+ Version    Date        Author    Changes 
+ v1        15/10/10    ASF     First version based on preliminary works for oceanpal data
+----------------------------------------------------------
+ EX.
+     We want to compute the minimum, which is equivalent to a fuzzy integral
+     w.r.t. a fuzzy measure [0,0,0,...,0,1], in the first row and the
+     maximum (fuzzy integral w.r.t. [1,1,1,...,1] in the second row of arr
+ &gt;&gt; arr
+ 
+ arr =
+ 
+     0.1536    0.2525    0.3962    0.2047
+     0.0036    0.3400    0.9819    0.0141
+     0.9386    0.0077    0.0020    0.8546
+ 
+ &gt;&gt; muMeas
+ 
+ muMeas =
+ 
+      0     0     0     0     0     0     1
+      1     1     1     1     1     1     1
+ 
+ &gt;&gt; fuzInt=fastFuzIntVectorMeasVector(arr,muMeas)
+ 
+ fuzInt =
+ 
+     0.0036    0.0077    0.0020    0.0141
+     0.9386    0.3400    0.9819    0.8546
+--------------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function fuzInt=fastFuzIntVectorMeasVector(arr,muMeas)</a>
+0002 <span class="comment">%----------------------------------------------------------</span>
+0003 <span class="comment">% StarEEGlab Toolbox</span>
+0004 <span class="comment">% (C) Starlab S.L.</span>
+0005 <span class="comment">%----------------------------------------------------------</span>
+0006 <span class="comment">% fastFuzIntVectorMeasVector</span>
+0007 <span class="comment">%     Compute fuzzy integrals of M vectors of dimension N with respect to K</span>
+0008 <span class="comment">%     different fuzzy measures. I.e. the function computes K*M integrals in a run.</span>
+0009 <span class="comment">%     Each fuzzy measure is given in a row vector,</span>
+0010 <span class="comment">%     where the coefficints of the measures are</span>
+0011 <span class="comment">%     organized as following:</span>
+0012 <span class="comment">%     muMeas_i=[coeff_1,coeff_2,coeff_1_2,coeff_3,coeff_1_3,coeff_2_3,coeff_1_2_3,coeff_4,....,coeff_1_2_3_4_..._N]</span>
+0013 <span class="comment">%     since N is the dimensions of the vectors to be fused and therefore</span>
+0014 <span class="comment">%     the fuzzy measures present 2^(N-1) coefficients.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%     This function is in vectorized form. Being</span>
+0017 <span class="comment">%     vectorized allows using it as vectorized in the GA Toolbox</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% [Fast Fuzzy integral algorithm as described in:</span>
+0020 <span class="comment">% Aggregation Functions: A Guide for Practitioners</span>
+0021 <span class="comment">% Beliakov, Pradera, and Calvo</span>
+0022 <span class="comment">% Studies in Fuzziness and Soft Computing, Vol. 221, 2007</span>
+0023 <span class="comment">% ISBN: 978-3-540-73720-9]</span>
+0024 <span class="comment">%----------------------------------------------------------</span>
+0025 <span class="comment">%Inputs</span>
+0026 <span class="comment">% arr:    data in matrix form of M vectors to be fused with dimensions N - matrix N x M</span>
+0027 <span class="comment">% muMeas: K fuzzy measures of 2^(N-1) coefficients - matrix K x 2^(N-1)</span>
+0028 <span class="comment">%         (theoretically fuzzy measure coefficients are defined in the interval [0,inf],</span>
+0029 <span class="comment">%           and regular fuzzy measures, which are the most used ones, in [0,1])</span>
+0030 <span class="comment">%----------------------------------------------------------</span>
+0031 <span class="comment">%Outputs</span>
+0032 <span class="comment">% fuzInt: Fuzzy integral results organized in a matrix - matrix K x M.</span>
+0033 <span class="comment">%       You find in position (i,j) of this martrix the fuzzy integral result of vector j</span>
+0034 <span class="comment">%       (which was given in arr(:,j)) with respect to the fuzzy measure i (whose</span>
+0035 <span class="comment">%       coefficients were given in muMeas(i,:)).</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">%----------------------------------------------------------</span>
+0038 <span class="comment">%Dependencies</span>
+0039 <span class="comment">% None</span>
+0040 <span class="comment">%----------------------------------------------------------</span>
+0041 <span class="comment">% Version    Date        Author    Changes</span>
+0042 <span class="comment">% v1        15/10/10    ASF     First version based on preliminary works for oceanpal data</span>
+0043 <span class="comment">%----------------------------------------------------------</span>
+0044 <span class="comment">% EX.</span>
+0045 <span class="comment">%     We want to compute the minimum, which is equivalent to a fuzzy integral</span>
+0046 <span class="comment">%     w.r.t. a fuzzy measure [0,0,0,...,0,1], in the first row and the</span>
+0047 <span class="comment">%     maximum (fuzzy integral w.r.t. [1,1,1,...,1] in the second row of arr</span>
+0048 <span class="comment">% &gt;&gt; arr</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% arr =</span>
+0051 <span class="comment">%</span>
+0052 <span class="comment">%     0.1536    0.2525    0.3962    0.2047</span>
+0053 <span class="comment">%     0.0036    0.3400    0.9819    0.0141</span>
+0054 <span class="comment">%     0.9386    0.0077    0.0020    0.8546</span>
+0055 <span class="comment">%</span>
+0056 <span class="comment">% &gt;&gt; muMeas</span>
+0057 <span class="comment">%</span>
+0058 <span class="comment">% muMeas =</span>
+0059 <span class="comment">%</span>
+0060 <span class="comment">%      0     0     0     0     0     0     1</span>
+0061 <span class="comment">%      1     1     1     1     1     1     1</span>
+0062 <span class="comment">%</span>
+0063 <span class="comment">% &gt;&gt; fuzInt=fastFuzIntVectorMeasVector(arr,muMeas)</span>
+0064 <span class="comment">%</span>
+0065 <span class="comment">% fuzInt =</span>
+0066 <span class="comment">%</span>
+0067 <span class="comment">%     0.0036    0.0077    0.0020    0.0141</span>
+0068 <span class="comment">%     0.9386    0.3400    0.9819    0.8546</span>
+0069 <span class="comment">%--------------------------------------------------------------</span>
+0070 
+0071 [sortArr,sortInd]=sort(arr);
+0072 muInd=repmat((2^size(arr,1))-1,1,size(arr,2));
+0073 fuzInt=repmat(sortArr(1,:),size(muMeas,1),1).*muMeas(:,muInd);
+0074 <span class="keyword">for</span> i=2:size(arr,1)
+0075     muInd=muInd-2.^(sortInd(i-1,:)-1);
+0076     fuzInt=fuzInt+(repmat(sortArr(i,:)-sortArr(i-1,:),size(muMeas,1),1)).*muMeas(:,muInd);
+0077 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

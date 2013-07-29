@@ -1,0 +1,659 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-06-14_844" version="20130320">
+  <components>
+    <component id="NeuralNetworkLoader.1" type_id="asterics.NeuralNetworkLoader">
+      <description>Basic Neural Network</description>
+      <ports>
+        <inputPort portTypeID="input1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input6">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input7">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input8">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input9">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input10">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input11">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input12">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input13">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input14">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input15">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input16">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input17">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input18">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input19">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input20">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input21">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input22">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input23">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input24">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input25">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input26">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input27">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input28">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input29">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input30">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input31">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="input32">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output9">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output10">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output11">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output12">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output13">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output14">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output15">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output16">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output17">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output18">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output19">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output20">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output21">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output22">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output23">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output24">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output25">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output26">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output27">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output28">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output29">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output30">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output31">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="output32">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filePath" value=".\data\neural networks\Example.eg" />
+      </properties>
+      <layout>
+        <posX>356</posX>
+        <posY>252</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="buttonCaption1" value="Input: 0 0" />
+        <property name="buttonCaption2" value="Input: 0 1" />
+        <property name="buttonCaption3" value="Input: 1 0" />
+        <property name="buttonCaption4" value="Input: 1 1" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>3</posX>
+        <posY>63</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>2756</posY>
+        <width>3600</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="ConstantDispatcher.1" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="0" />
+        <property name="slot2" value="1" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="1" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>175</posX>
+        <posY>32</posY>
+      </layout>
+    </component>
+    <component id="ConstantDispatcher.2" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="0" />
+        <property name="slot2" value="0" />
+        <property name="slot3" value="1" />
+        <property name="slot4" value="1" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>176</posX>
+        <posY>226</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Input 1" />
+        <property name="default" value="" />
+        <property name="textPosition" value="2" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>717</posX>
+        <posY>0</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>578</posY>
+        <width>3600</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Output" />
+        <property name="default" value="" />
+        <property name="textPosition" value="2" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>729</posX>
+        <posY>354</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>2022</posY>
+        <width>3600</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.3" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Input 2" />
+        <property name="default" value="" />
+        <property name="textPosition" value="2" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>733</posX>
+        <posY>165</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>1289</posY>
+        <width>3600</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="DoubleToString.1" type_id="asterics.DoubleToString">
+      <description>Converts double to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>589</posX>
+        <posY>0</posY>
+      </layout>
+    </component>
+    <component id="DoubleToString.2" type_id="asterics.DoubleToString">
+      <description>Converts double to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>585</posX>
+        <posY>161</posY>
+      </layout>
+    </component>
+    <component id="DoubleToString.3" type_id="asterics.DoubleToString">
+      <description>Converts double to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>579</posX>
+        <posY>334</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="ConstantDispatcher.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="NeuralNetworkLoader.1" />
+        <port id="input2" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="ConstantDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="NeuralNetworkLoader.1" />
+        <port id="input1" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="DoubleToString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="DoubleToString.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.3" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="NeuralNetworkLoader.1" />
+        <port id="output1" />
+      </source>
+      <target>
+        <component id="DoubleToString.3" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="ConstantDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="DoubleToString.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="ConstantDispatcher.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="DoubleToString.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="DoubleToString.3" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_dispatchSlot4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.2" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.2" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.2" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_dispatchSlot4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.2" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4188</width>
+      <height>3600</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

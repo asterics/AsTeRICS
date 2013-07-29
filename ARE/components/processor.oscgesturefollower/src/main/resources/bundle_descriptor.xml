@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.OscGestureFollower"
+                   canonical_name="eu.asterics.component.processor.oscgesturefollower.OscGestureFollowerInstance">
+        <type subtype="DSP and Feature Detection">processor</type>
+        <singleton>false</singleton>
+        <description>Connects the external GestureFollower tool with ARE</description>
+        <ports>
+			<inputPort id="CH1">
+				<description>Data Stream 1</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH2">
+				<description>Data Stream 2</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH3">
+				<description>Data Stream 3</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH4">
+				<description>Data Stream 4</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="likeliest">
+				<description>Index of the likeliest gesture</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="stop">
+				<description>Stop the following process.</description>
+			</eventListenerPort>
+			<eventListenerPort id="stoplearn">
+				<description>Stop the stop the learning process</description>
+			</eventListenerPort>
+			<eventListenerPort id="learn1">
+				<description>Start learning phrase 1</description>
+			</eventListenerPort>
+			<eventListenerPort id="learn2">
+				<description>Start learning phrase 2</description>
+			</eventListenerPort>
+			<eventListenerPort id="learn3">
+				<description>Start learning phrase 3</description>
+			</eventListenerPort>
+			<eventListenerPort id="learn4">
+				<description>Start learning phrase 4</description>
+			</eventListenerPort>
+			<eventListenerPort id="learn5">
+				<description>Start learning phrase 5</description>
+			</eventListenerPort>
+			<eventListenerPort id="clear">
+				<description>Start learning phrase 6</description>
+			</eventListenerPort>
+			<eventListenerPort id="follow">
+				<description>In the 'follow' mode the incoming phrase is compared with the recorded pharse</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+				<property name="InPort"
+				type="integer"
+				value="57110"
+				description="property description"/>
+				<property name="OutPort"
+				type="integer"
+				value="9000"
+				description="property description"/>
+        </properties>
+
+    </componentType>
+</componentTypes>

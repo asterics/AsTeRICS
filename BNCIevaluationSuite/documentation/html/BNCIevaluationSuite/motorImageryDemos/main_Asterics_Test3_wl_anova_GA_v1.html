@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of main_Asterics_Test3_wl_anova_GA_v1</title>
+  <meta name="keywords" content="main_Asterics_Test3_wl_anova_GA_v1">
+  <meta name="description" content="This script launches a GA to optimize the projection of the features">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html motorImageryDemos -->
+<h1>main_Asterics_Test3_wl_anova_GA_v1
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This script launches a GA to optimize the projection of the features</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> This script launches a GA to optimize the projection of the features 
+ before introducing them to the multi-classifier.
+ Te features are loaded from the folders as they are recorded by
+ main_Asterics_Test2_wl_anova_GA_v1.m, so ithas to be run to
+ calculate the extractor dimension and the initial population
+ before running this script
+
+ developed by Ivan Cester 2010
+ v.1</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../BNCIevaluationSuite/featureExtraction/AstericsfitFunct_v2.html" class="code" title="function Fitness=AstericsfitFunct_v2(SinglvectExtractor,Trials)">AstericsfitFunct_v2</a>	----------------------------------------------------------</li><li><a href="AstericsfitFunct_v2.html" class="code" title="function Fitness=AstericsfitFunct(SinglvectExtractor,Trials,subj)">AstericsfitFunct_v2</a>	%%this is the fitness function to be used to optimize the projections with</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% This script launches a GA to optimize the projection of the features</span>
+0002 <span class="comment">% before introducing them to the multi-classifier.</span>
+0003 <span class="comment">% Te features are loaded from the folders as they are recorded by</span>
+0004 <span class="comment">% main_Asterics_Test2_wl_anova_GA_v1.m, so ithas to be run to</span>
+0005 <span class="comment">% calculate the extractor dimension and the initial population</span>
+0006 <span class="comment">% before running this script</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% developed by Ivan Cester 2010</span>
+0009 <span class="comment">% v.1</span>
+0010 
+0011 
+0012 
+0013 subj=1;
+0014 feature_dirs={<span class="string">'features subject k3b/'</span>,<span class="string">'features subject k6b/'</span>,<span class="string">'features subject l1b/'</span>};
+0015 subjects={<span class="string">'k3b'</span>,<span class="string">'k6b'</span>,<span class="string">'l1b'</span>};
+0016 
+0017 load(sprintf([<span class="string">'WldataS%d.mat'</span>],subj));<span class="comment">%we load the data</span>
+0018 load(sprintf([<span class="string">'%s_test_GT_reject.mat'</span>],subjects{subj}))<span class="comment">% we load the ground truth for the test</span>
+0019 load ([<span class="string">'WlmoduleS'</span>,int2str(subj),<span class="string">'_P.mat'</span>]);
+0020 NerCoefs=100;
+0021 
+0022 <span class="comment">%%%COEFFICIENTS SELECTION AND TRIAL PREPARATION%%%%</span>
+0023 <span class="comment">% the same coefficients will be chosen for all samples. The criteria to</span>
+0024 <span class="comment">% select the coeeficients takes into account the maximum</span>
+0025 <span class="comment">%stdP=std(p(:,250:end),0,2);</span>
+0026 sumP=sum(p(:,250:end),2);
+0027 [pVal,ind]=sort(sumP);
+0028 coef=ind(1:NerCoefs);
+0029 
+0030 <span class="keyword">for</span> clas=1:4
+0031     eval([<span class="string">'len=WlModdataS'</span>,int2str(subj),<span class="string">'C'</span>,int2str(clas),<span class="string">'.dim(3);'</span>]);
+0032     Trials{clas}=[];
+0033     <span class="keyword">for</span> tr=1:len
+0034         eval(sprintf(<span class="string">'Trials{clas}=[Trials{clas} WlModdataS1C%d(coef,250:end,tr)];'</span>,clas));
+0035     <span class="keyword">end</span>
+0036 <span class="keyword">end</span>
+0037 
+0038 
+0039 <span class="comment">%%%%INITIAL POPULATION</span>
+0040 load(sprintf(<span class="string">'%sfeature_parameters.mat'</span>,feature_dirs{subj})); <span class="comment">%we load the extractor</span>
+0041 SinglMatExtractor=[extractor{1};extractor{2};extractor{3};extractor{4}];
+0042 nelem=size(SinglMatExtractor,1)*size(SinglMatExtractor,2); <span class="comment">% this is the number of elements to optimize</span>
+0043 SinglvectExtractor=reshape(SinglMatExtractor,nelem,1);
+0044 <span class="comment">%SinglMatExtractor=reshape(SinglvectExtractor,20,100);</span>
+0045 
+0046 noise = wgn(49,nelem,1)/200;
+0047 new_population=repmat(SinglvectExtractor',[49 1])+noise;
+0048 InitialPop=[SinglvectExtractor';new_population];
+0049 
+0050 options=gaoptimset(<span class="string">'InitialPopulation'</span>,InitialPop,<span class="string">'PopulationSize'</span>,length(InitialPop(:,1)),<span class="string">'PlotInterval'</span>,5,<span class="string">'vectorize'</span>,<span class="string">'on'</span>,<span class="string">'Generations'</span>,120);
+0051 tic;[OptimSinglvectExtractor,fval,exitflag,output,population]=ga({@<a href="AstericsfitFunct_v2.html" class="code" title="function Fitness=AstericsfitFunct(SinglvectExtractor,Trials,subj)">AstericsfitFunct_v2</a> Trials subj},nelem,[],[],[],[],[],[],[],options);total_GA=toc
+0052 save OptimizedProjection_1.mat OptimSinglvectExtractor 
+0053 
+0054 
+0055</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

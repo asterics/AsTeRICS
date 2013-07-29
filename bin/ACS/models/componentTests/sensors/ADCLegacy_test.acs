@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="28.09.2012_114" version="20130320">
+  <components>
+    <component id="LegacyAnalogIn.1" type_id="asterics.LegacyAnalogIn">
+      <description>ADC CIM sensor for inputs</description>
+      <ports>
+        <outputPort portTypeID="in1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="in2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="in3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="in4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="in5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="in6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="in7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="in8">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="activateInput1" value="True" />
+        <property name="activateInput2" value="false" />
+        <property name="activateInput3" value="false" />
+        <property name="activateInput4" value="false" />
+        <property name="activateInput5" value="True" />
+        <property name="activateInput6" value="false" />
+        <property name="activateInput7" value="false" />
+        <property name="activateInput8" value="False" />
+        <property name="periodicUpdate" value="100" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>40</posX>
+        <posY>84</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>289</posX>
+        <posY>62</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>622</posY>
+        <width>6000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>304</posX>
+        <posY>228</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>3756</posY>
+        <width>6000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="LegacyAnalogIn.1" />
+        <port id="in1" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="LegacyAnalogIn.1" />
+        <port id="in5" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6587</width>
+      <height>7000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-services.systemchangenotifier
+Bundle-SymbolicName: eu.asterics.mw.systemstatechange
+Bundle-Version: 0.1.0
+Bundle-NativeCode: lib/native/systemevent.dll;
+ osname=win32;processor=x86;
+ osname=win;processor=x86-64;
+ osname=win8;processor=x86;
+ osname=win8;processor=x86-64;
+ osname=windows 8;processor=x86;
+ osname=windows 8;processor=x86-64;
+ osname=windows8;processor=x86;
+ osname=windows8;processor=x86-64
+Export-Package: eu.asterics.mw.systemstatechange
+DynamicImport-Package: *

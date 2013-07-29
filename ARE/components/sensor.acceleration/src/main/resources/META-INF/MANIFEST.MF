@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics.acceleration
+Bundle-SymbolicName: eu.asterics.component.sensor.acceleration
+Bundle-Version: 0.1.0
+DynamicImport-Package: *
+

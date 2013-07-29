@@ -1,0 +1,385 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="10.01.2012_1358" version="20130320">
+  <modelDescription>
+    <shortDescription>A short demonstration how a standard PC gamepad can be used for mouse-replacement
+This model is described in the AsTeRICS User Manual 
+(Section 4, Step-by-Step Guide to Model Creation)</shortDescription>
+    <requirements>PC gamepad or joystick connected to an USB port.</requirements>
+    <description>The x- and y- coordinates of the joystick (or the left stick of a gamepad)
+control the x/y postions of the local computer mouse cursor. 
+Left-,  right- and double clicks can be created via the gampad buttons 1,2 and 3.</description>
+  </modelDescription>
+  <components>
+    <component id="JoystickCapture.1" type_id="asterics.JoystickCapture">
+      <description>Gets data from the first available Joystick device; up to 6 axis and 20 buttons can be used; Note the different order of buttons 1-4 in a PC-compatible gamepad to the PS3 sixaxis controller (HIDjoystick)</description>
+      <ports>
+        <outputPort portTypeID="x">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="z">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="r">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="u">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="v">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pov">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="updatePeriod" value="20" />
+      </properties>
+      <layout>
+        <posX>1</posX>
+        <posY>107</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="True" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>428</posX>
+        <posY>104</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="buttonCaption1" value="continue" />
+        <property name="buttonCaption2" value="back to menu" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>112</posX>
+        <posY>347</posY>
+      </layout>
+      <gui>
+        <posX>263</posX>
+        <posY>3178</posY>
+        <width>3175</width>
+        <height>489</height>
+      </gui>
+    </component>
+    <component id="AdjustmentCurve.1.1" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="Gamepad_Accel_Y" />
+        <property name="displayGui" value="True" />
+        <property name="inMin" value="0" />
+        <property name="inMax" value="255" />
+        <property name="outMin" value="-20" />
+        <property name="outMax" value="20" />
+        <property name="mode" value="1" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="y-Acceleration" />
+      </properties>
+      <layout>
+        <posX>226</posX>
+        <posY>191</posY>
+      </layout>
+      <gui>
+        <posX>1925</posX>
+        <posY>511</posY>
+        <width>1500</width>
+        <height>2578</height>
+      </gui>
+    </component>
+    <component id="AdjustmentCurve.1" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="Gamepad_Accel_X" />
+        <property name="displayGui" value="true" />
+        <property name="inMin" value="0" />
+        <property name="inMax" value="255" />
+        <property name="outMin" value="-20" />
+        <property name="outMax" value="20" />
+        <property name="mode" value="1" />
+        <property name="fontSize" value="12" />
+        <property name="caption" value="x-Acceleration" />
+      </properties>
+      <layout>
+        <posX>227</posX>
+        <posY>33</posY>
+      </layout>
+      <gui>
+        <posX>287</posX>
+        <posY>489</posY>
+        <width>1550</width>
+        <height>2556</height>
+      </gui>
+    </component>
+    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
+      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+      <ports>
+        <inputPort portTypeID="modelName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="model" value="demomenu.acs" />
+      </properties>
+      <layout>
+        <posX>381</posX>
+        <posY>348</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="GamepadMouse.acs" />
+        <property name="slot2" value="demomenu.acs" />
+        <property name="slot3" value="" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>253</posX>
+        <posY>360</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.10">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="x" />
+      </source>
+      <target>
+        <component id="AdjustmentCurve.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="AdjustmentCurve.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="y" />
+      </source>
+      <target>
+        <component id="AdjustmentCurve.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="AdjustmentCurve.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="modelSwitcher.1" />
+        <port id="modelName" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="pressedButton1_rightClick">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton2_doubleClick">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="doubleClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton3_dragPress">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="dragPress" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton3_dragRelease">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="dragRelease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>125</posX>
+      <posY>200</posY>
+      <width>3775</width>
+      <height>3733</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

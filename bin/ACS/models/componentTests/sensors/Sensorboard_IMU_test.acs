@@ -1,0 +1,497 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="14.06.2012_1457" version="20130320">
+  <components>
+    <component id="SensorBoard.1" type_id="asterics.SensorBoard">
+      <description>Interfaces the sensor board CIM which provides accelerometer, gyroscope, compass, IR-camera and pressure sensor</description>
+      <ports>
+        <outputPort portTypeID="accX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="accY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="accZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyroX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyroY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyroZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="compassX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="compassY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="compassZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt1X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt1Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt2X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt2Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt3X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt3Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt4X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt4Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="refreshInterval" value="50" />
+      </properties>
+      <layout>
+        <posX>40</posX>
+        <posY>40</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="axxX" />
+      </properties>
+      <layout>
+        <posX>170</posX>
+        <posY>7</posY>
+      </layout>
+      <gui>
+        <posX>188</posX>
+        <posY>1556</posY>
+        <width>2625</width>
+        <height>2200</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="accY" />
+      </properties>
+      <layout>
+        <posX>290</posX>
+        <posY>8</posY>
+      </layout>
+      <gui>
+        <posX>2850</posX>
+        <posY>1556</posY>
+        <width>2588</width>
+        <height>2222</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="accZ" />
+      </properties>
+      <layout>
+        <posX>417</posX>
+        <posY>15</posY>
+      </layout>
+      <gui>
+        <posX>5488</posX>
+        <posY>1556</posY>
+        <width>2412</width>
+        <height>2289</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="gyroX" />
+      </properties>
+      <layout>
+        <posX>179</posX>
+        <posY>189</posY>
+      </layout>
+      <gui>
+        <posX>188</posX>
+        <posY>3911</posY>
+        <width>2612</width>
+        <height>2022</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.3" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="gyroZ" />
+      </properties>
+      <layout>
+        <posX>423</posX>
+        <posY>196</posY>
+      </layout>
+      <gui>
+        <posX>5512</posX>
+        <posY>3933</posY>
+        <width>2400</width>
+        <height>2111</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="gyroY" />
+      </properties>
+      <layout>
+        <posX>296</posX>
+        <posY>193</posY>
+      </layout>
+      <gui>
+        <posX>2838</posX>
+        <posY>3889</posY>
+        <width>2600</width>
+        <height>2100</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.4" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="compX" />
+      </properties>
+      <layout>
+        <posX>177</posX>
+        <posY>354</posY>
+      </layout>
+      <gui>
+        <posX>175</posX>
+        <posY>6111</posY>
+        <width>2600</width>
+        <height>2300</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1.3" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="compY" />
+      </properties>
+      <layout>
+        <posX>295</posX>
+        <posY>356</posY>
+      </layout>
+      <gui>
+        <posX>2838</posX>
+        <posY>6089</posY>
+        <width>2600</width>
+        <height>2311</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.2.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="compZ" />
+      </properties>
+      <layout>
+        <posX>416</posX>
+        <posY>361</posY>
+      </layout>
+      <gui>
+        <posX>5512</posX>
+        <posY>6089</posY>
+        <width>2388</width>
+        <height>2311</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="100" />
+        <property name="max" value="130" />
+        <property name="threshold" value="127" />
+        <property name="displayThreshold" value="True" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="bar-graph" />
+      </properties>
+      <layout>
+        <posX>562</posX>
+        <posY>257</posY>
+      </layout>
+      <gui>
+        <posX>7975</posX>
+        <posY>1600</posY>
+        <width>1488</width>
+        <height>6733</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.4">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="gyroY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="gyroX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="gyroZ" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.3" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="compassX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.4" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="compassY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1.3" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="compassZ" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.2.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="accZ" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="accY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.0">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="accX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>556</posY>
+      <width>9988</width>
+      <height>8489</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,540 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-11-09_1012" version="20130320">
+  <components>
+    <component id="BasicTRalgorithms.1" type_id="asterics.BasicTRalgorithms">
+      <description>Basic tremor reduction algorithms</description>
+      <ports>
+        <inputPort portTypeID="inputX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inputY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="bufferSize">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="maxDistance">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="factor">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outputX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="algorithm" value="0" />
+        <property name="eventsType" value="0" />
+        <property name="bufferSize" value="30" />
+        <property name="maxDistance" value="100" />
+        <property name="factor" value="0.5" />
+        <property name="degree" value="0" />
+      </properties>
+      <layout>
+        <posX>286</posX>
+        <posY>101</posY>
+      </layout>
+    </component>
+    <component id="MouseCapture.1" type_id="asterics.MouseCapture">
+      <description>Captures mouse cursor activity from local system</description>
+      <ports>
+        <outputPort portTypeID="mouseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="mouseY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="blockEvents" value="False" />
+      </properties>
+      <layout>
+        <posX>38</posX>
+        <posY>90</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Input Mouse X" />
+      </properties>
+      <layout>
+        <posX>555</posX>
+        <posY>30</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>822</posY>
+        <width>3100</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Input Mouse Y" />
+      </properties>
+      <layout>
+        <posX>705</posX>
+        <posY>26</posY>
+      </layout>
+      <gui>
+        <posX>3300</posX>
+        <posY>800</posY>
+        <width>3088</width>
+        <height>1756</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Arithmetic Mean X" />
+      </properties>
+      <layout>
+        <posX>558</posX>
+        <posY>199</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>2644</posY>
+        <width>3100</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.3" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Arithmetic Mean Y" />
+      </properties>
+      <layout>
+        <posX>707</posX>
+        <posY>198</posY>
+      </layout>
+      <gui>
+        <posX>3312</posX>
+        <posY>2644</posY>
+        <width>3100</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.4" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Outlier Reduction X" />
+      </properties>
+      <layout>
+        <posX>559</posX>
+        <posY>372</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>4467</posY>
+        <width>3100</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.5" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Outlier Reduction Y" />
+      </properties>
+      <layout>
+        <posX>710</posX>
+        <posY>378</posY>
+      </layout>
+      <gui>
+        <posX>3288</posX>
+        <posY>4467</posY>
+        <width>3100</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.6" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Exponential Smoothing X" />
+      </properties>
+      <layout>
+        <posX>569</posX>
+        <posY>560</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>6267</posY>
+        <width>3100</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.7" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Exponential Smoothing Y" />
+      </properties>
+      <layout>
+        <posX>712</posX>
+        <posY>557</posY>
+      </layout>
+      <gui>
+        <posX>3288</posX>
+        <posY>6289</posY>
+        <width>3100</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="BasicTRalgorithms.1.1" type_id="asterics.BasicTRalgorithms">
+      <description>Basic tremor reduction algorithms</description>
+      <ports>
+        <inputPort portTypeID="inputX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inputY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="bufferSize">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="maxDistance">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="factor">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outputX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="algorithm" value="1" />
+        <property name="eventsType" value="0" />
+        <property name="bufferSize" value="30" />
+        <property name="maxDistance" value="10" />
+        <property name="factor" value="0.5" />
+        <property name="degree" value="0" />
+      </properties>
+      <layout>
+        <posX>283</posX>
+        <posY>317</posY>
+      </layout>
+    </component>
+    <component id="BasicTRalgorithms.1.2" type_id="asterics.BasicTRalgorithms">
+      <description>Basic tremor reduction algorithms</description>
+      <ports>
+        <inputPort portTypeID="inputX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inputY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="bufferSize">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="maxDistance">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="factor">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outputX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="algorithm" value="2" />
+        <property name="eventsType" value="0" />
+        <property name="bufferSize" value="30" />
+        <property name="maxDistance" value="100" />
+        <property name="factor" value="0.05" />
+        <property name="degree" value="1" />
+      </properties>
+      <layout>
+        <posX>284</posX>
+        <posY>529</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseX" />
+      </source>
+      <target>
+        <component id="BasicTRalgorithms.1" />
+        <port id="inputX" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseY" />
+      </source>
+      <target>
+        <component id="BasicTRalgorithms.1" />
+        <port id="inputY" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="BasicTRalgorithms.1" />
+        <port id="outputX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="BasicTRalgorithms.1" />
+        <port id="outputY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.3" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseX" />
+      </source>
+      <target>
+        <component id="BasicTRalgorithms.1.1" />
+        <port id="inputX" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseY" />
+      </source>
+      <target>
+        <component id="BasicTRalgorithms.1.1" />
+        <port id="inputY" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="BasicTRalgorithms.1.1" />
+        <port id="outputX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.4" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="BasicTRalgorithms.1.1" />
+        <port id="outputY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.5" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="BasicTRalgorithms.1.2" />
+        <port id="outputX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.6" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="BasicTRalgorithms.1.2" />
+        <port id="outputY" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.7" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseX" />
+      </source>
+      <target>
+        <component id="BasicTRalgorithms.1.2" />
+        <port id="inputX" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="MouseCapture.1" />
+        <port id="mouseY" />
+      </source>
+      <target>
+        <component id="BasicTRalgorithms.1.2" />
+        <port id="inputY" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6988</width>
+      <height>8200</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

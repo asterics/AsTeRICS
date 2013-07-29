@@ -1,0 +1,630 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="08.03.2012_1253" version="20130320">
+  <components>
+    <component id="Eyetracker.1" type_id="asterics.Eyetracker">
+      <description>Webcamera-based eye tracking sensor with gaze tracking support</description>
+      <ports>
+        <inputPort portTypeID="pt1x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt1y">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt2x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt2y">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt3x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt3y">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt4x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt4y">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="x">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="y">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraSelection" value="0" />
+        <property name="cameraResolution" value="1" />
+        <property name="cameraProfile" value="" />
+        <property name="cameraDisplayUpdate" value="50" />
+        <property name="trackingMode" value="0" />
+        <property name="minArea" value="100" />
+        <property name="maxArea" value="1500" />
+        <property name="roundness" value="0.92" />
+        <property name="glintBrightness" value="256" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+        <property name="calibrationStepsX" value="3" />
+        <property name="calibrationStepsY" value="3" />
+        <property name="averaging" value="5" />
+        <property name="screenSize" value="22" />
+        <property name="minBlinkDuration" value="300" />
+        <property name="maxBlinkDuration" value="800" />
+      </properties>
+      <layout>
+        <posX>133</posX>
+        <posY>68</posY>
+      </layout>
+      <gui>
+        <posX>7375</posX>
+        <posY>578</posY>
+        <width>2100</width>
+        <height>2900</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="buttonCaption1" value="enable/disable mouse" />
+        <property name="buttonCaption2" value="show settings" />
+        <property name="buttonCaption3" value="save cam profile" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>11</posX>
+        <posY>144</posY>
+      </layout>
+      <gui>
+        <posX>150</posX>
+        <posY>4444</posY>
+        <width>3200</width>
+        <height>1300</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>261</posX>
+        <posY>16</posY>
+      </layout>
+      <gui>
+        <posX>88</posX>
+        <posY>711</posY>
+        <width>4600</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>258</posX>
+        <posY>215</posY>
+      </layout>
+      <gui>
+        <posX>75</posX>
+        <posY>2556</posY>
+        <width>4600</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="True" />
+        <property name="absolutePosition" value="true" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>621</posX>
+        <posY>81</posY>
+      </layout>
+    </component>
+    <component id="IntToString.1" type_id="asterics.IntToString">
+      <description>Converts int to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hexadecimalOutput" value="false" />
+      </properties>
+      <layout>
+        <posX>339</posX>
+        <posY>427</posY>
+      </layout>
+    </component>
+    <component id="Benchmark.1" type_id="asterics.Benchmark">
+      <description>Measures incoming data or events per time</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="dataCount">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="eventCount">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="time" value="1000" />
+      </properties>
+      <layout>
+        <posX>212</posX>
+        <posY>404</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="FPS" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>515</posX>
+        <posY>554</posY>
+      </layout>
+      <gui>
+        <posX>3400</posX>
+        <posY>4444</posY>
+        <width>1100</width>
+        <height>1300</height>
+      </gui>
+    </component>
+    <component id="SignalTranslation.1" type_id="asterics.SignalTranslation">
+      <description>Translates signals from a certain input range to an output range</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setMax">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setMin">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="inMin" value="1000" />
+        <property name="inMax" value="-1000" />
+        <property name="outMin" value="0" />
+        <property name="outMax" value="1024" />
+      </properties>
+      <layout>
+        <posX>494</posX>
+        <posY>36</posY>
+      </layout>
+    </component>
+    <component id="MinMax.1" type_id="asterics.MinMax">
+      <description>Remember minimum and maximum of a signal</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="max">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="min">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="defaultMin" value="1000" />
+        <property name="defaultMax" value="-1000" />
+      </properties>
+      <layout>
+        <posX>377</posX>
+        <posY>46</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="@MOUSE:action,toggle" />
+        <property name="slot2" value="" />
+        <property name="slot3" value="" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>70</posX>
+        <posY>383</posY>
+      </layout>
+    </component>
+    <component id="SignalTranslation.1.1" type_id="asterics.SignalTranslation">
+      <description>Translates signals from a certain input range to an output range</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setMax">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="setMin">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="inMin" value="1000" />
+        <property name="inMax" value="-1000" />
+        <property name="outMin" value="0" />
+        <property name="outMax" value="768" />
+      </properties>
+      <layout>
+        <posX>502</posX>
+        <posY>192</posY>
+      </layout>
+    </component>
+    <component id="MinMax.1.1" type_id="asterics.MinMax">
+      <description>Remember minimum and maximum of a signal</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="max">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="min">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="defaultMin" value="1000" />
+        <property name="defaultMax" value="-1000" />
+      </properties>
+      <layout>
+        <posX>385</posX>
+        <posY>202</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.11">
+      <source>
+        <component id="MinMax.1" />
+        <port id="max" />
+      </source>
+      <target>
+        <component id="SignalTranslation.1" />
+        <port id="setMax" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="Eyetracker.1" />
+        <port id="y" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Benchmark.1" />
+        <port id="dataCount" />
+      </source>
+      <target>
+        <component id="IntToString.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="Eyetracker.1" />
+        <port id="x" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Eyetracker.1" />
+        <port id="x" />
+      </source>
+      <target>
+        <component id="Benchmark.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="Eyetracker.1" />
+        <port id="x" />
+      </source>
+      <target>
+        <component id="SignalTranslation.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="IntToString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="MinMax.1" />
+        <port id="min" />
+      </source>
+      <target>
+        <component id="SignalTranslation.1" />
+        <port id="setMin" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Eyetracker.1" />
+        <port id="x" />
+      </source>
+      <target>
+        <component id="MinMax.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="action" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="SignalTranslation.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="MinMax.1.1" />
+        <port id="max" />
+      </source>
+      <target>
+        <component id="SignalTranslation.1.1" />
+        <port id="setMax" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="MinMax.1.1" />
+        <port id="min" />
+      </source>
+      <target>
+        <component id="SignalTranslation.1.1" />
+        <port id="setMin" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="Eyetracker.1" />
+        <port id="y" />
+      </source>
+      <target>
+        <component id="MinMax.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="SignalTranslation.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="Eyetracker.1" />
+        <port id="y" />
+      </source>
+      <target>
+        <component id="SignalTranslation.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_calibrate">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Eyetracker.1" />
+          <eventPort id="calibrate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_showCameraSettings">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Eyetracker.1" />
+          <eventPort id="showCameraSettings" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_saveProfile">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Eyetracker.1" />
+          <eventPort id="saveProfile" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>5200</width>
+      <height>5889</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

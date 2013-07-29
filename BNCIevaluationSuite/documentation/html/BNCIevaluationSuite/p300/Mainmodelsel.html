@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of Mainmodelsel</title>
+  <meta name="keywords" content="Mainmodelsel">
+  <meta name="description" content="This script do the model selection classifier">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300 -->
+<h1>Mainmodelsel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This script do the model selection classifier</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> This script do the model selection classifier 
+ the hyperparameters of each classifier should be save</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="modelselclassifier.html" class="code" title="function modelselclassifier(DirInfo,file,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam)">modelselclassifier</a>	USAGE</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% This script do the model selection classifier</span>
+0002 <span class="comment">% the hyperparameters of each classifier should be save</span>
+0003 
+0004 <span class="comment">%</span>
+0005 
+0006 <span class="comment">% 16/02</span>
+0007 
+0008 clear all
+0009 close all
+0010 
+0011 
+0012 
+0013 
+0014 data.normalizationtype=<span class="string">'normal'</span>;
+0015 data.typedata=<span class="string">'allfilt'</span>;
+0016 data.highcutofffrequency=20;
+0017 h = helpdlg(<span class="string">'Select directoy with preprocessed data'</span>);
+0018 uiwait(h);
+0019 DirInfo.pathdata=uigetdir(<span class="string">''</span>,<span class="string">'Select directoy with preprocessed data'</span>);
+0020 DirInfo.pathdata=strcat(DirInfo.pathdata,<span class="string">'/'</span>);
+0021 h = helpdlg(<span class="string">'Select directoy for output data'</span>);
+0022 uiwait(h);
+0023 outputpath = uigetdir(<span class="string">''</span>,<span class="string">'Select directoy for output data'</span>);
+0024 DirInfo.outputpath = strcat(outputpath,<span class="string">'/'</span>);
+0025 
+0026 <span class="comment">% NO channel selection and just do model selection with C and kerneloption</span>
+0027 channelselection=0; 
+0028 chanselparam=[];
+0029 chanselparam.channel=[34 11 51 9 13 49 53 62];
+0030 <span class="comment">%chanselparam.channel=[1:64];</span>
+0031 chanselparam.lengthperchannel=14;
+0032 <span class="comment">%%-----------------------------------------</span>
+0033 <span class="comment">%% channel selection parameter</span>
+0034 <span class="comment">% channelselection=1;   % if channel has been ranked</span>
+0035 <span class="comment">% chanselparam.NbChanMax=4; % final number of channel</span>
+0036 <span class="comment">% chanselparam.RemoveChan=4; % final number of channel</span>
+0037 <span class="comment">% chanselparam.criterion='tp'; % criterion for channel selection</span>
+0038 <span class="comment">%-----------------------------------------</span>
+0039 
+0040 
+0041 
+0042 Cvec=[0.001 0.005 0.01    0.05    0.1 0.5    1] <span class="comment">% tp</span>
+0043 kernel=<span class="string">'poly'</span>;
+0044 kerneloptionvec=1;
+0045 
+0046 
+0047 <span class="comment">% The criterion is evaluated on based on a cross-validation procedure</span>
+0048 
+0049 <span class="comment">%%%--------------------------------------------------------------------------</span>
+0050 <span class="comment">%%%                     Model Selection Procedure</span>
+0051 <span class="comment">%%%------------------------------------------------------------------------</span>
+0052 File.app={
+0053     <span class="string">'A1-A2-A3-A4-A5'</span> <span class="string">'A6-A7-A8-A9-A10'</span> <span class="keyword">...</span>
+0054         <span class="string">'A11-A12-A13-A14-A15'</span> <span class="string">'A16-A17-A18-A19-A20'</span>   <span class="keyword">...</span><span class="comment">    </span>
+0055             <span class="string">'A21-A22-A23-A24-A25'</span> <span class="string">'A26-A27-A28-A29-A30'</span> <span class="keyword">...</span>
+0056         <span class="string">'A31-A32-A33-A34-A35'</span> <span class="string">'A36-A37-A38-A39-A40'</span> <span class="keyword">...</span>
+0057         
+0058 };    
+0059 
+0060 <a href="modelselclassifier.html" class="code" title="function modelselclassifier(DirInfo,file,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam)">modelselclassifier</a>(DirInfo,File,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam);
+0061 
+0062 
+0063 
+0064 
+0065 File.app={ 
+0066     <span class="string">'A76-A77-A78-A79-A80'</span> <span class="string">'A81-A82-A83-A84-A85'</span><span class="keyword">...</span><span class="comment">    </span>
+0067         <span class="string">'A41-A42-A43-A44-A45'</span>  <span class="string">'A46-A47-A48-A49-A50'</span> <span class="keyword">...</span>
+0068         <span class="string">'A51-A52-A53-A54-A55'</span>  <span class="string">'A56-A57-A58-A59-A60'</span> <span class="keyword">...</span>
+0069         <span class="string">'A61-A62-A63-A64-A65'</span>  <span class="string">'A66-A67-A68-A69-A70'</span> <span class="keyword">...</span>
+0070         <span class="string">'A71-A72-A73-A74-A75'</span>   <span class="keyword">...</span>
+0071         
+0072 };
+0073 <a href="modelselclassifier.html" class="code" title="function modelselclassifier(DirInfo,file,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam)">modelselclassifier</a>(DirInfo,File,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam);
+0074 
+0075 
+0076 <span class="comment">% --------------------------------------------------------------------------</span>
+0077 <span class="comment">%       SUBJECT B</span>
+0078 <span class="comment">% -------------------------------------------------------------------------</span>
+0079 
+0080 File.app={<span class="keyword">...</span>
+0081           <span class="string">'B36-B37-B38-B39-B40'</span> <span class="string">'B31-B32-B33-B34-B35'</span> <span class="keyword">...</span><span class="comment"> </span>
+0082        <span class="string">'B1-B2-B3-B4-B5'</span> <span class="string">'B6-B7-B8-B9-B10'</span> <span class="keyword">...</span>
+0083         <span class="string">'B11-B12-B13-B14-B15'</span>  <span class="string">'B16-B17-B18-B19-B20'</span> <span class="keyword">...</span>
+0084         <span class="string">'B21-B22-B23-B24-B25'</span>  <span class="string">'B26-B27-B28-B29-B30'</span> <span class="keyword">...</span>
+0085          
+0086     };
+0087 
+0088 <a href="modelselclassifier.html" class="code" title="function modelselclassifier(DirInfo,file,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam)">modelselclassifier</a>(DirInfo,File,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam);
+0089 File.app={<span class="keyword">...</span>
+0090         
+0091         <span class="string">'B76-B77-B78-B79-B80'</span> <span class="keyword">...</span>
+0092         <span class="string">'B61-B62-B63-B64-B65'</span>  <span class="string">'B66-B67-B68-B69-B70'</span> <span class="keyword">...</span>
+0093         <span class="string">'B51-B52-B53-B54-B55'</span>  <span class="string">'B56-B57-B58-B59-B60'</span> <span class="keyword">...</span><span class="comment">      </span>
+0094     <span class="string">'B41-B42-B43-B44-B45'</span>  <span class="string">'B46-B47-B48-B49-B50'</span> <span class="keyword">...</span>
+0095     <span class="string">'B71-B72-B73-B74-B75'</span> <span class="keyword">...</span><span class="comment">% 'B76-B77-B78-B79-B80' ...</span>
+0096     <span class="string">'B81-B82-B83-B84-B85'</span> <span class="keyword">...</span>
+0097 } ;
+0098 <a href="modelselclassifier.html" class="code" title="function modelselclassifier(DirInfo,file,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam)">modelselclassifier</a>(DirInfo,File,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam);</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

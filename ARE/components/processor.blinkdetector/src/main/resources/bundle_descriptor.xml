@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.BlinkDetector"
+                   canonical_name="com.starlab.component.processor.blinkdetector.BlinkDetectorInstance">
+        <type subtype="DSP and Feature Detection">processor</type>
+        <singleton>false</singleton>
+        <description>Blink detector. It detects both a simple and a double blinks</description>
+        <ports>
+			<inputPort id="Input">
+				<description>Input port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<outputPort id="Filtered Sample">
+				<description>Output port 1</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Differential">
+				<description>Output port 1</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="BlinkDetected">
+				<description>Blink detection</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="DoubleblinkDetected">
+				<description>Double blink detection</description>
+			</eventTriggererPort>
+ 
+		</events>			
+        <properties>
+			<property name="SampleRate"
+				type="integer"
+				value="250"
+				description="The signal sample rate"/>
+			<property name="maxThreshold"
+				type="integer"
+				value="10000"
+				description="The value used to tune the maximum threshold (for the positive slope of the derivative) that determines whether the signal is behaving as an eye blink"></property>
+			<property name="minThreshold" 
+				type="integer" 
+				value="-10000" 
+				description="The value used to tune the minimum threshold (for the negative slope in the derivative) that determines whether the signal is behaving as an eye blink"/>
+			<property name="BlinkLength"
+				type="integer"
+				value="300"
+				description="Maximum length of the blink in milliseconds"></property>
+			<property name="DoubleBlinkSeparation"
+				type="integer"
+				value="500"
+				description="Maximum separation between blinks to be considered as double blink"/>
+		</properties>
+
+    </componentType>
+</componentTypes>

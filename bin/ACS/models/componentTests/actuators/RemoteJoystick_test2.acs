@@ -1,0 +1,492 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="09.11.2011_1628" version="20130320">
+  <components>
+    <component id="RemoteJoystick.1" type_id="asterics.RemoteJoystick">
+      <description>Joystick emulator, communicates via HID actuator, compatible to PS3 sixaxis / SEGA Virtua Stick </description>
+      <ports>
+        <inputPort portTypeID="joystickX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickZ">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickR">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickPov">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="refreshInterval" value="10" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>556</posX>
+        <posY>78</posY>
+      </layout>
+    </component>
+    <component id="Slider.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="0" />
+        <property name="max" value="255" />
+        <property name="default" value="128" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="X-Axis" />
+        <property name="majorTickSpacing" value="10" />
+        <property name="minorTickSpacing" value="10" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+      </properties>
+      <layout>
+        <posX>63</posX>
+        <posY>45</posY>
+      </layout>
+      <gui>
+        <posX>1762</posX>
+        <posY>1022</posY>
+        <width>4900</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="buttonCaption1" value="cross" />
+        <property name="buttonCaption2" value="cross release" />
+        <property name="buttonCaption3" value="circle" />
+        <property name="buttonCaption4" value="circle release" />
+        <property name="buttonCaption5" value="r2" />
+        <property name="buttonCaption6" value="r2 release" />
+        <property name="buttonCaption7" value="l1 click" />
+        <property name="buttonCaption8" value="r1 click" />
+        <property name="buttonCaption9" value="ps" />
+        <property name="buttonCaption10" value="ps release" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>102</posX>
+        <posY>390</posY>
+      </layout>
+      <gui>
+        <posX>1200</posX>
+        <posY>2700</posY>
+        <width>5900</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="Slider.2" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="0" />
+        <property name="max" value="255" />
+        <property name="default" value="128" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="Y-Axis" />
+        <property name="majorTickSpacing" value="10" />
+        <property name="minorTickSpacing" value="10" />
+        <property name="alignment" value="1" />
+        <property name="fontSize" value="14" />
+      </properties>
+      <layout>
+        <posX>57</posX>
+        <posY>188</posY>
+      </layout>
+      <gui>
+        <posX>175</posX>
+        <posY>1000</posY>
+        <width>900</width>
+        <height>5400</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.2" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="255" />
+        <property name="threshold" value="128" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="bar-graph" />
+      </properties>
+      <layout>
+        <posX>308</posX>
+        <posY>184</posY>
+      </layout>
+      <gui>
+        <posX>4200</posX>
+        <posY>4400</posY>
+        <width>2000</width>
+        <height>1800</height>
+      </gui>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>Timer</description>
+      <ports>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="20" />
+        <property name="resolution" value="10" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="False" />
+      </properties>
+      <layout>
+        <posX>312</posX>
+        <posY>339</posY>
+      </layout>
+    </component>
+    <component id="Timer.2" type_id="asterics.Timer">
+      <description>Timer</description>
+      <ports>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="20" />
+        <property name="resolution" value="10" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>306</posX>
+        <posY>516</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="255" />
+        <property name="threshold" value="128" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="bar-graph" />
+      </properties>
+      <layout>
+        <posX>313</posX>
+        <posY>18</posY>
+      </layout>
+      <gui>
+        <posX>2200</posX>
+        <posY>4400</posY>
+        <width>1800</width>
+        <height>1800</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.6">
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickX" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Slider.2" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="BarDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="Slider.2" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickY" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button3_pressButton1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_releaseButton1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_pressButton4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_releaseButton4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_releaseButton6">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_pressButton6">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button7_pressButton5">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button7_pressButton7">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_start">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button8_start">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.2" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton5">
+      <sources>
+        <source>
+          <component id="Timer.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_releaseButton7">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button9_pressButton13">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton13" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button10_releaseButton13">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton13" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>7775</width>
+      <height>6822</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,1 @@
+EyesStateDetect --model model.yml --camera 0

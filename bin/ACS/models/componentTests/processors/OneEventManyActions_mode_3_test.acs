@@ -1,0 +1,415 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-06-13_810" version="20130320">
+  <components>
+    <component id="OneEventManyActions.1" type_id="asterics.OneEventManyActions">
+      <description>One input event raises many actions</description>
+      <ports />
+      <properties>
+        <property name="actionsNumber" value="1" />
+        <property name="mode" value="2" />
+        <property name="delay" value="2000" />
+      </properties>
+      <layout>
+        <posX>149</posX>
+        <posY>33</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="buttonCaption1" value="Select Action" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>10</posX>
+        <posY>28</posY>
+      </layout>
+      <gui>
+        <posX>638</posX>
+        <posY>2444</posY>
+        <width>1700</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Action 1" />
+        <property name="slot2" value="Action 2" />
+        <property name="slot3" value="Action 3" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>282</posX>
+        <posY>19</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.2" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Action 1" />
+        <property name="slot2" value="Action 2" />
+        <property name="slot3" value="Action 3" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>290</posX>
+        <posY>205</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Scanned Action" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>468</posX>
+        <posY>29</posY>
+      </layout>
+      <gui>
+        <posX>12</posX>
+        <posY>578</posY>
+        <width>3000</width>
+        <height>800</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Selected Action" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>478</posX>
+        <posY>220</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>1444</posY>
+        <width>3000</width>
+        <height>900</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="StringDispatcher.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_input">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="actionShown1_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="actionShown1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="actionShown2_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="actionShown2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="actionShown3_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="actionShown3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="action1_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="action1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.2" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="action2_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="action2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.2" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="action3_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="action3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.2" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_inputOff">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="inputOff" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="action1_clear">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="action1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextDisplay.1" />
+          <eventPort id="clear" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="action2_clear">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="action2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextDisplay.1" />
+          <eventPort id="clear" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="action3_clear">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="action3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextDisplay.1" />
+          <eventPort id="clear" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="actionShown1_clear">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="actionShown1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextDisplay.2" />
+          <eventPort id="clear" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="actionShown2_clear">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="actionShown2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextDisplay.2" />
+          <eventPort id="clear" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="actionShown3_clear">
+      <sources>
+        <source>
+          <component id="OneEventManyActions.1" />
+          <eventPort id="actionShown3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextDisplay.2" />
+          <eventPort id="clear" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>3588</width>
+      <height>3311</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

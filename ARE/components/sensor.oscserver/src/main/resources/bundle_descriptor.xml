@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.OscServer"
+                   canonical_name="eu.asterics.component.sensor.oscserver.OscServerInstance">
+        <type subtype="Communication">sensor</type>
+        <singleton>false</singleton>
+        <description>Receives OSC messages and forward it to the ARE</description>
+        <ports>
+
+			<outputPort id="CH1">
+				<description>output CH1</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH2">
+				<description>output CH2</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH3">
+				<description>output CH3</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH4">
+				<description>output CH4</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH5">
+				<description>output CH5</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH6">
+				<description>output CH6</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH7">
+				<description>output CH7</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH8">
+				<description>output CH8</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH9">
+				<description>string output CH9</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="CH10">
+				<description>string output CH10</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="CH11">
+				<description>string output CH11</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="CH12">
+				<description>string output CH12</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="Port"
+				type="integer"
+				value="57000"
+				description="Osc Server Port"/>
+			<property name="AddressCH1"
+				type="string"
+				value="/Channel1"
+				description="Address of Osc Stream 1"/>
+			<property name="ArgNrCH1"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 1"/>
+			<property name="AddressCH2"
+				type="string"
+				value="/Channel2"
+				description="Address of Osc Stream 2"/>
+			<property name="ArgNrCH2"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 2"/>
+			<property name="AddressCH3"
+				type="string"
+				value="/Channel3"
+				description="Address of Osc Stream 3"/>
+			<property name="ArgNrCH3"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 3"/>
+			<property name="AddressCH4"
+				type="string"
+				value="/Channel4"
+				description="Address of Osc Stream 4"/>
+			<property name="ArgNrCH4"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 4"/>
+			<property name="AddressCH5"
+				type="string"
+				value="/Channel5"
+				description="Address of Osc Stream 5"/>
+			<property name="ArgNrCH5"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 5"/>
+			<property name="AddressCH6"
+				type="string"
+				value="/Channel6"
+				description="Address of Osc Stream 6"/>
+			<property name="ArgNrCH6"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 6"/>
+			<property name="AddressCH7"
+				type="string"
+				value="/Channel7"
+				description="Address of Osc Stream 7"/>
+			<property name="ArgNrCH7"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 7"/>
+			<property name="AddressCH8"
+				type="string"
+				value="/Channel8"
+				description="Address of Osc Stream 8"/>
+			<property name="ArgNrCH8"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 8"/>
+			<property name="AddressCH9"
+				type="string"
+				value="/Channel9"
+				description="Address of Osc Stream 9"/>
+			<property name="ArgNrCH9"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 9"/>
+			<property name="AddressCH10"
+				type="string"
+				value="/Channel10"
+				description="Address of Osc Stream 10"/>
+			<property name="ArgNrCH10"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 10"/>
+			<property name="AddressCH11"
+				type="string"
+				value="/Channel11"
+				description="Address of Osc Stream 11"/>
+			<property name="ArgNrCH11"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 11"/>
+			<property name="AddressCH12"
+				type="string"
+				value="/Channel12"
+				description="Address of Osc Stream 12"/>
+			<property name="ArgNrCH12"
+				type="integer"
+				value="1"
+				description="Argument Number of OSC Stream 12"/>
+			
+        </properties>
+
+    </componentType>
+</componentTypes>

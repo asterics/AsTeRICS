@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of AstericsfitFunct_v2</title>
+  <meta name="keywords" content="AstericsfitFunct_v2">
+  <meta name="description" content="%%this is the fitness function to be used to optimize the projections with">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html motorImageryDemos -->
+<h1>AstericsfitFunct_v2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>%%this is the fitness function to be used to optimize the projections with</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function Fitness=AstericsfitFunct(SinglvectExtractor,Trials,subj) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">%%this is the fitness function to be used to optimize the projections with
+%%a  GA.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../BNCIevaluationSuite/multiclass/splitDataset.html" class="code" title="function [varargout]=splitDataset(data,trainPercentage,homogDataSets)">splitDataset</a>	function that splits datasets in training and test groups.</li><li><a href="../../BNCIevaluationSuite/multiclass/starClassify.html" class="code" title="function [ypredTrain,ypredTest]=starClassify(dataTrain, dataTest,parameters)">starClassify</a>	----------------------------------------------------------</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="main_Asterics_Test3_wl_anova_GA_v1.html" class="code" title="">main_Asterics_Test3_wl_anova_GA_v1</a>	This script launches a GA to optimize the projection of the features</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function Fitness=AstericsfitFunct(SinglvectExtractor,Trials,subj)</a>
+0002 
+0003 
+0004 
+0005 <span class="comment">%%%this is the fitness function to be used to optimize the projections with</span>
+0006 <span class="comment">%%%a  GA.</span>
+0007 tic
+0008 <span class="keyword">for</span> pop=1:length(SinglvectExtractor(:,1))
+0009     <span class="comment">%% FEATURE PROJECTION WITH OVR</span>
+0010     SinglMatExtractor=reshape(SinglvectExtractor(pop,:),20,100);
+0011     extractor{1}=SinglMatExtractor(1:5,:);
+0012     extractor{2}=SinglMatExtractor(6:10,:);
+0013     extractor{3}=SinglMatExtractor(11:15,:);
+0014     extractor{4}=SinglMatExtractor(16:20,:);
+0015     
+0016     Nclass=length(Trials);
+0017     Perf=zeros(4,1);
+0018 
+0019     <span class="keyword">for</span> pr=1:4
+0020         data.features=[];
+0021         data.GT=[];
+0022         <span class="keyword">for</span> daclas=1:Nclass
+0023             B=Trials{daclas};
+0024             prD=extractor{pr}*B;
+0025             data.features=[data.features prD]; 
+0026             <span class="keyword">if</span> pr==daclas
+0027                 data.GT=[data.GT;ones(size(prD,2)/189,1)];
+0028             <span class="keyword">else</span>
+0029                 data.GT=[data.GT;ones(size(prD,2)/189,1)*-1];
+0030             <span class="keyword">end</span>
+0031         <span class="keyword">end</span>
+0032         data.features=reshape(data.features,5,189,[]);
+0033        
+0034         <span class="comment">%% CLASSIFIER</span>
+0035         [dataTrain,dataTest]=<a href="../../BNCIevaluationSuite/multiclass/splitDataset.html" class="code" title="function [varargout]=splitDataset(data,trainPercentage,homogDataSets)">splitDataset</a>(data,[],1);
+0036 <span class="comment">%         parameters.svm.c=inf;</span>
+0037 <span class="comment">%         parameters.svm.epsilon=1e-7;</span>
+0038 <span class="comment">%         parameters.svm.kerneloption=0.3;</span>
+0039 <span class="comment">%         parameters.svm.kernel='gaussian';</span>
+0040         parameters.lda.cl_type=<span class="string">'diagquadratic'</span>;
+0041         parameters.lda.priorProb=<span class="string">'empirical'</span>;
+0042         [ypredTrain,ypredTest,]=<a href="../../BNCIevaluationSuite/multiclass/starClassify.html" class="code" title="function [ypredTrain,ypredTest]=starClassify(dataTrain, dataTest,parameters)">starClassify</a>(dataTrain, dataTest,parameters);
+0043         
+0044         <span class="comment">%% Performance</span>
+0045         ypredTest=squeeze(ypredTest);
+0046         pred=zeros(size(ypredTest,1),size(ypredTest,2));
+0047         false=find(ypredTest&lt;=0);
+0048         true=find(ypredTest&gt;0);
+0049         pred(true)=1;
+0050         pred(false)=-1;
+0051         
+0052         NrPred=size(ypredTest(:));
+0053         GTtemplate=repmat(dataTest.GT,[1 189])';
+0054         Perf(pr)=(NrPred(1)-sum(eq(pred(:),GTtemplate(:))));
+0055     <span class="keyword">end</span>
+0056 Fitness(pop,1)=sum(Perf);
+0057 <span class="keyword">end</span>
+0058 toc</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

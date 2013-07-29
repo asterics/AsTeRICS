@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of preprocessingdata</title>
+  <meta name="keywords" content="preprocessingdata">
+  <meta name="description" content="This script is an important one">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300 -->
+<h1>preprocessingdata
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This script is an important one</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> This script is an important one
+ since it computes the preprocessing of all the sessions
+ and store them in a file</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="ReadDataBCI_III.html" class="code" title="function [x,y,code,target]=ReadDataBCI(path,filename,epoch,window,channel)">ReadDataBCI_III</a>	USAGE</li><li><a href="filtering.html" class="code" title="function [xappf,xtestf]=filtering(xapp,xtest,triallength,NbChannel,N,Fc1,Fc2,Fe,decim);">filtering</a>	USAGE</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">% This script is an important one</span>
+0002 <span class="comment">% since it computes the preprocessing of all the sessions</span>
+0003 <span class="comment">% and store them in a file</span>
+0004 
+0005 clear all
+0006 
+0007 <span class="comment">%</span>
+0008 
+0009 <span class="comment">% Preprocessing and filtering parameters</span>
+0010 
+0011 NbChannel=64;  <span class="comment">% number of acquired channel</span>
+0012 channel=[1:64];  <span class="comment">% les canaux selectionnees</span>
+0013 triallength=160; <span class="comment">% nombres d'echantillons du signal pris apres stimuli</span>
+0014 Fe=240;   <span class="comment">% Sampling frequency of the BCI signals</span>
+0015 filteron=1; <span class="comment">% Filtering and decimation parameters</span>
+0016 decim=1;    <span class="comment">% do decimation</span>
+0017 order=4;    <span class="comment">% Band pass filter order</span>
+0018 Fc1=0.1;    <span class="comment">% low cut-off frequency</span>
+0019 Fc2=20;     <span class="comment">% high cut-off frequency</span>
+0020  
+0021 <span class="comment">%  Path and Data parameters</span>
+0022 h = helpdlg(<span class="string">'Select directoy with BCI data'</span>);
+0023 uiwait(h);
+0024 path=uigetdir(<span class="string">''</span>,<span class="string">'Select directoy with BCI data'</span>);
+0025 path=strcat(path,<span class="string">'/'</span>);
+0026 h = helpdlg(<span class="string">'Select directoy to store preprocessed data'</span>);
+0027 uiwait(h);
+0028 opath=uigetdir(<span class="string">''</span>,<span class="string">'Select directoy to store preprocessed data'</span>);
+0029 opath=strcat(opath,<span class="string">'/'</span>);
+0030 <span class="comment">%path='../../../bcidata/bciIII-II/';</span>
+0031 subject=<span class="string">'B'</span>;
+0032 type=<span class="string">'Test'</span>;
+0033 NbMaxofCharacters=100;  <span class="comment">% Number of characters acquisition to use</span>
+0034 pas=1; <span class="comment">% number of characters acquisition joined in a single example files</span>
+0035 
+0036 
+0037 <span class="comment">% Main Preprocessing Program</span>
+0038 maxi=round(NbMaxofCharacters/pas);
+0039 filen=[<span class="string">'Subject_'</span> subject <span class="string">'_'</span> type <span class="string">'.mat'</span>];  
+0040 <span class="keyword">for</span> i=1:maxi
+0041     fprintf(<span class="string">'.\n'</span>);
+0042     epoch=pas*(i-1)+1:i*pas;
+0043     [x,y,code,target]=<a href="ReadDataBCI_III.html" class="code" title="function [x,y,code,target]=ReadDataBCI(path,filename,epoch,window,channel)">ReadDataBCI_III</a>(path,filen,epoch,triallength,channel);
+0044     [x]=<a href="filtering.html" class="code" title="function [xappf,xtestf]=filtering(xapp,xtest,triallength,NbChannel,N,Fc1,Fc2,Fe,decim);">filtering</a>(x,[],triallength,NbChannel,order,Fc1,Fc2,Fe,decim);
+0045     filesave=[subject <span class="string">'t'</span> int2str(i) <span class="string">'-allfilt'</span> int2str(Fc2) <span class="string">'.mat'</span>];
+0046     filesave=strcat(filesave,opath);
+0047     save(filesave);        
+0048 <span class="keyword">end</span>;
+0049     
+0050     
+0051</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

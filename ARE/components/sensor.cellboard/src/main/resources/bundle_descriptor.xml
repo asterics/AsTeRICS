@@ -1,0 +1,654 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.CellBoard"
+                   canonical_name="eu.asterics.component.sensor.cellboard.CellBoardInstance">
+        <type subtype="Graphical User Interface">sensor</type>
+        <singleton>false</singleton>
+        <description>GUI component</description>
+        <ports>
+			<inputPort id="row">
+				<description>Row of the cell</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="column">
+				<description>column of the cell</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="cellNumber">
+				<description>Number of the cell</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="xmlFile">
+				<description>XML file path to load when the load event occurs</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<outputPort id="selectedCell">
+				<description>Selected cell ID</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="selectedCellText">
+				<description>Selected cell Text</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="scanMove">
+				<description>Move the scan frame</description>
+			</eventListenerPort>
+			<eventListenerPort id="scanSelect">
+				<description>Select the cell during scanning</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveUp">
+				<description>Move frame up</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveRight">
+				<description>Move frame right</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveLeft">
+				<description>Move frame left</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveDown">
+				<description>Move frame down</description>
+			</eventListenerPort>
+			<eventTriggererPort id="cellClicked">
+				<description>Cell is clicked</description>
+			</eventTriggererPort>
+			<eventListenerPort id="load">
+				<description>Load xml file with filename from input xmlfile</description>
+			</eventListenerPort>
+			<eventTriggererPort id="cell1">
+				<description>Cell 1 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell2">
+				<description>Cell 2 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell3">
+				<description>Cell 3 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell4">
+				<description>Cell 4 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell5">
+				<description>Cell 5 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell6">
+				<description>Cell 6 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell7">
+				<description>Cell 7 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell8">
+				<description>Cell 8 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell9">
+				<description>Cell 9 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell10">
+				<description>Cell 10 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell11">
+				<description>Cell 11 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell12">
+				<description>Cell 12 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell13">
+				<description>Cell 13 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell14">
+				<description>Cell 14 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell15">
+				<description>Cell 15 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell16">
+				<description>Cell 16 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell17">
+				<description>Cell 17 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell18">
+				<description>Cell 18 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell19">
+				<description>Cell 19 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell20">
+				<description>Cell 20 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell21">
+				<description>Cell 21 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell22">
+				<description>Cell 22 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell23">
+				<description>Cell 23 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell24">
+				<description>Cell 24 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell25">
+				<description>Cell 25 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell26">
+				<description>Cell 26 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell27">
+				<description>Cell 27 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell28">
+				<description>Cell 28 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell29">
+				<description>Cell 29 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell30">
+				<description>Cell 30 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell31">
+				<description>Cell 31 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell32">
+				<description>Cell 32 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell33">
+				<description>Cell 33 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell34">
+				<description>Cell 34 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell35">
+				<description>Cell 35 selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="cell36">
+				<description>Cell 36 selected</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+        	<property name="caption"
+				type="string"
+				value="Cell Board"
+				description="Caption of the component"/>
+			<property name="rows"
+				type="integer"
+				value="2"
+				combobox="1//2//3//4//5//6"
+				description="Number of rows"/>
+			<property name="columns"
+				type="integer"
+				value="2"
+				combobox="1//2//3//4//5//6"
+				description="Number of rows"/>
+			<property name="textColor"
+				type="integer"
+				value="0"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+				description="Text color"/>
+			<property name="backgroundColor"
+				type="integer"
+				value="11"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+				description="Background color"/>
+			<property name="scanColor"
+				type="integer"
+				value="10"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+				description="Color of the scan frame"/>
+			<property name="scanMode"
+				type="integer"
+				value="0"
+				combobox="none//row-column//column-row//directed//hover selection"
+				description="Scanning mode"/>
+			<property name="hoverTime"
+				type="integer"
+				value="1000"
+				description="Time of hovering needed to cell selection [ms]."/>
+			<property name="cellText1"
+				type="string"
+				value=""
+				description="Text of cell 1"/>
+			<property name="cellImage1"
+				type="string"
+				value=""
+				description="Image of cell 1"/>
+			<property name="actionText1"
+				type="string"
+				value=""
+				description="Action text of cell 1"/>
+			<property name="cellText2"
+				type="string"
+				value=""
+				description="Text of cell 2"/>
+			<property name="cellImage2"
+				type="string"
+				value=""
+				description="Image of cell 2"/>
+			<property name="actionText2"
+				type="string"
+				value=""
+				description="Action text of cell 2"/>
+			<property name="cellText3"
+				type="string"
+				value=""
+				description="Text of cell 3"/>
+			<property name="cellImage3"
+				type="string"
+				value=""
+				description="Image of cell 3"/>
+			<property name="actionText3"
+				type="string"
+				value=""
+				description="Action text of cell 3"/>
+			<property name="cellText4"
+				type="string"
+				value=""
+				description="Text of cell 4"/>
+			<property name="cellImage4"
+				type="string"
+				value=""
+				description="Image of cell 4"/>
+			<property name="actionText4"
+				type="string"
+				value=""
+				description="Action text of cell 4"/>
+			<property name="cellText5"
+				type="string"
+				value=""
+				description="Text of cell 5"/>
+			<property name="cellImage5"
+				type="string"
+				value=""
+				description="Image of cell 5"/>
+			<property name="actionText5"
+				type="string"
+				value=""
+				description="Action text of cell 5"/>
+			<property name="cellText6"
+				type="string"
+				value=""
+				description="Text of cell 6"/>
+			<property name="cellImage6"
+				type="string"
+				value=""
+				description="Image of cell 6"/>
+			<property name="actionText6"
+				type="string"
+				value=""
+				description="Action text of cell 6"/>
+			<property name="cellText7"
+				type="string"
+				value=""
+				description="Text of cell 7"/>
+			<property name="cellImage7"
+				type="string"
+				value=""
+				description="Image of cell 7"/>
+			<property name="actionText7"
+				type="string"
+				value=""
+				description="Action text of cell 7"/>
+			<property name="cellText8"
+				type="string"
+				value=""
+				description="Text of cell 8"/>
+			<property name="cellImage8"
+				type="string"
+				value=""
+				description="Image of cell 8"/>
+			<property name="actionText8"
+				type="string"
+				value=""
+				description="Action text of cell 8"/>
+			<property name="cellText9"
+				type="string"
+				value=""
+				description="Text of cell 9"/>
+			<property name="cellImage9"
+				type="string"
+				value=""
+				description="Image of cell 9"/>
+			<property name="actionText9"
+				type="string"
+				value=""
+				description="Action text of cell 9"/>
+			<property name="cellText10"
+				type="string"
+				value=""
+				description="Text of cell 10"/>
+			<property name="cellImage10"
+				type="string"
+				value=""
+				description="Image of cell 10"/>
+			<property name="actionText10"
+				type="string"
+				value=""
+				description="Action text of cell 10"/>
+			<property name="cellText11"
+				type="string"
+				value=""
+				description="Text of cell 11"/>
+			<property name="cellImage11"
+				type="string"
+				value=""
+				description="Image of cell 11"/>
+			<property name="actionText11"
+				type="string"
+				value=""
+				description="Action text of cell 11"/>
+			<property name="cellText12"
+				type="string"
+				value=""
+				description="Text of cell 12"/>
+			<property name="cellImage12"
+				type="string"
+				value=""
+				description="Image of cell 12"/>
+			<property name="actionText12"
+				type="string"
+				value=""
+				description="Action text of cell 12"/>
+			<property name="cellText13"
+				type="string"
+				value=""
+				description="Text of cell 13"/>
+			<property name="cellImage13"
+				type="string"
+				value=""
+				description="Image of cell 13"/>
+			<property name="actionText13"
+				type="string"
+				value=""
+				description="Action text of cell 13"/>
+			<property name="cellText14"
+				type="string"
+				value=""
+				description="Text of cell 14"/>
+			<property name="cellImage14"
+				type="string"
+				value=""
+				description="Image of cell 14"/>
+			<property name="actionText14"
+				type="string"
+				value=""
+				description="Action text of cell 14"/>
+			<property name="cellText15"
+				type="string"
+				value=""
+				description="Text of cell 15"/>
+			<property name="cellImage15"
+				type="string"
+				value=""
+				description="Image of cell 15"/>
+			<property name="actionText15"
+				type="string"
+				value=""
+				description="Action text of cell 15"/>
+			<property name="cellText16"
+				type="string"
+				value=""
+				description="Text of cell 16"/>
+			<property name="cellImage16"
+				type="string"
+				value=""
+				description="Image of cell 16"/>
+			<property name="actionText16"
+				type="string"
+				value=""
+				description="Action text of cell 16"/>
+			<property name="cellText17"
+				type="string"
+				value=""
+				description="Text of cell 17"/>
+			<property name="cellImage17"
+				type="string"
+				value=""
+				description="Image of cell 17"/>
+			<property name="actionText17"
+				type="string"
+				value=""
+				description="Action text of cell 17"/>
+			<property name="cellText18"
+				type="string"
+				value=""
+				description="Text of cell 18"/>
+			<property name="cellImage18"
+				type="string"
+				value=""
+				description="Image of cell 18"/>
+			<property name="actionText18"
+				type="string"
+				value=""
+				description="Action text of cell 18"/>
+			<property name="cellText19"
+				type="string"
+				value=""
+				description="Text of cell 19"/>
+			<property name="cellImage19"
+				type="string"
+				value=""
+				description="Image of cell 19"/>
+			<property name="actionText19"
+				type="string"
+				value=""
+				description="Action text of cell 19"/>
+			<property name="cellText20"
+				type="string"
+				value=""
+				description="Text of cell 20"/>
+			<property name="cellImage20"
+				type="string"
+				value=""
+				description="Image of cell 20"/>
+			<property name="actionText20"
+				type="string"
+				value=""
+				description="Action text of cell 20"/>
+			<property name="cellText21"
+				type="string"
+				value=""
+				description="Text of cell 21"/>
+			<property name="cellImage21"
+				type="string"
+				value=""
+				description="Image of cell 21"/>
+			<property name="actionText21"
+				type="string"
+				value=""
+				description="Action text of cell 21"/>
+			<property name="cellText22"
+				type="string"
+				value=""
+				description="Text of cell 22"/>
+			<property name="cellImage22"
+				type="string"
+				value=""
+				description="Image of cell 22"/>
+			<property name="actionText22"
+				type="string"
+				value=""
+				description="Action text of cell 22"/>
+			<property name="cellText23"
+				type="string"
+				value=""
+				description="Text of cell 23"/>
+			<property name="cellImage23"
+				type="string"
+				value=""
+				description="Image of cell 23"/>
+			<property name="actionText23"
+				type="string"
+				value=""
+				description="Action text of cell 23"/>
+			<property name="cellText24"
+				type="string"
+				value=""
+				description="Text of cell 24"/>
+			<property name="cellImage24"
+				type="string"
+				value=""
+				description="Image of cell 24"/>
+			<property name="actionText24"
+				type="string"
+				value=""
+				description="Action text of cell 24"/>
+			<property name="cellText25"
+				type="string"
+				value=""
+				description="Text of cell 25"/>
+			<property name="cellImage25"
+				type="string"
+				value=""
+				description="Image of cell 25"/>
+			<property name="actionText25"
+				type="string"
+				value=""
+				description="Action text of cell 25"/>
+			<property name="cellText26"
+				type="string"
+				value=""
+				description="Text of cell 26"/>
+			<property name="cellImage26"
+				type="string"
+				value=""
+				description="Image of cell 26"/>
+			<property name="actionText26"
+				type="string"
+				value=""
+				description="Action text of cell 26"/>
+			<property name="cellText27"
+				type="string"
+				value=""
+				description="Text of cell 27"/>
+			<property name="cellImage27"
+				type="string"
+				value=""
+				description="Image of cell 27"/>
+			<property name="actionText27"
+				type="string"
+				value=""
+				description="Action text of cell 27"/>
+			<property name="cellText28"
+				type="string"
+				value=""
+				description="Text of cell 28"/>
+			<property name="cellImage28"
+				type="string"
+				value=""
+				description="Image of cell 28"/>
+			<property name="actionText28"
+				type="string"
+				value=""
+				description="Action text of cell 28"/>
+			<property name="cellText29"
+				type="string"
+				value=""
+				description="Text of cell 29"/>
+			<property name="cellImage29"
+				type="string"
+				value=""
+				description="Image of cell 29"/>
+			<property name="actionText29"
+				type="string"
+				value=""
+				description="Action text of cell 29"/>
+			<property name="cellText30"
+				type="string"
+				value=""
+				description="Text of cell 30"/>
+			<property name="cellImage30"
+				type="string"
+				value=""
+				description="Image of cell 30"/>
+			<property name="actionText30"
+				type="string"
+				value=""
+				description="Action text of cell 30"/>
+			<property name="cellText31"
+				type="string"
+				value=""
+				description="Text of cell 31"/>
+			<property name="cellImage31"
+				type="string"
+				value=""
+				description="Image of cell 31"/>
+			<property name="actionText31"
+				type="string"
+				value=""
+				description="Action text of cell 31"/>
+			<property name="cellText32"
+				type="string"
+				value=""
+				description="Text of cell 32"/>
+			<property name="cellImage32"
+				type="string"
+				value=""
+				description="Image of cell 32"/>
+			<property name="actionText32"
+				type="string"
+				value=""
+				description="Action text of cell 32"/>
+			<property name="cellText33"
+				type="string"
+				value=""
+				description="Text of cell 33"/>
+			<property name="cellImage33"
+				type="string"
+				value=""
+				description="Image of cell 33"/>
+			<property name="actionText33"
+				type="string"
+				value=""
+				description="Action text of cell 33"/>
+			<property name="cellText34"
+				type="string"
+				value=""
+				description="Text of cell 34"/>
+			<property name="cellImage34"
+				type="string"
+				value=""
+				description="Image of cell 34"/>
+			<property name="actionText34"
+				type="string"
+				value=""
+				description="Action text of cell 34"/>
+			<property name="cellText35"
+				type="string"
+				value=""
+				description="Text of cell 35"/>
+			<property name="cellImage35"
+				type="string"
+				value=""
+				description="Image of cell 35"/>
+			<property name="actionText35"
+				type="string"
+				value=""
+				description="Action text of cell 35"/>
+			<property name="cellText36"
+				type="string"
+				value=""
+				description="Text of cell 36"/>
+			<property name="cellImage36"
+				type="string"
+				value=""
+				description="Image of cell 36"/>
+			<property name="actionText36"
+				type="string"
+				value=""
+				description="Action text of cell 36"/>
+        </properties>
+		<gui>
+			<width>3000</width>
+			<height>3000</height>
+		</gui>
+
+    </componentType>
+</componentTypes>

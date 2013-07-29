@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="05.10.2012_730" version="20130320">
+  <components>
+    <component id="FS20Receiver.1" type_id="asterics.FS20Receiver">
+      <description>Receiver Plugin for the FS20 Home automatisation system</description>
+      <ports>
+        <outputPort portTypeID="fs20command">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Housecode" value="11111111" />
+        <property name="Sendaddress" value="1111" />
+      </properties>
+      <layout>
+        <posX>29</posX>
+        <posY>201</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>284</posX>
+        <posY>89</posY>
+      </layout>
+      <gui>
+        <posX>25</posX>
+        <posY>5733</posY>
+        <width>4600</width>
+        <height>800</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>553</posX>
+        <posY>211</posY>
+      </layout>
+      <gui>
+        <posX>362</posX>
+        <posY>1089</posY>
+        <width>3638</width>
+        <height>4511</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="FS20Receiver.1" />
+        <port id="fs20command" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="off_eventDisplay">
+      <sources>
+        <source>
+          <component id="FS20Receiver.1" />
+          <eventPort id="off" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="onOldLevel_eventDisplay">
+      <sources>
+        <source>
+          <component id="FS20Receiver.1" />
+          <eventPort id="onOldLevel" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <groups />
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>5188</width>
+      <height>6933</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

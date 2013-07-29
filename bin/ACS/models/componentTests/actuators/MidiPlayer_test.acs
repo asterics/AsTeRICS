@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="27.10.2011_2059" version="20130320">
+  <components>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="Gervill" />
+        <property name="instrument" value="Vibraphone  " />
+        <property name="triggerThreshold" value="50" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="1000" />
+        <property name="toneScale" value="2.sc" />
+        <property name="displayGUI" value="True" />
+      </properties>
+      <layout>
+        <posX>366</posX>
+        <posY>81</posY>
+      </layout>
+      <gui>
+        <posX>100</posX>
+        <posY>622</posY>
+        <width>5350</width>
+        <height>2556</height>
+      </gui>
+    </component>
+    <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="20" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="0.2" />
+        <property name="amplitude" value="500" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="500" />
+      </properties>
+      <layout>
+        <posX>72</posX>
+        <posY>230</posY>
+      </layout>
+    </component>
+    <component id="Slider.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="0" />
+        <property name="max" value="100" />
+        <property name="default" value="85" />
+        <property name="autosend" value="True" />
+        <property name="caption" value="trigger" />
+        <property name="majorTickSpacing" value="20" />
+        <property name="minorTickSpacing" value="5" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+      </properties>
+      <layout>
+        <posX>64</posX>
+        <posY>22</posY>
+      </layout>
+      <gui>
+        <posX>900</posX>
+        <posY>3400</posY>
+        <width>3700</width>
+        <height>1100</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.2">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="trigger" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6000</width>
+      <height>4667</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

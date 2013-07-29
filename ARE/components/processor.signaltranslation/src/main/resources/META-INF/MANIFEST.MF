@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics.signaltranslation
+Bundle-SymbolicName: eu.asterics.component.processor.signaltranslation
+Bundle-Version: 0.1.0
+DynamicImport-Package: *
+

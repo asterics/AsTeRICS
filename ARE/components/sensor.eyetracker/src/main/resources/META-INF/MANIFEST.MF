@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-sensors.eyetracker
+Bundle-SymbolicName: eu.asterics.component.sensor.eyetracker
+Bundle-Version: 0.1.0
+Bundle-NativeCode: lib/native/eyetracker.dll;
+ lib/native/tbb.dll;
+ lib/native/posit.dll;  
+ osname=win32;processor=x86;
+ osname=win;processor=x86-64;
+ osname=win8;processor=x86;
+ osname=win8;processor=x86-64;
+ osname=windows 8;processor=x86;
+ osname=windows 8;processor=x86-64;
+ osname=windows8;processor=x86;
+ osname=windows8;processor=x86-64
+DynamicImport-Package: *

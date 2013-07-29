@@ -1,0 +1,353 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of WlextractS</title>
+  <meta name="keywords" content="WlextractS">
+  <meta name="description" content="The followinf script preprocessess and extrcats the Wavelet coefficients">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html featureExtraction -->
+<h1>WlextractS
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>The followinf script preprocessess and extrcats the Wavelet coefficients</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">The followinf script preprocessess and extrcats the Wavelet coefficients
+for the BCI competition iii data set 3a.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="dataBCIiii_LTpreproT3.html" class="code" title="function class_epoch = dataBCIiii_LTpreproT3(class_epoch,dec)">dataBCIiii_LTpreproT3</a>	The function decimates and extracts the base line of each epoch</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%The followinf script preprocessess and extrcats the Wavelet coefficients</span>
+0002 <span class="comment">%for the BCI competition iii data set 3a.</span>
+0003 
+0004 <span class="comment">%TODOs: 1) test the function after Ivan leaving</span>
+0005 <span class="comment">%       2) make it a self-contained function by suppressing disk access</span>
+0006 
+0007 <span class="comment">%</span>
+0008 <span class="comment">% the steps involved are the following:</span>
+0009 <span class="comment">%   1-baseline extraction and decimation</span>
+0010 <span class="comment">%   2-reject epoch with NaN's</span>
+0011 <span class="comment">%   3-reference to mean all channels</span>
+0012 <span class="comment">%   4-reject epoch by thresholding</span>
+0013 <span class="comment">%   5-save data in a file array dataSx.mat will load the file array structure to the workspace (x is the number of subjects)</span>
+0014 <span class="comment">%   -------</span>
+0015 <span class="comment">%   6-Extract Time frequency using wavelets (1-30 Hz --&gt;30 coefs for each</span>
+0016 <span class="comment">%   channel) the baseline. A baseline is subtracted to each TF epoch. The</span>
+0017 <span class="comment">%   baseline used is the mean of the coefficients of the section of the epoch</span>
+0018 <span class="comment">%   previous to the trigger (samples 1:1000 see description of the dataset)</span>
+0019 <span class="comment">%   7-record the wavelet coefficients in a file array WldataSx.mat will</span>
+0020 <span class="comment">%   load the file array structure to the workspace (x is the number of subjects)</span>
+0021 <span class="comment">%   ------</span>
+0022 <span class="comment">%   8-Calculates an Anova to find the most statistical significant of the</span>
+0023 <span class="comment">%   difference between classes of the coefficients.</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">%dependencies:</span>
+0027 <span class="comment">%SPM toolbox required to build the file_arrays</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%Wavelet is from wavelet toolbox.</span>
+0030 
+0031 <span class="comment">%developed by Ivan Cester Starlab s.l.</span>
+0032 <span class="comment">%changes:</span>
+0033 <span class="comment">%</span>
+0034 
+0035 <span class="comment">%%%%%data formating%%%%%%%%%%%%%%</span>
+0036 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0037 <span class="comment">%%%%%Starblast</span>
+0038 <span class="comment">%    data_dir='/Volumes/Projects-1/S1-ONGOING-PROJECTS/UCONTROL-P20070527-01/BCI competition iii/data set IIIa/cutted in epochs/';</span>
+0039 <span class="comment">%%%windows</span>
+0040 <span class="comment">%     data_dir='\\skat\Projects\S1-ONGOING-PROJECTS\UCONTROL-P20070527-01\BCI competition iii\data set IIIa\cutted in epochs\';</span>
+0041 <span class="comment">%%%%aureli desktop</span>
+0042     data_dir=<span class="string">'Z:\S1-ONGOING-PROJECTS\UCONTROL-P20070527-01\BCI competition iii\data set IIIa\cutted in epochs\'</span>;
+0043     subjects={<span class="string">'subject k3b/'</span>,<span class="string">'subject k6b/'</span>,<span class="string">'subject l1b/'</span>};
+0044     file_names={<span class="string">'class_epoch1.mat'</span>,<span class="string">'class_epoch2.mat'</span>,<span class="string">'class_epoch3.mat'</span>,<span class="string">'class_epoch4.mat'</span>};
+0045     GT={<span class="string">'k3b_test_GT'</span>,<span class="string">'k6b_test_GT'</span>,<span class="string">'l1b_test_GT'</span>}
+0046     Nclass=4;
+0047     dec=4;<span class="comment">%decimation coefficient</span>
+0048     thres=100;<span class="comment">%threshold for rejection (all epochs with amplitude out of [-thres thres] will be rejected)</span>
+0049     basln=floor(1000/dec);
+0050     subj=1 <span class="comment">%subjects you want to extract featurees from [1 2 3]</span>
+0051    
+0052     <span class="keyword">for</span> s=subj  <span class="comment">%%%this has been changed by aureli 2/8; original was s=subjects</span>
+0053         <span class="comment">%%%trainning data</span>
+0054         <span class="keyword">for</span> i=1:Nclass
+0055                 input_file_name=[data_dir,subjects{s},file_names{i}];
+0056                 load(input_file_name);    <span class="comment">%this loads the structure class_epoch</span>
+0057                 <span class="comment">%1-Decimate 250---&gt;125</span>
+0058                 class_epoch=<a href="dataBCIiii_LTpreproT3.html" class="code" title="function class_epoch = dataBCIiii_LTpreproT3(class_epoch,dec)">dataBCIiii_LTpreproT3</a>(class_epoch,dec);<span class="comment">%%decimate</span>
+0059                 <span class="comment">%2-Reformat</span>
+0060                 data=[];
+0061                 <span class="keyword">for</span> trial=1:length(class_epoch)
+0062                     <span class="keyword">if</span> sum(sum(isnan(class_epoch{trial})))==0
+0063                         data=cat(3,data,class_epoch{trial}');
+0064                     <span class="keyword">end</span>
+0065                 <span class="keyword">end</span>
+0066                 clear class_epoch
+0067                 <span class="comment">%3-Reference to the mean of all channels</span>
+0068                 <span class="keyword">for</span> trial=1:length(data(1,1,:))
+0069                     Ref=mean(data(:,:,trial),1);
+0070                     data(:,:,trial)=data(:,:,trial)-repmat(Ref,[60 1]);
+0071                 <span class="keyword">end</span>
+0072                 <span class="comment">%4-reject all trials with artefact +-thres uV</span>
+0073 
+0074                 reject=[];
+0075                 <span class="keyword">for</span> trial=1:length(data(1,1,:))
+0076                     <span class="keyword">if</span> max(max(abs(data(:,:,trial))))&gt;=thres
+0077                         reject=[reject trial]
+0078                     <span class="keyword">end</span>
+0079                 <span class="keyword">end</span>
+0080                 data(:,:,reject)=[];
+0081                         
+0082                     
+0083                 
+0084             eval(sprintf(<span class="string">'dataS%dC%d=file_array(''dataS%dC%d.dat'',[length(data(:,1,1)) length(data(1,:,1)) length(data(1,1,:))],''FLOAT32-BE'',0,1,0,''rw'');'</span>,s,i,s,i));
+0085             eval(sprintf(<span class="string">'dataS%dC%d(:,:,:)=data;'</span>,s,i));
+0086         <span class="keyword">end</span>
+0087         
+0088         <span class="comment">%%test data</span>
+0089         input_file_name=[data_dir,subjects{s},<span class="string">'class_epoch_test.mat'</span>];
+0090         load(input_file_name);
+0091         load (GT{s})
+0092         
+0093         
+0094         <span class="comment">%1-Decimate</span>
+0095         class_epoch=<a href="dataBCIiii_LTpreproT3.html" class="code" title="function class_epoch = dataBCIiii_LTpreproT3(class_epoch,dec)">dataBCIiii_LTpreproT3</a>(class_epoch_test,dec);<span class="comment">%%decimate</span>
+0096         <span class="comment">%2-Reformat</span>
+0097         data=[];
+0098         rejectNaN=[];
+0099         <span class="keyword">for</span> trial=1:length(class_epoch)
+0100             <span class="keyword">if</span> sum(sum(isnan(class_epoch{trial})))==0
+0101                 data=cat(3,data,class_epoch{trial}');
+0102             <span class="keyword">else</span>
+0103                 rejectNaN=[rejectNaN trial];
+0104             <span class="keyword">end</span>
+0105         <span class="keyword">end</span>
+0106         test_GT(rejectNaN)=[];
+0107         clear class_epoch class_epoch_test
+0108         <span class="comment">%3-Reference to the mean of all channels</span>
+0109         <span class="keyword">for</span> trial=1:length(data(1,1,:))
+0110             Ref=mean(data(:,:,trial),1);
+0111             data(:,:,trial)=data(:,:,trial)-repmat(Ref,[60 1]);
+0112         <span class="keyword">end</span>
+0113         <span class="comment">%4-reject all trials with artefact +-50uV</span>
+0114         
+0115         reject=[];
+0116         <span class="keyword">for</span> trial=1:length(data(1,1,:))
+0117             <span class="keyword">if</span> max(max(abs(data(:,:,trial))))&gt;=thres
+0118                 reject=[reject trial]
+0119             <span class="keyword">end</span>
+0120         <span class="keyword">end</span>
+0121         data(:,:,reject)=[];
+0122          data_test=data;
+0123 
+0124         eval(sprintf(<span class="string">'dataS%d_test=file_array(''dataS%d_test.dat'',[length(data_test(:,1,1)) length(data_test(1,:,1)) length(data_test(1,1,:))],''FLOAT32-BE'',0,1,0,''rw'');'</span>,s,s));
+0125         eval(sprintf(<span class="string">'dataS%d_test(:,:,:)=data_test;'</span>,s));
+0126         <span class="comment">%reject the same trials from the ground truth</span>
+0127         test_GT([reject])=[];
+0128         save ([GT{s},<span class="string">'_reject'</span>],<span class="string">'test_GT'</span>)
+0129         <span class="comment">%%%%%%%%</span>
+0130         clear data class_epoch class_epoch_test input_file
+0131         eval(sprintf(<span class="string">'save dataS%d.mat dataS%d* test_GT'</span>,s,s));
+0132     <span class="keyword">end</span>
+0133 
+0134     
+0135 <span class="comment">%%%Feature extraction%%%%%%%%</span>
+0136 <span class="comment">%%%T-f wavelets coeficients%%</span>
+0137 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0138 
+0139 <span class="keyword">for</span> sub=1    
+0140     Nclass=4;
+0141     eval(sprintf(<span class="string">'load dataS%d.mat'</span>,sub))
+0142 
+0143     srate=250/dec;
+0144     freq=1:1:30;
+0145     S=srate*1.5./freq;
+0146     <span class="comment">%SAlpha=S(9:12);</span>
+0147 
+0148     Ncoefs=1800;<span class="comment">%length(dataS1_test(:,1,1))*length(freq);%%this is the number of coeficients we will have</span>
+0149     
+0150     <span class="comment">%%%trainning data%%%</span>
+0151     <span class="keyword">for</span> cl=1:Nclass<span class="comment">%n# of classes</span>
+0152         eval(sprintf(<span class="string">'WlModdataS%dC%d=file_array(''WlModdataS%dC%d.dat'',[Ncoefs length(dataS%d_test(1,:,1)) length(dataS%dC%d(1,1,:))],''FLOAT32-BE'',0,1,0,''rw'');'</span>,sub,cl,sub,cl,sub,sub,cl));
+0153   <span class="comment">%      eval(sprintf('WlPhadataS%dC%d=file_array(''WlPhadataS%dC%d.dat'',[Ncoefs length(dataS%d_test(1,:,1)) length(dataS2C1(1,1,:))],''FLOAT32-BE'',0,1,0,''rw'');',sub,cl,sub,cl));</span>
+0154         eval(sprintf(<span class="string">'lentr=length(dataS%dC%d(1,1,:));'</span>,sub,cl))
+0155         <span class="keyword">for</span> tr=1:lentr
+0156             count=0;
+0157             <span class="keyword">for</span> ch=1:60
+0158                 eval(sprintf(<span class="string">'a=dataS%dC%d(ch,:,tr);'</span>,sub,cl))
+0159                 b=[ones(100,1)*a(1);a';ones(100,1)*a(end)];
+0160                 <span class="comment">%cwt is a function of wavelet toolbox for extracting</span>
+0161                 <span class="comment">%wavelets. cmor1-1.5 is the employed Morlet wavelet.</span>
+0162                 wlc=cwt(b,S,<span class="string">'cmor1-1.5'</span>);
+0163                 wlc=wlc(:,101:end-100);              
+0164                 <span class="comment">%%%%extract module and phase%%%%baseline is the mean of the first part of the trial (see RWD wavelet analysis case 1)%%%%%</span>
+0165                 module=abs(wlc);
+0166                 Nmodule=module;
+0167 <span class="comment">%</span>
+0168                 <span class="comment">%extract base line case 2 (see RWD wavelet analysis)</span>
+0169                 <span class="comment">%module=module-repmat((mean(module(:,1:125),2)),[1 438]);</span>
+0170                 <span class="comment">%%%normalize module</span>
+0171                  <span class="keyword">for</span> i=1:length(freq)
+0172                      Nmodule(i,:)=module(i,:)-repmat(mean(module(i,1:basln)),[1 length(module(1,:))]);
+0173                      Nmodule(i,:)=Nmodule(i,:)/std(Nmodule(i,basln+1:end));
+0174                  <span class="keyword">end</span>
+0175                 <span class="comment">%%%%%%</span>
+0176                 
+0177 <span class="comment">%               phase = atan2(imag(wlc),real(wlc));</span>
+0178                 eval(sprintf(<span class="string">'WlModdataS%dC%d(1+count:count+length(freq),:,tr)=Nmodule;'</span>,sub,cl))
+0179 <span class="comment">%                eval(sprintf('WlPhadataS%dC%d(1+count:count+length(freq),:,tr)=phase;',s,cl))</span>
+0180                 count=count+length(freq);
+0181                 clear a b module Nmodule
+0182             <span class="keyword">end</span>
+0183         <span class="keyword">end</span>   
+0184     <span class="keyword">end</span>
+0185 
+0186 
+0187     <span class="comment">%%%test data</span>
+0188 
+0189     eval(sprintf(<span class="string">'Ntest=length(dataS%d_test(1,1,:));'</span>,sub)) <span class="comment">%#n of trials for testing</span>
+0190     eval(sprintf(<span class="string">'WlModdataS%d_test=file_array(''WlModdataS%d_test.dat'',[Ncoefs length(dataS%d_test(1,:,1)) Ntest],''FLOAT32-BE'',0,1,0,''rw'');'</span>,sub,sub,sub))
+0191  <span class="comment">%   WlPhadataS1_test=file_array('WlPhadataS1_test.dat',[Ncoefs length(dataS1_test(1,:,1)) Ntest],'FLOAT32-BE',0,1,0,'rw');</span>
+0192     <span class="keyword">for</span> tr=1:Ntest
+0193         count=0;
+0194         <span class="keyword">for</span> ch=1:60<span class="comment">%length(dataS1C1(:,1,1))</span>
+0195             eval(sprintf(<span class="string">'a=dataS%d_test(ch,:,tr);'</span>,sub))
+0196             b=[ones(100,1)*a(1);a';ones(100,1)*a(end)];
+0197             wlc=cwt(b,S,<span class="string">'cmor1-1.5'</span>);
+0198             wlc=wlc(:,101:end-100);              
+0199             <span class="comment">%%%%extract module and phase%%%%baseline is the mean of the first part of the trial (see RWD wavelet analysis case 1)%%%%%</span>
+0200             module=abs(wlc);
+0201             Nmodule=module;
+0202             
+0203             <span class="comment">%extract base line case 2 (see RWD wavelet analysis)</span>
+0204             <span class="comment">%module=module-repmat((mean(module(:,1:125),2)),[1 438]);</span>
+0205             <span class="comment">%%%normalize module</span>
+0206             <span class="keyword">for</span> i=1:length(freq)
+0207                 Nmodule(i,:)=module(i,:)-repmat(mean(module(i,1:basln)),[1 length(module(1,:))]);
+0208                 Nmodule(i,:)=Nmodule(i,:)/std(Nmodule(i,basln+1:end));
+0209             <span class="keyword">end</span>    
+0210             <span class="comment">%%%%%</span>
+0211 
+0212 <span class="comment">%            phase = atan2(imag(wlc),real(wlc));</span>
+0213             eval(sprintf(<span class="string">'WlModdataS%d_test(1+count:count+length(freq),:,tr)=Nmodule;'</span>,sub))
+0214 <span class="comment">%            eval(sprintf('WlPhadataS%d_test(1+count:count+length(freq),:,tr)=phase;',sub))</span>
+0215             count=count+length(freq);
+0216             clear a b module Nmodule
+0217         <span class="keyword">end</span>
+0218     <span class="keyword">end</span>   
+0219     eval(sprintf(<span class="string">'save([''WldataS%d.mat''],''Wl*'')'</span>,sub))
+0220  <span class="keyword">end</span>
+0221  
+0222 
+0223 <span class="comment">%%%%find most significant coefficiens%%%%%%%%%%%</span>
+0224 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0225 
+0226 load WldataS1.mat
+0227 
+0228 <span class="comment">%%%we analyse the variance of the module%%%%%%%</span>
+0229 p=sparse(length(WlModdataS1_test),length(WlModdataS1C1(1,:,1)))
+0230 <span class="keyword">for</span> s=1:length(WlModdataS1_test)<span class="comment">%n# of coefficients of the vector</span>
+0231     dat1=squeeze(WlModdataS1C1(s,:,:));
+0232     dat2=squeeze(WlModdataS1C2(s,:,:));
+0233     dat3=squeeze(WlModdataS1C3(s,:,:));
+0234     dat4=squeeze(WlModdataS1C4(s,:,:));
+0235     clear X
+0236     
+0237     <span class="keyword">for</span> c=1:length(WlModdataS1C1(1,:,1))
+0238         X=squeeze([dat1(c,:),dat2(c,:),dat3(c,:),dat4(c,:)]);
+0239         group=[ones(length(dat1(c,:)),1);ones(length(dat2(c,:)),1)*2;ones(length(dat3(c,:)),1)*3;ones(length(dat4(c,:)),1)*4];
+0240         p(s,c)=anova1(X,group,<span class="string">'off'</span>);
+0241     <span class="keyword">end</span>
+0242     s
+0243 <span class="keyword">end</span>
+0244 save WlmoduleS1P.mat p
+0245 
+0246 figure
+0247 imagesc(p)
+0248 
+0249 
+0250 <span class="comment">% load WldataS2.mat</span>
+0251 <span class="comment">%</span>
+0252 <span class="comment">%%%%we analyse the variance of the module%%%%%%%</span>
+0253 <span class="comment">% for s=1:length(WlModdataS2_test)%n# of coefficients of the vector</span>
+0254 <span class="comment">%     dat1=squeeze(WlModdataS2C1(s,:,:));</span>
+0255 <span class="comment">%     dat2=squeeze(WlModdataS2C2(s,:,:));</span>
+0256 <span class="comment">%     dat3=squeeze(WlModdataS2C3(s,:,:));</span>
+0257 <span class="comment">%     dat4=squeeze(WlModdataS2C4(s,:,:));</span>
+0258 <span class="comment">%     clear X</span>
+0259 <span class="comment">%     for c=1:length(WlModdataS2C1(1,:,1))</span>
+0260 <span class="comment">%         X{1}=squeeze([dat1(c,:),dat2(c,:),dat3(c,:),dat4(c,:)]);</span>
+0261 <span class="comment">%         X{2}=squeeze([dat2(c,:),dat1(c,:),dat3(c,:),dat4(c,:)]);</span>
+0262 <span class="comment">%         X{3}=squeeze([dat3(c,:),dat2(c,:),dat1(c,:),dat4(c,:)]);</span>
+0263 <span class="comment">%         X{4}=squeeze([dat4(c,:),dat2(c,:),dat3(c,:),dat1(c,:)]);</span>
+0264 <span class="comment">%         for classcomb=1:4 %1-12,2-13,3-14,4-23,5-24,6-34</span>
+0265 <span class="comment">%             p(s,c,classcomb)=anova1(X{classcomb},[ones(1,length(dat1(c,:))),2*ones(1,3*length(dat1(c,:)))],'off');</span>
+0266 <span class="comment">%         end</span>
+0267 <span class="comment">%     end</span>
+0268 <span class="comment">%     s</span>
+0269 <span class="comment">% end</span>
+0270 <span class="comment">% save WlmoduleS2P4.mat p</span>
+0271 <span class="comment">%</span>
+0272 <span class="comment">% figure</span>
+0273 <span class="comment">% for pl=1:4</span>
+0274 <span class="comment">% subplot(2,2,pl)</span>
+0275 <span class="comment">% imagesc(p(:,:,pl))</span>
+0276 <span class="comment">% title(['p for class comb ',int2str(pl)])</span>
+0277 <span class="comment">% end</span>
+0278 <span class="comment">%</span>
+0279 <span class="comment">% load WldataS3.mat</span>
+0280 <span class="comment">%</span>
+0281 <span class="comment">% %%%%we analyse the variance of the module%%%%%%%</span>
+0282 <span class="comment">% for s=1:length(WlModdataS3_test)%n# of coefficients of the vector</span>
+0283 <span class="comment">%     dat1=squeeze(WlModdataS3C1(s,:,:));</span>
+0284 <span class="comment">%     dat2=squeeze(WlModdataS3C2(s,:,:));</span>
+0285 <span class="comment">%     dat3=squeeze(WlModdataS3C3(s,:,:));</span>
+0286 <span class="comment">%     dat4=squeeze(WlModdataS3C4(s,:,:));</span>
+0287 <span class="comment">%     clear X</span>
+0288 <span class="comment">%     for c=1:length(WlModdataS3C1(1,:,1))</span>
+0289 <span class="comment">%         X{1}=squeeze([dat1(c,:),dat2(c,:),dat3(c,:),dat4(c,:)]);</span>
+0290 <span class="comment">%         X{2}=squeeze([dat2(c,:),dat1(c,:),dat3(c,:),dat4(c,:)]);</span>
+0291 <span class="comment">%         X{3}=squeeze([dat3(c,:),dat2(c,:),dat1(c,:),dat4(c,:)]);</span>
+0292 <span class="comment">%         X{4}=squeeze([dat4(c,:),dat2(c,:),dat3(c,:),dat1(c,:)]);</span>
+0293 <span class="comment">%         for classcomb=1:4 %1-12,2-13,3-14,4-23,5-24,6-34</span>
+0294 <span class="comment">%             p(s,c,classcomb)=anova1(X{classcomb},[ones(1,length(dat1(c,:))),2*ones(1,3*length(dat1(c,:)))],'off');</span>
+0295 <span class="comment">%         end</span>
+0296 <span class="comment">%     end</span>
+0297 <span class="comment">%     s</span>
+0298 <span class="comment">% end</span>
+0299 <span class="comment">% save WlmoduleS3P4.mat p</span>
+0300 <span class="comment">%</span>
+0301 <span class="comment">% figure</span>
+0302 <span class="comment">% for pl=1:4</span>
+0303 <span class="comment">% subplot(2,2,pl)</span>
+0304 <span class="comment">% imagesc(p(:,:,pl))</span>
+0305 <span class="comment">% title(['p for class comb ',int2str(pl)])</span>
+0306 <span class="comment">% end</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

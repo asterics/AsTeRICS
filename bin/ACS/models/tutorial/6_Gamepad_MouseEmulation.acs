@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="10.01.2012_1358" version="20130320">
+  <modelDescription>
+    <shortDescription>A short demonstration how a standard PC gamepad can be used for mouse-replacement
+This model is described in the AsTeRICS User Manual 
+(Section 4, Step-by-Step Guide to Model Creation)</shortDescription>
+    <requirements>PC gamepad connected to an USB port.</requirements>
+    <description>The x- and y- coordinates of the left joystick of the gampad 
+influence the x/y postions of the local computer mouse cursor. 
+Left- and right clicks (or drag clicks) can be created via the gampad buttons 1,2 and 3.</description>
+  </modelDescription>
+  <components>
+    <component id="JoystickCapture.1" type_id="asterics.JoystickCapture">
+      <description>Gets data from the first available Joystick device; up to 6 axis and 20 buttons can be used; Note the different order of buttons 1-4 in a PC-compatible gamepad to the PS3 sixaxis controller (HIDjoystick)</description>
+      <ports>
+        <outputPort portTypeID="x">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="z">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="r">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="u">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="v">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pov">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="updatePeriod" value="20" />
+      </properties>
+      <layout>
+        <posX>79</posX>
+        <posY>110</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+      </properties>
+      <layout>
+        <posX>544</posX>
+        <posY>106</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>241</posX>
+        <posY>38</posY>
+      </layout>
+      <gui>
+        <posX>50</posX>
+        <posY>600</posY>
+        <width>3500</width>
+        <height>1900</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>242</posX>
+        <posY>212</posY>
+      </layout>
+      <gui>
+        <posX>62</posX>
+        <posY>2644</posY>
+        <width>3500</width>
+        <height>2100</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a-127)/10" />
+      </properties>
+      <layout>
+        <posX>376</posX>
+        <posY>33</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a-127)/10" />
+      </properties>
+      <layout>
+        <posX>371</posX>
+        <posY>196</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.5">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="x" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="y" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="x" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="JoystickCapture.1" />
+        <port id="y" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="pressedButton1_rightClick">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton2_doubleClick">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="doubleClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pressedButton3_dragPress">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="pressedButton3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="dragPress" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="releasedButton3_dragRelease">
+      <sources>
+        <source>
+          <component id="JoystickCapture.1" />
+          <eventPort id="releasedButton3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="dragRelease" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4088</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

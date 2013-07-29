@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="03.11.2012_1248" version="20130320">
+  <components>
+    <component id="TobiTiC.1" type_id="asterics.TobiTiC">
+      <description>Implements a simple TOBI TiC  interface and outputs classifier values</description>
+      <ports>
+        <outputPort portTypeID="value1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="value2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="value3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="value4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="value5">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="tcpPort" value="52000" />
+        <property name="classLabel1" value="0x769" />
+        <property name="classLabel2" value="0x770" />
+        <property name="classLabel3" value="" />
+        <property name="classLabel4" value="" />
+        <property name="classLabel5" value="" />
+      </properties>
+      <layout>
+        <posX>15</posX>
+        <posY>118</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="signal 0x769" />
+      </properties>
+      <layout>
+        <posX>236</posX>
+        <posY>32</posY>
+      </layout>
+      <gui>
+        <posX>100</posX>
+        <posY>600</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="BarDisplay.2" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="signal 0x770" />
+      </properties>
+      <layout>
+        <posX>242</posX>
+        <posY>218</posY>
+      </layout>
+      <gui>
+        <posX>1200</posX>
+        <posY>600</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="TobiTiC.1" />
+        <port id="value1" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="TobiTiC.1" />
+        <port id="value2" />
+      </source>
+      <target>
+        <component id="BarDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>2688</width>
+      <height>3911</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

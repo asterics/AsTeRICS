@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, AsTeRICSPhoneServerActivity!</string>
+    <string name="app_name">AsTeRICSPhoneServer</string>
+    <string name="ip_adsress">Used IP addresses:</string>
+
+</resources>

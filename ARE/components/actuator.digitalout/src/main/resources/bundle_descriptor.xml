@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.DigitalOut"
+                   canonical_name="eu.asterics.component.actuator.digitalout.DigitalOutInstance">
+        <type subtype="Generic Control Output">actuator</type>
+        <singleton>true</singleton>
+        <description>Digital Output control of GPIO-CIM</description>
+        <ports>
+            <inputPort id="action">
+                <description>Commands for switching outputs, Examples: @GPIO:set,1/@GPIO:clear,2/@GPIO:toggle,1/@GPIO:press,4</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="setOutput1">
+                <description>An incoming event switches Output1 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput2">
+                <description>An incoming event switches Output2 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput3">
+                <description>An incoming event switches Output3 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput4">
+                <description>An incoming event switches Output4 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput5">
+                <description>An incoming event switches Output5 to high level</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="clearOutput1">
+                <description>An incoming event switches Output1 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput2">
+                <description>An incoming event switches Output2 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput3">
+                <description>An incoming event switches Output3 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput4">
+                <description>An incoming event switches Output4 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput5">
+                <description>An incoming event switches Output5 to low level</description>
+            </eventListenerPort>
+        </events>        
+        <properties>
+            <property name="pullupStateOut3"
+                      type="boolean"
+                      value="false"
+                      description="Sets pull up state for output 3, true enables pull up"/>
+            <property name="pullupStateOut4"
+                      type="boolean"
+                      value="false"
+                      description="Sets pull up state for output 4, true enables pull up"/>
+            <property name="pullupStateOut5"
+                      type="boolean"
+                      value="false"
+                      description="Sets pull up state for output 5, true enables pull up"/>
+            <property name="uniqueID"
+                      type="string"
+                      value="not used"
+                      getStringList="true"
+                      description="ID (if more than one devices of this kind are connected)"/>
+                      
+            
+        </properties>
+    </componentType>
+    
+    
+    <componentType id="asterics.LegacyDigitalOut"
+                   canonical_name="eu.asterics.component.actuator.digitalout.DigitalOutInstance">
+        <type subtype="Generic Control Output">actuator</type>
+        <singleton>true</singleton>
+        <description>Digital Output control of GPIO-CIM</description>
+        <ports>
+            <inputPort id="action">
+                <description>Commands for switching outputs, Examples: @GPIO:set,1/@GPIO:clear,2/@GPIO:toggle,1/@GPIO:press,4</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="setOutput1">
+                <description>An incoming event switches Output1 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput2">
+                <description>An incoming event switches Output2 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput3">
+                <description>An incoming event switches Output3 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput4">
+                <description>An incoming event switches Output4 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput5">
+                <description>An incoming event switches Output5 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput6">
+                <description>An incoming event switches Output6 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput7">
+                <description>An incoming event switches Output7 to high level</description>
+            </eventListenerPort>
+            <eventListenerPort id="setOutput8">
+                <description>An incoming event switches Output8 to high level</description>
+            </eventListenerPort>
+
+            <eventListenerPort id="clearOutput1">
+                <description>An incoming event switches Output1 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput2">
+                <description>An incoming event switches Output2 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput3">
+                <description>An incoming event switches Output3 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput4">
+                <description>An incoming event switches Output4 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput5">
+                <description>An incoming event switches Output5 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput6">
+                <description>An incoming event switches Output6 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput7">
+                <description>An incoming event switches Output7 to low level</description>
+            </eventListenerPort>
+            <eventListenerPort id="clearOutput8">
+                <description>An incoming event switches Output8 to low level</description>
+            </eventListenerPort>
+        </events>        
+        <properties>
+            <property name="pullupStateOut1"
+                      type="boolean"
+                      value="false"
+                      description="Sets pull up state for output 1, true enables pull up"/>
+            <property name="pullupStateOut2"
+                      type="boolean"
+                      value="false"
+                      description="Sets pull up state for output 2, true enables pull up"/>
+            <property name="pullupStateOut3"
+                      type="boolean"
+                      value="false"
+                      description="Sets pull up state for output 3, true enables pull up"/>
+            <property name="pullupStateOut4"
+                      type="boolean"
+                      value="false"
+                      description="Sets pull up state for output 4, true enables pull up"/>
+            <property name="uniqueID"
+                      type="string"
+                      value="not used"
+                      getStringList="true"
+                      description="ID (if more than one devices of this kind are connected)"/>
+                      
+        </properties>
+    </componentType>
+    
+
+</componentTypes>

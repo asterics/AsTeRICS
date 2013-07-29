@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.modelSwitcher"
+                   canonical_name="eu.asterics.component.actuator.modelSwitcher.ModelSwitcherInstance">
+        <type subtype="File System">actuator</type>
+        <singleton>false</singleton>
+        <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+        <ports>
+			<inputPort id="modelName">
+				<description>Name of the Model to be started </description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+        </ports>
+		<events>
+            <eventListenerPort id="switchModel">
+                <description>incoming event switches to the default model given as property value</description>
+            </eventListenerPort>
+		</events>			
+        <properties>
+			<property name="model"
+				type="string"
+				value="autostart.acs"
+				description="default model name"/>
+
+        </properties>
+    </componentType>
+</componentTypes>

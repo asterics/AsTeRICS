@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of normalize</title>
+  <meta name="keywords" content="normalize">
+  <meta name="description" content="USAGE">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300 -->
+<h1>normalize
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>USAGE</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function  [xappf,xtestf,mposxapp,sigmaposxapp]=normalize(xapp,xtest,yapp,ytest,channel,triallength,mposxapp,sigmaposxapp,method) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">  USAGE 
+ [xappf,xtestf,mposxapp,sigmaposxapp]=normalize(xapp,xtest,yapp,ytest,channel,triallength,mposxapp,sigmaposxapp,method)
+
+ two methods : 'pos' and 'normal'.
+ respectively normalized wrt only the positive examples in the learning
+ set and all the examples in the learning set</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="TestClassifier.html" class="code" title="function [resultlettre,perf]=TestClassifier(fileclassifier,filet,DirInfo,data,nbshotvec)">TestClassifier</a>	USAGE</li><li><a href="createclassifier.html" class="code" title="function createclassifier(DirInfo,File,data,channelselection,chanselparamclass)">createclassifier</a>	USAGE</li><li><a href="modelselclassifier.html" class="code" title="function modelselclassifier(DirInfo,file,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam)">modelselclassifier</a>	USAGE</li><li><a href="../../BNCIevaluationSuite/p300toolkit/svmRecallAndP300Averages.html" class="code" title="function [symbolMemberships]=svmRecallAndP300Averages(testData,svmRecallParameters,numberSequencesAverage,spellerMatrixNumberElements)">svmRecallAndP300Averages</a>	----------------------------------------------------------</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function  [xappf,xtestf,mposxapp,sigmaposxapp]=normalize(xapp,xtest,yapp,ytest,channel,triallength,mposxapp,sigmaposxapp,method)</a>
+0002 
+0003 <span class="comment">%  USAGE</span>
+0004 <span class="comment">% [xappf,xtestf,mposxapp,sigmaposxapp]=normalize(xapp,xtest,yapp,ytest,channel,triallength,mposxapp,sigmaposxapp,method)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% two methods : 'pos' and 'normal'.</span>
+0007 <span class="comment">% respectively normalized wrt only the positive examples in the learning</span>
+0008 <span class="comment">% set and all the examples in the learning set</span>
+0009 <span class="comment">%</span>
+0010 
+0011 <span class="comment">% 16/05/2005</span>
+0012 
+0013 xappf=[];
+0014 xtestf=[];
+0015 nbapp=size(xapp,1);
+0016 nbchannel=length(channel);
+0017 
+0018 <span class="keyword">if</span> nbapp &gt;0 
+0019     indposapp=find(yapp==1);
+0020     indnegapp=find(yapp==-1);
+0021     
+0022     <span class="keyword">switch</span> method
+0023     <span class="keyword">case</span> <span class="string">'pos'</span>
+0024         <span class="keyword">if</span> ~isempty(xapp)
+0025             mposxapp=mean(xapp(indposapp,:));
+0026             sigmaposxapp=std(xapp(indposapp,:));
+0027         <span class="keyword">end</span>;
+0028     <span class="keyword">case</span> <span class="string">'normal'</span>
+0029         <span class="keyword">if</span> ~isempty(xapp)
+0030             mposxapp=mean(xapp);
+0031             sigmaposxapp=std(xapp);
+0032         <span class="keyword">end</span>;
+0033     <span class="keyword">end</span>;
+0034     xappf=(xapp -ones(nbapp,1)*mposxapp)./(ones(nbapp,1)*sigmaposxapp);
+0035     
+0036     
+0037     
+0038 <span class="keyword">end</span>;
+0039 
+0040 nbtest=size(xtest,1);
+0041 
+0042 <span class="keyword">if</span> nbtest~=0
+0043     xtestf=(xtest -ones(nbtest,1)*mposxapp)./(ones(nbtest,1)*sigmaposxapp);
+0044 <span class="keyword">end</span>;</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

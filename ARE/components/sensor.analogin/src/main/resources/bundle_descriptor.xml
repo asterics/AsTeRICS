@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.AnalogIn"
+                   canonical_name="eu.asterics.component.sensor.analogin.AnalogInInstance">
+        <type subtype="Generic Control Input">sensor</type>
+        <singleton>false</singleton>
+        <description>ADC CIM sensor for inputs</description>
+        <ports>
+            <outputPort id="in1">
+                <description>Input 1</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="in2">
+                <description>Input 2</description>
+                <dataType>integer</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="adcSampleTrigger">
+                <description>Event port triggers ADC sampling once</description>
+            </eventListenerPort>
+        </events>        
+        <properties>
+            <property name="activateInput1"
+                      type="boolean"
+                      value="false"
+                      description="Defines if CIM should notify ARE on input level changes of this input"/>
+            <property name="activateInput2"
+                      type="boolean"
+                      value="false"
+                      description="Defines if CIM should notify ARE on input level changes of this input"/>
+            <property name="periodicUpdate"
+                      type="integer"
+                      value="0"
+                      description="value of interval between periodic update messagess of inputs in ms"/>
+            <property name="uniqueID"
+                      type="string"
+                      value="not used"
+                      getStringList="true"
+                      description="ID (if more than one devices of this kind are connected)"/>
+                      
+            
+                      
+        </properties>
+    </componentType>
+    
+    <componentType id="asterics.LegacyAnalogIn"
+                   canonical_name="eu.asterics.component.sensor.analogin.AnalogInInstance">
+        <type subtype="Generic Control Input">sensor</type>
+        <singleton>false</singleton>
+        <description>ADC CIM sensor for inputs</description>
+        <ports>
+            <outputPort id="in1">
+                <description>Input 1</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="in2">
+                <description>Input 2</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="in3">
+                <description>Input 3</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="in4">
+                <description>Input 4</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="in5">
+                <description>Input 5</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="in6">
+                <description>Input 6</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="in7">
+                <description>Input 7</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="in8">
+                <description>Input 8</description>
+                <dataType>integer</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="adcSampleTrigger">
+                <description>Event port triggers ADC sampling once</description>
+            </eventListenerPort>
+        </events>        
+        <properties>
+            <property name="activateInput1"
+                      type="boolean"
+                      value="false"
+                      description="Defines if CIM should notify ARE on input level changes of this input"/>
+            <property name="activateInput2"
+                      type="boolean"
+                      value="false"
+                      description="Defines if CIM should notify ARE on input level changes of this input"/>
+            <property name="activateInput3"
+                      type="boolean"
+                      value="false"
+                      description="Defines if CIM should notify ARE on input level changes of this input"/>
+            <property name="activateInput4"
+                      type="boolean"
+                      value="false"
+                      description="Defines if CIM should notify ARE on input level changes of this input"/>
+            <property name="activateInput5"
+                      type="boolean"
+                      value="false"
+                      description="Defines if CIM should notify ARE on input level changes of this input"/>
+            <property name="activateInput6"
+                      type="boolean"
+                      value="false"
+                      description="Defines if CIM should notify ARE on input level changes of this input"/>
+            <property name="activateInput7"
+                      type="boolean"
+                      value="false"
+                      description="Defines if CIM should notify ARE on input level changes of this input"/>
+            <property name="activateInput8"
+                      type="boolean"
+                      value="false"
+                      description="Defines if CIM should notify ARE on input level changes of this input"/>
+            <property name="periodicUpdate"
+                      type="integer"
+                      value="0"
+                      description="value of interval between periodic update messagess of inputs in ms"/>
+            <property name="uniqueID"
+                      type="string"
+                      value="not used"
+                      getStringList="true"
+                      description="ID (if more than one devices of this kind are connected)"/>
+                      
+            
+                      
+        </properties>
+    </componentType>
+    
+
+</componentTypes>

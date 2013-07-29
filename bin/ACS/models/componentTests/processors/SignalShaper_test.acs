@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-06-12_1342" version="20130320">
+  <components>
+    <component id="SignalShaper.1" type_id="asterics.SignalShaper">
+      <description>This component allow to shape signal from the lines</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="interval" value="20" />
+        <property name="numberOfLines" value="4" />
+        <property name="behaviourAfterFinish" value="1" />
+        <property name="beginValue1" value="0" />
+        <property name="endValue1" value="10" />
+        <property name="time1" value="1000" />
+        <property name="beginValue2" value="10" />
+        <property name="endValue2" value="10" />
+        <property name="time2" value="2000" />
+        <property name="beginValue3" value="10" />
+        <property name="endValue3" value="30" />
+        <property name="time3" value="1000" />
+        <property name="beginValue4" value="30" />
+        <property name="endValue4" value="20" />
+        <property name="time4" value="2000" />
+        <property name="beginValue5" value="-10" />
+        <property name="endValue5" value="-10" />
+        <property name="time5" value="1000" />
+      </properties>
+      <layout>
+        <posX>131</posX>
+        <posY>160</posY>
+      </layout>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="1000" />
+      </properties>
+      <layout>
+        <posX>2</posX>
+        <posY>8</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>361</posX>
+        <posY>158</posY>
+      </layout>
+      <gui>
+        <posX>50</posX>
+        <posY>733</posY>
+        <width>6438</width>
+        <height>4067</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalShaper.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="output_start">
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="SignalShaper.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>7088</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

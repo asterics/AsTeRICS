@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of classificationMat2confusionMat</title>
+  <meta name="keywords" content="classificationMat2confusionMat">
+  <meta name="description" content="transforms a classification matrix into a confusion matrix for a">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html multiclass -->
+<h1>classificationMat2confusionMat
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>transforms a classification matrix into a confusion matrix for a</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function confusionMat=classificationMat2confusionMat(classificationMat,subject) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">transforms a classification matrix into a confusion matrix for a
+particular subject</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="trueAndFalsePositiveRates2.html" class="code" title="function [TPR,FPR]=trueAndFalsePositiveRates2(classMatrix,subject)">trueAndFalsePositiveRates2</a>	compute the true positive rate (TPR) and the false positive rate (FPR)</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function confusionMat=classificationMat2confusionMat(classificationMat,subject)</a>
+0002 <span class="comment">%transforms a classification matrix into a confusion matrix for a</span>
+0003 <span class="comment">%particular subject</span>
+0004 auxMatrix=classificationMat;
+0005 auxMatrix(subject,:)=[];
+0006 auxMatrix(:,subject)=[];
+0007 trueNegatives=sum(sum(auxMatrix));
+0008 truePositives=classificationMat(subject,subject);
+0009 falsePositives=sum(classificationMat(:,subject))-truePositives;
+0010 falseNegatives=sum(classificationMat(subject,:))-truePositives;
+0011 confusionMat=[truePositives,falseNegatives;falsePositives,trueNegatives];</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

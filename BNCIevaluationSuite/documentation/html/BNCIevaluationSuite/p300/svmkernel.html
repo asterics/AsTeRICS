@@ -1,0 +1,298 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of svmkernel</title>
+  <meta name="keywords" content="svmkernel">
+  <meta name="description" content="Usage  K=svkernel(x,kernel,kerneloption,xsup,frame,vector,dual);">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300 -->
+<h1>svmkernel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Usage  K=svkernel(x,kernel,kerneloption,xsup,frame,vector,dual);</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [K,option]=svmkernel(x,kernel,kerneloption,xsup,framematrix,vector,dual); </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> Usage  K=svkernel(x,kernel,kerneloption,xsup,frame,vector,dual);
+
+ Returns the scalar product of the vectors x by using the
+ mapping defined by the kernel function or x and xsup
+ if the matrix xsup is defined
+
+ Input
+ 
+ x        :input vectors
+ kernel     : kernel function
+        Type                                Function                    Option
+        Polynomial                        'poly'                    Degree (&lt;x,xsup&gt;+1)^d
+        Homogeneous polynomial        'polyhomog'                Degree &lt;x,xsup&gt;^d    
+        Gaussian                            'gaussian'                Bandwidth
+        Heavy Tailed RBF                'htrbf'                    [a,b]   %see Chappelle 1999    
+        Mexican 1D Wavelet             'wavelet'
+        Frame kernel                    'frame'                    'sin','numerical'...    
+
+  kerneloption    : scalar or vector containing the option for the kernel
+ 'gaussian' : scalar gamma is identical for all coordinates
+              otherwise is a vector of length equal to the number of 
+              coordinate
+ 
+
+ 'poly' : kerneloption is a scalar given the degree of the polynomial
+          or is a vector which first element is the degree of the polynomial
+           and other elements gives the bandwidth of each dimension.
+          thus the vector is of size n+1 where n is the dimension of the problem.
+
+
+ xsup        : support vector
+
+ ----- 1D Frame Kernel -------------------------- 
+
+  framematrix  frame elements for frame kernel
+  vector       sampling position of frame elements
+    dual           dual frame
+  frame,vector and dual are respectively the matrices and the vector where the frame 
+  elements have been processed. these parameters are used only in case
+
+
+    see also svmreg,<a href="svmclass.html" class="code" title="function [xsup,w,d,pos,timeps,alpha,obj]=svmclass(x,y,c,lambda,kernel,kerneloption,verbose,span, alphainit)">svmclass</a>,<a href="svmval.html" class="code" title="function [y,y1,y2]=svmval(x,xsup,w,b,kernel,kerneloption,span,framematrix,vector,dual)">svmval</a>, kernelwavelet,kernelframe</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="svmclass.html" class="code" title="function [xsup,w,d,pos,timeps,alpha,obj]=svmclass(x,y,c,lambda,kernel,kerneloption,verbose,span, alphainit)">svmclass</a>	USAGE [xsup,w,b,pos,timeps,alpha,obj]=svmclass(x,y,c,lambda,kernel,kerneloption,verbose,span, alphainit)</li><li><a href="svmclassLS.html" class="code" title="function [xsup,w,b,pos,timeps,alpha,status,cost]=svmclassLS(x,y,c,lambda,kernel,kerneloption,verbose,span,qpsize,chunksize,alphainit)">svmclassLS</a>	</li><li><a href="svmval.html" class="code" title="function [y,y1,y2]=svmval(x,xsup,w,b,kernel,kerneloption,span,framematrix,vector,dual)">svmval</a>	USAGE</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [K,option]=svmkernel(x,kernel,kerneloption,xsup,framematrix,vector,dual);</a>
+0002 
+0003 <span class="comment">% Usage  K=svkernel(x,kernel,kerneloption,xsup,frame,vector,dual);</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Returns the scalar product of the vectors x by using the</span>
+0006 <span class="comment">% mapping defined by the kernel function or x and xsup</span>
+0007 <span class="comment">% if the matrix xsup is defined</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Input</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% x        :input vectors</span>
+0012 <span class="comment">% kernel     : kernel function</span>
+0013 <span class="comment">%        Type                                Function                    Option</span>
+0014 <span class="comment">%        Polynomial                        'poly'                    Degree (&lt;x,xsup&gt;+1)^d</span>
+0015 <span class="comment">%        Homogeneous polynomial        'polyhomog'                Degree &lt;x,xsup&gt;^d</span>
+0016 <span class="comment">%        Gaussian                            'gaussian'                Bandwidth</span>
+0017 <span class="comment">%        Heavy Tailed RBF                'htrbf'                    [a,b]   %see Chappelle 1999</span>
+0018 <span class="comment">%        Mexican 1D Wavelet             'wavelet'</span>
+0019 <span class="comment">%        Frame kernel                    'frame'                    'sin','numerical'...</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%  kerneloption    : scalar or vector containing the option for the kernel</span>
+0022 <span class="comment">% 'gaussian' : scalar gamma is identical for all coordinates</span>
+0023 <span class="comment">%              otherwise is a vector of length equal to the number of</span>
+0024 <span class="comment">%              coordinate</span>
+0025 <span class="comment">%</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% 'poly' : kerneloption is a scalar given the degree of the polynomial</span>
+0028 <span class="comment">%          or is a vector which first element is the degree of the polynomial</span>
+0029 <span class="comment">%           and other elements gives the bandwidth of each dimension.</span>
+0030 <span class="comment">%          thus the vector is of size n+1 where n is the dimension of the problem.</span>
+0031 <span class="comment">%</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">% xsup        : support vector</span>
+0034 <span class="comment">%</span>
+0035 <span class="comment">% ----- 1D Frame Kernel --------------------------</span>
+0036 <span class="comment">%</span>
+0037 <span class="comment">%  framematrix  frame elements for frame kernel</span>
+0038 <span class="comment">%  vector       sampling position of frame elements</span>
+0039 <span class="comment">%    dual           dual frame</span>
+0040 <span class="comment">%  frame,vector and dual are respectively the matrices and the vector where the frame</span>
+0041 <span class="comment">%  elements have been processed. these parameters are used only in case</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">%</span>
+0044 <span class="comment">%    see also svmreg,svmclass,svmval, kernelwavelet,kernelframe</span>
+0045 <span class="comment">%</span>
+0046 
+0047 <span class="comment">% O4/O6/2000 A. Rakotomamonjy</span>
+0048 
+0049 
+0050 <span class="keyword">if</span> nargin &lt; 6
+0051     vector=[];
+0052     dual=[];
+0053 <span class="keyword">end</span>;
+0054 <span class="keyword">if</span> nargin &lt;5
+0055     frame=[];
+0056 <span class="keyword">end</span>;
+0057 
+0058 <span class="keyword">if</span> nargin&lt;4
+0059     xsup=x;
+0060 <span class="keyword">end</span>;
+0061 <span class="keyword">if</span> nargin&lt;3
+0062     kerneloption=1;
+0063 <span class="keyword">end</span>;
+0064 <span class="keyword">if</span> nargin&lt;2
+0065     kernel=<span class="string">'gaussian'</span>;
+0066 <span class="keyword">end</span>;
+0067 <span class="keyword">if</span> isempty(xsup)
+0068     xsup=x;
+0069 <span class="keyword">end</span>;
+0070 [n1 n2]=size(x);
+0071 [n n3]=size(xsup);
+0072 ps  =  zeros(n1,n);            <span class="comment">% produit scalaire</span>
+0073 <span class="keyword">switch</span> lower(kernel)
+0074 <span class="keyword">case</span> <span class="string">'poly'</span>
+0075     
+0076     [nk,nk2]=size(kerneloption);   
+0077     <span class="keyword">if</span> nk&gt;nk2
+0078         kerneloption=kerneloption';
+0079         nk2=nk;
+0080     <span class="keyword">end</span>;
+0081     <span class="keyword">if</span> nk2==1
+0082         degree=kerneloption;
+0083         var=ones(1,n2);
+0084         
+0085     <span class="keyword">elseif</span> nk2 ==2
+0086         degree=kerneloption(1);
+0087         var=ones(1,n2)*kerneloption(2);
+0088         
+0089     <span class="keyword">elseif</span> nk2== n2+1
+0090         degree=kerneloption(1);
+0091         var=kerneloption(2:n2+1);
+0092         
+0093     <span class="keyword">elseif</span> nk2 ==n2+2
+0094         degree=kerneloption(1);
+0095         var=kerneloption(2:n2+1);
+0096     <span class="keyword">end</span>;
+0097 
+0098     <span class="keyword">if</span> nk2==1
+0099         aux=1;
+0100     <span class="keyword">else</span>
+0101         aux=repmat(var,n,1);
+0102     <span class="keyword">end</span>;
+0103   
+0104     ps= x *(xsup.*aux.^2)';
+0105 
+0106     <span class="keyword">if</span> degree &gt; 1
+0107         K =(ps+1).^degree;
+0108     <span class="keyword">else</span>
+0109         K=ps;
+0110     <span class="keyword">end</span>;
+0111 <span class="keyword">case</span> <span class="string">'polyhomog'</span>
+0112     
+0113     [nk,nk2]=size(kerneloption);   
+0114     <span class="keyword">if</span> nk&gt;nk2
+0115         kerneloption=kerneloption';
+0116         nk2=nk;
+0117     <span class="keyword">end</span>;
+0118     <span class="keyword">if</span> nk2==1
+0119         degree=kerneloption;
+0120         var=ones(1,n2);
+0121     <span class="keyword">else</span>
+0122         <span class="keyword">if</span> nk2 ~=n2+1
+0123             degree=kerneloption(1);
+0124             var=ones(1,n2)*kerneloption(2);
+0125         <span class="keyword">else</span>
+0126             degree=kerneloption(1);
+0127             var=kerneloption(2:nk2);
+0128         <span class="keyword">end</span>;
+0129     <span class="keyword">end</span>;
+0130     
+0131     
+0132     aux=repmat(var,n,1);
+0133     ps= x *(xsup.*aux.^2)';
+0134     K =(ps).^degree;
+0135     
+0136     
+0137 <span class="keyword">case</span> <span class="string">'gaussian'</span>
+0138     [nk,nk2]=size(kerneloption);
+0139     <span class="keyword">if</span> nk ~=nk2
+0140         <span class="keyword">if</span> nk&gt;nk2
+0141             kerneloption=kerneloption';
+0142         <span class="keyword">end</span>;
+0143     <span class="keyword">else</span>
+0144         kerneloption=ones(1,n2)*kerneloption;
+0145     <span class="keyword">end</span>;
+0146     
+0147     <span class="keyword">if</span> length(kerneloption)~=n2 &amp; length(kerneloption)~=n2+1 
+0148         error(<span class="string">'Number of kerneloption is not compatible with data...'</span>);
+0149     <span class="keyword">end</span>;
+0150     
+0151     
+0152     metric = diag(1./kerneloption.^2);
+0153     ps = x*metric*xsup'; 
+0154     [nps,pps]=size(ps);
+0155     normx = sum(x.^2*metric,2);
+0156     normxsup = sum(xsup.^2*metric,2);
+0157     ps = -2*ps + repmat(normx,1,pps) + repmat(normxsup',nps,1) ; 
+0158     
+0159     
+0160     K = exp(-ps/2);
+0161     
+0162 <span class="keyword">case</span> <span class="string">'htrbf'</span>    <span class="comment">% heavy tailed RBF  %see Chappelle Paper%</span>
+0163     b=kerneloption(2);
+0164     a=kerneloption(1);
+0165     <span class="keyword">for</span> i=1:n
+0166         ps(:,i) = sum( abs((x.^a - ones(n1,1)*xsup(i,:).^a)).^b   ,2);
+0167     <span class="keyword">end</span>;
+0168     
+0169     
+0170     K = exp(-ps);
+0171     
+0172 <span class="keyword">case</span> <span class="string">'gaussianslow'</span>    <span class="comment">%</span>
+0173     <span class="comment">%b=kerneloption(2);</span>
+0174     <span class="comment">%a=kerneloption(1);</span>
+0175     <span class="keyword">for</span> i=1:n
+0176         ps(:,i) = sum( abs((x - ones(n1,1)*xsup(i,:))).^2 ,2)./kerneloption.^2/2;
+0177     <span class="keyword">end</span>;
+0178     
+0179     
+0180     K = exp(-ps);
+0181 <span class="keyword">case</span> <span class="string">'multiquadric'</span>
+0182     metric = diag(1./kerneloption);
+0183     ps = x*metric*xsup'; 
+0184     [nps,pps]=size(ps);
+0185     normx = sum(x.^2*metric,2);
+0186     normxsup = sum(xsup.^2*metric,2);
+0187     ps = -2*ps + repmat(normx,1,pps) + repmat(normxsup',nps,1) ; 
+0188     K=sqrt(ps + 0.1);
+0189 <span class="keyword">case</span> <span class="string">'wavelet'</span>
+0190     K=kernelwavelet(x,kerneloption,xsup);     
+0191 <span class="keyword">case</span> <span class="string">'frame'</span>
+0192     K=kernelframe(x,kerneloption,xsup,framematrix,vector,dual);
+0193 <span class="keyword">case</span> <span class="string">'wavelet2d'</span>
+0194     K=wav2dkernelint(x,xsup,kerneloption);
+0195 <span class="keyword">case</span> <span class="string">'radialwavelet2d'</span>
+0196     K=radialwavkernel(x,xsup);    
+0197 <span class="keyword">case</span> <span class="string">'tensorwavkernel'</span>
+0198     [K,option]=tensorwavkernel(x,xsup,kerneloption);  
+0199 
+0200 <span class="keyword">case</span> <span class="string">'numerical'</span>
+0201     K=kerneloption.matrix;
+0202 <span class="keyword">case</span> <span class="string">'polymetric'</span>
+0203     K=x*kerneloption.metric*xsup';
+0204     
+0205 <span class="keyword">case</span> <span class="string">'jcb'</span>
+0206     K=x*xsup';
+0207     
+0208 <span class="keyword">end</span>;
+0209 
+0210 
+0211</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

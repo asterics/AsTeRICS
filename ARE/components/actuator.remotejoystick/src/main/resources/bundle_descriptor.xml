@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.RemoteJoystick"
+                   canonical_name="eu.asterics.component.actuator.remotejoystick.RemoteJoystickInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>false</singleton>
+        <description>Joystick emulator, communicates via HID actuator, compatible to PS3 sixaxis / SEGA Virtua Stick </description>
+        <ports>
+            <inputPort id="joystickX">
+                <description>Input port for x-coordinate for joystick (Left-X)</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+            <inputPort id="joystickY">
+                <description>Input port for y-coordinate for joystick (Left-Y)</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+            <inputPort id="joystickZ">
+                <description>Input port for z-coordinate for joystick (Right-X)</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+            <inputPort id="joystickR">
+                <description>Input port for r-coordinate for joystick (Right-Y)</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+            <inputPort id="joystickPov">
+                <description>Input port for POV-hat for joystick (Direction)</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="pressButton1">
+                <description>presses button 1 (Square)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton1">
+                <description>releases button 1 (Square)</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton2">
+                <description>presses button 2 (Cross)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton2">
+                <description>releases button 2 (Cross)</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton3">
+                <description>presses button 3 (Circle)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton3">
+                <description>releases button 3 (Circle)</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton4">
+                <description>presses button 4 (Triangle)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton4">
+                <description>releases button 4 (Triangle)</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton5">
+                <description>presses button 5 (L1)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton5">
+                <description>releases button 5 (L1)</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton6">
+                <description>presses button 6 (R1)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton6">
+                <description>releases button 6 (R1)</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton7">
+                <description>presses button 7 (L2)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton7">
+                <description>releases button 7 (L2)</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton8">
+                <description>presses button 8 (R2)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton8">
+                <description>releases button 8 (R2)</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton9">
+                <description>presses button 9 (Select)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton9">
+                <description>releases button 9 (Select)</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton10">
+                <description>presses button 10 (Start)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton10">
+                <description>releases button 10 (Start)</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton11">
+                <description>presses button 11</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton11">
+                <description>releases button 11</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton12">
+                <description>presses button 12</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton12">
+                <description>releases button 12</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressButton13">
+                <description>presses button 13 (PS)</description>
+            </eventListenerPort>
+            <eventListenerPort id="releaseButton13">
+                <description>releases button 13 (PS)</description>
+            </eventListenerPort>
+            <eventListenerPort id="reset">
+                <description>resets to default values (no button pressed, axis centered)</description>
+            </eventListenerPort>
+        </events>        
+        <properties>
+            <property name="refreshInterval"
+                      type="integer"
+                      value="0"
+                      description="the minimim time between two update-packets to the joystick HID (in milliseconds)"/>
+            <property name="uniqueID"
+                      type="string"
+                      value="not used"
+                      getStringList="true"
+                      description="ID (if more than one devices of this kind are connected)"/>
+                      
+        </properties>
+    </componentType>
+
+</componentTypes>

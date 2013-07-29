@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.ImageBox"
+                   canonical_name="eu.asterics.component.actuator.imagebox.ImageBoxInstance">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>GUI component, which displays a picture.</description>
+        <ports>
+			<inputPort id="input">
+				<description>Picture path</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="clear">
+				<description>Clear the picture</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="clicked">
+				<description>component clicked</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="caption"
+				type="string"
+				value="Image Box"
+				description="Caption of the component"/>
+			<property name="default"
+				type="string"
+				value=""
+				description="Default picture"/>
+			<property name="backgroundColor"
+				type="integer"
+				value="11"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+				description="Background color"/>
+
+        </properties>
+		<gui>
+			<width>3000</width>
+			<height>3000</height>
+		</gui>
+
+    </componentType>
+</componentTypes>

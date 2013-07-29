@@ -1,0 +1,1 @@
+EyesStateTrain --input eyes20.yml --eigenratio 0.8 --model model.yml

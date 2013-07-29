@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.MidiPlayer"
+                   canonical_name="eu.asterics.component.actuator.midi.MidiInstance">
+        <type subtype="Audio and Voice">actuator</type>
+        <singleton>false</singleton>
+        <description>This plugin is used for MIDI applications</description>
+        <ports>
+			<inputPort id="trigger">
+				<description>this input port triggers the keystroke of the midi plugin</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="pitch">
+				<description>this input selects the pitch of the tone played.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+        </ports>
+		<events>
+		</events>			
+        <properties>
+			<property name="midiDevice"
+                      type="string"
+                      value="Gervill"
+                      getStringList="true"
+                      description="name of the Midi Output device"/>
+			<property name="instrument"
+                      type="string"
+                      value="Vibraphone"
+                      getStringList="true"
+                      description="name of the instrument or controller"/>
+			<property name="triggerThreshold"
+                      type="integer"
+                      value="50"
+                      description="sets the threshold for triggering a note"/>
+			<property name="triggerMax"
+                      type="integer"
+                      value="100"
+                      description="sets the value for the trigger input where the tone will have maximum volume"/>
+			<property name="pitchMin"
+                      type="integer"
+                      value="0"
+                      description="sets the minimum input value for computing the tone pitch"/>
+			<property name="pitchMax"
+                      type="integer"
+                      value="1000"
+                      description="sets the maximum input value for computing the tone pitch"/>
+			<property name="toneScale"
+                      type="string"
+                      value="alltones"
+                      getStringList="true"
+                      description="filename of tone scale file"/>
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window with tone parameters will be shown"/>
+        </properties>
+		<gui>
+			<width>5000</width>
+			<height>2000</height>
+		</gui>
+
+    </componentType>
+</componentTypes>

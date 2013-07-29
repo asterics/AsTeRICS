@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.EOG"
+                   canonical_name="eu.asterics.component.sensor.eog.EogInstance">
+        <type subtype="Bioelectric Measurement">sensor</type>
+        <singleton>true</singleton>
+        <description>connects to EOG CIM and measures horizontal and vertical eye movements</description>
+        <ports>
+
+			<outputPort id="horizontal">
+				<description>horizontal eye movement</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="vertical">
+				<description>vertical eye movement</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="updatePeriod"
+				type="integer"
+				value="100"
+				description="Update period for EOG values (in milliseconds)"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

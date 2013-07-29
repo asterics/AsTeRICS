@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="16.12.2011_1431" version="20130320">
+  <components>
+    <component id="PlatformAnalogIn.1" type_id="asterics.PlatformAnalogIn">
+      <description>ADC inputs of personal platform</description>
+      <ports>
+        <outputPort portTypeID="in1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="in2">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="activateInput1" value="True" />
+        <property name="activateInput2" value="False" />
+        <property name="periodicUpdate" value="50" />
+      </properties>
+      <layout>
+        <posX>72</posX>
+        <posY>89</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Analog In1" />
+      </properties>
+      <layout>
+        <posX>266</posX>
+        <posY>16</posY>
+      </layout>
+      <gui>
+        <posX>100</posX>
+        <posY>800</posY>
+        <width>5600</width>
+        <height>2100</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Button Released" />
+        <property name="slot2" value="Button Pressed" />
+        <property name="slot3" value="" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>242</posX>
+        <posY>245</posY>
+      </layout>
+    </component>
+    <component id="PlatformDigitalIn.1" type_id="asterics.PlatformDigitalIn">
+      <description>GPIO CIM sensor for inputs</description>
+      <ports />
+      <properties>
+        <property name="activateEventIn1" value="True" />
+        <property name="activateEventIn2" value="false" />
+        <property name="activateEventIn3" value="false" />
+      </properties>
+      <layout>
+        <posX>79</posX>
+        <posY>270</posY>
+      </layout>
+    </component>
+    <component id="IntToString.1" type_id="asterics.IntToString">
+      <description>Converts int to string</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hexadecimalOutput" value="false" />
+      </properties>
+      <layout>
+        <posX>394</posX>
+        <posY>26</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>530</posX>
+        <posY>29</posY>
+      </layout>
+      <gui>
+        <posX>5800</posX>
+        <posY>1400</posY>
+        <width>1400</width>
+        <height>900</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="DigitalIn1" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="12" />
+        <property name="backgroundColor" value="1" />
+      </properties>
+      <layout>
+        <posX>417</posX>
+        <posY>242</posY>
+      </layout>
+      <gui>
+        <posX>100</posX>
+        <posY>3200</posY>
+        <width>5500</width>
+        <height>1100</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.3">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="PlatformAnalogIn.1" />
+        <port id="in1" />
+      </source>
+      <target>
+        <component id="IntToString.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="IntToString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="PlatformAnalogIn.1" />
+        <port id="in1" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="in1High_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="PlatformDigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="PlatformDigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>7788</width>
+      <height>5200</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

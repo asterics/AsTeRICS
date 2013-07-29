@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of measurePerformance2</title>
+  <meta name="keywords" content="measurePerformance2">
+  <meta name="description" content="receives the results of prediction and the ground truth and computes the">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html multiclass -->
+<h1>measurePerformance2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>receives the results of prediction and the ground truth and computes the</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [confusionMat]=measurePerformance2(ypred,gt,decisionThres,print_result,labelClass) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">receives the results of prediction and the ground truth and computes the
+confusion matrix (it prints as well the TPR and FPR indices) given the
+decision threshold
+v2: does not compute the average over samples</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="trueAndFalsePositiveRates2.html" class="code" title="function [TPR,FPR]=trueAndFalsePositiveRates2(classMatrix,subject)">trueAndFalsePositiveRates2</a>	compute the true positive rate (TPR) and the false positive rate (FPR)</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="adjustBaggingFusion.html" class="code" title="function [performMeasures]=adjustBaggingFusion(data)">adjustBaggingFusion</a>	----------------------------------------------------------</li><li><a href="adjustParameterClassifier.html" class="code" title="function [TPRtrain, FPRtrain,TPRtest,FPRtest,info]=adjustParameterClassifier(dataTrain,dataTest,parameters,paramname,param2adjust,Nvalid,dataFilename,decisionThreshold)">adjustParameterClassifier</a>	function to adjust the parameters of the classifiers.</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [confusionMat]=measurePerformance2(ypred,gt,decisionThres,print_result,labelClass)</a>
+0002 <span class="comment">%receives the results of prediction and the ground truth and computes the</span>
+0003 <span class="comment">%confusion matrix (it prints as well the TPR and FPR indices) given the</span>
+0004 <span class="comment">%decision threshold</span>
+0005 <span class="comment">%v2: does not compute the average over samples</span>
+0006 <span class="comment">%</span>
+0007 <span class="keyword">if</span> nargin &lt; 4
+0008     print_result=1;
+0009 <span class="keyword">end</span>
+0010 
+0011 <span class="keyword">if</span> nargin&lt;5
+0012     labelClass=[-1,1];
+0013 <span class="keyword">end</span>
+0014 
+0015 <span class="comment">%%%%this has been changed from version 1</span>
+0016 <span class="comment">%ypred=mean(ypred,2);</span>
+0017 <span class="keyword">if</span> size(gt,2)&gt;1
+0018     gt=gt';
+0019 <span class="keyword">end</span>
+0020 gt=repmat(gt,1,size(ypred,2));
+0021 
+0022 
+0023 ypred(ypred&gt;decisionThres)=labelClass(2);
+0024 ypred(ypred&lt;=decisionThres)=labelClass(1);
+0025 
+0026 confusionMat(1,1)=sum(ypred(ypred==gt)==labelClass(2));
+0027 confusionMat(2,2)=sum(ypred(ypred==gt)==labelClass(1));
+0028 confusionMat(1,2)=sum(ypred(ypred~=gt)==labelClass(1));
+0029 confusionMat(2,1)=sum(ypred(ypred~=gt)==labelClass(2));
+0030 <span class="keyword">if</span> print_result
+0031     [TPR,FPR]=<a href="trueAndFalsePositiveRates2.html" class="code" title="function [TPR,FPR]=trueAndFalsePositiveRates2(classMatrix,subject)">trueAndFalsePositiveRates2</a>(confusionMat)
+0032 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

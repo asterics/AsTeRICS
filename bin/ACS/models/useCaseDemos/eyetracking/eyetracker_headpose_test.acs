@@ -1,0 +1,673 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="14.06.2012_141" version="20130320">
+  <components>
+    <component id="Eyetracker.1" type_id="asterics.Eyetracker">
+      <description>Webcamera-based eye tracking sensor with gaze tracking support</description>
+      <ports>
+        <inputPort portTypeID="pt1x" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt1y" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt2x" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt2y" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt3x" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt3y" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt4x" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pt4y" sync="true">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="x">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="y">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraSelection" value="1" />
+        <property name="cameraResolution" value="1" />
+        <property name="cameraProfile" value="" />
+        <property name="cameraDisplayUpdate" value="100" />
+        <property name="trackingMode" value="2" />
+        <property name="minArea" value="500" />
+        <property name="maxArea" value="3000" />
+        <property name="roundness" value="0.85" />
+        <property name="glintBrightness" value="200" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="0" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="0" />
+        <property name="calibrationStepsX" value="3" />
+        <property name="calibrationStepsY" value="3" />
+        <property name="averaging" value="10" />
+        <property name="screenSize" value="15" />
+        <property name="minBlinkDuration" value="150" />
+        <property name="maxBlinkDuration" value="800" />
+      </properties>
+      <layout>
+        <posX>243</posX>
+        <posY>199</posY>
+      </layout>
+      <gui>
+        <posX>8200</posX>
+        <posY>2200</posY>
+        <width>1800</width>
+        <height>2600</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Options" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="buttonCaption1" value="Calibrate" />
+        <property name="buttonCaption2" value="Headpose" />
+        <property name="buttonCaption3" value="Evaluation" />
+        <property name="buttonCaption4" value="Cam Settings" />
+        <property name="buttonCaption5" value="save Cam Settiings" />
+        <property name="buttonCaption6" value="enable/disble Mouse" />
+        <property name="buttonCaption7" value="Right Click" />
+        <property name="buttonCaption8" value="Double Click" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>127</posX>
+        <posY>14</posY>
+      </layout>
+      <gui>
+        <posX>50</posX>
+        <posY>556</posY>
+        <width>8412</width>
+        <height>856</height>
+      </gui>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="true" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="4000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1080" />
+      </properties>
+      <layout>
+        <posX>509</posX>
+        <posY>147</posY>
+      </layout>
+    </component>
+    <component id="SensorBoard.1" type_id="asterics.SensorBoard">
+      <description>Interfaces the sensor board CIM which provides accelerometer, gyroscope, compass, IR-camera and pressure sensor</description>
+      <ports>
+        <outputPort portTypeID="accX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="accY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="accZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyroX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyroY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="gyroZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="compassX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="compassY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="compassZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt1X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt1Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt2X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt2Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt3X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt3Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt4X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pt4Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="refreshInterval" value="20" />
+      </properties>
+      <layout>
+        <posX>12</posX>
+        <posY>27</posY>
+      </layout>
+    </component>
+    <component id="WavefilePlayer.1" type_id="asterics.WavefilePlayer">
+      <description>Plays .Wav - soundfiles on event or filename reception. </description>
+      <ports>
+        <inputPort portTypeID="wavefileName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="data\sounds\4.wav" />
+      </properties>
+      <layout>
+        <posX>374</posX>
+        <posY>471</posY>
+      </layout>
+    </component>
+    <component id="WavefilePlayer.1.1" type_id="asterics.WavefilePlayer">
+      <description>Plays .Wav - soundfiles on event or filename reception. </description>
+      <ports>
+        <inputPort portTypeID="wavefileName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="data\sounds\7.wav" />
+      </properties>
+      <layout>
+        <posX>505</posX>
+        <posY>341</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="130" />
+        <property name="thresholdLow" value="130" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="0" />
+      </properties>
+      <layout>
+        <posX>174</posX>
+        <posY>446</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="@MOUSE:nextclick,right" />
+        <property name="slot2" value="@MOUSE:nextclick,double" />
+        <property name="slot3" value="@MOUSE:action,toggle" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>293</posX>
+        <posY>17</posY>
+      </layout>
+    </component>
+    <component id="OskaExternalScanning2D.1" type_id="OskaExternalScanning2D">
+      <description>Component communicating with OSKA</description>
+      <ports>
+        <inputPort portTypeID="posColumn">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="posRow">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="action">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="keycodes">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="port" value="4546" />
+        <property name="title" value="OSKA keyboard" />
+        <property name="oskaPath" value="..\oska\start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards\writing\abc.xml" />
+        <property name="highlightStyle" value="0" />
+        <property name="highlightResetPosition" value="0" />
+        <property name="settingsFile" value="settings\default.kst" />
+        <property name="windowDecorated" value="True" />
+        <property name="eventScanningEnabled" value="true" />
+        <property name="valueScanningEnabled" value="true" />
+        <property name="inputRange" value="0" />
+        <property name="resizeEnabled" value="false" />
+      </properties>
+      <layout>
+        <posX>649</posX>
+        <posY>61</posY>
+      </layout>
+      <gui>
+        <posX>488</posX>
+        <posY>5022</posY>
+        <width>8938</width>
+        <height>4922</height>
+      </gui>
+    </component>
+    <component id="ApplicationLauncher.1" type_id="asterics.ApplicationLauncher">
+      <description>starts external software applications via path and  filename (.exe)</description>
+      <ports>
+        <inputPort portTypeID="filename">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="defaultApplication" value="c:\windows\notepad.exe" />
+        <property name="arguments" value="" />
+        <property name="workingDirectory" value="." />
+        <property name="autoLaunch" value="True" />
+        <property name="autoClose" value="true" />
+        <property name="onlyByEvent" value="false" />
+      </properties>
+      <layout>
+        <posX>658</posX>
+        <posY>358</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="Eyetracker.1" />
+        <port id="x" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="Eyetracker.1" />
+        <port id="y" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pt1X" />
+      </source>
+      <target>
+        <component id="Eyetracker.1" />
+        <port id="pt1x" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pt1Y" />
+      </source>
+      <target>
+        <component id="Eyetracker.1" />
+        <port id="pt1y" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pt2X" />
+      </source>
+      <target>
+        <component id="Eyetracker.1" />
+        <port id="pt2x" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pt2Y" />
+      </source>
+      <target>
+        <component id="Eyetracker.1" />
+        <port id="pt2y" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pt3X" />
+      </source>
+      <target>
+        <component id="Eyetracker.1" />
+        <port id="pt3x" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pt3Y" />
+      </source>
+      <target>
+        <component id="Eyetracker.1" />
+        <port id="pt3y" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pt4X" />
+      </source>
+      <target>
+        <component id="Eyetracker.1" />
+        <port id="pt4x" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pt4Y" />
+      </source>
+      <target>
+        <component id="Eyetracker.1" />
+        <port id="pt4y" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="SensorBoard.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="action" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_calibrate">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Eyetracker.1" />
+          <eventPort id="calibrate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_showCameraSettings">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Eyetracker.1" />
+          <eventPort id="showCameraSettings" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_startEvaluation">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Eyetracker.1" />
+          <eventPort id="startEvaluation" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_togglePoseInfoWindow">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Eyetracker.1" />
+          <eventPort id="togglePoseInfoWindow" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_saveProfile">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Eyetracker.1" />
+          <eventPort id="saveProfile" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="blinkDetected_Start">
+      <sources>
+        <source>
+          <component id="Eyetracker.1" />
+          <eventPort id="blinkDetected" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="longBlinkDetected_Start">
+      <sources>
+        <source>
+          <component id="Eyetracker.1" />
+          <eventPort id="longBlinkDetected" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="longBlinkDetected_offsetCorrection">
+      <sources>
+        <source>
+          <component id="Eyetracker.1" />
+          <eventPort id="longBlinkDetected" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Eyetracker.1" />
+          <eventPort id="offsetCorrection" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_leftClick">
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_Start">
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button7_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button8_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <groups />
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9000</width>
+      <height>1844</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

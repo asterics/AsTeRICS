@@ -1,0 +1,489 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="11.01.2012_923" version="20130320">
+  <modelDescription>
+    <shortDescription>This model allows the user to play the game Modnation Racer on the PS3 using
+gestures. A Kinect sensor must be connected to the AsTeRICS system.</shortDescription>
+    <requirements>Kinect Sensor
+Compatible drivers must be installed: e.g. SensorKinect drivers
+OpenNI 1.3.3.6
+Nite Middleware 1.4.2.4</requirements>
+    <description>The user must put his hands in front of the body, like he is holding a real steering
+wheel. Steering to the left and right is achieved by simulating the movements
+like with a real steering wheel. 
+The car will accelerate if the hands are more than 30 cm in front of the body.
+If the hands are put nearer the car will break and after a few seconds start to
+drive backwards.</description>
+  </modelDescription>
+  <components>
+    <component id="Comparator.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="4" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="0" />
+        <property name="threshold" value="1" />
+        <property name="threshold2" value="10" />
+      </properties>
+      <layout>
+        <posX>611</posX>
+        <posY>449</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="b-a" />
+      </properties>
+      <layout>
+        <posX>284</posX>
+        <posY>180</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.2.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a*b)" />
+      </properties>
+      <layout>
+        <posX>495</posX>
+        <posY>273</posY>
+      </layout>
+    </component>
+    <component id="Kinect.1" type_id="asterics.Kinect">
+      <description>My Plugin description</description>
+      <ports>
+        <outputPort portTypeID="HeadX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HeadY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HeadZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="leftHandX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="leftHandY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="leftHandZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="rightHandX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="rightHandY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="rightHandZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="rightFootX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="rightFootY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="rightFootZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="leftFootX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="leftFootY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="leftFootZ">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="visualize" value="true" />
+        <property name="centerZeroPoint" value="false" />
+      </properties>
+      <layout>
+        <posX>18</posX>
+        <posY>302</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.2.1.2" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a/1.5 +128" />
+      </properties>
+      <layout>
+        <posX>657</posX>
+        <posY>216</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a-b &gt; 200)" />
+      </properties>
+      <layout>
+        <posX>428</posX>
+        <posY>484</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="256" />
+        <property name="threshold" value="1" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="0" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="bar-graph" />
+      </properties>
+      <layout>
+        <posX>790</posX>
+        <posY>84</posY>
+      </layout>
+      <gui>
+        <posX>62</posX>
+        <posY>644</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="RemoteJoystick.1" type_id="asterics.RemoteJoystick">
+      <description>Joystick emulator, communicates via HID actuator, compatible to PS3 sixaxis / SEGA Virtua Stick </description>
+      <ports>
+        <inputPort portTypeID="joystickX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickZ">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickR">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="joystickPov">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="refreshInterval" value="10" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>892</posX>
+        <posY>306</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.2.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a &lt; -30) || (a &gt; 30)" />
+      </properties>
+      <layout>
+        <posX>467</posX>
+        <posY>85</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.18">
+      <description />
+      <source>
+        <component id="MathEvaluator.2.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2.1.2" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <description />
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="Kinect.1" />
+        <port id="rightHandY" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="Kinect.1" />
+        <port id="HeadZ" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="MathEvaluator.2.1.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="RemoteJoystick.1" />
+        <port id="joystickX" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="MathEvaluator.2.1.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <description />
+      <source>
+        <component id="MathEvaluator.2.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2.1.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="Kinect.1" />
+        <port id="rightHandZ" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <description />
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Comparator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <description />
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="Kinect.1" />
+        <port id="leftHandY" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="conditionTrue_releaseButton8">
+      <description />
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionFalse" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionFalse_releaseButton2">
+      <description />
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionFalse" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="releaseButton2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_pressButton8">
+      <description />
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_pressButton2">
+      <description />
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="RemoteJoystick.1" />
+          <eventPort id="pressButton2" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>1588</width>
+      <height>3911</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

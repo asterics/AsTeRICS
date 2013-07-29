@@ -1,0 +1,971 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="12-Nov-12_1455" version="20130320">
+  <components>
+    <component id="FacetrackerCLM.1" type_id="asterics.FacetrackerCLM">
+      <description>Facetracker plugin. Ideal in mouse control models. It also implements a blink detection system.</description>
+      <ports>
+        <outputPort portTypeID="Roll">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Pitch">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Yaw">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="PosX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="PosY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Scale">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="EyeLeft">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="EyeRight">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraSelection" value="0" />
+        <property name="cameraResolution" value="2" />
+        <property name="modelName" value="Generic" />
+        <property name="cameraDisplayUpdate" value="33" />
+      </properties>
+      <layout>
+        <posX>46</posX>
+        <posY>28</posY>
+      </layout>
+      <gui>
+        <posX>7938</posX>
+        <posY>0</posY>
+        <width>2075</width>
+        <height>2711</height>
+      </gui>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="500" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>264</posX>
+        <posY>4</posY>
+      </layout>
+    </component>
+    <component id="EventBlock.1" type_id="asterics.EventBlock">
+      <description>Pass or block event</description>
+      <ports />
+      <properties>
+        <property name="block" value="false" />
+        <property name="blockAfterEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>400</posX>
+        <posY>2</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="buttonCaption1" value="Enable Mouse" />
+        <property name="buttonCaption2" value="Disable Mouse" />
+        <property name="buttonCaption3" value="Drag Click" />
+        <property name="buttonCaption4" value="Right Click" />
+        <property name="buttonCaption5" value="Double Click" />
+        <property name="buttonCaption6" value="Recalibrate Face" />
+        <property name="buttonCaption7" value="Cam Settings" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>47</posX>
+        <posY>403</posY>
+      </layout>
+      <gui>
+        <posX>25</posX>
+        <posY>622</posY>
+        <width>3600</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="250" />
+        <property name="slot1" value="@MOUSE:action,activate" />
+        <property name="slot2" value="@MOUSE:action,disable" />
+        <property name="slot3" value="@MOUSE:nextclick,drag" />
+        <property name="slot4" value="@MOUSE:nextclick,right" />
+        <property name="slot5" value="@MOUSE:nextclick,double" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>186</posX>
+        <posY>560</posY>
+      </layout>
+    </component>
+    <component id="Slider.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="20" />
+        <property name="max" value="300" />
+        <property name="default" value="250" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="Mouse Speed" />
+        <property name="majorTickSpacing" value="20" />
+        <property name="minorTickSpacing" value="5" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+      </properties>
+      <layout>
+        <posX>598</posX>
+        <posY>210</posY>
+      </layout>
+      <gui>
+        <posX>575</posX>
+        <posY>1800</posY>
+        <width>2400</width>
+        <height>700</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*b/20 " />
+      </properties>
+      <layout>
+        <posX>727</posX>
+        <posY>117</posY>
+      </layout>
+    </component>
+    <component id="WavefilePlayer.1" type_id="asterics.WavefilePlayer">
+      <description>Plays .Wav - soundfiles on event or filename reception. </description>
+      <ports>
+        <inputPort portTypeID="wavefileName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="data\sounds\2.wav" />
+      </properties>
+      <layout>
+        <posX>522</posX>
+        <posY>0</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.2" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*b/20" />
+      </properties>
+      <layout>
+        <posX>734</posX>
+        <posY>298</posY>
+      </layout>
+    </component>
+    <component id="Local Mouse" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="False" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="1920" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1080" />
+      </properties>
+      <layout>
+        <posX>1096</posX>
+        <posY>374</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="7" />
+        <property name="thresholdLow" value="7" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="0" />
+      </properties>
+      <layout>
+        <posX>479</posX>
+        <posY>233</posY>
+      </layout>
+    </component>
+    <component id="Integrate.1" type_id="asterics.Integrate">
+      <description>Integration with upper and lower bounds and reset</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="resetValue" value="0" />
+        <property name="upperLimit" value="50000" />
+        <property name="lowerLimit" value="-50000" />
+        <property name="wrapAround" value="false" />
+      </properties>
+      <layout>
+        <posX>361</posX>
+        <posY>233</posY>
+      </layout>
+    </component>
+    <component id="Threshold.2" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="0.5" />
+        <property name="thresholdLow" value="0.5" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="1" />
+      </properties>
+      <layout>
+        <posX>261</posX>
+        <posY>232</posY>
+      </layout>
+    </component>
+    <component id="Threshold.2.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="0.5" />
+        <property name="thresholdLow" value="0.5" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="1" />
+      </properties>
+      <layout>
+        <posX>337</posX>
+        <posY>493</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="7" />
+        <property name="thresholdLow" value="7" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="0" />
+      </properties>
+      <layout>
+        <posX>589</posX>
+        <posY>507</posY>
+      </layout>
+    </component>
+    <component id="Integrate.1.1" type_id="asterics.Integrate">
+      <description>Integration with upper and lower bounds and reset</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="resetValue" value="0" />
+        <property name="upperLimit" value="50000" />
+        <property name="lowerLimit" value="-50000" />
+        <property name="wrapAround" value="false" />
+      </properties>
+      <layout>
+        <posX>462</posX>
+        <posY>480</posY>
+      </layout>
+    </component>
+    <component id="Deadzone.1" type_id="asterics.Deadzone">
+      <description>Defines active/passive Zone for x/y values</description>
+      <ports>
+        <inputPort portTypeID="inX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="radius">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="xCenter" value="0" />
+        <property name="yCenter" value="0" />
+        <property name="radius" value="0.2" />
+        <property name="mode" value="1" />
+      </properties>
+      <layout>
+        <posX>976</posX>
+        <posY>225</posY>
+      </layout>
+    </component>
+    <component id="Filter.1" type_id="asterics.Filter">
+      <description>This plugin implements a FIR Filter</description>
+      <ports>
+        <inputPort portTypeID="Input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="Output">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="SignalPower">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Order" value="1" />
+        <property name="CutoffFreq1" value="2.2" />
+        <property name="CutoffFreq2" value="0" />
+        <property name="SamplingRate" value="10" />
+        <property name="Type" value="0" />
+        <property name="SignalPowerUpdateRate" value="5" />
+        <property name="SignalPowerBufferSize" value="125" />
+      </properties>
+      <layout>
+        <posX>840</posX>
+        <posY>112</posY>
+      </layout>
+    </component>
+    <component id="Filter.1.1" type_id="asterics.Filter">
+      <description>This plugin implements a FIR Filter</description>
+      <ports>
+        <inputPort portTypeID="Input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="Output">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="SignalPower">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Order" value="1" />
+        <property name="CutoffFreq1" value="2.2" />
+        <property name="CutoffFreq2" value="0" />
+        <property name="SamplingRate" value="10" />
+        <property name="Type" value="0" />
+        <property name="SignalPowerUpdateRate" value="5" />
+        <property name="SignalPowerBufferSize" value="125" />
+      </properties>
+      <layout>
+        <posX>853</posX>
+        <posY>298</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="FacetrackerCLM.1" />
+        <port id="PosX" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="FacetrackerCLM.1" />
+        <port id="PosY" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="MathEvaluator.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Filter.1.1" />
+        <port id="Input" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Local Mouse" />
+        <port id="action" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="FacetrackerCLM.1" />
+        <port id="EyeLeft" />
+      </source>
+      <target>
+        <component id="Threshold.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="FacetrackerCLM.1" />
+        <port id="EyeLeft" />
+      </source>
+      <target>
+        <component id="Integrate.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="Integrate.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="Deadzone.1" />
+        <port id="outY" />
+      </source>
+      <target>
+        <component id="Local Mouse" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="Deadzone.1" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="Local Mouse" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="Integrate.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="groupbinding.16">
+      <source>
+        <component id="FacetrackerCLM.1" />
+        <port id="EyeRight" />
+      </source>
+      <target>
+        <component id="Integrate.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="Filter.1" />
+        <port id="Output" />
+      </source>
+      <target>
+        <component id="Deadzone.1" />
+        <port id="inX" />
+      </target>
+    </channel>
+    <channel id="groupbinding.14">
+      <source>
+        <component id="FacetrackerCLM.1" />
+        <port id="EyeRight" />
+      </source>
+      <target>
+        <component id="Threshold.2.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="MathEvaluator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Filter.1" />
+        <port id="Input" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="Filter.1.1" />
+        <port id="Output" />
+      </source>
+      <target>
+        <component id="Deadzone.1" />
+        <port id="inY" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="EyebrowsRaised_start">
+      <sources>
+        <source>
+          <component id="FacetrackerCLM.1" />
+          <eventPort id="EyebrowsRaised" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_pass">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="pass" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="EyebrowsRaised_input">
+      <sources>
+        <source>
+          <component id="FacetrackerCLM.1" />
+          <eventPort id="EyebrowsRaised" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventBlock.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_reset">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="FacetrackerCLM.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_showCameraSettings">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="FacetrackerCLM.1" />
+          <eventPort id="showCameraSettings" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_dispatchSlot4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_reset">
+      <sources>
+        <source>
+          <component id="Threshold.2" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Integrate.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_reset">
+      <sources>
+        <source>
+          <component id="Threshold.2.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Integrate.1.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_wheelUp">
+      <sources>
+        <source>
+          <component id="Threshold.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Local Mouse" />
+          <eventPort id="wheelUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_center">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Local Mouse" />
+          <eventPort id="center" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_reset">
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Integrate.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_reset">
+      <sources>
+        <source>
+          <component id="Threshold.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Integrate.1.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_activate">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Local Mouse" />
+          <eventPort id="activate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_leftClick">
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Local Mouse" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_rightClick">
+      <sources>
+        <source>
+          <component id="Threshold.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Local Mouse" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_deactivate">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Local Mouse" />
+          <eventPort id="deactivate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_Start">
+      <sources>
+        <source>
+          <component id="EventBlock.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <groups />
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4188</width>
+      <height>2689</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.EventRouter"
+                   canonical_name="eu.asterics.component.processor.eventrouter.EventRouterInstance">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>routes incoming events to one of 8 event trigger ports</description>
+        <ports>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="eventIn">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			<eventListenerPort id="select1">
+				<description>select route 1</description>
+			</eventListenerPort>
+			<eventListenerPort id="select2">
+				<description>select route 2</description>
+			</eventListenerPort>
+			<eventListenerPort id="select3">
+				<description>select route 3</description>
+			</eventListenerPort>
+			<eventListenerPort id="select4">
+				<description>select route 4</description>
+			</eventListenerPort>
+			<eventListenerPort id="select5">
+				<description>select route 5</description>
+			</eventListenerPort>
+			<eventListenerPort id="select6">
+				<description>select route 6</description>
+			</eventListenerPort>
+			<eventListenerPort id="select7">
+				<description>select route 7</description>
+			</eventListenerPort>
+			<eventListenerPort id="select8">
+				<description>select route 8</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="eventOut1">
+				<description>output route 1</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2">
+				<description>output route 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3">
+				<description>output route 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4">
+				<description>output route 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5">
+				<description>output route 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6">
+				<description>output route 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut7">
+				<description>output route 7</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut8">
+				<description>output route 8</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

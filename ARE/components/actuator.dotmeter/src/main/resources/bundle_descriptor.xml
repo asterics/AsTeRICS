@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.DotMeter"
+                   canonical_name="eu.asterics.component.actuator.dotmeter.DotmeterInstance">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>DotMeter</description>
+        <ports>
+            <inputPort id="x">
+                <description>Input port for x-position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="y">
+                <description>Input port for y-position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+        </ports>
+		<events>
+			<eventListenerPort id="dotOn">
+				<description>display the dot</description>
+			</eventListenerPort>
+			<eventListenerPort id="dotOff">
+				<description>hide the dot</description>
+			</eventListenerPort>
+		</events>			        
+        <properties>
+            <property name="xMin"
+                      type="double"
+                      value="0"
+                      description="minimum X value"/>
+            <property name="xMax"
+                      type="double"
+                      value="1000"
+                      description="maximum X value"/>
+            <property name="yMin"
+                      type="double"
+                      value="0"
+                      description="minimum Y value"/>
+            <property name="yMax"
+                      type="double"
+                      value="1000"
+                      description="maximum Y value"/>
+            <property name="mode"
+                      type="integer"
+                      value="1"
+                      combobox="clip to min and max//autoupdate min and max"
+                      description="how to deal with values exceeding min or max"/> 
+            <property name="dotSize"
+                      type="integer"
+                      value="10"
+                      description="size of the dot"/>
+            <property name="centerLine"
+                      type="boolean"
+                      value="true"
+                      description="draw line to center?"/>
+            <property name="displayDot"
+                      type="boolean"
+                      value="true"
+                      description="display dot at startup?"/>
+            <property name="displayCaptions"
+                      type="boolean"
+                      value="true"
+                      description="display meter captions?"/>
+            <property name="gridColor"
+                      type="integer"
+                      value="0"
+                      combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                      description="color of the grid"/> 
+            <property name="dotColor"
+                      type="integer"
+                      value="8"
+                      combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                      description="color of bar display"/> 
+            <property name="backgroundColor"
+                      type="integer"
+                      value="11"
+                      combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                      description="background color"/> 
+            <property name="fontSize"
+                      type="integer"
+                      value="14"
+                      description="font size of dotmeter captions"/>
+            <property name="caption"
+                      type="string"
+                      value="dotMeter"
+                      description="caption of the meter"/>                                                       
+        </properties>
+        <gui>
+            <width>3000</width>
+            <height>3000</height>
+        </gui>
+    </componentType>
+</componentTypes>

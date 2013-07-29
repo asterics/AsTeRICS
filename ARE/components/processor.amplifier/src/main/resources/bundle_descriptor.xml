@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Amplifier"
+                   canonical_name="eu.asterics.component.processor.amplifier.AmplifierInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Multiplies input with a proportional factor</description>
+        <ports>
+            <inputPort id="sigIn">
+                <description>Input port of amplifier</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <outputPort id="sigOut">
+                <description>Output port of amplifier</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <properties>
+            <property name="factor"
+                      type="double"
+                      value="1"
+                      description="The factor to multiply input with"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

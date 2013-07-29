@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Derivative"
+                   canonical_name="com.starlab.component.processor.derivative.DerivativeInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Derivative processor</description>
+        <ports>
+            <inputPort id="input">
+                <description>Input port</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <outputPort id="output">
+                <description>Output port</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <properties>
+            <property name="SampleFrequency"
+                      type="integer"
+                      value="250"
+                      description="sample frequency of the input signal"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

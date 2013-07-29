@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="27.10.2011_2059" version="20130320">
+  <modelDescription>
+    <shortDescription>Play Midi Tones via an analogue sensor (e.g. sip / puff sensor)
+and head movements</shortDescription>
+    <requirements>A webcam and the AnalogIn CIM have to be connected to the system.
+On channel 1 of the AnalogIn CIM, a sensor - e.g. the Sip/Puff Sensor has to be connected.</requirements>
+    <description>This model can be used to control a musical intrument by head movements,
+The FactrackerLK plugin measures left/right movement of the user's head. 
+These movements influence the tone height (pitch) of the midi tones.
+
+A tone can be played e.g. by the Sip/Puff sensor (by blowing) 
+- or by any other sensor with voltage output connected to Chn1 of the AnalogIn CIM.
+</description>
+  </modelDescription>
+  <components>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="Gervill" />
+        <property name="instrument" value="Vibraphone" />
+        <property name="triggerThreshold" value="2650" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="1000" />
+        <property name="toneScale" value="0" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>621</posX>
+        <posY>56</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>822</posY>
+        <width>9450</width>
+        <height>1800</height>
+      </gui>
+    </component>
+    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
+      <description>Webcamera-based face tracking sensor</description>
+      <ports>
+        <outputPort portTypeID="noseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="noseY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraSelection" value="0" />
+        <property name="cameraResolution" value="1" />
+        <property name="cameraDisplayUpdate" value="100" />
+        <property name="cameraProfile" value="" />
+      </properties>
+      <layout>
+        <posX>335</posX>
+        <posY>232</posY>
+      </layout>
+      <gui>
+        <posX>7375</posX>
+        <posY>5067</posY>
+        <width>2425</width>
+        <height>2956</height>
+      </gui>
+    </component>
+    <component id="Integrate.1" type_id="asterics.Integrate">
+      <description>Integration with upper and lower bounds and reset</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="resetValue" value="0" />
+        <property name="upperLimit" value="1000" />
+        <property name="lowerLimit" value="0" />
+        <property name="wrapAround" value="false" />
+      </properties>
+      <layout>
+        <posX>494</posX>
+        <posY>213</posY>
+      </layout>
+    </component>
+    <component id="AnalogIn.1" type_id="asterics.AnalogIn">
+      <description>ADC CIM sensor for inputs</description>
+      <ports>
+        <outputPort portTypeID="in1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="in2">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="activateInput1" value="True" />
+        <property name="activateInput2" value="false" />
+        <property name="periodicUpdate" value="50" />
+        <property name="uniqueID" value="not used" />
+      </properties>
+      <layout>
+        <posX>54</posX>
+        <posY>48</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="bar-graph" />
+      </properties>
+      <layout>
+        <posX>198</posX>
+        <posY>137</posY>
+      </layout>
+      <gui>
+        <posX>3100</posX>
+        <posY>2756</posY>
+        <width>3113</width>
+        <height>1622</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.4">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseX" />
+      </source>
+      <target>
+        <component id="Integrate.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Integrate.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="AnalogIn.1" />
+        <port id="in1" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="AnalogIn.1" />
+        <port id="in1" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="trigger" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>10000</width>
+      <height>4556</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

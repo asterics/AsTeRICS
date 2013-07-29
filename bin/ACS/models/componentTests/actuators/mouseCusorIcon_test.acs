@@ -1,0 +1,207 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="04.10.2012_159" version="20130320">
+  <components>
+    <component id="MouseCursorIcon.1" type_id="asterics.MouseCursorIcon">
+      <description>sets different cursor icnos for the local mouse cursor</description>
+      <ports>
+        <inputPort portTypeID="iconName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="icon1name" value="up" />
+        <property name="icon2name" value="down" />
+        <property name="icon3name" value="left" />
+        <property name="icon4name" value="right" />
+        <property name="icon5name" value="circle1" />
+        <property name="icon6name" value="pen" />
+        <property name="icon7name" value="4arrows" />
+        <property name="icon8name" value="ew" />
+        <property name="icon9name" value="ns" />
+      </properties>
+      <layout>
+        <posX>264</posX>
+        <posY>91</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="select cursor style" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="buttonCaption1" value="Up" />
+        <property name="buttonCaption2" value="Down" />
+        <property name="buttonCaption3" value="Left" />
+        <property name="buttonCaption4" value="Right" />
+        <property name="buttonCaption5" value="circle1" />
+        <property name="buttonCaption6" value="pen" />
+        <property name="buttonCaption7" value="4arrows" />
+        <property name="buttonCaption8" value="ew" />
+        <property name="buttonCaption9" value="ns" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>99</posX>
+        <posY>86</posY>
+      </layout>
+      <gui>
+        <posX>88</posX>
+        <posY>533</posY>
+        <width>1862</width>
+        <height>4289</height>
+      </gui>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="button1_setIcon1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_setIcon2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_setIcon3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_setIcon4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_setIcon5">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_setIcon6">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button7_setIcon7">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button8_setIcon8">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button9_setIcon9">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCursorIcon.1" />
+          <eventPort id="setIcon9" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>2488</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

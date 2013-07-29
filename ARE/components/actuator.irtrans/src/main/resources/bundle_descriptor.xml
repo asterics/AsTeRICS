@@ -1,0 +1,207 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.IrTrans"
+                   canonical_name="eu.asterics.component.actuator.irtrans.IrTransInstance">
+        <type subtype="Home Control">actuator</type>
+        <singleton>false</singleton>
+        <description>Infrared Transmission Module, interfaces to the IrTrans device</description>
+        <ports>
+            <inputPort id="action">
+                <description>Commands to send directly to IRTrans, Example: @IRTRANS:snd myremote,mycommand</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="sendprop1">
+                <description>Sending the string defined in send property 1</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop2">
+                <description>Sending the string defined in send property 2</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop3">
+                <description>Sending the string defined in send property 3</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop4">
+                <description>Sending the string defined in send property 4</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop5">
+                <description>Sending the string defined in send property 5</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop6">
+                <description>Sending the string defined in send property 6</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop7">
+                <description>Sending the string defined in send property 7</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop8">
+                <description>Sending the string defined in send property 8</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop9">
+                <description>Sending the string defined in send property 9</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop10">
+                <description>Sending the string defined in send property 10</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop11">
+                <description>Sending the string defined in send property 11</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop12">
+                <description>Sending the string defined in send property 12</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop13">
+                <description>Sending the string defined in send property 13</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop14">
+                <description>Sending the string defined in send property 14</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop15">
+                <description>Sending the string defined in send property 15</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop16">
+                <description>Sending the string defined in send property 16</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop17">
+                <description>Sending the string defined in send property 17</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop18">
+                <description>Sending the string defined in send property 18</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop19">
+                <description>Sending the string defined in send property 19</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop20">
+                <description>Sending the string defined in send property 20</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop21">
+                <description>Sending the string defined in send property 21</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop22">
+                <description>Sending the string defined in send property 22</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop23">
+                <description>Sending the string defined in send property 23</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendprop24">
+                <description>Sending the string defined in send property 24</description>
+            </eventListenerPort>                                    
+        </events>         
+        <properties>
+            <property name="hostname"
+                      type="string"
+                      value=""
+                      description="the hostname / IP of the IRTrans"/>
+            <property name="port"
+                      type="string"
+                      value="21000"
+                      description="The port of the IRTrans"/>
+<!--            <property name="useTCP"
+                      type="boolean"
+                      value="false"
+                      description="Using TCP if selected, otherwise UDP"/>-->
+            <property name="prestring"
+                      type="string"
+                      value=""
+                      description="The string, which will be send before the strings in the following properties"/>
+            <property name="send1"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop1 will be triggered"/>
+            <property name="send2"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop2 will be triggered"/>
+            <property name="send3"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop3 will be triggered"/>
+            <property name="send4"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop4 will be triggered"/>
+            <property name="send5"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop5 will be triggered"/>
+            <property name="send6"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop6 will be triggered"/>
+           <property name="send7"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop7 will be triggered"/>
+            <property name="send8"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop8 will be triggered"/>
+            <property name="send9"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop9 will be triggered"/>
+            <property name="send10"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop10 will be triggered"/>
+            <property name="send11"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop11 will be triggered"/>
+            <property name="send12"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop12 will be triggered"/>
+           <property name="send13"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop13 will be triggered"/>
+            <property name="send14"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop14 will be triggered"/>
+            <property name="send15"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop15 will be triggered"/>
+            <property name="send16"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop16 will be triggered"/>
+            <property name="send17"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop17 will be triggered"/>
+            <property name="send18"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop18 will be triggered"/>
+           <property name="send19"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop19 will be triggered"/>
+            <property name="send20"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop20 will be triggered"/>
+            <property name="send21"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop21 will be triggered"/>
+            <property name="send22"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop22 will be triggered"/>
+            <property name="send23"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop23 will be triggered"/>
+            <property name="send24"
+                      type="string"
+                      value=""
+                      description="The string, which will be send if sendprop24 will be triggered"/>                                                                  
+        </properties>
+    </componentType>
+
+</componentTypes>

@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of svmval</title>
+  <meta name="keywords" content="svmval">
+  <meta name="description" content="USAGE">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300 -->
+<h1>svmval
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>USAGE</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [y,y1,y2]=svmval(x,xsup,w,b,kernel,kerneloption,span,framematrix,vector,dual) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> USAGE
+ [y,y1,y2]=svmval(x,xsup,w,b,kernel,kerneloption,span,framematrix,vector,dual)
+
+ svmval computes the prediction of a support vector machine
+       using the kernel function and its parameter for classification
+          or regression
+
+ INPUT
+ x    : input data
+ xsup : support vector list    
+ w    : weight
+ kernel : string containing the type of kernel
+ kerneloption : setting parameter of kernel.
+ b   : bias. this can be a column vector in case of semiparametric SVM
+ span : span matrix for semiparametric SVM
+
+   ----- 1D Frame Kernel -------------------------- 
+
+   framematrix  frame elements for frame kernel
+   vector       sampling position of frame elements
+     dual           dual frame
+
+ OUTPUT
+
+ y : the output ouf the network at point (vector or matrix) x
+
+       y = w phi(x) - b*span(x)
+          y1= w phi(x)    
+          y2=    b*span(x)
+             
+
+    See also <a href="svmclass.html" class="code" title="function [xsup,w,d,pos,timeps,alpha,obj]=svmclass(x,y,c,lambda,kernel,kerneloption,verbose,span, alphainit)">svmclass</a>,svmreg, <a href="svmkernel.html" class="code" title="function [K,option]=svmkernel(x,kernel,kerneloption,xsup,framematrix,vector,dual);">svmkernel</a></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="svmkernel.html" class="code" title="function [K,option]=svmkernel(x,kernel,kerneloption,xsup,framematrix,vector,dual);">svmkernel</a>	Usage  K=svkernel(x,kernel,kerneloption,xsup,frame,vector,dual);</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../BNCIevaluationSuite/multiclass/starClassify.html" class="code" title="function [ypredTrain,ypredTest]=starClassify(dataTrain, dataTest,parameters)">starClassify</a>	----------------------------------------------------------</li><li><a href="TestClassifier.html" class="code" title="function [resultlettre,perf]=TestClassifier(fileclassifier,filet,DirInfo,data,nbshotvec)">TestClassifier</a>	USAGE</li><li><a href="modelselclassifier.html" class="code" title="function modelselclassifier(DirInfo,file,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam)">modelselclassifier</a>	USAGE</li><li><a href="../../BNCIevaluationSuite/p300toolkit/svmRecallAndP300Averages.html" class="code" title="function [symbolMemberships]=svmRecallAndP300Averages(testData,svmRecallParameters,numberSequencesAverage,spellerMatrixNumberElements)">svmRecallAndP300Averages</a>	----------------------------------------------------------</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [y,y1,y2]=svmval(x,xsup,w,b,kernel,kerneloption,span,framematrix,vector,dual)</a>
+0002 
+0003 <span class="comment">% USAGE</span>
+0004 <span class="comment">% [y,y1,y2]=svmval(x,xsup,w,b,kernel,kerneloption,span,framematrix,vector,dual)</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% svmval computes the prediction of a support vector machine</span>
+0007 <span class="comment">%       using the kernel function and its parameter for classification</span>
+0008 <span class="comment">%          or regression</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% INPUT</span>
+0011 <span class="comment">% x    : input data</span>
+0012 <span class="comment">% xsup : support vector list</span>
+0013 <span class="comment">% w    : weight</span>
+0014 <span class="comment">% kernel : string containing the type of kernel</span>
+0015 <span class="comment">% kerneloption : setting parameter of kernel.</span>
+0016 <span class="comment">% b   : bias. this can be a column vector in case of semiparametric SVM</span>
+0017 <span class="comment">% span : span matrix for semiparametric SVM</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%   ----- 1D Frame Kernel --------------------------</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">%   framematrix  frame elements for frame kernel</span>
+0022 <span class="comment">%   vector       sampling position of frame elements</span>
+0023 <span class="comment">%     dual           dual frame</span>
+0024 <span class="comment">%</span>
+0025 <span class="comment">% OUTPUT</span>
+0026 <span class="comment">%</span>
+0027 <span class="comment">% y : the output ouf the network at point (vector or matrix) x</span>
+0028 <span class="comment">%</span>
+0029 <span class="comment">%       y = w phi(x) - b*span(x)</span>
+0030 <span class="comment">%          y1= w phi(x)</span>
+0031 <span class="comment">%          y2=    b*span(x)</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">%</span>
+0034 <span class="comment">%    See also svmclass,svmreg, svmkernel</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">%</span>
+0037 
+0038 <span class="comment">%    12/10/00 A. Rakotomamonjy Including SVM kernel</span>
+0039 
+0040 
+0041 <span class="comment">%</span>
+0042 <span class="comment">% Usual verifications</span>
+0043 <span class="comment">%</span>
+0044 semiparam=0;
+0045 <span class="keyword">if</span> nargin&lt;4
+0046     error(<span class="string">'Insufficients number of input arguments....'</span>);
+0047 <span class="keyword">end</span>;
+0048 <span class="keyword">if</span> nargin &lt; 5
+0049     kernel=<span class="string">'gaussian'</span>; 
+0050 <span class="keyword">end</span>;
+0051 <span class="keyword">if</span> nargin &lt; 6
+0052     kerneloption=1; 
+0053 <span class="keyword">end</span>;
+0054 <span class="keyword">if</span> nargin &lt;7
+0055     span=[];
+0056 <span class="keyword">end</span>;
+0057 <span class="keyword">if</span> ~isempty(span)
+0058     semiparam=1;
+0059 <span class="keyword">end</span>;
+0060 <span class="keyword">if</span> ~strcmp(kernel,<span class="string">'frame'</span>) | nargin&lt;8;
+0061     framematrix=[];
+0062     vector=[];
+0063 <span class="keyword">end</span>;
+0064 <span class="keyword">if</span> nargin &lt;10
+0065     dual=[];
+0066 <span class="keyword">end</span>;
+0067 
+0068 <span class="comment">% [nl nc] = size(x);</span>
+0069 <span class="comment">% if~isstruct(xsup)</span>
+0070 <span class="comment">%     [nsup nd] =  size(xsup);</span>
+0071 <span class="comment">%     if nc ~= nd</span>
+0072 <span class="comment">%         error('x and xsup must have the same number of column')</span>
+0073 <span class="comment">%     end</span>
+0074 <span class="comment">%</span>
+0075 <span class="comment">%</span>
+0076 <span class="comment">% end;</span>
+0077 
+0078 <span class="keyword">if</span>~isstruct(xsup)
+0079         [nsup nd] =  size(xsup);
+0080     <span class="keyword">else</span>
+0081         nsup=length(xsup.indice);
+0082         nd= xsup.dimension;
+0083 <span class="keyword">end</span>;
+0084 
+0085 <span class="keyword">if</span>~isstruct(x)
+0086         [nl nc] =  size(x);
+0087     <span class="keyword">else</span>
+0088         nl=length(x.indice);
+0089         nc= x.dimension;
+0090 <span class="keyword">end</span>;
+0091 <span class="keyword">if</span> nc ~= nd
+0092         error(<span class="string">'x and xsup must have the same number of column'</span>)
+0093  <span class="keyword">end</span>
+0094 
+0095 
+0096 <span class="comment">%</span>
+0097 <span class="comment">%</span>
+0098 <span class="comment">%</span>
+0099 <span class="comment">%keyboard</span>
+0100 <span class="comment">% these is a chunking procedure if number of sv is too large</span>
+0101 <span class="comment">% or number of data to test is to large.</span>
+0102 <span class="keyword">if</span>  ~strcmp(kernel,<span class="string">'numerical'</span>)&amp; ~isstruct(x) &amp; ~isstruct(xsup) &amp;(nl &gt; 1000 | nsup &gt; 1000)  ;
+0103     <span class="keyword">if</span> ~isempty(w)
+0104         chunksize=100;
+0105         chunks1=ceil(nsup/chunksize);
+0106         chunks2=ceil(nl/chunksize);
+0107         y2=zeros(nl,1);
+0108         <span class="keyword">for</span> ch1=1:chunks1
+0109             ind1=(1+(ch1-1)*chunksize) : min( nsup, ch1*chunksize);
+0110             
+0111             <span class="keyword">for</span> ch2=1:chunks2
+0112                 ind2=(1+(ch2-1)*chunksize) : min(nl, ch2*chunksize);
+0113                 kchunk=<a href="svmkernel.html" class="code" title="function [K,option]=svmkernel(x,kernel,kerneloption,xsup,framematrix,vector,dual);">svmkernel</a>(x(ind2,:),kernel,kerneloption,xsup(ind1,:));
+0114                 
+0115                 y2(ind2)=y2(ind2)+ kchunk*w(ind1) ;
+0116             <span class="keyword">end</span>;
+0117         <span class="keyword">end</span>
+0118         <span class="keyword">if</span> semiparam
+0119             y1=span*b;
+0120             y=y1+y2;
+0121         <span class="keyword">else</span>
+0122             <span class="comment">% keyboard</span>
+0123             y=y2+b;
+0124         <span class="keyword">end</span>;
+0125     <span class="keyword">else</span>
+0126         y=[];
+0127     <span class="keyword">end</span>;
+0128     
+0129 <span class="keyword">elseif</span> isfield(xsup,<span class="string">'datafile'</span>) | isfield(x,<span class="string">'datafile'</span>);  <span class="comment">% data is stored in file and not in memory</span>
+0130     
+0131     <span class="keyword">if</span> isstruct(xsup);
+0132         nsup=length(xsup.indice);
+0133     <span class="keyword">else</span>
+0134         nsup=size(xsup,1);
+0135     <span class="keyword">end</span>;
+0136     <span class="keyword">if</span> isstruct(x);
+0137         nl=length(x.indice);
+0138     <span class="keyword">else</span>
+0139         nl=size(x,1);
+0140     <span class="keyword">end</span>;
+0141     
+0142     chunksize=100;
+0143     chunks1=ceil(nsup/chunksize);
+0144     chunks2=ceil(nl/chunksize);
+0145     y2=zeros(nl,1);
+0146     <span class="keyword">for</span> ch1=1:chunks1
+0147         ind1=(1+(ch1-1)*chunksize) : min( nsup, ch1*chunksize);
+0148         
+0149         <span class="keyword">for</span> ch2=1:chunks2
+0150             ind2=(1+(ch2-1)*chunksize) : min(nl, ch2*chunksize);
+0151             
+0152             <span class="comment">%-----------------------------------------------------------</span>
+0153             <span class="keyword">if</span> ~isfield(x,<span class="string">'datafile'</span>)
+0154                 x1=x(ind2,:);
+0155             <span class="keyword">else</span>
+0156                 x1=fileaccess(x.datafile,x.indice(ind2),x.dimension);
+0157             <span class="keyword">end</span>;   
+0158             <span class="keyword">if</span> ~isfield(xsup,<span class="string">'datafile'</span>)
+0159                 x2=xsup(ind1,:);
+0160             <span class="keyword">else</span>
+0161                 x2=fileaccess(xsup.datafile,xsup.indice(ind1),xsup.dimension);
+0162             <span class="keyword">end</span>;   
+0163             kchunk=<a href="svmkernel.html" class="code" title="function [K,option]=svmkernel(x,kernel,kerneloption,xsup,framematrix,vector,dual);">svmkernel</a>(x1,kernel,kerneloption,x2);
+0164             <span class="comment">%kchunk=svmkernel(x(ind2,:),kernel,kerneloption,xsup(ind1,:));</span>
+0165             
+0166             y2(ind2)=y2(ind2)+ kchunk*w(ind1) ;
+0167         <span class="keyword">end</span>;
+0168     <span class="keyword">end</span>
+0169     <span class="keyword">if</span> semiparam
+0170         y1=span*b;
+0171         y=y1+y2;
+0172     <span class="keyword">else</span>
+0173         <span class="comment">% keyboard</span>
+0174         y=y2+b;
+0175     <span class="keyword">end</span>;
+0176     
+0177 <span class="keyword">else</span>
+0178     ps=<a href="svmkernel.html" class="code" title="function [K,option]=svmkernel(x,kernel,kerneloption,xsup,framematrix,vector,dual);">svmkernel</a>(x,kernel,kerneloption,xsup,framematrix,vector,dual);
+0179     
+0180     
+0181     <span class="keyword">if</span> semiparam
+0182         
+0183         y1=span*b;
+0184         <span class="keyword">if</span> isempty(w)
+0185             y=y1;
+0186             y2=zeros(size(y1));
+0187             
+0188         <span class="keyword">else</span>
+0189             y2=ps*w;
+0190             y = y1+y2;
+0191         <span class="keyword">end</span>;
+0192     <span class="keyword">else</span>
+0193         y=ps*w+b;
+0194     <span class="keyword">end</span>;
+0195 <span class="keyword">end</span>;</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

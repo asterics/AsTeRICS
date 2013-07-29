@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.MinMax"
+                   canonical_name="eu.asterics.component.processor.minmax.MinmaxInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Remember minimum and maximum of a signal</description>
+        <ports>
+            <inputPort id="in">
+                <description>Input port</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <outputPort id="max">
+                <description>Output of maximum value</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="min">
+                <description>Output of minimum value</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="reset">
+                <description>Reset min and max to default values on incoming event</description>
+            </eventListenerPort>
+        </events>  
+        <properties>
+            <property name="defaultMin"
+                      type="double"
+                      value="0"
+                      description="The default value for minimum"/>
+            <property name="defaultMax"
+                      type="double"
+                      value="10"
+                      description="The default value for maximum"/>
+        </properties>      
+    </componentType>
+</componentTypes>

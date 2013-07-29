@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.SensorBoard"
+                   canonical_name="eu.asterics.component.sensor.sensorboard.SensorboardInstance">
+        <type subtype="Sensor Modules">sensor</type>
+        <singleton>false</singleton>
+        <description>Interfaces the sensor board CIM which provides accelerometer, gyroscope, compass, IR-camera and pressure sensor</description>
+        <ports>
+
+			<outputPort id="accX">
+				<description>acceleration X</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="accY">
+				<description>acceleration Y</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="accZ">
+				<description>acceleration Z</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="gyroX">
+				<description>angle velocity X</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="gyroY">
+				<description>angle velocity Y</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="gyroZ">
+				<description>angle velocity Z</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="compassX">
+				<description>compass direction X</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="compassY">
+				<description>compass direction Y</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="compassZ">
+				<description>compass direction Z</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pt1X">
+				<description>infrared point 1 X position</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pt1Y">
+				<description>infrared point 1 Y position</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pt2X">
+				<description>infrared point 2 X position</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pt2Y">
+				<description>infrared point 2 Y position</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pt3X">
+				<description>infrared point 3 X position</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pt3Y">
+				<description>infrared point 3 Y position</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pt4X">
+				<description>infrared point 4 X position</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pt4Y">
+				<description>infrared point 4 Y position</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pressure">
+				<description>air pressure sensor</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="refreshInterval"
+				type="integer"
+				value="50"
+				description="refresh interval for sensor values"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

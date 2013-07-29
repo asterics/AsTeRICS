@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-services.displayguimgmt
+Bundle-SymbolicName: eu.asterics.mw.displayguimanagement
+Bundle-Version: 0.1.0
+Export-Package: eu.asterics.mw.displayguimanagement
+Require-Bundle: eu.asterics.mw.cimcommunication
+Bundle-Activator: eu.asterics.mw.displayguimanagement.DisplayBundleActivator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+DynamicImport-Package: *

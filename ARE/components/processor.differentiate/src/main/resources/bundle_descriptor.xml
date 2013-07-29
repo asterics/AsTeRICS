@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Differentiate"
+                   canonical_name="eu.asterics.component.processor.differentiate.DifferentiateInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Differentiate (subtract last input value from input value)</description>
+        <ports>
+            <inputPort id="in">
+                <description>Input port of differentiate</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <outputPort id="out">
+                <description>Output result value</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+
+        <properties>
+            <property name="resetValue"
+                      type="double"
+                      value="0"
+                      description="The reset value"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.JoystickCapture"
+                   canonical_name="eu.asterics.component.sensor.joystickcapture.JoystickCaptureInstance">
+        <type subtype="Standard Input Devices">sensor</type>
+        <singleton>true</singleton>
+        <description>Gets data from the first available Joystick device; up to 6 axis and 20 buttons can be used; Note the different order of buttons 1-4 in a PC-compatible gamepad to the PS3 sixaxis controller (HIDjoystick)</description>
+        <ports>
+
+			<outputPort id="x">
+				<description>X-Axis (Left-X)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="y">
+				<description>Y-Axis (Left-Y)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="z">
+				<description>Z-Axis (Right-X)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="r">
+				<description>R-Axis (Right-Y)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="u">
+				<description>U-Axis</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="v">
+				<description>V-Axis</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pov">
+				<description>Point-Of-Vision (Direction 1-8)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+            <eventTriggererPort id="pressedButton1">
+                <description>button 1 (Triangle) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton1">
+                <description>button 1 (Triangle) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton2">
+                <description>button 2 (Circle) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton2">
+                <description>button 2 (Circle) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton3">
+                <description>button 3 (Cross) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton3">
+                <description>button 3 (Cross) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton4">
+                <description>button 4 (Square) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton4">
+                <description>button 4 (Square) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton5">
+                <description>button 5 (L1) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton5">
+                <description>button 5 (L1) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton6">
+                <description>button 6 (R1) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton6">
+                <description>button 6 (R1) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton7">
+                <description>button 7 (L2) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton7">
+                <description>button 7 (L2) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton8">
+                <description>button 8 (R2) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton8">
+                <description>button 8 (R2) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton9">
+                <description>button 9 (Select) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton9">
+                <description>button 9 (Select) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton10">
+                <description>button 10 (Start) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton10">
+                <description>button 10 (Start) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton11">
+                <description>button 11 has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton11">
+                <description>button 11 has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton12">
+                <description>button 12 has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton12">
+                <description>button 12 has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton13">
+                <description>button 13 (PS) has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton13">
+                <description>button 13 (PS) has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton14">
+                <description>button 14 has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton14">
+                <description>button 14 has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton15">
+                <description>button 15 has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton15">
+                <description>button 15 has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton16">
+                <description>button 16 has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton16">
+                <description>button 16 has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton17">
+                <description>button 17 has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton17">
+                <description>button 17 has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton18">
+                <description>button 18 has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton18">
+                <description>button 18 has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton19">
+                <description>button 19 has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton19">
+                <description>button 19 has been released</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="pressedButton20">
+                <description>button 20 has been pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="releasedButton20">
+                <description>button 20 has been released</description>
+            </eventTriggererPort>
+
+		</events>			
+        <properties>
+            <property name="updatePeriod"
+                      type="integer"
+                      value="100"
+                      description="the update period for getting new values from the joystick device (in milliseconds)"/>
+			
+        </properties>
+
+    </componentType>
+</componentTypes>

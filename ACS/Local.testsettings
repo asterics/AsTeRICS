@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestSettings name="Lokal" id="b0bd03e9-0a30-4f52-befd-514834c7204e" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>Dies sind die standardmäßigen Testeinstellungen für einen lokalen Testlauf.</Description>
+  <Deployment enabled="false" />
+  <Execution>
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
+    <AgentRule name="LocalMachineDefaultRole">
+      <DataCollectors>
+        <DataCollector uri="datacollector://microsoft/TraceDebugger/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TraceCollector.TraceDebuggerDataCollector, Microsoft.VisualStudio.TraceCollector, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="IntelliTrace">
+        </DataCollector>
+        <DataCollector uri="datacollector://microsoft/EventLog/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.EventLog.EventLogDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.EventLog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Ereignisprotokoll">
+        </DataCollector>
+        <DataCollector uri="datacollector://microsoft/CodeCoverage/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.CodeCoverage.CoveragePlugIn, Microsoft.VisualStudio.QualityTools.Plugins.CodeCoverage, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Codeabdeckung">
+        </DataCollector>
+        <DataCollector uri="datacollector://microsoft/TestImpact/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TraceCollector.TestImpactDataCollector, Microsoft.VisualStudio.TraceCollector, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Testauswirkung">
+        </DataCollector>
+        <DataCollector uri="datacollector://microsoft/SystemInfo/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo.SystemInfoDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Systeminformationen">
+        </DataCollector>
+      </DataCollectors>
+    </AgentRule>
+  </Execution>
+</TestSettings>

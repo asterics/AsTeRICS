@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.PlatformLCD"
+                   canonical_name="eu.asterics.component.actuator.platformlcd.PlatformLCDInstance">
+        <type subtype="Personal Platform">actuator</type>
+        <singleton>false</singleton>
+        <description>LC-Display actuator for Personal Platform display control</description>
+        <ports>
+            <inputPort id="input">
+                <description>Input port for signal</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+        </ports>
+        <properties>
+        </properties>
+    </componentType>
+</componentTypes>

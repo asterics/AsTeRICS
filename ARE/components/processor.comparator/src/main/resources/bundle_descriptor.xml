@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Comparator"
+                   canonical_name="eu.asterics.component.processor.comparator.ComparatorInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Comparator for two inputs</description>
+        <ports>
+            <inputPort id="inA">
+                <description>Input port 1 of comparator</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="inB">
+                <description>Input port 2 of comparator</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            
+            <outputPort id="output">
+                <description>Output signal of comparator</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <events>
+
+            <eventTriggererPort id="conditionTrue">
+                <description>Event port triggers if condition becomes true</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="conditionFalse">
+                <description>Event port triggers if condition becomes false</description>
+            </eventTriggererPort>
+        </events>
+        <properties>
+            <property name="condition"
+                      type="integer"
+                      value="0"
+                      combobox="a greater b//a equals b//a lower b//a greater threshold//a equals threshold//a lower threshold//a between threshold and threshold2"
+                      description="condition for even generation"/>
+            <property name="outputMode"
+                      type="integer"
+                      value="2"
+                      combobox="output max//output min//output a if condition met"
+                      description="mode for output signal"/>
+            <property name="eventMode"
+                      type="integer"
+                      value="0"
+                      combobox="create event only if condition changes//create event on every incoming value"
+                      description="mode for event generation"/>
+            <property name="threshold"
+                      type="double"
+                      value="1"
+                      description="threshold for signal comparison with constant value"/>
+            <property name="threshold2"
+                      type="double"
+                      value="10"
+                      description="threshold2 for signal range comparison (a between threshold and threshold2)"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

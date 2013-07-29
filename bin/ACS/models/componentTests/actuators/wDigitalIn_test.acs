@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="07.02.2013_1728" version="20130320">
+  <components>
+    <component id="DigitalIn.1" type_id="asterics.DigitalIn">
+      <description>GPIO CIM sensor for inputs</description>
+      <ports />
+      <properties>
+        <property name="activateEventIn1" value="false" />
+        <property name="activateEventIn2" value="false" />
+        <property name="activateEventIn3" value="false" />
+        <property name="activateEventIn4" value="false" />
+        <property name="activateEventIn5" value="false" />
+        <property name="activateEventIn6" value="false" />
+        <property name="periodicUpdate" value="0" />
+        <property name="uniqueID" value="0xb01-0x8000003" />
+      </properties>
+      <layout>
+        <posX>106</posX>
+        <posY>111</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>379</posX>
+        <posY>86</posY>
+      </layout>
+      <gui>
+        <posX>50</posX>
+        <posY>600</posY>
+        <width>3000</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="WavefilePlayer.1" type_id="asterics.WavefilePlayer">
+      <description>Plays .Wav - soundfiles on event or filename reception. </description>
+      <ports>
+        <inputPort portTypeID="wavefileName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="data\sounds\7.wav" />
+      </properties>
+      <layout>
+        <posX>493</posX>
+        <posY>228</posY>
+      </layout>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="in1High_eventDisplay">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_eventDisplay">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1High_Start">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1High" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="in1Low_Start">
+      <sources>
+        <source>
+          <component id="DigitalIn.1" />
+          <eventPort id="in1Low" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>3588</width>
+      <height>1911</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

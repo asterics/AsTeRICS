@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of eegstarlab2RakotoSplit</title>
+  <meta name="keywords" content="eegstarlab2RakotoSplit">
+  <meta name="description" content="----------------------------------------------------------">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300toolkit -->
+<h1>eegstarlab2RakotoSplit
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>----------------------------------------------------------</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function convertedData = eegstarlab2RakotoSplit(data,decimationFactor, options) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">----------------------------------------------------------
+ EEGStarlab Toolbox
+ (C) Starlab S.L.
+----------------------------------------------------------
+ eegstarlab2Rakoto
+ Performs a format conversion between EEGStarlab toolbox and Rakotomamonjy
+ code formats. This function is only used for Anton's internal tests (change according in
+ svmMoedlSelection)
+----------------------------------------------------------
+Inputs
+ data:    structure with data set signals and ground truth
+       signals: EEG data in Starlab Data Cube format - matrix channels X
+                samples X epochs  (e.g. in the paper 64 x N x 15300)
+       GT:      ground truth for each epoch. In case of p300 data we have agreed the following
+                GT structure:
+                - First column: 0 means unattended stimuli, 1 means attended stimuli
+                - Second Column: Linear code (k) of the image shown in presentation protocol.
+                This maps into a row (i) or column (j) index through the expression:
+                   i=k if k&lt;=R for rows, and j=R+k for columns, where R is the number of  
+                   rows and being rows indexed from left to right and columns from top to bottom.
+                - Third Column: Code of the attended stimuli (character/image/icon) for the duration of
+                each run. This is the code of what we are trying to detect through the
+                p300 wave analysis.
+               Data type - matrix epochs x 3 ()
+ decimationFactor: Factor to be applied in the decimation. In the Rakotomamonjy code this
+                   is 12, which delivers sequences of 14 samples as output of this function
+----------------------------------------------------------
+Outputs
+ convertedData: structure with data set signals and ground truth after
+ preprocessing and converted to Rakotomamonjy's code format
+                
+----------------------------------------------------------
+Dependencies
+ 
+----------------------------------------------------------
+ Version    Date        Author        Changes 
+ v1        2011/01/11   AAE         First version
+----------------------------------------------------------
+ EX.
+ 
+--------------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function convertedData = eegstarlab2RakotoSplit(data,decimationFactor, options)</a>
+0002 <span class="comment">%----------------------------------------------------------</span>
+0003 <span class="comment">% EEGStarlab Toolbox</span>
+0004 <span class="comment">% (C) Starlab S.L.</span>
+0005 <span class="comment">%----------------------------------------------------------</span>
+0006 <span class="comment">% eegstarlab2Rakoto</span>
+0007 <span class="comment">% Performs a format conversion between EEGStarlab toolbox and Rakotomamonjy</span>
+0008 <span class="comment">% code formats. This function is only used for Anton's internal tests (change according in</span>
+0009 <span class="comment">% svmMoedlSelection)</span>
+0010 <span class="comment">%----------------------------------------------------------</span>
+0011 <span class="comment">%Inputs</span>
+0012 <span class="comment">% data:    structure with data set signals and ground truth</span>
+0013 <span class="comment">%       signals: EEG data in Starlab Data Cube format - matrix channels X</span>
+0014 <span class="comment">%                samples X epochs  (e.g. in the paper 64 x N x 15300)</span>
+0015 <span class="comment">%       GT:      ground truth for each epoch. In case of p300 data we have agreed the following</span>
+0016 <span class="comment">%                GT structure:</span>
+0017 <span class="comment">%                - First column: 0 means unattended stimuli, 1 means attended stimuli</span>
+0018 <span class="comment">%                - Second Column: Linear code (k) of the image shown in presentation protocol.</span>
+0019 <span class="comment">%                This maps into a row (i) or column (j) index through the expression:</span>
+0020 <span class="comment">%                   i=k if k&lt;=R for rows, and j=R+k for columns, where R is the number of</span>
+0021 <span class="comment">%                   rows and being rows indexed from left to right and columns from top to bottom.</span>
+0022 <span class="comment">%                - Third Column: Code of the attended stimuli (character/image/icon) for the duration of</span>
+0023 <span class="comment">%                each run. This is the code of what we are trying to detect through the</span>
+0024 <span class="comment">%                p300 wave analysis.</span>
+0025 <span class="comment">%               Data type - matrix epochs x 3 ()</span>
+0026 <span class="comment">% decimationFactor: Factor to be applied in the decimation. In the Rakotomamonjy code this</span>
+0027 <span class="comment">%                   is 12, which delivers sequences of 14 samples as output of this function</span>
+0028 <span class="comment">%----------------------------------------------------------</span>
+0029 <span class="comment">%Outputs</span>
+0030 <span class="comment">% convertedData: structure with data set signals and ground truth after</span>
+0031 <span class="comment">% preprocessing and converted to Rakotomamonjy's code format</span>
+0032 <span class="comment">%</span>
+0033 <span class="comment">%----------------------------------------------------------</span>
+0034 <span class="comment">%Dependencies</span>
+0035 <span class="comment">%</span>
+0036 <span class="comment">%----------------------------------------------------------</span>
+0037 <span class="comment">% Version    Date        Author        Changes</span>
+0038 <span class="comment">% v1        2011/01/11   AAE         First version</span>
+0039 <span class="comment">%----------------------------------------------------------</span>
+0040 <span class="comment">% EX.</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">%--------------------------------------------------------------</span>
+0043 
+0044 dimensions = size(data.signal);
+0045 nSamples = dimensions(2);
+0046 nChannels = dimensions(1);
+0047 <span class="comment">% WE NEED TO DECIMATE THE SIGNAL, AS IT'S TOO LONG</span>
+0048 firstDecimationFactor = 8;
+0049 freq=2048.0;
+0050 freq = freq / firstDecimationFactor;
+0051 lowcut = 0.1;
+0052 highcut = 20;
+0053 R=0.5;
+0054 W = [lowcut*2/freq highcut*2/freq];
+0055 order = 4;
+0056 [b,a] = cheby1(order,R,W);
+0057 gradient = [1 find(diff(data.GT(:,3)')~=0)+1];
+0058 nEpochs = length(gradient);
+0059 indexes = [gradient, dimensions(3)+1];
+0060 fooData = [];
+0061 fooGT = [];
+0062 dictionary = [<span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZ'</span>];
+0063 <span class="keyword">for</span> i=1:nEpochs
+0064     x = [];
+0065     <span class="comment">% follow from index(i) to index(i+1) and extract samples</span>
+0066     <span class="keyword">for</span> k=indexes(i):indexes(i+1)-1
+0067         xaux = [];
+0068         <span class="keyword">for</span> j=1:nChannels
+0069             xaux = [xaux,double(data.signal(j,:,k))];    
+0070         <span class="keyword">end</span>
+0071         x = [x;xaux];
+0072     <span class="keyword">end</span>
+0073     oneGT=data.GT(indexes(i):indexes(i+1)-1,1);
+0074     oneCode=data.GT(indexes(i):indexes(i+1)-1,2);
+0075     oneTarget=dictionary(data.GT(indexes(i),3));
+0076     
+0077     <span class="comment">% need to create a cell array, on cell for each epoch</span>
+0078     fooData{i}.x = x;
+0079     fooData{i}.y = oneGT*2-1;
+0080     fooData{i}.code=oneCode;
+0081     fooData{i}.target=oneTarget;
+0082     fooData{i}.nbChannels = nChannels;
+0083     fooData{i}.channel = [1:nChannels];
+0084     fooData{i}.triallength = 49;
+0085 <span class="keyword">end</span>
+0086 convertedData = fooData;</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

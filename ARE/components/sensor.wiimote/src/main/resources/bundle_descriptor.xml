@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.WiiMote"
+                   canonical_name="eu.asterics.component.sensor.wiimote.WiiMoteInstance">
+        <type subtype="Standard Input Devices">sensor</type>
+        <singleton>true</singleton>
+        <description>Interfaces to the WiiMote via Bluetooth HID and provides data from Wiimote and Nunchuck controller</description>
+        <ports>
+
+			<outputPort id="pitch">
+				<description>pitch orientation  of the WiiMote in degrees</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="roll">
+				<description>roll orientation  of the WiiMote in degrees</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="point1X">
+				<description>IR camera point1 tracking X position [0..1]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="point1Y">
+				<description>IR camera point1 tracking Y position [0..1]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="point2X">
+				<description>IR camera point2 tracking X position [0..1]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="point2Y">
+				<description>IR camera point2 tracking Y position [0..1]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="nunX">
+				<description>X position of the Nunchuck Joystick [-1..1]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="nunY">
+				<description>Y position of the Nunchuck Joystick [-1..1]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="battery">
+				<description>battery status [0-100%]</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="pressedUp">
+				<description>direction up pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedUp">
+				<description>direction up released on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressedDown">
+				<description>direction down pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedDown">
+				<description>direction down released on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressedLeft">
+				<description>direction left pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedLeft">
+				<description>direction left released on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressedRight">
+				<description>direction right pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedRight">
+				<description>direction right released on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressedA">
+				<description>button A pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedA">
+				<description>button A released on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressedB">
+				<description>button B pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedB">
+				<description>button B released on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressed1">
+				<description>button 1 pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="released1">
+				<description>button 1 released on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressed2">
+				<description>button 2 pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="released2">
+				<description>button 2 released on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressedPlus">
+				<description>button + pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedPlus">
+				<description>button + released on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressedMinus">
+				<description>button - pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedMinus">
+				<description>button - released on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressedHome">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedHome">
+				<description>button Home pressed on the WiiMote</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressedNunchuckC">
+				<description>button C pressed on the Nunchuck extension</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedNunchuckC">
+				<description>button C released on the Nunchuck extension</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="pressedNunchuckZ">
+				<description>button Z pressed on the Nunchuck extension</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="releasedNunchuckZ">
+				<description>button Z released on the Nunchuck extension</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+            <property name="updatePeriod"
+                      type="integer"
+                      value="5"
+                      description="the update period for getting new values from the WiiMote device (in milliseconds)"/>	
+        </properties>
+    </componentType>
+</componentTypes>

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.MouseCursorIcon"
+                   canonical_name="eu.asterics.component.actuator.mousecursoricon.MouseCursorIconInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>sets different cursor icnos for the local mouse cursor</description>
+        <ports>
+			<inputPort id="iconName">
+				<description>filename of the icon</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="setIcon1">
+				<description>activates Icon1</description>
+			</eventListenerPort>
+			<eventListenerPort id="setIcon2">
+				<description>activates Icon2</description>
+			</eventListenerPort>
+			<eventListenerPort id="setIcon3">
+				<description>activates Icon3</description>
+			</eventListenerPort>
+			<eventListenerPort id="setIcon4">
+				<description>activates Icon4</description>
+			</eventListenerPort>
+			<eventListenerPort id="setIcon5">
+				<description>activates Icon5</description>
+			</eventListenerPort>
+			<eventListenerPort id="setIcon6">
+				<description>activates Icon6</description>
+			</eventListenerPort>
+			<eventListenerPort id="setIcon7">
+				<description>activates Icon7</description>
+			</eventListenerPort>
+			<eventListenerPort id="setIcon8">
+				<description>activates Icon8</description>
+			</eventListenerPort>
+			<eventListenerPort id="setIcon9">
+				<description>activates Icon9</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="icon1name"
+				type="string"
+				value="arrow"
+				description="filename of the icon"/>
+			<property name="icon2name"
+				type="string"
+				value="arrow"
+				description="filename of the icon"/>
+			<property name="icon3name"
+				type="string"
+				value="arrow"
+				description="filename of the icon"/>
+			<property name="icon4name"
+				type="string"
+				value="arrow"
+				description="filename of the icon"/>
+			<property name="icon5name"
+				type="string"
+				value="arrow"
+				description="filename of the icon"/>
+			<property name="icon6name"
+				type="string"
+				value="arrow"
+				description="filename of the icon"/>
+			<property name="icon7name"
+				type="string"
+				value="arrow"
+				description="filename of the icon"/>
+			<property name="icon8name"
+				type="string"
+				value="arrow"
+				description="filename of the icon"/>
+			<property name="icon9name"
+				type="string"
+				value="arrow"
+				description="filename of the icon"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

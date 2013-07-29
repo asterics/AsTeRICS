@@ -1,0 +1,316 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="27/08/2012_1344" version="20130320">
+  <modelDescription>
+    <shortDescription>This model aims to personalize the blink detection parameters used in the
+BlinkDetector plugin.</shortDescription>
+    <requirements>Enobio (cap and band montage)</requirements>
+    <description>It has been proved that people suffering from severe motor disabilities do not 
+control their intentional blinks in the same way as healthy people do. Thus, this
+model aims to customize the parameters of the BlinkDetector plugin (maxThreshold,
+minThreshold, simple blink length and double blink separation) in order to adapt it to 
+each user.</description>
+  </modelDescription>
+  <components>
+    <component id="BlinkDetectorTrainer.1" type_id="asterics.BlinkDetectorTrainer">
+      <description>Blink detector trainer</description>
+      <ports>
+        <inputPort portTypeID="Input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="Protocol">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Results">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="language" value="0" />
+        <property name="sampleRate" value="250" />
+      </properties>
+      <layout>
+        <posX>227</posX>
+        <posY>347</posY>
+      </layout>
+    </component>
+    <component id="Enobio.1" type_id="asterics.Enobio">
+      <description>Enobio sensor (ECG, EEG and EMG)</description>
+      <ports>
+        <outputPort portTypeID="Channel1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Status">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="IsChannel1Activated" value="true" />
+        <property name="IsChannel2Activated" value="True" />
+        <property name="IsChannel3Activated" value="True" />
+        <property name="IsChannel4Activated" value="True" />
+        <property name="HighPassFilterInChannel1" value="True" />
+        <property name="HighPassFilterInChannel2" value="True" />
+        <property name="HighPassFilterInChannel3" value="True" />
+        <property name="HighPassFilterInChannel4" value="True" />
+        <property name="LineNoiseFilter" value="True" />
+      </properties>
+      <layout>
+        <posX>47</posX>
+        <posY>141</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Instructions" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>470</posX>
+        <posY>67</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>933</posY>
+        <width>9438</width>
+        <height>711</height>
+      </gui>
+    </component>
+    <component id="EnobioDisplay.1" type_id="asterics.EnobioDisplay">
+      <description>Enobio actuator which displays the Enobio data</description>
+      <ports>
+        <inputPort portTypeID="Channel1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Channel2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Channel3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Channel4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Status">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>279</posX>
+        <posY>121</posY>
+      </layout>
+      <gui>
+        <posX>2188</posX>
+        <posY>2600</posY>
+        <width>5200</width>
+        <height>6089</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="buttonCaption1" value="Start" />
+        <property name="buttonCaption2" value="Stop" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>474</posX>
+        <posY>313</posY>
+      </layout>
+      <gui>
+        <posX>213</posX>
+        <posY>3711</posY>
+        <width>1600</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Results" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>612</posX>
+        <posY>98</posY>
+      </layout>
+      <gui>
+        <posX>462</posX>
+        <posY>1844</posY>
+        <width>8412</width>
+        <height>544</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.14">
+      <source>
+        <component id="BlinkDetectorTrainer.1" />
+        <port id="Results" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Channel1" />
+      </source>
+      <target>
+        <component id="EnobioDisplay.1" />
+        <port id="Channel1" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Channel2" />
+      </source>
+      <target>
+        <component id="EnobioDisplay.1" />
+        <port id="Channel2" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Channel3" />
+      </source>
+      <target>
+        <component id="EnobioDisplay.1" />
+        <port id="Channel3" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Channel4" />
+      </source>
+      <target>
+        <component id="EnobioDisplay.1" />
+        <port id="Channel4" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Status" />
+      </source>
+      <target>
+        <component id="EnobioDisplay.1" />
+        <port id="Status" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="Enobio.1" />
+        <port id="Channel4" />
+      </source>
+      <target>
+        <component id="BlinkDetectorTrainer.1" />
+        <port id="Input" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="BlinkDetectorTrainer.1" />
+        <port id="Protocol" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_StartProtocol">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="BlinkDetectorTrainer.1" />
+          <eventPort id="StartProtocol" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_StopProtocol">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="BlinkDetectorTrainer.1" />
+          <eventPort id="StopProtocol" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9988</width>
+      <height>8800</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

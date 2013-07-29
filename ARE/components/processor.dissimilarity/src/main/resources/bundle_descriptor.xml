@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Dissimilarity"
+                   canonical_name="com.starlab.component.processor.dissimilarity.DissimilarityInstance">
+        <type subtype="DSP and Feature Detection">processor</type>
+        <singleton>false</singleton>
+        <description>Dissimilarity processor</description>
+        <ports>
+            <inputPort id="input1">
+                <description>Input port 1</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="input2">
+                <description>Input port 2</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <outputPort id="output">
+                <description>Output port</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <properties>
+            <property name="DataLen"
+                      type="integer"
+					  value="100"
+                      description="Length of the of signals over what to calculate the dissimilarity"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

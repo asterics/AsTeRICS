@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.FS20CommandInterpreter"
+                   canonical_name="eu.asterics.component.processor.fs20commandinterpreter.FS20CommandInterpreterInstance">
+        <type subtype="Home Control">processor</type>
+        <singleton>false</singleton>
+        <description>Plugin to interprete FS20 commandos (including housecode and sendaddress) and fireing events regarding to the command</description>
+        <ports>
+			<inputPort id="command">
+				<description>The FS 20 command including housecode and sender address</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+        </ports>
+        
+		<events>
+			<eventTriggererPort id="off">
+				<description>Switch off</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel1">
+				<description>Light on 6,25%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel2">
+				<description>Light on 12,5%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel3">
+				<description>Light on 18,75%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel4">
+				<description>Light on 25%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel5">
+				<description>Light on 31,25%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel6">
+				<description>Light on 37,5%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel7">
+				<description>Light on 43,75%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel8">
+				<description>Light on 50%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel9">
+				<description>Light on 56,25%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel10">
+				<description>Light on 62,5%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel11">
+				<description>Light on 68,75%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel12">
+				<description>Light on 75%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel13">
+				<description>Light on 81,25%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel14">
+				<description>Light on 87,5%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel15">
+				<description>Light on 93,75%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onLevel16">
+				<description>Light on 100%</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onOldLevel">
+				<description>Switch on old level</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="toggle">
+				<description>Toggle between off an on, old value</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="dimUp">
+				<description>Dim up for one step</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="dimDown">
+				<description>Dim down for one step</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="dimUpAndDown">
+				<description>Dim up, then down, then up etc. </description>
+			</eventTriggererPort>
+			<eventTriggererPort id="programTimer">
+				<description>Start/stop programmable timer</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="offForTimerThenOldLevel">
+				<description>Off for internal timer, than old value</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onForTimerThenOff">
+				<description>On for internal timer, than off</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onOldLevelForTimerThenOff">
+				<description>On (old value) for internal timer, then off</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="reset">
+				<description>reset to factory default</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onForTimerThenOldLevel">
+				<description>On for internal timer, then old value</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="onOldLevelForTimerThenPreviousState">
+				<description>On (old value) for internal timer, then old value</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="Housecode"
+				type="integer"
+				value="11111111"
+				description="The housecode"/>
+			<property name="Sendaddress"
+				type="integer"
+				value="1111"
+				description="The address of the sender"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

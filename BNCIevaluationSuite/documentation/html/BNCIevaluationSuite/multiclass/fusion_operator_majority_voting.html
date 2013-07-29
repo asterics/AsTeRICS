@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of fusion_operator_majority_voting</title>
+  <meta name="keywords" content="fusion_operator_majority_voting">
+  <meta name="description" content="----------------------------------------------------------">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html multiclass -->
+<h1>fusion_operator_majority_voting
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>----------------------------------------------------------</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function maj_voted=fusion_operator_majority_voting(classes) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">----------------------------------------------------------
+ EEGStarlab Toolbox
+ (C) Starlab S.L.
+----------------------------------------------------------
+This function takes the matrix 'classes'
+and it outputs a column vector with the fusion decision, based on a
+democratic voting.
+If two classes are equally voted, the output for this case would be a -X
+where X is the decimal representation of a binary number, where a 1 appear
+in each class a draw occurs. As an example imagine we have
+ 1 0 1 0, that means a draw occurs in class 1 and 3. The decimal output
+ for this case would be -10.
+----------------------------------------------------------
+Inputs
+ -classes: matrix M*N classifier outputs as input:
+
+       Classifier1 classifier2 ... classifierN
+test 1    1            2       ...     3
+test 2    1            2       ...     3
+...      ...      ...  ...     ...
+test M    1            2       ...     3
+----------------------------------------------------------
+Outputs
+ -maj_voted:   a column vector with the fusion decision, based on a
+               democratic majority voting - Vector trials X 1
+----------------------------------------------------------
+Dependencies
+
+----------------------------------------------------------
+ Version   Date        Author  Changes 
+ v1        30/10/08    AR      First version
+ v2        10/10/10    ASF     Header update.
+----------------------------------------------------------
+ EX.
+
+--------------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="starFusion.html" class="code" title="function varargout=starFusion(testData, GT, data, fusionOp, decisionThreshold)">starFusion</a>	</li><li><a href="starFusionMultiClass.html" class="code" title="function varargout=starFusionMultiClass(testData, GT, data, fusionOp, decisionThreshold)">starFusionMultiClass</a>	function that performs the fusion of streams of several binary class classificators</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function maj_voted=fusion_operator_majority_voting(classes)</a>
+0002 
+0003 <span class="comment">%----------------------------------------------------------</span>
+0004 <span class="comment">% EEGStarlab Toolbox</span>
+0005 <span class="comment">% (C) Starlab S.L.</span>
+0006 <span class="comment">%----------------------------------------------------------</span>
+0007 <span class="comment">%This function takes the matrix 'classes'</span>
+0008 <span class="comment">%and it outputs a column vector with the fusion decision, based on a</span>
+0009 <span class="comment">%democratic voting.</span>
+0010 <span class="comment">%If two classes are equally voted, the output for this case would be a -X</span>
+0011 <span class="comment">%where X is the decimal representation of a binary number, where a 1 appear</span>
+0012 <span class="comment">%in each class a draw occurs. As an example imagine we have</span>
+0013 <span class="comment">% 1 0 1 0, that means a draw occurs in class 1 and 3. The decimal output</span>
+0014 <span class="comment">% for this case would be -10.</span>
+0015 <span class="comment">%----------------------------------------------------------</span>
+0016 <span class="comment">%Inputs</span>
+0017 <span class="comment">% -classes: matrix M*N classifier outputs as input:</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%       Classifier1 classifier2 ... classifierN</span>
+0020 <span class="comment">%test 1    1            2       ...     3</span>
+0021 <span class="comment">%test 2    1            2       ...     3</span>
+0022 <span class="comment">%...      ...      ...  ...     ...</span>
+0023 <span class="comment">%test M    1            2       ...     3</span>
+0024 <span class="comment">%----------------------------------------------------------</span>
+0025 <span class="comment">%Outputs</span>
+0026 <span class="comment">% -maj_voted:   a column vector with the fusion decision, based on a</span>
+0027 <span class="comment">%               democratic majority voting - Vector trials X 1</span>
+0028 <span class="comment">%----------------------------------------------------------</span>
+0029 <span class="comment">%Dependencies</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%----------------------------------------------------------</span>
+0032 <span class="comment">% Version   Date        Author  Changes</span>
+0033 <span class="comment">% v1        30/10/08    AR      First version</span>
+0034 <span class="comment">% v2        10/10/10    ASF     Header update.</span>
+0035 <span class="comment">%----------------------------------------------------------</span>
+0036 <span class="comment">% EX.</span>
+0037 <span class="comment">%</span>
+0038 <span class="comment">%--------------------------------------------------------------</span>
+0039 
+0040 
+0041 number_of_classes=max(max(classes));
+0042 
+0043 n = histc(classes,[1:number_of_classes],2);<span class="comment">%I count how many votes each class has.</span>
+0044 
+0045 [a,maj_voted]=max(n,[],2);<span class="comment">%I select the class with more votes.</span>
+0046 
+0047 <span class="comment">%find the row indexes where a draw exist</span>
+0048 index=[];
+0049 <span class="keyword">for</span> i=1:length(a)
+0050     <span class="keyword">if</span> length(find(n(i,:)==a(i)))&gt;1
+0051         index=[index;i];
+0052     <span class="keyword">end</span>
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="comment">%make all values diferent to 0 in 'n' equal to 1 (I pass 'n' to a binary format)</span>
+0056 n(n~=0)=1;
+0057 to_binarize=n(index,:);
+0058 
+0059 <span class="comment">%binarize the rows where a draw occurs and put the binary code in his</span>
+0060 <span class="comment">%right place in the final output 'maj_voted'</span>
+0061 all_str_bin=[];
+0062 <span class="keyword">for</span> i=1:length(index)
+0063 str_bin=num2str(to_binarize(i,:));
+0064 a=bin2dec(str_bin);
+0065 all_str_bin=[all_str_bin,bin2dec(str_bin)];
+0066 maj_voted(index(i))=a*-1;
+0067 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

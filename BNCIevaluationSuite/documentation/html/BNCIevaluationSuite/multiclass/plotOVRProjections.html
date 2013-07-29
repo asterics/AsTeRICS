@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of plotOVRProjections</title>
+  <meta name="keywords" content="plotOVRProjections">
+  <meta name="description" content="[dataTrain,dataTest]=openFiles()">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html multiclass -->
+<h1>plotOVRProjections
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[dataTrain,dataTest]=openFiles()</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">[dataTrain,dataTest]=openFiles()</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%[dataTrain,dataTest]=openFiles()</span>
+0002 
+0003 c1=dataTrain(1,1);
+0004 c2=dataTrain(1,2);
+0005 c3=dataTrain(1,3);
+0006 c4=dataTrain(1,4);
+0007 minNumberChannels=min([size(c1.features,1),size(c2.features,1),size(c3.features,1),size(c4.features,1)])
+0008 <span class="keyword">for</span> chanel=1:minNumberChannels
+0009 
+0010 figure
+0011 a=squeeze(c4.features(chanel,:,c4.GT==1));
+0012 plot(a(:))
+0013 hold all
+0014 a=squeeze(c4.features(chanel,:,c4.GT==0));
+0015 plot(a(:))
+0016 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection training on class 4 space'</span>])
+0017 
+0018 figure
+0019 a=squeeze(c3.features(chanel,:,c3.GT==1));
+0020 plot(a(:))
+0021 hold all
+0022 a=squeeze(c3.features(chanel,:,c3.GT==0));
+0023 plot(a(:))
+0024 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection training on class 3 space'</span>])
+0025 
+0026 figure
+0027 a=squeeze(c2.features(chanel,:,c2.GT==1));
+0028 plot(a(:))
+0029 hold all
+0030 a=squeeze(c2.features(chanel,:,c2.GT==0));
+0031 plot(a(:))
+0032 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection training on class 2 space'</span>])
+0033 
+0034 figure
+0035 a=squeeze(c1.features(chanel,:,c1.GT==1));
+0036 plot(a(:))
+0037 hold all
+0038 a=squeeze(c1.features(chanel,:,c1.GT==0));
+0039 plot(a(:))
+0040 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection training on class 1 space'</span>])
+0041 
+0042 figure
+0043 a=squeeze(c1.features(chanel,:,c1.GT==1));
+0044 plot(a(:))
+0045 hold all
+0046 a=squeeze(c1.features(chanel,:,c2.GT==1));
+0047 plot(a(:))
+0048 a=squeeze(c1.features(chanel,:,c3.GT==1));
+0049 plot(a(:))
+0050 a=squeeze(c1.features(chanel,:,c4.GT==1));
+0051 plot(a(:))
+0052 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection training on class 1 space'</span>])
+0053 
+0054 c1=dataTest(1,1);
+0055 c2=dataTest(1,2);
+0056 c3=dataTest(1,3);
+0057 c4=dataTest(1,4);
+0058 
+0059 figure
+0060 a=squeeze(c1.features(chanel,:,c1.GT==1));
+0061 plot(a(:))
+0062 hold all
+0063 a=squeeze(c1.features(chanel,:,c2.GT==1));
+0064 plot(a(:))
+0065 a=squeeze(c1.features(chanel,:,c3.GT==1));
+0066 plot(a(:))
+0067 a=squeeze(c1.features(chanel,:,c4.GT==1));
+0068 plot(a(:))
+0069 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection test on class 1 space'</span>])
+0070 
+0071 figure
+0072 a=squeeze(c1.features(chanel,:,c1.GT==1));
+0073 plot(a(:))
+0074 hold all
+0075 a=squeeze(c1.features(chanel,:,c1.GT==0));
+0076 plot(a(:))
+0077 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection test on class 1 space'</span>])
+0078 
+0079 figure
+0080 a=squeeze(c2.features(chanel,:,c2.GT==1));
+0081 plot(a(:))
+0082 hold all
+0083 a=squeeze(c2.features(chanel,:,c2.GT==0));
+0084 plot(a(:))
+0085 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection test on class 2 space'</span>])
+0086 
+0087 figure
+0088 a=squeeze(c3.features(chanel,:,c3.GT==1));
+0089 plot(a(:))
+0090 hold all
+0091 a=squeeze(c3.features(chanel,:,c3.GT==0));
+0092 plot(a(:))
+0093 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection test on class 3 space'</span>])
+0094 
+0095 figure
+0096 a=squeeze(c4.features(chanel,:,c4.GT==1));
+0097 plot(a(:))
+0098 hold all
+0099 a=squeeze(c4.features(chanel,:,c4.GT==0));
+0100 plot(a(:))
+0101 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection test on class 4 space'</span>])
+0102 
+0103 figure
+0104 a=squeeze(c4.features(chanel,:,c4.GT==1));
+0105 plot(a(:))
+0106 hold all
+0107 a=squeeze(c4.features(chanel,:,c1.GT==1));
+0108 plot(a(:))
+0109 a=squeeze(c4.features(chanel,:,c2.GT==1));
+0110 plot(a(:))
+0111 a=squeeze(c4.features(chanel,:,c3.GT==1));
+0112 plot(a(:))
+0113 title([<span class="string">'chan '</span>,int2str(chanel),<span class="string">' projection test on class 4 space'</span>])
+0114 
+0115 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

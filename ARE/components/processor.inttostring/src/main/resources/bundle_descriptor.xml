@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.IntToString"
+                   canonical_name="eu.asterics.component.processor.inttostring.IntToStringInstance">
+        <type subtype="Data Converters">processor</type>
+        <singleton>false</singleton>
+        <description>Converts int to string</description>
+        <ports>
+			<inputPort id="input">
+				<description>Integer input port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+			<outputPort id="output">
+				<description>String output port</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="hexadecimalOutput"
+				type="boolean"
+				value="false"
+				description="If set, the output data will be hexadecimal"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.EventDelay"
+                   canonical_name="eu.asterics.component.processor.eventdelay.EventDelayInstance">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>Delalys events</description>
+        <ports>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="input">
+				<description>Input port for the events</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="output">
+				<description>Output port for the events.</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="delay"
+				type="integer"
+				value="100"
+				description="Event delay (ms)"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

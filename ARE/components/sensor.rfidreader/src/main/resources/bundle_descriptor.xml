@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.RFIDReader"
+                   canonical_name="eu.asterics.component.sensor.rfidreader.RFIDReaderInstance">
+        <type subtype="Sensor Modules">sensor</type>
+        <singleton>false</singleton>
+        <description>Interfaces to the ID Innovations RFID reader and outputs a recognized tag identifier</description>
+        <ports>
+
+			<outputPort id="tagID">
+				<description>Identification string of the RFID tag</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="comPort"
+				type="string"
+				value="COM8"
+				description="The COM Port where the RFID reader is connected"/>
+			<property name="baudRate"
+				type="integer"
+				value="9600"
+				description="The baud rate for communication with the RFID reader"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

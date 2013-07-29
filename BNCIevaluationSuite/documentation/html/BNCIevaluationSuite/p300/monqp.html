@@ -1,0 +1,421 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of monqp</title>
+  <meta name="keywords" content="monqp">
+  <meta name="description" content="function [xnew, lambda, pos] = monqp(H,c,A,b,C,l,verbose,X,ps,xinit)">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300 -->
+<h1>monqp
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [xnew, lambda, pos] = monqp(H,c,A,b,C,l,verbose,X,ps,xinit)</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [xnew, lambda, pos,mu] = monqp(H,c,A,b,C,l,verbose,X,ps,xinit) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> function [xnew, lambda, pos] = monqp(H,c,A,b,C,l,verbose,X,ps,xinit)
+
+ min 1/2  x' H x - c' x                 
+  x 
+ contrainte   A' x = b                    
+ 
+ et         0 &lt;= x_i  &lt;= C_i
+
+ Crdits : J.P. Yvon (INSA de Rennes) pour l'algorithme
+           O. Bodard (Clermont Ferrand) pour le debugage on line
+
+  S CANU - scanu@insa-rouen.fr
+  Mai 2001</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="cout.html" class="code" title="function [J,lam] = cout(H,x,y,C,ind,c,A,b,lambda)">cout</a>	[J,yx] = cout(H,x,b,C,indd,c,A,b,lambda);</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="svmclass.html" class="code" title="function [xsup,w,d,pos,timeps,alpha,obj]=svmclass(x,y,c,lambda,kernel,kerneloption,verbose,span, alphainit)">svmclass</a>	USAGE [xsup,w,b,pos,timeps,alpha,obj]=svmclass(x,y,c,lambda,kernel,kerneloption,verbose,span, alphainit)</li><li><a href="svmclassLS.html" class="code" title="function [xsup,w,b,pos,timeps,alpha,status,cost]=svmclassLS(x,y,c,lambda,kernel,kerneloption,verbose,span,qpsize,chunksize,alphainit)">svmclassLS</a>	</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [xnew, lambda, pos,mu] = monqp(H,c,A,b,C,l,verbose,X,ps,xinit)</a>
+0002 <span class="comment">% function [xnew, lambda, pos] = monqp(H,c,A,b,C,l,verbose,X,ps,xinit)</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% min 1/2  x' H x - c' x</span>
+0005 <span class="comment">%  x</span>
+0006 <span class="comment">% contrainte   A' x = b</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% et         0 &lt;= x_i  &lt;= C_i</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Crdits : J.P. Yvon (INSA de Rennes) pour l'algorithme</span>
+0011 <span class="comment">%           O. Bodard (Clermont Ferrand) pour le debugage on line</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%  S CANU - scanu@insa-rouen.fr</span>
+0014 <span class="comment">%  Mai 2001</span>
+0015 
+0016 
+0017 
+0018 <span class="comment">%--------------------------------------------------------------------------</span>
+0019 <span class="comment">%                                verifications</span>
+0020 <span class="comment">%--------------------------------------------------------------------------</span>
+0021 [n,d] = size(H); 
+0022 [nl,nc] = size(c); 
+0023 [nlc,ncc] = size(A); 
+0024 [nlb,ncb] = size(b); 
+0025 <span class="keyword">if</span> d ~= n 
+0026     error(<span class="string">'H must be a squre matrix n by n'</span>); 
+0027 <span class="keyword">end</span> 
+0028 <span class="keyword">if</span> nl ~= n 
+0029     error(<span class="string">'H and c must have the same number of row'</span>); 
+0030 <span class="keyword">end</span> 
+0031 
+0032 <span class="keyword">if</span> nlc ~= n 
+0033     error(<span class="string">'H and A must have the same number of row'</span>); 
+0034 <span class="keyword">end</span> 
+0035 <span class="keyword">if</span> nc ~= 1 
+0036     error(<span class="string">'c must be a row vector'</span>); 
+0037 <span class="keyword">end</span> 
+0038 <span class="keyword">if</span> ncb ~= 1 
+0039     error(<span class="string">'b must be a row vector'</span>); 
+0040 <span class="keyword">end</span> 
+0041 <span class="keyword">if</span> ncc ~= nlb  
+0042     error(<span class="string">'A'' and b  must have the same number of row'</span>); 
+0043 <span class="keyword">end</span> 
+0044 
+0045 <span class="keyword">if</span> nargin &lt; 5        <span class="comment">% default value for the regularisation parameter</span>
+0046     l = 0;                 
+0047 <span class="keyword">end</span>; 
+0048 
+0049 <span class="keyword">if</span> nargin &lt; 6        <span class="comment">% default value for the display parameter</span>
+0050     verbose = 0;                 
+0051 <span class="keyword">end</span>; 
+0052 <span class="keyword">if</span>  size(C,1)~=nl
+0053     <span class="comment">%   keyboard</span>
+0054     C=ones(nl,1)*C;  <span class="comment">% vectorizing the UpperBound Constraint</span>
+0055 <span class="keyword">end</span>;
+0056 <span class="keyword">if</span> exist(<span class="string">'xinit'</span>,<span class="string">'var'</span>)~=1
+0057     xinit=[];
+0058 <span class="keyword">end</span>;
+0059 
+0060 
+0061 fid = 1; <span class="comment">%default value, curent matlab window</span>
+0062 <span class="comment">%--------------------------------------------------------------------------</span>
+0063 
+0064 
+0065 <span class="comment">%--------------------------------------------------------------------------</span>
+0066 <span class="comment">%                       I N I T I A L I S A T I O N</span>
+0067 <span class="comment">%--------------------------------------------------------------------------</span>
+0068 
+0069 OO = zeros(ncc);
+0070 H = H+l*eye(length(H)); <span class="comment">% preconditionning</span>
+0071 
+0072 xnew = -1*ones(size(C));ness = 0;     
+0073 ind=1;
+0074 
+0075 
+0076 
+0077 <span class="keyword">if</span> isempty(xinit)
+0078     
+0079     <span class="keyword">while</span> (( sum (xnew &lt; 0)) &gt;0 | ( sum(xnew &gt;C(ind)) &gt; 0))  &amp; ness &lt; 100   <span class="comment">%% 03/01/2002</span>
+0080         ind = randperm(n);
+0081         ind = sort(ind(1:ncc)');
+0082         aux=[H(ind,ind) A(ind,:);A(ind,:)' OO];
+0083         aux= aux+l*eye(size(aux));
+0084         <span class="keyword">if</span> rcond(aux)&gt;1e-12
+0085             newsol = aux\[c(ind) ; b];
+0086             xnew = newsol(1:length(ind));
+0087             ness = ness+1; 
+0088         <span class="keyword">else</span>
+0089             ness=101;
+0090             <span class="keyword">break</span>;
+0091         <span class="keyword">end</span>;
+0092     <span class="keyword">end</span>;
+0093     <span class="comment">%keyboard</span>
+0094     <span class="keyword">if</span> ness &lt; 100
+0095         x = xnew;
+0096         lambda = newsol(length(ind)+1:length(ind)+ncc);
+0097     <span class="keyword">else</span>
+0098         <span class="comment">% Brute Force Initialisation</span>
+0099         ind = [1];
+0100         x = C(ind)/2.*ones(size(ind,1),1);                            
+0101         lambda=ones(ncc,1);    
+0102         
+0103         <span class="comment">%</span>
+0104         <span class="comment">%         ind = [1;nl];</span>
+0105         <span class="comment">%         x = C(ind)/2.*ones(size(ind,1),1);</span>
+0106         
+0107         
+0108     <span class="keyword">end</span>
+0109     indsuptot = [];     
+0110 <span class="keyword">else</span>  <span class="comment">% start with a predefined x</span>
+0111     
+0112     
+0113     indsuptot=find(xinit==C);
+0114     indsup=indsuptot;
+0115     ind=find(xinit&gt;0 &amp; xinit ~=C) ;
+0116     x = xinit(ind);
+0117     lambda=ones(ncc,1);
+0118     
+0119 <span class="keyword">end</span>;
+0120 
+0121 
+0122 
+0123 <span class="comment">% Modification for QP without equality constraints</span>
+0124 <span class="keyword">if</span> sum(A==0)
+0125     ncc=0;
+0126 <span class="keyword">end</span>;
+0127 
+0128 
+0129 [U,testchol] = chol(H); <span class="comment">% Test definite positiveness of H</span>
+0130 firstchol=1;
+0131 
+0132 <span class="comment">%--------------------------------------------------------------------------</span>
+0133 <span class="comment">%                            M A I N   L O O P</span>
+0134 <span class="comment">%--------------------------------------------------------------------------</span>
+0135 
+0136 Jold = 10000000000000000000;  
+0137 <span class="comment">%C = Jold; % for the cost function</span>
+0138 <span class="keyword">if</span> verbose ~= 0 
+0139     disp(<span class="string">'      Cost     Delta Cost  #support  #up saturate'</span>); 
+0140     nbverbose = 0; 
+0141 <span class="keyword">end</span> 
+0142 
+0143 nbiter=0;
+0144 STOP = 0;
+0145 nbitermax=20*n;
+0146 <span class="keyword">while</span> STOP ~= 1
+0147     
+0148     nbiter=nbiter+1;
+0149     indd = zeros(n,1);indd(ind)=ind;nsup=length(ind);indd(indsuptot)=-1;
+0150     [J,yx] = <a href="cout.html" class="code" title="function [J,lam] = cout(H,x,y,C,ind,c,A,b,lambda)">cout</a>(H,x,b,C,indd,c,A,b,lambda); 
+0151     <span class="keyword">if</span> verbose ~= 0 
+0152         nbverbose = nbverbose+1; 
+0153         <span class="keyword">if</span> nbverbose == 20 
+0154             disp(<span class="string">'      Cost     Delta Cost  #support  #up saturate'</span>); 
+0155             nbverbose = 0; 
+0156         <span class="keyword">end</span> 
+0157         <span class="keyword">if</span> Jold == 0 
+0158             fprintf(fid,<span class="string">'| %11.4e | %8.4f | %6.0f | %6.0f |\n'</span>,[J (Jold-J) nsup length(indsuptot)]); 
+0159         <span class="keyword">elseif</span>  (Jold-J)&gt;0
+0160             fprintf(fid,<span class="string">'| %11.4e | %8.4f | %6.0f | %6.0f |\n'</span>,[J min((Jold-J)/abs(Jold),99.9999) nsup length(indsuptot)]); 
+0161         <span class="keyword">else</span>
+0162             fprintf(fid,<span class="string">'| %11.4e | %8.4f | %6.0f | %6.0f |\n'</span>,[J max((Jold-J)/abs(Jold),-99.9999) nsup length(indsuptot)]); 
+0163             
+0164         <span class="keyword">end</span> 
+0165     <span class="keyword">end</span> 
+0166     
+0167     
+0168     
+0169     
+0170     Jold = J; 
+0171     
+0172     <span class="comment">% nouvele resolution du systme</span>
+0173     
+0174     <span class="comment">% newsol = [H(ind,ind)+l*eye(length(ind)) A(ind,:);A(ind,:)' OO]\[c(ind) ; b];</span>
+0175     <span class="comment">% xnew = newsol(1:length(ind));</span>
+0176     <span class="comment">% lambda = newsol(length(ind)+1:length(newsol));</span>
+0177     
+0178     ce = c(ind);
+0179     be = b;
+0180     
+0181     <span class="comment">%     if (isempty(indsuptot)==0) % if NOT empty</span>
+0182     <span class="comment">%         keyboard</span>
+0183     <span class="comment">%         %     ce= ce - C*(sum(H(ind,indsuptot),2)+sum(H(indsuptot,ind),1)');%    min     x'Hx + c'x</span>
+0184     <span class="comment">%         ce= ce - C*(sum(H(ind,indsuptot),2));%                              min     x'Hx + c'x</span>
+0185     <span class="comment">%         be= be - C*sum(A(indsuptot,:),1)';                            %    with    Ax=b</span>
+0186     <span class="comment">%     end</span>
+0187     
+0188     
+0189     <span class="comment">%03/01/2003</span>
+0190     <span class="keyword">if</span> (isempty(indsuptot)==0) <span class="comment">% if NOT empty</span>
+0191         
+0192         <span class="comment">%</span>
+0193         <span class="comment">%  on remplace tout les x qui sont indsuptot par C</span>
+0194         <span class="comment">%</span>
+0195         
+0196         Cmat= ones(length(ind),1)*(C(indsuptot)'); 
+0197         <span class="keyword">if</span> size(ce)~= size(sum( Cmat.*H(ind,indsuptot),2))
+0198             keyboard;
+0199         <span class="keyword">end</span>;
+0200         ce= ce - sum( Cmat.*H(ind,indsuptot),2);<span class="comment">%                              min     x'Hx + c'x</span>
+0201         Cmat= C(indsuptot)*ones(1,size(A,2)); 
+0202         be= be - sum(Cmat.*A(indsuptot,:),1)';                            <span class="comment">%    with    Ax=b</span>
+0203         
+0204     <span class="keyword">end</span> 
+0205     
+0206     
+0207     
+0208     <span class="comment">%  keyboard</span>
+0209     <span class="comment">% auxH=H(ind,ind);</span>
+0210     <span class="comment">% [U,testchol] = chol(auxH); %</span>
+0211     At=A(ind,:)';
+0212     Ae=A(ind,:);
+0213     
+0214     
+0215     <span class="keyword">if</span> testchol==0
+0216         auxH=H(ind,ind);
+0217         [U,testchol] = chol(auxH); <span class="comment">% It would be better to use an updated choleski</span>
+0218         <span class="comment">%------------------------------------------------------------------</span>
+0219 <span class="comment">%         if length(ind)&gt;5</span>
+0220 <span class="comment">%             keyboard</span>
+0221 <span class="comment">%         if firstchol</span>
+0222 <span class="comment">%             Ub=chol(auxH)';</span>
+0223 <span class="comment">%             firstchol=0;</span>
+0224 <span class="comment">%         else</span>
+0225 <span class="comment">%</span>
+0226 <span class="comment">%             if directioncholupdate==1</span>
+0227 <span class="comment">%                 Ubr = updatechol(Ub,indexcholupdate-1,H(varcholupdate,:),directioncholupdate);</span>
+0228 <span class="comment">%             else</span>
+0229 <span class="comment">%                 Ubr = updatechol(Ub,indexcholupdate,[],directioncholupdate);</span>
+0230 <span class="comment">%             end;</span>
+0231 <span class="comment">%</span>
+0232 <span class="comment">%             max(max(abs(Ub-U)))</span>
+0233 <span class="comment">%         end;</span>
+0234 <span class="comment">%     end</span>
+0235         <span class="comment">%------------------------------------------------------------------</span>
+0236 
+0237         M = At*(U\(U'\Ae));
+0238         d = U\(U'\ce);
+0239         d = (At*d - be);   <span class="comment">% second membre  (homage au gars OlgaZZZZZZ qui nous a bien aid)</span>
+0240         <span class="comment">% On appelle le gc fabuleux de mister OlgaZZZ Hoduc</span>
+0241         <span class="comment">% lambdastart = rand([m,1]);</span>
+0242         <span class="comment">% [lambda] = gradconj(lambdastart,M*M,M*d,MaxIterZZZ,tol,1000);</span>
+0243         <span class="keyword">if</span> rcond(M)&lt;l
+0244             M=M+l*eye(size(M));
+0245         <span class="keyword">end</span>;
+0246         lambda = M\d;
+0247         <span class="comment">% On reconstitue le vecteur en rsolvant le systme linaire Hx = c-Alambda</span>
+0248         <span class="comment">% size(lambda)</span>
+0249         <span class="comment">% size(Ae)</span>
+0250         <span class="comment">%      keyboard</span>
+0251         <span class="comment">%        xnew = U\(Ut\(ce-Ae*lambda));</span>
+0252         xnew=auxH\(ce-Ae*lambda);
+0253     <span class="keyword">else</span>
+0254         
+0255         <span class="comment">% if non definite positive;</span>
+0256         auxH=H(ind,ind);
+0257         
+0258         auxM=At*(auxH\Ae);
+0259         M=auxM'*auxM;
+0260         d=auxH\ce;
+0261         d=At*d-be;
+0262         <span class="keyword">if</span> rcond(M)&lt;l
+0263             M=M+l*eye(size(M));
+0264         <span class="keyword">end</span>;
+0265         lambda=M\d;
+0266         xnew=auxH\(ce-Ae*lambda);
+0267     <span class="keyword">end</span>;
+0268     
+0269     <span class="comment">%-------------------------------------------------------------------------------------------------------</span>
+0270     
+0271     [minxnew minpos]=min(xnew);
+0272     
+0273     
+0274     <span class="keyword">if</span> (sum(xnew&lt; 0) &gt; 0 | sum(xnew &gt; C(ind)) &gt; 0)   &amp;  length(ind) &gt; ncc  <span class="comment">%  03/01/2002 AR</span>
+0275         <span class="comment">%  cette condition est utile  pour le</span>
+0276         <span class="comment">% semi param</span>
+0277         <span class="comment">% on projette dans le domaine admissible et on sature la contrainte associe</span>
+0278         <span class="comment">%-------------------------------------------------------------------------</span>
+0279         d = (xnew - x)+l;                <span class="comment">% projection direction</span>
+0280         indad = find(xnew &lt; 0); 
+0281         indsup = find(xnew &gt; C(ind) );                      <span class="comment">%% 03/01/2002</span>
+0282         [tI indmin] = min(-x(indad)./d(indad));
+0283         [tS indS] = min((C(ind(indsup))-x(indsup))./d(indsup)); <span class="comment">% pas de descente</span>
+0284         <span class="keyword">if</span> isempty(tI) , tI = tS + 1; <span class="keyword">end</span>; 
+0285         <span class="keyword">if</span> isempty(tS) , tS = tI + 1; <span class="keyword">end</span>; 
+0286         t = min(tI,tS); 
+0287         
+0288         x = x + t*d;                 <span class="comment">% projection into the admissible set</span>
+0289         
+0290         <span class="keyword">if</span> t == tI 
+0291             
+0292             varcholupdate=ind(indad(indmin));
+0293             indexcholupdate=indad(indmin);
+0294             directioncholupdate=-1; <span class="comment">% remove</span>
+0295             
+0296             ind(indad(indmin)) = [];            <span class="comment">% the associate variable is set to 0</span>
+0297             x(indad(indmin)) = [];              <span class="comment">% the associate variable is set to 0</span>
+0298             
+0299             
+0300             
+0301         <span class="keyword">else</span>
+0302             indexcholupdate=indsup(indS);
+0303             varcholupdate=ind(indsup(indS));
+0304             directioncholupdate=-1; <span class="comment">% remove</span>
+0305             
+0306             indsuptot = [indsuptot ; ind(indsup(indS))]; 
+0307             ind(indsup(indS))= []; 
+0308             x(indsup(indS))= []; 
+0309             
+0310             
+0311             
+0312         <span class="keyword">end</span>
+0313         
+0314     <span class="keyword">else</span>
+0315         xt = zeros(n,1);           <span class="comment">% keyboard;</span>
+0316         xt(ind) = xnew;              <span class="comment">% keyboard;</span>
+0317         xt(indsuptot) = C(indsuptot); indold=ind;             <span class="comment">% keyboard;                                     %% 03/01/2002</span>
+0318         
+0319         mu = H*xt - c + A*lambda;    <span class="comment">% calcul des multiplicateurs de lagrange associes aux contraintes</span>
+0320         
+0321         indsat = 1:n;                           <span class="comment">% on ne regarde que les contraintes satures</span>
+0322         indsat([ind ; indsuptot]) = [];
+0323         
+0324         [mm mpos]=min(mu(indsat));
+0325         [mmS mposS]=min(-mu(indsuptot));  <span class="comment">%keyboard</span>
+0326         
+0327         <span class="keyword">if</span> ((~isempty(mm) &amp; (mm &lt; -sqrt(eps)))  | (~isempty(mmS) &amp; (mmS &lt;  -sqrt(eps)))) &amp; nbiter&lt; nbitermax
+0328             <span class="keyword">if</span> isempty(indsuptot) | (mm &lt; mmS)             <span class="comment">% il faut rajouter une variable</span>
+0329                 ind = sort([ind ; indsat(mpos)]);        <span class="comment">% on elimine une contrainte de type x=0</span>
+0330                 x = xt(ind);
+0331                 indexcholupdate=find(ind==indsat(mpos));
+0332                 varcholupdate=indsat(mpos);
+0333                 directioncholupdate=1; <span class="comment">% remove</span>
+0334             <span class="keyword">else</span>
+0335                 ind = sort([ind ; indsuptot(mposS)]);  <span class="comment">% on elimine la contrainte sup si necessaire</span>
+0336                 x = xt(ind);                           <span class="comment">% on elimine une contrainte de type x=C</span>
+0337                 indexcholupdate=find(ind==indsuptot(mposS));
+0338                 varcholupdate=indsuptot(mposS);
+0339                 indsuptot(mposS)=[];
+0340                 directioncholupdate=1; <span class="comment">% remove</span>
+0341             <span class="keyword">end</span>
+0342         <span class="keyword">else</span>
+0343             
+0344             STOP = 1;                
+0345             pos=sort([ind ; indsuptot]);
+0346             xt = zeros(n,1);             
+0347             xt(ind) = xnew;              
+0348             xt(indsuptot) = C(indsuptot);          
+0349             indout = 1:n;
+0350             indout(pos)=[];
+0351             xnew = xt;
+0352             xnew(indout)=[];
+0353             
+0354         <span class="keyword">end</span>
+0355         
+0356     <span class="keyword">end</span>
+0357 <span class="keyword">end</span>
+0358 
+0359 <span class="comment">%--------------------------------------------------------------------------</span>
+0360 <span class="comment">%                        E N D   M A I N   L O O P</span>
+0361 <span class="comment">%--------------------------------------------------------------------------</span>
+0362 
+0363</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

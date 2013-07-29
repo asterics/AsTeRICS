@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-actuators.oscoutclient
+Bundle-SymbolicName: eu.asterics.component.actuator.oscoutclient
+Bundle-Version: 0.1.0
+DynamicImport-Package: *
+Bundle-ClassPath: . , lib/NetUtil.jar

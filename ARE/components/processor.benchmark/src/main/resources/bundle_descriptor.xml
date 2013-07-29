@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Benchmark"
+                   canonical_name="eu.asterics.component.processor.benchmark.BenchmarkInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Measures incoming data or events per time</description>
+        <ports>
+            <inputPort id="in">
+                <description>Input port for numerics values</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+        	<outputPort id="dataCount">
+                <description>Data received per time</description>
+                <dataType>integer</dataType>
+            </outputPort>
+        	<outputPort id="eventCount">
+                <description>Number of events per time</description>
+                <dataType>integer</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="eventIncrease">
+                <description>Received event increases event counter</description>
+            </eventListenerPort>
+            <eventListenerPort id="resetCounter">
+                <description>Resets benchmark counters to zero</description>
+            </eventListenerPort>
+        </events>         
+        <properties>
+            <property name="time"
+                      type="integer"
+                      value="1000"
+                      description="The time for counting/update in miliseconds"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

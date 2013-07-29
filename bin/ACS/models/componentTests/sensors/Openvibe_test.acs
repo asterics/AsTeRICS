@@ -1,0 +1,317 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="25.05.2012_827" version="20130320">
+  <components>
+    <component id="OpenViBE.1" type_id="asterics.OpenViBE">
+      <description>UDP Server for transfer of OSC data</description>
+      <ports>
+        <outputPort portTypeID="CH1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH9">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH10">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH11">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH12">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH13">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH14">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH15">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH16">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Port" value="57110" />
+      </properties>
+      <layout>
+        <posX>86</posX>
+        <posY>145</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>439</posX>
+        <posY>146</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>2667</posY>
+        <width>5900</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>288</posX>
+        <posY>44</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>778</posY>
+        <width>5900</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>544</posX>
+        <posY>274</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>4556</posY>
+        <width>5900</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.3" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>380</posX>
+        <posY>348</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>6422</posY>
+        <width>5900</width>
+        <height>1700</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>257</posX>
+        <posY>429</posY>
+      </layout>
+      <gui>
+        <posX>1438</posX>
+        <posY>8333</posY>
+        <width>3000</width>
+        <height>1000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.1">
+      <source>
+        <component id="OpenViBE.1" />
+        <port id="CH2" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="OpenViBE.1" />
+        <port id="CH1" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="OpenViBE.1" />
+        <port id="CH3" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="OpenViBE.1" />
+        <port id="CH4" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.3" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="OVTK_StimulationId_Label_00_eventDisplay">
+      <sources>
+        <source>
+          <component id="OpenViBE.1" />
+          <eventPort id="OVTK_StimulationId_Label_00" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="OVTK_StimulationId_Label_01_eventDisplay">
+      <sources>
+        <source>
+          <component id="OpenViBE.1" />
+          <eventPort id="OVTK_StimulationId_Label_01" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="OVTK_StimulationId_Label_02_eventDisplay">
+      <sources>
+        <source>
+          <component id="OpenViBE.1" />
+          <eventPort id="OVTK_StimulationId_Label_02" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="OVTK_StimulationId_Label_03_eventDisplay">
+      <sources>
+        <source>
+          <component id="OpenViBE.1" />
+          <eventPort id="OVTK_StimulationId_Label_03" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>7125</width>
+      <height>9467</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

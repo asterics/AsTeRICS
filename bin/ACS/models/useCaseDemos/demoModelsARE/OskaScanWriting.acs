@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="23.11.2011_176" version="20130320">
+  <modelDescription>
+    <shortDescription>Camera controlled mouse for writing with OSKA</shortDescription>
+    <requirements>Webcam connected.
+Optionally two switches connected to In1, In2 and In5 of the DigitalIn CIM.</requirements>
+    <description>The Head Pose is translated to mouse X/Y positions (direct, absolute positioning).
+Mouse clicks can be perfromed by dwell time, GUI buttons allow to select
+the next click type.
+Alternatively, switch1 and switch2 control left and right mouse buttons.
+Switch5 activates and deactivates the camera mouse.
+The camera mouse sensitivity and the dwell time can be selected via a GUI sliders.
+OSKA and Notepad are automatically started for the writing task.</description>
+  </modelDescription>
+  <components>
+    <component id="ApplicationLauncher.1" type_id="asterics.ApplicationLauncher">
+      <description>starts external software applications via path and  filename (.exe)</description>
+      <ports>
+        <inputPort portTypeID="filename">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="arguments" value="" />
+        <property name="defaultApplication" value="c:\windows\notepad.exe" />
+        <property name="autoLaunch" value="False" />
+        <property name="onlyByEvent" value="false" />
+        <property name="autoClose" value="true" />
+        <property name="workingDirectory" value="." />
+      </properties>
+      <layout>
+        <posX>636</posX>
+        <posY>60</posY>
+      </layout>
+    </component>
+    <component id="OskaInternalScanning.1" type_id="OskaInternalScanning">
+      <description>Component communicating with OSKA</description>
+      <ports>
+        <outputPort portTypeID="action">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="keycodes">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="port" value="4546" />
+        <property name="keyboardPath" value="keyboards\default.xml" />
+        <property name="title" value="OSKA keyboard" />
+        <property name="highlightStyle" value="0" />
+        <property name="scanSpeed" value="3" />
+        <property name="windowDecorated" value="true" />
+        <property name="resizeEnabled" value="false" />
+        <property name="oskaPath" value="..\oska\start keyboard.exe" />
+        <property name="settingsFile" value="settings\internal_tcp.kst" />
+      </properties>
+      <layout>
+        <posX>192</posX>
+        <posY>54</posY>
+      </layout>
+      <gui>
+        <posX>2775</posX>
+        <posY>6600</posY>
+        <width>4275</width>
+        <height>3356</height>
+      </gui>
+    </component>
+    <component id="MouseCapture.1" type_id="asterics.MouseCapture">
+      <description>Captures mouse cursor activity from local system</description>
+      <ports>
+        <outputPort portTypeID="mouseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="mouseY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="blockEvents" value="True" />
+      </properties>
+      <layout>
+        <posX>51</posX>
+        <posY>54</posY>
+      </layout>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="3000" />
+      </properties>
+      <layout>
+        <posX>494</posX>
+        <posY>59</posY>
+      </layout>
+    </component>
+    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
+      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+      <ports>
+        <inputPort portTypeID="modelName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="model" value="autostart.acs" />
+      </properties>
+      <layout>
+        <posX>333</posX>
+        <posY>57</posY>
+      </layout>
+    </component>
+  </components>
+  <eventChannels>
+    <eventChannel id="middleButtonPressed_pressSwitch2">
+      <sources>
+        <source>
+          <component id="MouseCapture.1" />
+          <eventPort id="middleButtonPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="OskaInternalScanning.1" />
+          <eventPort id="pressSwitch2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_launchNow">
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ApplicationLauncher.1" />
+          <eventPort id="launchNow" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventOut1_switchModel">
+      <sources>
+        <source>
+          <component id="OskaInternalScanning.1" />
+          <eventPort id="eventOut1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="modelSwitcher.1" />
+          <eventPort id="switchModel" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9488</width>
+      <height>2000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

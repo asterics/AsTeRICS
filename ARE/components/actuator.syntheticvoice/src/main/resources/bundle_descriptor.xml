@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.SyntheticVoice"
+                   canonical_name="eu.asterics.component.actuator.syntheticvoice.SyntheticVoiceInstance">
+        <type subtype="Audio and Voice">actuator</type>
+        <singleton>false</singleton>
+        <description>Uses SAPI technology to generate synthetic voice</description>
+        <ports>
+            <inputPort id="input">
+                <description>Text to speak</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+        </ports>
+        <properties>
+        	<property name="volume"
+                      type="integer"
+                      value="100"
+                      description="Volume of the voice"/>
+            <property name="speed"
+                      type="integer"
+                      value="0"
+                      description="Speed of the voice"/>
+            <property name="voice"
+                      type="string"
+                      value=""
+                      description="Name of the voice used."/>
+            <property name="xmlTags"
+                      type="boolean"
+                      value="false"
+                      description="Defines if the xml tags in the string are supported"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

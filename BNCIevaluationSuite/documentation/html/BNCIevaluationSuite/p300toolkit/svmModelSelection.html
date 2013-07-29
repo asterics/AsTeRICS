@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of svmModelSelection</title>
+  <meta name="keywords" content="svmModelSelection">
+  <meta name="description" content="----------------------------------------------------------">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300toolkit -->
+<h1>svmModelSelection
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>----------------------------------------------------------</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [svmRecallParameters]=svmModelSelection(trainingData,validationData,Cvalues) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">----------------------------------------------------------
+ EEGStarlab Toolbox
+ (C) Starlab S.L.
+----------------------------------------------------------
+ svmModelSelection
+ Performs a selection of the parameter C and the chanels to be used by a SVM in the classification of 
+ p300 training data. Function has been adapted from code provided in
+ http://asi.insa-rouen.fr/~arakotom/code/bciindex.html. 
+ It trains a SVM with the training data set for different values of C and validates the
+ result with the validation data set. The validation is done for different subsets of
+ the input channels. These subset with best performance is output as part of the SVM
+ parameter set. Each of the SVMs generated this way are used as an element of a
+ SVM classifier ensemble by the overall framework.
+
+ [Description in A. Rakotomamonjy and V. Guigue, &quot;BCI competition III: 
+ dataset II- ensemble of SVMs for BCI P300 speller.&quot; IEEE transactions on bio-medical engineering, vol. 55, no. 3, pp. 1147-1154, 
+ March 2008. [Online]. Available: http://dx.doi.org/10.1109/TBME.2008.915728 ]
+
+ REQUIREMENTS:
+   - eegstarlab2RakotoTrain
+   - eegstarlab2RakotoSplit
+----------------------------------------------------------
+Inputs
+ trainingData:    structure with data set signals and ground truth
+       signals: EEG data in Starlab Data Cube format - matrix channels X
+                samples X epochs  (e.g. in the paper 64 x 14 x NE)
+       GT:      ground truth for each epoch. In case of p300 data we have agreed the following
+                GT structure:
+                - First column: 0 means unattended stimuli, 1 means attended stimuli
+                - Second Column: Linear code (k) of the image shown in presentation protocol.
+                This maps into a row (i) or column (j) index through the expression:
+                   i=k if k&lt;=R for rows, and j=R+k for columns, where R is the number of  
+                   rows and being rows indexed from left to right and columns from top to bottom.
+                - Third Column: Integer code of the attended stimuli (character/image/icon) for the duration of
+                each run. This is the code of what we are trying to detect through the
+                p300 wave analysis.
+               Data type - matrix epochs x 3 ()
+ validationData: Structure with validation data set signals and ground truth. Same
+                 structure as training data set.
+ Cvalues: Array of the C values (from which there are K different ones) to be tested in 
+          the SVM - row vector 1 x K (see svmclass for info on possible values)
+----------------------------------------------------------
+Outputs
+ svmRecallParameters: Structure with the parameters to be used in the recall of the SVM
+                      classifier. It includes following fields:
+       channel: Array of the M channels to be used - row vector 1 x M (int)
+       xsup: Matrix of support vectors (used by svmval) -
+       w: Weighting matrix (used by svmval) -
+       b: Bias vector (used by svmval) - 
+       kernelType: Kernel type of the SVM (used by svmval) - str
+       kerneloption: Kernel option (used by svmval) - int
+       lengthperchannel
+       mnormalize: flag to determine if normalization should be applied
+       stdnormalize: type of normalization
+       typedata
+----------------------------------------------------------
+Dependencies
+ 
+----------------------------------------------------------
+ Version    Date        Author        Changes 
+ v0.1        20/12/10    ASF         First version only interface
+ v1        07/02/11    AAE         First implementation. Tested.
+----------------------------------------------------------
+ EX.
+ 
+--------------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="eegstarlab2RakotoTrain.html" class="code" title="function convertedData = eegstarlab2RakotoTrain(data)">eegstarlab2RakotoTrain</a>	----------------------------------------------------------</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [svmRecallParameters]=svmModelSelection(trainingData,validationData,Cvalues)</a>
+0002 <span class="comment">%----------------------------------------------------------</span>
+0003 <span class="comment">% EEGStarlab Toolbox</span>
+0004 <span class="comment">% (C) Starlab S.L.</span>
+0005 <span class="comment">%----------------------------------------------------------</span>
+0006 <span class="comment">% svmModelSelection</span>
+0007 <span class="comment">% Performs a selection of the parameter C and the chanels to be used by a SVM in the classification of</span>
+0008 <span class="comment">% p300 training data. Function has been adapted from code provided in</span>
+0009 <span class="comment">% http://asi.insa-rouen.fr/~arakotom/code/bciindex.html.</span>
+0010 <span class="comment">% It trains a SVM with the training data set for different values of C and validates the</span>
+0011 <span class="comment">% result with the validation data set. The validation is done for different subsets of</span>
+0012 <span class="comment">% the input channels. These subset with best performance is output as part of the SVM</span>
+0013 <span class="comment">% parameter set. Each of the SVMs generated this way are used as an element of a</span>
+0014 <span class="comment">% SVM classifier ensemble by the overall framework.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% [Description in A. Rakotomamonjy and V. Guigue, &quot;BCI competition III:</span>
+0017 <span class="comment">% dataset II- ensemble of SVMs for BCI P300 speller.&quot; IEEE transactions on bio-medical engineering, vol. 55, no. 3, pp. 1147-1154,</span>
+0018 <span class="comment">% March 2008. [Online]. Available: http://dx.doi.org/10.1109/TBME.2008.915728 ]</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">% REQUIREMENTS:</span>
+0021 <span class="comment">%   - eegstarlab2RakotoTrain</span>
+0022 <span class="comment">%   - eegstarlab2RakotoSplit</span>
+0023 <span class="comment">%----------------------------------------------------------</span>
+0024 <span class="comment">%Inputs</span>
+0025 <span class="comment">% trainingData:    structure with data set signals and ground truth</span>
+0026 <span class="comment">%       signals: EEG data in Starlab Data Cube format - matrix channels X</span>
+0027 <span class="comment">%                samples X epochs  (e.g. in the paper 64 x 14 x NE)</span>
+0028 <span class="comment">%       GT:      ground truth for each epoch. In case of p300 data we have agreed the following</span>
+0029 <span class="comment">%                GT structure:</span>
+0030 <span class="comment">%                - First column: 0 means unattended stimuli, 1 means attended stimuli</span>
+0031 <span class="comment">%                - Second Column: Linear code (k) of the image shown in presentation protocol.</span>
+0032 <span class="comment">%                This maps into a row (i) or column (j) index through the expression:</span>
+0033 <span class="comment">%                   i=k if k&lt;=R for rows, and j=R+k for columns, where R is the number of</span>
+0034 <span class="comment">%                   rows and being rows indexed from left to right and columns from top to bottom.</span>
+0035 <span class="comment">%                - Third Column: Integer code of the attended stimuli (character/image/icon) for the duration of</span>
+0036 <span class="comment">%                each run. This is the code of what we are trying to detect through the</span>
+0037 <span class="comment">%                p300 wave analysis.</span>
+0038 <span class="comment">%               Data type - matrix epochs x 3 ()</span>
+0039 <span class="comment">% validationData: Structure with validation data set signals and ground truth. Same</span>
+0040 <span class="comment">%                 structure as training data set.</span>
+0041 <span class="comment">% Cvalues: Array of the C values (from which there are K different ones) to be tested in</span>
+0042 <span class="comment">%          the SVM - row vector 1 x K (see svmclass for info on possible values)</span>
+0043 <span class="comment">%----------------------------------------------------------</span>
+0044 <span class="comment">%Outputs</span>
+0045 <span class="comment">% svmRecallParameters: Structure with the parameters to be used in the recall of the SVM</span>
+0046 <span class="comment">%                      classifier. It includes following fields:</span>
+0047 <span class="comment">%       channel: Array of the M channels to be used - row vector 1 x M (int)</span>
+0048 <span class="comment">%       xsup: Matrix of support vectors (used by svmval) -</span>
+0049 <span class="comment">%       w: Weighting matrix (used by svmval) -</span>
+0050 <span class="comment">%       b: Bias vector (used by svmval) -</span>
+0051 <span class="comment">%       kernelType: Kernel type of the SVM (used by svmval) - str</span>
+0052 <span class="comment">%       kerneloption: Kernel option (used by svmval) - int</span>
+0053 <span class="comment">%       lengthperchannel</span>
+0054 <span class="comment">%       mnormalize: flag to determine if normalization should be applied</span>
+0055 <span class="comment">%       stdnormalize: type of normalization</span>
+0056 <span class="comment">%       typedata</span>
+0057 <span class="comment">%----------------------------------------------------------</span>
+0058 <span class="comment">%Dependencies</span>
+0059 <span class="comment">%</span>
+0060 <span class="comment">%----------------------------------------------------------</span>
+0061 <span class="comment">% Version    Date        Author        Changes</span>
+0062 <span class="comment">% v0.1        20/12/10    ASF         First version only interface</span>
+0063 <span class="comment">% v1        07/02/11    AAE         First implementation. Tested.</span>
+0064 <span class="comment">%----------------------------------------------------------</span>
+0065 <span class="comment">% EX.</span>
+0066 <span class="comment">%</span>
+0067 <span class="comment">%--------------------------------------------------------------</span>
+0068 trainDataNoSplit = <a href="eegstarlab2RakotoTrain.html" class="code" title="function convertedData = eegstarlab2RakotoTrain(data)">eegstarlab2RakotoTrain</a>(trainingData);
+0069 <span class="comment">%trainDataSplit = eegstarlab2RakotoSplit(trainingData);</span>
+0070 validDataNoSplit = <a href="eegstarlab2RakotoTrain.html" class="code" title="function convertedData = eegstarlab2RakotoTrain(data)">eegstarlab2RakotoTrain</a>(validationData);
+0071 <span class="comment">%validDataSplit = eegstarlab2RakotoSplit(validationData);</span>
+0072 flagSplit = 0;
+0073 <span class="keyword">if</span> flagSplit==0
+0074     trainData = trainDataNoSplit;
+0075     validData = validDataNoSplit;
+0076 <span class="comment">% else</span>
+0077 <span class="comment">%     trainData = trainDataSplit;</span>
+0078 <span class="comment">%     validData = validDataSplit;</span>
+0079 <span class="keyword">end</span>
+0080 data.normalizationtype=<span class="string">'normal'</span>;
+0081 data.typedata=<span class="string">'allfilt'</span>;
+0082 data.highcutofffrequency=20;
+0083 Cvec=Cvalues; <span class="comment">% tp</span>
+0084 kernel=<span class="string">'poly'</span>;
+0085 kerneloptionvec=1;
+0086 channelselection=0;   <span class="comment">% if channel has been ranked</span>
+0087 chanselparam.channelchoice=<span class="string">'optimal'</span>; <span class="comment">% optimal selection according to criterion 'optimal' or 'adhoc'</span>
+0088 chanselparam.nbchannel=trainData{1}.nbChannels; <span class="comment">% number of channel to select if 'adhoc</span>
+0089 chanselparam.criterion=<span class="string">'tp'</span>; <span class="comment">% criterion for channel selection</span>
+0090 chanselparam.channel=[1:trainData{1}.channel];
+0091 intwarning off
+0092 chanselparam.lengthperchannel=int16(length(trainData{1}.x(1,:))/length(chanselparam.channel));
+0093 intwarning on
+0094 feedData{1} = trainData{1};
+0095 feedData{2} = validData{1};
+0096 cvs = modelselclassifier4(feedData,data,Cvec,kernel,kerneloptionvec,channelselection,chanselparam);
+0097 
+0098 svmRecallParameters = createclassifier3(trainData,cvs,data,channelselection,chanselparam);</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="25.06.2012_1240" version="20130320">
+  <components>
+    <component id="SpeechProcessor.1" type_id="asterics.SpeechProcessor">
+      <description>This plugin allows to genereate and recognize speech via the speech processor server application</description>
+      <ports>
+        <inputPort portTypeID="speak">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="command">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="language" value="1" />
+        <property name="recognitionConfidence" value="0.5" />
+        <property name="activationCommand" value="Computer ein" />
+        <property name="deactivationCommand" value="Computer aus" />
+        <property name="helpCommand" value="Computer hilfe" />
+        <property name="mode" value="1" />
+        <property name="command1" value="CD Player play" />
+        <property name="command2" value="CD Player stop" />
+        <property name="command3" value="CD Player voriges Lied" />
+        <property name="command4" value="CD Player nächstes Lied" />
+        <property name="command5" value="CD Player lauter" />
+        <property name="command6" value="CD Player leiser" />
+        <property name="command7" value="CD Player einschalten" />
+        <property name="command8" value="CD Player ausschalten" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+        <property name="command11" value="" />
+        <property name="command12" value="" />
+        <property name="command13" value="" />
+        <property name="command14" value="" />
+        <property name="command15" value="" />
+        <property name="command16" value="" />
+        <property name="command17" value="" />
+        <property name="command18" value="" />
+        <property name="command19" value="" />
+        <property name="command20" value="" />
+        <property name="command21" value="" />
+        <property name="command22" value="" />
+        <property name="command23" value="" />
+        <property name="command24" value="" />
+        <property name="command25" value="" />
+      </properties>
+      <layout>
+        <posX>68</posX>
+        <posY>64</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>501</posX>
+        <posY>35</posY>
+      </layout>
+      <gui>
+        <posX>2150</posX>
+        <posY>1267</posY>
+        <width>4200</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="ImageBox.1" type_id="asterics.ImageBox">
+      <description>GUI component, which displays a picture.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Image Box" />
+        <property name="default" value="data\pictures\sony.jpg" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>546</posX>
+        <posY>211</posY>
+      </layout>
+      <gui>
+        <posX>2150</posX>
+        <posY>2289</posY>
+        <width>4200</width>
+        <height>4700</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="buttonCaption1" value="CD Player play" />
+        <property name="buttonCaption2" value="CD Player stop" />
+        <property name="buttonCaption3" value="CD Player voriges Lied" />
+        <property name="buttonCaption4" value="CD Player nächstes Lied" />
+        <property name="buttonCaption5" value="CD Player lauter" />
+        <property name="buttonCaption6" value="CD Player leiser" />
+        <property name="buttonCaption7" value="CD Player einschalten" />
+        <property name="buttonCaption8" value="CD Player ausschalten" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>136</posX>
+        <posY>251</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>1289</posY>
+        <width>2100</width>
+        <height>5700</height>
+      </gui>
+    </component>
+    <component id="WavefilePlayer.1" type_id="asterics.WavefilePlayer">
+      <description>Plays .Wav - soundfiles on event or filename reception. </description>
+      <ports>
+        <inputPort portTypeID="wavefileName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="data\sounds\8.wav" />
+      </properties>
+      <layout>
+        <posX>201</posX>
+        <posY>42</posY>
+      </layout>
+    </component>
+    <component id="WavefilePlayer.1.1" type_id="asterics.WavefilePlayer">
+      <description>Plays .Wav - soundfiles on event or filename reception. </description>
+      <ports>
+        <inputPort portTypeID="wavefileName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="data\sounds\7.wav" />
+      </properties>
+      <layout>
+        <posX>317</posX>
+        <posY>39</posY>
+      </layout>
+    </component>
+    <component id="IrTrans.1" type_id="asterics.IrTrans">
+      <description>Infrared Transmission Module, interfaces to the IrTrans device</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="localhost" />
+        <property name="port" value="21000" />
+        <property name="prestring" value="snd asterics," />
+        <property name="send1" value="rc_play" />
+        <property name="send2" value="rc_stop" />
+        <property name="send3" value="rc_previous" />
+        <property name="send4" value="rc_next" />
+        <property name="send5" value="rc_volume_up" />
+        <property name="send6" value="rc_volume_down" />
+        <property name="send7" value="rc_operate" />
+        <property name="send8" value="" />
+        <property name="send9" value="" />
+        <property name="send10" value="" />
+        <property name="send11" value="" />
+        <property name="send12" value="" />
+        <property name="send13" value="" />
+        <property name="send14" value="" />
+        <property name="send15" value="" />
+        <property name="send16" value="" />
+        <property name="send17" value="" />
+        <property name="send18" value="" />
+        <property name="send19" value="" />
+        <property name="send20" value="" />
+        <property name="send21" value="" />
+        <property name="send22" value="" />
+        <property name="send23" value="" />
+        <property name="send24" value="" />
+      </properties>
+      <layout>
+        <posX>390</posX>
+        <posY>224</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SpeechProcessor.1" />
+        <port id="command" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button2_help">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="help" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_Start">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="deActivated" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_Start">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="activated" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WavefilePlayer.1.1" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_sendprop1">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_sendprop2">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_sendprop3">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_sendprop4">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_sendprop5">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_sendprop6">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_sendprop7">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand8_sendprop7">
+      <sources>
+        <source>
+          <component id="SpeechProcessor.1" />
+          <eventPort id="recognizedCommand8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_sendprop1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_sendprop2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_sendprop3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_sendprop4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_sendprop5">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_sendprop6">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button7_sendprop7">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button8_sendprop7">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1" />
+          <eventPort id="sendprop7" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6988</width>
+      <height>7000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

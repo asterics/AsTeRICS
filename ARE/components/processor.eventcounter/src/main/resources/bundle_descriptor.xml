@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.EventCounter"
+                   canonical_name="eu.asterics.component.processor.eventcounter.EventCounterInstance">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>Two-direction event counter</description>
+        <ports>
+        	<outputPort id="output">
+                <description>Sends the number of events</description>
+                <dataType>integer</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="increase">
+                <description>Increases the number of events</description>
+            </eventListenerPort>
+            <eventListenerPort id="decrease">
+                <description>Decreases the number of events</description>
+            </eventListenerPort>
+            <eventListenerPort id="resetToZero">
+                <description>Sets the event number to zero</description>
+            </eventListenerPort>
+            <eventListenerPort id="resetToInitial">
+                <description>Sets the event number to the initial value</description>
+            </eventListenerPort>
+        </events>         
+        <properties>
+            <property name="mode"
+                      type="integer"
+                      value="0"
+                      description="the mode of operation"
+                      combobox="no limit//limit maximum//limit minimum//limit minimum and maximum"/>
+            <property name="minValue"
+                      type="integer"
+                      value="0"
+                      description="the minimum value"/>
+            <property name="maxValue"
+                      type="integer"
+                      value="1000"
+                      description="the maximum value"/>
+            <property name="initialValue"
+                      type="integer"
+                      value="0"
+                      description="the initial value"/>
+            <property name="wrapAround"
+                      type="boolean"
+                      value="false"
+                      description="if selected, exceeding the max value will wrap to the min value and vice versa"/>
+            <property name="sendInitialValue"
+                      type="boolean"
+                      value="false"
+                      description="if selected, the initial value is sent at startup"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.TextDisplay"
+                   canonical_name="eu.asterics.component.actuator.textdisplay.TextDisplayInstance">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>GUI component, which displays text.</description>
+        <ports>
+			<inputPort id="input">
+				<description>Input string port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+        </ports>
+		<events>
+		    <eventListenerPort id="clear">
+                <description>clear the text</description>
+            </eventListenerPort>
+            <eventTriggererPort id="clicked">
+                <description>component clicked</description>
+            </eventTriggererPort>		
+		</events>			
+        <properties>
+        	<property name="caption"
+				type="string"
+				value="Text Display"
+				description="Caption of the component"/>
+			<property name="default"
+				type="string"
+				value=""
+				description="Defalult text"/>
+			<property name="textPosition"
+				type="integer"
+				value="1"
+				description="Position of the text"
+				combobox="left//center//right"/>
+			<property name="textColor"
+                type="integer"
+                value="0"
+                combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                description="color of text"/> 
+            <property name="backgroundColor"
+                type="integer"
+                value="11"
+                combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                description="background color"/> 
+        </properties>
+		<gui>
+			<width>3000</width>
+			<height>2000</height>
+		</gui>
+
+    </componentType>
+</componentTypes>

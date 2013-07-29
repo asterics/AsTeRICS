@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.MathEvaluator"
+                   canonical_name="eu.asterics.component.processor.mathevaluator.MathEvaluatorInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Mathematical expression evaluator</description>
+        <ports>
+            <inputPort id="inA">
+                <description>Input port A</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="inB">
+                <description>Input port B</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="inC">
+                <description>Input port C</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="inD">
+                <description>Input port D</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            
+            <outputPort id="out">
+                <description>Output port for result</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <properties>
+            <property name="expression"
+                      type="string"
+                      value="a+b"
+                      description="Mathematical expression containing the variables a, b, c and d"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

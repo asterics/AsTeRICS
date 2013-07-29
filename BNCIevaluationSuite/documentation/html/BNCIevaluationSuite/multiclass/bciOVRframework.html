@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of bciOVRframework</title>
+  <meta name="keywords" content="bciOVRframework">
+  <meta name="description" content="v. 2 adding decision stage and kappa computation">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html multiclass -->
+<h1>bciOVRframework
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>v. 2 adding decision stage and kappa computation</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [kap,kapTest,classLabelSamples,classLabelSamplesTest,classPrediction,classPredictionTest,labelClass,labelClassTest]=bciOVRframework(xTrain,xTest,baggingRuns,homogeneousBagging,standardizeClassifierOutputs,subtractMeanMembership) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">v. 2 adding decision stage and kappa computation
+v. 3 adding output as alebls for test and training</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="baggingFusion.html" class="code" title="function [trainBaggingPrediction,testBaggingPrediction]=baggingFusion(data,testData,baggingRuns,homogeneousBagging,standardizeClassifiers)">baggingFusion</a>	----------------------------------------------------------</li><li><a href="kappa.html" class="code" title="function [kap,se,H,zscore,p0,SA,R]=kappa(d,c,kk);">kappa</a>	KAPPA.M estimates Cohen's kappa coefficient</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../BNCIevaluationSuite/featureExtraction/AstericsfitFunct_v1.html" class="code" title="function InvPerf=AstericsfitFunct(SinglvectExtractor)">AstericsfitFunct_v1</a>	</li><li><a href="../../BNCIevaluationSuite/motorImageryDemos/main_Asterics_Test1_wl_OVR_v1.html" class="code" title="">main_Asterics_Test1_wl_OVR_v1</a>	matlab routine to go through the folders,</li><li><a href="../../BNCIevaluationSuite/motorImageryDemos/main_Asterics_Test2_wl_anova_OVR_v1.html" class="code" title="">main_Asterics_Test2_wl_anova_OVR_v1</a>	matlab routine to go through the folders,</li><li><a href="../../BNCIevaluationSuite/motorImageryDemos/main_TestDeciimationTPR112_v4_SoA.html" class="code" title="">main_TestDeciimationTPR112_v4_SoA</a>	matlab routine to go through the folders,</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%v. 2 adding decision stage and kappa computation</span>
+0002 <span class="comment">%v. 3 adding output as alebls for test and training</span>
+0003 
+0004 <span class="comment">%EX.</span>
+0005 <span class="comment">% &gt;&gt; load 'W:\UCONTROL\BCI competition iii\OVR_aproach\features subject k3b\features4aproach1_c4.mat'</span>
+0006 <span class="comment">% %split data in train and test sets with 80% training and non-homogenous data</span>
+0007 <span class="comment">% [xTrain,xTest,indTest]=splitDataset(data,.8,0);</span>
+0008 <span class="comment">% &gt;&gt; dataTrain(4)=xTrain;</span>
+0009 <span class="comment">% &gt;&gt; dataTest(4)=xTest;</span>
+0010 <span class="comment">% &gt;&gt; load 'W:\UCONTROL\BCI competition iii\OVR_aproach\features subject k3b\features4aproach1_c3.mat'</span>
+0011 <span class="comment">% %split data in train and test sets with the same indices as used for the</span>
+0012 <span class="comment">% %former class</span>
+0013 <span class="comment">% [xTrain,xTest,indTest2]=splitDataset(data,indTest);</span>
+0014 <span class="comment">% &gt;&gt; dataTrain(3)=xTrain;</span>
+0015 <span class="comment">% &gt;&gt; dataTest(3)=xTest;</span>
+0016 <span class="comment">% &gt;&gt; load 'W:\UCONTROL\BCI competition iii\OVR_aproach\features subject k3b\features4aproach1_c2.mat'</span>
+0017 <span class="comment">% &gt;&gt; [xTrain,xTest,indTest2]=splitDataset(data,indTest);</span>
+0018 <span class="comment">% &gt;&gt; dataTrain(2)=xTrain;</span>
+0019 <span class="comment">% &gt;&gt; dataTest(2)=xTest;</span>
+0020 <span class="comment">% &gt;&gt; load 'W:\UCONTROL\BCI competition iii\OVR_aproach\features subject k3b\features4aproach1_c1.mat'</span>
+0021 <span class="comment">% &gt;&gt; [xTrain,xTest,indTest2]=splitDataset(data,indTest);</span>
+0022 <span class="comment">% &gt;&gt; dataTrain(1)=xTrain;</span>
+0023 <span class="comment">% &gt;&gt; dataTest(1)=xTest;</span>
+0024 <span class="comment">% &gt;&gt;</span>
+0025 <span class="comment">% [kap,kapTest,classLabelSamples,classLabelSamplesTest,classMemberships,classMembershipsTest]=bciOVRframework(dataTrain,dataTest);</span>
+0026 <a name="_sub0" href="#_subfunctions" class="code">function [kap,kapTest,classLabelSamples,classLabelSamplesTest,classPrediction,classPredictionTest,labelClass,labelClassTest]=bciOVRframework(xTrain,xTest,baggingRuns,homogeneousBagging,standardizeClassifierOutputs,subtractMeanMembership)</a>
+0027 <span class="keyword">if</span> nargin&lt;3
+0028     baggingRuns=3
+0029 <span class="keyword">end</span>
+0030 <span class="keyword">if</span> nargin&lt;4
+0031     homogeneousBagging=1
+0032 <span class="keyword">end</span>
+0033 <span class="keyword">if</span> nargin&lt;5
+0034     standardizeClassifierOutputs=0
+0035 <span class="keyword">end</span>
+0036 <span class="keyword">if</span> nargin&lt;6
+0037     subtractMeanMembership=0
+0038 <span class="keyword">end</span>
+0039 
+0040 <span class="keyword">if</span> baggingRuns <span class="comment">%%%bagging runs have to be undertaken</span>
+0041     <span class="keyword">for</span> k=1:length(xTrain)
+0042         <span class="comment">%fill in the multiclass GT membership matrix for the training</span>
+0043         multiclassGT(:,k)=xTrain(k).GT;
+0044         multiclassGTtest(:,k)=xTest(k).GT;
+0045 
+0046         <span class="comment">%bagging with 3 runs</span>
+0047         [trainBaggingPrediction,testBaggingPrediction]=<a href="baggingFusion.html" class="code" title="function [trainBaggingPrediction,testBaggingPrediction]=baggingFusion(data,testData,baggingRuns,homogeneousBagging,standardizeClassifiers)">baggingFusion</a>(xTrain(k),xTest(k),baggingRuns,homogeneousBagging);
+0048         <span class="comment">%joints class predictions in a multi-class matrix of dimensions</span>
+0049         <span class="comment">%classIndex X timeSamplesOfAllEpochs X baggingFusionOperator</span>
+0050         <span class="comment">%baggingFusionOperator=1 embeds results for majority voting and</span>
+0051         <span class="comment">%baggingFusionOperator=2 embeds results for averaging</span>
+0052         classPrediction(k,:,:)=reshape(trainBaggingPrediction,[size(trainBaggingPrediction,1),size(trainBaggingPrediction,2)*size(trainBaggingPrediction,3)])';
+0053         classPredictionTest(k,:,:)=reshape(testBaggingPrediction,[size(testBaggingPrediction,1),size(testBaggingPrediction,2)*size(testBaggingPrediction,3)])';
+0054     <span class="keyword">end</span>
+0055 <span class="keyword">else</span> <span class="comment">%bagging runs are complete and input data is in another format</span>
+0056     classPrediction=xTrain{1};
+0057     classPredictionTest=xTest{1};
+0058     multiclassGT=xTrain{2};
+0059     multiclassGTtest=xTest{2};
+0060 <span class="keyword">end</span>
+0061 
+0062 <span class="comment">%generate the class labels needed by bci4eval</span>
+0063 [i,j,s]=find(multiclassGT');
+0064 classLabels=i;
+0065 numberSamplesAfterDecimation=size(classPrediction,2)/length(classLabels); <span class="comment">%GT has to be extended by this number</span>
+0066 classLabelSamples=repmat(classLabels',numberSamplesAfterDecimation,1); <span class="comment">%each sample of the GT is repeated this number</span>
+0067 classLabelSamples=classLabelSamples(:);<span class="comment">%turn the repeated matrix one-dimensional</span>
+0068 [i,j,s]=find(multiclassGTtest');    <span class="comment">%&quot;find()&quot; sorts the column index j (it is a really extrange arbitrary convention)</span>
+0069                                     <span class="comment">%so we have to transpose the matrix and</span>
+0070                                     <span class="comment">%take the row index (i), which is not sorted</span>
+0071 classLabelsTest=i;
+0072 numberSamplesAfterDecimationTest=size(classPredictionTest,2)/length(classLabelsTest); <span class="comment">%GT has to be extended by this number</span>
+0073 classLabelSamplesTest=repmat(classLabelsTest',numberSamplesAfterDecimationTest,1); <span class="comment">%each sample of the GT is repeated this number</span>
+0074 classLabelSamplesTest=classLabelSamplesTest(:);<span class="comment">%turn the repeated matrix one-dimensional</span>
+0075 
+0076 <span class="comment">% %turn the predictions into decisions and computing kappa</span>
+0077 
+0078 <span class="comment">%%%%%%decision stage  - it looks like adding an offset to the predictions</span>
+0079 <span class="comment">%%%%%%of class 1 and 2 improves performance</span>
+0080 <span class="keyword">if</span> subtractMeanMembership
+0081     classPrediction=classPrediction-repmat(mean(classPrediction,2),[1,size(classPrediction,2),1]);
+0082     classPredictionTest=classPredictionTest-repmat(mean(classPredictionTest,2),[1,size(classPredictionTest,2),1]);
+0083 <span class="keyword">end</span>
+0084 
+0085 
+0086 
+0087 <span class="keyword">for</span> i=0:0
+0088 classPredictionOffest=classPrediction;
+0089 classPredictionOffestTest=classPredictionTest;
+0090 classPredictionOffest(1,:,:)=classPredictionOffest(1,:,:)+i/10.0;
+0091 classPredictionOffest(2,:,:)=classPredictionOffest(2,:,:)+i/10.0;
+0092 classPredictionOffestTest(1,:,:)=classPredictionOffestTest(1,:,:)+i/10.0;
+0093 classPredictionOffestTest(2,:,:)=classPredictionOffestTest(2,:,:)+i/10.0;
+0094 
+0095 [val,labelClass]=max(classPredictionOffest,[],1);
+0096 [val,labelClassTest]=max(classPredictionOffestTest,[],1);
+0097 
+0098 kap(i+1,2)=<a href="kappa.html" class="code" title="function [kap,se,H,zscore,p0,SA,R]=kappa(d,c,kk);">kappa</a>(classLabelSamples,labelClass(:,:,2)');
+0099 kapTest(i+1,2)=<a href="kappa.html" class="code" title="function [kap,se,H,zscore,p0,SA,R]=kappa(d,c,kk);">kappa</a>(classLabelSamplesTest,labelClassTest(:,:,2)');
+0100 kap(i+1,1)=<a href="kappa.html" class="code" title="function [kap,se,H,zscore,p0,SA,R]=kappa(d,c,kk);">kappa</a>(classLabelSamples,labelClass(:,:,1)');
+0101 kapTest(i+1,1)=<a href="kappa.html" class="code" title="function [kap,se,H,zscore,p0,SA,R]=kappa(d,c,kk);">kappa</a>(classLabelSamplesTest,labelClassTest(:,:,1)');
+0102 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

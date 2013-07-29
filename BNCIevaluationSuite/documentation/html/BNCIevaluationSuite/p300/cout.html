@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of cout</title>
+  <meta name="keywords" content="cout">
+  <meta name="description" content="[J,yx] = cout(H,x,b,C,indd,c,A,b,lambda);">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html p300 -->
+<h1>cout
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>[J,yx] = cout(H,x,b,C,indd,c,A,b,lambda);</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [J,lam] = cout(H,x,y,C,ind,c,A,b,lambda) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">         [J,yx] = cout(H,x,b,C,indd,c,A,b,lambda);</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="monqp.html" class="code" title="function [xnew, lambda, pos,mu] = monqp(H,c,A,b,C,l,verbose,X,ps,xinit)">monqp</a>	function [xnew, lambda, pos] = monqp(H,c,A,b,C,l,verbose,X,ps,xinit)</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [J,lam] = cout(H,x,y,C,ind,c,A,b,lambda)</a>
+0002 <span class="comment">%         [J,yx] = cout(H,x,b,C,indd,c,A,b,lambda);</span>
+0003  
+0004   
+0005     [n,m] = size(H);  
+0006     X = zeros(n,1);  
+0007     posok = find(ind &gt; 0);  
+0008     posA = find(ind==0);            <span class="comment">% liste des contriantes saturees</span>
+0009     posB = find(ind==-1);            <span class="comment">% liste des contriantes saturees</span>
+0010             <span class="comment">%             keyboard</span>
+0011     X(posok) = x;  
+0012     X(posB) = C(posB);     <span class="comment">%% 03/01/2002</span>
+0013 
+0014     J = 0.5 *X'*H*X  - c'*X;<span class="comment">% + lambda'*(A'*X-b);</span>
+0015                                 <span class="comment">% 0 normalement</span>
+0016  <span class="comment">% keyboard</span>
+0017     
+0018  <span class="comment">% lam = y'*X;</span>
+0019 lam = 0; <span class="comment">% liminer</span>
+0020     
+0021</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

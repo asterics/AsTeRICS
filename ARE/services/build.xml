@@ -1,0 +1,24 @@
+<project name="asterics.services" default="buildAllServices" basedir=".">
+
+	<target name="buildSystemChange">
+    <subant target="jar">
+      <property name="debug" value="${debug}"/>
+      <fileset dir="." includes="SystemStateChange/build.xml"/>
+    </subant>
+	</target>
+		
+	<target name="buildAllServices" depends="buildSystemChange">
+     <subant target="jar">
+        <property name="debug" value="${debug}"/>
+        <fileset dir="." includes="*/build.xml"/>
+     </subant>
+  </target>
+
+	<target name="clean">
+        <delete dir="out"/>
+		<delete>
+			<fileset dir="." includes="*.jar"/>
+		</delete>
+    </target>
+	
+</project>

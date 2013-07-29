@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.RemoteMouse"
+                   canonical_name="eu.asterics.component.actuator.remotemouse.RemoteMouseInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>Remote mouse emulation via HID actuator</description>
+        <ports>
+            <inputPort id="mouseX">
+                <description>Input port of x-coordinate for mouse</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="mouseY">
+                <description>Input port of y-coordinate for mouse</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="action">
+                <description>Mouse commands for selection of next click type (eg.: @MOUSE:nextclick,right @MOUSE:action,enable @MOUSE:action,toggle)</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="leftClick">
+                <description>On incoming event, left mouse button is clicked</description>
+            </eventListenerPort>
+            <eventListenerPort id="middleClick">
+                <description>On incoming event, middle mouse button is clicked</description>
+            </eventListenerPort>
+            <eventListenerPort id="rightClick">
+                <description>On incoming event, right mouse button is clicked</description>
+            </eventListenerPort>
+            <eventListenerPort id="doubleClick">
+                <description>On incoming event, left mouse button is double-clicked</description>
+            </eventListenerPort>
+            <eventListenerPort id="dragPress">
+                <description>On incoming event, left mouse button is clicked</description>
+            </eventListenerPort>
+            <eventListenerPort id="dragRelease">
+                <description>On incoming event, left mouse button is released</description>
+            </eventListenerPort>
+            <eventListenerPort id="wheelUp">
+                <description>On incoming event, mouse wheel position is increased</description>
+            </eventListenerPort>
+            <eventListenerPort id="wheelDown">
+                <description>On incoming event, mouse wheel position is decreased</description>
+            </eventListenerPort>
+            <eventListenerPort id="center">
+                <description>On incoming event, the mouse cursor position will be centered</description>
+            </eventListenerPort>
+        </events>        
+        <properties>
+            <property name="absolutePosition"
+                      type="boolean"
+                      value="true"
+                      description="X and Y values are absolute positions or relative movements"/>
+            <property name="centerX"
+                      type="integer"
+                      value="300"
+                      description="center value for X location"/>                      
+            <property name="centerY"
+                      type="integer"
+                      value="150"
+                      description="center value for Y location"/>   
+            <property name="uniqueID"
+                      type="string"
+                      value="not used"
+                      getStringList="true"
+                      description="ID (if more than one devices of this kind are connected)"/>
+                                         
+        </properties>
+    </componentType>
+
+</componentTypes>

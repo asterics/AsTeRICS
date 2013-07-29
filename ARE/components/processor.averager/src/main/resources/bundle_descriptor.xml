@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+<componentType id="asterics.Averager"
+                   canonical_name="eu.asterics.component.processor.averager.AveragerInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Linked list-based averager or accumulator</description>
+        <ports>
+            <inputPort id="input">
+                <description>Input port</description>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <outputPort id="output">
+                <description>Output port of averaged/accumulated values</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <properties>
+            <property name="bufferSize"
+                      type="integer"
+                      value="50"
+                      description="The size of the averager's buffer or milliseconds to accumulate"/>
+            <property name="mode"
+                      type="integer"
+                      value="0"
+                      combobox="average//averager with integer output//accumulate for n milliseconds"
+                      description="The averager or accumulator mode"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

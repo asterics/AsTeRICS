@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of saveImages</title>
+  <meta name="keywords" content="saveImages">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html multiclass -->
+<h1>saveImages
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 warning off;
+0002 hands   = get (0,<span class="string">'Children'</span>);   <span class="comment">% locate all open figure handles</span>
+0003 hands   = sort(hands);          <span class="comment">% sort figure handles</span>
+0004 
+0005 toprint=[<span class="string">'\n Open figures: '</span>,num2str(hands'),<span class="string">'.\n'</span>];
+0006 fprintf(toprint);
+0007 allflag=input(<span class="string">'\nDo you want to print all these figures [yes]?'</span>);
+0008 <span class="keyword">if</span> isempty(allflag) | allflag==1;<span class="keyword">end</span>;
+0009 <span class="keyword">if</span> allflag==0
+0010   nhands=input(<span class="string">'\nInput a vector with the number of the figures to print:\n\n'</span>);
+0011   <span class="keyword">if</span> ~ismember(nhands,hands)
+0012     fprintf(<span class="string">'\nSome figures you want to print do not exist\n'</span>)
+0013     error(<span class="string">'The program will stop.'</span>);
+0014   <span class="keyword">else</span>
+0015     hands=nhands(:);
+0016   <span class="keyword">end</span>
+0017 <span class="keyword">end</span>
+0018 
+0019 numfigs = size(hands,1);        <span class="comment">% number of open figures</span>
+0020 
+0021  
+0022 flag=input(<span class="string">'\nDo you want to print this set of figure on paper [no]?'</span>);
+0023 <span class="keyword">if</span> isempty(flag) flag=0;<span class="keyword">end</span>;
+0024 flag_fig=input(<span class="string">'\nDo you want to save also as &quot;.fig&quot; [no]?'</span>);
+0025 <span class="keyword">if</span> isempty(flag_fig) flag_fig=0;<span class="keyword">end</span>;
+0026 flag_name=input(<span class="string">'\nDo you want to name independently each figure [yes]?'</span>);
+0027 <span class="keyword">if</span> isempty(flag_name) flag_name=1;<span class="keyword">end</span>;
+0028 <span class="keyword">if</span> ~flag_name
+0029 tag=input(<span class="string">'Which common name for this set of figures? '</span>,<span class="string">'s'</span>);
+0030 <span class="keyword">end</span>;
+0031 
+0032 <span class="keyword">for</span> i=1:numfigs
+0033   fhand=hands(i);
+0034   figure(fhand)
+0035 <span class="keyword">if</span> flag_name
+0036   name=input([<span class="string">'\nInput the name for figure number '</span>,num2str(fhand),<span class="string">':'</span>],<span class="string">'s'</span>);
+0037 <span class="keyword">else</span>
+0038   name=[tag,<span class="string">'_'</span>,num2str(fhand)];
+0039 <span class="keyword">end</span>;
+0040   <span class="comment">%print(fhand,'-depsc2',[name,'.eps']);</span>
+0041   print(fhand,<span class="string">'-dtiff'</span>,[name,<span class="string">'.tif'</span>]);
+0042 <span class="comment">%   if flag</span>
+0043 <span class="comment">%     eval(['unix(''lp ',name,'.eps'');']);</span>
+0044 <span class="comment">%   end;</span>
+0045   <span class="keyword">if</span> flag_fig
+0046     saveas(fhand,[name,<span class="string">'.fig'</span>],<span class="string">'fig'</span>);
+0047   <span class="keyword">end</span>
+0048 <span class="keyword">end</span>;
+0049 warning on;</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

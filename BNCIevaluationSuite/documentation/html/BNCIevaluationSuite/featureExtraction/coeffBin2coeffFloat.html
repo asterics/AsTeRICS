@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of coeffBin2coeffFloat</title>
+  <meta name="keywords" content="coeffBin2coeffFloat">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html featureExtraction -->
+<h1>coeffBin2coeffFloat
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function coeff=coeffBin2coeffFloat(coeffBin,nBits,scaleFactor) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"></pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="AstericsfitFunct_v3.html" class="code" title="function Fitness=AstericsfitFunct(SinglvectExtractor,Trials,subj,analyzedClass,scaleFactor,bitDepth)">AstericsfitFunct_v3</a>	%%this is the fitness function to be used to optimize the projections with</li><li><a href="../../BNCIevaluationSuite/motorImageryDemos/main_Asterics_Test4_wl_anova_GAnew_v1.html" class="code" title="">main_Asterics_Test4_wl_anova_GAnew_v1</a>	This script launches a GA to optimize the projection of the features</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function coeff=coeffBin2coeffFloat(coeffBin,nBits,scaleFactor)</a>
+0002     nCoefs=length(coeffBin)/nBits;
+0003     <span class="keyword">for</span> i=1:nCoefs
+0004         coeff(:,i)=bin2dec(num2str(coeffBin(:,(i-1)*nBits+1:(i-1)*nBits+nBits)))/(2^nBits);
+0005     <span class="keyword">end</span>
+0006     coeff=(scaleFactor(2)-scaleFactor(1))*coeff+scaleFactor(1);</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

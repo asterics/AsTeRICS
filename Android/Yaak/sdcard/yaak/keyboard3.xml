@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<keyboard rows="2" cols="3" bgcolor="#FFFFFF">
+	<painter method="invert" fontcolor="#0000FF" bgcolor="#0000FF" 
+	    bordercolor="#FFFF00" bordersize="2.0f"/>
+	<scanner method="column" scantime="2000" repeattime="1000"/>
+	<rows>
+		<row>
+			<button fontColor="#00FF00">
+				<icon>power.png</icon>
+				<text>keyboard3</text>
+				<action>@load:default.xml</action>
+			</button>
+			<button bgColor="#FF00FF">
+				<icon>volup.png</icon>
+				<action>vol+</action>
+			</button>
+			<button>
+				<icon>voldown.png</icon>
+				<action>vol-</action>
+			</button>
+		</row>
+		<row>
+			<button>
+				<text>this text is way to long</text>
+				<action>ch++</action>
+			</button>
+			<button>
+				<text>ch--</text>
+				<action>ch--</action>
+			</button>
+			<button>
+				<icon>mute.png</icon>
+				<text>mute</text>
+				<action>mute</action>
+			</button>
+		</row>
+	</rows>
+</keyboard>

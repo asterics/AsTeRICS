@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Mouse"
+                   canonical_name="eu.asterics.component.actuator.mouse.MouseInstance">
+        <type subtype="Input Device Emulation">actuator</type>
+        <singleton>true</singleton>
+        <description>Local mouse actuator, emulates mouse activity on local system</description>
+        <ports>
+            <inputPort id="mouseX">
+                <description>Input port of x-coordinate for mouse</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="mouseY">
+                <description>Input port of y-coordinate for mouse</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="action">
+                <description>Mouse commands for selection of next click type (eg.: @MOUSE:nextclick,right @MOUSE:action,enable @MOUSE:action,toggle)</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>    
+        </ports>
+        <events>
+            <eventListenerPort id="leftClick">
+                <description>generates a left click</description>
+            </eventListenerPort>
+            <eventListenerPort id="middleClick">
+                <description>generates a middle click</description>
+            </eventListenerPort>
+            <eventListenerPort id="rightClick">
+                <description>generates a right click</description>
+            </eventListenerPort>
+            <eventListenerPort id="doubleClick">
+                <description>generates a double left click</description>
+            </eventListenerPort>
+            <eventListenerPort id="dragPress">
+                <description>generates a left mouse button press</description>
+            </eventListenerPort>
+            <eventListenerPort id="dragRelease">
+                <description>generates a left mouse button release</description>
+            </eventListenerPort>
+            <eventListenerPort id="wheelUp">
+                <description>moves wheel up one step</description>
+            </eventListenerPort>
+            <eventListenerPort id="wheelDown">
+                <description>moves wheel down one step</description>
+            </eventListenerPort>
+            <eventListenerPort id="center">
+                <description>On incoming event, the mouse cursor position will be centered</description>
+            </eventListenerPort>
+            <eventListenerPort id="activate">
+                <description>On incoming event, the mouse activity starts</description>
+            </eventListenerPort>
+            <eventListenerPort id="deactivate">
+                <description>On incoming event, the mouse activity stops</description>
+            </eventListenerPort>
+            <eventListenerPort id="toggle">
+                <description>On incoming event, the mouse activity toggles</description>
+            </eventListenerPort>                        
+        </events>         
+        <properties>
+            <property name="enableMouse"
+                      type="boolean"
+                      value="true"
+                      description="Defines if the mouse will move and clicks will be performed"/>
+            <property name="absolutePosition"
+                      type="boolean"
+                      value="true"
+                      description="X and Y values are absolute positions or relative movements"/>
+            <property name="xMin"
+                      type="integer"
+                      value="0"
+                      description="minimum value for x-coordinate"/>
+            <property name="xMax"
+                      type="integer"
+                      value="2000"
+                      description="maximum value for x-coordinate (0 for auto-detect)"/>
+            <property name="yMin"
+                      type="integer"
+                      value="0"
+                      description="minimum value for y-coordinate"/>
+            <property name="yMax"
+                      type="integer"
+                      value="1024"
+                      description="maximum value for y-coordinate (0 for auto-detect)"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

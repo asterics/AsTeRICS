@@ -1,0 +1,49 @@
+<project name="asterics.runtime" default="buildComponents" basedir=".">
+
+  <property name="debug" value="true"/>    
+	<target name="buildARE">
+          <subant target="jar">
+              <property name="debug" value="${debug}"/>
+              <fileset dir="." includes="middleware/build.xml"/>
+          </subant>
+          <exec executable="../bin/ARE/profile/rm.exe">
+            <arg value="-r"/>
+            <arg value="../bin/ARE/profile/org.eclipse.osgi"/>
+          </exec>
+    </target>
+
+	<target name="buildServices" depends="buildARE">
+          <subant target="buildAllServices">
+            <property name="debug" value="${debug}"/>
+            <fileset dir="." includes="services/build.xml"/>
+          </subant>
+    </target>
+
+	<target name="buildComponents" depends="buildServices">
+          <subant target="buildAllComponents">
+            <property name="debug" value="${debug}"/>
+            <fileset dir="." includes="components/build.xml"/>
+          </subant>
+    </target>
+
+	<target name="buildAll" depends="clean,buildServices">
+          <subant target="buildAllComponents">
+            <property name="debug" value="true"/>
+            <fileset dir="." includes="components/build.xml"/>
+          </subant>
+    </target>
+
+	<target name="buildAll-release" depends="clean,buildServices">
+         <subant target="buildAllComponents">
+            <property name="debug" value="false"/>
+            <fileset dir="." includes="components/build.xml"/>
+          </subant>
+    </target>
+	
+	<target name="clean">
+        <subant target="clean">
+          <fileset dir="." includes="*/build.xml"/>
+        </subant>
+    </target>
+
+</project>

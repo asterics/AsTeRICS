@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="08.11.2011_1014" version="20130320">
+  <components>
+    <component id="EOG.1" type_id="asterics.EOG">
+      <description>connects to EOG CIM and measures horizontal and vertical eye movements</description>
+      <ports>
+        <outputPort portTypeID="horizontal">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="vertical">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="updatePeriod" value="100" />
+      </properties>
+      <layout>
+        <posX>84</posX>
+        <posY>143</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Oscilloscope" />
+      </properties>
+      <layout>
+        <posX>429</posX>
+        <posY>127</posY>
+      </layout>
+      <gui>
+        <posX>88</posX>
+        <posY>733</posY>
+        <width>3400</width>
+        <height>2200</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Oscilloscope" />
+      </properties>
+      <layout>
+        <posX>409</posX>
+        <posY>298</posY>
+      </layout>
+      <gui>
+        <posX>88</posX>
+        <posY>3000</posY>
+        <width>3400</width>
+        <height>2100</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="EOG.1" />
+        <port id="horizontal" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="EOG.1" />
+        <port id="vertical" />
+      </source>
+      <target>
+        <component id="Oscilloscope.2" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>3988</width>
+      <height>5200</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

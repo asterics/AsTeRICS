@@ -1,0 +1,1785 @@
+{ "interface" : {
+	"commands" : [
+		{
+			"message" : "about",
+			"label" : "About Max",
+			"navkey" : "A",
+			"target" : "max"
+		},
+		{
+			"message" : "customabout",
+			"label" : "About Max",
+			"navkey" : "A",
+			"target" : "menubar"
+		},
+		{
+			"message" : "preferences",
+			"label" : "Preferences...",
+			"target" : "max"
+		},
+		{
+			"message" : "newjpatcher",
+			"label" : "New Patcher",
+			"navkey" : "P",
+			"target" : "max",
+			"shortcut" : "N"
+		},
+		{
+			"message" : "customnew",
+			"label" : "New",
+			"navkey" : "N",
+			"target" : "menubar",
+			"shortcut" : "N"
+		},
+		{
+			"message" : "newfilebrowser",
+			"label" : "New File Browser",
+			"navkey" : "b",
+			"shortcut" : "B",
+			"target" : "max"
+		},
+		{
+			"message" : "newtext",
+			"label" : "New Text",
+			"navkey" : "T",
+			"target" : "max",
+			"shortcut" : "shift+N"
+		},
+		{
+			"message" : "runtime_newtext",
+			"label" : "New Text",
+			"navkey" : "T",
+			"target" : "max",
+			"shortcut" : "shift+N"
+		},
+		{
+			"message" : "newtable",
+			"label" : "Table",
+			"navkey" : "e",
+			"target" : "max"
+		},
+		{
+			"message" : "template",
+			"label" : "",
+			"target" : "max",
+			"enummsg" : "listtemplates",
+			"enumtarget" : "max"
+		},
+		{
+			"message" : "newfromclipboard",
+			"label" : "New From Clipboard",
+			"target" : "max",
+			"shortcut" : "option+N"
+		},
+		{
+			"message" : "jopen",
+			"label" : "Open...",
+			"navkey" : "O",
+			"target" : "max",
+			"shortcut" : "O"
+		},
+		{
+			"message" : "customopen",
+			"label" : "Open...",
+			"navkey" : "O",
+			"target" : "menubar",
+			"shortcut" : "O"
+		},
+		{	
+			"message" : "openastext",
+			"label" : "Open As Text...",
+			"navkey" : "T",
+			"target" : "max"
+		},
+		{
+			"message" : "openrecent",
+			"label" : "Open Recent",
+			"navkey" : "R",
+			"target" : "max",
+			"enummsg" : "listrecent",
+			"enumtarget" : "max",
+			"flags" : 8
+		},
+		{
+			"message" : "close",
+			"label" : "Close",
+			"navkey" : "C",
+			"target" : "window",
+			"shortcut" : "W"
+		},
+		{
+			"message" : "allowmod",
+			"label" : "Modify Read-Only",
+			"target" : "owner",
+			"shortcut" : "option+M"
+		},
+		{
+			"message" : "windsave",
+			"label" : "Save",
+			"navkey" : "S",
+			"target" : "owner",
+			"shortcut" : "S"
+		},
+		{
+			"message" : "windsaveas",
+			"label" : "Save As...",
+			"navkey" : "a",
+			"target" : "owner",
+			"shortcut" : "shift+S"
+		},
+		{
+			"message" : "customsave",
+			"label" : "Save",
+			"navkey" : "S",
+			"target" : "menubar",
+			"shortcut" : "S"
+		},
+		{
+			"message" : "customsaveas",
+			"label" : "Save As...",
+			"navkey" : "a",
+			"target" : "menubar",
+			"shortcut" : "shift+S"
+		},
+		{
+			"message" : "savecoll",
+			"label" : "Build Collective / Application...",
+			"navkey" : "L",
+			"target" : "owner"
+		},
+		{
+			"message" : "midisetup",
+			"label" : "MIDI Setup...",
+			"navkey" : "M",
+			"target" : "max"
+		},
+		{
+			"message" : "backtomax",
+			"label" : "Max Menus",
+			"target" : "menubar"
+		},
+		{
+			"message" : "pagesetup",
+			"label" : "Page Setup...",
+			"navkey" : "u",
+			"target" : "window"
+		},
+		{	
+			"message" : "print",
+			"label" : "Print...",
+			"navkey" : "P",
+			"target" : "owner",
+			"shortcut" : "P"
+		},
+		{	
+			"message" : "exportimage",
+			"label" : "Export Image...",
+			"navkey" : "E",
+			"target" : "owner"
+		},
+		{
+			"message" : "listfiles",
+			"label" : "List Externals and Subpatcher Files",
+			"target" : "owner"
+		},
+		{
+			"message" : "install",
+			"label" : "Install...",
+			"navkey" : "I",
+			"target" : "max"
+		},
+		{
+			"message" : "quit",
+			"label_mac" : "Quit",
+			"label_windows" : "Exit",
+			"navkey" : "x",
+			"target" : "max",
+			"shortcut" : "Q"
+		},
+		
+		{
+			"message" : "undo",
+			"label" : "Undo",
+			"navkey" : "U",
+			"target" : "owner",
+			"shortcut" : "Z"
+		},
+		{
+			"message" : "redo",
+			"label" : "Redo",
+			"navkey" : "o",
+			"target" : "owner",
+			"shortcut_mac" : "shift+Z",
+			"shortcut_windows" : "Y"
+		},
+		{
+			"message" : "cut",
+			"label" : "Cut",
+			"navkey" : "t",
+			"target" : "owner",
+			"shortcut" : "X"
+		},
+		{
+			"message" : "copy",
+			"label" : "Copy",
+			"navkey" : "C",
+			"target" : "owner",
+			"shortcut" : "C"
+		},
+		{
+			"message" : "copycompressed",
+			"label" : "Copy Compressed",
+			"target" : "owner"
+		},
+		{
+			"message" : "paste",
+			"label" : "Paste",
+			"navkey" : "P",
+			"target" : "owner",
+			"shortcut" : "V"
+		},
+		{
+			"message" : "contextualpaste",
+			"label" : "Paste",
+			"target" : "owner"
+		},
+		{
+			"message" : "clr",
+			"label" : "Delete",
+			"navkey" : "l",
+			"target" : "owner",
+			"shortcut" : "del"
+		},
+		{
+			"message" : "dup",
+			"label" : "Duplicate",
+			"navkey" : "D",
+			"target" : "owner",
+			"shortcut" : "D"
+		},
+		{
+			"message" : "selectall",
+			"label" : "Select All",
+			"navkey" : "A",
+			"target" : "owner",
+			"shortcut" : "A"
+		},
+		{
+			"message" : "pastepic",
+			"label" : "Paste Picture",
+			"navkey" : "i",
+			"target" : "owner"
+		},
+		{
+			"message" : "pastereplace",
+			"label" : "Paste Replace",
+			"navkey" : "e",
+			"target" : "owner",
+			"shortcut" : "option+V"
+		},
+		{
+			"message" : "encapsulate",
+			"label" : "Encapsulate",
+			"target" : "owner",
+			"shortcut" : "shift+E"
+		},
+		{
+			"message" : "deencapsulate",
+			"label" : "De-encapsulate",
+			"target" : "owner",
+			"shortcut" : "shift+D"
+		},
+		{
+			"message" : "scale",
+			"label" : "Scale...",
+			"target" : "owner"
+		},
+		{
+			"message" : "scalespace",
+			"label" : "Scale Spacing...",
+			"target" : "owner"
+		},
+		{
+			"message" : "find",
+			"label" : "Find...",
+			"navkey" : "F",
+			"target" : "owner",
+			"shortcut" : "F"
+		},
+		{
+			"message" : "findnext",
+			"label" : "Find Next",
+			"navkey_mac" : "G",
+			"target" : "owner",
+			"shortcut_mac" : "G",
+			"shortcut_windows" : "F3"
+		},
+		{
+			"message" : "findprev",
+			"label" : "Find Previous",
+			"target" : "owner",
+			"shortcut_mac" : "shift+G",
+			"shortcut_windows" : "shift+F3"
+		},
+		{
+			"message" : "resume",
+			"label" : "Resume",
+			"navkey" : "m",
+			"target" : "max",
+			"shortcut" : "R"
+		},
+		{
+			"message" : "newview",
+			"label" : "New View",
+			"navkey" : "N",
+			"target" : "owner"
+		},
+		{
+			"message" : "edit",
+			"label" : "Edit",
+			"navkey" : "E",
+			"target" : "owner",
+			"shortcut" : "E",
+			"flags" : 3,
+			"icon" : "lock.svg",
+			"downicon" : "unlock.svg",
+			"caption" : "Unlock",
+			"downcaption" : "Lock"
+		},
+		{
+			"message" : "presentation",
+			"label" : "Presentation",
+			"target" : "owner",
+			"icon" : "presentation.svg",
+			"downicon" : "present_on.svg",
+			"caption" : "Presentation Mode",
+			"downcaption" : "Patching Mode",
+			"shortcut" : "option+E",
+			"flags" : 3
+		},
+		{
+			"message" : "patcherinspector",
+			"label" : "Patcher Inspector",
+			"shortcut" : "shift+I",
+			"target" : "owner"
+		},
+		{
+			"message" : "showparameters",
+			"label" : "Parameters",
+			"target" : "owner"
+		},
+		{
+			"message" : "showconnections",
+			"label" : "Show Connections",
+			"navkey" : "C",
+			"target" : "owner",
+			"invmsg" : "hideconnections",
+			"invlabel" : "Hide Connections"
+		},
+		{
+			"message" : "showfg",
+			"label" : "Show Foreground",
+			"target" : "owner",
+			"invmsg" : "hidefg",
+			"invlabel" : "Hide Foreground"
+		},
+		{
+			"message" : "showbg",
+			"label" : "Show Background",
+			"target" : "owner",
+			"invmsg" : "hidebg",
+			"invlabel" : "Hide Background"
+		},
+		{
+			"message" : "lockbg",
+			"label" : "Lock Background",
+			"shortcut" : "option+L",
+			"target" : "owner",
+			"flags" : 3
+		},
+		{
+			"message" : "grid",
+			"label" : "Grid",
+			"target" : "owner",
+			"flags" : 3,
+			"icon" : "grid.svg",
+			"downicon" : "grid_on.svg",
+			"caption" : "Show Grid",
+			"downcaption" : "Hide Grid"
+		},
+		{
+			"message" : "snaptogrid",
+			"label" : "Snap to Grid",
+			"target" : "owner",
+			"flags" : 3,
+			"icon" : "snap.svg",
+			"downicon" : "snap_on.svg",
+			"caption" : "Enable Snap to Grid",
+			"downcaption" : "Disable Snap to Grid",
+			"shortcut" : "option+G"
+		},
+		{
+			"message" : "showtoolbar",
+			"label" : "Toolbar",
+			"target" : "owner",
+			"flags" : 3
+		},
+		{
+			"message" : "initialposition",
+			"label" : "Initial Window Location",
+			"target" : "owner"
+		},
+		{
+			"message" : "defineinitialposition",
+			"label" : "Define Fixed Initial Window Location",
+			"target" : "owner"
+		},
+		{
+			"message" : "clearinitialposition",
+			"label" : "Clear Initial Window Location",
+			"target" : "owner"
+		},
+		{
+			"message" : "definedevicewidth",
+			"label" : "Set Device Width",
+			"target" : "owner"
+		},
+		{
+			"message" : "cleardevicewidth",
+			"label" : "Clear Device Width",
+			"target" : "owner"
+		},
+		{
+			"message" : "navigate",
+			"label" : "Navigate Zoom",
+			"target" : "owner",
+			"icon" : "navigate.svg",
+			"caption" : "Zoom"
+		},
+		{
+			"message" : "objectpalette",
+			"label" : "New Object",
+			"target" : "owner",
+			"shortcut" : "shift+O",
+			"icon" : "plus.svg",
+			"caption" : "New Object"
+		},	
+		{
+			"message" : "fixwidth",
+			"label" : "Fix Width",
+			"navkey" : "W",
+			"target" : "owner",
+			"shortcut" : "J"
+		},
+		{
+			"message" : "lineup",
+			"label" : "Align",
+			"navkey" : "A",
+			"target" : "owner",
+			"shortcut_mac" : "Y",
+			"shortcut_windows" : "shift+A"
+		},
+		{
+			"message" : "route",
+			"label" : "Route Patch Cords",
+			"target" : "owner",
+			"shortcut_mac" : "shift+Y",
+			"shortcut_windows" : "shift+Y"
+		},
+		{
+			"message" : "lineupconnections",
+			"label" : "Align Connections",
+			"target" : "owner",
+			"shortcut_mac" : "option+Y"
+		},
+		{
+			"message" : "dialog",
+			"label" : "Inspector",
+			"navkey" : "G",
+			"target" : "owner",
+			"icon" : "dialog.svg",
+			"shortcut" : "I"
+		},
+		{
+			"message" : "colorpopup",
+			"label" : "Color...",
+			"navkey" : "C",
+			"target" : "owner"
+		},
+		{
+			"message" : "wobjectname",
+			"label" : "Name...",
+			"navkey" : "N",
+			"target" : "owner",
+			"shortcut" : "'"
+		},
+		{
+			"message" : "wobjectimage",
+			"label" : "Imageburger...",
+			"navkey" : "e",
+			"target" : "owner"
+		},
+		{
+			"message" : "setdefaults",
+			"label" : "Set to Default Values",
+			"target" : "owner"
+		},
+		{
+			"message" : "defaults",
+			"label" : "Object Defaults...",
+			"target" : "max"
+		},
+		{
+			"message" : "hide",
+			"label" : "Hide on Lock",
+			"navkey" : "H",
+			"target" : "owner",
+			"shortcut" : "K"
+		},
+		{
+			"message" : "show",
+			"label" : "Show on Lock",
+			"navkey" : "S",
+			"target" : "owner",
+			"shortcut" : "L"
+		},
+		{
+			"message" : "bfront",
+			"label" : "Bring to Front",
+			"navkey" : "F",
+			"target" : "owner",
+			"shortcut" : "shift+F"
+		},
+		{
+			"message" : "forward",
+			"label" : "Bring Forward",
+			"target" : "owner",
+			"icon" : "forward.svg",
+			"caption" : "Bring Forward",
+			"shortcut" : "shift+option+F"
+		},
+		{
+			"message" : "back",
+			"label" : "Send to Back",
+			"navkey" : "B",
+			"target" : "owner",
+			"shortcut" : "shift+B"
+		},
+		{
+			"message" : "backward",
+			"label" : "Send Backward",
+			"target" : "owner",
+			"shortcut" : "shift+option+B",
+			"icon" : "backward.svg",
+			"caption" : "Send Backward"
+		},
+		{
+			"message" : "ignoreclick",
+			"label" : "Ignore Click",
+			"navkey" : "I",
+			"target" : "owner"
+		},
+		{
+			"message" : "respondtoclick",
+			"label" : "Respond to Click",
+			"navkey" : "R",
+			"target" : "owner"
+		},
+		{
+			"message" : "includebg",
+			"label" : "Include in Background",
+			"navkey" : "l",
+			"target" : "owner"
+		},
+		{
+			"message" : "excludebg",
+			"label" : "Remove from Background",
+			"navkey" : "m",
+			"target" : "owner"
+		},
+		{
+			"message" : "addtopresentation",
+			"label" : "Add to Presentation",
+			"shortcut" : "shift+P",
+			"target" : "owner"
+		},
+		{
+			"message" : "removefrompresentation",
+			"label" : "Remove from Presentation",
+			"shortcut" : "option+P",
+			"target" : "owner"
+		},
+		{
+			"message" : "sendmessage",
+			"label" : "Send Message...",
+			"shortcut" : "shift+M",
+			"target" : "owner"
+		},
+		{
+			"message" : "saveprototype",
+			"label" : "Save Prototype...",
+			"target" : "owner"
+		},
+		{
+			"message" : "prototype",
+			"label" : "Prototype",
+			"navkey" : "P",
+			"target" : "owner",
+			"enummsg" : "listprototypes",
+			"enumtarget" : "owner",
+			"flags" : 8
+		},
+		{
+			"message" : "showfontpanel",
+			"label" : "Show Fonts",
+			"target" : "owner",
+			"invmsg" : "hidefontpanel",
+			"invlabel" : "Hide Fonts",
+			"shortcut" : "T"
+		},
+		{
+			"message" : "overdrive",
+			"label" : "Overdrive",
+			"navkey" : "O",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "allwindowsactive",
+			"label" : "All Windows Active",
+			"navkey" : "A",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "autofixwidth",
+			"label" : "Auto Fix Width",
+			"navkey" : "W",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "segpatchcords",
+			"label" : "Segmented Patch Cords",
+			"navkey" : "P",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "assistance",
+			"label" : "Assistance",
+			"navkey" : "s",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "floatdisplaycorrection",
+			"label" : "Float Display Correction",
+			"navkey" : "t",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "maxatstartup",
+			"label" : "Max Window At Startup",
+			"navkey" : "M",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "helpinlockedpatchers",
+			"label" : "Help in Locked Patchers",
+			"navkey" : "H",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "extendedfilepreview",
+			"label" : "Extended File Preview",
+			"navkey" : "E",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "savedialogshowsfilelocation",
+			"label" : "Save Dialog Shows File Location",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "dspstatus",
+			"label" : "DSP Status...",
+			"navkey" : "D",
+			"target" : "max"
+		},
+		{
+			"message" : "iomap",
+			"label" : "I/O Mappings",
+			"target" : "dsp",
+			"icon" : "iomap.svg",
+			"caption" : "I/O Mappings"
+		},
+		{
+			"message" : "driversetup",
+			"label" : "Audio Driver Setup",
+			"target" : "dsp",
+			"icon" : "driversetup.svg",
+			"caption" : "Audio Driver Setup"
+		},
+		{
+			"message" : "filepreferences",
+			"label" : "File Preferences...",
+			"target" : "max"
+		},
+		{
+			"message" : "editor",
+			"label" : "",
+			"target" : "max",
+			"enummsg" : "listeditors",
+			"enumtarget" : "max"
+		},
+		
+		{
+			"message" : "traceenable",
+			"label" : "Enable Debugging",
+			"navkey" : "E",
+			"target" : "max",
+			"invmsg" : "tracedisable",
+			"invlabel" : "Disable Debugging",
+			"icon" : "debug_off.svg",
+			"downicon" : "debug_on.svg"
+		},
+		{
+			"message" : "showdebugger",
+			"label" : "Debugger",
+			"navkey" : "D",
+			"shortcut_mac" : "shift+option+D",
+			"shortcut_windows" : "option+D",
+			"target" : "max"
+		},
+		{
+			"message" : "showwiretaps",
+			"label" : "Watchpoints",
+			"target" : "max"
+		},
+		{
+			"message" : "tracestep",
+			"label" : "Step",
+			"navkey" : "t",
+			"target" : "max",
+			"shortcut" : "shift+T",
+			"icon" : "step.svg"
+		},
+		{
+			"message" : "tracecontinue",
+			"label" : "Continue",
+			"navkey" : "u",
+			"target" : "max",
+			"shortcut" : "U",
+			"icon" : "continue.svg"
+		},
+		{
+			"message" : "traceabort",
+			"label" : "Abort",
+			"navkey" : "A",
+			"target" : "max",
+			"icon" : "revert.svg"
+		},
+		{
+			"message" : "traceautostep",
+			"label" : "Auto Step",
+			"navkey" : "S",
+			"target" : "max",
+			"flags" : 3
+		},
+		{
+			"message" : "tracepause",
+			"label" : "Pause",
+			"navkey" : "P",
+			"target" : "max",
+			"icon" : "pause.svg"
+		},
+		{
+			"message" : "addbreakpoint",
+			"label" : "Add Watchpoint - Break",
+			"navkey" : "B",
+			"target" : "owner"
+		},
+		{
+			"message" : "addwiretap",
+			"label" : "Add Watchpoint - Monitor",
+			"target" : "owner"
+		},
+		{
+			"message" : "removewiretap",
+			"label" : "Remove Watchpoint",
+			"target" : "owner"
+		},
+		{
+			"message" : "disablewiretap",
+			"label" : "Disable Watchpoint",
+			"target" : "owner"
+		},
+		{
+			"message" : "removeallwiretaps",
+			"label" : "Remove All Watchpoints",
+			"navkey" : "r",
+			"target" : "max"
+		},
+		{
+			"message" : "probeenable",
+			"label" : "Probing",
+			"target" : "max",
+			"flags" : 1
+		},
+		{
+			"message" : "showmatrixprobe",
+			"label" : "Matrix Probe",
+			"target" : "max"
+		},
+		{
+			"message" : "extra",
+			"label" : "",
+			"target" : "max",
+			"enummsg" : "listextras",
+			"enumtarget" : "max"
+		},
+
+		{
+			"message" : "selectwindow", 
+			"label" : "Select Window",
+			"target" : "window"
+		},
+		{
+			"message" : "closeall", 
+			"label" : "Close All",
+			"navkey" : "A",
+			"target" : "max"
+		},
+		{
+			"message" : "nextwindow",
+			"label" : "Next",
+			"navkey" : "N",
+			"target" : "window"
+		},
+		{	"message" : "previouswindow",
+			"label" : "Previous",
+			"navkey" : "P",
+			"target" : "window"
+		},	
+		{	
+			"message" : "cascade",
+			"label" : "Cascade",
+			"navkey" : "d",
+			"target" : "max"
+		},
+		{
+			"message" : "tilehorizontally",
+			"label" : "Tile Horizontally",
+			"navkey" : "H",
+			"target" : "max"
+		},
+		{
+			"message" : "tilevertically",
+			"label" : "Tile Vertically",
+			"navkey" : "V",
+			"target" : "max"
+		},
+		{
+			"message" : "minimize",
+			"label" : "Minimize",
+			"target" : "window"
+		},
+		{
+			"message" : "zoomwindow",
+			"label" : "Zoom",
+			"target" : "window"
+		},
+		{
+			"message" : "bringalltofront",
+			"label" : "Bring All to Front",
+			"target" : "max"
+		},
+		{
+			"message" : "minimizeall",
+			"label" : "Minimize All",
+			"target" : "max"
+		},
+		{
+			"message" : "restoreall",
+			"label_windows" : "Restore All",
+			"label_mac" : "This Does Not Work",
+			"target" : "max"
+		},
+		{
+			"message" : "hidesubs",
+			"label" : "Hide Subwindows",
+			"navkey" : "S",
+			"target" : "max"
+		},
+		{
+			"message" : "sendwindowtoback",
+			"label" : "Send Window to Back",
+			"navkey" : "B",
+			"target" : "window"
+		},
+		{
+			"message" : "showfloatinspector",
+			"label" : "Show Floating Inspector",
+			"navkey" : "F",
+			"target" : "max",
+			"invmsg" : "hidefloatinspector",
+			"invlabel" : "Hide Floating Inspector",
+			"shortcut" : "/"
+		},
+		{
+			"message" : "showclue",
+			"label" : "Clue Window",
+			"target" : "max"
+		},
+		{
+			"message" : "maxwindow",
+			"label" : "Max Window",
+			"target" : "max",
+			"shortcut" : "M"
+		},
+		{
+			"message" : "window",
+			"label" : "",
+			"target" : "max",
+			"enummsg" : "listwindows",
+			"enumtarget" : "max"
+		},
+		{
+			"message" : "help",
+			"label" : "Help",
+			"navkey" : "H",
+			"shortcut" : "shift+H",
+			"target" : "owner"
+		},
+		{
+			"message" : "reference",
+			"label" : "Reference",
+			"shortcut" : "shift+R",
+			"target" : "owner"
+		},
+		{
+			"message" : "queryselected",
+			"label" : "Query",
+			"shortcut" : "shift+Q",
+			"target" : "owner"
+		},
+		{
+			"message" : "zoomin",
+			"label" : "Zoom In",
+			"navkey" : "Z",
+			"target" : "owner",
+			"shortcut" : "="
+		},
+		{
+			"message" : "zoomout",
+			"label" : "Zoom Out",
+			"navkey" : "m",
+			"target" : "owner",
+			"shortcut" : "-"
+		},
+		{
+			"message" : "showat100percent",
+			"label" : "Show at 100%",
+			"navkey" : "1",
+			"target" : "owner",
+			"shortcut" : "1"
+		},
+		{
+			"message" : "pastefrom",
+			"label" : "Paste From",
+			"target" : "owner",
+			"enummsg" : "listclippings",
+			"enumtarget" : "max",
+			"flags" : 8
+		},
+		{
+			"message" : "clientcontext",
+			"label" : "Object",
+			"target" : "owner",
+			"enummsg" : "listboxcontextitems",
+			"enumtarget" : "owner",
+			"flags" : 8
+		},
+		{
+			"message" : "savequery",
+			"label" : "Save Search",
+			"target" : "owner",
+			"icon" : "save.svg",
+			"caption" : "Save Search"
+		},
+		{
+			"message" : "updatequery",
+			"label" : "Update Search",
+			"target" : "owner",
+			"icon" : "update.svg",
+			"caption" : "Update Search"
+		},
+		{
+			"message" : "deletequery",
+			"label" : "Delete Search",
+			"target" : "owner",
+			"icon" : "delete.svg",
+			"caption" : "Remove Search"
+		},
+		{
+			"message" : "showpreview",
+			"label" : "Show Preview",
+			"target" : "owner",
+			"icon" : "dialog.svg",
+			"downicon" : "dialog_on.svg",
+			"caption" : "Show Preview",
+			"downcaption" : "Hide Preview",
+			"flags" : 3
+		},
+		{
+			"message" : "editmetadata",
+			"label" : "Edit Metadata",
+			"target" : "owner",
+			"icon" : "pencil.svg",
+			"caption" : "Edit Metadata",
+			"flags" : 3
+		},
+		{
+			"message" : "newproject",
+			"label" : "Create New Project",
+			"target" : "projectmanager",
+			"icon" : "plus.svg",
+			"caption" : "Create New Project"
+		},
+		{
+			"message" : "revealinfinder",
+			"label_mac" : "Reveal in Finder",
+			"label_windows" : "Reveal in Explorer",
+			"target" : "owner",
+			"icon" : "reveal.svg",
+			"flags" : 64
+		},
+		{
+			"message" : "addmetadata",
+			"label" : "Add Metadata",
+			"target" : "owner",
+			"icon" : "plus.svg",
+			"caption" : "Add Metadata"
+		},
+		{
+			"message" : "deletemetadata",
+			"label" : "Remove Metadata",
+			"target" : "owner",
+			"icon" : "minus.svg",
+			"caption" : "Remove Metadata"
+		},
+		{
+			"message" : "penciltool",
+			"label" : "Pencil Tool",
+			"target" : "owner",
+			"icon" : "pencil.svg",
+			"downicon" : "pencil_on.svg",
+			"caption" : "Pencil Tool",
+			"flags" : 3
+		},
+		{
+			"message" : "selecttool",
+			"label" : "Select Tool",
+			"target" : "owner",
+			"icon" : "ibeam.svg",
+			"downicon" : "ibeam_on.svg",
+			"caption" : "Select Tool",
+			"flags" : 3
+		},
+		{
+			"message" : "linetool",
+			"label" : "Line Tool",
+			"target" : "owner",
+			"icon" : "cross.svg",
+			"downicon" : "cross_on.svg",
+			"caption" : "Line Tool",
+			"flags" : 3
+		},
+		{
+			"message" : "changetool",
+			"label" : "Change Tool",
+			"target" : "owner",
+			"icon" : "cross.svg",
+			"downicon" : "cross_on.svg",
+			"caption" : "Change Tool",
+			"flags" : 3
+		},
+		{
+			"message" : "handtool",
+			"label" : "Move Tool",
+			"target" : "owner",
+			"icon" : "hand.svg",
+			"downicon" : "hand_on.svg",
+			"caption" : "Move Tool",
+			"flags" : 3
+		},
+		{
+			"message" : "sortbytime",
+			"label" : "Order by Time",
+			"target" : "owner",
+			"icon" : "clock.svg",
+			"caption" : "Order by Time"
+		},
+		{
+			"message" : "maxclearall",
+			"label" : "Clear All",
+			"target" : "owner",
+			"icon" : "revert.svg",
+			"caption" : "Clear All"
+		},
+		{
+			"message" : "addattr",
+			"label" : "Add Instance Attribute",
+			"target" : "owner",
+			"icon" : "plus.svg",
+			"caption" : "Add Instance Attribute"
+		},
+		{
+			"message" : "addattr_single",
+			"label" : "Add Attribute",
+			"target" : "owner",
+			"icon" : "plus.svg",
+			"caption" : "Add"
+		},
+		{
+			"message" : "addpath",
+			"label" : "Add Path",
+			"target" : "owner",
+			"icon" : "plus.svg",
+			"caption" : "Add Path"
+		},
+		{
+			"message" : "removeattr",
+			"label" : "Remove Instance Attribute",
+			"target" : "owner",
+			"icon" : "minus.svg",
+			"caption" : "Remove Instance Attribute"
+		},
+		{
+			"message" : "removeattr_single",
+			"label" : "Remove Attribute",
+			"target" : "owner",
+			"icon" : "minus.svg",
+			"caption" : "Remove"
+		},
+		{
+			"message" : "removepath",
+			"label" : "Remove Path",
+			"target" : "owner",
+			"icon" : "minus.svg",
+			"caption" : "Remove Path"
+		},
+		{
+			"message" : "reveal",
+			"label" : "Show Object",
+			"target" : "owner",
+			"icon" : "reveal.svg",
+			"caption" : "Show Object"
+		},
+		{
+			"message" : "attr_reveal",
+			"label" : "Show Object",
+			"target" : "owner",
+			"icon" : "reveal.svg",
+			"caption" : "Show Object"
+		},
+		{
+			"message" : "revert",
+			"label" : "Revert Value",
+			"target" : "owner",
+			"icon" : "revert.svg",
+			"caption" : "Revert Value"
+		},
+		{
+			"message" : "freeze",
+			"label" : "Freeze",
+			"target" : "owner",
+			"icon" : "snowflake.svg",
+			"caption" : "Freeze Attribute"
+		},
+		{
+			"message" : "unfreeze",
+			"label" : "Unfreeze",
+			"target" : "owner",
+			"icon" : "sun.svg",
+			"caption" : "Unfreeze Attribute"
+		},
+		{
+			"message" : "dialog_sender",
+			"label" : "Inspector",
+			"target" : "owner",
+			"icon" : "dialog.svg",
+			"caption" : "Inspect Sender"
+		},
+		{
+			"message" : "dialog_receiver",
+			"label" : "Inspector",
+			"target" : "owner",
+			"icon" : "dialogcirc.svg",
+			"caption" : "Inspect Receiver"
+		},
+		{
+			"message" : "reveal_sender",
+			"label" : "Reveal",
+			"target" : "owner",
+			"icon" : "reveal.svg",
+			"caption" : "Show Sender"
+		},
+		{
+			"message" : "reveal_receiver",
+			"label" : "Reveal",
+			"target" : "owner",
+			"icon" : "revealcirc.svg",
+			"caption" : "Show Receiver"
+		},
+		{
+			"message" : "browser_fwd",
+			"label" : "Forward",
+			"target" : "owner",
+			"icon" : "fwdarrow.svg",
+			"caption" : "Show Next Page"
+		},
+		{
+			"message" : "browser_home",
+			"label" : "Home",
+			"target" : "owner",
+			"icon" : "home.svg",
+			"caption" : "Documentation Home"
+		},
+		{
+			"message" : "browser_related",
+			"label" : "Contents",
+			"target" : "owner",
+			"icon" : "related.svg",
+			"caption" : "Contents"
+		},
+		{
+			"message" : "browser_web",
+			"label" : "Open Online Version",
+			"target" : "owner",
+			"icon" : "web.svg",
+			"caption" : "Open Online Version"
+		},
+		{
+			"message" : "browser_patch",
+			"label" : "Open Patcher",
+			"target" : "owner",
+			"icon" : "eye.svg",
+			"caption" : "Open Patcher"
+		},
+		{
+			"message" : "browser_back",
+			"label" : "Back",
+			"target" : "owner",
+			"icon" : "backarrow.svg",
+			"caption" : "Show Previous Page"
+		},
+		{
+			"message" : "loadskin",
+			"label" : "Load Settings",
+			"target" : "owner",
+			"enummsg" : "listskinfiles",
+			"enumtarget" : "max"
+		},
+		{
+			"message" : "saveskin",
+			"label" : "Save Settings",
+			"target" : "owner",
+			"icon" : "save.svg",
+			"caption" : "Save Settings"
+		},
+		{
+			"message" : "defaultdefaults",
+			"label" : "Set All to Default Values",
+			"target" : "owner",
+			"icon" : "revert.svg",
+			"caption" : "Set All to Default Values"
+		},
+		{
+			"message" : "listpaths",
+			"label" : "List Paths",
+			"target" : "owner",
+			"icon" : "list.svg",
+			"caption" : "List Paths"
+		},
+		{
+			"message" : "docintro",
+			"label" : "Max Help",
+			"target" : "max",
+			"shortcut" : "?"
+		},
+		{
+			"message" : "docnew",
+			"label" : "What's New in Max 5?",
+			"target" : "max"
+		},
+		{
+			"message" : "doclive",
+			"label" : "Max for Live",
+			"target" : "max"
+		},
+		{
+			"message" : "doctesting",
+			"label" : "Latest Support Information",
+			"target" : "max"
+		},
+		{
+			"message" : "shortcuts",
+			"label" : "Tips and Shortcuts",
+			"target" : "max"
+		},
+		{
+			"message" : "keycommands",
+			"label" : "Patcher Key Commands",
+			"target" : "max"
+		},
+		{
+			"message" : "maxindex",
+			"label" : "Max Tutorials",
+			"target" : "max"
+		},
+		{
+			"message" : "mspindex",
+			"label" : "MSP Tutorials",
+			"target" : "max"
+		},
+		{
+			"message" : "jitindex",
+			"label" : "Jitter Tutorials",
+			"target" : "max"
+		},
+		{
+			"message" : "showattrs",
+			"label" : "Show Attribute Names",
+			"target" : "owner",
+			"flags" : 3,
+			"icon" : "attr.svg",
+			"downicon" : "attr_on.svg",
+			"caption" : "Show Attribute Names",
+			"downcaption" : "Hide Attribute Names"
+		},
+		{
+			"message" : "livepreview",
+			"label" : "Preview",
+			"target" : "owner",
+			"icon" : "livepreview_on.svg",
+			"downicon" : "livepreview_off.svg",
+			"caption" : "Preview is On",
+			"downcaption" : "Preview is Off",
+			"flags" : 3
+		},
+		{
+			"message" : "freezedevice",
+			"label" : "Freeze Device",
+			"target" : "owner",
+			"icon" : "snowflake_off.svg",
+			"downicon" : "snowflake.svg",
+			"caption" : "Freeze Device",
+			"downcaption" : "Unfreeze Device (Allow Editing)",
+			"flags" : 3
+		},
+		{
+			"message" : "resolveconflicts",
+			"label" : "Resolve Conflicts",
+			"target" : "owner",
+			"icon" : "resolveconflicts.svg",
+			"downicon" : "resolveconflicts_on.svg",
+			"caption" : "No Conflicts",
+			"downcaption" : "Resolve Conflicts",
+			"flags" : 3
+		},
+			{
+			"message" : "dependencies",
+			"label" : "Dependencies",
+			"target" : "owner"
+		},
+		{
+			"message" : "addfiledependency",
+			"label" : "Add File Dependency",
+			"target" : "owner",
+			"icon" : "plus.svg",
+			"caption" : "Add File Dependency"
+		},
+		{
+			"message" : "addfolderdependency",
+			"label" : "Add Folder Dependency",
+			"target" : "owner",
+			"icon" : "addfolder.svg",
+			"caption" : "Add Folder Dependency"
+		},
+		{
+			"message" : "removedependency",
+			"label" : "Remove Dependency",
+			"target" : "owner",
+			"icon" : "minus.svg",
+			"caption" : "Remove Dependency"
+		},
+		{
+			"message" : "showobjects",
+			"label" : "Show Objects",
+			"target" : "owner",
+			"icon" : "objects.svg",
+			"downicon" : "objects_on.svg",
+			"caption" : "Show Objects",
+			"downcaption" : "Hide Objects",
+			"flags" : 3
+		},
+		{
+			"message" : "showfoldercontents",
+			"label" : "Show Folder Contents",
+			"target" : "owner",
+			"icon" : "folders.svg",
+			"downicon" : "folders_on.svg",
+			"caption" : "Show Folder Contents",
+			"downcaption" : "Hide Folder Contents",
+			"flags" : 3
+		},
+		{
+			"message" : "updatedependencies",
+			"label" : "Update Dependency List",
+			"target" : "owner",
+			"icon" : "refresh.svg",
+			"caption" : "Update Dependency List"
+		},
+		{
+			"message" : "refreshconflicts",
+			"label" : "Update Conflict List",
+			"target" : "owner",
+			"icon" : "refresh.svg",
+			"caption" : "Update Conflict List"
+		},
+		{
+			"message" : "listconflicts",
+			"label" : "List Conflicts",
+			"target" : "owner",
+			"icon" : "list.svg",
+			"caption" : "List Conflicts"
+		},
+		{
+			"message" : "gencode",
+			"label" : "Generate Code",
+			"target" : "owner",
+			"icon" : "gencode.svg",
+			"caption" : "Generate Code"
+		},
+		{
+			"message" : "compile",
+			"label" : "Compile",
+			"target" : "owner",
+			"icon" : "compile.svg",
+			"caption" : "Compile"
+		},
+		{
+			"message" : "build",
+			"label" : "Build",
+			"target" : "owner",
+			"icon" : "build.svg",
+			"caption" : "Build"
+		}
+		
+
+		],
+		
+	"menus" : [
+		{
+			"id" : "newmenu",
+			"label" : "New",
+			"navkey" : "N",
+			"icon" : "new.svg",
+			"tooltip" : "Make new patcher",
+			"commands" : [ "newjpatcher", "newtext", "newtable", "-", "template" ],
+			"defaultcommand" : "newjpatcher"
+		},
+		{
+			"id" : "newtemplatemenu",
+			"label" : "New From Template",
+			"navkey" : "N",
+			"commands" : [ "template" ]
+		},
+		{
+			"id" : "filemenu",
+			"label" : "File",
+			"navkey" : "F",
+			"commands_windows" : [ "newjpatcher", "newtemplatemenu", "newfromclipboard", "-", "newfilebrowser", "newtext", "-", "jopen", "openastext", "openrecent", "close", "-", "allowmod", "-",
+							"windsave", "windsaveas",
+							"savecoll", "-", "exportimage", "-", "listfiles", "install", "quit" ],
+			"commands_mac" : [ "newjpatcher", "newtemplatemenu", "newfromclipboard", "-", "newfilebrowser", "newtext", "-", "jopen", "openastext", "openrecent", "close", "-", "allowmod", "-",
+							"windsave", "windsaveas",
+							"savecoll", "-", "exportimage", "-", "listfiles", "install" ],
+			"commands_runtime_mac" : [ "runtime_newtext", "jopen", "close", "-", "windsave", "windsaveas", "-", "midisetup" ],
+			"commands_runtime_windows" : [ "newtext", "jopen", "close", "-", "windsave", "windsaveas", "-", "midisetup", "-", "quit" ]
+		},
+		{
+			"id" : "customfilemenu",
+			"label" : "File",
+			"navkey" : "F",
+			"commands" : [ "customnew", "customopen", "close", "-", "customsave", "customsaveas", "-", "backtomax" ],
+			"commands_runtime_mac" : [ "customnew", "customopen", "close", "-", "customsave", "customsaveas" ],
+			"commands_runtime_windows" : [ "customnew", "customopen", "close", "-", "customsave", "customsaveas", "-", "quit" ]
+		},
+		{
+			"id" : "customeditmenu",
+			"label" : "Edit",
+			"navkey" : "E",
+			"commands" : [ "undo", "redo", "-", "cut", "copy", "paste", "clr", "-", "overdrive", "resume" ]
+		},
+		{
+			"id" : "editmenu",
+			"label" : "Edit",
+			"navkey" : "E",
+			"commands" : [ "undo", "redo", "-", "cut", "copy", "copycompressed", "paste", "clr", "-", "dup", "selectall", "pastepic", "pastereplace", "-",
+							"encapsulate", "deencapsulate", "-", "scale", "scalespace", "-", "find", "findnext", "findprev", "-", "resume" ],
+			"commands_runtime" : [ "undo", "redo", "-", "cut", "copy", "paste", "clr", "-", "overdrive", "resume" ]
+		},
+		{
+			"id" : "viewmenu",
+			"label" : "View",
+			"navkey" : "V",
+			"commands" : [ "newview", "-", "edit", "presentation", "-", "patcherinspector", "showparameters", "dependencies", "-", "zoomin", "zoomout", "showat100percent", "navigate", "-",
+					"grid", "snaptogrid", "-", "showtoolbar", "showconnections", "showfg", "showbg", "lockbg", "-",
+							"initialposition", "defineinitialposition", "clearinitialposition" ]
+		},
+		{
+			"id" : "objectmenu",
+			"label" : "Object",
+			"navkey" : "O",
+			"commands" : [ "objectpalette", "-", "fixwidth", "-", "wobjectname", "dialog", "showfontpanel", "colorpopup", "setdefaults", "-", "hide", "show", "-",
+						"ignoreclick", "respondtoclick", "-", "addtopresentation", "removefrompresentation", "-", "sendmessage", "-",
+						"saveprototype" , "prototype" ]
+		},
+		{
+			"id" : "arrangemenu",
+			"label" : "Arrange",
+			"navkey" : "A",
+			"commands" : [ "lineup", "route", "lineupconnections", "-", "bfront", "forward", "back", "backward", "-", "includebg", "excludebg"]
+		},
+		{
+			"id" : "optionsmenu",
+			"label" : "Options",
+			"navkey" : "p",
+			"commands_mac" : [ "overdrive", "allwindowsactive", "autofixwidth", "segpatchcords", "assistance", "floatdisplaycorrection", 
+						"helpinlockedpatchers", "-", "midisetup", "dspstatus", "-", "defaults", "filepreferences" ],
+			"commands_windows" : [ "overdrive", "allwindowsactive", "autofixwidth", "segpatchcords", "assistance", "floatdisplaycorrection", 
+						"helpinlockedpatchers", "-", "midisetup", "dspstatus", "-",  "preferences", "defaults", "filepreferences" ]
+		},
+		{
+			"id" : "debugmenu",
+			"label" : "Debug",
+			"navkey" : "D",
+			"commands" : [ "traceenable", "showdebugger", "showwiretaps", "-", "probeenable", "showmatrixprobe", "-", "tracestep", "tracepause", "tracecontinue", "traceabort", "traceautostep", "-", "addwiretap", "addbreakpoint",
+							"disablewiretap", "removewiretap",  "removeallwiretaps" ]
+		},
+		{
+			"id" : "windowmenu",
+			"label_mac" : "Window",
+			"label_windows" : "Window",
+			"navkey" : "W",
+			"commands_windows" : [ "minimizeall", "restoreall", "sendwindowtoback", "hidesubs", "-", "bringalltofront", "-", "maxwindow", "showclue", "window" ],
+			"commands_mac" : [ "minimize", "zoomwindow", "sendwindowtoback", "hidesubs", "-", "bringalltofront", "-", "maxwindow", "showclue", "window" ],
+			"commands_runtime_windows" : [ "minimizeall", "restoreall", "sendwindowtoback", "-", "bringalltofront", "-", "maxwindow", "window" ],
+			"commands_runtime_mac" : [ "minimize", "zoomwindow", "sendwindowtoback", "hidesubs", "-", "bringalltofront", "-", "maxwindow", "window" ] 
+		},
+		{
+			"id" : "extrasmenu",
+			"label" : "Extras",
+			"navkey" : "x",
+			"commands" : [ "extra" ]
+		},
+		{
+			"id" : "helpmenu",
+			"label" :  "Help",
+			"navkey" : "H",
+			"commands_mac" : [ "help", "reference" , "queryselected" , "-", "docintro", "docnew", "doclive", "-", 
+			"doctesting", "-", "shortcuts", "keycommands", "-",
+			"maxindex", "mspindex", "jitindex"],
+			"commands_windows" : [ "help", "reference", "queryselected" , "-", "docintro", "docnew", "doclive", "-", 
+			"doctesting", "-", "shortcuts", "keycommands", "-", "maxindex", "mspindex", "jitindex", "-", "about"],
+			"commands_runtime_mac" : [ "help" ],
+			"commands_runtime_windows" : [ "help", "-", "about"]
+		},
+		{
+			"id" : "customhelpmenu",
+			"label" : "Help",
+			"navkey" : "H",
+			"commands_mac" : [ "help" ],
+			"commands_windows" : [ "help", "-", "customabout"]
+		},
+		{
+			"id" : "applmenu",
+			"label" : "<apple>",
+			"commands_mac" : [ "about" , "preferences" ],
+			"commands_runtime_mac" : [ "about"]
+		},
+		{
+			"id" : "customapplmenu",
+			"label" : "<apple>",
+			"commands_mac" : [ "customabout" ]
+		},
+		{
+			"id" : "runtime_applmenu",
+			"label" : "<apple>",
+			"commands_mac" : ["about" ]
+		},
+		{
+			"id" : "linecontextmenu",
+			"label" : "Line",
+			"commands" : ["clr","lineup","route","-","addwiretap","addbreakpoint","removewiretap", "-", "colorpopup" ]
+		},
+		{
+			"id" : "boxcontextmenu",
+			"label" : "Box",
+			"commands" : ["help", "-", "cut","copy","contextualpaste","clr","-","pastereplace","dialog","bfront", "back","addtopresentation","removefrompresentation","colorpopup","-","saveprototype","prototype","clientcontext"]
+		},
+		{
+			"id" : "multiboxcontextmenu",
+			"label" : "Multibox",
+			"commands" : ["cut","copy","contextualpaste","clr","-","pastereplace","lineup", "lineupconnections", "forward", "bfront", "backward", "back","addtopresentation","removefrompresentation", "colorpopup", "prototype"]
+		},
+		{
+			"id" : "multilinecontextmenu",
+			"label" : "Multiline",
+			"commands" : ["clr","lineup","route","-","addwiretap","addbreakpoint", "removewiretap", "-", "colorpopup"]
+		},
+		{
+			"id" : "windowsubmenu",
+			"label" : "Window",
+			"commands" : ["window"]
+		},
+		{
+			"id" : "patchercontextmenu",
+			"label" : "Patcher",
+			"commands" : ["edit","-","selectwindow","windowsubmenu","-","contextualpaste","-","selectall","patcherinspector","showparameters","objectpalette","pastefrom"]
+		},
+		{
+			"id" : "lockedpatchercontextmenu",
+			"label" : "Patcher",
+			"commands" : ["edit","-","selectwindow","windowsubmenu"]
+		},
+		{
+			"id" : "skinmenu",
+			"label" : "Load Settings",
+			"icon" : "load.svg",
+			"commands" : [ "loadskin" ]
+		},
+		{
+			"id" : "tutorialsmenu",
+			"label" : "Tutorials",
+			"commands" : [ "maxindex", "mspindex", "jitindex" ]
+		},
+		{
+			"id" : "windowstraymenu",
+			"label" : "Windows Tray Menu",
+			"commands" : [ "maxwindow", "bringalltofront", "quit" ]
+		},
+		{
+			"id" : "filebrowserdummymenu",
+			"label" : "filebrowserdummy",
+			"commands" : ["savequery","updatequery","deletequery","showpreview","revealinfinder","editmetadata","newproject"]
+		},
+		{
+			"id" : "metadatadummymenu",
+			"label" : "metadatadummy",
+			"commands" : ["addmetadata","deletemetadata"]
+		},
+		{
+			"id" : "dummymenu",
+			"label" : "dummy",
+			"commands" : ["penciltool", "linetool", "selecttool", "handtool", "sortbytime", "removeattr", "addattr", "reveal", "attr_reveal", "revert",
+							"freeze", "unfreeze","reveal_sender","reveal_receiver","dialog_sender","dialog_receiver","browser_fwd", "browser_back",
+							"addattr_single", "removeattr_single", "saveskin","listpaths","addpath","removepath","showattrs","driversetup","iomap","maxclearall",
+							"defaultdefaults","browser_home","browser_related","browser_patch", "browser_web", "livepreview", "freezedevice", 
+							"resolveconflicts", "addfiledependency", "addfolderdependency", "removedependency", "updatedependencies", "showobjects" , 
+							"showfoldercontents", "listconflicts", "refreshconflicts", "definedevicewidth", "cleardevicewidth", "gencode", "compile", "build"]
+		}
+		],
+		
+	"menubar" : { 
+		"id" : "main",
+		"menus_mac" : [ "applmenu", "filemenu", "editmenu", "viewmenu", "objectmenu", "arrangemenu", "optionsmenu", "debugmenu", "windowmenu", "extrasmenu", "helpmenu" ],
+		"menus_windows" : [ "filemenu", "editmenu", "viewmenu", "objectmenu", "arrangemenu", "optionsmenu", "debugmenu", "extrasmenu", "windowmenu", "helpmenu" ],
+		"menus_runtime_mac" : [ "applmenu", "filemenu", "editmenu", "windowmenu", "helpmenu" ],
+		"menus_runtime_windows" : [ "filemenu", "editmenu", "windowmenu", "helpmenu" ],
+		"menus_menubar_mac" : [ "customapplmenu", "customfilemenu", "customeditmenu" ],
+		"menus_menubar_windows" : [ "customfilemenu", "customeditmenu" ]
+	},
+	
+	"toolbars" : [
+		{
+			"id" : "patchereditor",
+			"commands" : [ "edit", " ", "objectpalette", " ", "navigate", " ", "presentation", " ", "dialog", " ", "forward", "backward", " ", "grid", "snaptogrid"]
+		},
+		{
+			"id" : "liveeditor",
+			"commands" : [ "edit", "freezedevice", "resolveconflicts", " ", "objectpalette", " ", "navigate", " ", "presentation", " ", "dialog", " ", "forward", "backward", " ", "grid", "snaptogrid", " ", "livepreview"]
+		},
+		{
+			"id" : "maxwindow",
+			"commands" : [ "maxclearall", " ", "sortbytime", " ", "dialog", " ", "reveal" ]
+		},
+		{
+			"id" : "browserwindow",
+			"commands" : [ "savequery", "updatequery", "deletequery", " ", "editmetadata", " ", "showpreview", " ", "revealinfinder" ]
+		},
+		{
+			"id" : "metadatawindow",
+			"commands" : [ "addmetadata", "deletemetadata" ]
+		},
+		{
+			"id" : "tablewindow",
+			"commands" : [ "penciltool", " ", "linetool", " ", "selecttool" ]
+		},
+		{
+			"id" : "detonatewindow",
+			"commands" : [ "penciltool", " ", "changetool", " ", "selecttool" ]
+		},
+		{
+			"id" : "inspectorwindow",
+			"commands" : ["showattrs", " ", "freeze", "unfreeze", " ", "revert", " ", "attr_reveal" ]
+		},
+		{
+			"id" : "filepreferenceswindow",
+			"commands" : [ "addpath", " ", "removepath", " ", "listpaths", " ", "revealinfinder" ]
+		},
+		{
+			"id" : "defaultswindow",
+			"commands" : [ "skinmenu", " ", "saveskin" , " ", "defaultdefaults"]
+		},
+		{
+			"id" : "debugwindow",
+			"commands" : [ "tracepause", "tracecontinue", " ", "tracestep", " ", "traceabort", " ", "dialog_sender", "reveal_sender", " ", "dialog_receiver", "reveal_receiver" ]
+		},
+		{
+			"id" : "docwindow",
+			"commands" : [ "browser_back", "browser_fwd", " ", "browser_home", " ", "browser_related", " ", "browser_patch", " ", "browser_web" ]
+		},
+		{
+			"id" : "dependencieswindow",
+			"commands" : [ "addfiledependency", "addfolderdependency","removedependency", " ", "showobjects", "showfoldercontents", " ", "updatedependencies", " ", "revealinfinder" ]
+		},
+		{
+			"id" : "resolveconflictswindow",
+			"commands" : [ "listconflicts", " ", "refreshconflicts", " ", "revealinfinder" ]
+		},
+		{
+			"id" : "dspstatuswindow",
+			"commands" : [ "driversetup", " ", "iomap" ]
+		},
+		{
+			"id" : "patcherbuilder",
+			"commands" : [ "edit", " ", "objectpalette", " ", "navigate", " ", "presentation", " ", "dialog", " ", "forward", "backward", " ", "grid", "snaptogrid",
+				" ", "gencode", "compile", "build"]
+		}
+	]
+
+}}
+
+		
+		
+	
+			

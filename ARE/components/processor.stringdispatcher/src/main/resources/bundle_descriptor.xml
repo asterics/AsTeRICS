@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.StringDispatcher"
+                   canonical_name="eu.asterics.component.processor.stringdispatcher.StringDispatcherInstance">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>Send test from chosen slot</description>
+        <ports>
+            <outputPort id="output">
+                <description>Output text</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <inputPort id="slotDispatch">
+                <description>Send the string from the slot defined by number</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="dispatchSlot1">
+                <description>Send text from slot 1</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot2">
+                <description>Send text from slot 2</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot3">
+                <description>Send text from slot 3</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot4">
+                <description>Send text from slot 4</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot5">
+                <description>Send text from slot 5</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot6">
+                <description>Send text from slot 6</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot7">
+                <description>Send text from slot 7</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot8">
+                <description>Send text from slot 8</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot9">
+                <description>Send text from slot 9</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot10">
+                <description>Send text from slot 10</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot11">
+                <description>Send text from slot 11</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot12">
+                <description>Send text from slot 12</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot13">
+                <description>Send text from slot 13</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot14">
+                <description>Send text from slot 14</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot15">
+                <description>Send text from slot 15</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot16">
+                <description>Send text from slot 16</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot17">
+                <description>Send text from slot 17</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot18">
+                <description>Send text from slot 18</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot19">
+                <description>Send text from slot 19</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlot20">
+                <description>Send text from slot 20</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchNextSlot">
+                <description>Send text from the next not empty slot</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchPreviousSlot">
+                <description>Send text from the previous not empty slot</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchSlotSeries">
+                <description>Send text in sequence from all not empty slots with delay defined by Delay property</description>
+            </eventListenerPort>
+        </events>        
+        <properties>
+            <property name="delay"
+                      type="integer"
+                      value="300"
+                      description="Send all slots delay"/>
+            <property name="slot1"
+                      type="string"
+                      value=""
+                      description="String slot 1"/>
+            <property name="slot2"
+                      type="string"
+                      value=""
+                      description="String slot 2"/>
+            <property name="slot3"
+                      type="string"
+                      value=""
+                      description="String slot 3"/>
+            <property name="slot4"
+                      type="string"
+                      value=""
+                      description="String slot 4"/>
+            <property name="slot5"
+                      type="string"
+                      value=""
+                      description="String slot 5"/>
+            <property name="slot6"
+                      type="string"
+                      value=""
+                      description="String slot 6"/>
+            <property name="slot7"
+                      type="string"
+                      value=""
+                      description="String slot 7"/>
+            <property name="slot8"
+                      type="string"
+                      value=""
+                      description="String slot 8"/>
+            <property name="slot9"
+                      type="string"
+                      value=""
+                      description="String slot 9"/>
+            <property name="slot10"
+                      type="string"
+                      value=""
+                      description="String slot 10"/>
+            <property name="slot11"
+                      type="string"
+                      value=""
+                      description="String slot 11"/>
+            <property name="slot12"
+                      type="string"
+                      value=""
+                      description="String slot 12"/>
+            <property name="slot13"
+                      type="string"
+                      value=""
+                      description="String slot 13"/>
+            <property name="slot14"
+                      type="string"
+                      value=""
+                      description="String slot 14"/>
+            <property name="slot15"
+                      type="string"
+                      value=""
+                      description="String slot 15"/>
+            <property name="slot16"
+                      type="string"
+                      value=""
+                      description="String slot 16"/>
+            <property name="slot17"
+                      type="string"
+                      value=""
+                      description="String slot 17"/>
+            <property name="slot18"
+                      type="string"
+                      value=""
+                      description="String slot 18"/>
+            <property name="slot19"
+                      type="string"
+                      value=""
+                      description="String slot 19"/>
+            <property name="slot20"
+                      type="string"
+                      value=""
+                      description="String slot 20"/>
+                      
+        </properties>
+    </componentType>
+
+</componentTypes>

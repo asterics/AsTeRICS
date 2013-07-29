@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of dataBCIiii_LTpreproT3</title>
+  <meta name="keywords" content="dataBCIiii_LTpreproT3">
+  <meta name="description" content="The function decimates and extracts the base line of each epoch">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html featureExtraction -->
+<h1>dataBCIiii_LTpreproT3
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>The function decimates and extracts the base line of each epoch</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function class_epoch = dataBCIiii_LTpreproT3(class_epoch,dec) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">The function decimates and extracts the base line of each epoch
+This routine preprocess the data of the BCI competition to be used for
+Test3 of the PhD (RWD Ivan)
+data is explained at (http://ida.first.fraunhofer.de/projects/bci/competition_iii/desc_IIIa.pdf)
+processing steps:
+ substract base line
+ delmation by factor dec (int)
+ class_epoch cell array of length numberOfEpochs in data set. The epochs
+ are matrices of dimensions numberOfChannels X epochTimeSamples</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="WlextractS.html" class="code" title="">WlextractS</a>	The followinf script preprocessess and extrcats the Wavelet coefficients</li><li><a href="../../BNCIevaluationSuite/motorImageryDemos/main_TestDeciimationTPR112_v4_SoA.html" class="code" title="">main_TestDeciimationTPR112_v4_SoA</a>	matlab routine to go through the folders,</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function class_epoch = dataBCIiii_LTpreproT3(class_epoch,dec)</a>
+0002 
+0003 <span class="comment">%The function decimates and extracts the base line of each epoch</span>
+0004 <span class="comment">%This routine preprocess the data of the BCI competition to be used for</span>
+0005 <span class="comment">%Test3 of the PhD (RWD Ivan)</span>
+0006 <span class="comment">%data is explained at (http://ida.first.fraunhofer.de/projects/bci/competition_iii/desc_IIIa.pdf)</span>
+0007 <span class="comment">%processing steps:</span>
+0008 <span class="comment">% substract base line</span>
+0009 <span class="comment">% delmation by factor dec (int)</span>
+0010 <span class="comment">% class_epoch cell array of length numberOfEpochs in data set. The epochs</span>
+0011 <span class="comment">% are matrices of dimensions numberOfChannels X epochTimeSamples</span>
+0012 
+0013 <span class="comment">%This function is obsolete (subsumed by starDecimate), but it is still</span>
+0014 <span class="comment">%used by Ivan.</span>
+0015 
+0016 <span class="keyword">for</span> i=1:length(class_epoch)
+0017     <span class="keyword">for</span> j=1:length(class_epoch{i}(1,:))
+0018         class_epoch_temp{i}(:,j)=decimate((class_epoch{i}(:,j)-mean(class_epoch{i}(:,j))),dec);
+0019         <span class="comment">%class_epoch_temp{i}(:,j)=class_epoch{i}(:,j)-mean(class_epoch{i}(501:750,j));</span>
+0020     <span class="keyword">end</span>
+0021 <span class="keyword">end</span>
+0022 clear class_epoch
+0023 class_epoch=class_epoch_temp;</pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

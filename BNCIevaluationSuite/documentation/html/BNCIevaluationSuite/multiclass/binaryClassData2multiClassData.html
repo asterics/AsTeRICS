@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of binaryClassData2multiClassData</title>
+  <meta name="keywords" content="binaryClassData2multiClassData">
+  <meta name="description" content="----------------------------------------------------------">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html multiclass -->
+<h1>binaryClassData2multiClassData
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>----------------------------------------------------------</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function [dataTrain,dataTest]=binaryClassData2multiClassData(xTrain,xTest,jointClassSpaces) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">----------------------------------------------------------
+ EEGStarlab Toolbox
+ (C) Starlab S.L.
+----------------------------------------------------------
+ binaryClassData2multiClassData
+ Transform a data set prepared for binary classifiers into a data set prepaerd for multiclass ones.
+
+----------------------------------------------------------
+Inputs
+ xTrain:    array of dimension K (K = number of classes) of structures with data set features and ground truth
+       features: EEG data as computed by the OVR procedure - matrix channels X
+                 samples X trials  ()
+       GT:       class labels for each trial - column vector 1 x trials ()
+ xTest: same type of structure for the test set.
+ jointClassSpaces: boolean that if set to one, joints all class spaces in
+                   a unique one.
+----------------------------------------------------------
+Outputs
+ dataTrain:    array of 1 component embedding a structure with multi-class 
+               data set features and ground
+               truth (if jointClassSpaces=1, else the array presents K components as 
+               in xTrain)
+       features: EEG data as computed by the OVR procedure - matrix channels X
+                 samples X trials  ()
+       GT:       class labels from set {1...K} for each trial - column vector 1 x trials ()
+ dataTest: same type of structure for the test set.
+----------------------------------------------------------
+Dependencies
+
+----------------------------------------------------------
+ Version    Date        Author    Changes 
+ v1        18/12/09    ASF     First version
+ v2        23/12/09    ASF     Adds a boolean for just generating a
+                               multi-class GT and leaving data in each
+                               class space
+----------------------------------------------------------
+ EX. after running open files part of demoBciOVRfgrameworkMulticlass
+ k =
+ 
+      4
+ 
+ 
+ filename =
+ 
+ Z:\S1-ONGOING-PROJECTS\UCONTROL-P20070527-01\BCI competition iii\OVR_aproach\features subject k3b\features4aproach1_c4.mat
+ 
+ 
+ filename =
+ 
+ Z:\S1-ONGOING-PROJECTS\UCONTROL-P20070527-01\BCI competition iii\OVR_aproach\features subject k3b\test_features4aproach1_c4.mat
+ 
+ &gt;&gt; dataTrain
+ 
+ dataTrain = 
+ 
+ 1x4 struct array with fields:
+     features
+     GT
+ 
+ &gt;&gt; dataTrain(4)
+ 
+ ans = 
+ 
+     features: [4x750x151 double]
+           GT: [1x151 double]
+  
+ &gt;&gt; [dataTrain,dataTest]=binaryClassData2multiClassData(dataTrain,dataTest);
+ &gt;&gt; dataTrain(1)
+ 
+ dataTrain(1) = 
+ 
+     features: [15x750x151 double]
+           GT: [1x151 double]
+--------------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%----------------------------------------------------------</span>
+0002 <span class="comment">% EEGStarlab Toolbox</span>
+0003 <span class="comment">% (C) Starlab S.L.</span>
+0004 <span class="comment">%----------------------------------------------------------</span>
+0005 <span class="comment">% binaryClassData2multiClassData</span>
+0006 <span class="comment">% Transform a data set prepared for binary classifiers into a data set prepaerd for multiclass ones.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%----------------------------------------------------------</span>
+0009 <span class="comment">%Inputs</span>
+0010 <span class="comment">% xTrain:    array of dimension K (K = number of classes) of structures with data set features and ground truth</span>
+0011 <span class="comment">%       features: EEG data as computed by the OVR procedure - matrix channels X</span>
+0012 <span class="comment">%                 samples X trials  ()</span>
+0013 <span class="comment">%       GT:       class labels for each trial - column vector 1 x trials ()</span>
+0014 <span class="comment">% xTest: same type of structure for the test set.</span>
+0015 <span class="comment">% jointClassSpaces: boolean that if set to one, joints all class spaces in</span>
+0016 <span class="comment">%                   a unique one.</span>
+0017 <span class="comment">%----------------------------------------------------------</span>
+0018 <span class="comment">%Outputs</span>
+0019 <span class="comment">% dataTrain:    array of 1 component embedding a structure with multi-class</span>
+0020 <span class="comment">%               data set features and ground</span>
+0021 <span class="comment">%               truth (if jointClassSpaces=1, else the array presents K components as</span>
+0022 <span class="comment">%               in xTrain)</span>
+0023 <span class="comment">%       features: EEG data as computed by the OVR procedure - matrix channels X</span>
+0024 <span class="comment">%                 samples X trials  ()</span>
+0025 <span class="comment">%       GT:       class labels from set {1...K} for each trial - column vector 1 x trials ()</span>
+0026 <span class="comment">% dataTest: same type of structure for the test set.</span>
+0027 <span class="comment">%----------------------------------------------------------</span>
+0028 <span class="comment">%Dependencies</span>
+0029 <span class="comment">%</span>
+0030 <span class="comment">%----------------------------------------------------------</span>
+0031 <span class="comment">% Version    Date        Author    Changes</span>
+0032 <span class="comment">% v1        18/12/09    ASF     First version</span>
+0033 <span class="comment">% v2        23/12/09    ASF     Adds a boolean for just generating a</span>
+0034 <span class="comment">%                               multi-class GT and leaving data in each</span>
+0035 <span class="comment">%                               class space</span>
+0036 <span class="comment">%----------------------------------------------------------</span>
+0037 <span class="comment">% EX. after running open files part of demoBciOVRfgrameworkMulticlass</span>
+0038 <span class="comment">% k =</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">%      4</span>
+0041 <span class="comment">%</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">% filename =</span>
+0044 <span class="comment">%</span>
+0045 <span class="comment">% Z:\S1-ONGOING-PROJECTS\UCONTROL-P20070527-01\BCI competition iii\OVR_aproach\features subject k3b\features4aproach1_c4.mat</span>
+0046 <span class="comment">%</span>
+0047 <span class="comment">%</span>
+0048 <span class="comment">% filename =</span>
+0049 <span class="comment">%</span>
+0050 <span class="comment">% Z:\S1-ONGOING-PROJECTS\UCONTROL-P20070527-01\BCI competition iii\OVR_aproach\features subject k3b\test_features4aproach1_c4.mat</span>
+0051 <span class="comment">%</span>
+0052 <span class="comment">% &gt;&gt; dataTrain</span>
+0053 <span class="comment">%</span>
+0054 <span class="comment">% dataTrain =</span>
+0055 <span class="comment">%</span>
+0056 <span class="comment">% 1x4 struct array with fields:</span>
+0057 <span class="comment">%     features</span>
+0058 <span class="comment">%     GT</span>
+0059 <span class="comment">%</span>
+0060 <span class="comment">% &gt;&gt; dataTrain(4)</span>
+0061 <span class="comment">%</span>
+0062 <span class="comment">% ans =</span>
+0063 <span class="comment">%</span>
+0064 <span class="comment">%     features: [4x750x151 double]</span>
+0065 <span class="comment">%           GT: [1x151 double]</span>
+0066 <span class="comment">%</span>
+0067 <span class="comment">% &gt;&gt; [dataTrain,dataTest]=binaryClassData2multiClassData(dataTrain,dataTest);</span>
+0068 <span class="comment">% &gt;&gt; dataTrain(1)</span>
+0069 <span class="comment">%</span>
+0070 <span class="comment">% dataTrain(1) =</span>
+0071 <span class="comment">%</span>
+0072 <span class="comment">%     features: [15x750x151 double]</span>
+0073 <span class="comment">%           GT: [1x151 double]</span>
+0074 <span class="comment">%--------------------------------------------------------------</span>
+0075 <a name="_sub0" href="#_subfunctions" class="code">function [dataTrain,dataTest]=binaryClassData2multiClassData(xTrain,xTest,jointClassSpaces)</a>
+0076     <span class="keyword">if</span> nargin&lt;3
+0077         jointClassSpaces=1 <span class="comment">%%%transformation of data sets in a multi-class data structure</span>
+0078     <span class="keyword">end</span>
+0079     
+0080     <span class="keyword">if</span> jointClassSpaces
+0081         <span class="comment">%concatenate all class projection spaces</span>
+0082         dataTrain(1).features=cat(1,xTrain(1).features,xTrain(2).features,xTrain(3).features,xTrain(4).features);
+0083         dataTest(1).features=cat(1,xTest(1).features,xTest(2).features,xTest(3).features,xTest(4).features);
+0084     <span class="keyword">else</span>
+0085         dataTrain=xTrain;
+0086         dataTest=xTest;
+0087     <span class="keyword">end</span>
+0088 
+0089     <span class="comment">%build multiclass ground truth</span>
+0090     multiclassGT=cat(1,xTrain(1).GT,xTrain(2).GT,xTrain(3).GT,xTrain(4).GT);
+0091     [multiclassGT,j,s]=find(multiclassGT); <span class="comment">%from binary labels to integer labels</span>
+0092     multiclassGTtest=cat(1,xTest(1).GT,xTest(2).GT,xTest(3).GT,xTest(4).GT);
+0093     [multiclassGTtest,j,s]=find(multiclassGTtest); <span class="comment">%from binary labels to integer labels</span>
+0094     <span class="keyword">if</span> jointClassSpaces
+0095         dataTrain(1).GT=multiclassGT';
+0096         dataTest(1).GT=multiclassGTtest';
+0097     <span class="keyword">else</span>
+0098         <span class="keyword">for</span> i=1:length(xTrain)
+0099             dataTrain(i).GT=multiclassGT';
+0100             dataTest(i).GT=multiclassGTtest';
+0101         <span class="keyword">end</span>
+0102     <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

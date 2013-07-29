@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Acceleration"
+                   canonical_name="eu.asterics.component.sensor.acceleration.AccelerationInstance">
+        <type subtype="Inertial Measurement">sensor</type>
+        <singleton>false</singleton>
+        <description>Acceleration sensor CIM</description>
+        <ports>
+            <outputPort id="xAcc">
+                <description>X-Acceleration</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="yAcc">
+                <description>Y-Acceleration</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="zAcc">
+                <description>Z-Acceleration</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="total">
+                <description>Accumulated absolute accelerations</description>
+                <dataType>integer</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="start">
+                <description>Incoming event starts acceleration sensor</description>
+            </eventListenerPort>
+            <eventListenerPort id="stop">
+                <description>Incoming event stops acceleration sensor</description>
+            </eventListenerPort>
+            <eventListenerPort id="calibrate">
+                <description>Incoming event sets offset values for x,y,z</description>
+            </eventListenerPort>
+        </events>        
+        <properties>
+            <property name="autoStart"
+                      type="boolean"
+                      value="true" 
+                      description="start acceleration sensor automatically"/>
+            <property name="descreteSteps"
+                      type="integer"
+                      value="0" 
+                      description="Mapping to (n) integral steps (0=disable)"/>
+            <property name="updateFrequency"
+                      type="integer"
+                      value="0"
+                      combobox="10 Hz//20 Hz//40 Hz//75 Hz//150 Hz//300 Hz"
+                      description="frequency of periodic updates in Hz"/>
+            <property name="accelerationRange"
+                      type="integer"
+                      value="0"
+                      combobox="1 g//1.5 g//2 g//3 g//4 g//8 g//16 g"
+                      description="sensitivity of acceleration"/>
+               
+        </properties>
+    </componentType>
+
+</componentTypes>

@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-processors.pathselector
+Bundle-SymbolicName: eu.asterics.component.processor.pathselector
+Bundle-Version: 0.1.0
+DynamicImport-Package: *

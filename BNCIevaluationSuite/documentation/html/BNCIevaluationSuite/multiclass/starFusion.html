@@ -1,0 +1,329 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of starFusion</title>
+  <meta name="keywords" content="starFusion">
+  <meta name="description" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html multiclass -->
+<h1>starFusion
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong></strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>function varargout=starFusion(testData, GT, data, fusionOp, decisionThreshold) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">
+----------------------------------------------------------
+ EEGStarlab Toolbox
+ (C) Starlab S.L.
+----------------------------------------------------------
+ starFusion
+ Performs the fusion of streams of several classificator result with an optional 
+ training stage.
+
+ It fuses several temporal series obtained as outputs of
+ some classifiers into one output. If training data and GT are given, it selects for each classification
+ result the best fusion rule. In this case the GT is the one of a binary classification with labels +1 and -1
+ respectively for the positive and negative classes.
+
+ [Example of use in B:\STAR2STAR - Internal\TN Technical Notes (TB+KN)\TN00146 - BCI Classification - OVR aproach]
+----------------------------------------------------------
+Inputs
+ testData:    structure with classification results as computed by starClassify - matrix numberClassifiers X samples X trials
+ Optional
+ GT:    ground truth vector - vector 1 X trials 
+        It is expected to 
+       be of values 1 and -1. If it is provided, the best fusion operator 
+       is chosen for each time sample. 
+       If not, the diferent fusion candidates are provided as output.
+ data: training data with the same format than testData, and used to find out 
+       which is the right fusion operator used. Similar to a training set
+       of a classifier. It has to present the same number of trials than GT.
+ fusionOp:    cell array of strings with a list of fusionOperators to be applied - {'sum'|'product'|'max'|'min'|'median'|'majorVoting'}
+           In this case, GT and data are not needed, therefore,
+           the function can be called like:
+           fusionPrediction=starFusion(classifyPrediction,[],[],{'max','majorVoting'},0);
+ decisionThresold: In case a binary classification is wished this is the threshold used to assign 1 or 0 - double in [-1,1] 
+                    Default value is 0
+----------------------------------------------------------
+Outputs
+ varargout{1}: Fusion result with two different dimensionalities depending on the fact if the function is called with
+                 training data or not.
+                If training - matrix trials X samples
+                If no training - matrix numberOperators X samples X trials
+               Ther result of fusionOp{j} can be found in (j,:,:)
+ varargout{2}: Fusion operator used as an array of its corresponding indices of fusionOp.
+               Vector of 1 X samples
+----------------------------------------------------------
+Dependencies
+ fusion_operator_majority_voting: EEGStarlab
+----------------------------------------------------------
+ Version    Date        Author        Changes 
+ v1        09/12/08    JLL,ASF     First version
+ v2        10/11/10    ASF         Update header.
+ TODO         change to varargin in order not to input data and GT in case we do
+             not want to select the best
+----------------------------------------------------------
+ EX.
+ 
+--------------------------------------------------------------</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="fusion_operator_majority_voting.html" class="code" title="function maj_voted=fusion_operator_majority_voting(classes)">fusion_operator_majority_voting</a>	----------------------------------------------------------</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="adjustBaggingFusion.html" class="code" title="function [performMeasures]=adjustBaggingFusion(data)">adjustBaggingFusion</a>	----------------------------------------------------------</li><li><a href="baggingFusion.html" class="code" title="function [trainBaggingPrediction,testBaggingPrediction]=baggingFusion(data,testData,baggingRuns,homogeneousBagging,standardizeClassifiers)">baggingFusion</a>	----------------------------------------------------------</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function varargout=starFusion(testData, GT, data, fusionOp, decisionThreshold)</a>
+0002 <span class="comment">%</span>
+0003 <span class="comment">%----------------------------------------------------------</span>
+0004 <span class="comment">% EEGStarlab Toolbox</span>
+0005 <span class="comment">% (C) Starlab S.L.</span>
+0006 <span class="comment">%----------------------------------------------------------</span>
+0007 <span class="comment">% starFusion</span>
+0008 <span class="comment">% Performs the fusion of streams of several classificator result with an optional</span>
+0009 <span class="comment">% training stage.</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% It fuses several temporal series obtained as outputs of</span>
+0012 <span class="comment">% some classifiers into one output. If training data and GT are given, it selects for each classification</span>
+0013 <span class="comment">% result the best fusion rule. In this case the GT is the one of a binary classification with labels +1 and -1</span>
+0014 <span class="comment">% respectively for the positive and negative classes.</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">% [Example of use in B:\STAR2STAR - Internal\TN Technical Notes (TB+KN)\TN00146 - BCI Classification - OVR aproach]</span>
+0017 <span class="comment">%----------------------------------------------------------</span>
+0018 <span class="comment">%Inputs</span>
+0019 <span class="comment">% testData:    structure with classification results as computed by starClassify - matrix numberClassifiers X samples X trials</span>
+0020 <span class="comment">% Optional</span>
+0021 <span class="comment">% GT:    ground truth vector - vector 1 X trials</span>
+0022 <span class="comment">%        It is expected to</span>
+0023 <span class="comment">%       be of values 1 and -1. If it is provided, the best fusion operator</span>
+0024 <span class="comment">%       is chosen for each time sample.</span>
+0025 <span class="comment">%       If not, the diferent fusion candidates are provided as output.</span>
+0026 <span class="comment">% data: training data with the same format than testData, and used to find out</span>
+0027 <span class="comment">%       which is the right fusion operator used. Similar to a training set</span>
+0028 <span class="comment">%       of a classifier. It has to present the same number of trials than GT.</span>
+0029 <span class="comment">% fusionOp:    cell array of strings with a list of fusionOperators to be applied - {'sum'|'product'|'max'|'min'|'median'|'majorVoting'}</span>
+0030 <span class="comment">%           In this case, GT and data are not needed, therefore,</span>
+0031 <span class="comment">%           the function can be called like:</span>
+0032 <span class="comment">%           fusionPrediction=starFusion(classifyPrediction,[],[],{'max','majorVoting'},0);</span>
+0033 <span class="comment">% decisionThresold: In case a binary classification is wished this is the threshold used to assign 1 or 0 - double in [-1,1]</span>
+0034 <span class="comment">%                    Default value is 0</span>
+0035 <span class="comment">%----------------------------------------------------------</span>
+0036 <span class="comment">%Outputs</span>
+0037 <span class="comment">% varargout{1}: Fusion result with two different dimensionalities depending on the fact if the function is called with</span>
+0038 <span class="comment">%                 training data or not.</span>
+0039 <span class="comment">%                If training - matrix trials X samples</span>
+0040 <span class="comment">%                If no training - matrix numberOperators X samples X trials</span>
+0041 <span class="comment">%               Ther result of fusionOp{j} can be found in (j,:,:)</span>
+0042 <span class="comment">% varargout{2}: Fusion operator used as an array of its corresponding indices of fusionOp.</span>
+0043 <span class="comment">%               Vector of 1 X samples</span>
+0044 <span class="comment">%----------------------------------------------------------</span>
+0045 <span class="comment">%Dependencies</span>
+0046 <span class="comment">% fusion_operator_majority_voting: EEGStarlab</span>
+0047 <span class="comment">%----------------------------------------------------------</span>
+0048 <span class="comment">% Version    Date        Author        Changes</span>
+0049 <span class="comment">% v1        09/12/08    JLL,ASF     First version</span>
+0050 <span class="comment">% v2        10/11/10    ASF         Update header.</span>
+0051 <span class="comment">% TODO         change to varargin in order not to input data and GT in case we do</span>
+0052 <span class="comment">%             not want to select the best</span>
+0053 <span class="comment">%----------------------------------------------------------</span>
+0054 <span class="comment">% EX.</span>
+0055 <span class="comment">%</span>
+0056 <span class="comment">%--------------------------------------------------------------</span>
+0057 
+0058 <span class="keyword">if</span> nargin &lt;5
+0059     decisionThreshold=0;
+0060 <span class="keyword">end</span>
+0061 
+0062 <span class="keyword">if</span> nargin &lt;4
+0063     fusionOp={<span class="string">'sum'</span>,<span class="string">'product'</span>,<span class="string">'max'</span>,<span class="string">'min'</span>,<span class="string">'median'</span>,<span class="string">'majorVoting'</span>};
+0064 <span class="keyword">end</span>
+0065 
+0066 <span class="keyword">if</span> ~iscell(fusionOp)
+0067     fusionOp={fusionOp};
+0068 <span class="keyword">end</span>
+0069 
+0070 <span class="keyword">if</span> length(fusionOp{1})==3 <span class="comment">%condition added in order to avoid error</span>
+0071     <span class="keyword">if</span> all(fusionOp{1}==<span class="string">'all'</span>)
+0072         <span class="comment">%%%%%%%%%%fusion operators</span>
+0073         fusionOp={<span class="string">'sum'</span>,<span class="string">'product'</span>,<span class="string">'max'</span>,<span class="string">'min'</span>,<span class="string">'median'</span>,<span class="string">'majorVoting'</span>};
+0074     <span class="keyword">end</span>
+0075 <span class="keyword">end</span>
+0076 
+0077 selectBestOperator=1;
+0078 <span class="keyword">if</span> nargin &lt; 3
+0079     selectBestOperator=0;
+0080     GT=[];
+0081 <span class="keyword">end</span>
+0082 <span class="keyword">if</span> nargin&gt;4
+0083     selectBestOperator=0;
+0084 <span class="keyword">end</span>
+0085 <span class="keyword">if</span> sum(size(GT))&lt;2 <span class="comment">%we don't have anything as GT</span>
+0086     selectBestOperator=0;
+0087 <span class="keyword">end</span>
+0088 <span class="keyword">if</span> sum(size(data))&lt;2 <span class="comment">%we don't have anything as data</span>
+0089     selectBestOperator=0;
+0090 <span class="keyword">end</span>
+0091 GT=GT(:);
+0092 <span class="keyword">if</span> size(data,3)==size(GT,1) 
+0093 <span class="keyword">else</span>
+0094 <span class="comment">%    display('Training set and Ground Truth dimensions do not seem to match')</span>
+0095     selectBestOperator=0;
+0096 <span class="keyword">end</span>
+0097 
+0098 
+0099 <span class="comment">%%%go through the different fusion operators in order to select the</span>
+0100 <span class="comment">%%%best</span>
+0101 <span class="keyword">for</span> t=1:size(testData,2)
+0102     <span class="keyword">if</span> selectBestOperator
+0103         <span class="keyword">for</span> j=1:length(fusionOp)
+0104             <span class="keyword">switch</span> fusionOp{j}
+0105                 <span class="comment">%%diferent fusion operators</span>
+0106                 <span class="keyword">case</span> <span class="string">'sum'</span>
+0107                     dataFusedCandidate(:,j)=sum(data(:,t,:),1);
+0108                 <span class="keyword">case</span> <span class="string">'product'</span>
+0109                     dataFusedCandidate(:,j)=prod(data(:,t,:),1);
+0110                 <span class="keyword">case</span> <span class="string">'max'</span>
+0111                     dataFusedCandidate(:,j)=max(data(:,t,:),[],1);
+0112                 <span class="keyword">case</span> <span class="string">'min'</span>
+0113                     dataFusedCandidate(:,j)=min(data(:,t,:),[],1);
+0114                 <span class="keyword">case</span> <span class="string">'median'</span>
+0115                     dataFusedCandidate(:,j)=median(data(:,t,:),1);
+0116                 <span class="keyword">case</span> <span class="string">'majorVoting'</span>
+0117                     <span class="comment">%                 disp('mV')</span>
+0118 
+0119                     <span class="comment">%             %%%class results have to be first converted into class</span>
+0120                     <span class="comment">%             %%%labels</span>
+0121                     <span class="comment">%             %%%%%%%%%%%%%%%%attention real classifier results are</span>
+0122                     <span class="comment">%             %%%%%%%%%%%%%%%%lost from here on</span>
+0123                     dataCand=data(:,t,:);
+0124                     dataCand(dataCand&gt;decisionThreshold)=3;
+0125                     dataCand(dataCand&lt;decisionThreshold)=1;
+0126 
+0127                     dataCand=permute(dataCand,[3 1 2]);
+0128                     <span class="comment">%             %now comes the fusion</span>
+0129                     <span class="comment">%             %2 is substracted because we want the label result to</span>
+0130                     <span class="comment">%             %be 1 or -1</span>
+0131                     dataFusedCandidate(:,j)=<a href="fusion_operator_majority_voting.html" class="code" title="function maj_voted=fusion_operator_majority_voting(classes)">fusion_operator_majority_voting</a>(dataCand)-2;
+0132 
+0133                 <span class="keyword">otherwise</span>
+0134                     disp([fusionOp{j},<span class="string">' has not been implemented for fusion'</span>])
+0135             <span class="keyword">end</span> <span class="comment">%switch fusion operator</span>
+0136         <span class="keyword">end</span> <span class="comment">% different fusion operators</span>
+0137 
+0138     
+0139         <span class="comment">%now we have to select the rule with maximal times winning (by</span>
+0140         <span class="comment">%comparing to the GT)</span>
+0141         <span class="comment">%1. transform decision in binary ones</span>
+0142         dataFusedCandidate(dataFusedCandidate&gt;decisionThreshold)=1;
+0143         dataFusedCandidate(dataFusedCandidate&lt;decisionThreshold)=-1;
+0144 
+0145         <span class="comment">%2. compute number of times each operator wins</span>
+0146         numberTimesWin=sum(dataFusedCandidate==repmat(GT,1,size(dataFusedCandidate,2)));
+0147         [aux,winFusion]=max(numberTimesWin);
+0148 
+0149         <span class="comment">%3. assign the result to the final prediction for this time sample</span>
+0150         dataFused(1,:,t)=dataFusedCandidate(:,winFusion);
+0151         usedFusion(t)=winFusion;
+0152         <span class="comment">%size(usedFusion) %debugging</span>
+0153 
+0154         <span class="comment">%----------from the result of the previous, now the best rule can</span>
+0155         <span class="comment">%be selected:</span>
+0156          <span class="keyword">switch</span> fusionOp{winFusion}
+0157                 <span class="comment">%%diferent fusion operators</span>
+0158              <span class="keyword">case</span> <span class="string">'sum'</span>
+0159                  testDataFused(:,t)=sum(testData(:,t,:),1);
+0160              <span class="keyword">case</span> <span class="string">'product'</span>
+0161                  testDataFused(:,t)=prod(testData(:,t,:),1);
+0162              <span class="keyword">case</span> <span class="string">'max'</span>
+0163                  testDataFused(:,t)=max(testData(:,t,:),[],1);
+0164              <span class="keyword">case</span> <span class="string">'min'</span>
+0165                  testDataFused(:,t)=min(testData(:,t,:),[],1);
+0166              <span class="keyword">case</span> <span class="string">'median'</span>
+0167                  testDataFused(:,t)=median(testData(:,t,:),1);
+0168              <span class="keyword">case</span> <span class="string">'majorVoting'</span>
+0169 
+0170                  testDataMV=testData(:,t,:);
+0171                  testDataMV(testDataMV&gt;decisionThreshold)=3;
+0172                  testDataMV(testDataMV&lt;decisionThreshold)=1;
+0173 
+0174                  testDataMV=permute(testDataMV,[3 1 2]);
+0175                  <span class="comment">%             %now comes the fusion</span>
+0176                  <span class="comment">%             %2 is substracted because we want the label result to</span>
+0177                  <span class="comment">%             %be 1 or -1</span>
+0178                  testDataFused(:,t)=<a href="fusion_operator_majority_voting.html" class="code" title="function maj_voted=fusion_operator_majority_voting(classes)">fusion_operator_majority_voting</a>(testDataMV)-2;
+0179 
+0180              <span class="keyword">otherwise</span>
+0181                  disp([fusionOp{winFusion},<span class="string">' has not been implemented for fusion'</span>])
+0182          <span class="keyword">end</span> <span class="comment">%switch fusion opeerator</span>
+0183 
+0184     <span class="keyword">else</span> <span class="comment">%there is no training set for the fusion procedure---------------</span>
+0185         <span class="comment">%dataFused(:,:,t)=dataFusedCandidate;</span>
+0186         <span class="keyword">for</span> j=1:length(fusionOp)
+0187             <span class="keyword">switch</span> fusionOp{j}
+0188                 <span class="comment">%%diferent fusion operators</span>
+0189                 <span class="keyword">case</span> <span class="string">'sum'</span>
+0190                     testDataFusedCandidate(:,j)=sum(testData(:,t,:),1);
+0191                 <span class="keyword">case</span> <span class="string">'product'</span>
+0192                     testDataFusedCandidate(:,j)=prod(testData(:,t,:),1);
+0193                 <span class="keyword">case</span> <span class="string">'max'</span>
+0194                     testDataFusedCandidate(:,j)=max(testData(:,t,:),[],1);
+0195                 <span class="keyword">case</span> <span class="string">'min'</span>
+0196                     testDataFusedCandidate(:,j)=min(testData(:,t,:),[],1);
+0197                 <span class="keyword">case</span> <span class="string">'median'</span>
+0198                     testDataFusedCandidate(:,j)=median(testData(:,t,:),1);
+0199                 <span class="keyword">case</span> <span class="string">'majorVoting'</span>
+0200 
+0201                     <span class="comment">%             %%%class results have to be first converted into class</span>
+0202                     <span class="comment">%             %%%labels</span>
+0203                     <span class="comment">%             %%%%%%%%%%%%%%%%attention real classifier results are</span>
+0204                     <span class="comment">%             %%%%%%%%%%%%%%%%lost from here on</span>
+0205                     testDataFusedCandidate=testData(:,t,:);
+0206                     testDataFusedCandidate(testDataFusedCandidate&gt;decisionThreshold)=3;
+0207                     testDataFusedCandidate(testDataFusedCandidate&lt;decisionThreshold)=1;
+0208 
+0209                     testDataFusedCandidate=permute(testDataFusedCandidate,[3 1 2]);
+0210                     <span class="comment">%             %now comes the fusion</span>
+0211                     <span class="comment">%             %2 is substracted because we want the label result to</span>
+0212                     <span class="comment">%             %be 1 or -1</span>
+0213                     testDataFusedCandidate(:,j)=<a href="fusion_operator_majority_voting.html" class="code" title="function maj_voted=fusion_operator_majority_voting(classes)">fusion_operator_majority_voting</a>(testDataFusedCandidate)-2;
+0214 
+0215                 <span class="keyword">otherwise</span>
+0216                     disp([fusionOp{j},<span class="string">' has not been implemented for fusion'</span>])
+0217             <span class="keyword">end</span> <span class="comment">%switch fusion operator</span>
+0218             testDataFused(j,t,:)=testDataFusedCandidate(:,j);
+0219         <span class="keyword">end</span> <span class="comment">%for each fusion operator</span>
+0220         
+0221     <span class="keyword">end</span> <span class="comment">%end if training set is provided or not</span>
+0222 <span class="keyword">end</span> <span class="comment">%time samples</span>
+0223 
+0224 varargout{1}=testDataFused;
+0225 <span class="keyword">if</span> nargout &gt;1
+0226     varargout{2}=usedFusion;
+0227 <span class="comment">%     size(usedFusion)</span>
+0228 <span class="keyword">end</span>
+0229 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-processors.audioselector
+Bundle-SymbolicName: com.starlab.component.processor.audioselector
+Bundle-Version: 0.1.0
+DynamicImport-Package: *

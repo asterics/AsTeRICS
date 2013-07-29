@@ -1,0 +1,215 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ITMES               ICON                    "itmes.ICO"
+IDI_SMALL               ICON                    "SMALL.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDC_ITMES MENU
+BEGIN
+    MENUITEM "Exit",                        IDM_EXIT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDC_ITMES ACCELERATORS
+BEGIN
+    "?",            IDM_ABOUT,              ASCII,  ALT
+    "/",            IDM_ABOUT,              ASCII,  ALT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BROWSERDIALOG DIALOGEX 1, 1, 559, 364
+STYLE DS_ABSALIGN | DS_SYSMODAL | DS_SETFONT | WS_CHILD | WS_VISIBLE | WS_BORDER
+FONT 10, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LISTBOX         IDC_IPLIST,18,52,105,74,LBS_NOINTEGRALHEIGHT | LBS_WANTKEYBOARDINPUT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    PUSHBUTTON      "add Input Port",IDC_ADD_IP,15,179,73,18
+    EDITTEXT        IDC_PLUGINNAME,66,15,48,14,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | NOT WS_BORDER,WS_EX_STATICEDGE
+    LTEXT           "PluginName:",IDC_STATIC,24,17,40,8
+    CONTROL         "Plugin has a GUI",IDC_HASGUI,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | BS_CENTER | BS_FLAT | WS_TABSTOP,375,250,152,12,WS_EX_STATICEDGE
+    GROUPBOX        "Input Ports",IDC_STATIC,6,40,130,164,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_IPNAME,46,130,75,13,ES_AUTOHSCROLL
+    LTEXT           "Name:",IDC_STATIC,18,131,24,8
+    COMBOBOX        IDC_IPTYPECOMBO,62,147,57,49,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Data-Type:",IDC_STATIC,17,147,41,8
+    LISTBOX         IDC_OPLIST,157,52,105,77,LBS_NOINTEGRALHEIGHT | LBS_WANTKEYBOARDINPUT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    PUSHBUTTON      "add Output Port",IDC_ADD_OP,155,180,75,18
+    GROUPBOX        "Output Ports",IDC_STATIC,145,40,130,164,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_OPNAME,185,133,75,13,ES_AUTOHSCROLL
+    LTEXT           "Name:",IDC_STATIC,157,135,24,8
+    COMBOBOX        IDC_OPTYPECOMBO,202,148,57,53,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Data-Type:",IDC_STATIC,158,150,41,8
+    LISTBOX         IDC_ELPLIST,294,56,105,80,LBS_NOINTEGRALHEIGHT | LBS_WANTKEYBOARDINPUT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    GROUPBOX        "Event Listener Ports",IDC_STATIC,281,40,130,163,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_ELPNAME,320,142,75,13,ES_AUTOHSCROLL
+    LTEXT           "Name:",IDC_STATIC,295,144,24,8
+    LISTBOX         IDC_ETPLIST,433,56,105,79,LBS_NOINTEGRALHEIGHT | LBS_WANTKEYBOARDINPUT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    PUSHBUTTON      "add Event Trigger Port",IDC_ADD_ETP,430,179,80,18
+    GROUPBOX        "Event Trigger Ports",IDC_STATIC,420,40,130,163,0,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_ETPNAME,460,143,75,13,ES_AUTOHSCROLL
+    LTEXT           "Name:",IDC_STATIC,434,145,24,8
+    EDITTEXT        IDC_AREPATH,415,15,114,14,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | NOT WS_BORDER,WS_EX_STATICEDGE
+    LTEXT           "Path to existing target folder:",IDC_STATIC,325,17,88,8
+    LTEXT           "Type:",IDC_STATIC,125,17,19,8
+    COMBOBOX        IDC_PLUGINTYPECOMBO,147,15,57,51,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "add Event Listener Port",IDC_ADD_ELP,293,179,80,18
+    GROUPBOX        "Properties",IDC_STATIC,7,214,321,144,0,WS_EX_TRANSPARENT
+    LISTBOX         IDC_PROPLIST,19,227,120,126,LBS_NOINTEGRALHEIGHT | LBS_WANTKEYBOARDINPUT | LBS_DISABLENOSCROLL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
+    PUSHBUTTON      "CREATE PLUGIN !",IDC_CREATE_PLUGIN,374,312,154,34
+    EDITTEXT        IDC_PROPNAME,221,229,75,13,ES_AUTOHSCROLL
+    LTEXT           "Name:",IDC_STATIC,156,231,24,8
+    LTEXT           "Data-Type:",IDC_STATIC,156,248,41,8
+    LTEXT           "Combo-Box Entries:",IDC_STATIC,156,281,68,8
+    LTEXT           " X-size:",IDC_STATIC,375,265,24,8
+    EDITTEXT        IDC_GUI_XSIZE,402,264,20,13,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Y-size:",IDC_STATIC,428,266,25,8
+    EDITTEXT        IDC_GUI_YSIZE,450,264,20,13,ES_AUTOHSCROLL | WS_DISABLED
+    PUSHBUTTON      "add Property",IDC_ADD_PROP,157,321,116,18
+    GROUPBOX        "Setup",IDC_STATIC,16,2,520,33,0,WS_EX_TRANSPARENT
+    COMBOBOX        IDC_PROPTYPECOMBO,223,246,73,51,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_PROPCOMBO_ENTRIES,222,280,90,13,ES_AUTOHSCROLL
+    LTEXT           "(% of screen size)",IDC_STATIC,474,266,60,8
+    CONTROL         "Plugin is a Singleton",IDC_SINGLETON,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | BS_CENTER | BS_FLAT | WS_TABSTOP,375,236,152,12,WS_EX_STATICEDGE
+    EDITTEXT        IDC_IPDESC,62,162,58,13,ES_AUTOHSCROLL
+    LTEXT           "Description:",IDC_STATIC,18,163,40,8
+    EDITTEXT        IDC_OPDESC,201,163,58,13,ES_AUTOHSCROLL
+    LTEXT           "Description:",IDC_STATIC,158,165,40,8
+    EDITTEXT        IDC_ELPDESC,337,158,58,13,ES_AUTOHSCROLL
+    LTEXT           "Description:",IDC_STATIC,293,159,40,8
+    EDITTEXT        IDC_ETPDESC,477,159,58,13,ES_AUTOHSCROLL
+    LTEXT           "Description:",IDC_STATIC,433,161,40,8
+    EDITTEXT        IDC_PROPDESC,201,298,111,13,ES_AUTOHSCROLL
+    LTEXT           "Description:",IDC_STATIC,157,299,40,8
+    EDITTEXT        IDC_PLUGINDESC,438,218,89,13,ES_AUTOHSCROLL
+    LTEXT           "Plugin-Description:",IDC_STATIC,374,219,59,8
+    LTEXT           "Default Value:",IDC_STATIC,157,263,52,8
+    EDITTEXT        IDC_PROPVALUE,223,262,90,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "delete",IDC_DEL_IP,90,179,27,18
+    PUSHBUTTON      "delete",IDC_DEL_OP,232,180,27,18
+    PUSHBUTTON      "delete",IDC_DEL_ELP,375,179,27,18
+    PUSHBUTTON      "delete",IDC_DEL_ETP,511,179,27,18
+    PUSHBUTTON      "delete",IDC_DEL_PROP,275,321,38,18
+    CONTROL         "Plugin uses CIM Port Manager",IDC_HASCIM,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | BS_CENTER | BS_FLAT | WS_DISABLED | WS_TABSTOP,375,278,152,12,WS_EX_STATICEDGE
+    CONTROL         "Plugin uses Java Native Interface (JNI)",IDC_HASJNI,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | BS_CENTER | BS_FLAT | WS_DISABLED | WS_TABSTOP,375,292,152,12,WS_EX_STATICEDGE
+    EDITTEXT        IDC_SUBCATEGORY,260,15,48,14,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | NOT WS_BORDER,WS_EX_STATICEDGE
+    LTEXT           "Subcategory:",IDC_STATIC,216,17,41,8
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+2 TEXTINCLUDE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""resource.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_BROWSERDIALOG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 558
+        VERTGUIDE, 44
+        VERTGUIDE, 250
+        BOTTOMMARGIN, 359
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_APP_TITLE           "AsTeRICS Plugin Creation Wizard"
+    IDC_ITEMS               "ITEMS"
+END
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

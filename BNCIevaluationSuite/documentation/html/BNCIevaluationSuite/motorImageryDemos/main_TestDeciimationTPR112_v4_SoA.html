@@ -1,0 +1,308 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of main_TestDeciimationTPR112_v4_SoA</title>
+  <meta name="keywords" content="main_TestDeciimationTPR112_v4_SoA">
+  <meta name="description" content="matlab routine to go through the folders,">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html &copy; 2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+  <script type="text/javascript">
+    if (top.frames.length == 0) { top.location = "../../index.html"; };
+  </script>
+</head>
+<body>
+<a name="_top"></a>
+<!-- # BNCIevaluationSuite --><!-- menu.html motorImageryDemos -->
+<h1>main_TestDeciimationTPR112_v4_SoA
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>matlab routine to go through the folders,</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">matlab routine to go through the folders,
+and call the diferent steps involved in the feature extraction
+procedure
+
+ developed by Ivan Cester and Joan Llobera 08
+ v.13 we pre-process the data
+
+ note that in the paths //Phact has been replaced by /Volumes to run in
+ Starblast. A search and replace in the other direction should have the
+ same effect
+ v2.try with OVR transposing the data and local data folders
+ v3.data stored locally and take care of NaN?s in the filtered data
+ v4. we use the data v2 ei. no NaN?s and no artefacts(since BCI comp HDR)
+ in any epoch. The test data is also separated in different files for each
+ class.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../BNCIevaluationSuite/featureExtraction/OVRtrain_v6.html" class="code" title="function varargout=OVRtrain_v6(dataset,m)">OVRtrain_v6</a>	----------------------------------------------------------</li><li><a href="../../BNCIevaluationSuite/featureExtraction/U_C_lap_perrin.html" class="code" title="function lap=U_C_lap_perrin(voltage,channel_location,n_elec)">U_C_lap_perrin</a>	----------------------------------------------------------</li><li><a href="../../BNCIevaluationSuite/featureExtraction/dataBCIiii_LTpreproT3.html" class="code" title="function class_epoch = dataBCIiii_LTpreproT3(class_epoch,dec)">dataBCIiii_LTpreproT3</a>	The function decimates and extracts the base line of each epoch</li><li><a href="../../BNCIevaluationSuite/multiclass/U_C_lap_perrin.html" class="code" title="function lap=U_C_lap_perrin(voltage,channel_location,n_elec);">U_C_lap_perrin</a>	Copyright (C) 2003  Josep Marco for Starlab BCN SL</li><li><a href="../../BNCIevaluationSuite/multiclass/bciOVRframework.html" class="code" title="function [kap,kapTest,classLabelSamples,classLabelSamplesTest,classPrediction,classPredictionTest,labelClass,labelClassTest]=bciOVRframework(xTrain,xTest,baggingRuns,homogeneousBagging,standardizeClassifierOutputs,subtractMeanMembership)">bciOVRframework</a>	v. 2 adding decision stage and kappa computation</li><li><a href="../../BNCIevaluationSuite/multiclass/openFiles.html" class="code" title="function [dataTrain,dataTest]=openFiles(dirPath,filePrefix)">openFiles</a>	</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001     <span class="comment">%matlab routine to go through the folders,</span>
+0002 <span class="comment">%and call the diferent steps involved in the feature extraction</span>
+0003 <span class="comment">%procedure</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% developed by Ivan Cester and Joan Llobera 08</span>
+0006 <span class="comment">% v.13 we pre-process the data</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">% note that in the paths //Phact has been replaced by /Volumes to run in</span>
+0009 <span class="comment">% Starblast. A search and replace in the other direction should have the</span>
+0010 <span class="comment">% same effect</span>
+0011 <span class="comment">% v2.try with OVR transposing the data and local data folders</span>
+0012 <span class="comment">% v3.data stored locally and take care of NaN?s in the filtered data</span>
+0013 <span class="comment">% v4. we use the data v2 ei. no NaN?s and no artefacts(since BCI comp HDR)</span>
+0014 <span class="comment">% in any epoch. The test data is also separated in different files for each</span>
+0015 <span class="comment">% class.</span>
+0016 
+0017 <span class="comment">%%%%tested asf 04/08 on aureli's desktop with error result:</span>
+0018 <span class="comment">% ??? Undefined function or method 'svmclass' for input</span>
+0019 <span class="comment">% arguments of type 'double'.</span>
+0020 <span class="comment">%</span>
+0021 <span class="comment">% Error in ==&gt; starClassify at 220</span>
+0022 <span class="comment">%             [xsup,w,b,pos]=svmclass(sampleData,yapp,c,epsilon,kernel,kerneloption,verbose);</span>
+0023 <span class="comment">%</span>
+0024 <span class="comment">% Error in ==&gt; baggingFusion at 98</span>
+0025 <span class="comment">%     [yTrain4Fusion,yDataStar]=starClassify(xTrain,testDataAll);</span>
+0026 <span class="comment">%     %data is only used for recalling</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">% Error in ==&gt; bciOVRframework at 43</span>
+0029 <span class="comment">%         [trainBaggingPrediction,testBaggingPrediction]=baggingFusion(xTrain(k),xTest(k),baggingRuns,homogeneousBagging);</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">% Error in ==&gt; main_TestDeciimationTPR112_v4_SoA at 220</span>
+0032 <span class="comment">%                 [kap,kapTest,classLabelSamples,classLabelSamplesTest,classPrediction,classPredictionTest]=bciOVRframework(dataTrain,dataTest,2);</span>
+0033 
+0034 
+0035 training=1;
+0036 recall=1;
+0037 <span class="keyword">if</span> training==0;
+0038     recall=1;
+0039 <span class="keyword">end</span>
+0040 
+0041 Nclass=4;
+0042 feature_dirs={<span class="string">'features subject k3b/'</span>,<span class="string">'features subject k6b/'</span>,<span class="string">'features subject l1b/'</span>};
+0043 load(<span class="string">'coord_BCIcomp3-3b.mat'</span>);
+0044 subj=1;
+0045 
+0046 <span class="keyword">for</span> m1=5:2:11
+0047     <span class="keyword">for</span> m2=15
+0048         <span class="keyword">for</span> m3=15
+0049             <span class="keyword">for</span> m4=15
+0050                 m=[m1 m2 m3 m4]
+0051                 <span class="keyword">if</span> training==1
+0052                     tic
+0053                     subjects={<span class="string">'raw subject k3b/'</span>,<span class="string">'raw subject k6b/'</span>,<span class="string">'raw subject l1b/'</span>};
+0054                     <span class="comment">%subjects={'debugg/'};</span>
+0055                     file_names={<span class="string">'v3class_epoch1.mat'</span>,<span class="string">'v3class_epoch2.mat'</span>,<span class="string">'v3class_epoch3.mat'</span>,<span class="string">'v3class_epoch4.mat'</span>};
+0056                     <span class="comment">%file_names={'debugg1.mat','debugg2.mat','debugg3.mat','debugg4.mat'};</span>
+0057                     addpath(genpath(<span class="string">'\\phact\code\02_-_Project_Related_Code\U_CONTROL\toolboxes_required\MatLab_EEG_Toolkit\eeglab4_4/eeglab4.4b'</span>));
+0058                     <span class="comment">%first, we filter: laplace and Beta filtering.</span>
+0059                     <span class="keyword">for</span> s=subj <span class="comment">%length(subjects)!!!!!</span>
+0060                         <span class="keyword">for</span> i=1:Nclass
+0061                             fid=1;
+0062                             <span class="keyword">if</span> fid==-1 <span class="comment">%we  check we haven't processed this</span>
+0063                                 input_file_name=[subjects{s},file_names{i}];
+0064                                 load(input_file_name);    <span class="comment">%this loads the structure class_epoch</span>
+0065                                 class_epoch=<a href="../../BNCIevaluationSuite/featureExtraction/dataBCIiii_LTpreproT3.html" class="code" title="function class_epoch = dataBCIiii_LTpreproT3(class_epoch,dec)">dataBCIiii_LTpreproT3</a>(class_epoch,1);<span class="comment">%%%%original uses dataBCIiii_prepro without decimation</span>
+0066                                 n_elec=length(class_epoch{1}(1,:));
+0067                                 <span class="comment">%disp(sprintf('Now Filtering for subject %d in folder %s and class %d', s, subjects{s},i));</span>
+0068                                 clear raw_data
+0069                                 <span class="keyword">for</span> the_epoch=1:length(class_epoch)
+0070                                     the_epoch
+0071                                     raw_data=class_epoch{the_epoch};  <span class="comment">%raw_data has size: samples x channels</span>
+0072                                     <span class="comment">%here we look for NaN?s in the data and we substitue</span>
+0073                                     <span class="comment">%them with the previous value in the same channel.</span>
+0074                                     bad=isnan(raw_data);
+0075                                     <span class="keyword">if</span> sum(sum(bad))~=0
+0076                                         f=find(bad==1);
+0077                                         raw_data(f)=raw_data(f-1);
+0078                                     <span class="keyword">end</span>
+0079 
+0080                                     <span class="comment">%we will need the function in the folder and subfolders:</span>
+0081                                     <span class="comment">%           laplace_filter</span>
+0082                                     data2=<a href="../../BNCIevaluationSuite/featureExtraction/U_C_lap_perrin.html" class="code" title="function lap=U_C_lap_perrin(voltage,channel_location,n_elec)">U_C_lap_perrin</a>(raw_data(250:<span class="keyword">end</span>,:),channel_location,n_elec);
+0083                                     bad=isnan(data2);
+0084                                     <span class="keyword">if</span> sum(sum(bad))~=0
+0085                                         f=find(bad==1);
+0086                                         data2(f)=data2(f-1);
+0087                                     <span class="keyword">end</span>
+0088                                     <span class="comment">% we extract beta activity</span>
+0089 <span class="comment">%                                     data3=filterBeta(data2); Filter is designed for 20 hz sampling rate. In</span>
+0090 <span class="comment">%                                                                   this case Sampling rate is 62.5 so</span>
+0091 <span class="comment">%                                                                   max frequency si already about 30 Hz</span>
+0092                                     data.trial{the_epoch}=data2;
+0093                                     data.class{the_epoch}=i;
+0094                                     clear(<span class="string">'raw_data'</span>,<span class="string">'data2'</span>,<span class="string">'data3'</span>);
+0095                                 <span class="keyword">end</span>
+0096                                 save(sprintf(<span class="string">'filtered_data_c%d_s%d.mat'</span>,i,s),<span class="string">'data'</span>);
+0097                                 <span class="comment">%        note there is redundancy in labelling the data with class number</span>
+0098                                 clear class_epoch data
+0099                             <span class="keyword">end</span>
+0100                         <span class="keyword">end</span>
+0101                     <span class="keyword">end</span>
+0102                    
+0103 
+0104                     <span class="comment">%now, we train for the features (OVR)</span>
+0105 
+0106                 <span class="comment">%% %</span>
+0107                     <span class="keyword">for</span> s=subj<span class="comment">%length(subjects)!!!!</span>
+0108                         <span class="comment">%we  check we don't need to train the system</span>
+0109                         fid=-1;
+0110                         <span class="keyword">if</span> fid==-1 <span class="comment">%there is no such file</span>
+0111                             mkdir([feature_dirs{s}]);
+0112                             <span class="comment">%disp(sprintf('Now preparing data for OVRTraining for subject %d in folder %s',  s, subjects{s}));</span>
+0113                             <span class="keyword">for</span> i=1:Nclass
+0114                                 load(sprintf(<span class="string">'filtered_data_c%d_s%d.mat'</span>,i,s));
+0115                                 <span class="comment">%mean_data{i}=zeros(size(data.trial{1}));</span>
+0116                                 mat_data{i}=[];
+0117                                 <span class="keyword">for</span> j=1:length(data.trial)
+0118                                     <span class="keyword">if</span>(isfinite(sum(sum(data.trial{j})))) <span class="comment">%there are no infinite numbers</span>
+0119                                         mat_data{i}=cat(1,mat_data{i},data.trial{j});
+0120                                     <span class="keyword">end</span>
+0121                                 <span class="keyword">end</span>
+0122                                 <span class="comment">%mean_data{i}=mean(mat_data,3);</span>
+0123                                 clear data
+0124                             <span class="keyword">end</span>
+0125                             <span class="comment">%disp(sprintf('OVRTraining for subject %d in folder %s', s, subjects{s}));</span>
+0126                             <span class="comment">%if we wanted a training specific for each subject:</span>
+0127                             <span class="comment">%extractor=OVRtrain_v3(mean_data);</span>
+0128                             [extractor]=<a href="../../BNCIevaluationSuite/featureExtraction/OVRtrain_v6.html" class="code" title="function varargout=OVRtrain_v6(dataset,m)">OVRtrain_v6</a>(mat_data,m);
+0129                             save(sprintf(<span class="string">'%sfeature_parameters.mat'</span>,feature_dirs{s}),<span class="string">'extractor'</span>);
+0130                             clear mat_data
+0131                             <span class="comment">%save(sprintf('//skat/Projects/UCONTROL-P20070527-01/BCI competition iii/OVR_aproach/%sfeature_training.mat',feature_dirs{s}),'dataset_filt');</span>
+0132                         <span class="keyword">end</span>
+0133                     <span class="keyword">end</span>
+0134 
+0135                     <span class="comment">%we extract the features for the training set (for the classification training):</span>
+0136 
+0137                     <span class="keyword">for</span> s=subj<span class="comment">%length(subjects)!!!!!!</span>
+0138                         clear Z
+0139                         load(sprintf(<span class="string">'%sfeature_parameters.mat'</span>,feature_dirs{s})); <span class="comment">%we load the extractor</span>
+0140                         <span class="keyword">for</span> i=1:Nclass
+0141                             <span class="comment">%disp(sprintf('Now extracting features of Training Set for subject %d, and class %d, in folder %s',  s,i, subjects{s}));</span>
+0142                             load(sprintf(<span class="string">'filtered_data_c%d_s%d.mat'</span>,i,s));<span class="comment">%we load the data</span>
+0143                             <span class="keyword">for</span> l=1:length(data.trial)
+0144                                 data.trial{l};
+0145                                 <span class="keyword">for</span> j=1:Nclass
+0146                                     A=extractor{j};
+0147                                     B=data.trial{l}';
+0148                                     Z{j}{l}=A*B; <span class="comment">%for each class and trial, we have a 750*60 matrix</span>
+0149                                 <span class="keyword">end</span>
+0150                             <span class="keyword">end</span>
+0151                             save(sprintf(<span class="string">'%sfeatures_class%d.mat'</span>,feature_dirs{s},i),<span class="string">'Z'</span>);
+0152                             clear Z
+0153                         <span class="keyword">end</span>
+0154                     <span class="keyword">end</span>
+0155                    
+0156                 <span class="keyword">end</span>
+0157 
+0158                 <span class="keyword">if</span> recall==1
+0159                     
+0160                     subjects={<span class="string">'raw subject k3b/'</span>,<span class="string">'raw subject k6b/'</span>,<span class="string">'raw subject l1b/'</span>};
+0161                     file_names={<span class="string">'v3class_epoch_test1.mat'</span>,<span class="string">'v3class_epoch_test2.mat'</span>,<span class="string">'v3class_epoch_test3.mat'</span>,<span class="string">'v3class_epoch_test4.mat'</span>};
+0162                     GT_dir=<span class="string">'//skat/Projects/UCONTROL-P20070527-01/BCI competition iii/data set IIIa/Ground Truth/'</span>;
+0163                     GT_files={<span class="string">'k3b_test_GT.mat'</span>,<span class="string">'k6b_test_GT.mat'</span>,<span class="string">'l1b_test_GT.mat'</span>};
+0164                     <span class="comment">%assuming the training was done individually for each subject</span>
+0165                     <span class="keyword">for</span> s=subj<span class="comment">%length(subjects)</span>
+0166                        <span class="keyword">for</span> i=1:Nclass
+0167                             fid=1;
+0168                             <span class="keyword">if</span> fid==-1 <span class="comment">%we  check we haven't processed this</span>
+0169                                 input_file_name=[subjects{s},file_names{i}];
+0170                                 load(input_file_name);    <span class="comment">%this loads the structure class_epoch</span>
+0171                                 class_epoch=<a href="../../BNCIevaluationSuite/featureExtraction/dataBCIiii_LTpreproT3.html" class="code" title="function class_epoch = dataBCIiii_LTpreproT3(class_epoch,dec)">dataBCIiii_LTpreproT3</a>(class_epoch_test,1);
+0172                                 n_elec=length(class_epoch{1}(1,:));
+0173                                 <span class="comment">%disp(sprintf('Now Filtering for subject %d in folder %s and class %d', s, subjects{s},i));</span>
+0174                                 <span class="comment">%addpath(genpath('\\phact\code\02_-_Project_Related_Code\U_CONTROL\toolboxes_required\MatLab_EEG_Toolkit\eeglab4_4/eeglab4.4b'));</span>
+0175                                 clear data
+0176                                 <span class="keyword">for</span> the_epoch=1:length(class_epoch)
+0177                                     the_epoch
+0178                                     raw_data=class_epoch{the_epoch};  <span class="comment">%raw_data has size: samples x channels</span>
+0179                                     <span class="comment">%here we look for NaN?s in the data and we substitue</span>
+0180                                     <span class="comment">%them with the previous value in the same channel.</span>
+0181                                     bad=isnan(raw_data);
+0182                                     <span class="keyword">if</span> sum(sum(bad))~=0
+0183                                         f=find(bad==1);
+0184                                         raw_data(f)=raw_data(f-1);
+0185                                     <span class="keyword">end</span>
+0186 
+0187                                     <span class="comment">%we will need the function in the folder and subfolders:</span>
+0188                                     
+0189                                     <span class="comment">% laplace_filter</span>
+0190                                     data2=<a href="../../BNCIevaluationSuite/featureExtraction/U_C_lap_perrin.html" class="code" title="function lap=U_C_lap_perrin(voltage,channel_location,n_elec)">U_C_lap_perrin</a>(raw_data(250:<span class="keyword">end</span>,:),channel_location,n_elec);
+0191                                     bad=isnan(data2);
+0192                                     <span class="keyword">if</span> sum(sum(bad))~=0
+0193                                         f=find(bad==1);
+0194                                         data2(f)=data2(f-1);
+0195                                     <span class="keyword">end</span>
+0196                                     <span class="comment">%         we extract beta activity</span>
+0197                                     <span class="comment">%data3=filterBeta(data2);</span>
+0198                                     data.trial{the_epoch}=data2;
+0199                                     data.class{the_epoch}=i;
+0200                                     clear(<span class="string">'raw_data'</span>,<span class="string">'data2'</span>,<span class="string">'data3'</span>);
+0201                                 <span class="keyword">end</span>
+0202                                 save(sprintf(<span class="string">'recall_filtered_data_c%d_s%d.mat'</span>,i,s),<span class="string">'data'</span>);
+0203                                 <span class="comment">%        note there is redundancy in labelling the data with class number</span>
+0204                                 clear Z data class_epoch class_epoch_test
+0205                             <span class="keyword">end</span>
+0206                         <span class="keyword">end</span>
+0207                     <span class="keyword">end</span>
+0208 
+0209 
+0210                         <span class="comment">%we extract the features:.............................................</span>
+0211                    <span class="keyword">for</span> s=subj<span class="comment">%length(subjects)</span>
+0212                         <span class="keyword">for</span> clas=1:Nclass     
+0213                             <span class="comment">%we check we haven't already extracted the features:</span>
+0214                             fid=-1;
+0215                             <span class="keyword">if</span> fid==-1
+0216                                 clear Z
+0217                                 load(sprintf(<span class="string">'%sfeature_parameters.mat'</span>,feature_dirs{s}));<span class="comment">%%%%</span>
+0218                                 <span class="comment">%TO ensure we do not reuse this:</span>
+0219                                 clear data;
+0220                                 load(sprintf(<span class="string">'recall_filtered_data_c%d_s%d.mat'</span>,clas,s),<span class="string">'data'</span>);<span class="comment">%%JL modified</span>
+0221                                 <span class="keyword">for</span> trials=1:length(data.trial)
+0222                                     data.trial{trials};
+0223                                     <span class="keyword">for</span> j=1:Nclass
+0224                                         A=extractor{j};
+0225                                         B=data.trial{trials};
+0226                                         Z{j}{trials}=A*B'; <span class="comment">%for each class and trial, we have a 750*60 matrix</span>
+0227                                     <span class="keyword">end</span>
+0228                                 <span class="keyword">end</span>
+0229                                 save(sprintf(<span class="string">'%srecall_features_s%d_c%d.mat'</span>,feature_dirs{s},s,clas),<span class="string">'Z'</span>);
+0230                                 clear Z
+0231                             <span class="keyword">end</span>
+0232                         <span class="keyword">end</span>
+0233                    <span class="keyword">end</span>
+0234 
+0235                 <span class="keyword">end</span>
+0236                 reformat4classification(subj)
+0237                 [dataTrain,dataTest]=<a href="../../BNCIevaluationSuite/multiclass/openFiles.html" class="code" title="function [dataTrain,dataTest]=openFiles(dirPath,filePrefix)">openFiles</a>(feature_dirs{subj})
+0238                 [kap,kapTest,classLabelSamples,classLabelSamplesTest,classPrediction,classPredictionTest]=<a href="../../BNCIevaluationSuite/multiclass/bciOVRframework.html" class="code" title="function [kap,kapTest,classLabelSamples,classLabelSamplesTest,classPrediction,classPredictionTest,labelClass,labelClassTest]=bciOVRframework(xTrain,xTest,baggingRuns,homogeneousBagging,standardizeClassifierOutputs,subtractMeanMembership)">bciOVRframework</a>(dataTrain,dataTest,2);
+0239                 kapMajTrain(m1,m2,m3,m4)=kap(1);
+0240                 kapAveTrain(m1,m2,m3,m4)=kap(2)
+0241                 kapMajTest(m1,m2,m3,m4)=kapTest(1);
+0242                 kapAveTest(m1,m2,m3,m4)=kapTest(2)                
+0243                 toc
+0244             <span class="keyword">end</span>
+0245         <span class="keyword">end</span>
+0246     <span class="keyword">end</span>
+0247 <span class="keyword">end</span>
+0248 <span class="comment">%save ('resultsMtune\KappaTuningMtestSoA.mat','kapMajTrain','kapAveTrain','kapMajTest','kapAveTest')</span></pre></div>
+<hr><address>Generated on Mon 20-Feb-2012 14:41:54 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" target="_parent">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

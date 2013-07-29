@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-actuator.filewriter
+Bundle-SymbolicName: com.starlab.component.actuator.filewriter
+Bundle-Version: 0.1.0
+DynamicImport-Package: *

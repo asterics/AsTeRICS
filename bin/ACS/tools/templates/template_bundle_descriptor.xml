@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="@pluginid"
+                   canonical_name="@canonicalname">
+        <type subtype="@subcategory">@type</type>
+        <singleton>@singleton</singleton>
+        <description>@description</description>
+        <ports>
+@inputports
+@outputports
+        </ports>
+		<events>
+@elports
+@etports
+		</events>			
+        <properties>
+@properties
+        </properties>
+@gui
+    </componentType>
+</componentTypes>

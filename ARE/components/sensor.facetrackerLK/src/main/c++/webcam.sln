@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "facetrackerLK", "facetrackerLK.vcxproj", "{B9EBC536-E709-4DCD-AF76-73423D1FF314}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release (cv097)|Win32 = Release (cv097)|Win32
+		Release (cv231)|Win32 = Release (cv231)|Win32
+		Release (VI)|Win32 = Release (VI)|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9EBC536-E709-4DCD-AF76-73423D1FF314}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B9EBC536-E709-4DCD-AF76-73423D1FF314}.Debug|Win32.Build.0 = Debug|Win32
+		{B9EBC536-E709-4DCD-AF76-73423D1FF314}.Release (cv097)|Win32.ActiveCfg = Release (Ocv097)|Win32
+		{B9EBC536-E709-4DCD-AF76-73423D1FF314}.Release (cv097)|Win32.Build.0 = Release (Ocv097)|Win32
+		{B9EBC536-E709-4DCD-AF76-73423D1FF314}.Release (cv231)|Win32.ActiveCfg = Release (cv231)|Win32
+		{B9EBC536-E709-4DCD-AF76-73423D1FF314}.Release (cv231)|Win32.Build.0 = Release (cv231)|Win32
+		{B9EBC536-E709-4DCD-AF76-73423D1FF314}.Release (VI)|Win32.ActiveCfg = Release (VI)|Win32
+		{B9EBC536-E709-4DCD-AF76-73423D1FF314}.Release (VI)|Win32.Build.0 = Release (VI)|Win32
+		{B9EBC536-E709-4DCD-AF76-73423D1FF314}.Release|Win32.ActiveCfg = Release (VI)|Win32
+		{B9EBC536-E709-4DCD-AF76-73423D1FF314}.Release|Win32.Build.0 = Release (VI)|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
