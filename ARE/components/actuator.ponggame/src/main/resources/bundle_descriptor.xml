@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.PongGame"
+                   canonical_name="eu.asterics.component.actuator.ponggame.PongGameInstance">
+        <type subtype="Others">actuator</type>
+        <singleton>false</singleton>
+        <description>Plugin displays a pong game in the AsTeRICS GUI</description>
+        <ports>
+			<inputPort id="playerOnePos">
+				<description>range 0 to 500 will move paddle of player 1 to this position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="playerTwoPos">
+				<description>range 0 to 500 will move paddle of player 2 to this position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="playerOneSpeed">
+				<description>range -10 to 10 will move paddle up or down at specified speed</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="playerTwoSpeed">
+				<description>range -10 to 10 will move paddle up or down at specified speed</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="startGame">
+				<description>incoming event will start the game</description>
+			</eventListenerPort>
+			<eventListenerPort id="playerOneToggleDirection">
+				<description>incoming event will switch paddle direction in event and speed controlled drive</description>
+			</eventListenerPort>
+			<eventListenerPort id="playerTwoToggleDirection">
+				<description>incoming event will switch paddle direction in event and speed controlled drive</description>
+			</eventListenerPort>
+			<eventListenerPort id="playerTwoMovement">
+				<description>incoming event will add points/calories for player 2 (and move paddle in event controlled drive)</description>
+			</eventListenerPort>
+			<eventListenerPort id="playerOneMovement">
+				<description>incoming event will add point for player 1 (and move paddle in event controlled drive)</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="gameOver">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="goalPlayerOne">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="goalPlayerTwo">
+				<description>etp description</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="controlMode"
+				type="integer"
+                value="1"
+                combobox="Position//Speed//Event"
+				description="selects the type of drive control (position input ports, speed input ports or event ports)"/>
+			<property name="speedStep"
+				type="double"
+				value="0.2"
+				description="speed to be multiplied by speed input (only in speed controlled drive)"/>
+			<property name="goalsToWin"
+				type="integer"
+				value="5"
+				description="how many goals to win a game"/>
+			<property name="eventsToCaloryMultiplier"
+				type="double"
+				value="5.0"
+				description="mapping of input events to calories"/>
+			<property name="goalScoreBase"
+				type="integer"
+				value="1000"
+				description="Base amount of points for a goal"/>
+			<property name="goalTouchBase"
+				type="integer"
+				value="10"
+				description="Base amount of points for touching the ball with the paddle"/>
+			<property name="resetWaitTime"
+				type="integer"
+				value="2000"
+				description="time to wait after reset of ball"/>
+			<property name="maxSpeed"
+				type="double"
+				value="5.0"
+				description="top speed of ball"/>
+			<property name="minXSpeed"
+				type="double"
+				value="1.0"
+				description="speed threshold for x movement to avoid stalled game"/>
+			<property name="reflectionYImpulse"
+				type="double"
+				value="0.5"
+				description="Base amount of y force applied to ball on touch to rectangular paddle"/>
+			<property name="soundFilePaddleTouch"
+				type="string"
+				value="data/sounds/pong_2.wav"
+				description="sound to be played when ball touches paddle"/>
+			<property name="soundFileBoundsTouch"
+				type="string"
+				value="data/sounds/pong_1.wav"
+				description="sound to be played when ball touches bounds"/>
+			<property name="soundFileGoal"
+				type="string"
+				value="data/sounds/pong_3.wav"
+				description="sound to be played when ball touches bounds"/>
+			<property name="soundFileEndGame"
+				type="string"
+				value="data/sounds/pong_3.wav"
+				description="sound to be played when game ends"/>
+
+        </properties>
+		<gui>
+			<width>3000</width>
+			<height>2000</height>
+		</gui>
+
+    </componentType>
+</componentTypes>
