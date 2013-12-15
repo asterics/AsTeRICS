@@ -30,7 +30,6 @@ package eu.asterics.component.actuator.midi;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
@@ -39,14 +38,7 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.services.AREServices;
-import javax.sound.midi.Instrument;
-import javax.sound.midi.MidiChannel;
-import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Synthesizer;
-import javax.sound.midi.Receiver;
-import javax.sound.midi.ShortMessage;
+import eu.asterics.mw.services.MidiManager;
 import javax.sound.midi.MidiDevice.Info;
 
 
@@ -62,66 +54,44 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 {
 	private  GUI gui = null;
 	
-	Scales scale = new Scales();	//Class for musical scales.
-	int[] noteNumberArray = scale.noteNumberArray("alltones");	//Array of musical scale corresponding numbers.
-
-
-    public Synthesizer synthesizer = null;
-	public MidiDevice mididevice = null;
-	public MidiChannel midiChannel = null;
-    public Receiver receiver;    
-    public Vector<Info> midiDeviceInfos;
-    public Vector<String> instrumentNames;
-
+	Scales scale = new Scales();   	//  Class for musical scales.
 	
-    private boolean blow = true;
-    private boolean edgeBlow = true;
-    private boolean edgeBlowTrigger = false;
-    public static int selectedNote;			//Selected Note
+	public  int selectedNote;			//Selected Note
     private int oldNote;				//saves the old Note
     
-    private int actInstrument = 0;	
-    
-    private int changeOctave = 0;
-    private boolean changeOctaveDown = false;
-    private boolean changeOctaveUp = false;
-    private int thresholdStep = 0;
-    public static int amountOfNotes = 8;
+    public  int amountOfNotes = 8;
     private int velocity = 127;
-    private int volume = 80;
-    public boolean calibrateButtonPitch = false;
-    public boolean calibrateButtonTrigger = false;
-    public static int[] thresholdArray = new int[128];
-    public static int range = 0;
-    public boolean setMin = false;
-    public boolean setMax = false;
-    public boolean calibrationPitchSuccess = true;
-    public boolean calibrationTriggerSuccess = true;
+    private int volume = 127;
+    public  int range = 0;
 
-    int propPitchMin=0;
-    int propPitchMax=1000;
-    private int propTriggerThreshold=50;
+    public int propPitchMin=0;
+    public int propPitchMax=1000;
+    public int propTriggerThreshold=50;
     public int propTriggerMax = 100;
-    String propToneScale="alltones";
+    public int propChannel=1;
+    String propToneScale="alltones.sc";
     String propMidiDevice="Gervill";
     String propInstrument="Vibraphone";
     private boolean propDisplayGUI=true;
+    boolean propPlayOnlyChangingNotes=true;
 
-    public static int pitchInput=500;
+    public int pitchInput=500;
     private int triggerInput=75;
 
     
    /**
     * The class constructor.
     */
-    public MidiInstance()
+    public MidiInstance() 
     {
-	    midiDeviceInfos= getActDeviceInfos();
-		if (openMidiDevice("Gervill")==false)
-			System.out.println("No Midi Device opened !");
-		else instrumentNames=getInstrumentNames();
+    	scale.loadScale(propToneScale);
+    	MidiManager.instance.openMidiDevice(propMidiDevice);
     }
 
+    public int getAmountOfNotes()
+    {
+    	return (amountOfNotes);
+    }
     /**
      * returns two Input Ports.
      * @param portID   the name of the port
@@ -136,6 +106,14 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 		if ("pitch".equalsIgnoreCase(portID))
 		{
 			return ipPitch;
+		}
+		if ("instrument".equalsIgnoreCase(portID))
+		{
+			return ipInstrument;
+		}
+		if ("scale".equalsIgnoreCase(portID))
+		{
+			return ipScale;
 		}
 
 		return null;
@@ -185,6 +163,10 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
         {
             return propMidiDevice;
         }
+    	if("channel".equalsIgnoreCase(propertyName))
+        {
+            return propChannel;
+        }
     	if("instrument".equalsIgnoreCase(propertyName))
         {
             return propInstrument;
@@ -209,6 +191,10 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
         {
             return propToneScale;
         }
+    	if("playOnlyChangingNotes".equalsIgnoreCase(propertyName))
+        {
+            return propPlayOnlyChangingNotes;
+        }
     	if("displayGUI".equalsIgnoreCase(propertyName))
         {
             return propDisplayGUI;
@@ -227,14 +213,20 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
         {
             final Object oldValue = propMidiDevice;
             propMidiDevice = (String) newValue;
-            openMidiDevice(propMidiDevice);
+            MidiManager.instance.openMidiDevice(propMidiDevice);
+            return oldValue;
+        }
+        if("channel".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propChannel;
+            propChannel = Integer.parseInt(newValue.toString());
             return oldValue;
         }
         if("instrument".equalsIgnoreCase(propertyName))
         {
             final Object oldValue = propInstrument;
             propInstrument = (String) newValue;
-            instrumentChange (propInstrument);
+            MidiManager.instance.instrumentChange (propMidiDevice, propChannel, propInstrument);
             return oldValue;
         }
         if("triggerThreshold".equalsIgnoreCase(propertyName))
@@ -266,12 +258,9 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
         	int i;
             final Object oldValue = propToneScale;
             propToneScale = (String) newValue;
-       
-			noteNumberArray = scale.noteNumberArray(propToneScale);
-			for (i=0; (i<256) && (noteNumberArray[i]>0); i++) ;
-			amountOfNotes = i;
-			thresholdArray= thresholdArray(propPitchMin, propPitchMax);
-			
+
+            scale.loadScale(propToneScale);
+			amountOfNotes = scale.size;
             return oldValue;
         }
     	if("displayGUI".equalsIgnoreCase(propertyName))
@@ -285,6 +274,20 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
             else if("false".equalsIgnoreCase((String)newValue))
             {
             	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
+    	if("playOnlyChangingNotes".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propPlayOnlyChangingNotes;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propPlayOnlyChangingNotes = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propPlayOnlyChangingNotes = false;
             }
             return oldValue;
         }    	
@@ -335,14 +338,14 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 			}
 			if (key.equals("midiDevice"))
 			{
-				for (Info dev : midiDeviceInfos)
+				for (Info dev : MidiManager.instance.midiDeviceInfos)
 				{
 					res.add(dev.getName()); 
 				}
 			}
 			if (key.equals("instrument"))
 			{
-				for (String inst : instrumentNames)
+				for (String inst : MidiManager.instance.getInstrumentNames(propMidiDevice))
 				{
 					res.add(inst); 
 				}
@@ -356,9 +359,6 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 	} 
 
     
-    
-    
-    
      /**
       * Input Ports for receiving values.
       */
@@ -368,34 +368,15 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 		{
 			triggerInput = ConversionUtils.intFromBytes(data);
 			
-			if(calibrationTriggerSuccess)
-			{
 				if(triggerInput-propTriggerThreshold > propTriggerMax-propTriggerThreshold)
 				{
-					volume = 127;
+					velocity = 127;
 				}
 				else
 				{
 					double roundVolume = (127/(double)(propTriggerMax-propTriggerThreshold))*(triggerInput-propTriggerThreshold);
-					volume = (int)roundVolume;
+					velocity = (int)roundVolume;
 				}
-			}	
-			
-			if(triggerInput >= propTriggerThreshold) 
-			{
-				blow = true;
-			}
-			else
-			{
-				blow = false;
-				edgeBlow = false;
-				midiAllSoundOff();
-			}
-    		
-    		if(calibrateButtonTrigger)
-    		{
-    			propTriggerMax = triggerCalibration(triggerInput);
-    		}
 		}
 
 	};
@@ -405,322 +386,59 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
     		pitchInput = ConversionUtils.intFromBytes(data);
-    		
-    		if(calibrationPitchSuccess && calibrationTriggerSuccess)
-    		{
-    			for(int i = 0; i <= amountOfNotes; i++)
-    			{
-    				if(pitchInput < thresholdArray[0])
-    				{
-    					selectedNote = -1;
-    					changeOctaveDown = true;
-    					break;
-    				}
-    				else if(pitchInput > thresholdArray[amountOfNotes])
-    				{
-    					selectedNote = -1;
-    					changeOctaveUp = true;
-    					break;
-    				}
-    				else if(pitchInput > thresholdArray[i] && pitchInput < thresholdArray[i+1])
-    				{
-    					selectedNote = i;
-    					changeOctaveUp = false;
-    					changeOctaveDown = false;
-    					break;
-    				}
-    			}
+			if(pitchInput < propPitchMin)
+			{
+				selectedNote = 0;
+			}
+			else if(pitchInput > propPitchMax)
+			{
+				selectedNote = amountOfNotes-1;
+			}
+			else
+			{
+				selectedNote =  propPitchMin + (int)((double)(pitchInput-propPitchMin) / (double)(propPitchMax-propPitchMin) * (double) amountOfNotes); 
+			}
     			
-    			gui.repaint();
+			if (propDisplayGUI == true) gui.repaint();
     			
-    			if(blow && !edgeBlow && changeOctaveDown)
-    			{
-    				edgeBlow = true;
-    				changeOctaveDown = false;
-    				if(changeOctave != -36)
-    				{
-        				changeOctave = changeOctave - 12;
-    				}
-    			}
-    			else if(blow && !edgeBlow && changeOctaveUp)
-    			{
-    				edgeBlow = true;
-    				changeOctaveUp = false;
-    				if(changeOctave != 36)
-    				{
-        				changeOctave = changeOctave + 12;
-    				}
-    			}
-    			else if(blow && (!edgeBlow || oldNote != selectedNote) && selectedNote != -1)
-    			{
-        			midiAllSoundOff();
-    				midiNoteOn(noteNumberArray[selectedNote]+changeOctave, velocity);
-    				edgeBlow = true;
-    				oldNote = selectedNote;
-    			}
-    			
-				midiChannel.controlChange(7,volume);
-    		}
-    		
-    		if(calibrateButtonPitch && calibrationTriggerSuccess)
-    		{
-    			thresholdArray = pitchCalibration(pitchInput);
-    		}
+			if ((propPlayOnlyChangingNotes == false) || (oldNote != selectedNote))
+			{ 	
+				if (propInstrument.startsWith("Controller"))
+					MidiManager.instance.midiControlChange(propMidiDevice, propChannel,0,scale.noteNumberArray[selectedNote]);
+				else
+				{
+					MidiManager.instance.midiNoteOff(propMidiDevice, propChannel,scale.noteNumberArray[oldNote]);
+					MidiManager.instance.midiNoteOn(propMidiDevice, propChannel,scale.noteNumberArray[selectedNote], velocity);
+				}
+				oldNote = selectedNote;
+								
+				//if (midiChannel != null)  midiChannel[propChannel].controlChange(7,volume);
+
+			}
 
 		}
 		
 	};
 
-
-	
-	 /**
-     * Calibration of Trigger Input
-     * @param data 	data received from the trigger input port
-     * @return		thresholds that specifies the range of velocity
-     */  
-    public int triggerCalibration (int data)	//returns threshold for the pitch.
-    {
-		if(blow && !edgeBlow)
+	private final IRuntimeInputPort ipScale  = new DefaultRuntimeInputPort()
+	{
+		public void receiveData(byte[] data)
 		{
-			edgeBlowTrigger = true;
-			if(data > propTriggerMax)
-			{
-				propTriggerMax = data;
-			}
+		    propToneScale = ConversionUtils.stringFromBytes(data);
+            scale.loadScale(propToneScale);
+			amountOfNotes = scale.size;
 		}
-		if(edgeBlowTrigger && !blow)
-		{
-			calibrationTriggerSuccess = true;	
-			calibrateButtonTrigger = false;
-			edgeBlowTrigger = false;
-		}
-	    return propTriggerMax;
-    }
-	
-	 /**
-     * Calibration of Pitch Input
-     * @param data 	data received from the pitch input port
-     * @return		thresholds that specify the range of each note
-     */  
-    public int[] pitchCalibration (int data)	//returns threshold for the pitch.
-    {
-	    if(blow && !edgeBlow && !setMin)
-	    {
-	        propPitchMin = data;
-	        setMin = true;
-		    edgeBlow = true;
-	    }
-	    
-	    if(blow && !edgeBlow && !setMax)
-	    {
-	    	propPitchMax = data;
-	    	setMax = true;
-	    	edgeBlow = true;
-	    }	    
 
-	    if(setMin && setMax)
-	    {
-	    	thresholdArray = thresholdArray(propPitchMin, propPitchMax);
-	    }
-	    	
-	    return thresholdArray;
-    }
+	};
     
-	 /**
-     * Calibration of Pitch Input - Calculation of thresholdArrays
-     * @param thresholdMin 	minimum pitch input
-     * @param thresholdMax	maximum pitch input
-     * @return		thresholds that specify the range of each note
-     */
-    public int[] thresholdArray(int thresholdMin, int thresholdMax)
-    {
-	    thresholdStep = (thresholdMax - thresholdMin)/(amountOfNotes-1); //defines the threshold_step
-	    thresholdArray[0]=thresholdMin - (thresholdStep/2);
-	    for(int i = 1; i <= amountOfNotes;i++)
-	    {
-	    	thresholdArray[i] = thresholdArray[i-1] + thresholdStep; 
-	    }
-	    calibrateButtonPitch = false;
-	    calibrationPitchSuccess = true;
-	    
-	    return thresholdArray;
-    }
-
-    
-    
-    
-	/**
-	 * Returns a vector of all available synthesizers
-	 * @return	Vector of all available synthesizers
-	 */
-	public Vector<Info> getActDeviceInfos()
+	private final IRuntimeInputPort ipInstrument  = new DefaultRuntimeInputPort()
 	{
-		Vector<Info> actDeviceInfos = new Vector<Info>(); 									//Vector<Info> = Generic
-		MidiDevice.Info[] deviceInfo = MidiSystem.getMidiDeviceInfo(); 	//gets a String of available MIDI-devices.
-		for(int i = 0; i < deviceInfo.length; i++)
+		public void receiveData(byte[] data)
 		{
-			try
-			{
-				MidiDevice device = MidiSystem.getMidiDevice(deviceInfo[i]);
-				System.out.println(device.getDeviceInfo().getName()+ " - Receivers: "+device.getMaxReceivers()+" Transmitters: "+device.getMaxTransmitters());
-				if((device instanceof Synthesizer) || (device.getMaxTransmitters()>-1))
-				{
-					//System.out.println("SYNTHESIZER:"+device.getDeviceInfo().getName());
-					actDeviceInfos.add(deviceInfo[i]);
-				}
-			}
-			catch (MidiUnavailableException e)
-			{
-				e.printStackTrace();
-			}
+		    propInstrument = ConversionUtils.stringFromBytes(data);
+            MidiManager.instance.instrumentChange (propMidiDevice, propChannel, propInstrument);
 		}
-		return actDeviceInfos;
-	}	
-	
-	/**
-	 * Returns a list of all available MIDI-instruments
-	 * @param deviceInfo	information of type Info about the MidiDevice 
-	 * @return				list of Instruments
-	 */
-
-	public Vector<String> getInstrumentNames()
-	{
-		Vector<String> list = new Vector<String>();		
-
-		if (synthesizer != null)
-		{
-			Instrument[] instrumentNames = synthesizer.getAvailableInstruments();
-			for (int i=0;(i<instrumentNames.length) && (i<128); i++ )
-			{
-				list.add(instrumentNames[i].getName());
-			}
-		}
-		else
-		{
-			for (int i=0;i<128; i++ )
-			{
-				list.add("Instrument "+i);
-			}
-		}
-		for (int i=0;i<128; i++ )
-		{
-			list.add("Controller "+i);
-		}
-		return  list;
-	}
-	
-	public boolean openMidiDevice(String newDeviceName) // MidiDevice.Info deviceInfo)
-	{	
-		MidiDevice.Info deviceInfo =null;
-		for (MidiDevice.Info di : midiDeviceInfos )
-		{
-			if (newDeviceName.equals(di.getName()))
-				deviceInfo=di;
-		}
-		if (deviceInfo!=null)
-		{
-			try 
-			{
-				if (mididevice != null) mididevice.close();
-				if (synthesizer!=null) synthesizer.close();
-				
-				mididevice= MidiSystem.getMidiDevice(deviceInfo);
-				if ( mididevice instanceof Synthesizer)
-				{
-					synthesizer = (Synthesizer) mididevice;
-					synthesizer.open();
-
-					midiChannel= synthesizer.getChannels()[0];
-					/*
-					 MidiChannel[] availableMidiChannels = synthesizer.getChannels();
-					 for(int i = 0; i < availableMidiChannels.length;i++)
-					 {
-						if(availableMidiChannels[i] != null)
-						{
-							return availableMidiChannels[i];
-						}
-					 }
-					 */
-					
-					System.out.println("Synthesizer "+mididevice.getDeviceInfo().getName()+" opened.");
-				}
-				else
-				{
-					synthesizer=null;
-					mididevice.open();
-					receiver =  mididevice.getReceiver(); // MidiSystem.getReceiver();
-					System.out.println("MidiDevice "+mididevice.getDeviceInfo().getName()+" opened.");					
-				}
-				return(true);
-					
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		}
-		return(false);
-	}
-	
-	public void instrumentChange(String newInstrumentName)
-	{
-		int instrument;
-		
-		for (instrument=0;instrument<instrumentNames.size();instrument++)
-		{
-			if (instrumentNames.elementAt(instrument).equals(newInstrumentName))
-				 break;
-		}
-		
-		if (instrument<instrumentNames.size())
-		{
-			actInstrument=instrument;
-			
-			System.out.println("changing to instrument "+actInstrument);
-	    	if (instrument < 128)
-	    	{
-				if (synthesizer != null) midiChannel.programChange(instrument);
-				else if (receiver != null)
-				{
-					try 
-					{
-						ShortMessage myMsg = new ShortMessage();
-						myMsg.setMessage(ShortMessage.PROGRAM_CHANGE, 0, instrument,0 ); 
-						receiver.send(myMsg, -1);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-				}
-	    	}	
-		}
-	}
-	
-	private void midiAllSoundOff()
-	{
-		if (synthesizer != null) midiChannel.allSoundOff();
-
-	}
-
-	private void midiNoteOn(int note, int velocity)
-	{
-		if (synthesizer != null) midiChannel.noteOn(note, velocity);
-		else
-		{
-			try 
-			{
-				ShortMessage myMsg = new ShortMessage();
-				if (actInstrument < 128)
-				{
-					myMsg.setMessage(ShortMessage.NOTE_ON, 0, note, velocity);  // 60=note, 93=velocity
-				}
-				else
-					myMsg.setMessage(ShortMessage.CONTROL_CHANGE, 0, 0, note); 
-				receiver.send(myMsg, -1);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
-
-	
+	};
 
      /**
       * called when model is started.
@@ -728,10 +446,8 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
-			gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
-		    thresholdArray = thresholdArray(propPitchMin, propPitchMax);
-
-			if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
+		  gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
+		  if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
           super.start();
       }
 

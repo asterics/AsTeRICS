@@ -18,6 +18,16 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
+			<inputPort id="instrument">
+				<description>accepts string inputs for instrument names of the active midi device, to select this instrument.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="scale">
+				<description>accepts string inputs for filenames of a tonescale, to select this scale.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
         </ports>
 		<events>
 		</events>			
@@ -27,6 +37,10 @@
                       value="Gervill"
                       getStringList="true"
                       description="name of the Midi Output device"/>
+			<property name="channel"
+                      type="integer" 
+                      value="1"
+                      description="sets the channel for the midi instrument"/>
 			<property name="instrument"
                       type="string"
                       value="Vibraphone"
@@ -50,9 +64,13 @@
                       description="sets the maximum input value for computing the tone pitch"/>
 			<property name="toneScale"
                       type="string"
-                      value="alltones"
+                      value="alltones.sc"
                       getStringList="true"
                       description="filename of tone scale file"/>
+            <property name="playOnlyChangingNotes"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, only note changes will be played"/>
             <property name="displayGUI"
                       type="boolean"
                       value="true"                      

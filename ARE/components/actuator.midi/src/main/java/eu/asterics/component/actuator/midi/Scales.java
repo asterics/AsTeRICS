@@ -44,20 +44,26 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class Scales 
 {
+	final static boolean debugOutput = false;
+
+	int[] noteNumberArray;
+	int size;
 	
 	public Scales()
 	{
+		 noteNumberArray= new int[256];
+		 size=0;
 	}
 	
 	/**RETURNS AN ARRAY OF THE MIDI NUMBERS CORRESPONDING TO THE SELECTED SCALE
     * @param index 	index is the value corresponding to the selected scale
     * @return		returns an array with the MIDI numbers corresponding to the scale
     */  
-	public int[] noteNumberArray(String scaleName)
+	public boolean loadScale (String scaleName)
 	{
         FileInputStream fIn=null;
         byte[] fileInput= new byte[1128];
-		int[] noteNumberArray = new int[256];
+		
 		int readBytes,len;
          
 		if (!(scaleName.endsWith(".sc"))) scaleName+=".sc";
@@ -69,7 +75,7 @@ public class Scales
             //System.out.println(readBytes+ " bytes have been read.");
             fIn.close();
             len=fromByteArray(fileInput,0);
-            System.out.println("loading "+len+ " tones from midi tonescale "+ scaleName+".");
+            if (debugOutput) System.out.println("loading "+len+ " tones from midi tonescale "+ scaleName+".");
             
             for (int i=0;i<len;i++)
             {
@@ -77,49 +83,18 @@ public class Scales
                 // System.out.println("Note "+noteNumberArray[i]+ " read.");
             }
             noteNumberArray[len]=0;
+            size=len;
         }
         catch(IOException e){
         	
         	AstericsErrorHandling.instance.getLogger().fine("Could not load tonescale file data/actuator/midi/"+scaleName+".sc");
+        	noteNumberArray[0]=0;
+        	size=0;
+        	return(false);
         	
         }
-        return(noteNumberArray);
-/*		
-		switch(index)
-		{
-			case 0: 						//C-DUR
-				noteNumberArray[0] = 48;	//C3
-				noteNumberArray[1] = 50;	//D3
-				noteNumberArray[2] = 52;	//E3
-				noteNumberArray[3] = 53;	
-				noteNumberArray[4] = 55;
-				noteNumberArray[5] = 57;
-				noteNumberArray[6] = 59;
-				noteNumberArray[7] = 60;	//C4
-				noteNumberArray[8] = 0;	
-				break;
-			case 1:							//D-DUR
-				noteNumberArray[0] = 50;
-				noteNumberArray[1] = 52;
-				noteNumberArray[2] = 54;
-				noteNumberArray[3] = 55;	
-				noteNumberArray[4] = 57;
-				noteNumberArray[5] = 59;
-				noteNumberArray[6] = 61;
-				noteNumberArray[7] = 62;
-				noteNumberArray[8] = 0;	
-				break;
-			case 2:							//All 127 tones
-				for (int i=1;i<126;i++)
-				    noteNumberArray[i-1] = i;
-				noteNumberArray[126] = 0;
-				
-				break;
-		}
-		return noteNumberArray;
-		
-		*/
-		
+        return(true);
+	
 	}
 	
 	int fromByteArray(byte[] bytes,int index) {
