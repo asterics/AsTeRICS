@@ -1,8 +1,8 @@
 #ARE Properties
-#Sun Dec 15 04:10:40 CET 2013
-undecorated=1
-show_side_bar=0
+#Sun Dec 15 14:54:48 CET 2013
+undecorated=0
+show_side_bar=1
 fullscreen=0
-iconify=0
-always_on_top=0
 background_color=-11842717
+always_on_top=0
+iconify=0
