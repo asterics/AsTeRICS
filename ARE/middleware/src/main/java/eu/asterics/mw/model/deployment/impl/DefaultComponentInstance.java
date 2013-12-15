@@ -70,7 +70,8 @@ extends DefaultPropertyful implements IComponentInstance
 			final Map<String, Object> propertyValues,
 			final Point layout, 
 			//final boolean easyConfig,
-			final AREGUIElement guiElement, Set<IInputPort> bufferedPorts)
+			final AREGUIElement guiElement, 
+			Set<IInputPort> bufferedPorts)
 	{
 		super(propertyValues);
 
