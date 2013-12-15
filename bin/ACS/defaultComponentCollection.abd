@@ -416,50 +416,6 @@
     </componentType>
 
 
- <componentType canonical_name="eu.asterics.component.sensor.p2_parser.P2_parserInstance" id="asterics.p2_parser">
-        <type subtype="Bioelectric Measurement">sensor</type>
-        <singleton>false</singleton>
-        <description>This plugin receives a P"-packet stream compatible to the OpenEEG ModularEEG / SMT EEG firmware. 6 Channels of bioelectric data can be processed.</description>
-        <ports>
-
-			<outputPort id="Channel1">
-				<description>output port for channel1 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Channel2">
-				<description>output port for channel2 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Channel3">
-				<description>output port for channel3 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Channel4">
-				<description>output port for channel4 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Channel5">
-				<description>output port for channel5 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Channel6">
-				<description>output port for channel6 data</description>
-				<dataType>double</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-
-
-		</events>			
-        <properties>
-			<property description="The COM Port which will be opened to receive a P2-packet stream" name="ComPort" type="string" value="COM4"/>
-			<property description="The baud rate for the P2 packet stream" name="BaudRate" type="integer" value="57600"/>
-
-        </properties>
-
-    </componentType>
-
  <componentType canonical_name="com.starlab.component.actuator.flickeringlightstimulator.FlickeringLightStimulatorInstance" id="asterics.FlickeringLightStimulator">
         <type subtype="Brain Computer Interface">actuator</type>
         <singleton>false</singleton>
@@ -925,7 +881,30 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
-
+			<outputPort id="rcv_1_value">
+				<description>Received KNX value 1</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="rcv_1_unit">
+				<description>Received KNX unit 1</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="rcv_2_value">
+				<description>Received KNX value 2</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="rcv_2_unit">
+				<description>Received KNX unit 2</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="rcv_3_value">
+				<description>Received KNX value 3</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="rcv_3_unit">
+				<description>Received KNX unit 3</description>
+				<dataType>string</dataType>
+			</outputPort>
 
         </ports>
 		<events>
@@ -991,6 +970,15 @@
             <property description="Destination group address 6" name="groupAddress6" type="string" value="1/1/1"/>
             <property description="DPT 6 (string|boolean|int|float)" name="dataType6" type="string" value="boolean"/>
             <property description="Value 6" name="dataValue6" type="string" value="1"/>
+            <property description="Receiving group address 1" name="rcv_groupAddress1" type="string" value="1/1/1"/>
+            <property description="DPT 1 (string|boolean|int|float)" name="rcv_dataType1" type="string" value="boolean"/>
+            <property description="Value 1" name="rcv_dataValue1" type="string" value="1"/>
+            <property description="Receiving group address 2" name="rcv_groupAddress2" type="string" value="1/1/1"/>
+            <property description="DPT 2 (string|boolean|int|float)" name="rcv_dataType2" type="string" value="boolean"/>
+            <property description="Value 2" name="rcv_dataValue2" type="string" value="1"/>
+            <property description="Receiving group address 3" name="rcv_groupAddress3" type="string" value="1/1/1"/>
+            <property description="DPT 3 (string|boolean|int|float)" name="rcv_dataType3" type="string" value="boolean"/>
+            <property description="Value 3" name="rcv_dataValue3" type="string" value="1"/>
             <property description="Destination group address Slider" name="groupAddressSlider1" type="string" value="1/1/1"/>
             <property description="Destination group address Slider" name="groupAddressSlider2" type="string" value="1/1/1"/>	                  
             <property description="Destination group address Slider" name="groupAddressSlider3" type="string" value="1/1/1"/>
@@ -1005,6 +993,55 @@
             <property description="Destination group address Slider" name="groupAddressTrigger6" type="string" value="1/1/1"/>
 	                                  	                  	                  	        
         </properties>
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.actuator.mediaplayer.MediaPlayerInstance" id="asterics.MediaPlayer">
+        <type subtype="File System">actuator</type>
+        <singleton>false</singleton>
+        <description>Media player for supported file formats</description>
+        <ports>
+			<inputPort id="filename">
+				<description>file name of media file</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="position">
+				<description>position in media file (0-100%)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="rate">
+				<description>playback speed (0-500%)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+        </ports>
+		<events>
+			<eventListenerPort id="play">
+				<description>plays the mediafile</description>
+			</eventListenerPort>
+			<eventListenerPort id="pause">
+				<description>pauses the mediafile</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stops the mediafile</description>
+			</eventListenerPort>
+			<eventListenerPort id="reset">
+				<description>resets the mediafile to initial position</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="path and filename of a valid media file" getStringList="true" name="filename" type="string" value=""/>
+			<property description="automatically play the media file ar startup or as filename is received" name="autoplay" type="boolean" value="true"/>
+
+        </properties>
+		<gui>
+			<width>3000</width>
+			<height>2000</height>
+		</gui>
+
     </componentType>
 
  <componentType canonical_name="eu.asterics.component.actuator.midi.MidiInstance" id="asterics.MidiPlayer">
@@ -1022,17 +1059,29 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
+			<inputPort id="instrument">
+				<description>accepts string inputs for instrument names of the active midi device, to select this instrument.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="scale">
+				<description>accepts string inputs for filenames of a tonescale, to select this scale.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
         </ports>
 		<events>
 		</events>			
         <properties>
 			<property description="name of the Midi Output device" getStringList="true" name="midiDevice" type="string" value="Gervill"/>
+			<property description="sets the channel for the midi instrument" name="channel" type="integer" value="1"/>
 			<property description="name of the instrument or controller" getStringList="true" name="instrument" type="string" value="Vibraphone"/>
 			<property description="sets the threshold for triggering a note" name="triggerThreshold" type="integer" value="50"/>
 			<property description="sets the value for the trigger input where the tone will have maximum volume" name="triggerMax" type="integer" value="100"/>
 			<property description="sets the minimum input value for computing the tone pitch" name="pitchMin" type="integer" value="0"/>
 			<property description="sets the maximum input value for computing the tone pitch" name="pitchMax" type="integer" value="1000"/>
-			<property description="filename of tone scale file" getStringList="true" name="toneScale" type="string" value="alltones"/>
+			<property description="filename of tone scale file" getStringList="true" name="toneScale" type="string" value="alltones.sc"/>
+            <property description="if selected, only note changes will be played" name="playOnlyChangingNotes" type="boolean" value="true"/>
             <property description="if selected, the GUI window with tone parameters will be shown" name="displayGUI" type="boolean" value="true"/>
         </properties>
 		<gui>
@@ -1565,6 +1614,86 @@
         </properties>
     </componentType>
 
+
+ <componentType canonical_name="eu.asterics.component.actuator.ponggame.PongGameInstance" id="asterics.PongGame">
+        <type subtype="Others">actuator</type>
+        <singleton>false</singleton>
+        <description>Plugin displays a pong game in the AsTeRICS GUI</description>
+        <ports>
+			<inputPort id="playerOnePos">
+				<description>range 0 to 500 will move paddle of player 1 to this position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="playerTwoPos">
+				<description>range 0 to 500 will move paddle of player 2 to this position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="playerOneSpeed">
+				<description>range -10 to 10 will move paddle up or down at specified speed</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="playerTwoSpeed">
+				<description>range -10 to 10 will move paddle up or down at specified speed</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="startGame">
+				<description>incoming event will start the game</description>
+			</eventListenerPort>
+			<eventListenerPort id="playerOneToggleDirection">
+				<description>incoming event will switch paddle direction in event and speed controlled drive</description>
+			</eventListenerPort>
+			<eventListenerPort id="playerTwoToggleDirection">
+				<description>incoming event will switch paddle direction in event and speed controlled drive</description>
+			</eventListenerPort>
+			<eventListenerPort id="playerTwoMovement">
+				<description>incoming event will add points/calories for player 2 (and move paddle in event controlled drive)</description>
+			</eventListenerPort>
+			<eventListenerPort id="playerOneMovement">
+				<description>incoming event will add point for player 1 (and move paddle in event controlled drive)</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="gameOver">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="goalPlayerOne">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="goalPlayerTwo">
+				<description>etp description</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property combobox="Position//Speed//Event" description="selects the type of drive control (position input ports, speed input ports or event ports)" name="controlMode" type="integer" value="1"/>
+			<property description="speed to be multiplied by speed input (only in speed controlled drive)" name="speedStep" type="double" value="0.2"/>
+			<property description="how many goals to win a game" name="goalsToWin" type="integer" value="5"/>
+			<property description="mapping of input events to calories" name="eventsToCaloryMultiplier" type="double" value="5.0"/>
+			<property description="Base amount of points for a goal" name="goalScoreBase" type="integer" value="1000"/>
+			<property description="Base amount of points for touching the ball with the paddle" name="goalTouchBase" type="integer" value="10"/>
+			<property description="time to wait after reset of ball" name="resetWaitTime" type="integer" value="2000"/>
+			<property description="top speed of ball" name="maxSpeed" type="double" value="5.0"/>
+			<property description="speed threshold for x movement to avoid stalled game" name="minXSpeed" type="double" value="1.0"/>
+			<property description="Base amount of y force applied to ball on touch to rectangular paddle" name="reflectionYImpulse" type="double" value="0.5"/>
+			<property description="sound to be played when ball touches paddle" name="soundFilePaddleTouch" type="string" value="data/sounds/pong_2.wav"/>
+			<property description="sound to be played when ball touches bounds" name="soundFileBoundsTouch" type="string" value="data/sounds/pong_1.wav"/>
+			<property description="sound to be played when ball touches bounds" name="soundFileGoal" type="string" value="data/sounds/pong_3.wav"/>
+			<property description="sound to be played when game ends" name="soundFileEndGame" type="string" value="data/sounds/pong_3.wav"/>
+
+        </properties>
+		<gui>
+			<width>3000</width>
+			<height>2000</height>
+		</gui>
+
+    </componentType>
 
  <componentType canonical_name="eu.asterics.component.actuator.platformdigitalout.PlatformDigitalOutInstance" id="asterics.PlatformDigitalOut">
         <type subtype="Personal Platform">actuator</type>
@@ -2371,17 +2500,17 @@
         <description>Arduino Microcontroller CIM</description>
         <ports>
 			<inputPort id="pwm3">
-				<description>PWM value for Pin3 Analog Output</description>
+				<description>PWM value for Pin3 Analog Output (0-255)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="pwm5">
-				<description>PWM value for Pin5 Analog Output</description>
+				<description>PWM value for Pin5 Analog Output (0-255)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="pwm6">
-				<description>PWM value for Pin6 Analog Output</description>
+				<description>PWM value for Pin6 Analog Output (0-255)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
@@ -2563,10 +2692,10 @@
         <properties>
 			<property description="automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 2 Mode" name="pin2Mode" type="integer" value="0"/>
-			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 3 Mode" name="pin3Mode" type="integer" value="0"/>
+			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 1kHz//PWM 10 kHz//PWM 28kHz" description="Pin 3 Mode" name="pin3Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 4 Mode" name="pin4Mode" type="integer" value="0"/>
-			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 5 Mode" name="pin5Mode" type="integer" value="0"/>
-			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 6 Mode" name="pin6Mode" type="integer" value="0"/>
+			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 1kHz//PWM 10 kHz//PWM 28kHz" description="Pin 5 Mode" name="pin5Mode" type="integer" value="0"/>
+			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 1kHz//PWM 10 kHz//PWM 28kHz" description="Pin 6 Mode" name="pin6Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 7 Mode" name="pin7Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 8 Mode" name="pin8Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 9 Mode" name="pin9Mode" type="integer" value="0"/>
@@ -4772,6 +4901,52 @@
         </properties>
     </componentType>
 
+
+ <componentType canonical_name="eu.asterics.component.processor.peakdetector.PeakDetectorInstance" id="asterics.PeakDetector">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Peak detection for incoming signal</description>
+        <ports>
+			<inputPort id="in">
+				<description>input signal</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="top">
+				<description>detected top value</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="bottom">
+				<description>detected bottom value</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="time">
+				<description>time between peaks</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="topDetected">
+				<description>a top value has been detected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="bottomDetected">
+				<description>a bottom value has been detected</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property combobox="detect tops//detect bottoms//detect both" description="mode of operation" name="mode" type="integer" value="0"/>
+			<property description="number of peaks for averaging (0=disable)" name="comparePeaks" type="integer" value="0"/>
+			<property description="minimum percentage of average peaks for valid tops (0=disable)" name="validTopPercentage" type="integer" value="0"/>
+			<property description="maximum percentage of average peaks for valid bottoms (0=disable)" name="validBottomPercentage" type="integer" value="0"/>
+			<property combobox="milliseconds//BPM" description="mode for time output (milliseconds or beats per minute)" name="timeMode" type="integer" value="0"/>
+
+        </properties>
+
+    </componentType>
 
  <componentType canonical_name="com.starlab.component.processor.protocolssveptrain.ProtocolSSVEPTrainInstance" id="asterics.ProtocolSSVEPTrain">
         <type subtype="DSP and Feature Detection">processor</type>
@@ -7607,6 +7782,50 @@
 			<property description="Address of Osc Stream 12" name="AddressCH12" type="string" value="/Channel12"/>
 			<property description="Argument Number of OSC Stream 12" name="ArgNrCH12" type="integer" value="1"/>
 			
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.sensor.p2_parser.P2_parserInstance" id="asterics.p2_parser">
+        <type subtype="Bioelectric Measurement">sensor</type>
+        <singleton>false</singleton>
+        <description>This plugin receives a P"-packet stream compatible to the OpenEEG ModularEEG / SMT EEG firmware. 6 Channels of bioelectric data can be processed.</description>
+        <ports>
+
+			<outputPort id="Channel1">
+				<description>output port for channel1 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel2">
+				<description>output port for channel2 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel3">
+				<description>output port for channel3 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel4">
+				<description>output port for channel4 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel5">
+				<description>output port for channel5 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel6">
+				<description>output port for channel6 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property description="The COM Port which will be opened to receive a P2-packet stream" name="ComPort" type="string" value="COM4"/>
+			<property description="The baud rate for the P2 packet stream" name="BaudRate" type="integer" value="57600"/>
+
         </properties>
 
     </componentType>

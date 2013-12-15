@@ -36,7 +36,8 @@ rd /s/q profile\org.eclipse.osgi
 
 ECHO Starting AsTeRICS Runtime Environment with Debug output ...
 ECHO error_level:FINE>.logger
-%JAVA_BIN% -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 -Djava.util.logging.config.file=logging.properties -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
+java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 -Dorg.osgi.framework.bootdelegation=* -DAnsi=true -Djava.util.logging.config.file=logging.properties  -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
+
 GOTO Quit
 
 :QuitError

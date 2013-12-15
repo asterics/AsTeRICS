@@ -30,7 +30,7 @@ REM sleeper 5
 
 
 REM use the next line instead for starting with the shell window
-%JAVA_BIN% -Djava.util.logging.config.file=logging.properties -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
+%JAVA_BIN% -Djava.util.logging.config.file=logging.properties -Dorg.osgi.framework.bootdelegation=* -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
 
 GOTO Quit
 
