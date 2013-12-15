@@ -332,6 +332,10 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 				 *  example:
 				 *  11111112_1234_18 would send the toggle command with housecode=11111112 and address=1234
 				 */
+				
+				if (!((action.trim()).startsWith("@FS20:")))  // if action string not addressed to FS20 plugin: cancel  
+					return;
+				
 				String [] values = action.split("_");
 				if (values.length != 3) {
 					AstericsErrorHandling.instance.reportError(new FS20SenderInstance(), "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
