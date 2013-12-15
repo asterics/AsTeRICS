@@ -4870,6 +4870,52 @@
     </componentType>
 
 
+ <componentType canonical_name="eu.asterics.component.processor.peakdetector.PeakDetectorInstance" id="asterics.PeakDetector">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Peak detection for incoming signal</description>
+        <ports>
+			<inputPort id="in">
+				<description>input signal</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="top">
+				<description>detected top value</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="bottom">
+				<description>detected bottom value</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="time">
+				<description>time between peaks</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="topDetected">
+				<description>a top value has been detected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="bottomDetected">
+				<description>a bottom value has been detected</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property combobox="detect tops//detect bottoms//detect both" description="mode of operation" name="mode" type="integer" value="0"/>
+			<property description="number of peaks for averaging (0=disable)" name="comparePeaks" type="integer" value="0"/>
+			<property description="minimum percentage of average peaks for valid tops (0=disable)" name="validTopPercentage" type="integer" value="0"/>
+			<property description="maximum percentage of average peaks for valid bottoms (0=disable)" name="validBottomPercentage" type="integer" value="0"/>
+			<property combobox="milliseconds//BPM" description="mode for time output (milliseconds or beats per minute)" name="timeMode" type="integer" value="0"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="com.starlab.component.processor.protocolssveptrain.ProtocolSSVEPTrainInstance" id="asterics.ProtocolSSVEPTrain">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>true</singleton>
