@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-actuators.mediaplayer
+Bundle-SymbolicName: eu.asterics.component.actuator.mediaplayer
+Bundle-Version: 0.1.0
+DynamicImport-Package: *
+Bundle-ClassPath: . ,
+ lib/vlcj-2.4.1.jar,
+ lib/jna-3.5.2.jar,
+ lib/platform-3.5.2.jar,
+ lib/vlcj-2.4.1-tests.jar

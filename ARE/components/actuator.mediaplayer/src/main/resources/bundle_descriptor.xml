@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.MediaPlayer"
+                   canonical_name="eu.asterics.component.actuator.mediaplayer.MediaPlayerInstance">
+        <type subtype="File System">actuator</type>
+        <singleton>false</singleton>
+        <description>Media player for supported file formats</description>
+        <ports>
+			<inputPort id="filename">
+				<description>file name of media file</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="position">
+				<description>position in media file (0-100%)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="rate">
+				<description>playback speed (0-500%)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+        </ports>
+		<events>
+			<eventListenerPort id="play">
+				<description>plays the mediafile</description>
+			</eventListenerPort>
+			<eventListenerPort id="pause">
+				<description>pauses the mediafile</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stops the mediafile</description>
+			</eventListenerPort>
+			<eventListenerPort id="reset">
+				<description>resets the mediafile to initial position</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="filename"
+				type="string"
+                value=""
+                getStringList="true"
+				description="path and filename of a valid media file"/>
+			<property name="autoplay"
+				type="boolean"
+				value="true"
+				description="automatically play the media file ar startup or as filename is received"/>
+
+        </properties>
+		<gui>
+			<width>3000</width>
+			<height>2000</height>
+		</gui>
+
+    </componentType>
+</componentTypes>
