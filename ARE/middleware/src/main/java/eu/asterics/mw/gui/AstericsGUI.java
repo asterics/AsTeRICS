@@ -594,7 +594,9 @@ public class AstericsGUI implements IAREEventListener
 					new Dimension(screenSize.width+10, 
 							screenSize.height+10));
 			mainFrame.setLocation(new Point(-2,-2));  
-			mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); 				
+			mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+			size = new Dimension((int)(screenSize.width +10),(int)(screenSize.height +10)); 
+			position = new Point((int)(-2),(int)(-2)); 
 		}
 		else
 		{	
