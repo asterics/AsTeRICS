@@ -208,7 +208,7 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
         {
             String text = ConversionUtils.stringFromBytes(data);
     		if (text.startsWith("@IRTRANS:")) {  			
-	    		sendString(text.substring(9)); 
+	    		sendString((text.substring(9).trim())); 
     		}
             
         }
