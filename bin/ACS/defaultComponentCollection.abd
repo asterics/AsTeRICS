@@ -881,30 +881,7 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
-			<outputPort id="rcv_1_value">
-				<description>Received KNX value 1</description>
-				<dataType>string</dataType>
-			</outputPort>
-			<outputPort id="rcv_1_unit">
-				<description>Received KNX unit 1</description>
-				<dataType>string</dataType>
-			</outputPort>
-			<outputPort id="rcv_2_value">
-				<description>Received KNX value 2</description>
-				<dataType>string</dataType>
-			</outputPort>
-			<outputPort id="rcv_2_unit">
-				<description>Received KNX unit 2</description>
-				<dataType>string</dataType>
-			</outputPort>
-			<outputPort id="rcv_3_value">
-				<description>Received KNX value 3</description>
-				<dataType>string</dataType>
-			</outputPort>
-			<outputPort id="rcv_3_unit">
-				<description>Received KNX unit 3</description>
-				<dataType>string</dataType>
-			</outputPort>
+
 
         </ports>
 		<events>
@@ -970,15 +947,6 @@
             <property description="Destination group address 6" name="groupAddress6" type="string" value="1/1/1"/>
             <property description="DPT 6 (string|boolean|int|float)" name="dataType6" type="string" value="boolean"/>
             <property description="Value 6" name="dataValue6" type="string" value="1"/>
-            <property description="Receiving group address 1" name="rcv_groupAddress1" type="string" value="1/1/1"/>
-            <property description="DPT 1 (string|boolean|int|float)" name="rcv_dataType1" type="string" value="boolean"/>
-            <property description="Value 1" name="rcv_dataValue1" type="string" value="1"/>
-            <property description="Receiving group address 2" name="rcv_groupAddress2" type="string" value="1/1/1"/>
-            <property description="DPT 2 (string|boolean|int|float)" name="rcv_dataType2" type="string" value="boolean"/>
-            <property description="Value 2" name="rcv_dataValue2" type="string" value="1"/>
-            <property description="Receiving group address 3" name="rcv_groupAddress3" type="string" value="1/1/1"/>
-            <property description="DPT 3 (string|boolean|int|float)" name="rcv_dataType3" type="string" value="boolean"/>
-            <property description="Value 3" name="rcv_dataValue3" type="string" value="1"/>
             <property description="Destination group address Slider" name="groupAddressSlider1" type="string" value="1/1/1"/>
             <property description="Destination group address Slider" name="groupAddressSlider2" type="string" value="1/1/1"/>	                  
             <property description="Destination group address Slider" name="groupAddressSlider3" type="string" value="1/1/1"/>
@@ -2500,17 +2468,17 @@
         <description>Arduino Microcontroller CIM</description>
         <ports>
 			<inputPort id="pwm3">
-				<description>PWM value for Pin3 Analog Output (0-255)</description>
+				<description>PWM value for Pin3 Analog Output</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="pwm5">
-				<description>PWM value for Pin5 Analog Output (0-255)</description>
+				<description>PWM value for Pin5 Analog Output</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="pwm6">
-				<description>PWM value for Pin6 Analog Output (0-255)</description>
+				<description>PWM value for Pin6 Analog Output</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
@@ -2692,10 +2660,10 @@
         <properties>
 			<property description="automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 2 Mode" name="pin2Mode" type="integer" value="0"/>
-			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 1kHz//PWM 10 kHz//PWM 28kHz" description="Pin 3 Mode" name="pin3Mode" type="integer" value="0"/>
+			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 3 Mode" name="pin3Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 4 Mode" name="pin4Mode" type="integer" value="0"/>
-			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 1kHz//PWM 10 kHz//PWM 28kHz" description="Pin 5 Mode" name="pin5Mode" type="integer" value="0"/>
-			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 1kHz//PWM 10 kHz//PWM 28kHz" description="Pin 6 Mode" name="pin6Mode" type="integer" value="0"/>
+			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 5 Mode" name="pin5Mode" type="integer" value="0"/>
+			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 6 Mode" name="pin6Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 7 Mode" name="pin7Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 8 Mode" name="pin8Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 9 Mode" name="pin9Mode" type="integer" value="0"/>
@@ -4901,52 +4869,6 @@
         </properties>
     </componentType>
 
-
- <componentType canonical_name="eu.asterics.component.processor.peakdetector.PeakDetectorInstance" id="asterics.PeakDetector">
-        <type subtype="Basic Math">processor</type>
-        <singleton>false</singleton>
-        <description>Peak detection for incoming signal</description>
-        <ports>
-			<inputPort id="in">
-				<description>input signal</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-
-			<outputPort id="top">
-				<description>detected top value</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="bottom">
-				<description>detected bottom value</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="time">
-				<description>time between peaks</description>
-				<dataType>double</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-
-			<eventTriggererPort id="topDetected">
-				<description>a top value has been detected</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="bottomDetected">
-				<description>a bottom value has been detected</description>
-			</eventTriggererPort>
-
-		</events>			
-        <properties>
-			<property combobox="detect tops//detect bottoms//detect both" description="mode of operation" name="mode" type="integer" value="0"/>
-			<property description="number of peaks for averaging (0=disable)" name="comparePeaks" type="integer" value="0"/>
-			<property description="minimum percentage of average peaks for valid tops (0=disable)" name="validTopPercentage" type="integer" value="0"/>
-			<property description="maximum percentage of average peaks for valid bottoms (0=disable)" name="validBottomPercentage" type="integer" value="0"/>
-			<property combobox="milliseconds//BPM" description="mode for time output (milliseconds or beats per minute)" name="timeMode" type="integer" value="0"/>
-
-        </properties>
-
-    </componentType>
 
  <componentType canonical_name="com.starlab.component.processor.protocolssveptrain.ProtocolSSVEPTrainInstance" id="asterics.ProtocolSSVEPTrain">
         <type subtype="DSP and Feature Detection">processor</type>

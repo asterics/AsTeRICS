@@ -316,7 +316,7 @@ public class AdjustmentCurveInstance extends AbstractRuntimeComponentInstance
         }
         if("displayGui".equalsIgnoreCase(propertyName))
         {
-        	final Object oldValue = propDisplayGui;
+        	final boolean oldValue = propDisplayGui;
             if("true".equalsIgnoreCase((String)newValue))
             {
             	propDisplayGui = true;
