@@ -28,6 +28,7 @@ package eu.asterics.mw.model.runtime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
@@ -101,7 +102,16 @@ abstract public class AbstractRuntimeComponentInstance implements IRuntimeCompon
     	return new ArrayList<String>();
     }
     
-    public void syncedValuesReceived (HashMap <String, byte[]> dataRow){
-    	;
-    }
+    public void syncedValuesReceived (HashMap <String, byte[]> dataRow)
+    {
+    	
+		for (Map.Entry<String, byte[]> e: dataRow.entrySet())
+		{
+			IRuntimeInputPort p = getInputPort(e.getKey());
+			if (p != null)
+			{
+				p.receiveData(e.getValue());
+			}
+		}
+     }
 }
