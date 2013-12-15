@@ -51,7 +51,7 @@ public class PCSDevice {
 		buf[6] = (byte) command; // Befehl
 		buf[7] = 0x00; // Erweiterung
 		try {
-			dev.write(buf);
+			if (dev != null) dev.write(buf);
 		} catch (IOException ie) {
 			ie.printStackTrace();
 		}
