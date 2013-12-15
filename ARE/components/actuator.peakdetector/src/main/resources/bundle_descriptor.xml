@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.PeakDetector"
+                   canonical_name="eu.asterics.component.processor.peakdetector.PeakDetectorInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>Peak detection for incoming signal</description>
+        <ports>
+			<inputPort id="in">
+				<description>input signal</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="top">
+				<description>detected top value</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="bottom">
+				<description>detected bottom value</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="time">
+				<description>time between peaks</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="topDetected">
+				<description>a top value has been detected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="bottomDetected">
+				<description>a bottom value has been detected</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="mode"
+				type="integer"
+				value="0"
+				combobox="detect tops//detect bottoms//detect both"
+				description="mode of operation"/>
+			<property name="comparePeaks"
+				type="integer"
+				value="0"
+				description="number of peaks for averaging (0=disable)"/>
+			<property name="validTopPercentage"
+				type="integer"
+				value="0"
+				description="minimum percentage of average peaks for valid tops (0=disable)"/>
+			<property name="validBottomPercentage"
+				type="integer"
+				value="0"
+				description="maximum percentage of average peaks for valid bottoms (0=disable)"/>
+			<property name="timeMode"
+				type="integer"
+				value="0"
+				combobox="milliseconds//BPM"
+				description="mode for time output (milliseconds or beats per minute)"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
