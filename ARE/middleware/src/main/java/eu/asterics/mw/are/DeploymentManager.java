@@ -640,6 +640,24 @@ public class DeploymentManager
 				{			
 					IInputPort port = itr.next();
 					IRuntimeInputPort runtimePort = componentInstance.getInputPort(port.getPortType());
+					
+					boolean isConnected=false;
+					Set<IChannel> channels = runtimeModel.getChannels();
+					Iterator<IChannel> itc = channels.iterator();
+					while (itc.hasNext())
+					{
+						IChannel channel =  itc.next();
+						
+						if ((channel.getTargetInputPortID().equals(port.getPortType()))  &&
+								(channel.getTargetComponentInstanceID().equals(s)))
+						{
+							isConnected=true;
+						}
+					}
+					
+					if (!isConnected)
+						logger.severe("The synchronized port "+ s + " (" +port.getPortType() + ") is not connected to a data source - this blocks the component operation !");
+						
 					runtimePort.startBuffering((AbstractRuntimeComponentInstance) componentInstance, port.getPortType());
 					
 					IRuntimeInputPort wrapper = ci.getWrapper(port.getPortType());
