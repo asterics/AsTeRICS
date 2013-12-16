@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>Arduino</Title>
+</HEAD>
+<BODY>
+<H1>Arduino</H1>
+<H3>Component Type: Processors (Subcategory: Microcontroller Interface)</H3>
+<p>The Arduino component provides an interface to the Arduino Uno microcontroller and makes available analog inputs and digital inputs and outputs.</p>
+
+<div class="image"><img src="img/Arduino.jpg" alt="Screenshot: Arduino plugin" title="Screenshot: Arduino plugin" /><br>
+Arduino plugin</div>
+
+<H2>Requirements</H2>
+An Arduino UNO microcontroller board has to be connected to an USB port. The Arduino CIM firmware must have been downloaded into the Arduino to communicate via the CIM protocol with the Arduino component.  
+<div class="image"><img src="img/Arduino_picture.jpg" alt="Arduino UNO board" title="Arduino UNO board" /><br>
+Arduino UNO board</div>
+
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>pwm3 [integer]:</STRONG> PWM channel 3, output value (range: 0-255). The output signal depends on the mode (PWM or servo PWM)</li>
+<li><STRONG>pwm5 [integer]:</STRONG> PWM channel 5, output value (range: 0-255). The output signal depends on the mode (PWM or servo PWM)</li>
+<li><STRONG>pwm6 [integer]:</STRONG> PWM channel 6, output value (range: 0-255). The output signal depends on the mode (PWM or servo PWM)</li>
+</ul>
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>A0 - A5 [integer]:</STRONG> The readings of the 6 analog channels of the Arduino (0-1023)</li>
+</ul>
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>setPin2 - setPin13:</STRONG> An incoming event will set the corresponding digital output pin on the Arduino to high level (5V)</li>
+<li><STRONG>clearPin2 - clearPin13:</STRONG> An incoming event will set the corresponding digital output pin on the Arduino to low level (0V)</li>
+</ul>
+<H2>Event Trigger Description</H2>
+<ul>
+<li><STRONG>pin2ChangedToLow - pin13ChangedToLow:</STRONG> This event is triggered if the corresponding input pin on the Arduino switches from high to low level (connected to 0V)</li>
+<li><STRONG>pin2ChangedToHigh - pin13ChangedToHigh:</STRONG> This event is triggered if the corresponding input pin on the Arduino switches from low to high level (connected to 5V)</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>periodicADCUpdate [integer]:</STRONG> This property defines how often the ADC values are measured and put out on the ports A0-A5 (0=disable ADC)</li>
+<li><STRONG>pin2Mode - pin13Mode [integer]:</STRONG> This property defines the mode of the Arduino Pins. The value can be selected via a ComboBox. Possible selections are:
+<ul>
+<li>not used</li>
+<li>Input without pullup resistor</li>
+<li>Input with pullup resistor</li>
+<li>output, default low</li>
+<li>output, default high</li>
+<li>PWM servo (PWM for servo driving, 1-2ms pulse), available only on pin 3,5 and 6</li>
+<li>500Hz PWM (normal 0-100% PWM), available only on pin 3,5 and 6</li>
+</ul>
+</li>
+</ul>
+</BODY>
+</HTML>

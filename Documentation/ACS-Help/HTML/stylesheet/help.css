@@ -1,0 +1,53 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	width: 45em;
+}
+
+img {
+	width: 90%;
+}
+
+.image {
+	font-size: 0.9em;
+	width: 90%;
+	text-align: center;
+	font-style: italic;
+}
+
+.medium_image {
+	font-size: 0.9em;
+	width: 70%;
+	text-align: center;
+	font-style: italic;
+}
+
+.small_image {
+	font-size: 0.9em;
+	width: 50%;
+	text-align: center;
+	font-style: italic;
+}
+
+.bullet_image {
+	padding: 0.5em;
+	font-size: 0.9em;
+	width: 90%;
+	text-align: center;
+	font-style: italic;
+}
+
+.bullet_image_medium {
+	padding: 0.5em;
+	font-size: 0.9em;
+	width: 70%;
+	text-align: center;
+	font-style: italic;
+}
+
+.bullet_image_small {
+	padding: 0.5em;
+	font-size: 0.9em;
+	width: 50%;
+	text-align: center;
+	font-style: italic;
+}

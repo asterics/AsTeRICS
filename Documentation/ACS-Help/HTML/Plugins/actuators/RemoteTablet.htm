@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>RemoteTablet</Title>
+</HEAD>
+<BODY>
+<H1>Remote Tablet</H1> 
+<H3>Component Type: Actuator (Subcategory: Input Device Emulation)</H3>
+<p>The RemoteTablet component interfaces the AsTeRICS Personal Platform to a second computer via the HID actuator CIM (USB dongle, plugged into the target computer). 
+This plugins performs similar like the RemoteMouse plugin, with the difference that the coorindates are set absolutely via the table devie, not relatively like a mouse device works. The HID actuator emulates a standard USB Tablet on the target computer (no special driver software is needed). The Tablet x-position, y-position, press/release actions of Tablet buttons and wheel movements can be controlled via desired input values and event triggers. Note that multiple instances of the Remote components (RemoteJoystick, RemoteKeyboard, RemoteMouse and RemoteTablet) can be used concurrently with one HID actuator USB dongle, e.g. to provide different key actions for up to four different input devices on the target computer.</p>
+<div class="image"><img src="img/RemoteTablet.jpg" alt="Screenshot: RemoteTablet plugin" title="Screenshot: RemoteTablet plugin" /><br>
+RemoteTablet plugin</div>
+<H2>Requirements</H2>
+The HID Actuator CIM (CIM ID 0x0101) has to be plugged into a free USB port of the target computer and the cable has to be connected to the AsTeRICS platform.
+<div class="image"><img src="img/HID_CIM.jpg" alt="HID Actuator CIM" title="HID Actuator CIM" /><br>
+the HID Actuator plugs into the target computer and connects via Bluetooth wirelessly to the ARE</div>
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>mouseX [integer]:</STRONG> The desired X-Position of the cursor. <b>This input port supports synchronization</b></li>
+<li><STRONG>mouseY [integer]:</STRONG> The desired Y-Position of the cursor. <b>This input port supports synchronization</b></li>
+<li><STRONG>action [string]:</STRONG> Input port for a command string. This command string allows to modify the action of the next left Tablet click ¡V it can be set to trigger other types of Tablet clicks. Following command strings are accepted:
+<ul>
+<li><EM>"@Mouse: nextclick, right":</EM> next left click event will create a right Mouse button click.</li>
+<li><EM>"@Mouse: nextclick, double":</EM> next left click event will create a double click.</li>
+<li><EM>"@Mouse: nextclick, middle":</EM> next left click event will create a middle button click.</li>
+<li><EM>"@Mouse: nextclick, drag":</EM> next left click event will hold the left Mouse button.</li>
+<li><EM>"@Mouse: nextclick, release":</EM> next left click event will release the left Mouse button.</li>
+<li><EM>"@Mouse: action, enable":</EM> enables all Mouse actions.</li>
+<li><EM>"@Mouse: action, disable":</EM> disables all Mouse actions.</li>
+<li><EM>"@Mouse: action, toggle":</EM> enables / disables all Mouse actions.</li>
+</ul>
+</li>
+</ul>
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>leftClick:</STRONG> An incoming event at this port creates a Mouse button click. A left click will be generated, unless a valid "nextclick …" command has been received at the cmd input which changed the type of the click (see above).</li>
+<li><STRONG>middleClick:</STRONG> A click with the middle Mouse button is generated.</li>
+<li><STRONG>rightClick:</STRONG> A click with the right Mouse button is generated.</li>
+<li><STRONG>doubleClick:</STRONG> A double click with the left Mouse button is generated.</li>
+<li><STRONG>dragPress:</STRONG> The left Mouse button is pressed (but not released again).</li>
+<li><STRONG>dragRelease:</STRONG> The left Mouse button is released.</li>
+<li><STRONG>wheelUp:</STRONG> The Mouse wheel is turned one position from the user.</li>
+<li><STRONG>wheelDown:</STRONG> The Mouse wheel is turned one position to the user.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>absolutePosition [boolean]:</STRONG> Currently not supported. All Mouse position input values are interpreted as relative changes of the position (X- and Y-movement).</li>
+<li><STRONG>uniqueId:</STRONG> unique number of the CIM - if more than one CIMs of the same type are used. The module flashes a LED for identification when the ID is selected.  <b>Supports value suggestions from ARE (dynamic property)</b></li>
+</ul>
+</BODY>
+</HTML>

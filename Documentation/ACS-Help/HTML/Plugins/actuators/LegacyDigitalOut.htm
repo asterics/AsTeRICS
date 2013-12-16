@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>Legacy Digital Out</Title>
+</HEAD>
+<BODY>
+<H1>Legacy Digital Out</H1>
+<H3>Component Type: Actuator (Subcategory: Generic Control Output)</H3>
+<p>The DigitalOut plugin operates the output ports of the legacy GPIO CIM (CIM Id: 0x0201). The output ports 1-4 are open-collector outputs, where a pull-up resistor can be activated or deactivated using the plugin's properties. The output ports 5-8 are relais outputs where loads can be connected via a galvanic isolation barrier. The plugin provides event listener ports which serve the activation or deactivation of an output channel, and a command port which accepts string parameters to set, clear and toggle particular output channels.</p>
+<div class="image"><img src="img/LegacyDigitalOut.jpg" alt="Screenshot: Legacy DigitalOut plugin" title="Screenshot: LegacyDigitalOut plugin" /><br>
+Legacy DigitalOut plugin</div>
+
+<H2>Requirements</H2>
+This component requires the GPIO CIM (CIM Id: 0x0201) to be connected to an USB port.
+<div class="image"><img src="img/DigitalOut_CIM.jpg" alt="GPIO CIM" title="GPIO CIM" /><br>
+Legacy GPIO CIM</div>
+
+<H2>Input port Description</H2>
+<ul>
+<li><STRONG>action [string]:</STRONG> The plugin reacts to incoming action strings starting with "@GPIO:" and a command. Valid commands are "set", "clear", "toggle" and "press". The command has to be followed by a comma and the port number, for example: "@GPIO:set,1" or "@GPIO:toggle,2". The "press"-command toggles the given output port two times with a delay of 500 milliseconds. The following examples illustrate the available action strings:
+<ul>
+<li><EM>"@DIGITALOUT:set,1":</EM> Pin 1 of the GPIO CIM will be set</li>
+<li><EM>"@DIGITALOUT:clear,2":</EM>Pin 2 of the GPIO CIM will be cleared</li>
+<li><EM>"@DIGITALOUT:toggle,1":</EM> Pin 1 of the GPIO CIM will be changed</li>
+<li><EM>"@DIGITALOUT:press,4":</EM> Pin 4 of the GPIO CIM will be cleared and after 500ms it will be set again</li>
+</ul>
+ </li>
+</ul>
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>setOutput1 to setOutput8:</STRONG> an incoming event on these ports will cause the corresponding output port on the CIM to go to the high level.</li>
+<li><STRONG>clearOutput1 to clearOutput8:</STRONG> an incoming event on these ports will cause the corresponding output port on the CIM to go to the low level.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>pullupStateOut1 to pullupStateOut4 [boolean]:</STRONG> These properties specify if the internal pullup resistor shall be activated on the respective open collector output channels.</li>
+</ul>
+</BODY>
+</HTML>
