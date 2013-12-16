@@ -70,6 +70,10 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 	private static final int PINMODE_INPUT_WITH_PULLUP = 2;
 	private static final int PINMODE_OUTPUT_DEFAULT_LOW = 3;
 	private static final int PINMODE_OUTPUT_DEFAULT_HIGH = 4;
+	private static final int PINMODE_PWM_SERVO = 5;
+	private static final int PINMODE_PWM_500Hz = 6;
+	//private static final int PINMODE_PWM_10kHz = 7;
+	//private static final int PINMODE_PWM_28kHz = 8;
 
 	public final int NUMBER_OF_ADCPORTS = 6;
 	public final int NUMBER_OF_PINS = 12;  // pins 2 to 13 available
@@ -110,6 +114,10 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 	
 	private int currentPinValue = 0;
 	private boolean firstPinReport = true;
+	
+	private int pin3Mode = 0; //mode of pin 3 (0 -> disabled, 1 -> servo, 2-> 1khz PWM, 3-> 10khz PWM, 4-> 28khz PWM)
+	private int pin5Mode = 0; //mode of pin 5 (0 -> disabled, 1 -> servo, 2-> 1khz PWM, 3-> 10khz PWM, 4-> 28khz PWM)
+	private int pin6Mode = 0; //mode of pin 6 (0 -> disabled, 1 -> servo, 2-> 1khz PWM, 3-> 10khz PWM, 4-> 28khz PWM)
 
 	
    /**
@@ -269,31 +277,73 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 				switch (propPinMode[i])
 				{
 					case PINMODE_NOT_USED:
+						 if((i+STARTPIN) == 3) pin3Mode=0;
+						 if((i+STARTPIN) == 5) pin5Mode=0;
+						 if((i+STARTPIN) == 6) pin6Mode=0;
 			  			 pinState &= ~(1<<(i+STARTPIN));
 			  			 pinDirection &= ~(1<<(i+STARTPIN));
 			  			 pinMask &= ~(1<<(i+STARTPIN));
 			  			break;
 					case PINMODE_INPUT_WITHOUT_PULLUP:
+						 if((i+STARTPIN) == 3) pin3Mode=0;
+						 if((i+STARTPIN) == 5) pin5Mode=0;
+						 if((i+STARTPIN) == 6) pin6Mode=0;
 			  			 pinState &= ~(1<<(i+STARTPIN));
 			  			 pinDirection &= ~(1<<(i+STARTPIN));
 			  			 pinMask |= (1<<(i+STARTPIN));
 						break;
 					case PINMODE_INPUT_WITH_PULLUP:
+						 if((i+STARTPIN) == 3) pin3Mode=0;
+						 if((i+STARTPIN) == 5) pin5Mode=0;
+						 if((i+STARTPIN) == 6) pin6Mode=0;
 			  			 pinState |= (1<<(i+STARTPIN));
 			  			 pinDirection &= ~(1<<(i+STARTPIN));
 			  			 pinMask |= (1<<(i+STARTPIN));
 						break;
 					case PINMODE_OUTPUT_DEFAULT_LOW:
+						 if((i+STARTPIN) == 3) pin3Mode=0;
+						 if((i+STARTPIN) == 5) pin5Mode=0;
+						 if((i+STARTPIN) == 6) pin6Mode=0;
 			  			 pinState &= ~(1<<(i+STARTPIN));
 			  			 pinDirection |= (1<<(i+STARTPIN));
 			  			 pinMask &= ~(1<<(i+STARTPIN));
 						break;
 					case PINMODE_OUTPUT_DEFAULT_HIGH:
+						 if((i+STARTPIN) == 3) pin3Mode=0;
+						 if((i+STARTPIN) == 5) pin5Mode=0;
+						 if((i+STARTPIN) == 6) pin6Mode=0;
 			  			 pinState |= (1<<(i+STARTPIN));
 			  			 pinDirection |= (1<<(i+STARTPIN));
 			  			 pinMask &= ~(1<<(i+STARTPIN));
 						break;
+					case PINMODE_PWM_SERVO:
+						if((i+STARTPIN) == 3) pin3Mode=1;
+						if((i+STARTPIN) == 5) pin5Mode=1;
+						if((i+STARTPIN) == 6) pin6Mode=1;
+						pinMask &= ~(1<<(i+STARTPIN));
+						break;
+					case PINMODE_PWM_500Hz:
+						if((i+STARTPIN) == 3) pin3Mode=2;
+						if((i+STARTPIN) == 5) pin5Mode=2;
+						if((i+STARTPIN) == 6) pin6Mode=2;
+						pinMask &= ~(1<<(i+STARTPIN));
+						break;
+					/*case PINMODE_PWM_10kHz:
+						if((i+STARTPIN) == 3) pin3Mode=3;
+						if((i+STARTPIN) == 5) pin5Mode=3;
+						if((i+STARTPIN) == 6) pin6Mode=3;
+						pinMask &= ~(1<<(i+STARTPIN));
+						break;
+					case PINMODE_PWM_28kHz:
+						if((i+STARTPIN) == 3) pin3Mode=4;
+						if((i+STARTPIN) == 5) pin5Mode=4;
+						if((i+STARTPIN) == 6) pin6Mode=4;
+						pinMask &= ~(1<<(i+STARTPIN));
+						break;*/
 				}
+				sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,3+(pin3Mode<<4));
+				sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,5+(pin5Mode<<4));
+				sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,6+(pin6Mode<<4));
 	 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PINSTATE,pinState);
 	 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PINDIRECTION,pinDirection);
 	 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PINMASK,pinMask);
@@ -310,8 +360,9 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 	{
 		public void receiveData(byte[] data)
 		{
-			int value = ConversionUtils.intFromBytes(data); 
- 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,3+(value<<8));
+			int value = ConversionUtils.intFromBytes(data);
+			AstericsErrorHandling.instance.reportDebugInfo(null, String.valueOf(3+(value<<8)+(pin3Mode<<4)) + "  Value 3");
+ 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,3+(value<<8)+(pin3Mode<<4));
 		}
 
 	};
@@ -320,7 +371,8 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 		public void receiveData(byte[] data)
 		{
 			int value = ConversionUtils.intFromBytes(data); 
- 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,5+(value<<8));
+			AstericsErrorHandling.instance.reportDebugInfo(null, String.valueOf(5+(value<<8)+(pin5Mode<<4)) + "  Value 5");
+ 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,5+(value<<8)+(pin5Mode<<4));//hier PWM
 		}
 
 	};
@@ -329,7 +381,8 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 		public void receiveData(byte[] data)
 		{
 			int value = ConversionUtils.intFromBytes(data); 
- 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,6+(value<<8));
+			AstericsErrorHandling.instance.reportDebugInfo(null, String.valueOf(6+(value<<8)+(pin6Mode<<4)) + "  Value 6");
+ 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,6+(value<<8)+(pin6Mode<<4));//hier PWM
 		}
 	};
 
@@ -487,6 +540,9 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
  			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PINDIRECTION,pinDirection);
  			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PINMASK,pinMask);
  			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_ADCPERIOD,propPeriodicADCUpdate);
+ 			if(pin3Mode != 0) sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,3+(pin3Mode<<4));
+ 			if(pin5Mode != 0) sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,5+(pin5Mode<<4));
+ 			if(pin6Mode != 0) sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,6+(pin6Mode<<4));
  			firstPinReport = true;
 			CIMPortManager.getInstance().sendPacket(port, null, ARDUINO_CIM_FEATURE_GET_PINVALUE, CIMProtocolPacket.COMMAND_REQUEST_READ_FEATURE, false);
 			CIMPortManager.getInstance().sendPacket(port, null, (short) 0, CIMProtocolPacket.COMMAND_REPLY_START_CIM, false);

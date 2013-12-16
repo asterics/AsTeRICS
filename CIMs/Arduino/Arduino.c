@@ -25,6 +25,8 @@ extern struct CIM_frame_t CIM_frame;
 extern unsigned char PIND_Mask;
 extern unsigned char PINB_Mask;
 
+volatile uint8_t check_PINChange_now=0;   // flag for pinstate update
+
 uint8_t old_PIND,old_PINB;
 uint8_t autoreply_num=0x80;   // sequential number for automatic replies, 0x80-0xff
 
@@ -36,6 +38,9 @@ void setupHardware(void)
 	UART_Init(115200);
 	ADC_Init();
 	Timer_Init();
+	
+	//pin change interrupt activation
+	PCICR = (1<<PCIE0)|(1<<PCIE2);
 }
 
 
@@ -44,8 +49,7 @@ int main(void  )
 {
  	setupHardware();
 	init_CIM_frame();
-	old_PIND=PIND;
-	old_PINB=PINB;
+
     sei();           // enable global interrupts
 
 	while (1)
@@ -67,30 +71,33 @@ int main(void  )
 		   //DDRB |= (1<<5); PORTB ^= (1<<5);  // indicate frame send with led
 	    }
 
-		if (check_PINChange_now)  // this is updated in the timer ISR !!
+		if (check_PINChange_now)  // this is updated in the pinchange ISR
 		{ 
 		    check_PINChange_now=0;
 
-			// has a selected pin changed ?
-		    if ( ((old_PIND ^ PIND) & PIND_Mask) || ((old_PINB ^ PINB) & PINB_Mask))
-			{
-			    old_PIND=PIND;
-			    old_PINB=PINB;				
+		    autoreply_num++; 
+		    if (autoreply_num==0) autoreply_num=0x80;
 
-			    autoreply_num++; 
-			    if (autoreply_num==0) autoreply_num=0x80;
-
-			    CIM_frame.cim_feature=ARDUINO_CIM_FEATURE_GET_PINVALUES;
-			    CIM_frame.serial_number=autoreply_num;
-				CIM_frame.reply_code=CMD_EVENT_REPLY;
-			    generate_PINFrame();	     
-			    reply_DataFrame();
-			}
+		    CIM_frame.cim_feature=ARDUINO_CIM_FEATURE_GET_PINVALUES;
+		    CIM_frame.serial_number=autoreply_num;
+			CIM_frame.reply_code=CMD_EVENT_REPLY;
+		    generate_PINFrame();	     
+		    reply_DataFrame();
 		}
 
 	}
 }
 
+//Pin change ISR, setting the pin change bit (the CIM frame is transmitted from main)
+ISR(PCINT0_vect)
+{
+	check_PINChange_now=1;
+}
 
+//Pin change ISR, setting the pin change bit (the CIM frame is transmitted from main)
+ISR(PCINT2_vect)
+{
+	check_PINChange_now=1;
+}
 
 
