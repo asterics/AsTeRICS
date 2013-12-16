@@ -1,16 +1,18 @@
 <project name="asterics.runtime" default="buildComponents" basedir=".">
 
   <property name="debug" value="true"/>    
-	<target name="buildARE">
-          <subant target="jar">
-              <property name="debug" value="${debug}"/>
-              <fileset dir="." includes="middleware/build.xml"/>
-          </subant>
-          <exec executable="../bin/ARE/profile/rm.exe">
-            <arg value="-r"/>
-            <arg value="../bin/ARE/profile/org.eclipse.osgi"/>
-          </exec>
-    </target>
+
+
+	<target name="cleanProfile">
+	    <delete dir =  "../bin/ARE/profile/org.eclipse.osgi"/>
+	</target>
+
+	<target name="buildARE" depends="cleanProfile">
+      <subant target="jar">
+          <property name="debug" value="${debug}"/>
+          <fileset dir="." includes="middleware/build.xml"/>
+      </subant>
+	</target>
 
 	<target name="buildServices" depends="buildARE">
           <subant target="buildAllServices">
