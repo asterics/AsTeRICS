@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>Osc Server</Title>
+</HEAD>
+<BODY>
+<H1>Osc Server</H1> 
+<H3>Component Type: Sensor (Subcategory: Communication)</H3>
+<p>The OscServer component enables the ARE to receive messages using the OpenSoundControl (OSC) protocol. The OscServer can receive various OSC data messages which can be divided in the individual data segments and forwarded to the output ports. The properties are used for the segmentation of the individual information segments of a whole OSC message. This plugin utilizes the NetUtil java library (http://www.sciss.de/netutil/) for the OSC implementation, it is (C)opyrighted 2004-2011 by Hanns Holger Rutz and released under the GNU Lesser General Public License. </p>
+<div class="image"><img src="img/OscServer.jpg" alt="Screenshot: OscServer plugin" title="Screenshot: OscServer plugin" /><br>
+OscServer plugin</div>
+
+
+<H2>Requirements</H2>
+<ul>
+<li>Any OSC client software which sends data to the server  e.g. ARE OscOutClient Plugin, various OSC Apps for Android and various PC software.</li>
+<li>Check your firewall configuration and network settings to ensure that OSC messages are not blocked.  </li>
+<li>Exact knowledge about the structure of the OSC message, to determine the OSC message structure refere to the OSC client documentation or utilze a neworksniffer e.g. Wireshark (www.wireshark.org) </li>
+</ul>
+
+<H2>Functional Principle</H2>
+<div class="image"><img src="img/OscMsg.jpg" alt="Symblic OSC Message" title="Symbolic OSC Message" /><br>
+Symbolic OSC Message</div>
+Each time the OscServer Plugin receives a OSC message it decompose it according to the plugin properties (AddressCH[n], ArgNrCH[n]) and forward it to the output ports. The OscServer is able to receive OSC messages with arguments of the type float and string. The OSC datatype float is typcased to the ARE type double.
+
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>out 1-8 [double]:</STRONG> Forward data form the OSC message.</li>
+<li><STRONG>out 9-12 [string]:</STRONG> Forward strings from the OSC message</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>Port [integer]:</STRONG> This value specifies the OscServer port.</li>
+<li><STRONG>AddressCH[n] [string]:</STRONG> This value specifies the OSC input address e.g. "/path/to/sensor/accxyz".</li>
+<li><STRONG>ArgNrCH[n] [integer]:</STRONG> The Argument Number defines which single argument of an entire message is picked out and forwarded to the output. The first argument of an OSC message begins with the index value zero, e.g. the first argument has the index 0, the second the index 1 and so on.</li>
+</ul>
+
+<H2>Referred Plugins</H2>
+<ul>
+<li>OscOutClient </li>
+<li>OpenVibe </li>
+<li>OscGestureFollower </li>
+</ul>
+
+
+</ul>
+</BODY>
+</HTML>

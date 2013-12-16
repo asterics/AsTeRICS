@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<Title>The Edit Tab </Title>
+<link rel="stylesheet" type="text/css" href="../stylesheet/help.css" media="screen" />
+</HEAD>
+<BODY>
+<h1>The Edit Tab</h1>
+<p>The edit tab is used for manipulating properties of the components and their interconnections. The list below provides a detailed description of the available operations found on the Edit Tab as shown in the figure. </p>
+<div class="image"><img src="img/edit_tab.png" alt="Screenshot: The edit tab" title="Screenshot: The edit tab" /><br>
+The Edit Tab</div>
+<p>Description of the <em>Model Properties</em> Group:</p>
+<ul>
+	<li><EM>Edit Model ID</EM> edits the unique model ID. This ID is generated automatically and is used by the ARE to store model based informations belonging to the editing model.</li>
+	<li><EM>Show Model Description</EM> shows the model description dialog. Within this dialog, the model description will be shown and can be edited. The description is divided in the parts of <em>Short Description</em>, <em>Model Requirements</em> and <em>Detailed Description</em></li> 
+</ul>
+<p>Description of the <em>Edit Components</em> Group: 
+<ul>
+	<li><EM>Move Component</EM> enables the move mode of a component. Now the component can be moved around the drawing board using the arrow keys. Using the enter-key or tabbing to another component ends the move mode.</li>
+	<li><EM>Component Properties</EM> shows the properties of the component.</li> 
+</ul> 
+</p>
+<p>Description of the <em>Edit</em> Group: 
+<ul>
+	<li><EM>New Channel</EM> indicates that a channel is about to be drawn. To start drawing a channel, click on an output port or use the context menu.</li> 
+	<li><EM>New Eventchannel</EM> indicates that an event channel is about to be drawn. To start drawing an event channel, click on an event trigger port or use the context menu.</li> 
+	<li><EM>Cut</EM> cuts out the selected elements and store the cutted elements in the clipboard.</li>
+	<li><EM>Copy</EM> copies the selected elements to the clipboard.</li>
+	<li><EM>Paste</EM> copies the elements from the clipboard to the drawing field.</li> 
+	<li><EM>Delete Selection</EM> deletes the selected elements. This can also be done with the delete-key.</li> 
+	<li><EM>Undo</EM> the last editing action like move a component, add/delete a component or also the channel and event channel operations. Setting properties and events (things done in the property window) are excluded form undo.</li>
+	<li><EM>Redo</EM> the last editing action that has been undone with <EM>Undo</EM>. Setting properties and events (things done in the property window) are excluded form redo.</li>
+	<li><EM>Group</EM> the selected components (incl. channels and event channels) to one group. The selected components must not contain a group. All connected ports and event ports will be available as external connection points of the group. The figure above shows a very simple example, the grouping of two components to one group.
+		<div class="bullet_image"><img src="img/Group1.png" alt="Grouping of two components" title="Grouping of two components" /><br>
+		Grouping of two components</div>
+	</li>
+	<li><em>Ungroup</em> the selected group, showing the single components of the group.</li>
+	<li><em>Save Group</em> saves a selected group, so the group can be reused in this or in other models. The saved groups are available in <em>Components / Saved Groups</em> </li>
+</ul> 
+</p>
+<p>After at least two components have been added to the deployment, they can be connected to each other. A connection always has to start at the output port (right hand side of a component) connecting to an input port (left side of the component). One output port can be connected to several input ports, but an input port can only receive data from one output port. Additionally the data types of the ports must match in order to be able to connect them, see the section on Channels.</p>
+</BODY>
+</HTML>

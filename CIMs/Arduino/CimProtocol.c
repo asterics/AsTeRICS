@@ -74,9 +74,6 @@ unsigned int  datapos=0;
 uint8_t first_packet=1;
 int ADCValues[6];
 
-extern unsigned char old_PIND;
-extern unsigned char old_PINB;
-
 unsigned char PIND_Mask =0;
 unsigned char PINB_Mask =0;
 
@@ -92,6 +89,7 @@ uint8_t process_ARE_frame(uint8_t status_code)
     uint8_t ack_needed;
 	uint8_t data_size=0;
 	uint8_t command;
+	uint8_t bitmask = 0;
 
 
 //	LEDs_ToggleLEDs(LED0);  // indicate correct frame
@@ -132,6 +130,10 @@ uint8_t process_ARE_frame(uint8_t status_code)
 			   		// LEDs_ToggleLEDs(LED4);  // indicate reset CIM
 				     first_packet=1;  // reset first frame indicator etc.
 					 disable_timer_ISR();
+					 DDRD = 0x00;
+					 servo3_en = 0;
+					 servo5_en = 0;
+					 servo6_en = 0;
 					} else status_code |= CIM_ERROR_INVALID_FEATURE;
 				  break;
 
@@ -147,9 +149,7 @@ uint8_t process_ARE_frame(uint8_t status_code)
 					
 			     case ARDUINO_CIM_FEATURE_GET_PINVALUES:
 						generate_PINFrame();
-						reply_DataFrame();
-					    old_PIND=PIND;
-					    old_PINB=PINB;				
+						reply_DataFrame();				
 					    ack_needed=0;
 				     break;
 
@@ -172,16 +172,48 @@ uint8_t process_ARE_frame(uint8_t status_code)
 				switch (ARE_frame.cim_feature) {  // which feature address ?
 
 					case ARDUINO_CIM_FEATURE_SET_PINDIRECTION:   // set DDR registers
+						
 	  		            if (data_size==2) {    
 				 		  DDRD=ARE_frame.data[0];
 				 		  DDRB=ARE_frame.data[1];
+				 		  
+				 		  //check for pins as output, disable PWM
+				 		  if(ARE_frame.data[0] & (1<<PD3))
+				 		  {
+							  disable_PWM(3);
+							  servo3_en = 0;
+						  }
+						  
+						  if(ARE_frame.data[0] & (1<<PD5))
+				 		  {
+							  disable_PWM(5);
+							  servo5_en = 0;
+						  }
+						  
+						  if(ARE_frame.data[0] & (1<<PD6))
+				 		  {
+							  disable_PWM(6);
+							  servo6_en = 0;
+						  }
+				 		  
   						} else status_code |= CIM_ERROR_INVALID_FEATURE;
 					  break;	
 					  				
 					case ARDUINO_CIM_FEATURE_SET_PINSTATE:   // set PORT registers
-	  		            if (data_size==2) {    
-				 		  PORTD=ARE_frame.data[0];
-				 		  PORTB=ARE_frame.data[1];
+						
+	  		            if (data_size==2) {
+							//check for running PWM
+							bitmask = 0xFF;
+							if(is_active_PWM(3)) bitmask &= ~(1<<PD3);
+							if(is_active_PWM(6)) bitmask &= ~(1<<PD5);
+							if(is_active_PWM(5)) bitmask &= ~(1<<PD6);
+							
+							if(servo3_en) bitmask &= ~(1<<PD3);
+							if(servo5_en) bitmask &= ~(1<<PD5);
+							if(servo6_en) bitmask &= ~(1<<PD6);
+							
+							PORTD=ARE_frame.data[0] & bitmask;
+							PORTB=ARE_frame.data[1];
   						} else status_code |= CIM_ERROR_INVALID_FEATURE;
 					  break;					
 
@@ -191,22 +223,157 @@ uint8_t process_ARE_frame(uint8_t status_code)
 							ADC_updatetime=  (uint16_t)ARE_frame.data[0];
 							ADC_updatetime+= ((uint16_t)ARE_frame.data[1])<<8;
 							sei();
-						}
+						} else status_code |= CIM_ERROR_INVALID_FEATURE;
 				     break;
 
 			        case ARDUINO_CIM_FEATURE_SET_PINMASK:
-	  		            if (data_size==2) {    
-				 		  PIND_Mask=ARE_frame.data[0];
-				 		  PINB_Mask=ARE_frame.data[1];
-						}
+	  		            if (data_size==2) {
+							//check for running PWM
+							bitmask = 0xFF;
+							if(is_active_PWM(3)) bitmask &= ~(1<<PD3);
+							if(is_active_PWM(5)) bitmask &= ~(1<<PD5);
+							if(is_active_PWM(6)) bitmask &= ~(1<<PD6);
+							
+							if(servo3_en) bitmask &= ~(1<<PD3);
+							if(servo5_en) bitmask &= ~(1<<PD5);
+							if(servo6_en) bitmask &= ~(1<<PD6);
+							
+							PIND_Mask=ARE_frame.data[0] & bitmask;
+							PINB_Mask=ARE_frame.data[1];
+				 		  
+							PCMSK0 = ARE_frame.data[1] & 0x3F; //enable pin change sensing on pins PB0-PB5 (PB6-7 are not connected)
+							PCMSK2 = ARE_frame.data[0] & bitmask; //pin change sensing enable on port D
+				 		  
+						} else status_code |= CIM_ERROR_INVALID_FEATURE;
 				     break;
 
 			        case ARDUINO_CIM_FEATURE_SET_PWM:
-	  		            if (data_size==2) {    
-				 		  if(ARE_frame.data[0] == 3) pwm3= 50+ARE_frame.data[1];
-				 		  if(ARE_frame.data[0] == 5) pwm5= 50+ARE_frame.data[1];
-				 		  if(ARE_frame.data[0] == 6) pwm6= 50+ARE_frame.data[1];
-						}
+	  		            if (data_size==2) {  
+							switch(ARE_frame.data[0] & 0xF0) //high nibble: operational mode of the output pin (PWM 1kHz-28kHz, servo or disabled)
+							{	
+								case 0x10: // Servo output
+									switch(ARE_frame.data[0] & 0x0F) //low nibble: selected output pin
+									{
+										case 0x03: //output pin 3
+											disable_PWM(3);
+											servo3_en = 1;
+											servo[0] = ARE_frame.data[1] * 79 + 13000; //extend range to timer values
+											DDRD |= (1<<PD3);
+											enable_servo_ISR();
+										break;
+										
+										case 0x05: //output pin 5
+											disable_PWM(5);
+											servo5_en = 1;
+											servo[1] = ARE_frame.data[1] * 79 + 13000; //extend range to timer values
+											DDRD |= (1<<PD5);
+											enable_servo_ISR();
+										break;
+										
+										case 0x06: //output pin 6
+											disable_PWM(6);
+											servo6_en = 1;
+											servo[2] = ARE_frame.data[1] * 79 + 13000; //extend range to timer values
+											DDRD |= (1<<PD6);
+											enable_servo_ISR();
+										break;
+									}
+								break;
+								
+								case 0x20: //PWM 500Hz output
+									switch(ARE_frame.data[0] & 0x0F) //low nibble: selected output pin
+									{
+										case 0x03: //output pin 3
+											servo3_en = 0;
+											pwm3 = ARE_frame.data[1];
+											enable_PWM_500Hz(3);
+										break;
+										
+										case 0x05: //output pin 5
+											servo5_en = 0;
+											pwm5 = ARE_frame.data[1];
+											enable_PWM_500Hz(5);
+										break;
+										
+										case 0x06: //output pin 6
+											servo6_en = 0;
+											pwm6 = ARE_frame.data[1];
+											enable_PWM_500Hz(6);
+										break;
+									}
+								break;
+								
+								//disabled due to speed limitations of the controller
+								/*case 0x30: //PWM 10kHz output
+									switch(ARE_frame.data[0] & 0x0F) //low nibble: selected output pin
+									{
+										case 0x03: //output pin 3
+											pwm3 = ARE_frame.data[1];
+											enable_PWM_10kHz(3);
+										break;
+										
+										case 0x05: //output pin 5
+											pwm5 = ARE_frame.data[1];
+											enable_PWM_10kHz(5);
+										break;
+										
+										case 0x06: //output pin 6
+											pwm6 = ARE_frame.data[1];
+											enable_PWM_10kHz(6);
+										break;
+									}
+								break;
+								
+								case 0x40: //PWM 28kHz output
+									switch(ARE_frame.data[0] & 0x0F) //low nibble: selected output pin
+									{
+										case 0x03: //output pin 3
+											pwm3 = ARE_frame.data[1];
+											enable_PWM_28kHz(3);
+										break;
+										
+										case 0x05: //output pin 5
+											pwm5 = ARE_frame.data[1];
+											enable_PWM_28kHz(5);
+										break;
+										
+										case 0x06: //output pin 6
+											pwm6 = ARE_frame.data[1];
+											enable_PWM_28kHz(6);
+										break;
+									}
+								break;*/
+								
+								default: //default: disable
+									switch(ARE_frame.data[0] & 0x0F) //low nibble: selected output pin
+									{
+										case 0x03: //output pin 3
+											DDRD &= ~(1<<PD3);
+											PORTD &= ~(1<<PD3);
+											servo3_en = 0;
+											disable_PWM(3);
+											if(!(servo5_en | servo6_en)) disable_servo_ISR();
+										break;
+										
+										case 0x05: //output pin 5
+											DDRD &= ~(1<<PD5);
+											PORTD &= ~(1<<PD5);
+											servo5_en = 0;
+											disable_PWM(5);
+											if(!(servo3_en | servo6_en)) disable_servo_ISR();
+										break;
+										
+										case 0x06: //output pin 6
+											DDRD &= ~(1<<PD6);
+											PORTD &= ~(1<<PD6);
+											servo6_en = 0;
+											disable_PWM(6);
+											if(!(servo3_en | servo5_en)) disable_servo_ISR();
+										break;
+									}
+								break;
+							}
+						} else status_code |= CIM_ERROR_INVALID_FEATURE;
 				     break;
 					default:         // not a valid write  feature;
 		   				status_code |= CIM_ERROR_INVALID_FEATURE;
