@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>PlatformDigitalOut</Title>
+</HEAD>
+<BODY>
+<H1>Platform Digital Out</H1>
+<H3>Component Type: Actuator (Subcategory: Personal Platform)</H3>
+<p>The PlatformDigitalOut plugin operates the output ports of the AsTeRICS Personal Platform. The output ports 1-2 are open-collector outputs with a deactivated pull-up resistor. </p>
+<div class="image"><img src="img/PlatformDigitalOut.jpg" alt="Screenshot: PlatformDigitalOut plugin" title="Screenshot: PlatformDigitalOut plugin" /><br>
+PlatformDigitalOut plugin</div>
+
+<H2>Requirements</H2>
+This component requires the Core CIM (CIM Id: 0x0602) of the AsTeRICS Personal Platform.
+<div class="image"><img src="img/PersonalPlatform.jpg" alt="The AsteRICS Personal Platform (preliminary version)" title="The AsteRICS Personal Platform (preliminary version)" /><br>
+The AsteRICS Personal Platform</div>
+
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>command [string]:</STRONG> The plugin reacts to incoming action strings starting with "@GPIO:" and a command. Valid commands are "set", "clear", "toggle" and "press". The command has to be followed by a comma and the port number, for example: "@GPIO:set,1" or "@GPIO:toggle,2". The following examples illustrate the available action strings:
+<ul>
+<li><EM>"@DIGITALOUT:set,1":</EM>Output port 1 of the Personal Platform will be set (5 Volt)</li>
+<li><EM>"@DIGITALOUT:clear,2":</EM>Output port 2 of the Personal Platform will be cleared (0 Volt)</li>
+<li><EM>"@DIGITALOUT:toggle,1":</EM>Output port 1 of the Personal Platform will be changed</li>
+</ul>
+ </li>
+</ul>
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>setOutput1 to setOutput2:</STRONG> an incoming event on these ports will cause the corresponding output port to go to the high level.</li>
+<li><STRONG>clearOutput1 to clearOutput2:</STRONG> an incoming event on these ports will cause the corresponding output port to go to the low level.</li>
+</ul>
+</BODY>
+</HTML>

@@ -9,17 +9,17 @@
         <description>Arduino Microcontroller CIM</description>
         <ports>
 			<inputPort id="pwm3">
-				<description>PWM value for Pin3 Analog Output</description>
+				<description>PWM value for Pin3 Analog Output (0-255)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="pwm5">
-				<description>PWM value for Pin5 Analog Output</description>
+				<description>PWM value for Pin5 Analog Output (0-255)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="pwm6">
-				<description>PWM value for Pin6 Analog Output</description>
+				<description>PWM value for Pin6 Analog Output (0-255)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
@@ -211,7 +211,7 @@
 			<property name="pin3Mode"
 				type="integer"
 				value="0"
-				combobox="not used//input without pullup//input with pullup//output, default low//output, default high"
+				combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 500Hz"
 				description="Pin 3 Mode"/>
 			<property name="pin4Mode"
 				type="integer"
@@ -221,12 +221,12 @@
 			<property name="pin5Mode"
 				type="integer"
 				value="0"
-				combobox="not used//input without pullup//input with pullup//output, default low//output, default high"
+				combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 500Hz"
 				description="Pin 5 Mode"/>
 			<property name="pin6Mode"
 				type="integer"
 				value="0"
-				combobox="not used//input without pullup//input with pullup//output, default low//output, default high"
+				combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 500Hz"
 				description="Pin 6 Mode"/>
 			<property name="pin7Mode"
 				type="integer"

@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>Event State Machine</Title>
+</HEAD>
+<BODY>
+<H1>EventStateMachine</H1>
+This component allows definition of a sequence of events (up to 9 different incoming events are supported). 
+If the sequence appears at the event listener ports in the given order, an event is fired by the EventStateMachine plugin.
+Optionally, a timing can be specified for a valid event sequence.
+<h3>Component Type: Processor (Subcategory: Event and Signal Processing)</h3>
+<div class="image"><img src="img/EventStateMachine.jpg" alt="Screenshot: EventStateMachine" title="Screenshot: Event State Machine plugin" /><br>
+Event State Machine plugin</div>
+
+<H2>EventStateMachine Description</H2>
+<ul>
+<li><STRONG>in1-in9:</STRONG> Incoming events</li>
+<li><STRONG>reset:</STRONG> Resets the current state detection to the first element of the sequence</li>
+</ul>
+<H2>Event Trigger Description</H2>
+<ul>
+<li><STRONG>finalStateReached:</STRONG> fired if the last element of the sequence is reached.</li>
+<li><STRONG>stateError:</STRONG> fired if an incoming event does not fit the sequence.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>stateSequence [string]:</STRONG> A sequence of digits separated by commas, representing the order of incoming events, for example: "1,5,2,3,1".</li>
+<li><STRONG>stateTiming [string]:</STRONG> An (optional) sequence of timings for the above events, specified in min/max milliseconds for a state transition. One timing information consists of a numeric value for the maximum time or two numeric values separated by a forward slash (/) for minimum and maximum time. For example the timing "1000/2000,500/1000,x,3000" defines that the transition from first to second state my take a minimum of 1000 milliseconds and a maximum of 3000 milliseconds; The transition to the next state may trake 500-1000 milliseconds, the next transition has no timing contraints, the next transition may take up to 3000 milliseconds. If this property is left empty, no timing constraints are active for the event state transitions.</li>
+<li><STRONG>resetOnIncorrectEvent [boolean]:</STRONG> if checked, an incoming event which does not fit the current element of the sequence will reset the state detection to the first element of the sequence.</li>
+</ul>
+</BODY>
+</HTML>

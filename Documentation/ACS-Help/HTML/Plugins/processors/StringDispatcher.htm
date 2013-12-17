@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=ISO-8859-2">
+    <meta name="GENERATOR" content="Microsoft&#174; HTML Help Workshop 4.1">
+    <link rel="stylesheet" type="text/css"
+      href="../../stylesheet/help.css" media="screen">
+    <title>String Dispatcher</title>
+  </head>
+  <body>
+    <h1>String Dispatcher </h1>
+    <h3>Component Type: Processor (Subcategory: Event and String
+      Processing)</h3>
+    <p>This component has twenty slots for text strings. After the
+      appropriate command, the text is sent through the output port.</p>
+    <div class="image"><img src="img/StringDispatcher.jpg"
+        alt="Screenshot: StringDispatcher plugin" title="Screenshot:
+        StringDispatcher plugin"><br>
+      StringDispatcher plugin</div>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>slotDispatch [integer]:</strong> Sends the string from
+        the slot defined by number.</li>
+    </ul>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>output [string]:</strong> String output port.</li>
+    </ul>
+    <h2>Event Listener Description</h2>
+    <ul>
+      <li><strong>dispatchSlot1...dispatchSlot20:</strong> This event
+        causes text from the slot: 1..20 to be sent.</li>
+      <li><strong>dispatchNextSlot:</strong> This event causes text from
+        the next not empty slot to be sent.</li>
+      <li><strong>dispatchPreviousSlot:</strong> This event causes text
+        from the previous not empty slot to be sent.</li>
+      <li><strong>dispatchSlotSeries:</strong> This event causes text in
+        sequence from all not empty slots to be sent, with a delay
+        defined by the delay property. </li>
+      <strong></strong>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>delay [integer]:</strong> The interval (ms) which will
+        be used for sending strings from all slots.</li>
+      <li><strong>slot1...slot20 [string]:</strong> Contains the text
+        for the slot: 1...20.<br>
+      </li>
+    </ul>
+  </body>
+</html>

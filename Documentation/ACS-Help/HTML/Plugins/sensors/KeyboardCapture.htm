@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>KeyboardCapture</Title>
+</HEAD>
+<BODY>
+<H1>Keyboard Capture</H1> 
+<H3>Component Type: Sensor (Subcategory: Standard Input Devices)</H3>
+<p>This component provides access to keystrokes input via a standard keyboard. The keystroke capture does not depend on a particular window or text field to have the input focus. The keycodes of the pressed keys and accumulated words (multiple keys separated by <space>) are provided at the output ports of this component. Possible applications include triggering functions by keyboard input, interfacing to speech recognition software or remapping keys to other keycodes. </p>
+<div class="image"><img src="img/KeyboardCapture.jpg" alt="Screenshot: KeyboardCapture plugin" title="Screenshot: KeyboardCapture plugin" /><br>
+KeyboardCapture plugin</div>
+<H2>Requirements</H2>
+A keyboard which generates keystrokes or a software component which injects keystrokes into the operating system message queue. 
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>keyCode [integer]:</STRONG> This port sends the virtual keycode of the last pressed key as an integer value.</li>
+<li><STRONG>words [string]:</STRONG> This ports accumulates keystrokes and sends them as a string as soon as a blank separator (space key) appears in the key input stream.</li>
+</ul>
+<H2>Event Trigger Description</H2>
+<ul>
+<li><STRONG>recognizedCommand1 - recognizedCommand10:</STRONG> These event ports fire an event if one of seven command strings has been detected in the current input stream of keys.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>blockEvents [boolean]:</STRONG> If this property is set to true, no key press activities will be routed to the operating system - they will not be processed by other applications and disappear. If the property value is set to false, keystrokes will be passed back to the operating system and processed as usual.</li>
+<li><STRONG>command1 [string] - command10 [string]:</STRONG> Seven string properties to specify command strings. The component looks for these command strings in the input stream of keystrokes. If a command string matches, the corresponding event trigger port is raised. This can be useful for example to define voice commands which should trigger certain actions in other ARE plugins.</li>
+</ul>
+</BODY>
+</HTML>

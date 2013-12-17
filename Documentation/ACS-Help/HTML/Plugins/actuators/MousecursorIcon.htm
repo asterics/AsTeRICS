@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>MousecursorIcon</Title>
+</HEAD>
+<BODY>
+<H1>Mousecursor Icon</H1> 
+<H3>Component Type: Actuator (Subcategory: Input Device Emulation)</H3>
+<p>The MousecursorIcon plugin can be used to modifiy the current default system mouse cursor icon. A number of icon file names can be given as properties and activated by corresponding event listener ports. 
+Currently, only the default system cursor can be modified. The cursor is restored to the default arrow when the model is stopped.</p> 
+<div class="image"><img src="img/MousecursorIcon.jpg" alt="Screenshot: MousecursorIcon plugin" title="Screenshot: MousecursorIcon plugin" /><br>
+MousecursorIcon plugin</div>
+
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>iconName [strig]:</STRONG> This input port accepts a filename, the plugin tries to load a cursor file with this name from the local plugin working directory.</li>
+</ul>
+<H2>Event Listener Description:</H2>
+<ul>
+<li><STRONG>setIcon1 - setIcon9:</STRONG> an incoming events sets the given cursor as new system cursor.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>iconName1 - iconName9 [string]:</STRONG> 9 slots for cursor file names.</li>
+</ul>
+</BODY>
+</HTML>
