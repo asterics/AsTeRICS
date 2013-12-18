@@ -304,6 +304,7 @@ namespace Asterics.ACS {
             topRectangle = new Rectangle();
             topGrid = new Grid();
             componentCanvas = new Canvas();
+            Canvas.SetZIndex(componentCanvas, 9999999);
             label = new TextBlock();
             layout = new layoutType();
             propertiesArrayList = new ArrayList();

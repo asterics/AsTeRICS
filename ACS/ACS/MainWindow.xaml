@@ -173,7 +173,7 @@
                     <r:RibbonButton Label="{x:Static properties:Resources.CreationWizardRibbonButton}" LargeImageSource="images/ExtToolCreate.png" Name="creationWizardRibbonButton" Click="CreationWizardRibbonButton_Click" KeyTip="C" ToolTipTitle="{x:Static properties:Resources.CreationWizardRibbonButtonToolTip}" IsEnabled="True"/>
                     <r:RibbonButton Label="{x:Static properties:Resources.ActivationWizardRibbonButton}" LargeImageSource="images/ExtToolActivate.png" Name="activationWizardRibbonButton" Click="ActivationWizardRibbonButton_Click" KeyTip="A" ToolTipTitle="{x:Static properties:Resources.ActivationWizardRibbonButtonToolTip}" IsEnabled="True"/>
                     <r:RibbonButton Label="{x:Static properties:Resources.LanguageFileCreationRibbonButton}" LargeImageSource="images/ExtToolLangCreate.png" Name="languageFileCreationRibbonButton" Click="LanguageFileCreationRibbonButton_Click" KeyTip="G" ToolTipTitle="{x:Static properties:Resources.LanguageFileCreationRibbonButtonToolTip}" IsEnabled="True"/>
-                    <r:RibbonButton Label="{x:Static properties:Resources.MidiToneCreatorButton}" LargeImageSource="images/ExtToolLangCreate.png" Name="midiToneCreatorRibbonButton" Click="MidiToneCreatorRibbonButton_Click" KeyTip="M" ToolTipTitle="Test" IsEnabled="True"/>
+                    <r:RibbonButton Label="{x:Static properties:Resources.MidiToneCreatorButton}" LargeImageSource="images/ExtToolNote.png" Name="midiToneCreatorRibbonButton" Click="MidiToneCreatorRibbonButton_Click" KeyTip="M" ToolTipTitle="Test" IsEnabled="True"/>
                 </r:RibbonGroup>
             </r:RibbonTab>
         </r:Ribbon>

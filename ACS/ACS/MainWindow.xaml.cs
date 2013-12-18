@@ -3602,7 +3602,7 @@ namespace Asterics.ACS {
         private void ComponentContextItemDelete_Click(object sender, RoutedEventArgs e) {
             if (((ContextMenu)((MenuItem)e.Source).Parent).PlacementTarget is Rectangle) {
                 Rectangle r = (Rectangle)((ContextMenu)((MenuItem)e.Source).Parent).PlacementTarget;
-                foreach (componentType tempComponent in deploymentComponentList.Values) {
+                foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                     if ((tempComponent.MainRectangle == r) || (tempComponent.TopRectangle == r)) {
                         //DeleteComponentFromMenu(tempComponent);
                         DeleteSelectedComponents();
@@ -3612,7 +3612,7 @@ namespace Asterics.ACS {
             }
             else if (((ContextMenu)((MenuItem)e.Source).Parent).PlacementTarget is Grid) {
                 Grid g = (Grid)((ContextMenu)((MenuItem)e.Source).Parent).PlacementTarget;
-                foreach (componentType tempComponent in deploymentComponentList.Values) {
+                foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                     if (tempComponent.TopGrid == g) {
                         DeleteSelectedComponents();
                         //DeleteComponentFromMenu(tempComponent);
@@ -4104,7 +4104,7 @@ namespace Asterics.ACS {
             else if (args.Source is Rectangle) {
                 //modelComponent tempComponent = null;
                 moveTracking = false;
-                foreach (componentType tempComponent in deploymentComponentList.Values) {
+                foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                     if ((tempComponent.MainRectangle == (Rectangle)args.Source) || (tempComponent.TopRectangle == (Rectangle)args.Source)) {
                         focusedComponent = tempComponent;
                         Keyboard.Focus(focusedComponent.ComponentCanvas);
@@ -4164,7 +4164,7 @@ namespace Asterics.ACS {
                 }
             }
             else if (args.Source is TextBlock) {
-                foreach (componentType tempComponent in deploymentComponentList.Values) {
+                foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                     if (tempComponent.Label == (TextBlock)args.Source) {
                         focusedComponent = tempComponent;
                         Keyboard.Focus(focusedComponent.ComponentCanvas);
@@ -4239,7 +4239,7 @@ namespace Asterics.ACS {
                 if (newEventChannelRibbonButton.IsEnabled) // was editeventribbongroup
                 {
                     if (!((Polygon)args.Source).Name.Equals("EventTriggerPortPolygon")) {
-                        foreach (componentType tempComponent in deploymentComponentList.Values) {
+                        foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                             Canvas tempCanvas = (Canvas)((Polygon)args.Source).Parent;
                             if (tempComponent.ComponentCanvas == tempCanvas.Parent) {
                                 if (!selectedComponentList.Contains(tempComponent)) {
@@ -4338,7 +4338,7 @@ namespace Asterics.ACS {
             else if (args.Source is Rectangle) {
                 //modelComponent tempComponent = null;
                 if ((Keyboard.Modifiers & ModifierKeys.Control) == 0) {
-                    foreach (componentType tempComponent in deploymentComponentList.Values) {
+                    foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                         if ((tempComponent.MainRectangle == (Rectangle)args.Source) || (tempComponent.TopRectangle == (Rectangle)args.Source)) {
                             focusedComponent = tempComponent;
                             Keyboard.Focus(focusedComponent.ComponentCanvas);
@@ -4390,7 +4390,7 @@ namespace Asterics.ACS {
             }
             else if (args.Source is TextBlock) {
                 if ((Keyboard.Modifiers & ModifierKeys.Control) == 0) {
-                    foreach (componentType tempComponent in deploymentComponentList.Values) {
+                    foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                         if (tempComponent.Label == (TextBlock)args.Source) {
                             focusedComponent = tempComponent;
                             Keyboard.Focus(focusedComponent.ComponentCanvas);
@@ -4450,7 +4450,7 @@ namespace Asterics.ACS {
                     else {
                         if (newEventChannelRibbonButton.IsChecked == false) { // mouse down on an event channel input, not in connect mode
                             if ((Keyboard.Modifiers & ModifierKeys.Control) == 0) {
-                                foreach (componentType tempComponent in deploymentComponentList.Values) {
+                                foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                                     Canvas tempCanvas = (Canvas)((Polygon)args.Source).Parent;
                                     if (tempComponent.ComponentCanvas == tempCanvas.Parent) {
                                         focusedComponent = tempComponent;
@@ -4502,7 +4502,7 @@ namespace Asterics.ACS {
                     if (args.Source is Rectangle) {
                         Rectangle r = (Rectangle)args.Source;
                         Canvas tempCanvas = (Canvas)r.Parent;
-                        foreach (componentType tempComponent in deploymentComponentList.Values) {
+                        foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                             if (tempComponent.ComponentCanvas == tempCanvas) {
                                 bool portfound = false;
                                 if (tempComponent.ports != null) {
@@ -4566,7 +4566,7 @@ namespace Asterics.ACS {
                     Rectangle r = (Rectangle)args.Source;
 
                     Canvas tempCanvas = (Canvas)r.Parent;
-                    foreach (componentType tempComponent in deploymentComponentList.Values) {
+                    foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                         if (tempComponent.ComponentCanvas == tempCanvas) {
                             foreach (object o in tempComponent.ports) {
                                 if (o is outputPortType) {
@@ -6538,8 +6538,8 @@ namespace Asterics.ACS {
         private void ClearBorderOfSelectedComponents() {
             foreach (componentType mc in selectedComponentList) {
                 Canvas selectCanvas = mc.ComponentCanvas;
-                //Canvas.SetZIndex(selectCanvas, Canvas.GetZIndex(selectCanvas) - 3000);
-                Canvas.SetZIndex(selectCanvas, 0);
+                Canvas.SetZIndex(selectCanvas, Canvas.GetZIndex(selectCanvas) - 3000);
+                //Canvas.SetZIndex(selectCanvas, 999999);
                 foreach (UIElement uie in selectCanvas.Children) {
                     if ((uie is Rectangle) && (((Rectangle)uie).Name.Equals("selectRectangle"))) {
                         selectCanvas.Children.Remove((Rectangle)uie);
@@ -6943,7 +6943,7 @@ namespace Asterics.ACS {
             int stop = (int)Canvas.GetTop(selRect);
             int sright = (int)(selRect.Width + sleft);
             int sbottom = (int)(selRect.Height + stop);
-            foreach (componentType tempComponent in deploymentComponentList.Values) {
+            foreach (componentType tempComponent in deploymentComponentList.Values.ToList()) {
                 if (tempComponent.ComponentCanvas.Visibility != System.Windows.Visibility.Visible)
                     continue;
                 int left = (int)Canvas.GetLeft(tempComponent.ComponentCanvas);
@@ -9238,6 +9238,8 @@ namespace Asterics.ACS {
             // loading the components
             foreach (object o in deploymentModel.components) {
                 componentType modelComp = (componentType)o;
+                if (deploymentComponentList.ContainsKey(modelComp.id))
+                    continue;
                 // check, if bundle is available
                 if (componentList.ContainsKey(modelComp.type_id)) {
 
@@ -9534,6 +9536,7 @@ namespace Asterics.ACS {
 
                     canvas.Children.Add(modelComp.ComponentCanvas);
                     KeyboardNavigation.SetTabIndex(modelComp.ComponentCanvas, canvas.Children.Count + 1);
+                    Console.WriteLine(modelComp.id);
                     deploymentComponentList.Add(modelComp.id, modelComp);
                     // adding context menu
                     modelComp.MainRectangle.ContextMenu = componentContextMenu;
