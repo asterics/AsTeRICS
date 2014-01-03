@@ -82,6 +82,8 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
     Robot rob;
     private double mouseXPos = 0;
     private double mouseYPos = 0;
+	private double mouseLastXPos = -1;
+    private double mouseLastYPos = -1;
     private int mouseActive = 0;
 	private int nextClick = CLK_LEFT;
 	
@@ -324,7 +326,10 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 
             if ((mouseActive == 1) && (propEnableMouse))
             {
-           		rob.mouseMove((int)mouseXPos, (int)mouseYPos);
+				if (mouseXPos != mouseLastXPos) {
+					mouseLastXPos = mouseXPos;
+					rob.mouseMove((int)mouseXPos, (int)mouseYPos);
+				}
             }
         }
     };
@@ -350,7 +355,11 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 
             if ((mouseActive == 1) && (propEnableMouse))
             {
-           		rob.mouseMove((int)mouseXPos, (int)mouseYPos);
+				if (mouseYPos != mouseLastYPos) {
+						mouseLastYPos = mouseYPos;
+						rob.mouseMove((int)mouseXPos, (int)mouseYPos);
+				}
+
             }
        }
     };
@@ -656,7 +665,11 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 	
 	    if ((mouseActive == 1) && (propEnableMouse))
 	    {
-	   		rob.mouseMove((int)mouseXPos, (int)mouseYPos);
+			if (mouseXPos != mouseLastXPos || mouseYPos != mouseLastYPos) {
+				mouseLastXPos = mouseXPos;
+				mouseLastYPos = mouseYPos;
+				rob.mouseMove((int)mouseXPos, (int)mouseYPos);
+			}
 	    }
 	}
 }
