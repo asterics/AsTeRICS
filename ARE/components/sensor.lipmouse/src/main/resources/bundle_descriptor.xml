@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Lipmouse"
+                   canonical_name="eu.asterics.component.sensor.lipmouse.LipmouseInstance">
+        <type subtype="Standard Input Devices">sensor</type>
+        <singleton>false</singleton>
+        <description>Lipmouse CIM</description>
+        <ports>
+
+			<outputPort id="X">
+				<description>X's value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="Y">
+				<description>Y's value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pressure">
+				<description>Presure value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="calibration">
+				<description>For calibrating the mouse</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="periodicADCUpdate"
+				type="integer"
+				value="0"
+				description="Automatic update of ADC values (time in milliseconds, 0=off)"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

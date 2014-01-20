@@ -27,6 +27,7 @@
 package eu.asterics.component.actuator.mouse;
 import java.util.*;
 import java.util.logging.Logger;
+
 import eu.asterics.mw.data.*;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -35,6 +36,8 @@ import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 
 import java.awt.Dimension;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.Robot;
 import java.awt.AWTException;
 import java.awt.Toolkit;
@@ -78,10 +81,13 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
     private int propYMin = 0;
     private int propYMax = 1024;
 
+    private boolean first=true;
 
     Robot rob;
     private double mouseXPos = 0;
     private double mouseYPos = 0;
+	private double mouseLastXPos = -1;
+    private double mouseLastYPos = -1;
     private int mouseActive = 0;
 	private int nextClick = CLK_LEFT;
 	
@@ -299,7 +305,28 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
         return null;
     }
  
-    
+    private void updateMousePosition()
+    {
+		if (!first)
+		{
+			Point p= MouseInfo.getPointerInfo().getLocation(); 
+			
+			mouseXPos-= (mouseLastXPos- p.x);
+			mouseYPos-= (mouseLastYPos- p.y);
+		}
+		first=false;
+
+		if (mouseXPos<propXMin) mouseXPos=propXMin;
+	    if (mouseXPos>propXMax) mouseXPos=propXMax;
+	    if (mouseYPos<propYMin) mouseYPos=propYMin;
+	    if (mouseYPos>propYMax) mouseYPos=propYMax;
+
+	    rob.mouseMove((int)mouseXPos, (int)mouseYPos);
+
+		mouseLastXPos = mouseXPos;
+		mouseLastYPos = mouseYPos;
+
+    }
 
     /**
      * Input Port for receiving mouse x coordinates.
@@ -309,22 +336,22 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
     {
         public void receiveData(byte[] data)
         {
-        	if (propAbsolutePosition==true)
-        	{
- //               mouseXPos = ConversionUtils.intFromBytes(data);
-                mouseXPos = ConversionUtils.doubleFromBytes(data);
-        	}
-        	else 
-        	{
-                mouseXPos += ConversionUtils.doubleFromBytes(data);
-          	}
-
-        	if (mouseXPos<propXMin) mouseXPos=propXMin;
-            if (mouseXPos>propXMax) mouseXPos=propXMax;
-
             if ((mouseActive == 1) && (propEnableMouse))
             {
-           		rob.mouseMove((int)mouseXPos, (int)mouseYPos);
+
+	        	if (propAbsolutePosition==true)
+	        	{
+	 //               mouseXPos = ConversionUtils.intFromBytes(data);
+	                mouseXPos = ConversionUtils.doubleFromBytes(data);
+	        	}
+	        	else 
+	        	{
+	                mouseXPos += ConversionUtils.doubleFromBytes(data);
+	          	}
+
+
+				if (mouseXPos != mouseLastXPos) 
+					updateMousePosition();
             }
         }
     };
@@ -337,20 +364,19 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
     {
         public void receiveData(byte[] data)
         {
-        	if (propAbsolutePosition==true)
-        	{
-                mouseYPos = ConversionUtils.doubleFromBytes(data);
-        	}
-        	else 
-        	{
-                mouseYPos += ConversionUtils.doubleFromBytes(data);
-          	}
-            if (mouseYPos<propYMin) mouseYPos=propYMin;
-            if (mouseYPos>propYMax) mouseYPos=propYMax;
-
             if ((mouseActive == 1) && (propEnableMouse))
             {
-           		rob.mouseMove((int)mouseXPos, (int)mouseYPos);
+	        	if (propAbsolutePosition==true)
+	        	{
+	                mouseYPos = ConversionUtils.doubleFromBytes(data);
+	        	}
+	        	else 
+	        	{
+	                mouseYPos += ConversionUtils.doubleFromBytes(data);
+	          	}
+
+				if (mouseYPos != mouseLastYPos)
+					updateMousePosition();
             }
        }
     };
@@ -581,7 +607,7 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
     public void start()
     {
         super.start();
-        
+        first=true;
         mouseXPos = propXMin +(propXMax - propXMin)/2;
         mouseYPos = propYMin +(propYMax - propYMin)/2;
         mouseActive=1;
@@ -604,6 +630,7 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
    @Override
    public void resume()
    {
+	   first=true;
        super.resume();
    }
 
@@ -637,26 +664,22 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 			}
 		}
 
-		
-		if (propAbsolutePosition==true)
-		{
-	        mouseXPos = inX;
-	        mouseYPos = inY;
-		}
-		else 
-		{
-	        mouseXPos += inX;
-	        mouseYPos += inY;
-	  	}
-	
-		if (mouseXPos<propXMin) mouseXPos=propXMin;
-	    if (mouseXPos>propXMax) mouseXPos=propXMax;
-	    if (mouseYPos<propYMin) mouseYPos=propYMin;
-	    if (mouseYPos>propYMax) mouseYPos=propYMax;
-	
 	    if ((mouseActive == 1) && (propEnableMouse))
 	    {
-	   		rob.mouseMove((int)mouseXPos, (int)mouseYPos);
+		
+			if (propAbsolutePosition==true)
+			{
+		        mouseXPos = inX;
+		        mouseYPos = inY;
+			}
+			else 
+			{
+		        mouseXPos += inX;
+		        mouseYPos += inY;
+		  	}
+	
+			if (mouseXPos != mouseLastXPos || mouseYPos != mouseLastYPos)
+				updateMousePosition();
 	    }
 	}
 }

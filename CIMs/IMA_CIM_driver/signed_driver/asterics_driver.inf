@@ -1,0 +1,50 @@
+[Version]
+Signature="$Windows NT$"
+Class=Ports
+ClassGUID={4d36e978-e325-11ce-bfc1-08002be10318}
+Provider=%IMA%
+DriverVer=03/26/2013,1.0.7
+CatalogFile=asterics.cat
+
+[Manufacturer]
+%ManufacturerName%=DeviceList, NTamd64, NTia64
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[DeviceList]
+%IMA_CDC&PID_0033%=DriverInstall,USB\VID_FFFF&PID_0033
+
+[DeviceList.NTamd64]
+%IMA_CDC&PID_0033%=DriverInstall,USB\VID_FFFF&PID_0033
+
+[DeviceList.NTia64]
+%IMA_CDC&PID_0033%=DriverInstall,USB\VID_FFFF&PID_0033
+
+[DriverInstall]
+include=mdmcpq.inf,usb.inf
+CopyFiles = FakeModemCopyFileSection
+AddReg=DriverInstall.AddReg
+
+[DriverInstall.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,usbser.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[DriverInstall.Services]
+include=mdmcpq.inf
+AddService=usbser, 0x00000002, DriverService
+
+[DriverService]
+DisplayName=%SERVICE%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\%DRIVERFILENAME%.sys
+LoadOrderGroup=Base
+
+[Strings]
+IMA="IMA s.r.o."
+IMA_CDC&PID_0033="IMA AsTeRICS Module"
+SERVICE="IMA Module for AsTeRICS"
+DRIVERFILENAME ="usbser"
