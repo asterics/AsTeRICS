@@ -684,23 +684,26 @@ namespace Asterics.ACS {
                                 messageBox.showCheckbox.IsChecked = showOverrideAtConnectionQuestion;
                                 messageBox.ShowDialog();
 
+                                bool dialogResult = (bool)messageBox.DialogResult;
+                                if (dialogResult) {
+                                    DownloadAndCheckModel();
+                                }
                                 showOverrideAtConnectionQuestion = (bool)messageBox.showCheckbox.IsChecked;
                                 if (showOverrideAtConnectionQuestion) {
                                     ini.IniWriteValue("Options", "showOverrideLocalWhenConnected", "true");
-                                }
-                                else {
+                                } else {
                                     ini.IniWriteValue("Options", "showOverrideLocalWhenConnected", "false");
-                                }
-                                if ((bool)messageBox.DialogResult) {
-                                    DownloadAndCheckModel();
+                                    if (dialogResult) 
+                                        ini.IniWriteValue("Options","downloadModelOnConnect","true");
+                                    else
+                                        ini.IniWriteValue("Options", "downloadModelOnConnect","false");
                                 }
                             }
                             else {
-                                // If the message will not be shown, the model will not be downloaded (default = no). Uncomment to set the default to yes.
-                                // downloadAndCheckModel();
+                                if (ini.IniReadValue("Options","downloadModelOnConnect") == "true")
+                                    DownloadAndCheckModel();
                             }
-                        }
-                        else if (currentAREStatus == "running" || currentAREStatus == "paused") {
+                        } else if (currentAREStatus == "running" || currentAREStatus == "paused") {
                             if (showOverrideAndRunAtConnectionQuestion) {
                                 CustomMessageBox messageBox = new CustomMessageBox(Properties.Resources.AREStatusMessageRunning, Properties.Resources.AREStatusMessageHeader, CustomMessageBox.messageType.Info, CustomMessageBox.resultType.YesNo);
                                 messageBox.Owner = this;

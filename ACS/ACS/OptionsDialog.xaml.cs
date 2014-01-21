@@ -434,5 +434,20 @@ namespace Asterics.ACS {
             ConnectionTimeoutBox.Text = ((int)e.NewValue).ToString();
         }
 
+        private void OverrideModelFromAREAtConnectQuestionCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Do you want to download the model on connect?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            IniFile ini = new IniFile(AppDomain.CurrentDomain.BaseDirectory + "asterics.ini");
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    ini.IniWriteValue("Options", "downloadModelOnConnect", "true");
+                    break;
+                case MessageBoxResult.No:
+                    ini.IniWriteValue("Options", "downloadModelOnConnect", "false");
+                    break;
+            }
+        }
+
     }
 }
