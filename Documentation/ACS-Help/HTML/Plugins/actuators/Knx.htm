@@ -34,7 +34,7 @@ The KNX plugin has also some Event Trigger which can be assigned to various KNX 
 <H2>Input Port Description</H2>
 <ul>
 <li><STRONG>command [string]:</STRONG> This port receives string commands for the KNX component. The commands have to be in the format "@KNX: group_address#type#value". An example for a valid command is"@KNX:1/1/1#boolean#true". As a valid command is received by the input port, the value is sent to the KNX group address. The group addresses comply to the setup of the KNX network which can be configured with the ETS4 software.</li>
-<li><STRONG>slider[1-6] [double]:</STRONG> Input port for a double value which is converted to a integer and forwardet to a dedicated KNX datapoint</li>
+<li><STRONG>slider[1-6] [double]:</STRONG> Input port for a double value which is converted to an integer and forwarded to a dedicated KNX datapoint</li>
 </ul>
 <H2>Properties</H2>
 <ul>
@@ -44,7 +44,7 @@ The KNX plugin has also some Event Trigger which can be assigned to various KNX 
 <li><STRONG>groupAddress[1-6] [string]:</STRONG> (Event Listener) Specifies KNX group addresses for the [n] Event Listener e.g. "1/1/1".</li>
 <li><STRONG>dataType[1-6] [string]:</STRONG> (Event Listener) Specifies the data type of the dataValue[1-6] which is send to the KNX datapoint. The data type for values to be sent to the KNX group addresses. Following type are supported: </li>
 <ul>
-<li><EM>"boolean":</EM> e.g. used for witching light actuators on or off.</li>
+<li><EM>"boolean":</EM> e.g. used for switching light actuators on or off.</li>
 <li><EM>"int":</EM> used e.g. to control blend positions or light dimmer value.</li>
 <li><EM>"float":</EM> e.g. to control temperature of the building.</li>
 <li><EM>"string":</EM> e.g. so display text messages on a home automation console display.</li>
