@@ -25,7 +25,6 @@ package eu.asterics.mw.gui;
  *
  */
 
-
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -52,6 +51,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 //import java.io.BufferedWriter;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 //import java.io.FileWriter;
 //import java.io.IOException;
 import java.net.InetAddress;
@@ -84,21 +84,17 @@ import eu.asterics.mw.services.AREServices;
 //import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.IAREEventListener;
 
-
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * 		   Konstantinos Kakousis [kakousis@cs.ucy.ac.cy]
- * 		   Chris Veigl [veigl@technikum-wien.at]
- *         Date: Aug 20, 2010
- *         Time: 2:14:37 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Konstantinos Kakousis
+ *         [kakousis@cs.ucy.ac.cy] Chris Veigl [veigl@technikum-wien.at] Date:
+ *         Aug 20, 2010 Time: 2:14:37 PM
  */
-public class AstericsGUI implements IAREEventListener
-{
-	
-	static int DEFAULT_SCREEN_X=0;
-	static int DEFAULT_SCREEN_Y=0;
-	static int DEFAULT_SCREEN_W=0;
-	static int DEFAULT_SCREEN_H=0;
+public class AstericsGUI implements IAREEventListener {
+
+	static int DEFAULT_SCREEN_X = 0;
+	static int DEFAULT_SCREEN_Y = 0;
+	static int DEFAULT_SCREEN_W = 0;
+	static int DEFAULT_SCREEN_H = 0;
 
 	static String ICON_PATH = "/images/icon.gif";
 	static String TRAY_ICON_PATH = "/images/tray_icon.gif";
@@ -108,17 +104,17 @@ public class AstericsGUI implements IAREEventListener
 
 	private BundleContext bundleContext;
 	private JFileChooser fc;
-	private int openFrameCount=0;
-	private int xOffset=20;
-	private int yOffset=20;
+	private int openFrameCount = 0;
+	private int xOffset = 20;
+	private int yOffset = 20;
 
 	JButton restartButton;
-	JPanel centerPanel,
-	controlPanel, jplPanel, copyrightPanel, modelWrapperPanel, cpWrapperPanel;
+	JPanel centerPanel, controlPanel, jplPanel, copyrightPanel,
+			modelWrapperPanel, cpWrapperPanel;
 	private Container pane;
 
-	private final AsapiSupport as; 
-	Dimension screenSize ;
+	private final AsapiSupport as;
+	Dimension screenSize;
 	private JFrame mainFrame;
 	OptionsFrame optionsFrame;
 	// private AboutFrame aboutFrame;
@@ -126,29 +122,26 @@ public class AstericsGUI implements IAREEventListener
 	private Dimension size;
 	private Point position, initialClick;
 	private ControlPane controlPane;
-	private TrayIcon trayIcon=null;
-	private int controlPanelOrientation= BoxLayout.Y_AXIS;
+	private TrayIcon trayIcon = null;
+	private int controlPanelOrientation = BoxLayout.Y_AXIS;
 
-	SystemTray tray=null;
-	
-	ModelGUIInfo modelGuiInfo = new ModelGUIInfo(	DEFAULT_SCREEN_X, 
-													DEFAULT_SCREEN_Y,
-													DEFAULT_SCREEN_W,
-													DEFAULT_SCREEN_H);
+	SystemTray tray = null;
 
-	public  AstericsGUI(BundleContext bundleContext) 
-	{
+	ModelGUIInfo modelGuiInfo = new ModelGUIInfo(DEFAULT_SCREEN_X,
+			DEFAULT_SCREEN_Y, DEFAULT_SCREEN_W, DEFAULT_SCREEN_H);
+
+	public AstericsGUI(BundleContext bundleContext) {
 		super();
 
 		// logger = AstericsErrorHandling.instance.getLogger();
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		AREServices.instance.registerAREEventListener(this);
-		
+
 		this.bundleContext = bundleContext;
 		final URL iconPath = bundleContext.getBundle().getResource(ICON_PATH);
-		
+
 		as = new AsapiSupport();
-		String hostname="", ip="";
+		String hostname = "", ip = "";
 
 		try {
 			hostname = InetAddress.getLocalHost().getHostName();
@@ -158,104 +151,96 @@ public class AstericsGUI implements IAREEventListener
 		}
 
 		mainFrame = new JFrame();
-		mainFrame.setVisible(false); 
+		mainFrame.setVisible(false);
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
-		mainFrame.setTitle ("AsTeRICS Runtime Environment 2.2     Host: "+hostname+"  IP:"+ip);
+		mainFrame.setTitle("AsTeRICS Runtime Environment 2.2     Host: "
+				+ hostname + "  IP:" + ip);
 		mainFrame.addComponentListener(new ResizeListener());
 		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				if (mainFrame.isShowing())
-				closeAction();
+					closeAction();
 			}
 			// public void windowStateChanged(java.awt.event.WindowEvent e) {
 			// if (mainFrame.isShowing())
-			//	setDesktopSize("both");
-			//}
+			// setDesktopSize("both");
+			// }
 		});
 
 		pane = mainFrame.getContentPane();
 
-		//Create and set up the content pane.
+		// Create and set up the content pane.
 		desktop = new AstericsDesktop(this);
-		desktop.setOpaque(true); //content panes must be opaque
+		desktop.setOpaque(true); // content panes must be opaque
 		desktop.addMouseListener(new DesktopListener());
 		desktop.addMouseMotionListener(new DesktopListener());
 		pane.add(desktop, BorderLayout.CENTER);
 
-		optionsFrame = new OptionsFrame (this, mainFrame);
-		
+		optionsFrame = new OptionsFrame(this, mainFrame);
+
 		controlPane = new ControlPane(this.bundleContext, mainFrame, as, this);
 		controlPane.setStatus(AREStatus.UNKNOWN);
 
-		controlPanel = new JPanel ();
+		controlPanel = new JPanel();
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
 		controlPanel.add(controlPane);
-		pane.add(controlPanel, BorderLayout.LINE_END);	
+		pane.add(controlPanel, BorderLayout.LINE_END);
 
 		// aboutFrame = new AboutFrame (this, mainFrame);
-		
+
 	}
 
 	public class ResizeListener extends ComponentAdapter {
 
-		  @Override
-		  public void componentResized(ComponentEvent evt) {
-			  
-				int bHeight=mainFrame.getHeight();
-				int bWidth=mainFrame.getWidth();
-				int actOrientation;
-				
-				if ((bHeight<250) && (bWidth>bHeight))  { 
-					actOrientation=BoxLayout.X_AXIS;
-					if (controlPanelOrientation!=actOrientation)
-					{
-						pane.remove(controlPanel);
-						pane.add(controlPanel, BorderLayout.PAGE_END);	
-						controlPane.reAlign(actOrientation);
-					}
+		@Override
+		public void componentResized(ComponentEvent evt) {
+
+			int bHeight = mainFrame.getHeight();
+			int bWidth = mainFrame.getWidth();
+			int actOrientation;
+
+			if ((bHeight < 250) && (bWidth > bHeight)) {
+				actOrientation = BoxLayout.X_AXIS;
+				if (controlPanelOrientation != actOrientation) {
+					pane.remove(controlPanel);
+					pane.add(controlPanel, BorderLayout.PAGE_END);
+					controlPane.reAlign(actOrientation);
 				}
-				else { 
-					actOrientation=BoxLayout.Y_AXIS; 
-					if (controlPanelOrientation!=actOrientation)
-					{
-						pane.remove(controlPanel);
-						pane.add(controlPanel, BorderLayout.LINE_END);	
-						controlPane.reAlign(actOrientation);
-					}
+			} else {
+				actOrientation = BoxLayout.Y_AXIS;
+				if (controlPanelOrientation != actOrientation) {
+					pane.remove(controlPanel);
+					pane.add(controlPanel, BorderLayout.LINE_END);
+					controlPane.reAlign(actOrientation);
 				}
-				controlPanelOrientation=actOrientation;
-				
-				controlPane.resizeLabels(actOrientation);
-		  }
+			}
+			controlPanelOrientation = actOrientation;
+
+			controlPane.resizeLabels(actOrientation);
+		}
 	}
 
 	public class DesktopListener implements MouseListener, MouseMotionListener {
 
 		@Override
-		public void mouseClicked(MouseEvent e) 
-		{
-			if (e.getButton()==MouseEvent.BUTTON3) 
-			{
-				//System.out.println(" MOUSE CLICKED RIGHT " + e.getClickCount() + " TIMES **");
+		public void mouseClicked(MouseEvent e) {
+			if (e.getButton() == MouseEvent.BUTTON3) {
+				// System.out.println(" MOUSE CLICKED RIGHT " +
+				// e.getClickCount() + " TIMES **");
 				controlPanel.setVisible(!controlPanel.isVisible());
-			}
-			else if (e.getButton()==MouseEvent.BUTTON1)
-			{
-				//System.out.println(" MOUSE CLICKED LEFT" + e.getClickCount() + " TIMES **");
-				if (e.getClickCount() ==2) 
-				{
+			} else if (e.getButton() == MouseEvent.BUTTON1) {
+				// System.out.println(" MOUSE CLICKED LEFT" + e.getClickCount()
+				// + " TIMES **");
+				if (e.getClickCount() == 2) {
 					mainFrame.setPreferredSize(mainFrame.getSize());
-					
-					if (mainFrame.isUndecorated() == false)
-					{
+
+					if (mainFrame.isUndecorated() == false) {
 						mainFrame.dispose();
 						mainFrame.setUndecorated(true);
 						mainFrame.pack();
 						mainFrame.setVisible(true);
-					}
-					else
-					{
+					} else {
 						mainFrame.dispose();
 						mainFrame.setUndecorated(false);
 						mainFrame.pack();
@@ -266,62 +251,63 @@ public class AstericsGUI implements IAREEventListener
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {}
+		public void mouseEntered(MouseEvent e) {
+		}
 
 		@Override
-		public void mouseExited(MouseEvent e) {}
+		public void mouseExited(MouseEvent e) {
+		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			initialClick = e.getPoint();
-            mainFrame.getComponentAt(initialClick);
+			mainFrame.getComponentAt(initialClick);
 		}
 
 		@Override
-		public void mouseReleased(MouseEvent e) {}
-		
-		
+		public void mouseReleased(MouseEvent e) {
+		}
+
 		@Override
-		public void mouseMoved(MouseEvent e) { }
-		
-	    @Override
-	    public void mouseDragged(MouseEvent e) {
-	
-	        // get location of Window
-	        int thisX = mainFrame.getLocationOnScreen().x;
-	        int thisY = mainFrame.getLocationOnScreen().y;
-	          
-	        // Determine how much the mouse moved since the initial click
-	        int xMoved = (thisX + e.getX()) - (thisX + initialClick.x);
-	        int yMoved = (thisY + e.getY()) - (thisY + initialClick.y);
-	
-	        // Move window to this position
-	        int X = thisX + xMoved;
-	        int Y = thisY + yMoved;
-	        mainFrame.setLocation(X, Y);
-	    }
+		public void mouseMoved(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+
+			// get location of Window
+			int thisX = mainFrame.getLocationOnScreen().x;
+			int thisY = mainFrame.getLocationOnScreen().y;
+
+			// Determine how much the mouse moved since the initial click
+			int xMoved = (thisX + e.getX()) - (thisX + initialClick.x);
+			int yMoved = (thisY + e.getY()) - (thisY + initialClick.y);
+
+			// Move window to this position
+			int X = thisX + xMoved;
+			int Y = thisY + yMoved;
+			mainFrame.setLocation(X, Y);
+		}
 	}
-		
-		
 
 	public void setSystemTray() {
 
-
 		if (SystemTray.isSupported()) {
 
-			if (tray!=null && tray.getTrayIcons().length>0) 
+			if (tray != null && tray.getTrayIcons().length > 0)
 				return;
 
 			// get the SystemTray instance
 			tray = SystemTray.getSystemTray();
 			// load an image
-			final URL iconPath = bundleContext.
-					getBundle().getResource(TRAY_ICON_PATH);
+			final URL iconPath = bundleContext.getBundle().getResource(
+					TRAY_ICON_PATH);
 			Image image = Toolkit.getDefaultToolkit().getImage(iconPath);
 
 			mainFrame.setIconImage(image);
 
-			// create a action listener to listen for default action executed on the tray icon
+			// create a action listener to listen for default action executed on
+			// the tray icon
 			ActionListener quitListener = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					closeAction();
@@ -330,7 +316,7 @@ public class AstericsGUI implements IAREEventListener
 
 			ActionListener openListener = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(!mainFrame.isVisible()) {
+					if (!mainFrame.isVisible()) {
 						mainFrame.setVisible(true);
 
 						mainFrame.setState(JFrame.NORMAL);
@@ -348,9 +334,8 @@ public class AstericsGUI implements IAREEventListener
 			defaultItem.addActionListener(quitListener);
 			popup.add(defaultItem);
 
-
-
-			trayIcon = new TrayIcon(image, "AsTeRICS Runtime Envrironment", popup);
+			trayIcon = new TrayIcon(image, "AsTeRICS Runtime Envrironment",
+					popup);
 			// set the TrayIcon properties
 			trayIcon.addActionListener(openListener);
 			// add the tray image
@@ -359,37 +344,33 @@ public class AstericsGUI implements IAREEventListener
 			} catch (AWTException e) {
 				System.err.println(e);
 			}
-		} 
+		}
 	}
 
-	public JPanel getDesktop ()
-	{
+	public JPanel getDesktop() {
 		return this.desktop;
 	}
 
-	public void displayFrame (final JInternalFrame frame, final boolean display)
-	{
+	public void displayFrame(final JInternalFrame frame, final boolean display) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 
-				if (display)
-				{
+				if (display) {
 					openFrameCount++;
 					frame.setResizable(true);
 					frame.setClosable(true);
 					frame.setMaximizable(true);
 					frame.setIconifiable(true);
-					frame.setLocation(xOffset*openFrameCount, yOffset*openFrameCount);
+					frame.setLocation(xOffset * openFrameCount, yOffset
+							* openFrameCount);
 					frame.setVisible(true);
 					desktop.validate();
 					desktop.add(frame);
 
 					frame.moveToFront();
 					desktop.repaint();
-				}
-				else
-				{
+				} else {
 					desktop.remove(frame);
 					frame.setVisible(false);
 					frame.dispose();
@@ -400,123 +381,115 @@ public class AstericsGUI implements IAREEventListener
 
 	}
 
-	public void displayPanel (final JPanel panel, final int posX, final int posY, 
-			final int width, final int height, 
-			final boolean display)
-	{
-		//x, y, w and h are given in % we need to convert them to absolute
-		//values based on the screen dimension
+	public void displayPanel(final JPanel panel, final int posX,
+			final int posY, final int width, final int height,
+			final boolean display) {
+		// x, y, w and h are given in % we need to convert them to absolute
+		// values based on the screen dimension
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				
+
 				AREProperties props = AREProperties.instance;
-				
-				int realX=screenSize.width;
-				int realY=screenSize.height;
-				
-				int nposX = (int) (realX*posX/10000f);
-				int nposY = (int) (realY*posY/10000f);
-				int nwidth = (int) (realX*width/10000f);
-				int nheight = (int) (realY*height/10000f);
-				if (props.checkProperty("undecorated", "0")) 
-				{
+				int realX = screenSize.width;
+				int realY = screenSize.height;
+
+				int nposX = (int) (realX * posX / 10000f);
+				int nposY = (int) (realY * posY / 10000f);
+				int nwidth = (int) (realX * width / 10000f);
+				int nheight = (int) (realY * height / 10000f);
+				if (props.checkProperty("undecorated", "0")) {
 					nposY -= 41;
 				}
-				//System.out.println("\nDisplay Panel:");
-				//System.out.println("  Screensize ="+screenSize.width + ", " + screenSize.height);
-				//System.out.println("  Pos ="+posX + ", " + posY + ", " + width + ", " + height);
-				//System.out.println("  nPos ="+nposX + ", " + nposY + ", " + nwidth + ", " + nheight);
-				//System.out.println("  set to:"+(nposX-position.x)+ ", " + (nposY-position.y));
+				// System.out.println("\nDisplay Panel:");
+				// System.out.println("  Screensize ="+screenSize.width + ", " +
+				// screenSize.height);
+				// System.out.println("  Pos ="+posX + ", " + posY + ", " +
+				// width + ", " + height);
+				// System.out.println("  nPos ="+nposX + ", " + nposY + ", " +
+				// nwidth + ", " + nheight);
+				// System.out.println("  set to:"+(nposX-position.x)+ ", " +
+				// (nposY-position.y));
 
-				if (display)
-				{
-					desktop.validate();
-					if (panel!=null) desktop.addPanel(panel, nposX - position.x , nposY - position.y, nwidth, nheight);
-					desktop.repaint();
-				}
-				else
-				{
-					if (panel!=null) {
-					  panel.setVisible(false);
-					  desktop.remove(panel);
+				if (display) {
+					if (panel != null) {
+						desktop.addPanel(panel, nposX - position.x, nposY
+								- position.y, nwidth, nheight);
+						// Recalculates preferred size according to new desktop
+						// panel
+						mainFrame.pack();
+						// Repaints GUI
+						mainFrame.repaint();
 					}
-					desktop.repaint();
-					desktop.validate();
-
+				} else {
+					if (panel != null) {
+						panel.setVisible(false);
+						desktop.remove(panel);
+						// Recalculates layout and size according to new desktop
+						// panel
+						desktop.validate();
+						// Repaints GUI
+						desktop.repaint();
+					}
 				}
 			}
 		});
 
 	}
 
-	public void closeAction()
-	{	//if (mainFrame.isShowing())
-		//	setDesktopSize("both");
+	public void closeAction() { // if (mainFrame.isShowing())
+								// setDesktopSize("both");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setVisible(false);
 		AREServices.instance.stopModel();
 		System.exit(0);
 	}
 
-
-	void fileChooser (AsapiSupport as)
-	{
+	void fileChooser(AsapiSupport as) {
 		fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
-		//Add a custom file filter and disable the default
-		//(Accept All) file filter.
+		// Add a custom file filter and disable the default
+		// (Accept All) file filter.
 		fc.addChoosableFileFilter(new ModelFilter());
 		fc.setAcceptAllFileFilterUsed(true);
 		fc.setCurrentDirectory(new java.io.File("./models"));
 
-		//Show it.
+		// Show it.
 		int returnVal = fc.showDialog(mainFrame, "Open model...");
 
-		//Process the results.
-		if (returnVal == JFileChooser.APPROVE_OPTION)
-		{
+		// Process the results.
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			String fileName = file.getName();
-			int mid= fileName.lastIndexOf(".");
-			String extension=fileName.substring(mid+1,fileName.length());  
+			int mid = fileName.lastIndexOf(".");
+			String extension = fileName.substring(mid + 1, fileName.length());
 
-			if (extension != null) 
-			{
-				if (extension.equals("xml") ||
-						extension.equals("acs") ) 
-				{
-					try 
-					{
+			if (extension != null) {
+				if (extension.equals("xml") || extension.equals("acs")) {
+					try {
 						as.deployFile(file.getAbsolutePath());
-						//as.runModel();
-					} 
-					catch (AREAsapiException e) 
-					{
-						//e.printStackTrace();
+						// as.runModel();
+					} catch (AREAsapiException e) {
+						// e.printStackTrace();
 					}
-				} 
-				else 
-				{
+				} else {
 					JOptionPane.showMessageDialog(mainFrame,
 							"The selected file is not a valid AsTeRICS model.",
-							"Invalid file",
-							JOptionPane.WARNING_MESSAGE);
+							"Invalid file", JOptionPane.WARNING_MESSAGE);
 				}
 			}
+		} else if (returnVal == JFileChooser.CANCEL_OPTION) {
+			;
 		}
-		else if (returnVal == JFileChooser.CANCEL_OPTION) {;}
 
-
-		//Reset the file chooser for the next time it's shown.
+		// Reset the file chooser for the next time it's shown.
 		fc.setSelectedFile(null);
 	}
-	
-	
-	class ModelFilter  extends FileFilter {
 
-		//Accept only .xml and .acs files
+	class ModelFilter extends FileFilter {
+
+		// Accept only .xml and .acs files
 		public boolean accept(File f) {
 
 			if (f.isDirectory()) {
@@ -524,12 +497,11 @@ public class AstericsGUI implements IAREEventListener
 			}
 
 			String fileName = f.getName();
-			int mid= fileName.lastIndexOf(".");
-			String extension=fileName.substring(mid+1,fileName.length());  
+			int mid = fileName.lastIndexOf(".");
+			String extension = fileName.substring(mid + 1, fileName.length());
 
 			if (extension != null) {
-				if (extension.equals("xml") ||
-						extension.equals("acs") ) {
+				if (extension.equals("xml") || extension.equals("acs")) {
 					return true;
 				} else {
 					return false;
@@ -539,121 +511,102 @@ public class AstericsGUI implements IAREEventListener
 			return false;
 		}
 
-		//The description of this filter
+		// The description of this filter
 		public String getDescription() {
 			return "AsTeRICS models";
 		}
 	}
 
-	public void setVisible(String name, boolean b)
-	{
+	public void setVisible(String name, boolean b) {
 		Component[] components = pane.getComponents();
 
-		for (Component c : components)
-		{
-			if ( c!=null && (c instanceof JPanel) && (c.getName()!=null))
-			{
-				if (c.getName().equals(name))
-				{
+		for (Component c : components) {
+			if (c != null && (c instanceof JPanel) && (c.getName() != null)) {
+				if (c.getName().equals(name)) {
 					c.setVisible(b);
 					return;
 				}
 			}
 		}
 	}
-	
 
-	void applyChanges ()
-	{
-		
+	void applyChanges() {
+
 		mainFrame.setVisible(false);
 		AREProperties props = AREProperties.instance;
-		
-		if (props.checkProperty("undecorated", "1"))
-		{
-			if (mainFrame.isUndecorated() == false)
-			{
+
+		if (props.checkProperty("undecorated", "1")) {
+			if (mainFrame.isUndecorated() == false) {
 				mainFrame.dispose();
 				mainFrame.setUndecorated(true);
-				//mainFrame.pack();
+				// mainFrame.pack();
 			}
-		}
-		else
-		{
-			if (mainFrame.isUndecorated() == true) 
-			{
+		} else {
+			if (mainFrame.isUndecorated() == true) {
 				mainFrame.dispose();
 				mainFrame.setUndecorated(false);
-				//mainFrame.pack();
-				
+				// mainFrame.pack();
+
 			}
 		}
-		if (props.checkProperty("fullscreen", "1"))
-		{
-			mainFrame.setPreferredSize(
-					new Dimension(screenSize.width+10, 
-							screenSize.height+10));
-			mainFrame.setLocation(new Point(-2,-2));  
-			mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-			size = new Dimension((int)(screenSize.width +10),(int)(screenSize.height +10)); 
-			position = new Point((int)(-2),(int)(-2)); 
-		}
-		else
-		{	
-			size = new Dimension(
-					(int)(screenSize.width * modelGuiInfo.getDimension().width / 10000f),
-					(int)(screenSize.height * modelGuiInfo.getDimension().height / 10000f)); 
+		if (props.checkProperty("fullscreen", "1")) {
+			mainFrame.setPreferredSize(new Dimension(screenSize.width + 10,
+					screenSize.height + 10));
+			mainFrame.setLocation(new Point(-2, -2));
+			mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			size = new Dimension((int) (screenSize.width + 10),
+					(int) (screenSize.height + 10));
+			position = new Point((int) (-2), (int) (-2));
+		} else {
+			size = new Dimension((int) (screenSize.width
+					* modelGuiInfo.getDimension().width / 10000f),
+					(int) (screenSize.height
+							* modelGuiInfo.getDimension().height / 10000f));
 
 			position = new Point(
-					(int)(screenSize.width * modelGuiInfo.getPosition().x / 10000f),
-					(int)(screenSize.height * modelGuiInfo.getPosition().y / 10000f)); 
-					
+					(int) (screenSize.width * modelGuiInfo.getPosition().x / 10000f),
+					(int) (screenSize.height * modelGuiInfo.getPosition().y / 10000f));
+
 			mainFrame.setLocation(position);
 			mainFrame.setPreferredSize(size);
 		}
-		
+
 		if (props.checkProperty("show_side_bar", "1"))
 			this.controlPanel.setVisible(true);
 		else
 			this.controlPanel.setVisible(false);
-		
-		if (props.containsKey("background_color"))
-		{
+
+		if (props.containsKey("background_color")) {
 			int ncint = Integer.parseInt(props.getProperty("background_color"));
 			Color nc = new Color(ncint);
 			desktop.setBackground(nc);
 			desktop.validate();
 		}
-		
-		mainFrame.setAlwaysOnTop(props.getProperty("always_on_top").equals("1"));
 
-		if (props.checkProperty("iconify", "1"))
-		{
+		mainFrame
+				.setAlwaysOnTop(props.getProperty("always_on_top").equals("1"));
+
+		if (props.checkProperty("iconify", "1")) {
 			setSystemTray();
-		}
-		else 
-		{
+		} else {
 			mainFrame.setVisible(true);
 			mainFrame.setState(JFrame.NORMAL);
 
-			if (tray!=null)
+			if (tray != null)
 				tray.remove(trayIcon);
 		}
 		mainFrame.pack();
-		mainFrame.revalidate();		
+		mainFrame.revalidate();
 	}
-	
-	
-	public void setStatus (AREStatus s)
-	{
-		controlPane.setStatus (s);
+
+	public void setStatus(AREStatus s) {
+		controlPane.setStatus(s);
 	}
-	
-	
+
 	public JFrame getFrame() {
 		return this.mainFrame;
 	}
-	
+
 	public void setModelGuiInfo(ModelGUIInfo modelGuiInfo) {
 		this.modelGuiInfo = modelGuiInfo;
 	}
@@ -663,16 +616,14 @@ public class AstericsGUI implements IAREEventListener
 	}
 
 	@Override
-	public void postDeployModel() 
-	{
-		ModelGUIInfo info = DeploymentManager.instance
-			.getCurrentRuntimeModel().getModelGuiInfo();
-		
-		if (info != null)
-		{
+	public void postDeployModel() {
+		ModelGUIInfo info = DeploymentManager.instance.getCurrentRuntimeModel()
+				.getModelGuiInfo();
+
+		if (info != null) {
 			// System.out.println(info.toString());
 			modelGuiInfo = info;
-			modelGuiInfo.updateProperties();			
+			modelGuiInfo.updateProperties();
 			applyChanges();
 		}
 	}
@@ -683,111 +634,62 @@ public class AstericsGUI implements IAREEventListener
 
 	@Override
 	public void postStopModel() {
-		
+
 	}
 
 	@Override
 	public void postBundlesInstalled() {
-		
+
 	}
 
 	@Override
 	public void onAreError(String msg) {
-		
+
 	}
-	
-	public BundleContext getBundleContext ()
-	{
+
+	public BundleContext getBundleContext() {
 		return this.bundleContext;
 	}
 
-
 }
 
-
+/*
+ * mainFrame.addHierarchyListener(new HierarchyListener() {
+ * 
+ * @Override public void hierarchyChanged(HierarchyEvent e) {
+ * 
+ * if ((HierarchyEvent.SHOWING_CHANGED & e.getChangeFlags()) !=0 &&
+ * mainFrame.isShowing()) { setPostDisplayableOptions(); } } });
+ */
 
 /*
-mainFrame.addHierarchyListener(new HierarchyListener() {
-
-	@Override
-	public void hierarchyChanged(HierarchyEvent e) 
-	{
-	
-		if ((HierarchyEvent.SHOWING_CHANGED & e.getChangeFlags()) !=0 
-				&& mainFrame.isShowing()) 
-		{
-			setPostDisplayableOptions();
-		}
-	}
-});
-*/
-
-
-
-/*
-mainFrame.addComponentListener(new ComponentAdapter() {
-
-
-	@Override
-	public void componentResized(ComponentEvent e) {
-		if (mainFrame.isShowing())
-		{
-			setDesktopSize("both");
-		}
-	}
-	public void componentMoved(ComponentEvent e) {
-
-		if (mainFrame.isShowing())
-		{
-			setDesktopSize("both");
-		}
-	}
-});
-
-mainFrame.addWindowStateListener(new WindowStateListener() {
-	public void windowStateChanged(WindowEvent e) {
-		if (e.getNewState() == JFrame.ICONIFIED) {
-			if (areOptions.get("iconify")!=null)
-			{
-				if(areOptions.get("iconify").equals("1"))
-				{
-					setSystemTray();
-					mainFrame.setVisible(false);
-				}
-			}
-		}
-	}
-});
-	*/		
-
-
+ * mainFrame.addComponentListener(new ComponentAdapter() {
+ * 
+ * 
+ * @Override public void componentResized(ComponentEvent e) { if
+ * (mainFrame.isShowing()) { setDesktopSize("both"); } } public void
+ * componentMoved(ComponentEvent e) {
+ * 
+ * if (mainFrame.isShowing()) { setDesktopSize("both"); } } });
+ * 
+ * mainFrame.addWindowStateListener(new WindowStateListener() { public void
+ * windowStateChanged(WindowEvent e) { if (e.getNewState() == JFrame.ICONIFIED)
+ * { if (areOptions.get("iconify")!=null) {
+ * if(areOptions.get("iconify").equals("1")) { setSystemTray();
+ * mainFrame.setVisible(false); } } } } });
+ */
 
 /*
-public void setDesktopSize(String mode) 
-{
-	BufferedWriter out = null;
-
-	try 
-	{
-		out = new BufferedWriter(new FileWriter(WINDOW_PROPERTIES));
-		if (mode.equals("both"))
-		{
-			out.write(mainFrame.getSize().width+","+mainFrame.getSize().height);
-			out.newLine();
-			int x = mainFrame.getLocationOnScreen().x;
-			if (x<0) x=0;
-			int y = mainFrame.getLocationOnScreen().y;
-			if (y<0) y=0;
-			out.write(x+","+y);
-		}
-		out.close();
-	}
-	catch (IOException ioe)
-	{
-		logger.warning(this.getClass().getName()+"." +
-				"setDesktopSize: IO Exception while writting window properties." 
-				+"Details:"+ioe.getMessage());
-	}
-}
-*/
+ * public void setDesktopSize(String mode) { BufferedWriter out = null;
+ * 
+ * try { out = new BufferedWriter(new FileWriter(WINDOW_PROPERTIES)); if
+ * (mode.equals("both")) {
+ * out.write(mainFrame.getSize().width+","+mainFrame.getSize().height);
+ * out.newLine(); int x = mainFrame.getLocationOnScreen().x; if (x<0) x=0; int y
+ * = mainFrame.getLocationOnScreen().y; if (y<0) y=0; out.write(x+","+y); }
+ * out.close(); } catch (IOException ioe) {
+ * logger.warning(this.getClass().getName()+"." +
+ * "setDesktopSize: IO Exception while writting window properties."
+ * +"Details:"+ioe.getMessage()); } }
+ */
 

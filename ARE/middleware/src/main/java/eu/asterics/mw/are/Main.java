@@ -11,11 +11,14 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 
 /*
@@ -87,7 +90,7 @@ public class Main implements BundleActivator
 			}
 			logger.info("JVM "+bits+" bit detected");
 			
-			EventQueue.invokeLater(new Runnable() { public void run() {
+		    SwingUtilities.invokeLater(new Runnable() { public void run() {				
 			astericsGUI = new AstericsGUI (context);
 		
 			astericsFrame = astericsGUI.getFrame();
@@ -134,9 +137,7 @@ public class Main implements BundleActivator
 				astericsFrame.setVisible(true);
 				astericsFrame.setState(JFrame.NORMAL);
 			}*/
-			
 			astericsFrame.setVisible(true);
-
 			
 			AsapiSupport as = new AsapiSupport();
 			as.autostart();
