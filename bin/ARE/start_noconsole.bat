@@ -24,15 +24,15 @@ ECHO Starting AsTeRICS Runtime Environment ...
 ECHO error_level:WARNING>.logger
 
 REM use next two lines for starting without the shell window
-REM start javaw -Djava.util.logging.config.file=logging.properties -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
+REM start javaw -splash:images/asterics_startup.png -Djava.util.logging.config.file=logging.properties -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
 REM sleeper 5
 
 
 REM use the next line instead for starting with the shell window
 if exist java/bin/javaw.exe (
-	start java/bin/javaw.exe -Djava.util.logging.config.file=logging.properties -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
+	start java/bin/javaw.exe -splash:images/asterics_startup.png -Djava.util.logging.config.file=logging.properties -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
 ) else (
-	start javaw -Djava.util.logging.config.file=logging.properties -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
+	start javaw -splash:images/asterics_startup.png -Djava.util.logging.config.file=logging.properties -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
 )
 
 
