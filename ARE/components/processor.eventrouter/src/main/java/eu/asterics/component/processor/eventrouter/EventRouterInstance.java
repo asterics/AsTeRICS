@@ -84,7 +84,10 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
     */
     public IRuntimeInputPort getInputPort(String portID)
     {
-
+		if("routeIndex".equalsIgnoreCase(portID))
+        {
+            return ipRouteIndex;
+        }
 		return null;
 	}
 
@@ -99,6 +102,24 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
 		return null;
 	}
 
+	
+	 /**
+     * Input Port for receiving values.
+     */
+    private final IRuntimeInputPort ipRouteIndex = new DefaultRuntimeInputPort()
+    {
+        public void receiveData(byte[] data)
+        {
+			actPort = ConversionUtils.intFromBytes(data);
+			if (actPort < 1)
+				actPort = 1;
+			
+			if (actPort > 8)
+					actPort = 8;
+       }
+
+    };
+	
     /**
      * returns an Event Listener Port.
      * @param eventPortID   the name of the port

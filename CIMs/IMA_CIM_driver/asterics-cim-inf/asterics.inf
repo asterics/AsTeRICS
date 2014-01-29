@@ -1,0 +1,48 @@
+[Version]
+Signature="$Windows NT$"
+Class=Ports
+ClassGUID={4d36e978-e325-11ce-bfc1-08002be10318}
+Provider=%IMA%
+DriverVer=16/03/2009,1.0.7
+
+[SourceDisksFiles]
+
+[SourceDisksNames]
+
+[Manufacturer]
+%IMA%=IMA
+
+[IMA]
+%IMA_CDC&PID_0033%=ImaVirCOM,USB\VID_FFFF&PID_0033
+
+;**************************************************
+;*   Windows NT family                            *
+;**************************************************
+[ImaVirCOM.NT]
+include=mdmcpq.inf
+CopyFiles=FakeModemCopyFileSection
+AddReg=ImaVirCOM.NT.AddReg
+
+[ImaVirCOM.NT.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,usbser.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[ImaVirCOM.NT.Services]
+AddService=usbser, 0x00000002,ImaVirCOMService_Inst
+
+[ImaVirCOMService_Inst]
+DisplayName=%ImaVirCOM.SvcDesc%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys
+LoadOrderGroup=Base
+
+;**************************************************
+;* Strings                                        *
+;**************************************************
+[Strings]
+IMA="IMA s.r.o."
+IMA_CDC&PID_0033="IMA AsTeRICS Development Module"
+ImaVirCOM.SvcDesc="IMA Development Module for AsTeRICS"

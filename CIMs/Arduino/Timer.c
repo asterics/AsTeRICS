@@ -161,13 +161,13 @@ uint8_t is_active_PWM(uint8_t pinnumber)
 	if(pinnumber == 3) return pwm3_en;
 	if(pinnumber == 5) return pwm5_en;
 	if(pinnumber == 6) return pwm6_en;
+	return 0;
 }
 
 
 ISR (TIMER0_OVF_vect)           // Timer0 overflow interrupt service routine, triggered every millisecond (ADC periodic)
 {
    static uint16_t adc_counter=0;   // millisecond_counter for adc reports
-   static uint16_t pinstate_counter=0;   // millisecond_counter for pinstate reports
    
    TCNT0 = RELOAD;        // Reload timer value to maintain the desired frequency of 1000Hz.
    if (ADC_updatetime >0)

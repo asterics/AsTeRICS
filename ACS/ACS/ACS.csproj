@@ -15,10 +15,14 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -249,12 +253,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.es-ES.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGeneratorEx</Generator>
       <LastGenOutput>Resources.es-ES.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.de-AT.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGeneratorEx</Generator>
       <LastGenOutput>Resources.de-AT.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -465,6 +469,8 @@
     <Resource Include="images\asterics_startup2.png" />
     <Resource Include="images\asterics_startup2_de.png" />
     <Resource Include="images\asterics_startup2_pl.png" />
+    <Resource Include="images\are_deco.png" />
+    <Resource Include="images\ExtToolNote.png" />
     <Content Include="libs\ColorPicker.dll" />
     <Resource Include="images\AsTeRICS_acs_icon_lg.ico" />
     <Resource Include="images\AsTeRICS_acs_icon_lg_tr.ico" />

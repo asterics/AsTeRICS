@@ -8,8 +8,11 @@
         <singleton>false</singleton>
         <description>routes incoming events to one of 8 event trigger ports</description>
         <ports>
-
-
+			<inputPort id="routeIndex">
+				<description>Select the route (range 0 - 1)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
         </ports>
 		<events>
 			<eventListenerPort id="eventIn">
