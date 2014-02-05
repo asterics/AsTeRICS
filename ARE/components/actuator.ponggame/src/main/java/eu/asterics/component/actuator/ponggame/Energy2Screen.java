@@ -32,17 +32,7 @@ public class Energy2Screen
     
 	public void auxiliaryButtonInput()
 	{
-		for (int i = 0; i < 2; i++)
-		{
-			Player p = GameWorld.instance.players[i];
-			if (p.score > AstericsPong.instance.lowestHighScore)
-			{
-				game.setScreen(new HighScoreEnterScreen(game, i));
-				goToNextScreen = false;
-				return;
-			}
-		}
-		setNextScreen(new HighScoreScreen(game));
+		goToNextScreen = true;
 	}
 	
 	public void playerMovementInput(int index)
@@ -92,11 +82,21 @@ public class Energy2Screen
 
         
 		
-		if (nextScreen != null)
+		if (goToNextScreen && !screenSwitchActive)
 		{
-			game.setScreen(nextScreen);
+			for (int i = 0; i < 2; i++)
+			{
+				Player p = GameWorld.instance.players[i];
+				if (p.score > AstericsPong.instance.lowestHighScore)
+				{
+					game.setScreen(new HighScoreEnterScreen(game, i));
+					screenSwitchActive = true;					
+					return;
+				}
+			}
+			setNextScreen(new HighScoreScreen(game));
+			screenSwitchActive = true;			
 		}
-		
 	}    
 }
 

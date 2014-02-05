@@ -63,7 +63,7 @@ public class GameOverScreen
     
 	public void auxiliaryButtonInput()
 	{
-		setNextScreen(new Energy1Screen(game));
+		goToNextScreen = true;
 	}
 	
 	public void playerMovementInput(int index)
@@ -119,9 +119,10 @@ public class GameOverScreen
 
         getBatch().end();
         
-		if (nextScreen != null)
+		if (goToNextScreen && !screenSwitchActive)
 		{
-			game.setScreen(nextScreen);
+			game.setScreen(new Energy1Screen(game));
+			screenSwitchActive = true;
 		}
 	}    
 }

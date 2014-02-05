@@ -32,7 +32,7 @@ public class Energy1Screen
     
 	public void auxiliaryButtonInput()
 	{
-		setNextScreen(new Energy2Screen(game));
+		goToNextScreen = true;
 	}
 	
 	public void playerMovementInput(int index)
@@ -73,9 +73,10 @@ public class Energy1Screen
 		getBatch().end();
 
         
-		if (nextScreen != null)
+		if (goToNextScreen && !screenSwitchActive)
 		{
-			game.setScreen(nextScreen);
+			game.setScreen(new Energy2Screen(game));
+			screenSwitchActive = true;
 		}
 	}    
 }
