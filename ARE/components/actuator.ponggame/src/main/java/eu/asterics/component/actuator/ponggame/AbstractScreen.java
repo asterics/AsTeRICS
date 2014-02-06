@@ -41,6 +41,7 @@ public abstract class AbstractScreen
     protected BitmapFont highscorefont =new BitmapFont(Gdx.files.internal("data/actuator.ponggame/highscorefont.fnt"),false);
     
     Screen nextScreen = null;
+    boolean screenSwitchActive = false;
     
     public void setNextScreen(Screen nextScreen) {
     	if (nextScreen == null)

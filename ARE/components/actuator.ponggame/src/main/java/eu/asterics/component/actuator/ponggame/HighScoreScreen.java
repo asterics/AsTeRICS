@@ -62,9 +62,10 @@ public class HighScoreScreen
         drawImage(backgroundImage,40,400);
 		getBatch().end();
 		
-		if (nextScreen != null)
+		if (showNextScreen && !screenSwitchActive)
 		{
-			game.setScreen(nextScreen);
+			game.setScreen(new GameScreen(game));
+			screenSwitchActive = true;
 		}
    	}    
 
@@ -73,7 +74,8 @@ public class HighScoreScreen
 	public void auxiliaryButtonInput()
 	{
 		PongGameServer.reset(2);                              // CRASHES (?)
-		setNextScreen(new GameScreen(game));
+		showNextScreen = true;
+		
 	}
 	
 	public void playerMovementInput(int index)
