@@ -429,7 +429,7 @@ namespace Asterics.ACS {
                     }
                 
                 }
-                catch (Exception e) {
+                catch (Exception) {
                 }
                 decorationCanvas.Width = guiComponentCanvas.Width-2;
                 decorationCanvas.Height = decorationHeight;
