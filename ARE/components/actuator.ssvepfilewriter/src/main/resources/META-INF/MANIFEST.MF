@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-actuators.ssvepfilewriter
-Bundle-SymbolicName: com.starlab.component.actuator.ssvepfilewriter
-Bundle-Version: 0.1.0
-DynamicImport-Package: *

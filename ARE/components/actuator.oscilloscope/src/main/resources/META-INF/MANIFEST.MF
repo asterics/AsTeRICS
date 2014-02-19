@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-actuators.oscilloscope
-Bundle-SymbolicName: eu.asterics.component.actuator.oscilloscope
-Bundle-Version: 0.1.0
-DynamicImport-Package: *

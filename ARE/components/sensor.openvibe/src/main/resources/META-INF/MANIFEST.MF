@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-sensors.openvibe
-Bundle-SymbolicName: eu.asterics.component.sensor.openvibe
-Bundle-Version: 0.1.0
-Bundle-ClassPath: . , lib/NetUtil.jar
-DynamicImport-Package: *

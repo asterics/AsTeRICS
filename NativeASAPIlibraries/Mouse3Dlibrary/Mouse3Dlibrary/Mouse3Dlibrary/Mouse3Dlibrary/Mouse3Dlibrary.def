@@ -1,6 +1,0 @@
-LIBRARY Mouse3Dlibrary
-
-EXPORTS
-init @1
-close @2
-get3DMouseState @3

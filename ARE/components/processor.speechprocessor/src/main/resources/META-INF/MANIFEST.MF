@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-processors.speechprocessor
-Bundle-SymbolicName: eu.asterics.component.processor.speechprocessor
-Bundle-Version: 0.1.0
-DynamicImport-Package: *

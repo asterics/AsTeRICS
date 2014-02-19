@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-sensors.textfieldreader
-Bundle-SymbolicName: eu.asterics.component.sensor.textfieldreader
-Bundle-Version: 0.1.0
-DynamicImport-Package: *

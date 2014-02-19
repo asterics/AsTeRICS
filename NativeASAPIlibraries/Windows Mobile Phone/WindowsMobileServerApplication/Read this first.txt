@@ -1,5 +1,0 @@
-This is Visual Studio 2005 project, because VS2010 does not support Windows Mobile projects.
-
-Component needed:
-- Microsoft Windows Mobile Device Center (Vista, Windows 7) or ActiveSync (XP)
-- Windows Mobile 5.0 Pocket PC SDK

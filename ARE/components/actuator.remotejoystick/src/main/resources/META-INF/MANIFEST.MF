@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics.remotejoystick
-Bundle-SymbolicName: eu.asterics.component.actuator.remotejoystick
-Bundle-Version: 0.1.0
-DynamicImport-Package: *
-

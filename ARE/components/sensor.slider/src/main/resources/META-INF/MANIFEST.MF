@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-sensors.slider
-Bundle-SymbolicName: eu.asterics.component.sensor.slider
-Bundle-Version: 0.1.0
-DynamicImport-Package: *

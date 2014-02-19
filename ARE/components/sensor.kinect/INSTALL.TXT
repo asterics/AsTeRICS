@@ -1,8 +1,0 @@
-Requirements:
-- latest OPENNI-Version from openni.org (tested with OpenNI 1.3.3.6)
-- Primesense NITE For Windows from openni.org (tested with Nite 1.4.2.4)
-- SensorKinect Driver (tested with Primesense Sensor KinectMod 5.0.3.3 driver)
-- sensor.kinect folder in the data directory of the are with two files
-	- SamplesConfig.xml
-	- calib.data
-- Java7

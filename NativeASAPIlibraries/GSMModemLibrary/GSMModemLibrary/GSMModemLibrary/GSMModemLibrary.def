@@ -1,7 +1,0 @@
-LIBRARY GSMModemLibrary
-
-EXPORTS
-init @1
-close @2
-sendSMS @3
-getModemPortNumber @4

@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Ant-Version: Apache Ant 1.7.1
-Created-By: 14.2-b01 (Sun Microsystems Inc.)
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-sensor.enobio
-Bundle-SymbolicName: com.starlab.component.sensor.enobio
-Bundle-Version: 0.1.0
-DynamicImport-Package: *
-

@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-proxy.remoteconsumer
-Bundle-SymbolicName: eu.asterics.component.proxy.remoteconsumer
-Bundle-Version: 0.1.0
-DynamicImport-Package: *

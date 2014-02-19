@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-processors.oscgesturefollower
-Bundle-SymbolicName: eu.asterics.component.processor.oscgesturefollower
-Bundle-Version: 0.1.0
-DynamicImport-Package: *
-Bundle-ClassPath: . , lib/NetUtil.jar

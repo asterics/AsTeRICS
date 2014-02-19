@@ -1,5 +1,0 @@
-The coordinates of the points are:
-0, 0     left upper led
-80, 0     right upper led
-0, 113     left lower led
-80, 103     right lower led

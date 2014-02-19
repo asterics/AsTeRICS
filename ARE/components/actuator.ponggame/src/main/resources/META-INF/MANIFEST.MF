@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-actuators.ponggame
-Bundle-SymbolicName: eu.asterics.component.actuator.ponggame
-Bundle-Version: 0.1.0
-Bundle-ClassPath: . , lib/gdx.jar, lib/gdx-sources.jar, lib/gdx-natives.jar, lib/gdx-backend-lwjgl.jar,lib/gdx-backend-lwjgl-natives.jar,lib/gdx-backend-lwjgl-sources.jar
-DynamicImport-Package: *

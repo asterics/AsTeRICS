@@ -1,1 +1,0 @@
-It requires the Boost library.

@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: asterics-sensors.lipmouse
-Bundle-SymbolicName: eu.asterics.component.sensor.lipmouse
-Bundle-Version: 0.1.0
-DynamicImport-Package: *
