@@ -33,6 +33,7 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 
 /**
@@ -129,7 +130,42 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance
 		}
 		return null;
 	}
+	
+	/**
+      * Event Listerner Ports.
+      */
+	final IRuntimeEventListenerPort elpBlockEvents = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			bridge.setProperty("blockEvents", "true"); 
+		}
+	};
 
+	final IRuntimeEventListenerPort elpForwardEvents = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			bridge.setProperty("blockEvents", "false"); 
+		}
+	};
+	
+	
+	/**
+     * returns an Event Listener Port.
+     * @param eventPortID   the name of the port
+     * @return         the EventListener port or null if not found
+     */
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
+    {
+		if ("blockEvents".equalsIgnoreCase(eventPortID))
+			return elpBlockEvents;
+		else if ("forwardEvents".equalsIgnoreCase(eventPortID))
+			return elpForwardEvents;
+		return null;
+    }
+
+	
 	/**
 	 * returns an Event Triggerer Port 
 	 * @param enventPortID   the name of the event trigger port

@@ -676,59 +676,42 @@ namespace Asterics.ACS {
                         }
 
                         // check, if a deployed model is ready on ARE
-                        if (currentAREStatus == "deployed") { // also stopped?
-                            if (showOverrideAtConnectionQuestion) {
-                                //if (MessageBox.Show(Properties.Resources.AREStatusMessageDeployed, Properties.Resources.AREStatusMessageHeader, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
-                                CustomMessageBox messageBox = new CustomMessageBox(Properties.Resources.AREStatusMessageDeployed, Properties.Resources.AREStatusMessageHeader, CustomMessageBox.messageType.Info, CustomMessageBox.resultType.YesNo);
-                                messageBox.Owner = this;
-                                messageBox.showCheckbox.IsChecked = showOverrideAtConnectionQuestion;
-                                messageBox.ShowDialog();
+                        if (showOverrideAtConnectionQuestion)
+                        {
+                            //if (MessageBox.Show(Properties.Resources.AREStatusMessageDeployed, Properties.Resources.AREStatusMessageHeader, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
+                            CustomMessageBox messageBox = new CustomMessageBox(Properties.Resources.AREStatusMessageDeployed, Properties.Resources.AREStatusMessageHeader, CustomMessageBox.messageType.Info, CustomMessageBox.resultType.YesNo);
+                            messageBox.Owner = this;
+                            messageBox.showCheckbox.IsChecked = showOverrideAtConnectionQuestion;
+                            messageBox.ShowDialog();
 
-                                showOverrideAtConnectionQuestion = (bool)messageBox.showCheckbox.IsChecked;
-                                if (showOverrideAtConnectionQuestion) {
-                                    ini.IniWriteValue("Options", "showOverrideLocalWhenConnected", "true");
-                                }
-                                else {
-                                    ini.IniWriteValue("Options", "showOverrideLocalWhenConnected", "false");
-                                }
-                                if ((bool)messageBox.DialogResult) {
-                                    DownloadAndCheckModel();
-                                }
+                            bool dialogResult = (bool)messageBox.DialogResult;
+                            if (dialogResult)
+                            {
+                                DownloadAndCheckModel();
                             }
-                            else {
-                                // If the message will not be shown, the model will not be downloaded (default = no). Uncomment to set the default to yes.
-                                // downloadAndCheckModel();
+                            showOverrideAtConnectionQuestion = (bool)messageBox.showCheckbox.IsChecked;
+                            if (showOverrideAtConnectionQuestion)
+                            {
+                                ini.IniWriteValue("Options", "showOverrideLocalWhenConnected", "true");
+                            }
+                            else
+                            {
+                                ini.IniWriteValue("Options", "showOverrideLocalWhenConnected", "false");
+                                if (dialogResult)
+                                    ini.IniWriteValue("Options", "downloadModelOnConnect", "true");
+                                else
+                                    ini.IniWriteValue("Options", "downloadModelOnConnect", "false");
                             }
                         }
-                        else if (currentAREStatus == "running" || currentAREStatus == "paused") {
-                            if (showOverrideAndRunAtConnectionQuestion) {
-                                CustomMessageBox messageBox = new CustomMessageBox(Properties.Resources.AREStatusMessageRunning, Properties.Resources.AREStatusMessageHeader, CustomMessageBox.messageType.Info, CustomMessageBox.resultType.YesNo);
-                                messageBox.Owner = this;
-                                messageBox.showCheckbox.IsChecked = showOverrideAndRunAtConnectionQuestion;
-                                messageBox.ShowDialog();
-
-                                showOverrideAndRunAtConnectionQuestion = (bool)messageBox.showCheckbox.IsChecked;
-                                if (showOverrideAndRunAtConnectionQuestion) {
-                                    ini.IniWriteValue("Options", "showOverrideAndRunLocalWhenConnected", "true");
-                                }
-                                else {
-                                    ini.IniWriteValue("Options", "showOverrideAndRunLocalWhenConnected", "false");
-                                }
-                                if ((bool)messageBox.DialogResult) {
-                                    DownloadAndCheckModel();
+                        else
+                        {
+                            if (ini.IniReadValue("Options", "downloadModelOnConnect") == "true")
+                            {
+                                DownloadAndCheckModel();
+                                if (currentAREStatus == "running")
                                     areStatus.Status = AREStatus.ConnectionStatus.Running;
-                                    if (currentAREStatus == "paused") {
-                                        areStatus.Status = AREStatus.ConnectionStatus.Pause;
-                                    }
-                                }
-                            }
-                            else {
-                                // If the message will not be shown, the model will not be downloaded and started (default = no). Uncomment to set the default to yes.
-                                //downloadAndCheckModel();
-                                //areStatus.Status = AREStatus.ConnectionStatus.Running;
-                                //if (currentAREStatus == "paused") {
-                                //    areStatus.Status = AREStatus.ConnectionStatus.Pause;
-                                //}
+                                else if (currentAREStatus == "paused")
+                                    areStatus.Status = AREStatus.ConnectionStatus.Pause;
                             }
                         }
                     }
@@ -3563,15 +3546,15 @@ namespace Asterics.ACS {
                     break;
                 }
             }
-            canvas.Children.Add(eventChannelToConnect.Line);
+            
             eventChannelToConnect.ListenerComponentId = componentWithFocus.id;
             eventChannelToConnect.Line.X2 = Canvas.GetLeft(componentWithFocus.ComponentCanvas) + LayoutConstants.EVENTINPORTCANVASOFFSETX + LayoutConstants.EVENTPORTWIDTH / 2 + 5;
             eventChannelToConnect.Line.Y2 = Canvas.GetTop(componentWithFocus.ComponentCanvas) + LayoutConstants.EVENTINPORTCANVASOFFSETY + LayoutConstants.EVENTPORTHEIGHT + 3;
             CommandObject co = new CommandObject("Delete", eventChannelToConnect);
             undoStack.Push(co);
             redoStack.Clear();
-            AddEventChannelCommand(eventChannelToConnect, true);
-
+            if (AddEventChannelCommand(eventChannelToConnect, true))
+                canvas.Children.Add(eventChannelToConnect.Line);
             eventChannelToConnect = null;
             ////dockManager.ActiveContent = dockableEventsTab;
 
@@ -4637,10 +4620,15 @@ namespace Asterics.ACS {
                             eventChannelToConnect.Line.X2 = Canvas.GetLeft((Canvas)tempCanvas.Parent) + Canvas.GetLeft(tempCanvas) + tempCanvas.ActualWidth / 2 + 2;
                             eventChannelToConnect.Line.Y2 = Canvas.GetTop((Canvas)tempCanvas.Parent) + Canvas.GetTop(tempCanvas) + tempCanvas.Height;
                             connectedChannelLastClick = true;
-                            CommandObject co = new CommandObject("Delete", eventChannelToConnect);
-                            undoStack.Push(co);
-                            redoStack.Clear();
-                            AddEventChannelCommand(eventChannelToConnect, true);
+                            if (AddEventChannelCommand(eventChannelToConnect, true) == false)
+                            {
+                                canvas.Children.Remove(eventChannelToConnect.Line);
+                            } else
+                            {
+                                CommandObject co = new CommandObject("Delete", eventChannelToConnect);
+                                undoStack.Push(co);
+                                redoStack.Clear();
+                            }
                             eventChannelToConnect = null;
                             newEventChannelRibbonButton.IsChecked = false;
                             ////dockManager.ActiveContent = dockableEventsTab;
@@ -10695,7 +10683,14 @@ namespace Asterics.ACS {
         /// </summary>
         /// <param name="addEventChannel">The new event channel</param>
         /// <param name="showDialog">Switch, to deactivate the "Connect Events" dialog</param>
-        private void AddEventChannelCommand(eventChannelLine addEventChannel, bool showDialog) {
+        private bool AddEventChannelCommand(eventChannelLine addEventChannel, bool showDialog) {
+            // check if connection already exists
+            foreach (eventChannelLine el in eventChannelLinesList) {
+                if (el.ListenerComponentId == addEventChannel.ListenerComponentId && el.TriggerComponentId == addEventChannel.TriggerComponentId)
+                {
+                    return false;
+                }
+            }
             addEventChannel.Line.Focusable = true;
             KeyboardNavigation.SetTabIndex(addEventChannel.Line, canvas.Children.Count + 1);
             addEventChannel.Line.GotKeyboardFocus += EventChannel_GotKeyboardFocus;
@@ -10729,6 +10724,7 @@ namespace Asterics.ACS {
             eventChannel ec = new eventChannel();
             ec.sources.source.component.id = addEventChannel.TriggerComponentId;
             //canvas.Children.Add(addEventChannel.Line);
+            return true;
         }
 
 

@@ -35,6 +35,25 @@ import java.util.logging.Logger;
 
 import java.net.UnknownHostException;
 
+import at.technikum_wien.embsys.aat.PriscillaCore.enums.BinaryState;
+import at.technikum_wien.embsys.aat.PriscillaCore.enums.ErrorCodeSend;
+import at.technikum_wien.embsys.aat.PriscillaCore.enums.EventSend;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEvent;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventBinary;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventError;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventFan;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventGetGatewayID;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventHumidity;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventIllumination;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventLearnTelegram;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventSetPoint;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventSupplyVoltage;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventTemperature;
+import at.technikum_wien.embsys.aat.PriscillaCore.event.FrameEventWindowHandle;
+import at.technikum_wien.embsys.aat.PriscillaCore.link.EnOceanLinkImpl;
+import at.technikum_wien.embsys.aat.PriscillaCore.link.event.ILinkListener;
+import eu.asterics.mw.cimcommunication.CIMPortController;
+import eu.asterics.mw.cimcommunication.CIMPortManager;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
@@ -42,53 +61,62 @@ import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 
 /* 
- * <Describe purpose of this module>
- * 
+ * This is a plugin for interfacing with an EnOcean network.
+ * The communication is based on the Priscilla library, developed
+ * by the UAS FH Technikum Wien (Benjamin Aigner and Richard Wagner)
  * 
  *  
- * @author <your name> [<your email address>]
- *         Date: 
+ * @author Benjamin Aigner [aignerb@technikum-wien.at]
+ *         Date: 26.12.2013
  *         Time: 
  */
 public class EnoceanInstance extends AbstractRuntimeComponentInstance
 {
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
-	//private KNXNetworkLinkIP netLinkIp = null;
-	//private ProcessCommunicator pc = null;
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+	EnOceanLinkImpl enoceanLink = null;
 
 	// Properties
-	private boolean propNAT = true;
+	private boolean propUSB = true;
 	private String propLocalIP = new String();
-	private String propKnxNetIP = new String();
-	private String propGroupAddress1 = new String();
+	private String propGatewayIP = new String();
+	
+	
+	private String propSendID1 = new String();
 	private String propDataType1 = new String();
 	private String propDataValue1 = new String();
-	private String propGroupAddress2 = new String();
+	private String propSendID2 = new String();
 	private String propDataType2 = new String();
 	private String propDataValue2 = new String();
-	private String propGroupAddress3 = new String();
+	private String propSendID3 = new String();
 	private String propDataType3 = new String();
 	private String propDataValue3 = new String();
-	private String propGroupAddress4 = new String();
+	private String propSendID4 = new String();
 	private String propDataType4 = new String();
 	private String propDataValue4 = new String();
-	private String propGroupAddress5 = new String();
+	private String propSendID5 = new String();
 	private String propDataType5 = new String();
 	private String propDataValue5 = new String();
-	private String propGroupAddress6 = new String();
+	private String propSendID6 = new String();
 	private String propDataType6 = new String();
 	private String propDataValue6 = new String();
 	
-	private String propGroupAddressSlider1 = new String();
-	private String propGroupAddressSlider2 = new String();
-	private String propGroupAddressSlider3 = new String();
-	private String propGroupAddressSlider4 = new String();
-	private String propGroupAddressSlider5 = new String();
-	private String propGroupAddressSlider6 = new String();
+	private String propIDSlider1 = new String();
+	private String propIDSlider2 = new String();
+	private String propIDSlider3 = new String();
+	private String propIDSlider4 = new String();
+	private String propIDSlider5 = new String();
+	private String propIDSlider6 = new String();
+	
+	private String propTypeSlider1 = new String();
+	private String propTypeSlider2 = new String();
+	private String propTypeSlider3 = new String();
+	private String propTypeSlider4 = new String();
+	private String propTypeSlider5 = new String();
+	private String propTypeSlider6 = new String();
 	// declare member variables here
 
 	// Event Listener Ports
@@ -99,12 +127,18 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 	private final String ELP_SEND5 	= "send5";		
 	private final String ELP_SEND6 	= "send6";
 	
-	private String propGroupAddressTrigger1 = new String();
-	private String propGroupAddressTrigger2 = new String();
-	private String propGroupAddressTrigger3 = new String();
-	private String propGroupAddressTrigger4 = new String();
-	private String propGroupAddressTrigger5 = new String();
-	private String propGroupAddressTrigger6 = new String();
+	private String propIDTrigger1 = new String();
+	private String propIDTrigger2 = new String();
+	private String propIDTrigger3 = new String();
+	private String propIDTrigger4 = new String();
+	private String propIDTrigger5 = new String();
+	private String propIDTrigger6 = new String();
+	private String propTypeTrigger1 = new String();
+	private String propTypeTrigger2 = new String();
+	private String propTypeTrigger3 = new String();
+	private String propTypeTrigger4 = new String();
+	private String propTypeTrigger5 = new String();
+	private String propTypeTrigger6 = new String();
 	
 	final IRuntimeEventTriggererPort runtimeEventTriggererPort1 = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort runtimeEventTriggererPort2 = new DefaultRuntimeEventTriggererPort();
@@ -112,6 +146,13 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 	final IRuntimeEventTriggererPort runtimeEventTriggererPort4 = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort runtimeEventTriggererPort5 = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort runtimeEventTriggererPort6 = new DefaultRuntimeEventTriggererPort();
+	
+	final IRuntimeOutputPort opValue1 = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opValue2 = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opValue3 = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opValue4 = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opValue5 = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opValue6 = new DefaultRuntimeOutputPort();
 	
     
 	
@@ -170,6 +211,35 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
+		if ("output1".equalsIgnoreCase(portID))
+		{
+			return opValue1;
+		}
+		
+		if ("output2".equalsIgnoreCase(portID))
+		{
+			return opValue2;
+		}
+		
+		if ("output3".equalsIgnoreCase(portID))
+		{
+			return opValue3;
+		}
+		
+		if ("output4".equalsIgnoreCase(portID))
+		{
+			return opValue4;
+		}
+		
+		if ("output5".equalsIgnoreCase(portID))
+		{
+			return opValue5;
+		}
+		
+		if ("output6".equalsIgnoreCase(portID))
+		{
+			return opValue6;
+		}
 
 		return null;
 	}
@@ -260,17 +330,17 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         {
             return propLocalIP;
         }
-        else if("KNXNetIP".equalsIgnoreCase(propertyName))
+        else if("gatewayIP".equalsIgnoreCase(propertyName))
         {
-        	return propKnxNetIP;
+        	return propGatewayIP;
         }
-        else if("NAT".equalsIgnoreCase(propertyName))
+        else if("USB".equalsIgnoreCase(propertyName))
         {
-        	return propNAT;
+        	return propUSB;
         }
-        else if("groupAddress1".equalsIgnoreCase(propertyName))
+        else if("id1".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddress1;
+        	return propSendID1;
         }
         else if("dataType1".equalsIgnoreCase(propertyName))
         {
@@ -280,9 +350,9 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         {
         	return propDataValue1;
         }
-        else if("groupAddress2".equalsIgnoreCase(propertyName))
+        else if("id2".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddress2;
+        	return propSendID2;
         }
         else if("dataType2".equalsIgnoreCase(propertyName))
         {
@@ -292,9 +362,9 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         {
         	return propDataValue2;
         }
-        else if("groupAddress3".equalsIgnoreCase(propertyName))
+        else if("id3".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddress3;
+        	return propSendID3;
         }
         else if("dataType3".equalsIgnoreCase(propertyName))
         {
@@ -304,9 +374,9 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         {
         	return propDataValue3;
         }
-        else if("groupAddress4".equalsIgnoreCase(propertyName))
+        else if("id4".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddress4;
+        	return propSendID4;
         }
         else if("dataType4".equalsIgnoreCase(propertyName))
         {
@@ -316,9 +386,9 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         {
         	return propDataValue4;
         }
-        else if("groupAddress5".equalsIgnoreCase(propertyName))
+        else if("id5".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddress5;
+        	return propSendID5;
         }
         else if("dataType5".equalsIgnoreCase(propertyName))
         {
@@ -328,9 +398,9 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         {
         	return propDataValue5;
         }
-        else if("groupAddress6".equalsIgnoreCase(propertyName))
+        else if("id6".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddress6;
+        	return propSendID6;
         }
         else if("dataType6".equalsIgnoreCase(propertyName))
         {
@@ -340,30 +410,103 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         {
         	return propDataValue6;
         }
-        else if("groupAddressTrigger1".equalsIgnoreCase(propertyName))
+        else if("IDSlider1".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddressTrigger1;
+        	return propIDSlider1;
         }
-        else if("groupAddressTrigger2".equalsIgnoreCase(propertyName))
+        else if("sendTypeSlider1".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddressTrigger2;
+        	return propTypeSlider1;
         }
-        else if("groupAddressTrigger3".equalsIgnoreCase(propertyName))
+        else if("IDSlider2".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddressTrigger3;
+        	return propIDSlider2;
         }
-        else if("groupAddressTrigger4".equalsIgnoreCase(propertyName))
+        else if("sendTypeSlider2".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddressTrigger4;
+        	return propTypeSlider2;
         }
-        else if("groupAddressTrigger5".equalsIgnoreCase(propertyName))
+        else if("IDSlider3".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddressTrigger5;
+        	return propIDSlider3;
         }
-        else if("groupAddressTrigger6".equalsIgnoreCase(propertyName))
+        else if("sendTypeSlider3".equalsIgnoreCase(propertyName))
         {
-        	return propGroupAddressTrigger6;
+        	return propTypeSlider3;
         }
+        else if("IDSlider4".equalsIgnoreCase(propertyName))
+        {
+        	return propIDSlider4;
+        }
+        else if("sendTypeSlider4".equalsIgnoreCase(propertyName))
+        {
+        	return propTypeSlider4;
+        }
+        else if("IDSlider5".equalsIgnoreCase(propertyName))
+        {
+        	return propIDSlider5;
+        }
+        else if("sendTypeSlider5".equalsIgnoreCase(propertyName))
+        {
+        	return propTypeSlider5;
+        }
+        else if("IDSlider6".equalsIgnoreCase(propertyName))
+        {
+        	return propIDSlider6;
+        }
+        else if("sendTypeSlider6".equalsIgnoreCase(propertyName))
+        {
+        	return propTypeSlider6;
+        }
+        else if("IDTrigger1".equalsIgnoreCase(propertyName))
+        {
+        	return propIDTrigger1;
+        }
+        else if("IDTrigger2".equalsIgnoreCase(propertyName))
+        {
+        	return propIDTrigger2;
+        }
+        else if("IDTrigger3".equalsIgnoreCase(propertyName))
+        {
+        	return propIDTrigger3;
+        }
+        else if("IDTrigger4".equalsIgnoreCase(propertyName))
+        {
+        	return propIDTrigger4;
+        }
+        else if("IDTrigger5".equalsIgnoreCase(propertyName))
+        {
+        	return propIDTrigger5;
+        }
+        else if("IDTrigger6".equalsIgnoreCase(propertyName))
+        {
+        	return propIDTrigger6;
+        }
+        else if("TypeTrigger1".equalsIgnoreCase(propertyName))
+        {
+        	return propTypeTrigger1;
+        }
+        else if("TypeTrigger2".equalsIgnoreCase(propertyName))
+        {
+        	return propTypeTrigger2;
+        }
+        else if("TypeTrigger3".equalsIgnoreCase(propertyName))
+        {
+        	return propTypeTrigger3;
+        }
+        else if("TypeTrigger4".equalsIgnoreCase(propertyName))
+        {
+        	return propTypeTrigger4;
+        }
+        else if("TypeTrigger5".equalsIgnoreCase(propertyName))
+        {
+        	return propTypeTrigger5;
+        }
+        else if("TypeTrigger6".equalsIgnoreCase(propertyName))
+        {
+        	return propTypeTrigger6;
+        }
+    	
         return null;
     }
 
@@ -379,24 +522,24 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
             oldValue = propLocalIP;
             propLocalIP = newValue.toString();
         }
-        else if("KNXNetIP".equalsIgnoreCase(propertyName)) {
-        	oldValue = propKnxNetIP;
-        	propKnxNetIP = newValue.toString();
+        else if("gatewayIP".equalsIgnoreCase(propertyName)) {
+        	oldValue = propGatewayIP;
+        	propGatewayIP = newValue.toString();
         }
-        else if("NAT".equalsIgnoreCase(propertyName)) {
-        	oldValue = propNAT;
+        else if("USB".equalsIgnoreCase(propertyName)) {
+        	oldValue = propUSB;
         	if("true".equalsIgnoreCase((String)newValue)) {
-                propNAT = true;
+        		propUSB = true;
             }
             else if("false".equalsIgnoreCase((String)newValue)) {
-                propNAT = false;
+            	propUSB = false;
             }
         }
-        else if("groupAddress1".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddress1;
-        	propGroupAddress1 = newValue.toString();
+        else if("id1".equalsIgnoreCase(propertyName)) {
+        	oldValue = propSendID1;
+        	propSendID1 = newValue.toString();
         }
-        else if("dataType1".equalsIgnoreCase(propertyName)) {
+        else if("sendType1".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataType1;
         	propDataType1 = newValue.toString();
         }
@@ -404,11 +547,11 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         	oldValue = propDataValue1;
         	propDataValue1 = newValue.toString();
         }
-        else if("groupAddress2".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddress2;
-        	propGroupAddress2 = newValue.toString();
+        else if("id2".equalsIgnoreCase(propertyName)) {
+        	oldValue = propSendID2;
+        	propSendID2 = newValue.toString();
         }
-        else if("dataType2".equalsIgnoreCase(propertyName)) {
+        else if("sendType2".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataType2;
         	propDataType2 = newValue.toString();
         }
@@ -416,11 +559,11 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         	oldValue = propDataValue2;
         	propDataValue2 = newValue.toString();
         }
-        else if("groupAddress3".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddress3;
-        	propGroupAddress3 = newValue.toString();
+        else if("id3".equalsIgnoreCase(propertyName)) {
+        	oldValue = propSendID3;
+        	propSendID3 = newValue.toString();
         }
-        else if("dataType3".equalsIgnoreCase(propertyName)) {
+        else if("sendType3".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataType3;
         	propDataType3 = newValue.toString();
         }
@@ -428,11 +571,11 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         	oldValue = propDataValue3;
         	propDataValue3 = newValue.toString();
         }
-        else if("groupAddress4".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddress4;
-        	propGroupAddress4 = newValue.toString();
+        else if("id4".equalsIgnoreCase(propertyName)) {
+        	oldValue = propSendID4;
+        	propSendID4 = newValue.toString();
         }
-        else if("dataType4".equalsIgnoreCase(propertyName)) {
+        else if("sendType4".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataType4;
         	propDataType4 = newValue.toString();
         }
@@ -440,11 +583,11 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         	oldValue = propDataValue4;
         	propDataValue4 = newValue.toString();
         }
-        else if("groupAddress5".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddress5;
-        	propGroupAddress5 = newValue.toString();
+        else if("id5".equalsIgnoreCase(propertyName)) {
+        	oldValue = propSendID5;
+        	propSendID5 = newValue.toString();
         }
-        else if("dataType5".equalsIgnoreCase(propertyName)) {
+        else if("sendType5".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataType5;
         	propDataType5 = newValue.toString();
         }
@@ -452,11 +595,11 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         	oldValue = propDataValue5;
         	propDataValue5 = newValue.toString();
         }
-        else if("groupAddress6".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddress6;
-        	propGroupAddress6 = newValue.toString();
+        else if("id6".equalsIgnoreCase(propertyName)) {
+        	oldValue = propSendID6;
+        	propSendID6 = newValue.toString();
         }
-        else if("dataType6".equalsIgnoreCase(propertyName)) {
+        else if("sendType6".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataType6;
         	propDataType6 = newValue.toString();
         }
@@ -464,53 +607,101 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         	oldValue = propDataValue6;
         	propDataValue6 = newValue.toString();
         }
-        else if("groupAddressSlider1".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressSlider1;
-        	propGroupAddressSlider1 = newValue.toString();
+        else if("IDSlider1".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDSlider1;
+        	propIDSlider1 = newValue.toString();
         }
-        else if("groupAddressSlider2".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressSlider2;
-        	propGroupAddressSlider2 = newValue.toString();
+        else if("sendTypeSlider1".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeSlider1;
+        	propTypeSlider1 = newValue.toString();
         }
-        else if("groupAddressSlider3".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressSlider3;
-        	propGroupAddressSlider3 = newValue.toString();
+        else if("IDSlider2".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDSlider2;
+        	propIDSlider2 = newValue.toString();
         }
-        else if("groupAddressSlider4".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressSlider4;
-        	propGroupAddressSlider4 = newValue.toString();
+        else if("sendTypeSlider2".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeSlider2;
+        	propTypeSlider2 = newValue.toString();
         }
-        else if("groupAddressSlider5".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressSlider5;
-        	propGroupAddressSlider5 = newValue.toString();
+        else if("IDSlider3".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDSlider3;
+        	propIDSlider3 = newValue.toString();
         }
-        else if("groupAddressSlider6".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressSlider6;
-        	propGroupAddressSlider6 = newValue.toString();
+        else if("sendTypeSlider3".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeSlider3;
+        	propTypeSlider3 = newValue.toString();
         }
-        else if("groupAddressTrigger1".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressTrigger1;
-        	propGroupAddressTrigger1 = newValue.toString();
+        else if("IDSlider4".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDSlider4;
+        	propIDSlider4 = newValue.toString();
         }
-        else if("groupAddressTrigger2".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressTrigger2;
-        	propGroupAddressTrigger2 = newValue.toString();
+        else if("sendTypeSlider4".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeSlider4;
+        	propTypeSlider4 = newValue.toString();
         }
-        else if("groupAddressTrigger3".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressTrigger3;
-        	propGroupAddressTrigger3 = newValue.toString();
+        else if("IDSlider5".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDSlider5;
+        	propIDSlider5 = newValue.toString();
         }
-        else if("groupAddressTrigger4".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressTrigger4;
-        	propGroupAddressTrigger4 = newValue.toString();
+        else if("sendTypeSlider5".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeSlider5;
+        	propTypeSlider5 = newValue.toString();
         }
-        else if("groupAddressTrigger5".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressTrigger5;
-        	propGroupAddressTrigger5 = newValue.toString();
+        else if("IDSlider6".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDSlider6;
+        	propIDSlider6 = newValue.toString();
         }
-        else if("groupAddressTrigger6".equalsIgnoreCase(propertyName)) {
-        	oldValue = propGroupAddressTrigger6;
-        	propGroupAddressTrigger6 = newValue.toString();
+        else if("sendTypeSlider6".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeSlider6;
+        	propTypeSlider6 = newValue.toString();
+        }
+        else if("IDTrigger1".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDTrigger1;
+        	propIDTrigger1 = newValue.toString();
+        }
+        else if("IDTrigger2".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDTrigger2;
+        	propIDTrigger2 = newValue.toString();
+        }
+        else if("IDTrigger3".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDTrigger3;
+        	propIDTrigger3 = newValue.toString();
+        }
+        else if("IDTrigger4".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDTrigger4;
+        	propIDTrigger4 = newValue.toString();
+        }
+        else if("IDTrigger5".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDTrigger5;
+        	propIDTrigger5 = newValue.toString();
+        }
+        else if("IDTrigger6".equalsIgnoreCase(propertyName)) {
+        	oldValue = propIDTrigger6;
+        	propIDTrigger6 = newValue.toString();
+        }
+        else if("TypeTrigger1".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeTrigger1;
+        	propTypeTrigger1 = newValue.toString();
+        }
+        else if("TypeTrigger2".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeTrigger2;
+        	propTypeTrigger2 = newValue.toString();
+        }
+        else if("TypeTrigger3".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeTrigger3;
+        	propTypeTrigger3 = newValue.toString();
+        }
+        else if("TypeTrigger4".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeTrigger4;
+        	propTypeTrigger4 = newValue.toString();
+        }
+        else if("TypeTrigger5".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeTrigger5;
+        	propTypeTrigger5 = newValue.toString();
+        }
+        else if("TypeTrigger6".equalsIgnoreCase(propertyName)) {
+        	oldValue = propTypeTrigger6;
+        	propTypeTrigger6 = newValue.toString();
         }
         
         return oldValue;
@@ -525,13 +716,13 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 		{
 			String text = ConversionUtils.stringFromBytes(data);
 	    	// Logger.getAnonymousLogger().info("KNX received: " + text);
-
-    		if (text.startsWith("@KNX:")) {  			
+			//TODO: den sendstring noch einbauen
+    		if (text.startsWith("@ENOCEAN:")) {  			
 				try {
 					
-					StringTokenizer st = new StringTokenizer(text.substring(5),"#");
-			    	// Logger.getAnonymousLogger().info("Tokenizing: " + text.substring(5));
-					sendKNX(st.nextToken(),st.nextToken(),st.nextToken());
+					//StringTokenizer st = new StringTokenizer(text.substring(5),"#");
+			    	Logger.getAnonymousLogger().info("Tokenizing: " + text.substring(5));
+					//sendKNX(st.nextToken(),st.nextToken(),st.nextToken());
 				} catch (Exception e) {
 					Logger.getAnonymousLogger().severe(e.toString());
 				}
@@ -543,7 +734,7 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in1=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider1,new String("int"),Integer.toString((int)(in1)));
+            sendEnOcean(propIDSlider1,propTypeSlider1,Integer.toString((int)(in1)));
 		}
 	};
 	private final IRuntimeInputPort ipSlider2  = new DefaultRuntimeInputPort()
@@ -551,7 +742,7 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in2=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider2,new String("int"),Integer.toString((int)(in2)));
+            sendEnOcean(propIDSlider2,propTypeSlider2,Integer.toString((int)(in2)));
 		}
 	};
 	private final IRuntimeInputPort ipSlider3  = new DefaultRuntimeInputPort()
@@ -559,7 +750,7 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in3=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider3,new String("int"),Integer.toString((int)(in3)));
+			sendEnOcean(propIDSlider3,propTypeSlider3,Integer.toString((int)(in3)));
 		}
 	};
 	private final IRuntimeInputPort ipSlider4  = new DefaultRuntimeInputPort()
@@ -567,7 +758,7 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in4=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider4,new String("int"),Integer.toString((int)(in4)));
+			sendEnOcean(propIDSlider4,propTypeSlider4,Integer.toString((int)(in4)));
 		}
 	};
 	private final IRuntimeInputPort ipSlider5  = new DefaultRuntimeInputPort()
@@ -575,7 +766,7 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in5=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider5,new String("int"),Integer.toString((int)(in5)));
+			sendEnOcean(propIDSlider5,propTypeSlider5,Integer.toString((int)(in5)));
 		}
 	};
 	private final IRuntimeInputPort ipSlider6  = new DefaultRuntimeInputPort()
@@ -583,7 +774,7 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in6=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider6,new String("int"),Integer.toString((int)(in6)));
+			sendEnOcean(propIDSlider6,propTypeSlider6,Integer.toString((int)(in6)));
 		}
 	};
 
@@ -595,42 +786,42 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress1,propDataType1,propDataValue1);
+			sendEnOcean(propSendID1,propDataType1,propDataValue1);
 		}
 	};
 	final IRuntimeEventListenerPort elpSend2 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress2,propDataType2,propDataValue2);
+			sendEnOcean(propSendID2,propDataType2,propDataValue3);
 		}
 	};
 	final IRuntimeEventListenerPort elpSend3 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress3,propDataType3,propDataValue3);
+			sendEnOcean(propSendID3,propDataType3,propDataValue3);
 		}
 	};
 	final IRuntimeEventListenerPort elpSend4 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress4,propDataType4,propDataValue4);
+			sendEnOcean(propSendID4,propDataType4,propDataValue4);
 		}
 	};
 	final IRuntimeEventListenerPort elpSend5 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress5,propDataType5,propDataValue5);
+			sendEnOcean(propSendID5,propDataType5,propDataValue5);
 		}
 	};
 	final IRuntimeEventListenerPort elpSend6 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress6,propDataType6,propDataValue6);
+			sendEnOcean(propSendID6,propDataType6,propDataValue6);
 		}
 	};
 
@@ -644,7 +835,7 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
-    	  openKNXconnection();
+    	  openConnection();
           super.start();
       }
 
@@ -672,126 +863,454 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
-    	  closeKNXconnection();
+    	  closeConnection();
           super.stop();
       }
 
       /**
-       * opens a connection to a KNX/IP router via the Calimero library.
+       * opens a connection to a EnOcean router via the Priscilla library.
        */
-      private void openKNXconnection() {
+      private void openConnection() {
 	   		try {
-	   			//netLinkIp = new KNXNetworkLinkIP(KNXNetworkLinkIP.TUNNEL, 
-	   			//		new InetSocketAddress(InetAddress.getByName(propLocalIP), 0),
-	   			//		new InetSocketAddress(InetAddress.getByName(propKnxNetIP),KNXnetIPConnection.IP_PORT),
-	   			//		propNAT, new TPSettings(false));
-	   			//pc = new ProcessCommunicatorImpl(netLinkIp);
-	   			Logger.getAnonymousLogger().info("KNX connection opened");
+	   			System.out.println("PORT: " + propGatewayIP);
+	   			System.out.println("POPUSB: " + propUSB);
+	   			if(propUSB == false)
+	   			{
+	   				InetSocketAddress adress = new InetSocketAddress(propGatewayIP,5000);
+	   				enoceanLink = new EnOceanLinkImpl(adress);
+	   			} else {
+	   				CIMPortController portController = CIMPortManager.getInstance().getRawConnection(propGatewayIP,57600);
+	   				if(portController == null) System.out.println("Port controller ist null....");
+	   				if(portController.getInputStream() == null) System.out.println("Port controller InputStream ist null....");
+	   				if(portController.getOutputStream() == null) System.out.println("Port controller OutputStream ist null....");
+	   				enoceanLink = new EnOceanLinkImpl(portController.getInputStream(),portController.getOutputStream());
+	   			}
 	   			
-	   			
-	   			/*netLinkIp.addLinkListener(new NetworkLinkListener() {
+	   			enoceanLink.addLinkListener(new ILinkListener() {
+
 					@Override
-					public void confirmation(FrameEvent arg0) {
+					public void frameReceived(FrameEvent arg0) {
 					}
 
 					@Override
-					public void indication(FrameEvent arg0) {
-					//	System.out.println("srcadress " + arg0.getSource());
-					//	System.out.println(arg0.getSource().getClass());
-					//	System.out.println("targetadresse "
-					//			+ ((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination());
+					public void frameReceived_Binary(FrameEventBinary arg0) {
+						String temp = "";
 						
-						GroupAddress derandere = new GroupAddress (2821);
-						GroupAddress bewegungsmelder= new GroupAddress (2307);
-						GroupAddress bewegungsmelder2= new GroupAddress (2307);
-					//	if (derandere.equals(bewegungsmelder)){System.out.println("yes ");}
-						try {
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger1))){
-							System.out.println("matching address 1 ");
+						if(arg0.getDeviceA() == BinaryState.FALSE)
+						{
+							temp = temp + "false";
+						}
+						if(arg0.getDeviceA() == BinaryState.TRUE)
+						{
+							temp = temp + "true";
+						}
+						
+						if(arg0.getDeviceB() == BinaryState.FALSE)
+						{
+							temp = temp + " false";
+						}
+						if(arg0.getDeviceB() == BinaryState.TRUE)
+						{
+							temp = temp + "true";
+						}
+						
+						if(arg0.getDeviceC() == BinaryState.FALSE)
+						{
+							temp = temp + " false";
+						}
+						if(arg0.getDeviceC() == BinaryState.TRUE)
+						{
+							temp = temp + "true";
+						}
+						
+						if(arg0.getDeviceD() == BinaryState.FALSE)
+						{
+							temp = temp + " false";
+						}
+						if(arg0.getDeviceD() == BinaryState.TRUE)
+						{
+							temp = temp + "true";
+						}
+						
+						if(arg0.getDeviceID().equals(propIDTrigger1) && "binary".equalsIgnoreCase(propTypeTrigger1))
+						{
+							opValue1.sendData(temp.getBytes());
 							runtimeEventTriggererPort1.raiseEvent();
 						}
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger2))){
-							System.out.println("matching address 2 ");
+						
+						if(arg0.getDeviceID().equals(propIDTrigger2) && "binary".equalsIgnoreCase(propTypeTrigger2))
+						{
+							opValue2.sendData(temp.getBytes());
 							runtimeEventTriggererPort2.raiseEvent();
 						}
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger3))){
-							System.out.println("matching address 3 ");
+						
+						if(arg0.getDeviceID().equals(propIDTrigger3) && "binary".equalsIgnoreCase(propTypeTrigger3))
+						{
+							opValue3.sendData(temp.getBytes());
 							runtimeEventTriggererPort3.raiseEvent();
 						}
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger4))){
-							System.out.println("matching address 4 ");
+						
+						if(arg0.getDeviceID().equals(propIDTrigger4) && "binary".equalsIgnoreCase(propTypeTrigger4))
+						{
+							opValue4.sendData(temp.getBytes());
 							runtimeEventTriggererPort4.raiseEvent();
 						}
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger5))){
-							System.out.println("matching address 5 ");
+						
+						if(arg0.getDeviceID().equals(propIDTrigger5) && "binary".equalsIgnoreCase(propTypeTrigger5))
+						{
+							opValue5.sendData(temp.getBytes());
 							runtimeEventTriggererPort5.raiseEvent();
 						}
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger6))){
-							System.out.println("matching address 6 ");
+						
+						if(arg0.getDeviceID().equals(propIDTrigger6) && "binary".equalsIgnoreCase(propTypeTrigger6))
+						{
+							opValue6.sendData(temp.getBytes());
 							runtimeEventTriggererPort6.raiseEvent();
 						}
-						} catch (Exception e) {
-			   				Logger.getAnonymousLogger().severe(e.toString());
-			   			}
 					}
 
 					@Override
-					public void linkClosed(CloseEvent arg0) {
+					public void frameReceived_DayNight(FrameEvent arg0) {
+						//not implemented
+						
 					}
-				});*/
+
+					@Override
+					public void frameReceived_Error(FrameEventError arg0) {
+						//not implemented
+						
+					}
+
+					@Override
+					public void frameReceived_Fan(FrameEventFan arg0) {
+						String temp = "";
+						
+						switch(arg0.getFanState())
+						{
+						case OFF:
+							temp = "OFF";
+							break;
+						case AUTO:
+							temp = "AUTO";
+							break;
+						case SPEED0:
+							temp = "0";
+							break;
+						case SPEED1:
+							temp = "1";
+							break;
+						case SPEED2:
+							temp = "2";
+							break;
+						case SPEED3:
+							temp = "3";
+							break;
+						case SPEED4:
+							temp = "4";
+							break;
+						case SPEED5:
+							temp = "5";
+							break;
+						default:
+							break;
+						}
+						
+						switch(arg0.getFanType())
+						{
+						case TYPE3:
+							temp = temp + "/3";
+							break;
+						case TYPE5:
+							temp = temp + "/5";
+							break;
+						default:
+							break;
+						}
+						
+						if(arg0.getDeviceID().equals(propIDTrigger1) && "fan".equalsIgnoreCase(propTypeTrigger1))
+						{
+							opValue1.sendData(temp.getBytes());
+							runtimeEventTriggererPort1.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger2) && "fan".equalsIgnoreCase(propTypeTrigger2))
+						{
+							opValue2.sendData(temp.getBytes());
+							runtimeEventTriggererPort2.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger3) && "fan".equalsIgnoreCase(propTypeTrigger3))
+						{
+							opValue3.sendData(temp.getBytes());
+							runtimeEventTriggererPort3.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger4) && "fan".equalsIgnoreCase(propTypeTrigger4))
+						{
+							opValue4.sendData(temp.getBytes());
+							runtimeEventTriggererPort4.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger5) && "fan".equalsIgnoreCase(propTypeTrigger5))
+						{
+							opValue5.sendData(temp.getBytes());
+							runtimeEventTriggererPort5.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger6) && "fan".equalsIgnoreCase(propTypeTrigger6))
+						{
+							opValue6.sendData(temp.getBytes());
+							runtimeEventTriggererPort6.raiseEvent();
+						}
+					}
+
+					@Override
+					public void frameReceived_Gas(FrameEvent arg0) {
+						//not implemented
+						
+					}
+
+					@Override
+					public void frameReceived_GatewayID(
+							FrameEventGetGatewayID arg0) {
+						//not necessary...
+						
+					}
+
+					@Override
+					public void frameReceived_Humidity(FrameEventHumidity arg0) {
+						String temp = String.valueOf(arg0.getHumidityValue());
+						
+						if(arg0.getDeviceID().equals(propIDTrigger1) && "humidity".equalsIgnoreCase(propTypeTrigger1))
+						{
+							opValue1.sendData(temp.getBytes());
+							runtimeEventTriggererPort1.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger2) && "humidity".equalsIgnoreCase(propTypeTrigger2))
+						{
+							opValue2.sendData(temp.getBytes());
+							runtimeEventTriggererPort2.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger3) && "humidity".equalsIgnoreCase(propTypeTrigger3))
+						{
+							opValue3.sendData(temp.getBytes());
+							runtimeEventTriggererPort3.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger4) && "humidity".equalsIgnoreCase(propTypeTrigger4))
+						{
+							opValue4.sendData(temp.getBytes());
+							runtimeEventTriggererPort4.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger5) && "humidity".equalsIgnoreCase(propTypeTrigger5))
+						{
+							opValue5.sendData(temp.getBytes());
+							runtimeEventTriggererPort5.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger6) && "humidity".equalsIgnoreCase(propTypeTrigger6))
+						{
+							opValue6.sendData(temp.getBytes());
+							runtimeEventTriggererPort6.raiseEvent();
+						}
+					}
+
+					@Override
+					public void frameReceived_Illumination(
+							FrameEventIllumination arg0) {
+						String temp = String.valueOf(arg0.getIlluminationValue());
+						
+						if(arg0.getDeviceID().equals(propIDTrigger1) && "illumination".equalsIgnoreCase(propTypeTrigger1))
+						{
+							opValue1.sendData(temp.getBytes());
+							runtimeEventTriggererPort1.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger2) && "illumination".equalsIgnoreCase(propTypeTrigger2))
+						{
+							opValue2.sendData(temp.getBytes());
+							runtimeEventTriggererPort2.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger3) && "illumination".equalsIgnoreCase(propTypeTrigger3))
+						{
+							opValue3.sendData(temp.getBytes());
+							runtimeEventTriggererPort3.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger4) && "illumination".equalsIgnoreCase(propTypeTrigger4))
+						{
+							opValue4.sendData(temp.getBytes());
+							runtimeEventTriggererPort4.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger5) && "illumination".equalsIgnoreCase(propTypeTrigger5))
+						{
+							opValue5.sendData(temp.getBytes());
+							runtimeEventTriggererPort5.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger6) && "illumination".equalsIgnoreCase(propTypeTrigger6))
+						{
+							opValue6.sendData(temp.getBytes());
+							runtimeEventTriggererPort6.raiseEvent();
+						}
+					}
+
+					@Override
+					public void frameReceived_LearnTelegram(
+							FrameEventLearnTelegram arg0) {
+						//not necessary...
+						
+					}
+
+					@Override
+					public void frameReceived_RainSensor(FrameEvent arg0) {
+						//not implemented
+						
+					}
+
+					@Override
+					public void frameReceived_SetPoint(FrameEventSetPoint arg0) {
+						String temp = String.valueOf(arg0.getSetPointValue());
+						
+						if(arg0.getDeviceID().equals(propIDTrigger1) && "setpoint".equalsIgnoreCase(propTypeTrigger1))
+						{
+							opValue1.sendData(temp.getBytes());
+							runtimeEventTriggererPort1.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger2) && "setpoint".equalsIgnoreCase(propTypeTrigger2))
+						{
+							opValue2.sendData(temp.getBytes());
+							runtimeEventTriggererPort2.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger3) && "setpoint".equalsIgnoreCase(propTypeTrigger3))
+						{
+							opValue3.sendData(temp.getBytes());
+							runtimeEventTriggererPort3.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger4) && "setpoint".equalsIgnoreCase(propTypeTrigger4))
+						{
+							opValue4.sendData(temp.getBytes());
+							runtimeEventTriggererPort4.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger5) && "setpoint".equalsIgnoreCase(propTypeTrigger5))
+						{
+							opValue5.sendData(temp.getBytes());
+							runtimeEventTriggererPort5.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger6) && "setpoint".equalsIgnoreCase(propTypeTrigger6))
+						{
+							opValue6.sendData(temp.getBytes());
+							runtimeEventTriggererPort6.raiseEvent();
+						}
+						
+					}
+
+					@Override
+					public void frameReceived_SupplyVoltage(
+							FrameEventSupplyVoltage arg0) {
+						//not implemented
+						
+					}
+
+					@Override
+					public void frameReceived_Temperature(
+							FrameEventTemperature arg0) {
+						String temp = String.valueOf(arg0.getTemperatureValue());
+						
+						if(arg0.getDeviceID().equals(propIDTrigger1) && "temperature".equalsIgnoreCase(propTypeTrigger1))
+						{
+							opValue1.sendData(temp.getBytes());
+							runtimeEventTriggererPort1.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger2) && "temperature".equalsIgnoreCase(propTypeTrigger2))
+						{
+							opValue2.sendData(temp.getBytes());
+							runtimeEventTriggererPort2.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger3) && "temperature".equalsIgnoreCase(propTypeTrigger3))
+						{
+							opValue3.sendData(temp.getBytes());
+							runtimeEventTriggererPort3.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger4) && "temperature".equalsIgnoreCase(propTypeTrigger4))
+						{
+							opValue4.sendData(temp.getBytes());
+							runtimeEventTriggererPort4.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger5) && "temperature".equalsIgnoreCase(propTypeTrigger5))
+						{
+							opValue5.sendData(temp.getBytes());
+							runtimeEventTriggererPort5.raiseEvent();
+						}
+						if(arg0.getDeviceID().equals(propIDTrigger6) && "temperature".equalsIgnoreCase(propTypeTrigger6))
+						{
+							opValue6.sendData(temp.getBytes());
+							runtimeEventTriggererPort6.raiseEvent();
+						}
+					}
+
+					@Override
+					public void frameReceived_Time(FrameEvent arg0) {
+						//not implemented
+					}
+
+					@Override
+					public void frameReceived_WeatherStation(FrameEvent arg0) {
+						//not implemented
+					}
+
+					@Override
+					public void frameReceived_WindowHandle(
+							FrameEventWindowHandle arg0) {
+						// TODO to be done...
+						
+					}
+		
+					}
+
+				);
 
 	   		} catch (Exception e) {
 	   			//netLinkIp = null;
-	   			Logger.getAnonymousLogger().severe(e.toString());
+	   			System.out.println(e.getMessage());
 	   		}
        }
       
       /**
-       * closes a connection to a KNX/IP router.
+       * closes a connection to an EnOcean gateway
        */
-       private void closeKNXconnection () {
-   		/*if (netLinkIp != null) {
-   			netLinkIp.close();
-   			Logger.getAnonymousLogger().info("KNX connection closed");
-   		}*/
+       private void closeConnection () {
        }
        
        /**
-        * sends a group/type/value command  to a KNX/IP router via the Calimero library.
+        * sends a id/type/value command  to the connected EnOcean gateway 
         */
-       private void sendKNX(String groupaddress, String type, String value) {
-
-   		/*if (netLinkIp != null) {
-   			try {
-   		    	if (type.equalsIgnoreCase("string")) {
-   					pc.write(new GroupAddress(groupaddress), value);	
-   				}
-   				else if (type.equalsIgnoreCase("boolean")) {
-   					if (value.equalsIgnoreCase("1")) {
-   						pc.write(new GroupAddress(groupaddress), true);
-   					}
-   					else if (value.equalsIgnoreCase("0")) {
-   						pc.write(new GroupAddress(groupaddress), false);
-   					}
-   				}
-   				else if (type.equalsIgnoreCase("int")) {
-   					Integer i = new Integer(value);
-   					pc.write(new GroupAddress(groupaddress), i, ProcessCommunicator.UNSCALED);
-   				}
-   				else if (type.equalsIgnoreCase("float")) {
-   					Float f = new Float(value);
-   					pc.write(new GroupAddress(groupaddress), f);
-   				}
-   		
-   		    	Logger.getAnonymousLogger().info("sent value: " + value + " type: " + type + " to " + groupaddress);
-   		    	
-   			} catch (Exception e) {
-   				Logger.getAnonymousLogger().severe(e.toString());
-   			}
-   		}
-   		else {
-   			Logger.getAnonymousLogger().severe("KNX connection not open");
-   		}   */	
+       private void sendEnOcean(String id, String type, String value) {
+    	   System.out.println(id);
+    	   System.out.println(type);
+    	   System.out.println(value);
+    	   ErrorCodeSend returnval = null;
+    	   if(enoceanLink != null)
+    	   {
+    		   switch(type)
+    		   {
+    		   		case "binary":
+    		   			if(value.equalsIgnoreCase("true")) {
+    		   				returnval = enoceanLink.sendEvent(EventSend.BINARY_EVENT, Integer.parseInt(id), BinaryState.TRUE , BinaryState.UNKNOWN,  BinaryState.UNKNOWN,  BinaryState.UNKNOWN);
+    		   			} else {
+    		   				returnval = enoceanLink.sendEvent(EventSend.BINARY_EVENT, Integer.parseInt(id), BinaryState.FALSE , BinaryState.UNKNOWN,  BinaryState.UNKNOWN,  BinaryState.UNKNOWN);
+    		   			}
+    		   			break;
+    		   		case "temperature":
+    		   			returnval = enoceanLink.sendEvent(EventSend.TEMPERATURE_EVENT, Integer.parseInt(id), Float.parseFloat(value));
+    		   			break;
+    		   		case "illumination":
+    		   			returnval = enoceanLink.sendEvent(EventSend.ILLUMINATION_EVENT, Integer.parseInt(id), Float.parseFloat(value));
+    		   			break;
+    		   		case "fan":
+    		   			//TODO
+    		   			break;
+    		   		case "humidity":
+    		   			returnval = enoceanLink.sendEvent(EventSend.HUMIDITY_EVENT, Integer.parseInt(id), Float.parseFloat(value));
+    		   			break;
+    		   		case "setpoint":
+    		   			returnval = enoceanLink.sendEvent(EventSend.SETPOINT_EVENT, Integer.parseInt(id), Float.parseFloat(value));
+    		   			break;
+    		   		default:
+    		   			break;
+    		   }
+    		   System.out.println("Return value send: " + returnval);
+    	   }
        }
       
       

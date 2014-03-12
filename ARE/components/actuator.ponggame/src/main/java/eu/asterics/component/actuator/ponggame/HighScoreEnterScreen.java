@@ -47,29 +47,13 @@ public class HighScoreEnterScreen
 			game.addHighScore(name, p.score);
 			showNextScreen = true;
 			state = 0;
-			show();
+//			show();
 		}
 		else
 		{
 			name[state] = 'A';
 			show();
 		}
-
-		if (showNextScreen )
-		{
-			showNextScreen = false;
-			if ((index + 1) < 2)
-			{
-		        Player p = GameWorld.instance.players[index + 1];
-		        if (p.score > AstericsPong.instance.lowestHighScore)
-		        {
-		        	setNextScreen(new HighScoreEnterScreen(game, index + 1));
-		        	return;
-		        }
-			}
-			setNextScreen(new HighScoreScreen(game));
-		}
-		
 	}
 	
 	public void playerMovementInput(int index)
@@ -103,9 +87,20 @@ public class HighScoreEnterScreen
 	public void render(float delta) {
 		super.render(delta);
 		
-		if (nextScreen != null)
+		if (showNextScreen && !screenSwitchActive)
 		{
-			game.setScreen(nextScreen);
+			screenSwitchActive = true;
+			if ((index + 1) < 2)
+			{
+		        Player p = GameWorld.instance.players[index + 1];
+		        if (p.score > AstericsPong.instance.lowestHighScore)
+		        {
+		        	game.setScreen(new HighScoreEnterScreen(game, index + 1));
+		    		showNextScreen = false;
+		        	return;
+		        }
+			}
+			game.setScreen(new HighScoreScreen(game));
 		}
 	}    
 }

@@ -42,6 +42,12 @@
             <eventTriggererPort id="wheelDown">
                 <description>Event port triggers when mouse wheel is moved down</description>
             </eventTriggererPort>
+			<eventListenerPort id="blockEvents">
+                <description>Eventlistener to block mouse events. This means the mouse events will not be processed by the local system.</description>
+            </eventListenerPort>
+			<eventListenerPort id="forwardEvents">
+                <description>Forward mouse events to the local system</description>
+            </eventListenerPort>
         </events>
         
         <properties>
