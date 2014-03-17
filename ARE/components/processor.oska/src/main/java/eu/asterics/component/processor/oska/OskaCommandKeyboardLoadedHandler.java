@@ -76,7 +76,7 @@ class OskaCommandKeyboardLoadedHandler implements IOskaCommandHandler {
 		}
 		catch (Exception e)
 		{
-			AstericsErrorHandling.instance.reportError(OskaInstance.instance, 
+			AstericsErrorHandling.instance.reportInfo(OskaInstance.instance, 
 				String.format("Received malformed keyboardloaded " +
 						"message"));
 			return false;

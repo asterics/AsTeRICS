@@ -767,7 +767,7 @@ public class RemoteMouseInstance extends AbstractRuntimeComponentInstance
 		  AstericsErrorHandling.instance.reportInfo(this, "RemoteMouse Instance (ID "+propUniqueID+") started.");
 	    }
 	    else
-		  AstericsErrorHandling.instance.reportError(this, "Could not find RemoteMouse Instance (ID "+propUniqueID+")");
+      		AstericsErrorHandling.instance.reportError(this, "Could not find RemoteMouse. Please verify that the HID actuator USB dongle is connected to the remote system and correctly installed on this computer.");
 	    
 	   super.start();  
      }

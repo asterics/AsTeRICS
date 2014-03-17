@@ -129,7 +129,7 @@ public class AnalogOutInstance extends AbstractRuntimeComponentInstance
     	}
     	else
     	{
-    		AstericsErrorHandling.instance.reportError(this, "Could not find DAC CIM");
+       		AstericsErrorHandling.instance.reportError(this, String.format("Could not find AnalogOut CIM (0x%x) in PortManager. Please verify that the CIM Module is connected to an USB Port and that the driver is installed.", ADC_CIM_ID ));
     	}
     }
 

@@ -79,6 +79,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 	private int houseCode = 11111111;
 	private int address = 1111;
 	private PCSDevice pcs;
+	private FS20SenderInstance instance = this;
     
    /**
     * The class constructor.
@@ -338,12 +339,12 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 				
 				String [] values = action.split("_");
 				if (values.length != 3) {
-					AstericsErrorHandling.instance.reportError(new FS20SenderInstance(), "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
+					AstericsErrorHandling.instance.reportInfo(instance, "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
 					return;
 				}
 				String [] prefix = values[0].split(":");
 				if ((prefix.length != 2) || ( ! prefix[0].equals("@FS20"))) {
-					AstericsErrorHandling.instance.reportError(new FS20SenderInstance(), "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
+					AstericsErrorHandling.instance.reportInfo(instance, "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
 					return;
 				}
 				try {
@@ -353,7 +354,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 					if (pcs != null)
 						pcs.send(hc, a, cmd);
 				} catch (NumberFormatException ne) {
-					AstericsErrorHandling.instance.reportError(new FS20SenderInstance(), "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
+					AstericsErrorHandling.instance.reportInfo(instance, "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
 				}
 		}
 	};
@@ -645,7 +646,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
       private void openDevice() {
     	  pcs = new PCSDevice();
     	  if (!pcs.open()) {
-    		  AstericsErrorHandling.instance.reportError(this, "Could not open/find PCS Device");
+    		  AstericsErrorHandling.instance.reportError(this, "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
     		  pcs = null;
     		  return;
     	  }
@@ -657,7 +658,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
       private void closeDevice() {
     	  if (pcs != null) {
 	    	  if (!pcs.close()) {
-	    		  AstericsErrorHandling.instance.reportError(this, "Could not close PCS Device");
+	    		  AstericsErrorHandling.instance.reportInfo(this, "Could not close PCS Device");
 	    		  pcs = null;
 	    		  return;
 	    	  }

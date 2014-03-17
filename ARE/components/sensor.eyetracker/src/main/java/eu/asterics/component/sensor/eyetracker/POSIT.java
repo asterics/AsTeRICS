@@ -116,7 +116,7 @@ public class POSIT
     {      
  	   
         if (bridgePOSIT.activate() == 0)
-     	   AstericsErrorHandling.instance.reportError(this.owner, "Could not init POSIT");
+     	   AstericsErrorHandling.instance.reportInfo(this.owner, "Could not init POSIT");
      	else
      	   AstericsErrorHandling.instance.reportDebugInfo(this.owner, "POSIT activated");
         
@@ -130,7 +130,7 @@ public class POSIT
     public void resumePosit()
     {    	
         if (bridgePOSIT.activate() == 0)
-      	   AstericsErrorHandling.instance.reportError(this.owner, "Could not init POSIT");
+      	   AstericsErrorHandling.instance.reportInfo(this.owner, "Could not init POSIT");
       	else
       	   AstericsErrorHandling.instance.reportDebugInfo(this.owner, "POSIT activated");
             	
@@ -151,7 +151,7 @@ public class POSIT
     	int errormsg;
     	Dimension screenResolution = Toolkit.getDefaultToolkit().getScreenSize();
     	errormsg = bridgePOSIT.startEval(screenResolution.width, screenResolution.height);
-    	if(errormsg != 1)	AstericsErrorHandling.instance.reportError(this.owner, String.format("could not start evaluation: %x", errormsg));    		
+    	if(errormsg != 1)	AstericsErrorHandling.instance.reportInfo(this.owner, String.format("could not start evaluation: %x", errormsg));    		
     }
     
     /**
@@ -179,7 +179,7 @@ public class POSIT
     {
     	int errormsg;
     	errormsg = bridgePOSIT.togglePoseInfoWindow();
-    	if(errormsg != 1)	AstericsErrorHandling.instance.reportError(this.owner, String.format("could not toggle Info Window: %x", errormsg));
+    	if(errormsg != 1)	AstericsErrorHandling.instance.reportInfo(this.owner, String.format("could not toggle Info Window: %x", errormsg));
     }
         
     /**

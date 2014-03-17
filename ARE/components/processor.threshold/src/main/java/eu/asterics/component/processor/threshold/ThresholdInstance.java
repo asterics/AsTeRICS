@@ -303,14 +303,14 @@ public class ThresholdInstance extends AbstractRuntimeComponentInstance
             	propEventCondition = Integer.parseInt(newValue.toString());
             	if ( (propEventCondition < EVENT_CONDITION_POS_EDGE) || (propEventCondition > EVENT_CONDITION_BOTH_EDGE) )
             	{
-            		AstericsErrorHandling.instance.reportError(this, "Property value out of range for " + propertyName + ": " + newValue);
+            		AstericsErrorHandling.instance.reportInfo(this, "Property value out of range for " + propertyName + ": " + newValue);
             	}
 	            return oldValue;
 	        }
     	}
         catch (NumberFormatException nfe)
         {
-        	AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+        	AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
         }
         return null;
     }

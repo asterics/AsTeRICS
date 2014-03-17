@@ -207,7 +207,7 @@ public class SignalTranslationInstance extends AbstractRuntimeComponentInstance
         }
         catch (NumberFormatException nfe)
         {
-        	AstericsErrorHandling.instance.reportError(this, 
+        	AstericsErrorHandling.instance.reportInfo(this, 
         			"Invalid property value for " + propertyName + ": " 
         				+ newValue);
         }         		

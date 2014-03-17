@@ -324,7 +324,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		  }
 		  else
 		  {
-			AstericsErrorHandling.instance.reportError(this, String.format("Could not get port controller for Lipmouse CIM ID: %x", LIPMOUSE_CIM_ID ));
+	       		AstericsErrorHandling.instance.reportError(this, "Could not find LipMouse Module. Please verify that the Module is connected to an USB Port and that the driver is installed.");
 		  }
 
           super.start();

@@ -301,7 +301,7 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
 	            }
 	            else
 	            {
-	            	AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+	            	AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 	            }
 	        	
 	        	if(KEY_PROPERTY_CHANGE_EVENT_1.equalsIgnoreCase(propertyName))
@@ -361,11 +361,11 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
     	}
         catch (NumberFormatException nfe)
         {
-        	AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+        	AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
         }
         catch (NullPointerException npe)
         {
-       		AstericsErrorHandling.instance.reportError(this, String.format("Could not find CIM 0x%x in PortManager", GPIO_CIM_ID ));
+       		AstericsErrorHandling.instance.reportInfo(this, "Could not find DigitalIn CIM in PortManager. Please verify that the CIM Module is connected to an USB Port and that the driver is installed.");
         }    	
         return null;
     }
@@ -485,7 +485,7 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
         }
         else
         {
-        	AstericsErrorHandling.instance.reportError(this, "Could not find port controller for digital In CIM or legacy GPIO ");
+       		AstericsErrorHandling.instance.reportError(this, "Could not find DigitalIn CIM in PortManager. Please verify that the CIM Module is connected to an USB Port and that the driver is installed.");
         }    	
     }
     

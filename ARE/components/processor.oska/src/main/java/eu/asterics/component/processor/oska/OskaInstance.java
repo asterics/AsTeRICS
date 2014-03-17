@@ -154,11 +154,11 @@ public class OskaInstance extends AbstractRuntimeComponentInstance
 	    	catch (IOException e)
 	    	{
 	    		AstericsErrorHandling.instance.reportError(this, 
-	    				"IOException while starting OSKA");
+	    				"IOException while starting OSKA - make sure OSKA is installed in teh correct path.");
 	    	}
 	    	catch (IllegalArgumentException e)
 	    	{
-	    		AstericsErrorHandling.instance.reportError(this, 
+	    		AstericsErrorHandling.instance.reportInfo(this, 
 	    				"oskaPath property is empty"+ propOskaPath);
 	    	}
     	}

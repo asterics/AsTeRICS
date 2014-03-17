@@ -174,12 +174,15 @@ JNIEXPORT jint JNICALL Java_eu_asterics_component_sensor_joystickcapture_jni_Bri
 				(jint) (4), (jint) (5), (jint) (6), (jint) (0), (jint) (9000));
 */
 			printf("Joyhook-Dll: Joystickhook installed\n");
+			return (jint)0;
+
+
 		}
 		else printf("Joyhook-Dll: Could not retrieve joystick capabilities\n");
 	}
 	else printf("Joyhook-Dll: No Joystick found\n");
 
-	return (jint)0;
+	return (jint)1;
 }
 
 

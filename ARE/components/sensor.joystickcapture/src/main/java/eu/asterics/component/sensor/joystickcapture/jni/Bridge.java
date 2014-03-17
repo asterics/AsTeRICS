@@ -164,7 +164,7 @@ public class Bridge
 			case 18000: pov=4; break;
 			case 22500: pov=5; break;
     		case 27000: pov=6; break;
-    		case 31500: pov=6; break;
+    		case 31500: pov=7; break;
     		default: pov=8; break;
     	}
     	if (owner.axis>0) owner.opX.sendData(ConversionUtils.intToBytes(x));       
