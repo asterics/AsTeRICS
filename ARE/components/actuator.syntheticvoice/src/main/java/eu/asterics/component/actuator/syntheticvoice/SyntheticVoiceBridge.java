@@ -156,12 +156,12 @@ public class SyntheticVoiceBridge
       }
       else if(result==libraryInitializeWarning)
       {
-        AstericsErrorHandling.instance.reportError(componentInstance, "Synthetic Voice start warming, the plugin continue");
+        AstericsErrorHandling.instance.reportInfo(componentInstance, "Synthetic Voice start warning, the plugin continues");
     	active=true;
       }
       else
       {
-        AstericsErrorHandling.instance.reportError(componentInstance, "Synthetic Voice start Error! "+Integer.toString(result));
+        AstericsErrorHandling.instance.reportError(componentInstance, "The Synthetic Voice plugin coudl not start! Error code "+Integer.toString(result));
       }
     }
     else
@@ -180,7 +180,7 @@ public class SyntheticVoiceBridge
     	
     if(result<0)
     {
-      AstericsErrorHandling.instance.reportError(componentInstance, "Synthetic Voice deactivate Error! "+Integer.toString(result));
+      AstericsErrorHandling.instance.reportInfo(componentInstance, "Synthetic Voice deactivation Error! "+Integer.toString(result));
     }
     else
     {
@@ -200,7 +200,7 @@ public class SyntheticVoiceBridge
         	
       if(result<0)
       {
-        AstericsErrorHandling.instance.reportError(componentInstance, "Synthetic Voice speech Error! "+Integer.toString(result));
+        AstericsErrorHandling.instance.reportInfo(componentInstance, "Synthetic Voice speech Error! "+Integer.toString(result));
       }
     }
   }

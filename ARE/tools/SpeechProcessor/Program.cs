@@ -18,9 +18,12 @@ using System.Globalization;
  using Microsoft.Speech.Recognition;
  using Microsoft.Speech.Synthesis;
 
+
 namespace AsynchronousRecognition
 {
-    class Program
+
+
+    public class Recog
     {
 
         static IAsyncResult m_asynResult;
@@ -44,8 +47,8 @@ namespace AsynchronousRecognition
         // Indicate whether asynchronous recognition is complete.
         static bool completed;
         static bool speaking=false;
-
-        static void Main(string[] args)
+        
+        public static void speechPlatformMain() 
         {
 
             Console.WriteLine("\nSpeech Processor: initializing!");

@@ -155,7 +155,7 @@ public class PlatformAnalogInInstance extends AbstractRuntimeComponentInstance i
 			}
 			catch (NumberFormatException nfe)
 			{
-				AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+				AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 			}        
 		}
 		else 
@@ -167,7 +167,7 @@ public class PlatformAnalogInInstance extends AbstractRuntimeComponentInstance i
 			else if("false".equalsIgnoreCase((String)newValue))
 				propertyValue = false;
 			else
-				AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+				AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 
 			for (int i = 0; i < NUMBER_OF_INPUTS; i++)
 			{
@@ -197,13 +197,12 @@ public class PlatformAnalogInInstance extends AbstractRuntimeComponentInstance i
 		else
 		{
 			AstericsErrorHandling.instance.reportError(this, 
-					String.format("Could not get port controller for CIM ID: %x", 
-							PLATFORM_CORE_CIM_V2_ID));
+					"Could not find AsTeRICS Personal platform - needed by the PlatformAnalogIn plugin");
 		}
 		threadActive = true;
 		AstericsThreadPool.instance.execute(this);
 		super.start();
-		// AstericsErrorHandling.instance.reportInfo(this, "AnalogInInstance started");
+		// AstericsErrorHandling.instance.reportInfo(this, "PlatformAnalogInInstance started");
 	}
 
 	/**
@@ -251,8 +250,7 @@ public class PlatformAnalogInInstance extends AbstractRuntimeComponentInstance i
 		else
 		{
 			AstericsErrorHandling.instance.reportError(this, 
-					String.format("Could not get port controller for Platform CIM ID: %x", 
-							PLATFORM_CORE_CIM_V2_ID));
+					"Could not find AsTeRICS Personal platform - needed by the PlatformAnalogIn plugin");
 		}
 		threadActive = true;
 		AstericsThreadPool.instance.execute(this);

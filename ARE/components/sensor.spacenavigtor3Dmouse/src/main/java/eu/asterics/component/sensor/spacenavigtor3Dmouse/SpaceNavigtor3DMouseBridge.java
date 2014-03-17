@@ -136,7 +136,7 @@ public class SpaceNavigtor3DMouseBridge implements Runnable
       }
       else
       {
-        AstericsErrorHandling.instance.reportError(componentInstance, "3D mouse start Error!"+Integer.toString(result));
+        AstericsErrorHandling.instance.reportError(componentInstance, "3D mouse start Error! ErrorCode:"+Integer.toString(result));
       }
     }  
     else
@@ -160,7 +160,7 @@ public class SpaceNavigtor3DMouseBridge implements Runnable
     
     if(result<0)
     {
-      AstericsErrorHandling.instance.reportError(componentInstance,"3D mouse stop Error!");
+      AstericsErrorHandling.instance.reportInfo(componentInstance,"3D mouse stop Error!");
     }
   }
    
@@ -203,7 +203,7 @@ public class SpaceNavigtor3DMouseBridge implements Runnable
     	}
     	else
     	{
-          AstericsErrorHandling.instance.reportError(componentInstance,"3D mouse read data Error!");
+          AstericsErrorHandling.instance.reportInfo(componentInstance,"3D mouse read data Error!");
     	}
       }    
     	

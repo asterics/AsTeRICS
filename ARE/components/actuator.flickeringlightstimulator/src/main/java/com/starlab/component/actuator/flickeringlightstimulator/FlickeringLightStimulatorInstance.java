@@ -599,7 +599,7 @@ public class FlickeringLightStimulatorInstance extends AbstractRuntimeComponentI
 	@Override
 	public void handlePacketError(CIMEvent e)
 	{
-		AstericsErrorHandling.instance.reportError(this, "handle error");
+		AstericsErrorHandling.instance.reportInfo(this, "handle error");
 		/*CIMEventErrorPacketFault EventErrorPacketFault = (CIMEventErrorPacketFault)e;
 		
 		AstericsErrorHandling.instance.reportError(this, EventErrorPacketFault.toString());

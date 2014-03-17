@@ -299,7 +299,7 @@ public class RazorImuInstance extends AbstractRuntimeComponentInstance
 		if (portController == null)
 		{
 			AstericsErrorHandling.instance.reportError(this, 
-					"Could not open port for connection to device");
+					"Could not open port for connection to RAZOR IMU device, please verify COM port number and module connection");
 		}
 		portController.addEventListener(this);
 
@@ -331,7 +331,8 @@ public class RazorImuInstance extends AbstractRuntimeComponentInstance
 		portController = CIMPortManager.getInstance().getRawConnection(propComPortName, propBaudRate);
 		if (portController == null)
 		{
-			AstericsErrorHandling.instance.reportError(this, "Could not construct raw port controller");
+
+			AstericsErrorHandling.instance.reportError(this, "Could not open port for connection to RAZOR IMU device, please verify COM port number and module connection");
 		}
 		portController.addEventListener(this);
 

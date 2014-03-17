@@ -193,7 +193,7 @@ public class AnalogInInstance extends AbstractRuntimeComponentInstance implement
 			}
 			catch (NumberFormatException nfe)
 			{
-				AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+				AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 			}        
 		}
 		else if("uniqueID".equalsIgnoreCase(propertyName))
@@ -229,7 +229,7 @@ public class AnalogInInstance extends AbstractRuntimeComponentInstance implement
 			else if("false".equalsIgnoreCase((String)newValue))
 				propertyValue = false;
 			else
-				AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+				AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 
 			for (int i = 0; i < NUMBER_OF_INPUTS; i++)
 			{
@@ -313,7 +313,7 @@ public class AnalogInInstance extends AbstractRuntimeComponentInstance implement
 			port = openCIM((short) 0x401, propUniqueID);
 			if (port == null)
 			{
-				AstericsErrorHandling.instance.reportError(this, String.format("Could not get port controller for ADC CIM ID: %x or for legacy ADC CIM", ADC_CIM_ID));
+				AstericsErrorHandling.instance.reportInfo(this, String.format("Could not get port controller for ADC CIM ID: %x or for legacy ADC CIM", ADC_CIM_ID));
 				return;
 			}
 			else
@@ -380,7 +380,7 @@ public class AnalogInInstance extends AbstractRuntimeComponentInstance implement
 			port = CIMPortManager.getInstance().getConnection((short) 0x401);
 			if (port == null)
 			{
-				AstericsErrorHandling.instance.reportError(this, String.format("Could not get port controller for CIM ID: %x or for legacy ACD CIM", ADC_CIM_ID));
+				AstericsErrorHandling.instance.reportInfo(this, String.format("Could not get port controller for CIM ID: %x or for legacy ACD CIM", ADC_CIM_ID));
 				return;
 			}
 			else

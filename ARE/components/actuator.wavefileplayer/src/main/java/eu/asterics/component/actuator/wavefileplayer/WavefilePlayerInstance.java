@@ -64,10 +64,12 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
 	boolean onRunning=false;
 	double soundVolume=0.0;
 	FloatControl volume;
+	
+	private WavefilePlayerInstance instance;
 
 	public WavefilePlayerInstance()
 	{
-		// empty constructor - needed for OSGi service factory operations
+		instance=this;
 	}
 
 	/**
@@ -376,7 +378,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
 	    	int i=0;
 	    	File soundFile = new File(getName());
 			if (!soundFile.exists()) { 
-				//AstericsErrorHandling.instance.reportError(this, "Wave file not found: " + getName());
+				AstericsErrorHandling.instance.reportInfo(instance, "Wave file not found: " + getName());
 				return;
 			} 
 

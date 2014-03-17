@@ -251,7 +251,7 @@ public class ProximityInstance extends AbstractRuntimeComponentInstance implemen
     	
          else
          {
-         	AstericsErrorHandling.instance.reportError(this, "Could not find port controller for Teensy");
+         	AstericsErrorHandling.instance.reportError(this, "Could not find Teensy controller, make sure the Proximity module is connected to an USB port and correctly installed.");
          }      	
       }
 

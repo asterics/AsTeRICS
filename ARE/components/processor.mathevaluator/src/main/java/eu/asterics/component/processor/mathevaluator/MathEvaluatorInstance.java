@@ -225,7 +225,7 @@ public class MathEvaluatorInstance extends AbstractRuntimeComponentInstance
         }
         catch (ParseException e)
         {
-        	AstericsErrorHandling.instance.reportError(this, "Exception while evaluating output of expression parser");
+        	AstericsErrorHandling.instance.reportInfo(this, "Exception while evaluating output of expression parser");
         	e.printStackTrace();
         }
         

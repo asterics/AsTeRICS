@@ -389,7 +389,23 @@ public class SpeechProcessorInstance extends AbstractRuntimeComponentInstance
     			  Thread.sleep(200);
   				  p=Runtime.getRuntime().exec(speechProcessorExePath);
   				  printConsoleOutput();
-		  
+
+					AstericsThreadPool.instance.execute(new Runnable() {
+						public void run() {
+							try {
+								p.waitFor();
+								if (p.exitValue() > 0) {
+									AstericsErrorHandling.instance.reportError(instance ,"SpeechProcessor could not be initialized ! Please verify that the Microsoft Speech Runtime 11 is installed correctly for your CPU  architecture.");
+									
+								}
+							} catch (InterruptedException e) {
+								AstericsErrorHandling.instance.reportError(instance, "Exception in SpeechProcessor:"
+										+ e.getMessage());
+							}
+						}
+					});
+  				  
+  				  
 	/*
 	    		  AstericsThreadPool.instance.execute(new Runnable() {
 	    			public void run()

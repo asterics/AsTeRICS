@@ -134,7 +134,7 @@ public class AmplifierInstance extends AbstractRuntimeComponentInstance
                 }
                 catch (NumberFormatException nfe)
                 {
-                	AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+                	AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
                 }
             }
             return oldValue;

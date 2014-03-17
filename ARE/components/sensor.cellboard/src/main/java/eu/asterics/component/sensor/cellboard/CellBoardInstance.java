@@ -770,7 +770,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 				propColumns = handler.getCols();
 				propScanType = handler.getScanning();
 				if (propRows == -1 || propColumns == -1) {
-					reportError("Error parsing rows or cols attribute of element keyboard");
+					reportError("Error parsing rows or cols attribute of CellBoard plugin");
 					return;
 				}
 				int hheight = handler.getHeight();

@@ -246,9 +246,9 @@ public class YaakInstance extends AbstractRuntimeComponentInstance
     		reader.start();
     	  } catch (UnknownHostException ue) {
         	  ue.printStackTrace();
-        	  AstericsErrorHandling.instance.reportError(this,"Could not find host: " + propHostname + ":"+propPort);
+        	  AstericsErrorHandling.instance.reportError(this,"Yaak: Could not find host: " + propHostname + ":"+propPort);
           } catch (IOException io) {
-        	  AstericsErrorHandling.instance.reportError(this,"Error opening socket for host: " + propHostname + ":"+propPort);
+        	  AstericsErrorHandling.instance.reportError(this,"Yaak: Error opening socket for host: " + propHostname + ":"+propPort);
         	  io.printStackTrace();
           }
       }
@@ -264,7 +264,7 @@ public class YaakInstance extends AbstractRuntimeComponentInstance
         	  if (s != null)
         		  s.close();
     	  } catch (IOException io) {
-    		  AstericsErrorHandling.instance.reportError(this,"Error closing the socket");
+    		  AstericsErrorHandling.instance.reportError(this,"Yaak: Error closing the socket");
     		  io.printStackTrace();
     	  }
       }

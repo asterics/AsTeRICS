@@ -205,7 +205,7 @@ public class TimerInstance extends AbstractRuntimeComponentInstance
 				int value  = Integer.parseInt(newValue.toString());
 				if (value < 1)
 				{
-					AstericsErrorHandling.instance.reportError(this, "Property value out of range for " + propertyName + ": " + newValue);
+					AstericsErrorHandling.instance.reportInfo(this, "Property value out of range for " + propertyName + ": " + newValue);
 				}
 				else propTimePeriod = value;
 				return oldValue;
@@ -216,7 +216,7 @@ public class TimerInstance extends AbstractRuntimeComponentInstance
 				int value  = Integer.parseInt(newValue.toString());
 				if (value < 1)
 				{
-					AstericsErrorHandling.instance.reportError(this, "Property value out of range for " + propertyName + ": " + newValue);
+					AstericsErrorHandling.instance.reportInfo(this, "Property value out of range for " + propertyName + ": " + newValue);
 				}
 				else propResolution = value;
 				return oldValue;
@@ -227,7 +227,7 @@ public class TimerInstance extends AbstractRuntimeComponentInstance
 				int value  = Integer.parseInt(newValue.toString());
 				if (value < 0)
 				{
-					AstericsErrorHandling.instance.reportError(this, "Property value out of range for " + propertyName + ": " + newValue);
+					AstericsErrorHandling.instance.reportInfo(this, "Property value out of range for " + propertyName + ": " + newValue);
 				}
 				else propWaitPeriod = value;
 				return oldValue;
@@ -238,7 +238,7 @@ public class TimerInstance extends AbstractRuntimeComponentInstance
 				int value  = Integer.parseInt(newValue.toString());
 				if (value < 0)
 				{
-					AstericsErrorHandling.instance.reportError(this, "Property value out of range for " + propertyName + ": " + newValue);
+					AstericsErrorHandling.instance.reportInfo(this, "Property value out of range for " + propertyName + ": " + newValue);
 				}
 				else propRepeatCounter = value;
 				return oldValue;
@@ -259,7 +259,7 @@ public class TimerInstance extends AbstractRuntimeComponentInstance
 		}
 		catch (NumberFormatException nfe)
 		{
-			AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+			AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 		}
 		return null;
 	}

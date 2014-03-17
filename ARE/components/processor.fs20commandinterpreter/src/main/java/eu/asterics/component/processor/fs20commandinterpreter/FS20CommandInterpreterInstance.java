@@ -322,7 +322,7 @@ public class FS20CommandInterpreterInstance extends AbstractRuntimeComponentInst
 			String receivedCommand = ConversionUtils.stringFromBytes(data); 
 			String[] values = receivedCommand.split("_");
 			if (values.length != 3) {
-				AstericsErrorHandling.instance.reportError(new FS20CommandInterpreterInstance(), "Parameter mismatch for action string "+receivedCommand+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");		
+				AstericsErrorHandling.instance.reportInfo(new FS20CommandInterpreterInstance(), "Parameter mismatch for action string "+receivedCommand+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");		
 				return;
 			}
 			try {
@@ -333,7 +333,7 @@ public class FS20CommandInterpreterInstance extends AbstractRuntimeComponentInst
 					findEvent(recCommand);
 				}
 			} catch (NumberFormatException ne) {
-				AstericsErrorHandling.instance.reportError(new FS20CommandInterpreterInstance(), "Data mismatch in action string "+receivedCommand+"! Numbers could not be converted. Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
+				AstericsErrorHandling.instance.reportInfo(new FS20CommandInterpreterInstance(), "Data mismatch in action string "+receivedCommand+"! Numbers could not be converted. Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
 			}
 		}
 	};

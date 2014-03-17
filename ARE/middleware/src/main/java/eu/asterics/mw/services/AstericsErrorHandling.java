@@ -45,6 +45,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.asapi.StatusObject;
@@ -113,7 +116,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	 * @param errorMsg the error message
 	 */
 	public void reportError(IRuntimeComponentInstance component, 
-			String errorMsg) 
+			final String errorMsg) 
 	{
 		
 		String componentID = DeploymentManager.instance.
@@ -122,7 +125,17 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 		ErrorLogPane.appendLog(errorMsg);
 		DeploymentManager.instance.setStatus(AREStatus.ERROR);
 		setStatusObject(AREStatus.ERROR.toString(), componentID, errorMsg);
-		this.notifyAREEventListeners("onAreError", errorMsg);
+		this.notifyAREEventListeners("onAreError", errorMsg);	
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				JOptionPane.showMessageDialog (null,
+					    errorMsg,
+					    "AsTeRICS RuntimeEnvironment: An Error occurred !",
+					    JOptionPane.WARNING_MESSAGE);
+				}
+			});				
 	}
 
 	/**

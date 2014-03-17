@@ -205,7 +205,7 @@ public class PlatformDigitalOutInstance extends AbstractRuntimeComponentInstance
     	else
     	{
     		AstericsErrorHandling.instance.reportError(this, 
-    			"Could not get port controller for Platform CIM");
+    			"The AsTeRICS platform could not be found - it is necessary for the PlatformDigitalOut plugin.");
     	}
     	AstericsErrorHandling.instance.reportInfo(this, 
     			"PlatformDigitalOut started");
