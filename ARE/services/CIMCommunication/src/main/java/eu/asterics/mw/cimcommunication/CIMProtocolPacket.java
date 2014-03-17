@@ -99,7 +99,7 @@ public class CIMProtocolPacket {
 
 	ParseState parseState = ParseState.areCimId;
 	byte [] parseBuffer = new byte[4];
-	byte parseIdxCtr = 0;
+	int parseIdxCtr = 0;
 
 	private static Logger logger = AstericsErrorHandling.instance.getLogger();
 	

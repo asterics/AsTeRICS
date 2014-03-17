@@ -156,11 +156,6 @@ namespace Asterics.ACS {
             } else {
                 OverrideModelFromAREAtConnectQuestionCheckBox.IsChecked = false;
             }
-            if (mainWindow.Ini.IniReadValue("Options", "showOverrideAndRunLocalWhenConnected").Equals("true")) {
-                OverrideAndRunFromAREAtConnectQuestionCheckBox.IsChecked = true;
-            } else {
-                OverrideAndRunFromAREAtConnectQuestionCheckBox.IsChecked = false;
-            }
             if (mainWindow.Ini.IniReadValue("Options", "showOverrideComponentCollectionQuestion").Equals("true")) {
                 OverrideComponentCollectionQuestionCheckBox.IsChecked = true;
             } else {
@@ -286,11 +281,6 @@ namespace Asterics.ACS {
             } else {
                 mainWindow.Ini.IniWriteValue("Options", "showOverrideLocalWhenConnected", "false");
             }
-            if (OverrideAndRunFromAREAtConnectQuestionCheckBox.IsChecked != null && (bool)OverrideAndRunFromAREAtConnectQuestionCheckBox.IsChecked) {
-                mainWindow.Ini.IniWriteValue("Options", "showOverrideAndRunLocalWhenConnected", "true");
-            } else {
-                mainWindow.Ini.IniWriteValue("Options", "showOverrideAndRunLocalWhenConnected", "false");
-            }
             if (OverrideComponentCollectionQuestionCheckBox.IsChecked != null && (bool)OverrideComponentCollectionQuestionCheckBox.IsChecked) {
                 mainWindow.Ini.IniWriteValue("Options", "showOverrideComponentCollectionQuestion", "true");
             } else {
@@ -314,7 +304,6 @@ namespace Asterics.ACS {
             mainWindow.showOverrideModelQuestion = (bool)OverrideModelQuestionCheckBox.IsChecked;
             mainWindow.showOverrideLocalModelQuestion = (bool)OverrideLocalModelQuestionCheckBox.IsChecked;
             mainWindow.showOverrideAtConnectionQuestion = (bool)OverrideModelFromAREAtConnectQuestionCheckBox.IsChecked;
-            mainWindow.showOverrideAndRunAtConnectionQuestion = (bool)OverrideAndRunFromAREAtConnectQuestionCheckBox.IsChecked;
             mainWindow.showOverrideComponentCollectionQuestion = (bool)OverrideComponentCollectionQuestionCheckBox.IsChecked;
 
             //mainWindow.Ini.IniWriteValue("Options", "pathToPluginCreationTool", creationToolPathText.Text);

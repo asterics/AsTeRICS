@@ -40,7 +40,7 @@ Name: "jre"; Description: "Java Runtime Environment"; Types: full
 [Run]
 ; install if frameworks needed - Check: CheckForFramework;
 Filename: {tmp}\dotNetFx40_setup.exe; Parameters: "/q:a /c:""install /l /q"""; Check: CheckForFramework; StatusMsg: Microsoft Framework 4.0 is beïng installed. Please wait...
-Filename: {tmp}\vcredist_x86.exe; Parameters: "/q:a /c:""install /l /q"""; Check: VCRedistNeedsInstall; StatusMsg: Microsoft Visual C++ 2010 is beïng installed. Please wait...
+Filename: {tmp}\vcredist_x86.exe; Parameters: "/q:a /c:""install /l /q"""; Check: VCSetupNeeded; StatusMsg: Microsoft Visual C++ 2010 is beïng installed. Please wait...
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\ACS"
@@ -53,33 +53,18 @@ Type: filesandordirs; Name: "{app}\OSKA"
 #ELSE
   #DEFINE AW "A"
 #ENDIF
-type
-  INSTALLSTATE = Longint;
-const       
-  INSTALLSTATE_DEFAULT = 5;
-  VC_2010_REDIST_X86 = '{196BB40D-1578-3D01-B289-BEFC77A11A1E}';
-  VC_2010_SP1_REDIST_X86 = '{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}';
-  
-function MsiQueryProductState(szProduct: string): INSTALLSTATE; 
-  external 'MsiQueryProductState{#AW}@msi.dll stdcall';
 
-function VCVersionInstalled(const ProductID: string): Boolean;
+
+// the following function checks if Visual C++ Redistributable needs to be installed
+function VCSetupNeeded(): Boolean;
+var
+  RedistInstalled : Boolean;
 begin
-  Result := MsiQueryProductState(ProductID) = INSTALLSTATE_DEFAULT;
+  RedistInstalled := RegKeyExists(HKLM,'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{196BB40D-1578-3D01-B289-BEFC77A11A1E}');
+  RedistInstalled := RedistInstalled or RegKeyExists(HKLM,'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}');
+  RedistInstalled := RedistInstalled or RegKeyExists(HKLM,'SOFTWARE\Microsoft\DevDiv\VC');
+  Result := not RedistInstalled;
 end;
-
-function VCRedistNeedsInstall: Boolean;
-Var
-result1: Boolean;
-result2: Boolean;
-regResult1 : Cardinal;   
-begin  
-  result1 := not (VCVersionInstalled(VC_2010_REDIST_X86) and not VCVersionInstalled(VC_2010_SP1_REDIST_X86));
-  RegQueryDWordValue(HKCU, 'Software\Microsoft\VisualStudio\10.0_Config\VC\VCRedist\x86', 'Installed', regResult1);
-  result2 := regResult1 = 0;
-  Result := result1 and result2;
-end;
-
 
                                                                                                                             
 var Splash  : TSetupForm;
@@ -130,38 +115,11 @@ Result := false;
 End;
 
 
-// the following function checks if Visual C++ Redistributable needs to be installed
-function VCSetupNeeded(): Boolean;
-var
-  RedistInstalled : Boolean;
-begin
-  RedistInstalled := RegKeyExists(HKLM,'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{196BB40D-1578-3D01-B289-BEFC77A11A1E}');
-  if RedistInstalled then
-  begin
-    Result := false;
-  end else
-  begin
-    RedistInstalled := RegKeyExists(HKLM,'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F0C3E5D1-1ADE-321E-8167-68EF0DE699A5}');
-    if RedistInstalled then
-    begin
-      Result := false;
-    end else
-    begin
-      Result := true;
-    end;
-  end;
-end;
 
 procedure InitializeWizard();
 begin
   Splash.Close;
 end;
-
-procedure MyAfterInstall2(FileName: String);
-begin
-  MsgBox('Just installed ' + FileName + ' as ' + CurrentFileName + '.', mbInformation, MB_OK);
-end;
-
 
 procedure CurPageChanged(CurPageID: Integer);
 var
