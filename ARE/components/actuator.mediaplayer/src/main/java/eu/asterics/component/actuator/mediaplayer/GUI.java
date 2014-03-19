@@ -67,7 +67,8 @@ import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
 import uk.co.caprica.vlcj.runtime.windows.WindowsCanvas;
- 
+import uk.co.caprica.vlcj.binding.internal.libvlc_state_t;
+
 
 /**
  *   Implements the Graphical User Interface for the
@@ -202,11 +203,16 @@ public class GUI extends JPanel
 	 
 	 public void play(String mediafile)
 	 {
+
 		 if (!actMediaFile.equals(mediafile)) stop();
 		 if (playerCreated==false) createPlayer();
 		 if (playerCreated==true)
 		 {
-			
+			 
+		   	if (mediaPlayer.getMediaPlayerState().toString().equals("libvlc_Ended"))  
+		        	mediaPlayer.stop();
+
+			 
 			if (!actMediaFile.equals(mediafile))
 	        {
 		        System.out.println("Trying to open and play file:"+ mediafile);
@@ -217,6 +223,7 @@ public class GUI extends JPanel
 	        {
 		        System.out.println("Trying to play mediafile");
 	        	mediaPlayer.play();
+
 	        }
 		 }
 	 }
@@ -235,9 +242,9 @@ public class GUI extends JPanel
 		 if (playerCreated==true)
 		 {
 		        mediaPlayer.stop();
-		        mediaPlayer.release();
-		        playerCreated=false;
-		        actMediaFile="";
+	//	        mediaPlayer.release();
+	//	        playerCreated=false;
+	//	        actMediaFile="";
 		 }
 
 	 }
@@ -254,7 +261,16 @@ public class GUI extends JPanel
 	 {
 		 if (playerCreated==true)
 		 {
-		        mediaPlayer.setPosition((float) position/100);
+			   	//  System.out.println(mediaPlayer.getMediaPlayerState().toString());
+
+			   	if (mediaPlayer.getMediaPlayerState().toString().equals("libvlc_Paused"))  
+			   	{	mediaPlayer.setPosition((float) position/100); }
+			   	else
+			   	if (mediaPlayer.getMediaPlayerState().toString().equals("libvlc_Ended"))  
+			   	{	mediaPlayer.stop(); mediaPlayer.play();}
+			   	else
+			   	if (mediaPlayer.getMediaPlayerState().toString().equals("libvlc_Playing"))  
+			   	{  mediaPlayer.pause(); }
 		 }
 	 }
 }
