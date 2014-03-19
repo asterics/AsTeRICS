@@ -185,7 +185,7 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 			else if("false".equalsIgnoreCase((String)newValue))
 				propAutoStart = false;
 			else
-				AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+				AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 
 		}
 		else if(KEY_PROPERTY_DESCRETE_STEPS.equalsIgnoreCase(propertyName))
@@ -197,7 +197,7 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 			}
 			catch (NumberFormatException nfe)
 			{
-				AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+				AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 			}        
 		}
 		else if(KEY_PROPERTY_UDPATE_FREQUENCY.equalsIgnoreCase(propertyName))
@@ -209,7 +209,7 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 			}
 			catch (NumberFormatException nfe)
 			{
-				AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+				AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 			}        
 		}
 		else if(KEY_PROPERTY_ACCELERATION_RANGE.equalsIgnoreCase(propertyName))
@@ -221,7 +221,7 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 			}
 			catch (NumberFormatException nfe)
 			{
-				AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+				AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 			}        
 		}
 		return null;
@@ -265,7 +265,7 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 		}
 		else
 		{
-			AstericsErrorHandling.instance.reportError(this, String.format("Could not get port controller for CIM ID: %x", ACC_CIM_ID));
+       		AstericsErrorHandling.instance.reportError(this, "Could not find Acceleration Module. Please verify that the CIM Module is connected to an USB Port and that the driver is installed.");
 		}
 		super.start();
 		AstericsErrorHandling.instance.reportInfo(this, "AccelerationInstance started");

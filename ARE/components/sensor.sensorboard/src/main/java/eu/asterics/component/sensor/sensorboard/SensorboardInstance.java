@@ -368,7 +368,7 @@ public class SensorboardInstance extends AbstractRuntimeComponentInstance implem
 		  }
 		  else
 		  {
-			AstericsErrorHandling.instance.reportError(this, String.format("Could not get port controller for CIM ID: %x", SENSORBOARD_CIM_ID));
+			AstericsErrorHandling.instance.reportError(this, "Could not find Sensorboard, please verify that the Sensorboard is connected to an USB port and correctly installed.");
 		  }
 
           super.start();

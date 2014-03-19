@@ -216,7 +216,7 @@ public class PlatformDigitalInInstance extends AbstractRuntimeComponentInstance
 	            }
 	            else
 	            {
-	            	AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+	            	AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 	            }
 	        	
 	        	if(KEY_PROPERTY_CHANGE_EVENT_1.equalsIgnoreCase(propertyName))
@@ -258,12 +258,13 @@ public class PlatformDigitalInInstance extends AbstractRuntimeComponentInstance
     	}
         catch (NumberFormatException nfe)
         {
-        	AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+        	AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
         }
         catch (NullPointerException npe)
         {
-       		AstericsErrorHandling.instance.reportError(this, String.format("Could not find Platform CIM 0x%x or 0x%x in PortManager", 
-       					PLATFORM_GPIO_CIM_ID, PLATFORM_GPIO_CIM_V2_ID ));
+       		AstericsErrorHandling.instance.reportError(this, 
+       				"Could not find AsTeRICS Personal platform - needed by the PlatformDigitalIn plugin");
+
         }    	
         return null;
     }
@@ -291,8 +292,9 @@ public class PlatformDigitalInInstance extends AbstractRuntimeComponentInstance
         }
         else
         {
-        	AstericsErrorHandling.instance.reportError(this, String.format("Could not find CIM 0x%x  or 0x%x in PortManager", 
-        			PLATFORM_GPIO_CIM_V2_ID, PLATFORM_GPIO_CIM_ID));
+        	AstericsErrorHandling.instance.reportError(this,
+       				"Could not find AsTeRICS Personal platform - needed by the PlatformDigitalIn plugin");
+
         }    	
     	
     	System.out.println("PlatformDigitalIn.start()");

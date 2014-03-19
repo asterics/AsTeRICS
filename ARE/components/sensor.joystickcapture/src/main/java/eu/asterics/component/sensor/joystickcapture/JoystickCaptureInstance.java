@@ -223,7 +223,8 @@ public class JoystickCaptureInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
-    	  bridge.activate();
+    	  if (bridge.activate() !=0)
+         		AstericsErrorHandling.instance.reportError(this, "Could not find Joystick or Gamepad. Please verify that a Joystick or Gamepad is connected to a USB port !");
           super.start();
       }
 
@@ -241,9 +242,10 @@ public class JoystickCaptureInstance extends AbstractRuntimeComponentInstance
       * called when model is resumed.
       */
       @Override
-      public void resume()
+      public void resume() 
       {
-    	  bridge.activate();
+    	  if (bridge.activate() !=0)
+       		AstericsErrorHandling.instance.reportError(this, "Could not find Joystick or Gamepad. Please verify that a Joystick or Gamepad is connected to a USB port !");
           super.resume();
       }
 

@@ -186,7 +186,7 @@ public class FileWriterInstance extends AbstractRuntimeComponentInstance
 			try {
 				out.close();
 			} catch (IOException e) {
-				AstericsErrorHandling.instance.reportError(this, "Error closing file");
+				AstericsErrorHandling.instance.reportInfo(this, "Error closing file");
 			}
 		}
         super.stop();

@@ -269,7 +269,7 @@ public class EogInstance extends AbstractRuntimeComponentInstance implements CIM
 		  }
 		  else
 		  {
-			AstericsErrorHandling.instance.reportError(this, String.format("Could not get port controller for CIM ID: %x", EOG_CIM_ID));
+	       		AstericsErrorHandling.instance.reportError(this, "Could not find EOG Module. Please verify that the Module is connected to an USB Port and that the driver is installed.");
 		  }
           super.start();
       }

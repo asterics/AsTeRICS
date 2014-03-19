@@ -305,7 +305,7 @@ public class P2_parserInstance extends AbstractRuntimeComponentInstance
     	  
     	  if (portController == null) {
     		 AstericsErrorHandling.instance.reportError(this, 
-    		 "Could not construct raw port controller");
+    		 "P2-plugin: Could not construct raw port controller, please verify that the COM port is valid.");
     	  } else {
     		  in = portController.getInputStream();
     		  readerThread = new Thread(new Runnable() {
@@ -360,7 +360,7 @@ public class P2_parserInstance extends AbstractRuntimeComponentInstance
       {
     	portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate,true);
   		if (portController == null) {
-  			AstericsErrorHandling.instance.reportError(this, "Could not construct OpenEEG raw port controller");
+  			AstericsErrorHandling.instance.reportError(this, "Could not construct OpenEEG raw port controller, please make sure that the COM port is valid.");
   		}
   		readerThread.start();
   		super.resume();

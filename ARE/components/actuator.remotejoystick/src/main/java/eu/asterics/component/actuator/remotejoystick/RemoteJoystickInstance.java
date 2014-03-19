@@ -464,7 +464,7 @@ public class RemoteJoystickInstance extends AbstractRuntimeComponentInstance
 	   if (port != null)
 		  AstericsErrorHandling.instance.reportInfo(this, "RemoteJoystick Instance (ID "+propUniqueID+") started.");
 	   else
-		  AstericsErrorHandling.instance.reportError(this, "Could not find RemoteJoystick Instance (ID "+propUniqueID+")");
+      		AstericsErrorHandling.instance.reportError(this, "Could not find RemoteJoystick. Please verify that the HID actuator USB dongle is connected to the remote system and correctly installed on this computer.");
 	   super.start();  
   }
   

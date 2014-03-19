@@ -158,7 +158,7 @@ public class MinmaxInstance extends AbstractRuntimeComponentInstance
 				}
 				catch (NumberFormatException nfe)
 				{
-					AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+					AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 				}
 			}
 			return oldValue;
@@ -175,7 +175,7 @@ public class MinmaxInstance extends AbstractRuntimeComponentInstance
 				}
 				catch (NumberFormatException nfe)
 				{
-					AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+					AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 				}
 			}
 			return oldValue;
