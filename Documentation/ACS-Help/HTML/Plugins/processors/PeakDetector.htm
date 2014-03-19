@@ -9,7 +9,10 @@
 <H1>PeakDetector</H1>
 <H3>Component Type: Processor (Subcategory: Basic Math)</H3>
 <p>
-	The Peakdetector component can be used to detect peaks and valleys in a signal. Additionally it can calculate the time between two peaks or two valles or between a peak and a valley.
+ The Peakdetector component can be used to detect peaks (top values of the signal) and valleys (bottom values) in a signal. 
+ Additionally it can calculate the time between two peaks or two valleys or between a peak and a valley.
+ Optionally, top and bottom values can be compared with an average of the most recent top / bottom values - this allows to 
+ detect only peaks which are for example greater than 150% of the last 5 averaged peak values.   
 
 </p>
 <div class="image"><img src="img/peakdetector.png" style="width:20em;" alt="Screenshot: PeakDetector plugin" title="Screenshot: PeakDetector plugin" /><br>
@@ -33,10 +36,10 @@ PeakDetector plugin</div>
 <H2>Properties</H2>
 <ul>
 <li><STRONG>mode:</STRONG> Determines which time frame will be used for the time output signal (see description of the output port time).</li>
-<li><STRONG>comparePeaks:</STRONG> CHRIS INPUT</li>
-<li><STRONG>validTopPercentage:</STRONG> CHRIS INPUT</li>
-<li><STRONG>validBottomPercentage:</STRONG> CHRIS INPUT</li>
-<li><STRONG>timeMode:</STRONG> Determines the unit for the measured time frame. Options are BPM or milliseconds.</li>
+<li><STRONG>comparePeaks:</STRONG>the number of top / bottom values which are taken into account for averaging (0 = disable)</li>
+<li><STRONG>validTopPercentage:</STRONG>the percentage of the recent averaged top values which constitutes a valid top value (0 = all top values are valid)</li>
+<li><STRONG>validBottomPercentage:</STRONG>the percentage of the recent averaged bottom values which constitutes a valid bottom value (0 = all bottom values are valid)</li>
+<li><STRONG>timeMode:</STRONG> Determines the unit for the measured time frame between top/bottom values. Options are beats per minute (BPM) or milliseconds.</li>
 </ul>
 </BODY>
 </HTML>
