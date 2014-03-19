@@ -157,7 +157,7 @@ namespace Asterics.ACS {
                             }
                             else {
                                 //Console.WriteLine("nothing received");
-                                Thread.Sleep(200); // wait before the next attemt to read data from the port
+                                Thread.Sleep(400); // wait before the next attemt to read data from the port
                             }
                         }
                         Thread.Sleep(100);
