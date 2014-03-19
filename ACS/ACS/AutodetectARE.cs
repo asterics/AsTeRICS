@@ -138,7 +138,8 @@ namespace Asterics.ACS {
                         IPEndPoint recvEp = new IPEndPoint(IPAddress.Any, 0);
                         UdpClient udpResponse = new UdpClient(receivePort);
                         //Loop to give the ARE some time to respond
-                        for (int i = 0; i <= 10; i++) {
+                        int iterations = 10;
+                        for (int i = 0; i < iterations; i++) {
                             if (udpResponse.Available > 0) {
                                 IPEndPoint remoteEndPoint = new IPEndPoint(IPAddress.Any, receivePort);
 
@@ -157,7 +158,7 @@ namespace Asterics.ACS {
                             }
                             else {
                                 //Console.WriteLine("nothing received");
-                                Thread.Sleep(400); // wait before the next attemt to read data from the port
+                                Thread.Sleep(getTimeout()/iterations); // wait before the next attemt to read data from the port
                             }
                         }
                         Thread.Sleep(100);
@@ -204,6 +205,29 @@ namespace Asterics.ACS {
                 return true;
             }
 
+        }
+
+        private int getTimeout()
+        {
+            IniFile ini = null;
+            int timeOut = 1000;
+            if (File.Exists(Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\AsTeRICS\\ACS\\asterics.ini"))
+            {
+                ini = new IniFile(Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\AsTeRICS\\ACS\\asterics.ini");
+            }
+            else if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "asterics.ini"))
+            {
+                ini = new IniFile(AppDomain.CurrentDomain.BaseDirectory + "asterics.ini");
+            }
+            if (ini != null)
+            {
+                timeOut = int.Parse(ini.IniReadValue("ARE", "socket_timeout"));
+                if (timeOut < 100)
+                {
+                    timeOut = 1000;
+                }
+            }
+            return timeOut;
         }
 
         private void filenameListbox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
