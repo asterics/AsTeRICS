@@ -4,7 +4,7 @@
 
     <componentType id="asterics.Lipmouse"
                    canonical_name="eu.asterics.component.sensor.lipmouse.LipmouseInstance">
-        <type subtype="Standard Input Devices">sensor</type>
+        <type subtype="Sensor Modules">sensor</type>
         <singleton>false</singleton>
         <description>Lipmouse CIM</description>
         <ports>

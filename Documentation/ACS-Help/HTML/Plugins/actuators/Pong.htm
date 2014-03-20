@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>Pong</Title>
+</HEAD>
+<BODY>
+<H1>Pong</H1> 
+<H3>Component Type: Actuator (Subcategory: Others)</H3>
+<p>The Pong component is an implementation of the classic "pong"-game, where two players control their paddles and try to hit a moving ball.
+The Pong component offers different input modalities (speed or event-baed) so that the game can be played via a wide range (and combination of) sensors.
+Two users can play the game using different sensors. Several game options can be controlled by the plugin properties.
+</p>
+<div class="image"><img src="img/Pong.jpg" alt="Screenshot: Pong plugin" title="Screenshot: Pong plugin" /><br>
+Pong plugin</div>
+
+<div class="image"><img src="img/PongScreen.jpg" alt="Screenshot: Pong game screen" title="Pong game screen" /><br>
+Pong game screen</div>
+<H2>Application</H2>
+ A special "bike-Pong" interface has been developed at UAS Technikum Wien, which allows playing the
+game via bicycle ergometers. For this purpuse, the Arduino microcontroller (and corresponding plugin) are utilized to measure the user interactions and deliver the data to the Pong plugin.
+<p>
+<div class="image"><img src="img/PongApplication.jpg" alt="bike pong gaming" title="bike pong gaming" /><br>
+bike-ergomenter controlled pong game</div>
+
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>playerOnePos [integer]:</STRONG> This input port defines the position of player one's paddle (0 to 500)</li>
+<li><STRONG>playerTwoPos [integer]:</STRONG> This input port defines the position of player two's paddle (0 to 500)</li>
+<li><STRONG>playerOneSpeed [integer]:</STRONG> This input port defines the speed of player one's paddle (-10 to 10)</li>
+<li><STRONG>playerTwoSpeed [integer]:</STRONG> This input port defines the speed of player two's paddle (-10 to 10)</li>
+</li>
+</ul>
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>startGame:</STRONG> An incoming event starts/restarts the game</li>
+<li><STRONG>playerOneToggleDirection:</STRONG> An incoming event changes the direction of player one's paddle (only relevant for event-based paddle control mode).</li>
+<li><STRONG>playerTwoToggleDirection:</STRONG> An incoming event changes the direction of player two's paddle (only relevant for event-based paddle control mode).</li>
+<li><STRONG>playerOneMovement:</STRONG> An incoming event moves player one's paddle one step (only relevant for event-based paddle control mode). This input is also used for the calculation of the total amount of engery.</li>
+<li><STRONG>playerTwoMovement:</STRONG> An incoming event moves player two's paddle one step (only relevant for event-based paddle control mode). This input is also used for the calculation of the total amount of engery.</li>
+</ul>
+
+<H2>Properties</H2>
+<ul>
+<li><STRONG>controlMode [combobox selection]:</STRONG> selects the mode for controlling the paddle positions. possible selections are: absolute position (via input port), speed (via input port) or single events.</li>
+<li><STRONG>speedStep [double]:</STRONG> defines the amount of movement caused by one event.</li>
+<li><STRONG>goalsToWin [double]:</STRONG> number of goals to win a game (player lives).</li>
+<li><STRONG>eventsToCaloryMultiplier [double]:</STRONG> factor to calculate energy (in calories) from incoming events (especially for the bike ergometer application).</li>
+<li><STRONG>goalScoreBase [integer]:</STRONG> game points for one goal.</li>
+<li><STRONG>touchScoreBase [integer]:</STRONG> game points for one ball hit.</li>
+<li><STRONG>resetWaitTime [integer]:</STRONG> time to wait before resetting game screen.</li>
+<li><STRONG>maxSpeed [double]:</STRONG> the maximum speed of the ball.</li>
+<li><STRONG>minXSpeed [double]:</STRONG> the minimum X speed of the ball (to avoid deadlocks of the gameplay).</li>
+<li><STRONG>reflectionYImpulse [double]:</STRONG> speed impluse gained from a vertical reflection of the ball.</li>
+<li><STRONG>soundFilePaddleTouch [string]:</STRONG> a wav file which is played when the ball touches a paddle.</li>
+<li><STRONG>soundFileBoundsTouch [string]:</STRONG> a wav file which is played when the ball touches the vertical bounds.</li>
+<li><STRONG>soundFileGoal [string]:</STRONG> a wav file which is played when a player missed a ball.</li>
+<li><STRONG>soundFileEndGame [string]:</STRONG> a wav file which is played when the game is over.</li>
+</ul>
+</BODY>
+</HTML>

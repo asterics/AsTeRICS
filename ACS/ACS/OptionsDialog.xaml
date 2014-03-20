@@ -124,7 +124,7 @@
                         <x:Static Member="properties:Resources.OptionsDialogConnectionTimeout" />
                     </Label>
                     <TextBox AutomationProperties.Name="{x:Static properties:Resources.OptionsDialogConnectionTimeout}" Grid.Column="2" Grid.Row="6" HorizontalAlignment="Left" Margin="15,3,0,0" Name="ConnectionTimeoutBox" VerticalAlignment="Top" Width="44" Height="28" IsReadOnly="True" TextAlignment="Right" IsEnabled="False" />
-                    <Slider Grid.Column="1" Grid.Row="6" Height="23" HorizontalAlignment="Left" Margin="30,4,0,0" Name="ConnectionTimeoutSlider" VerticalAlignment="Top" Width="150" Minimum="1000" Interval="1000" IsSnapToTickEnabled="True" TickPlacement="BottomRight" ValueChanged="ConnectionTimeoutSlider_ValueChanged" Maximum="60000" TickFrequency="1000" />
+                    <Slider Grid.Column="1" Grid.Row="6" Height="23" HorizontalAlignment="Left" Margin="30,4,0,0" Name="ConnectionTimeoutSlider" VerticalAlignment="Top" Width="150" Minimum="100" Interval="100" IsSnapToTickEnabled="True" TickPlacement="BottomRight" ValueChanged="ConnectionTimeoutSlider_ValueChanged" Maximum="60000" TickFrequency="100" />
                     <Label Grid.Column="0" Grid.Row="7" Height="28" HorizontalAlignment="Right" Margin="0,3,0,3" Name="StatusUpdateLabel" VerticalAlignment="Top" >
                         <x:Static Member="properties:Resources.OptionsDialogStatusUpdateLabel" />
                     </Label>
