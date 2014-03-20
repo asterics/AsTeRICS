@@ -381,6 +381,171 @@
     </componentType>
 
 
+ <componentType canonical_name="eu.asterics.component.actuator.enocean.EnoceanInstance" id="asterics.enocean">
+        <type subtype="Home Control">actuator</type>
+        <singleton>false</singleton>
+        <description>Enables the ARE to communicate with an EnOcean wireless network</description>
+        <ports>
+			<inputPort id="command">
+				<description>command string to send an EnOcean command</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="slider1">
+				<description>analog value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="slider2">
+				<description>analog value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="slider3">
+				<description>analog value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="slider4">
+				<description>analog value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="slider5">
+				<description>v</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="slider6">
+				<description>analog value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="output1">
+				<description>the output value, from device with IDTrigger1</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="output2">
+				<description>the output value, from device with IDTrigger2</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="output3">
+				<description>the output value, from device with IDTrigger3</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="output4">
+				<description>the output value, from device with IDTrigger4</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="output5">
+				<description>the output value, from device with IDTrigger5</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="output6">
+				<description>the output value, from device with IDTrigger6</description>
+				<dataType>string</dataType>
+			</outputPort>
+        </ports>
+		<events>
+		
+            <eventTriggererPort id="event_out_1">
+                <description>The default event port where the generated events are produced</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="event_out_2">
+                <description>The default event port where the generated events are produced</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="event_out_3">
+                <description>The default event port where the generated events are produced</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="event_out_4">
+                <description>The default event port where the generated events are produced</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="event_out_5">
+                <description>The default event port where the generated events are produced</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="event_out_6">
+                <description>The default event port where the generated events are produced</description>
+            </eventTriggererPort>                                                            
+			<eventListenerPort id="send1">
+				<description>Sending the value defined in send property sendvalue1 with id1</description>
+			</eventListenerPort>
+			<eventListenerPort id="send2">
+				<description>Sending the value defined in send property sendvalue2 with id2</description>
+			</eventListenerPort>
+			<eventListenerPort id="send3">
+				<description>Sending the value defined in send property sendvalue3 with id3</description>
+			</eventListenerPort>
+			<eventListenerPort id="send4">
+				<description>Sending the value defined in send property sendvalue4 with id4</description>
+			</eventListenerPort>
+			<eventListenerPort id="send5">
+				<description>Sending the value defined in send property sendvalue5 with id5</description>
+			</eventListenerPort>
+			<eventListenerPort id="send6">
+				<description>Sending the value defined in send property sendvalue6 with id6</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+            <property description="The local IP of network interface, which is connected to KNX/IP network" name="localIP" type="string" value="127.0.0.1"/>
+            <property description="The hostname/IP of EnOcean IP gateway device" name="gatewayIP" type="string" value="172.0.10.2"/>
+            <property description="Use USB communication" name="USB" type="boolean" value="true"/>
+            <property description="Sending ID 1" name="id1" type="string" value="0"/>
+            <property description="DPT 1 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendType1" type="string" value="binary"/>
+            <property description="Value 1" name="dataValue1" type="string" value="0"/>
+            <property description="Sending ID 2" name="id2" type="string" value="0"/>
+            <property description="DPT 2 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendType2" type="string" value="binary"/>
+            <property description="Value 2" name="dataValue2" type="string" value="0"/>
+            <property description="Sending ID 3" name="id3" type="string" value="0"/>
+            <property description="DPT 3 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendType3" type="string" value="binary"/>
+            <property description="Value 3" name="dataValue3" type="string" value="0"/>
+            <property description="Sending ID 4" name="id4" type="string" value="0"/>
+            <property description="DPT 4 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendType4" type="string" value="binary"/>
+            <property description="Value 4" name="dataValue4" type="string" value="0"/>
+            <property description="Sending ID 5" name="id5" type="string" value="0"/>
+            <property description="DPT 5 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendType5" type="string" value="binary"/>
+            <property description="Value 5" name="dataValue5" type="string" value="0"/>
+            <property description="Sending ID 6" name="id6" type="string" value="0"/>
+            <property description="DPT 6 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendType6" type="string" value="binary"/>
+            <property description="Value 6" name="dataValue6" type="string" value="0"/>
+                      
+                      
+            <property description="Sending ID Slider 1" name="IDSlider1" type="string" value="0"/>
+	        <property description="DPT 1 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendTypeSlider1" type="string" value="binary"/>
+	        <property description="Sending ID Slider 2" name="IDSlider2" type="string" value="0"/>
+	        <property description="DPT 2 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendTypeSlider2" type="string" value="binary"/>
+	        <property description="Sending ID Slider 3" name="IDSlider3" type="string" value="0"/>
+	        <property description="DPT 3 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendTypeSlider3" type="string" value="binary"/>
+	        <property description="Sending ID Slider 4" name="IDSlider4" type="string" value="0"/>
+	        <property description="DPT 4 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendTypeSlider4" type="string" value="binary"/>
+	        <property description="Sending ID Slider 5" name="IDSlider5" type="string" value="0"/>
+	        <property description="DPT 5 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendTypeSlider5" type="string" value="binary"/>
+	        <property description="Sending ID Slider 6" name="IDSlider6" type="string" value="0"/>
+	        <property description="DPT 6 (binary|temperature|illumination|fan|humidity|setpoint)" name="sendTypeSlider6" type="string" value="binary"/>   
+           
+            <property description="Listening ID for event trigger/output value 1" name="IDTrigger1" type="string" value="AABBCCDD"/>
+	        <property description="DPT 1 (binary|temperature|illumination|fan|humidity|setpoint)" name="TypeTrigger1" type="string" value="binary"/>   
+            <property description="Listening ID for event trigger/output value 2" name="IDTrigger2" type="string" value="AABBCCDD"/>
+	        <property description="DPT 2 (binary|temperature|illumination|fan|humidity|setpoint)" name="TypeTrigger2" type="string" value="binary"/> 
+	        <property description="Listening ID for event trigger/output value 3" name="IDTrigger3" type="string" value="AABBCCDD"/>
+	        <property description="DPT 3 (binary|temperature|illumination|fan|humidity|setpoint)" name="TypeTrigger3" type="string" value="binary"/> 
+	        <property description="Listening ID for event trigger/output value 4" name="IDTrigger4" type="string" value="AABBCCDD"/>
+	        <property description="DPT 4 (binary|temperature|illumination|fan|humidity|setpoint)" name="TypeTrigger4" type="string" value="binary"/> 
+	        <property description="Listening ID for event trigger/output value 5" name="IDTrigger5" type="string" value="AABBCCDD"/>
+	        <property description="DPT 5 (binary|temperature|illumination|fan|humidity|setpoint)" name="TypeTrigger5" type="string" value="binary"/> 
+	        <property description="Listening ID for event trigger/output value 6" name="IDTrigger6" type="string" value="AABBCCDD"/>
+	        <property description="DPT 6 (binary|temperature|illumination|fan|humidity|setpoint)" name="TypeTrigger6" type="string" value="binary"/> 
+	                                  	                  	                  	        
+        </properties>
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.actuator.event_visualizer.EventVisualizerInstance" id="asterics.EventVisualizer">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -2358,6 +2523,41 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.actuator.tonegenerator.ToneGeneratorInstance" id="asterics.ToneGenerator">
+        <type subtype="Audio and Voice">actuator</type>
+        <singleton>false</singleton>
+        <description>Plays a tone with a given frequency for a given time</description>
+        <ports>
+			<inputPort id="frequencyLeft">
+				<description>frequency of the left channel</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="frequencyRight">
+				<description>frequency of the right channel</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="play">
+				<description>plays the tone</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stops the tone</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="sample rate" name="samplerate" type="integer" value="44100"/>
+			<property description="play frequencies on separate channels" name="separate channels" type="boolean" value="true"/>
+			<property combobox="sine//square//sawtooth" description="defines the waveform for the generated tone" name="waveform" type="integer" value="0"/>				
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.actuator.wavefileplayer.WavefilePlayerInstance" id="asterics.WavefilePlayer">
         <type subtype="Audio and Voice">actuator</type>
         <singleton>false</singleton>
@@ -2468,17 +2668,17 @@
         <description>Arduino Microcontroller CIM</description>
         <ports>
 			<inputPort id="pwm3">
-				<description>PWM value for Pin3 Analog Output</description>
+				<description>PWM value for Pin3 Analog Output (0-255)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="pwm5">
-				<description>PWM value for Pin5 Analog Output</description>
+				<description>PWM value for Pin5 Analog Output (0-255)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="pwm6">
-				<description>PWM value for Pin6 Analog Output</description>
+				<description>PWM value for Pin6 Analog Output (0-255)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
@@ -2660,10 +2860,10 @@
         <properties>
 			<property description="automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 2 Mode" name="pin2Mode" type="integer" value="0"/>
-			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 3 Mode" name="pin3Mode" type="integer" value="0"/>
+			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 500Hz" description="Pin 3 Mode" name="pin3Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 4 Mode" name="pin4Mode" type="integer" value="0"/>
-			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 5 Mode" name="pin5Mode" type="integer" value="0"/>
-			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 6 Mode" name="pin6Mode" type="integer" value="0"/>
+			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 500Hz" description="Pin 5 Mode" name="pin5Mode" type="integer" value="0"/>
+			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 500Hz" description="Pin 6 Mode" name="pin6Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 7 Mode" name="pin7Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 8 Mode" name="pin8Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 9 Mode" name="pin9Mode" type="integer" value="0"/>
@@ -3541,8 +3741,11 @@
         <singleton>false</singleton>
         <description>routes incoming events to one of 8 event trigger ports</description>
         <ports>
-
-
+			<inputPort id="routeIndex">
+				<description>Select the route (range 0 - 1)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
         </ports>
 		<events>
 			<eventListenerPort id="eventIn">
@@ -7377,6 +7580,40 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.sensor.lipmouse.LipmouseInstance" id="asterics.Lipmouse">
+        <type subtype="Sensor Modules">sensor</type>
+        <singleton>false</singleton>
+        <description>Lipmouse CIM</description>
+        <ports>
+
+			<outputPort id="X">
+				<description>X's value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="Y">
+				<description>Y's value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pressure">
+				<description>Presure value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="calibration">
+				<description>For calibrating the mouse</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="Automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="0"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.sensor.mousecapture.MouseCaptureInstance" id="asterics.MouseCapture">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>
@@ -7416,6 +7653,12 @@
             <eventTriggererPort id="wheelDown">
                 <description>Event port triggers when mouse wheel is moved down</description>
             </eventTriggererPort>
+			<eventListenerPort id="blockEvents">
+                <description>Eventlistener to block mouse events. This means the mouse events will not be processed by the local system.</description>
+            </eventListenerPort>
+			<eventListenerPort id="forwardEvents">
+                <description>Forward mouse events to the local system</description>
+            </eventListenerPort>
         </events>
         
         <properties>
