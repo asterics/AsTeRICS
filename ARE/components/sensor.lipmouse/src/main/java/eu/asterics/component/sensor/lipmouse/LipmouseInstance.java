@@ -48,7 +48,7 @@ import eu.asterics.mw.services.AREServices;
  * Interface to the Lipmouse module. Based on ArduinoInstance.java developed by Chris Veigl
  * 
  * 
- *  
+ *   
  * @author Alberto Ibanez [alberto_21_9@hotmail.com]
  *         Date: 07.01.2014
  *         Time: 17:50

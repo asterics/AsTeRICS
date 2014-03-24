@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>Lipmouse</Title>
+</HEAD>
+<BODY>
+<H1>Lipmouse</H1> 
+<H3>Component Type: Sensor (Subcategory:Sensor Modules)</H3>
+<p>
+This component provides signals from the Lipmouse module, which allows computer control via a mouthpiece. 
+The user can create input signals with 3 degrees of freedom by interacting with the mouthpiece: left/right, up/down and sip/puff.
+The horizontal and vertical movements are measured via force sensors inside the lipmouse module. The sip/puff actions are measured via a pressure sensor.
+The lipmouse can be adjusted to very low force that it can be used by persons with severly reduced motor capabilites (e.g. late stage musculuar dystrophy or quadraplegia up to C1/C2 lesions).
+
+<div class="image"><img src="img/Lipmouse.jpg" alt="Screenshot: Lipmouse plugin" title="Screenshot: Lipmouse plugin" /><br>
+the Lipmouse sensor plugin</div>
+
+<H2>Requirements</H2>
+The Lipmouse module must be connected to a USB port. Firmware for the lipmouse sensor can be found in the folder CIMs/Lipmouse_CIM.
+A detailed design documentation will be provided in the future.
+<div class="image"><img src="img/LipmouseApplication.jpg" alt="Lipmouse sensor application" title="Lipmouse sensor application" /><br>
+Lipmouse sensor application</div>
+
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>X [integer]:</STRONG> the force applied to the Lipmouse mouthpiece in x-direction</li>
+<li><STRONG>Y [integer]:</STRONG> the force applied to the Lipmouse mouthpiece in y-direction</li>
+<li><STRONG>pressure [integer]:</STRONG> the pressure value applied to the sip/puff - sensor</li>
+</ul>
+
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>calibration:</STRONG> if this event is received, the x/y force value is set to 0 (removing any drift of the sensor values)</li>
+</ul>
+
+<H2>Properties</H2>
+<ul>
+<li><STRONG>periodicADCUpdate [integer]:</STRONG> the update rate for force and pressure values in milliseconds.</li>
+</ul>
+</BODY>
+</HTML>

@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# AvrStudio Solution File, Format Version 11.00
+Project("{D1100916-62DA-4D80-A9B4-55A1E7CCEEB3}") = "EOG_CIM", "EOG_CIM\EOG_CIM.avrgccproj", "{3A6EAA9D-2299-4C9B-B0B1-3C770CD47A86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A6EAA9D-2299-4C9B-B0B1-3C770CD47A86}.Debug|AVR.ActiveCfg = Debug|AVR
+		{3A6EAA9D-2299-4C9B-B0B1-3C770CD47A86}.Debug|AVR.Build.0 = Debug|AVR
+		{3A6EAA9D-2299-4C9B-B0B1-3C770CD47A86}.Release|AVR.ActiveCfg = Release|AVR
+		{3A6EAA9D-2299-4C9B-B0B1-3C770CD47A86}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

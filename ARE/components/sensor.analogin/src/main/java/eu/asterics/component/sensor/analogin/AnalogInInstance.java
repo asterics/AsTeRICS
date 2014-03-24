@@ -313,7 +313,7 @@ public class AnalogInInstance extends AbstractRuntimeComponentInstance implement
 			port = openCIM((short) 0x401, propUniqueID);
 			if (port == null)
 			{
-				AstericsErrorHandling.instance.reportInfo(this, String.format("Could not get port controller for ADC CIM ID: %x or for legacy ADC CIM", ADC_CIM_ID));
+	       		AstericsErrorHandling.instance.reportError(this, "Could not find AnalogIn CIM in PortManager. Please verify that the Module is connected to an USB Port and that the driver is installed.");
 				return;
 			}
 			else
@@ -380,7 +380,7 @@ public class AnalogInInstance extends AbstractRuntimeComponentInstance implement
 			port = CIMPortManager.getInstance().getConnection((short) 0x401);
 			if (port == null)
 			{
-				AstericsErrorHandling.instance.reportInfo(this, String.format("Could not get port controller for CIM ID: %x or for legacy ACD CIM", ADC_CIM_ID));
+	       		AstericsErrorHandling.instance.reportError(this, "Could not find AnalogIn CIM in PortManager. Please verify that the Module is connected to an USB Port and that the driver is installed.");
 				return;
 			}
 			else
