@@ -61,7 +61,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
 	private String propFilename="dummy.wav";
 	SourceDataLine auline = null;
 	Thread thread = new SimpleThread("dummy");
-	boolean onRunning=false;
+	volatile boolean onRunning=false;
 	double soundVolume=0.0;
 	FloatControl volume;
 	
@@ -329,6 +329,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
      @Override
      public void start()
      {
+    	 onRunning=true;
          super.start();
      }
 
@@ -338,6 +339,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
      @Override
      public void pause()
      {
+    	 onRunning=false;
          super.pause();
      }
 
@@ -347,6 +349,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
      @Override
      public void resume()
      {
+    	 onRunning=true;
          super.resume();
      }
 
