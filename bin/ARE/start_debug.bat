@@ -1,6 +1,6 @@
 :Initialization
 CLS
-@ECHO AsTeRICS ARE Version 2.2
+@ECHO AsTeRICS ARE Version 2.3
 @ECHO.
 set JAVA_BIN="java"
 
