@@ -4,7 +4,7 @@
         <description>Digital-to-Analog (DAC-CIM) actuator interface, enables analog control outputs</description>
         <ports>
             <inputPort id="out1">
-                <description>desired value for DAC channel 1</description>
+                <description>desired value for DAC channel 1</description> 
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>integer</dataType>
             </inputPort>
