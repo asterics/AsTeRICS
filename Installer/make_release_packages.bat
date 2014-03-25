@@ -21,6 +21,7 @@ cd AsTeRICS/ARE
 call ant
 cd ..
 cd ..
+rm AsTeRICS/ReadMe.md
 rm -r AsTeRICS/ACS
 rm -r AsTeRICS/ARE
 mv AsTeRICS/bin/ACS AsTeRICS/ACS
@@ -44,6 +45,8 @@ rm -r AsTeRICS/CIMs/Arduino/build
 
 rm -r AsTeRICS/CIMs/HID_actuator/Joystick_only
 rm -r AsTeRICS/CIMs/HID_actuator/LUFA
+rm -r AsTeRICS/CIMs/EOG_CIM
+rm -r AsTeRICS/CIMs/Lipmouse_CIM
 mv AsTeRICS/CIMs/HID_actuator/Mouse_Keyboard_Joystick/*.hex AsTeRICS/CIMs/HID_actuator
 rm -r AsTeRICS/CIMs/HID_actuator/Mouse_Keyboard_Joystick
 rm -r AsTeRICS/CIMs/HID_actuator/Tools
