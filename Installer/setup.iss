@@ -73,6 +73,9 @@ var Splash  : TSetupForm;
 function InitializeSetup(): Boolean;
 var
   BitmapImage1 : TBitmapImage;
+  UninstallPath : String;
+  RegPath : String;
+  ResultCode: Integer;
 begin
   Splash := CreateCustomForm;
   Splash.BorderStyle := bsNone;
@@ -96,6 +99,26 @@ begin
   BitmapImage1.Refresh;
   
   Sleep(2000)
+
+  RegPath := 'Software\Microsoft\Windows\CurrentVersion\Uninstall\AsTeRICS_is1';
+  if RegValueExists(HKEY_LOCAL_MACHINE, RegPath, 'UninstallString') 
+  then  //Your App GUID/ID
+  begin
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, RegPath, 'UninstallString', UninstallPath);
+  end;
+
+  RegPath := 'Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AsTeRICS_is1';
+  if RegValueExists(HKEY_LOCAL_MACHINE,RegPath, 'UninstallString') 
+  then  //Your App GUID/ID
+  begin
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, RegPath, 'UninstallString', UninstallPath);
+  end;
+
+  if Length(UninstallPath) > 0 then
+  begin
+  MsgBox(ExpandConstant('An old version of AsTeRCIS was detected. Which which will be uninstalled before the Installation?'), mbInformation, MB_OK);
+  Exec(RemoveQuotes(ExpandConstant(UninstallPath)),'', '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
+  end;
 
   Result := True;
 end;
