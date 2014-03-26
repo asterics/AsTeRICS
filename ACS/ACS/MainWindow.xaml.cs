@@ -1315,10 +1315,12 @@ namespace Asterics.ACS {
                 }
                 storageDialog.Owner = this;
                 storageDialog.ShowDialog();
-
-                if (storageDialog.filenameTextbox.Text != null && storageDialog.filenameTextbox.Text != "") {
+                string filename = storageDialog.filenameTextbox.Text;
+                if ( filename != null && filename != "") {
                     try {
-                        asapiClient.storeModel(ConvertDeploymentModelToValidString(), storageDialog.filenameTextbox.Text);
+                        if (filename.ToLower().EndsWith(".acs") == false)
+                            filename += ".acs";
+                        asapiClient.storeModel(ConvertDeploymentModelToValidString(), filename);
                     }
                     catch (Exception ex) {
                         MessageBox.Show(Properties.Resources.StoreModelOnAREError, Properties.Resources.StoreModelOnAREErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
