@@ -116,7 +116,7 @@ begin
 
   if Length(UninstallPath) > 0 then
   begin
-  MsgBox(ExpandConstant('An old version of AsTeRCIS was detected. Which which will be uninstalled before the Installation?'), mbInformation, MB_OK);
+  MsgBox(ExpandConstant('An old version of AsTeRCIS was detected, which will be uninstalled before the Installation?'), mbInformation, MB_OK);
   Exec(RemoveQuotes(ExpandConstant(UninstallPath)),'', '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
   end;
 
