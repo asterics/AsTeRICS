@@ -257,6 +257,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
     {
     	lastUpdate=System.currentTimeMillis();
     	accu=0;
+		sum = 0;
         super.start();
     }
 
