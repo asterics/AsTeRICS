@@ -224,7 +224,7 @@ namespace Asterics.ACS {
                 timeOut = int.Parse(ini.IniReadValue("ARE", "socket_timeout"));
                 if (timeOut < 100)
                 {
-                    timeOut = 1000;
+                    timeOut = 2000;
                 }
             }
             return timeOut;
