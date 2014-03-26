@@ -1025,7 +1025,7 @@ public class SerialSenderInstance extends AbstractRuntimeComponentInstance imple
 		portController = CIMPortManager.getInstance().getRawConnection(
 				propCOMPort, propBaudRate);
 		if (portController == null) {
-			AstericsErrorHandling.instance.reportError(this,"Could not construct raw port controller");
+			AstericsErrorHandling.instance.reportError(this,"Could not construct raw port controller, please verify that the COM port number is valid.");
 		} else {
 			if (propDebug) {
 				portController.addEventListener(this);

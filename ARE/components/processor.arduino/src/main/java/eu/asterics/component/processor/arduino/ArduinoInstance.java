@@ -549,7 +549,7 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 		  }
 		  else
 		  {
-			AstericsErrorHandling.instance.reportError(this, String.format("Could not get port controller for Arduino CIM ID: %x", ARDUINO_CIM_ID));
+	       		AstericsErrorHandling.instance.reportError(this, "Could not find Arduino. Please verify that the Arduino Module is connected to an USB Port and that the correct firmware is installed.");
 		  }
 
           super.start();

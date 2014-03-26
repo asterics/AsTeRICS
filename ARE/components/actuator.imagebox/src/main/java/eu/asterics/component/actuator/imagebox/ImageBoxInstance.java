@@ -59,6 +59,7 @@ public class ImageBoxInstance extends AbstractRuntimeComponentInstance
 	private final String ETP_CLICKED = "clicked";
 	private final String ELP_CLEAR="clear";
 	private final String IP_INPUT="input";
+	private Logger logger = null;
 	
 	final IRuntimeEventTriggererPort etpClicked = new DefaultRuntimeEventTriggererPort();
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
@@ -77,6 +78,7 @@ public class ImageBoxInstance extends AbstractRuntimeComponentInstance
     public ImageBoxInstance()
     {
         // empty constructor
+		logger = AstericsErrorHandling.instance.getLogger();
     }
 
    /**
@@ -212,9 +214,15 @@ public class ImageBoxInstance extends AbstractRuntimeComponentInstance
       */
 	private final IRuntimeInputPort ipInput  = new DefaultRuntimeInputPort()
 	{
-		public void receiveData(byte[] data)
-		{
-			String newImagePath=ConversionUtils.stringFromBytes(data);
+		public void receiveData(byte[] data) {
+			if (gui == null) {
+				logger.warning(this.getClass().getName()
+						+ "."
+						+ "receiveData: got data although gui not initialized, model running?");
+				return;
+			}
+
+			String newImagePath = ConversionUtils.stringFromBytes(data);
 			gui.setPicturePath(newImagePath);
 		}
 		

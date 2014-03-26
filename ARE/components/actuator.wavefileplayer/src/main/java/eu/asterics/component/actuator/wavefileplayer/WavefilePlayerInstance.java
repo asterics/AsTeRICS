@@ -61,13 +61,15 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
 	private String propFilename="dummy.wav";
 	SourceDataLine auline = null;
 	Thread thread = new SimpleThread("dummy");
-	boolean onRunning=false;
+	volatile boolean onRunning=false;
 	double soundVolume=0.0;
 	FloatControl volume;
+	
+	private WavefilePlayerInstance instance;
 
 	public WavefilePlayerInstance()
 	{
-		// empty constructor - needed for OSGi service factory operations
+		instance=this;
 	}
 
 	/**
@@ -327,6 +329,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
      @Override
      public void start()
      {
+    	 onRunning=true;
          super.start();
      }
 
@@ -336,6 +339,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
      @Override
      public void pause()
      {
+    	 onRunning=false;
          super.pause();
      }
 
@@ -345,6 +349,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
      @Override
      public void resume()
      {
+    	 onRunning=true;
          super.resume();
      }
 
@@ -376,7 +381,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
 	    	int i=0;
 	    	File soundFile = new File(getName());
 			if (!soundFile.exists()) { 
-				//AstericsErrorHandling.instance.reportError(this, "Wave file not found: " + getName());
+				AstericsErrorHandling.instance.reportInfo(instance, "Wave file not found: " + getName());
 				return;
 			} 
 

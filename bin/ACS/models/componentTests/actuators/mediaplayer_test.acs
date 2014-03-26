@@ -15,12 +15,12 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\videos\ClaudeFaraldo-Themroc-Fr'73.avi" />
-        <property name="autoplay" value="true" />
+        <property name="filename" value="data\videos\blooming_flower1.avi" />
+        <property name="autoplay" value="True" />
       </properties>
       <layout>
         <posX>572</posX>
-        <posY>163</posY>
+        <posY>164</posY>
       </layout>
       <gui>
         <posX>1762</posX>
@@ -57,8 +57,8 @@
         <property name="buttonCaption20" value="" />
       </properties>
       <layout>
-        <posX>68</posX>
-        <posY>243</posY>
+        <posX>105</posX>
+        <posY>263</posY>
       </layout>
       <gui>
         <posX>388</posX>
@@ -95,8 +95,8 @@
         <property name="buttonCaption20" value="" />
       </properties>
       <layout>
-        <posX>143</posX>
-        <posY>33</posY>
+        <posX>211</posX>
+        <posY>48</posY>
       </layout>
       <gui>
         <posX>5650</posX>
@@ -120,7 +120,7 @@
       </ports>
       <properties>
         <property name="caption" value="Media File" />
-        <property name="default" value="C:\data\asterics\videos\Heli_720p_Enobio.mp4" />
+        <property name="default" value="data\music\demosound.wav" />
         <property name="editable" value="True" />
         <property name="fontSize" value="14" />
         <property name="textColor" value="0" />
@@ -178,22 +178,42 @@
         <property name="max" value="100" />
         <property name="default" value="50" />
         <property name="autosend" value="False" />
-        <property name="caption" value="position" />
-        <property name="majorTickSpacing" value="20" />
-        <property name="minorTickSpacing" value="5" />
+        <property name="caption" value="postiion" />
+        <property name="majorTickSpacing" value="10" />
+        <property name="minorTickSpacing" value="10" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
       </properties>
       <layout>
-        <posX>294</posX>
-        <posY>199</posY>
+        <posX>282</posX>
+        <posY>208</posY>
       </layout>
       <gui>
-        <posX>2562</posX>
-        <posY>6511</posY>
-        <width>4075</width>
+        <posX>2525</posX>
+        <posY>6600</posY>
+        <width>4125</width>
         <height>711</height>
       </gui>
+    </component>
+    <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="20" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="0.2" />
+        <property name="amplitude" value="50" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="50" />
+      </properties>
+      <layout>
+        <posX>50</posX>
+        <posY>112</posY>
+      </layout>
     </component>
   </components>
   <channels>

@@ -649,7 +649,7 @@ public class RemoteTabletInstance extends AbstractRuntimeComponentInstance
 		  AstericsErrorHandling.instance.reportInfo(this, "RemoteTablet Instance (ID "+propUniqueID+") started.");
 	    }
 	    else
-		  AstericsErrorHandling.instance.reportError(this, "Could not find RemoteTablet Instance (ID "+propUniqueID+")");
+      		AstericsErrorHandling.instance.reportError(this, "Could not find RemoteTablet. Please verify that the HID actuator USB dongle is connected to the remote system and correctly installed on this computer.");
      }
 
     /**

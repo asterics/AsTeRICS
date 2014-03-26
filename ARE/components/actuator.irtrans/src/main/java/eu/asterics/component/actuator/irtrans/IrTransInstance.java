@@ -270,7 +270,8 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
     		*/
     		
 		 } catch (Exception e) {
-			 AstericsErrorHandling.instance.reportError(this, e.toString());
+			 AstericsErrorHandling.instance.reportError(this,"The IRTrans - Plugin could not send data. Please verify that the IRTrans Module is connected and installed, and that the IP-address is correctly specified.");
+			 AstericsErrorHandling.instance.reportInfo(this,e.toString());
 		 }   	
     }
     

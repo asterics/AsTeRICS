@@ -48,7 +48,7 @@ import eu.asterics.mw.services.AREServices;
  * Interface to the Lipmouse module. Based on ArduinoInstance.java developed by Chris Veigl
  * 
  * 
- *  
+ *   
  * @author Alberto Ibanez [alberto_21_9@hotmail.com]
  *         Date: 07.01.2014
  *         Time: 17:50
@@ -324,7 +324,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		  }
 		  else
 		  {
-			AstericsErrorHandling.instance.reportError(this, String.format("Could not get port controller for Lipmouse CIM ID: %x", LIPMOUSE_CIM_ID ));
+	       		AstericsErrorHandling.instance.reportError(this, "Could not find LipMouse Module. Please verify that the Module is connected to an USB Port and that the driver is installed.");
 		  }
 
           super.start();

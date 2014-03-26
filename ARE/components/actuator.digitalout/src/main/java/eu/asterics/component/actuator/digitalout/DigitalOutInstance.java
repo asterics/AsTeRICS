@@ -376,7 +376,7 @@ public class DigitalOutInstance extends AbstractRuntimeComponentInstance
     	}
     	else
     	{
-    		AstericsErrorHandling.instance.reportError(this, "Could not get port controller for Digital Out CIM");
+       		AstericsErrorHandling.instance.reportError(this, "Could not find DigitalOut CIM in PortManager. Please verify that the CIM Module is connected to an USB Port and that the driver is installed.");
     	}
     	AstericsErrorHandling.instance.reportInfo(this, "DigitalOutInstance started");
     }

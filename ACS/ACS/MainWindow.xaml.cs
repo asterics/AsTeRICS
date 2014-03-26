@@ -509,7 +509,6 @@ namespace Asterics.ACS {
                     File.Create(AppDomain.CurrentDomain.BaseDirectory + "recent.txt");
                 }
             }
-            
         }
 
 
@@ -665,7 +664,6 @@ namespace Asterics.ACS {
                                 }
                             }
                         }
-
                         // check, if a model is loaded and remove error marker
                         if ((deploymentModel != null) && (deploymentModel.components != null) && (deploymentModel.components.Count() > 0)) {
                             foreach (componentType mc in deploymentModel.components) {
@@ -688,6 +686,10 @@ namespace Asterics.ACS {
                             if (dialogResult)
                             {
                                 DownloadAndCheckModel();
+                                if (currentAREStatus == "running")
+                                    areStatus.Status = AREStatus.ConnectionStatus.Running;
+                                else if (currentAREStatus == "paused")
+                                    areStatus.Status = AREStatus.ConnectionStatus.Pause;
                             }
                             showOverrideAtConnectionQuestion = (bool)messageBox.showCheckbox.IsChecked;
                             if (showOverrideAtConnectionQuestion)
@@ -6285,7 +6287,7 @@ namespace Asterics.ACS {
                         if (pollingFrequency < 500) { // 500ms is the minimum for the polling frequency
                             pollingFrequency = 500;
                         }
-                        //Console.WriteLine("starting timer");
+                        Console.WriteLine("starting timer");
                         statusTimer = new Timer(tcb, null, 100, pollingFrequency);
                     }
                     catch (Exception ex) {

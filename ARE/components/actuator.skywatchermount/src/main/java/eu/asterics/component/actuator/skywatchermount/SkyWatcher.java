@@ -159,7 +159,7 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 				out.write(cmd.getBytes());
 			}
 		} catch (IOException ex) {
-			AstericsErrorHandling.instance.reportError(this,"Could not send command "+cmd);
+			AstericsErrorHandling.instance.reportInfo(this,"Could not send command "+cmd);
 		}
 	}
 	
@@ -286,7 +286,7 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 		portController = CIMPortManager.getInstance().getRawConnection(this.serialPort,9600,true);
     	if (portController == null) 
 		{
-			AstericsErrorHandling.instance.reportError(this,"Could not construct raw port controller");
+			AstericsErrorHandling.instance.reportError(this,"Could not construct raw port controller, pleaser verify that the COM port is valid.");
 			return false; 
     	} else  
 		{

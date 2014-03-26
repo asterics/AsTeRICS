@@ -77,7 +77,7 @@ namespace Asterics.ASAPI {
                     if (ini != null) {
                         timeOut = int.Parse(ini.IniReadValue("ARE", "socket_timeout"));
                         if (timeOut < 100) {
-                            timeOut = 10000;
+                            timeOut = 1000;
                         }
                     }
                 } catch (Exception) {

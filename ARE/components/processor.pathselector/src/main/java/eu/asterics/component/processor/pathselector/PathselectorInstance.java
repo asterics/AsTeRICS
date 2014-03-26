@@ -186,14 +186,14 @@ public class PathselectorInstance extends AbstractRuntimeComponentInstance
 				propActivePorts = Integer.parseInt(newValue.toString())+1;
 				if ( (propActivePorts < 1) || (propActivePorts > 4) )
 				{
-					AstericsErrorHandling.instance.reportError(this, "Property value out of range for " + propertyName + ": " + newValue);
+					AstericsErrorHandling.instance.reportInfo(this, "Property value out of range for " + propertyName + ": " + newValue);
 				}
 				return oldValue;
 			}
 		}
 		catch (NumberFormatException nfe)
 		{
-			AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+			AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 		}
 		return null;
 	}

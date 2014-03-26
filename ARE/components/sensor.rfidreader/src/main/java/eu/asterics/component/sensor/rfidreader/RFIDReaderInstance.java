@@ -231,7 +231,7 @@ public class RFIDReaderInstance extends AbstractRuntimeComponentInstance
 			if (portController == null)
 			{
 				AstericsErrorHandling.instance.reportError(this, 
-						"Could not construct raw port controller for RFID reader");
+						"Could not construct raw port controller for RFID reader, please verify that the reader module is conencted to an USB port and correctly installed.");
 			}
 			else portController.addEventListener(this);
             super.start();
@@ -262,7 +262,9 @@ public class RFIDReaderInstance extends AbstractRuntimeComponentInstance
 	  		portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate);
 			if (portController == null)
 			{
-				AstericsErrorHandling.instance.reportError(this, "Could not construct raw port controller");
+				AstericsErrorHandling.instance.reportError(this, 
+						"Could not construct raw port controller for RFID reader, please verify that the reader module is conencted to an USB port and correctly installed.");
+
 			}
 			else portController.addEventListener(this);
 	

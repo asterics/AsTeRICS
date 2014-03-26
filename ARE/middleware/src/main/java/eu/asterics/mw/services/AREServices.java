@@ -40,6 +40,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
+
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -58,8 +59,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
@@ -311,7 +314,8 @@ public class AREServices implements IAREServices{
 	public void stopModel()
 	{
 		if (DeploymentManager.instance.getStatus()==AREStatus.RUNNING
-				||DeploymentManager.instance.getStatus()==AREStatus.PAUSED)
+				||DeploymentManager.instance.getStatus()==AREStatus.PAUSED||
+				DeploymentManager.instance.getStatus()==AREStatus.ERROR)
 		{
 			DeploymentManager.instance.stopModel();
 			DeploymentManager.instance.getCurrentRuntimeModel().
@@ -421,12 +425,20 @@ public class AREServices implements IAREServices{
 	 */
 	public void runModel()	throws AREAsapiException
 	{
-		if (DeploymentManager.instance.getCurrentRuntimeModel().getState().
-				equals(ModelState.STOPPED))
+		ModelState modelState=DeploymentManager.instance.getCurrentRuntimeModel().getState();
+		logger.fine(this.getClass().getName()+".runModel: model state: "+modelState+" \n");		
+		if (ModelState.STOPPED.equals(modelState))
 		{
 			DeploymentManager.instance.runModel();	
 		}
-		else 
+		else if(modelState.STARTED.equals(modelState)) {
+			//if model is already running, stop it first to ensure that native libs are not 
+			//loaded and instantiated twice.			
+			stopModel();
+			DeploymentManager.instance.runModel();
+		} 
+		//ModelState.PAUSED
+		else
 		{
 			DeploymentManager.instance.resumeModel();
 		}
@@ -436,6 +448,27 @@ public class AREServices implements IAREServices{
 		AstericsErrorHandling.instance.setStatusObject(AREStatus.RUNNING.toString(), 
 				"", "");
 		logger.fine(this.getClass().getName()+".runModel: model running \n");
+	}
+	
+	/**
+	 * Briefly stops the execution of the model. Its main difference from the
+	 * {@link #stopModel()} method is that it does not reset the components
+	 * (e.g., the buffers are not cleared).
+	 *
+	 */
+	public void pauseModel() {
+		if (DeploymentManager.instance.getStatus()==AREStatus.RUNNING)
+		{
+			DeploymentManager.instance.pauseModel();
+			DeploymentManager.instance.getCurrentRuntimeModel().
+			setState(ModelState.PAUSED);
+			DeploymentManager.instance.setStatus(AREStatus.PAUSED);
+			AstericsErrorHandling.instance.setStatusObject(AREStatus.PAUSED.toString(), 
+					"", "");
+			logger.fine(this.getClass().getName()+".pauseModel: model paused \n");
+			System.out.println("Model paused!");
+
+		}
 	}
 
 	/**

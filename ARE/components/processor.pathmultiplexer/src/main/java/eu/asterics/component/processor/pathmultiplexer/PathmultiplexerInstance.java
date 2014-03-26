@@ -209,14 +209,14 @@ public class PathmultiplexerInstance extends AbstractRuntimeComponentInstance
         propNumber = Integer.parseInt(newValue.toString())+1;
         if ( (propNumber < 1) || (propNumber > 4) )
         {
-          AstericsErrorHandling.instance.reportError(this, "Property value out of range for " + propertyName + ": " + newValue);
+          AstericsErrorHandling.instance.reportInfo(this, "Property value out of range for " + propertyName + ": " + newValue);
         }
 	      return propNumber;
       }
     }
     catch (NumberFormatException nfe)
     {
-      AstericsErrorHandling.instance.reportError(this, "Invalid property value for " + propertyName + ": " + newValue);
+      AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
     }
     return null;
   }

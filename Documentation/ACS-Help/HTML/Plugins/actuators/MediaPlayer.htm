@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>MediaPlayer</Title>
+</HEAD>
+<BODY>
+<H1>MediaPlayer</H1>
+<H3>Component Type: Actuator (Subcategory: File System)</H3>
+<p>This component allows to play media files supported by the local system. The supported file type depends on the installed media CODEC, but generally all media formats supported by the VLC player should work.
+Please note that the VLC player (32 bit version) must be installed in the default location: C:/Program Files/VideoLan or C:/Program Files (x86)/VideoLan</p>
+<div class="image"><img src="img/MediaPlayer.jpg" alt="Screenshot: MediaPlayer plugin" title="Screenshot: MediaPlayer plugin" /><br>
+MediaPlayer plugin</div>
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>filename [string]:</STRONG> Input port for the mediafile name. The file must be present in the filesystem of the ARE. Sending to this port will change the media file.</li>
+<li><STRONG>position [double]:</STRONG> Position in the media file (0-100%) - Sending to this port will set the position in the media file.</li>
+<li><STRONG>rate [double]:</STRONG> The playback speed of the media file (0-500%) - Sending to this port will change the playback speed.</li>
+</ul>
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>play:</STRONG> Triggering this event will start (or resume) the mediafile playback.</li>
+<li><STRONG>pause:</STRONG> Triggering this event will pause the mediafile playback.</li>
+<li><STRONG>stop:</STRONG> Triggering this event will stop the mediafile playback.</li>
+<li><STRONG>reset:</STRONG>  Triggering this event will reset the mediafile playback to position 0.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>filename [string]:</STRONG> Initial mediafile name. The file must be present in the filesystem the ARE. This is a dynamic property: a synchronized ARE can suggest available files which are located in the data/videos and data/music subfolders of the ARE.</li>
+<li><STRONG>autoplay [boolean]:</STRONG> if selected, the file will play automatically.</li>
+</ul>
+</BODY>
+</HTML>

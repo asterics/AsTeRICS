@@ -1,7 +1,7 @@
 ; -- AsTeRICS Installer --
 [Setup]
 AppName=AsTeRICS
-AppVersion=2.2
+AppVersion=2.3
 DefaultDirName={pf}\AsTeRICS
 DefaultGroupName=AsTeRICS
 UninstallDisplayIcon=
@@ -12,8 +12,8 @@ SetupIconFile=asterics_icon.ico
 PrivilegesRequired=admin
 
 [Icons]
-Name: {commondesktop}\ACS.exe; Filename: {app}\ACS/ACS.exe; WorkingDir: {app}/ACS
-Name: {commondesktop}\ARE.exe; Filename: {app}\ARE/ARE.exe; WorkingDir: {app}/ARE
+Name: "{commondesktop}\AsTeRICS Configuratione Suite.exe"; Filename: {app}\ACS/ACS.exe; WorkingDir: {app}/ACS
+Name: "{commondesktop}\AsTeRICS Runtime Environment.exe"; Filename: {app}\ARE/ARE.exe; WorkingDir: {app}/ARE
 Name: "{group}\ACS"; Filename: "{app}\ACS\ACS.exe"; WorkingDir: "{app}/ACS"
 Name: "{group}\ARE"; Filename: "{app}\ARE\ARE.exe"; WorkingDir: "{app}/ARE"
 Name: "{group}\ARE Debug"; Filename: "{app}\ARE\ARE_debug.exe"; WorkingDir: "{app}/ARE"
@@ -73,6 +73,9 @@ var Splash  : TSetupForm;
 function InitializeSetup(): Boolean;
 var
   BitmapImage1 : TBitmapImage;
+  UninstallPath : String;
+  RegPath : String;
+  ResultCode: Integer;
 begin
   Splash := CreateCustomForm;
   Splash.BorderStyle := bsNone;
@@ -96,6 +99,26 @@ begin
   BitmapImage1.Refresh;
   
   Sleep(2000)
+
+  RegPath := 'Software\Microsoft\Windows\CurrentVersion\Uninstall\AsTeRICS_is1';
+  if RegValueExists(HKEY_LOCAL_MACHINE, RegPath, 'UninstallString') 
+  then  //Your App GUID/ID
+  begin
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, RegPath, 'UninstallString', UninstallPath);
+  end;
+
+  RegPath := 'Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AsTeRICS_is1';
+  if RegValueExists(HKEY_LOCAL_MACHINE,RegPath, 'UninstallString') 
+  then  //Your App GUID/ID
+  begin
+    RegQueryStringValue(HKEY_LOCAL_MACHINE, RegPath, 'UninstallString', UninstallPath);
+  end;
+
+  if Length(UninstallPath) > 0 then
+  begin
+  MsgBox(ExpandConstant('An old version of AsTeRCIS was detected, which will be uninstalled before the Installation?'), mbInformation, MB_OK);
+  Exec(RemoveQuotes(ExpandConstant(UninstallPath)),'', '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
+  end;
 
   Result := True;
 end;
