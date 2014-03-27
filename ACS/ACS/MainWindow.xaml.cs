@@ -194,8 +194,8 @@ namespace Asterics.ACS {
         List<StatusObject> statusList;
 
         // Thread to read the status of the ARE
-        Timer statusTimer = null;
-
+        DispatcherTimer statusTimer = null;
+        Timer focusTimer = null;
         // flag, if model has been edited
         private bool modelHasBeenEdited = false;        
 
@@ -510,7 +510,6 @@ namespace Asterics.ACS {
                 }
             }
         }
-
 
         private void LinkedList_SizeChanged(object sender, PropertyChangedEventArgs e) {
             if ((selectedEventChannelList.Count == 0) && (selectedComponentList.Count == 0) && (selectedChannelList.Count == 0)) {
@@ -4791,7 +4790,7 @@ namespace Asterics.ACS {
                 }
             }
             TimerCallback tcbFocus = this.DoFocusTimer;
-            statusTimer = new Timer(tcbFocus, dockableComponentProperties, 300, Timeout.Infinite);
+            focusTimer = new Timer(tcbFocus, dockableComponentProperties, 300, Timeout.Infinite);
         }
 
 
@@ -6283,14 +6282,17 @@ namespace Asterics.ACS {
                 if (statusTimer == null) {
                     try {
                         asapiStatusClient = asapiNet.Connect(AREHostIP, AREPort, 300);
-                        TimerCallback tcb = this.DoPollingTimer; //sc.CheckStatus;
-                        int pollingFrequency = 2000;
-                        int.TryParse(ini.IniReadValue("ARE", "status_polling_frequency"), out pollingFrequency);
-                        if (pollingFrequency < 500) { // 500ms is the minimum for the polling frequency
-                            pollingFrequency = 500;
+                        int interval = 2000;
+                        int.TryParse(ini.IniReadValue("ARE", "status_polling_frequency"), out interval);
+                        if (interval < 500)
+                        { // 500ms is the minimum for the polling frequency
+                            interval = 500;
                         }
                         Console.WriteLine("starting timer");
-                        statusTimer = new Timer(tcb, null, 100, pollingFrequency);
+                        statusTimer = new DispatcherTimer(DispatcherPriority.SystemIdle);
+                        statusTimer.Interval = TimeSpan.FromMilliseconds(interval);
+                        statusTimer.Tick += new EventHandler(CheckStatus);
+                        statusTimer.IsEnabled = true;
                     }
                     catch (Exception ex) {
                         MessageBox.Show(Properties.Resources.StatusPollingThreadErrorDialog, Properties.Resources.StatusPollingThreadErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -6305,7 +6307,7 @@ namespace Asterics.ACS {
         /// Stop the status polling thread
         /// </summary>
         private void StopStatusPolling() {
-            try {
+            /*try {
                 if (statusTimer != null) {
                     statusTimer.Dispose();
                     Thread.Sleep(100); // needed to stop the timer process before closing the connection
@@ -6321,82 +6323,92 @@ namespace Asterics.ACS {
             catch (Exception ex) {
                 MessageBox.Show(Properties.Resources.StatusPollingThreadErrorDialog, Properties.Resources.StatusPollingThreadErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                 traceSource.TraceEvent(TraceEventType.Error, 3, ex.Message);
-            }
+            }*/
+            if (statusTimer != null)
+                statusTimer.IsEnabled = false;
+            statusTimer = null;
         }
+
 
         /// <summary>
         /// Function, called by a periodic timer to request the status of the ARE and the plug-ins
         /// If an error in a plug-in occurs, the background of this plug-in will be coloured red
+        /// If the status of the ARE changes the gui will be updated
         /// </summary>
         /// <param name="statusObject">Empty Object, not used</param>
-        public void DoPollingTimer(Object statusObject) {
-
+        public void CheckStatus(Object statusObject, EventArgs e)
+        {
             List<StatusObject> newStatus = new List<StatusObject>();
-            try {
-                if (asapiStatusClient != null && asapiStatusClient.InputProtocol.Transport.IsOpen) {
-                    newStatus = asapiStatusClient.QueryStatus(false);
-                }
+            if (asapiStatusClient != null && asapiStatusClient.InputProtocol.Transport.IsOpen)
+            {
+                newStatus = asapiStatusClient.QueryStatus(false);
             }
-            catch (Exception ex) {
-                if (statusTimer != null) {
-                    statusTimer.Dispose();
-                    statusTimer = null;
-                }               
-                MessageBox.Show(Properties.Resources.StatusPollingThreadErrorDialog, Properties.Resources.StatusPollingThreadErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Error);
-                traceSource.TraceEvent(TraceEventType.Error, 3, ex.Message);
-                // Helper button and dispatcher to disconnect ACS form ARE
-                dispatcherHelperRibbonButton.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                    (Action)(() => {
-                        dispatcherHelperRibbonButton.IsEnabled = false;                                
+            string tmpAreStatus = "none";
+            foreach (StatusObject so in newStatus)
+            {
+                if (so.InvolvedComponentID == "")
+                    tmpAreStatus = so.Status;
+                else if (so.Status == "error") {
+                    Canvas errorCompCanvas = deploymentComponentList[so.InvolvedComponentID].ComponentCanvas; //.Background = Brushes.Red;
+                    Canvas groupErrorCanvas = null;
+                    if (GetParentGroup(deploymentComponentList[so.InvolvedComponentID]) != null)
+                    {
+                        groupErrorCanvas = deploymentComponentList[GetParentGroup(deploymentComponentList[so.InvolvedComponentID]).ID].ComponentCanvas;
+                    }
+                    errorCompCanvas.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    (Action)(() =>
+                    {
+                        errorCompCanvas.Background = Brushes.Red;
+                        if (groupErrorCanvas != null)
+                        {
+                            groupErrorCanvas.Background = Brushes.Red;
+                        }
                     }));
+                } else if (so.Status == "ok") { // remove error state
+                    Canvas errorCompCanvas = deploymentComponentList[so.InvolvedComponentID].ComponentCanvas;
+                    Canvas groupErrorCanvas = null;
 
-            }
-            try {
-                if (newStatus != null && newStatus.Count > 0) {
-                    foreach (StatusObject so in newStatus) {
-                        if ((so.InvolvedComponentID != "") && (so.Status == "error")) {
-                            Canvas errorCompCanvas = deploymentComponentList[so.InvolvedComponentID].ComponentCanvas; //.Background = Brushes.Red;
-                            Canvas groupErrorCanvas = null;
-                            if (GetParentGroup(deploymentComponentList[so.InvolvedComponentID]) != null) {
+                    errorCompCanvas.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                    (Action)(() =>
+                    {
+                        if (errorCompCanvas.Background == Brushes.Red)
+                        {
+
+                            if (GetParentGroup(deploymentComponentList[so.InvolvedComponentID]) != null)
+                            {
                                 groupErrorCanvas = deploymentComponentList[GetParentGroup(deploymentComponentList[so.InvolvedComponentID]).ID].ComponentCanvas;
                             }
-                            errorCompCanvas.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                            (Action)(() => {
-                                errorCompCanvas.Background = Brushes.Red;
-                                if (groupErrorCanvas != null) {
-                                    groupErrorCanvas.Background = Brushes.Red;
-                                }
-                            }));
-                        } else if ((so.InvolvedComponentID != "") && (so.Status == "ok")) { // remove error state
-                            Canvas errorCompCanvas = deploymentComponentList[so.InvolvedComponentID].ComponentCanvas;
-                            Canvas groupErrorCanvas = null;
-                            
-                                errorCompCanvas.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                                (Action)(() => {
-                                    if (errorCompCanvas.Background == Brushes.Red) {
-                                
-                                        if (GetParentGroup(deploymentComponentList[so.InvolvedComponentID]) != null) {
-                                            groupErrorCanvas = deploymentComponentList[GetParentGroup(deploymentComponentList[so.InvolvedComponentID]).ID].ComponentCanvas;
-                                        }
-                                    }
-                                    errorCompCanvas.Background = null;
-                                    if (groupErrorCanvas != null) {
-                                        groupErrorCanvas.Background = null;
-                                    }
-                                }));
-                            
                         }
-                        statusList.Add(so);
-                    }
+                        errorCompCanvas.Background = null;
+                        if (groupErrorCanvas != null)
+                        {
+                            groupErrorCanvas.Background = null;
+                        }
+                    }));
+
                 }
+
             }
-            catch (Exception ex) {
-                MessageBox.Show(Properties.Resources.StatusPollingThreadErrorDialog, Properties.Resources.StatusPollingThreadErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Error);
-                traceSource.TraceEvent(TraceEventType.Error, 3, ex.Message);
+            switch (tmpAreStatus)
+            {
+                case "running":
+                    areStatus.Status = AREStatus.ConnectionStatus.Running;
+                    break;
+                case "ok":
+                case "deployed":
+                    areStatus.Status = AREStatus.ConnectionStatus.Synchronised;
+                    break;
+                case "paused":
+                    areStatus.Status = AREStatus.ConnectionStatus.Pause;
+                    break;
+                default:
+                    Console.WriteLine("unhandled status: " + tmpAreStatus);
+                    break;
             }
         }
 
 
+      
         /// <summary>
         /// Timer so set the focus on the first element of a canvas. This is needed to set the focus after
         /// tabs have been switched, otherwise, the elements are not visible and therefore, the focus
@@ -7456,7 +7468,7 @@ namespace Asterics.ACS {
                 // Timer is setting the focus to the first element. Otherwise, the system is still changing the tabs
                 // and the focus will not be set, as the elements are not visible
                 TimerCallback tcbFocus = this.DoFocusTimer;                
-                statusTimer = new Timer(tcbFocus, canvas, 300, Timeout.Infinite);
+                focusTimer = new Timer(tcbFocus, canvas, 300, Timeout.Infinite);
             }
             else if ((Keyboard.Modifiers == ModifierKeys.Control) && (e.Key == Key.G)) {
                 Keyboard.Focus(GUIEditorCanvas);
@@ -7465,7 +7477,7 @@ namespace Asterics.ACS {
                 // Timer is setting the focus to the first element. Otherwise, the system is still changing the tabs
                 // and the focus will not be set, as the elements are not visible
                 TimerCallback tcbFocus = this.DoFocusTimer; 
-                statusTimer = new Timer(tcbFocus, guiCanvas, 300, Timeout.Infinite);                                
+                focusTimer = new Timer(tcbFocus, guiCanvas, 300, Timeout.Infinite);                                
             }
             else if ((Keyboard.Modifiers == ModifierKeys.Control) && ((e.Key == Key.Add) || (e.Key == Key.OemPlus))) {
                 if (zoomSlider.Value < zoomSlider.Maximum) {
@@ -7964,6 +7976,7 @@ namespace Asterics.ACS {
                     showLogRibbonButton.IsEnabled = true;
                     dispatcherHelperRibbonButton.IsEnabled = true; 
                     statusBar.Text = Properties.Resources.AREStatusConnected;
+                    StartStatusPolling();
                     break;
                 case AREStatus.ConnectionStatus.Synchronised:
                     runModelButton.IsEnabled = true;
@@ -7978,7 +7991,7 @@ namespace Asterics.ACS {
                     downloadBundlesButton.IsEnabled = false;
                     statusBar.Text = Properties.Resources.AREStatusSynchronised;
                     EnableCanvas();
-                    StopStatusPolling();
+                    //StopStatusPolling();
                     GetAllDynamicProperties();
                     break;
                 case AREStatus.ConnectionStatus.Running:
@@ -7987,7 +8000,7 @@ namespace Asterics.ACS {
                     pauseModelButton.IsEnabled = true;
                     statusBar.Text = Properties.Resources.AREStatusRunning;
                     DisableCanvas();
-                    StartStatusPolling();
+                    //StartStatusPolling();
                     break;
                 case AREStatus.ConnectionStatus.Pause:
                     runModelButton.IsEnabled = true;
@@ -10194,7 +10207,6 @@ namespace Asterics.ACS {
                     if (o is inputPortType) {
                         inputPortType pIn = (inputPortType)o;
                         if ((pIn.ChannelId != "") && (deploymentChannelList.ContainsKey(pIn.ChannelId))) {
-                            Console.WriteLine("CounterIn is " + counterIn);
                             deploymentChannelList[pIn.ChannelId].Line.X2 = newxPos + LayoutConstants.INPORTRECTANGLEOFFSETX;
                             deploymentChannelList[pIn.ChannelId].Line.Y2 = newyPos + (LayoutConstants.INPORTRECTANGLEOFFSETY + LayoutConstants.INPORTRECTANGLEHEIGHT / 2) +
                                 counterIn * LayoutConstants.INPORTDISTANCE;
