@@ -12,8 +12,8 @@ SetupIconFile=asterics_icon.ico
 PrivilegesRequired=admin
 
 [Icons]
-Name: "{commondesktop}\AsTeRICS Configuratione Suite.exe"; Filename: {app}\ACS/ACS.exe; WorkingDir: {app}/ACS
-Name: "{commondesktop}\AsTeRICS Runtime Environment.exe"; Filename: {app}\ARE/ARE.exe; WorkingDir: {app}/ARE
+Name: "{commondesktop}\AsTeRICS Configuration Suite"; Filename: {app}\ACS/ACS.exe; WorkingDir: {app}/ACS
+Name: "{commondesktop}\AsTeRICS Runtime Environment"; Filename: {app}\ARE/ARE.exe; WorkingDir: {app}/ARE
 Name: "{group}\ACS"; Filename: "{app}\ACS\ACS.exe"; WorkingDir: "{app}/ACS"
 Name: "{group}\ARE"; Filename: "{app}\ARE\ARE.exe"; WorkingDir: "{app}/ARE"
 Name: "{group}\ARE Debug"; Filename: "{app}\ARE\ARE_debug.exe"; WorkingDir: "{app}/ARE"

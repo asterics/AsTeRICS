@@ -270,6 +270,7 @@
     <EmbeddedResource Include="Properties\Resources.pl-PL.resx">
       <Generator>ResXFileCodeGeneratorEx</Generator>
       <LastGenOutput>Resources.pl-PL.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ACS_Help.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
