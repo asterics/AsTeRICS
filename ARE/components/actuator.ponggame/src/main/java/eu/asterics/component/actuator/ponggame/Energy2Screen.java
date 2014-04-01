@@ -94,8 +94,8 @@ public class Energy2Screen
 					return;
 				}
 			}
-			setNextScreen(new HighScoreScreen(game));
 			screenSwitchActive = true;			
+			game.setScreen(new HighScoreScreen(game));
 		}
 	}    
 }
