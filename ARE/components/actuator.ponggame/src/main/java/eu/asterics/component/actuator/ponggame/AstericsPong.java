@@ -1,5 +1,6 @@
 package eu.asterics.component.actuator.ponggame;
 
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
@@ -20,18 +21,17 @@ public class AstericsPong extends Game
 	
 	Standings standings = null;
 	boolean gameLogicRunning = false;
-	
+    public float scaleFactor= 1;
+
 	Player player ;
 	
 	GameScreen gameScreen;
-	
-	
-	
 
 	
 	List<HighScore> scores = null;
 	int lowestHighScore = 0;
 	FileHandle highscores;
+	private Dimension availableScreenSize=null;
 	
     void initHighScores()
     {
@@ -73,14 +73,16 @@ public class AstericsPong extends Game
 	
 	
 	
-	private AstericsPong()
+	private AstericsPong(Dimension availableScreenSize)
 	{
-		
+		this.availableScreenSize=availableScreenSize;
 	}
 	
-	public static void reset()
+	public static void reset(Dimension availableScreenSize)
 	{
-		instance = new AstericsPong();
+		instance = new AstericsPong(availableScreenSize);
+		 System.out.println("reset to screen size "+availableScreenSize.height+"/"+availableScreenSize.width);
+
 	}
 	
 	@Override
@@ -130,6 +132,7 @@ public class AstericsPong extends Game
 
 	protected void createGameScreen() {
 		gameScreen = new GameScreen(this);
+		gameScreen.setScaleFactor(availableScreenSize);
 	}
 	
 	@Override

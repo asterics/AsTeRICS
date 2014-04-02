@@ -153,7 +153,7 @@ public class GameScreen extends AbstractScreen
 			for (Player p : GameWorld.instance.players)
 			{
 				getFont().draw(getBatch(), p.name 
-						+ " : " + p.score, (1.5f +  9*p.index) * PHYS_TO_REND , 0.45f * PHYS_TO_REND);
+						+ " : " + p.score, (4.0f +  9*p.index) * getScaleFactor() * PHYS_TO_REND , 0.80f * PHYS_TO_REND * getScaleFactor());
 				
 				//for (int i=0; i<p.lifes;i++)
 				//	drawImage(ballImage,(int)((1.5f +  9 * p.index + i*0.6f)* PHYS_TO_REND) , (int)(0.50f * PHYS_TO_REND));

@@ -75,8 +75,8 @@ public class Energy1Screen
         
 		if (goToNextScreen && !screenSwitchActive)
 		{
-			game.setScreen(new Energy2Screen(game));
 			screenSwitchActive = true;
+			game.setScreen(new Energy2Screen(game));
 		}
 	}    
 }
