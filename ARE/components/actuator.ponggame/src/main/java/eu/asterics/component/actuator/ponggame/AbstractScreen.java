@@ -1,5 +1,7 @@
 package eu.asterics.component.actuator.ponggame;
 
+import java.awt.Dimension;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
@@ -89,10 +91,11 @@ public abstract class AbstractScreen
     {
     	if( font == null ) {
            font = new BitmapFont(Gdx.files.internal("data/actuator.ponggame/gamefont.fnt"),false);
+           font.scale(getScaleFactor()-1);
         }
         return font;
     }
-
+    
     public SpriteBatch getBatch()
     {
         if( batch == null ) {
@@ -128,6 +131,15 @@ public abstract class AbstractScreen
         return table;
     }
 
+    public void setScaleFactor(Dimension dim)
+    {
+    	AstericsPong.instance.scaleFactor=(float)dim.width / 1920.0f;    	
+    }
+
+    public float getScaleFactor()
+    {
+    	return(AstericsPong.instance.scaleFactor);
+    }
     
     // Screen implementation
 
