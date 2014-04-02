@@ -78,7 +78,6 @@ namespace Asterics.ACS {
         private int copyYOffset = 150;
         //private Hashtable model = new Hashtable();
 
-
         private String copyDummyName = "copydummyftwsurrockslolcatftwnyannyannyan";
         private String pasteDummyName = "";
         
@@ -6341,7 +6340,17 @@ namespace Asterics.ACS {
             List<StatusObject> newStatus = new List<StatusObject>();
             if (asapiStatusClient != null && asapiStatusClient.InputProtocol.Transport.IsOpen)
             {
-                newStatus = asapiStatusClient.QueryStatus(false);
+                try
+                {
+                    newStatus = asapiStatusClient.QueryStatus(true);
+                }
+                catch (IOException ie)
+                {
+                    MessageBox.Show(Properties.Resources.StatusPollingThreadErrorDialog, Properties.Resources.StatusPollingThreadErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                    StopStatusPolling();
+                    areStatus.Status = AREStatus.ConnectionStatus.Disconnected;
+                    return;
+                }
             }
             string tmpAreStatus = "none";
             foreach (StatusObject so in newStatus)
@@ -6402,7 +6411,7 @@ namespace Asterics.ACS {
                     areStatus.Status = AREStatus.ConnectionStatus.Pause;
                     break;
                 default:
-                    Console.WriteLine("unhandled status: " + tmpAreStatus);
+                    Console.WriteLine("Unknown Status: " + tmpAreStatus);
                     break;
             }
         }

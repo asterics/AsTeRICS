@@ -20,14 +20,16 @@ Pong game screen</div>
 <H2>Application</H2>
  A special "bike-Pong" interface has been developed at UAS Technikum Wien, which allows playing the
 game via bicycle ergometers. For this purpose, the Arduino microcontroller (and corresponding plugin) are utilized to measure the user interactions and deliver the data to the Pong plugin.
+The energy created by the pong-players can be calculated in calories (this mode makes only sense when the bike-ergonometers are connected, see properties) Please note that the bike
+mode only works well with a screen resolution of 1920x1090 because of the utilized background graphics.
 <p>
 <div class="image"><img src="img/PongApplication.jpg" alt="bike pong gaming" title="bike pong gaming" /><br>
 bike-ergomenter controlled pong game</div>
 
 <H2>Input Port Description</H2>
 <ul>
-<li><STRONG>playerOnePos [integer]:</STRONG> This input port defines the position of player one's paddle (0 to 500)</li>
-<li><STRONG>playerTwoPos [integer]:</STRONG> This input port defines the position of player two's paddle (0 to 500)</li>
+<li><STRONG>playerOnePos [integer]:</STRONG> This input port defines the position of player one's paddle (0 to 300)</li>
+<li><STRONG>playerTwoPos [integer]:</STRONG> This input port defines the position of player two's paddle (0 to 300)</li>
 <li><STRONG>playerOneSpeed [integer]:</STRONG> This input port defines the speed of player one's paddle (-10 to 10)</li>
 <li><STRONG>playerTwoSpeed [integer]:</STRONG> This input port defines the speed of player two's paddle (-10 to 10)</li>
 </li>
@@ -46,7 +48,7 @@ bike-ergomenter controlled pong game</div>
 <li><STRONG>controlMode [combobox selection]:</STRONG> selects the mode for controlling the paddle positions. possible selections are: absolute position (via input port), speed (via input port) or single events.</li>
 <li><STRONG>speedStep [double]:</STRONG> defines the amount of movement caused by one event.</li>
 <li><STRONG>goalsToWin [double]:</STRONG> number of goals to win a game (player lives).</li>
-<li><STRONG>eventsToCaloryMultiplier [double]:</STRONG> factor to calculate energy (in calories) from incoming events (especially for the bike ergometer application).</li>
+<li><STRONG>eventsToCaloryMultiplier [double]:</STRONG> factor to calculate energy (in calories) from incoming events (especially for the bike ergometer application) Setting this property value to 0 deactivates the energy calculation and the respective game report screens (default).</li>
 <li><STRONG>goalScoreBase [integer]:</STRONG> game points for one goal.</li>
 <li><STRONG>touchScoreBase [integer]:</STRONG> game points for one ball hit.</li>
 <li><STRONG>resetWaitTime [integer]:</STRONG> time to wait before resetting game screen.</li>
