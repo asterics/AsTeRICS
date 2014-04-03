@@ -1,6 +1,6 @@
 <DockingManager version="1.3.0">
     <ResizingPanel ResizeWidth="*" ResizeHeight="*" EffectiveSize="0,0" Orientation="Horizontal">
-        <DocumentPane IsMain="true" SelectedIndex="0" ResizeWidth="*" ResizeHeight="*" EffectiveSize="770,517">
+        <DocumentPane IsMain="true" SelectedIndex="1" ResizeWidth="*" ResizeHeight="*" EffectiveSize="770,517">
             <DocumentContent Name="dockGUIEditorWindowName" />
             <DocumentContent Name="dockDeploymentWindowName" />
         </DocumentPane>
