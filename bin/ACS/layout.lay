@@ -1,10 +1,10 @@
 <DockingManager version="1.3.0">
     <ResizingPanel ResizeWidth="*" ResizeHeight="*" EffectiveSize="0,0" Orientation="Horizontal">
-        <DocumentPane IsMain="true" SelectedIndex="1" ResizeWidth="*" ResizeHeight="*" EffectiveSize="609.333333333333,419.666666666667">
+        <DocumentPane IsMain="true" SelectedIndex="1" ResizeWidth="*" ResizeHeight="*" EffectiveSize="402,370">
             <DocumentContent Name="dockGUIEditorWindowName" />
             <DocumentContent Name="dockDeploymentWindowName" />
         </DocumentPane>
-        <DockablePane ResizeWidth="408" ResizeHeight="*" EffectiveSize="408,419.666666666667" ID="c3760918-1db2-4dc3-9517-4fbd3a74a440" Anchor="Right" SelectedIndex="0" IsAutoHidden="false">
+        <DockablePane ResizeWidth="408" ResizeHeight="*" EffectiveSize="408,370" ID="c3760918-1db2-4dc3-9517-4fbd3a74a440" Anchor="Right" SelectedIndex="0" IsAutoHidden="false">
             <DockableContent Name="dockComponentName" FloatingWindowSize="250,400" ChildIndex="0" Width="480" Height="517" Anchor="Right" State="Docked" />
             <DockableContent Name="eventTriggerName" FloatingWindowSize="250,400" ChildIndex="0" Width="480" Height="517" Anchor="Right" State="Docked" />
             <DockableContent Name="events" FloatingWindowSize="250,400" ChildIndex="0" Width="480" Height="517" Anchor="Right" State="Docked" />

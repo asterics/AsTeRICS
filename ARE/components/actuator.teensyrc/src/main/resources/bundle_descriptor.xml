@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.TeensyRCprototype"
+                   canonical_name="eu.asterics.component.actuator.teensyrcprototype.TeensyRCprototypeInstance">
+        <type subtype="Others">actuator</type>
+        <singleton>false</singleton>
+        <description>Remote Control for radio-controlled toy models</description>
+        <ports>
+			<inputPort id="channel1">
+				<description>Channel1 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel2">
+				<description>Channel2 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel3">
+				<description>Channel3 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel4">
+				<description>Channel4 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel5">
+				<description>Channel5 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel6">
+				<description>Channel6 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel7">
+				<description>Channel7 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel8">
+				<description>Channel8 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+        </ports>
+		<events>
+
+		</events>			
+        <properties>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
