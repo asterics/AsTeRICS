@@ -408,7 +408,7 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
 	 */
 	public List<String> getRuntimePropertyList(String key) 
 	{
-		System.out.println("DigitalInInstance.getRuntimePropertyList");
+		//System.out.println("DigitalInInstance.getRuntimePropertyList");
 
 		List<String> res = new ArrayList<String>(); 
 		if (key.compareToIgnoreCase("uniqueID")==0)
