@@ -45,6 +45,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -136,10 +137,20 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					JOptionPane.showMessageDialog (null,
+
+					JOptionPane op = new JOptionPane (errorMsg,
+						    JOptionPane.WARNING_MESSAGE);
+
+/*					JOptionPane.showMessageDialog (null,
 						    errorMsg,
 						    "AsTeRICS RuntimeEnvironment: An Error occurred !",
 						    JOptionPane.WARNING_MESSAGE);
+	*/				
+					JDialog dialog = op.createDialog("AsTeRICS RuntimeEnvironment: An Error occurred !");
+					dialog.setAlwaysOnTop(true);
+					dialog.setModal(true);
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
 					}
 				});				
 		}
