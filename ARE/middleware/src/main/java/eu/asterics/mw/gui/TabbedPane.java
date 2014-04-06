@@ -186,7 +186,7 @@ public class TabbedPane extends JPanel
 			tcc = new JColorChooser(new Color(Integer
 					.parseInt(props.getProperty("background_color"))));
 		else	
-			tcc = new JColorChooser(colorPanel.getForeground());
+			tcc = new JColorChooser(new Color (-11435361));  // default background color
 		colorPanel.add(tcc);
 		panel.add(colorPanel);
 		return panel;
