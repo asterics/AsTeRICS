@@ -59,7 +59,8 @@ public class HighScoreScreen
 		super.render(delta);
 		
         getBatch().begin();
-        drawImage(backgroundImage,40,400);
+		if (PongGameProperties.eventsToCaloryMultiplier>0)
+			drawImage(backgroundImage,40,400);
 		getBatch().end();
 		
 		if (showNextScreen && !screenSwitchActive)

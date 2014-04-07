@@ -1773,7 +1773,14 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
-
+			<outputPort id="ballX">
+				<description>current X position of the Ball</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="ballY">
+				<description>current Y position of the Ball</description>
+				<dataType>integer</dataType>
+			</outputPort>
 
         </ports>
 		<events>
