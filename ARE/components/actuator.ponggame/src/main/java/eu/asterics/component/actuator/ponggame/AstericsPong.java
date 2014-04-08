@@ -13,6 +13,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+
 public class AstericsPong extends Game 
 {
 	public static final String LOG = AstericsPong.class.getSimpleName();
@@ -22,6 +24,9 @@ public class AstericsPong extends Game
 	Standings standings = null;
 	boolean gameLogicRunning = false;
     public float scaleFactor= 1;
+    
+    public IRuntimeOutputPort opBallX;
+    public IRuntimeOutputPort opBallY;
 
 	Player player ;
 	
@@ -72,17 +77,17 @@ public class AstericsPong extends Game
     }
 	
 	
-	
-	private AstericsPong(Dimension availableScreenSize)
+	private AstericsPong(Dimension availableScreenSize, IRuntimeOutputPort opBallX, IRuntimeOutputPort opBallY)
 	{
 		this.availableScreenSize=availableScreenSize;
+		this.opBallX=opBallX;
+		this.opBallY=opBallY;
 	}
 	
-	public static void reset(Dimension availableScreenSize)
+	public static void reset(Dimension availableScreenSize, IRuntimeOutputPort opBallX, IRuntimeOutputPort opBallY)
 	{
-		instance = new AstericsPong(availableScreenSize);
-		 System.out.println("reset to screen size "+availableScreenSize.height+"/"+availableScreenSize.width);
-
+		instance = new AstericsPong(availableScreenSize, opBallX, opBallY);
+		// System.out.println("reset to screen size "+availableScreenSize.height+"/"+availableScreenSize.width);
 	}
 	
 	@Override

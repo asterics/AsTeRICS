@@ -99,33 +99,35 @@ public class GameOverScreen
 
 		if (PongGameProperties.eventsToCaloryMultiplier>0)
 		{
-	        getFont().draw(getBatch(), pl.name + " siegt nach Punkten "
-	            		, 450* getScaleFactor(), 630* getScaleFactor());
-
+	        String numOutput;
+	        DecimalFormat formatter;
+	        
 	        pl = (p1Calories > p2Calories) ? 
         		GameWorld.instance.players[0] : GameWorld.instance.players[1];
         
         		getFont().draw(getBatch(), pl.name + " siegt nach Kalorien "
         	        		//+p1Calories+" vs. "+p2Calories+")"
         	        		, 430* getScaleFactor(), 580* getScaleFactor());
+        		
+    	        formatter = new DecimalFormat("###.#############");
+    	        
+    	        getFont().draw(getBatch(),"Gesamtenergie: ", 560* getScaleFactor(), 445* getScaleFactor());
+    	        numOutput = formatter.format((double)(p1Calories+p2Calories)/1000);
+    	        getFont().draw(getBatch()," "+numOutput+" Kilo-Kalorien (kCal).", 390* getScaleFactor(), 390* getScaleFactor());
+    	        numOutput = formatter.format((double)(p1Calories+p2Calories)*0.000001163);
+    	        getFont().draw(getBatch()," "+numOutput+" Kilowatt-Stunden (kWh)", 390* getScaleFactor(), 335* getScaleFactor());
+
+    	        getFont().draw(getBatch(), pl.name + " siegt nach Punkten "
+    	            		, 450* getScaleFactor(), 630* getScaleFactor());
+
 		}
 		else
 		{
 	        getFont().draw(getBatch(), pl.name + " siegt nach Punkten: "
-	            		+GameWorld.instance.players[0].score+" vs. " + GameWorld.instance.players[1].score+")"
+	            		+GameWorld.instance.players[0].score+" vs. " + GameWorld.instance.players[1].score
 	            		, 450* getScaleFactor(), 630* getScaleFactor());
 		}
 
-        String numOutput;
-        DecimalFormat formatter;
-        
-        formatter = new DecimalFormat("###.#############");
-        
-        getFont().draw(getBatch(),"Gesamtenergie: ", 560, 445);
-        numOutput = formatter.format((double)(p1Calories+p2Calories)/1000);
-        getFont().draw(getBatch()," "+numOutput+" Kilo-Kalorien (kCal).", 390, 390);
-        numOutput = formatter.format((double)(p1Calories+p2Calories)*0.000001163);
-        getFont().draw(getBatch()," "+numOutput+" Kilowatt-Stunden (kWh)", 390, 335);
 
         getBatch().end();
         

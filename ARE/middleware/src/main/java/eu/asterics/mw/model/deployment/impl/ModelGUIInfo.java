@@ -42,6 +42,7 @@ public class ModelGUIInfo
 	public boolean  valwaysOnTop = false;
 	public boolean  toSysTray = false; 
 	public boolean  shopControlPanel = true;
+	public boolean  showErrorDialogs = true;
 	public int posX;
 	public int posY;
 	public int width;
@@ -88,6 +89,7 @@ public class ModelGUIInfo
 		props.setProperty("always_on_top", valwaysOnTop ? "1" : "0");
 		props.setProperty("undecorated", decoration ? "0" : "1");
 		props.setProperty("fullscreen", fullscreen ? "1" : "0");
+		props.setProperty("showErrorDialogs", showErrorDialogs ? "1" : "0");
 		props.storeProperties();
 	}
 

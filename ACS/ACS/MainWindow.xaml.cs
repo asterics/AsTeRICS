@@ -6342,7 +6342,7 @@ namespace Asterics.ACS {
             {
                 try
                 {
-                    newStatus = asapiStatusClient.QueryStatus(true);
+                    newStatus = asapiStatusClient.QueryStatus(false);
                 }
                 catch (IOException ie)
                 {
@@ -6358,43 +6358,57 @@ namespace Asterics.ACS {
                 if (so.InvolvedComponentID == "")
                     tmpAreStatus = so.Status;
                 else if (so.Status == "error") {
-                    Canvas errorCompCanvas = deploymentComponentList[so.InvolvedComponentID].ComponentCanvas; //.Background = Brushes.Red;
-                    Canvas groupErrorCanvas = null;
-                    if (GetParentGroup(deploymentComponentList[so.InvolvedComponentID]) != null)
+                    Canvas errorCompCanvas = null;
+                    if (deploymentComponentList.ContainsKey(so.InvolvedComponentID))
                     {
-                        groupErrorCanvas = deploymentComponentList[GetParentGroup(deploymentComponentList[so.InvolvedComponentID]).ID].ComponentCanvas;
-                    }
-                    errorCompCanvas.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                    (Action)(() =>
-                    {
-                        errorCompCanvas.Background = Brushes.Red;
-                        if (groupErrorCanvas != null)
+                        errorCompCanvas = deploymentComponentList[so.InvolvedComponentID].ComponentCanvas; //.Background = Brushes.Red;
+                        Canvas groupErrorCanvas = null;
+                        if (GetParentGroup(deploymentComponentList[so.InvolvedComponentID]) != null)
                         {
-                            groupErrorCanvas.Background = Brushes.Red;
+                            groupErrorCanvas = deploymentComponentList[GetParentGroup(deploymentComponentList[so.InvolvedComponentID]).ID].ComponentCanvas;
                         }
-                    }));
-                } else if (so.Status == "ok") { // remove error state
-                    Canvas errorCompCanvas = deploymentComponentList[so.InvolvedComponentID].ComponentCanvas;
-                    Canvas groupErrorCanvas = null;
-
-                    errorCompCanvas.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-                    (Action)(() =>
-                    {
-                        if (errorCompCanvas.Background == Brushes.Red)
+                        if (errorCompCanvas != null)
                         {
-
-                            if (GetParentGroup(deploymentComponentList[so.InvolvedComponentID]) != null)
+                            errorCompCanvas.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                            (Action)(() =>
                             {
-                                groupErrorCanvas = deploymentComponentList[GetParentGroup(deploymentComponentList[so.InvolvedComponentID]).ID].ComponentCanvas;
-                            }
+                                errorCompCanvas.Background = Brushes.Red;
+                                if (groupErrorCanvas != null)
+                                {
+                                    groupErrorCanvas.Background = Brushes.Red;
+                                }
+                            }));
                         }
-                        errorCompCanvas.Background = null;
-                        if (groupErrorCanvas != null)
+                    }
+                }
+                else if (so.Status == "ok")
+                { // remove error state
+                    Canvas errorCompCanvas = null;
+                    if (deploymentComponentList.ContainsKey(so.InvolvedComponentID))
+                    {
+                        errorCompCanvas = deploymentComponentList[so.InvolvedComponentID].ComponentCanvas;
+                        Canvas groupErrorCanvas = null;
+                        if (errorCompCanvas != null)
                         {
-                            groupErrorCanvas.Background = null;
-                        }
-                    }));
+                            errorCompCanvas.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+                            (Action)(() =>
+                            {
+                                if (errorCompCanvas.Background == Brushes.Red)
+                                {
 
+                                    if (GetParentGroup(deploymentComponentList[so.InvolvedComponentID]) != null)
+                                    {
+                                        groupErrorCanvas = deploymentComponentList[GetParentGroup(deploymentComponentList[so.InvolvedComponentID]).ID].ComponentCanvas;
+                                    }
+                                }
+                                errorCompCanvas.Background = null;
+                                if (groupErrorCanvas != null)
+                                {
+                                    groupErrorCanvas.Background = null;
+                                }
+                            }));
+                        }
+                    }
                 }
 
             }
