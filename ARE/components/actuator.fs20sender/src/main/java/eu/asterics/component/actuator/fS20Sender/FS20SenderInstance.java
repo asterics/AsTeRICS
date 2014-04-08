@@ -85,8 +85,6 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 	private FS20SenderInstance instance = this;
 	
 	private Logger logger =	AstericsErrorHandling.instance.getLogger();
-	
-	private Object lockObject=new Object();
     
    /**
     * The class constructor.
