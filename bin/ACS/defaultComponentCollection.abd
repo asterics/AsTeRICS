@@ -4,7 +4,7 @@
         <description>Digital-to-Analog (DAC-CIM) actuator interface, enables analog control outputs</description>
         <ports>
             <inputPort id="out1">
-                <description>desired value for DAC channel 1</description> 
+                <description>desired value for DAC channel 1</description>
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>integer</dataType>
             </inputPort>
@@ -1754,12 +1754,12 @@
         <description>Plugin displays a pong game in the AsTeRICS GUI</description>
         <ports>
 			<inputPort id="playerOnePos">
-				<description>range 0 to 500 will move paddle of player 1 to this position</description>
+				<description>range 0 to 300 will move paddle of player 1 to this position</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="playerTwoPos">
-				<description>range 0 to 500 will move paddle of player 2 to this position</description>
+				<description>range 0 to 300 will move paddle of player 2 to this position</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
@@ -1773,7 +1773,14 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
-
+			<outputPort id="ballX">
+				<description>current X position of the Ball</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="ballY">
+				<description>current Y position of the Ball</description>
+				<dataType>integer</dataType>
+			</outputPort>
 
         </ports>
 		<events>
@@ -1807,8 +1814,8 @@
         <properties>
 			<property combobox="Position//Speed//Event" description="selects the type of drive control (position input ports, speed input ports or event ports)" name="controlMode" type="integer" value="1"/>
 			<property description="speed to be multiplied by speed input (only in speed controlled drive)" name="speedStep" type="double" value="0.2"/>
-			<property description="how many goals to win a game" name="goalsToWin" type="integer" value="5"/>
-			<property description="mapping of input events to calories" name="eventsToCaloryMultiplier" type="double" value="5.0"/>
+			<property description="how many goals to win a game" name="goalsToWin" type="integer" value="3"/>
+			<property description="mapping of input events to calories (0 = deactivate calory events and screens)" name="eventsToCaloryMultiplier" type="double" value="0.0"/>
 			<property description="Base amount of points for a goal" name="goalScoreBase" type="integer" value="1000"/>
 			<property description="Base amount of points for touching the ball with the paddle" name="goalTouchBase" type="integer" value="10"/>
 			<property description="time to wait after reset of ball" name="resetWaitTime" type="integer" value="2000"/>
@@ -2437,6 +2444,62 @@
         </properties>
     </componentType>
 
+
+ <componentType canonical_name="eu.asterics.component.actuator.teensyrcprototype.TeensyRCprototypeInstance" id="asterics.TeensyRCprototype">
+        <type subtype="Others">actuator</type>
+        <singleton>false</singleton>
+        <description>Remote Control for radio-controlled toy models</description>
+        <ports>
+			<inputPort id="channel1">
+				<description>Channel1 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel2">
+				<description>Channel2 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel3">
+				<description>Channel3 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel4">
+				<description>Channel4 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel5">
+				<description>Channel5 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel6">
+				<description>Channel6 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel7">
+				<description>Channel7 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="channel8">
+				<description>Channel8 Value (0-1000)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+        </ports>
+		<events>
+
+		</events>			
+        <properties>
+
+        </properties>
+
+    </componentType>
 
  <componentType canonical_name="eu.asterics.component.actuator.textdisplay.TextDisplayInstance" id="asterics.TextDisplay">
         <type subtype="Graphical User Interface">actuator</type>
