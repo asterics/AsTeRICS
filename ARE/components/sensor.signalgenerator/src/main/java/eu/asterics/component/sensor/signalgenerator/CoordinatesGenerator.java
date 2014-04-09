@@ -27,6 +27,7 @@
 package eu.asterics.component.sensor.signalgenerator;
 
 import java.util.Random;
+
 import eu.asterics.component.sensor.signalgenerator.SignalGeneratorInstance.OutputPort;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.services.AstericsThreadPool;
@@ -181,6 +182,7 @@ public class CoordinatesGenerator implements Runnable{
 	 */
 	 public void run()
 	{
+			System.out.println("siggen thread started");
 		while (active != 0)
 		{
 			if (active == 1)
@@ -188,15 +190,7 @@ public class CoordinatesGenerator implements Runnable{
 
 				count+=sendInterval;
 				switch (waveForm) {
-				case 0: // out.sendData(offset+r.nextDouble()*amplitude);
-				
-				
-	  					for(int count = 0; count < 32; count++)
-  	  					{
-  		  					out.sendData(ConversionUtils.doubleToBytes((float) count));
-  		  					// try {Thread.sleep(1);} catch (InterruptedException e) {}
-  	  					}
-				 		
+				case 0:  out.sendData(offset+r.nextDouble()*amplitude);				 		
 				break;
 				case 1: out.sendData(offset+amplitude*Math.sin(((double)count+phaseShift)/1000*frequency*2*Math.PI));
 				break;
@@ -215,6 +209,7 @@ public class CoordinatesGenerator implements Runnable{
 				Thread.sleep(this.sendInterval);
 			} catch (InterruptedException e) {}
 		}
+		System.out.println("siggen thread ended");
 	}
 
 
