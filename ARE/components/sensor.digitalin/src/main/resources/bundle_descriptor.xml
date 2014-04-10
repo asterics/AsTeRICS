@@ -5,7 +5,7 @@
     <componentType id="asterics.DigitalIn"
                    canonical_name="eu.asterics.component.sensor.digitalin.DigitalInInstance">
         <type subtype="Generic Control Input">sensor</type>
-        <singleton>true</singleton>
+        <singleton>false</singleton>
         <description>GPIO CIM sensor for inputs</description>
         <ports>
         </ports>
