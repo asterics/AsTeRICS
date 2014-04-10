@@ -34,6 +34,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -282,6 +283,17 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 			fineFileHandler;
 			ConsoleHandler consoleHandler;
 			try {
+				//cleanup before starting:
+				logger.setUseParentHandlers(false);
+
+				// remove and handlers that will be replaced
+				Handler[] handlers = logger.getHandlers();
+				for(Handler handler : handlers)
+				{
+				        if(handler.getClass() == ConsoleHandler.class)
+				            logger.removeHandler(handler);
+				}
+				
 
 				//Create handlers
 				severeFileHandler =
