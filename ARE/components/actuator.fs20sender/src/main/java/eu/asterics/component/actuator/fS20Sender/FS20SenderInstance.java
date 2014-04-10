@@ -28,10 +28,13 @@
 package eu.asterics.component.actuator.fS20Sender;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
@@ -40,9 +43,9 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.*;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsThreadPool;
 import eu.asterics.component.actuator.fS20Sender.PCSDevice;
 import eu.asterics.component.actuator.fS20Sender.FS20Utils;
 //import eu.asterics.component.actuator.fS20Sender.PCSDevice;
@@ -80,6 +83,8 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 	private int address = 1111;
 	private PCSDevice pcs;
 	private FS20SenderInstance instance = this;
+	
+	private Logger logger =	AstericsErrorHandling.instance.getLogger();
     
    /**
     * The class constructor.
@@ -353,8 +358,10 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 					int hc = Integer.parseInt(prefix[1]);  // this is the housecode
 					int a = Integer.parseInt(values[1]);
 					int cmd = Integer.parseInt(values[2]);
+				synchronized (pcs) {
 					if (pcs != null)
 						pcs.send(hc, a, cmd);
+				}
 				} catch (NumberFormatException ne) {
 					AstericsErrorHandling.instance.reportInfo(instance, "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
 				}
@@ -369,232 +376,203 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-				 if (pcs != null)
-					 pcs.send(houseCode, address, FS20Utils.Off);
+			sendDataToFS20(houseCode,address,FS20Utils.Off);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel1 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep1);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep1);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel2 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep2);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep2);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel3 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep3);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep3);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel4 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep4);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep4);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel5 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep5);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep5);			
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel6 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep6);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep6);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel7 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep7);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep7);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel8 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep8);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep8);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel9 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep9);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep9);			
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel10 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep10);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep10);			
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel11 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				pcs.send(houseCode, address, FS20Utils.OnStep11);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep11);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel12 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep12); 
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep12);			
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel13 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep13); 
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep13);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel14 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-					 pcs.send(houseCode, address, FS20Utils.OnStep14);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep14);			
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel15 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep15);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep15);			
 		}
 	};
 	final IRuntimeEventListenerPort elpOnLevel16 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnStep16);
+			sendDataToFS20(houseCode, address, FS20Utils.OnStep16);			
 		}
 	};
 	final IRuntimeEventListenerPort elpOnOldLevel = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnOld);
+			sendDataToFS20(houseCode, address, FS20Utils.OnOld);			
 		}
 	};
 	final IRuntimeEventListenerPort elpToggle = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.Toggle);
+			sendDataToFS20(houseCode, address, FS20Utils.Toggle);
 		}
 	};
 	final IRuntimeEventListenerPort elpDimUp = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.DimUp);
+			sendDataToFS20(houseCode, address, FS20Utils.DimUp);
 		}
 	};
 	final IRuntimeEventListenerPort elpDimDown = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.DimDown);
+			sendDataToFS20(houseCode, address, FS20Utils.DimDown);
 		}
 	};
 	final IRuntimeEventListenerPort elpDimUpAndDown = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.DimUpDown);
+			sendDataToFS20(houseCode, address, FS20Utils.DimUpDown);			
 		}
 	};
 	final IRuntimeEventListenerPort elpProgramTimer = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.TimeSet);
+			sendDataToFS20(houseCode, address, FS20Utils.TimeSet);
 		}
 	};
 	final IRuntimeEventListenerPort elpOffForTimerThenOldLevel = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OffForTimeOld);
+			sendDataToFS20(houseCode, address, FS20Utils.OffForTimeOld);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnForTimerThenOff = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnForTimeOff);
+			sendDataToFS20(houseCode, address, FS20Utils.OnForTimeOff);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnOldLevelForTimerThenOff = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnOldForTimeOff);
+			sendDataToFS20(houseCode, address, FS20Utils.OnOldForTimeOff);
 		}
 	};
 	final IRuntimeEventListenerPort elpReset = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.Reset);
+			sendDataToFS20(houseCode, address, FS20Utils.Reset);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnForTimerThenOldLevel = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnForTimeOld);
+			sendDataToFS20(houseCode, address, FS20Utils.OnForTimeOld);
 		}
 	};
 	final IRuntimeEventListenerPort elpOnOldLevelForTimerThenPreviousState = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if (pcs != null)
-				 pcs.send(houseCode, address, FS20Utils.OnOldForTimeOld);
+			sendDataToFS20(houseCode, address, FS20Utils.OnOldForTimeOld);
 		}
 	};
 
@@ -642,29 +620,104 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
           super.stop();
       }
       
-      /**
-       * Open the USB HID Device
-       */
-      private void openDevice() {
-    	  pcs = new PCSDevice();
-    	  if (!pcs.open()) {
-    		  AstericsErrorHandling.instance.reportError(this, "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
-    		  pcs = null;
-    		  return;
-    	  }
-      }
-      
-      /**
-       * Close the USB HID Device
-       */
-      private void closeDevice() {
-    	  if (pcs != null) {
-	    	  if (!pcs.close()) {
-	    		  AstericsErrorHandling.instance.reportInfo(this, "Could not close PCS Device");
-	    		  pcs = null;
-	    		  return;
-	    	  }
-    	  }
-      }
-      
+	/**
+	 * Open the USB HID Device
+	 */
+	private void openDevice() {
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				String curThread = Thread.currentThread().getName();
+				logger.fine("[" + curThread + "]" + "Trying to open device");
+
+				if (pcs != null) {
+					logger.fine("[" + curThread + "]"
+							+ "PCSDevice already open");
+					closeDevice();
+				}
+
+				pcs = new PCSDevice();
+				if (!pcs.open()) {
+					AstericsErrorHandling.instance
+							.reportError(
+									FS20SenderInstance.this,
+									"["
+											+ curThread
+											+ "]"
+											+ "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
+					pcs = null;
+					return;
+				}
+			}
+		};
+
+		try {
+			AstericsThreadPool.instance.execAndWaitOnAREMainThread(runnable);
+		} catch (InterruptedException | ExecutionException e) {
+			logger.warning("Could not execute openDevice in AREMain thread: "
+					+ e.getMessage());
+		}
+
+	}
+
+	/**
+	 * Close the USB HID Device
+	 */
+	private void closeDevice() {
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				String curThread = Thread.currentThread().getName();
+				logger.fine("[" + curThread + "]" + "Trying to close device");
+
+				if (pcs != null) {
+					if (!pcs.close()) {
+						AstericsErrorHandling.instance.reportInfo(
+								FS20SenderInstance.this, "[" + curThread + "]"
+										+ "Could not close PCS Device");
+						return;
+					}
+					// Set to null anyway
+					pcs = null;
+				}
+			}
+		};
+		try {
+			AstericsThreadPool.instance.execAndWaitOnAREMainThread(runnable);
+		} catch (InterruptedException | ExecutionException e) {
+			logger.warning("Could not execute closeDevice in AREMain thread: "
+					+ e.getMessage());
+		}
+
+	}
+
+	/**
+	 * Send data to FS20 device. The method is executed in the AREMain thread to prevent thread safety issues.
+	 * @param houseCode
+	 * @param addr
+	 * @param command
+	 */
+	private void sendDataToFS20(final int houseCode, final int addr,
+			final int command) {
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+
+				String curThread = Thread.currentThread().getName();
+				logger.fine("[" + curThread + "]" + "Sending data to FS20...");
+
+				if (pcs != null) {
+					pcs.send(houseCode, addr, command);
+				}
+			}
+		};
+
+		try {
+			AstericsThreadPool.instance.execAndWaitOnAREMainThread(runnable);
+		} catch (InterruptedException | ExecutionException e) {
+			logger.warning("Could not execute sendDataToFS20 in AREMain thread: "
+					+ e.getMessage());
+		}
+	}
+     
 }
