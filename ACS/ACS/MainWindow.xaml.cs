@@ -4502,7 +4502,6 @@ namespace Asterics.ACS {
                                                     channelToConnect.target.port.id = inPort.portTypeID;
                                                     channelToConnect.Line.X2 = Canvas.GetLeft(r) + Canvas.GetLeft(tempCanvas);
                                                     channelToConnect.Line.Y2 = Canvas.GetTop(r) + r.ActualHeight - r.ActualHeight / 2 + Canvas.GetTop(tempCanvas);
-                                                    inPort.ChannelId = channelToConnect.id;
                                                     AddChannel(channelToConnect);
                                                     portfound = true;
                                                     Canvas.SetZIndex(channelToConnect.Line, Canvas.GetZIndex(channelToConnect.Line) + 1000);
