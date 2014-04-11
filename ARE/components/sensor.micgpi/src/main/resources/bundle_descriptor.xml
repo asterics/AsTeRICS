@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.MicGPI"
+                   canonical_name="eu.asterics.component.sensor.micgpi.MicGPIInstance">
+        <type subtype="Generic Control Input">sensor</type>
+        <singleton>false</singleton>
+        <description>This plugin reads an input signal via the microphone input</description>
+        <ports>
+
+			<inputPort id="thresholdLow">
+				<description>threshold for button release</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="thresholdHigh">
+				<description>threshold for button release</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			
+		
+			<outputPort id="out">
+				<description>output port description</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventTriggererPort id="inLow">
+				<description>This event gets fired if the signal goes beyond the lowThreshold</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="inHigh">
+				<description>This event gets fired if the signal goes over the highThreshold</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="updateInterval"
+				type="integer"
+				value="10"
+				description="time between samples (ms)"/>
+			<property name="thresholdLow"
+				type="integer"
+				value="-30"
+				description="time between samples (ms)"/>
+			<property name="thresholdHigh"
+				type="integer"
+				value="30"
+				description="time between samples (ms)"/>
+			<property name="captureDevice"
+                type="string"
+                value="System Default"
+                getStringList="true"
+			    description="Specifies which device should be used for recording"/>
+        </properties>
+
+    </componentType>
+</componentTypes>
