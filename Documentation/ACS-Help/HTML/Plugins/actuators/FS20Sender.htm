@@ -18,6 +18,31 @@ The PCS sender must be attached to the system!
 Picture of the PCS FS20 sender
 </div>
 
+<H2>Troubleshooting problems under Win8/Win8.1</H2>
+
+Under Windows 8 and Windows 8.1, there can be problems concering the
+operation of the FS20 PCS device: If the red control led stays on just a few seconds after plugging in the device,
+and then goes dark and teh PCS sender cannot be used, the reason could be that the power management
+settings on Win8/8.1 switch the device off per default - this can be changed by applying the following steps:
+
+<ul>
+<li>Open the Device Manager (usually can be selected by right-clicking at the bottom left corner of your windows desktop)</li>
+<li>Open the device group "Human Interface Devices"</li>
+<li>Locate the device which pops up when you insert or remove the FS20 PCS module to/from an USB port
+   It should be a "HID compliant supplier defined device". You can distinguish different devices by right-clicking a device
+   and looking into rider "details" and "properites" - there you can find the VID and PID values, e.g. under property "last known parent"
+<li> Note the VID and PID values. For example if you see a line like "USB\VID_1B1F&PID_C00F\EEE0000473" the values are VID:1B1F and PID:C00F</li>
+   
+<li>Press the Windows-Key and "R" to open the command window. Type "regedit" and press enter</li>
+<li>Select the entry "HKEY_LOCAL_MACHINE" > "SYSTEM" > "CurrentControlSet" > "Enum" > "USB".</li>
+<li>In this list, select the entry for the FS20 PCS (given by VID und PID you noted)</li>
+<li>Open the Subfolder "Device Paramteters" and double click the property "EnhancedPowerManagementEnabled" which appears in the right window section</li>
+<li>Change the property value from 1 to 0 and commit by clicking "OK"</li>
+<li>Restart you PC - now hopefully the FS20 PCS works as intended.</li>
+</li>
+</ul>
+
+
 <H2>Input Port Description</H2>
 <ul>
 <li><STRONG>houseCode [int]:</STRONG> The houseCode to which the command should be sent. Overrides the houseCode set in the properties</li>
@@ -157,6 +182,8 @@ See table below for a list of all commands that can be triggered
 	<li><STRONG>houseCode [integer]:</STRONG> The default housecode for the component if there is no on the input port.</li>
 	<li><STRONG>address [integer]:</STRONG> The default address for the component if there is no on the input port.</li>
 </ul>
+
+
 
 </BODY>
 </HTML>
