@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>MicGPI</Title>
+</HEAD>
+<BODY>
+<H1>MicGPI</H1>
+<H3>Component Type: Sensor (Subcategory: Generic Control Input)</H3>
+<p>This component reads the input of a switch from the microphone or line-in of a computer.</p>
+<p>Disclaimer: Try at your own risk. It is not possible for us to check if your sound card can handle the input signal without getting broken. We can only say that we did not find a sound card which got destroyed be a switch.
+<div class="image"><img style="width: 400px;" src="img/micgpi.png" alt="Screenshot: MicGPI plugin" title="Screenshot: MicGPI plugin" />
+</div>
+<H2>Requirements</H2>
+This software component requires a switch attached to the line-in or microphone input jack. No additional input circuit is required. Any sort of filtering of the signal like background noise cancelling must be disabled. 
+<div>
+</div>
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>thresholdLow [int]:</STRONG> This input port sets the low threshold below a signal must move that a inLow event gets triggered.</li> 
+<li><STRONG>thresholdHigh [int]:</STRONG> This input port sets the high threshold above a signal must move that a inHigh event gets triggered.</li> 
+</ul>
+
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>out [integer]:</STRONG> This port outputs every 1024th sample of the mic input signal.</li>
+</ul>
+
+<H2>Event Trigger Description</H2>
+<ul>
+<li><STRONG>inLow:</STRONG> This event is fired if the external signal goes below the low threshold.</li>
+<li><STRONG>inHigh:</STRONG> This event is fired if the external signal goes above the high threshold.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>updateInterval [int]:</STRONG> This gives the sampling interval in ms.</li>
+<li><STRONG>thresholdLow [int]:</STRONG> This property sets the low threshold below a signal must move that a inLow event gets triggered.</li> 
+<li><STRONG>thresholdHigh [int]:</STRONG> This property sets the high threshold above a signal must move that a inHigh event gets triggered.</li> 
+<li><STRONG>captureDevice: [string]:</STRONG> This property defines the sound card from which the audio samples should be analysed.</li> 
+</ul>
+</BODY>
+</HTML>

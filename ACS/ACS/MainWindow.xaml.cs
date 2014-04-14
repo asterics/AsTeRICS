@@ -636,44 +636,9 @@ namespace Asterics.ACS {
 
                     areStatus.Status = AREStatus.ConnectionStatus.Connected;
 
-                    // check the status of the ARE and change model of ACS, if requested
-                    List<StatusObject> newStatus = asapiClient.QueryStatus(true);
-                    if (newStatus.Count > 0) {
-                        String currentAREStatus = "";
-                        foreach (StatusObject so in newStatus) {
-                            statusList.Add(so);
-
-                            // get the current status of the ARE
-                            if (so.InvolvedComponentID == "") {
-                                if ((so.Status == "ok") && (currentAREStatus == "running")) {
-                                    currentAREStatus = "deployed";
-                                }
-                                else if ((currentAREStatus == "running") && (so.Status == "paused")) {
-                                    currentAREStatus = "paused";
-                                }
-                                else if (so.Status == "deployed") {
-                                    currentAREStatus = "deployed";
-                                }
-                                else if (so.Status == "running") {
-                                    currentAREStatus = "running";
-                                }
-                                else if (so.Status == "error") {
-                                    currentAREStatus = "error";
-                                }
-                            }
-                        }
-                        // check, if a model is loaded and remove error marker
-                        if ((deploymentModel != null) && (deploymentModel.components != null) && (deploymentModel.components.Count() > 0)) {
-                            foreach (componentType mc in deploymentModel.components) {
-                                if ((mc != null) && ((mc.ComponentCanvas.Background == Brushes.Red) || (mc.ComponentCanvas.Background == Brushes.Orange))) {
-                                    mc.ComponentCanvas.Background = null;
-                                }
-                            }
-                        }
-
-                        // check, if a deployed model is ready on ARE
-                        if (showOverrideAtConnectionQuestion)
-                        {
+                   // check, if a deployed model is ready on ARE
+                   if (showOverrideAtConnectionQuestion)
+                   {
                             //if (MessageBox.Show(Properties.Resources.AREStatusMessageDeployed, Properties.Resources.AREStatusMessageHeader, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
                             CustomMessageBox messageBox = new CustomMessageBox(Properties.Resources.AREStatusMessageDeployed, Properties.Resources.AREStatusMessageHeader, CustomMessageBox.messageType.Info, CustomMessageBox.resultType.YesNo);
                             messageBox.Owner = this;
@@ -684,10 +649,6 @@ namespace Asterics.ACS {
                             if (dialogResult)
                             {
                                 DownloadAndCheckModel();
-                                if (currentAREStatus == "running")
-                                    areStatus.Status = AREStatus.ConnectionStatus.Running;
-                                else if (currentAREStatus == "paused")
-                                    areStatus.Status = AREStatus.ConnectionStatus.Pause;
                             }
                             showOverrideAtConnectionQuestion = (bool)messageBox.showCheckbox.IsChecked;
                             if (showOverrideAtConnectionQuestion)
@@ -708,12 +669,7 @@ namespace Asterics.ACS {
                             if (ini.IniReadValue("Options", "downloadModelOnConnect") == "true")
                             {
                                 DownloadAndCheckModel();
-                                if (currentAREStatus == "running")
-                                    areStatus.Status = AREStatus.ConnectionStatus.Running;
-                                else if (currentAREStatus == "paused")
-                                    areStatus.Status = AREStatus.ConnectionStatus.Pause;
                             }
-                        }
                     }
                 }
                 else {
@@ -6286,7 +6242,6 @@ namespace Asterics.ACS {
                         { // 500ms is the minimum for the polling frequency
                             interval = 500;
                         }
-                        Console.WriteLine("starting timer");
                         statusTimer = new DispatcherTimer(DispatcherPriority.SystemIdle);
                         statusTimer.Interval = TimeSpan.FromMilliseconds(interval);
                         statusTimer.Tick += new EventHandler(CheckStatus);
@@ -7998,7 +7953,7 @@ namespace Asterics.ACS {
                     showLogRibbonButton.IsEnabled = true;
                     dispatcherHelperRibbonButton.IsEnabled = true; 
                     statusBar.Text = Properties.Resources.AREStatusConnected;
-                    StartStatusPolling();
+                    StopStatusPolling();
                     break;
                 case AREStatus.ConnectionStatus.Synchronised:
                     runModelButton.IsEnabled = true;
@@ -8013,7 +7968,7 @@ namespace Asterics.ACS {
                     downloadBundlesButton.IsEnabled = false;
                     statusBar.Text = Properties.Resources.AREStatusSynchronised;
                     EnableCanvas();
-                    //StopStatusPolling();
+                    StartStatusPolling();
                     GetAllDynamicProperties();
                     break;
                 case AREStatus.ConnectionStatus.Running:
@@ -8022,7 +7977,7 @@ namespace Asterics.ACS {
                     pauseModelButton.IsEnabled = true;
                     statusBar.Text = Properties.Resources.AREStatusRunning;
                     DisableCanvas();
-                    //StartStatusPolling();
+                    StartStatusPolling();
                     break;
                 case AREStatus.ConnectionStatus.Pause:
                     runModelButton.IsEnabled = true;
