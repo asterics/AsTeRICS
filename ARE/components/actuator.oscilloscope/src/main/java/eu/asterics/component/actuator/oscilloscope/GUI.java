@@ -182,7 +182,7 @@ public class GUI extends JPanel
 		}
 
 
-		public void paintComponent(Graphics g) {
+		public synchronized void paintComponent(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g;
 			int new_y,old_y=0;
 
