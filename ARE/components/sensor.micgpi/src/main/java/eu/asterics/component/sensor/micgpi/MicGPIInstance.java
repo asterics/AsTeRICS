@@ -27,8 +27,8 @@
 
 package eu.asterics.component.sensor.micgpi;
 
-
 import java.util.*;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -40,37 +40,51 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
+
 import eu.asterics.mw.services.AstericsThreadPool;
+
 /**
  * 
- * <Describe purpose of this module>
+ * This pluign delivers data from a sound input device (e.g. standard microphone)
+ * It can be used to attach a standard momentary switch to the microphone input
+ * and detect button press / release actions  or to detect sound events
  * 
  *  
  * @author David Thaller [dt@ki-i.at]
  */
 public class MicGPIInstance extends AbstractRuntimeComponentInstance implements Runnable
 {
-	final IRuntimeOutputPort opOut = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opPressure = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opFrequency = new DefaultRuntimeOutputPort();
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 
 	final IRuntimeEventTriggererPort etpInLow = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpInHigh = new DefaultRuntimeEventTriggererPort();
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 	
-	int propUpdateInterval = 10;
+	int [] sampleSizeList = {32,64,128,256,512,1024,2048};
+ 	
+	int propSampleSize = 2;    //  32//64//128//256//512//1024//2048  default = 128 
 	int propThresholdHigh = 30;
 	int propThresholdLow = -30;
+	double propNoiseLevel = 1.5;
+	
+	boolean propCalculateFrequency = true;
+	boolean propPrintSpectrum = false;	
 	String propCaptureDevice = "System Default";
+	
 	// declare member variables here
 	private RecordDevice recDev;
     private TargetDataLine targetDataLine;
     private boolean running = true;
 	private boolean highState, lowState;
+		
    /**
     * The class constructor.
     */
@@ -122,9 +136,13 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
      */
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
-		if ("out".equalsIgnoreCase(portID))
+		if ("pressure".equalsIgnoreCase(portID))
 		{
-			return opOut;
+			return opPressure;
+		}
+		if ("frequency".equalsIgnoreCase(portID))
+		{
+			return opFrequency;
 		}
 
 		return null;
@@ -167,9 +185,9 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
      */
     public Object getRuntimePropertyValue(String propertyName)
     {
-		if ("updateInterval".equalsIgnoreCase(propertyName))
+		if ("sampleSize".equalsIgnoreCase(propertyName))
 		{
-			return propUpdateInterval;
+			return propSampleSize;
 		}
 	
 		if ("captureDevice".equalsIgnoreCase(propertyName))
@@ -184,9 +202,25 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 		{
 			return propThresholdHigh;
 		}
-        return null;
+		if ("noiseLevel".equalsIgnoreCase(propertyName))
+		{
+			return propNoiseLevel;
+		}
+		if ("calculateFrequency".equalsIgnoreCase(propertyName))
+		{
+			return propCaptureDevice;
+		}
+		if ("printSpectrum".equalsIgnoreCase(propertyName))
+		{
+			return propCaptureDevice;
+		}
+
+		
+		return null;
     }
 
+
+    
     /**
      * sets a new value for the given property.
      * @param propertyName   the name of the property
@@ -194,10 +228,10 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
-		if ("updateInterval".equalsIgnoreCase(propertyName))
+		if ("sampleSize".equalsIgnoreCase(propertyName))
 		{
-			final int oldValue = propUpdateInterval;
-			propUpdateInterval = Integer.parseInt((String)newValue);
+			final int oldValue = propSampleSize;
+			propSampleSize = Integer.parseInt((String)newValue);
 			return oldValue;
 		}
 		if ("captureDevice".equalsIgnoreCase(propertyName)) {
@@ -215,6 +249,28 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 			propThresholdHigh = Integer.parseInt((String) newValue);
 			return oldValue;
 		}
+		if ("noiseLevel".equalsIgnoreCase(propertyName)) {
+			final double oldValue = propNoiseLevel;
+			propNoiseLevel = Double.parseDouble((String) newValue);
+			return oldValue;
+		}
+	    if("calculateFrequency".equalsIgnoreCase(propertyName))
+	    {
+	    	final boolean oldValue = propCalculateFrequency;
+	        if("true".equalsIgnoreCase((String)newValue))
+	        	propCalculateFrequency = true;
+	        else propCalculateFrequency = false;
+	        return oldValue;
+	    }
+	    if("printSpectrum".equalsIgnoreCase(propertyName))
+	    {
+	    	final boolean oldValue = propPrintSpectrum;
+	        if("true".equalsIgnoreCase((String)newValue))
+	        	propPrintSpectrum = true;
+	        else propPrintSpectrum = false;
+	        return oldValue;
+	    }
+
         return null;
     }
 	
@@ -237,23 +293,13 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 	} 
     
 
-     /**
-      * Input Ports for receiving values.
-      */
-
-
-     /**
-      * Event Listerner Ports.
-      */
-
-
 	@Override
     public void run() {
             if (this.targetDataLine == null) {
 				AstericsErrorHandling.instance.reportInfo(this, "Error opening capture device: " + propCaptureDevice);
 				return;
             }
-			running = true;
+
 			try {
 				this.targetDataLine.open();
 				this.targetDataLine.start();
@@ -261,36 +307,72 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 				AstericsErrorHandling.instance.reportInfo(this, "Error opening capture device: " + propCaptureDevice);
 				return;
 			}
-			byte [] data = new byte[1024];
+
+			int sampleCount = sampleSizeList[propSampleSize];
+			byte [] data = new byte[sampleCount];
+			double [] fftMagnitudes = new double[sampleCount/2];
+            running = true;
+
 			while (running == true) {
-				try {
-					int readBytes = targetDataLine.read(data, 0, 1024);
-					if (readBytes == 0)
-						continue;
-					else
-						opOut.sendData(ConversionUtils.intToByteArray(data[0]));
-					for (int i = 0; i< readBytes; i++) {
-						int value = data[i];
-						
-						if (value < propThresholdLow) {
-							if (lowState == false) {
-								etpInLow.raiseEvent();
-								lowState = true;
-							}
-						} 
-						if (value > propThresholdHigh) {
-							if (highState == false) {
-								etpInHigh.raiseEvent();
-								highState = true;
-							}
-						} 
-						if (value > -10 && value < 10) {
-							highState = false;
-							lowState = false;
+				int readBytes = targetDataLine.read(data, 0, sampleCount);
+				if (readBytes <= 0)
+					continue;
+				
+				int sum=0;
+				for (int i = 0; i< readBytes; i++) {
+					int value = data[i];
+
+					if (Math.abs(value)<propNoiseLevel)
+					{
+						highState = false;
+						lowState = false;
+						value=0;
+					}					
+					
+					if (value < propThresholdLow) {
+						if (lowState == false) {
+							etpInLow.raiseEvent();
+							lowState = true;
+						}
+					} 
+					if (value > propThresholdHigh) {
+						if (highState == false) {
+							etpInHigh.raiseEvent();
+							highState = true;
 						}
 					}
-					Thread.sleep(propUpdateInterval);
-				} catch (InterruptedException ie) {}   	
+
+					sum+=Math.abs(value);
+				}
+				opPressure.sendData(ConversionUtils.doubleToBytes((double)sum/readBytes));
+
+				if (propCalculateFrequency == true)
+				{
+					calculateFFT (data,fftMagnitudes,sampleCount);
+					String spectrum = "";
+					double max=-1;
+					int maxIndex=-1;
+					for (int i=0;i<sampleCount/2;i++)
+					{
+						double r=fftMagnitudes[i]*10;
+						if (r<propNoiseLevel) r=0;
+						if (r>max) {max=r; maxIndex=i;}
+						if (propPrintSpectrum == true) {
+							if (r<2) spectrum+=".";
+							else if (r<4) spectrum+=":";
+							else if (r<6) spectrum+="o";
+							else if (r<8) spectrum+="x";
+							else spectrum+="*";
+						}
+					}
+					int dominantFrequency = maxIndex*8000/sampleCount;
+					if (propPrintSpectrum == true)
+					{
+						spectrum+=(" DomF="+dominantFrequency);
+						System.out.println(spectrum);
+					}
+					opFrequency.sendData(ConversionUtils.intToBytes(dominantFrequency));					
+				}
         }
 		this.targetDataLine.stop();
 		this.targetDataLine.close();
@@ -353,4 +435,115 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 		running = false;
         super.stop();
       }
+      
+      
+      
+      
+      boolean IsPowerOfTwo ( int x )
+      {
+          if ( x < 2 )    return (false);
+          if ( ( x & (x-1)) != 0 )        // Thanks to 'byang' for this cute trick!
+              return (false);
+          return (true);
+      }
+
+      int NumberOfBitsNeeded ( int PowerOfTwo )
+      {
+          int i;
+          for ( i=0; ; i++ )
+            if ( (PowerOfTwo & (1 << i)) != 0 )   return i;
+      }
+
+      int ReverseBits ( int index, int NumBits )
+      {
+          int i, rev;
+          for ( i=rev=0; i < NumBits; i++ )
+          {
+              rev = (rev << 1) | (index & 1);
+              index >>= 1;
+          }
+          return rev;
+      }
+
+      public void calculateFFT (byte[] buffer, double[] fftbands, int numSamples)
+      {
+          int NumBits;					// Number of bits needed to store indices 
+          int i, j, k, n, x;
+          int BlockSize, BlockEnd;
+          int bins;
+
+          double angle_numerator = 2.0 * Math.PI;
+      	double tr, ti;						// temp real, temp imaginary 
+      	
+      	if (!IsPowerOfTwo(numSamples)) return;
+
+      	bins=numSamples/2;
+          NumBits = NumberOfBitsNeeded ( numSamples );
+
+      	double [] RealOut = new double[numSamples];
+      	double [] ImagOut = new double[numSamples];
+      
+          //  data copy and bit-reversal ordering 
+          for ( i=0; i < numSamples; i++ )
+          {		
+              j = ReverseBits ( i, NumBits );
+              ImagOut[j] = 0.0;
+      		RealOut[j] = buffer[i];
+      		// apply hanning window !
+      		RealOut[j] *= (0.5 + 0.5*Math.cos(2*Math.PI*(i-numSamples/2)/numSamples));
+          }
+
+          //   the FFT itself
+          BlockEnd = 1;
+          for ( BlockSize = 2; BlockSize <= numSamples; BlockSize <<= 1 )
+          {
+              double delta_angle = angle_numerator / (double)BlockSize;
+              double sm2 = Math.sin ( -2 * delta_angle );
+              double sm1 = Math.sin ( -delta_angle );
+              double cm2 = Math.cos ( -2 * delta_angle );
+              double cm1 = Math.cos ( -delta_angle );
+              double w = 2 * cm1;
+              double [] ar =new double[3];
+              double [] ai =new double[3];
+
+              for ( i=0; i < numSamples; i += BlockSize )
+              {
+                  ar[2] = cm2;
+                  ar[1] = cm1;
+
+                  ai[2] = sm2;
+                  ai[1] = sm1;
+
+                  for ( j=i, n=0; n < BlockEnd; j++, n++ )
+                  {
+                      ar[0] = w*ar[1] - ar[2];
+                      ar[2] = ar[1];
+                      ar[1] = ar[0];
+
+                      ai[0] = w*ai[1] - ai[2];
+                      ai[2] = ai[1];
+                      ai[1] = ai[0];
+
+                      k = j + BlockEnd;
+                      tr = ar[0]*RealOut[k] - ai[0]*ImagOut[k];
+                      ti = ar[0]*ImagOut[k] + ai[0]*RealOut[k];
+
+                      RealOut[k] = RealOut[j] - tr;
+                      ImagOut[k] = ImagOut[j] - ti;
+
+                      RealOut[j] += tr;
+                      ImagOut[j] += ti;
+                  }
+              }
+
+              BlockEnd = BlockSize;
+          }
+
+         for (i=0;i<bins;i++)
+         {
+            fftbands[i] = Math.sqrt(ImagOut[i]*ImagOut[i]+RealOut[i]*RealOut[i])/bins;
+         }
+
+      }          
+      
 }

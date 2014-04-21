@@ -6758,7 +6758,7 @@
 
  <componentType canonical_name="eu.asterics.component.sensor.digitalin.DigitalInInstance" id="asterics.DigitalIn">
         <type subtype="Generic Control Input">sensor</type>
-        <singleton>true</singleton>
+        <singleton>false</singleton>
         <description>GPIO CIM sensor for inputs</description>
         <ports>
         </ports>
@@ -7729,6 +7729,56 @@
         </properties>
     </componentType>
 
+
+ <componentType canonical_name="eu.asterics.component.sensor.micgpi.MicGPIInstance" id="asterics.MicGPI">
+        <type subtype="Generic Control Input">sensor</type>
+        <singleton>false</singleton>
+        <description>This plugin reads an input signal via the microphone input</description>
+        <ports>
+
+			<inputPort id="thresholdLow">
+				<description>threshold for button release</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="thresholdHigh">
+				<description>threshold for button release</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			
+		
+			<outputPort id="pressure">
+				<description>sound pressure level</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="frequency">
+				<description>the dominant frequency in the spectrum</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventTriggererPort id="inLow">
+				<description>This event gets fired if the signal goes beyond the lowThreshold</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="inHigh">
+				<description>This event gets fired if the signal goes over the highThreshold</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property combobox="32//64//128//256//512//1024//2048" description="interval length (in samples)" name="sampleSize" type="integer" value="3"/>
+			<property description="threshold for low event" name="thresholdLow" type="integer" value="-30"/>
+			<property description="threshold for high event" name="thresholdHigh" type="integer" value="30"/>
+			<property description="sound below noise level will be attenuated" name="noiseLevel" type="double" value="1.5"/>
+
+			<property description="if selected, the dominant frequency is calculated" name="calculateFrequency" type="boolean" value="false"/> 
+			<property description="if selected, the frequency spectrum is shown in the console window" name="printSpectrum" type="boolean" value="false"/> 
+			<property description="Specifies which device should be used for recording" getStringList="true" name="captureDevice" type="string" value="System Default"/>
+        </properties>
+
+    </componentType>
 
  <componentType canonical_name="eu.asterics.component.sensor.openvibe.OpenViBEInstance" id="asterics.OpenViBE">
         <type subtype="Bioelectric Measurement">sensor</type>
