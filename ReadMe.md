@@ -33,7 +33,6 @@ If you want to contribute to the AsTeRICS project, have questions or just need h
 
 This project has been partly funded by the European Commission,  Grant Agreement Number 247730 in the years 2010-2012.
 Since 2013, further development of AsTeRICS software and hardware components is hosted at:  https://github.com/asterics/AsTeRICS
-In case you would like to contribute to the repository, please send a request to: asterics-info@ki-i.at
 
 If not otherwise mentioned, the AsTeRICS source code is released under the following licenses:
 
@@ -44,7 +43,7 @@ For a detailed description of the utilized 3rd party libraries and the implicati
 please refer to the file "Licenses.pdf" in the folder "Documentation".
 
 This software is provided 'as-is', without any express or implied warranty. 
-In no event will the authors be held liable for any damages arising from the use of this software. Please also see [Disclaimer] (DISCLAIMER)
+In no event will the authors be held liable for any damages arising from the use of this software. See [Disclaimer] (DISCLAIMER.txt)
 
 ##Releases
 See [Release Notes] (RELEASE_NOTES.txt) 
