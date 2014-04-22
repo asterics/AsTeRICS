@@ -43,7 +43,7 @@ For a detailed description of the utilized 3rd party libraries and the implicati
 please refer to the file "Licenses.pdf" in the folder "Documentation".
 
 This software is provided 'as-is', without any express or implied warranty. 
-In no event will the authors be held liable for any damages arising from the use of this software. See [Disclaimer] (DISCLAIMER.txt)
+In no event will the authors be held liable for any damages arising from the use of this software. See [DISCLAIMER] (DISCLAIMER.TXT)
 
 ##Releases
 See [Release Notes] (RELEASE_NOTES.txt) 
