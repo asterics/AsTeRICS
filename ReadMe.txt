@@ -30,6 +30,28 @@ ACS, ARE and 125 plugins with demo models.
 V2.2 (2013-07-30):
 major GUI improvents and bug corrections
 
-
-
+V2.3 (2014-04-25):
+Midi-Plugin: Bug fixes/Improvements
+Mediaplayer-Plugin: added
+Ponggame-Plugin: added
+Skywatchermount-Plugin: added
+Peakdetector-Plugin: added
+Tonegenerator-Plugin: added
+EnOcean-Plugin: added
+fixed issue #3 and updated project and images for the 2.3 release
+added IMA CIM drivers
+added IMA CIM drivers
+added .hex and Makefile to Arduino CIM folder
+fixed issue #8
+Speechprocessor-Plugin: improved error handling in case no speechprocessor is installed
+Updated help
+Proximitysensor-Plugin: added
+EOG-Plugin: added
+FS20Sender-Plugin: Fixed ARE-crash due to thread-synchronisation problems
+Fixed Issue #1, #3, #4, #5, #6, #7, #8, #9, #10
+Averager-Plugin: fixed bug
+Fixed ACS <-> ARE synchronisation issues
+added teensy RC CIM
+ARE: Improved Error handling
+MicGPI-Plugin: added
 
