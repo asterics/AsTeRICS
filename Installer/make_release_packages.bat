@@ -29,6 +29,7 @@ mv AsTeRICS/bin/ARE AsTeRICS/ARE
 mv AsTeRICS/bin/OSKA AsTeRICS/OSKA
 rm -rf AsTeRICS/bin
 rm -rf AsTeRICS/.git
+cp AsTeRICS/Documentation/ACS-Help/HTML/ACS_Help.chm AsTeRICS/ACS/
 rm -rf AsTeRICS/Documentation/ACS-Help
 rm -rf AsTeRICS/bin
 rm AsTeRICS/Documentation/ModelGuides/*.doc
@@ -42,6 +43,16 @@ rm -r AsTeRICS/CIMs/Arduino/driver
 rm AsTeRICS/CIMs/Arduino/build/Makefile
 mv AsTeRICS/CIMs/Arduino/build/* AsTeRICS/CIMs/Arduino
 rm -r AsTeRICS/CIMs/Arduino/build
+mv AsTeRICS/CIMs/Teensy_RC_CIM/default/* AsTeRICS/CIMs/Teensy_RC_CIM/
+rm -rf AsTeRICS/CIMs/Teensy_RC_CIM/default/
+rm -rf AsTeRICS/CIMs/Teensy_RC_CIM/*.c
+rm -rf AsTeRICS/CIMs/Teensy_RC_CIM/*.h
+rm -rf AsTeRICS/CIMs/Teensy_RC_CIM/*.aps
+
+mv AsTeRICS/CIMs/EOG_CIM/EOG_CIM/Debug/EOG_CIM.hex AsTeRICS/CIMs/EOG_CIM/
+rm -rf  AsTeRICS/CIMs/EOG_CIM/EOG_CIM/
+rm -rf AsTeRICS/CIMs/EOG_CIM/*.avrsln
+rm -rf AsTeRICS/CIMs/EOG_CIM/*.avrsuo
 
 rm -r AsTeRICS/CIMs/HID_actuator/Joystick_only
 rm -r AsTeRICS/CIMs/HID_actuator/LUFA
