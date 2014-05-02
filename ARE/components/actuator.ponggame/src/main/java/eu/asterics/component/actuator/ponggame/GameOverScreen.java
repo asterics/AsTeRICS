@@ -88,41 +88,69 @@ public class GameOverScreen
 		
         getBatch().begin();
         
-        drawImage(backgroundImage,0,0);
-        getFont().draw(getBatch(), "Game Over !", 620, 770);
+		if (PongGameProperties.eventsToCaloryMultiplier>0)
+			drawImage(backgroundImage,0,0);
+		
+        getFont().draw(getBatch(), "Game Over !", 620* getScaleFactor(), 770* getScaleFactor());
         
         Player pl = (GameWorld.instance.players[0].score > GameWorld.instance.players[1].score) ?
         		GameWorld.instance.players[0] : GameWorld.instance.players[1];
         
-        getFont().draw(getBatch(), pl.name + " siegt nach Punkten "
-        	//	+GameWorld.instance.players[0].score+" vs. " + GameWorld.instance.players[1].score+")"
-        		, 450, 630);
 
-        pl = (p1Calories > p2Calories) ? 
+		if (PongGameProperties.eventsToCaloryMultiplier>0)
+		{
+	        String numOutput;
+	        DecimalFormat formatter;
+	        
+	        pl = (p1Calories > p2Calories) ? 
         		GameWorld.instance.players[0] : GameWorld.instance.players[1];
         
-        getFont().draw(getBatch(), pl.name + " siegt nach Kalorien "
+        		getFont().draw(getBatch(), pl.name + " siegt nach Kalorien "
         	        		//+p1Calories+" vs. "+p2Calories+")"
-        	        		, 430, 580);
-        
+        	        		, 430* getScaleFactor(), 580* getScaleFactor());
+        		
+    	        formatter = new DecimalFormat("###.#############");
+    	        
+    	        getFont().draw(getBatch(),"Gesamtenergie: ", 560* getScaleFactor(), 445* getScaleFactor());
+    	        numOutput = formatter.format((double)(p1Calories+p2Calories)/1000);
+    	        getFont().draw(getBatch()," "+numOutput+" Kilo-Kalorien (kCal).", 390* getScaleFactor(), 390* getScaleFactor());
+    	        numOutput = formatter.format((double)(p1Calories+p2Calories)*0.000001163);
+    	        getFont().draw(getBatch()," "+numOutput+" Kilowatt-Stunden (kWh)", 390* getScaleFactor(), 335* getScaleFactor());
 
-        String numOutput;
-        DecimalFormat formatter;
-        
-        formatter = new DecimalFormat("###.#############");
-        
-        getFont().draw(getBatch(),"Gesamtenergie: ", 560, 445);
-        numOutput = formatter.format((double)(p1Calories+p2Calories)/1000);
-        getFont().draw(getBatch()," "+numOutput+" Kilo-Kalorien (kCal).", 390, 390);
-        numOutput = formatter.format((double)(p1Calories+p2Calories)*0.000001163);
-        getFont().draw(getBatch()," "+numOutput+" Kilowatt-Stunden (kWh)", 390, 335);
+    	        getFont().draw(getBatch(), pl.name + " siegt nach Punkten "
+    	            		, 450* getScaleFactor(), 630* getScaleFactor());
+
+		}
+		else
+		{
+	        getFont().draw(getBatch(), pl.name + " siegt nach Punkten: "
+	            		+GameWorld.instance.players[0].score+" vs. " + GameWorld.instance.players[1].score
+	            		, 450* getScaleFactor(), 630* getScaleFactor());
+		}
+
 
         getBatch().end();
         
 		if (goToNextScreen && !screenSwitchActive)
 		{
-			game.setScreen(new Energy1Screen(game));
 			screenSwitchActive = true;
+			if (PongGameProperties.eventsToCaloryMultiplier>0)
+				game.setScreen(new Energy1Screen(game));
+			else
+			{
+				for (int i = 0; i < 2; i++)
+				{
+					Player p = GameWorld.instance.players[i];
+					if (p.score > AstericsPong.instance.lowestHighScore)
+					{
+						screenSwitchActive = true;					
+						game.setScreen(new HighScoreEnterScreen(game, i));
+						return;
+					}
+				}
+				screenSwitchActive = true;			
+				game.setScreen(new HighScoreScreen(game));				
+			}
 		}
 	}    
 }

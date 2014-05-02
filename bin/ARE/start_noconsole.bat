@@ -2,7 +2,7 @@
 :Initialization
 CLS
 @ECHO OFF
-@ECHO AsTeRICS ARE Version 2.2
+@ECHO AsTeRICS ARE Version 2.3
 set JAVA_BIN="java"
 
 if exist java\bin\java.exe (

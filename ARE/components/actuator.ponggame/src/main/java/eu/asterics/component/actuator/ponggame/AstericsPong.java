@@ -1,5 +1,6 @@
 package eu.asterics.component.actuator.ponggame;
 
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+
 public class AstericsPong extends Game 
 {
 	public static final String LOG = AstericsPong.class.getSimpleName();
@@ -20,18 +23,20 @@ public class AstericsPong extends Game
 	
 	Standings standings = null;
 	boolean gameLogicRunning = false;
-	
+    public float scaleFactor= 1;
+    
+    public IRuntimeOutputPort opBallX;
+    public IRuntimeOutputPort opBallY;
+
 	Player player ;
 	
 	GameScreen gameScreen;
-	
-	
-	
 
 	
 	List<HighScore> scores = null;
 	int lowestHighScore = 0;
 	FileHandle highscores;
+	private Dimension availableScreenSize=null;
 	
     void initHighScores()
     {
@@ -72,15 +77,17 @@ public class AstericsPong extends Game
     }
 	
 	
-	
-	private AstericsPong()
+	private AstericsPong(Dimension availableScreenSize, IRuntimeOutputPort opBallX, IRuntimeOutputPort opBallY)
 	{
-		
+		this.availableScreenSize=availableScreenSize;
+		this.opBallX=opBallX;
+		this.opBallY=opBallY;
 	}
 	
-	public static void reset()
+	public static void reset(Dimension availableScreenSize, IRuntimeOutputPort opBallX, IRuntimeOutputPort opBallY)
 	{
-		instance = new AstericsPong();
+		instance = new AstericsPong(availableScreenSize, opBallX, opBallY);
+		// System.out.println("reset to screen size "+availableScreenSize.height+"/"+availableScreenSize.width);
 	}
 	
 	@Override
@@ -130,6 +137,7 @@ public class AstericsPong extends Game
 
 	protected void createGameScreen() {
 		gameScreen = new GameScreen(this);
+		gameScreen.setScaleFactor(availableScreenSize);
 	}
 	
 	@Override

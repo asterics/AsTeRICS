@@ -625,6 +625,7 @@ public class DeploymentManager
 		{
 			try 
 			{
+				logger.fine("Trying to start component instance: "+componentInstance.toString());
 				String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 				bundleManager.getBundleFromId(id).start();
 				componentInstance.start();
@@ -689,6 +690,7 @@ public class DeploymentManager
 	{
 		for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
 		{
+			logger.fine("Trying to pause component instance: "+componentInstance.toString());
 			componentInstance.pause();
 		}
 	}
@@ -701,6 +703,7 @@ public class DeploymentManager
 	{
 		for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
 		{
+			logger.fine("Trying to resume component instance: "+componentInstance.toString());
 			componentInstance.resume();
 		}
 	}
@@ -715,6 +718,7 @@ public class DeploymentManager
 		{
 			try 
 			{
+				logger.fine("Trying to stop component instance: "+componentInstance.toString());
 				String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 				bundleManager.getBundleFromId(id).stop();
 				componentInstance.stop();

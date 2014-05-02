@@ -39,12 +39,18 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
@@ -58,8 +64,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
@@ -113,6 +121,8 @@ public class AREServices implements IAREServices{
 	private ArrayList<IAREEventListener> areEventListenerObjects;
 	public static final AREServices instance = 
 			new AREServices();
+	
+
 
 
 	private AREServices()
@@ -308,18 +318,31 @@ public class AREServices implements IAREServices{
 	 * method, this one resets the components, which means that when the model
 	 * is started again it starts from scratch (i.e., with a new state).
 	 */
-	public void stopModel()
-	{
-		if (DeploymentManager.instance.getStatus()==AREStatus.RUNNING
-				||DeploymentManager.instance.getStatus()==AREStatus.PAUSED)
-		{
-			DeploymentManager.instance.stopModel();
-			DeploymentManager.instance.getCurrentRuntimeModel().
-			setState(ModelState.STOPPED);
-			DeploymentManager.instance.setStatus(AREStatus.OK);
-			AstericsErrorHandling.instance.setStatusObject(AREStatus.OK.toString(), 
-					"", "");
-			logger.fine(this.getClass().getName()+".stopModel: model stopped \n");
+	public void stopModel() {
+		try {
+			AstericsThreadPool.instance
+					.execAndWaitOnAREMainThread(new Runnable() {
+						@Override
+						public void run() {
+
+							if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING
+									|| DeploymentManager.instance.getStatus() == AREStatus.PAUSED
+									|| DeploymentManager.instance.getStatus() == AREStatus.ERROR) {
+								DeploymentManager.instance.stopModel();
+								DeploymentManager.instance
+										.getCurrentRuntimeModel().setState(
+												ModelState.STOPPED);
+								DeploymentManager.instance
+										.setStatus(AREStatus.OK);
+								AstericsErrorHandling.instance.setStatusObject(
+										AREStatus.OK.toString(), "", "");
+								logger.fine(this.getClass().getName()
+										+ ".stopModel: model stopped \n");
+							}
+						}
+					});
+		} catch (InterruptedException | ExecutionException e) {
+			logger.warning("Could not execute stopModel in AREMain thread");
 		}
 	}
 
@@ -419,29 +442,86 @@ public class AREServices implements IAREServices{
 	/**
 	 * It starts or resumes the execution of the model.
 	 */
-	public void runModel()	throws AREAsapiException
-	{
-		if (DeploymentManager.instance.getCurrentRuntimeModel().getState().
-				equals(ModelState.STOPPED))
-		{
-			DeploymentManager.instance.runModel();	
+	public void runModel() throws AREAsapiException {
+		try {
+			AstericsThreadPool.instance
+					.execAndWaitOnAREMainThread(new Runnable() {
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							ModelState modelState = DeploymentManager.instance
+									.getCurrentRuntimeModel().getState();
+							logger.fine(this.getClass().getName()
+									+ ".runModel: model state: " + modelState
+									+ " \n");
+							if (ModelState.STOPPED.equals(modelState)) {
+								DeploymentManager.instance.runModel();
+							} else if (modelState.STARTED.equals(modelState)) {
+								// if model is already running, stop it first to
+								// ensure that native libs are not
+								// loaded and instantiated twice.
+								stopModel();
+								DeploymentManager.instance.runModel();
+							}
+							// ModelState.PAUSED
+							else {
+								DeploymentManager.instance.resumeModel();
+							}
+							DeploymentManager.instance.getCurrentRuntimeModel()
+									.setState(ModelState.STARTED);
+							DeploymentManager.instance
+									.setStatus(AREStatus.RUNNING);
+							AstericsErrorHandling.instance.setStatusObject(
+									AREStatus.RUNNING.toString(), "", "");
+							logger.fine(this.getClass().getName()
+									+ ".runModel: model running \n");
+
+						}
+					});
+		} catch (InterruptedException | ExecutionException e) {
+			logger.warning("Could not execute runModel in AREMain thread");
 		}
-		else 
-		{
-			DeploymentManager.instance.resumeModel();
+	}
+	
+	/**
+	 * Briefly stops the execution of the model. Its main difference from the
+	 * {@link #stopModel()} method is that it does not reset the components
+	 * (e.g., the buffers are not cleared).
+	 *
+	 */
+	public void pauseModel() {
+		try {
+			AstericsThreadPool.instance
+					.execAndWaitOnAREMainThread(new Runnable() {
+						@Override
+						public void run() {
+
+							if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING) {
+								DeploymentManager.instance.pauseModel();
+								DeploymentManager.instance
+										.getCurrentRuntimeModel().setState(
+												ModelState.PAUSED);
+								DeploymentManager.instance
+										.setStatus(AREStatus.PAUSED);
+								AstericsErrorHandling.instance.setStatusObject(
+										AREStatus.PAUSED.toString(), "", "");
+								logger.fine(this.getClass().getName()
+										+ ".pauseModel: model paused \n");
+								System.out.println("Model paused!");
+
+							}
+						}
+					});
+		} catch (InterruptedException | ExecutionException e) {
+			logger.warning("Could not execute pauseModel in AREMain thread");
 		}
-		DeploymentManager.instance.getCurrentRuntimeModel().
-		setState(ModelState.STARTED);
-		DeploymentManager.instance.setStatus(AREStatus.RUNNING);
-		AstericsErrorHandling.instance.setStatusObject(AREStatus.RUNNING.toString(), 
-				"", "");
-		logger.fine(this.getClass().getName()+".runModel: model running \n");
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
+	//TODO:Should be synchronized, but risk of dead lock due to AREMain thread
 	public boolean isAREStoppedAndHealthy()
 	{
 		AREStatus status = DeploymentManager.instance.getStatus();
@@ -459,6 +539,7 @@ public class AREServices implements IAREServices{
 	 * @return the name of the model as a String object if there is one 
 	 * deployed, <code>null</code> otherwise.
 	 */
+	//TODO:Should be synchronized, but risk of dead lock due to AREMain thread
 	public String getRuntimeModelName()
 	{
 		IRuntimeModel currentRuntimeModel = DeploymentManager.instance.
@@ -484,7 +565,7 @@ public class AREServices implements IAREServices{
 	 * 
 	 * @param fileName	the name of the file to be opened
 	 */
-	public File getLocalStorageFile(IRuntimeComponentInstance component, 
+	public synchronized File getLocalStorageFile(IRuntimeComponentInstance component, 
 			String fileName)
 	{
 		String modelName = getRuntimeModelName();
@@ -587,184 +668,162 @@ public class AREServices implements IAREServices{
 
 	}
 
+	public void adjustFonts(final JPanel panel, final int maxFontSize,
+			final int minFontSize, final int offset) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
 
-
-
-	public void adjustFonts(JPanel panel, int maxFontSize, int minFontSize, 
-			int offset) 
-	{
-
-		
-		
-			adjustPanelFonts (panel, maxFontSize, minFontSize, offset);
-			Component[] components = panel.getComponents();
-//		if (components.length>0)
-//		{
-//			for (Component c : components)
-//			{
-//				System.out.println ("Component: "+c.getName());
-//				if (c instanceof JPanel)
-//				{
-//					System.out.println ("Instance of JPanel");
-//
-//					adjustPanelFonts ((JPanel) c, maxFontSize, minFontSize, offset);
-//				}
-//			}
-//		}
-
+				adjustPanelFonts(panel, maxFontSize, minFontSize, offset);
+				Component[] components = panel.getComponents();
+				// if (components.length>0)
+				// {
+				// for (Component c : components)
+				// {
+				// System.out.println ("Component: "+c.getName());
+				// if (c instanceof JPanel)
+				// {
+				// System.out.println ("Instance of JPanel");
+				//
+				// adjustPanelFonts ((JPanel) c, maxFontSize, minFontSize,
+				// offset);
+				// }
+				// }
+				// }
+			}
+		});
 	}
 
-	private void adjustPanelFonts(JPanel c, int maxFontSize, int minFontSize, 
-			int offset) 
-	{
-
-
-
-		int containerWidth = c.getPreferredSize().width-offset;
+	private void adjustPanelFonts(final JPanel c, final int maxFontSize,
+			final int minFontSize, final int offset) {
+		int containerWidth = c.getPreferredSize().width - offset;
 		int containerHeight = c.getPreferredSize().height;
-
 
 		Component[] comp = c.getComponents();
 
-		
-		
-		for (int i=0;i<comp.length;++i) 
-		{
-			if (JLabel.class.isAssignableFrom(comp[i].getClass()) )
-			{
+		for (int i = 0; i < comp.length; ++i) {
+			if (JLabel.class.isAssignableFrom(comp[i].getClass())) {
 				JLabel label = (JLabel) comp[i];
 				Font labelFont = label.getFont();
 				String labelText = label.getText();
-				if (labelText.length() > 0)
-				{
-					int stringWidth = 
-							label.getFontMetrics(labelFont).stringWidth(labelText);
-					double ratio = Math.min(containerWidth,containerHeight) 
-							/ (double)stringWidth;
-					int newFontSize = (int)(labelFont.getSize() * ratio);
+				if (labelText.length() > 0) {
+					int stringWidth = label.getFontMetrics(labelFont)
+							.stringWidth(labelText);
+					double ratio = Math.min(containerWidth, containerHeight)
+							/ (double) stringWidth;
+					int newFontSize = (int) (labelFont.getSize() * ratio);
 
 					int fs = Math.min(newFontSize, containerHeight);
 					fs = Math.max(newFontSize, minFontSize);
 					fs = Math.min(fs, maxFontSize);
 
-					label.setFont(new Font(labelFont.getName(), 
-							labelFont.getStyle(), fs));
+					label.setFont(new Font(labelFont.getName(), labelFont
+							.getStyle(), fs));
 
 				}
 
-
-			}
-			else if (JTextComponent.class.isAssignableFrom(comp[i].getClass()))
-			{
+			} else if (JTextComponent.class
+					.isAssignableFrom(comp[i].getClass())) {
 
 				JTextComponent label = (JTextComponent) comp[i];
 				Font labelFont = label.getFont();
 				String labelText = label.getText();
-				if (labelText.length() > 0)
-				{
-					int stringWidth = 
-							label.getFontMetrics(labelFont).stringWidth(labelText);
-					double ratio = Math.min(containerWidth,containerHeight) 
-							/ (double)stringWidth;
-					int newFontSize = (int)(labelFont.getSize() * ratio);
-
+				if (labelText.length() > 0) {
+					int stringWidth = label.getFontMetrics(labelFont)
+							.stringWidth(labelText);
+					double ratio = Math.min(containerWidth, containerHeight)
+							/ (double) stringWidth;
+					int newFontSize = (int) (labelFont.getSize() * ratio);
 
 					int fs = Math.min(newFontSize, containerHeight);
 					fs = Math.max(newFontSize, minFontSize);
 					fs = Math.min(fs, maxFontSize);
-					label.setFont(new Font(labelFont.getName(), 
-							labelFont.getStyle(), fs));
+					label.setFont(new Font(labelFont.getName(), labelFont
+							.getStyle(), fs));
 
 				}
 
-
-			}
-			else if (JButton.class.isAssignableFrom(comp[i].getClass()))
-			{
+			} else if (JButton.class.isAssignableFrom(comp[i].getClass())) {
 
 				JButton label = (JButton) comp[i];
 				Font labelFont = label.getFont();
 				String labelText = label.getText();
-				if (labelText.length() > 0)
-				{
-					int stringWidth = 
-							label.getFontMetrics(labelFont).stringWidth(labelText);
-					double ratio = Math.min(containerWidth,containerHeight) 
-							/ (double)stringWidth;
-					int newFontSize = (int)(labelFont.getSize() * ratio);
-
+				if (labelText.length() > 0) {
+					int stringWidth = label.getFontMetrics(labelFont)
+							.stringWidth(labelText);
+					double ratio = Math.min(containerWidth, containerHeight)
+							/ (double) stringWidth;
+					int newFontSize = (int) (labelFont.getSize() * ratio);
 
 					int fs = Math.min(newFontSize, containerHeight);
 					fs = Math.max(newFontSize, minFontSize);
 					fs = Math.min(fs, maxFontSize);
 
-					label.setFont(new Font(labelFont.getName(), 
-							labelFont.getStyle(), fs));
+					label.setFont(new Font(labelFont.getName(), labelFont
+							.getStyle(), fs));
 				}
-			}
-			else if (JSlider.class.isAssignableFrom(comp[i].getClass()))
-			{
+			} else if (JSlider.class.isAssignableFrom(comp[i].getClass())) {
 
 				JSlider slider = (JSlider) comp[i];
 				Font sliderFont = slider.getFont();
-				int newFontSize=minFontSize;
-				int fs=minFontSize;
-				
-//					double ratio = Math.min(containerWidth,containerHeight);
-//					int newFontSize = (int)(sliderFont.getSize() * ratio);
-//
-//
-//					int fs = Math.min(newFontSize, containerHeight);
-				
-				if (containerWidth>0&&containerWidth<=25)
-					newFontSize=6;
-				else if (containerWidth>25&&containerWidth<=50)
-					newFontSize=8;
-				else if (containerWidth>50&&containerWidth<=100)
-					newFontSize=10;
-				else if (containerWidth>100&&containerWidth<=400)
-					newFontSize=14;
-				else if (containerWidth>400)
-					newFontSize=16;
-				
-					fs = Math.max(newFontSize, minFontSize);
-					fs = Math.min(fs, maxFontSize);
+				int newFontSize = minFontSize;
+				int fs = minFontSize;
 
-					slider.setFont(new Font(sliderFont.getName(), 
-							sliderFont.getStyle(), fs));
-				
+				// double ratio = Math.min(containerWidth,containerHeight);
+				// int newFontSize = (int)(sliderFont.getSize() * ratio);
+				//
+				//
+				// int fs = Math.min(newFontSize, containerHeight);
+
+				if (containerWidth > 0 && containerWidth <= 25)
+					newFontSize = 6;
+				else if (containerWidth > 25 && containerWidth <= 50)
+					newFontSize = 8;
+				else if (containerWidth > 50 && containerWidth <= 100)
+					newFontSize = 10;
+				else if (containerWidth > 100 && containerWidth <= 400)
+					newFontSize = 14;
+				else if (containerWidth > 400)
+					newFontSize = 16;
+
+				fs = Math.max(newFontSize, minFontSize);
+				fs = Math.min(fs, maxFontSize);
+
+				slider.setFont(new Font(sliderFont.getName(), sliderFont
+						.getStyle(), fs));
+
 			}
-			
-			if (comp[i] instanceof JPanel) 
-			{
-				adjustPanelFonts( (JPanel)comp[i], maxFontSize, minFontSize, offset);
+
+			if (comp[i] instanceof JPanel) {
+				adjustPanelFonts((JPanel) comp[i], maxFontSize, minFontSize,
+						offset);
 			}
 
 		}
-		
-		//Adjust TitledBorders if any
-//		Border b = c.getBorder();
-//		if (TitledBorder.class.isAssignableFrom(b.getClass()))
-//		{
-//
-//			TitledBorder tb = (TitledBorder) b;
-//		
-//			Font tbFont = tb.getTitleFont();
-//			
-//			
-//			double ratio = Math.min(containerWidth,containerHeight) 
-//					/ (double)containerWidth;
-//			int newFontSize = (int)(tbFont.getSize() * ratio);
-//
-//
-//			int fs = Math.min(newFontSize, containerHeight);
-//			fs = Math.max(newFontSize, minFontSize);
-//			fs = Math.min(fs, maxFontSize);
-//
-//			tb.setTitleFont(new Font(tbFont.getName(), 
-//					tbFont.getStyle(), fs));
-//			
-//		}
-	}
 
+		// Adjust TitledBorders if any
+		// Border b = c.getBorder();
+		// if (TitledBorder.class.isAssignableFrom(b.getClass()))
+		// {
+		//
+		// TitledBorder tb = (TitledBorder) b;
+		//
+		// Font tbFont = tb.getTitleFont();
+		//
+		//
+		// double ratio = Math.min(containerWidth,containerHeight)
+		// / (double)containerWidth;
+		// int newFontSize = (int)(tbFont.getSize() * ratio);
+		//
+		//
+		// int fs = Math.min(newFontSize, containerHeight);
+		// fs = Math.max(newFontSize, minFontSize);
+		// fs = Math.min(fs, maxFontSize);
+		//
+		// tb.setTitleFont(new Font(tbFont.getName(),
+		// tbFont.getStyle(), fs));
+		//
+		// }
+
+	}
 }

@@ -160,7 +160,7 @@ public class AstericsGUI implements IAREEventListener
 		mainFrame = new JFrame();
 		mainFrame.setVisible(false); 
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
-		mainFrame.setTitle ("AsTeRICS Runtime Environment 2.2     Host: "+hostname+"  IP:"+ip);
+		mainFrame.setTitle ("AsTeRICS Runtime Environment 2.3     Host: "+hostname+"  IP:"+ip);
 		mainFrame.addComponentListener(new ResizeListener());
 		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(new WindowAdapter() {
@@ -624,6 +624,12 @@ public class AstericsGUI implements IAREEventListener
 			desktop.setBackground(nc);
 			desktop.validate();
 		}
+		else
+		{
+			Color nc = new Color(-11435361);  // default background color lightblue
+			desktop.setBackground(nc);
+			desktop.validate();
+		}	
 		
 		mainFrame.setAlwaysOnTop(props.getProperty("always_on_top").equals("1"));
 

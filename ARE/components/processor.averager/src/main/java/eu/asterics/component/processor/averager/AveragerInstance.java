@@ -134,7 +134,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
     * @param propertyName   the name of the property
     * @param newValue       the desired property value or null if not found
     */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
+    public synchronized Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
         if("bufferSize".equalsIgnoreCase(propertyName))
         {
@@ -171,6 +171,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
                 try
                 {
                     propMode = Integer.parseInt(newValue.toString());
+                    buffer.clear();
                     sum = 0;
                 }
                 catch (NumberFormatException nfe)
@@ -193,7 +194,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
      * MODE_AVERAGE_ROUND: same as AVERAGE, but result is rounded to integer
      * MODE_ACCUMULATE: the samples are summed but not divided
      */
-    private void process(final double in)
+    private synchronized void process(final double in)
     {
     	if (propMode==MODE_AVERAGE)
     	{
@@ -203,8 +204,10 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
 	        {
 	        	sum -=buffer.removeLast();
 	        }
+//	        System.out.println(Arrays.toString(buffer.toArray()));
 	        opOutput.sendData(ConversionUtils.doubleToBytes(sum / buffer.size()));
     	}
+    	
     	else if (propMode==MODE_AVERAGE_ROUND)
     	{
 	        buffer.addFirst(in);
@@ -253,10 +256,13 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
     * called when model is started.
     */
     @Override
-    public void start()
+    public synchronized void start()
     {
     	lastUpdate=System.currentTimeMillis();
+
+    	buffer.clear();
     	accu=0;
+		sum = 0;
         super.start();
     }
 
@@ -264,7 +270,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
     * called when model is paused.
     */
     @Override
-    public void pause()
+    public synchronized void pause()
     {
         super.pause();
     }
@@ -273,7 +279,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
     * called when model is resumed.
     */
     @Override
-    public void resume()
+    public synchronized void resume()
     {
     	lastUpdate=System.currentTimeMillis();
     	accu=0;
@@ -284,7 +290,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
     * called when model is stopped.
     */
     @Override
-    public void stop()
+    public synchronized void stop()
     {
         super.stop();
         buffer.clear();

@@ -62,6 +62,7 @@ import eu.asterics.mw.model.deployment.impl.DefaultComponentInstance;
 import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
 import eu.asterics.mw.model.deployment.impl.ModelState;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
+import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 
@@ -489,83 +490,71 @@ public class AsapiSupport
 
 	/**
 	 * It starts or resumes the execution of the model.
-	 *
-	 * @throws AREAsapiException if an exception occurs while validating and
-	 * starting the deployed model.
+	 * 
+	 * @throws AREAsapiException
+	 *             if an exception occurs while validating and starting the
+	 *             deployed model.
 	 */
-	public void runModel()
-			throws AREAsapiException
-			{
-		if (DeploymentManager.instance.getCurrentRuntimeModel().getState().
-				equals(ModelState.STOPPED))
-		{
-			DeploymentManager.instance.runModel();	
-		}
-		else 
-		{
-			DeploymentManager.instance.resumeModel();
-		}
-		DeploymentManager.instance.getCurrentRuntimeModel().
-		setState(ModelState.STARTED);
-		DeploymentManager.instance.setStatus(AREStatus.RUNNING);
-		AstericsErrorHandling.instance.setStatusObject(AREStatus.RUNNING.toString(), 
-				"", "");
-		logger.fine(this.getClass().getName()+".runModel: model running \n");
-		System.out.println("Model started!");
-			}
+	public void runModel() throws AREAsapiException {
+		AREServices.instance.runModel();
+		/*
+		 * if (DeploymentManager.instance.getCurrentRuntimeModel().getState().
+		 * equals(ModelState.STOPPED)) { DeploymentManager.instance.runModel();
+		 * } else { DeploymentManager.instance.resumeModel(); }
+		 * DeploymentManager.instance.getCurrentRuntimeModel().
+		 * setState(ModelState.STARTED);
+		 * DeploymentManager.instance.setStatus(AREStatus.RUNNING);
+		 * AstericsErrorHandling
+		 * .instance.setStatusObject(AREStatus.RUNNING.toString(), "", "");
+		 * logger.fine(this.getClass().getName()+".runModel: model running \n");
+		 * System.out.println("Model started!");
+		 */
+	}
 
 	/**
 	 * Briefly stops the execution of the model. Its main difference from the
 	 * {@link #stopModel()} method is that it does not reset the components
 	 * (e.g., the buffers are not cleared).
-	 *
-	 * @throws AREAsapiException if the deployed model is not started already, or
-	 * if the execution cannot be paused
+	 * 
+	 * @throws AREAsapiException
+	 *             if the deployed model is not started already, or if the
+	 *             execution cannot be paused
 	 */
-	public void pauseModel()
-			throws AREAsapiException
-			{
-		if (DeploymentManager.instance.getStatus()==AREStatus.RUNNING)
-		{
-			DeploymentManager.instance.pauseModel();
-			DeploymentManager.instance.getCurrentRuntimeModel().
-			setState(ModelState.PAUSED);
-			DeploymentManager.instance.setStatus(AREStatus.PAUSED);
-			AstericsErrorHandling.instance.setStatusObject(AREStatus.PAUSED.toString(), 
-					"", "");
-			logger.fine(this.getClass().getName()+".pauseModel: model paused \n");
-			System.out.println("Model paused!");
-
-		}
-			}
+	public void pauseModel() throws AREAsapiException {
+		AREServices.instance.pauseModel();
+	}
 
 	/**
 	 * Stops the execution of the model. Unlike the {@link #pauseModel()}
 	 * method, this one resets the components, which means that when the model
 	 * is started again it starts from scratch (i.e., with a new state).
-	 *
-	 * @throws AREAsapiException if the deployed model is not started already, or
-	 * if the execution cannot be stopped
+	 * 
+	 * @throws AREAsapiException
+	 *             if the deployed model is not started already, or if the
+	 *             execution cannot be stopped
 	 */
-	public void stopModel()
-			throws AREAsapiException
-			{
+	public void stopModel() throws AREAsapiException {
+		// Delegate to AREServices
+		AREServices.instance.stopModel();
 
-		if (DeploymentManager.instance.getStatus()==AREStatus.RUNNING ||
-				DeploymentManager.instance.getStatus()==AREStatus.PAUSED || 
-				DeploymentManager.instance.getStatus()==AREStatus.ERROR)
-		{
-			DeploymentManager.instance.stopModel();
-			DeploymentManager.instance.getCurrentRuntimeModel().
-			setState(ModelState.STOPPED);
-			DeploymentManager.instance.setStatus(AREStatus.OK);
-			AstericsErrorHandling.instance.setStatusObject(AREStatus.OK.toString(), 
-					"", "");
-			logger.fine(this.getClass().getName()+".stopModel: model stopped \n");
-			System.out.println("Model stopped!");
+		/*
+		 * if (DeploymentManager.instance.getStatus()==AREStatus.RUNNING ||
+		 * DeploymentManager.instance.getStatus()==AREStatus.PAUSED ||
+		 * DeploymentManager.instance.getStatus()==AREStatus.ERROR) {
+		 * DeploymentManager.instance.stopModel();
+		 * DeploymentManager.instance.getCurrentRuntimeModel().
+		 * setState(ModelState.STOPPED);
+		 * DeploymentManager.instance.setStatus(AREStatus.OK);
+		 * AstericsErrorHandling
+		 * .instance.setStatusObject(AREStatus.OK.toString(), "", "");
+		 * logger.fine
+		 * (this.getClass().getName()+".stopModel: model stopped \n");
+		 * System.out.println("Model stopped!");
+		 * 
+		 * }
+		 */
 
-		}
-			}
+	}
 
 	/**
 	 * Returns an array that includes all existing component instances in the

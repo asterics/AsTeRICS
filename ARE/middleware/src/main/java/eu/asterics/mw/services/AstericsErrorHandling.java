@@ -34,6 +34,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -45,9 +46,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.asapi.StatusObject;
@@ -126,16 +129,32 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 		DeploymentManager.instance.setStatus(AREStatus.ERROR);
 		setStatusObject(AREStatus.ERROR.toString(), componentID, errorMsg);
 		this.notifyAREEventListeners("onAreError", errorMsg);	
+
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				JOptionPane.showMessageDialog (null,
-					    errorMsg,
-					    "AsTeRICS RuntimeEnvironment: An Error occurred !",
-					    JOptionPane.WARNING_MESSAGE);
-				}
-			});				
+		AREProperties props = AREProperties.instance;
+		if (props.checkProperty("showErrorDialogs", "1")) 
+		{
+		
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+
+					JOptionPane op = new JOptionPane (errorMsg,
+						    JOptionPane.WARNING_MESSAGE);
+
+/*					JOptionPane.showMessageDialog (null,
+						    errorMsg,
+						    "AsTeRICS RuntimeEnvironment: An Error occurred !",
+						    JOptionPane.WARNING_MESSAGE);
+	*/				
+					JDialog dialog = op.createDialog("AsTeRICS RuntimeEnvironment: An Error occurred !");
+					dialog.setAlwaysOnTop(true);
+					dialog.setModal(true);
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+					}
+				});				
+		}
 	}
 
 	/**
@@ -264,6 +283,17 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 			fineFileHandler;
 			ConsoleHandler consoleHandler;
 			try {
+				//cleanup before starting:
+				logger.setUseParentHandlers(false);
+
+				// remove and handlers that will be replaced
+				Handler[] handlers = logger.getHandlers();
+				for(Handler handler : handlers)
+				{
+				        if(handler.getClass() == ConsoleHandler.class)
+				            logger.removeHandler(handler);
+				}
+				
 
 				//Create handlers
 				severeFileHandler =

@@ -55,7 +55,11 @@
                       value="0"
                       combobox="1 g//1.5 g//2 g//3 g//4 g//8 g//16 g"
                       description="sensitivity of acceleration"/>
-               
+            <property name="uniqueID"
+                      type="string"
+                      value="not used"
+                      getStringList="true"
+                      description="ID (if more than one devices of this kind are connected)"/>                                 
         </properties>
     </componentType>
 

@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.graphics.Texture;
 
+import eu.asterics.mw.data.ConversionUtils;
+
 
 public class GameScreen extends AbstractScreen 
 {
@@ -21,8 +23,7 @@ public class GameScreen extends AbstractScreen
 	public GameScreen(AstericsPong game)
 	{
 		super(game);
-		
-		
+				
 	    //ballImage=loadImage("data/actuator.ponggame/ball.png");   // CRASHES (?)
 
 		if (useDebugRenderer)
@@ -124,6 +125,14 @@ public class GameScreen extends AbstractScreen
 						GameWorld.instance.ball.y * PHYS_TO_REND, 
 						GameWorld.instance.ball.radius * PHYS_TO_REND);
 
+				
+//				game.opBallX.sendData(ConversionUtils.intToBytes(
+	//					(int) (GameWorld.instance.ball.x* PHYS_TO_REND)));
+				
+				if (game.opBallY != null)				
+				  game.opBallY.sendData(ConversionUtils.intToBytes(
+							(int) (GameWorld.instance.ball.y* PHYS_TO_REND)));
+				
 				shapeRenderer.circle(
 						GameWorld.instance.bumper.x * PHYS_TO_REND, 
 						GameWorld.instance.bumper.y * PHYS_TO_REND, 
@@ -153,7 +162,7 @@ public class GameScreen extends AbstractScreen
 			for (Player p : GameWorld.instance.players)
 			{
 				getFont().draw(getBatch(), p.name 
-						+ " : " + p.score, (1.5f +  9*p.index) * PHYS_TO_REND , 0.45f * PHYS_TO_REND);
+						+ " : " + p.score, (4.0f +  9*p.index) * getScaleFactor() * PHYS_TO_REND , 0.80f * PHYS_TO_REND * getScaleFactor());
 				
 				//for (int i=0; i<p.lifes;i++)
 				//	drawImage(ballImage,(int)((1.5f +  9 * p.index + i*0.6f)* PHYS_TO_REND) , (int)(0.50f * PHYS_TO_REND));
@@ -165,7 +174,6 @@ public class GameScreen extends AbstractScreen
 		}
 		if (PongGameServer.instance.gameState == PongGameServer.GAME_STATE_OVER)
 		{
-			System.out.println("Showing game over screen");
 			game.setScreen(new GameOverScreen(game));
 		}
 	}

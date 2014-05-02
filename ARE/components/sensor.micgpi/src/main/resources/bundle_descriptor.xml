@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.MicGPI"
+                   canonical_name="eu.asterics.component.sensor.micgpi.MicGPIInstance">
+        <type subtype="Generic Control Input">sensor</type>
+        <singleton>false</singleton>
+        <description>This plugin reads an input signal via the microphone input</description>
+        <ports>
+
+			<inputPort id="thresholdLow">
+				<description>threshold for button release</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="thresholdHigh">
+				<description>threshold for button release</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			
+		
+			<outputPort id="pressure">
+				<description>sound pressure level</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="frequency">
+				<description>the dominant frequency in the spectrum</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventTriggererPort id="inLow">
+				<description>This event gets fired if the signal goes beyond the lowThreshold</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="inHigh">
+				<description>This event gets fired if the signal goes over the highThreshold</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="sampleSize"
+				type="integer"
+				value="3"
+				combobox="32//64//128//256//512//1024//2048"				
+				description="interval length (in samples)"/>
+			<property name="thresholdLow"
+				type="integer"
+				value="-30"
+				description="threshold for low event"/>
+			<property name="thresholdHigh"
+				type="integer"
+				value="30"
+				description="threshold for high event"/>
+			<property name="noiseLevel"
+				type="double"
+				value="1.5"
+				description="sound below noise level will be attenuated"/>
+
+			<property name="calculateFrequency"
+                      type="boolean"
+                      value="false"
+                      description="if selected, the dominant frequency is calculated"/> 
+			<property name="printSpectrum"
+                      type="boolean"
+                      value="false"
+                      description="if selected, the frequency spectrum is shown in the console window"/> 
+			<property name="captureDevice"
+                type="string"
+                value="System Default"
+                getStringList="true"
+			    description="Specifies which device should be used for recording"/>
+        </properties>
+
+    </componentType>
+</componentTypes>

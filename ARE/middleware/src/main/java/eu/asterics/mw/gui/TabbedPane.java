@@ -72,7 +72,8 @@ public class TabbedPane extends JPanel
 	JCheckBox undecoratedBox;
 	JCheckBox onTopBox;
 	JCheckBox showSideBarBox;
-
+	JCheckBox showErrorGuiBox;
+	
 	JColorChooser tcc;
 	
 	public TabbedPane(AstericsGUI parent) 
@@ -85,10 +86,14 @@ public class TabbedPane extends JPanel
 		JComponent panel1 = makeDescriptionPanel("Model Description");
 		tabbedPane.addTab("Model Description and Requirements", panel1);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+
+		JComponent panel2 = makeDialogPanel ("Dialog Options");
+		tabbedPane.addTab("Dialog Options", panel2);
+		tabbedPane.setMnemonicAt(1,KeyEvent.VK_2);
 	
 		JComponent panel3 = makeColorChooserPanel ("Background Color");
 		tabbedPane.addTab("Background Color", panel3);
-		tabbedPane.setMnemonicAt(1,KeyEvent.VK_2);
+		tabbedPane.setMnemonicAt(1,KeyEvent.VK_3);
 
 		//Add the tabbed pane to this panel.
 		add(tabbedPane);
@@ -106,26 +111,6 @@ public class TabbedPane extends JPanel
 			
 		IRuntimeModel currentRuntimeModel
 		= DeploymentManager.instance.getCurrentRuntimeModel();
-
-		/*
-        JTextArea textArea = new JTextArea(15, 60);
-        textArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-       
-        if (currentRuntimeModel !=null)
-        {
-	        textArea.append("\nShortDescription:\n----------------------\n");
-	        textArea.append(currentRuntimeModel.getModelShortDescription());
-	        textArea.append("\n\nModelDescription:\n-----------------------\n");
-	        textArea.append(currentRuntimeModel.getModelDescription());
-	        textArea.append("\n\nModelRequirements:\n--------------------------\n");
-	        textArea.append(currentRuntimeModel.getModelRequirements());
-        }
-        Font font = textArea.getFont();
-        textArea.setFont(textArea.getFont().deriveFont(font.PLAIN,14.0f));
-
- 		textArea.setVisible(true);
- 		*/
 
         JTextPane textPane = new JTextPane();
         StyledDocument doc = textPane.getStyledDocument();
@@ -164,7 +149,30 @@ public class TabbedPane extends JPanel
 
 		return panel;
 	}
-	
+
+	protected JComponent makeDialogPanel(String text) 
+	{
+		JPanel panel = new JPanel(false);
+		showErrorGuiBox = new JCheckBox("Show Error GUI Windows");
+		showErrorGuiBox.setSelected (false);
+		
+		panel.setBorder(BorderFactory.createTitledBorder(text));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setPreferredSize(new Dimension(460, 380));
+		
+		AREProperties props = AREProperties.instance;
+
+        if (props.containsKey("showErrorDialogs"))
+        {
+        	if (Integer.parseInt(props.getProperty("showErrorDialogs")) == 1)
+        		showErrorGuiBox.setSelected (true);
+        }
+        	
+		panel.add(showErrorGuiBox);
+
+		return panel;
+	}
+
 	private JComponent makeColorChooserPanel(String text) 
 	{
 		AREProperties props = AREProperties.instance;
@@ -178,7 +186,7 @@ public class TabbedPane extends JPanel
 			tcc = new JColorChooser(new Color(Integer
 					.parseInt(props.getProperty("background_color"))));
 		else	
-			tcc = new JColorChooser(colorPanel.getForeground());
+			tcc = new JColorChooser(new Color (-11435361));  // default background color
 		colorPanel.add(tcc);
 		panel.add(colorPanel);
 		return panel;
@@ -187,8 +195,15 @@ public class TabbedPane extends JPanel
 	void storeProperties()
 	{
 		AREProperties props = AREProperties.instance;
+
 		props.setProperty("background_color", 
 				Integer.toString(tcc.getColor().getRGB()));
+
+		if (showErrorGuiBox.isSelected())
+			props.setProperty("showErrorDialogs","1"); 
+		else
+			props.setProperty("showErrorDialogs","0"); 
+		
 		props.storeProperties();
 
 		Color nc = new Color(tcc.getColor().getRGB());

@@ -9,12 +9,12 @@
         <description>Plugin displays a pong game in the AsTeRICS GUI</description>
         <ports>
 			<inputPort id="playerOnePos">
-				<description>range 0 to 500 will move paddle of player 1 to this position</description>
+				<description>range 0 to 300 will move paddle of player 1 to this position</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="playerTwoPos">
-				<description>range 0 to 500 will move paddle of player 2 to this position</description>
+				<description>range 0 to 300 will move paddle of player 2 to this position</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
@@ -28,7 +28,14 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
-
+			<outputPort id="ballX">
+				<description>current X position of the Ball</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="ballY">
+				<description>current Y position of the Ball</description>
+				<dataType>integer</dataType>
+			</outputPort>
 
         </ports>
 		<events>
@@ -71,12 +78,12 @@
 				description="speed to be multiplied by speed input (only in speed controlled drive)"/>
 			<property name="goalsToWin"
 				type="integer"
-				value="5"
+				value="3"
 				description="how many goals to win a game"/>
 			<property name="eventsToCaloryMultiplier"
 				type="double"
-				value="5.0"
-				description="mapping of input events to calories"/>
+				value="0.0"
+				description="mapping of input events to calories (0 = deactivate calory events and screens)"/>
 			<property name="goalScoreBase"
 				type="integer"
 				value="1000"

@@ -74,6 +74,10 @@ public class PongGameInstance extends AbstractRuntimeComponentInstance
 	final IRuntimeEventTriggererPort etpGameOver = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpGoalPlayerOne = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpGoalPlayerTwo = new DefaultRuntimeEventTriggererPort();
+	
+	final IRuntimeOutputPort opBallX = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opBallY = new DefaultRuntimeOutputPort();
+
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
 //	String propSoundFilePaddleTouch = "";
@@ -130,6 +134,14 @@ public class PongGameInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
+		if ("ballX".equalsIgnoreCase(portID))
+		{
+			return opBallX;
+		}
+		if ("ballY".equalsIgnoreCase(portID))
+		{
+			return opBallY;
+		}
 
 		return null;
 	}
@@ -453,7 +465,7 @@ public class PongGameInstance extends AbstractRuntimeComponentInstance
           pnl = new JPanel();
 
           //LwjglApplicationConfiguration.disableAudio = true;
-          AstericsPong.reset();
+          AstericsPong.reset(dim, opBallX, opBallY);
           lcnv= new LwjglAWTCanvas(AstericsPong.instance, false); 
           Canvas cnvs = lcnv.getCanvas();
           cnvs.setPreferredSize(dim);

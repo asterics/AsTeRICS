@@ -27,6 +27,10 @@
 
 package eu.asterics.component.sensor.acceleration;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
 import eu.asterics.mw.cimcommunication.CIMEvent;
 import eu.asterics.mw.cimcommunication.CIMEventHandler;
 import eu.asterics.mw.cimcommunication.CIMEventPacketReceived;
@@ -51,12 +55,17 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 public class AccelerationInstance extends AbstractRuntimeComponentInstance implements CIMEventHandler
 {
+	private static final String WIRELESS_ACC_STRING = "WIRELESS_ACC";
+
+	private static final String WIRED_ACC_STRING = "WIRED_ACC";
+
 	private CIMPortController port = null;
 
 	private final String KEY_PROPERTY_AUTOSTART 		= "autoStart";
 	private final String KEY_PROPERTY_DESCRETE_STEPS 	= "descreteSteps";
 	private final String KEY_PROPERTY_UDPATE_FREQUENCY 	= "updateFrequency";
 	private final String KEY_PROPERTY_ACCELERATION_RANGE = "accelerationRange";
+	private final String KEY_PROPERTY_UNIQUE_ID = "uniqueID";
 
 	private static final short ACC_FEATURE_FREQUENCY   	= 0x61;
 	private static final short ACC_FEATURE_RANGE 	  	= 0x62;
@@ -73,7 +82,9 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 	private short propDescreteSteps = 0;
 	private short propUpdateFrequency = 0;
 	private short propAccelerationRange = 0;
-
+    private String 	propUniqueID = "not used";
+    private short 	propDefaultCIMID = ACC_CIM_ID;
+    
 	private boolean wirelessCIM = false;
 	private boolean calibrateNow = false;
 	private int calX=0;
@@ -142,13 +153,53 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 		return null;
 	}
 
+	/**
+	 * Returns a List of available CIM unique IDs
+	 * @return list of string with CIM IDs
+	 */
+	public synchronized List<String> getRuntimePropertyList(String key) 
+	{
+		List<String> res = new ArrayList<String>(); 
+		if (key.compareToIgnoreCase("uniqueID")==0)
+		{
+			res.add("not used");
+			String s;
+			// get wired accelerator in CIMs
+			Vector<Long> ids=CIMPortManager.getInstance()
+				.getUniqueIdentifiersofCIMs(ACC_CIM_ID);
+			if (ids != null)
+			{ 
+				for (Long l : ids)
+				{
+					//s = String.format("0x%x-0x%x", ACC_CIM_ID, l);
+					s = String.format(WIRED_ACC_STRING+"-0x%x", l);
+					res.add(s);
+					System.out.println(ACC_CIM_ID+" found unique ID: "+s);
+				}
+			}
+								
+			// get wireless digital in CIMs
+			ids=CIMPortManager.getInstance()
+				.getUniqueIdentifiersofWirelessCIMs(WIRELESS_ACC_CIM_ID);
+			if (ids != null)
+			{ 
+				for (Long l : ids)
+				{
+					s = String.format(WIRELESS_ACC_STRING+"-0x%x", l);
+					res.add(s);
+					System.out.println(WIRELESS_ACC_CIM_ID+" found wireless unique ID: "+s);
+				}
+			}
+		}
+		return res;
+	} 	
 
 	/**
 	 * returns the value of the given property.
 	 * @param propertyName   the name of the property
 	 * @return               the property value or null if not found
 	 */
-	public Object getRuntimePropertyValue(String propertyName)
+	public synchronized Object getRuntimePropertyValue(String propertyName)
 	{
 		if(KEY_PROPERTY_AUTOSTART.equalsIgnoreCase(propertyName))
 		{
@@ -166,6 +217,11 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 		{
 			return propAccelerationRange;
 		}
+    	else if(KEY_PROPERTY_UNIQUE_ID.equalsIgnoreCase(propertyName))
+        {
+            return propUniqueID;
+        }
+
 		return null;
 	}
 
@@ -224,6 +280,35 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 				AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
 			}        
 		}
+    	else if(KEY_PROPERTY_UNIQUE_ID.equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propUniqueID;
+			propUniqueID = (String)newValue;
+			
+			CIMPortController tempPort = openCIM(propDefaultCIMID, propUniqueID);
+
+			if (tempPort != null)
+			{
+				port=tempPort;
+				if (    (!wirelessCIM) &&
+						(!propUniqueID.equals("")) && 
+						(!propUniqueID.equals("not used")))
+				{
+						byte [] leBytes = { (byte) 0x20 }; 
+						CIMPortManager.getInstance().sendPacket  (port, leBytes, 
+							  (short) 0x77, 
+							  CIMProtocolPacket.COMMAND_REQUEST_WRITE_FEATURE, false);
+						try { Thread.sleep (1000); }  catch (InterruptedException e) {}
+						byte [] lebytes = { (byte) 0 };
+						CIMPortManager.getInstance().sendPacket  (port, lebytes, 
+							  (short) 0x77, 
+							  CIMProtocolPacket.COMMAND_REQUEST_WRITE_FEATURE, false);
+
+				}
+			}
+			return oldValue;
+		}
+
 		return null;
 	}
 
@@ -231,20 +316,26 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 	 * called when model is started.
 	 */
 	@Override
-	public void start()
+	public synchronized void start()
 	{
+		/*
 		CIMPortController port = CIMPortManager.getInstance().getConnection(ACC_CIM_ID);
 		if (port == null )
 		{
 			port = CIMPortManager.getInstance()
-				.getWirelessConnection(WIRELESS_ACC_CIM_ID);
+				.getWirelessConnection(WIRELESS_ACC_CIM_ID, 0xa000003);
 			if (port != null)
 				wirelessCIM = true;
 		}
 		else
 		{
 			wirelessCIM = false;
-		}
+		}*/
+    	if (port == null)
+    	{
+    		port = openCIM(propDefaultCIMID, propUniqueID);
+    	}
+		
 		if (port != null )
 		{
 			port.addEventListener(this);
@@ -275,7 +366,7 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 	 * called when model is paused.
 	 */
 	@Override
-	public void pause()
+	public synchronized void pause()
 	{
 		super.pause();
 	}
@@ -284,7 +375,7 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 	 * called when model is resumed.
 	 */
 	@Override
-	public void resume()
+	public synchronized void resume()
 	{
 		super.resume();
 	}
@@ -293,7 +384,7 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 	 * called when model is stopped.
 	 */
 	@Override
-	public void stop()
+	public synchronized void stop()
 	{
 		super.stop();
 		CIMPortController port = CIMPortManager.getInstance().getConnection(ACC_CIM_ID);
@@ -310,6 +401,46 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 		AstericsErrorHandling.instance.reportInfo(this, "AccelerationInstance stopped");
 	}
 
+    /**
+     * Opens a CIM controller for a certain unique ID 
+     * @param cimId the CIM type ID of the CIM 
+     * @param uniqueID the unique ID of the CIM as a string
+     * @return the CIM controller for the corresponding CIM, null if not present
+     */
+	private CIMPortController openCIM(short cimID, String uniqueID)
+	{
+		if ("not used".equalsIgnoreCase(propUniqueID) || (propUniqueID==""))
+		{
+		    return (CIMPortManager.getInstance().getConnection(cimID));
+		}
+		else
+		{
+			try {
+				//short id = Short.decode(propUniqueID.substring(0, propUniqueID.indexOf('-')));
+				short id = ACC_CIM_ID;
+				String cimString = propUniqueID.substring(0,
+						propUniqueID.indexOf('-'));
+
+				if(WIRED_ACC_STRING.equals(cimString)) {
+					id = ACC_CIM_ID;
+				} else if(WIRELESS_ACC_STRING.equals(cimString)){
+					id = WIRELESS_ACC_CIM_ID;
+				}
+
+				long  uid = Long.decode(propUniqueID.substring(propUniqueID.indexOf('-') + 1));
+				System.out.println(String.format("Trying to get: id %x uid %x", id, uid));
+				if (id == (short) WIRELESS_ACC_CIM_ID)
+				{
+					wirelessCIM = true;
+					return (CIMPortManager.getInstance().getWirelessConnection(id, uid));
+				}
+				wirelessCIM = false;
+				return (CIMPortManager.getInstance().getConnection(id, uid));
+			} catch (Exception e) {
+				return null;
+			}
+		}
+	}
 
 	private void handleAccInputValuePacket(byte [] b)
 	{
@@ -365,16 +496,16 @@ public class AccelerationInstance extends AbstractRuntimeComponentInstance imple
 		calibrateNow = false;
 	}
 
-	public void handlePacketReceived(CIMEvent e)
+	public synchronized void handlePacketReceived(CIMEvent e)
 	{
 		//        Logger.getAnonymousLogger().info("handlePacketReceived start");
 
-		if (wirelessCIM)
+		if (wirelessCIM && (e instanceof CIMWirelessDataEvent))
 		{
 			CIMWirelessDataEvent ev = (CIMWirelessDataEvent) e;
 			handleAccInputValuePacket(ev.data);
 		}
-		else
+		else if(e instanceof CIMEventPacketReceived)
 		{
 			CIMEventPacketReceived ev = (CIMEventPacketReceived) e;
 			CIMProtocolPacket packet = ev.packet;
