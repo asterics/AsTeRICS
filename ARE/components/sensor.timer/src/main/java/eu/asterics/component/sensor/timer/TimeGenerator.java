@@ -49,6 +49,9 @@ public class TimeGenerator implements Runnable
 	long startTime,currentTime;
 	boolean active=false;
 	int count=0;
+	long timecount;
+	
+	private Thread runThread = null;
 
 	final TimerInstance owner;
 
@@ -64,69 +67,74 @@ public class TimeGenerator implements Runnable
 	/**
 	 * resets the time conter value.
 	 */
-	public void reset()	
+	public synchronized void reset()	
 	{	
 		count=0;
 		if (owner.propMode != MEASURE_TIME)
 		   owner.opTime.sendData(ConversionUtils.intToBytes(0));
 	}
 
+//	static int tcount=0;
 
 	/**
 	 * the time generation thread.
 	 */
 	public void run()
 	{
+        runThread = Thread.currentThread();
+		//System.out.println ("\n\n *** TimeGenThread "+ (++tcount) + " started.\n");
+		
+		try {
+		
 		while(active==true)
 		{
 			currentTime=System.currentTimeMillis()-startTime;
-			if ((currentTime>owner.propWaitPeriod) &&  (owner.propMode != MEASURE_TIME))
+			while ((currentTime>timecount) && (active==true))
 			{
-				if (currentTime-owner.propWaitPeriod<owner.propTimePeriod)
-				{
-					   owner.opTime.sendData(ConversionUtils.intToBytes((int)(currentTime-owner.propWaitPeriod)));
-				}
-				else {
 					owner.etpPeriodFinished.raiseEvent();
+
 					switch (owner.propMode)
 					{
-					case MODE_N_TIMES:
-						count++;
-						if (count<owner.propRepeatCounter)
-						{
-							startTime=System.currentTimeMillis();
-						}
-						else { count=0; active=false; }
-						break;
-
-					case MODE_LOOP:
-						startTime=System.currentTimeMillis();
-						break;
-
-					case MODE_ONE_SHOT:
-						active=false;
-						break;
-
-					case MODE_ONCE_STAY_ACTIVE:
-						owner.opTime.sendData(ConversionUtils.intToBytes(owner.propTimePeriod));
-						break;
-
+						case MODE_N_TIMES:
+							count++;
+							if (count>=owner.propRepeatCounter)
+							{ count=0; active=false; }
+							break;
+	
+						case MODE_LOOP:
+							break;
+	
+						case MODE_ONE_SHOT:
+							active=false; 
+							break;
+	
+						case MODE_ONCE_STAY_ACTIVE:
+							owner.opTime.sendData(ConversionUtils.intToBytes(owner.propTimePeriod));
+							break;
 					}
+					timecount+=owner.propTimePeriod;
 				}
+				Thread.sleep(owner.propResolution);	
+				if ((timecount>owner.propWaitPeriod) &&  (owner.propMode != MEASURE_TIME)
+						&& (active==true))
+				owner.opTime.sendData(ConversionUtils.intToBytes((int)(currentTime-owner.propWaitPeriod)));
 			}
-			try {
-				Thread.sleep(owner.propResolution);
-			} catch (InterruptedException e) {}
-		}
+		} catch (InterruptedException e) {active =false;}
+
+		runThread=null;
+		//	System.out.println ("\n\n *** TimeGenThread "+ (tcount) + " stopped.\n");
 	}
 
 
 	/**
 	 * called when model is started or resumed.
 	 */
-	public void start()	
+	public synchronized void start()	
 	{	
+		if (runThread != null) return;
+		
 		startTime=System.currentTimeMillis();
+		timecount=0;
 		active=true;
 		AstericsThreadPool.instance.execute(this);
 	}
@@ -134,8 +142,11 @@ public class TimeGenerator implements Runnable
 	/**
 	 * called when model is stopped or paused.
 	 */
-	public void stop()	
+	public synchronized void stop()	
 	{	
+		if (runThread!=null)
+			runThread.interrupt();
+
 		active=false;
 		if (owner.propMode == MEASURE_TIME)
 		{

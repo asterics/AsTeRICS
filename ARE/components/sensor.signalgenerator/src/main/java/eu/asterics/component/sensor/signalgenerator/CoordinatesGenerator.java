@@ -42,8 +42,8 @@ import eu.asterics.mw.services.AstericsThreadPool;
  */
 public class CoordinatesGenerator implements Runnable{
 
-	Thread t;	
-	int count;
+	private Thread runThread = null;
+	long count; 
 	private OutputPort out;
 	private Random r;
 	private int sendInterval;
@@ -54,6 +54,7 @@ public class CoordinatesGenerator implements Runnable{
 	private double offset;	
 	private int active;
 	private int rstep=0;
+	long starttime, resumetime=0;
 
 
 
@@ -147,6 +148,8 @@ public class CoordinatesGenerator implements Runnable{
 	 */
 	public void start()
 	{
+		if (runThread != null) return;
+
 		count=0;
 		rstep=0;
 		active=1; 	
@@ -158,6 +161,7 @@ public class CoordinatesGenerator implements Runnable{
 	 */
 	public void pause()
 	{
+		resumetime=System.currentTimeMillis();
 		active=2;
 	}
 
@@ -166,6 +170,10 @@ public class CoordinatesGenerator implements Runnable{
 	 */
 	public void resume()
 	{
+		if (resumetime!=0)
+			starttime+=(System.currentTimeMillis()-resumetime);
+		resumetime=0;
+		//count=0;rstep=0;
 		active=1;
 	}
 
@@ -174,6 +182,8 @@ public class CoordinatesGenerator implements Runnable{
 	 */
 	public void stop ()
 	{
+		if (runThread!=null)
+			runThread.interrupt();
 		active=0;
 	}
 
@@ -182,34 +192,35 @@ public class CoordinatesGenerator implements Runnable{
 	 */
 	 public void run()
 	{
-			System.out.println("siggen thread started");
+	    runThread = Thread.currentThread();
+		starttime=System.currentTimeMillis();
 		while (active != 0)
 		{
 			if (active == 1)
 			{
-
-				count+=sendInterval;
-				switch (waveForm) {
-				case 0:  out.sendData(offset+r.nextDouble()*amplitude);				 		
-				break;
-				case 1: out.sendData(offset+amplitude*Math.sin(((double)count+phaseShift)/1000*frequency*2*Math.PI));
-				break;
-				case 2: out.sendData(offset+((int)((count+phaseShift)*frequency) % 1000)*amplitude/1000) ;
-				break;
-
-				case 3:if (count>=(int)(500*rstep/frequency))
-					rstep++; 
-				out.sendData(offset+ (rstep %2 ==0 ? 0:amplitude));
-				break;
-
+				while (System.currentTimeMillis()-starttime>count)
+				{
+					switch (waveForm) {
+					case 0:  out.sendData(offset+r.nextDouble()*amplitude);				 		
+					break;
+					case 1: out.sendData(offset+amplitude*Math.sin(((double)count+phaseShift)/1000*frequency*2*Math.PI));
+					break;
+					case 2: out.sendData(offset+((int)((count+phaseShift)*frequency) % 1000)*amplitude/1000) ;
+					break;
+	
+					case 3:if (count>=(int)(500*rstep/frequency))
+						rstep++; 
+					out.sendData(offset+ (rstep %2 ==0 ? 0:amplitude));
+					break;				
+				   }
+				   count+=sendInterval;
 				}
-
 			}
 			try {
-				Thread.sleep(this.sendInterval);
-			} catch (InterruptedException e) {}
+				Thread.sleep(10); 
+			} catch (InterruptedException e) {active=0;}
 		}
-		System.out.println("siggen thread ended");
+		runThread=null;
 	}
 
 

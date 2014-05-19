@@ -42,33 +42,46 @@ public class TimeGenerator implements Runnable
 {
 
 	boolean active=false;	
+	private Thread runThread = null;
+	
 	final BenchmarkInstance owner;
 
 	public TimeGenerator(final BenchmarkInstance owner)
 	{
 		    this.owner = owner;
 	}
-	public void start()	
+	public synchronized void start()	
 	{	
-		AstericsThreadPool.instance.execute(this);
+		if (runThread != null) return;
 		active=true;
+		AstericsThreadPool.instance.execute(this);
 	}
 	public void stop()	
 	{	
+		if (runThread!=null)
+			runThread.interrupt();
 		active=false;
 	}
 	
+	
 	public void run()
 	{
+        runThread = Thread.currentThread();
+
 		while(active)
 		{
 				try {
 				  Thread.sleep(owner.propTime);
-				} catch (InterruptedException e) {}
-	    		owner.opDataCountPort.sendData(ConversionUtils.intToByteArray(owner.dataCounter));
-	    		owner.opEventCountPort.sendData(ConversionUtils.intToByteArray(owner.eventCounter));
-	    		owner.dataCounter=0;
-	    		owner.eventCounter=0;
+				} catch (InterruptedException e) { active=false;}
+				
+				if (active ==true)
+				{
+		    		owner.opDataCountPort.sendData(ConversionUtils.intToByteArray(owner.dataCounter));
+		    		owner.opEventCountPort.sendData(ConversionUtils.intToByteArray(owner.eventCounter));
+		    		owner.dataCounter=0;
+		    		owner.eventCounter=0;
+				}
 		}
+		runThread=null;
 	}
 }

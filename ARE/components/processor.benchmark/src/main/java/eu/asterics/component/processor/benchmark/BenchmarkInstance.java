@@ -171,7 +171,7 @@ public class BenchmarkInstance extends AbstractRuntimeComponentInstance
      */    
     private class InputPort1 extends DefaultRuntimeInputPort
     {
-        public void receiveData(byte[] data)
+        public synchronized void receiveData(byte[] data)
         {
             dataCounter=dataCounter+1;
         }
@@ -183,7 +183,7 @@ public class BenchmarkInstance extends AbstractRuntimeComponentInstance
      */
     public class OutputPort extends DefaultRuntimeOutputPort
     {
-        public void sendData(int data)
+        public synchronized void sendData(int data)
         {
             super.sendData(ConversionUtils.intToByteArray(data));
         }
@@ -195,7 +195,7 @@ public class BenchmarkInstance extends AbstractRuntimeComponentInstance
     final IRuntimeEventListenerPort elpIncreaseEventCounter 	= new IRuntimeEventListenerPort()
     {
     	@Override 
-    	public void receiveEvent(String data)
+    	public synchronized void receiveEvent(String data)
     	 {
     		eventCounter=eventCounter+1;
     	 }
@@ -207,7 +207,7 @@ public class BenchmarkInstance extends AbstractRuntimeComponentInstance
     final IRuntimeEventListenerPort elpResetCounter 	= new IRuntimeEventListenerPort()
     {
     	@Override 
-    	public void receiveEvent(String data)
+    	public synchronized void receiveEvent(String data)
     	 {
     		eventCounter=0;
     		dataCounter=0;
