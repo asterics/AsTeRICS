@@ -11,6 +11,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -241,11 +243,11 @@ public class DefaultDeploymentModelParser
 	private DefaultRuntimeModel parse(Document document)
 	throws ParseException
 	{
-		final Set<IChannel> channelsSet = new HashSet<IChannel>();
+		final Set<IChannel> channelsSet = new LinkedHashSet<IChannel>();
 		final Set<IEventChannel> eventChannelsSet =
-			new HashSet<IEventChannel>();
+			new LinkedHashSet<IEventChannel>();
 		final Set<IComponentInstance> componentsSet =
-			new HashSet<IComponentInstance>();
+			new LinkedHashSet<IComponentInstance>();
 		final ArrayList <DefaultACSGroup> groups = new ArrayList<DefaultACSGroup>();
 
 		
@@ -541,12 +543,12 @@ public class DefaultDeploymentModelParser
 			NodeList componentChildren =
 				componentNode.getChildNodes();
 			String cDescription = null;
-			Set<IInputPort> inputPorts = new HashSet<IInputPort>();
-			Set<IOutputPort> outputPorts = new HashSet<IOutputPort>();
-			Set<IInputPort> bufferedPorts = new HashSet<IInputPort>();
+			Set<IInputPort> inputPorts = new LinkedHashSet<IInputPort>();
+			Set<IOutputPort> outputPorts = new LinkedHashSet<IOutputPort>();
+			Set<IInputPort> bufferedPorts = new LinkedHashSet<IInputPort>();
 			String posX = "0";
 			String posY = "0";
-			Map<String, Object> cPropertyValues = new HashMap<String, Object>();
+			Map<String, Object> cPropertyValues = new LinkedHashMap<String, Object>();
 			//Iterate through component children elements
 			for (int k = 0; k < componentChildren.getLength(); k++)
 			{
@@ -709,7 +711,7 @@ public class DefaultDeploymentModelParser
 		//Get port children
 		NodeList propertiesList = portElement.
 		getElementsByTagName("properties");
-		Map<String, Object> opPropertyValues = new HashMap<String, Object>();
+		Map<String, Object> opPropertyValues = new LinkedHashMap<String, Object>();
 		if (propertiesList != null && propertiesList.getLength() > 0)
 		{
 			Node propertiesNode = propertiesList.item(0);
@@ -755,7 +757,7 @@ public class DefaultDeploymentModelParser
 		//Get port children
 		NodeList propertiesList = portElement.
 		getElementsByTagName("properties");
-		Map<String, Object> ipPropertyValues = new HashMap<String, Object>();
+		Map<String, Object> ipPropertyValues = new LinkedHashMap<String, Object>();
 		
 		if (propertiesList != null && propertiesList.getLength() > 0)
 		{
@@ -767,7 +769,7 @@ public class DefaultDeploymentModelParser
 					ipPropertyValues = getPropertyValues(
 							propertiesElement.getChildNodes());
 				else
-					ipPropertyValues = new HashMap<String, Object>();
+					ipPropertyValues = new LinkedHashMap<String, Object>();
 			}
 		}
 		
@@ -880,7 +882,7 @@ public class DefaultDeploymentModelParser
 		}//Channel child
 
 		final Map<String, Object> channelProperties = 
-			new HashMap<String, Object>();
+			new LinkedHashMap<String, Object>();
 
 		return new DefaultChannel(
 				chDescription,
@@ -911,9 +913,9 @@ public class DefaultDeploymentModelParser
 	private DefaultEventChannel getEventChannel (Element ecChild)
 	{
 		final Set<IEventEdge> sourcesEdge = 
-			new HashSet<IEventEdge>();
+			new LinkedHashSet<IEventEdge>();
 		final Set<IEventEdge> targetsEdge = 
-			new HashSet<IEventEdge>();
+			new LinkedHashSet<IEventEdge>();
 
 		GroupReferences groupReferences=null;
 		// handle a single eventChannel
@@ -1060,8 +1062,8 @@ public class DefaultDeploymentModelParser
 
 	private Map<String, Object> getPropertyValues(NodeList properties)
 	{
-		final HashMap<String, Object> propertyValues = 
-			new HashMap<String, Object>();
+		final Map<String, Object> propertyValues = 
+			new LinkedHashMap<String, Object>();
 		for (int k = 0; k < properties.getLength(); k++)
 		{
 			final Node node = properties.item(k);

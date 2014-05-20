@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -658,13 +660,13 @@ public class AsapiSupport
 					(componentID,
 							componentType,
 							"", 
-							new HashSet<IInputPort> (),
-							new HashSet<IOutputPort> (),
-							new HashMap<String, Object> (),
+							new LinkedHashSet<IInputPort> (),
+							new LinkedHashSet<IOutputPort> (),
+							new LinkedHashMap<String, Object> (),
 							new Point (0,0),
 							//false,
 							null,
-							new HashSet<IInputPort> ());
+							new LinkedHashSet<IInputPort> ());
 			DeploymentManager.instance.getCurrentRuntimeModel().insertComponent
 			(newInstance);
 		}
@@ -884,7 +886,7 @@ public class AsapiSupport
 				targetComponentID,
 				targetPortID,
 				channelID,
-				new HashMap<String, Object> ());
+				new LinkedHashMap<String, Object> ());
 
 		model.insertChannel(newChannel);
 
