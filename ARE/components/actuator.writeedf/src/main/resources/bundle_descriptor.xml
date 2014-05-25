@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.WriteEDF"
+                   canonical_name="eu.asterics.component.actuator.writeedf.WriteEDFInstance">
+        <type subtype="File System">actuator</type>
+        <singleton>false</singleton>
+        <description>This plugin records the incoming data into an EDF file</description>
+        <ports>
+			<inputPort id="CH1">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH2">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH3">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH4">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH5">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH6">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH7">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH8">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="patientID"
+				type="string"
+				value="undefined"
+				description="ID of the recorded subject"/>
+			<property name="FileName"
+				type="string"
+				value="record"
+				description="name of the recording file"/>
+			<property name="reSampling"
+				type="boolean"
+				value="false"
+				description="incoming data will be re-sampled according to the set frequency"/>
+			<property name="SamplingRateCH1"
+				type="integer"
+				value="100"
+				description="sampling rate for the corresponding channel"/>
+			<property name="SamplingRateCH2"
+				type="integer"
+				value="100"
+				description="sampling rate for the corresponding channel"/>
+			<property name="SamplingRateCH3"
+				type="integer"
+				value="100"
+				description="sampling rate for the corresponding channel"/>
+			<property name="SamplingRateCH4"
+				type="integer"
+				value="100"
+				description="sampling rate for the corresponding channel"/>
+			<property name="SamplingRateCH5"
+				type="integer"
+				value="100"
+				description="sampling rate for the corresponding channel"/>
+			<property name="SamplingRateCH6"
+				type="integer"
+				value="100"
+				description="sampling rate for the corresponding channel"/>
+			<property name="SamplingRateCH7"
+				type="integer"
+				value="100"
+				description="sampling rate for the corresponding channel"/>
+			<property name="SamplingRateCH8"
+				type="integer"
+				value="100"
+				description="sampling rate for the corresponding channel"/>
+			<property name="PhysicalMinimumCH1"
+				type="integer"
+				value="-32768"
+				description="physical minimum of the corresponding  channel"/>
+			<property name="PhysicalMinimumCH2"
+				type="integer"
+				value="-32768"
+				description="physical minimum of the corresponding  channel"/>
+			<property name="PhysicalMinimumCH3"
+				type="integer"
+				value="-32768"
+				description="physical minimum of the corresponding  channel"/>
+			<property name="PhysicalMinimumCH4"
+				type="integer"
+				value="-32768"
+				description="physical minimum of the corresponding  channel"/>
+			<property name="PhysicalMinimumCH5"
+				type="integer"
+				value="-32768"
+				description="physical minimum of the corresponding  channel"/>
+			<property name="PhysicalMinimumCH6"
+				type="integer"
+				value="-32768"
+				description="physical minimum of the corresponding  channel"/>
+			<property name="PhysicalMinimumCH7"
+				type="integer"
+				value="-32768"
+				description="physical minimum of the corresponding  channel"/>
+			<property name="PhysicalMinimumCH8"
+				type="integer"
+				value="-32768"
+				description="physical minimum of the corresponding  channel"/>
+			<property name="PhysicalMaximumCH1"
+				type="integer"
+				value="32767"
+				description="physical maximum of the corresponding  channel"/>
+			<property name="PhysicalMaximumCH2"
+				type="integer"
+				value="32767"
+				description="physical maximum of the corresponding  channel"/>
+			<property name="PhysicalMaximumCH3"
+				type="integer"
+				value="32767"
+				description="physical maximum of the corresponding  channel"/>
+			<property name="PhysicalMaximumCH4"
+				type="integer"
+				value="32767"
+				description="physical maximum of the corresponding  channel"/>
+			<property name="PhysicalMaximumCH5"
+				type="integer"
+				value="32767"
+				description="physical maximum of the corresponding  channel"/>
+			<property name="PhysicalMaximumCH6"
+				type="integer"
+				value="32767"
+				description="physical maximum of the corresponding  channel"/>
+			<property name="PhysicalMaximumCH7"
+				type="integer"
+				value="32767"
+				description="physical maximum of the corresponding  channel"/>
+			<property name="PhysicalMaximumCH8"
+				type="integer"
+				value="32767"
+				description="physical maximum of the corresponding  channel"/>
+			<property name="DigitalMinimumCH1"
+				type="integer"
+				value="-32768"
+				description="digital minimum of the corresponding  channel"/>
+			<property name="DigitalMinimumCH2"
+				type="integer"
+				value="-32768"
+				description="digital minimum of the corresponding  channel"/>
+			<property name="DigitalMinimumCH3"
+				type="integer"
+				value="-32768"
+				description="digital minimum of the corresponding  channel"/>
+			<property name="DigitalMinimumCH4"
+				type="integer"
+				value="-32768"
+				description="digital minimum of the corresponding  channel"/>
+			<property name="DigitalMinimumCH5"
+				type="integer"
+				value="-32768"
+				description="digital minimum of the corresponding  channel"/>
+			<property name="DigitalMinimumCH6"
+				type="integer"
+				value="-32768"
+				description="digital minimum of the corresponding  channel"/>
+			<property name="DigitalMinimumCH7"
+				type="integer"
+				value="-32768"
+				description="digital minimum of the corresponding  channel"/>
+			<property name="DigitalMinimumCH8"
+				type="integer"
+				value="-32768"
+				description="digital minimum of the corresponding  channel"/>
+			<property name="DigitalMaximumCH1"
+				type="integer"
+				value="32767"
+				description="digital maximum of the corresponding  channel"/>
+			<property name="DigitalMaximumCH2"
+				type="integer"
+				value="32767"
+				description="digital maximum of the corresponding  channel"/>
+			<property name="DigitalMaximumCH3"
+				type="integer"
+				value="32767"
+				description="digital maximum of the corresponding  channel"/>
+			<property name="DigitalMaximumCH4"
+				type="integer"
+				value="32767"
+				description="digital maximum of the corresponding  channel"/>
+			<property name="DigitalMaximumCH5"
+				type="integer"
+				value="32767"
+				description="digital maximum of the corresponding  channel"/>
+			<property name="DigitalMaximumCH6"
+				type="integer"
+				value="32767"
+				description="digital maximum of the corresponding  channel"/>
+			<property name="DigitalMaximumCH7"
+				type="integer"
+				value="32767"
+				description="digital maximum of the corresponding  channel"/>
+			<property name="DigitalMaximumCH8"
+				type="integer"
+				value="32767"
+				description="digital maximum of the corresponding  channel"/>
+		</properties>
+
+    </componentType>
+</componentTypes>

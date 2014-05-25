@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.ReadEDF"
+                   canonical_name="eu.asterics.component.sensor.readedf.ReadEDFInstance">
+        <type subtype="File System">sensor</type>
+        <singleton>false</singleton>
+        <description>This plugin reads data from an edf-file and sends it to its output ports</description>
+        <ports>
+
+			<outputPort id="CH1">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH2">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH3">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH4">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH5">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH6">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH7">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH8">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+            <property name="filename"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="Wav file to be played."/>
+        </properties>
+
+    </componentType>
+</componentTypes>
