@@ -46,7 +46,7 @@ public class TimeGenerator implements Runnable
 	final int MEASURE_TIME=4;
 
 	Thread t;	
-	long startTime,currentTime;
+	long startTime,currentTime; 
 	boolean active=false;
 	int count=0;
 	long timecount;
@@ -134,7 +134,7 @@ public class TimeGenerator implements Runnable
 		if (runThread != null) return;
 		
 		startTime=System.currentTimeMillis();
-		timecount=0;
+		timecount=owner.propTimePeriod;
 		active=true;
 		AstericsThreadPool.instance.execute(this);
 	}

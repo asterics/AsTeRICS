@@ -67,8 +67,12 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	public int propPeriodicADCUpdate = 0;
-	
+	public int propPeriodicADCUpdate = 50;
+
+	private int calibX = 0;
+	private int calibY = 0;
+	private boolean calibNow = false;
+
 	// declare member variables here
 
 	private CIMPortController port = null; 
@@ -186,8 +190,10 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 	{
 		public void receiveEvent(final String data)
 		{
-				 // It is not developed currently
-			//sendLipmouseWriteFeature(LIPMOUSE_CIM_FEATURE_CALLIBRATION,calibrationData);
+		    
+			//sendLipmouseWriteFeature(LIPMOUSE_CIM_FEATURE_CALLIBRATION,calibrationData);   // calib in firmware 
+			calibNow=true;
+			
 		}
 	};
 
@@ -202,10 +208,20 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 	{
 		// System.out.println("handleLipmouseAdcPacket");
 		byte [] b = packet.getData();
-		int channelValue;
+		int x,y;
 
-		opX.sendData(ADCDataToBytes(b[0],b[1]));
-		opY.sendData(ADCDataToBytes(b[2],b[3]));
+		x= ConversionUtils.intFromBytes(ADCDataToBytes(b[0],b[1]));
+		y= ConversionUtils.intFromBytes(ADCDataToBytes(b[2],b[3]));
+
+		if (calibNow==true)  {
+			calibX=x;
+			calibY=y;
+			calibNow=false;
+		}
+		
+		opX.sendData(ConversionUtils.intToBytes(x-calibX));
+		opY.sendData(ConversionUtils.intToBytes(y-calibY));
+				
 		opPressure.sendData(ADCDataToBytes(b[4],b[5]));
 	}
 	
@@ -273,25 +289,6 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 				
 				break;
 			case CIMProtocolPacket.COMMAND_REPLY_WRITE_FEATURE:
-				/*
-				System.out.print ("Reply Write: ");
-				if (featureAddress == ARDUINO_CIM_FEATURE_SET_PINDIRECTION)
-				{
-					 System.out.println ("Set PinDirection.");
-				}
-				if (featureAddress == ARDUINO_CIM_FEATURE_SET_PINSTATE)
-				{
-					 System.out.println ("Set PinState.");
-				}
-				if (featureAddress == ARDUINO_CIM_FEATURE_SET_PINMASK)
-				{
-					 System.out.println ("Set PinMask.");
-				}
-				if (featureAddress == ARDUINO_CIM_FEATURE_SET_ADCPERIOD)
-				{
-					 System.out.println ("Set AdcPeriod.");
-				}
-				*/
 				break;
 		}
 	}
