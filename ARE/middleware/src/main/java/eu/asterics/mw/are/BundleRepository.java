@@ -8,6 +8,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -114,7 +115,7 @@ public class BundleRepository
     public Set<IComponentType> getInstalledComponentTypes()
     {
         final Set<IComponentType> installedComponentTypes
-                = new HashSet<IComponentType>();
+                = new LinkedHashSet<IComponentType>();
 
         installedComponentTypes.addAll(repository.values());
     

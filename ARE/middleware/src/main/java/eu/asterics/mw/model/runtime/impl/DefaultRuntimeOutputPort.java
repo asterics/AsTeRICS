@@ -27,6 +27,7 @@ package eu.asterics.mw.model.runtime.impl;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -47,9 +48,9 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 {
 	//Sync
 	private final Map<EndPoint, IRuntimeInputPort> inputPortEndpoints = 
-			new HashMap<EndPoint,IRuntimeInputPort>();
+			new LinkedHashMap<EndPoint,IRuntimeInputPort>();
 	private final Map<String, String> portIdToConversion = 
-			new HashMap<String,String>();
+			new LinkedHashMap<String,String>();
 
 	public void sendData(final byte[] data)
 	{

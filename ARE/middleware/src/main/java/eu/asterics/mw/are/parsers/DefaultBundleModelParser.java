@@ -9,12 +9,16 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.model.bundle.*;
 import eu.asterics.mw.model.bundle.impl.*;
@@ -24,6 +28,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.Multiplicity;
 import eu.asterics.mw.services.AstericsErrorHandling;
@@ -191,7 +196,7 @@ public class DefaultBundleModelParser {
 		}
 
 		final Set<IComponentType> componentTypes = 
-			new HashSet<IComponentType>();
+			new LinkedHashSet<IComponentType>();
 
 		//iterate through the components
 		for (int i = 0; i < components.getLength(); i++) 
@@ -235,15 +240,15 @@ public class DefaultBundleModelParser {
 			boolean isExternalGui = false;
 			String description = null;
 			final Set<IInputPortType> inputPortTypes =
-				new HashSet<IInputPortType>();
+				new LinkedHashSet<IInputPortType>();
 			final Set<IOutputPortType> outputPortTypes =
-				new HashSet<IOutputPortType>();
+				new LinkedHashSet<IOutputPortType>();
 			
 			Map<String, PropertyType> cPropertyTypes = null;
 			Set<IEventListenerPortType> eventListenerPortTypes = 
-				new HashSet<IEventListenerPortType>();
+				new LinkedHashSet<IEventListenerPortType>();
 			Set<IEventTriggererPortType> eventTriggererPortTypes = 
-				new HashSet<IEventTriggererPortType>();
+				new LinkedHashSet<IEventTriggererPortType>();
 
 			//Iterate through the children of the componentType
 			for (int j = 0; j < componentTypeChildNodes.getLength(); j++) 
@@ -328,7 +333,7 @@ public class DefaultBundleModelParser {
 						} 
 						else 
 						{
-							cPropertyTypes = new HashMap<String,PropertyType>();
+							cPropertyTypes = new LinkedHashMap<String,PropertyType>();
 						}
 					}
 					else if (componentTypeChildElement.getTagName().equals("gui"))
@@ -510,7 +515,7 @@ public class DefaultBundleModelParser {
 					} 
 					else 
 					{
-						ipPropertyTypes = new HashMap<String,PropertyType>();
+						ipPropertyTypes = new LinkedHashMap<String,PropertyType>();
 					}
 				}
 				
@@ -605,7 +610,7 @@ public class DefaultBundleModelParser {
 									getChildNodes());
 					} else {
 						opPropertyTypes =
-							new HashMap<String,
+							new LinkedHashMap<String,
 							PropertyType>();
 					}
 				}
@@ -627,8 +632,8 @@ public class DefaultBundleModelParser {
 
 	private Map<String, PropertyType> getPropertyTypes(NodeList properties) 
 	{
-		HashMap<String, PropertyType> propertyTypes =
-			new HashMap<String, PropertyType>();
+		Map<String, PropertyType> propertyTypes =
+			new LinkedHashMap<String, PropertyType>();
 		PropertyType pt;
 		Node node;
 		Element property;
