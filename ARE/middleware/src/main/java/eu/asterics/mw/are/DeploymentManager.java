@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -137,14 +139,14 @@ public class DeploymentManager
 	}
 
 	private Map<String, IRuntimeComponentInstance> runtimeComponentInstances
-	= new HashMap<String, IRuntimeComponentInstance>();
+	= new LinkedHashMap<String, IRuntimeComponentInstance>();
 	private Map<String, Set<IRuntimeComponentInstance>> 
 	componentTypeIdToRuntimeComponentInstances
-	= new HashMap<String, Set<IRuntimeComponentInstance>>();
+	= new LinkedHashMap<String, Set<IRuntimeComponentInstance>>();
 	private BundleManager bundleManager;
-	private Map<IRuntimeComponentInstance,String > runtimeInstanceToComponentTypeID = new HashMap<IRuntimeComponentInstance, String>();
-	private Map<String, Stack<HashMap<String, byte[]>>> bufferedPortsMap
-	= new HashMap<String, Stack<HashMap<String,byte[]>>>();
+	private Map<IRuntimeComponentInstance,String > runtimeInstanceToComponentTypeID = new LinkedHashMap<IRuntimeComponentInstance, String>();
+	private Map<String, Stack<LinkedHashMap<String, byte[]>>> bufferedPortsMap
+	= new LinkedHashMap<String, Stack<LinkedHashMap<String,byte[]>>>();
 
 	private void init()
 	{
@@ -244,7 +246,7 @@ public class DeploymentManager
 					get(componentInstance.getComponentTypeID());
 			if (set == null)
 			{
-				set = new HashSet<IRuntimeComponentInstance>();
+				set = new LinkedHashSet<IRuntimeComponentInstance>();
 			}
 			set.add(runtimeComponentInstance);
 
@@ -412,7 +414,7 @@ public class DeploymentManager
 			final IEventEdge [] eventTargets = eventChannel.getTargets();
 
 			final Set<EventListenerDetails> targetEventListenerPorts
-			= new HashSet<EventListenerDetails>();
+			= new LinkedHashSet<EventListenerDetails>();
 
 			for(final IEventEdge targetEventEdge : eventTargets)
 			{
@@ -510,7 +512,7 @@ public class DeploymentManager
 			final IEventEdge [] eventTargets = eventChannel.getTargets();
 
 			final Set<EventListenerDetails> targetEventListenerPorts
-			= new HashSet<EventListenerDetails>();
+			= new LinkedHashSet<EventListenerDetails>();
 
 			for(final IEventEdge targetEventEdge : eventTargets)
 			{
@@ -1087,14 +1089,14 @@ public class DeploymentManager
 
 		
 
-			Stack<HashMap<String, byte[]>> stack = bufferedPortsMap.get(targetComponentID);
+			Stack<LinkedHashMap<String, byte[]>> stack = bufferedPortsMap.get(targetComponentID);
 			synchronized (stack)
 			{
 				if (stack.isEmpty()){
 
 					
 					
-					HashMap<String, byte[]> row = new HashMap<String, byte[]>();
+					LinkedHashMap<String, byte[]> row = new LinkedHashMap<String, byte[]>();
 					synchronized (row)
 					{
 						row.put(portID, data);
@@ -1117,7 +1119,7 @@ public class DeploymentManager
 
 			
 					
-					HashMap<String, byte[]> row = stack.peek();
+					LinkedHashMap<String, byte[]> row = stack.peek();
 					synchronized (row)
 					{
 						//if (row.size()<=100) 
@@ -1134,11 +1136,11 @@ public class DeploymentManager
 		}
 		else //start buffering
 		{
-			Stack<HashMap<String, byte[]>> stack = new  Stack<HashMap<String, byte[]>>();
+			Stack<LinkedHashMap<String, byte[]>> stack = new  Stack<LinkedHashMap<String, byte[]>>();
 			synchronized (stack)
 			{
 				bufferedPortsMap.put(targetComponentID, stack);
-				HashMap<String, byte[]> row = new HashMap<String, byte[]>();
+				LinkedHashMap<String, byte[]> row = new LinkedHashMap<String, byte[]>();
 				row.put(portID, data);
 				stack.push(row);
 				//	System.out.println("Row.zise="+row.size()+" bufferedPorts.size() "+bufferedPorts.size() );

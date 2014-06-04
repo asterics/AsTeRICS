@@ -2653,6 +2653,106 @@
     </componentType>
 
 
+ <componentType canonical_name="eu.asterics.component.actuator.writeedf.WriteEDFInstance" id="asterics.WriteEDF">
+        <type subtype="File System">actuator</type>
+        <singleton>false</singleton>
+        <description>This plugin records the incoming data into an EDF file</description>
+        <ports>
+			<inputPort id="CH1">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH2">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH3">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH4">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH5">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH6">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH7">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="CH8">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property description="ID of the recorded subject" name="patientID" type="string" value="undefined"/>
+			<property description="name of the recording file" name="FileName" type="string" value="record"/>
+			<property description="incoming data will be re-sampled according to the set frequency" name="reSampling" type="boolean" value="false"/>
+			<property description="sampling rate for the corresponding channel" name="SamplingRateCH1" type="integer" value="100"/>
+			<property description="sampling rate for the corresponding channel" name="SamplingRateCH2" type="integer" value="100"/>
+			<property description="sampling rate for the corresponding channel" name="SamplingRateCH3" type="integer" value="100"/>
+			<property description="sampling rate for the corresponding channel" name="SamplingRateCH4" type="integer" value="100"/>
+			<property description="sampling rate for the corresponding channel" name="SamplingRateCH5" type="integer" value="100"/>
+			<property description="sampling rate for the corresponding channel" name="SamplingRateCH6" type="integer" value="100"/>
+			<property description="sampling rate for the corresponding channel" name="SamplingRateCH7" type="integer" value="100"/>
+			<property description="sampling rate for the corresponding channel" name="SamplingRateCH8" type="integer" value="100"/>
+			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH1" type="integer" value="-32768"/>
+			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH2" type="integer" value="-32768"/>
+			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH3" type="integer" value="-32768"/>
+			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH4" type="integer" value="-32768"/>
+			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH5" type="integer" value="-32768"/>
+			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH6" type="integer" value="-32768"/>
+			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH7" type="integer" value="-32768"/>
+			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH8" type="integer" value="-32768"/>
+			<property description="physical maximum of the corresponding  channel" name="PhysicalMaximumCH1" type="integer" value="32767"/>
+			<property description="physical maximum of the corresponding  channel" name="PhysicalMaximumCH2" type="integer" value="32767"/>
+			<property description="physical maximum of the corresponding  channel" name="PhysicalMaximumCH3" type="integer" value="32767"/>
+			<property description="physical maximum of the corresponding  channel" name="PhysicalMaximumCH4" type="integer" value="32767"/>
+			<property description="physical maximum of the corresponding  channel" name="PhysicalMaximumCH5" type="integer" value="32767"/>
+			<property description="physical maximum of the corresponding  channel" name="PhysicalMaximumCH6" type="integer" value="32767"/>
+			<property description="physical maximum of the corresponding  channel" name="PhysicalMaximumCH7" type="integer" value="32767"/>
+			<property description="physical maximum of the corresponding  channel" name="PhysicalMaximumCH8" type="integer" value="32767"/>
+			<property description="digital minimum of the corresponding  channel" name="DigitalMinimumCH1" type="integer" value="-32768"/>
+			<property description="digital minimum of the corresponding  channel" name="DigitalMinimumCH2" type="integer" value="-32768"/>
+			<property description="digital minimum of the corresponding  channel" name="DigitalMinimumCH3" type="integer" value="-32768"/>
+			<property description="digital minimum of the corresponding  channel" name="DigitalMinimumCH4" type="integer" value="-32768"/>
+			<property description="digital minimum of the corresponding  channel" name="DigitalMinimumCH5" type="integer" value="-32768"/>
+			<property description="digital minimum of the corresponding  channel" name="DigitalMinimumCH6" type="integer" value="-32768"/>
+			<property description="digital minimum of the corresponding  channel" name="DigitalMinimumCH7" type="integer" value="-32768"/>
+			<property description="digital minimum of the corresponding  channel" name="DigitalMinimumCH8" type="integer" value="-32768"/>
+			<property description="digital maximum of the corresponding  channel" name="DigitalMaximumCH1" type="integer" value="32767"/>
+			<property description="digital maximum of the corresponding  channel" name="DigitalMaximumCH2" type="integer" value="32767"/>
+			<property description="digital maximum of the corresponding  channel" name="DigitalMaximumCH3" type="integer" value="32767"/>
+			<property description="digital maximum of the corresponding  channel" name="DigitalMaximumCH4" type="integer" value="32767"/>
+			<property description="digital maximum of the corresponding  channel" name="DigitalMaximumCH5" type="integer" value="32767"/>
+			<property description="digital maximum of the corresponding  channel" name="DigitalMaximumCH6" type="integer" value="32767"/>
+			<property description="digital maximum of the corresponding  channel" name="DigitalMaximumCH7" type="integer" value="32767"/>
+			<property description="digital maximum of the corresponding  channel" name="DigitalMaximumCH8" type="integer" value="32767"/>
+		</properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.processor.adjustmentcurve.AdjustmentCurveInstance" id="asterics.AdjustmentCurve">
         <type subtype="Signal Shaping">processor</type>
         <singleton>false</singleton>
@@ -6242,7 +6342,7 @@
             <property description="Mapping to (n) integral steps (0=disable)" name="descreteSteps" type="integer" value="0"/>
             <property combobox="10 Hz//20 Hz//40 Hz//75 Hz//150 Hz//300 Hz" description="frequency of periodic updates in Hz" name="updateFrequency" type="integer" value="0"/>
             <property combobox="1 g//1.5 g//2 g//3 g//4 g//8 g//16 g" description="sensitivity of acceleration" name="accelerationRange" type="integer" value="0"/>
-               
+            <property description="ID (if more than one devices of this kind are connected)" getStringList="true" name="uniqueID" type="string" value="not used"/>                                 
         </properties>
     </componentType>
 
@@ -7671,7 +7771,7 @@
 
 		</events>			
         <properties>
-			<property description="Automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="0"/>
+			<property description="Automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="50"/>
 
         </properties>
 
@@ -8293,6 +8393,56 @@
             <property description="(currently: PitchYawRoll)" name="operationMode" type="string" value="PitchYawRoll"/>        </properties>
     </componentType>
 
+
+ <componentType canonical_name="eu.asterics.component.sensor.readedf.ReadEDFInstance" id="asterics.ReadEDF">
+        <type subtype="File System">sensor</type>
+        <singleton>false</singleton>
+        <description>This plugin reads data from an edf-file and sends it to its output ports</description>
+        <ports>
+
+			<outputPort id="CH1">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH2">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH3">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH4">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH5">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH6">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH7">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH8">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+            <property description="Wav file to be played." getStringList="true" name="filename" type="string" value=""/>
+        </properties>
+
+    </componentType>
 
  <componentType canonical_name="eu.asterics.component.sensor.rfidreader.RFIDReaderInstance" id="asterics.RFIDReader">
         <type subtype="Sensor Modules">sensor</type>

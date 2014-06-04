@@ -26,6 +26,7 @@ extern unsigned char PIND_Mask;
 extern unsigned char PINB_Mask;
 
 volatile uint8_t check_PINChange_now=0;   // flag for pinstate update
+uint8_t pinChangeCounter = 0;
 
 uint8_t old_PIND,old_PINB;
 uint8_t autoreply_num=0x80;   // sequential number for automatic replies, 0x80-0xff
@@ -71,9 +72,10 @@ int main(void  )
 		   //DDRB |= (1<<5); PORTB ^= (1<<5);  // indicate frame send with led
 	    }
 
-		if (check_PINChange_now)  // this is updated in the pinchange ISR
+		if (check_PINChange_now && (pinChangeCounter++ == 50))  // this is updated in the pinchange ISR
 		{ 
 		    check_PINChange_now=0;
+		    pinChangeCounter = 0;
 
 		    autoreply_num++; 
 		    if (autoreply_num==0) autoreply_num=0x80;
@@ -87,6 +89,8 @@ int main(void  )
 
 	}
 }
+
+
 
 //Pin change ISR, setting the pin change bit (the CIM frame is transmitted from main)
 ISR(PCINT0_vect)

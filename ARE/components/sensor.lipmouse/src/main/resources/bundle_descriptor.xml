@@ -33,7 +33,7 @@
         <properties>
 			<property name="periodicADCUpdate"
 				type="integer"
-				value="0"
+				value="50"
 				description="Automatic update of ADC values (time in milliseconds, 0=off)"/>
 
         </properties>

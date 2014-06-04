@@ -26,6 +26,7 @@
 package eu.asterics.mw.model.bundle.impl;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -135,7 +136,7 @@ public class DefaultComponentType
 
     public Set<IPortType> getPorts()
     {
-        final Set<IPortType> allPortTypes = new HashSet<IPortType>();
+        final Set<IPortType> allPortTypes = new LinkedHashSet<IPortType>();
         allPortTypes.addAll(inputPortTypes);
         allPortTypes.addAll(outputPortTypes);
 
@@ -145,7 +146,7 @@ public class DefaultComponentType
     @Override
     public Set<IEventPortType> getEventPorts()
     {
-        final Set<IEventPortType> allEventPortTypes = new HashSet<IEventPortType>();
+        final Set<IEventPortType> allEventPortTypes = new LinkedHashSet<IEventPortType>();
         allEventPortTypes.addAll(eventListenerPortTypes);
         allEventPortTypes.addAll(eventTriggererPortTypes);
 
@@ -154,12 +155,12 @@ public class DefaultComponentType
 
     public Set<IInputPortType> getInputPorts()
     {
-        return new HashSet<IInputPortType>(inputPortTypes);
+        return new LinkedHashSet<IInputPortType>(inputPortTypes);
     }
 
     public Set<IOutputPortType> getOutputPorts()
     {
-        return new HashSet<IOutputPortType>(outputPortTypes);
+        return new LinkedHashSet<IOutputPortType>(outputPortTypes);
     }
 
     @Override
@@ -197,12 +198,12 @@ public class DefaultComponentType
 
     public Set<IEventListenerPortType> getEventListenerPorts()
     {
-        return new HashSet<IEventListenerPortType>(eventListenerPortTypes);
+        return new LinkedHashSet<IEventListenerPortType>(eventListenerPortTypes);
     }
 
     public Set<IEventTriggererPortType> getEventTriggererPorts()
     {
-        return new HashSet<IEventTriggererPortType>(eventTriggererPortTypes);
+        return new LinkedHashSet<IEventTriggererPortType>(eventTriggererPortTypes);
     }
 
     @Override

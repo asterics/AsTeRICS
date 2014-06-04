@@ -29,6 +29,7 @@ import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IPropertyfulType;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,7 +52,7 @@ public class DefaultPropertyfulType implements IPropertyfulType
     	if ( this.propertyTypes == null)
     		return null;
     	else
-        return new HashSet<String>(propertyTypes.keySet());
+        return new LinkedHashSet<String>(propertyTypes.keySet());
     }
 
     public DataType getDataType(String propertyName)

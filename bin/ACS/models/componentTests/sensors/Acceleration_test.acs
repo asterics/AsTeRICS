@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="16.12.2011_1454" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="16.12.2011_1454" version="20130320">
   <components>
     <component id="Acceleration.1" type_id="asterics.Acceleration">
       <description>Acceleration sensor CIM</description>
@@ -20,12 +20,13 @@
       <properties>
         <property name="autoStart" value="true" />
         <property name="descreteSteps" value="0" />
-        <property name="updateFrequency" value="0" />
-        <property name="accelerationRange" value="0" />
+        <property name="updateFrequency" value="1" />
+        <property name="accelerationRange" value="4" />
+        <property name="uniqueID" value="WIRELESS_ACC-0xa000003" />
       </properties>
       <layout>
-        <posX>62</posX>
-        <posY>72</posY>
+        <posX>16</posX>
+        <posY>131</posY>
       </layout>
     </component>
     <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
@@ -152,6 +153,59 @@
         <height>2200</height>
       </gui>
     </component>
+    <component id="Benchmark.1" type_id="asterics.Benchmark">
+      <description>Measures incoming data or events per time</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="dataCount">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="eventCount">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="time" value="1000" />
+      </properties>
+      <layout>
+        <posX>243</posX>
+        <posY>395</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="1" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="FPS" />
+      </properties>
+      <layout>
+        <posX>386</posX>
+        <posY>444</posY>
+      </layout>
+      <gui>
+        <posX>7762</posX>
+        <posY>756</posY>
+        <width>1125</width>
+        <height>3378</height>
+      </gui>
+    </component>
   </components>
   <channels>
     <channel id="binding.0">
@@ -184,7 +238,7 @@
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.3">
+    <channel id="binding.6">
       <source>
         <component id="Acceleration.1" />
         <port id="total" />
@@ -192,6 +246,26 @@
       <target>
         <component id="Oscilloscope.4" />
         <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Acceleration.1" />
+        <port id="total" />
+      </source>
+      <target>
+        <component id="Benchmark.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Benchmark.1" />
+        <port id="dataCount" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
       </target>
     </channel>
   </channels>
@@ -204,8 +278,8 @@
     <AREGUIWindow>
       <posX>0</posX>
       <posY>0</posY>
-      <width>8388</width>
-      <height>5800</height>
+      <width>9475</width>
+      <height>5711</height>
     </AREGUIWindow>
   </modelGUI>
 </model>

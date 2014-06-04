@@ -24,7 +24,7 @@
 
 // updated in timer ISR (-> volatile is important !!)
 volatile uint16_t ADC_updatetime=0;     // milliseconds for ADC update Frame (0=off)
-volatile uint8_t send_ADCFrame_now=0;     // flag for adc send packet request
+volatile uint8_t send_ADCFrame_now=0;     // flag for adc send packet requests
 
 
 ////// timer PWM operation //////

@@ -49,6 +49,12 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 public class DigitalInInstance extends AbstractRuntimeComponentInstance implements CIMEventHandler
 {
+	private static final String WIRELESS_GPIO_STRING = "WIRELESS_GPIO";
+
+	private static final String WIRED_GPIO_LEGACY_STRING = "WIRED_GPIO_LEGACY";
+
+	private static final String WIRED_GPIO_STRING = "WIRED_GPIO";
+
 	private CIMPortController port = null;
 	
 	private final String KEY_PROPERTY_CHANGE_EVENT_1 	= "activateEventIn1";
@@ -192,7 +198,7 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
      * @param propertyName the name of the requested property
      * @return the value of the property as an Object
      */
-    public Object getRuntimePropertyValue(String propertyName)
+    public synchronized Object getRuntimePropertyValue(String propertyName)
     {
         if(KEY_PROPERTY_CHANGE_EVENT_1.equalsIgnoreCase(propertyName))
         {
@@ -243,7 +249,7 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
      * @param newValue the new value for the property
      * @return the old value of the property as an Object
     */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
+    public synchronized Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
     	try
     	{
@@ -268,7 +274,7 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
 				if (tempPort != null)
 				{
 					port=tempPort;
-					if (    (!wirelessCIM) &&
+					if (    (!wirelessCIM) &&   							
 							(!propUniqueID.equals("")) && 
 							(!propUniqueID.equals("not used")))
 					{
@@ -386,10 +392,23 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
 		else
 		{
 			try {
-				short id = Short.decode(propUniqueID.substring(0, propUniqueID.indexOf('-')));
+				//short id = Short.decode(propUniqueID.substring(0, propUniqueID.indexOf('-')));
+				
+				short id = GPIO_CIM_ID;
+				String cimString = propUniqueID.substring(0,
+						propUniqueID.indexOf('-'));
+
+				if(WIRED_GPIO_STRING.equals(cimString)) {
+					id = GPIO_CIM_ID;
+				} else if(WIRED_GPIO_LEGACY_STRING.equals(cimString)){
+					id = GPIO_LEGACY_CIM_ID;
+				} else if(WIRELESS_GPIO_STRING.equals(cimString)) {
+					id= WGPIO_CIM_ID;
+				}
+								
 				long  uid = Long.decode(propUniqueID.substring(propUniqueID.indexOf('-') + 1));
 				System.out.println(String.format("Trying to get: id %x uid %x", id, uid));
-				if (id == (short) 0x0b01)
+				if (id == (short) WGPIO_CIM_ID)
 				{
 					wirelessCIM = true;
 					return (CIMPortManager.getInstance().getWirelessConnection(id, uid));
@@ -406,7 +425,7 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
 	 * Returns a List of available CIM unique IDs
 	 * @return list of string with CIM IDs
 	 */
-	public List<String> getRuntimePropertyList(String key) 
+	public synchronized List<String> getRuntimePropertyList(String key) 
 	{
 		//System.out.println("DigitalInInstance.getRuntimePropertyList");
 
@@ -422,9 +441,9 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
 			{ 
 				for (Long l : ids)
 				{
-					s = String.format("0x%x-0x%x", GPIO_CIM_ID, l);
+					s = String.format(WIRED_GPIO_STRING+"-0x%x", l);
 					res.add(s);
-					System.out.println(" 0x0701 found unique ID: "+s);
+					System.out.println(GPIO_CIM_ID+" found unique ID: "+s);
 				}
 			}
 			
@@ -435,9 +454,9 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
 			{ 
 				for (Long l : ids)
 				{
-					s = String.format("0x%x-0x%x", GPIO_LEGACY_CIM_ID, l);
+					s = String.format(WIRED_GPIO_LEGACY_STRING+"-0x%x", l);
 					res.add(s);
-					System.out.println(" 0x0201 found unique ID: "+s);
+					System.out.println(GPIO_LEGACY_CIM_ID+" found unique ID: "+s);
 				}
 			}
 					
@@ -448,9 +467,9 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
 			{ 
 				for (Long l : ids)
 				{
-					s = String.format("0x%x-0x%x", WGPIO_CIM_ID, l);
+					s = String.format(WIRELESS_GPIO_STRING+"-0x%x", l);
 					res.add(s);
-					System.out.println(" 0x0b01 found wireless unique ID: "+s);
+					System.out.println(WGPIO_CIM_ID+ "  found wireless unique ID: "+s);
 				}
 			}
 		}
@@ -461,7 +480,7 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
     /**
      * Starts the component, gets the port controller and reports error on fail
      */
-    public void start()
+    public synchronized void start()
     {
     	if (port == null)
     	{
@@ -493,7 +512,7 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
      * Stops the component and releases the port controller
      */
     @Override
-    public void stop()
+    public synchronized void stop()
     {
         super.stop();
 //        CIMPortController port = CIMPortManager.getInstance().getConnection(GPIO_CIM_ID);
@@ -509,8 +528,9 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
      * Handles incoming packets and raises events if necessary. Called when new 
      * packets arrive from the GPIO CIM.  
      */
-	public void handlePacketReceived(CIMEvent e)
+	public synchronized void handlePacketReceived(CIMEvent e)
 	{
+		//System.out.println("DigitalIn.handlePacketReceived: wirelessCIM: "+wirelessCIM+", CimEvent: "+e.getClass().getName());
 		if (wirelessCIM)
 		{
 			CIMWirelessDataEvent ev = (CIMWirelessDataEvent) e;
@@ -584,7 +604,7 @@ public class DigitalInInstance extends AbstractRuntimeComponentInstance implemen
 	/**
 	 * Called if a faulty packet is read from the CIM
 	 */
-	public void handlePacketError(CIMEvent e)
+	public synchronized void handlePacketError(CIMEvent e)
 	{
 		AstericsErrorHandling.instance.reportDebugInfo(this, "Faulty packet received");
 	}

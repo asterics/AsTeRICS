@@ -41,8 +41,8 @@ import org.w3c.dom.Element;
  */
 public class DefaultEventChannel implements IEventChannel
 {
-    private final Set<IEventEdge> sources = new HashSet<IEventEdge>();
-    private final Set<IEventEdge> targets = new HashSet<IEventEdge>();
+    private final Set<IEventEdge> sources = new LinkedHashSet<IEventEdge>();
+    private final Set<IEventEdge> targets = new LinkedHashSet<IEventEdge>();
 
     private String id, description;
 
