@@ -1,9 +1,9 @@
 :Initialization
 CLS
-set JAVA_BIN="java"
+set JAVA_BIN="javaw"
 
 if exist java\bin\java.exe (
-	set JAVA_BIN=java\bin\java.exe
+	set JAVA_BIN=java\bin\javaw.exe
 )
 
 @ECHO AsTeRICS ARE Version 2.3
@@ -30,11 +30,10 @@ REM sleeper 5
 
 
 REM use the next line instead for starting with the shell window
-%JAVA_BIN% -Djava.util.logging.config.file=logging.properties -Dorg.osgi.framework.bootdelegation=* -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
+%JAVA_BIN% -splash:images/asterics_startup.png -Djava.util.logging.config.file=logging.properties -Dorg.osgi.framework.bootdelegation=* -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
 
 GOTO Quit
 
 :QuitError
-pause
 
 :Quit
