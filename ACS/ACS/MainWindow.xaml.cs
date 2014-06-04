@@ -6349,10 +6349,10 @@ namespace Asterics.ACS {
                             {
                                 if (errorCompCanvas.Background == Brushes.Red)
                                 {
-
-                                    if (GetParentGroup(deploymentComponentList[so.InvolvedComponentID]) != null)
+                                    groupComponent group = GetParentGroup(deploymentComponentList[so.InvolvedComponentID]);
+                                    if (group != null && deploymentComponentList.ContainsKey(group.ID))
                                     {
-                                        groupErrorCanvas = deploymentComponentList[GetParentGroup(deploymentComponentList[so.InvolvedComponentID]).ID].ComponentCanvas;
+                                        groupErrorCanvas = deploymentComponentList[group.ID].ComponentCanvas;
                                     }
                                 }
                                 errorCompCanvas.Background = null;
