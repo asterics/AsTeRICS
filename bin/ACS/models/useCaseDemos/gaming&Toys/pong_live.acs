@@ -87,6 +87,12 @@
         <inputPort portTypeID="playerTwoSpeed">
           <properties />
         </inputPort>
+        <outputPort portTypeID="ballX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ballY">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="controlMode" value="0" />
