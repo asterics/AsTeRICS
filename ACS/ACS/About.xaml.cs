@@ -51,7 +51,7 @@ namespace Asterics.ACS {
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             DateTime dt = new DateTime(2000, 1, 1);
             string dateString = dt.AddDays(version.Build).ToString();
-            versionText.Text = Properties.Resources.AboutVersion + dt.AddDays(version.Build).ToShortDateString()+
+            versionText.Text = "ACS Version: "+MainWindow.ACS_VERSION+"\n"+Properties.Resources.AboutVersion + dt.AddDays(version.Build).ToShortDateString()+
                 "\nAsapi: "+asapiVersion;
         }
 

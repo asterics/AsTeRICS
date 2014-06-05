@@ -86,26 +86,26 @@
             <r:RibbonTab Header="{x:Static properties:Resources.RibbonTabSystem}" Name="ribbonSystemTab" KeyTip="Y">
 
                 <!-- Define the groups in this tab -->
-                <r:RibbonGroup Header="{x:Static properties:Resources.RibbonGroupARE}">
+                <r:RibbonGroup Header="{x:Static properties:Resources.RibbonGroupARE}" MinWidth="100" MinHeight="20">
                     <r:RibbonButton Label="{x:Static properties:Resources.ConnectAREButton}" Name="connectAREButton" LargeImageSource="images/connect.png" ToolTipTitle="{x:Static properties:Resources.ConnectARETooltip}" Click="Connect_Click" KeyTip="C"/>
                     <r:RibbonButton Label="{x:Static properties:Resources.DisconnectAREButton}" Name="disconnectAREButton" LargeImageSource="images/disconnect.png" ToolTipTitle="{x:Static properties:Resources.DisconnectARETooltip}" Click="Disconnect_Click" KeyTip="T" IsEnabled="False" />
                     <r:RibbonButton Label="{x:Static properties:Resources.UploadSchemaButton}" Name="uplaodSchemaButton" LargeImageSource="images/Upload.png" ToolTipTitle="{x:Static properties:Resources.UploadSchemaTooltip}" Click="UploadSchema_Click" KeyTip="U" IsEnabled="False" />
                     <r:RibbonButton Label="{x:Static properties:Resources.DownloadSchemaButton}" Name="downlaodSchemaButton" LargeImageSource="images/Download.png" ToolTipTitle="{x:Static properties:Resources.DownloadSchemaTooltip}" Click="DownloadSchema_Click" KeyTip="D" IsEnabled="False" />
                     <r:RibbonButton Label="{x:Static properties:Resources.DownloadBundlesButton}" Name="downloadBundlesButton" LargeImageSource="images/DownloadBundle.png" ToolTipTitle="{x:Static properties:Resources.DownloadBundlesTooltip}" Click="DownloadBundles_Click" KeyTip="W" IsEnabled="False" />
                 </r:RibbonGroup>
-                <r:RibbonGroup Header="{x:Static properties:Resources.RibbonGroupStoreARE}">
+                <r:RibbonGroup Header="{x:Static properties:Resources.RibbonGroupStoreARE}" MinWidth="100" MinHeight="20">
                     <r:RibbonButton Label="{x:Static properties:Resources.StoreModelButton}" Name="storeModelButton" LargeImageSource="images/storeup.png" ToolTipTitle="{x:Static properties:Resources.StoreModelTooltip}" Click="StoreModelOnARE_Click" KeyTip="J" IsEnabled="False" />
                     <r:RibbonButton Label="{x:Static properties:Resources.LoadModelFromStorageButton}" Name="loadModelFromStorageButton" LargeImageSource="images/storedown.png" ToolTipTitle="{x:Static properties:Resources.LoadModelFromStorageTooltip}" Click="LoadModelFromStorage_Click" KeyTip="L" IsEnabled="False" />
                     <r:RibbonButton Label="{x:Static properties:Resources.ActivateStoredModelButton}" Name="activateStoredModelButton" LargeImageSource="images/storerun.png" ToolTipTitle="{x:Static properties:Resources.ActivateStoredModelTooltip}" Click="ActivateStoredModel_Click" KeyTip="V" IsEnabled="False" />
                     <r:RibbonButton Label="{x:Static properties:Resources.DeleteStoredModelButton}" Name="deleteStoredModelButton" LargeImageSource="images/storedelete.png" ToolTipTitle="{x:Static properties:Resources.DeleteStoredModelTooltip}" Click="DeleteModelOnStorage_Click" KeyTip="X" IsEnabled="False" />
                     <r:RibbonButton Label="{x:Static properties:Resources.AutorunModelButton}" Name="autorunModelButton" LargeImageSource="images/autorun.png" ToolTipTitle="{x:Static properties:Resources.AutorunModelTooltip}" Click="AutostartModel_Click" KeyTip="B" IsEnabled="False" />
                 </r:RibbonGroup>
-                <r:RibbonGroup Header="{x:Static properties:Resources.RibbonGroupModel}">
+                <r:RibbonGroup Header="{x:Static properties:Resources.RibbonGroupModel}" MinWidth="100" MinHeight="20">
                     <r:RibbonButton Label="{x:Static properties:Resources.RunModelButton}" Name="runModelButton" LargeImageSource="images/StartModel.png" ToolTipTitle="{x:Static properties:Resources.RunModelTooltip}" Click="StartModel_Click" KeyTip="R" IsEnabled="False" />
                     <r:RibbonButton Label="{x:Static properties:Resources.PauseModelButton}" Name="pauseModelButton" LargeImageSource="images/PauseModel.png" ToolTipTitle="{x:Static properties:Resources.PauseModelTooltip}" Click="PauseModel_Click" KeyTip="P" IsEnabled="False" />
                     <r:RibbonButton Label="{x:Static properties:Resources.StopModelButton}" Name="stopModelButton" LargeImageSource="images/StopModel.png" ToolTipTitle="{x:Static properties:Resources.StopModelTooltip}" Click="StopModel_Click" KeyTip="E" IsEnabled="False" />
                 </r:RibbonGroup>
-                <r:RibbonGroup Header="{x:Static properties:Resources.RibbonGroupLocal}">
+                <r:RibbonGroup Header="{x:Static properties:Resources.RibbonGroupLocal}" MinWidth="100" MinHeight="20">
                     <r:RibbonButton LargeImageSource="images/new.png" Label="{x:Static properties:Resources.NewSchemaButton}" ToolTipTitle="{x:Static properties:Resources.NewSchemaTooltip}" Click="NewSchema_Click" KeyTip="N"/>
                     <r:RibbonButton LargeImageSource="images/open.png" Label="{x:Static properties:Resources.OpenSchemaButton}" ToolTipTitle="{x:Static properties:Resources.OpenSchemaTooltip}" Click="OpenLocal_Click" KeyTip="O"/>
                     <r:RibbonButton LargeImageSource="images/save.png" Label="{x:Static properties:Resources.SaveSchemaButton}" ToolTipTitle="{x:Static properties:Resources.SaveSchemaTooltip}" KeyTip="S" Click="SaveLocal_Click" />
