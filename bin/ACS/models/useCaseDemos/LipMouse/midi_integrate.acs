@@ -1,0 +1,402 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="31.08.2012_2336" version="20130320">
+  <components>
+    <component id="Integrate.1" type_id="asterics.Integrate">
+      <description>Integration with upper and lower bounds and reset</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="resetValue" value="80" />
+        <property name="upperLimit" value="255" />
+        <property name="lowerLimit" value="0" />
+        <property name="wrapAround" value="false" />
+      </properties>
+      <layout>
+        <posX>645</posX>
+        <posY>208</posY>
+      </layout>
+    </component>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="Gervill" />
+        <property name="channel" value="1" />
+        <property name="instrument" value="Shakuhachi  " />
+        <property name="triggerThreshold" value="530" />
+        <property name="triggerMax" value="600" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="255" />
+        <property name="toneScale" value="major30-102.sc" />
+        <property name="playOnlyChangingNotes" value="true" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>787</posX>
+        <posY>39</posY>
+      </layout>
+      <gui>
+        <posX>88</posX>
+        <posY>978</posY>
+        <width>5000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="AdjustmentCurve.1" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="midi_integrate2" />
+        <property name="displayGui" value="true" />
+        <property name="inMin" value="0" />
+        <property name="inMax" value="127" />
+        <property name="outMin" value="-10" />
+        <property name="outMax" value="10" />
+        <property name="mode" value="1" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="dotMeter" />
+      </properties>
+      <layout>
+        <posX>450</posX>
+        <posY>275</posY>
+      </layout>
+      <gui>
+        <posX>5138</posX>
+        <posY>1000</posY>
+        <width>3025</width>
+        <height>3089</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="buttonCaption1" value="save curve" />
+        <property name="buttonCaption2" value="center tone" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>130</posX>
+        <posY>64</posY>
+      </layout>
+      <gui>
+        <posX>75</posX>
+        <posY>3022</posY>
+        <width>5025</width>
+        <height>1089</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="(a-b)+512" />
+      </properties>
+      <layout>
+        <posX>294</posX>
+        <posY>315</posY>
+      </layout>
+    </component>
+    <component id="SampleAndHold.1" type_id="asterics.SampleAndHold">
+      <description>Sample and hold for up to 4 input values</description>
+      <ports>
+        <inputPort portTypeID="in1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in4">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>265</posX>
+        <posY>489</posY>
+      </layout>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="300" />
+      </properties>
+      <layout>
+        <posX>38</posX>
+        <posY>503</posY>
+      </layout>
+    </component>
+    <component id="BarDisplay.1" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="bar-graph" />
+      </properties>
+      <layout>
+        <posX>367</posX>
+        <posY>52</posY>
+      </layout>
+      <gui>
+        <posX>8212</posX>
+        <posY>1044</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="Lipmouse.1" type_id="asterics.Lipmouse">
+      <description>Lipmouse CIM</description>
+      <ports>
+        <outputPort portTypeID="X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="periodicADCUpdate" value="50" />
+      </properties>
+      <layout>
+        <posX>12</posX>
+        <posY>278</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.3">
+      <source>
+        <component id="AdjustmentCurve.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Integrate.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Integrate.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="X" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="X" />
+      </source>
+      <target>
+        <component id="SampleAndHold.1" />
+        <port id="in1" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="SampleAndHold.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="MathEvaluator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="AdjustmentCurve.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.11">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="trigger" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="BarDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_saveCurve">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AdjustmentCurve.1" />
+          <eventPort id="saveCurve" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_reset">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Integrate.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_sampleNow">
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="SampleAndHold.1" />
+          <eventPort id="sampleNow" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>38</posX>
+      <posY>67</posY>
+      <width>9800</width>
+      <height>4089</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

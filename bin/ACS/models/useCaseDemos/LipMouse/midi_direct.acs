@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="31.08.2012_2336" version="20130320">
+  <components>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+      </properties>
+      <layout>
+        <posX>240</posX>
+        <posY>314</posY>
+      </layout>
+      <gui>
+        <posX>1625</posX>
+        <posY>2111</posY>
+        <width>3625</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
+      <ports>
+        <inputPort portTypeID="trigger">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pitch">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="instrument">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="scale">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="midiDevice" value="Gervill" />
+        <property name="channel" value="1" />
+        <property name="instrument" value="Vibraphone  " />
+        <property name="triggerThreshold" value="50" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="412" />
+        <property name="pitchMax" value="612" />
+        <property name="toneScale" value="harmonic.sc" />
+        <property name="playOnlyChangingNotes" value="true" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>241</posX>
+        <posY>123</posY>
+      </layout>
+      <gui>
+        <posX>1112</posX>
+        <posY>4311</posY>
+        <width>5000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="Lipmouse.1" type_id="asterics.Lipmouse">
+      <description>Lipmouse CIM</description>
+      <ports>
+        <outputPort portTypeID="X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="periodicADCUpdate" value="50" />
+      </properties>
+      <layout>
+        <posX>44</posX>
+        <posY>214</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.1">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.0">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>60</posX>
+      <posY>1267</posY>
+      <width>6840</width>
+      <height>5244</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

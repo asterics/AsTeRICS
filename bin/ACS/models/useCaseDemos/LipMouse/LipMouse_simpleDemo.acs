@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="03.06.2014_1624" version="20130320">
+  <components>
+    <component id="Lipmouse.1" type_id="asterics.Lipmouse">
+      <description>Lipmouse CIM</description>
+      <ports>
+        <outputPort portTypeID="X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="periodicADCUpdate" value="50" />
+      </properties>
+      <layout>
+        <posX>49</posX>
+        <posY>113</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="true" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="2000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1024" />
+      </properties>
+      <layout>
+        <posX>499</posX>
+        <posY>106</posY>
+      </layout>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="1000" />
+      </properties>
+      <layout>
+        <posX>108</posX>
+        <posY>393</posY>
+      </layout>
+    </component>
+    <component id="Deadzone.1" type_id="asterics.Deadzone">
+      <description>Defines active/passive Zone for x/y values</description>
+      <ports>
+        <inputPort portTypeID="inX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="radius">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="xCenter" value="0" />
+        <property name="yCenter" value="0" />
+        <property name="radius" value="10" />
+        <property name="mode" value="2" />
+      </properties>
+      <layout>
+        <posX>355</posX>
+        <posY>106</posY>
+      </layout>
+    </component>
+    <component id="Amplifier.1" type_id="asterics.Amplifier">
+      <description>Multiplies input with a proportional factor</description>
+      <ports>
+        <inputPort portTypeID="sigIn">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="sigOut">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="factor" value="0.1" />
+      </properties>
+      <layout>
+        <posX>194</posX>
+        <posY>38</posY>
+      </layout>
+    </component>
+    <component id="Amplifier.1.1" type_id="asterics.Amplifier">
+      <description>Multiplies input with a proportional factor</description>
+      <ports>
+        <inputPort portTypeID="sigIn">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="sigOut">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="factor" value="0.1" />
+      </properties>
+      <layout>
+        <posX>197</posX>
+        <posY>195</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.5">
+      <source>
+        <component id="Amplifier.1" />
+        <port id="sigOut" />
+      </source>
+      <target>
+        <component id="Deadzone.1" />
+        <port id="inX" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="Y" />
+      </source>
+      <target>
+        <component id="Amplifier.1.1" />
+        <port id="sigIn" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="Deadzone.1" />
+        <port id="outX" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Deadzone.1" />
+        <port id="outY" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="X" />
+      </source>
+      <target>
+        <component id="Amplifier.1" />
+        <port id="sigIn" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Amplifier.1.1" />
+        <port id="sigOut" />
+      </source>
+      <target>
+        <component id="Deadzone.1" />
+        <port id="inY" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="output_calibration">
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Lipmouse.1" />
+          <eventPort id="calibration" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9000</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
