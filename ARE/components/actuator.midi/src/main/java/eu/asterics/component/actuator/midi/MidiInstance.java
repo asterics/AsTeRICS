@@ -29,7 +29,9 @@ package eu.asterics.component.actuator.midi;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
@@ -39,6 +41,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.MidiManager;
+
 import javax.sound.midi.MidiDevice.Info;
 
 
@@ -396,7 +399,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 			}
 			else
 			{
-				selectedNote =  propPitchMin + (int)((double)(pitchInput-propPitchMin) / (double)(propPitchMax-propPitchMin) * (double) amountOfNotes); 
+				selectedNote =  (int)((double)(pitchInput-propPitchMin) / (double)(propPitchMax-propPitchMin) * (double) amountOfNotes); 
 			}
     			
 			if (propDisplayGUI == true) gui.repaint();
