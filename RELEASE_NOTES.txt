@@ -55,3 +55,17 @@ added teensy RC CIM
 ARE: Improved Error handling
 MicGPI-Plugin: added
 
+v2.4 (2014-06-05)
+TimerPlugin: cured timing issues
+Fixed Issue #21
+Added ReadEDF/WriteEDF, TeensyRCPrototype plugins
+Fixed Issue #36
+Fixed Issue #24
+Improved Issue #30
+improved start.bat file
+added better version handling to ARE and ACS
+added/adapted models for LipMouse plugin
+
+
+
+
