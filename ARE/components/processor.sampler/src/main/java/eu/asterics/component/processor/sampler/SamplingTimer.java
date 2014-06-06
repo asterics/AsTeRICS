@@ -54,7 +54,7 @@ import eu.asterics.mw.services.AstericsThreadPool;
 public class SamplingTimer implements Runnable
 {
 	private Thread t;
-	private boolean active=false;
+	private volatile boolean active=false;
 	private long sampingTime=-1;
 	private double value =0; 
 	
