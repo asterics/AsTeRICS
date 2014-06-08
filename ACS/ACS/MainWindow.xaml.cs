@@ -3990,6 +3990,86 @@ namespace Asterics.ACS {
                 ClearSelectedEventChannelList();
                 return;
             }
+
+            /////  *** begin patch for easier selection of channels and ports
+
+            foreach (eventChannelLine tempLine in eventChannelLinesList)
+            {
+                if (tempLine.Line.StrokeThickness == SELECTED_LINE_THICKNESS)
+                {
+                    focusedEventChannel = tempLine;
+
+                    double v = scrollViewer.VerticalOffset;
+                    double h = scrollViewer.HorizontalOffset;
+
+                    Keyboard.Focus(focusedEventChannel.Line);
+
+                    scrollViewer.ScrollToVerticalOffset(v);
+                    scrollViewer.ScrollToHorizontalOffset(h);
+
+                    if (!selectedEventChannelList.Contains(tempLine))
+                    {
+                        if ((Keyboard.Modifiers & ModifierKeys.Control) == 0)
+                        {
+                            ClearSelectedChannelList();
+                            ClearSelectedComponentList();
+                            ClearSelectedEventChannelList();
+                        }
+                        AddSelectedEventChannel(tempLine);
+                    }
+                    else
+                    {
+                        if ((Keyboard.Modifiers & ModifierKeys.Control) > 0)
+                        {
+                            ClearColorOfSelectedEventChannels();
+                            selectedEventChannelList.Remove(tempLine);
+                            UpdateSelectedEventChannels();
+                        }
+                    }
+                    break ;
+                }
+            }
+
+            foreach (channel tempChannel in deploymentChannelList.Values)
+            {
+                if (tempChannel.Line.StrokeThickness == SELECTED_LINE_THICKNESS)
+                {
+                    focusedChannel = tempChannel;
+                    double v=scrollViewer.VerticalOffset;
+                    double h = scrollViewer.HorizontalOffset;
+
+                    Keyboard.Focus(focusedChannel.Line);
+
+                    scrollViewer.ScrollToVerticalOffset(v);
+                    scrollViewer.ScrollToHorizontalOffset(h);
+
+                    if (!selectedChannelList.Contains(tempChannel))
+                    {
+                        if ((Keyboard.Modifiers & ModifierKeys.Control) == 0)
+                        {
+                            ClearSelectedChannelList();
+                            ClearSelectedComponentList();
+                            ClearSelectedEventChannelList();
+                        }
+                        this.AddSelectedChannel(tempChannel);
+                        Console.WriteLine(tempChannel.id + ": " + tempChannel.source.component.id + " --> " + tempChannel.target.component.id);
+
+                    }
+                    else
+                    {
+                        if ((Keyboard.Modifiers & ModifierKeys.Control) > 0)
+                        {
+                            ClearColorOfSelectedChannels();
+                            selectedChannelList.Remove(tempChannel);
+                            UpdateSelectedChannels();
+                        }
+                    }
+                    break;
+                }
+            }
+            /////  *** end patch for easier selection of channels and ports
+
+
             // left up on an event channel. set event channel as focused event channel
             if (args.Source is Line) {
                 if (((Line)args.Source).Name == "EventChannelLine") {
@@ -4609,12 +4689,155 @@ namespace Asterics.ACS {
             }
         }
 
+
+        /////  *** begin patch for easier selection of channels and ports
+
+        //Compute the dot product AB . AC
+        private double DotProduct(double[] pointA, double[] pointB, double[] pointC)
+        {
+            double[] AB = new double[2];
+            double[] BC = new double[2];
+            AB[0] = pointB[0] - pointA[0];
+            AB[1] = pointB[1] - pointA[1];
+            BC[0] = pointC[0] - pointB[0];
+            BC[1] = pointC[1] - pointB[1];
+            double dot = AB[0] * BC[0] + AB[1] * BC[1];
+
+            return dot;
+        }
+
+        //Compute the cross product AB x AC
+        private double CrossProduct(double[] pointA, double[] pointB, double[] pointC)
+        {
+            double[] AB = new double[2];
+            double[] AC = new double[2];
+            AB[0] = pointB[0] - pointA[0];
+            AB[1] = pointB[1] - pointA[1];
+            AC[0] = pointC[0] - pointA[0];
+            AC[1] = pointC[1] - pointA[1];
+            double cross = AB[0] * AC[1] - AB[1] * AC[0];
+
+            return cross;
+        }
+
+        //Compute the distance from A to B
+        double Distance(double[] pointA, double[] pointB)
+        {
+            double d1 = pointA[0] - pointB[0];
+            double d2 = pointA[1] - pointB[1];
+
+            return Math.Sqrt(d1 * d1 + d2 * d2);
+        }
+
+        //Compute the distance from AB to C
+        //if isSegment is true, AB is a segment, not a line.
+        double LineToPointDistance2D(double[] pointA, double[] pointB, double[] pointC,
+            bool isSegment)
+        {
+            double dist = CrossProduct(pointA, pointB, pointC) / Distance(pointA, pointB);
+            if (isSegment)
+            {
+                double dot1 = DotProduct(pointA, pointB, pointC);
+                if (dot1 > 0)
+                    return Distance(pointB, pointC);
+
+                double dot2 = DotProduct(pointB, pointA, pointC);
+                if (dot2 > 0)
+                    return Distance(pointA, pointC);
+            }
+            return Math.Abs(dist);
+        }
+
+        Polygon selectedEventPort = null;
+        const int SELECTED_PORT_THICKNESS = 4;
+        const int SELECTED_EVENTPORT_THICKNESS = 3;
+        const int SELECTED_LINE_THICKNESS = 4;
+        const int UNSELECTED_LINE_THICKNESS = 2;
+        const int LINE_SELECTION_DISTANCE = 20;
+
+        /////  *** end patch for easier selection of channels and ports
+        
         /// <summary>
         /// Mouse move on the canvas. If a channel or an eventchannel has been created, the line wil be drawn to the mouse pointer
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
+
         private void OnMouseMove(object sender, MouseEventArgs args) {
+
+            /////  *** begin patch for easier selection of channels and ports
+
+            Line foundLine = null;
+            double minDist = 100000, actDist=0;
+            foreach (object o in canvas.Children)
+            {
+                if (o is Line)
+                {
+                    Line lin = (Line)o;
+                    lin.StrokeThickness = UNSELECTED_LINE_THICKNESS;  // reset prior selections ! 
+
+                    double[] pointA={lin.X1,lin.Y1};
+                    double[] pointB={lin.X2,lin.Y2};
+                    double[] pointC={args.GetPosition(canvas).X,args.GetPosition(canvas).Y};
+
+                    actDist = LineToPointDistance2D(pointA, pointB, pointC, true);
+                    if ((actDist < LINE_SELECTION_DISTANCE) && (actDist < minDist))
+                    {
+                        minDist=actDist;
+                        foundLine = lin;
+                    }
+                }
+            }
+
+            if (selectedEventPort != null)
+            {
+                selectedEventPort.StrokeThickness = 1;  // reset prior selections
+                selectedEventPort = null;
+            }
+
+            if (args.Source is Polygon)
+            {
+                Polygon p = (Polygon)args.Source;
+                if (p.IsMouseOver)
+                {
+                    p.StrokeThickness = SELECTED_EVENTPORT_THICKNESS;
+                    selectedEventPort = p;
+                    foundLine = null;
+                }
+            }
+
+            foreach (componentType tempComponent in deploymentComponentList.Values.ToList())
+            {
+
+                foreach (object o in tempComponent.PortsList.Values)
+                {
+                    if (o is outputPortType)
+                    {
+                        if (((outputPortType)o).PortRectangle.IsMouseOver)
+                        {
+                            ((outputPortType)o).PortRectangle.StrokeThickness = SELECTED_PORT_THICKNESS;
+                            foundLine = null;
+                        }
+                        else ((outputPortType)o).PortRectangle.StrokeThickness = 1;
+                    }
+                    else if (o is inputPortType)
+                    {
+                        if (((inputPortType)o).PortRectangle.IsMouseOver)
+                        {
+                            ((inputPortType)o).PortRectangle.StrokeThickness = SELECTED_PORT_THICKNESS;
+                            foundLine = null;
+                        }
+                        else ((inputPortType)o).PortRectangle.StrokeThickness = 1;
+                    }
+                }
+            }
+
+            if (foundLine != null)
+            { foundLine.StrokeThickness = SELECTED_LINE_THICKNESS; }
+
+            /////  *** end patch for easier selection of channels and ports
+
+
             // if a 'movePlugin' is defined, the plugin will be moved
             //if (componentToMove != null && Mouse.LeftButton == MouseButtonState.Pressed)  
             //MoveComponent(selectedComponentList.First(), (int)args.GetPosition(canvas).X, (int)args.GetPosition(canvas).Y);
