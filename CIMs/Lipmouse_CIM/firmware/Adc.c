@@ -12,7 +12,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-
+#define PCB_VERSION
 
 void ADC_Init(void) {
  
@@ -37,10 +37,20 @@ void ADC_Init(void) {
 /* ADC Einzelmessung */
 uint16_t ADC_Read(uint16_t channel )
 {
+
+#ifdef PCB_VERSION
   if (channel==1) channel=4;
   else if (channel==2) channel=5;
   else if (channel==3) channel=6;
   else if (channel==4) channel=7;
+#else
+  if (channel==1) channel=1;
+  else if (channel==2) channel=4;
+  else if (channel==3) channel=2;
+  else if (channel==4) channel=3;
+#endif
+
+
   // Kanal waehlen, ohne andere Bits zu beeinfluﬂen
   ADMUX = (ADMUX & ~(0x1F)) | (channel & 0x1F);
   ADCSRA |= (1<<ADSC);            // eine Wandlung "single conversion"
