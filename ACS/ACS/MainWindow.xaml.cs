@@ -4798,7 +4798,7 @@ namespace Asterics.ACS {
             if (args.Source is Polygon)
             {
                 Polygon p = (Polygon)args.Source;
-                if (p.IsMouseOver)
+                if ((p.IsMouseOver) && (channelToConnect == null))
                 {
                     p.StrokeThickness = SELECTED_EVENTPORT_THICKNESS;
                     selectedEventPort = p;
@@ -4813,7 +4813,7 @@ namespace Asterics.ACS {
                 {
                     if (o is outputPortType)
                     {
-                        if (((outputPortType)o).PortRectangle.IsMouseOver)
+                        if ((((outputPortType)o).PortRectangle.IsMouseOver) && (channelToConnect == null))
                         {
                             ((outputPortType)o).PortRectangle.StrokeThickness = SELECTED_PORT_THICKNESS;
                             foundLine = null;
@@ -4822,7 +4822,7 @@ namespace Asterics.ACS {
                     }
                     else if (o is inputPortType)
                     {
-                        if (((inputPortType)o).PortRectangle.IsMouseOver)
+                        if ((((inputPortType)o).PortRectangle.IsMouseOver) && (channelToConnect != null))
                         {
                             ((inputPortType)o).PortRectangle.StrokeThickness = SELECTED_PORT_THICKNESS;
                             foundLine = null;
@@ -4831,6 +4831,9 @@ namespace Asterics.ACS {
                     }
                 }
             }
+
+            if (channelToConnect != null) foundLine = channelToConnect.Line;
+            if (eventChannelToConnect != null) foundLine = eventChannelToConnect.Line;
 
             if (foundLine != null)
             { foundLine.StrokeThickness = SELECTED_LINE_THICKNESS; }
