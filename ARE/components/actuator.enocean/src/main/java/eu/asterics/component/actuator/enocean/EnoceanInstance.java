@@ -879,7 +879,7 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
 	   				InetSocketAddress adress = new InetSocketAddress(propGatewayIP,5000);
 	   				enoceanLink = new EnOceanLinkImpl(adress);
 	   			} else {
-	   				CIMPortController portController = CIMPortManager.getInstance().getRawConnection(propGatewayIP,57600);
+	   				CIMPortController portController = CIMPortManager.getInstance().getRawConnection(propGatewayIP,57600,true);
 	   				if(portController == null) System.out.println("Port controller ist null....");
 	   				if(portController.getInputStream() == null) System.out.println("Port controller InputStream ist null....");
 	   				if(portController.getOutputStream() == null) System.out.println("Port controller OutputStream ist null....");
@@ -1276,9 +1276,9 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
         * sends a id/type/value command  to the connected EnOcean gateway 
         */
        private void sendEnOcean(String id, String type, String value) {
-    	   System.out.println(id);
+    	   /*System.out.println(id);
     	   System.out.println(type);
-    	   System.out.println(value);
+    	   System.out.println(value);*/
     	   ErrorCodeSend returnval = null;
     	   if(enoceanLink != null)
     	   {
@@ -1309,7 +1309,7 @@ public class EnoceanInstance extends AbstractRuntimeComponentInstance
     		   		default:
     		   			break;
     		   }
-    		   System.out.println("Return value send: " + returnval);
+    		   //System.out.println("Return value send: " + returnval);
     	   }
        }
       
