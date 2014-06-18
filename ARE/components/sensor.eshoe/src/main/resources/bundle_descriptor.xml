@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.ESHOE"
+                   canonical_name="eu.asterics.component.sensor.eshoe.ESHOEInstance">
+        <type subtype="Sensor Modules">sensor</type>
+        <singleton>false</singleton>
+        <description>eSHOE implementation</description>
+        <ports>
+
+			<outputPort id="Angle">
+				<description>Foot angle in respect to ground</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccX">
+				<description>acceleration x-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccY">
+				<description>acceleration y-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccZ">
+				<description>acceleration z-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Heel">
+				<description>pressure heel sensor</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Meta1">
+				<description>pressure metatarsal1 sensor</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Meta5">
+				<description>pressure metatarsal5 sensor</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Toe">
+				<description>pressure toe sensor</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="GyroX">
+				<description>angular velocity x-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="GyroY">
+				<description>angular velocity y-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="GyroZ">
+				<description>angular velocity z-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="start">
+				<description>start data transmission</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stop data transmission</description>
+			</eventListenerPort>
+			<eventListenerPort id="calibrate">
+				<description>calibrate baseline position</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="toePressureReached">
+				<description>threshold pressure for toe exceeded</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+        	<property name="ComPort"
+				type="string"
+				value="COM4"
+				description="The COM Port which will be opened to connect to the eSHOE"/>
+			<property name="SamplingRate"
+				type="integer"
+				value="0"
+				combobox="50 Hz//200 Hz"
+				description="Choose sampling rate between 50 and 200 Hz"/>
+			<property name="ToePressureThreshold"
+				type="double"
+				value="100"
+				description="Threshold for toe pressure event"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
