@@ -3,7 +3,8 @@
 <head>
 <meta http-equiv="content-type"
 	content="text/html; charset=windows-1252">
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/blitzer/jquery-ui.css">
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.9.2/themes/blitzer/jquery-ui.css">
 <style>
 body {
 	margin: 0px;
@@ -77,14 +78,14 @@ h2 {
 	var data1 = 0;
 	var data2 = 0;
 	var data3 = 0;
-	
-	var wsUri = "ws://"+window.location.hostname+":8080/ws/ws";
+
+	var wsUri = "ws://" + window.location.hostname + ":8080/ws/ws";
 	var output;
 	function init() {
 		output = document.getElementById("output");
 		//testWebSocket();
 	}
-	
+
 	function initSocket() {
 		init();
 		websocket = new WebSocket(wsUri);
@@ -100,7 +101,7 @@ h2 {
 		websocket.onerror = function(evt) {
 			onError(evt)
 		};
-		
+
 	}
 	function testWebSocket() {
 		websocket = new WebSocket(wsUri);
@@ -125,17 +126,10 @@ h2 {
 		writeToScreen("DISCONNECTED");
 	}
 	function onMessage(evt) {
-
-		analogData1 = document.getElementById("Ch0");
-		//output.appendChild(evt.data);
-		//writeToScreen(evt.data);
-		analogData1.value = evt.data;	
-		
 		accDataX = document.getElementById("AccX");
 		accDataX.value = evt.data;
 
 		window.data1 = Number(evt.data); //AccX graphData
-
 	}
 	function onError(evt) {
 		writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
@@ -150,7 +144,6 @@ h2 {
 		pre.innerHTML = message;
 		output.appendChild(pre);
 	}
-	
 
 	function initGraph1() //Initialize Graph 1
 	{
@@ -197,7 +190,6 @@ h2 {
 			plot3.append(new Date().getTime(), data3);
 		}, 100);
 	}
-
 
 	function initButton() {
 		$("#check1").button();
@@ -339,13 +331,14 @@ h2 {
 </head>
 
 <body>
-<div>
-<h2>Websocket message:</h2>
-<p>
-<div id="output"></div>
-</div>
+	<div>
+		<h2>Websocket message:</h2>
+		<p>
+		<div id="output"></div>
+	</div>
 
 	<div id="rtxData">
+		<!-- 
 		<h2>Data from MSP430</h2>
 		<p style="">ADC Data:</p>
 		<div id="AnalogData1" style="">
@@ -371,20 +364,8 @@ h2 {
 			<br>
 			<hr style="">
 		</div>
-		<div id="AccData">
-			<p style="">Accelerometer Data:</p>
-			<p style="">X:</p>
-			&nbsp; &nbsp; <input id="AccX" style="" type="text"> &nbsp;
-			&nbsp;
-			<p style="">Y:</p>
-			&nbsp; &nbsp; <input id="AccY" style="" type="text"> &nbsp;
-			&nbsp;
-			<p style="">Z:</p>
-			&nbsp; &nbsp; <input id="AccZ" style="" type="text"> &nbsp;
-			&nbsp; <br>
-			<br>
-			<br>
-		</div>
+		-->
+
 		<!-- 
 		<div id="txData">
 			<h2>Data to MSP430</h2>
@@ -411,26 +392,32 @@ h2 {
 	</div>
 
 	<div id="gPanel">
-
-		<h2>Accelerometer Plot:</h2>
-
+		<h2>WebSocket Plugin:</h2>
 		<div align="center">
-			<p>X Axis:</p>
+			<p style="">inA:</p>
+			&nbsp; &nbsp; <input id="AccX" style="" type="text"> &nbsp;
+			&nbsp;
 			<canvas id="myGraph1" width="400" height="100"></canvas>
 		</div>
 
 		<div align="center">
-			<p>Y Axis:</p>
+			<p style="">inB:</p>
+			&nbsp; &nbsp; <input id="AccY" style="" type="text"> &nbsp;
+			&nbsp;
+
 			<canvas id="myGraph2" width="400" height="100"></canvas>
 		</div>
 
 		<div align="center">
-			<p>Z Axis:</p>
+			<p style="">inC:</p>
+			&nbsp; &nbsp; <input id="AccZ" style="" type="text"> &nbsp;
+			&nbsp;
+
 			<canvas id="myGraph3" width="400" height="100"></canvas>
 			<br>
 		</div>
 		<br>
-<!-- 
+		<!-- 
 		<div align="center">
 			<input id="start" value="Start" style="" onclick="startCOM()"
 				type="button"> <input id="stop" value="Stop" style=""
