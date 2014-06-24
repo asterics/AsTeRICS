@@ -1884,11 +1884,14 @@ public class AsapiSupport
 	 * It is called on startup by the middleware in order to autostart
 	 * a default model without the need of pressing deploy and start model 
 	 * first.
+	 * @param startModel TODO
 	 */
-	public void autostart() {
+	public void autostart(String startModel) {
 		try {
-
-			deployFile (AUTO_START_MODEL);
+			if(startModel== null || startModel.equals("")) {
+				startModel=AUTO_START_MODEL;
+			}
+			deployFile (startModel);
 			runModel();
 
 		} catch (AREAsapiException e) {
