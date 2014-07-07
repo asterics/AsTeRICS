@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type"
+	content="text/html; charset=windows-1252">
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.9.2/themes/blitzer/jquery-ui.css">
+<style>
+body {
+	margin: 0px;
+	padding: 0px;
+}
+
+#rtxData {
+	float: left;
+	margin-left: 100px;
+	margin-right: auto;
+	width: 470px;
+}
+
+#gPanel {
+	float: left;
+	margin-left: 100px;
+	margin-right: auto;
+	width: 470px;
+}
+
+h2 {
+	text-align: center;
+}
+
+#btnHolder,#sliderTxt {
+	text-align: center;
+}
+</style>
+
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<script src="http://smoothiecharts.org/smoothie.js"></script>
+<script>
+	window.requestAnimFrame = (function(callback) {
+		return window.requestAnimationFrame
+				|| window.webkitRequestAnimationFrame
+				|| window.mozRequestAnimationFrame
+				|| window.oRequestAnimationFrame
+				|| window.msRequestAnimationFrame ||
+
+				function(callback) {
+					window.setTimeout(callback, 1000 / 30); // 30 frames per second
+				};
+	})();
+
+	var toggleVal1 = 0;
+	var toggleVal2 = 0;
+	var toggleVal3 = 0;
+	var toggleVal4 = 0;
+	var toggleVal5 = 0;
+	var toggleVal6 = 0;
+	var toggleVal7 = 0;
+	var toggleVal8 = 0;
+
+	var tempData = 0;
+	var txData = '';
+
+	var analogData1 = 0;
+	var analogData2 = 0;
+	var analogData3 = 0;
+	var analogData4 = 0;
+	var analogData5 = 0;
+	var analogData6 = 0;
+	var analogData7 = 0;
+	var analogData8 = 0;
+
+	var accDataX = 0;
+	var accDataY = 0;
+	var accDataZ = 0;
+
+	var data1 = 0;
+	var data2 = 0;
+	var data3 = 0;
+
+	var wsUri = "ws://" + window.location.hostname + ":8080/ws/ws";
+	var output;
+	function init() {
+		output = document.getElementById("output");
+		//testWebSocket();
+	}
+
+	function initSocket() {
+		init();
+		websocket = new WebSocket(wsUri);
+		websocket.onopen = function(evt) {
+			onOpen(evt)
+		};
+		websocket.onclose = function(evt) {
+			onClose(evt)
+		};
+		websocket.onmessage = function(evt) {
+			onMessage(evt)
+		};
+		websocket.onerror = function(evt) {
+			onError(evt)
+		};
+
+	}
+	function testWebSocket() {
+		websocket = new WebSocket(wsUri);
+		websocket.onopen = function(evt) {
+			onOpen(evt)
+		};
+		websocket.onclose = function(evt) {
+			onClose(evt)
+		};
+		websocket.onmessage = function(evt) {
+			onMessage(evt)
+		};
+		websocket.onerror = function(evt) {
+			onError(evt)
+		};
+	}
+	function onOpen(evt) {
+		writeToScreen("CONNECTED");
+		doSend("WebSocket rocks");
+	}
+	function onClose(evt) {
+		writeToScreen("DISCONNECTED");
+	}
+	function onMessage(evt) {
+		accDataX = document.getElementById("AccX");
+		accDataX.value = evt.data;
+
+		window.data1 = Number(evt.data); //AccX graphData
+	}
+	function onError(evt) {
+		writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+	}
+	function doSend(message) {
+		writeToScreen("SENT: " + message);
+		websocket.send(message);
+	}
+	function writeToScreen(message) {
+		var pre = document.createElement("p");
+		pre.style.wordWrap = "break-word";
+		pre.innerHTML = message;
+		output.appendChild(pre);
+	}
+
+	function initGraph1() //Initialize Graph 1
+	{
+		var smoothie1 = new SmoothieChart();
+		var plot1 = new TimeSeries();
+
+		smoothie1.streamTo(document.getElementById("myGraph1"));
+		smoothie1.addTimeSeries(plot1, {
+			strokeStyle : 'rgb(0, 255, 0)',
+			lineWidth : 2
+		});
+
+		setInterval(function() {
+			plot1.append(new Date().getTime(), data1);
+		}, 100);
+	}
+
+	function initGraph2() {
+		var smoothie2 = new SmoothieChart();
+		var plot2 = new TimeSeries();
+
+		smoothie2.streamTo(document.getElementById("myGraph2"));
+		smoothie2.addTimeSeries(plot2, {
+			strokeStyle : 'rgb(0, 0, 255)',
+			lineWidth : 2
+		});
+
+		setInterval(function() {
+			plot2.append(new Date().getTime(), data2);
+		}, 100);
+	}
+
+	function initGraph3() {
+		var smoothie3 = new SmoothieChart();
+		var plot3 = new TimeSeries();
+
+		smoothie3.streamTo(document.getElementById("myGraph3"));
+		smoothie3.addTimeSeries(plot3, {
+			strokeStyle : 'rgb(255, 0, 0)',
+			lineWidth : 2
+		});
+
+		setInterval(function() {
+			plot3.append(new Date().getTime(), data3);
+		}, 100);
+	}
+
+	function initButton() {
+		$("#check1").button();
+		$("#check2").button();
+		$("#check3").button();
+		$("#check4").button();
+		$("#check5").button();
+		$("#check6").button();
+		$("#check7").button();
+		$("#check8").button();
+	}
+
+	function startCOM() {
+		iosocket.emit('buttonval', 'S');
+		document.getElementById("text1").value = "UART Reception started!";
+	}
+
+	function stopCOM() {
+		iosocket.emit('buttonval', 's');
+		document.getElementById("text1").value = "UART Reception stopped!";
+	}
+
+	function initSlider() {
+		$("#slider").slider({
+			min : 0,
+			max : 9,
+			change : function(event, ui) {
+				iosocket.emit('sliderval', ui.value);
+			}
+		});
+	}
+
+	window.onload = function() {
+		//initSocketIO();
+		initSocket();
+		initGraph1();
+		initGraph2();
+		initGraph3();
+	};
+
+	$(document).ready(function() {
+		$('#check1').click(function() {
+			toggleVal1 += 1;
+			toggleVal1 %= 2; //Either '0' or '1'
+
+			if (toggleVal1 == 1) {
+				txData = 'A';
+			} else {
+				txData = 'a';
+			}
+			iosocket.emit('buttonval', txData);
+		});
+
+		$('#check2').click(function() {
+			toggleVal2 += 1;
+			toggleVal2 %= 2; //Either '0' or '1'
+
+			if (toggleVal2 == 1) {
+				txData = 'B';
+			} else {
+				txData = 'b';
+			}
+			iosocket.emit('buttonval', txData);
+		});
+
+		$('#check3').click(function() {
+			toggleVal3 += 1;
+			toggleVal3 %= 2; //Either '0' or '1'
+
+			if (toggleVal3 == 1) {
+				txData = 'C';
+			} else {
+				txData = 'c';
+			}
+			iosocket.emit('buttonval', txData);
+		});
+
+		$('#check4').click(function() {
+			toggleVal4 += 1;
+			toggleVal4 %= 2; //Either '0' or '1'
+
+			if (toggleVal4 == 1) {
+				txData = 'D';
+			} else {
+				txData = 'd';
+			}
+			iosocket.emit('buttonval', txData);
+		});
+
+		$('#check5').click(function() {
+			toggleVal5 += 1;
+			toggleVal5 %= 2; //Either '0' or '1'
+
+			if (toggleVal5 == 1) {
+				txData = 'E';
+			} else {
+				txData = 'e';
+			}
+			iosocket.emit('buttonval', txData);
+		});
+
+		$('#check6').click(function() {
+			toggleVal6 += 1;
+			toggleVal6 %= 2; //Either '0' or '1'
+
+			if (toggleVal6 == 1) {
+				txData = 'F';
+			} else {
+				txData = 'f';
+			}
+			iosocket.emit('buttonval', txData);
+		});
+
+		$('#check7').click(function() {
+			toggleVal7 += 1;
+			toggleVal7 %= 2; //Either '0' or '1'
+
+			if (toggleVal7 == 1) {
+				txData = 'G';
+			} else {
+				txData = 'g';
+			}
+			iosocket.emit('buttonval', txData);
+		});
+
+		$('#check8').click(function() {
+			toggleVal8 += 1;
+			toggleVal8 %= 2; //Either '0' or '1'
+
+			if (toggleVal8 == 1) {
+				txData = 'H';
+			} else {
+				txData = 'h';
+			}
+			iosocket.emit('buttonval', txData);
+		});
+	});
+</script>
+</head>
+
+<body>
+	<div>
+		<h2>Websocket message:</h2>
+		<p>
+		<div id="output"></div>
+	</div>
+
+	<div id="rtxData">
+		<!-- 
+		<h2>Data from MSP430</h2>
+		<p style="">ADC Data:</p>
+		<div id="AnalogData1" style="">
+			<p style="">Channel 1:</p>
+			&nbsp; &nbsp; <input id="Ch0" style="" type="text"> <br>
+			<br>
+			<p style="">Channel 2:</p>
+			&nbsp; &nbsp; <input id="Ch1" style="" type="text"> <br>
+			<br>
+			<p style="">Channel 3:</p>
+			&nbsp; &nbsp; <input id="Ch2" style="" type="text"> <br>
+			<br>
+		</div>
+		<div id="AnalogData2" style="">
+			<p style="">Channel 4:</p>
+			&nbsp; &nbsp; <input id="Ch3" style="" type="text"> <br>
+			<br>
+			<p style="">Channel 5:</p>
+			&nbsp; &nbsp; <input id="Ch4" style="" type="text"> <br>
+			<br>
+			<p style="">Channel 6:</p>
+			&nbsp; &nbsp; <input id="Ch5" style="" type="text"> <br>
+			<br>
+			<hr style="">
+		</div>
+		-->
+
+		<!-- 
+		<div id="txData">
+			<h2>Data to MSP430</h2>
+			<p style="">Toggle LEDs:</p>
+			<div id="btnHolder">
+				<input id="check1" value="toggle" type="checkbox"><label
+					for="check1">1</label> <input id="check2" value="toggle"
+					type="checkbox"><label for="check2">2</label> <input
+					id="check3" value="toggle" type="checkbox"><label
+					for="check3">3</label> <input id="check4" value="toggle"
+					type="checkbox"><label for="check4">4</label> <input
+					id="check5" value="toggle" type="checkbox"><label
+					for="check5">5</label> <input id="check6" value="toggle"
+					type="checkbox"><label for="check6">6</label> <input
+					id="check7" value="toggle" type="checkbox"><label
+					for="check7">7</label> <input id="check8" value="toggle"
+					type="checkbox"><label for="check8">8</label>
+			</div>
+			<p id="sliderTxt">Send Data</p>
+			<div id="slider"></div>
+			
+		</div>
+		-->
+	</div>
+
+	<div id="gPanel">
+		<h2>WebSocket Plugin:</h2>
+		<div align="center">
+			<p style="">inA:</p>
+			&nbsp; &nbsp; <input id="AccX" style="" type="text"> &nbsp;
+			&nbsp;
+			<canvas id="myGraph1" width="400" height="100"></canvas>
+		</div>
+
+		<div align="center">
+			<p style="">inB:</p>
+			&nbsp; &nbsp; <input id="AccY" style="" type="text"> &nbsp;
+			&nbsp;
+
+			<canvas id="myGraph2" width="400" height="100"></canvas>
+		</div>
+
+		<div align="center">
+			<p style="">inC:</p>
+			&nbsp; &nbsp; <input id="AccZ" style="" type="text"> &nbsp;
+			&nbsp;
+
+			<canvas id="myGraph3" width="400" height="100"></canvas>
+			<br>
+		</div>
+		<br>
+		<!-- 
+		<div align="center">
+			<input id="start" value="Start" style="" onclick="startCOM()"
+				type="button"> <input id="stop" value="Stop" style=""
+				onclick="stopCOM()" type="button"> <input id="text1"
+				style="" value="Click Start button!" type="text">
+		</div>
+		-->
+	</div>
+
+
+
+</body>
+</html>

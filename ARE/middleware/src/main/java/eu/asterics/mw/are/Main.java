@@ -69,7 +69,6 @@ public class Main implements BundleActivator
 	}
 	public void start(final BundleContext context) throws Exception
 	{
-
 		try {
 			
 			logger = AstericsErrorHandling.instance.getLogger();
@@ -86,6 +85,8 @@ public class Main implements BundleActivator
 				System.exit(0);
 			}
 			logger.info("JVM "+bits+" bit detected");
+			final String startModel=context.getProperty("eu.asterics.ARE.startModel");
+			logger.info("Property eu.asterics.ARE.startModel: "+startModel);
 			
 			EventQueue.invokeLater(new Runnable() { public void run() {
 			astericsGUI = new AstericsGUI (context);
@@ -139,7 +140,7 @@ public class Main implements BundleActivator
 
 			
 			AsapiSupport as = new AsapiSupport();
-			as.autostart();
+			as.autostart(startModel);
 			}});
 		}
 		catch (Throwable t) 

@@ -1,5 +1,5 @@
 <project name="asterics.services" default="buildAllServices" basedir=".">
-
+    <property name="runtime" location="../../bin/ARE"/>
 	<target name="buildSystemChange">
     <subant target="jar">
       <property name="debug" value="${debug}"/>
@@ -12,12 +12,15 @@
         <property name="debug" value="${debug}"/>
         <fileset dir="." includes="*/build.xml"/>
      </subant>
+    <copy todir="${runtime}">
+    	<fileset dir="." includes="*.jar" excludes="asterics.*.jar"/>        
+    </copy>
   </target>
 
 	<target name="clean">
         <delete dir="out"/>
 		<delete>
-			<fileset dir="." includes="*.jar"/>
+			<fileset dir="." includes="asterics.*.jar"/>
 		</delete>
     </target>
 	

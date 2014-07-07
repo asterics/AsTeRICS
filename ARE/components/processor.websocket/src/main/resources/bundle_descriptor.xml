@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.WebSocket"
+                   canonical_name="eu.asterics.component.processor.websocket.WebSocketInstance">
+        <type subtype="Web">processor</type>
+        <singleton>false</singleton>
+        <description>This plugin uses a websocket connection to send and read data</description>
+        <ports>
+			<inputPort id="InA">
+				<description>Double Input A</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="InB">
+				<description>Double Input B</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="InC">
+				<description>Integer Input D</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="InD">
+				<description>Integer Input D</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="InE">
+				<description>String Input D</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="InF">
+				<description>String Input F</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="OutA">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="OutB">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="OutC">
+				<description>output port description</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="OutD">
+				<description>output port description</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="OutE">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="OutF">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="event1">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="reset">
+				<description>Clears buffers and resets websocket connection</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="reconnect">
+				<description>Reconnect to websockect</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="host"
+				type="string"
+				value="localhost"
+				description="hostname or ip address to use for URL"/>
+			<property name="port"
+				type="integer"
+				value="8080"
+				description="port number used for websocket"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
