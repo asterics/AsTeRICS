@@ -1,0 +1,36 @@
+There are different file versions, depending on the Lipmouse design (especially the mouth piece and mounting construction):
+
+###lipmouse_case_lasercut.cdr
+
+This is the original design, produced by Robert Haderer.
+It uses a zigarette mouthpiece, which is plugged into plate2
+
+
+###lipmouse_case_lasercut_v2_sidemount.cdr
+
+An improved design of lipmouse_case_lasercut.cdr, where the front plate
+carries the construction (plate 1 is removed). In addition, the front plate hole is extended.
+For mounting the Lipmouse, a 10mm hole is added in one side plate.
+
+
+###lipmouse_case_lasercut_v2_backmount.cdr
+
+The same design as lipmouse_case_lasercut_v2_sidemount.cdr, but instead of the side-mount hole, a 10mm hole in the back plane is used.
+
+
+
+###lipmouse_case_lasercut_v2.cdr
+
+The same design as lipmouse_case_lasercut_v2_backmount.cdr, but without any mounting holes (may be used for glueing to a plate...)
+
+
+
+###lipmouse_case_lasercut_quadjoy_sidemount.cdr
+
+The same design as lipmouse_case_lasercut_v2_sidemount.cdr, but instead of the zigarette-holder mouth-piece, a filter construction of quadjoy is used as mouthpiece
+
+
+
+###lipmouse_case_lasercut_quadjoy_backmount.cdr
+
+The same design as lipmouse_case_lasercut_v2_backmount.cdr, but instead of the zigarette-holder mouth-piece, a filter construction of quadjoy is used as mouthpiece
