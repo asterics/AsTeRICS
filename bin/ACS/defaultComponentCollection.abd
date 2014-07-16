@@ -2656,7 +2656,7 @@
  <componentType canonical_name="eu.asterics.component.actuator.writeedf.WriteEDFInstance" id="asterics.WriteEDF">
         <type subtype="File System">actuator</type>
         <singleton>false</singleton>
-        <description>This plugin records the incoming data into an EDF file</description>
+        <description>This plugin records the incoming data live into an EDF file (http://www.edfplus.info/specs/edf.html). So it can be viewed in the EDF-Browser (http://www.teuniz.net/edfbrowser/) simulaneously</description>
         <ports>
 			<inputPort id="CH1">
 				<description>input port description</description>
@@ -2709,14 +2709,14 @@
 			<property description="ID of the recorded subject" name="patientID" type="string" value="undefined"/>
 			<property description="name of the recording file" name="FileName" type="string" value="record"/>
 			<property description="incoming data will be re-sampled according to the set frequency" name="reSampling" type="boolean" value="false"/>
-			<property description="sampling rate for the corresponding channel" name="SamplingRateCH1" type="integer" value="100"/>
-			<property description="sampling rate for the corresponding channel" name="SamplingRateCH2" type="integer" value="100"/>
-			<property description="sampling rate for the corresponding channel" name="SamplingRateCH3" type="integer" value="100"/>
-			<property description="sampling rate for the corresponding channel" name="SamplingRateCH4" type="integer" value="100"/>
-			<property description="sampling rate for the corresponding channel" name="SamplingRateCH5" type="integer" value="100"/>
-			<property description="sampling rate for the corresponding channel" name="SamplingRateCH6" type="integer" value="100"/>
-			<property description="sampling rate for the corresponding channel" name="SamplingRateCH7" type="integer" value="100"/>
-			<property description="sampling rate for the corresponding channel" name="SamplingRateCH8" type="integer" value="100"/>
+			<property description="sampling rate for the corresponding channel. Set to zero to deactivate this channel " name="SamplingRateCH1" type="integer" value="100"/>
+			<property description="sampling rate for the corresponding channel. Set to zero to deactivate this channel" name="SamplingRateCH2" type="integer" value="0"/>
+			<property description="sampling rate for the corresponding channel. Set to zero to deactivate this channel" name="SamplingRateCH3" type="integer" value="0"/>
+			<property description="sampling rate for the corresponding channel. Set to zero to deactivate this channel" name="SamplingRateCH4" type="integer" value="0"/>
+			<property description="sampling rate for the corresponding channel. Set to zero to deactivate this channel" name="SamplingRateCH5" type="integer" value="0"/>
+			<property description="sampling rate for the corresponding channel. Set to zero to deactivate this channel" name="SamplingRateCH6" type="integer" value="0"/>
+			<property description="sampling rate for the corresponding channel. Set to zero to deactivate this channel" name="SamplingRateCH7" type="integer" value="0"/>
+			<property description="sampling rate for the corresponding channel. Set to zero to deactivate this channel" name="SamplingRateCH8" type="integer" value="0"/>
 			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH1" type="integer" value="-32768"/>
 			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH2" type="integer" value="-32768"/>
 			<property description="physical minimum of the corresponding  channel" name="PhysicalMinimumCH3" type="integer" value="-32768"/>

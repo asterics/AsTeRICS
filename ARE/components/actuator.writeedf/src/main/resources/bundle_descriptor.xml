@@ -6,7 +6,7 @@
                    canonical_name="eu.asterics.component.actuator.writeedf.WriteEDFInstance">
         <type subtype="File System">actuator</type>
         <singleton>false</singleton>
-        <description>This plugin records the incoming data into an EDF file</description>
+        <description>This plugin records the incoming data live into an EDF file (http://www.edfplus.info/specs/edf.html). So it can be viewed in the EDF-Browser (http://www.teuniz.net/edfbrowser/) simulaneously</description>
         <ports>
 			<inputPort id="CH1">
 				<description>input port description</description>
@@ -59,7 +59,7 @@
 			<property name="patientID"
 				type="string"
 				value="undefined"
-				description="ID of the recorded subject"/>
+				description="ID of the recorded subject"></property>
 			<property name="FileName"
 				type="string"
 				value="record"
@@ -71,35 +71,35 @@
 			<property name="SamplingRateCH1"
 				type="integer"
 				value="100"
-				description="sampling rate for the corresponding channel"/>
+				description="sampling rate for the corresponding channel. Set to zero to deactivate this channel "/>
 			<property name="SamplingRateCH2"
 				type="integer"
-				value="100"
-				description="sampling rate for the corresponding channel"/>
+				value="0"
+				description="sampling rate for the corresponding channel. Set to zero to deactivate this channel"/>
 			<property name="SamplingRateCH3"
 				type="integer"
-				value="100"
-				description="sampling rate for the corresponding channel"/>
+				value="0"
+				description="sampling rate for the corresponding channel. Set to zero to deactivate this channel"/>
 			<property name="SamplingRateCH4"
 				type="integer"
-				value="100"
-				description="sampling rate for the corresponding channel"/>
+				value="0"
+				description="sampling rate for the corresponding channel. Set to zero to deactivate this channel"/>
 			<property name="SamplingRateCH5"
 				type="integer"
-				value="100"
-				description="sampling rate for the corresponding channel"/>
+				value="0"
+				description="sampling rate for the corresponding channel. Set to zero to deactivate this channel"/>
 			<property name="SamplingRateCH6"
 				type="integer"
-				value="100"
-				description="sampling rate for the corresponding channel"/>
+				value="0"
+				description="sampling rate for the corresponding channel. Set to zero to deactivate this channel"/>
 			<property name="SamplingRateCH7"
 				type="integer"
-				value="100"
-				description="sampling rate for the corresponding channel"/>
+				value="0"
+				description="sampling rate for the corresponding channel. Set to zero to deactivate this channel"/>
 			<property name="SamplingRateCH8"
 				type="integer"
-				value="100"
-				description="sampling rate for the corresponding channel"/>
+				value="0"
+				description="sampling rate for the corresponding channel. Set to zero to deactivate this channel"/>
 			<property name="PhysicalMinimumCH1"
 				type="integer"
 				value="-32768"
