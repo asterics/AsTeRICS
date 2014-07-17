@@ -31,23 +31,23 @@ package eu.asterics.component.sensor.readedf;
 import java.io.*; 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+//import java.util.StringTokenizer;
+//import java.util.logging.Logger;
 
 import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.gui.ErrorLogPane;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
-import eu.asterics.mw.services.AstericsThreadPool;
+//import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+//import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+//import eu.asterics.mw.gui.ErrorLogPane;
+//import eu.asterics.mw.services.AREServices;
+//import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
  * This plugin reads data from an edf-file and sends it to its output ports
@@ -55,36 +55,36 @@ import eu.asterics.mw.services.AstericsThreadPool;
  * Have a look at "http://www.edfplus.info/specs/edf.html" for full edf-file specification
  *  
  * @author Christian Strasak [christian.strasak@technikum-wien.at]
- *         Date: 15.05.2014
+ *         Date: 15.07.2014
  */
 
 public class ReadEDFInstance extends AbstractRuntimeComponentInstance 
 {
-	String propFileName = "";
-	String propFileExtension = ".edf";
-	
-	RandomAccessFile filePointer = null;
-	
 	boolean samplingRuns = false;
 	boolean samplingShouldRun = false;
 	boolean samplingShouldPause = false;
-	long startTime = 0; 
-	
+
 	int numberOfSignals = 32; // number of recorded signals in the file (number will be replaced after the file has been read)
 	int numberOfDataRecords = 0; 
 	int headerSize = 0;
 	int recordSize = 0; // = number of samples of each signal per record
-
 	int samplesPerRecord[] = new int[numberOfSignals];
-	float periodDuration[] = new float[numberOfSignals]; // period duration for the samples of each signal
-	final OutputPort[] opCH = new OutputPort[numberOfSignals]; 
-	signalTransmitClass[] signalTransmitInstance = new signalTransmitClass[numberOfSignals];
 
+	long startTime = 0; 
+	
+	float periodDuration[] = new float[numberOfSignals]; // period duration for the samples of each signal
 	float physicalMin[] = new float[numberOfSignals];
 	float physicalMax[] = new float[numberOfSignals];
 	float digitalMin[] = new float[numberOfSignals];
 	float digitalMax[] = new float[numberOfSignals];
 	
+	String propFileName = "";
+	
+	RandomAccessFile filePointer = null;
+	
+	final OutputPort[] opCH = new OutputPort[numberOfSignals]; 
+	signalTransmitClass[] signalTransmitInstance = new signalTransmitClass[numberOfSignals];
+
 	/**
     * The class constructor.
     */
@@ -92,7 +92,6 @@ public class ReadEDFInstance extends AbstractRuntimeComponentInstance
 	 {
     	for(int i = 0; i < numberOfSignals; i++)
     	{
-//    		signalTransmitInstance[i] = new signalTransmitClass(i);
     		opCH[i] = new OutputPort();
     		physicalMin[i] = 0;
     		physicalMax[i] = 0;
@@ -219,8 +218,8 @@ public class ReadEDFInstance extends AbstractRuntimeComponentInstance
   	}
     
     /**
-     * reads the samples from a stream, converts it and sends it to the output ports
-     * @param number of the output port (parameter realised through the constructor)
+     * reads the samples from a signal, defined by signalNumberParamter, converts them and sends them to the corresponding output port
+     * @param number of the output port ( through the constructor)
      */
     public class signalTransmitClass extends Thread 
     {
@@ -248,19 +247,19 @@ public class ReadEDFInstance extends AbstractRuntimeComponentInstance
 			RandomAccessFile filePointerInstance = null;
 			
 			try	{ filePointerInstance = new RandomAccessFile(propFileName , "r");}
-	    	catch (IOException e) {AstericsErrorHandling.instance.getLogger().severe("Error reading file: " + propFileName);}
+	    	catch (IOException e) {AstericsErrorHandling.instance.getLogger().severe("Error reading file (at run method): " + propFileName);}
 
-			for(int i = 0; i < signalNumber; i++)
+			for(int i = 0; i < signalNumber; i ++)
 				signalSamplesOffset += (samplesPerRecord[i] * 2); // to determine the offset of each signal-start in a record
 
-			for(long recordNumber = 0;(recordNumber < numberOfDataRecords) && samplingShouldRun; recordNumber++) 
+			for(long recordNumber = 0;(recordNumber < numberOfDataRecords) && samplingShouldRun; recordNumber ++) 
 			{		        	
-				for(long sampleNumber = 0;(sampleNumber < samplesPerRecord[signalNumber]) && samplingShouldRun; sampleNumber++)
+				for(long sampleNumber = 0;(sampleNumber < samplesPerRecord[signalNumber]) && samplingShouldRun; sampleNumber ++)
 	    		{
 					try { filePointerInstance.seek(headerSize + (recordSize * recordNumber) + signalSamplesOffset + (2 * sampleNumber));} //go to the first position of the signal records in the file
 					catch (IOException e) {AstericsErrorHandling.instance.getLogger().severe("Could not read from file for signal number: " + signalNumber);};
 					//===================================================================================================
-			    	//read the bytes from file, corresponding to a sample, and merge them
+			    	//read the bytes, representing a sample, from file and merge them
 					//===================================================================================================
 					try 
 					{
@@ -280,13 +279,15 @@ public class ReadEDFInstance extends AbstractRuntimeComponentInstance
 	 	    		timeOffset = System.nanoTime() - (startTime + pauseTime);
 					nextSampleTime = (long)(periodDuration[signalNumber] * sampleCounter * 1000 * 1000);
 	 	    		timeUntilNextSample = nextSampleTime - timeOffset;
+	 	    		
 	 	    		if(timeUntilNextSample > 0)
 	 	    		{
 		 	    		try {TimeUnit.NANOSECONDS.sleep(timeUntilNextSample);} // suspend the thread, for the right sampling frequency, and allow the other threads to send their data
 		 	    		catch (InterruptedException e) {};
 	 	    		}
+	 	    		
 	 	    		opCH[signalNumber].sendData(physicalSample); // send the sample to the corresponding output port
-	 	    		sampleCounter++;
+	 	    		sampleCounter ++;
 
 	 	    		if(samplingShouldPause)
 	    	        {
@@ -311,14 +312,14 @@ public class ReadEDFInstance extends AbstractRuntimeComponentInstance
     /**
      * Reads ASCII values from file and returns the corresponding int value
      * @param position = position of the data in the file
-     * @param numberOfByts = number of bytes to be read
+     * @param numberOfBytes = number of bytes to be read
      * @return int-value of the read bytes
      */
-    float readFromFile(int position, int numberOfBytes)
+    float readPropertyFromEDFHeader(int position, int numberOfBytes)
     {
     	
     	float value = 0;
-    	int stateMachine = 0; // 0: no "." or "E" where found so far / 1: "." was found / 2: "E" was found
+    	int stateMachine = 0; // (state 0: no "." or "E" or "e" where found so far) / (state 1: "." was found ) / ( state 2: "E" or "e" was found )
     	int decimalPosition = 1;
     	int power = 0;
     	byte[] asciiValue = new byte[numberOfBytes]; // for the characters in the file representing a number
@@ -331,7 +332,7 @@ public class ReadEDFInstance extends AbstractRuntimeComponentInstance
 		//===================================================================================================
 		// convert each of the ASCII-chars to a digit and merge them into a number
 		//===================================================================================================
-		for(int j = 0; j < numberOfBytes; j++)
+		for(int j = 0; j < numberOfBytes; j ++)
 		{
 			switch (stateMachine)
 			{
@@ -378,16 +379,30 @@ public class ReadEDFInstance extends AbstractRuntimeComponentInstance
 			value *= -1;
 		return value;
     }
-    
+    /**
+     * Lists the available edf-files on the ARE
+     * @param key = name of the property
+     * @return list of edf-files
+     */
 	public List<String> getRuntimePropertyList(String key) 
 	{
 
 		List<String> res = new ArrayList<String>(); 
 		if (key.compareToIgnoreCase("filename")==0)
 		{
-			List<String> nextDir = new ArrayList<String>(); //Directories
+			List<String> nextDir = new ArrayList<String>(); 
+			
+			//===================================================================================================
+			// creating path "data/edf" if it is not available
+			//===================================================================================================
+			try { new File("data/edf").mkdirs(); } 
+			catch (Exception e) {AstericsErrorHandling.instance.getLogger().severe("Error: could not create subfolders");}
+			
 			nextDir.add("data/edf");	
-//			nextDir.add("data/sounds");	
+
+			//===================================================================================================
+			// searching for available edf files in the given path
+			//===================================================================================================
 			while(nextDir.size() > 0) 
 			{
 				File pathName = new File(nextDir.get(0)); 
@@ -419,68 +434,56 @@ public class ReadEDFInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
+    	  super.start();
     	  recordSize = 0;
 		  
-    	try	{ filePointer = new RandomAccessFile(propFileName , "r");}
-    	catch (IOException e) 
-    	{ 
-    		AstericsErrorHandling.instance.reportError(this, "Error reading file: " + propFileName);
-    		return ;
-    	}
-    	//===================================================================================================
-    	//read the header from the file
-    	//===================================================================================================
-    	numberOfDataRecords = (int)readFromFile(236, 8); //get the number of records, that have been caputured sequentially
-    	numberOfSignals = (int)readFromFile(252, 4); // get the number of signals 
-    	headerSize = 256 * (1 + numberOfSignals); // get the header size
-    	final int numOfSamplesPosition = headerSize - numberOfSignals * (32 + 8); // get the position, where the number of samples is located
-    	final float durationOfDataRecord = readFromFile(244, 8); //get the duration of a data record
-      	//===================================================================================================
-    	//get the data of the second header for the signal depending values (each signal has different attributes)
-    	//===================================================================================================
-    	for(int signalNumber = 0; signalNumber < numberOfSignals; signalNumber++)
-    	{
-    		samplesPerRecord[signalNumber] = (int)readFromFile(numOfSamplesPosition + signalNumber * 8, 8); // get the "number of samples" of each signal
-    		recordSize += (samplesPerRecord[signalNumber] * 2); // get the number of samples of all signals in one record
-    		periodDuration[signalNumber] = durationOfDataRecord / samplesPerRecord[signalNumber]* 1000; // calculate the period duration [in ms] of each sample
-    		physicalMin[signalNumber] = readFromFile(256 + numberOfSignals * 104 + signalNumber * 8,8);
-    		physicalMax[signalNumber] = readFromFile(256 + numberOfSignals * 112 + signalNumber * 8,8);
-    		digitalMin[signalNumber] = readFromFile(256 + numberOfSignals * 120 + signalNumber * 8,8);
-    		digitalMax[signalNumber] = readFromFile(256 + numberOfSignals * 128 + signalNumber * 8,8);
-   		}
-    	//===================================================================================================
-    	//Start a thread for each signal. It will read the corresponding samples and send it to its output port
-    	//===================================================================================================
-    	startTime = System.currentTimeMillis();
-    	byte[] allRecordBytes = new byte[numberOfDataRecords * numberOfSignals * recordSize];
-    	try {
-    		filePointer.seek(headerSize);
-    		filePointer.read(allRecordBytes); 	}
-    	catch (IOException e) {	AstericsErrorHandling.instance.reportError(this, "Error reading file: " + propFileName);  	}
-   		if (filePointer != null)
-		{
-			try {filePointer.close();}
-			catch (IOException e) {AstericsErrorHandling.instance.reportError(this, "Error closing file");}
+		try	{ filePointer = new RandomAccessFile(propFileName , "r");}
+		catch (IOException e) 
+		{ 
+			AstericsErrorHandling.instance.reportError(this, "Error reading file (at the start): " + propFileName);
+			return ;
 		}
+		AstericsErrorHandling.instance.reportDebugInfo(this, "file has been opened");
+		//===================================================================================================
+		//Reading the header from the file
+		//===================================================================================================
+		numberOfDataRecords = (int)readPropertyFromEDFHeader(236, 8); //get the number of records, that have been caputured sequentially
+		numberOfSignals = (int)readPropertyFromEDFHeader(252, 4); // get the number of signals 
+		headerSize = 256 * (1 + numberOfSignals); // get the header size
+		final int numOfSamplesPosition = headerSize - numberOfSignals * (32 + 8); // get the position, where the number of samples is located
+		final float durationOfDataRecord = readPropertyFromEDFHeader(244, 8); //get the duration of a data record
+		//===================================================================================================
+		//Getting the data of the second header for the signal depending values (each signal has different attributes)
+		//===================================================================================================
+		for(int signalNumber = 0; signalNumber < numberOfSignals; signalNumber++)
+		{
+			samplesPerRecord[signalNumber] = (int)readPropertyFromEDFHeader(numOfSamplesPosition + signalNumber * 8, 8); // get the "number of samples" of each signal
+			recordSize += (samplesPerRecord[signalNumber] * 2); // get the number of samples of all signals in one record (each samples consists of 2 bytes)
+			periodDuration[signalNumber] = durationOfDataRecord / samplesPerRecord[signalNumber]* 1000; // calculate the period duration [in ms] of each sample
+			physicalMin[signalNumber] = readPropertyFromEDFHeader(256 + numberOfSignals * 104 + signalNumber * 8,8);
+			physicalMax[signalNumber] = readPropertyFromEDFHeader(256 + numberOfSignals * 112 + signalNumber * 8,8);
+			digitalMin[signalNumber] = readPropertyFromEDFHeader(256 + numberOfSignals * 120 + signalNumber * 8,8);
+			digitalMax[signalNumber] = readPropertyFromEDFHeader(256 + numberOfSignals * 128 + signalNumber * 8,8);
+		}
+		AstericsErrorHandling.instance.reportDebugInfo(this, "header has been read");
 
-//    	ErrorLogPane.appendLog("Datei eingelesen");
-    	AstericsErrorHandling.instance.reportInfo(this, allRecordBytes.length + " samples have been read in " + (System.currentTimeMillis() - startTime) + " Milliseconds");
-    	
-    	startTime = System.nanoTime();
-    	samplingShouldRun = true;
-
-   		for(int signalNumber = 0; signalNumber < numberOfSignals; signalNumber++)
-   		{
-   			signalTransmitInstance[signalNumber] = new signalTransmitClass(signalNumber);
-   			signalTransmitInstance[signalNumber].start();
-   		}
-   		
-   		while(!samplingRuns)
-	    {	 	
-   			try {TimeUnit.MILLISECONDS.sleep(10);} // suspend the thread, for the right sampling frequency, and allow the other threads to send their data
-	  		catch (InterruptedException e) {};
-	    }
-//	  	super.start();
+		//===================================================================================================
+		//Starting a thread for each signal. They will read the corresponding samples and send them to their output ports
+		//===================================================================================================
+		startTime = System.nanoTime();
+		samplingShouldRun = true;
+		
+		for(int signalNumber = 0; signalNumber < numberOfSignals; signalNumber++)
+		{
+			signalTransmitInstance[signalNumber] = new signalTransmitClass(signalNumber);
+			signalTransmitInstance[signalNumber].start();
+		}
+		
+		while(!samplingRuns)
+		{	 	
+			try {TimeUnit.MILLISECONDS.sleep(1);} 
+			catch (InterruptedException e) {};
+		}
       }
 
      /**

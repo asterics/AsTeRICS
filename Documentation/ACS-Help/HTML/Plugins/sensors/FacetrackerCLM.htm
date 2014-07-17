@@ -30,13 +30,16 @@ relative scale of the face).
 The FacetrackerCLM also introduces the detection of facial gestures that can be then exploited in the ACS models to
 directly perform actions or trigger events. To this purpose in this version there are two distinct event related outputs: 
 <li> Detection of the raising of both eyebrows.</li>
-<li> Detection of the <em>close</em> or <em>open</em> state of each eye.</li>
 </p>
 
+<p>
+For a closer explaination of the EyeTrackerCLM functions and the training algorithm for eye states please refer to the document
+FacetrackerCLM.pdf in the folder /documentation.
+</p>
 
 </p>
 
-<div class="image"><img src="img/FacetrackerCLM_Win.png" alt="Screenshot: FacetrackerCLM plugin" title="Screenshot: FacetrackerCLM plugin" /><br>
+<div class="image"><img src="img/FacetrackerCLM.jpg" alt="Screenshot: FacetrackerCLM plugin" title="Screenshot: FacetrackerCLM plugin" /><br>
    FacetrackerCLM plugin</div>
 
 <H2>Requirements</H2>
@@ -93,7 +96,9 @@ of the tracked point (approximatively located around the nose).</li>
 
 <H2>Event Listener Description</H2>
 <ul>
-<li><STRONG>initFace:</STRONG> Forces reinit of the fitting of deformable model for the face in order to reset the tracking points.</li>
+<li><STRONG>reset:</STRONG> Forces reinit of the fitting of deformable model for the face in order to reset the tracking points.</li>
+<li><STRONG>showCameraSettings:</STRONG> Displays the camera settings dialog on screen</li>
+<li><STRONG>setReferencePose:</STRONG> sets the reference pose</li>
 </ul>
 
 <H2>Event Trigger Description</H2>
@@ -122,7 +127,7 @@ Please note that this property does not influence the frame rate of the camera n
 </ul>
 
 <ul>
-<li><STRONG>userName [string]:</STRONG> this property informs the plugin about which is the trained model to load. The actual file name is then automatically expanded as: <em><strong>userName</strong>_model.xlm</em>. The file is searched in the the FacetrackerCLM folder inside the plugin &quot;data&quot; folder.</li>
+<li><STRONG>modelName [string]:</STRONG> this property informs the plugin about which is the trained model to load. The file is searched in the the FacetrackerCLM/EyeStateModels folder inside the plugin &quot;data&quot; folder. Specify the name without .yml extension.</li>
 </ul>
 
 </ul>
