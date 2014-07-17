@@ -1,9 +1,11 @@
 package eu.asterics.mw.webservice;
 
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -21,15 +23,31 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 
+
+
+
+
+
+
+
+
+
+import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
+import com.sun.jersey.api.core.*;
+
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class WebServiceEngine {
 	private static WebServiceEngine instance=null;
 	
-	private static final int PORT = 8080;
+	public static final String REST_PATH = "rest";
+	private static final int PORT_REST = 8081;
+	private static final int PORT_WS = 8080;
+	private static final URI BASE_URI = URI.create("http://localhost:"+PORT_REST+"/rest");
 	private Logger logger=logger = AstericsErrorHandling.instance.getLogger();
-	private HttpServer server=null; 
+	private HttpServer restServer=null; 
+	private HttpServer wsServer=null;
 	private AstericsDataApplication astericsApplication=null;
 
 
@@ -46,8 +64,13 @@ public class WebServiceEngine {
 	 * @throws IOException
 	 */
 	public void initGrizzlyHttpService(BundleContext bc) throws IOException {
-		logger.fine("Starting grizzly HTTP-server, URI: http://localhost:"+PORT);
-		server = HttpServer.createSimpleServer("./data/webservice","0.0.0.0", PORT);
+		logger.fine("Starting grizzly HTTP-server, "+BASE_URI);
+		
+        ClasspathResourceConfig rc = new ClasspathResourceConfig();
+        rc.add(new ApplicationConfig());
+        restServer = GrizzlyServerFactory.createHttpServer(BASE_URI, rc);
+        		
+		wsServer = HttpServer.createSimpleServer("./data/webservice","0.0.0.0", PORT_WS);
 		
 		//NetworkListener listener=new NetworkListener("ext net", "192.168.0.100", PORT);
 		
@@ -68,16 +91,17 @@ public class WebServiceEngine {
 		
 		
 		final WebSocketAddOn addon = new WebSocketAddOn();
-		for (NetworkListener listener : server.getListeners()) {
-			logger.fine("listener: "+listener.getHost()+":"+listener.getPort());
+		for (NetworkListener listener : wsServer.getListeners()) {
+			logger.fine("listener: "+listener.getHost()+":"+listener.getPort());			
 		    listener.registerAddOn(addon);
 		}
 		
 		astericsApplication = new AstericsDataApplication();
 
-		logger.fine("Registering Websocket URI: ws://localhost:" +PORT+"/ws/ws");
+		logger.fine("Registering Websocket URI: ws://localhost:" +PORT_WS+"/ws/ws");
 		WebSocketEngine.getEngine().register("/ws","/ws",astericsApplication);	
-		server.start();
+		restServer.start();
+		wsServer.start();
 	}
 	
 	/**
@@ -118,9 +142,13 @@ public class WebServiceEngine {
 
 	public void stop() {
 		// TODO Auto-generated method stub
-		if(server!=null) {
-			server.shutdownNow();
+		if(restServer!=null) {
+			restServer.shutdownNow();
 		}
+		if(wsServer!=null) {
+			wsServer.shutdownNow();
+		}
+
 	}
 	
 	//data handling

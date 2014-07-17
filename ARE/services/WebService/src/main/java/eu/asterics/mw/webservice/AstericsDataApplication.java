@@ -20,6 +20,7 @@ import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
+
 public class AstericsDataApplication extends WebSocketApplication implements IRuntimeInputPort {
 	ScheduledExecutorService sendService=Executors.newScheduledThreadPool(1);
     // initialize optimized broadcaster
