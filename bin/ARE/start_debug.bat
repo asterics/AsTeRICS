@@ -2,6 +2,34 @@
 CLS
 @ECHO AsTeRICS ARE Version 2.4
 @ECHO.
+
+SET PROFILE_PATH="profile"
+
+@REM Check commandline parameter
+@IF "%1" == "--webservice" (
+	@    echo "--webservice selected"
+	@    SET AUTOSTART_MODEL=WebSocket_test.acs
+	cp   %PROFILE_PATH%\\loader.ini %PROFILE_PATH%\\loader.ini.backup
+	cp   %PROFILE_PATH%\\services.ini %PROFILE_PATH%\\services.ini.backup
+	cp   %PROFILE_PATH%\\loader_websocketdemo.ini %PROFILE_PATH%\\loader.ini
+	cp   %PROFILE_PATH%\\services_websocketdemo.ini %PROFILE_PATH%\\services.ini
+
+) ELSE (
+
+	@     SET AUTOSTART_MODEL=%1
+
+	IF EXIST "%PROFILE_PATH%\\loader.ini.backup" (
+		cp   %PROFILE_PATH%\\loader.ini.backup %PROFILE_PATH%\\loader.ini
+	)
+	
+	IF EXIST "%PROFILE_PATH%\\services.ini.backup" (
+		cp   %PROFILE_PATH%\\services.ini.backup %PROFILE_PATH%\\services.ini
+	)
+)
+
+@echo "Using profile path: %PROFILE_PATH%"
+@echo "Using autostart model: %AUTOSTART_MODEL%"
+
 set JAVA_BIN="java"
 
 if exist java\bin\java.exe (
@@ -32,14 +60,14 @@ GOTO QuitError
 :Continue
 
 ECHO Deleting OSGi-Cache
-rd /s/q profile\org.eclipse.osgi
+rd /s/q %PROFILE_PATH%\org.eclipse.osgi
 
 ECHO Starting AsTeRICS Runtime Environment with Debug output ...
 ECHO error_level:FINE>.logger
-%JAVA_BIN% -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%1 -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
+%JAVA_BIN% -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%AUTOSTART_MODEL% -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console
 
 REM If you want to enable Java Mission Control and Flight Recording flags use the line below
-REM %JAVA_BIN% -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 -Dorg.osgi.framework.bootdelegation=* -DAnsi=true -Djava.util.logging.config.file=logging.properties  -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
+REM %JAVA_BIN% -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 -Dorg.osgi.framework.bootdelegation=* -DAnsi=true -Djava.util.logging.config.file=logging.properties  -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console
 
 GOTO Quit
 
