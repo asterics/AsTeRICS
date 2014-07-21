@@ -78,6 +78,8 @@ h2 {
 	var data1 = 0;
 	var data2 = 0;
 	var data3 = 0;
+	
+	var dataPacketCounter=0;
 
 	var wsUri = "ws://" + window.location.hostname + ":8080/ws/astericsData";
 	var output;
@@ -126,10 +128,21 @@ h2 {
 		writeToScreen("DISCONNECTED");
 	}
 	function onMessage(evt) {
+
 		accDataX = document.getElementById("AccX");
 		accDataX.value = evt.data;
 
-		window.data1 = Number(evt.data); //AccX graphData
+		var dataNum=Number(evt.data);
+		/*
+		console.log(dataPacketCounter);
+		console.log(dataNum);
+		
+		if(dataPacketCounter != dataNum) {
+			console.log("packetCounter differs");
+		}
+		*/
+		dataPacketCounter = dataPacketCounter+1;
+		window.data1 = dataNum; //AccX graphData
 	}
 	function onError(evt) {
 		writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
@@ -400,6 +413,7 @@ h2 {
 			<canvas id="myGraph1" width="400" height="100"></canvas>
 		</div>
 
+<!-- 
 		<div align="center">
 			<p style="">inB:</p>
 			&nbsp; &nbsp; <input id="AccY" style="" type="text"> &nbsp;
@@ -416,6 +430,7 @@ h2 {
 			<canvas id="myGraph3" width="400" height="100"></canvas>
 			<br>
 		</div>
+		-->
 		<br>
 		<!-- 
 		<div align="center">
