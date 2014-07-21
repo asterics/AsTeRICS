@@ -41,10 +41,14 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class WebServiceEngine {
 	private static WebServiceEngine instance=null;
 	
-	public static final String REST_PATH = "rest";
+	public static final String PATH_REST = "/rest";
 	private static final int PORT_REST = 8081;
+	private static final URI BASE_URI_REST = URI.create("http://localhost:"+PORT_REST+PATH_REST);
+	
+	public static final String PATH_WS = "/ws";
+	public static final String PATH_WS_ASTERICS_DATA="/astericsData";
 	private static final int PORT_WS = 8080;
-	private static final URI BASE_URI = URI.create("http://localhost:"+PORT_REST+"/rest");
+	private static final URI BASE_URI_WS = URI.create("http://localhost:"+PORT_WS+PATH_WS);
 	private Logger logger=logger = AstericsErrorHandling.instance.getLogger();
 	private HttpServer restServer=null; 
 	private HttpServer wsServer=null;
@@ -64,11 +68,11 @@ public class WebServiceEngine {
 	 * @throws IOException
 	 */
 	public void initGrizzlyHttpService(BundleContext bc) throws IOException {
-		logger.fine("Starting grizzly HTTP-server, "+BASE_URI);
+		logger.fine("Starting grizzly HTTP-server, "+BASE_URI_REST);
 		
         ClasspathResourceConfig rc = new ClasspathResourceConfig();
         rc.add(new ApplicationConfig());
-        restServer = GrizzlyServerFactory.createHttpServer(BASE_URI, rc);
+        restServer = GrizzlyServerFactory.createHttpServer(BASE_URI_REST, rc);
         		
 		wsServer = HttpServer.createSimpleServer("./data/webservice","0.0.0.0", PORT_WS);
 		
@@ -98,8 +102,8 @@ public class WebServiceEngine {
 		
 		astericsApplication = new AstericsDataApplication();
 
-		logger.fine("Registering Websocket URI: ws://localhost:" +PORT_WS+"/ws/ws");
-		WebSocketEngine.getEngine().register("/ws","/ws",astericsApplication);	
+		logger.fine("Registering Websocket URI: "+BASE_URI_WS+PATH_WS_ASTERICS_DATA);
+		WebSocketEngine.getEngine().register(PATH_WS,PATH_WS_ASTERICS_DATA,astericsApplication);	
 		restServer.start();
 		wsServer.start();
 	}

@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-@ApplicationPath(WebServiceEngine.REST_PATH)
+@ApplicationPath(WebServiceEngine.PATH_REST)
 public class ApplicationConfig extends Application {
 	public Set<Class<?>> getClasses() {
 		return new HashSet<Class<?>>(Arrays.asList(SimpleRESTPojo.class,StartModel.class,StopModel.class));
