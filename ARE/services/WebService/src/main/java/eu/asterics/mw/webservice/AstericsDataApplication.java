@@ -13,7 +13,7 @@ import org.glassfish.grizzly.websockets.WebSocketApplication;
 
 import sun.swing.StringUIClientPropertyKey;
 
-import com.corundumstudio.socketio.SocketConfig;
+//import com.corundumstudio.socketio.SocketConfig;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
