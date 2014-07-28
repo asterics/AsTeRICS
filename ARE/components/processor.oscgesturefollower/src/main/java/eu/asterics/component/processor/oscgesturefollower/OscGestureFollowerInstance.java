@@ -29,9 +29,14 @@ package eu.asterics.component.processor.oscgesturefollower;
 
 import de.sciss.net.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
+
+
 
 
 
@@ -46,8 +51,12 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsThreadPool;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -71,7 +80,7 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
 
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	int propInPort = 57110;
+	int propInPort = 8000;
 	int propOutPort = 9000;
 	// declare member variables here
 
@@ -82,7 +91,7 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
 	static OscGestureFollowerInstance instance;
 
 	Object	sync = new Object();
-	OSCClient c;
+	OSCClient c = null;
 	OSCServer s;
 
 	
@@ -90,6 +99,7 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
 	OSCBundle			bndlData;
 	
     float outdataA, outdataB, outdataC, outdataD;
+    String propFilename = "gestures.mubu";
 	
 	private double inA=0,inB=0,inC=0,inD=0;
     
@@ -187,6 +197,14 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
 		{
 			return elpFollow;
 		}
+		if ("load".equalsIgnoreCase(eventPortID))
+		{
+			return elpLoad;
+		}
+		if ("save".equalsIgnoreCase(eventPortID))
+		{
+			return elpSave;
+		}
 
         return null;
     }
@@ -219,6 +237,11 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
 		{
 			return propOutPort;
 		}
+
+    	if ("filename".equalsIgnoreCase(propertyName))
+		{
+			return propFilename;
+		}
     	
         return null;
     }
@@ -244,7 +267,13 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
 			propOutPort = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
-    	
+
+    	if ("filename".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propFilename;
+			propFilename = newValue.toString();
+			return oldValue;
+		}    	
         return null;
     }
     
@@ -259,7 +288,7 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
      synchronized private void sendOscMsg(String address, String command)
      {
     	
-    	 AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "SendOscMsg1");
+    	 // AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "SendOscMsg1");
     	 bndlData	= new OSCBundle( System.currentTimeMillis() );
     	 bndlData.addPacket(new OSCMessage(address, new Object[]{command}));
     	 try {
@@ -279,15 +308,34 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
      synchronized private void sendOscMsg(String address,String command, int value)
      {
      	
-    	 AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "SendOscMsg2");
+    	 // AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "SendOscMsg2");
     	 bndlData	= new OSCBundle( System.currentTimeMillis() );
     	 bndlData.addPacket(new OSCMessage(address, new Object[]{command, new Integer (value)}));
     	 try {
     		 OscGestureFollowerInstance.instance.c.send( bndlData );
     		 synchronized( OscGestureFollowerInstance.instance.sync )
-				{
- 			 OscGestureFollowerInstance.instance.sync.notifyAll();
-				}
+			 {
+    			 	OscGestureFollowerInstance.instance.sync.notifyAll();
+			 }
+    	 }
+    	 catch( IOException e2 ) {
+    		 e2.printStackTrace();
+    	 }
+          
+      }
+
+     synchronized private void sendOscMsg(String address,String command, String value)
+     {
+     	
+    	 // AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "SendOscMsg3");
+    	 bndlData	= new OSCBundle( System.currentTimeMillis() );
+    	 bndlData.addPacket(new OSCMessage(address, new Object[]{command, value}));
+    	 try {
+    		 OscGestureFollowerInstance.instance.c.send( bndlData );
+    		 synchronized( OscGestureFollowerInstance.instance.sync )
+			 {
+    			 OscGestureFollowerInstance.instance.sync.notifyAll();
+			 }
     	 }
     	 catch( IOException e2 ) {
     		 e2.printStackTrace();
@@ -300,24 +348,25 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
      */
      synchronized private void sendOutput()
      {
+    	 if (OscGestureFollowerInstance.instance.c == null) return;
     	 
-    	 
-    	 //AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "Send_output");
-    	 bndlData	= new OSCBundle( System.currentTimeMillis() );
-    	 bndlData.addPacket(new OSCMessage("/data", new Object[]{new Float (outdataA), new Float (outdataB), new Float (outdataC), new Float (outdataD)}));
-    	 try {
-    		 OscGestureFollowerInstance.instance.c.send( bndlData );
-    		 synchronized( OscGestureFollowerInstance.instance.sync )
-				{
- 			 OscGestureFollowerInstance.instance.sync.notifyAll();
-				}
-    	 }
-    	 catch( IOException e2 ) {
-    		 e2.printStackTrace();
-    	 }
-          
+    	 if (OscGestureFollowerInstance.instance.c.isConnected())
+    	 {
+	    	 //AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "Send_output");
+	    	 bndlData	= new OSCBundle( System.currentTimeMillis() );
+	    	 bndlData.addPacket(new OSCMessage("/data", new Object[]{new Float (outdataA), new Float (outdataB), new Float (outdataC), new Float (outdataD)}));
+	    	 try {
+	    		 OscGestureFollowerInstance.instance.c.send( bndlData );
+	    		 synchronized( OscGestureFollowerInstance.instance.sync )
+				 {
+	    			 OscGestureFollowerInstance.instance.sync.notifyAll();
+				 }
+	    	 }
+	    	 catch( IOException e2 ) {
+	    		 e2.printStackTrace();
+	    	 }
+    	 } 
       }
-    
     
     
      /**
@@ -364,6 +413,23 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
      /**
       * Event Listerner Ports.
       */
+	final IRuntimeEventListenerPort elpLoad = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			//AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "Stop");
+			sendOscMsg ("/parameters","readall",propFilename);
+		}
+	};
+	final IRuntimeEventListenerPort elpSave = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			//AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "Stop");
+			sendOscMsg ("/parameters","writeall",propFilename);
+		}
+	};
+	
 	final IRuntimeEventListenerPort elpStop = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
@@ -443,6 +509,7 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
+    	  launchNow();
     	  client(OSCChannel.UDP);
     	  server(OSCChannel.UDP);
           super.start();
@@ -484,8 +551,18 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
-
-    	  OscGestureFollowerInstance.instance.c.dispose();
+    	  closeNow();
+    	  if (OscGestureFollowerInstance.instance.c !=null)
+    	  {
+	    	  try
+	    	  {
+	    		  OscGestureFollowerInstance.instance.c.stop();
+	    	  }
+	    	  catch(IOException e1)
+	    	  {}    	  
+	    	  OscGestureFollowerInstance.instance.c.dispose();
+	    	  OscGestureFollowerInstance.instance.c=null;
+    	  }
           super.stop();
       }
       
@@ -534,10 +611,10 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
 //      	postln( "listening at port 57110. recognized commands: /pause, /quit, /dumpOSC" );
       	
       	try {
-      		AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "start server");
+      		//AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "start server");
       		OscGestureFollowerInstance.instance.s = OSCServer.newUsing( protocol, OscGestureFollowerInstance.instance.propInPort );
       		//AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, String.format( "server addr "+localAddress ));
-      		AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, String.valueOf(InetAddress.getLocalHost().getHostAddress()));
+      		//AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, String.valueOf(InetAddress.getLocalHost().getHostAddress()));
       		//AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, String.valueOf(localAddress);
       	}
       	catch( IOException e1 ) 
@@ -545,7 +622,7 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
       		e1.printStackTrace();
       		return; 
       	}
-  	  AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "add Listener");      	
+  	    // AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "add Listener");      	
       	OscGestureFollowerInstance.instance.s.addOSCListener( new OSCListener() 
       	{
       		public void messageReceived( OSCMessage m, SocketAddress addr, long time )
@@ -553,12 +630,13 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
       			
       			//AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, String.format("get from" +addr));
       			
-      			if(m.getName().contains("foo"))
-      				{
-      					AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "get_foo");
-      			}else if(m.getName().equals("/likeliest")){
-      				OscGestureFollowerInstance.instance.opLikeliest.sendData( ConversionUtils.doubleToBytes((float) m.getArg(0)));
-    //  				AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "likeliest");
+  				// if(m.getName().contains("foo"))
+  				//	AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "get_foo");
+  			    // else 
+      			
+  				if(m.getName().equals("/likeliest")){
+  					OscGestureFollowerInstance.instance.opLikeliest.sendData( ConversionUtils.doubleToBytes((float) m.getArg(0)));
+  					// AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "likeliest");
       				
       				synchronized( OscGestureFollowerInstance.instance.sync )
       				{
@@ -575,7 +653,7 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
       	}
       	catch( IOException e3 ) 
       	{}
-  	  AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "foo");
+      	// AstericsErrorHandling.instance.reportInfo(OscGestureFollowerInstance.instance, "foo");
       	
       }
     
@@ -609,5 +687,56 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
   		}
   		sendOutput();
   	}  
-      
+ 
+    
+	String gfApplication = "tools\\GestureFollower\\gfOSC_v1.4.exe";
+	String propWorkingDirectory = ".";
+	boolean propAutoLaunch = false;
+	boolean propAutoClose = true;
+	boolean propOnlyByEvent = false;
+
+	// declare member variables here
+	Process process = null;
+    boolean processStarted=false;
+   
+
+    private final void launchNow()
+    {
+    	if (processStarted == true) closeNow();
+    	try
+    	{
+    		    List<String> command =new ArrayList<String>();
+
+    		    command.add(gfApplication);    		    
+    		    ProcessBuilder builder = new ProcessBuilder(command);
+       		    Map<String, String> env = builder.environment();
+    		    builder.directory(new File(propWorkingDirectory));
+    		    
+    		    process = builder.start();    		    
+    	    	processStarted = true;
+    	}
+    	catch (IOException e)
+    	{
+    		AstericsErrorHandling.instance.reportError(this, 
+    				"IOException: problem starting "+ gfApplication);
+    	}
+    	catch (IllegalArgumentException e)
+    	{
+    		AstericsErrorHandling.instance.reportError(this, 
+    				"IllegalArgument: problem starting "+ gfApplication);
+    	}
+    }
+    
+    private final void closeNow()
+    { 
+        if (process != null)
+        {
+    		//System.out.println("closing Process");
+
+        	process.destroy();
+        	process = null;
+        }
+    	processStarted=false;    	
+    }
+
 }

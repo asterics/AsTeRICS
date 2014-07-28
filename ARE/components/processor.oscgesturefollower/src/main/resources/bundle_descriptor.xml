@@ -63,18 +63,26 @@
 			<eventListenerPort id="follow">
 				<description>In the 'follow' mode the incoming phrase is compared with the recorded pharse</description>
 			</eventListenerPort>
-
-
+			<eventListenerPort id="load">
+				<description>load gestures from file</description>
+			</eventListenerPort>
+			<eventListenerPort id="save">
+				<description>save learned gestures to file</description>
+			</eventListenerPort>
 		</events>			
         <properties>
 				<property name="InPort"
 				type="integer"
-				value="57110"
+				value="8000"
 				description="property description"/>
 				<property name="OutPort"
 				type="integer"
 				value="9000"
 				description="property description"/>
+				<property name="filename"
+				type="string"
+				value="gestures.mubu"
+				description="filename for loading or storing gesture data"/>
         </properties>
 
     </componentType>
