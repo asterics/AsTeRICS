@@ -115,11 +115,11 @@
 
             <r:RibbonTab Header="{x:Static properties:Resources.RibbonTabComponents}" KeyTip="C">
                 <r:RibbonGroup Header="{x:Static properties:Resources.RibbonGroupComponents}" Name="componentsRibbonGroup">
-                    <r:RibbonSplitButton Label="{x:Static properties:Resources.SensorsButton}" LargeImageSource="images/sensor.png" Name="sensorDropDown" KeyTip="S"/>
-                    <r:RibbonSplitButton Label="{x:Static properties:Resources.ProcessorsButton}" LargeImageSource="images/processor.png" Name="processorDropDown" KeyTip="P"/>
-                    <r:RibbonSplitButton Label="{x:Static properties:Resources.ActuatorsButton}" LargeImageSource="images/actuator.png" Name="actuatorDropDown" KeyTip="A"/>
-                    <r:RibbonSplitButton Label="{x:Static properties:Resources.SpecialsButton}" LargeImageSource="images/special.png" Name="specialDropDown" KeyTip="C" Visibility="Collapsed"/>
-                    <r:RibbonSplitButton Label="{x:Static properties:Resources.GroupSplitButton}" LargeImageSource="images/group_elem.png" Name="groupDropDown" KeyTip="G"/>
+                    <r:RibbonMenuButton Label="{x:Static properties:Resources.SensorsButton}" LargeImageSource="images/sensor.png" Name="sensorDropDown" KeyTip="S"/>
+                    <r:RibbonMenuButton Label="{x:Static properties:Resources.ProcessorsButton}" LargeImageSource="images/processor.png" Name="processorDropDown" KeyTip="P"/>
+                    <r:RibbonMenuButton Label="{x:Static properties:Resources.ActuatorsButton}" LargeImageSource="images/actuator.png" Name="actuatorDropDown" KeyTip="A"/>
+                    <r:RibbonMenuButton Label="{x:Static properties:Resources.SpecialsButton}" LargeImageSource="images/special.png" Name="specialDropDown" KeyTip="C" Visibility="Collapsed"/>
+                    <r:RibbonMenuButton Label="{x:Static properties:Resources.GroupSplitButton}" LargeImageSource="images/group_elem.png" Name="groupDropDown" KeyTip="G"/>
                 </r:RibbonGroup>        
             </r:RibbonTab>
 

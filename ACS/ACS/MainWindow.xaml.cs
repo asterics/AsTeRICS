@@ -5319,7 +5319,10 @@ namespace Asterics.ACS {
             }
         }
 
-
+        private void showStuff(Object sender,RoutedEventArgs e)
+        {
+            sensorDropDown.IsDropDownOpen = true;
+        }
         /// <summary>
         /// Download a model from ARE to the canvas and check, if the model is valid
         /// </summary>
@@ -7084,7 +7087,7 @@ namespace Asterics.ACS {
         }
 
 
-        private void moveOthersMenuItemBack(RibbonSplitButton button) {
+        private void moveOthersMenuItemBack(RibbonMenuButton button) {
             RibbonMenuItem tmprami = null;
             foreach (RibbonMenuItem rami in button.Items) {
                 if (rami.Header.Equals("Others")) {
