@@ -447,6 +447,7 @@ which in this case simulates a for/backward command for Mozilla Firefox. </descr
         <property name="descreteSteps" value="0" />
         <property name="updateFrequency" value="0" />
         <property name="accelerationRange" value="0" />
+        <property name="uniqueID" value="not used" />
       </properties>
       <layout>
         <posX>37</posX>
@@ -565,18 +566,18 @@ which in this case simulates a for/backward command for Mozilla Firefox. </descr
       </gui>
     </component>
     <component id="OscGestureFollower.1" type_id="asterics.OscGestureFollower">
-      <description>My Plugin description</description>
+      <description>Connects the external GestureFollower tool with ARE</description>
       <ports>
-        <inputPort portTypeID="CH1" sync="true">
+        <inputPort portTypeID="CH1">
           <properties />
         </inputPort>
-        <inputPort portTypeID="CH2" sync="true">
+        <inputPort portTypeID="CH2">
           <properties />
         </inputPort>
-        <inputPort portTypeID="CH3" sync="true">
+        <inputPort portTypeID="CH3">
           <properties />
         </inputPort>
-        <inputPort portTypeID="CH4" sync="false">
+        <inputPort portTypeID="CH4">
           <properties />
         </inputPort>
         <outputPort portTypeID="likeliest">
@@ -586,6 +587,7 @@ which in this case simulates a for/backward command for Mozilla Firefox. </descr
       <properties>
         <property name="InPort" value="8000" />
         <property name="OutPort" value="9000" />
+        <property name="filename" value="gestures.mubu" />
       </properties>
       <layout>
         <posX>646</posX>

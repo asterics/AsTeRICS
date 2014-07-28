@@ -55,8 +55,8 @@
         <posY>70</posY>
       </layout>
       <gui>
-        <posX>0</posX>
-        <posY>0</posY>
+        <posX>25</posX>
+        <posY>1844</posY>
         <width>1525</width>
         <height>2333</height>
       </gui>
@@ -101,8 +101,8 @@
         <property name="buttonCaption5" value="learn3" />
         <property name="buttonCaption6" value="clear" />
         <property name="buttonCaption7" value="follow" />
-        <property name="buttonCaption8" value="" />
-        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption8" value="load" />
+        <property name="buttonCaption9" value="save" />
         <property name="buttonCaption10" value="" />
         <property name="buttonCaption11" value="" />
         <property name="buttonCaption12" value="" />
@@ -120,10 +120,10 @@
         <posY>276</posY>
       </layout>
       <gui>
-        <posX>0</posX>
-        <posY>3178</posY>
-        <width>5337</width>
-        <height>1133</height>
+        <posX>25</posX>
+        <posY>533</posY>
+        <width>7862</width>
+        <height>800</height>
       </gui>
     </component>
     <component id="OscGestureFollower.1" type_id="asterics.OscGestureFollower">
@@ -148,6 +148,7 @@
       <properties>
         <property name="InPort" value="8000" />
         <property name="OutPort" value="9000" />
+        <property name="filename" value="nodding.mubu" />
       </properties>
       <layout>
         <posX>389</posX>
@@ -189,10 +190,10 @@
         <posY>98</posY>
       </layout>
       <gui>
-        <posX>1325</posX>
-        <posY>4400</posY>
-        <width>3250</width>
-        <height>1067</height>
+        <posX>7925</posX>
+        <posY>533</posY>
+        <width>1550</width>
+        <height>800</height>
       </gui>
     </component>
   </components>
@@ -357,6 +358,34 @@
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="button8_load">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="OscGestureFollower.1" />
+          <eventPort id="load" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button9_save">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="OscGestureFollower.1" />
+          <eventPort id="save" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
     <Decoration>true</Decoration>
@@ -365,10 +394,10 @@
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>true</ShopControlPanel>
     <AREGUIWindow>
-      <posX>0</posX>
-      <posY>2600</posY>
-      <width>6238</width>
-      <height>3022</height>
+      <posX>25</posX>
+      <posY>22</posY>
+      <width>10000</width>
+      <height>1756</height>
     </AREGUIWindow>
   </modelGUI>
 </model>

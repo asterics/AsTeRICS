@@ -277,8 +277,8 @@
         <property name="yMax" value="1080" />
       </properties>
       <layout>
-        <posX>1096</posX>
-        <posY>374</posY>
+        <posX>1196</posX>
+        <posY>270</posY>
       </layout>
     </component>
     <component id="Threshold.1" type_id="asterics.Threshold">
@@ -424,15 +424,15 @@
         <inputPort portTypeID="inY">
           <properties />
         </inputPort>
-        <inputPort portTypeID="radius">
-          <properties />
-        </inputPort>
         <outputPort portTypeID="outX">
           <properties />
         </outputPort>
         <outputPort portTypeID="outY">
           <properties />
         </outputPort>
+        <inputPort portTypeID="radius">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="xCenter" value="0" />
@@ -883,20 +883,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button1_activate">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Local Mouse" />
-          <eventPort id="activate" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="eventPosEdge_leftClick">
       <sources>
         <source>
@@ -925,20 +911,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button2_deactivate">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Local Mouse" />
-          <eventPort id="deactivate" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="output_Start">
       <sources>
         <source>
@@ -950,6 +922,20 @@
         <target>
           <component id="WavefilePlayer.1" />
           <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_toggle">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Local Mouse" />
+          <eventPort id="toggle" />
         </target>
       </targets>
     </eventChannel>
