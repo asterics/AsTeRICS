@@ -52,10 +52,10 @@ import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
  * 
- * ApplicationLauncherInstance can extternal software applications
+ * ApplicationLauncherInstance can external software applications
  * via full path and filename. A default application is given as property,
  * which can be replace by an incoming application name at the input port.
- * The Lauch can be performed automatically at startup, at incoming filename or
+ * The Launch can be performed automatically at startup, at incoming filename or
  * only via incoming event trigger.  
  *  
  * @author Chris Veigl [veigl@technikum-wien.at]
