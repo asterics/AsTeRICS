@@ -1322,4 +1322,7 @@
   <data name="MidiToneCreatorRibbonButtonToolTip" xml:space="preserve">
     <value>Miditone Creator</value>
   </data>
+  <data name="SearchComponent" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>

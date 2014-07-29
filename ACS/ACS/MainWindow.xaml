@@ -30,6 +30,7 @@
         xmlns:r="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
         xmlns:this="clr-namespace:Asterics.ACS"
         xmlns:properties="clr-namespace:Asterics.ACS.Properties"
+        xmlns:local="clr-namespace:Asterics.ACS"
         xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
         x:Class="Asterics.ACS.MainWindow" Title="{x:Static properties:Resources.MainWindowTitle}" Height="700" Width="1200" Icon="/ACS;component/images/AsTeRICS_icon.ico" TabIndex="300000">
     <r:RibbonWindow.Resources>
@@ -120,7 +121,10 @@
                     <r:RibbonMenuButton Label="{x:Static properties:Resources.ActuatorsButton}" LargeImageSource="images/actuator.png" Name="actuatorDropDown" KeyTip="A"/>
                     <r:RibbonMenuButton Label="{x:Static properties:Resources.SpecialsButton}" LargeImageSource="images/special.png" Name="specialDropDown" KeyTip="C" Visibility="Collapsed"/>
                     <r:RibbonMenuButton Label="{x:Static properties:Resources.GroupSplitButton}" LargeImageSource="images/group_elem.png" Name="groupDropDown" KeyTip="G"/>
-                </r:RibbonGroup>        
+                    <Label Margin="0 25 0 0" Content="{x:Static properties:Resources.SearchComponent}"/>
+                    <local:AutoCompleteTextBox Height="23" Width="240" Margin="0 28 0 0" x:Name="textBox1" DelayTime="500" Threshold="2"/>
+                </r:RibbonGroup>
+                
             </r:RibbonTab>
 
             <r:RibbonTab Header="{x:Static properties:Resources.RibbonTabEdit}" KeyTip="E">
