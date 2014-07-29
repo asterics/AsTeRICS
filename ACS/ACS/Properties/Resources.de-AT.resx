@@ -1245,4 +1245,10 @@
   <data name="MidiToneCreatorRibbonButtonTool" xml:space="preserve">
     <value>Miditone Creator</value>
   </data>
+  <data name="SearchComponent" xml:space="preserve">
+    <value>Suche</value>
+  </data>
+  <data name="SearchComponent1" xml:space="preserve">
+    <value>Suche</value>
+  </data>
 </root>

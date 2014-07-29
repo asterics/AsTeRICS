@@ -223,7 +223,7 @@ namespace Asterics.ACS {
             //if (!Directory.Exists(Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\AsTeRICS\\ACS\\componentcollections\\")) {
             //    Directory.CreateDirectory(Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\AsTeRICS\\ACS\\componentcollections\\");
             //}
-
+          
             // uncomment for local use
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\groups\\")) {
                 Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "\\groups\\");
@@ -231,7 +231,7 @@ namespace Asterics.ACS {
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\componentcollections\\")) {
                 Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "\\componentcollections\\");
             }
-
+            
 
             // loading the asterics.ini file, containing some basic settings
             // uncomment for the final version
@@ -398,7 +398,7 @@ namespace Asterics.ACS {
             undoStack = new AstericsStack<CommandObject>();
             undoStack.PropertyChanged += undoStack_PropertyChanged;
             redoStack.PropertyChanged += redoStack_PropertyChanged;
-
+            textBox1.itemSelected += searchItemSelected;
             // Creating the AvalonDock (split window and properties on the right hand side)
             BuildDockingLayout();
 
@@ -1780,7 +1780,10 @@ namespace Asterics.ACS {
 
             // check, if component is singleton
             bool canBeAdded = true;
-
+            if (componentList.Contains(typeId) == false)
+            {
+                return;
+            }
             if (((Asterics.ACS2.componentTypesComponentType)componentList[typeId]).singleton) {
                 List<string> componentTypeList = new List<string>();
                 foreach (componentType comp in deploymentComponentList.Values) {
@@ -5080,7 +5083,7 @@ namespace Asterics.ACS {
         /// <summary>
         /// Load the bundle-model (all available components) to the ribbon menu
         /// </summary>
-        private void LoadBundle(String pathToBundleFile) { 
+        private void LoadBundle(String pathToBundleFile) {
             // check, if model is valid against the deployment_model schema
             String xmlError;
             string fName;
@@ -5133,6 +5136,7 @@ namespace Asterics.ACS {
                             Asterics.ACS2.componentTypesComponentType comp = (Asterics.ACS2.componentTypesComponentType)o;
                             comp.InitGraphPorts(comp.id);
                             componentList.Add(comp.id, comp);
+                            AddSearchSuggestion(comp.id.Replace("asterics.",""));
                         }
                     }
                     foreach (Asterics.ACS2.componentTypesComponentType component in componentList.Values) {
@@ -5290,6 +5294,7 @@ namespace Asterics.ACS {
                             i.Click += AddGroupFromRibbonMenu;
                             i.CommandParameter = filename;
                             groupDropDown.Items.Add(i);
+                            
                         }
                     }
                 } catch (Exception e) {
@@ -5319,7 +5324,28 @@ namespace Asterics.ACS {
             }
         }
 
+        private void AddSearchSuggestion(string name) {
+           
+            AutoCompleteEntry entry = new AutoCompleteEntry(name);
+            List<string> keywords = new List<string>();
+            for (int i = 0; i < name.Length; i++)
+            {
+                keywords.Add(name.Substring(i));
+            }
+            entry.KeywordStrings = (string[])keywords.ToArray();
+            textBox1.AddItem(entry);
+        }
 
+        private void searchItemSelected()
+        {
+            AddComponent("asterics."+textBox1.Text, false, true, false);
+            textBox1.Text = "";
+        }
+
+        private void showStuff(Object sender, RoutedEventArgs e)
+        {
+            sensorDropDown.IsDropDownOpen = true;
+        }
         /// <summary>
         /// Download a model from ARE to the canvas and check, if the model is valid
         /// </summary>
@@ -7084,7 +7110,7 @@ namespace Asterics.ACS {
         }
 
 
-        private void moveOthersMenuItemBack(RibbonSplitButton button) {
+        private void moveOthersMenuItemBack(RibbonMenuButton button) {
             RibbonMenuItem tmprami = null;
             foreach (RibbonMenuItem rami in button.Items) {
                 if (rami.Header.Equals("Others")) {
@@ -7662,6 +7688,11 @@ namespace Asterics.ACS {
 
             if ((Keyboard.Modifiers == ModifierKeys.Control) && (e.Key == Key.P)) {
                 Keyboard.Focus(dockableComponentProperties);
+            }
+            else if ((Keyboard.Modifiers == ModifierKeys.Control) && (e.Key == Key.F))
+            {
+                
+                textBox1.Focus();
             }
             else if ((Keyboard.Modifiers == ModifierKeys.Control) && (e.Key == Key.E)) {
                 Keyboard.Focus(dockableEventsTab);
@@ -10547,7 +10578,7 @@ namespace Asterics.ACS {
         /// Add a component to the canvas and the data model.
         /// </summary>
         /// <param name="newComponent"></param>
-        private void AddComponent(componentType newComponent) {
+        public void AddComponent(componentType newComponent) {
             canvas.Children.Add(newComponent.ComponentCanvas);
 
             Canvas.SetLeft(newComponent.ComponentCanvas, Int32.Parse(newComponent.layout.posX));
