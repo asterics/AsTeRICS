@@ -32,7 +32,6 @@ import com.theeyetribe.client.GazeManager.ApiVersion;
 import com.theeyetribe.client.GazeManager.ClientMode;
 import com.theeyetribe.client.ICalibrationProcessHandler;
 import com.theeyetribe.client.data.CalibrationResult;
-
 import com.theeyetribe.client.*;
 
 import java.util.logging.Logger;
@@ -79,31 +78,49 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 
 	final static int STATE_IDLE=0;
 	final static int STATE_CALIBRATION=1;
-	final static int STATE_OFFSETCORRECTION=2;
-	final static int STATE_GETOFFSET=3;
+	final static int STATE_INITIATE_CORRECTION=2;
+	final static int STATE_AUTOCORRECTION=3;
+	final static int STATE_MANUALCORRECTION=4;
 
-    static int state = STATE_IDLE;
+	final static int MODE_MANUALCORRECTION=0;
+	final static int MODE_AUTOCORRECTION=1;
+
+	final static int POS_LEFT =0;
+	final static int POS_RIGHT =1;
+	final static int POS_BOTH =2;
+	
+	final static int MANUAL_CORRECTION_DEADZONE = 5;
+	final static double MANUAL_CORRECTION_SPEEDFACTOR = 0.020;
+	final static int MANUAL_CORRECTION_MAXSPEED = 2;
+
+	static int state = STATE_IDLE;
 	
 	static int propMinBlinkTime = 50;
-	static int propMaxBlinkTime = 200;
+	static int propMidBlinkTime = 200;
+	static int propMaxBlinkTime = 2000;
 	static int propFixationTime = 700;
 	static int propOffsetCorrectionRadius=150;
+	static int propOffsetCorrectionMode= MODE_MANUALCORRECTION;
+	static int propPupilPositionMode= POS_BOTH;
 	
 	static boolean measuringClose=false; 
 	static boolean measuringFixation=false;
 	static boolean firstFixation=false;
 	static long startCloseTimestamp=0;
 	static long startFixationTimestamp=0;
+	static boolean eyePositionValid=false;
 
-	
+	static double currentManualOffsetX=0;
+	static double currentManualOffsetY=0;
+
 	static long  offsetCorrectionStartTime;
-	static int  gazeX,gazeY,leftEyeX,leftEyeY;
+	static int  gazeX,gazeY,eyeX,eyeY;
 	static int  correctedGazeX,correctedGazeY,weakGazePointX,weakGazePointY, saveCorrectedGazeX, saveCorrectedGazeY;
 	
 	private final CalibrationGenerator calib = new CalibrationGenerator(this);
 
 	final GazeManager gm = GazeManager.getInstance();        
- 	final GazeListener gazeListener = new GazeListener();
+ 	final GazeListener gazeListener = new GazeListener(); 
     
    /**
     * The class constructor.
@@ -173,6 +190,10 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 		{
 			return elpOffsetCorrection;
 		}
+		if ("removeLastOffsetCorrection".equalsIgnoreCase(eventPortID))
+		{
+			return elpRemoveLastOffsetCorrection;
+		}
 
         return null;
     }
@@ -214,6 +235,10 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 		{
 			return propMinBlinkTime;
 		}
+		if ("midBlinkTime".equalsIgnoreCase(propertyName))
+		{
+			return propMidBlinkTime;
+		}
 		if ("maxBlinkTime".equalsIgnoreCase(propertyName))
 		{
 			return propMaxBlinkTime;
@@ -225,6 +250,14 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 		if ("offsetCorrectionRadius".equalsIgnoreCase(propertyName))
 		{
 			return propOffsetCorrectionRadius;
+		}
+		if ("offsetCorrectionMode".equalsIgnoreCase(propertyName))
+		{
+			return propOffsetCorrectionMode;
+		}
+		if ("pupilPositionMode".equalsIgnoreCase(propertyName))
+		{
+			return propPupilPositionMode;
 		}
 
         return null;
@@ -243,6 +276,12 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 			propMinBlinkTime = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
+		if ("midBlinkTime".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propMidBlinkTime;
+			propMidBlinkTime = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
 		if ("maxBlinkTime".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propMaxBlinkTime;
@@ -259,6 +298,18 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 		{
 			final Object oldValue = propOffsetCorrectionRadius;
 			propOffsetCorrectionRadius = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
+		if ("offsetCorrectionMode".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propOffsetCorrectionMode;
+			propOffsetCorrectionMode = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
+		if ("pupilPositionMode".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propPupilPositionMode;
+			propPupilPositionMode = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
         return null;
@@ -292,19 +343,36 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
     	@Override 
     	public synchronized void receiveEvent(String data)
     	 {
-    		if (state!=STATE_CALIBRATION)
+    		if (state==STATE_CALIBRATION) return;
+    		
+    		if (state==STATE_MANUALCORRECTION)
+    		{
+           		calib.newOffsetPoint(weakGazePointX,weakGazePointY,(int)currentManualOffsetX,(int)currentManualOffsetY);
+   				System.out.println("Manual correction finished.");
+    			state=STATE_IDLE;
+    		}
+    		else
     		{
 				calib.playWavFile("./data/sounds/7.wav");
 
    				System.out.println("Offset correction triggered."); 
-    			state=STATE_OFFSETCORRECTION;
     			measuringClose=false;
     			measuringFixation=false;
      		    offsetCorrectionStartTime=System.currentTimeMillis();
+     		    state=STATE_INITIATE_CORRECTION;
     		}
     	 }
     };    
 
+    final IRuntimeEventListenerPort elpRemoveLastOffsetCorrection 	= new IRuntimeEventListenerPort()
+    {
+    	@Override 
+    	public synchronized void receiveEvent(String data)
+    	 {
+    			int remainingPoints = calib.removeOffsetPoint();
+   				System.out.println ("Removed last offset correction point. Now there are "+remainingPoints+" points left.");
+    	 }
+    };    
 	
     
     private class GazeListener implements IGazeListener
@@ -314,49 +382,125 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
         {
         	//  System.out.println(gazeData.toString());
             
-            if ((state==STATE_CALIBRATION) || (gazeData.state & 7) == 0)     // tracking lost ?
+            if (state==STATE_CALIBRATION) return;
+
+            if ((gazeData.state & 7) == 0)     // tracking lost ?
             { 
-            	// System.out.print("-");
+    			measuringClose=false;
+    			measuringFixation=false;
             	return; 
             } 
-             
+            
+            // here we have at least valid pupil coordinates (maybe also valid gaze data ;)
+            
             gazeX = (int)gazeData.smoothedCoordinates.x;
             gazeY = (int)gazeData.smoothedCoordinates.y;
 
-            Point offset = calib.calcOffset(gazeX, gazeY);
+            Point offset = calib.calcOffset(gazeX, gazeY);  // look if we have an active offset correction point
     		correctedGazeX=gazeX+offset.x;
             correctedGazeY=gazeY+offset.y;
 
-            leftEyeX=(int)(gazeData.leftEye.pupilCenterCoordinates.x*1000);
-            leftEyeY=(int)(gazeData.leftEye.pupilCenterCoordinates.y*1000);
-
-            if (state == STATE_OFFSETCORRECTION)
-            {
-            	if (System.currentTimeMillis()>=offsetCorrectionStartTime+1000)
-        	    {
-            		weakGazePointX=gazeX;
-            	    weakGazePointY=gazeY;
-            	    
-            	    saveCorrectedGazeX=correctedGazeX;
-            	    saveCorrectedGazeY=correctedGazeY;
-
-            	    calib.playWavFile("./data/sounds/8.wav");
-            		state=STATE_GETOFFSET;
-        	    }
+            switch (propPupilPositionMode)  {
+            	case POS_LEFT: 
+			            eyeX=(int)(gazeData.leftEye.pupilCenterCoordinates.x*1000);
+			            eyeY=(int)(gazeData.leftEye.pupilCenterCoordinates.y*1000);
+			            if ((eyeX==0) && (eyeY==0)) eyePositionValid=false; else eyePositionValid=true;
+			            break;
+            	case POS_RIGHT: 
+			            eyeX=(int)(gazeData.rightEye.pupilCenterCoordinates.x*1000);
+			            eyeY=(int)(gazeData.rightEye.pupilCenterCoordinates.y*1000);
+			            if ((eyeX==0) && (eyeY==0)) eyePositionValid=false; else eyePositionValid=true;
+			            break;
+            	case POS_BOTH: 
+            			if (((gazeData.leftEye.pupilCenterCoordinates.x==0) && (gazeData.leftEye.pupilCenterCoordinates.y ==0)) ||
+            				((gazeData.rightEye.pupilCenterCoordinates.x==0) && (gazeData.rightEye.pupilCenterCoordinates.y ==0)))
+            			{	eyePositionValid=false;  }
+            			else {
+            				eyePositionValid=true;
+    			            eyeX=(int)((gazeData.leftEye.pupilCenterCoordinates.x+gazeData.rightEye.pupilCenterCoordinates.x)*500);
+    			            eyeY=(int)((gazeData.leftEye.pupilCenterCoordinates.y+gazeData.rightEye.pupilCenterCoordinates.y)*500);
+            			}
+			            break;
             }
-            if (state == STATE_GETOFFSET) 
-            {
-            	if (System.currentTimeMillis()>=offsetCorrectionStartTime+2000)
-            	{
-                    Point oldOffset = calib.calcOffset(weakGazePointY, weakGazePointY);
-               		calib.newOffsetPoint(weakGazePointX,weakGazePointY,oldOffset.x+(saveCorrectedGazeX-correctedGazeX),oldOffset.y+(saveCorrectedGazeY-correctedGazeY));
-            		state = STATE_IDLE;
-            	}
-            	return;
-            } 
+		            
+            switch (state)  {
+
+	            case STATE_INITIATE_CORRECTION:  // get weak gaze point coordinates
+	            	if (System.currentTimeMillis()>=offsetCorrectionStartTime+1000)
+	        	    {
+	       				weakGazePointX=gazeX;
+	            	    weakGazePointY=gazeY;
+	            	    
+	            	    saveCorrectedGazeX=correctedGazeX;
+	            	    saveCorrectedGazeY=correctedGazeY;
+	
+	            	    calib.playWavFile("./data/sounds/8.wav");
+	            	    
+	         		    if (propOffsetCorrectionMode==MODE_AUTOCORRECTION)  // continue depending on mode
+	         		    {
+		       				System.out.println("Got weak gaze spot for automatic correction");
+	         		    	state=STATE_AUTOCORRECTION;
+	         		    }
+	         		    else { 
+		       				System.out.println("Got weak gaze spot for manual correction");
+		                    Point oldOffset = calib.calcOffset(weakGazePointY, weakGazePointY);
+	         		    	currentManualOffsetX=oldOffset.x;
+	         		    	currentManualOffsetY=oldOffset.y;
+	         		    	state= STATE_MANUALCORRECTION;	         		    	
+	         		    }
+	        	    }
+	            	break;
+	            	
+	            case STATE_AUTOCORRECTION:   // get estimated offset to desired gazepoint
+	            	if (System.currentTimeMillis()>=offsetCorrectionStartTime+2000)
+	            	{
+	                    Point oldOffset = calib.calcOffset(weakGazePointY, weakGazePointY);
+	               		calib.newOffsetPoint(weakGazePointX,weakGazePointY,oldOffset.x+(saveCorrectedGazeX-correctedGazeX),oldOffset.y+(saveCorrectedGazeY-correctedGazeY));
+	       				System.out.println("Automatic correction finished.");
+	               		state = STATE_IDLE;
+	            	}
+	            	return;
+	            	
+	            case STATE_MANUALCORRECTION:   // modify offset by gaze actions
+	            		double currentXDirection=weakGazePointX-gazeX;
+	            		double currentYDirection=weakGazePointY-gazeY;
+	            		
+	            		if ((currentXDirection > -MANUAL_CORRECTION_DEADZONE) && (currentXDirection < MANUAL_CORRECTION_DEADZONE)) 
+	            			currentXDirection =0;
+	            		if ((currentYDirection > -MANUAL_CORRECTION_DEADZONE) && (currentYDirection < MANUAL_CORRECTION_DEADZONE)) 
+	            			currentYDirection =0;
+	            		
+	            		currentXDirection*=MANUAL_CORRECTION_SPEEDFACTOR;
+	            		currentYDirection*=MANUAL_CORRECTION_SPEEDFACTOR;
+
+	            		if (currentXDirection < -MANUAL_CORRECTION_MAXSPEED) currentXDirection=-MANUAL_CORRECTION_MAXSPEED; 
+	            		if (currentXDirection > MANUAL_CORRECTION_MAXSPEED) currentXDirection=MANUAL_CORRECTION_MAXSPEED; 
+	            		if (currentYDirection < -MANUAL_CORRECTION_MAXSPEED) currentYDirection=-MANUAL_CORRECTION_MAXSPEED; 
+	            		if (currentYDirection > MANUAL_CORRECTION_MAXSPEED) currentYDirection=MANUAL_CORRECTION_MAXSPEED; 
+	            		
+	            		currentManualOffsetX+=currentXDirection;
+	            		currentManualOffsetY+=currentYDirection;
+
+	            		if (currentManualOffsetX < -200) currentManualOffsetX=-200; 
+	            		if (currentManualOffsetX > 200) currentManualOffsetX=200; 
+	            		if (currentManualOffsetY < -200) currentManualOffsetX=-200; 
+	            		if (currentManualOffsetY > 200) currentManualOffsetX=200; 
+	            		
+	       				System.out.println("Manual correction: "+currentManualOffsetX+"/"+currentManualOffsetY);
+
+    		            opGazeX.sendData(ConversionUtils.intToBytes(weakGazePointX+(int)currentManualOffsetX));
+    		            opGazeY.sendData(ConversionUtils.intToBytes(weakGazePointY+(int)currentManualOffsetY));
+    		            
+    	            	if (System.currentTimeMillis()>=offsetCorrectionStartTime+7000)
+    	            	{
+	    	           		calib.newOffsetPoint(weakGazePointX,weakGazePointY,(int)currentManualOffsetX,(int)currentManualOffsetY);
+	    	   				System.out.println("Manual correction finished.");
+	    	    			state=STATE_IDLE;
+    	            	}
+	            		return;            	
+        	}
             
-            
-            if ((gazeData.leftEye.pupilCenterCoordinates.x ==0) && (gazeX==0))   // eyes closed
+            if ((eyePositionValid==false) && (gazeX==0))   // eyes closed
             {
             	// System.out.print("*");
 
@@ -375,9 +519,9 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
             	{
             		long blinktime=System.currentTimeMillis() - startCloseTimestamp;
   
-            		if ((blinktime > propMinBlinkTime) && (blinktime < propMaxBlinkTime))
+            		if ((blinktime > propMinBlinkTime) && (blinktime < propMidBlinkTime))
             			etpBlink.raiseEvent();
-            		else if (blinktime > propMaxBlinkTime)
+            		else if ((blinktime >= propMidBlinkTime) && (blinktime <= propMaxBlinkTime))
             			etpLongblink.raiseEvent();
             		
             	    measuringClose = false;
@@ -389,10 +533,10 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 		            opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY));
             	}
             	
-            	if ((leftEyeX != 0) || (leftEyeY != 0))
+            	if (eyePositionValid)
             	{
-		            opPosX.sendData(ConversionUtils.intToBytes(leftEyeX));
-		            opPosY.sendData(ConversionUtils.intToBytes(leftEyeY));
+		            opPosX.sendData(ConversionUtils.intToBytes(eyeX));
+		            opPosY.sendData(ConversionUtils.intToBytes(eyeY));
             	}
 	
 	            if ((gazeData.isFixated==true) && (measuringFixation ==false))
@@ -428,7 +572,10 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
        
     	  boolean success = gm.activate(ApiVersion.VERSION_1_0, ClientMode.PUSH);
     	  
-     	  gm.addGazeListener(gazeListener);
+    	  if (success)
+    		  gm.addGazeListener(gazeListener);
+    	  else
+  			  AstericsErrorHandling.instance.reportError(this, "Error initializing GazeManager, is EyeTribe Server running?");
 
     	  super.start();
       }

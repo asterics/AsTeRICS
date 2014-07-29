@@ -25,9 +25,12 @@
       </ports>
       <properties>
         <property name="minBlinkTime" value="50" />
-        <property name="maxBlinkTime" value="200" />
+        <property name="midBlinkTime" value="200" />
+        <property name="maxBlinkTime" value="2000" />
         <property name="fixationTime" value="700" />
-        <property name="offsetCorrectionRadius" value="400" />
+        <property name="pupilPositionMode" value="0" />
+        <property name="offsetCorrectionRadius" value="300" />
+        <property name="offsetCorrectionMode" value="0" />
       </properties>
       <layout>
         <posX>70</posX>
@@ -305,9 +308,9 @@
       <properties>
         <property name="caption" value="control" />
         <property name="horizontalOrientation" value="false" />
-        <property name="buttonCaption1" value="start Calbration" />
+        <property name="buttonCaption1" value="start Calibration" />
         <property name="buttonCaption2" value="enable/disable mouse" />
-        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption3" value="remove last Offset Correction" />
         <property name="buttonCaption4" value="" />
         <property name="buttonCaption5" value="" />
         <property name="buttonCaption6" value="" />
@@ -333,8 +336,8 @@
       <gui>
         <posX>7912</posX>
         <posY>2378</posY>
-        <width>1500</width>
-        <height>1467</height>
+        <width>1538</width>
+        <height>1755</height>
       </gui>
     </component>
   </components>
@@ -536,6 +539,20 @@
         <target>
           <component id="EyeTribe.1" />
           <eventPort id="offsetCorrection" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_removeLastOffsetCorrection">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EyeTribe.1" />
+          <eventPort id="removeLastOffsetCorrection" />
         </target>
       </targets>
     </eventChannel>

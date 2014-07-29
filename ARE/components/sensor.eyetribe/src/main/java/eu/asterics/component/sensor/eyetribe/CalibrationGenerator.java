@@ -234,6 +234,13 @@ public class CalibrationGenerator implements Runnable
 		owner.calibrationDone();
 	}
 
+	public int removeOffsetPoint()	
+	{	
+		if (offsetPoints.size()>0)
+			offsetPoints.remove(offsetPoints.size()-1);
+		return(offsetPoints.size());
+	}
+
 	public void newOffsetPoint(int x,int y,int xOffset,int yOffset)	
 	{	
 		int dist;
