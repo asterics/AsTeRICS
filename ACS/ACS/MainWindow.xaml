@@ -114,7 +114,7 @@
                 </r:RibbonGroup>
             </r:RibbonTab>
 
-            <r:RibbonTab Header="{x:Static properties:Resources.RibbonTabComponents}" KeyTip="C">
+            <r:RibbonTab Header="{x:Static properties:Resources.RibbonTabComponents}" Name="ribbonComponentsTab" KeyTip="C">
                 <r:RibbonGroup Header="{x:Static properties:Resources.RibbonGroupComponents}" Name="componentsRibbonGroup">
                     <r:RibbonMenuButton Label="{x:Static properties:Resources.SensorsButton}" LargeImageSource="images/sensor.png" Name="sensorDropDown" KeyTip="S"/>
                     <r:RibbonMenuButton Label="{x:Static properties:Resources.ProcessorsButton}" LargeImageSource="images/processor.png" Name="processorDropDown" KeyTip="P"/>

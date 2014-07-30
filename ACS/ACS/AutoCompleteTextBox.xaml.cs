@@ -42,7 +42,6 @@ namespace Asterics.ACS
         public AutoCompleteTextBox()
         {
             controls = new VisualCollection(this);
-            
 
             autoCompletionList = new ObservableCollection<AutoCompleteEntry>();
             searchThreshold = 2;        // default threshold to 2 char
@@ -187,5 +186,10 @@ namespace Asterics.ACS
             get { return controls.Count; }
         }
         #endregion
+
+        public void focusTextbox()
+        {
+            textBox.Focus();
+        }
     }
 }

@@ -253,7 +253,7 @@ namespace Asterics.ACS {
             // Read local language settings:
             //ACS.Properties.Resources.Culture = System.Threading.Thread.CurrentThread.CurrentCulture;
             InitializeComponent();
-
+            
             Title = "AsTeRICS Configuration Suite " + ACS_VERSION;
             // Remove the original default trace listener and add a new one (for logging exceptions)
             traceListener = new FileLogTraceListener();
@@ -498,7 +498,6 @@ namespace Asterics.ACS {
             selectedComponentList.PropertyChanged += LinkedList_SizeChanged;
             selectedChannelList.PropertyChanged += LinkedList_SizeChanged;
             selectedEventChannelList.PropertyChanged += LinkedList_SizeChanged;
-
             // make sure a file for recently opened documents exists
             if (ini.IniReadValue("Options", "useAppDataFolder").Equals("true")) {                
                 if (!File.Exists(Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "\\AsTeRICS\\ACS\\recent.txt")) {
@@ -510,6 +509,7 @@ namespace Asterics.ACS {
                 }
             }
         }
+
 
         private void LinkedList_SizeChanged(object sender, PropertyChangedEventArgs e) {
             if ((selectedEventChannelList.Count == 0) && (selectedComponentList.Count == 0) && (selectedChannelList.Count == 0)) {
@@ -7691,8 +7691,9 @@ namespace Asterics.ACS {
             }
             else if ((Keyboard.Modifiers == ModifierKeys.Control) && (e.Key == Key.F))
             {
-                
-                textBox1.Focus();
+                ribbonComponentsTab.IsSelected = true;
+                Keyboard.Focus(ribbonComponentsTab);
+                textBox1.focusTextbox();
             }
             else if ((Keyboard.Modifiers == ModifierKeys.Control) && (e.Key == Key.E)) {
                 Keyboard.Focus(dockableEventsTab);
