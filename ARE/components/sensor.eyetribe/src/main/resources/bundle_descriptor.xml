@@ -42,6 +42,9 @@
 			<eventListenerPort id="offsetCorrection">
 				<description>to apply an offset correction to the current gazepoint</description>
 			</eventListenerPort>
+			<eventListenerPort id="removeLastOffsetCorrection">
+				<description>remove the last offset correction point from the list of correction points</description>
+			</eventListenerPort>
 
 			<eventTriggererPort id="blink">
 				<description>triggered when eye blink occurs</description>
@@ -61,18 +64,32 @@
 				type="integer"
 				value="50"
 				description="minimum eye close time (in milliseconds) for triggering an eye blink event"/>
-			<property name="maxBlinkTime"
+			<property name="midBlinkTime"
 				type="integer"
 				value="200"
-				description="maximum time (in milliseconds) for triggering an eye blink event, longer eye close times will result in a longblink event "/>
+				description="eye close time (in milliseconds) to decide short/long blink event"/>
+			<property name="maxBlinkTime"
+				type="integer"
+				value="2000"
+				description="longer eye close times (in milliseconds) will not create eye blink events"/>
 			<property name="fixationTime"
 				type="integer"
 				value="700"
 				description="time for triggering a fixation event (in milliseconds)"/>
+			<property name="pupilPositionMode"
+				type="integer"
+				value="0"
+                description="the mode decides which pupil coordinates are sent to the posX and posY output ports: left eye, right eye or average;  the coordinates are in the range (0-1000)"
+                combobox="left eye//right eye//average of left and right eye"/>
 			<property name="offsetCorrectionRadius"
 				type="integer"
 				value="150"
 				description="radius (in pixels) in which offset correction spots are active"/>
+			<property name="offsetCorrectionMode"
+				type="integer"
+				value="0"
+                description="one stage: look around to change offset, send another event to finish; two stage: look at gaze point first, then on cursor "
+                combobox="one stage manual offset correction//two stage automatic offset correction"/>
         </properties>
 
     </componentType>
