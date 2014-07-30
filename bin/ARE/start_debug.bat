@@ -9,21 +9,21 @@ SET PROFILE_PATH="profile"
 @IF "%1" == "--webservice" (
 	@    echo "--webservice selected"
 	@    SET AUTOSTART_MODEL=WebSocket_test.acs
-	cp   %PROFILE_PATH%\\loader.ini %PROFILE_PATH%\\loader.ini.backup
-	cp   %PROFILE_PATH%\\services.ini %PROFILE_PATH%\\services.ini.backup
-	cp   %PROFILE_PATH%\\loader_websocketdemo.ini %PROFILE_PATH%\\loader.ini
-	cp   %PROFILE_PATH%\\services_websocketdemo.ini %PROFILE_PATH%\\services.ini
+	copy   %PROFILE_PATH%\\loader.ini %PROFILE_PATH%\\loader.ini.backup
+	copy   %PROFILE_PATH%\\services.ini %PROFILE_PATH%\\services.ini.backup
+	copy   %PROFILE_PATH%\\loader_websocketdemo.ini %PROFILE_PATH%\\loader.ini
+	copy   %PROFILE_PATH%\\services_websocketdemo.ini %PROFILE_PATH%\\services.ini
 
 ) ELSE (
 
 	@     SET AUTOSTART_MODEL=%1
 
 	IF EXIST "%PROFILE_PATH%\\loader.ini.backup" (
-		cp   %PROFILE_PATH%\\loader.ini.backup %PROFILE_PATH%\\loader.ini
+		copy   %PROFILE_PATH%\\loader.ini.backup %PROFILE_PATH%\\loader.ini
 	)
 	
 	IF EXIST "%PROFILE_PATH%\\services.ini.backup" (
-		cp   %PROFILE_PATH%\\services.ini.backup %PROFILE_PATH%\\services.ini
+		copy   %PROFILE_PATH%\\services.ini.backup %PROFILE_PATH%\\services.ini
 	)
 )
 
