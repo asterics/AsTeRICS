@@ -244,35 +244,57 @@ public class CalibrationGenerator implements Runnable
 	public void newOffsetPoint(int x,int y,int xOffset,int yOffset)	
 	{	
 		int dist;
+		
 		Iterator<calibPoint> iterator = offsetPoints.iterator();
 		while (iterator.hasNext())
 		{
 			calibPoint act=iterator.next();
 			dist=(int)Math.sqrt((act.xLocation-x)*(act.xLocation-x)+(act.yLocation-y)*(act.yLocation-y));
-			if (dist<owner.propOffsetCorrectionRadius)
+			if (dist<owner.propOffsetPointRemovalRadius)
 				iterator.remove();
 		} 
+		
 		offsetPoints.add(new calibPoint(x,y,xOffset,yOffset));
 		System.out.println("add calib point "+x+"/"+y+" with offset "+xOffset+"/"+yOffset+", new list has "+offsetPoints.size()+" elements.");
 	}
 
 	public Point calcOffset(int x, int y)	
 	{	
-		double dist;
+		double dist,factor=0,minDist=owner.propOffsetCorrectionRadius;
+		Point result=new Point(0,0);
 
 		for (calibPoint act: offsetPoints )
 		{
 			dist=Math.sqrt((act.xLocation-x)*(act.xLocation-x)+(act.yLocation-y)*(act.yLocation-y));
-			if (dist<owner.propOffsetCorrectionRadius)
+			if (dist<minDist)
 			{
-				double factor = 1-(dist/(float)owner.propOffsetCorrectionRadius);
-				Point result=new Point((int)(act.xOffset*factor),(int)(act.yOffset*factor));
-				System.out.println("correction "+(int)(factor*100)+"% , values "+result.x+"/"+result.y);
-
-				return(result);				
+				minDist=dist;
+				factor = 1-(dist/(float)owner.propOffsetCorrectionRadius);
+				result=new Point((int)(act.xOffset*factor),(int)(act.yOffset*factor));
 			}
 		}
-		return(new Point (0,0));
+
+		if (minDist!=owner.propOffsetCorrectionRadius)
+			System.out.println("correction "+(int)(factor*100)+"% , values "+result.x+"/"+result.y);
+
+		return(result);
+	}
+
+	public Point getOffsetPoint(int x, int y)	
+	{	
+		double dist,minDist=owner.propOffsetCorrectionRadius;
+		Point result=new Point(0,0);
+		
+		for (calibPoint act: offsetPoints )
+		{
+			dist=Math.sqrt((act.xLocation-x)*(act.xLocation-x)+(act.yLocation-y)*(act.yLocation-y));
+			if (dist<minDist)
+			{
+				result=new Point((int)(act.xOffset),(int)(act.yOffset));
+				minDist=dist;
+			}
+		}
+		return(result);
 	}
 
 }

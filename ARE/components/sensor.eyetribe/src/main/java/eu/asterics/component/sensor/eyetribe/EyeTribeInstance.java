@@ -100,6 +100,7 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 	static int propMaxBlinkTime = 2000;
 	static int propFixationTime = 700;
 	static int propOffsetCorrectionRadius=150;
+	static int propOffsetPointRemovalRadius = 50;
 	static int propOffsetCorrectionMode= MODE_MANUALCORRECTION;
 	static int propPupilPositionMode= POS_BOTH;
 	
@@ -443,9 +444,9 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 	         		    }
 	         		    else { 
 		       				System.out.println("Got weak gaze spot for manual correction");
-		                    Point oldOffset = calib.calcOffset(weakGazePointY, weakGazePointY);
-	         		    	currentManualOffsetX=oldOffset.x;
-	         		    	currentManualOffsetY=oldOffset.y;
+//		                    Point oldOffset = calib.getOffsetPoint(weakGazePointY, weakGazePointY);
+	         		    	currentManualOffsetX=offset.x;
+	         		    	currentManualOffsetY=offset.y;
 	         		    	state= STATE_MANUALCORRECTION;	         		    	
 	         		    }
 	        	    }
