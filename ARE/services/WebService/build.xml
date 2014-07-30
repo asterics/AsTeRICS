@@ -16,8 +16,9 @@
         <pathelement location="${middleware}/asterics.ARE.jar"/>
        	<pathelement location="${services}/grizzly-httpservice-bundle-2.3.13.jar"/>
        	<pathelement location="${services}/org.eclipse.osgi.services_3.2.100.v20100503.jar"/>
-       	<pathelement location="src/main/resources/lib/netty-all-4.0.20.Final.jar"/>
+       	<!--<pathelement location="src/main/resources/lib/netty-all-4.0.20.Final.jar"/>
        	<pathelement location="src/main/resources/lib/netty-socketio-1.6.6-SNAPSHOT.jar"/>
+       	-->
        	<!--<pathelement location="src/main/resources/lib/jsr311-api-1.1.1.jar"/>-->
         <pathelement location="src/main/resources/lib/jersey-server-1.18.1.jar"/>
        	<pathelement location="src/main/resources/lib/jersey-grizzly2-1.18.1.jar"/>
