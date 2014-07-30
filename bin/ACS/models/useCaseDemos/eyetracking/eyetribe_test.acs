@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="7/24/2014_1257" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="7/24/2014_1257" version="20130320">
   <components>
     <component id="EyeTribe.1" type_id="asterics.EyeTribe">
       <description>interfaces to the EyeTribe Gaze tracking system</description>
@@ -33,8 +33,8 @@
         <property name="offsetCorrectionMode" value="0" />
       </properties>
       <layout>
-        <posX>70</posX>
-        <posY>83</posY>
+        <posX>134</posX>
+        <posY>93</posY>
       </layout>
     </component>
     <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
@@ -55,11 +55,11 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="oscilloscope" />
+        <property name="caption" value="Gaze-X estimation" />
       </properties>
       <layout>
-        <posX>231</posX>
-        <posY>36</posY>
+        <posX>300</posX>
+        <posY>17</posY>
       </layout>
       <gui>
         <posX>0</posX>
@@ -86,14 +86,14 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="oscilloscope" />
+        <property name="caption" value="Gaze-Y estimation" />
       </properties>
       <layout>
-        <posX>359</posX>
-        <posY>36</posY>
+        <posX>428</posX>
+        <posY>17</posY>
       </layout>
       <gui>
-        <posX>2700</posX>
+        <posX>2512</posX>
         <posY>444</posY>
         <width>2462</width>
         <height>2822</height>
@@ -117,11 +117,11 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="oscilloscope" />
+        <property name="caption" value="Eye X-postition" />
       </properties>
       <layout>
-        <posX>232</posX>
-        <posY>185</posY>
+        <posX>301</posX>
+        <posY>166</posY>
       </layout>
       <gui>
         <posX>0</posX>
@@ -148,15 +148,15 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="oscilloscope" />
+        <property name="caption" value="Eye Y-position" />
       </properties>
       <layout>
-        <posX>358</posX>
-        <posY>187</posY>
+        <posX>427</posX>
+        <posY>168</posY>
       </layout>
       <gui>
-        <posX>2712</posX>
-        <posY>3444</posY>
+        <posX>2512</posX>
+        <posY>3422</posY>
         <width>2462</width>
         <height>2822</height>
       </gui>
@@ -179,15 +179,15 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="oscilloscope" />
+        <property name="caption" value="Fixation Time" />
       </properties>
       <layout>
-        <posX>232</posX>
-        <posY>328</posY>
+        <posX>425</posX>
+        <posY>323</posY>
       </layout>
       <gui>
-        <posX>5325</posX>
-        <posY>467</posY>
+        <posX>5012</posX>
+        <posY>444</posY>
         <width>2550</width>
         <height>1400</height>
       </gui>
@@ -214,8 +214,8 @@
         <property name="yMax" value="1500" />
       </properties>
       <layout>
-        <posX>708</posX>
-        <posY>105</posY>
+        <posX>777</posX>
+        <posY>86</posY>
       </layout>
     </component>
     <component id="Averager.1" type_id="asterics.Averager">
@@ -229,12 +229,12 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="bufferSize" value="10" />
+        <property name="bufferSize" value="15" />
         <property name="mode" value="0" />
       </properties>
       <layout>
-        <posX>516</posX>
-        <posY>37</posY>
+        <posX>595</posX>
+        <posY>34</posY>
       </layout>
     </component>
     <component id="Averager.1.1" type_id="asterics.Averager">
@@ -248,12 +248,12 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="bufferSize" value="10" />
+        <property name="bufferSize" value="15" />
         <property name="mode" value="0" />
       </properties>
       <layout>
-        <posX>502</posX>
-        <posY>209</posY>
+        <posX>599</posX>
+        <posY>182</posY>
       </layout>
     </component>
     <component id="Oscilloscope.1.5" type_id="asterics.Oscilloscope">
@@ -274,17 +274,17 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="oscilloscope" />
+        <property name="caption" value="Eye Close time" />
       </properties>
       <layout>
-        <posX>368</posX>
-        <posY>351</posY>
+        <posX>303</posX>
+        <posY>315</posY>
       </layout>
       <gui>
-        <posX>5337</posX>
-        <posY>1956</posY>
-        <width>2525</width>
-        <height>1533</height>
+        <posX>5012</posX>
+        <posY>1889</posY>
+        <width>2550</width>
+        <height>1378</height>
       </gui>
     </component>
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
@@ -292,14 +292,14 @@
       <ports />
       <properties />
       <layout>
-        <posX>654</posX>
-        <posY>291</posY>
+        <posX>560</posX>
+        <posY>324</posY>
       </layout>
       <gui>
-        <posX>5337</posX>
-        <posY>3644</posY>
-        <width>2562</width>
-        <height>2689</height>
+        <posX>5012</posX>
+        <posY>3444</posY>
+        <width>2575</width>
+        <height>2822</height>
       </gui>
     </component>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
@@ -330,14 +330,114 @@
         <property name="buttonCaption20" value="" />
       </properties>
       <layout>
-        <posX>25</posX>
-        <posY>332</posY>
+        <posX>11</posX>
+        <posY>289</posY>
       </layout>
       <gui>
-        <posX>7912</posX>
-        <posY>2378</posY>
-        <width>1538</width>
-        <height>1755</height>
+        <posX>7600</posX>
+        <posY>444</posY>
+        <width>1762</width>
+        <height>1800</height>
+      </gui>
+    </component>
+    <component id="EventCounter.1" type_id="asterics.EventCounter">
+      <description>Two-direction event counter</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="minValue" value="0" />
+        <property name="maxValue" value="1000" />
+        <property name="initialValue" value="0" />
+        <property name="wrapAround" value="false" />
+        <property name="sendInitialValue" value="false" />
+      </properties>
+      <layout>
+        <posX>161</posX>
+        <posY>475</posY>
+      </layout>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="1500" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>49</posX>
+        <posY>467</posY>
+      </layout>
+    </component>
+    <component id="Comparator.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="4" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="0" />
+        <property name="threshold" value="3" />
+        <property name="threshold2" value="10" />
+      </properties>
+      <layout>
+        <posX>291</posX>
+        <posY>474</posY>
+      </layout>
+    </component>
+    <component id="TextArea.1" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="EyeGaze Help" />
+        <property name="default" value="This model demonstrates eye gaze control using the EyeTribe tracker. The &quot;calibration&quot; button initiates a 9-point calibration (look at the cursor during calibration). A long eyeblink will create a left mouseclick. Offset correction spots can be added during operation as follows:  create OffsetCorrectionPoint by a triple eyeblink -  first sound: look at the gaze point to be corrected; second sound: look at the cursor, it should move towards the gaze point. third sound: offsetCorrection finished" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="18" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>774</posX>
+        <posY>331</posY>
+      </layout>
+      <gui>
+        <posX>7638</posX>
+        <posY>2444</posY>
+        <width>1675</width>
+        <height>3733</height>
       </gui>
     </component>
   </components>
@@ -442,6 +542,16 @@
         <port id="in" />
       </target>
     </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="EventCounter.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Comparator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
   </channels>
   <eventChannels>
     <eventChannel id="blink_eventDisplay">
@@ -528,20 +638,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="longblink_offsetCorrection">
-      <sources>
-        <source>
-          <component id="EyeTribe.1" />
-          <eventPort id="longblink" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EyeTribe.1" />
-          <eventPort id="offsetCorrection" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="button3_removeLastOffsetCorrection">
       <sources>
         <source>
@@ -556,6 +652,90 @@
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="blink_increase">
+      <sources>
+        <source>
+          <component id="EyeTribe.1" />
+          <eventPort id="blink" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="increase" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_resetToZero">
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="resetToZero" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="blink_start">
+      <sources>
+        <source>
+          <component id="EyeTribe.1" />
+          <eventPort id="blink" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="blink_reset">
+      <sources>
+        <source>
+          <component id="EyeTribe.1" />
+          <eventPort id="blink" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_offsetCorrection">
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EyeTribe.1" />
+          <eventPort id="offsetCorrection" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="longblink_leftClick">
+      <sources>
+        <source>
+          <component id="EyeTribe.1" />
+          <eventPort id="longblink" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
     <Decoration>true</Decoration>
@@ -566,8 +746,8 @@
     <AREGUIWindow>
       <posX>0</posX>
       <posY>0</posY>
-      <width>9938</width>
-      <height>6667</height>
+      <width>9900</width>
+      <height>6622</height>
     </AREGUIWindow>
   </modelGUI>
 </model>

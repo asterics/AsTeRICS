@@ -31,7 +31,6 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Robot;
 import java.awt.Point;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,7 +61,10 @@ import eu.asterics.mw.services.AstericsThreadPool;
 
 public class CalibrationGenerator implements Runnable
 {
+	final static String CALIB_SOUND_INITCALIB = "./data/sounds/4.wav";
+	final static String CALIB_SOUND_NEXTCALIB = "./data/sounds/5.wav";
 
+	
 	int DEBUG_OUTPUT=0;
     private final int WAVE_BUFFER_SIZE = 524288; // 128Kb 
     
@@ -218,16 +220,17 @@ public class CalibrationGenerator implements Runnable
 			try {
 	
 				if (active == false) break;
+				playWavFile(CALIB_SOUND_INITCALIB);
+			    rob.mouseMove(point.xLocation , point.yLocation);   // no idea why it needs multiple calls to work stably ..
+			    rob.mouseMove(point.xLocation , point.yLocation);
 			    rob.mouseMove(point.xLocation , point.yLocation);
 				System.out.println("starting calibration of point "+point.xLocation+"/"+point.yLocation);
 				Thread.sleep(200);				
-				playWavFile("./data/sounds/4.wav");
 
+				playWavFile(CALIB_SOUND_NEXTCALIB);
 				owner.gm.getInstance().calibrationPointStart(point.xLocation, point.yLocation);
 				Thread.sleep(800);
 			    owner.gm.getInstance().calibrationPointEnd();
-				playWavFile("./data/sounds/5.wav");
-
 
 				} catch (InterruptedException e) {}
 		}
@@ -251,7 +254,10 @@ public class CalibrationGenerator implements Runnable
 			calibPoint act=iterator.next();
 			dist=(int)Math.sqrt((act.xLocation-x)*(act.xLocation-x)+(act.yLocation-y)*(act.yLocation-y));
 			if (dist<owner.propOffsetPointRemovalRadius)
+			{
+				System.out.println("removed point "+act.xLocation+"/"+act.xLocation+" because it was too near.");
 				iterator.remove();
+			}
 		} 
 		
 		offsetPoints.add(new calibPoint(x,y,xOffset,yOffset));

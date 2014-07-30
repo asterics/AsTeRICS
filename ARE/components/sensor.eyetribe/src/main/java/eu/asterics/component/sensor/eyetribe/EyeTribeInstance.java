@@ -93,6 +93,9 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 	final static double MANUAL_CORRECTION_SPEEDFACTOR = 0.020;
 	final static int MANUAL_CORRECTION_MAXSPEED = 2;
 
+	final static String CALIB_SOUND_START = "./data/sounds/7.wav";
+	final static String CALIB_SOUND_NOTICE = "./data/sounds/8.wav";
+
 	static int state = STATE_IDLE;
 	
 	static int propMinBlinkTime = 50;
@@ -100,13 +103,13 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 	static int propMaxBlinkTime = 2000;
 	static int propFixationTime = 700;
 	static int propOffsetCorrectionRadius=150;
-	static int propOffsetPointRemovalRadius = 50;
+	static int propOffsetPointRemovalRadius = 50;   // TBD: make this adjustable via property
 	static int propOffsetCorrectionMode= MODE_MANUALCORRECTION;
 	static int propPupilPositionMode= POS_BOTH;
 	
 	static boolean measuringClose=false; 
 	static boolean measuringFixation=false;
-	static boolean firstFixation=false;
+	static boolean sentFixationEvent=false;
 	static long startCloseTimestamp=0;
 	static long startFixationTimestamp=0;
 	static boolean eyePositionValid=false;
@@ -354,7 +357,7 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
     		}
     		else
     		{
-				calib.playWavFile("./data/sounds/7.wav");
+				calib.playWavFile(CALIB_SOUND_START);
 
    				System.out.println("Offset correction triggered."); 
     			measuringClose=false;
@@ -435,7 +438,7 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 	            	    saveCorrectedGazeX=correctedGazeX;
 	            	    saveCorrectedGazeY=correctedGazeY;
 	
-	            	    calib.playWavFile("./data/sounds/8.wav");
+	            	    calib.playWavFile(CALIB_SOUND_NOTICE);
 	            	    
 	         		    if (propOffsetCorrectionMode==MODE_AUTOCORRECTION)  // continue depending on mode
 	         		    {
@@ -497,6 +500,7 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 	    	           		calib.newOffsetPoint(weakGazePointX,weakGazePointY,(int)currentManualOffsetX,(int)currentManualOffsetY);
 	    	   				System.out.println("Manual correction finished.");
 	    	    			state=STATE_IDLE;
+		            	    calib.playWavFile(CALIB_SOUND_NOTICE);
     	            	}
 	            		return;            	
         	}
@@ -544,18 +548,22 @@ public class EyeTribeInstance extends AbstractRuntimeComponentInstance // implem
 	            {
 	            	startFixationTimestamp = System.currentTimeMillis();
 	            	measuringFixation = true;
-	            	firstFixation=false;
+	            	sentFixationEvent=false;
 	            }
 	
-	            if (gazeData.isFixated==false) measuringFixation = false;
+	            if (gazeData.isFixated==false) 
+	            {
+	            	if ((measuringFixation==true) && (sentFixationEvent==true)) etpFixationEnd.raiseEvent();
+	            	measuringFixation = false;
+	            }
 	            
 	            if (measuringFixation == true)
 	            {
 	            	opFixationTime.sendData(ConversionUtils.intToBytes((int)(System.currentTimeMillis() - startFixationTimestamp)));
-	            	if ((System.currentTimeMillis() - startFixationTimestamp > propFixationTime) && (firstFixation==false))
+	            	if ((System.currentTimeMillis() - startFixationTimestamp > propFixationTime) && (sentFixationEvent==false))
 	            	{
 	            		etpFixation.raiseEvent(); 
-	            		firstFixation=true;
+	            		sentFixationEvent=true;
 	            	}
 	            }
             }
