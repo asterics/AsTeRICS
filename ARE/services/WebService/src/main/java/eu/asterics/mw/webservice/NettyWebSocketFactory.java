@@ -2,11 +2,11 @@ package eu.asterics.mw.webservice;
 
 import org.osgi.framework.BundleContext;
 
-import com.corundumstudio.socketio.Configuration;
-import com.corundumstudio.socketio.SocketIOClient;
-import com.corundumstudio.socketio.SocketIOServer;
-import com.corundumstudio.socketio.listener.ConnectListener;
-
+// import com.corundumstudio.socketio.Configuration;
+// import com.corundumstudio.socketio.SocketIOClient;
+// import com.corundumstudio.socketio.SocketIOServer;
+// import com.corundumstudio.socketio.listener.ConnectListener;
+/*
 public class NettyWebSocketFactory {
 	private SocketIOServer sioServer;
 
@@ -32,3 +32,4 @@ public class NettyWebSocketFactory {
 	}
 
 }
+*/
