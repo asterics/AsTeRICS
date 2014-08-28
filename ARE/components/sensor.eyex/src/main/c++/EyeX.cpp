@@ -65,18 +65,21 @@ HANDLE HookExitEvent=0;
 jint buttonstate=0;
 void PrintError(void); 
 
+float leftEyeX=0;
+float leftEyeY=0;
 
-
-// ID of the global interactor that provides our data stream; must be unique within the application.
-static const TX_STRING InteractorId = "Twilight Sparkle";
+// ID of the global interactors that provide our data streams; must be unique within the application.
+static const TX_STRING Interactor1Id = "AsTeRICS eyeX gazePos";
+static const TX_STRING Interactor2Id = "AsTeRICS eyeX eyePos";
 
 // global variables
-static TX_HANDLE g_hGlobalInteractorSnapshot = TX_EMPTY_HANDLE;
+static TX_HANDLE g_hGlobalInteractor1Snapshot = TX_EMPTY_HANDLE;
+static TX_HANDLE g_hGlobalInteractor2Snapshot = TX_EMPTY_HANDLE;
 
 /*
  * Initializes g_hGlobalInteractorSnapshot with an interactor that has the Gaze Point behavior.
  */
-BOOL InitializeGlobalInteractorSnapshot(TX_CONTEXTHANDLE hContext)
+BOOL InitializeGlobalInteractorSnapshot1(TX_CONTEXTHANDLE hContext)
 {
 	TX_HANDLE hInteractor = TX_EMPTY_HANDLE;
 	TX_HANDLE hBehavior   = TX_EMPTY_HANDLE;
@@ -85,11 +88,29 @@ BOOL InitializeGlobalInteractorSnapshot(TX_CONTEXTHANDLE hContext)
 
 	success = txCreateGlobalInteractorSnapshot(
 		hContext,
-		InteractorId,
-		&g_hGlobalInteractorSnapshot,
+		Interactor1Id,
+		&g_hGlobalInteractor1Snapshot,
 		&hInteractor) == TX_RESULT_OK;
 	success &= txCreateInteractorBehavior(hInteractor, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_GAZEPOINTDATA) == TX_RESULT_OK;
 	success &= txSetGazePointDataBehaviorParams(hBehavior, &params) == TX_RESULT_OK;
+
+	txReleaseObject(&hBehavior);
+	txReleaseObject(&hInteractor);
+
+	return success;
+}
+BOOL InitializeGlobalInteractorSnapshot2(TX_CONTEXTHANDLE hContext)
+{
+	TX_HANDLE hInteractor = TX_EMPTY_HANDLE;
+	TX_HANDLE hBehavior   = TX_EMPTY_HANDLE;
+	BOOL success;
+
+	success = txCreateGlobalInteractorSnapshot(
+		hContext,
+		Interactor2Id,
+		&g_hGlobalInteractor2Snapshot,
+		&hInteractor) == TX_RESULT_OK;
+	    success &= txCreateInteractorBehavior(hInteractor, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_EYEPOSITIONDATA) == TX_RESULT_OK;
 
 	txReleaseObject(&hBehavior);
 	txReleaseObject(&hInteractor);
@@ -121,7 +142,8 @@ void TX_CALLCONVENTION OnEngineConnectionStateChanged(TX_CONNECTIONSTATE connect
 			printf("The connection state is now CONNECTED (We are connected to the EyeX Engine)\n");
 			// commit the snapshot with the global interactor as soon as the connection to the engine is established.
 			// (it cannot be done earlier because committing means "send to the engine".)
-			success = txCommitSnapshotAsync(g_hGlobalInteractorSnapshot, OnSnapshotCommitted, NULL) == TX_RESULT_OK;
+			success = txCommitSnapshotAsync(g_hGlobalInteractor1Snapshot, OnSnapshotCommitted, NULL) == TX_RESULT_OK;
+			success &= txCommitSnapshotAsync(g_hGlobalInteractor2Snapshot, OnSnapshotCommitted, NULL) == TX_RESULT_OK;
 			if (!success) {
 				printf("Failed to initialize the data stream.\n");
 			}
@@ -164,10 +186,25 @@ void OnGazeDataEvent(TX_HANDLE hGazeDataBehavior)
 		// printf("Gaze Data: (%.1f, %.1f) timestamp %.0f ms\n", eventParams.X, eventParams.Y, eventParams.Timestamp);
 		if (jvm->AttachCurrentThread((void **)&env, NULL) >= 0) 
 		{
-     			env->CallVoidMethod(hookObj, newEyeDataProc, (jboolean)TRUE, (jint)eventParams.X,(jint)eventParams.Y,3,4);
+     			env->CallVoidMethod(hookObj, newEyeDataProc, (jboolean)TRUE, (jint)eventParams.X,(jint)eventParams.Y,(jint)leftEyeX,(jint)leftEyeY);
 		}
 	} else {
 		printf("Failed to interpret gaze data event packet.\n");
+	}
+}
+
+/*
+ * Handles an event from the Eye Position data stream.
+ */
+void OnEyePositionDataEvent(TX_HANDLE hGazeDataBehavior)
+{
+	TX_EYEPOSITIONDATAEVENTPARAMS eventParams;
+	if (txGetEyePositionDataEventParams(hGazeDataBehavior, &eventParams) == TX_RESULT_OK) {
+		//printf("Eye Position Data: (%.1f, %.1f) timestamp %.0f ms\n", eventParams.LeftEyeX, eventParams.LeftEyeY, eventParams.Timestamp);
+		leftEyeX=eventParams.LeftEyeX*10;
+		leftEyeY=eventParams.LeftEyeY*10;
+	} else {
+		printf("Failed to interpret eye postion data event packet.\n");
 	}
 }
 
@@ -186,6 +223,10 @@ void TX_CALLCONVENTION HandleEvent(TX_CONSTHANDLE hAsyncData, TX_USERPARAM userP
 
 	if (txGetEventBehavior(hEvent, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_GAZEPOINTDATA) == TX_RESULT_OK) {
 		OnGazeDataEvent(hBehavior);
+		txReleaseObject(&hBehavior);
+	}
+	else if (txGetEventBehavior(hEvent, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_EYEPOSITIONDATA) == TX_RESULT_OK) {
+		OnEyePositionDataEvent(hBehavior);
 		txReleaseObject(&hBehavior);
 	}
 
@@ -210,7 +251,8 @@ int startEyeX(void)
 	// initialize and enable the context that is our link to the EyeX Engine.
 	success = txInitializeSystem(TX_SYSTEMCOMPONENTOVERRIDEFLAG_NONE, NULL, NULL, NULL) == TX_RESULT_OK;
 	success &= txCreateContext(&hContext, TX_FALSE) == TX_RESULT_OK;
-	success &= InitializeGlobalInteractorSnapshot(hContext);
+	success &= InitializeGlobalInteractorSnapshot1(hContext);
+	success &= InitializeGlobalInteractorSnapshot2(hContext);
 	success &= txRegisterConnectionStateChangedHandler(hContext, &hConnectionStateChangedTicket, OnEngineConnectionStateChanged, NULL) == TX_RESULT_OK;
 	success &= txRegisterEventHandler(hContext, &hEventHandlerTicket, HandleEvent, NULL) == TX_RESULT_OK;
 	success &= txEnableConnection(hContext) == TX_RESULT_OK;
@@ -232,7 +274,8 @@ int stopEyeX(void)
 
 	// disable and delete the context.
 	txDisableConnection(hContext);
-	txReleaseObject(&g_hGlobalInteractorSnapshot);
+	txReleaseObject(&g_hGlobalInteractor1Snapshot);
+	txReleaseObject(&g_hGlobalInteractor2Snapshot);
 	txShutdownContext(hContext, TX_CLEANUPTIMEOUT_DEFAULT, TX_FALSE);
 	txReleaseContext(&hContext);
 

@@ -32,9 +32,6 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import java.awt.Point;
   
-
-
-import eu.asterics.component.sensor.eyex.CalibrationGenerator;
 import eu.asterics.component.sensor.eyex.jni.Bridge;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
@@ -63,6 +60,8 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 {
 	final static IRuntimeOutputPort opGazeX = new DefaultRuntimeOutputPort();
 	final static IRuntimeOutputPort opGazeY = new DefaultRuntimeOutputPort();
+	final static IRuntimeOutputPort opPosX = new DefaultRuntimeOutputPort();
+	final static IRuntimeOutputPort opPosY = new DefaultRuntimeOutputPort();
 	final static IRuntimeOutputPort opFixationTime = new DefaultRuntimeOutputPort();
 	final static IRuntimeOutputPort opCloseTime = new DefaultRuntimeOutputPort();
 
@@ -81,6 +80,10 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	final static int MODE_MANUALCORRECTION=0;
 	final static int MODE_AUTOCORRECTION=1;
 	
+	final static int POS_LEFT =0;
+	final static int POS_RIGHT =1;
+	final static int POS_BOTH =2;
+
 	final static int MANUAL_CORRECTION_DEADZONE = 5;
 	final static double MANUAL_CORRECTION_SPEEDFACTOR = 0.020;
 	final static int MANUAL_CORRECTION_MAXSPEED = 2;
@@ -97,6 +100,8 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	static int propOffsetCorrectionRadius=150;
 	static int propOffsetPointRemovalRadius = 50;   // TBD: make this adjustable via property
 	static int propOffsetCorrectionMode= MODE_MANUALCORRECTION;
+	static int propPupilPositionMode= POS_BOTH;
+
 	
 	static boolean measuringClose=false; 
 	static boolean measuringFixation=false;
@@ -149,6 +154,14 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 		{
 			return opGazeY;
 		}
+		if ("posX".equalsIgnoreCase(portID))
+		{
+			return opPosX;
+		}
+		if ("posY".equalsIgnoreCase(portID))
+		{
+			return opPosY;
+		}
 		if ("fixationTime".equalsIgnoreCase(portID))
 		{
 			return opFixationTime;
@@ -167,10 +180,6 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
      */
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
     {
-		if ("startCalibration".equalsIgnoreCase(eventPortID))
-		{
-			return elpStartCalibration;
-		}
 		if ("offsetCorrection".equalsIgnoreCase(eventPortID))
 		{
 			return elpOffsetCorrection;
@@ -240,6 +249,10 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 		{
 			return propOffsetCorrectionMode;
 		}
+		if ("pupilPositionMode".equalsIgnoreCase(propertyName))
+		{
+			return propPupilPositionMode;
+		}
         return null;
     }
 
@@ -286,27 +299,13 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 			propOffsetCorrectionMode = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
+		if ("pupilPositionMode".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propPupilPositionMode;
+			propPupilPositionMode = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
         return null;
-    }
-
-     /**
-      * Event Listerner Ports.
-      */
-    final IRuntimeEventListenerPort elpStartCalibration 	= new IRuntimeEventListenerPort()
-    {
-    	@Override 
-    	public synchronized void receiveEvent(String data)
-    	 {
-    			state=STATE_CALIBRATION;
-    			measuringClose=false;
-    			measuringFixation=false;
-    			calib.startCalibration();
-    	 }
-    };
-    
-    final void calibrationDone()
-    {
-    	state=STATE_IDLE;
     }
     
 	/**
@@ -316,9 +315,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     {
     	@Override 
     	public synchronized void receiveEvent(String data)
-    	 {
-    		if (state==STATE_CALIBRATION) return;
-    		
+    	 {    		
     		if (state==STATE_MANUALCORRECTION)
     		{
            		calib.newOffsetPoint(weakGazePointX,weakGazePointY,(int)currentManualOffsetX,(int)currentManualOffsetY);
@@ -350,14 +347,14 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	
     
     synchronized public void newEyeData(boolean isFixated, int gazeDataX, int gazeDataY, int leftEyeX, int leftEyeY)
-    {
-        
-        if (state==STATE_CALIBRATION) return;
-   
+    {   
         actTimestamp=System.currentTimeMillis();
         firstGazeData=false;
         waitForGazeData=0;
                 
+        int rightEyeX=leftEyeX+20;
+        int rightEyeY=leftEyeY;
+        
         int eyestate = 1; 
         if ((eyestate & 7) == 0)     // tracking lost ?
         { 
@@ -367,14 +364,39 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         } 
         
         // here we have at least valid pupil coordinates (maybe also valid gaze data ;)
-        
+
+    	//System.out.println("eyepos: "+leftEyeX+"/"+leftEyeY);
+
         gazeX = (int)gazeDataX;
         gazeY = (int)gazeDataY;
 
         Point offset = calib.calcOffset(gazeX, gazeY);  // look if we have an active offset correction point
 		correctedGazeX=gazeX+offset.x;
         correctedGazeY=gazeY+offset.y;
-	            
+	       
+        switch (propPupilPositionMode)  {
+    	case POS_LEFT: 
+	            eyeX=(int)(leftEyeX);
+	            eyeY=(int)(leftEyeY);
+	            if ((eyeX==0) && (eyeY==0)) eyePositionValid=false; else eyePositionValid=true;
+	            break;
+    	case POS_RIGHT: 
+	            eyeX=(int)(rightEyeX);
+	            eyeY=(int)(rightEyeX);
+	            if ((eyeX==0) && (eyeY==0)) eyePositionValid=false; else eyePositionValid=true;
+	            break;
+    	case POS_BOTH: 
+    			if (((leftEyeX==0) && (leftEyeY==0)) ||
+    				((rightEyeX==0) && (rightEyeY==0)))
+    			{	eyePositionValid=false;  }
+    			else {
+    				eyePositionValid=true;
+		            eyeX=(int)((leftEyeX+rightEyeX)/2);
+		            eyeY=(int)((leftEyeY+rightEyeY)/2);
+    			}
+	            break;
+    }
+
         switch (state)  {
 
             case STATE_INITIATE_CORRECTION:  // get weak gaze point coordinates
@@ -453,6 +475,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
             		return;            	
     	}
  
+       
         
         /*
 		long blinktime=actTimestamp - lastTimestamp;
@@ -498,6 +521,12 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
             	    measuringClose = false;
             	}
             	
+            	if (eyePositionValid)
+            	{
+                    opPosX.sendData(ConversionUtils.intToBytes(eyeX));
+                    opPosY.sendData(ConversionUtils.intToBytes(eyeY));
+            	}
+
             	if ((gazeX != 0) || (gazeY != 0))
             	{
 		            opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX));
@@ -603,9 +632,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
   		  closeTimeWatchDogStart();
           super.resume();
       }
-
+  
      /**
-      * called when model is stopped.
+      * called when model is stopped. 
       */
       @Override
       public void stop()

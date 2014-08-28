@@ -17,6 +17,14 @@
 				<description>eye gaze y-coordinate</description>
 				<dataType>integer</dataType>
 			</outputPort>
+			<outputPort id="posX">
+				<description>eye x-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="posY">
+				<description>eye y-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
 			<outputPort id="fixationTime">
 				<description>time user fixates a spot</description>
 				<dataType>integer</dataType>
@@ -28,9 +36,6 @@
 
         </ports>
 		<events>
-			<eventListenerPort id="startCalibration">
-				<description>to start the calibration process</description>
-			</eventListenerPort>
 			<eventListenerPort id="offsetCorrection">
 				<description>to apply an offset correction to the current gazepoint</description>
 			</eventListenerPort>
@@ -68,6 +73,11 @@
 				type="integer"
 				value="700"
 				description="time for triggering a fixation event (in milliseconds)"/>
+			<property name="pupilPositionMode"
+				type="integer"
+				value="0"
+                description="the mode decides which pupil coordinates are sent to the posX and posY output ports: left eye, right eye or average;  the coordinates are in the range (0-1000)"
+                combobox="left eye//right eye//average of left and right eye//off"/>
 			<property name="offsetCorrectionRadius"
 				type="integer"
 				value="150"
