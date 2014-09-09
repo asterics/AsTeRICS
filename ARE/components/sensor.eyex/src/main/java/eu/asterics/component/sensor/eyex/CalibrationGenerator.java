@@ -234,7 +234,7 @@ public class CalibrationGenerator implements Runnable
 
 				} catch (InterruptedException e) {}
 		}
-		owner.calibrationDone();
+	//	owner.calibrationDone();
 	}
 
 	public int removeOffsetPoint()	
