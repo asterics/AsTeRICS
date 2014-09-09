@@ -29,6 +29,7 @@ import eu.asterics.mw.data.*;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import java.awt.event.InputEvent;
@@ -60,7 +61,9 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
     private String propPort="";
 
     private IRuntimeInputPort ipAction = new InputPort1();			
-	
+		private final IRuntimeOutputPort opOutput = new DefaultRuntimeOutputPort();
+		private Thread readerThread;
+		private DatagramSocket socketIn = null;
 
     final EventListenerPortSendString[] elpRuntimeEventListenerCmds = new EventListenerPortSendString[NUMBER_OF_COMMANDS];    
 
@@ -96,7 +99,14 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeOutputPort getOutputPort(String portID)
     {
-        return null;
+        if("output".equalsIgnoreCase(portID))
+        {
+            return opOutput;
+        }
+        else
+        {
+            return null;
+        }
     }
     
     /**
@@ -274,6 +284,31 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
 			 AstericsErrorHandling.instance.reportInfo(this,e.toString());
 		 }   	
     }
+
+		private void receiveCommand () {
+			readerThread = new Thread(new Runnable() {
+			
+
+				@Override
+				public void run() {
+					try {
+						socketIn = new DatagramSocket(21000);
+		    		byte[] buf = new byte[256];
+		    		DatagramPacket packet = new DatagramPacket(buf, buf.length);
+						while (readerThread.isInterrupted() == false) {
+				    		socketIn.receive(packet);
+				    		String received = new String(packet.getData(), 0, packet.getLength());
+				    		opOutput.sendData(ConversionUtils.stringToBytes(received));
+				    		System.out.println("IRTrans, received: " + received);
+						}
+		        socketIn.close();
+					} catch (Exception e) {
+		    		e.printStackTrace();
+					}   	
+				}
+   		});
+			readerThread.start();
+		}
     
     /**
      * Standard method from framework
@@ -284,6 +319,7 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
     public void start()
     {
         super.start();
+        receiveCommand();
         AstericsErrorHandling.instance.reportInfo(this, "IRTransmitter Instance started");
     }
 
@@ -296,6 +332,7 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
     public void stop()
     {
         super.stop();
+        readerThread.interrupt();
         AstericsErrorHandling.instance.reportInfo(this, "IRTransmitter Instance stopped");
     }
 }

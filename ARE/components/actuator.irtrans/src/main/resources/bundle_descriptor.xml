@@ -13,6 +13,10 @@
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>string</dataType>
             </inputPort>
+            <outputPort id="output">
+                <description>Received Command when IR command is received by IRTrans</description>
+                <dataType>string</dataType>
+            </outputPort>
         </ports>
         <events>
             <eventListenerPort id="sendprop1">
