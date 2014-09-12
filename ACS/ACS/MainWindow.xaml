@@ -122,7 +122,7 @@
                     <r:RibbonMenuButton Label="{x:Static properties:Resources.SpecialsButton}" LargeImageSource="images/special.png" Name="specialDropDown" KeyTip="C" Visibility="Collapsed"/>
                     <r:RibbonMenuButton Label="{x:Static properties:Resources.GroupSplitButton}" LargeImageSource="images/group_elem.png" Name="groupDropDown" KeyTip="G"/>
                     <Label Margin="0 25 0 0" Content="{x:Static properties:Resources.SearchComponent}"/>
-                    <local:AutoCompleteTextBox Height="23" Width="240" Margin="0 28 0 0" x:Name="textBox1" DelayTime="500" Threshold="2"/>
+                    <local:AutoCompleteTextBox Height="23" Width="240" Margin="0 28 0 0" x:Name="autoCompleteTextBox" DelayTime="500" Threshold="2"/>
                 </r:RibbonGroup>
                 
             </r:RibbonTab>

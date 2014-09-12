@@ -94,6 +94,11 @@ namespace Asterics.ACS
             autoCompletionList.Add(entry);
         }
 
+        public void ClearItems()
+        {
+            autoCompletionList.Clear();
+        }
+
         private void textBox_KeyDown(Object sender,KeyEventArgs e)
         {
             if (e.Key == Key.Down)

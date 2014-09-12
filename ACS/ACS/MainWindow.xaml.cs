@@ -398,7 +398,7 @@ namespace Asterics.ACS {
             undoStack = new AstericsStack<CommandObject>();
             undoStack.PropertyChanged += undoStack_PropertyChanged;
             redoStack.PropertyChanged += redoStack_PropertyChanged;
-            textBox1.itemSelected += searchItemSelected;
+            autoCompleteTextBox.itemSelected += searchItemSelected;
             // Creating the AvalonDock (split window and properties on the right hand side)
             BuildDockingLayout();
 
@@ -5131,6 +5131,7 @@ namespace Asterics.ACS {
                     StreamReader sr = new StreamReader(fName);
                     Asterics.ACS2.componentTypes allComponents = (Asterics.ACS2.componentTypes)ser.Deserialize(sr);
                     sr.Close();
+                    autoCompleteTextBox.ClearItems();
                     foreach (object o in allComponents.componentType) {
                         if (o is Asterics.ACS2.componentTypesComponentType) {
                             Asterics.ACS2.componentTypesComponentType comp = (Asterics.ACS2.componentTypesComponentType)o;
@@ -5333,13 +5334,13 @@ namespace Asterics.ACS {
                 keywords.Add(name.Substring(i));
             }
             entry.KeywordStrings = (string[])keywords.ToArray();
-            textBox1.AddItem(entry);
+            autoCompleteTextBox.AddItem(entry);
         }
 
         private void searchItemSelected()
         {
-            AddComponent("asterics."+textBox1.Text, false, true, false);
-            textBox1.Text = "";
+            AddComponent("asterics." + autoCompleteTextBox.Text, false, true, false);
+            autoCompleteTextBox.Text = "";
         }
 
         private void showStuff(Object sender, RoutedEventArgs e)
@@ -7693,7 +7694,7 @@ namespace Asterics.ACS {
             {
                 ribbonComponentsTab.IsSelected = true;
                 Keyboard.Focus(ribbonComponentsTab);
-                textBox1.focusTextbox();
+                autoCompleteTextBox.focusTextbox();
             }
             else if ((Keyboard.Modifiers == ModifierKeys.Control) && (e.Key == Key.E)) {
                 Keyboard.Focus(dockableEventsTab);
