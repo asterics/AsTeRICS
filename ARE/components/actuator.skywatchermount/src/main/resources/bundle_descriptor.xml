@@ -90,6 +90,18 @@
 			<eventListenerPort id="triggerOff">
 				<description>turns the shutter off</description>
 			</eventListenerPort>
+			<eventListenerPort id="enableLimits">
+				<description>enables the maximum and minimum movement limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="disableLimits">
+				<description>disable the maximum and minimum movement limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="disable">
+				<description>disable all movements of the skywatcher mount</description>
+			</eventListenerPort>
+			<eventListenerPort id="enable">
+				<description>enable all movements of the skywatcher mount</description>
+			</eventListenerPort>
 		</events>			
         <properties>
 			<property name="SerialPort"

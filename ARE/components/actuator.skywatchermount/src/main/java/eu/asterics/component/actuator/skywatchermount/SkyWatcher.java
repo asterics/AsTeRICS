@@ -44,6 +44,8 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.lang.InterruptedException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -63,17 +65,21 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 	private CIMPortController portController = null;
 	private String serialPort;
 	private Thread readerThread;
+	private boolean readerThreadRunning = false;
 	private Thread posUpdateThread;
+	private boolean posUpdateThreadRunning = false;
 	private Thread senderThread;
-	private ArrayList<String> cmdList;
+	private boolean senderThreadRunning = false;
+	private List<String> cmdList;
 	private boolean cmdReady;
-	private ArrayList<PositionEventListener> posListeners;
+	private List<PositionEventListener> posListeners;
 	private String speedTable []= {"FF0000","AA0000","990000","880000","770000","5500000","4400000","1800000","1100000","050000"};
 	private String speed;
 	private int totalStepsPan, totalStepsTilt;
 	private int maxLeft, maxRight, maxUp, maxDown;
 	private boolean limitAxis = false;
 	private int panPosition, tiltPosition;
+	private boolean enabled = true;
    /**
     * The class constructor.
     */
@@ -82,9 +88,9 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 		panStatus = Status.STOP;
 		tiltStatus = Status.STOP;
         this.serialPort = serialPort;
-		cmdList = new ArrayList<String>();
+		cmdList = Collections.synchronizedList(new ArrayList<String>());
 		speed = speedTable[2];
-		posListeners = new ArrayList<PositionEventListener>();
+		posListeners = Collections.synchronizedList(new ArrayList<PositionEventListener>());
 		cmdReady = true;
 		init();
     }
@@ -114,13 +120,16 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 	}
 	
 	private void firePositionEvent(int axis, int position) {
-		for (PositionEventListener l : posListeners) {
-			l.updatePosition(axis,position);
+		synchronized(posListeners) {
+			for (PositionEventListener l : posListeners) {
+				l.updatePosition(axis,position);
+			}
 		}
 	}
 	
 	private void sendCommand(String cmd) {
 		cmdList.add(cmd);
+		System.out.println("Cmdlist: " + cmdList.size());
 	}
 	
 	public void setLimitActive(boolean state) {
@@ -146,6 +155,10 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 		this.maxDown = value;
 	}
 	
+	public void setEnabled(boolean state) {
+		this.enabled = state;
+	}
+	
 	private void sendNextCommand() {
 		if (out == null || portController == null || cmdList == null || cmdList.isEmpty() || cmdReady == false) {
 			System.out.println("Something is null: out --> " + out + " portController --> "+portController + " cmdList empty --> " + cmdList.isEmpty() + " cmdReady --> " + cmdReady );
@@ -158,7 +171,7 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 			if (cmd != null) {
 				out.write(cmd.getBytes());
 			}
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			AstericsErrorHandling.instance.reportInfo(this,"Could not send command "+cmd);
 		}
 	}
@@ -267,14 +280,22 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 					System.out.println("TotalSteps Tilt: "+totalStepsTilt);
 				}  
 				
-			} catch (NumberFormatException ne) {}
+			} catch (NumberFormatException ne) {ne.printStackTrace();}
 		}
 	}
 	
 	public void goToRandomPosition() {
+				if (enabled == false)
+					return;
 				Random r = new Random(System.currentTimeMillis());
-				int pan = maxLeft + r.nextInt(maxRight - maxLeft);
-				int tilt = maxDown + r.nextInt(maxUp - maxDown);
+				int panValue = maxRight - maxLeft;
+				int pan = maxLeft;
+				if (panValue > 0)
+					 pan = maxLeft + r.nextInt(panValue);
+				int tiltValue = maxUp - maxDown;
+				int tilt = maxDown;
+				if (tiltValue > 0)
+					tilt = maxDown + r.nextInt(tiltValue);
 				System.out.println("Random pos: " + pan + "x" + tilt);
 				goToPan(pan);
 				goToTilt(tilt);
@@ -302,7 +323,8 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 					StringBuilder lastCommand = new StringBuilder();
 					StringBuilder response = new StringBuilder();
 					int breakCount = 0;
-					while (readerThread.isInterrupted() == false) 
+					readerThreadRunning = true;
+					while (readerThreadRunning == true) 
 					{
 						try { 
 							if (in.available() > 0) 
@@ -346,7 +368,8 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 				@Override
 				public void run() 
 				{
-					while (posUpdateThread.isInterrupted() == false) {
+					posUpdateThreadRunning = true;
+					while (posUpdateThreadRunning == true) {
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException ie) {
@@ -362,13 +385,15 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 				@Override
 				public void run() 
 				{
-					while (senderThread.isInterrupted() == false) {
+					senderThreadRunning = true;
+					while (senderThreadRunning == true) {
 						if (portController != null && out != null && cmdList.isEmpty() == false && cmdReady == true) {
 							sendNextCommand();
 						} else {
 							try {
 								Thread.sleep(20);
-							} catch (InterruptedException ie) {}
+							} catch (InterruptedException ie) {
+							}
 						}	
 					}
 				}
@@ -385,6 +410,8 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 	}
 	
 	public void goRight() {
+		if (enabled == false)
+			return;
 		stopPan();
 		if (limitAxis) {
 			System.out.println("Axis is " + panPosition + " limit is " + maxRight);
@@ -398,6 +425,8 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 	}
 	
 	public void goLeft() {
+		if (enabled == false)
+			return;
 		stopPan();
 		if (limitAxis) {
 			System.out.println("Axis is " + panPosition + " limit is " + maxLeft);
@@ -412,6 +441,8 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 	}
 	
 	public void goDown() {
+		if (enabled == false)
+			return;
 		stopTilt();
 		if (limitAxis) {
 			if (tiltPosition <= maxDown)
@@ -424,6 +455,8 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 	}
 	
 	public void goUp() {
+		if (enabled == false)
+			return;
 		stopTilt();
 		if (limitAxis) {
 			if (tiltPosition >= maxUp)
@@ -436,6 +469,8 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 	}
 	
 	public void goToPan(int position) {
+		if (enabled == false)
+			return;
 		stopPan();
 		sendCommand(":G140\r");
 		sendCommand(":S1"+TranslatePosition(position)+"\r");
@@ -444,6 +479,8 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 	}
 	
 	public void goToTilt(int position) {
+		if (enabled == false)
+			return;
 		stopTilt();
 		sendCommand(":G240\r");
 		sendCommand(":S2"+TranslatePosition(position)+"\r");
@@ -492,17 +529,21 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
         }
 		try {
 			if (readerThread != null) {
+				readerThreadRunning = false;
 				readerThread.interrupt();
 				readerThread.join(500);
 			}
 			if (posUpdateThread != null) {
+				posUpdateThreadRunning = false;
 				posUpdateThread.interrupt();
 				posUpdateThread.join(500);
 			}
 			if (senderThread != null) {
+				senderThreadRunning = false;
 				senderThread.interrupt();
 				senderThread.join(500);
 			}
-		} catch (InterruptedException ie) {}
+			cmdList.clear();
+		} catch (InterruptedException ie) {ie.printStackTrace();}
 	}
 }

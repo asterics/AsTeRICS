@@ -280,6 +280,22 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 		{
 			return elpTriggerOff;
 		}
+		if ("enableLimits".equalsIgnoreCase(eventPortID))
+		{
+			return elpEnableLimit;
+		}
+		if ("disableLimits".equalsIgnoreCase(eventPortID))
+		{
+			return elpDisableLimit;
+		}
+		if ("enable".equalsIgnoreCase(eventPortID))
+		{
+			return elpEnable;
+		}
+		if ("disable".equalsIgnoreCase(eventPortID))
+		{
+			return elpDisable;
+		}
         return null;
     }
 
@@ -378,7 +394,7 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 	  
 	 final IRuntimeEventListenerPort elpGoRandom = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void receiveEvent(final String data)
 		{
 			if (skyWatcher == null)
 				return;
@@ -389,7 +405,7 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 	
 	final IRuntimeEventListenerPort elpGoLeft = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void receiveEvent(final String data)
 		{
 			if (skyWatcher == null)
 				return;
@@ -397,9 +413,28 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 			skyWatcher.goLeft();
 		}
 	};
+	final IRuntimeEventListenerPort elpEnableLimit = new IRuntimeEventListenerPort()
+	{
+		public synchronized void receiveEvent(final String data)
+		{
+			if (skyWatcher == null)
+				return;
+			skyWatcher.setLimitActive(true);
+		}
+	};
+	final IRuntimeEventListenerPort elpDisableLimit = new IRuntimeEventListenerPort()
+	{
+		public synchronized void receiveEvent(final String data)
+		{
+			if (skyWatcher == null)
+				return;
+			skyWatcher.setLimitActive(false);
+		}
+	};
+	
 	final IRuntimeEventListenerPort elpGoRight = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void receiveEvent(final String data)
 		{
 			if (skyWatcher == null)
 				return;
@@ -408,7 +443,7 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 	};
 	final IRuntimeEventListenerPort elpGoUp = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void receiveEvent(final String data)
 		{
 			if (skyWatcher == null)
 				return;
@@ -417,7 +452,7 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 	};
 	final IRuntimeEventListenerPort elpGoDown = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void receiveEvent(final String data)
 		{
 			if (skyWatcher == null)
 				return;
@@ -426,7 +461,7 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 	};
 	final IRuntimeEventListenerPort elpStopPan = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void receiveEvent(final String data)
 		{
 			if (skyWatcher == null)
 				return;
@@ -435,7 +470,7 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 	};
 	final IRuntimeEventListenerPort elpStopTilt = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void  receiveEvent(final String data)
 		{
 			if (skyWatcher == null)
 				return;
@@ -444,16 +479,34 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 	};
 	final IRuntimeEventListenerPort elpStop = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void  receiveEvent(final String data)
 		{ 
 			if (skyWatcher != null)
 				skyWatcher.stop();
 		}
 	};
 
+	final IRuntimeEventListenerPort elpEnable = new IRuntimeEventListenerPort()
+	{
+		public synchronized void receiveEvent(final String data)
+		{ 
+			if (skyWatcher != null)
+				skyWatcher.setEnabled(true);
+		}
+	};
+	
+	final IRuntimeEventListenerPort elpDisable = new IRuntimeEventListenerPort()
+	{
+		public synchronized void receiveEvent(final String data)
+		{ 
+			if (skyWatcher != null)
+				skyWatcher.setEnabled(false);
+		}
+	};
+	
 	final IRuntimeEventListenerPort elpGoToPanPosition = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void receiveEvent(final String data)
 		{ 
 			if (skyWatcher != null)
 				skyWatcher.goToPan(panPosition);
@@ -462,7 +515,7 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 
 	final IRuntimeEventListenerPort elpGoToTiltPosition = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void  receiveEvent(final String data)
 		{ 
 			if (skyWatcher != null)
 				skyWatcher.goToTilt(tiltPosition);
@@ -471,7 +524,7 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 	
 	final IRuntimeEventListenerPort elpTriggerOn = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void  receiveEvent(final String data)
 		{ 
 			if (skyWatcher != null)
 				skyWatcher.setTrigger(true);
@@ -480,7 +533,7 @@ public class SkyWatcherMountInstance extends AbstractRuntimeComponentInstance im
 	
 	final IRuntimeEventListenerPort elpTriggerOff = new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized  void receiveEvent(final String data)
 		{
 			if (skyWatcher != null)
 				skyWatcher.setTrigger(false);
