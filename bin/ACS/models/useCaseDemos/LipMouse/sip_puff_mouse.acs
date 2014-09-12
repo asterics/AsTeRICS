@@ -518,6 +518,9 @@ Sensitivity and Dwell time can be selected via two GUI sliders.</description>
         <inputPort portTypeID="action">
           <properties />
         </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="hostname" value="localhost" />

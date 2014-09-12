@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="25.06.2012_1240" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="25.06.2012_1240" version="20130320">
   <components>
     <component id="SpeechProcessor.1" type_id="asterics.SpeechProcessor">
       <description>This plugin allows to genereate and recognize speech via the speech processor server application</description>
@@ -171,6 +171,9 @@
         <inputPort portTypeID="action">
           <properties />
         </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="hostname" value="localhost" />

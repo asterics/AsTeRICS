@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="21.06.2012_713" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="21.06.2012_713" version="20130320">
   <components>
     <component id="Keyboard.1" type_id="asterics.ButtonGrid">
       <description>Keyboard which sends event after button press</description>
@@ -45,6 +45,9 @@
         <inputPort portTypeID="action">
           <properties />
         </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="hostname" value="192.168.2.6" />
