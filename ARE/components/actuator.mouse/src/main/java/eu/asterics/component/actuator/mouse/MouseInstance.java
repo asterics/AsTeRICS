@@ -66,6 +66,8 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 	private final String ELP_ACTIVATE_NAME 		= "activate";
 	private final String ELP_DEACTIVATE_NAME 	= "deactivate";
 	private final String ELP_TOGGLE_NAME 		= "toggle";
+	private final String ELP_ABSOLUTEPOSITION_NAME 		= "absolutePosition";
+	private final String ELP_RELATIVEPOSITION_NAME 		= "relativePosition";
 
 	private final int CLK_LEFT = 0;
 	private final int CLK_RIGHT = 1;
@@ -190,7 +192,13 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
         else if(ELP_TOGGLE_NAME.equalsIgnoreCase(eventPortID))
         {
             return elpToggle;
-        }
+        } else if (ELP_RELATIVEPOSITION_NAME.equalsIgnoreCase(eventPortID)) 
+		{
+			return elpRelativePosition;
+		} else if (ELP_ABSOLUTEPOSITION_NAME.equalsIgnoreCase(eventPortID)) 
+		{
+			return elpAbsolutePosition;
+		}
         
         return null;
     }
@@ -599,6 +607,28 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
   	 }
   };
 
+  
+  /**
+   * Event Listener Port for set relative positioning
+   */
+  final IRuntimeEventListenerPort elpRelativePosition = new IRuntimeEventListenerPort()
+  {
+  	 public void receiveEvent(final String data)
+  	 {
+  		propAbsolutePosition = false;
+  	 }
+  };
+
+  /**
+   * Event Listener Port for set absolute positioning
+   */
+  final IRuntimeEventListenerPort elpAbsolutePosition = new IRuntimeEventListenerPort()
+  {
+  	 public void receiveEvent(final String data)
+  	 {
+  		propAbsolutePosition = true;
+  	 }
+  };
   
   /**
    * called when model is started.
