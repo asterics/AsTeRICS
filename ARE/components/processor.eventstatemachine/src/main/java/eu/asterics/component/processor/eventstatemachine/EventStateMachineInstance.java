@@ -58,6 +58,7 @@ public class EventStateMachineInstance extends AbstractRuntimeComponentInstance
 
 	final IRuntimeEventTriggererPort etpFinalStateReached = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpStateError = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpStateChanged = new DefaultRuntimeEventTriggererPort();
 
 	String propStateSequence = "123123";
 	String propStateTiming = "0/2000,x,x,1000/3000";
@@ -169,6 +170,10 @@ public class EventStateMachineInstance extends AbstractRuntimeComponentInstance
 		if ("stateError".equalsIgnoreCase(eventPortID))
 		{
 			return etpStateError;
+		}
+		if ("stateChanged".equalsIgnoreCase(eventPortID))
+		{
+			return etpStateChanged;
 		}
         return null;
     }
@@ -328,6 +333,7 @@ public class EventStateMachineInstance extends AbstractRuntimeComponentInstance
 		if (stateError==false)
 		{
 			currentState++;
+			etpStateChanged.raiseEvent();
 			// System.out.println("State "+currentState+" reached !");
 			if (currentState==states.length)
 			{

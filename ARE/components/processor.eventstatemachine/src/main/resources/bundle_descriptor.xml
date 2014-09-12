@@ -42,7 +42,10 @@
 			<eventListenerPort id="reset">
 				<description>reset to initial state</description>
 			</eventListenerPort>
-
+			
+			<eventTriggererPort id="stateChanged">
+				<description>the statemachine switched to a new state</description>
+			</eventTriggererPort>
 			<eventTriggererPort id="finalStateReached">
 				<description>the final state is triggered</description>
 			</eventTriggererPort>
