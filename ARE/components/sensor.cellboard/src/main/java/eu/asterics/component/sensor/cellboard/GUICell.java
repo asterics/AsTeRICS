@@ -264,7 +264,7 @@ public class GUICell extends JPanel implements Runnable
 			font=font.deriveFont(fontSize);
 			FontMetrics fontMetrics =this.getFontMetrics(font);
 			Rectangle2D tmpFontSize=fontMetrics.getStringBounds(text, this.getGraphics());
-			
+			System.out.println(text + " --> " + fontSize + " pt\n");
 			double panelWidth=this.getWidth();
 			double panelHeight=this.getHeight();
 			

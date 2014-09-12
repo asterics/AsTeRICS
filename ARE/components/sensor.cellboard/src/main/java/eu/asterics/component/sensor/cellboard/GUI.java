@@ -159,12 +159,16 @@ public class GUI extends JPanel
 		}
 	}
 	
-	public void update(Dimension space) {
+	public void update(Dimension space,float pfontSize) {
 		this.remove(guiPanel);
 		this.rows = owner.getRowCount();
 		this.columns = owner.getColumnCount();
 		design(space.width,space.height);
-		defineTextFontSize(space);
+		if (pfontSize == -1) {
+			defineTextFontSize(space);
+		} else {
+			defineTextFontSize(pfontSize);
+		}
 		clearScanState();
 		setScanning();
 		repaintCells();
@@ -176,34 +180,36 @@ public class GUI extends JPanel
 	/**
 	 * Search for the optimal text size of cells.
 	 */
-	public void  defineTextFontSize()
+	public void  defineTextFontSize(float pfontSize)
 	{
 		float fontSize=-1;
 		
-		
-		for(int i=0;i<rows;i++)
-		{
-			for(int j=0;j<columns;j++)
+		if (pfontSize < 0) {
+			for(int i=0;i<rows;i++)
 			{
-				float size=cells[i][j].getMaxFont();
-				if(size>0)
+				for(int j=0;j<columns;j++)
 				{
-					if(fontSize<0)
+					float size=cells[i][j].getMaxFont();
+					if(size>0)
 					{
-						fontSize=size;
-					}
-					else
-					{
-						if(size<fontSize)
+						if(fontSize<0)
 						{
 							fontSize=size;
 						}
-					
+						else
+						{
+							if(size<fontSize)
+							{
+								fontSize=size;
+							}
+						
+						}
 					}
 				}
 			}
+		} else {
+			fontSize = pfontSize;
 		}
-		
 		for(int i=0;i<rows;i++)
 		{
 			for(int j=0;j<columns;j++)

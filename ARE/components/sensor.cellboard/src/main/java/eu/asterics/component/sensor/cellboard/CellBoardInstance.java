@@ -104,6 +104,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     
     private String xmlFile = null;
     private Dimension space;
+	private float propFontSize = -1;
 	private int propRows = 2;
 	private int propColumns = 2;
 	private int propScanType = 2;
@@ -768,6 +769,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 				propCellImageArray = handler.getPropCellImageArray();
 				propRows = handler.getRows();
 				propColumns = handler.getCols();
+				propFontSize = handler.getFontSize();
 				propScanType = handler.getScanning();
 				if (propRows == -1 || propColumns == -1) {
 					reportError("Error parsing rows or cols attribute of CellBoard plugin");
@@ -783,7 +785,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 					space.width = hwidth;
 				else 
 					space.width = getAvailableSpace().width;
-				gui.update(space);
+				gui.update(space,propFontSize);
 			} catch (ParserConfigurationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1002,7 +1004,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     	        	try{
     					Thread.sleep(400);
     				}catch (InterruptedException e) {}
-    	        	gui.defineTextFontSize();
+    	        	gui.defineTextFontSize(propFontSize);
 					gui.setScanning();
 			        guiReady=true;
 			        gui.repaintCells();

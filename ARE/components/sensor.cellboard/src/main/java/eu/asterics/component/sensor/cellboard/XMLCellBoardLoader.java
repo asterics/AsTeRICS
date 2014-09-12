@@ -16,6 +16,7 @@ public class XMLCellBoardLoader extends DefaultHandler
 	private int size;
 	private int rows;
 	private int cols;
+	private int fontSize;
 	private int height;
 	private int width;
 	private int scanning;
@@ -30,6 +31,10 @@ public class XMLCellBoardLoader extends DefaultHandler
 		return rows-1;
 	}
 
+	public int getFontSize() {
+		return fontSize;
+	}
+	
 	public int getCols() {
 		return cols-1;
 	}
@@ -72,6 +77,11 @@ public class XMLCellBoardLoader extends DefaultHandler
 				try {
 					rows = Integer.parseInt(atts.getValue("rows"));
 					cols = Integer.parseInt(atts.getValue("columns"));
+					if (atts.getIndex("fontsize") != -1) {
+						fontSize = Integer.parseInt(atts.getValue("fontsize"));
+					} else {
+						fontSize = -1;
+					}
 				} catch (NumberFormatException ne) {
 					rows = -1;
 					cols = -1;
@@ -122,7 +132,7 @@ public class XMLCellBoardLoader extends DefaultHandler
 		  	} else if (qName.equalsIgnoreCase("icon")) {
 				String iconPath = sb.toString(); 
 				if (iconPath.length() > 0) {
-					propCellImageArray[buttons] = "data\\sensor.cellboard\\"+iconPath;
+					propCellImageArray[buttons] = iconPath;
 				}
 			} else if (qName.equalsIgnoreCase("text")) {
 				String text = sb.toString(); 
