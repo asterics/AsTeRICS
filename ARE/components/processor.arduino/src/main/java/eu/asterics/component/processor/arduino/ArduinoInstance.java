@@ -102,7 +102,8 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	public int propPeriodicADCUpdate = 0;
+	//use default value 200
+	public int propPeriodicADCUpdate = 200;
 	public int[] propPinMode= new int[NUMBER_OF_PINS];
 	
 	// declare member variables here

@@ -201,7 +201,7 @@
         <properties>
 			<property name="periodicADCUpdate"
 				type="integer"
-				value="0"
+				value="200"
 				description="automatic update of ADC values (time in milliseconds, 0=off)"/>
 			<property name="pin2Mode"
 				type="integer"
