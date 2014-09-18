@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="18.07.2013_1252" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="18.07.2013_1252" version="20130320">
   <modelDescription>
     <shortDescription>A menu selection for some demo models which do not need special hardware.</shortDescription>
     <requirements>none</requirements>
@@ -35,7 +35,7 @@
         <property name="textColor" value="3" />
         <property name="backgroundColor" value="11" />
         <property name="scanColor" value="10" />
-        <property name="scanMode" value="1" />
+        <property name="scanMode" value="0" />
         <property name="hoverTime" value="1000" />
         <property name="cellText1" value="CameraMouse" />
         <property name="cellImage1" value="" />
@@ -151,34 +151,36 @@
         <posY>133</posY>
       </layout>
       <gui>
-        <posX>7887</posX>
-        <posY>2400</posY>
+        <posX>7712</posX>
+        <posY>1622</posY>
         <width>1663</width>
         <height>5689</height>
       </gui>
     </component>
-    <component id="Timer.1" type_id="asterics.Timer">
-      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
       <ports>
-        <inputPort portTypeID="period">
+        <inputPort portTypeID="input">
           <properties />
         </inputPort>
-        <outputPort portTypeID="time">
-          <properties />
-        </outputPort>
       </ports>
       <properties>
-        <property name="mode" value="2" />
-        <property name="repeatCounter" value="1" />
-        <property name="timePeriod" value="1500" />
-        <property name="resolution" value="50" />
-        <property name="waitPeriod" value="0" />
-        <property name="autostart" value="True" />
+        <property name="caption" value="" />
+        <property name="default" value="Welcome to AsTeRICS !" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="10" />
+        <property name="backgroundColor" value="11" />
       </properties>
       <layout>
-        <posX>187</posX>
-        <posY>131</posY>
+        <posX>154</posX>
+        <posY>184</posY>
       </layout>
+      <gui>
+        <posX>7662</posX>
+        <posY>1200</posY>
+        <width>1750</width>
+        <height>333</height>
+      </gui>
     </component>
     <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
       <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
@@ -233,65 +235,29 @@
         <posY>127</posY>
       </layout>
     </component>
-    <component id="KeyboardCapture.1" type_id="asterics.KeyboardCapture">
-      <description>Keyboard capture</description>
-      <ports>
-        <outputPort portTypeID="keyCode">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="words">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="blockEvents" value="False" />
-        <property name="mode" value="1" />
-        <property name="command1" value=" " />
-        <property name="command2" value="" />
-        <property name="command3" value="" />
-        <property name="command4" value="" />
-        <property name="command5" value="" />
-        <property name="command6" value="" />
-        <property name="command7" value="" />
-        <property name="command8" value="" />
-        <property name="command9" value="" />
-        <property name="command10" value="" />
-      </properties>
-      <layout>
-        <posX>187</posX>
-        <posY>317</posY>
-      </layout>
-    </component>
-    <component id="TextArea.1" type_id="asterics.TextArea">
+    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
       <description>GUI component, which displays text.</description>
       <ports>
-        <inputPort portTypeID="setText">
+        <inputPort portTypeID="input">
           <properties />
         </inputPort>
-        <inputPort portTypeID="appendText">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="text">
-          <properties />
-        </outputPort>
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="  Use Spacebar to select :" />
-        <property name="editable" value="false" />
-        <property name="fontSize" value="20" />
+        <property name="default" value="choose or deploy a model" />
+        <property name="textPosition" value="1" />
         <property name="textColor" value="10" />
         <property name="backgroundColor" value="11" />
       </properties>
       <layout>
-        <posX>28</posX>
-        <posY>124</posY>
+        <posX>304</posX>
+        <posY>334</posY>
       </layout>
       <gui>
-        <posX>7887</posX>
-        <posY>1956</posY>
-        <width>1650</width>
-        <height>378</height>
+        <posX>7675</posX>
+        <posY>7400</posY>
+        <width>1800</width>
+        <height>333</height>
       </gui>
     </component>
   </components>
@@ -308,20 +274,6 @@
     </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="periodFinished_scanMove">
-      <sources>
-        <source>
-          <component id="Timer.1" />
-          <eventPort id="periodFinished" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CellBoard.1" />
-          <eventPort id="scanMove" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="cell1_dispatchSlot1">
       <sources>
         <source>
@@ -378,20 +330,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="recognizedCommand1_scanSelect">
-      <sources>
-        <source>
-          <component id="KeyboardCapture.1" />
-          <eventPort id="recognizedCommand1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="CellBoard.1" />
-          <eventPort id="scanSelect" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="cell5_dispatchSlot5">
       <sources>
         <source>
@@ -422,16 +360,16 @@
     </eventChannel>
   </eventChannels>
   <modelGUI>
-    <Decoration>false</Decoration>
+    <Decoration>true</Decoration>
     <Fullscreen>false</Fullscreen>
     <AlwaysOnTop>false</AlwaysOnTop>
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>true</ShopControlPanel>
     <AREGUIWindow>
-      <posX>7775</posX>
-      <posY>1711</posY>
-      <width>2225</width>
-      <height>6578</height>
+      <posX>7612</posX>
+      <posY>578</posY>
+      <width>2388</width>
+      <height>7311</height>
     </AREGUIWindow>
   </modelGUI>
 </model>

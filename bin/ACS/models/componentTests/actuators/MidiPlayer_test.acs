@@ -1,106 +1,71 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="27.10.2011_2059" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="27.10.2011_2059" version="20130320">
+  <modelDescription>
+    <shortDescription>Play Midi Tones via an analogue sensor (e.g. sip / puff sensor)
+and head movements</shortDescription>
+    <requirements>A webcam and the AnalogIn CIM have to be connected to the system.
+On channel 1 of the AnalogIn CIM, a sensor - e.g. the Sip/Puff Sensor has to be connected.</requirements>
+    <description>This model can be used to control a musical intrument by head movements,
+The FactrackerLK plugin measures left/right movement of the user's head. 
+These movements influence the tone height (pitch) of the midi tones.
+
+A tone can be played e.g. by the Sip/Puff sensor (by blowing) 
+- or by any other sensor with voltage output connected to Chn1 of the AnalogIn CIM.
+</description>
+  </modelDescription>
   <components>
-    <component id="SignalTranslation.1.1" type_id="asterics.SignalTranslation">
-      <description>Translates signals from a certain input range to an output range</description>
+    <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
+      <description>This plugin is used for MIDI applications</description>
       <ports>
-        <inputPort portTypeID="in">
+        <inputPort portTypeID="trigger">
           <properties />
         </inputPort>
-        <inputPort portTypeID="setMax">
+        <inputPort portTypeID="pitch">
           <properties />
         </inputPort>
-        <inputPort portTypeID="setMin">
+        <inputPort portTypeID="instrument">
           <properties />
         </inputPort>
-        <outputPort portTypeID="out">
+        <inputPort portTypeID="scale">
           <properties />
-        </outputPort>
+        </inputPort>
       </ports>
       <properties>
-        <property name="inMin" value="-20" />
-        <property name="inMax" value="20" />
-        <property name="outMin" value="0.0" />
-        <property name="outMax" value="1" />
+        <property name="midiDevice" value="Gervill" />
+        <property name="channel" value="1" />
+        <property name="instrument" value="Glockenspiel" />
+        <property name="triggerThreshold" value="10" />
+        <property name="triggerMax" value="100" />
+        <property name="pitchMin" value="0" />
+        <property name="pitchMax" value="200" />
+        <property name="toneScale" value="harmonic.sc" />
+        <property name="playOnlyChangingNotes" value="true" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>265</posX>
-        <posY>177</posY>
-      </layout>
-    </component>
-    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
-      <description>Webcamera-based face tracking sensor</description>
-      <ports>
-        <outputPort portTypeID="noseX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="noseY">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="chinX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="chinY">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="cameraSelection" value="0" />
-        <property name="cameraResolution" value="1" />
-        <property name="cameraDisplayUpdate" value="100" />
-        <property name="cameraProfile" value="" />
-      </properties>
-      <layout>
-        <posX>55</posX>
-        <posY>70</posY>
+        <posX>740</posX>
+        <posY>110</posY>
       </layout>
       <gui>
         <posX>0</posX>
-        <posY>0</posY>
-        <width>1525</width>
-        <height>2333</height>
+        <posY>822</posY>
+        <width>9450</width>
+        <height>1800</height>
       </gui>
-    </component>
-    <component id="SignalTranslation.1" type_id="asterics.SignalTranslation">
-      <description>Translates signals from a certain input range to an output range</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="setMax">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="setMin">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="inMin" value="-20" />
-        <property name="inMax" value="20" />
-        <property name="outMin" value="0.0" />
-        <property name="outMax" value="1" />
-      </properties>
-      <layout>
-        <posX>205</posX>
-        <posY>25</posY>
-      </layout>
     </component>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
       <description>Keyboard which sends event after button press</description>
       <ports />
       <properties>
-        <property name="caption" value="Keyboard" />
-        <property name="horizontalOrientation" value="True" />
-        <property name="buttonCaption1" value="stop" />
-        <property name="buttonCaption2" value="stoplearn" />
-        <property name="buttonCaption3" value="learn1" />
-        <property name="buttonCaption4" value="learn2" />
-        <property name="buttonCaption5" value="learn3" />
-        <property name="buttonCaption6" value="clear" />
-        <property name="buttonCaption7" value="follow" />
+        <property name="caption" value="Instrument" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="buttonCaption1" value="Vibraphone" />
+        <property name="buttonCaption2" value="Glockenspiel" />
+        <property name="buttonCaption3" value="Woodblock" />
+        <property name="buttonCaption4" value="Taiko" />
+        <property name="buttonCaption5" value="Piano 1" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
         <property name="buttonCaption8" value="" />
         <property name="buttonCaption9" value="" />
         <property name="buttonCaption10" value="" />
@@ -116,150 +81,233 @@
         <property name="buttonCaption20" value="" />
       </properties>
       <layout>
-        <posX>143</posX>
-        <posY>276</posY>
+        <posX>83</posX>
+        <posY>285</posY>
       </layout>
       <gui>
-        <posX>0</posX>
-        <posY>3178</posY>
-        <width>5337</width>
-        <height>1133</height>
+        <posX>738</posX>
+        <posY>4356</posY>
+        <width>3062</width>
+        <height>2956</height>
       </gui>
     </component>
-    <component id="OscGestureFollower.1" type_id="asterics.OscGestureFollower">
-      <description>Connects the external GestureFollower tool with ARE</description>
+    <component id="Slider.1.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
       <ports>
-        <inputPort portTypeID="CH1">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="CH2">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="CH3">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="CH4">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="likeliest">
+        <outputPort portTypeID="value">
           <properties />
         </outputPort>
       </ports>
       <properties>
-        <property name="InPort" value="8000" />
-        <property name="OutPort" value="9000" />
+        <property name="min" value="0" />
+        <property name="max" value="200" />
+        <property name="default" value="50" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="pitch" />
+        <property name="majorTickSpacing" value="20" />
+        <property name="minorTickSpacing" value="5" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
       </properties>
       <layout>
-        <posX>389</posX>
-        <posY>91</posY>
+        <posX>209</posX>
+        <posY>118</posY>
       </layout>
+      <gui>
+        <posX>4038</posX>
+        <posY>2844</posY>
+        <width>5362</width>
+        <height>1089</height>
+      </gui>
     </component>
-    <component id="DoubleToString.1" type_id="asterics.DoubleToString">
-      <description>Converts double to string</description>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
       <ports>
-        <inputPort portTypeID="input">
-          <properties />
-        </inputPort>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
-      </ports>
-      <properties />
-      <layout>
-        <posX>524</posX>
-        <posY>98</posY>
-      </layout>
-    </component>
-    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
-      <description>GUI component, which displays text.</description>
-      <ports>
-        <inputPort portTypeID="input">
+        <inputPort portTypeID="slotDispatch">
           <properties />
         </inputPort>
       </ports>
       <properties>
-        <property name="caption" value="Text Display" />
-        <property name="default" value="" />
-        <property name="textPosition" value="1" />
-        <property name="textColor" value="0" />
-        <property name="backgroundColor" value="11" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="Vibraphone" />
+        <property name="slot2" value="Glockenspiel" />
+        <property name="slot3" value="Woodblock" />
+        <property name="slot4" value="Taiko" />
+        <property name="slot5" value="Piano 1" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
       </properties>
       <layout>
-        <posX>659</posX>
-        <posY>98</posY>
+        <posX>225</posX>
+        <posY>284</posY>
+      </layout>
+    </component>
+    <component id="Slider.1" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="0" />
+        <property name="max" value="100" />
+        <property name="default" value="50" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="volume" />
+        <property name="majorTickSpacing" value="20" />
+        <property name="minorTickSpacing" value="5" />
+        <property name="alignment" value="0" />
+        <property name="fontSize" value="14" />
+      </properties>
+      <layout>
+        <posX>79</posX>
+        <posY>6</posY>
       </layout>
       <gui>
-        <posX>1325</posX>
-        <posY>4400</posY>
-        <width>3250</width>
-        <height>1067</height>
+        <posX>0</posX>
+        <posY>2867</posY>
+        <width>4000</width>
+        <height>1000</height>
       </gui>
+    </component>
+    <component id="ButtonGrid.1.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Tonescale" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="buttonCaption1" value="All tones" />
+        <property name="buttonCaption2" value="harmonic" />
+        <property name="buttonCaption3" value="Major" />
+        <property name="buttonCaption4" value="harmonic 2" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>428</posX>
+        <posY>329</posY>
+      </layout>
+      <gui>
+        <posX>4850</posX>
+        <posY>4244</posY>
+        <width>3062</width>
+        <height>2956</height>
+      </gui>
+    </component>
+    <component id="StringDispatcher.1.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="alltones.sc" />
+        <property name="slot2" value="harmonic.sc" />
+        <property name="slot3" value="major30-102.sc" />
+        <property name="slot4" value="harmonic_dual40-103.sc" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>549</posX>
+        <posY>326</posY>
+      </layout>
     </component>
   </components>
   <channels>
     <channel id="binding.4">
       <source>
-        <component id="FacetrackerLK.1" />
-        <port id="noseY" />
+        <component id="StringDispatcher.1.1" />
+        <port id="output" />
       </source>
       <target>
-        <component id="SignalTranslation.1.1" />
-        <port id="in" />
+        <component id="MidiPlayer.1" />
+        <port id="scale" />
       </target>
     </channel>
     <channel id="binding.2">
       <source>
-        <component id="FacetrackerLK.1" />
-        <port id="noseX" />
+        <component id="Slider.1.1" />
+        <port id="value" />
       </source>
       <target>
-        <component id="SignalTranslation.1" />
-        <port id="in" />
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
       </target>
     </channel>
     <channel id="binding.3">
       <source>
-        <component id="SignalTranslation.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="OscGestureFollower.1" />
-        <port id="CH1" />
-      </target>
-    </channel>
-    <channel id="binding.5">
-      <source>
-        <component id="SignalTranslation.1.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="OscGestureFollower.1" />
-        <port id="CH2" />
-      </target>
-    </channel>
-    <channel id="binding.6">
-      <source>
-        <component id="OscGestureFollower.1" />
-        <port id="likeliest" />
-      </source>
-      <target>
-        <component id="DoubleToString.1" />
-        <port id="input" />
-      </target>
-    </channel>
-    <channel id="binding.7">
-      <source>
-        <component id="DoubleToString.1" />
+        <component id="StringDispatcher.1" />
         <port id="output" />
       </source>
       <target>
-        <component id="TextDisplay.1" />
-        <port id="input" />
+        <component id="MidiPlayer.1" />
+        <port id="instrument" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="Slider.1" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="trigger" />
       </target>
     </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="button1_stop">
+    <eventChannel id="button1_dispatchSlot1">
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -268,12 +316,12 @@
       </sources>
       <targets>
         <target>
-          <component id="OscGestureFollower.1" />
-          <eventPort id="stop" />
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button2_stoplearn">
+    <eventChannel id="button2_dispatchSlot2">
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -282,12 +330,12 @@
       </sources>
       <targets>
         <target>
-          <component id="OscGestureFollower.1" />
-          <eventPort id="stoplearn" />
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button3_learn1">
+    <eventChannel id="button3_dispatchSlot3">
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -296,12 +344,12 @@
       </sources>
       <targets>
         <target>
-          <component id="OscGestureFollower.1" />
-          <eventPort id="learn1" />
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button4_learn2">
+    <eventChannel id="button4_dispatchSlot4">
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -310,12 +358,12 @@
       </sources>
       <targets>
         <target>
-          <component id="OscGestureFollower.1" />
-          <eventPort id="learn2" />
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button5_learn3">
+    <eventChannel id="button5_dispatchSlot5">
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -324,36 +372,64 @@
       </sources>
       <targets>
         <target>
-          <component id="OscGestureFollower.1" />
-          <eventPort id="learn3" />
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot5" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button6_clear">
+    <eventChannel id="button1_dispatchSlot1">
       <sources>
         <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button6" />
+          <component id="ButtonGrid.1.1" />
+          <eventPort id="button1" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="OscGestureFollower.1" />
-          <eventPort id="clear" />
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot1" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button7_follow">
+    <eventChannel id="button2_dispatchSlot2">
       <sources>
         <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button7" />
+          <component id="ButtonGrid.1.1" />
+          <eventPort id="button2" />
         </source>
       </sources>
       <targets>
         <target>
-          <component id="OscGestureFollower.1" />
-          <eventPort id="follow" />
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_dispatchSlot3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_dispatchSlot4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1.1" />
+          <eventPort id="dispatchSlot4" />
         </target>
       </targets>
     </eventChannel>
@@ -366,9 +442,9 @@
     <ShopControlPanel>true</ShopControlPanel>
     <AREGUIWindow>
       <posX>0</posX>
-      <posY>2600</posY>
-      <width>6238</width>
-      <height>3022</height>
+      <posY>0</posY>
+      <width>10000</width>
+      <height>7778</height>
     </AREGUIWindow>
   </modelGUI>
 </model>

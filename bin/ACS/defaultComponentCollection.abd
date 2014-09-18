@@ -862,6 +862,10 @@
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>string</dataType>
             </inputPort>
+            <outputPort id="output">
+                <description>Received Command when IR command is received by IRTrans</description>
+                <dataType>string</dataType>
+            </outputPort>
         </ports>
         <events>
             <eventListenerPort id="sendprop1">
@@ -1303,7 +1307,13 @@
             </eventListenerPort>
             <eventListenerPort id="toggle">
                 <description>On incoming event, the mouse activity toggles</description>
-            </eventListenerPort>                        
+            </eventListenerPort>   
+			<eventListenerPort id="absolutePosition">
+                <description>On incoming event, the position of the mouse will be set to the given absolute position</description>
+            </eventListenerPort> 			
+			 <eventListenerPort id="relativePosition">
+                <description>On incoming event, the positioning of the mouse will be set relative to the actual position</description>
+            </eventListenerPort> 
         </events>         
         <properties>
             <property description="Defines if the mouse will move and clicks will be performed" name="enableMouse" type="boolean" value="true"/>
@@ -4010,7 +4020,10 @@
 			<eventListenerPort id="reset">
 				<description>reset to initial state</description>
 			</eventListenerPort>
-
+			
+			<eventTriggererPort id="stateChanged">
+				<description>the statemachine switched to a new state</description>
+			</eventTriggererPort>
 			<eventTriggererPort id="finalStateReached">
 				<description>the final state is triggered</description>
 			</eventTriggererPort>
@@ -7181,6 +7194,83 @@
 		</events>			
         <properties>
 			<property description="Update period for EOG values (in milliseconds)" name="updatePeriod" type="integer" value="100"/>
+
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.sensor.eshoe.ESHOEInstance" id="asterics.ESHOE">
+        <type subtype="Sensor Modules">sensor</type>
+        <singleton>false</singleton>
+        <description>eSHOE implementation</description>
+        <ports>
+
+			<outputPort id="Angle">
+				<description>Foot angle in respect to ground</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccX">
+				<description>acceleration x-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccY">
+				<description>acceleration y-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccZ">
+				<description>acceleration z-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Heel">
+				<description>pressure heel sensor</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Meta1">
+				<description>pressure metatarsal1 sensor</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Meta5">
+				<description>pressure metatarsal5 sensor</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Toe">
+				<description>pressure toe sensor</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="GyroX">
+				<description>angular velocity x-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="GyroY">
+				<description>angular velocity y-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="GyroZ">
+				<description>angular velocity z-axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="start">
+				<description>start data transmission</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stop data transmission</description>
+			</eventListenerPort>
+			<eventListenerPort id="calibrate">
+				<description>calibrate baseline position</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="toePressureReached">
+				<description>threshold pressure for toe exceeded</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+        	<property description="The COM Port which will be opened to connect to the eSHOE" name="ComPort" type="string" value="COM4"/>
+			<property combobox="50 Hz//200 Hz" description="Choose sampling rate between 50 and 200 Hz" name="SamplingRate" type="integer" value="0"/>
+			<property description="Threshold for toe pressure event" name="ToePressureThreshold" type="double" value="100"/>
 
         </properties>
 
