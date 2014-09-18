@@ -70,12 +70,12 @@ left/right movements influence the tone height</description>
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>649</posX>
-        <posY>170</posY>
+        <posX>655</posX>
+        <posY>252</posY>
       </layout>
       <gui>
         <posX>762</posX>
-        <posY>289</posY>
+        <posY>222</posY>
         <width>6312</width>
         <height>1289</height>
       </gui>
@@ -134,7 +134,7 @@ left/right movements influence the tone height</description>
       </layout>
       <gui>
         <posX>2375</posX>
-        <posY>8222</posY>
+        <posY>8155</posY>
         <width>2925</width>
         <height>444</height>
       </gui>
@@ -214,7 +214,7 @@ left/right movements influence the tone height</description>
       </layout>
       <gui>
         <posX>1375</posX>
-        <posY>3711</posY>
+        <posY>3644</posY>
         <width>2412</width>
         <height>4333</height>
       </gui>
@@ -290,7 +290,7 @@ left/right movements influence the tone height</description>
       </layout>
       <gui>
         <posX>4075</posX>
-        <posY>3711</posY>
+        <posY>3644</posY>
         <width>2212</width>
         <height>4333</height>
       </gui>
@@ -333,35 +333,6 @@ left/right movements influence the tone height</description>
         <posY>470</posY>
       </layout>
     </component>
-    <component id="Slider.1" type_id="asterics.Slider">
-      <description>a slider GUI element which provides the slider value at an output port</description>
-      <ports>
-        <outputPort portTypeID="value">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="min" value="0" />
-        <property name="max" value="100" />
-        <property name="default" value="80" />
-        <property name="autosend" value="true" />
-        <property name="caption" value="Lautstärke" />
-        <property name="majorTickSpacing" value="20" />
-        <property name="minorTickSpacing" value="5" />
-        <property name="alignment" value="0" />
-        <property name="fontSize" value="14" />
-      </properties>
-      <layout>
-        <posX>301</posX>
-        <posY>4</posY>
-      </layout>
-      <gui>
-        <posX>800</posX>
-        <posY>2622</posY>
-        <width>3088</width>
-        <height>889</height>
-      </gui>
-    </component>
     <component id="Slider.1.1" type_id="asterics.Slider">
       <description>a slider GUI element which provides the slider value at an output port</description>
       <ports>
@@ -385,9 +356,9 @@ left/right movements influence the tone height</description>
         <posY>286</posY>
       </layout>
       <gui>
-        <posX>3950</posX>
-        <posY>2622</posY>
-        <width>3088</width>
+        <posX>988</posX>
+        <posY>2556</posY>
+        <width>5850</width>
         <height>911</height>
       </gui>
     </component>
@@ -424,7 +395,7 @@ left/right movements influence the tone height</description>
       </layout>
       <gui>
         <posX>975</posX>
-        <posY>1711</posY>
+        <posY>1644</posY>
         <width>5875</width>
         <height>778</height>
       </gui>
@@ -481,6 +452,96 @@ left/right movements influence the tone height</description>
       <layout>
         <posX>282</posX>
         <posY>120</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.2" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="b-a" />
+      </properties>
+      <layout>
+        <posX>449</posX>
+        <posY>27</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="20" />
+        <property name="thresholdLow" value="-20" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>572</posX>
+        <posY>35</posY>
+      </layout>
+    </component>
+    <component id="ConstantDispatcher.1" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="0" />
+        <property name="slot2" value="90" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>694</posX>
+        <posY>32</posY>
       </layout>
     </component>
   </components>
@@ -555,10 +616,10 @@ left/right movements influence the tone height</description>
         <port id="inA" />
       </target>
     </channel>
-    <channel id="binding.10">
+    <channel id="binding.21">
       <source>
-        <component id="Slider.1" />
-        <port id="value" />
+        <component id="ConstantDispatcher.1" />
+        <port id="output" />
       </source>
       <target>
         <component id="MidiPlayer.1" />
@@ -583,6 +644,36 @@ left/right movements influence the tone height</description>
       <target>
         <component id="PathMultiplexer.1.1" />
         <port id="input1" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="chinY" />
+      </source>
+      <target>
+        <component id="MathEvaluator.2" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="MathEvaluator.2" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
       </target>
     </channel>
   </channels>
@@ -881,6 +972,34 @@ left/right movements influence the tone height</description>
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="eventPosEdge_dispatchSlot2">
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <groups />
   <modelGUI>
@@ -891,7 +1010,7 @@ left/right movements influence the tone height</description>
     <ShopControlPanel>true</ShopControlPanel>
     <AREGUIWindow>
       <posX>750</posX>
-      <posY>133</posY>
+      <posY>44</posY>
       <width>6800</width>
       <height>8734</height>
     </AREGUIWindow>
