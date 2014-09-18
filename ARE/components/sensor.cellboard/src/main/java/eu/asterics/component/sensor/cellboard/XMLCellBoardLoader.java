@@ -147,13 +147,13 @@ public class XMLCellBoardLoader extends DefaultHandler
 	  @Override
 	  public void startDocument()
 	  {
-	    System.out.println( "Document starts." );
+	    // System.out.println( "Document starts." );
 	  }
 
 	  @Override
 	  public void endDocument()
 	  {
-	    System.out.println( "Document ends." );
+	    // System.out.println( "Document ends." );
 	  }
 	  
 	  public void print() {
