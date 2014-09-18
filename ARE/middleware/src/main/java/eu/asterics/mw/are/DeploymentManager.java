@@ -1109,7 +1109,12 @@ public class DeploymentManager
 					
 							
 							IRuntimeComponentInstance rci = this.runtimeComponentInstances.get(targetComponentID);
-							rci.syncedValuesReceived(row);
+							
+							//synchronize using the target component, because the component can be considered a black box, that must
+							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.						
+							synchronized(rci) {
+								rci.syncedValuesReceived(row);
+							}
 							stack.pop();
 							if (stack.isEmpty()) bufferedPortsMap.remove(stack);
 						}
@@ -1127,7 +1132,12 @@ public class DeploymentManager
 						if (row.size()==bufferedPorts.size()) //A row has been completed
 						{
 							IRuntimeComponentInstance rci = this.runtimeComponentInstances.get(targetComponentID);
-							rci.syncedValuesReceived(row);
+							
+							//synchronize using the target component, because the component can be considered a black box, that must
+							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.							
+							synchronized(rci) {
+								rci.syncedValuesReceived(row);
+							}
 							stack.pop();
 						}
 					}
@@ -1149,7 +1159,12 @@ public class DeploymentManager
 				
 					
 					IRuntimeComponentInstance rci = runtimeComponentInstances.get(targetComponentID);
-					rci.syncedValuesReceived(row);
+					
+					//synchronize using the target component, because the component can be considered a black box, that must
+					//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.					
+					synchronized(rci) {
+						rci.syncedValuesReceived(row);
+					}
 					stack.pop();
 					//if (stack.isEmpty()) bufferedPortsMap.remove(stack);
 				}

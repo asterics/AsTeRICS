@@ -44,65 +44,65 @@ abstract public class AbstractRuntimeComponentInstance implements IRuntimeCompon
 
     protected RuntimeState runtimeState = RuntimeState.READY;
 
-    public void start()
+    public synchronized void start()
     {
         runtimeState = RuntimeState.ACTIVE;
     }
 
-    public void pause()
+    public synchronized void pause()
     {
         runtimeState = RuntimeState.SUSPENDED;
     }
 
-    public void resume()
+    public synchronized void resume()
     {
         runtimeState = RuntimeState.ACTIVE;
     }
 
-    public void stop()
+    public synchronized void stop()
     {
         runtimeState = RuntimeState.STOPPED;
     }
 
     @Override
-    public IRuntimeInputPort getInputPort(String portID)
+    public synchronized IRuntimeInputPort getInputPort(String portID)
     {
         return null;
     }
 
     @Override
-    public IRuntimeOutputPort getOutputPort(String portID)
+    public synchronized IRuntimeOutputPort getOutputPort(String portID)
     {
         return null;
     }
 
     @Override
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
+    public synchronized IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
     {
         return null;
     }
 
     @Override
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
+    public synchronized IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
     {
         return null;
     }
     
-    public Object getRuntimePropertyValue(String propertyName)
+    public synchronized Object getRuntimePropertyValue(String propertyName)
     {
     	return null;
     }
 
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
+    public synchronized Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
     	return null;
     }
     
-    public List<String> getRuntimePropertyList(String key){
+    public synchronized List<String> getRuntimePropertyList(String key){
     	return new ArrayList<String>();
     }
     
-    public void syncedValuesReceived (HashMap <String, byte[]> dataRow)
+    public synchronized void syncedValuesReceived (HashMap <String, byte[]> dataRow)
     {
     	
 		for (Map.Entry<String, byte[]> e: dataRow.entrySet())

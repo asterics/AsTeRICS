@@ -30,12 +30,15 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.data.ConversionUtils;
+import eu.asterics.mw.model.deployment.IComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsSendingThreadPool;
 import eu.asterics.mw.services.AstericsThreadPool;
 
@@ -46,6 +49,7 @@ import eu.asterics.mw.services.AstericsThreadPool;
  */
 public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 {
+	private static final Logger logger=AstericsErrorHandling.instance.getLogger();
 	//Sync
 	private final Map<EndPoint, IRuntimeInputPort> inputPortEndpoints = 
 			new LinkedHashMap<EndPoint,IRuntimeInputPort>();
@@ -65,6 +69,11 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 						final IRuntimeInputPort runtimeInputPort = entry.getValue();
 						final EndPoint endPoint = entry.getKey();
 						
+						IComponentInstance targetComponent=DeploymentManager.instance.getCurrentRuntimeModel().getComponentInstance(endPoint.targetComponentID);
+						if(targetComponent == null) {
+							logger.warning("Data could not be propagated, target component not found: targetComponentId: "+endPoint.targetComponentID);
+							continue;
+						}
 						
 						if (runtimeInputPort.isBuffered()) {
 							
@@ -73,16 +82,20 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 							if (conversion != null) {
 								newData = DefaultRuntimeOutputPort.this.convertData(data, conversion);
 							}
-								
+															
 							if (newData!=null)
 								DeploymentManager.instance.bufferData(newData, endPoint.portID, endPoint.targetComponentID);
 							else
-								DeploymentManager.instance.bufferData(data, endPoint.portID, endPoint.targetComponentID);
-								
+								DeploymentManager.instance.bufferData(data, endPoint.portID, endPoint.targetComponentID);													
 						}
-						else {
+						else {							
 							//System.out.println("PORT "+runtimeInputPort+" is NOT BUFFERRED"+runtimeInputPort);
-							runtimeInputPort.receiveData(data);
+
+							//synchronize using the target component, because the component can be considered a black box, that must
+							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.							
+							synchronized(targetComponent) {
+								runtimeInputPort.receiveData(data);
+							}
 						}
 					}
 

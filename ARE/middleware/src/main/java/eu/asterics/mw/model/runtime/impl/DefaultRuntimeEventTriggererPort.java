@@ -25,12 +25,17 @@
 
 package eu.asterics.mw.model.runtime.impl;
 
+import eu.asterics.mw.are.DeploymentManager;
+import eu.asterics.mw.model.deployment.IComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsEventThreadPool;
 import eu.asterics.mw.services.AstericsThreadPool;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Date: 1/7/11
@@ -38,7 +43,10 @@ import java.util.Map;
  */
 public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererPort
 {
-    private final Map<String, IRuntimeEventListenerPort> eventListeners = new HashMap<String, IRuntimeEventListenerPort>();
+	private static final Logger logger=AstericsErrorHandling.instance.getLogger();
+    private static final String UNIQUE_ID_DELIM = ":";
+
+	private final Map<String, IRuntimeEventListenerPort> eventListeners = new LinkedHashMap<String, IRuntimeEventListenerPort>();
 
     private String channelID = null;
 
@@ -49,25 +57,42 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
     }
 
     @Override
-    public void raiseEvent()
-    {
-        synchronized (eventListeners)
-        {
-            for(final IRuntimeEventListenerPort eventListenerPort : eventListeners.values())
-            {
-            	if (eventListenerPort==null) continue;
-                AstericsThreadPool.instance.execute(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                    	
-                        eventListenerPort.receiveEvent(channelID);
-                    }
-                });
-            }
-        }
-    }
+	public void raiseEvent() {
+		synchronized (eventListeners) {
+			// for(final IRuntimeEventListenerPort eventListenerPort :
+			// eventListeners.values())
+			for (final Map.Entry<String, IRuntimeEventListenerPort> elem : eventListeners.entrySet()) {
+				{
+					final IRuntimeEventListenerPort eventListenerPort = elem.getValue();
+					if (eventListenerPort == null)
+						continue;
+
+					AstericsEventThreadPool.instance.execute(new Runnable() {
+						@Override
+						public void run() {
+							String targetComponentId = getTargetComponentId(elem.getKey());
+							if (targetComponentId != null) {
+								IComponentInstance targetComponent = DeploymentManager.instance
+										.getCurrentRuntimeModel()
+										.getComponentInstance(targetComponentId);
+								if (targetComponent != null) {									
+									//synchronize using the target component, because the component can be considered a black box, that must
+									//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.
+									//System.out.println("Syncing on targetComponentId: "+targetComponentId+", targetComponent: "+targetComponent);
+									synchronized (targetComponent) {
+										eventListenerPort.receiveEvent(channelID);
+										return;										
+									}
+								}
+							}
+							
+							logger.warning("Event could not be notified, target component not found: targetComponentId: "+targetComponentId);
+						}
+					});
+				}
+			}
+		}
+	}
 
     @Override
     public void addEventListener(String targetComponentID, String eventPortID, IRuntimeEventListenerPort eventListenerPort)
@@ -89,6 +114,15 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
 
     private String getUniqueID(final String targetComponentID, final String eventPortID)
     {
-        return targetComponentID + ":" + eventPortID;
+        return targetComponentID + UNIQUE_ID_DELIM + eventPortID;
+    }
+    
+    /**
+     * Split uniqueID to its elements
+     * @param uniqueId
+     * @return
+     */
+    private String getTargetComponentId(String uniqueId) {
+    	return uniqueId.substring(0, uniqueId.indexOf(UNIQUE_ID_DELIM));
     }
 }

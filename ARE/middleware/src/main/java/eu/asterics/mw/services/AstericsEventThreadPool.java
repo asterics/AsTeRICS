@@ -57,25 +57,24 @@ import eu.asterics.mw.are.AREProperties;
  *
  */
 
-
 /**
- * This thread pool is used to propagate data (output port to input port) from one module to another one. Default it uses the pool size 1.
+ * This thread pool is used to notify events from one module to another one. Default it uses the pool size 1.
  * The size can be changed in areProperties.
  * @author mad
  *
  */
-public class AstericsSendingThreadPool
+public class AstericsEventThreadPool
 {
-	private static final String THREAD_POOL_SIZE = "ThreadPool.DataSender.size";
+	private static final String THREAD_POOL_SIZE = "ThreadPool.EventSender.size";
 	private static final Logger logger=AstericsErrorHandling.instance.getLogger();
 	
-    public static final AstericsSendingThreadPool instance = new AstericsSendingThreadPool();
+    public static final AstericsEventThreadPool instance = new AstericsEventThreadPool();
     private ExecutorService pool;
 
-    private AstericsSendingThreadPool()
+    private AstericsEventThreadPool()
     {
 		int poolSize=new Integer(AREProperties.instance.getProperty(THREAD_POOL_SIZE, "1"));
-		logger.info("Creating ThreadPool.DataSender with size: "+poolSize);
+		logger.info("Creating ThreadPool.EventSender with size: "+poolSize);
     	
         pool = Executors.newFixedThreadPool(1);
         

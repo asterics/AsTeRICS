@@ -30,7 +30,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+
+import eu.asterics.mw.are.AREProperties;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -58,21 +64,16 @@ import java.util.concurrent.ThreadFactory;
  */
 
 /**
- * Uses the default {@link java.util.concurrent.Executors} class for creating a
- * {@code newCachedThreadPool} <br />
- * Creates a thread pool that creates new threads as needed,<br />
- * but will reuse previously constructed threads when they are available.<br />
- * These pools will typically improve the performance of programs that execute <br/>
- * many short-lived asynchronous tasks. Calls to execute will reuse <br />
- * previously constructed threads if available. If no existing thread is
- * available, a new thread will be created and added <br/>
- * to the pool. Threads that have not been used for sixty seconds are <br/>
- * terminated and removed from the cache.
- * 
- * @author Costas Kakousis
- * 
+ * This thread pool is to perform diverse tasks, such as sending and receiving CIM data.
+ * There is one special pool with size 1 for the execution of lifecycle tasks like starting, stopping modules. 
+ * This one should also be used to interface hw to prevent multi-threading problems with not threadsafe libraries.  
+ * @author mad
+ *
  */
 public class AstericsThreadPool {
+	private static final String THREAD_POOL_SIZE = "ThreadPool.OtherTasks.size";
+	private static final Logger logger=AstericsErrorHandling.instance.getLogger();
+	
 	private static final String ARE_MAIN = "AREMain";
 	public static final AstericsThreadPool instance = new AstericsThreadPool();
 	private ExecutorService pool;
@@ -87,10 +88,15 @@ public class AstericsThreadPool {
 			});
 
 	private AstericsThreadPool() {
-		pool = Executors.newCachedThreadPool();
-		// pool = new ThreadPoolExecutor(20, 20, 500000000000000L,
-		// TimeUnit.MILLISECONDS,
-		// new LinkedBlockingQueue<Runnable>(100));
+		int poolSize=new Integer(AREProperties.instance.getProperty(THREAD_POOL_SIZE, "10"));
+		logger.info("Creating ThreadPool.OtherTasks with size: "+poolSize);
+		pool = Executors.newFixedThreadPool(poolSize);
+		//pool = Executors.newCachedThreadPool();
+		/*
+		pool = new ThreadPoolExecutor(5, 20, 60,
+		TimeUnit.SECONDS,
+		new LinkedBlockingQueue<Runnable>(100));
+		*/
 	}
 
 	public void execute(Runnable r) {
