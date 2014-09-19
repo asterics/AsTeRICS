@@ -15,7 +15,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="periodicADCUpdate" value="50" />
+        <property name="periodicADCUpdate" value="30" />
       </properties>
       <layout>
         <posX>12</posX>
@@ -305,12 +305,12 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="bufferSize" value="7" />
+        <property name="bufferSize" value="4" />
         <property name="mode" value="0" />
       </properties>
       <layout>
-        <posX>310</posX>
-        <posY>378</posY>
+        <posX>306</posX>
+        <posY>379</posY>
       </layout>
     </component>
     <component id="Averager.1.1" type_id="asterics.Averager">
@@ -324,7 +324,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="bufferSize" value="7" />
+        <property name="bufferSize" value="4" />
         <property name="mode" value="0" />
       </properties>
       <layout>

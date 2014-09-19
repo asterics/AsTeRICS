@@ -246,33 +246,22 @@ void reply_DataFrame(void)
 
 void generate_ADCFrame()
 {
-	short int adcval;
-	//uint8_t i;
-
-    
-	/*for (i=0;i<5;i++) //for (i=0;i<6;i++)
-	{
-		adcval=ADC_Read(i);
-		CIM_frame.data[i<<1]=(uint8_t)(adcval&0xff); //Multiple x2
-		CIM_frame.data[(i<<1) +1]=(uint8_t)(adcval>>8);
-	}*/
-
+	uint16_t adcval;
 	
-	
-	adcval=ADC_Read(1); //right
-	adcval=adcval-ADC_Read(2); //left -> value = right - left
+	adcval=ADC_Read(7); //right
+	adcval=adcval-ADC_Read(5); //left -> value = right - left
 	CIM_frame.data[0]=adcval&0xff;
 	CIM_frame.data[1]=adcval>>8;
 	
-	adcval=ADC_Read(4); //up
-	adcval=adcval-ADC_Read(3); //down -> value = up - down
+	adcval=ADC_Read(4); //down
+	adcval=adcval-ADC_Read(6); //up -> value = down-up
 	CIM_frame.data[2]=adcval&0xff;
 	CIM_frame.data[3]=adcval>>8;
 	
-	adcval=ADC_Read(0); //preasure
-	CIM_frame.data[4]=(uint8_t)(adcval&0xff);
-	CIM_frame.data[5]=(uint8_t)(adcval>>8);
-	CIM_frame.data_size=6; //CIM_frame.data_size=12;
+	adcval=ADC_Read(0); //pressure
+	CIM_frame.data[4]=adcval&0xff;
+	CIM_frame.data[5]=adcval>>8;
+	CIM_frame.data_size=6; 
 }
 
 

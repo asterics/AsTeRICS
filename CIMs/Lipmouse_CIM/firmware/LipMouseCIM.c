@@ -49,6 +49,8 @@ void setupHardware(void)
 {
 	Timer_Init();
 	ADC_Init();
+	DDRB=  0x06;  // B1 and B2 output
+	PORTB= 0x02;  // B1 5V to power up the pressure sensor !
 
 }
 

@@ -35,24 +35,19 @@ void ADC_Init(void) {
  
 
 /* ADC Einzelmessung */
-uint16_t ADC_Read(uint16_t channel )
+uint16_t ADC_Read(uint8_t channel )
 {
 
-#ifdef PCB_VERSION
-  if (channel==1) channel=4;
-  else if (channel==2) channel=5;
-  else if (channel==3) channel=6;
-  else if (channel==4) channel=7;
-#else
-  if (channel==1) channel=1;
-  else if (channel==2) channel=4;
-  else if (channel==3) channel=2;
-  else if (channel==4) channel=3;
+#ifndef PCB_VERSION
+  if (channel==4) channel=1;
+  else if (channel==5) channel=3;
+  else if (channel==6) channel=2;
+  else if (channel==7) channel=4;
 #endif
 
 
   // Kanal waehlen, ohne andere Bits zu beeinfluﬂen
-  ADMUX = (ADMUX & ~(0x1F)) | (channel & 0x1F);
+  ADMUX = (1<<REFS0) | channel;
   ADCSRA |= (1<<ADSC);            // eine Wandlung "single conversion"
   while (ADCSRA & (1<<ADSC) )     // auf Abschluss der Konvertierung warten
     ;
