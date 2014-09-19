@@ -337,10 +337,10 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <posY>442</posY>
       </layout>
       <gui>
-        <posX>1162</posX>
-        <posY>4978</posY>
-        <width>7438</width>
-        <height>4978</height>
+        <posX>1175</posX>
+        <posY>6311</posY>
+        <width>7400</width>
+        <height>3666</height>
       </gui>
     </component>
     <component id="MathEvaluator.2" type_id="asterics.MathEvaluator">
@@ -492,7 +492,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="demomenu.acs" />
+        <property name="model" value="Ergotherapie\ergomenu.acs" />
       </properties>
       <layout>
         <posX>156</posX>

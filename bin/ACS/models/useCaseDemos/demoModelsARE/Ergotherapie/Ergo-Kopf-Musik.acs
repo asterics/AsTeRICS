@@ -60,7 +60,7 @@ left/right movements influence the tone height</description>
       <properties>
         <property name="midiDevice" value="Gervill" />
         <property name="channel" value="1" />
-        <property name="instrument" value="Ocarina     " />
+        <property name="instrument" value="Bottle Blow " />
         <property name="triggerThreshold" value="10" />
         <property name="triggerMax" value="100" />
         <property name="pitchMin" value="0" />
@@ -138,11 +138,11 @@ left/right movements influence the tone height</description>
         <property name="buttonCaption2" value="Glockenspiel" />
         <property name="buttonCaption3" value="Posaune" />
         <property name="buttonCaption4" value="Trommel" />
-        <property name="buttonCaption5" value="Piano 1" />
-        <property name="buttonCaption6" value="Trommel2" />
+        <property name="buttonCaption5" value="Klavier" />
+        <property name="buttonCaption6" value="Floete" />
         <property name="buttonCaption7" value="Goblin" />
         <property name="buttonCaption8" value="Stimme" />
-        <property name="buttonCaption9" value="FretNoise" />
+        <property name="buttonCaption9" value="Wellen" />
         <property name="buttonCaption10" value="" />
         <property name="buttonCaption11" value="" />
         <property name="buttonCaption12" value="" />
@@ -181,12 +181,12 @@ left/right movements influence the tone height</description>
         <property name="slot1" value="Ocarina" />
         <property name="slot2" value="Glockenspiel" />
         <property name="slot3" value="Trombone" />
-        <property name="slot4" value="Taiko" />
+        <property name="slot4" value="Synth Drum" />
         <property name="slot5" value="Piano 1" />
-        <property name="slot6" value="Timpani" />
+        <property name="slot6" value="Pan Flute" />
         <property name="slot7" value="Goblin" />
         <property name="slot8" value="Voice Oohs" />
-        <property name="slot9" value="Gt.FretNoise" />
+        <property name="slot9" value="Seashore" />
         <property name="slot10" value="" />
         <property name="slot11" value="" />
         <property name="slot12" value="" />
@@ -200,7 +200,7 @@ left/right movements influence the tone height</description>
         <property name="slot20" value="" />
       </properties>
       <layout>
-        <posX>203</posX>
+        <posX>202</posX>
         <posY>453</posY>
       </layout>
     </component>
@@ -577,7 +577,7 @@ left/right movements influence the tone height</description>
       <properties>
         <property name="xCenter" value="0" />
         <property name="yCenter" value="0" />
-        <property name="radius" value="5" />
+        <property name="radius" value="15" />
         <property name="mode" value="0" />
       </properties>
       <layout>
@@ -596,7 +596,7 @@ left/right movements influence the tone height</description>
         </outputPort>
       </ports>
       <properties>
-        <property name="mode" value="0" />
+        <property name="mode" value="2" />
         <property name="repeatCounter" value="1" />
         <property name="timePeriod" value="1000" />
         <property name="resolution" value="50" />
