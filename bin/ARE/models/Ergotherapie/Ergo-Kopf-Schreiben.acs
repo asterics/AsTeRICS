@@ -39,7 +39,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
       </layout>
       <gui>
         <posX>8488</posX>
-        <posY>911</posY>
+        <posY>2000</posY>
         <width>1512</width>
         <height>1844</height>
       </gui>
@@ -121,7 +121,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
       </layout>
       <gui>
         <posX>3800</posX>
-        <posY>44</posY>
+        <posY>1155</posY>
         <width>2862</width>
         <height>756</height>
       </gui>
@@ -159,7 +159,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
       </layout>
       <gui>
         <posX>12</posX>
-        <posY>67</posY>
+        <posY>1178</posY>
         <width>3526</width>
         <height>711</height>
       </gui>
@@ -297,7 +297,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
       </layout>
       <gui>
         <posX>9312</posX>
-        <posY>44</posY>
+        <posY>1155</posY>
         <width>675</width>
         <height>733</height>
       </gui>
@@ -325,7 +325,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <property name="keyboardPath" value="keyboards\default.xml" />
         <property name="highlightStyle" value="0" />
         <property name="highlightResetPosition" value="0" />
-        <property name="settingsFile" value="settings\default.kst" />
+        <property name="settingsFile" value="settings\predict_german.kst" />
         <property name="windowDecorated" value="true" />
         <property name="eventScanningEnabled" value="true" />
         <property name="valueScanningEnabled" value="true" />
@@ -337,8 +337,8 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <posY>442</posY>
       </layout>
       <gui>
-        <posX>1175</posX>
-        <posY>6311</posY>
+        <posX>1275</posX>
+        <posY>5778</posY>
         <width>7400</width>
         <height>3666</height>
       </gui>
@@ -394,7 +394,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
       </layout>
       <gui>
         <posX>6788</posX>
-        <posY>44</posY>
+        <posY>1155</posY>
         <width>2350</width>
         <height>733</height>
       </gui>
@@ -792,7 +792,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
       <posX>0</posX>
-      <posY>44</posY>
+      <posY>1133</posY>
       <width>10000</width>
       <height>822</height>
     </AREGUIWindow>
