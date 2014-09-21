@@ -505,7 +505,7 @@ left/right movements influence the tone height</description>
         </inputPort>
       </ports>
       <properties>
-        <property name="enableMouse" value="true" />
+        <property name="enableMouse" value="False" />
         <property name="absolutePosition" value="False" />
         <property name="xMin" value="0" />
         <property name="xMax" value="0" />
