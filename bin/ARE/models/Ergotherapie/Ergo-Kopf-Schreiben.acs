@@ -120,10 +120,10 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <posY>259</posY>
       </layout>
       <gui>
-        <posX>3800</posX>
-        <posY>1155</posY>
-        <width>2862</width>
-        <height>756</height>
+        <posX>4812</posX>
+        <posY>1133</posY>
+        <width>2250</width>
+        <height>733</height>
       </gui>
     </component>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
@@ -136,7 +136,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <property name="buttonCaption2" value="Ziehen" />
         <property name="buttonCaption3" value="Rechtsklick" />
         <property name="buttonCaption4" value="Doppelklick" />
-        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption5" value="Notepad" />
         <property name="buttonCaption6" value="" />
         <property name="buttonCaption7" value="" />
         <property name="buttonCaption8" value="" />
@@ -158,9 +158,9 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <posY>481</posY>
       </layout>
       <gui>
-        <posX>12</posX>
-        <posY>1178</posY>
-        <width>3526</width>
+        <posX>25</posX>
+        <posY>1156</posY>
+        <width>4188</width>
         <height>711</height>
       </gui>
     </component>
@@ -297,7 +297,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
       </layout>
       <gui>
         <posX>9312</posX>
-        <posY>1155</posY>
+        <posY>1133</posY>
         <width>675</width>
         <height>733</height>
       </gui>
@@ -322,7 +322,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <property name="port" value="4546" />
         <property name="title" value="OSKA keyboard" />
         <property name="oskaPath" value="..\oska\start keyboard.exe" />
-        <property name="keyboardPath" value="keyboards\default.xml" />
+        <property name="keyboardPath" value="keyboards\writing\german_symbols\german_symbols.xml" />
         <property name="highlightStyle" value="0" />
         <property name="highlightResetPosition" value="0" />
         <property name="settingsFile" value="settings\predict_german.kst" />
@@ -393,9 +393,9 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <posY>484</posY>
       </layout>
       <gui>
-        <posX>6788</posX>
-        <posY>1155</posY>
-        <width>2350</width>
+        <posX>7088</posX>
+        <posY>1133</posY>
+        <width>2200</width>
         <height>733</height>
       </gui>
     </component>
@@ -475,13 +475,13 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <property name="defaultApplication" value="c:\windows\notepad.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
-        <property name="autoLaunch" value="True" />
+        <property name="autoLaunch" value="False" />
         <property name="autoClose" value="true" />
         <property name="onlyByEvent" value="false" />
       </properties>
       <layout>
-        <posX>784</posX>
-        <posY>465</posY>
+        <posX>428</posX>
+        <posY>614</posY>
       </layout>
     </component>
     <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
@@ -783,6 +783,20 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="button5_launchNow">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ApplicationLauncher.1" />
+          <eventPort id="launchNow" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
     <Decoration>false</Decoration>
@@ -792,7 +806,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
       <posX>0</posX>
-      <posY>1133</posY>
+      <posY>1089</posY>
       <width>10000</width>
       <height>822</height>
     </AREGUIWindow>
