@@ -150,82 +150,96 @@ public class GUI extends JPanel
 	}
 	
 	public void repaintCells() {
-		for(int i=0;i<rows;i++)
-		{
-			for(int j=0;j<columns;j++)
-			{
-				cells[i][j].repaintNow();
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				for(int i=0;i<rows;i++)
+				{
+					for(int j=0;j<columns;j++)
+					{
+						cells[i][j].repaintNow();
+					}
+				}
 			}
-		}
+		});
 	}
 	
-	public void update(Dimension space,float pfontSize) {
-		this.remove(guiPanel);
-		this.rows = owner.getRowCount();
-		this.columns = owner.getColumnCount();
-		design(space.width,space.height);
-		if (pfontSize == -1) {
-			defineTextFontSize(space);
-		} else {
-			defineTextFontSize(pfontSize);
-		}
-		clearScanState();
-		setScanning();
-		repaintCells();
-		gridPanel.repaint();
-		gridPanel.invalidate();
-		
+	public void update(final Dimension space,final float pfontSize) {
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				GUI.this.remove(guiPanel);
+				GUI.this.rows = owner.getRowCount();
+				GUI.this.columns = owner.getColumnCount();
+				design(space.width,space.height);
+				if (pfontSize == -1) {
+					defineTextFontSize(space);
+				} else {
+					defineTextFontSize(pfontSize);
+				}
+				clearScanState();
+				setScanning();
+				repaintCells();
+				gridPanel.repaint();
+				gridPanel.invalidate();
+			}
+		});		
 	}
 	
 	/**
 	 * Search for the optimal text size of cells.
 	 */
-	public void  defineTextFontSize(float pfontSize)
+	public void  defineTextFontSize(final float pfontSize)
 	{
-		float fontSize=-1;
-		
-		if (pfontSize < 0) {
-			for(int i=0;i<rows;i++)
-			{
-				for(int j=0;j<columns;j++)
-				{
-					float size=cells[i][j].getMaxFont();
-					if(size>0)
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+
+				float fontSize=-1;
+
+				if (pfontSize < 0) {
+					for(int i=0;i<rows;i++)
 					{
-						if(fontSize<0)
+						for(int j=0;j<columns;j++)
 						{
-							fontSize=size;
-						}
-						else
-						{
-							if(size<fontSize)
+							float size=cells[i][j].getMaxFont();
+							if(size>0)
 							{
-								fontSize=size;
+								if(fontSize<0)
+								{
+									fontSize=size;
+								}
+								else
+								{
+									if(size<fontSize)
+									{
+										fontSize=size;
+									}
+
+								}
 							}
-						
 						}
+					}
+				} else {
+					fontSize = pfontSize;
+				}
+				for(int i=0;i<rows;i++)
+				{
+					for(int j=0;j<columns;j++)
+					{
+						cells[i][j].setFontSize(fontSize);
 					}
 				}
 			}
-		} else {
-			fontSize = pfontSize;
-		}
-		for(int i=0;i<rows;i++)
-		{
-			for(int j=0;j<columns;j++)
-			{
-				cells[i][j].setFontSize(fontSize);
-			}
-		}
-		
-		
+		});				
 	}
   
 	
 	/**
 	 * Search for the optimal text size of cells.
 	 */
-	public void  defineTextFontSize(Dimension space)
+	private void  defineTextFontSize(Dimension space)
 	{
 		float fontSize=-1;
 		
@@ -323,259 +337,287 @@ public class GUI extends JPanel
      */
 	public void setScanning()
 	{
-		scanType=owner.getScanType();
-		
-		clearScanState();
-		
-		
-		for(int i=0;i<rows;i++)
-		{
-			for(int j=0;j<columns;j++)
-			{
-				if((scanType==0)||(scanType==4))
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				scanType=owner.getScanType();
+				
+				clearScanState();
+				
+				
+				for(int i=0;i<rows;i++)
 				{
-					
-					if(scanType==4)
+					for(int j=0;j<columns;j++)
 					{
-						cells[i][j].setEventBlock(true);
-						cells[i][j].setHoverSelection(true);
-					}
-					else
-					{
-						cells[i][j].setEventBlock(false);
-						cells[i][j].setHoverSelection(false);
+						if((scanType==0)||(scanType==4))
+						{
+							
+							if(scanType==4)
+							{
+								cells[i][j].setEventBlock(true);
+								cells[i][j].setHoverSelection(true);
+							}
+							else
+							{
+								cells[i][j].setEventBlock(false);
+								cells[i][j].setHoverSelection(false);
+							}
+						}
+						else
+						{
+							cells[i][j].setEventBlock(true);
+							cells[i][j].setHoverSelection(false);
+						}
 					}
 				}
-				else
-				{
-					cells[i][j].setEventBlock(true);
-					cells[i][j].setHoverSelection(false);
-				}
-			}
-		}
-		
-		if(scanType==3)
-		{
-			cells[0][0].setScanActive(true);
-			scanRow=0;
-			scanColumn=0;
-		}
-		else
-		{
-			if((scanType==1)||(scanType==2))
-			{
-				if((rows==1)||(columns==1))
+				
+				if(scanType==3)
 				{
 					cells[0][0].setScanActive(true);
 					scanRow=0;
 					scanColumn=0;
-					level=1;
 				}
 				else
 				{
-					if(scanType==1)
+					if((scanType==1)||(scanType==2))
 					{
-						for(int j=0;j<columns;j++)
+						if((rows==1)||(columns==1))
 						{
-							cells[0][j].setScanActive(true);
+							cells[0][0].setScanActive(true);
+							scanRow=0;
+							scanColumn=0;
+							level=1;
+						}
+						else
+						{
+							if(scanType==1)
+							{
+								for(int j=0;j<columns;j++)
+								{
+									cells[0][j].setScanActive(true);
+								}
+							}
+							else
+							{
+								for(int i=0;i<rows;i++)
+								{
+									cells[i][0].setScanActive(true);
+								}
+							}
+							
+							level=0;
+							scanRow=0;
+							scanColumn=0;
+							repeatCount=0;
 						}
 					}
-					else
-					{
-						for(int i=0;i<rows;i++)
-						{
-							cells[i][0].setScanActive(true);
-						}
-					}
-					
-					level=0;
-					scanRow=0;
-					scanColumn=0;
-					repeatCount=0;
 				}
+				
 			}
-		}
-		
-		
+		});		
 	}
 	
 	/**
      * Sets the cell row in the directed mode.
      * @param cellRow the row of the cell
      */
-	public void setSelectionRow(int cellRow)
+	public void setSelectionRow(final int cellRow)
 	{
-		if(scanType!=3)
-		{
-			return;
-		}
-		try
-		{
-			lock.lock();
-			int row=cellRow-1;
-			if(row<0)
-			{
-				row=0;
-			}
-			if(row>=rows)
-			{
-				row=rows-1;
-			}
+		SwingUtilities.invokeLater(new Runnable() {
 			
-			cells[scanRow][scanColumn].setScanActive(false);
-			scanRow=row;
-			cells[scanRow][scanColumn].setScanActive(true);
-		}
-		finally
-		{
-			lock.unlock();
-		}
-	}
-	
-	/**
-     * Sets the cell column in the directed mode.
-     * @param cellColumn the column of the cell
-     */
-	public void setSelectionColumn(int cellColumn)
-	{
-		if(scanType!=3)
-		{
-			return;
-		}
-		try
-		{
-			lock.lock();
-			int column=cellColumn-1;
-			if(column<0)
-			{
-				column=0;
-			}
-			if(column>=columns)
-			{
-				column=columns-1;
-			}
-			
-			cells[scanRow][scanColumn].setScanActive(false);
-			scanColumn=column;
-			cells[scanRow][scanColumn].setScanActive(true);
-		}
-		finally
-		{
-			lock.unlock();
-		}
-	}
-	
-	/**
-     * Sets the cell column in the directed mode.
-     * @param cellColumn the column of the cell
-     */
-	public void setSelectionNumber(int cellIndex)
-	{
-		if(scanType!=3)
-		{
-			return;
-		}
-		try
-		{
-			lock.lock();
-			
-			
-			boolean found=false;
-			
-			for(int i=0;i<rows;i++)
-			{
-				for(int j=0;j<columns;j++)
+			@Override
+			public void run() {
+				if(scanType!=3)
 				{
-					if(cells[i][j].getIndex()==cellIndex-1)
+					return;
+				}
+				try
+				{
+					//lock.lock();
+					int row=cellRow-1;
+					if(row<0)
 					{
-						cells[scanRow][scanColumn].setScanActive(false);
-						scanRow=i;
-						scanColumn=j;
-						cells[scanRow][scanColumn].setScanActive(true);
-						break;
+						row=0;
 					}
+					if(row>=rows)
+					{
+						row=rows-1;
+					}
+					
+					cells[scanRow][scanColumn].setScanActive(false);
+					scanRow=row;
+					cells[scanRow][scanColumn].setScanActive(true);
 				}
-				
-				if(found)
+				finally
 				{
-					break;
+					//lock.unlock();
 				}
 			}
+		});
+	}
+	
+	/**
+     * Sets the cell column in the directed mode.
+     * @param cellColumn the column of the cell
+     */
+	public void setSelectionColumn(final int cellColumn)
+	{
+		SwingUtilities.invokeLater(new Runnable() {
 			
-		}
-		finally
-		{
-			lock.unlock();
-		}
+			@Override
+			public void run() {
+				if(scanType!=3)
+				{
+					return;
+				}
+				try
+				{
+					//lock.lock();
+					int column=cellColumn-1;
+					if(column<0)
+					{
+						column=0;
+					}
+					if(column>=columns)
+					{
+						column=columns-1;
+					}
+					
+					cells[scanRow][scanColumn].setScanActive(false);
+					scanColumn=column;
+					cells[scanRow][scanColumn].setScanActive(true);
+				}
+				finally
+				{
+					//lock.unlock();
+				}
+			}
+		});
+	}
+	
+	/**
+     * Sets the cell column in the directed mode.
+     * @param cellColumn the column of the cell
+     */
+	public void setSelectionNumber(final int cellIndex)
+	{
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				if(scanType!=3)
+				{
+					return;
+				}
+				try
+				{
+					//lock.lock();
+					
+					
+					boolean found=false;
+					
+					for(int i=0;i<rows;i++)
+					{
+						for(int j=0;j<columns;j++)
+						{
+							if(cells[i][j].getIndex()==cellIndex-1)
+							{
+								cells[scanRow][scanColumn].setScanActive(false);
+								scanRow=i;
+								scanColumn=j;
+								cells[scanRow][scanColumn].setScanActive(true);
+								break;
+							}
+						}
+						
+						if(found)
+						{
+							break;
+						}
+					}
+					
+				}
+				finally
+				{
+					//lock.unlock();
+				}
+			}
+		});
 	}
 	
 	/**
      * Changes the active cell in the directed mode.
      */
-	public void scanSelectionMove(ScanSelectionDirection direction)
+	public void scanSelectionMove(final ScanSelectionDirection direction)
 	{	
-		try
-		{
-			lock.lock();
-			if(scanType==3)
-			{	
-				switch (direction)
-				{
-					case up:
-					{
-						if(scanRow-1>=0)
-						{
-							cells[scanRow][scanColumn].setScanActive(false);
-							scanRow=scanRow-1;
-							cells[scanRow][scanColumn].setScanActive(true);
-						}
-						break;
-					}
-					case down:
-					{
-						if(scanRow+1<rows)
-						{
-							cells[scanRow][scanColumn].setScanActive(false);
-							scanRow=scanRow+1;
-							cells[scanRow][scanColumn].setScanActive(true);
-						}
-						break;
-					}
-					case left:
-					{
-						if(scanColumn-1>=0)
-						{
-							cells[scanRow][scanColumn].setScanActive(false);
-							scanColumn=scanColumn-1;
-							cells[scanRow][scanColumn].setScanActive(true);
-						}
-						break;
-					}
-					case right:
-					{
-						if(scanColumn+1<columns)
-						{	
-							cells[scanRow][scanColumn].setScanActive(false);
-							scanColumn=scanColumn+1;
-							cells[scanRow][scanColumn].setScanActive(true);	
-						}
-						break;
-					}
+		SwingUtilities.invokeLater(new Runnable() {
 			
+			@Override
+			public void run() {
+				try
+				{
+					//lock.lock();
+					if(scanType==3)
+					{	
+						switch (direction)
+						{
+							case up:
+							{
+								if(scanRow-1>=0)
+								{
+									cells[scanRow][scanColumn].setScanActive(false);
+									scanRow=scanRow-1;
+									cells[scanRow][scanColumn].setScanActive(true);
+								}
+								break;
+							}
+							case down:
+							{
+								if(scanRow+1<rows)
+								{
+									cells[scanRow][scanColumn].setScanActive(false);
+									scanRow=scanRow+1;
+									cells[scanRow][scanColumn].setScanActive(true);
+								}
+								break;
+							}
+							case left:
+							{
+								if(scanColumn-1>=0)
+								{
+									cells[scanRow][scanColumn].setScanActive(false);
+									scanColumn=scanColumn-1;
+									cells[scanRow][scanColumn].setScanActive(true);
+								}
+								break;
+							}
+							case right:
+							{
+								if(scanColumn+1<columns)
+								{	
+									cells[scanRow][scanColumn].setScanActive(false);
+									scanColumn=scanColumn+1;
+									cells[scanRow][scanColumn].setScanActive(true);	
+								}
+								break;
+							}
+					
+						}
+						 
+						GUI.this.revalidate();
+						GUI.this.repaint();
+						 
+					}
 				}
-				 
-				this.revalidate();
-				this.repaint();
-				 
+				finally
+				{
+					 //lock.unlock();
+				}
+				
+				repaintCells();
 			}
-		}
-		finally
-		{
-			 lock.unlock();
-		}
-		
-		repaintCells();
-		
+		});		
 	}
 	
 	/**
@@ -583,150 +625,156 @@ public class GUI extends JPanel
      */
 	public void scanMove()
 	{
-		try
-		{
-			lock.lock();
-			if((scanType==1)||(scanType==2))
-			{
-				if((rows>1)&&(columns>1))
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				try
 				{
-					if(level==0)
+					//lock.lock();
+					if((scanType==1)||(scanType==2))
 					{
-						if(scanType==1)
+						if((rows>1)&&(columns>1))
 						{
-							for(int j=0;j<columns;j++)
+							if(level==0)
 							{
-								cells[scanRow][j].setScanActive(false);
-							}
-							if(scanRow+1<rows)
-							{
-								scanRow=scanRow+1;
-							}
-							else
-							{
-								scanRow=0;
-							}
-						
-							for(int j=0;j<columns;j++)
-							{
-								cells[scanRow][j].setScanActive(true);
-							}
-						}
-						else
-						{
-							for(int i=0;i<rows;i++)
-							{
-								cells[i][scanColumn].setScanActive(false);
-							}
-						
-							if(scanColumn+1<columns)
-							{
-								scanColumn=scanColumn+1;
-							}
-							else
-							{
-								scanColumn=0;
-							}
-						
-							for(int i=0;i<rows;i++)
-							{
-								cells[i][scanColumn].setScanActive(true);
-							}
-						}	
-					}
-					else if(level==1)
-					{
-						if(scanType==1)
-						{
-							cells[scanRow][scanColumn].setScanActive(false);
-							if(scanColumn+1<columns)
-							{
-								scanColumn=scanColumn+1;
-							}
-							else
-							{
-								scanColumn=0;
-								repeatCount=repeatCount+1;
-							}
-							cells[scanRow][scanColumn].setScanActive(true);
-						}
-						else
-						{
-							cells[scanRow][scanColumn].setScanActive(false);
-							if(scanRow+1<rows)
-							{
-								scanRow=scanRow+1;
-							}
-							else
-							{
-								scanRow=0;
-								repeatCount=repeatCount+1;
-							}
-							cells[scanRow][scanColumn].setScanActive(true);
-						}
-					
-						if(repeatCount>=maxRepeatCount)
-						{
-							cells[scanRow][scanColumn].setScanActive(false);
-							level=0;
-							repeatCount=0;
-							scanRow=0;
-							scanColumn=0;
-							if(scanType==1)
-							{
-								for(int j=0;j<columns;j++)
+								if(scanType==1)
 								{
-									cells[scanRow][j].setScanActive(true);
+									for(int j=0;j<columns;j++)
+									{
+										cells[scanRow][j].setScanActive(false);
+									}
+									if(scanRow+1<rows)
+									{
+										scanRow=scanRow+1;
+									}
+									else
+									{
+										scanRow=0;
+									}
+								
+									for(int j=0;j<columns;j++)
+									{
+										cells[scanRow][j].setScanActive(true);
+									}
+								}
+								else
+								{
+									for(int i=0;i<rows;i++)
+									{
+										cells[i][scanColumn].setScanActive(false);
+									}
+								
+									if(scanColumn+1<columns)
+									{
+										scanColumn=scanColumn+1;
+									}
+									else
+									{
+										scanColumn=0;
+									}
+								
+									for(int i=0;i<rows;i++)
+									{
+										cells[i][scanColumn].setScanActive(true);
+									}
+								}	
+							}
+							else if(level==1)
+							{
+								if(scanType==1)
+								{
+									cells[scanRow][scanColumn].setScanActive(false);
+									if(scanColumn+1<columns)
+									{
+										scanColumn=scanColumn+1;
+									}
+									else
+									{
+										scanColumn=0;
+										repeatCount=repeatCount+1;
+									}
+									cells[scanRow][scanColumn].setScanActive(true);
+								}
+								else
+								{
+									cells[scanRow][scanColumn].setScanActive(false);
+									if(scanRow+1<rows)
+									{
+										scanRow=scanRow+1;
+									}
+									else
+									{
+										scanRow=0;
+										repeatCount=repeatCount+1;
+									}
+									cells[scanRow][scanColumn].setScanActive(true);
+								}
+							
+								if(repeatCount>=maxRepeatCount)
+								{
+									cells[scanRow][scanColumn].setScanActive(false);
+									level=0;
+									repeatCount=0;
+									scanRow=0;
+									scanColumn=0;
+									if(scanType==1)
+									{
+										for(int j=0;j<columns;j++)
+										{
+											cells[scanRow][j].setScanActive(true);
+										}
+									}
+									else
+									{	
+										for(int i=0;i<rows;i++)
+										{
+											cells[i][scanColumn].setScanActive(true);
+										}
+									}
+								
+								}
+							}
+						}
+						else
+						{
+							cells[scanRow][scanColumn].setScanActive(false);
+						
+							if(rows==1)
+							{
+								if(scanColumn+1<columns)
+								{
+									scanColumn=scanColumn+1;
+								}
+								else
+								{
+									scanColumn=0;
 								}
 							}
 							else
-							{	
-								for(int i=0;i<rows;i++)
+							{
+								if(scanRow+1<rows)
 								{
-									cells[i][scanColumn].setScanActive(true);
+									scanRow=scanRow+1;
+								}
+								else
+								{
+									scanRow=0;
 								}
 							}
 						
+							cells[scanRow][scanColumn].setScanActive(true);
 						}
 					}
 				}
-				else
+				finally
 				{
-					cells[scanRow][scanColumn].setScanActive(false);
-				
-					if(rows==1)
-					{
-						if(scanColumn+1<columns)
-						{
-							scanColumn=scanColumn+1;
-						}
-						else
-						{
-							scanColumn=0;
-						}
-					}
-					else
-					{
-						if(scanRow+1<rows)
-						{
-							scanRow=scanRow+1;
-						}
-						else
-						{
-							scanRow=0;
-						}
-					}
-				
-					cells[scanRow][scanColumn].setScanActive(true);
+					 //lock.unlock();
 				}
+				
+				repaintCells();
 			}
-		}
-		finally
-		{
-			 lock.unlock();
-		}
-		
-		repaintCells();
+		});
 	}
 	
 	/**
@@ -734,90 +782,96 @@ public class GUI extends JPanel
      */
 	public void scanSelect ()
 	{
-		try
-		{
-			lock.lock();
-			if((scanType==1)||(scanType==2))
-			{
-				if((rows>1)&&(columns>1))
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				try
 				{
-					if(level==0)
+					//lock.lock();
+					if((scanType==1)||(scanType==2))
 					{
-						level=1;
-						if(scanType==1)
+						if((rows>1)&&(columns>1))
 						{
-							for(int j=0;j<columns;j++)
+							if(level==0)
 							{
-								cells[scanRow][j].setScanActive(false);
+								level=1;
+								if(scanType==1)
+								{
+									for(int j=0;j<columns;j++)
+									{
+										cells[scanRow][j].setScanActive(false);
+									}
+							
+									scanColumn=0;
+							
+									cells[scanRow][scanColumn].setScanActive(true);
+							
+								}
+								else
+								{
+									for(int i=0;i<rows;i++)
+									{
+										cells[i][scanColumn].setScanActive(false);
+									}
+							
+									scanRow=0;
+						
+									cells[scanRow][scanColumn].setScanActive(true);
+							
+								}
 							}
-					
-							scanColumn=0;
-					
-							cells[scanRow][scanColumn].setScanActive(true);
-					
+							else if(level==1)
+							{
+								cells[scanRow][scanColumn].setScanActive(false);
+								makeCellAction(scanRow,scanColumn);
+								level=0;
+								repeatCount=0;
+								scanRow=0;
+								scanColumn=0;
+								if(scanType==1)
+								{
+									for(int j=0;j<columns;j++)
+									{
+										cells[scanRow][j].setScanActive(true);
+									}
+								}
+								else
+								{	
+									for(int i=0;i<rows;i++)
+									{
+										cells[i][scanColumn].setScanActive(true);
+									}
+								}	
+							}
 						}
 						else
 						{
-							for(int i=0;i<rows;i++)
-							{
-								cells[i][scanColumn].setScanActive(false);
-							}
-					
+							cells[scanRow][scanColumn].setScanActive(false);
+							makeCellAction(scanRow,scanColumn);
+							level=1;
 							scanRow=0;
-				
+							scanColumn=0;
 							cells[scanRow][scanColumn].setScanActive(true);
-					
 						}
 					}
-					else if(level==1)
+					else
 					{
-						cells[scanRow][scanColumn].setScanActive(false);
-						makeCellAction(scanRow,scanColumn);
-						level=0;
-						repeatCount=0;
-						scanRow=0;
-						scanColumn=0;
-						if(scanType==1)
+						if(scanType==3)
 						{
-							for(int j=0;j<columns;j++)
-							{
-								cells[scanRow][j].setScanActive(true);
-							}
+							makeCellAction(scanRow,scanColumn);
 						}
-						else
-						{	
-							for(int i=0;i<rows;i++)
-							{
-								cells[i][scanColumn].setScanActive(true);
-							}
-						}	
 					}
 				}
-				else
+				finally
 				{
-					cells[scanRow][scanColumn].setScanActive(false);
-					makeCellAction(scanRow,scanColumn);
-					level=1;
-					scanRow=0;
-					scanColumn=0;
-					cells[scanRow][scanColumn].setScanActive(true);
+					 //lock.unlock();
+					 
 				}
+				
+				repaintCells();
 			}
-			else
-			{
-				if(scanType==3)
-				{
-					makeCellAction(scanRow,scanColumn);
-				}
-			}
-		}
-		finally
-		{
-			 lock.unlock();
-			 
-		}
-		
-		repaintCells();
+		});
 	}
 	
 	/**
