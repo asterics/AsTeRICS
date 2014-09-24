@@ -31,7 +31,7 @@ event arrives.</description>
         </outputPort>
       </ports>
       <properties>
-        <property name="cameraSelection" value="0" />
+        <property name="cameraSelection" value="1" />
         <property name="cameraResolution" value="3" />
         <property name="cameraDisplayUpdate" value="100" />
         <property name="cameraProfile" value="" />
@@ -50,10 +50,10 @@ event arrives.</description>
     <component id="Mouse.1" type_id="asterics.Mouse">
       <description>Local mouse actuator, emulates mouse activity on local system</description>
       <ports>
-        <inputPort portTypeID="mouseX">
+        <inputPort portTypeID="mouseX" sync="true">
           <properties />
         </inputPort>
-        <inputPort portTypeID="mouseY">
+        <inputPort portTypeID="mouseY" sync="true">
           <properties />
         </inputPort>
         <inputPort portTypeID="action">
