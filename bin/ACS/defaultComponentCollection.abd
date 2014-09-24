@@ -3031,7 +3031,7 @@
 
 		</events>			
         <properties>
-			<property description="automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="0"/>
+			<property description="automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="200"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 2 Mode" name="pin2Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 500Hz" description="Pin 3 Mode" name="pin3Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 4 Mode" name="pin4Mode" type="integer" value="0"/>
@@ -3470,6 +3470,79 @@
         </properties>
     </componentType>
 
+
+ <componentType canonical_name="eu.asterics.component.processor.datatype.DataTypeInstance" id="asterics.DataType">
+        <type subtype="Data Converters">processor</type>
+        <singleton>false</singleton>
+        <description>Uses the given outValue and sends it to each output port using the respective data type</description>
+        <ports>
+			<inputPort id="inByte">
+				<description>byte value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>byte</dataType>
+			</inputPort>
+			<inputPort id="inChar">
+				<description>char value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>char</dataType>
+			</inputPort>
+			<inputPort id="inInteger">
+				<description>integer value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="inDouble">
+				<description>double value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="inString">
+				<description>string value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inBoolean">
+				<description>boolean value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>boolean</dataType>
+			</inputPort>
+
+			<outputPort id="outByte">
+				<description>byte value</description>
+				<dataType>byte</dataType>
+			</outputPort>
+			<outputPort id="outChar">
+				<description>char value</description>
+				<dataType>char</dataType>
+			</outputPort>
+			<outputPort id="outInteger">
+				<description>integer value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="outDouble">
+				<description>double value</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="outString">
+				<description>string value</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="outBoolean">
+				<description>boolean value</description>
+				<dataType>boolean</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property description="Value that is converted and sent to out ports" name="outValue" type="double" value="1.1"/>
+
+        </properties>
+
+    </componentType>
 
  <componentType canonical_name="eu.asterics.component.processor.deadzone.DeadzoneInstance" id="asterics.Deadzone">
         <type subtype="Signal Shaping">processor</type>
@@ -6295,89 +6368,6 @@
     </componentType>
 
 
- <componentType canonical_name="eu.asterics.component.processor.websocket.WebSocketInstance" id="asterics.WebSocket">
-        <type subtype="Web">processor</type>
-        <singleton>false</singleton>
-        <description>This plugin uses a websocket connection to send and read data</description>
-        <ports>
-			<inputPort id="InA">
-				<description>Double Input A</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-			<inputPort id="InB">
-				<description>Double Input B</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-			<inputPort id="InC">
-				<description>Integer Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-			<inputPort id="InD">
-				<description>Integer Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-			<inputPort id="InE">
-				<description>String Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="InF">
-				<description>String Input F</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-
-			<outputPort id="OutA">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="OutB">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="OutC">
-				<description>output port description</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="OutD">
-				<description>output port description</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="OutE">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-			<outputPort id="OutF">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-			<eventListenerPort id="event1">
-				<description>elp description</description>
-			</eventListenerPort>
-			<eventListenerPort id="reset">
-				<description>Clears buffers and resets websocket connection</description>
-			</eventListenerPort>
-
-			<eventTriggererPort id="reconnect">
-				<description>Reconnect to websockect</description>
-			</eventTriggererPort>
-
-		</events>			
-        <properties>
-			<property description="hostname or ip address to use for URL" name="host" type="string" value="localhost"/>
-			<property description="port number used for websocket" name="port" type="integer" value="8080"/>
-
-        </properties>
-
-    </componentType>
-
  <componentType canonical_name="eu.asterics.component.processor.yaak.YaakInstance" id="asterics.Yaak">
         <type subtype="Phone Interface">processor</type>
         <singleton>false</singleton>
@@ -7194,83 +7184,6 @@
 		</events>			
         <properties>
 			<property description="Update period for EOG values (in milliseconds)" name="updatePeriod" type="integer" value="100"/>
-
-        </properties>
-
-    </componentType>
-
- <componentType canonical_name="eu.asterics.component.sensor.eshoe.ESHOEInstance" id="asterics.ESHOE">
-        <type subtype="Sensor Modules">sensor</type>
-        <singleton>false</singleton>
-        <description>eSHOE implementation</description>
-        <ports>
-
-			<outputPort id="Angle">
-				<description>Foot angle in respect to ground</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="AccX">
-				<description>acceleration x-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="AccY">
-				<description>acceleration y-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="AccZ">
-				<description>acceleration z-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Heel">
-				<description>pressure heel sensor</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Meta1">
-				<description>pressure metatarsal1 sensor</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Meta5">
-				<description>pressure metatarsal5 sensor</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Toe">
-				<description>pressure toe sensor</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="GyroX">
-				<description>angular velocity x-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="GyroY">
-				<description>angular velocity y-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="GyroZ">
-				<description>angular velocity z-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-			<eventListenerPort id="start">
-				<description>start data transmission</description>
-			</eventListenerPort>
-			<eventListenerPort id="stop">
-				<description>stop data transmission</description>
-			</eventListenerPort>
-			<eventListenerPort id="calibrate">
-				<description>calibrate baseline position</description>
-			</eventListenerPort>
-
-			<eventTriggererPort id="toePressureReached">
-				<description>threshold pressure for toe exceeded</description>
-			</eventTriggererPort>
-
-		</events>			
-        <properties>
-        	<property description="The COM Port which will be opened to connect to the eSHOE" name="ComPort" type="string" value="COM4"/>
-			<property combobox="50 Hz//200 Hz" description="Choose sampling rate between 50 and 200 Hz" name="SamplingRate" type="integer" value="0"/>
-			<property description="Threshold for toe pressure event" name="ToePressureThreshold" type="double" value="100"/>
 
         </properties>
 

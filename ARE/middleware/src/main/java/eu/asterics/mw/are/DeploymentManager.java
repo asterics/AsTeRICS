@@ -25,12 +25,7 @@ import org.osgi.framework.BundleException;
 import eu.asterics.mw.are.AREEvent;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.DeploymentException;
-import eu.asterics.mw.data.ByteToDoubleWrapper;
-import eu.asterics.mw.data.ByteToIntegerWrapper;
-import eu.asterics.mw.data.CharToDouble;
-import eu.asterics.mw.data.CharToInteger;
-import eu.asterics.mw.data.DoubleToIntegerWrapper;
-import eu.asterics.mw.data.IntegerToDoubleWrapper;
+import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.gui.AstericsGUI;
 import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IComponentType;
@@ -297,101 +292,14 @@ public class DeploymentManager
 			final DataType targetDataType = runtimeModel.
 					getPortDataType(targetComponentInstanceID, targetInputPortID);
 			
-			conversion = "";
+			conversion = "";			
 			if(sourceDataType != targetDataType)
 			{
-				switch (sourceDataType)
-				{
-				case BYTE:
-					switch (targetDataType)
-					{
-					case INTEGER:
-						wrapper = new ByteToIntegerWrapper(targetRuntimeInputPort);
-						conversion="byteToInteger";
-						break;
-					case DOUBLE:
-						wrapper = new ByteToDoubleWrapper(targetRuntimeInputPort);
-						conversion="byteToDouble";
-						break;
-					default:
-						logger.warning("Incompatible conversion " +
-								"from: " + sourceDataType + " to: " + 
-								targetDataType);
-						throw new RuntimeException("Incompatible conversion " +
-								"from: " + sourceDataType + " to: " + 
-								targetDataType);
-					}
-					break;
-				case CHAR:
-					switch (targetDataType)
-					{
-					case INTEGER:
-						wrapper = new CharToInteger(targetRuntimeInputPort);
-						conversion="charToInteger";
-						break;
-					case DOUBLE:
-						wrapper = new CharToDouble(targetRuntimeInputPort);
-						conversion="charToDouble";
-						break;
-					default:
-						logger.warning("Incompatible conversion " +
-								"from: " + sourceDataType + " to: " + 
-								targetDataType);
-						throw new RuntimeException("Incompatible conversion " +
-								"from: " + sourceDataType + " to: " +
-								targetDataType);
-					}
-					break;
-				case INTEGER:
-					switch (targetDataType)
-					{
-					case DOUBLE:
-						
-						wrapper = new IntegerToDoubleWrapper(targetRuntimeInputPort);
-						conversion="integerToDouble";
-						break;
-					default:
-						logger.warning("Incompatible conversion " +
-								"from: " + sourceDataType + " to: " + 
-								targetDataType);
-						throw new RuntimeException("Incompatible conversion " +
-								"from: " + sourceDataType + " to: " + 
-								targetDataType);
-					}
-					break;
-				case DOUBLE:
-					switch (targetDataType)
-					{
-					case INTEGER:
-						wrapper = new DoubleToIntegerWrapper(targetRuntimeInputPort);
-						conversion="doubleToInteger";
-						break;
-					default:
-						logger.warning("Incompatible conversion " +
-								"from: " + sourceDataType + " to: " + 
-								targetDataType);
-						throw new RuntimeException("Incompatible conversion " +
-								"from: " + sourceDataType + " to: " + 
-								targetDataType);
-					}
-					break;
-				case UNKNOWN:
-					conversion="";
-					logger.severe("Invalid enum type for source data type: "
-							+ sourceDataType);
-					throw new RuntimeException("Invalid enum type for source " +
-							"data type: " + sourceDataType);
-				default:
-					logger.severe("Invalid enum type for source data type: "
-							+ sourceDataType);
-					throw new RuntimeException("Invalid enum type for source" +
-							" data type: " + sourceDataType);
-				}
+				conversion=ConversionUtils.getDataTypeConversionString(sourceDataType, targetDataType);
 			}
-			else
-			{
-				wrapper = targetRuntimeInputPort;
-			}
+
+
+			wrapper = targetRuntimeInputPort;
 
 			sourceRuntimeOutputPort.addInputPortEndpoint(
 					targetComponentInstanceID, 

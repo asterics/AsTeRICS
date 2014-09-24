@@ -58,6 +58,9 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 
 	public void sendData(final byte[] data)
 	{
+		//TODO: check if this should not be within the run method!!
+		//Because the for loop is executed in another thread and the purpose of the synchronized statement is
+		//to ensure that the iteration does not fail due to concurrent manipulation of the map. 
 		synchronized (inputPortEndpoints)
 		{
 
@@ -74,27 +77,24 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 							logger.warning("Data could not be propagated, target component not found: targetComponentId: "+endPoint.targetComponentID);
 							continue;
 						}
+						String conversion = DefaultRuntimeOutputPort.this.portIdToConversion.get(endPoint.portID);
+						byte[] newData = data;
+						if (conversion != null && !"".equals(conversion)) {
+							newData = ConversionUtils.convertData(data, conversion);
+						}
 						
+						if(newData==null) {
+							logger.warning("Data for input port is null --> skip it, port: "+endPoint);
+							continue;
+						}
 						if (runtimeInputPort.isBuffered()) {
-							
-							String conversion = DefaultRuntimeOutputPort.this.portIdToConversion.get(endPoint.portID);
-							byte[] newData = null;
-							if (conversion != null) {
-								newData = DefaultRuntimeOutputPort.this.convertData(data, conversion);
-							}
-															
-							if (newData!=null)
 								DeploymentManager.instance.bufferData(newData, endPoint.portID, endPoint.targetComponentID);
-							else
-								DeploymentManager.instance.bufferData(data, endPoint.portID, endPoint.targetComponentID);													
 						}
 						else {							
-							//System.out.println("PORT "+runtimeInputPort+" is NOT BUFFERRED"+runtimeInputPort);
-
 							//synchronize using the target component, because the component can be considered a black box, that must
 							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.							
 							synchronized(targetComponent) {
-								runtimeInputPort.receiveData(data);
+								runtimeInputPort.receiveData(newData);
 							}
 						}
 					}
@@ -105,30 +105,6 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 
 		}
 	}
-
-
-	protected byte[] convertData(byte[] data, String conversion) {
-		switch (conversion) {
-		case "integerToDouble":
-			return ConversionUtils.doubleToBytes(ConversionUtils.intFromBytes(data));
-		case "byteToDouble":
-			return ConversionUtils.doubleToBytes(data[0]);
-		case "byteToInteger":
-			return ConversionUtils.intToBytes( data[0]);
-		case "charToDouble":
-			return ConversionUtils.doubleToBytes(new String(data).charAt(0));
-		case "charToInteger":
-			return ConversionUtils.intToBytes(new String(data).charAt(0));
-		case "doubleToInteger":
-			return ConversionUtils.intToBytes((int)ConversionUtils.doubleFromBytes(data));
-		case "integerToLong":
-			return ConversionUtils.longToBytes(ConversionUtils.intFromBytes(data));
-		default:
-			break;
-		}
-		return null;
-	}
-
 
 	public void addInputPortEndpoint(final String targetComponentID, 
 			final String portID,
@@ -166,9 +142,11 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 			this.targetComponentID=targetComponentID;
 			this.portID=portID;
 		}
+		@Override
+		public String toString() {
+			return targetComponentID+"."+ portID;
+		}
 
+		
 	}
-
-	
-
 }

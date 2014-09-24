@@ -6220,28 +6220,73 @@ namespace Asterics.ACS {
         /// <param name="outPortType"></param>
         /// <param name="inPortType"></param>
         /// <returns>true, if ports can be connected to each other</returns>
-        private bool CheckInteroperabilityOfPorts(ACS2.dataType outPortType, ACS2.dataType inPortType) {
-            if (outPortType == inPortType) {
+        private bool CheckInteroperabilityOfPorts(ACS2.dataType outPortType, ACS2.dataType inPortType)
+        {
+            if (outPortType == inPortType)
+            {
                 return true;
             }
-            else if (outPortType == ACS2.dataType.@byte && inPortType == ACS2.dataType.integer) {
+            else if (outPortType == ACS2.dataType.@byte && 
+                (inPortType == ACS2.dataType.integer ||
+                inPortType == ACS2.dataType.@double ||
+                inPortType == ACS2.dataType.@string||
+                inPortType== ACS2.dataType.boolean ||
+                inPortType == ACS2.dataType.@char))
+            {
                 return true;
             }
-            else if (outPortType == ACS2.dataType.@byte && inPortType == ACS2.dataType.@double) {
+            else if (outPortType == ACS2.dataType.@char && 
+                (inPortType == ACS2.dataType.integer ||
+                inPortType == ACS2.dataType.@double ||
+                inPortType == ACS2.dataType.@string ||
+                inPortType == ACS2.dataType.boolean ||
+                inPortType == ACS2.dataType.@byte
+                ))
+            {
                 return true;
             }
-            else if (outPortType == ACS2.dataType.@char && inPortType == ACS2.dataType.integer) {
+            else if (outPortType == ACS2.dataType.integer && 
+                (inPortType == ACS2.dataType.@double ||
+                inPortType == ACS2.dataType.@string ||
+                inPortType == ACS2.dataType.boolean ||
+                inPortType == ACS2.dataType.@byte ||
+                inPortType == ACS2.dataType.@char
+                ))
+            {
                 return true;
             }
-            else if (outPortType == ACS2.dataType.@char && inPortType == ACS2.dataType.@double) {
+            else if (outPortType == ACS2.dataType.@double && 
+                (inPortType == ACS2.dataType.integer ||
+                inPortType == ACS2.dataType.@string ||
+                inPortType == ACS2.dataType.boolean ||
+                inPortType == ACS2.dataType.@byte ||
+                inPortType == ACS2.dataType.@char
+
+                ))
+            {
                 return true;
             }
-            else if (outPortType == ACS2.dataType.integer && inPortType == ACS2.dataType.@double) {
+            else if (outPortType == ACS2.dataType.boolean
+                    &&
+                    inPortType == ACS2.dataType.@byte ||
+                    inPortType == ACS2.dataType.integer ||
+                    inPortType == ACS2.dataType.@double ||
+                    inPortType == ACS2.dataType.@string ||                
+                    inPortType == ACS2.dataType.@char
+                )
+            {
                 return true;
             }
-            else if (outPortType == ACS2.dataType.@double && inPortType == ACS2.dataType.integer) {
+            else if (outPortType == ACS2.dataType.@string &&
+                    (inPortType == ACS2.dataType.@byte ||
+                    inPortType == ACS2.dataType.integer ||
+                    inPortType == ACS2.dataType.@double ||
+                    inPortType == ACS2.dataType.@char ||
+                    inPortType == ACS2.dataType.boolean))
+            {
                 return true;
             }
+
             return false;
         }
 
