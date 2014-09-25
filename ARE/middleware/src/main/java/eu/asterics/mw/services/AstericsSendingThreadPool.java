@@ -25,6 +25,7 @@
 
 package eu.asterics.mw.services;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -75,14 +76,25 @@ public class AstericsSendingThreadPool
     private AstericsSendingThreadPool()
     {
 		int poolSize=new Integer(AREProperties.instance.getProperty(THREAD_POOL_SIZE, "1"));
-		logger.info("Creating ThreadPool.DataSender with size: "+poolSize);
+		//logger.info("Creating ThreadPool.DataSender with size: "+poolSize);
     	
-        pool = Executors.newFixedThreadPool(1);
+        //pool = Executors.newFixedThreadPool(1);
         
     }
 
     public void execute (Runnable r)
     {
-        pool.execute(r);
+        //pool.execute(r);
+		AstericsThreadPool.instance.getAREMainExecutor().execute(r);
+/*    	try {
+			AstericsThreadPool.instance.execAndWaitOnAREMainThread(r);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
     }
 }
