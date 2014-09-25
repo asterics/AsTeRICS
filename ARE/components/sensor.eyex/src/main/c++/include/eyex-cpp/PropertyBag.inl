@@ -12,7 +12,7 @@ TX_NAMESPACE_BEGIN
 
 /*********************************************************************************************************************/
 
-inline PropertyBag::PropertyBag(const std::shared_ptr<const InteractionContext>& spContext, TX_HANDLE hBag)
+inline PropertyBag::PropertyBag(const std::shared_ptr<const Context>& spContext, TX_HANDLE hBag)
 : InteractionObject(spContext, hBag)
 {}
 

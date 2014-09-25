@@ -16,7 +16,7 @@ class PropertyBag :
 	public InteractionObject
 {
 public:
-	PropertyBag(const std::shared_ptr<const InteractionContext>& spContext, TX_HANDLE hBag);
+	PropertyBag(const std::shared_ptr<const Context>& spContext, TX_HANDLE hBag);
 
 	TX_PROPERTYBAGTYPE GetType() const;
 };

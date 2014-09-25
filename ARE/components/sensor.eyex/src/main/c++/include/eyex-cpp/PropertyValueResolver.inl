@@ -210,8 +210,8 @@ struct PropertyValueResolver<TX_RECT> :
 /*********************************************************************************************************************/
 
 template <>
-struct PropertyValueResolver<TX_VEC2> :
-    public CompositePropertyValueResolver<TX_VEC2>
+struct PropertyValueResolver<TX_VECTOR2> :
+    public CompositePropertyValueResolver<TX_VECTOR2>
 {
    TX_RESULT GetContent(const std::shared_ptr<const InteractionObject>& spObject, ValueType* pValue) const
    {

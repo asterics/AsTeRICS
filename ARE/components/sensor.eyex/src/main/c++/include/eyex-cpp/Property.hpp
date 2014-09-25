@@ -16,7 +16,7 @@ class Property :
 	public HandleWrapper<TX_PROPERTYHANDLE>	
 {
 public:
-	Property(const std::shared_ptr<const InteractionContext>& spContext, TX_PROPERTYHANDLE hProperty);
+	Property(const std::shared_ptr<const Context>& spContext, TX_PROPERTYHANDLE hProperty);
 
 	TX_PROPERTYVALUETYPE GetValueType() const;
 	std::string GetName() const;

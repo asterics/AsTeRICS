@@ -47,6 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\resources\lib\native</OutDir>
+    <IncludePath>C:\Program Files %28x86%29\Java\jdk1.7.0_40\include\win32;C:\Program Files %28x86%29\Java\jdk1.7.0_40\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

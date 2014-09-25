@@ -9,11 +9,11 @@
 /*********************************************************************************************************************/
 
 /**
-  txGetAsyncResultCode
+  txGetAsyncDataResultCode
 
   Gets the result code contained by an async data.
-  Not all async data objects have a result code. Typically one-shot operations such as txCommitSnapshot, txExecuteCommand etc.
-  have results, but re-occuring events such as queries, notifications etc. does not.
+  Not all async data objects have a result code. See the specific asynchronous call for 
+  details.
  
   @param hAsyncData [in]: 
     A TX_CONSTHANDLE to the async data object.
@@ -25,7 +25,7 @@
  
   @return 
     TX_RESULT_OK: The result code of the async data was successfully retrieved.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.    
 	TX_RESULT_NOTFOUND: The async data does not have a result code.
  */
@@ -35,6 +35,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetAsyncDataResultCode(
     TX_RESULT* pResult
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetAsyncDataResultCodeHook)(
+    TX_CONSTHANDLE hAsyncData,
+    TX_RESULT* pResult
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -56,7 +62,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The content of the async data was successfully retrieved.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.    
     TX_RESULT_NOTFOUND: The async data does not have any content.
  */
@@ -66,6 +72,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetAsyncDataContent(
     TX_HANDLE* phObject
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetAsyncDataContentHook)(
+    TX_CONSTHANDLE hAsyncData,
+    TX_HANDLE* phObject
+    );
+
 
 /*********************************************************************************************************************/
 
