@@ -15,8 +15,8 @@ typedef struct txInteractionObject* TX_HANDLE;
 typedef const struct txInteractionObject* TX_CONSTHANDLE;
 typedef struct txProperty* TX_PROPERTYHANDLE;
 typedef const struct txProperty* TX_CONSTPROPERTYHANDLE;
-typedef struct txInteractionContext* TX_CONTEXTHANDLE;
-typedef const struct txInteractionContext* TX_CONSTCONTEXTHANDLE;
+typedef struct txContext* TX_CONTEXTHANDLE;
+typedef const struct txContext* TX_CONSTCONTEXTHANDLE;
 typedef int TX_TICKET;
 typedef int TX_BOOL;
 typedef unsigned char TX_BYTE;
@@ -47,35 +47,35 @@ typedef int TX_THREADID;
 /*********************************************************************************************************************/
 
 /**
-  TX_SYSTEMCOMPONENTOVERRIDEFLAGS    
+  TX_EYEXCOMPONENTOVERRIDEFLAGS    
 
-  Enumeration for all system component override flags.
-  When calling txInitializeSystem these flags must be combined to specify which system components should be overriden.
+  Enumeration for all client environment component override flags.
+  When calling txInitializeEyeX these flags must be combined to specify which components should be overridden.
 
-  @field TX_SYSTEMCOMPONENTOVERRIDEFLAG_NONE:
-    No system component should be overriden.
-    
-  @field TX_SYSTEMCOMPONENTOVERRIDEFLAG_MEMORYMODEL:
-    The memory model should be overriden.
-    
-  @field TX_SYSTEMCOMPONENTOVERRIDEFLAG_THREADINGMODEL:
-    The threading model should be overriden.
-    
-  @field TX_SYSTEMCOMPONENTOVERRIDEFLAG_LOGGINGMODEL:
-    The logging model should be overriden.
-    The logging model can be overriden by just specifying some of the standard log targets (see TX_LOGTARGET) or by
+  @field TX_EYEXCOMPONENTOVERRIDEFLAG_NONE:
+    No client environment component should be overridden.
+
+  @field TX_EYEXCOMPONENTOVERRIDEFLAG_LOGGINGMODEL:
+    The logging model should be overridden.
+    The logging model can be overridden by just specifying some of the standard log targets (see TX_LOGTARGET) or by
     a custom user implemented log writer.
     
-  @field TX_SYSTEMCOMPONENTOVERRIDEFLAG_SCHEDULINGMODEL:
-    The scheduling model should be overriden.
+  @field TX_EYEXCOMPONENTOVERRIDEFLAG_INTERNAL_MEMORYMODEL:
+    The memory model should be overridden. For internal use only.
+    
+  @field TX_EYEXCOMPONENTOVERRIDEFLAG_INTERNAL_THREADINGMODEL:
+    The threading model should be overridden. For internal use only.
+    
+  @field TX_EYEXCOMPONENTOVERRIDEFLAG_INTERNAL_SCHEDULINGMODEL:
+    The scheduling model should be overridden. For internal use only.
  */ 
 typedef enum {
-    TX_SYSTEMCOMPONENTOVERRIDEFLAG_NONE = TX_FLAGS_NONE_VALUE,  
-    TX_SYSTEMCOMPONENTOVERRIDEFLAG_MEMORYMODEL = 1 << 0,
-    TX_SYSTEMCOMPONENTOVERRIDEFLAG_THREADINGMODEL = 1 << 1,
-    TX_SYSTEMCOMPONENTOVERRIDEFLAG_LOGGINGMODEL = 1 << 2,
-    TX_SYSTEMCOMPONENTOVERRIDEFLAG_SCHEDULINGMODEL = 1 << 3
-} TX_SYSTEMCOMPONENTOVERRIDEFLAGS;
+    TX_EYEXCOMPONENTOVERRIDEFLAG_NONE = TX_FLAGS_NONE_VALUE,  
+    TX_EYEXCOMPONENTOVERRIDEFLAG_LOGGINGMODEL = 1 << 0,
+    TX_EYEXCOMPONENTOVERRIDEFLAG_INTERNAL_MEMORYMODEL = 1 << 1,
+    TX_EYEXCOMPONENTOVERRIDEFLAG_INTERNAL_THREADINGMODEL = 1 << 2,    
+    TX_EYEXCOMPONENTOVERRIDEFLAG_INTERNAL_SCHEDULINGMODEL = 1 << 3
+} TX_EYEXCOMPONENTOVERRIDEFLAGS;
 
 /*********************************************************************************************************************/
 
@@ -84,25 +84,25 @@ typedef enum {
 
   Enumeration for all connection states.
   These values are used to notify the application of the current connection state. 
-  To recieve these notifications the client needs to subscribe using txRegisterConnectionStateChangedHandler and then 
+  To receive these notifications the client needs to subscribe using txRegisterConnectionStateChangedHandler and then 
   call txEnableConnection. 
 
   @field TX_CONNECTIONSTATE_CONNECTED:
-    The client is now connected to the server.
+    The client is now connected to the client.
 
   @field TX_CONNECTIONSTATE_DISCONNECTED:
-    The client is now disconnected from the server. Unless this is due to txDisableConnection being called the client
+    The client is now disconnected from the client. Unless this is due to txDisableConnection being called the client
     will shortly attempt to connect again.
     
   @field TX_CONNECTIONSTATE_TRYINGTOCONNECT:
-    The client is now trying to connect to the server. This is the first state being sent to the application after 
+    The client is now trying to connect to the client. This is the first state being sent to the application after 
     txEnableConnection has been called.
     
   @field TX_CONNECTIONSTATE_SERVERVERSIONTOOLOW:
-    The server version is too low. The client is not connected and will not try to reconnect.
+    the client version is too low. The client is not connected and will not try to reconnect.
     
   @field TX_CONNECTIONSTATE_SERVERVERSIONTOOHIGH:
-    The server version is too high. The client is not connected and will not try to reconnect.
+    the client version is too high. The client is not connected and will not try to reconnect.
  */ 
 typedef enum {
     TX_CONNECTIONSTATE_CONNECTED = TX_ENUM_STARTVALUE,  
@@ -118,7 +118,7 @@ typedef enum {
   TX_LOGTARGET
 
   Enumeration for all log targets.
-  When overring the logging model these flags specify which log targets to use. The flags can be combined.
+  When overriding the logging model these flags specify which log targets to use. The flags can be combined.
 
   @field TX_LOGTARGET_NONE:
     No logging should occur at all.
@@ -172,7 +172,7 @@ typedef enum {
   TX_SCHEDULINGMODE
 
   Enumeration for all schedulng modes.
-  When overring the scheduling model the mode specifies which of the available scheduling modes to use.
+  When overriding the scheduling model the mode specifies which of the available scheduling modes to use.
 
   @field TX_SCHEDULINGMODE_DIRECT:
     All jobs are performed immediately on the thread that calls them.
@@ -289,7 +289,7 @@ typedef void (TX_CALLCONVENTION *TX_CONNECTIONSTATECHANGEDCALLBACK)(
     void
  */
 typedef void (TX_CALLCONVENTION *TX_ASYNCDATACALLBACK)(    
-    TX_CONSTHANDLE hAsyncData,
+    TX_CALLBACK_PARAM(TX_CONSTHANDLE) hAsyncData,
     TX_USERPARAM userParam
     );
 
@@ -308,7 +308,7 @@ typedef void (TX_CALLCONVENTION *TX_ASYNCDATACALLBACK)(
 
 /**
   Function run by a thread.
-    See txInitializeSystem, TX_THREADINGMODEL
+    See txInitializeEyeX, TX_THREADINGMODEL
  
   @param threadWorkerParam [in]: 
     The user parameter provided to the CreateThreadCallback.  
@@ -324,7 +324,7 @@ typedef void (TX_CALLCONVENTION *TX_THREADWORKERFUNCTION)(
 
 /**
   Callback used to create a thread.
-    See txInitializeSystem, TX_THREADINGMODEL
+    See txInitializeEyeX, TX_THREADINGMODEL
  
   @param worker [in]: 
    Worker function that will be run by the thread.
@@ -348,7 +348,7 @@ typedef TX_THREADID (TX_CALLCONVENTION *TX_CREATETHREADCALLBACK)(
 
 /**
   Callback used to get the current thread id.
-    See txInitializeSystem, TX_THREADINGMODEL
+    See txInitializeEyeX, TX_THREADINGMODEL
  
   @param userParam [in]: 
     The user parameter provided by the TX_THREADINGMODEL structure.
@@ -364,7 +364,7 @@ typedef TX_THREADID (TX_CALLCONVENTION *TX_GETCURRENTTHREADIDCALLBACK)(
 
 /**
   Callback used to join a thread.
-    See txInitializeSystem, TX_THREADINGMODEL
+    See txInitializeEyeX, TX_THREADINGMODEL
  
   @param threadId [in]: 
     The id of the thread to join.
@@ -384,7 +384,7 @@ typedef TX_BOOL (TX_CALLCONVENTION *TX_JOINTHREADCALLBACK)(
 
 /**
   Callback used to delete a thread.
-    See txInitializeSystem, TX_THREADINGMODEL
+    See txInitializeEyeX, TX_THREADINGMODEL
  
   @param threadId [in]: 
     The id of the thread to be deleted.
@@ -458,7 +458,7 @@ typedef void (TX_CALLCONVENTION *TX_LOGCALLBACK)(
     TX_USERPARAM userParam
     );
 
-/*********************************************************************************************************************
+/*********************************************************************************************************************/
 
 /**
   Function provided by the API when a job is scheduled.
@@ -539,7 +539,7 @@ typedef struct {
 typedef struct {
     TX_REAL             X;                              
     TX_REAL             Y;                              
-} TX_VEC2;
+} TX_VECTOR2;
 
  /*********************************************************************************************************************/
 
@@ -722,10 +722,10 @@ typedef struct {
     The type of fixation event. See TX_FIXATIONDATAEVENTTYPE.
     
   @field Timestamp:
-    For TX_FIXATIONDATAEVENTTYPE_BEGIN, this is the time when the fixation started.
-    For TX_FIXATIONDATAEVENTTYPE_END, this is the time when the fixation ended.
+    For TX_FIXATIONDATAEVENTTYPE_BEGIN, this is the time when the fixation started, in milliseconds.
+    For TX_FIXATIONDATAEVENTTYPE_END, this is the time when the fixation ended, in milliseconds.
     For TX_FIXATIONDATAEVENTTYPE_DATA, the timestamp for the filtered gaze point provided within 
-    the current fixation, when the filter was applied.
+    the current fixation, when the filter was applied, in milliseconds.
     
   @field X:
     The current X coordinate of the fixation in pixels. For begin and end events will reflect where the fixation 
@@ -752,8 +752,8 @@ typedef struct {
     The gaze point data mode. See TX_GAZEPOINTDATAMODE.
     
   @field Timestamp:
-    For TX_GAZEPOINTDATAMODE_LIGHTLYFILTERED this is the point in time when the filter was applied.
-    For TX_GAZEPOINTDATAMODE_UNFILTERED this is the point in time time when gazepoint was captured.
+    For TX_GAZEPOINTDATAMODE_LIGHTLYFILTERED this is the point in time when the filter was applied, in milliseconds.
+    For TX_GAZEPOINTDATAMODE_UNFILTERED this is the point in time time when gazepoint was captured, in milliseconds.
     
   @field X:
     The X coordinate of the gaze point in pixels.
@@ -777,7 +777,7 @@ typedef struct {
   millimeters on each axis.
    
   @field Timestamp:
-    The point in time when the eye position was captured.
+    The point in time when the eye position was captured, in milliseconds.
     
   @field HasLeftEyePosition:
     Specifies if the data for the left eye is valid.
@@ -791,7 +791,7 @@ typedef struct {
   @field LeftEyeY:
     The Y coordinate of the left eye in millimiters.
     
-  @field LeftEyeY:
+  @field LeftEyeZ:
     The Z coordinate of the left eye in millimiters.
     
   @field RightEyeX:

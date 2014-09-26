@@ -12,7 +12,7 @@ TX_NAMESPACE_BEGIN
 
 /*********************************************************************************************************************/
 
-inline InteractionEvent::InteractionEvent(const std::shared_ptr<const InteractionContext>& spContext, TX_HANDLE hEvent)
+inline InteractionEvent::InteractionEvent(const std::shared_ptr<const Context>& spContext, TX_HANDLE hEvent)
 : InteractionObject(spContext, hEvent)
 {}
 
@@ -25,15 +25,15 @@ inline std::string InteractionEvent::GetInteractorId() const
 
 /*********************************************************************************************************************/
 
-inline std::vector<std::shared_ptr<InteractionBehavior>> InteractionEvent::GetBehaviors() const
+inline std::vector<std::shared_ptr<Behavior>> InteractionEvent::GetBehaviors() const
 {	   
 	std::vector<Tx::Utils::ScopedHandle> behaviorHandles;
     TX_VALIDATE(Tx::Utils::GetBufferData(behaviorHandles, txGetEventBehaviors, _hObject));
 	
-    std::vector<std::shared_ptr<InteractionBehavior>> behaviors;
+    std::vector<std::shared_ptr<Behavior>> behaviors;
 	for(auto& hBehavior : behaviorHandles)
 	{
-		auto spBehavior = _spContext->CreateObject<InteractionBehavior>(hBehavior);
+		auto spBehavior = _spContext->CreateObject<Behavior>(hBehavior);
 		behaviors.push_back(spBehavior);
 	}
 
@@ -42,13 +42,13 @@ inline std::vector<std::shared_ptr<InteractionBehavior>> InteractionEvent::GetBe
 
 /*********************************************************************************************************************/
 
-inline bool InteractionEvent::TryGetBehavior(std::shared_ptr<InteractionBehavior>* pspBehavior, TX_INTERACTIONBEHAVIORTYPE behaviorType) const
+inline bool InteractionEvent::TryGetBehavior(std::shared_ptr<Behavior>* pspBehavior, TX_BEHAVIORTYPE behaviorType) const
 {
 	Tx::Utils::ScopedHandle hBehavior;
 	if(!TX_VALIDATE(txGetEventBehavior(_hObject, &hBehavior, behaviorType), TX_RESULT_NOTFOUND))
 		return false;
 
-	*pspBehavior = _spContext->CreateObject<InteractionBehavior>(hBehavior);
+	*pspBehavior = _spContext->CreateObject<Behavior>(hBehavior);
 	return true;
 }
 

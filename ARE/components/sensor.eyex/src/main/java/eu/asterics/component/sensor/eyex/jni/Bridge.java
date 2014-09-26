@@ -34,9 +34,9 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  *  
  * @author Chris Veigl [veigl@technikum-wien.at]
  *         Date: Mar 1, 2011
- *         Time: 3:35:00 PM
+ *         Time: 3:35:00 PM  
  */  
-public class Bridge
+public class Bridge 
 {
     /** 
      * Statically load the native library
@@ -56,7 +56,7 @@ public class Bridge
     {
         this.owner= owner;
     }
-
+ 
     /**
      * Activates the underlying native code/hardware.
      *

@@ -91,9 +91,10 @@ BOOL InitializeGlobalInteractorSnapshot1(TX_CONTEXTHANDLE hContext)
 		Interactor1Id,
 		&g_hGlobalInteractor1Snapshot,
 		&hInteractor) == TX_RESULT_OK;
-	success &= txCreateInteractorBehavior(hInteractor, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_GAZEPOINTDATA) == TX_RESULT_OK;
-	success &= txSetGazePointDataBehaviorParams(hBehavior, &params) == TX_RESULT_OK;
+//	success &= txCreateInteractorBehavior(hInteractor, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_GAZEPOINTDATA) == TX_RESULT_OK;
+//	success &= txSetGazePointDataBehaviorParams(hBehavior, &params) == TX_RESULT_OK;
 
+		success &= txCreateGazePointDataBehavior(hInteractor, &params) == TX_RESULT_OK;
 	txReleaseObject(&hBehavior);
 	txReleaseObject(&hInteractor);
 
@@ -110,7 +111,7 @@ BOOL InitializeGlobalInteractorSnapshot2(TX_CONTEXTHANDLE hContext)
 		Interactor2Id,
 		&g_hGlobalInteractor2Snapshot,
 		&hInteractor) == TX_RESULT_OK;
-	    success &= txCreateInteractorBehavior(hInteractor, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_EYEPOSITIONDATA) == TX_RESULT_OK;
+	    success &= txCreateInteractorBehavior(hInteractor, &hBehavior, TX_BEHAVIORTYPE_EYEPOSITIONDATA) == TX_RESULT_OK;
 
 	txReleaseObject(&hBehavior);
 	txReleaseObject(&hInteractor);
@@ -221,11 +222,15 @@ void TX_CALLCONVENTION HandleEvent(TX_CONSTHANDLE hAsyncData, TX_USERPARAM userP
 	// NOTE. Uncomment the following line of code to view the event object. The same function can be used with any interaction object.
 	OutputDebugStringA(txDebugObject(hEvent));
 
-	if (txGetEventBehavior(hEvent, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_GAZEPOINTDATA) == TX_RESULT_OK) {
+
+	//if (txGetEventBehavior(hEvent, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_GAZEPOINTDATA) == TX_RESULT_OK) {
+	if (txGetEventBehavior(hEvent, &hBehavior, TX_BEHAVIORTYPE_GAZEPOINTDATA) == TX_RESULT_OK) {
+
 		OnGazeDataEvent(hBehavior);
 		txReleaseObject(&hBehavior);
 	}
-	else if (txGetEventBehavior(hEvent, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_EYEPOSITIONDATA) == TX_RESULT_OK) {
+	else //if (txGetEventBehavior(hEvent, &hBehavior, TX_INTERACTIONBEHAVIORTYPE_EYEPOSITIONDATA) == TX_RESULT_OK) {
+		if (txGetEventBehavior(hEvent, &hBehavior, TX_BEHAVIORTYPE_EYEPOSITIONDATA) == TX_RESULT_OK) {
 		OnEyePositionDataEvent(hBehavior);
 		txReleaseObject(&hBehavior);
 	}
@@ -249,7 +254,7 @@ void TX_CALLCONVENTION HandleEvent(TX_CONSTHANDLE hAsyncData, TX_USERPARAM userP
 int startEyeX(void)
 {
 	// initialize and enable the context that is our link to the EyeX Engine.
-	success = txInitializeSystem(TX_SYSTEMCOMPONENTOVERRIDEFLAG_NONE, NULL, NULL, NULL) == TX_RESULT_OK;
+	success = txInitializeEyeX(TX_EYEXCOMPONENTOVERRIDEFLAG_NONE, NULL, NULL, NULL, NULL) == TX_RESULT_OK;
 	success &= txCreateContext(&hContext, TX_FALSE) == TX_RESULT_OK;
 	success &= InitializeGlobalInteractorSnapshot1(hContext);
 	success &= InitializeGlobalInteractorSnapshot2(hContext);

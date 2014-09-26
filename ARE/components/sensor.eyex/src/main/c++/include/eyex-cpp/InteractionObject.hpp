@@ -17,7 +17,7 @@ class InteractionObjectBase :
     public HandleWrapper<THandle>
 {
 public:
-	InteractionObjectBase(const std::shared_ptr<const InteractionContext>& spContext, THandle hObject);
+	InteractionObjectBase(const std::shared_ptr<const Context>& spContext, THandle hObject);
 		
 	TX_INTERACTIONOBJECTTYPE GetObjectType() const;
 
@@ -41,7 +41,7 @@ class InteractionObject :
     public InteractionObjectBase<TX_HANDLE>
 {
 public:
-	InteractionObject(const std::shared_ptr<const InteractionContext>& spContext, TX_HANDLE hObject);
+	InteractionObject(const std::shared_ptr<const Context>& spContext, TX_HANDLE hObject);
 	virtual ~InteractionObject();
 		
 	std::shared_ptr<Property> CreateProperty(const std::string& propertyName);

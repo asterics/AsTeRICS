@@ -13,7 +13,7 @@ TX_NAMESPACE_BEGIN
 /*********************************************************************************************************************/
 
 template <typename THandle>
-inline HandleWrapper<THandle>::HandleWrapper(const std::shared_ptr<const InteractionContext>& spContext, THandle hObject)
+inline HandleWrapper<THandle>::HandleWrapper(const std::shared_ptr<const Context>& spContext, THandle hObject)
 : _spContext(spContext), _hObject(hObject)
 {}
 
@@ -26,7 +26,7 @@ inline HandleWrapper<THandle>::~HandleWrapper()
 /*********************************************************************************************************************/
 
 template <typename THandle>
-inline std::shared_ptr<const InteractionContext> HandleWrapper<THandle>::GetContext() const
+inline std::shared_ptr<const Context> HandleWrapper<THandle>::GetContext() const
 {
 	return _spContext;
 }

@@ -64,15 +64,13 @@ inline bool TX_VALIDATE(TX_RESULT result, TX_RESULT falseResult1, TX_RESULT fals
 	return TX_VALIDATE(result, falseResult1);
 }
 
-
-     template <typename THandle1, typename THandle2>
-    inline std::string GetString(TX_RESULT (*pFn)(THandle1, TX_STRING, TX_SIZE*), THandle2 handle, TX_SIZE estimatedLength = 0)
-    {
-        std::string str;
-        TX_VALIDATE(GetString(&str, pFn, handle, estimatedLength));
-        return str;
-    }
-
+template <typename THandle1, typename THandle2>
+inline std::string GetString(TX_RESULT (*pFn)(THandle1, TX_STRING, TX_SIZE*), THandle2 handle, TX_SIZE estimatedLength = 0)
+{
+    std::string str;
+    TX_VALIDATE(GetString(&str, pFn, handle, estimatedLength));
+    return str;
+}
 
 /*********************************************************************************************************************/
 

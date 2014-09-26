@@ -18,7 +18,7 @@ public:
 	void Initialize();
 	void Uninitialize();
 
-	std::shared_ptr<InteractionContext> GetContext() const;
+	std::shared_ptr<Context> GetContext() const;
 
 protected:
 	InteractionAgentBase(bool trackObjects = true);
@@ -28,15 +28,15 @@ protected:
 	virtual void OnRegisterQueryHandlers();
 	
 	virtual void OnConnectionStateChanged(TX_CONNECTIONSTATE state) {}
-	virtual void OnNotification(const std::shared_ptr<InteractionNotification>& spNotification) {}
-	virtual void OnQuery(const std::shared_ptr<InteractionQuery>& spQuery) {}
+	virtual void OnNotification(const std::shared_ptr<Notification>& spNotification) {}
+	virtual void OnQuery(const std::shared_ptr<Query>& spQuery) {}
 	virtual void OnEvent(const std::shared_ptr<InteractionEvent>& spEvent) {}
 
-	virtual std::shared_ptr<InteractionSystem> InitializeSystem();	
+	virtual std::shared_ptr<Environment> InitializeEyeX();	
 	virtual TX_LOGGINGMODEL* GetLoggingModel();
 	virtual TX_THREADINGMODEL* GetThreadingModel() { return nullptr; }
 	virtual TX_SCHEDULINGMODEL* GetSchedulingModel() { return nullptr; }
-		
+    
 	void RegisterQueryHandler(const std::string& processId);
 
     bool IsRunning() const;
@@ -44,10 +44,10 @@ protected:
 private:
     bool _isRunning;
 
-	std::shared_ptr<InteractionContext> _spContext;
+	std::shared_ptr<Context> _spContext;
 	TX_TICKET _connectionStateChangedHandlerTicket;
 	std::vector<TX_TICKET> _messageHandlerTickets;
-	std::shared_ptr<InteractionSystem> _spSystem;
+	std::shared_ptr<Environment> _spSystem;
     bool _trackObjects;
 
 	TX_LOGGINGMODEL _defaultLoggingModel;
@@ -62,9 +62,9 @@ public:
 	AutoRespondingInteractionAgentBase(bool trackObjects = true);
 
 protected:
-	void OnQuery(const std::shared_ptr<InteractionQuery>& spQuery) override;
+	void OnQuery(const std::shared_ptr<Query>& spQuery) override;
 
-	virtual bool PrepareSnapshot(const std::shared_ptr<InteractionSnapshot>& spSnapshot) { return false; }
+	virtual bool PrepareSnapshot(const std::shared_ptr<Snapshot>& spSnapshot) { return false; }
 	virtual void OnSnapshotResult(const std::unique_ptr<AsyncData>& upAsyncData) {}
 };
 

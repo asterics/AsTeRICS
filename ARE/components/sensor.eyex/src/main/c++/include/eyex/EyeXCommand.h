@@ -9,9 +9,10 @@
 /*********************************************************************************************************************/
 
 /**
-  txCreateCommand
+  txCreateCommand. For internal use only.
 
-  Creates a command.
+  Creates a command. Internal: In first hand, prefer a higher abstraction before
+  sending raw commands to the engine.
  
   @param hContext [in]: 
     A TX_CONTEXTHANDLE to the context on which to create the command.
@@ -20,7 +21,7 @@
   @param phCommand [out]: 
     A pointer to a TX_HANDLE which will be set to the newly created command.
     This handle must be released using txReleaseObject to avoid leaks.
-    Must not be TX_EMPTY_HANDLE.
+    Must not be NULL.
     The value of the pointer must be set to TX_EMPTY_HANDLE.
 
   @param commandType [in]
@@ -28,7 +29,7 @@
  
   @return 
     TX_RESULT_OK: The command was successfully created.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_INVALIDCONTEXT: The handle to the context was invalid.
  */
@@ -36,41 +37,54 @@ TX_C_BEGIN
 TX_API TX_RESULT TX_CALLCONVENTION txCreateCommand(
     TX_CONTEXTHANDLE hContext,
     TX_HANDLE* phCommand,
-    TX_INTERACTIONCOMMANDTYPE commandType
+    TX_COMMANDTYPE commandType
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *CreateCommandHook)(
+    TX_CONTEXTHANDLE hContext,
+    TX_HANDLE* phCommand,
+    TX_COMMANDTYPE commandType
+    );
+
 
 /*********************************************************************************************************************/
 
 /**
-  txGetCommandType
+  txGetCommandType. For internal use only.
 
-  Gets the TX_INTERACTIONCOMMANDTYPE of a command.
+  Gets the TX_COMMANDTYPE of a command.
  
   @param hCommand [in]: 
     A TX_CONSTHANDLE to the command.
     Must not be TX_EMPTY_HANDLE.
  
   @param pCommandType [out]: 
-    A pointer to a TX_INTERACTIONCOMMANDTYPE which will be set to the type of the command.
+    A pointer to a TX_COMMANDTYPE which will be set to the type of the command.
     Must not be NULL.
  
   @return 
     TX_RESULT_OK: The type of the command was successfully retrieved.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
  */
 TX_C_BEGIN
 TX_API TX_RESULT TX_CALLCONVENTION txGetCommandType(
     TX_CONSTHANDLE hCommand,
-    TX_INTERACTIONCOMMANDTYPE* pCommandType
+    TX_COMMANDTYPE* pCommandType
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetCommandTypeHook)(
+    TX_CONSTHANDLE hCommand,
+    TX_COMMANDTYPE* pCommandType
+    );
+
 
 /*********************************************************************************************************************/
 
 /**
-  txSetCommandData
+  txSetCommandData. For internal use only.
 
   Sets the data of a command.
   If the command already has some object set as data it will be replaced and released.
@@ -85,7 +99,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The data of the command was successfully set.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
  */
 TX_C_BEGIN
@@ -95,10 +109,16 @@ TX_API TX_RESULT TX_CALLCONVENTION txSetCommandData(
     );
 TX_C_END
 
+typedef TX_RESULT (TX_CALLCONVENTION *SetCommandDataHook)(
+    TX_HANDLE hCommand,
+    TX_HANDLE hObject
+    );
+
+
 /*********************************************************************************************************************/
 
 /**
-  txGetCommandData
+  txGetCommandData. For internal use only.
 
   Gets the data of a command.
  
@@ -114,7 +134,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The data of the command was successfully set.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_NOTFOUND: The command does not have any data.
  */
@@ -125,10 +145,16 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetCommandData(
     );
 TX_C_END
 
+typedef TX_RESULT (TX_CALLCONVENTION *GetCommandDataHook)(
+    TX_CONSTHANDLE hCommand,
+    TX_HANDLE* phObject
+    );
+
+
 /*********************************************************************************************************************/
 
 /**
-  txExecuteCommandAsync
+  txExecuteCommandAsync. For internal use only.
 
   Executes a command asynchronously.
  
@@ -144,10 +170,10 @@ TX_C_END
 	txGetAsyncDataResult(). The result code will be one of the follwing:
 
 		TX_RESULT_OK: 
-			The command was succesfully executed on the server.
+			The command was succesfully executed on the client.
 						
 		TX_RESULT_INVALIDCOMMAND: 
-			The command was rejected by the server.
+			The command was rejected by the client.
 			
 		TX_RESULT_CANCELLED:
 			The asynchronous operation was cancelled.
@@ -160,7 +186,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The command was successfully executed. The actual result of the command will be provided to the callback.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
  */
 TX_C_BEGIN
@@ -171,19 +197,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txExecuteCommandAsync(
     );
 TX_C_END
 
-/*********************************************************************************************************************/
+typedef TX_RESULT (TX_CALLCONVENTION *ExecuteCommandAsyncHook)(
+    TX_HANDLE hCommand,
+    TX_ASYNCDATACALLBACK completionHandler,
+    TX_USERPARAM userParam
+    );
 
-#if defined(__cplusplus)
-#ifndef TOBII_TX_INTEROP
-#include <functional>
-
-    TX_API_FUNCTION_CPP(ExecuteCommandAsync, (
-		TX_HANDLE hCommand, 
-		const Tx::AsyncDataCallback& completionHandler
-		));
-
-#endif
-#endif
 
 /*********************************************************************************************************************/
 

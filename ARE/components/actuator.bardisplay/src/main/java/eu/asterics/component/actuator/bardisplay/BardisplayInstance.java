@@ -278,6 +278,7 @@ public class BardisplayInstance extends AbstractRuntimeComponentInstance
     @Override
     public void start()
     {
+    	inputValue=0;
     	// Logger.getAnonymousLogger().info("BardisplayInstance started");
       	gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
         AREServices.instance.displayPanel(gui, this, true);

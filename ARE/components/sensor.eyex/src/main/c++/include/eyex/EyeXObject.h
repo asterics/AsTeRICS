@@ -24,7 +24,7 @@
    
   @return 
     TX_RESULT_OK: The context was successfully retrieved.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
 */ 
 TX_C_BEGIN
@@ -33,6 +33,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetContext(
     TX_CONTEXTHANDLE* phContext 
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetContextHook)(
+    TX_CONSTHANDLE hObject,
+    TX_CONTEXTHANDLE* phContext 
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -51,7 +57,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The TX_INTERACTIONOBJECTTYPE of the object was successfully retrieved.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
 */ 
 TX_C_BEGIN
@@ -60,6 +66,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetObjectType(
     TX_INTERACTIONOBJECTTYPE* phObjectType
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetObjectTypeHook)(
+    TX_CONSTHANDLE hObject,
+    TX_INTERACTIONOBJECTTYPE* phObjectType
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -84,7 +96,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The type name of the object or size of the string was successfully retreived.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_INVALIDBUFFERSIZE: The size of the pObjectTypeName was to small. (*pObjectTypeNameSize will be set to the required size.)
  */
@@ -95,6 +107,13 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetObjectTypeName(
     TX_SIZE* pObjectTypeNameSize
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetObjectTypeNameHook)(
+    TX_CONSTHANDLE hObject,
+    TX_STRING pObjectTypeName,
+    TX_SIZE* pObjectTypeNameSize
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -112,7 +131,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The object was successfully released.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
 */ 
 TX_C_BEGIN
@@ -120,6 +139,11 @@ TX_API TX_RESULT TX_CALLCONVENTION txReleaseObject(
     TX_HANDLE* phObject
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *ReleaseObjectHook)(
+    TX_HANDLE* phObject
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -144,7 +168,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The formatted text or required size of the string was successfully retreived.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_INVALIDBUFFERSIZE: The size of the pText was to small. (*pTextSize will be set to the required size.)
 */ 
@@ -155,6 +179,13 @@ TX_API TX_RESULT TX_CALLCONVENTION txFormatObjectAsText(
     TX_SIZE* pTextSize
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *FormatObjectAsTextHook)(
+    TX_CONSTHANDLE hObject,
+    TX_STRING pText,
+    TX_SIZE* pTextSize
+    );
+
 
 /*********************************************************************************************************************/
 

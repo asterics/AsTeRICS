@@ -32,23 +32,23 @@
 
 TX_NAMESPACE_BEGIN 
 	
-class InteractionSystem;
+class Environment;
 class InteractionObject;
 class Property;
 class PropertyBag;
-class InteractionBounds;
-class InteractionBehavior;
+class Bounds;
+class Behavior;
 class Interactor;
-class InteractionSnapshot;
-class InteractionSnapshotResult;
-class InteractionCommand;
-class InteractionCommandResult;
-class InteractionQuery;
+class Snapshot;
+class SnapshotResult;
+class Command;
+class CommandResult;
+class Query;
 class InteractionEvent;
-class InteractionNotification;
+class Notification;
 class AsyncData;
 class StateBag;
-class InteractionMask;
+class Mask;
 
 TX_NAMESPACE_END
 
@@ -56,46 +56,46 @@ TX_NAMESPACE_END
 
 #include "APIException.hpp"
 #include "Callbacks.hpp"
-#include "InteractionSystem.hpp"
+#include "Environment.hpp"
 #include "PropertyValueResolver.hpp"
-#include "InteractionContext.hpp"
+#include "Context.hpp"
 #include "HandleWrapper.hpp"
 #include "InteractionObject.hpp"
-#include "InteractionBehavior.hpp"
-#include "InteractionBounds.hpp"
-#include "InteractionCommand.hpp"
+#include "Behavior.hpp"
+#include "Bounds.hpp"
+#include "Command.hpp"
 #include "AsyncData.hpp"
 #include "InteractionEvent.hpp"
-#include "InteractionQuery.hpp"
-#include "InteractionSnapshot.hpp"
+#include "Query.hpp"
+#include "Snapshot.hpp"
 #include "Interactor.hpp"
 #include "Property.hpp"
 #include "PropertyBag.hpp"
-#include "InteractionNotification.hpp"
+#include "Notification.hpp"
 #include "StateBag.hpp"
-#include "InteractionMask.hpp"
+#include "Mask.hpp"
 #include "InteractionAgentBase.hpp"
 
 /*********************************************************************************************************************/
 
 #include "PropertyValueResolver.inl"
-#include "InteractionSystem.inl"
-#include "InteractionContext.inl"
+#include "Environment.inl"
+#include "Context.inl"
 #include "HandleWrapper.inl"
 #include "InteractionObject.inl"
-#include "InteractionBehavior.inl"
-#include "InteractionBounds.inl"
-#include "InteractionCommand.inl"
+#include "Behavior.inl"
+#include "Bounds.inl"
+#include "Command.inl"
 #include "AsyncData.inl"
 #include "InteractionEvent.inl"
-#include "InteractionQuery.inl"
-#include "InteractionSnapshot.inl"
+#include "Query.inl"
+#include "Snapshot.inl"
 #include "Interactor.inl"
 #include "Property.inl"
 #include "PropertyBag.inl"
-#include "InteractionNotification.inl"
+#include "Notification.inl"
 #include "StateBag.inl"
-#include "InteractionMask.inl"
+#include "Mask.inl"
 #include "InteractionAgentBase.inl"
 
 /*********************************************************************************************************************/

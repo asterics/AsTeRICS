@@ -28,8 +28,8 @@ _trackObjects(trackObjects)
 inline void InteractionAgentBase::Initialize()
 {
     _isRunning = true;
-	_spSystem = InitializeSystem();
-	_spContext = InteractionContext::Create(_trackObjects);
+	_spSystem = InitializeEyeX();
+	_spContext = Context::Create(_trackObjects);
 
 	_connectionStateChangedHandlerTicket = _spContext->RegisterConnectionStateChangedHandler([this] (TX_CONNECTIONSTATE state) {
 		OnConnectionStateChanged(state);
@@ -41,7 +41,7 @@ inline void InteractionAgentBase::Initialize()
 	});
 
 	auto notificationHandlerTicket = _spContext->RegisterMessageHandler(TX_MESSAGETYPE_NOTIFICATION, nullptr, [this] (const std::unique_ptr<AsyncData>& upAsyncData) {
-		auto spNotification = upAsyncData->GetDataAs<InteractionNotification>();
+		auto spNotification = upAsyncData->GetDataAs<Notification>();
 		OnNotification(spNotification);
 	});
 
@@ -75,31 +75,31 @@ inline void InteractionAgentBase::Uninitialize()
 
 /*********************************************************************************************************************/
 
-inline std::shared_ptr<InteractionContext> InteractionAgentBase::GetContext() const
+inline std::shared_ptr<Context> InteractionAgentBase::GetContext() const
 {
 	return _spContext;
 }
 
 /*********************************************************************************************************************/
 
-inline std::shared_ptr<InteractionSystem> InteractionAgentBase::InitializeSystem()
+inline std::shared_ptr<Environment> InteractionAgentBase::InitializeEyeX()
 {
 	auto pLoggingModel = GetLoggingModel();
 	auto pThreadingModel = GetThreadingModel();
 	auto pSchedulingModel = GetSchedulingModel();
-
-	auto overrideFlags = TX_SYSTEMCOMPONENTOVERRIDEFLAG_NONE;
+   
+	auto overrideFlags = TX_EYEXCOMPONENTOVERRIDEFLAG_NONE;
 
 	if(pLoggingModel)
-		overrideFlags = (TX_SYSTEMCOMPONENTOVERRIDEFLAGS)(overrideFlags | TX_SYSTEMCOMPONENTOVERRIDEFLAG_LOGGINGMODEL);
+		overrideFlags = (TX_EYEXCOMPONENTOVERRIDEFLAGS)(overrideFlags | TX_EYEXCOMPONENTOVERRIDEFLAG_LOGGINGMODEL);
 		
 	if(pThreadingModel)
-		overrideFlags = (TX_SYSTEMCOMPONENTOVERRIDEFLAGS)(overrideFlags | TX_SYSTEMCOMPONENTOVERRIDEFLAG_THREADINGMODEL);
+		overrideFlags = (TX_EYEXCOMPONENTOVERRIDEFLAGS)(overrideFlags | TX_EYEXCOMPONENTOVERRIDEFLAG_INTERNAL_THREADINGMODEL);
 
 	if(pSchedulingModel)
-		overrideFlags = (TX_SYSTEMCOMPONENTOVERRIDEFLAGS)(overrideFlags | TX_SYSTEMCOMPONENTOVERRIDEFLAG_SCHEDULINGMODEL);
+		overrideFlags = (TX_EYEXCOMPONENTOVERRIDEFLAGS)(overrideFlags | TX_EYEXCOMPONENTOVERRIDEFLAG_INTERNAL_SCHEDULINGMODEL);
 
-	return InteractionSystem::Initialize(overrideFlags, pLoggingModel, pThreadingModel, pSchedulingModel);
+	return Environment::Initialize(overrideFlags, pLoggingModel, pThreadingModel, pSchedulingModel, nullptr);
 }
 
 /*********************************************************************************************************************/
@@ -121,7 +121,7 @@ inline void InteractionAgentBase::RegisterQueryHandler(const std::string& proces
 
 	auto fnQueryHandler = [this](const std::unique_ptr<AsyncData>& upAsyncData) 
 	{
-		auto spQuery = upAsyncData->GetDataAs<InteractionQuery>();       
+		auto spQuery = upAsyncData->GetDataAs<Query>();       
 		OnQuery(spQuery);       
 	};
 
@@ -151,9 +151,9 @@ inline AutoRespondingInteractionAgentBase::AutoRespondingInteractionAgentBase(bo
 
 /*********************************************************************************************************************/
 
-inline void AutoRespondingInteractionAgentBase::OnQuery(const std::shared_ptr<InteractionQuery>& spQuery)
+inline void AutoRespondingInteractionAgentBase::OnQuery(const std::shared_ptr<Query>& spQuery)
 {	    
-    auto spSnapshot = InteractionSnapshot::CreateSnapshotForQuery(spQuery);
+    auto spSnapshot = Snapshot::CreateSnapshotForQuery(spQuery);
 
     try
     {

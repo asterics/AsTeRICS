@@ -16,11 +16,11 @@ class InteractionEvent :
 	public InteractionObject
 {
 public:
-	InteractionEvent(const std::shared_ptr<const InteractionContext>& spContext, TX_HANDLE hEvent);
+	InteractionEvent(const std::shared_ptr<const Context>& spContext, TX_HANDLE hEvent);
 	   
     std::string GetInteractorId() const;        
-    std::vector<std::shared_ptr<InteractionBehavior>> GetBehaviors() const;
-	bool TryGetBehavior(std::shared_ptr<InteractionBehavior>* pspBehavior, TX_INTERACTIONBEHAVIORTYPE behaviorType) const;
+    std::vector<std::shared_ptr<Behavior>> GetBehaviors() const;
+	bool TryGetBehavior(std::shared_ptr<Behavior>* pspBehavior, TX_BEHAVIORTYPE behaviorType) const;
 };
 
 /*********************************************************************************************************************/

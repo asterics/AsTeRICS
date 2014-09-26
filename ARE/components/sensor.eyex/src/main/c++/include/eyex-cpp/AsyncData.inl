@@ -12,7 +12,7 @@ TX_NAMESPACE_BEGIN
 
 /*********************************************************************************************************************/
 
-inline AsyncData::AsyncData(const std::shared_ptr<const InteractionContext>& spContext, TX_CONSTHANDLE hAsyncData)
+inline AsyncData::AsyncData(const std::shared_ptr<const Context>& spContext, TX_CONSTHANDLE hAsyncData)
 : InteractionObjectBase(spContext, hAsyncData)
 { }
 

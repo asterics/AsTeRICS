@@ -8,12 +8,21 @@
 
 /*********************************************************************************************************************/
 
+#ifdef __cplusplus
+#define TX_NAMESPACE_BEGIN namespace EyeX {
+#define TX_NAMESPACE_END }
+#define TX_USING_NAMESPACE_TX using namespace EyeX;
+#endif // __cplusplus
+
+/*********************************************************************************************************************/
+
 #include "EyeXMacros.h"
 #include "EyeXLiterals.h"
-#include "EyeXInternalLiterals.h"
+#include "EyeXConstants.h"
+#include "EyeXSharedLiterals.h"
 #include "EyeXFrameworkTypes.h"
 #include "EyeXClientTypes.h"
-#include "EyeXSystem.h"
+#include "EyeXEnv.h"
 #include "EyeXContext.h"
 #include "EyeXObject.h"
 #include "EyeXAsyncData.h"

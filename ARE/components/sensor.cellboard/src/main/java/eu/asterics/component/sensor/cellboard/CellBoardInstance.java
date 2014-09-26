@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -40,11 +41,11 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
@@ -146,7 +147,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     * @param portID   the name of the port
     * @return         the input port or null if not found
     */
-    public IRuntimeInputPort getInputPort(String portID)
+    public synchronized IRuntimeInputPort getInputPort(String portID)
     {
     	if (IP_ROW.equalsIgnoreCase(portID))
 		{
@@ -231,7 +232,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param portID   the name of the port
      * @return         the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
+    public synchronized IRuntimeOutputPort getOutputPort(String portID)
 	{
 		if (OP_SELECTED_CELL.equalsIgnoreCase(portID))
 		{
@@ -250,7 +251,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param eventPortID   the name of the port
      * @return         the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
+    public synchronized IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
     {
     
     	if (ELP_SCAN_MOVE.equalsIgnoreCase(eventPortID))
@@ -300,7 +301,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param eventPortID   the name of the port
      * @return         the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
+    public synchronized IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
     {
     	if (ETP_CELL_CLICKED.equalsIgnoreCase(eventPortID))
 		{
@@ -346,7 +347,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param propertyName   the name of the property
      * @return               the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
+    public synchronized Object getRuntimePropertyValue(String propertyName)
     {
     	if (PROP_CAPTION.equalsIgnoreCase(propertyName))
 		{
@@ -486,7 +487,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param propertyName   the name of the property
      * @param newValue       the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
+    public synchronized Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
     	if (PROP_CAPTION.equalsIgnoreCase(propertyName))
 		{
@@ -785,7 +786,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 					space.width = hwidth;
 				else 
 					space.width = getAvailableSpace().width;
-				gui.update(space,propFontSize);
+				
+				gui.update(space,propFontSize);					
 			} catch (ParserConfigurationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -806,7 +808,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * Returns the color of the text.
      * @return   color of the text
      */
-	int getTextColor()
+	synchronized int getTextColor()
 	{
 		return propTextColor;
 	}
@@ -815,7 +817,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * Returns the background color.
      * @return   color of the background
      */
-	int getBackgroundColor()
+	synchronized int getBackgroundColor()
 	{
 		return propBackgroundColor;
 	}
@@ -824,7 +826,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * Returns the background color for the active cell during scanning.
      * @return   color of the active cell background
      */
-	int getScanColor()
+	synchronized int getScanColor()
 	{
 		return propScanColor;
 	}
@@ -833,7 +835,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * Returns the number of the rows.
      * @return   number of the rows
      */
-	int getRowCount()
+	synchronized int getRowCount()
 	{
 		return propRows+1;
 	}
@@ -843,7 +845,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @return   number of the columns
      */
 	
-	int getColumnCount()
+	synchronized int getColumnCount()
 	{
 		return propColumns+1;
 	}
@@ -853,7 +855,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * Returns the component caption.
      * @return   caption of the component
      */
-	String getCaption()
+	synchronized String getCaption()
 	{
 		return propCaption;
 	}
@@ -863,7 +865,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param index index of the cell
      * @return   image path
      */
-	String getImagePath(int index)
+	synchronized String getImagePath(int index)
 	{
 		return propCellImageArray[index];
 	}
@@ -873,7 +875,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param index index of the cell
      * @return   text of the cell
      */
-	String getText(int index)
+	synchronized String getText(int index)
 	{
 		return propCellTextArray[index];
 	}
@@ -883,7 +885,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param index index of the cell
      * @return   action text of the cell
      */
-	String getActionText(int index)
+	synchronized String getActionText(int index)
 	{
 		return propCellActionTextArray[index];
 	}
@@ -892,7 +894,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * Returns type of the scanning.
      * @return   scanning type
      */
-	int getScanType()
+	synchronized int getScanType()
 	{
 		return propScanType;
 	}
@@ -901,7 +903,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * Returns the general event port.
      * @return   general event port
      */
-	IRuntimeEventTriggererPort getGeneralEventPort()
+	synchronized IRuntimeEventTriggererPort getGeneralEventPort()
 	 {
 		 return etpCellClicked;
 	 }
@@ -911,7 +913,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param index index of the cell
      * @return   event port
      */
-	 EventPort getEventPort(int index)
+	synchronized EventPort getEventPort(int index)
 	 {
 		 return etpCellArray[index];
 	 }
@@ -920,7 +922,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	  * Returns the cell number output port.
 	  * @return   cell output port
 	  */
-	 IRuntimeOutputPort getCellOutputPort()
+	synchronized IRuntimeOutputPort getCellOutputPort()
 	 {
 		 return opSelectedCell;
 	 }
@@ -930,7 +932,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	  * Returns the cell text output port.
 	  * @return   cell text output port
 	  */
-	 IRuntimeOutputPort getCellTextOutputPort()
+	synchronized IRuntimeOutputPort getCellTextOutputPort()
 	 {
 		 return opSelectedCellText;
 	 }
@@ -939,7 +941,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	  * Returns the hover time.
 	  * @return   hover time.
 	  */
-	 int getHoverTime()
+	synchronized int getHoverTime()
 	 {
 		 return propHoverTime;
 	 }
@@ -948,12 +950,14 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
       * called when model is started.
       */
       @Override
-      public void start()
+      synchronized public void start()
       {
     	  space = AREServices.instance.getAvailableSpace(this);
     	  gui = new GUI(this,space);
 		  AREServices.instance.displayPanel(gui, this, true);
-		  AstericsThreadPool.instance.execute(paintCells);
+		  paintCells.run();
+		  //AstericsThreadPool.instance.execute(paintCells);
+		  //SwingUtilities.invokeLater(paintCells);
 		  //gui.defineTextFontSize();
 		  //gui.setScanning();
           super.start();
@@ -965,7 +969,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
       * called when model is paused.
       */
       @Override
-      public void pause()
+      synchronized public void pause()
       {
           super.pause();
       }
@@ -974,7 +978,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
       * called when model is resumed.
       */
       @Override
-      public void resume()
+      synchronized public void resume()
       {
           super.resume();
       }
@@ -983,7 +987,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
       * called when model is stopped.
       */
       @Override
-      public void stop()
+      synchronized public void stop()
       {
 
     	  gui.prepareToClose();
@@ -1001,9 +1005,10 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     	     */	
     		@Override
     		public void run() {
-    	        	try{
+/*    	        	try{
     					Thread.sleep(400);
     				}catch (InterruptedException e) {}
+    				*/
     	        	gui.defineTextFontSize(propFontSize);
 					gui.setScanning();
 			        guiReady=true;
