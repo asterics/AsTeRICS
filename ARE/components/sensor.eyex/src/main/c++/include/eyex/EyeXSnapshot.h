@@ -12,7 +12,9 @@
   txCreateSnapshot
 
   Creates a snapshot.
-  A snapshot is used to provide the current state of interactors for a specfic region of the screen to the server.
+  A snapshot is used to provide the current state of interactors for a specfic region of the screen to the client. 
+  This function can also be used to create a snapshot containing global interactors, but it is recommended to 
+  use txCreateGlobalInteractorSnapshot for this.
  
   @param hContext [in]: 
     A TX_CONTEXTHANDLE to the context on which to create the snapshot.
@@ -26,7 +28,7 @@
  
   @return 
     TX_RESULT_OK: The snapshot was successfully created.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.    
 */
 TX_C_BEGIN
@@ -35,6 +37,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txCreateSnapshot(
     TX_HANDLE* phSnapshot 
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *CreateSnapshotHook)(
+    TX_CONTEXTHANDLE hContext, 
+    TX_HANDLE* phSnapshot 
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -58,7 +66,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The snapshot was successfully created.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.    
 */
 TX_C_BEGIN
@@ -67,6 +75,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txCreateSnapshotWithQueryBounds(
     TX_HANDLE* phSnapshot 
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *CreateSnapshotWithQueryBoundsHook)(
+    TX_CONSTHANDLE hQuery,
+    TX_HANDLE* phSnapshot 
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -88,7 +102,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The snapshot was successfully created.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.    
 */
 TX_C_BEGIN
@@ -98,13 +112,19 @@ TX_API TX_RESULT TX_CALLCONVENTION txCreateSnapshotForQuery(
     );
 TX_C_END
 
+typedef TX_RESULT (TX_CALLCONVENTION *CreateSnapshotForQueryHook)(
+    TX_CONSTHANDLE hQuery,
+    TX_HANDLE* phSnapshot 
+    );
+
+
 /*********************************************************************************************************************/
 
 /**
   txCommitSnapshotAsync
 
   Commits a snapshot asynchronously.
-  The snapshot will be sent to the server.
+  The snapshot will be sent to the client.
  
   @param hSnapshot [in]: 
     A TX_HANDLE to the snapshot that should be committed.
@@ -117,10 +137,10 @@ TX_C_END
 	txGetAsyncDataResult(). The result code will be one of the follwing:
 
 		TX_RESULT_OK: 
-			The snapshot was succesfully commited to the server.
+			The snapshot was succesfully commited to the client.
 						
 		TX_RESULT_INVALIDSNAPSHOT: 
-			The snapshot was rejected by the server.
+			The snapshot was rejected by the client.
 			
 		TX_RESULT_CANCELLED:
 			The asynchronous operation was cancelled.
@@ -132,7 +152,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The snapshot was successfully commited. The actual result of the snapshot will be provided to the callback.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
 */
 TX_C_BEGIN
@@ -143,20 +163,13 @@ TX_API TX_RESULT TX_CALLCONVENTION txCommitSnapshotAsync(
     );
 TX_C_END
 
+typedef TX_RESULT (TX_CALLCONVENTION *CommitSnapshotAsyncHook)(
+    TX_HANDLE hSnapshot, 
+    TX_ASYNCDATACALLBACK completionHandler,
+    TX_USERPARAM userParam
+    );
 
-/*********************************************************************************************************************/
 
-#if defined(__cplusplus)
-#ifndef TOBII_TX_INTEROP
-#include <functional>
-
-TX_API_FUNCTION_CPP(CommitSnapshotAsync, (
-	TX_HANDLE hSnapshot,
-	const Tx::AsyncDataCallback& completionHandler
-	));
-
-#endif
-#endif
 
 /*********************************************************************************************************************/
 
@@ -178,7 +191,7 @@ TX_API_FUNCTION_CPP(CommitSnapshotAsync, (
  
   @return 
     TX_RESULT_OK: The bounds was successfully retrieved.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_NOTFOUND: The snapshot does not have any bounds.
 */
@@ -188,6 +201,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetSnapshotBounds(
     TX_HANDLE* phBounds
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetSnapshotBoundsHook)(
+    TX_CONSTHANDLE hSnapshot,
+    TX_HANDLE* phBounds
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -206,7 +225,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The number of window ids was successfully retrieved.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
 */
 TX_C_BEGIN
@@ -215,6 +234,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetSnapshotWindowIdCount(
     TX_SIZE* pWindowIdsCount
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetSnapshotWindowIdCountHook)(
+    TX_CONSTHANDLE hSnapshot,
+    TX_SIZE* pWindowIdsCount
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -244,7 +269,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The window id or the required size of the string was successfully retrieved.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_INVALIDBUFFERSIZE: The size of windowId is invalid (pWindowIdSize will be set to the required size).
     TX_RESULT_NOTFOUND: The specified index was out of range.
@@ -257,6 +282,14 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetSnapshotWindowId(
     TX_SIZE* pWindowIdSize
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetSnapshotWindowIdHook)(
+    TX_CONSTHANDLE hSnapshot,
+    TX_INTEGER windowIdIndex,
+    TX_STRING pWindowId,
+    TX_SIZE* pWindowIdSize
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -271,12 +304,12 @@ TX_C_END
     Must not be TX_EMPTY_HANDLE.
  
   @param windowId [in]: 
-    The window id as a string.
+    The window id as a string (window id corresponds to the windows handle on Windows).
     Must not be NULL or empty string.
  
   @return 
     TX_RESULT_OK: The window id was successfully added.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
 */
 TX_C_BEGIN
@@ -285,6 +318,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txAddSnapshotWindowId(
     TX_CONSTSTRING windowId
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *AddSnapshotWindowIdHook)(
+    TX_HANDLE hSnapshot, 
+    TX_CONSTSTRING windowId
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -318,14 +357,14 @@ TX_C_END
   
   @param windowId [in]: 
     The window id as a TX_CONSTSTRING.
-    Sets the top level window id of an interactor.
+    Sets the top level window id of an interactor (window id corresponds to the windows handle on Windows).
     Each interactor needs to specify the top level window id in which it was found.  
     Should be set to TX_LITERAL_GLOBALINTERACTORWINDOWID if this is a global interactor.
     Must not be NULL or empty string.
  
   @return 
     TX_RESULT_OK: The interactor was successfully created.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_DUPLICATEINTERACTOR: An interactor with the same id already exists in this snapshot.
 */
@@ -338,6 +377,15 @@ TX_API TX_RESULT TX_CALLCONVENTION txCreateInteractor(
     TX_CONSTSTRING windowId
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *CreateInteractorHook)(
+    TX_HANDLE hSnapshot,
+    TX_HANDLE* phInteractor,
+    TX_CONSTSTRING interactorId,
+    TX_CONSTSTRING parentId,
+    TX_CONSTSTRING windowId
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -375,14 +423,14 @@ TX_C_END
 
   @param windowId [in]: 
     The window id as a TX_CONSTSTRING.
-    Sets the top level window id of an interactor.
+    Sets the top level window id of an interactor (window id corresponds to the windows handle on Windows).
     Each interactor needs to specify the top level window id in which it was found.  
     Should be set to TX_LITERAL_GLOBALINTERACTORWINDOWID if this is a global interactor.
     Must not be NULL or empty string.
  
   @return 
     TX_RESULT_OK: The interactor was successfully created.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_DUPLICATEINTERACTOR: An interactor with the same id already exists in this snapshot.
 */
@@ -397,10 +445,20 @@ TX_API TX_RESULT TX_CALLCONVENTION txCreateRectangularInteractor(
     );
 TX_C_END
 
+typedef TX_RESULT (TX_CALLCONVENTION *CreateRectangularInteractorHook)(
+    TX_HANDLE hSnapshot,    
+    TX_HANDLE* phInteractor,
+    TX_CONSTSTRING interactorId,
+    TX_RECT* pBounds,
+    TX_CONSTSTRING parentId,
+    TX_CONSTSTRING windowId
+    );
+
+
 /*********************************************************************************************************************/
 
 /**
-  txRemoveInteractor
+  txRemoveInteractor. For internal use only.
 
   Removes an interactor from a snapshot.
   If an interactor with the specified id does not exist this call will fail.
@@ -416,7 +474,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The interactor was successfully removed.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_NOTFOUND: An interactor with the specified id does not exists in the snapshot.
  */
@@ -426,6 +484,12 @@ TX_API TX_RESULT TX_CALLCONVENTION txRemoveInteractor(
     TX_CONSTSTRING interactorId
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *RemoveInteractorHook)(
+    TX_HANDLE hSnapshot,
+    TX_CONSTSTRING interactorId
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -450,7 +514,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The handles or the required size of the buffer were retrieved successfully.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_INVALIDBUFFERSIZE: The size of the array is invalid. (*pInteractorsSize will be set to the number of interactors).
  */
@@ -462,6 +526,13 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetInteractors(
     );
 TX_C_END
 
+typedef TX_RESULT (TX_CALLCONVENTION *GetInteractorsHook)(
+    TX_CONSTHANDLE hSnapshot,    
+    TX_HANDLE* phInteractors,
+    TX_SIZE* pInteractorsSize
+    );
+
+
 /*********************************************************************************************************************/
 
 /**
@@ -470,7 +541,7 @@ TX_C_END
   Creates bounds on a snapshot. 
   The bounds of a snapshot should specify a rectangle that defines the region of the screen for which interactors
   are provided. Typically these are the same bounds as on the query.
-  The bounds may cover a larger area, thus telling the server where there is empty space.
+  The bounds may cover a larger area, thus telling the client where there is empty space.
   If the bounds does not at least intersect the interactors provided in the snapshot txCommitSnapshotAsync will fail.
   If the snapshot already have bounds this call will fail.
  
@@ -485,11 +556,11 @@ TX_C_END
     The value of the pointer must be set to TX_EMPTY_HANDLE.
  
   @param boundsType [in]: 
-    A TX_INTERACTIONBOUNDSTYPE which specifies the type of bounds to create.
+    A TX_BOUNDSTYPE which specifies the type of bounds to create.
  
   @return 
     TX_RESULT_OK: The bounds was successfully created.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_DUPLICATEBOUNDS: The snapshot already has bounds.
 */
@@ -497,9 +568,16 @@ TX_C_BEGIN
 TX_API TX_RESULT TX_CALLCONVENTION txCreateSnapshotBounds(
     TX_HANDLE hSnapshot,
     TX_HANDLE* phBounds,
-    TX_INTERACTIONBOUNDSTYPE boundsType
+    TX_BOUNDSTYPE boundsType
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *CreateSnapshotBoundsHook)(
+    TX_HANDLE hSnapshot,
+    TX_HANDLE* phBounds,
+    TX_BOUNDSTYPE boundsType
+    );
+
 
 /*********************************************************************************************************************/
 
@@ -515,7 +593,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The bounds was successfully deleted.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_NOTFOUND: The snapshot does not have any bounds.
 */
@@ -525,6 +603,11 @@ TX_API TX_RESULT TX_CALLCONVENTION txDeleteSnapshotBounds(
     );
 TX_C_END
 
+typedef TX_RESULT (TX_CALLCONVENTION *DeleteSnapshotBoundsHook)(
+    TX_HANDLE hSnapshot
+    );
+
+
 /*********************************************************************************************************************/
 
 /**
@@ -533,10 +616,10 @@ TX_C_END
   Creates a global Interactor Snapshot.
  
   Creates a snapshot with:
-   Bounds with boundsType TX_INTERACTIONBOUNDSTYPE_NONE,
+   Bounds with boundsType TX_BOUNDSTYPE_NONE,
    windowId as TX_LITERAL_GLOBALINTERACTORWINDOWID,
    One interactor with:
-   Bounds with boundsType TX_INTERACTIONBOUNDSTYPE_NONE,
+   Bounds with boundsType TX_BOUNDSTYPE_NONE,
    ParentId as TX_LITERAL_ROOTID
    WindowId as TX_LITERAL_GLOBALINTERACTORWINDOWID,
    InteractorId as @interactorId.
@@ -560,7 +643,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The interactor was successfully created.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.    
  */ 
 TX_C_BEGIN
@@ -571,6 +654,14 @@ TX_API TX_RESULT TX_CALLCONVENTION txCreateGlobalInteractorSnapshot(
     TX_HANDLE* hInteractor
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *CreateGlobalInteractorSnapshotHook)(
+    TX_CONTEXTHANDLE hContext, 
+    TX_CONSTSTRING interactorId, 
+    TX_HANDLE* hSnapshot, 
+    TX_HANDLE* hInteractor
+    );
+
 
 /*********************************************************************************************************************/
 

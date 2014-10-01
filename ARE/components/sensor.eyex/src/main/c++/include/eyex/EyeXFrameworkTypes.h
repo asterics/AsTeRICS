@@ -23,16 +23,16 @@
   @field TX_RESULT_OK:
     Everything went well.
 
-  @field TX_RESULT_SYSTEMNOTINITIALIZED:
-    The system is not initalized. All API functions except txInitializeSystem requires the system to be
+  @field TX_RESULT_EYEXNOTINITIALIZED:
+    The EyeX client environment is not initalized. All API functions except txInitializeEyeX requires the EyeX client environment to be
     initialized prior to being called.
 
-  @field TX_RESULT_SYSTEMALREADYINITIALIZED:
-    The system has already been initialized. This is returned by txInitializeSystem if called twice without being
+  @field TX_RESULT_EYEXALREADYINITIALIZED:
+    The EyeX client environment has already been initialized. This is returned by txInitializeEyeX if called twice without being
     uninitialized in between.
 
-  @field TX_RESULT_SYSTEMSTILLINUSE:
-    The system is still in use. This is returned by txUninitializeSystem if at least one context is still being used.
+  @field TX_RESULT_EYEXSTILLINUSE:
+    The EyeX client environment is still in use. This is returned by txUninitializeEyeX if at least one context is still being used.
 
   @field TX_RESULT_INVALIDARGUMENT:
     An invalid argument was passed to an API function. All arguments are checked before an API function actually
@@ -79,7 +79,7 @@
     backing up data that is required on different interaction objects.
     
   @field TX_RESULT_NOTCONNECTED:
-    An attempt was made to perform an operation that requires a valid connection to the server.
+    An attempt was made to perform an operation that requires a valid connection to the client.
 
   @field TX_RESULT_INVALIDOBJECTCAST:
     A handle for a different type of interaction object than expected was provided.
@@ -95,29 +95,33 @@
     An attempt was made to perform an operation that does not apply to the current behavior type.
     
   @field TX_RESULT_OBJECTLEAKAGE:
-    A leakage of an interaction object has been detected. May be returned by txReleaseContext if not all objects has been released properly.
+    A leakage of an interaction object has been detected. May be returned by a 
+    successful txReleaseContext call where some object were not released properly.
     
   @field TX_RESULT_OBJECTTRACKINGNOTENABLED:
     An attempt to retrieve tracked object has been made without tracking of objects being enabled.
 	
   @field TX_RESULT_INVALIDSNAPSHOT:
-    The snapshot committed to the server contained some invalid data.
+    The snapshot committed to the client contained some invalid data.
 
   @field TX_RESULT_INVALIDCOMMAND:
-    The submitted command was malformed or not recognized by the server.
+    The submitted command was malformed or not recognized by the client.
 
   @field TX_RESULT_CANCELLED:
     An attempt has been made to perform an operation that is not supported during shutdown. 
 	
   @field TX_RESULT_INVALIDSCHEDULINGMODE:
     The scheduling mode is invalid.
+
+  @field TX_RESULT_MASKTOOLARGE:
+    The supplied mask is too large, width*height must be less than 65536
  */
 typedef enum {
     TX_RESULT_UNKNOWN = TX_ENUM_STARTVALUE,
     TX_RESULT_OK,
-    TX_RESULT_SYSTEMNOTINITIALIZED,
-    TX_RESULT_SYSTEMALREADYINITIALIZED,
-    TX_RESULT_SYSTEMSTILLINUSE,
+    TX_RESULT_EYEXNOTINITIALIZED,
+    TX_RESULT_EYEXALREADYINITIALIZED,
+    TX_RESULT_EYEXSTILLINUSE,
     TX_RESULT_INVALIDARGUMENT,   
     TX_RESULT_INVALIDHANDLE,
     TX_RESULT_NOTFOUND,
@@ -141,7 +145,8 @@ typedef enum {
     TX_RESULT_INVALIDSNAPSHOT,
     TX_RESULT_INVALIDCOMMAND,
     TX_RESULT_CANCELLED,
-    TX_RESULT_INVALIDSCHEDULINGMODE
+    TX_RESULT_INVALIDSCHEDULINGMODE,
+    TX_RESULT_MASKTOOLARGE
 } TX_RESULT;
 
 /*********************************************************************************************************************
@@ -223,20 +228,24 @@ typedef enum {
     Message contains an event.
     
   @field TX_MESSAGETYPE_NOTIFICATION:
-    Message contains a notification.
+    Message contains a notification. This is an internal message type.
     
   @field TX_MESSAGETYPE_REQUEST:
-    Message contains a request.
+    Message contains a request. This is an internal message type.
     
   @field TX_MESSAGETYPE_RESPONSE:
-    Message contains a response.
+    Message contains a response. This is an internal message type.
+	
+  @field TX_MESSAGETYPE_CUSTOM:
+    Base value for custom message defined by other protocols.
  */
 typedef enum {
     TX_MESSAGETYPE_QUERY = TX_ENUM_STARTVALUE,
     TX_MESSAGETYPE_EVENT,
-    TX_MESSAGETYPE_NOTIFICATION,
+    TX_MESSAGETYPE_NOTIFICATION = TX_INTERNAL_ENUM_STARTVALUE,
     TX_MESSAGETYPE_REQUEST,
-    TX_MESSAGETYPE_RESPONSE
+    TX_MESSAGETYPE_RESPONSE,
+	TX_MESSAGETYPE_CUSTOM
 } TX_MESSAGETYPE;
 
 /*********************************************************************************************************************/
@@ -251,71 +260,66 @@ typedef enum {
     Notifies that some states have changed.
  */
 typedef enum {    
-    TX_NOTIFICATIONTYPE_STATECHANGED = TX_ENUM_STARTVALUE
+    TX_NOTIFICATIONTYPE_STATECHANGED = TX_ENUM_STARTVALUE,
+	TX_NOTIFICATIONTYPE_DIAGNOSTICSDATA
 } TX_NOTIFICATIONTYPE;
 
 /*********************************************************************************************************************/
 
 /**
-  TX_INTERACTIONBEHAVIORTYPE
+  TX_BEHAVIORTYPE
  
   Enumeration for all behavior types.
   The behavior type is metadata contained by all behaviors to specify what kind of behavior it is.
 
-  @field TX_INTERACTIONBEHAVIORTYPE_GAZEPOINTDATA:
-    Behavior used on interactors to receive gaze point data.
+  @field TX_BEHAVIORTYPE_GAZEPOINTDATA:
+    Behavior used on interactors to receive gaze point data.    
 
-  @field TX_INTERACTIONBEHAVIORTYPE_GAZEDATADIAGNOSTICS:
-    Behavior used on interactors to receive gaze data diagnostics.
-
-  @field TX_INTERACTIONBEHAVIORTYPE_EYEPOSITIONDATA:
+  @field TX_BEHAVIORTYPE_EYEPOSITIONDATA:
     Behavior used on interactors to receive eye position data.
     
-  @field TX_INTERACTIONBEHAVIORTYPE_GAZEAWARE:
+  @field TX_BEHAVIORTYPE_GAZEAWARE:
     Behavior used on interactors to perform gaze-aware interaction.
 
-  @field TX_INTERACTIONBEHAVIORTYPE_ACTIVATABLE:
+  @field TX_BEHAVIORTYPE_ACTIVATABLE:
     Behavior used on interactors to perform activation interaction.
 
-  @field TX_INTERACTIONBEHAVIORTYPE_PANNABLE:
+  @field TX_BEHAVIORTYPE_PANNABLE:
     Behavior used on interactors to perform panning interaction.  
 
-  @field TX_INTERACTIONBEHAVIORTYPE_FIXATIONDATA:
+  @field TX_BEHAVIORTYPE_FIXATIONDATA:
     Behavior used on interactors to receive fixation data.
-
-  @field TX_INTERACTIONBEHAVIORTYPE_PRESENCEDATA:
-    Behavior used on interactors to receive presence data.
  */
 typedef enum {
-    TX_INTERACTIONBEHAVIORTYPE_GAZEPOINTDATA = TX_ENUM_STARTVALUE,
-    TX_INTERACTIONBEHAVIORTYPE_GAZEDATADIAGNOSTICS,    
-    TX_INTERACTIONBEHAVIORTYPE_EYEPOSITIONDATA,
-    TX_INTERACTIONBEHAVIORTYPE_GAZEAWARE,
-    TX_INTERACTIONBEHAVIORTYPE_ACTIVATABLE,
-    TX_INTERACTIONBEHAVIORTYPE_PANNABLE,    
-    TX_INTERACTIONBEHAVIORTYPE_FIXATIONDATA,
+    TX_BEHAVIORTYPE_GAZEPOINTDATA = TX_ENUM_STARTVALUE,    
+    TX_BEHAVIORTYPE_EYEPOSITIONDATA,
+    TX_BEHAVIORTYPE_GAZEAWARE,
+    TX_BEHAVIORTYPE_ACTIVATABLE,
+    TX_BEHAVIORTYPE_PANNABLE,    
+    TX_BEHAVIORTYPE_FIXATIONDATA,
  /* For Internal use */
-    TX_INTERNAL_INTERACTIONBEHAVIORTYPE_RAWGAZEDATA,
-    TX_INTERNAL_INTERACTIONBEHAVIORTYPE_ZOOMABLE
-} TX_INTERACTIONBEHAVIORTYPE;
+    TX_INTERNAL_BEHAVIORTYPE_RAWGAZEDATA = TX_INTERNAL_ENUM_STARTVALUE,
+    TX_INTERNAL_BEHAVIORTYPE_ZOOMABLE,
+    TX_BEHAVIORTYPE_GAZEDATADIAGNOSTICS    
+} TX_BEHAVIORTYPE;
 
 /*********************************************************************************************************************/
 
 /**
-  TX_INTERACTIONBOUNDSTYPE
+  TX_BOUNDSTYPE
 
   Enumeration for all bounds types.
 
-  @field TX_INTERACTIONBOUNDSTYPE_NONE:
+  @field TX_BOUNDSTYPE_NONE:
     No bounds.
 
-  @field TX_INTERACTIONBOUNDSTYPE_RECTANGULAR:    
+  @field TX_BOUNDSTYPE_RECTANGULAR:    
     Rectangular bounds.
  */
 typedef enum {
-    TX_INTERACTIONBOUNDSTYPE_NONE = TX_ENUM_STARTVALUE,
-    TX_INTERACTIONBOUNDSTYPE_RECTANGULAR
-} TX_INTERACTIONBOUNDSTYPE;
+    TX_BOUNDSTYPE_NONE = TX_ENUM_STARTVALUE,
+    TX_BOUNDSTYPE_RECTANGULAR
+} TX_BOUNDSTYPE;
 
 /*********************************************************************************************************************/
 
@@ -323,8 +327,8 @@ typedef enum {
   TX_ACTIVATABLEEVENTTYPE
 
   Enumeration for all activation event types.
-  Activatable event type are metadata contained by all behaviors of type TX_INTERACTIONBEHAVIORTYPE_ACTIVATABLE sent
-  from the server. This event type specifies what kind of activation event actually happened.
+  Activatable event type are metadata contained by all behaviors of type TX_BEHAVIORTYPE_ACTIVATABLE sent
+  from the client. This event type specifies what kind of activation event actually happened.
   
   @field TX_ACTIVATABLEEVENTTYPE_ACTIVATED:
     The interactor has been activated.
@@ -340,22 +344,31 @@ typedef enum {
 /*********************************************************************************************************************/
 
 /**
-  TX_ACTIONDATA
+  TX_FAILEDACTIONTYPE
 
   Enumeration for all action data types.
 
-  @field TX_ACTIONDATATYPE_ACTIVATIONNOHIT
+  @field TX_FAILEDACTIONTYPE_ACTIVATIONNOHIT
     An activation action did not hit any valid interactor
-  @field TX_ACTIONDATATYPE_PANNOHIT
+  @field TX_FAILEDACTIONTYPE_PANNOHIT
     A pan action did not hit any valid interactor
-  @field TX_ACTIONDATATYPE_ZOOMNOHIT
+  @field TX_FAILEDACTIONTYPE_ZOOMNOHIT
     A zoom action did not hit any valid interactor
+  @field TX_FAILEDACTIONTYPE_ACTIVATIONDURINGNOTRACKING
+    An activation action occured when there was no tracking
+  @field TX_FAILEDACTIONTYPE_PANDURINGNOTRACKING
+    A pan action occured when there was no tracking
+  @field TX_FAILEDACTIONTYPE_ZOOMDURINGNOTRACKING
+    A zoom action occured when there was no tracking
  */
 typedef enum {    
-    TX_ACTIONDATATYPE_ACTIVATIONNOHIT = TX_ENUM_STARTVALUE,
-    TX_ACTIONDATATYPE_PANNOHIT,
-    TX_ACTIONDATATYPE_ZOOMNOHIT
-} TX_ACTIONDATATYPE;
+    TX_FAILEDACTIONTYPE_ACTIVATIONNOHIT = TX_ENUM_STARTVALUE,
+    TX_FAILEDACTIONTYPE_PANNOHIT,
+    TX_FAILEDACTIONTYPE_ZOOMNOHIT,
+    TX_FAILEDACTIONTYPE_ACTIVATIONDURINGNOTRACKING,
+    TX_FAILEDACTIONTYPE_PANDURINGNOTRACKING,
+    TX_FAILEDACTIONTYPE_ZOOMDURINGNOTRACKING
+} TX_FAILEDACTIONTYPE;
 
 /*********************************************************************************************************************/
 
@@ -363,8 +376,8 @@ typedef enum {
   TX_FIXATIONDATAEVENTTYPE
 
   Enumeration for all fixation data event types.
-  Fixation event type is metadata contained by all behaviors of type TX_INTERACTIONBEHAVIORTYPE_FIXATION sent
-  from the server. This event type specifies what kind of fixation event actually happened.
+  Fixation event type is metadata contained by all behaviors of type TX_BEHAVIORTYPE_FIXATION sent
+  from the client. This event type specifies what kind of fixation event actually happened.
   
   @field TX_FIXATIONDATAEVENTTYPE_BEGIN:
     The fixation has begun. The gaze point data provided is a combination of the gaze points used to detect the 
@@ -389,7 +402,7 @@ typedef enum {
   TX_GAZEPOINTDATAMODE
 
    Enumeration for all gaze point data modes.
-   The gaze point data mode is metadata contained by all behaviors of type TX_INTERACTIONBEHAVIORTYPE_GAZEPOINTDATA.
+   The gaze point data mode is metadata contained by all behaviors of type TX_BEHAVIORTYPE_GAZEPOINTDATA.
    When put on an interactor it specifies what kind of filter to use by the engine when calculating the gaze points.
    When put on an event it specifies what kind of filter that was used by the engine.
 
@@ -412,7 +425,7 @@ typedef enum {
   TX_GAZEAWAREMODE
 
    Enumeration for all gaze aware modes.
-   The gaze point data mode is metadata contained by all behaviors of type TX_INTERACTIONBEHAVIORTYPE_GAZEAWARE.
+   The gaze aware mode is metadata contained by all behaviors of type TX_BEHAVIORTYPE_GAZEAWARE.
    When put on an interactor it specifies how the user must gaze on the interactor to make it gaze aware.
    When put on an event it specifies what kind of mode that was used by the engine.
    
@@ -434,7 +447,7 @@ typedef enum {
   TX_FIXATIONDATAMODE
 
    Enumeration for all fixation data modes.
-   The fixation data mode is metadata contained by all behaviors of type TX_INTERACTIONBEHAVIORTYPE_FIXATION.
+   The fixation data mode is metadata contained by all behaviors of type TX_BEHAVIORTYPE_FIXATION.
    When put on an interactor it specifies what kind of filter to use by the engine when finding fixations.
    When put on an event it specifies what kind of filter that was used by the engine.
 
@@ -480,6 +493,9 @@ typedef enum {
 
   @field TX_EYETRACKINGDEVICESTATUS_UNKNOWNERROR:
     Unknown error.
+
+  @field TX_EYETRACKINGDEVICESTATUS_CONNECTIONERROR:
+    The eye tracking device is connected to USB port but EyeX Engine can not connect to it.
  */
 typedef enum {
     TX_EYETRACKINGDEVICESTATUS_INITIALIZING = TX_ENUM_STARTVALUE,
@@ -489,76 +505,30 @@ typedef enum {
     TX_EYETRACKINGDEVICESTATUS_TRACKING,
     TX_EYETRACKINGDEVICESTATUS_TRACKINGPAUSED,
     TX_EYETRACKINGDEVICESTATUS_CONFIGURING,
-    TX_EYETRACKINGDEVICESTATUS_UNKNOWNERROR
+    TX_EYETRACKINGDEVICESTATUS_UNKNOWNERROR,
+    TX_EYETRACKINGDEVICESTATUS_CONNECTIONERROR
 } TX_EYETRACKINGDEVICESTATUS;
 
 /*********************************************************************************************************************/
 
 /**
-  Enumeration for all command types.
-  The command type is metadata contained by all commands sent from the client to the server which describes what kind
-  of command it is. Normally, clients should not send commands directly. Instead prefer higher abstractions such as 
-  txGetState, txCommitSnapshot, etc. However, txCreateCommand and txExecuteCommands can be used to manually send commands.
-
-  @field TX_INTERACTIONCOMMANDTYPE_EXECUTEACTION:
-    Executes an action. Expected data payload is a property with name TX_LITERAL_ACTIONTYPE and with a value of TX_ACTIONTYPE.
-
-  @field TX_INTERACTIONCOMMANDTYPE_SETSTATE:
-    Sets a state. Expected data payload is a state bag. Use txCreateStateBag to set the property path and its value.
-    Asyncrhonous result will return TX_RESULT_NOT_FOUND if path does not exist.
-
-  @field TX_INTERACTIONCOMMANDTYPE_GETSTATE:
-    Gets a state. Expected payload data is a property with name TX_LITERAL_STATEPATH and with a string value.
-    Asynchronous result will return TX_RESULT_NOT_FOUND if path does not exist.
-
-  @field TX_INTERACTIONCOMMANDTYPE_REGISTERSTATEOBSERVER:
-    Registers the client as a state observer. Expected payload data is a property with name TX_LITERAL_STATEPATH and with a string value.
-
-  @field TX_INTERACTIONCOMMANDTYPE_UNREGISTERSTATEOBSERVER:
-    Unregisters the client as a state observer. Expected payload data is a property with name TX_LITERAL_STATEPATH and with a string value.
-
-  @field TX_INTERACTIONCOMMANDTYPE_COMMITSNAPSHOT:
-    Commits a snapshot to the server. Expected payload data is a a snapshot created with txCreateSnapshot.
-  
-  @field TX_INTERACTIONCOMMANDTYPE_GETSERVERVERSION:
-    Gets the version of the running server.
-
-  @field TX_INTERACTIONCOMMANDTYPE_ENABLEBUILTINKEYS:
-    Enabled built-in interaction keys in the EyeX Engine. These are enabled by default, so this will only have effect if the client has disabled
-    the keys previously with TX_INTERACTIONCOMMANDTYPE_DISABLEBUILTINKEYS.
-
-  @field TX_INTERACTIONCOMMANDTYPE_DISABLEBUILTINKEYS:
-    Disables the built-in interaction keys in the EyeX Engine. The keys will automatically be re-enabled if the client who disabled the keys
-    disconnects. Keys can also be re-enabled with TX_INTERACTIONCOMMANDTYPE_ENABLEBUILTINKEYS. Note that the keys will be disabled for all applications,
-    so developers should take care to re-enable the keys as soon as their application no longer has the key focus.
-    
-  @field TX_INTERACTIONCOMMANDTYPE_CLIENTCONNECTION:
-    For internal use only.
-
-  @field TX_INTERACTIONCOMMANDTYPE_LAUNCHEYETRACKINGCONTROLPANEL:
-    For internal use only.
-
-  @field TX_INTERACTIONCOMMANDTYPE_REGISTERQUERYHANDLER:
-    For internal use only.
-
-  @field TX_INTERACTIONCOMMANDTYPE_UNREGISTERQUERYHANDLER:
-    For internal use only.  
+  Enumeration for all command types. For internal use only.
  */
 typedef enum {
-    TX_INTERACTIONCOMMANDTYPE_EXECUTEACTION = TX_ENUM_STARTVALUE,
-    TX_INTERACTIONCOMMANDTYPE_SETSTATE,
-    TX_INTERACTIONCOMMANDTYPE_GETSTATE,
-    TX_INTERACTIONCOMMANDTYPE_REGISTERSTATEOBSERVER,
-    TX_INTERACTIONCOMMANDTYPE_UNREGISTERSTATEOBSERVER,    
-    TX_INTERACTIONCOMMANDTYPE_COMMITSNAPSHOT,
-    TX_INTERACTIONCOMMANDTYPE_GETSERVERVERSION,
-    TX_INTERACTIONCOMMANDTYPE_ENABLEBUILTINKEYS,
-    TX_INTERACTIONCOMMANDTYPE_DISABLEBUILTINKEYS,
-    TX_INTERACTIONCOMMANDTYPE_CLIENTCONNECTION = TX_INTERNAL_ENUM_STARTVALUE,
-    TX_INTERACTIONCOMMANDTYPE_LAUNCHEYETRACKINGCONTROLPANEL,
-    TX_INTERACTIONCOMMANDTYPE_REGISTERQUERYHANDLER,
-    TX_INTERACTIONCOMMANDTYPE_UNREGISTERQUERYHANDLER
-} TX_INTERACTIONCOMMANDTYPE;
+    TX_COMMANDTYPE_EXECUTEACTION = TX_ENUM_STARTVALUE,
+    TX_COMMANDTYPE_SETSTATE,
+    TX_COMMANDTYPE_GETSTATE,
+    TX_COMMANDTYPE_REGISTERSTATEOBSERVER,
+    TX_COMMANDTYPE_UNREGISTERSTATEOBSERVER,    
+    TX_COMMANDTYPE_COMMITSNAPSHOT,    
+    TX_COMMANDTYPE_ENABLEBUILTINKEYS,
+    TX_COMMANDTYPE_DISABLEBUILTINKEYS,
+    TX_COMMANDTYPE_CLIENTCONNECTION,
+    TX_COMMANDTYPE_LAUNCHEYETRACKINGCONTROLPANEL,
+    TX_COMMANDTYPE_REGISTERQUERYHANDLER,
+    TX_COMMANDTYPE_UNREGISTERQUERYHANDLER,
+	TX_COMMANDTYPE_DIAGNOSTICSREQUEST
+} TX_COMMANDTYPE;
 
 /*********************************************************************************************************************/
 
@@ -586,10 +556,10 @@ typedef enum {
     Performs a panning step action. This corresponds to a click on the panning button.
 
   @field TX_ACTIONTYPE_ZOOMIN:
-    Perfomrs a zoom-in action. This corresponds to a click on the zoom-in button.
+    Performs a zoom-in action. This corresponds to a click on the zoom-in button.
 
   @field TX_ACTIONTYPE_ZOOMOUT:
-    Perfomrs a zoom-out action. This corresponds to a click on the zoom-out button. 
+    Performs a zoom-out action. This corresponds to a click on the zoom-out button. 
 
   @field TX_ACTIONTYPE_PANNINGTOGGLEHANDSFREE:
     Toggles auto-panning mode on or off.  
@@ -612,8 +582,8 @@ typedef enum {
   TX_PANNABLEEVENTTYPE
 
   Enumeration for all pannable event types.
-  Pannable event type are metadata contained by all behaviors of type TX_INTERACTIONBEHAVIORTYPE_PANNABLE sent
-  from the server. This event type specifies what kind of pannable event actually happened.
+  Pannable event type are metadata contained by all behaviors of type TX_BEHAVIORTYPE_PANNABLE sent
+  from the client. This event type specifies what kind of pannable event actually happened.
   
   @field TX_PANNABLEEVENTTYPE_PAN:
     The interactor has been panned.
@@ -708,20 +678,38 @@ typedef enum {
 /*********************************************************************************************************************/
 
 /**
-  TX_PRESENCEDATA
+  TX_USERPRESENCE
 
   Enumeration for convery presence status.
 
-  @field TX_PRESENCEDATA_PRESENT:
+  @field TX_USERPRESENCE_PRESENT:
     A user is present in front of the eye tracker.
   
-  @field TX_PRESENCEDATA_NOTPRESENT:
+  @field TX_USERPRESENCE_NOTPRESENT:
     A user is not present in front of the eye tracker.
  */
 typedef enum {
-    TX_PRESENCEDATA_PRESENT = TX_ENUM_STARTVALUE,
-    TX_PRESENCEDATA_NOTPRESENT    
-} TX_PRESENCEDATA;
+    TX_USERPRESENCE_PRESENT = TX_ENUM_STARTVALUE,
+    TX_USERPRESENCE_NOTPRESENT    
+} TX_USERPRESENCE;
+
+/*********************************************************************************************************************/
+
+/**
+  TX_REQUESTTYPE
+
+  Enumeration for all the types of requests that can be exposed through the API.
+    
+  @field TX_REQUESTTYPE_COMMAND:
+    The request handles a command.
+	
+  @field TX_REQUESTTYPE_CUSTOM:
+    Base value for custom requests defined by other protocols.
+ */
+typedef enum {
+	TX_REQUESTTYPE_COMMAND = TX_ENUM_STARTVALUE,	
+	TX_REQUESTTYPE_CUSTOM = TX_INTERNAL_ENUM_STARTVALUE
+} TX_REQUESTTYPE;
 
 /*********************************************************************************************************************/
 
@@ -736,6 +724,13 @@ typedef enum {
 typedef enum {
     TX_MASKTYPE_DEFAULT = TX_ENUM_STARTVALUE
 } TX_MASKTYPE;
+
+/*********************************************************************************************************************/
+
+typedef enum {
+    TX_CLIENTMODE_AGENT = TX_ENUM_STARTVALUE,
+	TX_CLIENTMODE_DIAGNOSTICS
+} TX_CLIENTMODE;
 
 /*********************************************************************************************************************/
 

@@ -16,7 +16,7 @@ class StateBag :
 	public InteractionObject
 {
 public:
-	StateBag(const std::shared_ptr<const InteractionContext>& spContext, TX_HANDLE hBag);
+	StateBag(const std::shared_ptr<const Context>& spContext, TX_HANDLE hBag);
 		
     std::string GetStatePath() const;
     

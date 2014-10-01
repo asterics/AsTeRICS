@@ -43,7 +43,7 @@ void Property::SetValue(const TValue& value)
 
 /*********************************************************************************************************************/
 
-inline Property::Property(const std::shared_ptr<const InteractionContext>& spContext, TX_PROPERTYHANDLE hProperty)
+inline Property::Property(const std::shared_ptr<const Context>& spContext, TX_PROPERTYHANDLE hProperty)
 : HandleWrapper<TX_PROPERTYHANDLE>(spContext, hProperty)
 {}
 

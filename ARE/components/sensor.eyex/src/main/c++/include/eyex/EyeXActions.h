@@ -23,22 +23,142 @@
     Must not be TX_EMPTY_HANDLE.
 
   @param action [in]:
-    The action to send.
+    The type of action.  
  
   @return 
     TX_RESULT_OK: The command was successfully created.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
  */
 TX_C_BEGIN
 TX_API TX_RESULT TX_CALLCONVENTION txCreateActionCommand(
     TX_CONTEXTHANDLE hContext,
     TX_HANDLE* phCommand,
-    TX_ACTIONTYPE action    
+    TX_ACTIONTYPE actionType
     );
 TX_C_END
 
+typedef TX_RESULT (TX_CALLCONVENTION *CreateActionCommandHook)(
+    TX_CONTEXTHANDLE hContext,
+    TX_HANDLE* phCommand,
+    TX_ACTIONTYPE actionType
+    );
+
+
 /*********************************************************************************************************************/
+
+/**
+  txDisableBuiltinKeysAsync
+
+  Disables EyeX builtin keys for a top-level window. When the gaze is over the
+  specified window, all interaction must be done through action commands.
+ 
+  @param hContext [in]: 
+    A TX_CONTEXTHANDLE to the context on which to disable keys.
+    Must not be TX_EMPTY_HANDLE.
+  
+  @param windowId [in]: 
+    The window id for which to disable keys (window id corresponds to the windows handle on Windows).
+
+  @param completionHandler [in]:
+    The TX_ASYNCDATACALLBACK that will handle the request result.
+    Can be NULL.
+
+	The data provided by the TX_ASYNCDATACALLBACK will contain a result code which can be retrieved using 
+	txGetAsyncDataResult(). The result code will be one of the follwing:
+
+		TX_RESULT_OK: 
+			The request was succesfully executed on the client.
+									
+		TX_RESULT_CANCELLED:
+			The asynchronous operation was cancelled.
+
+	That handle to the async data must NOT be released.
+
+  @param userParam [in]:
+    A TX_USERPARAM which will be provided as a parameter to the completion callback. 
+    Can be NULL.
+ 
+  @return 
+    TX_RESULT_OK: The request was successfully sent.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
+    TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
+ */
+TX_C_BEGIN
+TX_API TX_RESULT TX_CALLCONVENTION txDisableBuiltinKeys(
+    TX_CONTEXTHANDLE hContext,
+    TX_CONSTSTRING windowId,
+    TX_ASYNCDATACALLBACK completionHandler,
+    TX_USERPARAM userParam
+    );
+TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *DisableBuiltinKeysHook)(
+    TX_CONTEXTHANDLE hContext,
+    TX_CONSTSTRING windowId,
+    TX_ASYNCDATACALLBACK completionHandler,
+    TX_USERPARAM userParam
+    );
+
+
+/*********************************************************************************************************************/
+
+/**
+  txEnableBuiltinKeysAsync
+
+  Enables EyeX builtin keys for a top-level window where the keys was previously disabled.   
+ 
+  @param hContext [in]: 
+    A TX_CONTEXTHANDLE to the context on which to enable keys.
+    Must not be TX_EMPTY_HANDLE.
+  
+  @param windowId [in]: 
+    The window id for which to re-enable keys (window id corresponds to the windows handle on Windows).
+
+  @param completionHandler [in]:
+    The TX_ASYNCDATACALLBACK that will handle the request result.
+    Can be NULL.
+
+	The data provided by the TX_ASYNCDATACALLBACK will contain a result code which can be retrieved using 
+	txGetAsyncDataResult(). The result code will be one of the follwing:
+
+		TX_RESULT_OK: 
+			The request was succesfully executed on the client.
+			
+		TX_RESULT_CANCELLED:
+			The asynchronous operation was cancelled.
+
+	That handle to the async data must NOT be released.
+
+  @param userParam [in]:
+    A TX_USERPARAM which will be provided as a parameter to the completion callback. 
+    Can be NULL.
+ 
+  @return 
+    TX_RESULT_OK: The command was successfully created.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
+    TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
+ */
+TX_C_BEGIN
+TX_API TX_RESULT TX_CALLCONVENTION txEnableBuiltinKeys(
+    TX_CONTEXTHANDLE hContext,
+    TX_CONSTSTRING windowId,
+    TX_ASYNCDATACALLBACK completionHandler,
+    TX_USERPARAM userParam
+    );
+TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *EnableBuiltinKeysHook)(
+    TX_CONTEXTHANDLE hContext,
+    TX_CONSTSTRING windowId,
+    TX_ASYNCDATACALLBACK completionHandler,
+    TX_USERPARAM userParam
+    );
+
+
+/*********************************************************************************************************************/
+
+
 
 #endif /* !defined(__TOBII_TX_ACTION_API__H__) */
 

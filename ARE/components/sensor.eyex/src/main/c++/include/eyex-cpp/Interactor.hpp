@@ -16,7 +16,7 @@ class Interactor :
 	public InteractionObject
 {
 public:	
-	Interactor(const std::shared_ptr<const InteractionContext>& spContext, TX_HANDLE hInteractor);
+	Interactor(const std::shared_ptr<const Context>& spContext, TX_HANDLE hInteractor);
 		
 	std::string GetId() const;
 	std::string GetParentId() const;
@@ -31,24 +31,24 @@ public:
     double GetZ() const;
     void SetZ(double z);
     
-    void SetGazePointDataBehavior(const TX_GAZEPOINTDATAPARAMS& params);
-    void SetActivatableBehavior(const TX_ACTIVATABLEPARAMS& params);
-    void SetPannableBehavior(const TX_PANNABLEPARAMS& params);    
-    void SetGazeAwareBehavior(const TX_GAZEAWAREPARAMS& params);    
-    void SetFixationDataBehaviorParams(const TX_FIXATIONDATAPARAMS& params); 
+    void CreateGazePointDataBehavior(const TX_GAZEPOINTDATAPARAMS& params);
+    void CreateActivatableBehavior(const TX_ACTIVATABLEPARAMS& params);
+    void CreatePannableBehavior(const TX_PANNABLEPARAMS& params);    
+    void CreateGazeAwareBehavior(const TX_GAZEAWAREPARAMS& params);    
+    void CreateFixationDataBehaviorParams(const TX_FIXATIONDATAPARAMS& params); 
 
-    std::shared_ptr<InteractionBounds> GetBounds() const;
-    std::vector<std::shared_ptr<InteractionBehavior>> GetBehaviors() const;
-    std::shared_ptr<InteractionBounds> CreateBounds(TX_INTERACTIONBOUNDSTYPE boundsType);
+    std::shared_ptr<Bounds> GetBounds() const;
+    std::vector<std::shared_ptr<Behavior>> GetBehaviors() const;
+    std::shared_ptr<Bounds> CreateBounds(TX_BOUNDSTYPE boundsType);
     void DeleteBounds();
 
-    std::shared_ptr<InteractionBehavior> CreateBehavior(TX_INTERACTIONBEHAVIORTYPE behaviorType);
-    void DeleteBehavior(TX_INTERACTIONBEHAVIORTYPE behaviorType);
-	bool TryGetBehavior(std::shared_ptr<InteractionBehavior> *pspBehavior, TX_INTERACTIONBEHAVIORTYPE behaviorType) const;
+    std::shared_ptr<Behavior> CreateBehavior(TX_BEHAVIORTYPE behaviorType);
+    void DeleteBehavior(TX_BEHAVIORTYPE behaviorType);
+	bool TryGetBehavior(std::shared_ptr<Behavior> *pspBehavior, TX_BEHAVIORTYPE behaviorType) const;
 
-    std::shared_ptr<InteractionMask> CreateMask(TX_MASKTYPE maskType, int columnCount, int rowCount, const TX_BYTE* pData);
+    std::shared_ptr<Mask> CreateMask(TX_MASKTYPE maskType, int columnCount, int rowCount, const TX_BYTE* pData);
     void RemoveMask();
-    std::shared_ptr<InteractionMask> GetMask() const;
+    std::shared_ptr<Mask> GetMask() const;
     
     void SetMaskBounds(const TX_RECT& bounds);
     void ClearMaskBounds();

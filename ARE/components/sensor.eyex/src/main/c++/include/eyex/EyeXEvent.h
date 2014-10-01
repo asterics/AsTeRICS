@@ -29,7 +29,7 @@
  
   @return 
     TX_RESULT_OK: The interactor id or the required size of the string was successfully retrieved.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_INVALIDBUFFERSIZE: The size of pInteractorId is invalid (*pInteractorIdSize will be set to the required size).
  */
@@ -41,12 +41,19 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetEventInteractorId(
     );
 TX_C_END
 
+typedef TX_RESULT (TX_CALLCONVENTION *GetEventInteractorIdHook)(
+    TX_CONSTHANDLE hEvent, 
+    TX_STRING pInteractorId,
+    TX_SIZE* pInteractorIdSize
+    );
+
+
 /*********************************************************************************************************************/
 
 /**
   txGetEventBehavior
 
-  Gets a behavior with a specified TX_INTERACTIONBEHAVIORTYPE from an event.
+  Gets a behavior with a specified TX_BEHAVIORTYPE from an event.
   If the event does not have a behavior of the specified type this call will fail.
  
   @param hEvent [in]: 
@@ -60,11 +67,11 @@ TX_C_END
     The value of the pointer must be set to TX_EMPTY_HANDLE.
  
   @param behaviorType [in]: 
-    The TX_INTERACTIONBEHAVIORTYPE which specifies what type of behavior to get.
+    The TX_BEHAVIORTYPE which specifies what type of behavior to get.
  
   @return 
     TX_RESULT_OK: The behavior was successfully retrieved.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_NOTFOUND: This event does not have a behavior of the specified type.
  */
@@ -72,9 +79,16 @@ TX_C_BEGIN
 TX_API TX_RESULT TX_CALLCONVENTION txGetEventBehavior(
     TX_CONSTHANDLE hEvent,
     TX_HANDLE* phBehavior,
-    TX_INTERACTIONBEHAVIORTYPE behaviorType
+    TX_BEHAVIORTYPE behaviorType
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetEventBehaviorHook)(
+    TX_CONSTHANDLE hEvent,
+    TX_HANDLE* phBehavior,
+    TX_BEHAVIORTYPE behaviorType
+    );
+
   
 /*********************************************************************************************************************/
 
@@ -99,7 +113,7 @@ TX_C_END
  
   @return 
     TX_RESULT_OK: The handles or the required size of the buffer was retrieved successfully.
-    TX_RESULT_SYSTEMNOTINITIALIZED: The system is not initialized.
+    TX_RESULT_EYEXNOTINITIALIZED: The EyeX client environment is not initialized.
     TX_RESULT_INVALIDARGUMENT: An invalid argument was passed to the function.
     TX_RESULT_INVALIDBUFFERSIZE: The size of the array is invalid. (*pBehaviorsSize will be set to the number of behaviors).
  */
@@ -110,6 +124,13 @@ TX_API TX_RESULT TX_CALLCONVENTION txGetEventBehaviors(
     TX_SIZE* pBehaviorsSize
     );
 TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetEventBehaviorsHook)(
+    TX_CONSTHANDLE hEvent,
+    TX_HANDLE* phBehaviors,
+    TX_SIZE* pBehaviorsSize
+    );
+
 
 /*********************************************************************************************************************/
 

@@ -10,10 +10,10 @@
 
 TX_NAMESPACE_BEGIN
 
-    /*********************************************************************************************************************/
+/*********************************************************************************************************************/
 
-    inline Interactor::Interactor(const std::shared_ptr<const InteractionContext>& spContext, TX_HANDLE hInteractor)
-    : InteractionObject(spContext, hInteractor)
+inline Interactor::Interactor(const std::shared_ptr<const Context>& spContext, TX_HANDLE hInteractor)
+: InteractionObject(spContext, hInteractor)
 {}
 
 /*********************************************************************************************************************/
@@ -87,62 +87,62 @@ inline void Interactor::SetZ(double z)
 
 /*********************************************************************************************************************/
 
-inline void Interactor::SetGazePointDataBehavior(const TX_GAZEPOINTDATAPARAMS& params)
+inline void Interactor::CreateGazePointDataBehavior(const TX_GAZEPOINTDATAPARAMS& params)
 {
 
-    TX_VALIDATE(txSetGazePointDataBehavior(_hObject, &params));
+    TX_VALIDATE(txCreateGazePointDataBehavior(_hObject, &params));
 }
 
 /*********************************************************************************************************************/
 
-inline void Interactor::SetActivatableBehavior(const TX_ACTIVATABLEPARAMS& params)
+inline void Interactor::CreateActivatableBehavior(const TX_ACTIVATABLEPARAMS& params)
 {    
-    TX_VALIDATE(txSetActivatableBehavior(_hObject, &params));
+    TX_VALIDATE(txCreateActivatableBehavior(_hObject, &params));
 }
 
 /*********************************************************************************************************************/
 
-inline void Interactor::SetPannableBehavior(const TX_PANNABLEPARAMS& params)
+inline void Interactor::CreatePannableBehavior(const TX_PANNABLEPARAMS& params)
 {
-    TX_VALIDATE(txSetPannableBehavior(_hObject, &params));
+    TX_VALIDATE(txCreatePannableBehavior(_hObject, &params));
 }
 
 /*********************************************************************************************************************/
 
-inline void Interactor::SetGazeAwareBehavior(const TX_GAZEAWAREPARAMS& params)
+inline void Interactor::CreateGazeAwareBehavior(const TX_GAZEAWAREPARAMS& params)
 {
-    TX_VALIDATE(txSetGazeAwareBehavior(_hObject, &params));
+    TX_VALIDATE(txCreateGazeAwareBehavior(_hObject, &params));
 }  
 
 /*********************************************************************************************************************/
 
-inline void Interactor::SetFixationDataBehaviorParams(const TX_FIXATIONDATAPARAMS& params)
+inline void Interactor::CreateFixationDataBehaviorParams(const TX_FIXATIONDATAPARAMS& params)
 {    
-    TX_VALIDATE(txSetFixationDataBehavior(_hObject, &params));
+    TX_VALIDATE(txCreateFixationDataBehavior(_hObject, &params));
 }
 
 /*********************************************************************************************************************/
 
-inline std::shared_ptr<InteractionBounds> Interactor::GetBounds() const
+inline std::shared_ptr<Bounds> Interactor::GetBounds() const
 {
     TX_HANDLE hBounds;
     if (!TX_VALIDATE(txGetInteractorBounds(_hObject, &hBounds), TX_RESULT_NOTFOUND))
         return nullptr;
 
-    return _spContext->CreateObject<InteractionBounds>(hBounds);
+    return _spContext->CreateObject<Bounds>(hBounds);
 }
 
 /*********************************************************************************************************************/
 
-inline std::vector<std::shared_ptr<InteractionBehavior>> Interactor::GetBehaviors() const
+inline std::vector<std::shared_ptr<Behavior>> Interactor::GetBehaviors() const
 {
     std::vector<Tx::Utils::ScopedHandle> behaviorHandles;
     TX_VALIDATE(Tx::Utils::GetBufferData(behaviorHandles, txGetInteractorBehaviors, _hObject));
         
-    std::vector<std::shared_ptr<InteractionBehavior>> behaviors;   
+    std::vector<std::shared_ptr<Behavior>> behaviors;   
     for(auto& hBehavior : behaviorHandles)
     {
-        auto spBehavior = _spContext->CreateObject<InteractionBehavior>(hBehavior);
+        auto spBehavior = _spContext->CreateObject<Behavior>(hBehavior);
         behaviors.push_back(spBehavior);
     }
 
@@ -151,11 +151,11 @@ inline std::vector<std::shared_ptr<InteractionBehavior>> Interactor::GetBehavior
 
 /*********************************************************************************************************************/
 
-inline std::shared_ptr<InteractionBounds> Interactor::CreateBounds(TX_INTERACTIONBOUNDSTYPE boundsType)
+inline std::shared_ptr<Bounds> Interactor::CreateBounds(TX_BOUNDSTYPE boundsType)
 {
     Tx::Utils::ScopedHandle hBounds;
     TX_VALIDATE(txCreateInteractorBounds(_hObject, &hBounds, boundsType));
-    auto spBounds = _spContext->CreateObject<InteractionBounds>(hBounds);
+    auto spBounds = _spContext->CreateObject<Bounds>(hBounds);
     return spBounds;
 }
 
@@ -168,40 +168,40 @@ inline void Interactor::DeleteBounds()
 
 /*********************************************************************************************************************/
 
-inline std::shared_ptr<InteractionBehavior> Interactor::CreateBehavior(TX_INTERACTIONBEHAVIORTYPE behaviorType)
+inline std::shared_ptr<Behavior> Interactor::CreateBehavior(TX_BEHAVIORTYPE behaviorType)
 {
     Tx::Utils::ScopedHandle hBehavior;
     TX_VALIDATE(txCreateInteractorBehavior(_hObject, &hBehavior, behaviorType));
-    auto spBehavior = _spContext->CreateObject<InteractionBehavior>(hBehavior);
+    auto spBehavior = _spContext->CreateObject<Behavior>(hBehavior);
     return spBehavior;
 }
 
 /*********************************************************************************************************************/
 
-inline void Interactor::DeleteBehavior(TX_INTERACTIONBEHAVIORTYPE behaviorType)
+inline void Interactor::DeleteBehavior(TX_BEHAVIORTYPE behaviorType)
 {
     TX_VALIDATE(txRemoveInteractorBehavior(_hObject, behaviorType));
 }
 
 /*********************************************************************************************************************/
 
-inline bool Interactor::TryGetBehavior(std::shared_ptr<InteractionBehavior> *pspBehavior, TX_INTERACTIONBEHAVIORTYPE behaviorType) const
+inline bool Interactor::TryGetBehavior(std::shared_ptr<Behavior> *pspBehavior, TX_BEHAVIORTYPE behaviorType) const
 {
     Tx::Utils::ScopedHandle hBehavior;
     if (!TX_VALIDATE(txGetInteractorBehavior(_hObject, &hBehavior, behaviorType), TX_RESULT_NOTFOUND))
         return false;
 
-    *pspBehavior = _spContext->CreateObject<InteractionBehavior>(hBehavior);
+    *pspBehavior = _spContext->CreateObject<Behavior>(hBehavior);
     return true;
 }
 
 /*********************************************************************************************************************/
 
-inline std::shared_ptr<InteractionMask> Interactor::CreateMask(TX_MASKTYPE maskType, int columnCount, int rowCount, const TX_BYTE* pData)
+inline std::shared_ptr<Mask> Interactor::CreateMask(TX_MASKTYPE maskType, int columnCount, int rowCount, const TX_BYTE* pData)
 {
     Tx::Utils::ScopedHandle hMask;
-    TX_VALIDATE(txCreateInteractorMask(_hObject, &hMask, maskType, columnCount, rowCount, pData));
-    auto spMask = _spContext->CreateObject<InteractionMask>(hMask);
+    TX_VALIDATE(txCreateMask(_hObject, &hMask, maskType, columnCount, rowCount, pData));
+    auto spMask = _spContext->CreateObject<Mask>(hMask);
     return spMask;
 }
 
@@ -209,16 +209,16 @@ inline std::shared_ptr<InteractionMask> Interactor::CreateMask(TX_MASKTYPE maskT
 
 inline void Interactor::RemoveMask()
 {
-    TX_VALIDATE(txRemoveInteractorMask(_hObject));
+    TX_VALIDATE(txRemoveMask(_hObject));
 }
 
 /*********************************************************************************************************************/
 
-inline std::shared_ptr<InteractionMask> Interactor::GetMask() const
+inline std::shared_ptr<Mask> Interactor::GetMask() const
 {
     Tx::Utils::ScopedHandle hMask;
-    TX_VALIDATE(txGetInteractorMask(_hObject, &hMask));
-    auto spMask = _spContext->CreateObject<InteractionMask>(hMask);
+    TX_VALIDATE(txGetMask(_hObject, &hMask));
+    auto spMask = _spContext->CreateObject<Mask>(hMask);
     return spMask;
 }
 
@@ -226,21 +226,21 @@ inline std::shared_ptr<InteractionMask> Interactor::GetMask() const
 
 inline void Interactor::SetMaskBounds(const TX_RECT& bounds)
 {
-    TX_VALIDATE(txSetInteractorMaskBounds(_hObject, &bounds));
+    TX_VALIDATE(txSetMaskBounds(_hObject, &bounds));
 }
 
 /*********************************************************************************************************************/
 
 inline void Interactor::ClearMaskBounds() 
 {
-    TX_VALIDATE(txClearInteractorMaskBounds(_hObject));
+    TX_VALIDATE(txClearMaskBounds(_hObject));
 }
 
 /*********************************************************************************************************************/
 
 inline bool Interactor::TryGetMaskBounds(TX_RECT* pBounds) const
 {    
-    if(!TX_VALIDATE(txGetInteractorMaskBounds(_hObject, pBounds), TX_RESULT_NOTFOUND))
+    if(!TX_VALIDATE(txGetMaskBounds(_hObject, pBounds), TX_RESULT_NOTFOUND))
         return false;
 
     return true;

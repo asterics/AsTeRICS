@@ -13,7 +13,7 @@ TX_NAMESPACE_BEGIN
 /*********************************************************************************************************************/
 
 template <typename THandle>
-inline InteractionObjectBase<THandle>::InteractionObjectBase(const std::shared_ptr<const InteractionContext>& spContext, THandle hObject)
+inline InteractionObjectBase<THandle>::InteractionObjectBase(const std::shared_ptr<const Context>& spContext, THandle hObject)
 : HandleWrapper(spContext, hObject)
 { }
 
@@ -118,7 +118,7 @@ inline bool InteractionObjectBase<THandle>::TryGetPropertyValue(TValue* pValue, 
 
 /*********************************************************************************************************************/
 
-inline InteractionObject::InteractionObject(const std::shared_ptr<const InteractionContext>& spContext, TX_HANDLE hObject)
+inline InteractionObject::InteractionObject(const std::shared_ptr<const Context>& spContext, TX_HANDLE hObject)
 : InteractionObjectBase<TX_HANDLE>(spContext, hObject)
 { }
 
