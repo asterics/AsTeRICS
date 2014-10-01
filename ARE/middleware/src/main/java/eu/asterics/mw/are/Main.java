@@ -5,6 +5,8 @@ import eu.asterics.mw.are.asapi.Activator;
 import eu.asterics.mw.are.exceptions.DeploymentException;
 import eu.asterics.mw.gui.AstericsGUI;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
+import eu.asterics.mw.services.AstericsThreadPool;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -117,6 +119,11 @@ public class Main implements BundleActivator
 			Thread udpThread = new Thread( new UDPThread ());
 			udpThread.start();
 
+			//Create thread pools and eventually store back properties
+			AstericsThreadPool.getInstance();
+			AstericsModelExecutionThreadPool.getInstance();
+			AREProperties.instance.storeProperties();
+			
 			DeploymentManager.instance.setStatus(AREStatus.OK);
 			AstericsErrorHandling.instance.setStatusObject
 			(AREStatus.OK.toString(), "", "");

@@ -31,6 +31,7 @@ package eu.asterics.component.actuator.fS20Sender;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
@@ -45,6 +46,7 @@ import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.*;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 import eu.asterics.mw.services.AstericsThreadPool;
 import eu.asterics.component.actuator.fS20Sender.PCSDevice;
 import eu.asterics.component.actuator.fS20Sender.FS20Utils;
@@ -652,9 +654,9 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 		};
 
 		try {
-			AstericsThreadPool.instance.execAndWaitOnAREMainThread(runnable);
-		} catch (InterruptedException | ExecutionException e) {
-			logger.warning("Could not execute openDevice in AREMain thread: "
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(runnable);
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			logger.warning("Could not execute openDevice in ModelExecutor thread: "
 					+ e.getMessage());
 		}
 
@@ -683,16 +685,16 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 			}
 		};
 		try {
-			AstericsThreadPool.instance.execAndWaitOnAREMainThread(runnable);
-		} catch (InterruptedException | ExecutionException e) {
-			logger.warning("Could not execute closeDevice in AREMain thread: "
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(runnable);
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			logger.warning("Could not execute closeDevice in ModelExecutor thread: "
 					+ e.getMessage());
 		}
 
 	}
 
 	/**
-	 * Send data to FS20 device. The method is executed in the AREMain thread to prevent thread safety issues.
+	 * Send data to FS20 device. The method is executed in the ModelExecutor thread to prevent thread safety issues.
 	 * @param houseCode
 	 * @param addr
 	 * @param command
@@ -713,9 +715,9 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 		};
 
 		try {
-			AstericsThreadPool.instance.execAndWaitOnAREMainThread(runnable);
-		} catch (InterruptedException | ExecutionException e) {
-			logger.warning("Could not execute sendDataToFS20 in AREMain thread: "
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(runnable);
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			logger.warning("Could not execute sendDataToFS20 in ModelExecutor thread: "
 					+ e.getMessage());
 		}
 	}

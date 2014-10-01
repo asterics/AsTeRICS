@@ -43,6 +43,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -320,9 +321,8 @@ public class AREServices implements IAREServices{
 	 */
 	public void stopModel() {
 		try {
-			AstericsThreadPool.instance
-					.execAndWaitOnAREMainThread(new Runnable() {
-						@Override
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+				@Override
 						public void run() {
 
 							if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING
@@ -341,8 +341,8 @@ public class AREServices implements IAREServices{
 							}
 						}
 					});
-		} catch (InterruptedException | ExecutionException e) {
-			logger.warning("Could not execute stopModel in AREMain thread");
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			logger.warning("Could not execute stopModel: "+e.getMessage());
 		}
 	}
 
@@ -444,8 +444,7 @@ public class AREServices implements IAREServices{
 	 */
 	public void runModel() throws AREAsapiException {
 		try {
-			AstericsThreadPool.instance
-					.execAndWaitOnAREMainThread(new Runnable() {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
@@ -478,8 +477,8 @@ public class AREServices implements IAREServices{
 
 						}
 					});
-		} catch (InterruptedException | ExecutionException e) {
-			logger.warning("Could not execute runModel in AREMain thread");
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			logger.warning("Could not execute runModel: "+e.getMessage());
 		}
 	}
 	
@@ -491,8 +490,7 @@ public class AREServices implements IAREServices{
 	 */
 	public void pauseModel() {
 		try {
-			AstericsThreadPool.instance
-					.execAndWaitOnAREMainThread(new Runnable() {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
 						@Override
 						public void run() {
 
@@ -512,8 +510,8 @@ public class AREServices implements IAREServices{
 							}
 						}
 					});
-		} catch (InterruptedException | ExecutionException e) {
-			logger.warning("Could not execute pauseModel in AREMain thread");
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			logger.warning("Could not execute pauseModel: "+e.getMessage());
 		}
 	}
 

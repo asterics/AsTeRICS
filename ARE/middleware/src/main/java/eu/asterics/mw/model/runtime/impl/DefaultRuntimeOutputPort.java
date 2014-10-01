@@ -39,8 +39,7 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AstericsSendingThreadPool;
-import eu.asterics.mw.services.AstericsThreadPool;
+import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 
 /**
  * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
@@ -64,7 +63,7 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 		synchronized (inputPortEndpoints)
 		{
 
-			AstericsSendingThreadPool.instance.execute(new Runnable()
+			AstericsModelExecutionThreadPool.instance.execute(new Runnable()
 			{
 				public void run()
 				{
