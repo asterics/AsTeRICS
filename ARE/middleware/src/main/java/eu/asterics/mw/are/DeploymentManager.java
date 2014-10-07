@@ -535,7 +535,8 @@ public class DeploymentManager
 		{
 			try 
 			{
-				logger.fine("Trying to start component instance: "+componentInstance.toString());
+				String compRefName=componentInstance.getClass().getSimpleName();
+				logger.fine("Trying to start component instance: "+compRefName);
 				String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 				bundleManager.getBundleFromId(id).start();
 				componentInstance.start();
@@ -575,6 +576,7 @@ public class DeploymentManager
 					if (wrapper!=null)
 						wrapper.startBuffering((AbstractRuntimeComponentInstance) componentInstance, port.getPortType());
 				}
+				logger.fine("Started component instance: "+compRefName);
 				
 			}
 			catch (Throwable t) 
@@ -600,8 +602,10 @@ public class DeploymentManager
 	{
 		for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
 		{
-			logger.fine("Trying to pause component instance: "+componentInstance.toString());
+			String compRefName=componentInstance.getClass().getSimpleName();
+			logger.fine("Trying to pause component instance: "+compRefName);
 			componentInstance.pause();
+			logger.fine("Paused component instance: "+compRefName);
 		}
 	}
 
@@ -613,8 +617,10 @@ public class DeploymentManager
 	{
 		for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
 		{
-			logger.fine("Trying to resume component instance: "+componentInstance.toString());
+			String compRefName=componentInstance.getClass().getSimpleName();
+			logger.fine("Trying to resume component instance: "+compRefName);
 			componentInstance.resume();
+			logger.fine("Resumed component instance: "+compRefName);
 		}
 	}
 
@@ -628,10 +634,12 @@ public class DeploymentManager
 		{
 			try 
 			{
-				logger.fine("Trying to stop component instance: "+componentInstance.toString());
+				String compRefName=componentInstance.getClass().getSimpleName();
+				logger.fine("Trying to stop component instance: "+compRefName);
 				String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 				bundleManager.getBundleFromId(id).stop();
 				componentInstance.stop();
+				logger.fine("Stopped component instance: "+compRefName);
 			}
 			catch (Throwable t) 
 			{
@@ -1019,10 +1027,15 @@ public class DeploymentManager
 							IRuntimeComponentInstance rci = this.runtimeComponentInstances.get(targetComponentID);
 							
 							//synchronize using the target component, because the component can be considered a black box, that must
-							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.						
-							synchronized(rci) {
-								rci.syncedValuesReceived(row);
+							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.	
+							if(rci != null) {
+								synchronized(rci) {
+									rci.syncedValuesReceived(row);
+								}
+							} else {
+								logger.warning("Data could not be propagated, target component not found: targetComponentId: "+targetComponentID);
 							}
+
 							stack.pop();
 							if (stack.isEmpty()) bufferedPortsMap.remove(stack);
 						}
@@ -1042,10 +1055,15 @@ public class DeploymentManager
 							IRuntimeComponentInstance rci = this.runtimeComponentInstances.get(targetComponentID);
 							
 							//synchronize using the target component, because the component can be considered a black box, that must
-							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.							
-							synchronized(rci) {
-								rci.syncedValuesReceived(row);
+							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.	
+							if(rci != null) {
+								synchronized(rci) {
+									rci.syncedValuesReceived(row);
+								}
+							} else {
+								logger.warning("Data could not be propagated, target component not found: targetComponentId: "+targetComponentID);
 							}
+							
 							stack.pop();
 						}
 					}
@@ -1069,10 +1087,15 @@ public class DeploymentManager
 					IRuntimeComponentInstance rci = runtimeComponentInstances.get(targetComponentID);
 					
 					//synchronize using the target component, because the component can be considered a black box, that must
-					//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.					
-					synchronized(rci) {
-						rci.syncedValuesReceived(row);
+					//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.			
+					if(rci != null) {
+						synchronized(rci) {
+							rci.syncedValuesReceived(row);
+						}
+					} else {
+						logger.warning("Data could not be propagated, target component not found: targetComponentId: "+targetComponentID);
 					}
+					
 					stack.pop();
 					//if (stack.isEmpty()) bufferedPortsMap.remove(stack);
 				}
