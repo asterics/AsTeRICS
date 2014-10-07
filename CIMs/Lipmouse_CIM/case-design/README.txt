@@ -34,3 +34,16 @@ The same design as lipmouse_case_lasercut_v2_sidemount.cdr, but instead of the z
 ###lipmouse_case_lasercut_quadjoy_backmount.cdr
 
 The same design as lipmouse_case_lasercut_v2_backmount.cdr, but instead of the zigarette-holder mouth-piece, a filter construction of quadjoy is used as mouthpiece
+
+
+###lipmouse_case_lasercut_v2.1_backmount.cdr
+
+Small improvements
+
+
+###lipmouse_case_lasercut_v2.2_backmount.cdr
+
+Improved case design: Main mechanics part (2 plates + sensors + PCB) can be put together without glueing. Adjustment of pressure sensor bias force without moving the main parts. RECOMMENDED!
+
+
+
