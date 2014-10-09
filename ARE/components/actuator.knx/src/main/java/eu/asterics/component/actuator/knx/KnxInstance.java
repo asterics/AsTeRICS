@@ -542,7 +542,7 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
     		if (text.startsWith("@KNX:")) {  			
 				try {
 					
-					StringTokenizer st = new StringTokenizer(text.substring(5),"#");
+					StringTokenizer st = new StringTokenizer(text.substring(5)," ,#");
 			    	// Logger.getAnonymousLogger().info("Tokenizing: " + text.substring(5));
 					sendKNX(st.nextToken(),st.nextToken(),st.nextToken());
 				} catch (Exception e) {
