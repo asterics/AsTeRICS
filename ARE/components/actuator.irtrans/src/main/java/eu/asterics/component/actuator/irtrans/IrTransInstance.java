@@ -303,7 +303,7 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
 						}
 		        socketIn.close();
 					} catch (Exception e) {
-		    		e.printStackTrace();
+		    		//e.printStackTrace();
 					}   	
 				}
    		});
@@ -331,8 +331,15 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
     @Override
     public void stop()
     {
-        super.stop();
         readerThread.interrupt();
+        if(socketIn!=null) {
+        	try{
+        		socketIn.close();
+        	}catch(Exception e) {        		
+        	}
+        }
+        socketIn=null;
         AstericsErrorHandling.instance.reportInfo(this, "IRTransmitter Instance stopped");
+        super.stop();
     }
 }

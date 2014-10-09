@@ -30,6 +30,7 @@ package eu.asterics.component.actuator.fS20Sender;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
@@ -332,41 +333,37 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 				String action = ConversionUtils.stringFromBytes(data);
-				
+				if (action == null)
+					return;
+				action = action.trim();
+
 				/*
 				 * Parse the action string! If it has a valid format send the corresponding command to the specified device
 				 * Format is as follows:
 				 *  hc_address_command
 				 *  example:
 				 *  11111112_1234_18 would send the toggle command with housecode=11111112 and address=1234
+				 *  
+				 *  update: now also delimiters ' ' and ',' can be used between hc, address and command !
 				 */
-				if (action == null)
-					return;
-				action = action.trim();
-				if (!(action.startsWith("@FS20:")))  // if action string not addressed to FS20 plugin: cancel  
-					return;
+
+				final String ACTION_STRING_PREFIX 	= "@FS20:";
 				
-				String [] values = action.split("_");
-				if (values.length != 3) {
-					AstericsErrorHandling.instance.reportInfo(instance, "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
-					return;
+	    		if (action.startsWith(ACTION_STRING_PREFIX)) {  			
+					try {		
+						StringTokenizer st = new StringTokenizer(action.substring(ACTION_STRING_PREFIX.length()),"_, ");
+						int hc = Integer.parseInt(st.nextToken());  // this is the housecode
+						int a = Integer.parseInt(st.nextToken());
+						int cmd = Integer.parseInt(st.nextToken());
+						synchronized (pcs) {
+							if (pcs != null)
+								pcs.send(hc, a, cmd);
+						}
+					} catch (NumberFormatException | NullPointerException e) {
+						Logger.getAnonymousLogger().severe(e.toString());
+						AstericsErrorHandling.instance.reportInfo(instance, "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111, 1111, 18 for toggle");
 				}
-				String [] prefix = values[0].split(":");
-				if ((prefix.length != 2) || ( ! prefix[0].equals("@FS20"))) {
-					AstericsErrorHandling.instance.reportInfo(instance, "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
-					return;
-				}
-				try {
-					int hc = Integer.parseInt(prefix[1]);  // this is the housecode
-					int a = Integer.parseInt(values[1]);
-					int cmd = Integer.parseInt(values[2]);
-				synchronized (pcs) {
-					if (pcs != null)
-						pcs.send(hc, a, cmd);
-				}
-				} catch (NumberFormatException ne) {
-					AstericsErrorHandling.instance.reportInfo(instance, "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111_1111_18 for toggle");
-				}
+	    	}
 		}
 	};
 

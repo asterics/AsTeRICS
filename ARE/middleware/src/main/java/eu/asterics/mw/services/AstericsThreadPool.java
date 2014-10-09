@@ -74,7 +74,6 @@ import eu.asterics.mw.are.AREProperties;
  *
  */
 public class AstericsThreadPool {	
-	private static final String THREAD_POOL_SIZE = "ThreadPool.OtherTasks.size";
 	private static final Logger logger=AstericsErrorHandling.instance.getLogger();
 	
 	public static final AstericsThreadPool instance = new AstericsThreadPool();
@@ -82,11 +81,7 @@ public class AstericsThreadPool {
 	private ExecutorService pool;
 
 	private AstericsThreadPool() {
-		int poolSize=new Integer(AREProperties.instance.getProperty(THREAD_POOL_SIZE, "10"));
-		logger.info("Creating ThreadPool.OtherTasks with size: "+poolSize);
-		AREProperties.instance.setProperty(THREAD_POOL_SIZE,Integer.toString(poolSize));
-		
-		pool=Executors.newFixedThreadPool(poolSize, new ThreadFactory() {
+		pool = Executors.newCachedThreadPool(new ThreadFactory() {
 			private int threadNr=0;				
 			@Override
 			public Thread newThread(Runnable r) {
@@ -99,9 +94,7 @@ public class AstericsThreadPool {
 				return newThread;					
 			}
 		});
-		
-		
-		//pool = Executors.newCachedThreadPool();
+
 		/*
 		pool = new ThreadPoolExecutor(5, 20, 60,
 		TimeUnit.SECONDS,

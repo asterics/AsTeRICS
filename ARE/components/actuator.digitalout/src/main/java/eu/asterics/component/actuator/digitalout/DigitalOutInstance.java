@@ -564,7 +564,7 @@ public class DigitalOutInstance extends AbstractRuntimeComponentInstance
 	    		{  			
 					try {	
 						int portNum=-1;
-						StringTokenizer st = new StringTokenizer(text.substring(12),",");
+						StringTokenizer st = new StringTokenizer(text.substring(12),", ");
 
 						String cmdType=st.nextToken();
 						if (cmdType.equalsIgnoreCase("set"))

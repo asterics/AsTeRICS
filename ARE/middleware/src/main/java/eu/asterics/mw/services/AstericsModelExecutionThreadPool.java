@@ -74,7 +74,7 @@ import eu.asterics.mw.are.AREProperties;
  *
  */
 public class AstericsModelExecutionThreadPool {
-	public static int TASK_SUBMIT_TIMEOUT=7000;
+	public static int TASK_SUBMIT_TIMEOUT=20000;
 	
 	private static final String MODEL_EXECUTOR = "ModelExecutor";
 
@@ -105,7 +105,7 @@ public class AstericsModelExecutionThreadPool {
 			});
 
 	private AstericsModelExecutionThreadPool() {
-		int TASK_SUBMIT_TIMEOUT=new Integer(AREProperties.instance.getProperty(TASK_SUBMIT_TIMEOUT_PROPERTY, "7000"));
+		TASK_SUBMIT_TIMEOUT=new Integer(AREProperties.instance.getProperty(TASK_SUBMIT_TIMEOUT_PROPERTY, "7000"));
 		logger.info(TASK_SUBMIT_TIMEOUT_PROPERTY+"="+TASK_SUBMIT_TIMEOUT);		
 		AREProperties.instance.setProperty(TASK_SUBMIT_TIMEOUT_PROPERTY, Integer.toString(TASK_SUBMIT_TIMEOUT));
 		
@@ -193,21 +193,28 @@ public class AstericsModelExecutionThreadPool {
 	public void execAndWaitOnModelExecutorLifecycleThread(Runnable r) throws InterruptedException,
 			ExecutionException, TimeoutException {
 		
-		//AstericsErrorHandling.instance.getLogger().fine("Current Thread: "+Thread.currentThread().getName()+", AREMain: "+ARE_MAIN);
 		if(MODEL_EXECUTOR.equals(Thread.currentThread().getName())) {
 			//We are already executed by the AREMain Thread so just call the Runnable.run() method
+			AstericsErrorHandling.instance.getLogger().fine("ModelExecutor: Current thread: "+Thread.currentThread().getName()+", running r.run() in this thread");
 			r.run();
 		} else {
 			//execute with AREMainExecuter and wait for response "blocked execution"
+			AstericsErrorHandling.instance.getLogger().fine("ModelExecutor: Current thread: "+Thread.currentThread().getName()+", Submitting on modelExecutorLifecycle thread");
 			Future f=modelExecutorLifecycle.submit(r);
 			try{				
 				f.get(TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS);
 			}
 			catch(TimeoutException e) {
-				logger.warning("["+MODEL_EXECUTOR+"]: Task execution timeouted, using fallback thread pool");
-			    fallbackPool.submit(r).get(TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS);
+				logger.warning("["+MODEL_EXECUTOR+"]: Task execution timeouted");
+				throw e;
+			    //fallbackPool.submit(r).get(TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS);
 			}			
 		}
+	}
+	
+	public void switchToFallbackPool() {
+		logger.warning("ModelExecutor ["+Thread.currentThread()+"]: Switching to fallbackPool");
+		modelExecutorLifecycle=fallbackPool;		
 	}
 
 	/**

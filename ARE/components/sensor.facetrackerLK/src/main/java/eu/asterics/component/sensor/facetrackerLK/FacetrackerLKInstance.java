@@ -55,15 +55,14 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
 {
-    private final OutputPort opNoseX = new OutputPort();
-    private final OutputPort opNoseY = new OutputPort();
-    private final OutputPort opChinX = new OutputPort();
-    private final OutputPort opChinY = new OutputPort();
-  
-    String propCameraProfile ="";
+	final IRuntimeOutputPort opNoseX = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opNoseY = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opChinX = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opChinY = new DefaultRuntimeOutputPort();
 
+	String propCameraProfile ="";
     
-    private final Bridge bridge = new Bridge(opNoseX, opNoseY, opChinX, opChinY);
+    protected final Bridge bridge = new Bridge(this); 
  
 	/**
 	 * The class constructor.
@@ -168,17 +167,17 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
         return null;
     }
     
-	/**
-	 * Output Ports for feature coordinates.
-	 */
-    public class OutputPort extends DefaultRuntimeOutputPort
-    {
-        public void sendData(int data)
+    
+    public void newCoordinates_callback(final int point1_x,
+            final int point1_y, final int point2_x, final int point2_y)
         {
-            super.sendData(ConversionUtils.intToByteArray(data));
-        }
-    }
-
+    		opNoseX.sendData(ConversionUtils.intToBytes(point1_x)); 
+    		opNoseY.sendData(ConversionUtils.intToBytes(point1_y)); 
+    		opChinX.sendData(ConversionUtils.intToBytes(point2_x)); 
+    		opChinY.sendData(ConversionUtils.intToBytes(point2_y));    
+        }             
+    
+    
 	/**
 	 * Event Listener Port for face position initialisation.
 	 */
