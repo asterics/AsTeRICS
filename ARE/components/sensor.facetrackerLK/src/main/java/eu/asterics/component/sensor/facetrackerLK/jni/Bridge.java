@@ -42,45 +42,21 @@ public class Bridge
     /**
      * Statically load the native library
      */
+	private FacetrackerLKInstance owner = null;
+	
     static        
     {  
-    	//Same for both versions
         System.loadLibrary("facetrackerLK");
         AstericsErrorHandling.instance.getLogger().fine("Loading \"facetrackerLK.dll\" ... ok!");
         
-    	//USING opencv097
-////	Uncomment the following lines if building the opencv097 based version.
-//    	System.loadLibrary("cxcore097");
-//    	AstericsErrorHandling.instance.getLogger().fine("Loading \"cxcore097.dll\" ... ok!");
-//  
-//        System.loadLibrary("cv097");
-//        AstericsErrorHandling.instance.getLogger().fine("Loading \"cv097.dll\" ... ok!");
-//  
-//        System.loadLibrary("highgui097"); 
-//        AstericsErrorHandling.instance.getLogger().fine("Loading \"highgui097.dll\" ... ok!");
-       //opencv097
-        
-////	Uncomment this if building the opencv 2.3.1 based version.
-    	//USING opencv231
+        // using opencv231
         System.loadLibrary("tbb");
         AstericsErrorHandling.instance.getLogger().fine("Loading \"tbb.dll\" ... ok!");
-        //opencv231
     }
  
-    private final FacetrackerLKInstance.OutputPort nose_x;
-    private final FacetrackerLKInstance.OutputPort nose_y;
-    private final FacetrackerLKInstance.OutputPort chin_x;
-    private final FacetrackerLKInstance.OutputPort chin_y; 
-
-    public Bridge(final FacetrackerLKInstance.OutputPort nose_x,
-                  final FacetrackerLKInstance.OutputPort nose_y,
-                  final FacetrackerLKInstance.OutputPort chin_x,
-                  final FacetrackerLKInstance.OutputPort chin_y)
+    public Bridge( FacetrackerLKInstance owner)
     {
-        this.nose_x = nose_x;
-        this.nose_y = nose_y;
-        this.chin_x = chin_x;
-        this.chin_y = chin_y;
+    	this.owner = owner;
     }
 
     /** 
@@ -155,14 +131,6 @@ public class Bridge
     synchronized private void newCoordinates_callback(final int point1_x,
         final int point1_y, final int point2_x, final int point2_y)
     {
-//        System.out.println("Java: Callback [(" + point1_x + ", " + point1_y
-//                + "), (" + point2_x + ", " + point2_y + ")]");
- 
-        nose_x.sendData(point1_x); 
-        nose_y.sendData(point1_y); 
-        chin_x.sendData(point2_x); 
-        chin_y.sendData(point2_y);    
-        
-          
+    	owner.newCoordinates_callback(point1_x, point1_y, point2_x, point2_y);
     }
 }

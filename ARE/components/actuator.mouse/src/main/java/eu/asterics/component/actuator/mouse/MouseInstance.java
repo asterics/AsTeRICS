@@ -54,6 +54,8 @@ import java.awt.event.InputEvent;
  */
 public class MouseInstance extends AbstractRuntimeComponentInstance
 {
+	private final String ACTION_STRING_PREFIX 	= "@MOUSE:";
+	
 	private final String ELP_LEFTCLICK_NAME 	= "leftClick";
 	private final String ELP_MIDDLECLICK_NAME 	= "middleClick";
 	private final String ELP_RIGHTCLICK_NAME 	= "rightClick";
@@ -62,12 +64,17 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 	private final String ELP_DRAGRELEASE_NAME 	= "dragRelease";		
 	private final String ELP_WHEELUP_NAME 		= "wheelUp";		
 	private final String ELP_WHEELDOWN_NAME 	= "wheelDown";		
+	private final String ELP_NEXTCLICKRIGHT_NAME   = "nextClickRight";		
+	private final String ELP_NEXTCLICKDOUBLE_NAME  = "nextClickDouble";		
+	private final String ELP_NEXTCLICKMIDDLE_NAME  = "nextClickMiddle";		
+	private final String ELP_NEXTCLICKDRAG_NAME    = "nextClickDrag";		
+	private final String ELP_NEXTCLICKRELEASE_NAME = "nextClickRelease";		
 	private final String ELP_CENTER_NAME 		= "center";
 	private final String ELP_ACTIVATE_NAME 		= "activate";
 	private final String ELP_DEACTIVATE_NAME 	= "deactivate";
 	private final String ELP_TOGGLE_NAME 		= "toggle";
-	private final String ELP_ABSOLUTEPOSITION_NAME 		= "absolutePosition";
-	private final String ELP_RELATIVEPOSITION_NAME 		= "relativePosition";
+	private final String ELP_ABSOLUTEPOSITION_NAME 	= "absolutePosition";
+	private final String ELP_RELATIVEPOSITION_NAME 	= "relativePosition";
 
 	private final int CLK_LEFT = 0;
 	private final int CLK_RIGHT = 1;
@@ -176,6 +183,26 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
         else if(ELP_WHEELDOWN_NAME.equalsIgnoreCase(eventPortID))
         {
             return elpWheelDown;
+        }
+        else if(ELP_NEXTCLICKRIGHT_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpNextClickRight;
+        }
+        else if(ELP_NEXTCLICKDOUBLE_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpNextClickDouble;
+        }
+        else if(ELP_NEXTCLICKMIDDLE_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpNextClickMiddle;
+        }
+        else if(ELP_NEXTCLICKDRAG_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpNextClickDrag;
+        }
+        else if(ELP_NEXTCLICKRELEASE_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpNextClickRelease;
         }
         else if(ELP_CENTER_NAME.equalsIgnoreCase(eventPortID))
         {
@@ -349,14 +376,12 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 
 	        	if (propAbsolutePosition==true)
 	        	{
-	 //               mouseXPos = ConversionUtils.intFromBytes(data);
 	                mouseXPos = ConversionUtils.doubleFromBytes(data);
 	        	}
 	        	else 
 	        	{
 	                mouseXPos += ConversionUtils.doubleFromBytes(data);
 	          	}
-
 
 				if (mouseXPos != mouseLastXPos) 
 					updateMousePosition();
@@ -400,16 +425,16 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
      * @MOUSE:action,enable      mouse action is enabled
      * @MOUSE:action,disable     mouse action is disabled
      * @MOUSE:action,toggle      mouse action is inverted
-     */    private final IRuntimeInputPort ipAction
-    = new DefaultRuntimeInputPort()
+     */    
+    private final IRuntimeInputPort ipAction = new DefaultRuntimeInputPort()
 	{
 		public void receiveData(byte[] data)
 		{
 			String text = ConversionUtils.stringFromBytes(data);
 
-    		if (text.startsWith("@MOUSE:")) {  			
+    		if (text.startsWith(ACTION_STRING_PREFIX)) {  			
 				try {		
-					StringTokenizer st = new StringTokenizer(text.substring(7),",");
+					StringTokenizer st = new StringTokenizer(text.substring(ACTION_STRING_PREFIX.length()),", ");
 					String command = st.nextToken();
 					if (command.equalsIgnoreCase("nextclick"))
 					{
@@ -563,6 +588,64 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 	         }
 	   	 }
   }; 
+
+  
+  /**
+   * Event Listener Port for NextClickRight.
+   */
+  final IRuntimeEventListenerPort  elpNextClickRight = new IRuntimeEventListenerPort()
+  {
+	   	 public void receiveEvent(final String data)
+	   	 {
+	   		nextClick=CLK_RIGHT;
+	   	 }
+ }; 
+
+ /**
+  * Event Listener Port for NextClickDouble.
+  */
+ final IRuntimeEventListenerPort  elpNextClickDouble = new IRuntimeEventListenerPort()
+ {
+	   	 public void receiveEvent(final String data)
+	   	 {
+	   		nextClick=CLK_DOUBLE;
+	   	 }
+}; 
+
+/**
+ * Event Listener Port for NextClickMiddle.
+ */
+final IRuntimeEventListenerPort  elpNextClickMiddle = new IRuntimeEventListenerPort()
+{
+	   	 public void receiveEvent(final String data)
+	   	 {
+	   		nextClick=CLK_MIDDLE;
+	   	 }
+}; 
+
+/**
+ * Event Listener Port for NextClickDrag.
+ */
+final IRuntimeEventListenerPort  elpNextClickDrag = new IRuntimeEventListenerPort()
+{
+	   	 public void receiveEvent(final String data)
+	   	 {
+	   		nextClick=CLK_DRAG;
+	   	 }
+}; 
+  
+
+/**
+ * Event Listener Port for NextClickRelease.
+ */
+final IRuntimeEventListenerPort  elpNextClickRelease = new IRuntimeEventListenerPort()
+{
+	   	 public void receiveEvent(final String data)
+	   	 {
+	   		nextClick=CLK_DRAGRELEASE;
+	   	 }
+}; 
+
 
   /**
    * Event Listener Port for center mouse action.
