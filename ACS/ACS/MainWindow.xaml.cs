@@ -4757,7 +4757,7 @@ namespace Asterics.ACS {
         const int SELECTED_LINE_THICKNESS = 4;
         const int UNSELECTED_LINE_THICKNESS = 2;
         const int LINE_SELECTION_DISTANCE = 20;
-
+      
         /////  *** end patch for easier selection of channels and ports
         
         /// <summary>
@@ -5593,11 +5593,12 @@ namespace Asterics.ACS {
             dockEventGrid.MinWidth = 200;
             dockEventGrid.Background = new SolidColorBrush(Colors.White);
             //dockEventGrid.Height = 100;
-
+            ColumnDefinition evtChnlDescriptionColDef = new ColumnDefinition();
             ColumnDefinition labelColDef = new ColumnDefinition();
             ColumnDefinition comboColDef = new ColumnDefinition();
             dockEventGrid.ColumnDefinitions.Add(labelColDef);
             dockEventGrid.ColumnDefinitions.Add(comboColDef);
+            dockEventGrid.ColumnDefinitions.Add(evtChnlDescriptionColDef);
             dockEventGrid.HorizontalAlignment = HorizontalAlignment.Left;
             dockEventGrid.VerticalAlignment = VerticalAlignment.Top;
             dockEventGrid.Margin = new Thickness(4, 4, 4, 4);
@@ -5937,6 +5938,18 @@ namespace Asterics.ACS {
             dockEventGrid.RowDefinitions.Add(new RowDefinition() {
                 Height = (GridLength)glc.ConvertFromString("28")
             });
+
+            TextBox headingDescription = new TextBox()
+            {
+                Text = "Description",
+                Margin = new Thickness(0, 0, 0, 0),
+                FontWeight = FontWeights.Bold,
+                FontSize = 12,
+                FontFamily = new FontFamily("Segoe UI"),
+                IsReadOnly = true,
+                Background = (Brush)bc.ConvertFrom("#FFE9ECFA")
+            };
+
             TextBox headingListener = new TextBox() {
                 Text = targetComponent.id,
                 Margin = new Thickness(0, 0, 0, 0),
@@ -5955,12 +5968,19 @@ namespace Asterics.ACS {
                 IsReadOnly = true,
                 Background = (Brush)bc.ConvertFrom("#FFE9ECFA")
             };
+
+
             Grid.SetRow(headingListener, 0);
             Grid.SetColumn(headingListener, 0);
             Grid.SetRow(headingTrigger, 0);
             Grid.SetColumn(headingTrigger, 1);
+            Grid.SetRow(headingDescription, 0);
+            Grid.SetColumn(headingDescription, 2);
+
             dockEventGrid.Children.Add(headingTrigger);
             dockEventGrid.Children.Add(headingListener);
+            dockEventGrid.Children.Add(headingDescription);
+
             Border headline = new Border();
             Grid.SetColumn(headline, 0);
             Grid.SetRow(headline, 0);
@@ -5979,6 +5999,7 @@ namespace Asterics.ACS {
                 dockEventGrid.RowDefinitions.Add(new RowDefinition() {
                     Height = (GridLength)glc.ConvertFromString("22")
                 });
+
                 TextBox l = new TextBox() {
                     Text = eventListener.EventListenerId,
                     Margin = new Thickness(0, 0, 0, 0),
@@ -5990,6 +6011,13 @@ namespace Asterics.ACS {
                 ComboBox eventCombobox = new ComboBox();
                 eventCombobox.Name = "eventCombobox" + (eventListenerIndex - 1);//+ rowCounter;
 
+                TextBox evtChnlDescription = new EvtChannelDescriptionTextBox
+                {
+                    eventListenerTextBox = l,
+                    eventTriggerComboBox = eventCombobox,
+                    
+                };
+                evtChnlDescription.LostFocus += EvtChnlDescription_LostFocus;
                 // original code, without tooltip
                 // eventCombobox.Items.Add("---");
 
@@ -6016,11 +6044,34 @@ namespace Asterics.ACS {
 
                 eventCombobox.KeyDown += EventCombobox_KeyDown;
                 eventChannel eventToRemove = null;
+
                 // load events and connect them
                 foreach (eventChannel eventCh in settedEvents) {
                     if ((eventCh.sources.source.component.id == sourceComponent.id) && (eventCh.targets.target.component.id == targetComponent.id)
                             && (eventCh.targets.target.eventPort.id == eventListener.EventListenerId)) {
 
+                        String sourceComponentId = eventCh.sources.source.component.id;
+                        String sourceEventId = eventCh.sources.source.eventPort.id;
+                        String targetComponentId = eventCh.targets.target.component.id;
+                        String targetEventId = eventCh.targets.target.eventPort.id;
+                        if (eventCh.GroupOriginalSource != null)
+                        {
+                            sourceComponentId = eventCh.GroupOriginalSource.component.id;
+                            sourceEventId = eventCh.GroupOriginalSource.eventPort.id;
+                        }
+
+                        if (eventCh.GroupOriginalTarget!=null)
+                        {
+                            targetComponentId = eventCh.GroupOriginalTarget.component.id;
+                            targetEventId = eventCh.GroupOriginalTarget.eventPort.id;
+                        }
+
+                        eventChannel originalEventChannel = findEventChannel(sourceComponentId, sourceEventId, targetComponentId, targetEventId);
+                        if (originalEventChannel != null)
+                        {
+                            evtChnlDescription.Text = originalEventChannel.description;
+                        }
+    
                         // new code for tooltips
                         foreach (ComboBoxItem cbi in eventCombobox.Items) {
                             if ((string)cbi.Content == eventCh.sources.source.eventPort.id) {
@@ -6044,10 +6095,14 @@ namespace Asterics.ACS {
                 }
 
                 eventCombobox.SelectionChanged += EventCombobox_SelectionChanged;
+
                 Grid.SetRow(l, rowCounter);
                 Grid.SetColumn(l, 0);
                 Grid.SetRow(eventCombobox, rowCounter);
                 Grid.SetColumn(eventCombobox, 1);
+                Grid.SetRow(evtChnlDescription, rowCounter);
+                Grid.SetColumn(evtChnlDescription, 2);
+
                 GridSplitter mySimpleGridSplitter = new GridSplitter();
                 mySimpleGridSplitter.Background = Brushes.DarkGray;
                 mySimpleGridSplitter.HorizontalAlignment = HorizontalAlignment.Right;
@@ -6055,6 +6110,7 @@ namespace Asterics.ACS {
                 mySimpleGridSplitter.Width = 1;
                 Grid.SetColumn(mySimpleGridSplitter, 0);
                 Grid.SetRow(mySimpleGridSplitter, rowCounter);
+                dockEventGrid.Children.Add(evtChnlDescription);
                 dockEventGrid.Children.Add(l);
                 dockEventGrid.Children.Add(eventCombobox);
                 if (!newEventChannelRibbonButton.IsEnabled) // was editeventribbongroup
@@ -8292,6 +8348,60 @@ namespace Asterics.ACS {
             }
         }
 
+        private void EvtChnlDescription_LostFocus(Object sender, RoutedEventArgs e)
+        {
+            EvtChannelDescriptionTextBox evtChnlDescTextBox = (EvtChannelDescriptionTextBox)e.Source;
+            ComboBox triggerBox = (ComboBox)evtChnlDescTextBox.eventTriggerComboBox;
+            TextBox listenerBox = (TextBox)evtChnlDescTextBox.eventListenerTextBox;
+            if (!triggerBox.SelectedValue.Equals("---"))
+            {
+                String sourceComponentId=focusedEventChannel.TriggerComponentId;
+                String sourceEventId=triggerBox.Text;
+                String targetComponentId=focusedEventChannel.ListenerComponentId;
+                String targetEventId=listenerBox.Text;
+
+                if (focusedEventChannel.HasGroupSource)
+                {
+                    componentType source = GetComponentTypeFromEventString(sourceEventId);
+                    if (source != null)
+                    {
+                        sourceComponentId = source.id;
+                        sourceEventId = sourceEventId.Substring(source.id.Length + 1);
+                    }
+                }
+
+                if (focusedEventChannel.HasGroupTarget)
+                {
+                    componentType target = GetComponentTypeFromEventString(targetEventId);
+                    if (target != null)
+                    {
+                        targetComponentId = target.id;
+                        targetEventId = targetEventId.Substring(target.id.Length + 1);
+                    }
+                }
+
+                eventChannel updateEventChannel = findEventChannel(sourceComponentId, sourceEventId, targetComponentId, targetEventId);
+                if (updateEventChannel != null)
+                {
+                    updateEventChannel.description = constructEvtChannelDescription(updateEventChannel.sources.source.eventPort.id, updateEventChannel.targets.target.eventPort.id, evtChnlDescTextBox);
+                }
+            }
+        }
+
+        eventChannel findEventChannel(String sourceComponentId, String sourceEventId, String targetComponentId, String targetEventId)
+        {
+            foreach (eventChannel updateEvent in eventChannelList)
+            {
+                if ((updateEvent.sources.source.component.id == sourceComponentId) &&
+                    (updateEvent.sources.source.eventPort.id == sourceEventId) &&
+                    (updateEvent.targets.target.component.id == targetComponentId) &&
+                    (updateEvent.targets.target.eventPort.id == targetEventId))
+                {
+                    return updateEvent;
+                }
+            }
+            return null;
+        }
 
         /// <summary>
         /// Listener for the componentComboBox in the property dock. This compobox is available, when the
@@ -8327,6 +8437,7 @@ namespace Asterics.ACS {
                 areStatus.Status = AREStatus.ConnectionStatus.Connected;
             }
             modelHasBeenEdited = true;
+            EvtChannelDescriptionTextBox correspondingEvtChannelDescpription = findEventChannelDescpriptionTextBox(cb);
 
             // Add a new line into the grid:
             if (!selection.Equals("---")) {
@@ -8342,7 +8453,7 @@ namespace Asterics.ACS {
                     }
                 }
 
-                if (!duplicated) {
+                if (!duplicated) { 
                     TextBox l = new TextBox() {
                         Text = ((EventListenerPort)deploymentComponentList[focusedEventChannel.ListenerComponentId].EventListenerList[key]).EventListenerId,
                         Margin = new Thickness(0, 0, 0, 0),
@@ -8365,7 +8476,12 @@ namespace Asterics.ACS {
                     eventCombobox.Items.Add(new ComboBoxItem() {
                         Content = "---"
                     });
-
+                    TextBox evtChnlDescription = new EvtChannelDescriptionTextBox
+                        {
+                            eventListenerTextBox=l,
+                            eventTriggerComboBox=eventCombobox,
+                        };
+                    evtChnlDescription.LostFocus += EvtChnlDescription_LostFocus;
 
                     foreach (EventTriggerPort eventTrigger in deploymentComponentList[focusedEventChannel.TriggerComponentId].EventTriggerList) {
                         // Uncomment, to enable tooltips for the combobox-elements.
@@ -8384,6 +8500,8 @@ namespace Asterics.ACS {
                     Grid.SetColumn(l, 0);
                     Grid.SetRow(eventCombobox, Grid.GetRow(cb) + 1);
                     Grid.SetColumn(eventCombobox, 1);
+                    Grid.SetRow(evtChnlDescription, Grid.GetRow(cb) + 1);
+                    Grid.SetColumn(evtChnlDescription, 2);
                     GridSplitter mySimpleGridSplitter = new GridSplitter();
                     mySimpleGridSplitter.Background = Brushes.DarkGray;
                     mySimpleGridSplitter.HorizontalAlignment = HorizontalAlignment.Right;
@@ -8393,6 +8511,7 @@ namespace Asterics.ACS {
                     Grid.SetRow(mySimpleGridSplitter, Grid.GetRow(cb) + 1);
                     dockEventGrid.Children.Add(l);
                     dockEventGrid.Children.Add(eventCombobox);
+                    dockEventGrid.Children.Add(evtChnlDescription);
                     dockEventGrid.Children.Add(mySimpleGridSplitter);
 
                     Border top = new Border();
@@ -8404,6 +8523,7 @@ namespace Asterics.ACS {
                     dockEventGrid.Children.Add(top);
                 }
 
+
                 if (((ComboBoxItem)e.RemovedItems[e.RemovedItems.Count - 1]).Content.Equals("---")) {
                     // write data to deployment model
                     eventChannel addEventChannel = new eventChannel();
@@ -8414,7 +8534,7 @@ namespace Asterics.ACS {
                     addEventChannel.targets.target.eventPort.id = ((EventListenerPort)deploymentComponentList[focusedEventChannel.ListenerComponentId].EventListenerList[key]).EventListenerId;
                     addEventChannel.id = addEventChannel.sources.source.eventPort.id + "_" + addEventChannel.targets.target.eventPort.id;
 
-
+                    addEventChannel.description = constructEvtChannelDescription(addEventChannel.sources.source.eventPort.id, addEventChannel.targets.target.eventPort.id, correspondingEvtChannelDescpription);
 
                     if (EventChannelHasGroupSource(addEventChannel)) {
                         eventEdge ee = new eventEdge();
@@ -8455,6 +8575,7 @@ namespace Asterics.ACS {
                         baseEventChannel.targets.target.component.id = target.id;
                         baseEventChannel.targets.target.eventPort.id = elp.EventListenerId.Substring(target.id.Length + 1);
                         baseEventChannel.id = baseEventChannel.sources.source.eventPort.id + "_" + baseEventChannel.targets.target.eventPort.id;
+                        baseEventChannel.description = constructEvtChannelDescription(baseEventChannel.sources.source.eventPort.id, baseEventChannel.targets.target.eventPort.id, correspondingEvtChannelDescpription);
 
                         eventChannelList.Add(baseEventChannel);
 
@@ -8465,6 +8586,7 @@ namespace Asterics.ACS {
                         baseEventChannel.targets.target.component.id = target.id;
                         baseEventChannel.targets.target.eventPort.id = elp.EventListenerId.Substring(target.id.Length + 1);
                         baseEventChannel.id = baseEventChannel.sources.source.eventPort.id + "_" + baseEventChannel.targets.target.eventPort.id;
+                        baseEventChannel.description = constructEvtChannelDescription(baseEventChannel.sources.source.eventPort.id, baseEventChannel.targets.target.eventPort.id, correspondingEvtChannelDescpription);
 
                         eventChannelList.Add(baseEventChannel);
 
@@ -8474,6 +8596,7 @@ namespace Asterics.ACS {
                         baseEventChannel.targets.target.component.id = focusedEventChannel.ListenerComponentId;
                         baseEventChannel.targets.target.eventPort.id = elp.EventListenerId;
                         baseEventChannel.id = baseEventChannel.sources.source.eventPort.id + "_" + baseEventChannel.targets.target.eventPort.id;
+                        baseEventChannel.description = constructEvtChannelDescription(baseEventChannel.sources.source.eventPort.id, baseEventChannel.targets.target.eventPort.id, correspondingEvtChannelDescpription);
 
                         eventChannelList.Add(baseEventChannel);
 
@@ -8490,6 +8613,7 @@ namespace Asterics.ACS {
                         baseEventChannel.targets.target.component.id = target.id;
                         baseEventChannel.targets.target.eventPort.id = elp.EventListenerId.Substring(target.id.Length + 1);
                         baseEventChannel.id = baseEventChannel.sources.source.eventPort.id + "_" + baseEventChannel.targets.target.eventPort.id;
+                        baseEventChannel.description = constructEvtChannelDescription(baseEventChannel.sources.source.eventPort.id, baseEventChannel.targets.target.eventPort.id, correspondingEvtChannelDescpription);
 
                         eventChannelList.Add(baseEventChannel);
                         deploymentModel.eventChannels = (eventChannel[])eventChannelList.ToArray(typeof(eventChannel));
@@ -8499,11 +8623,13 @@ namespace Asterics.ACS {
                         EventListenerPort elp = ((EventListenerPort)deploymentComponentList[focusedEventChannel.ListenerComponentId].EventListenerList[key]);
 
                         eventChannel baseEventChannel = new eventChannel();
+
                         baseEventChannel.sources.source.component.id = source.id;
                         baseEventChannel.sources.source.eventPort.id = selection.Substring(source.id.Length + 1);
                         baseEventChannel.targets.target.component.id = focusedEventChannel.ListenerComponentId;
                         baseEventChannel.targets.target.eventPort.id = elp.EventListenerId;
                         baseEventChannel.id = baseEventChannel.sources.source.eventPort.id + "_" + baseEventChannel.targets.target.eventPort.id;
+                        baseEventChannel.description = constructEvtChannelDescription(baseEventChannel.sources.source.eventPort.id, baseEventChannel.targets.target.eventPort.id, correspondingEvtChannelDescpription);
 
                         eventChannelList.Add(baseEventChannel);
                         deploymentModel.eventChannels = (eventChannel[])eventChannelList.ToArray(typeof(eventChannel));
@@ -8524,6 +8650,8 @@ namespace Asterics.ACS {
                             (updateEvent.targets.target.component.id == updateEventChannel.targets.target.component.id) &&
                             (updateEvent.targets.target.eventPort.id == updateEventChannel.targets.target.eventPort.id)) {
                             updateEvent.sources.source.eventPort.id = selection;
+                            updateEventChannel.description = constructEvtChannelDescription(updateEventChannel.sources.source.eventPort.id, updateEventChannel.targets.target.eventPort.id, correspondingEvtChannelDescpription);
+
                             //deploymentModel.eventChannels = (eventChannel[])eventChannelList.ToArray(typeof(eventChannel));
                             break;
                         }
@@ -8535,15 +8663,20 @@ namespace Asterics.ACS {
                 // remove a line
                 ArrayList elements = new ArrayList();
                 foreach (UIElement element in dockEventGrid.Children) {
-                    if (element is TextBox) {
+                    if (element is TextBox && !(element is EvtChannelDescriptionTextBox)) {
                         if (!elements.Contains(((TextBox)element).Text)) {
                             elements.Add(((TextBox)element).Text);
                         }
                         else if ((((TextBox)element).Text == ((EventListenerPort)deploymentComponentList[focusedEventChannel.ListenerComponentId].EventListenerList[key]).EventListenerId) &&
                           (Grid.GetRow(element) == Grid.GetRow(cb) + 1)) {
                             // remove one row
+                            
                             dockEventGrid.Children.Remove(element);
                             dockEventGrid.Children.Remove(cb);
+                            correspondingEvtChannelDescpription.eventTriggerComboBox = null;
+                            correspondingEvtChannelDescpription.eventListenerTextBox = null;
+                            dockEventGrid.Children.Remove(correspondingEvtChannelDescpription);
+
 
                             // move the other elements one line up
                             foreach (UIElement element2 in dockEventGrid.Children) {
@@ -8634,6 +8767,29 @@ namespace Asterics.ACS {
                     eventChannelList.Remove(ec);
                 deploymentModel.eventChannels = (eventChannel[])eventChannelList.ToArray(typeof(eventChannel));
             }
+        }
+
+        String constructEvtChannelDescription(String sourceId, String targetId, EvtChannelDescriptionTextBox evtChnlDescriptionTxtBox)
+        {
+            //String desc = sourceId + "->" + targetId;
+            String desc = "";
+            if (evtChnlDescriptionTxtBox.Text != null)
+            {
+                desc = evtChnlDescriptionTxtBox.Text;
+            }
+            return desc;
+        }
+        EvtChannelDescriptionTextBox findEventChannelDescpriptionTextBox(UIElement eventTriggercomboBox)
+        {
+            foreach (UIElement element in dockEventGrid.Children)
+            {
+                if (element is EvtChannelDescriptionTextBox && ((EvtChannelDescriptionTextBox)element).eventTriggerComboBox == eventTriggercomboBox)
+                {
+                    return ((EvtChannelDescriptionTextBox)element);
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
