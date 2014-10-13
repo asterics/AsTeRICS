@@ -60,7 +60,15 @@ public class RemoteTabletInstance extends AbstractRuntimeComponentInstance
 	private final String ELP_DRAGRELEASE_NAME 	= "dragRelease";		
 	private final String ELP_WHEELUP_NAME 		= "wheelUp";
 	private final String ELP_WHEELDOWN_NAME 	= "wheelDown";
+	private final String ELP_NEXTCLICKRIGHT_NAME   = "nextClickRight";		
+	private final String ELP_NEXTCLICKDOUBLE_NAME  = "nextClickDouble";		
+	private final String ELP_NEXTCLICKMIDDLE_NAME  = "nextClickMiddle";		
+	private final String ELP_NEXTCLICKDRAG_NAME    = "nextClickDrag";		
+	private final String ELP_NEXTCLICKRELEASE_NAME = "nextClickRelease";		
 	private final String ELP_CENTER_NAME 		= "center";
+	private final String ELP_ACTIVATE_NAME 		= "activate";
+	private final String ELP_DEACTIVATE_NAME 	= "deactivate";
+	private final String ELP_TOGGLE_NAME 		= "toggle";
 		
 	private final int MOUSEBUTTON_LEFT = 1;
 	private final int MOUSEBUTTON_RIGHT = 2;
@@ -181,6 +189,43 @@ public class RemoteTabletInstance extends AbstractRuntimeComponentInstance
         {
             return elpCenter;
         }
+        else if(ELP_NEXTCLICKRIGHT_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpNextClickRight;
+        }
+        else if(ELP_NEXTCLICKDOUBLE_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpNextClickDouble;
+        }
+        else if(ELP_NEXTCLICKMIDDLE_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpNextClickMiddle;
+        }
+        else if(ELP_NEXTCLICKDRAG_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpNextClickDrag;
+        }
+        else if(ELP_NEXTCLICKRELEASE_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpNextClickRelease;
+        }
+        else if(ELP_CENTER_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpCenter;
+        }
+        else if(ELP_ACTIVATE_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpActivate;
+        }
+        else if(ELP_DEACTIVATE_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpDeactivate;
+        }
+        else if(ELP_TOGGLE_NAME.equalsIgnoreCase(eventPortID))
+        {
+            return elpToggle;
+        }    
+        
         return null;
     }
 
@@ -396,7 +441,7 @@ public class RemoteTabletInstance extends AbstractRuntimeComponentInstance
 
     		if (text.startsWith("@MOUSE:")) {  			
 				try {		
-					StringTokenizer st = new StringTokenizer(text.substring(7),",");
+					StringTokenizer st = new StringTokenizer(text.substring(7),", ");
 					String command = st.nextToken();
 					if (command.equalsIgnoreCase("nextclick"))
 					{
@@ -630,6 +675,93 @@ public class RemoteTabletInstance extends AbstractRuntimeComponentInstance
    	 public void receiveEvent(final String data)
    	 {
    		 centerMode=1;
+   	 }
+   };
+   /**
+    * Event Listener Port for NextClickRight.
+    */
+   final IRuntimeEventListenerPort  elpNextClickRight = new IRuntimeEventListenerPort()
+   {
+ 	   	 public void receiveEvent(final String data)
+ 	   	 {
+ 	   		nextClick=CLK_RIGHT;
+ 	   	 }
+  }; 
+
+  /**
+   * Event Listener Port for NextClickDouble.
+   */
+  final IRuntimeEventListenerPort  elpNextClickDouble = new IRuntimeEventListenerPort()
+  {
+ 	   	 public void receiveEvent(final String data)
+ 	   	 {
+ 	   		nextClick=CLK_DOUBLE;
+ 	   	 }
+ }; 
+
+ /**
+  * Event Listener Port for NextClickMiddle.
+  */
+ final IRuntimeEventListenerPort  elpNextClickMiddle = new IRuntimeEventListenerPort()
+ {
+ 	   	 public void receiveEvent(final String data)
+ 	   	 {
+ 	   		nextClick=CLK_MIDDLE;
+ 	   	 }
+ }; 
+
+ /**
+  * Event Listener Port for NextClickDrag.
+  */
+ final IRuntimeEventListenerPort  elpNextClickDrag = new IRuntimeEventListenerPort()
+ {
+ 	   	 public void receiveEvent(final String data)
+ 	   	 {
+ 	   		nextClick=CLK_DRAG;
+ 	   	 }
+ }; 
+   
+
+ /**
+  * Event Listener Port for NextClickRelease.
+  */
+ final IRuntimeEventListenerPort  elpNextClickRelease = new IRuntimeEventListenerPort()
+ {
+ 	   	 public void receiveEvent(final String data)
+ 	   	 {
+ 	   		nextClick=CLK_DRAGRELEASE;
+ 	   	 }
+ }; 
+
+
+   /**
+    * Event Listener Port for activate mouse action.
+    */
+   final IRuntimeEventListenerPort elpActivate 	= new IRuntimeEventListenerPort()
+   {
+   	 public void receiveEvent(final String data)
+   	 {
+   		enableMouseAction = true; 
+   	 }
+   };
+   /**
+    * Event Listener Port for deactivate mouse action.
+    */
+   final IRuntimeEventListenerPort elpDeactivate 	= new IRuntimeEventListenerPort()
+   {
+   	 public void receiveEvent(final String data)
+   	 {
+   		enableMouseAction = false; 
+   	 }
+   };
+   /**
+    * Event Listener Port for toggle mouse action.
+    */
+   final IRuntimeEventListenerPort elpToggle 	= new IRuntimeEventListenerPort()
+   {
+   	 public void receiveEvent(final String data)
+   	 {
+   		enableMouseAction = !enableMouseAction; 
    	 }
    };
 

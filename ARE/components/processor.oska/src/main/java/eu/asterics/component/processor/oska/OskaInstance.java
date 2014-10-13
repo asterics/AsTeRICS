@@ -147,22 +147,23 @@ public class OskaInstance extends AbstractRuntimeComponentInstance
 //	    			process = Runtime.getRuntime().exec(buf.toString());
 	    			process = Runtime.getRuntime().exec(b);
 	    			oskaStarted = true;
-	    		}
-
-	        	
+	    	        super.start();	    	       
+	    		}	        	
 	    	}
 	    	catch (IOException e)
 	    	{
 	    		AstericsErrorHandling.instance.reportError(this, 
 	    				"IOException while starting OSKA - make sure OSKA is installed in teh correct path.");
+	    				
+	    		stop();
 	    	}
 	    	catch (IllegalArgumentException e)
 	    	{
 	    		AstericsErrorHandling.instance.reportInfo(this, 
 	    				"oskaPath property is empty"+ propOskaPath);
+	    		stop();
 	    	}
     	}
-        super.start();
         
     }
 
@@ -188,24 +189,38 @@ public class OskaInstance extends AbstractRuntimeComponentInstance
      */
     public void stop()
     {
-        super.stop();
-        if (process != null)
-        {
-        	process.destroy();
-        	process = null;
-        }
 		try
 		{
-			communication.closeOska();
-			oskaStarted = false;
-		}
-		catch (Exception e)	{ }        
-        RemoteConnectionManager.instance
-        	.closeConnection(Integer.toString(propPort));
+			if(communication!=null) {
+				communication.closeOska();
+			}
+		}catch (Exception e)	{ 
+			AstericsErrorHandling.instance.reportError(this, "Stopping OSKA 'communication' with exception: "+e+", message: "+e!=null ? e.getMessage() : "");
+		}        
+
+		try{			
+			RemoteConnectionManager.instance
+			.closeConnection(Integer.toString(propPort));
+		}catch (Exception e)	{ 
+			AstericsErrorHandling.instance.reportError(this, "Stopping OSKA 'RemoteConnection' with exception: "+e+", message: "+e!=null ? e.getMessage() : "");
+		}        
+		try{		
+			if (process != null)
+			{
+				process.destroy();
+				process = null;
+			}
+		}catch (Exception e)	{ 
+			AstericsErrorHandling.instance.reportError(this, "Stopping OSKA 'kill process' with exception: "+e+", message: "+e!=null ? e.getMessage() : "");
+		}        
+
+		oskaStarted = false;
     	highlighter = null;
 		communication = null;
     	commandManager = null;
         instance = null;
+
+        super.stop();
     }
     
     /**

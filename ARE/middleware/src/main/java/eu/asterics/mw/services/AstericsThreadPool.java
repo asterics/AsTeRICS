@@ -26,14 +26,17 @@
 package eu.asterics.mw.services;
 
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.are.AREProperties;
@@ -70,65 +73,53 @@ import eu.asterics.mw.are.AREProperties;
  * @author mad
  *
  */
-public class AstericsThreadPool {
-	private static final String THREAD_POOL_SIZE = "ThreadPool.OtherTasks.size";
+public class AstericsThreadPool {	
 	private static final Logger logger=AstericsErrorHandling.instance.getLogger();
 	
-	private static final String ARE_MAIN = "AREMain";
 	public static final AstericsThreadPool instance = new AstericsThreadPool();
+	protected static final String THREAD_POOL_PREFIX = "OtherTasks";
 	private ExecutorService pool;
-	private ExecutorService AREMainExecutor = Executors
-			.newSingleThreadExecutor(new ThreadFactory() {
-				
-				@Override
-				public Thread newThread(Runnable arg0) {
-					// TODO Auto-generated method stub
-					return new Thread(arg0,ARE_MAIN);
-				}
-			});
 
 	private AstericsThreadPool() {
-		int poolSize=new Integer(AREProperties.instance.getProperty(THREAD_POOL_SIZE, "10"));
-		logger.info("Creating ThreadPool.OtherTasks with size: "+poolSize);
-		pool = Executors.newFixedThreadPool(poolSize);
-		//pool = Executors.newCachedThreadPool();
+		pool = Executors.newCachedThreadPool(new ThreadFactory() {
+			private int threadNr=0;				
+			@Override
+			public Thread newThread(Runnable r) {
+				// TODO Auto-generated method stub
+				String threadName=THREAD_POOL_PREFIX+"-"+threadNr++;
+				logger.fine("Creating Thread: "+threadName);
+
+				Thread newThread=Executors.defaultThreadFactory().newThread(r);
+				newThread.setName(threadName);
+				return newThread;					
+			}
+		});
+
 		/*
 		pool = new ThreadPoolExecutor(5, 20, 60,
 		TimeUnit.SECONDS,
 		new LinkedBlockingQueue<Runnable>(100));
 		*/
 	}
-
+	
+	public static AstericsThreadPool getInstance() {
+		return instance;
+	}
+	
 	public void execute(Runnable r) {
 		pool.execute(r);
 	}
-
-	/**
-	 * Executes the given Runnable by the Thread instance "AREMain", which is used to execute AREServices (start, stop models, ...). The method checks
-	 * if it is already executed by AREMain. In such a case Runnable is called directly. The Runnable is executed in a blocking way.
-	 * @param r
-	 * @throws InterruptedException
-	 * @throws ExecutionException
-	 */
-	public void execAndWaitOnAREMainThread(Runnable r) throws InterruptedException,
-			ExecutionException {
-		//AstericsErrorHandling.instance.getLogger().fine("Current Thread: "+Thread.currentThread().getName()+", AREMain: "+ARE_MAIN);
-		if(ARE_MAIN.equals(Thread.currentThread().getName())) {
-//			AstericsErrorHandling.instance.getLogger().fine("already in AREMain Thread");
-			//We are already executed by the AREMain Thread so just call the Runnable.run() method
-			r.run();
-		} else {
-//			AstericsErrorHandling.instance.getLogger().fine("scheduling for AREMain Thread");
-			//execute with AREMainExecuter and wait for response "blocked execution"
-			AREMainExecutor.submit(r).get();
-		}
-	}
-
-	/**
-	 * Returns the instance of the AREMain thread ExecutorService.
-	 * @return
-	 */
-	public ExecutorService getAREMainExecutor() {
-		return AREMainExecutor;
+	
+	public <V> V submit(Callable<V> r) throws InterruptedException, ExecutionException, TimeoutException {
+		Future<V> f=pool.submit(r);
+		try{
+			return f.get(AstericsModelExecutionThreadPool.TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS);
+		}catch(TimeoutException e) {
+			logger.warning("["+Thread.currentThread()+"]: Task execution timeouted, trying to cancel task");
+			if(f!=null) {
+				f.cancel(true);
+			}
+			throw(e);
+		}		
 	}
 }

@@ -52,6 +52,21 @@
             <eventListenerPort id="center">
                 <description>On incoming event, the mouse cursor position will be centered</description>
             </eventListenerPort>
+  			<eventListenerPort id="nextClickRight">
+                <description>the next left click event will generate a right click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickDouble">
+                <description>the next left click event will generate a double click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickMiddle">
+                <description>the next left click event will generate a middle click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickDrag">
+                <description>the next left click event will generate a drag click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickRelease">
+                <description>the next left click event will release a drag click</description>
+            </eventListenerPort> 
             <eventListenerPort id="activate">
                 <description>On incoming event, the mouse activity starts</description>
             </eventListenerPort>

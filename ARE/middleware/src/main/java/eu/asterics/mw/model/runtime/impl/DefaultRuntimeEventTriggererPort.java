@@ -31,8 +31,7 @@ import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AstericsEventThreadPool;
-import eu.asterics.mw.services.AstericsThreadPool;
+import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -67,7 +66,8 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
 					if (eventListenerPort == null)
 						continue;
 
-					AstericsEventThreadPool.instance.execute(new Runnable() {
+					AstericsModelExecutionThreadPool.instance.execute(new Runnable()
+					{
 						@Override
 						public void run() {
 							String targetComponentId = getTargetComponentId(elem.getKey());

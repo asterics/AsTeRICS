@@ -8800,7 +8800,7 @@ namespace Asterics.ACS {
                     int i = 1;
                     while (namevalid == false) {
                         string modelID = ct.id + "." + i;
-                        if (!deploymentComponentList.ContainsKey(modelID)) {
+                        if (deploymentComponentList.ContainsKey(modelID) == false) {
                             namevalid = true;
                             groupNames.Add(modelID);
                         }
@@ -8816,34 +8816,99 @@ namespace Asterics.ACS {
                 componentType modelComp = (componentType)o;
                 if (modelComp.ComponentType == ACS2.componentTypeDataTypes.group)
                     continue;
+                bool componentFound = false;
+                foreach (componentType c in deploymentModel.components)
+                {
+                    if (c == null)
+                    {
+                        continue;
+                    }
+                    if (c.type_id == modelComp.type_id)
+                    {
+                        componentFound = true;
+                        break;
+                    }
+                }
+                if (componentFound && ((Asterics.ACS2.componentTypesComponentType)componentList[modelComp.type_id]).singleton) {
+                    MessageBox.Show(Properties.Resources.SingletonErrorHeaderFormat(modelComp.type_id), Properties.Resources.SingletonErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Warning);
+                    List<channel> channelsToDelete = new List<channel>();
+                    if (modelToPaste.channels != null)
+                    {
+                        foreach (channel c in modelToPaste.channels)
+                        {
+                            if (c.source.component.id == modelComp.id)
+                            {
+                                channelsToDelete.Add(c);
+                            }
+                            else if (c.target.component.id == modelComp.id)
+                            {
+                                channelsToDelete.Add(c);
+                            }
+                        }
+                    }
+                    // Delete all channels connected to the singleton
+                    modelToPaste.channels = modelToPaste.channels.Where(val => channelsToDelete.Contains(val) == false).ToArray();
+                    List<eventChannel> evChannelsToDelete = new List<eventChannel>();
+                    if (modelToPaste.eventChannels != null)
+                    {
+                        foreach (eventChannel ec in modelToPaste.eventChannels)
+                        {
+                            if (ec.sources.source.component.id == modelComp.id)
+                            {
+                                evChannelsToDelete.Add(ec);
+                            }
+                            else if (ec.targets.target.component.id == modelComp.id)
+                            {
+                                evChannelsToDelete.Add(ec);
+                            }
+                        }
+                    }
+                    // Delete all eventchannels connected to the singleton
+                    modelToPaste.eventChannels = modelToPaste.eventChannels.Where(val => evChannelsToDelete.Contains(val) == false).ToArray();
+                    continue;
+                }
                 // change id
                 bool namevalid = namesAreValid;
                 int i = 1;
-                while (namevalid == false) {
-                    string modelID = modelComp.id + "." + i;
-                    if (!deploymentComponentList.ContainsKey(modelID)) {
-                        if (modelToPaste.channels != null) {
-                            foreach (channel c in modelToPaste.channels) {
-                                if (c.source.component.id == modelComp.id)
-                                    c.source.component.id = modelID;
-                                if (c.target.component.id == modelComp.id)
-                                    c.target.component.id = modelID;
+                if (deploymentComponentList.ContainsKey(modelComp.id))
+                {
+                    while (namevalid == false) 
+                    {
+                        string modelID = modelComp.id + "." + i;
+                        bool inPasteModel = false;
+                        foreach (componentType ct in modelToPaste.components)
+                        {
+                            if (ct.id == modelID)
+                            {
+                                inPasteModel = true;
+                                break;
                             }
                         }
-                        if (modelToPaste.eventChannels != null) {
-                            foreach (eventChannel ec in modelToPaste.eventChannels) {
-                                if (ec.sources.source.component.id == modelComp.id)
-                                    ec.sources.source.component.id = modelID;
-                                if (ec.targets.target.component.id == modelComp.id)
-                                    ec.targets.target.component.id = modelID;
+                        if (deploymentComponentList.ContainsKey(modelID) == false && inPasteModel == false)
+                        {
+                            if (modelToPaste.channels != null) {
+                                foreach (channel c in modelToPaste.channels) {
+                                    if (c.source.component.id == modelComp.id)
+                                        c.source.component.id = modelID;
+                                    if (c.target.component.id == modelComp.id)
+                                        c.target.component.id = modelID;
+                                }
                             }
+                            if (modelToPaste.eventChannels != null) {
+                                foreach (eventChannel ec in modelToPaste.eventChannels) {
+                                    if (ec.sources.source.component.id == modelComp.id)
+                                        ec.sources.source.component.id = modelID;
+                                    if (ec.targets.target.component.id == modelComp.id)
+                                        ec.targets.target.component.id = modelID;
+                                }
+                            }
+                            changedComponents.Add(modelComp.id,modelID);
+                            modelComp.id = modelID;
+                            namevalid = true;
                         }
-                        changedComponents.Add(modelComp.id,modelID);
-                        modelComp.id = modelID;
-                        namevalid = true;
+                        else
+                            i++;
                     }
-                    else
-                        i++;
                 }
                 // check, if bundle is available
                 if (componentList.ContainsKey(modelComp.type_id)) {
@@ -9520,7 +9585,7 @@ namespace Asterics.ACS {
             eventChannelList.Clear();
             groupsList.Clear();
             CleanGUICanvas();
-            copyModel = null;
+            //copyModel = null;
 
             // loading the components
             foreach (object o in deploymentModel.components) {
@@ -10125,13 +10190,7 @@ namespace Asterics.ACS {
             LinkedList<componentType> t = new LinkedList<componentType>();
             for (int i = 0; i < selectedComponentList.Count; i++) {
                 componentType ct = selectedComponentList.ElementAt(i);
-                if (!((Asterics.ACS2.componentTypesComponentType)componentList[ct.type_id]).singleton) {
-                    t.AddLast(ct);
-                }
-                else {
-                    //if (ct.ComponentCanvas.Visibility == System.Windows.Visibility.Visible)
-                        MessageBox.Show(Properties.Resources.SingletonErrorHeaderFormat(ct.type_id), Properties.Resources.SingletonErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
+                t.AddLast(ct);
             }
             copyModel.components = t.ToArray();
             //get all selected channels where the source and target components

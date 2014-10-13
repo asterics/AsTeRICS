@@ -458,7 +458,7 @@
     <Resource Include="images\ungroup.png" />
     <Resource Include="images\ExtToolActivate.png" />
     <Resource Include="images\ExtToolCreate.png" />
-    <None Include="lang\de-AT.txt">
+    <None Include="images\lang\de-AT.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Resource Include="images\ExtToolLangCreate.png" />
@@ -468,10 +468,10 @@
     <Resource Include="images\Printer.png" />
     <Resource Include="images\DownloadBundle.png" />
     <Resource Include="images\ConfigureBundle.png" />
-    <None Include="lang\pl-PL.txt">
+    <None Include="images\lang\pl-PL.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="lang\es-ES.txt">
+    <None Include="images\lang\es-ES.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Resource Include="images\Question.png" />
