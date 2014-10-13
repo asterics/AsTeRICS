@@ -11,5 +11,7 @@ Bundle-NativeCode: lib/native/hidapi-jni.dll;
  osname=windows 8;processor=x86;
  osname=windows 8;processor=x86-64;
  osname=windows8;processor=x86;
- osname=windows8;processor=x86-64
+ osname=windows8;processor=x86-64;
+ osname=Windows 8.1;processor=x86;
+ osname=Windows 8.1;processor=x86-64
 DynamicImport-Package: *
