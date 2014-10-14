@@ -353,15 +353,21 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 					try {		
 						StringTokenizer st = new StringTokenizer(action.substring(ACTION_STRING_PREFIX.length()),"_, ");
 						int hc = Integer.parseInt(st.nextToken());  // this is the housecode
-						int a = Integer.parseInt(st.nextToken());
+						int a = Integer.parseInt(st.nextToken());						
 						int cmd = Integer.parseInt(st.nextToken());
-						synchronized (pcs) {
+						try {
+						  synchronized (pcs) {
 							if (pcs != null)
 								pcs.send(hc, a, cmd);
+						   }
 						}
+						catch(NullPointerException e) {
+							Logger.getAnonymousLogger().severe(e.toString());
+							AstericsErrorHandling.instance.reportInfo(instance, "cannot send to FS20 PCS !");
+						}	
 					} catch (NumberFormatException | NullPointerException e) {
 						Logger.getAnonymousLogger().severe(e.toString());
-						AstericsErrorHandling.instance.reportInfo(instance, "Parameter mismatch for action string "+action+"! Format is: hc_addr_cmd! example: 11111111, 1111, 18 for toggle");
+						AstericsErrorHandling.instance.reportInfo(instance, "Parameter mismatch for action string "+action+"! Format is @FS20: 11111111, 1111, 18");
 				}
 	    	}
 		}

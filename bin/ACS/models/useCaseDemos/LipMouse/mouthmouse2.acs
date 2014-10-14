@@ -15,7 +15,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="periodicADCUpdate" value="30" />
+        <property name="periodicADCUpdate" value="20" />
       </properties>
       <layout>
         <posX>12</posX>
@@ -215,7 +215,7 @@
         <posY>386</posY>
       </layout>
       <gui>
-        <posX>6462</posX>
+        <posX>2462</posX>
         <posY>22</posY>
         <width>250</width>
         <height>222</height>
@@ -225,11 +225,11 @@
       <description>Keyboard which sends event after button press</description>
       <ports />
       <properties>
-        <property name="caption" value="Keyboard" />
+        <property name="caption" value="Funktion" />
         <property name="horizontalOrientation" value="True" />
-        <property name="buttonCaption1" value="on/off" />
-        <property name="buttonCaption2" value="OSKA" />
-        <property name="buttonCaption3" value="func" />
+        <property name="buttonCaption1" value="ein / aus" />
+        <property name="buttonCaption2" value="Keyboard" />
+        <property name="buttonCaption3" value="pusten =" />
         <property name="buttonCaption4" value="" />
         <property name="buttonCaption5" value="" />
         <property name="buttonCaption6" value="" />
@@ -249,14 +249,14 @@
         <property name="buttonCaption20" value="" />
       </properties>
       <layout>
-        <posX>432</posX>
-        <posY>731</posY>
+        <posX>430</posX>
+        <posY>762</posY>
       </layout>
       <gui>
-        <posX>6462</posX>
+        <posX>2462</posX>
         <posY>22</posY>
-        <width>1763</width>
-        <height>689</height>
+        <width>2488</width>
+        <height>667</height>
       </gui>
     </component>
     <component id="AdjustmentCurve.1.1" type_id="asterics.AdjustmentCurve">
@@ -288,7 +288,7 @@
         <posY>539</posY>
       </layout>
       <gui>
-        <posX>6962</posX>
+        <posX>2962</posX>
         <posY>22</posY>
         <width>250</width>
         <height>222</height>
@@ -305,12 +305,12 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="bufferSize" value="4" />
+        <property name="bufferSize" value="7" />
         <property name="mode" value="0" />
       </properties>
       <layout>
-        <posX>306</posX>
-        <posY>379</posY>
+        <posX>310</posX>
+        <posY>378</posY>
       </layout>
     </component>
     <component id="Averager.1.1" type_id="asterics.Averager">
@@ -324,7 +324,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="bufferSize" value="4" />
+        <property name="bufferSize" value="7" />
         <property name="mode" value="0" />
       </properties>
       <layout>
@@ -382,7 +382,7 @@
         <property name="max" value="100" />
         <property name="default" value="30" />
         <property name="autosend" value="true" />
-        <property name="caption" value="Speed" />
+        <property name="caption" value="Geschwindigkeit" />
         <property name="majorTickSpacing" value="10" />
         <property name="minorTickSpacing" value="5" />
         <property name="alignment" value="0" />
@@ -393,10 +393,10 @@
         <posY>734</posY>
       </layout>
       <gui>
-        <posX>8312</posX>
-        <posY>0</posY>
-        <width>1163</width>
-        <height>711</height>
+        <posX>6525</posX>
+        <posY>22</posY>
+        <width>2550</width>
+        <height>667</height>
       </gui>
     </component>
     <component id="MathEvaluator.1.2.1" type_id="asterics.MathEvaluator">
@@ -419,7 +419,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="a*b/30" />
+        <property name="expression" value="-a*b/50" />
       </properties>
       <layout>
         <posX>621</posX>
@@ -446,11 +446,11 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="a*b/30" />
+        <property name="expression" value="-a*b/50" />
       </properties>
       <layout>
-        <posX>628</posX>
-        <posY>559</posY>
+        <posX>627</posX>
+        <posY>565</posY>
       </layout>
     </component>
     <component id="Timer.2" type_id="asterics.Timer">
@@ -574,15 +574,15 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="thresholdHigh" value="575" />
-        <property name="thresholdLow" value="575" />
+        <property name="thresholdHigh" value="550" />
+        <property name="thresholdLow" value="550" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="0" />
         <property name="operationMode" value="binary" />
         <property name="eventCondition" value="2" />
       </properties>
       <layout>
-        <posX>1163</posX>
+        <posX>1198</posX>
         <posY>166</posY>
       </layout>
     </component>
@@ -597,8 +597,8 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="thresholdHigh" value="575" />
-        <property name="thresholdLow" value="575" />
+        <property name="thresholdHigh" value="550" />
+        <property name="thresholdLow" value="550" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="0" />
         <property name="operationMode" value="binary" />
@@ -609,20 +609,114 @@
         <posY>334</posY>
       </layout>
     </component>
-    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
-      <description>Simple Event Visualizer</description>
-      <ports />
-      <properties />
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="1" />
+        <property name="backgroundColor" value="11" />
+      </properties>
       <layout>
-        <posX>827</posX>
-        <posY>167</posY>
+        <posX>895</posX>
+        <posY>737</posY>
       </layout>
       <gui>
-        <posX>6450</posX>
-        <posY>889</posY>
-        <width>3025</width>
-        <height>1778</height>
+        <posX>4938</posX>
+        <posY>244</posY>
+        <width>1588</width>
+        <height>444</height>
       </gui>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Rechtsklick" />
+        <property name="slot2" value="runter scrollen" />
+        <property name="slot3" value="rauf scrollen" />
+        <property name="slot4" value="" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>759</posX>
+        <posY>733</posY>
+      </layout>
+    </component>
+    <component id="Timer.3" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="2" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="250" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>1416</posX>
+        <posY>146</posY>
+      </layout>
+    </component>
+    <component id="Timer.3.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="2" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="250" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>1384</posX>
+        <posY>388</posY>
+      </layout>
     </component>
   </components>
   <channels>
@@ -784,6 +878,16 @@
       <target>
         <component id="Threshold.1.1.1.1" />
         <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
       </target>
     </channel>
   </channels>
@@ -1082,34 +1186,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="eventPosEdge_wheelUp">
-      <sources>
-        <source>
-          <component id="Threshold.1.1.1" />
-          <eventPort id="eventPosEdge" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="wheelUp" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="eventPosEdge_wheelDown">
-      <sources>
-        <source>
-          <component id="Threshold.1.1.1.1" />
-          <eventPort id="eventPosEdge" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="wheelDown" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="conditionTrue_toggle">
       <sources>
         <source>
@@ -1152,20 +1228,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="periodFinished_eventDisplay">
-      <sources>
-        <source>
-          <component id="Timer.1.1.1" />
-          <eventPort id="periodFinished" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="output_calibration">
       <sources>
         <source>
@@ -1180,6 +1242,146 @@
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="button3_dispatchNextSlot">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchNextSlot" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_dispatchSlot1">
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_start">
+      <sources>
+        <source>
+          <component id="Threshold.1.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.3" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_stop">
+      <sources>
+        <source>
+          <component id="Threshold.1.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.3" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_reset">
+      <sources>
+        <source>
+          <component id="Threshold.1.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.3" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_wheelUp">
+      <sources>
+        <source>
+          <component id="Timer.3" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="wheelUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_wheelDown">
+      <sources>
+        <source>
+          <component id="Timer.3.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="wheelDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_start">
+      <sources>
+        <source>
+          <component id="Threshold.1.1.1.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.3.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_stop">
+      <sources>
+        <source>
+          <component id="Threshold.1.1.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.3.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_reset">
+      <sources>
+        <source>
+          <component id="Threshold.1.1.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.3.1" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
     <Decoration>false</Decoration>
@@ -1188,10 +1390,10 @@
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
-      <posX>6450</posX>
+      <posX>2450</posX>
       <posY>0</posY>
-      <width>3062</width>
-      <height>3578</height>
+      <width>6625</width>
+      <height>689</height>
     </AREGUIWindow>
   </modelGUI>
 </model>

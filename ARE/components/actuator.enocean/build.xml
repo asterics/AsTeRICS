@@ -17,6 +17,7 @@
        	<pathelement location="src/main/resources/lib/log4j-1.2.17.jar"/>
         <pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
         <pathelement location="${middleware}/asterics.ARE.jar"/>
+        <pathelement location="${services}/asterics.mw.systemstatechange.jar"/>
        	<pathelement location="${services}/asterics.mw.cimcommunication.jar"/>
        	
     </path>
