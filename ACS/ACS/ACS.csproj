@@ -23,6 +23,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -37,7 +38,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -59,7 +59,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>images\asterics_icon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AvalonDock, Version=1.3.3592.0, Culture=neutral, PublicKeyToken=85a1e0ada7ec13e4, processorArchitecture=MSIL">
@@ -126,6 +127,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="BundleComponent.cs" />
+    <Compile Include="EvtChannelDescriptionTextBox.cs" />
     <Compile Include="Grouping.cs" />
     <Compile Include="GUIProperties.cs" />
     <Compile Include="RecentFiles.cs" />
@@ -458,9 +460,6 @@
     <Resource Include="images\ungroup.png" />
     <Resource Include="images\ExtToolActivate.png" />
     <Resource Include="images\ExtToolCreate.png" />
-    <None Include="images\lang\de-AT.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Resource Include="images\ExtToolLangCreate.png" />
     <Resource Include="images\group_save.png" />
     <Resource Include="images\group_elem.png" />
@@ -468,12 +467,6 @@
     <Resource Include="images\Printer.png" />
     <Resource Include="images\DownloadBundle.png" />
     <Resource Include="images\ConfigureBundle.png" />
-    <None Include="images\lang\pl-PL.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="images\lang\es-ES.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Resource Include="images\Question.png" />
     <Resource Include="images\asterics_startup2.png" />
     <Resource Include="images\asterics_startup2_de.png" />
