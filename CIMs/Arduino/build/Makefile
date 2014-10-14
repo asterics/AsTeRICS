@@ -43,9 +43,7 @@ OBJECTS = Adc.o Arduino.o CimProtocol.o Uart.o Timer.o
 LINKONLYOBJECTS = 
 
 ## Build
-all: $(TARGET) Arduino.hex Arduino.eep Arduino.lss size
-
-## Compile
+all: $(TARGET) Arduino.hex Arduino.eep Arduino.lss## Compile
 Adc.o: ../Adc.c
 	$(CC) $(INCLUDES) $(CFLAGS) -c  $<
 
@@ -74,10 +72,6 @@ $(TARGET): $(OBJECTS)
 %.lss: $(TARGET)
 	avr-objdump -h -S $< > $@
 
-size: ${TARGET}
-	@echo
-	@avr-size -C --mcu=${MCU} ${TARGET}
-
 ## Clean target
 .PHONY: clean
 clean:
@@ -85,5 +79,5 @@ clean:
 
 
 ## Other dependencies
--include $(shell mkdir dep 2>/dev/null) $(wildcard dep/*)
+-include $(shell mkdir dep 2>NUL) $(wildcard dep/*)
 
