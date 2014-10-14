@@ -116,9 +116,9 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 	private int currentPinValue = 0;
 	private boolean firstPinReport = true;
 	
-	private int pin3Mode = 0; //mode of pin 3 (0 -> disabled, 1 -> servo, 2-> 1khz PWM, 3-> 10khz PWM, 4-> 28khz PWM)
-	private int pin5Mode = 0; //mode of pin 5 (0 -> disabled, 1 -> servo, 2-> 1khz PWM, 3-> 10khz PWM, 4-> 28khz PWM)
-	private int pin6Mode = 0; //mode of pin 6 (0 -> disabled, 1 -> servo, 2-> 1khz PWM, 3-> 10khz PWM, 4-> 28khz PWM)
+	private int pin3Mode = 0; //mode of pin 3 (0 -> no PWM, 1 -> servo, 2-> 500Hz PWM)
+	private int pin5Mode = 0; //mode of pin 5 (0 -> no PWM, 1 -> servo, 2-> 500Hz PWM)
+	private int pin6Mode = 0; //mode of pin 6 (0 -> no PWM, 1 -> servo, 2-> 500Hz PWM)
 
 	
    /**
@@ -342,9 +342,9 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 						pinMask &= ~(1<<(i+STARTPIN));
 						break;*/
 				}
-				sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,3+(pin3Mode<<4));
-				sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,5+(pin5Mode<<4));
-				sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,6+(pin6Mode<<4));
+				if(pin3Mode != 0) sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,3+(pin3Mode<<4));
+				if(pin5Mode != 0) sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,5+(pin5Mode<<4));
+				if(pin6Mode != 0) sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,6+(pin6Mode<<4));
 	 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PINSTATE,pinState);
 	 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PINDIRECTION,pinDirection);
 	 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PINMASK,pinMask);
@@ -362,8 +362,10 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 		public void receiveData(byte[] data)
 		{
 			int value = ConversionUtils.intFromBytes(data);
-			AstericsErrorHandling.instance.reportDebugInfo(null, String.valueOf(3+(value<<8)+(pin3Mode<<4)) + "  Value 3");
- 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,3+(value<<8)+(pin3Mode<<4));
+			if(pin3Mode != 0) { 
+				AstericsErrorHandling.instance.reportDebugInfo(null, String.valueOf(3+(value<<8)+(pin3Mode<<4)) + "  Value 3");
+ 				sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,3+(value<<8)+(pin3Mode<<4));
+			}
 		}
 
 	};
@@ -372,8 +374,10 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 		public void receiveData(byte[] data)
 		{
 			int value = ConversionUtils.intFromBytes(data); 
-			AstericsErrorHandling.instance.reportDebugInfo(null, String.valueOf(5+(value<<8)+(pin5Mode<<4)) + "  Value 5");
- 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,5+(value<<8)+(pin5Mode<<4));//hier PWM
+			if(pin5Mode != 0) { 
+				AstericsErrorHandling.instance.reportDebugInfo(null, String.valueOf(5+(value<<8)+(pin5Mode<<4)) + "  Value 5");
+				sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,5+(value<<8)+(pin5Mode<<4));//hier PWM
+			}
 		}
 
 	};
@@ -382,8 +386,10 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 		public void receiveData(byte[] data)
 		{
 			int value = ConversionUtils.intFromBytes(data); 
-			AstericsErrorHandling.instance.reportDebugInfo(null, String.valueOf(6+(value<<8)+(pin6Mode<<4)) + "  Value 6");
- 			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,6+(value<<8)+(pin6Mode<<4));//hier PWM
+			if(pin6Mode != 0) {
+				AstericsErrorHandling.instance.reportDebugInfo(null, String.valueOf(6+(value<<8)+(pin6Mode<<4)) + "  Value 6");
+				sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_PWM,6+(value<<8)+(pin6Mode<<4));//hier PWM
+			}
 		}
 	};
 

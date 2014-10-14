@@ -132,8 +132,11 @@ uint8_t process_ARE_frame(uint8_t status_code)
 					 disable_timer_ISR();
 					 DDRD = 0x00;
 					 servo3_en = 0;
+					 disable_PWM(3);
 					 servo5_en = 0;
+					 disable_PWM(5);
 					 servo6_en = 0;
+					 disable_PWM(6);
 					} else status_code |= CIM_ERROR_INVALID_FEATURE;
 				  break;
 
@@ -176,26 +179,6 @@ uint8_t process_ARE_frame(uint8_t status_code)
 	  		            if (data_size==2) {    
 				 		  DDRD=ARE_frame.data[0];
 				 		  DDRB=ARE_frame.data[1];
-				 		  
-				 		  //check for pins as output, disable PWM
-				 		  if(ARE_frame.data[0] & (1<<PD3))
-				 		  {
-							  disable_PWM(3);
-							  servo3_en = 0;
-						  }
-						  
-						  if(ARE_frame.data[0] & (1<<PD5))
-				 		  {
-							  disable_PWM(5);
-							  servo5_en = 0;
-						  }
-						  
-						  if(ARE_frame.data[0] & (1<<PD6))
-				 		  {
-							  disable_PWM(6);
-							  servo6_en = 0;
-						  }
-				 		  
   						} else status_code |= CIM_ERROR_INVALID_FEATURE;
 					  break;	
 					  				
