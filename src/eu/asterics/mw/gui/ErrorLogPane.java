@@ -26,40 +26,49 @@
 package eu.asterics.mw.gui;
 
 
-import javax.swing.JTextArea;
+/*import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
-import javax.swing.JPanel;
+import javax.swing.JPanel;*/
 
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+//import java.awt.BorderLayout;
+//import java.awt.Dimension;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
+
+
+
+//import java.awt.event.MouseEvent;
+//import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 
-public class ErrorLogPane extends JPanel  {
-	protected static  JTextArea textArea;
+import javafx.geometry.Dimension2D;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+
+public class ErrorLogPane extends Pane  {
+	protected static  TextArea textArea;
 	protected static String newline = "\n";
 
 
 	public ErrorLogPane() {
-		super(new BorderLayout());
+		super(new BorderPane());
 
 
-		textArea = new JTextArea(10, 80);
+		textArea = new TextArea();
 		textArea.setEditable(false);
-		JScrollPane scrollPane = new JScrollPane(textArea);
+		//JScrollPane scrollPane = new JScrollPane(textArea);
 
 		//Lay out the main panel.
-		setPreferredSize(new Dimension(650, 400));
-		add(scrollPane, BorderLayout.CENTER);
+		//setPreferredSize(new Dimension2D(650, 400));
+		this.getChildren().add(this);
 
 		textArea.setVisible(true);
 		this.setVisible(false);
@@ -68,8 +77,8 @@ public class ErrorLogPane extends JPanel  {
 
 	public static void appendLog(String error) {
 
-			textArea.append(new Timestamp(System.currentTimeMillis())+": "+error+"\n");
-			textArea.setCaretPosition(textArea.getDocument().getLength());
+			textArea.appendText(new Timestamp(System.currentTimeMillis())+": "+error+"\n");
+			//textArea.setCaretPosition(textArea.getDocument().getLength());
 
 	}
 	

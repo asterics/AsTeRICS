@@ -26,30 +26,6 @@ package eu.asterics.mw.gui;
  */
 
 
-import java.awt.AWTException;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.Point;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowAdapter;
 //import java.io.BufferedWriter;
 import java.io.File;
 //import java.io.FileWriter;
@@ -59,18 +35,31 @@ import java.net.URL;
 import java.net.UnknownHostException;
 //import java.util.logging.Logger;
 
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileFilter;
+
+
+
+
+
+
+
+
+
+
+
+
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import org.osgi.framework.BundleContext;
 
@@ -107,29 +96,25 @@ public class AstericsGUI implements IAREEventListener
 	public AstericsDesktop desktop;
 
 	private BundleContext bundleContext;
-	private JFileChooser fc;
+	private FileChooser fc;
 	private int openFrameCount=0;
 	private int xOffset=20;
 	private int yOffset=20;
 
-	JButton restartButton;
-	JPanel centerPanel,
+	Button restartButton;
+	Pane centerPanel,
 	controlPanel, jplPanel, copyrightPanel, modelWrapperPanel, cpWrapperPanel;
-	private Container pane;
+	private Parent pane;
 
 	private final AsapiSupport as; 
-	Dimension screenSize ;
-	private JFrame mainFrame;
+	Dimension2D screenSize ;
+	private Scene mainFrame;
 	OptionsFrame optionsFrame;
 	// private AboutFrame aboutFrame;
 
-	private Dimension size;
-	private Point position, initialClick;
+	private Dimension2D size;
+	private Point2D position, initialClick;
 	private ControlPane controlPane;
-	private TrayIcon trayIcon=null;
-	private int controlPanelOrientation= BoxLayout.Y_AXIS;
-
-	SystemTray tray=null;
 	
 	ModelGUIInfo modelGuiInfo = new ModelGUIInfo(	DEFAULT_SCREEN_X, 
 													DEFAULT_SCREEN_Y,
@@ -141,7 +126,7 @@ public class AstericsGUI implements IAREEventListener
 		super();
 
 		// logger = AstericsErrorHandling.instance.getLogger();
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		AREServices.instance.registerAREEventListener(this);
 		
 		this.bundleContext = bundleContext;
@@ -157,13 +142,13 @@ public class AstericsGUI implements IAREEventListener
 			e.printStackTrace();
 		}
 
-		mainFrame = new JFrame();
-		mainFrame.setVisible(false); 
-		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
-		mainFrame.setTitle ("AsTeRICS Runtime Environment 2.2     Host: "+hostname+"  IP:"+ip);
-		mainFrame.addComponentListener(new ResizeListener());
-		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		mainFrame.addWindowListener(new WindowAdapter() {
+		mainFrame = new Scene(pane);
+		//mainFrame.setVisible(false); 
+		//mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
+		//mainFrame.setTitle ("AsTeRICS Runtime Environment 2.2     Host: "+hostname+"  IP:"+ip);
+		//mainFrame.addComponentListener(new ResizeListener());
+		//mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		/*mainFrame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				if (mainFrame.isShowing())
 				closeAction();
@@ -172,12 +157,12 @@ public class AstericsGUI implements IAREEventListener
 			// if (mainFrame.isShowing())
 			//	setDesktopSize("both");
 			//}
-		});
+		});*/
 
-		pane = mainFrame.getContentPane();
+		//pane.setScene(mainFrame);
 
 		//Create and set up the content pane.
-		desktop = new AstericsDesktop(this);
+		/*desktop = new AstericsDesktop(this);
 		desktop.setOpaque(true); //content panes must be opaque
 		desktop.addMouseListener(new DesktopListener());
 		desktop.addMouseMotionListener(new DesktopListener());
@@ -191,13 +176,13 @@ public class AstericsGUI implements IAREEventListener
 		controlPanel = new JPanel ();
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
 		controlPanel.add(controlPane);
-		pane.add(controlPanel, BorderLayout.LINE_END);	
+		pane.add(controlPanel, BorderLayout.LINE_END);	*/
 
 		// aboutFrame = new AboutFrame (this, mainFrame);
 		
 	}
 
-	public class ResizeListener extends ComponentAdapter {
+	/*public class ResizeListener extends ComponentAdapter {
 
 		  @Override
 		  public void componentResized(ComponentEvent evt) {
@@ -228,9 +213,9 @@ public class AstericsGUI implements IAREEventListener
 				
 				controlPane.resizeLabels(actOrientation);
 		  }
-	}
+	}*/
 
-	public class DesktopListener implements MouseListener, MouseMotionListener {
+	/*public class DesktopListener implements MouseListener, MouseMotionListener {
 
 		@Override
 		public void mouseClicked(MouseEvent e) 
@@ -301,10 +286,10 @@ public class AstericsGUI implements IAREEventListener
 	        mainFrame.setLocation(X, Y);
 	    }
 	}
-		
+		*/
 		
 
-	public void setSystemTray() {
+	/*public void setSystemTray() {
 
 
 		if (SystemTray.isSupported()) {
@@ -360,14 +345,14 @@ public class AstericsGUI implements IAREEventListener
 				System.err.println(e);
 			}
 		} 
-	}
+	}*/
 
-	public JPanel getDesktop ()
+	/*public JPanel getDesktop ()
 	{
 		return this.desktop;
-	}
+	}*/
 
-	public void displayFrame (final JInternalFrame frame, final boolean display)
+	/*public void displayFrame (final JInternalFrame frame, final boolean display)
 	{
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -398,9 +383,9 @@ public class AstericsGUI implements IAREEventListener
 			}
 		});
 
-	}
+	}*/
 
-	public void displayPanel (final JPanel panel, final int posX, final int posY, 
+	/*public void displayPanel (final Pane panel, final int posX, final int posY, 
 			final int width, final int height, 
 			final boolean display)
 	{
@@ -448,34 +433,34 @@ public class AstericsGUI implements IAREEventListener
 			}
 		});
 
-	}
+	}*/
 
-	public void closeAction()
+	/*public void closeAction()
 	{	//if (mainFrame.isShowing())
 		//	setDesktopSize("both");
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setVisible(false);
 		AREServices.instance.stopModel();
 		System.exit(0);
-	}
+	}*/
 
 
 	void fileChooser (AsapiSupport as)
 	{
-		fc = new JFileChooser();
-		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		fc = new FileChooser();
+		//fc.setFileSelectionMode(FileChooser.FILES_AND_DIRECTORIES);
 
 		//Add a custom file filter and disable the default
 		//(Accept All) file filter.
-		fc.addChoosableFileFilter(new ModelFilter());
-		fc.setAcceptAllFileFilterUsed(true);
-		fc.setCurrentDirectory(new java.io.File("./models"));
+		//fc.addChoosableFileFilter(new ModelFilter());
+		//fc.setAcceptAllFileFilterUsed(true);
+		fc.setInitialDirectory(new java.io.File("./models"));
 
 		//Show it.
-		int returnVal = fc.showDialog(mainFrame, "Open model...");
+		//int returnVal = fc.showOpenDialog((Window)mainFrame);
 
 		//Process the results.
-		if (returnVal == JFileChooser.APPROVE_OPTION)
+		/*if (returnVal == JFileChooser.APPROVE_OPTION)
 		{
 			File file = fc.getSelectedFile();
 			String fileName = file.getName();
@@ -510,11 +495,11 @@ public class AstericsGUI implements IAREEventListener
 
 
 		//Reset the file chooser for the next time it's shown.
-		fc.setSelectedFile(null);
+		fc.setSelectedFile(null);*/
 	}
 	
 	
-	class ModelFilter  extends FileFilter {
+	/*class ModelFilter  extends FileFilter {
 
 		//Accept only .xml and .acs files
 		public boolean accept(File f) {
@@ -543,9 +528,9 @@ public class AstericsGUI implements IAREEventListener
 		public String getDescription() {
 			return "AsTeRICS models";
 		}
-	}
+	}*/
 
-	public void setVisible(String name, boolean b)
+	/*public void setVisible(String name, boolean b)
 	{
 		Component[] components = pane.getComponents();
 
@@ -560,10 +545,10 @@ public class AstericsGUI implements IAREEventListener
 				}
 			}
 		}
-	}
+	}*/
 	
 
-	void applyChanges ()
+	/*void applyChanges ()
 	{
 		
 		mainFrame.setVisible(false);
@@ -641,22 +626,22 @@ public class AstericsGUI implements IAREEventListener
 		}
 		mainFrame.pack();
 		mainFrame.revalidate();		
-	}
+	}*/
 	
 	
-	public void setStatus (AREStatus s)
+	/*public void setStatus (AREStatus s)
 	{
 		controlPane.setStatus (s);
-	}
+	}*/
 	
 	
-	public JFrame getFrame() {
+	/*public Pane getFrame() {
 		return this.mainFrame;
-	}
+	}*/
 	
-	public void setModelGuiInfo(ModelGUIInfo modelGuiInfo) {
+	/*public void setModelGuiInfo(ModelGUIInfo modelGuiInfo) {
 		this.modelGuiInfo = modelGuiInfo;
-	}
+	}*/
 
 	@Override
 	public void preDeployModel() {
@@ -673,7 +658,7 @@ public class AstericsGUI implements IAREEventListener
 			// System.out.println(info.toString());
 			modelGuiInfo = info;
 			modelGuiInfo.updateProperties();			
-			applyChanges();
+			//applyChanges();
 		}
 	}
 

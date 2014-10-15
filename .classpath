@@ -5,5 +5,14 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="lib" path="/home/chris/dev/javafx/dalvik-sdk/rt/libs/compat.jar"/>
+	<classpathentry kind="lib" path="/home/chris/dev/javafx/dalvik-sdk/rt/libs/jfxdvk.jar"/>
+	<classpathentry kind="lib" path="/home/chris/dev/javafx/dalvik-sdk/rt/libs/jfxrt.jar"/>
+	<classpathentry kind="lib" path="/home/chris/dev/androidAre/libs/javafx-dialogs-0.0.4.jar"/>
+	<classpathentry kind="lib" path="libs/felix.jar"/>
+	<classpathentry kind="lib" path="libs/org.apache.felix.bundlerepository-1.6.6.jar"/>
+	<classpathentry kind="lib" path="libs/org.apache.felix.gogo.command-0.12.0.jar"/>
+	<classpathentry kind="lib" path="libs/org.apache.felix.gogo.runtime-0.10.0.jar"/>
+	<classpathentry kind="lib" path="libs/org.apache.felix.gogo.shell-0.10.0.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

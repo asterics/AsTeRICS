@@ -25,11 +25,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.logging.Logger;
 
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileSystemView;
-
-
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set

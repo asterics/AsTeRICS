@@ -25,17 +25,17 @@
 
 package eu.asterics.mw.gui;
 
-import java.awt.BorderLayout;
+/*import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage;*/
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
+/*import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -43,7 +43,12 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JPanel;*/
+
+
+
+import javafx.scene.control.Dialogs;
+import javafx.scene.layout.Pane;
 
 import org.osgi.framework.BundleContext;
 
@@ -54,17 +59,17 @@ import org.osgi.framework.BundleContext;
  * 
  * Date: Oct 10, 2011
  */
-public class AboutFrame extends JDialog 
+public class AboutFrame 
 {
 	private static final int OPTIONS_PRAME_WIDTH = 400;
 	private static final int OPTIONS_PRAME_HEIGHT = 450;
 	static String ICON_PATH = "/images/icon.gif";
-	JDialog thisDialog;
+	Dialogs thisDialog;
 	AstericsGUI parent;
-	public AboutFrame (AstericsGUI parent, JFrame mainFrame)
+	public AboutFrame (AstericsGUI parent, Pane mainFrame)
 	{
-		super(mainFrame);
-		thisDialog=this;
+		//super();
+		/*thisDialog=this;
 		this.parent = parent;
 		final URL iconPath = parent.getBundleContext().getBundle().
 			getResource(ICON_PATH);
@@ -93,22 +98,22 @@ public class AboutFrame extends JDialog
 		}
 		
 		
-      
+      */
 	}
 	
 	public void showFrame()
 	{
-		pack();
+		/*pack();
 		this.setLocation(parent.getFrame().getLocation());
-	    setVisible(true);
+	    setVisible(true);*/
 	}
 	public void hideFrame()
 	{ 
-	    setVisible(false);
+	    //setVisible(false);
 	}
 
 
-	private JComponent makeButtonsPanel ()
+	/*private JComponent makeButtonsPanel ()
 	{
 		 JPanel panel = new JPanel(false);
 
@@ -125,7 +130,7 @@ public class AboutFrame extends JDialog
 	        panel.add(cancelBbutton);
 	        return panel;
 		
-	}
+	}*/
 	
 	
 

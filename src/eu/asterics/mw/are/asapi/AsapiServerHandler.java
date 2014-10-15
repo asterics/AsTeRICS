@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import org.apache.thrift.TException;
 
-import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
+//import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
 
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.exceptions.AREAsapiException;

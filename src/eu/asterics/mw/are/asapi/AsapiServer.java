@@ -2847,15 +2847,21 @@ public class AsapiServer {
         super("GetAvailableComponentTypes");
       }
 
-      protected GetAvailableComponentTypes_args getEmptyArgsInstance() {
+      public GetAvailableComponentTypes_args getEmptyArgsInstance() {
         return new GetAvailableComponentTypes_args();
       }
 
-      protected GetAvailableComponentTypes_result getResult(I iface, GetAvailableComponentTypes_args args) throws org.apache.thrift.TException {
+      public GetAvailableComponentTypes_result getResult(I iface, GetAvailableComponentTypes_args args) throws org.apache.thrift.TException {
         GetAvailableComponentTypes_result result = new GetAvailableComponentTypes_result();
         result.success = iface.GetAvailableComponentTypes();
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetModel<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetModel_args> {
@@ -2863,15 +2869,21 @@ public class AsapiServer {
         super("GetModel");
       }
 
-      protected GetModel_args getEmptyArgsInstance() {
+      public GetModel_args getEmptyArgsInstance() {
         return new GetModel_args();
       }
 
-      protected GetModel_result getResult(I iface, GetModel_args args) throws org.apache.thrift.TException {
+      public GetModel_result getResult(I iface, GetModel_args args) throws org.apache.thrift.TException {
         GetModel_result result = new GetModel_result();
         result.success = iface.GetModel();
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class DeployModel<I extends Iface> extends org.apache.thrift.ProcessFunction<I, DeployModel_args> {
@@ -2879,11 +2891,11 @@ public class AsapiServer {
         super("DeployModel");
       }
 
-      protected DeployModel_args getEmptyArgsInstance() {
+      public DeployModel_args getEmptyArgsInstance() {
         return new DeployModel_args();
       }
 
-      protected DeployModel_result getResult(I iface, DeployModel_args args) throws org.apache.thrift.TException {
+      public DeployModel_result getResult(I iface, DeployModel_args args) throws org.apache.thrift.TException {
         DeployModel_result result = new DeployModel_result();
         try {
           iface.DeployModel(args.modelInXml);
@@ -2892,6 +2904,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class DeployFile<I extends Iface> extends org.apache.thrift.ProcessFunction<I, DeployFile_args> {
@@ -2899,11 +2917,11 @@ public class AsapiServer {
         super("DeployFile");
       }
 
-      protected DeployFile_args getEmptyArgsInstance() {
+      public DeployFile_args getEmptyArgsInstance() {
         return new DeployFile_args();
       }
 
-      protected DeployFile_result getResult(I iface, DeployFile_args args) throws org.apache.thrift.TException {
+      public DeployFile_result getResult(I iface, DeployFile_args args) throws org.apache.thrift.TException {
         DeployFile_result result = new DeployFile_result();
         try {
           iface.DeployFile(args.filename);
@@ -2912,6 +2930,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class DeployModelWithFile<I extends Iface> extends org.apache.thrift.ProcessFunction<I, DeployModelWithFile_args> {
@@ -2919,11 +2943,11 @@ public class AsapiServer {
         super("DeployModelWithFile");
       }
 
-      protected DeployModelWithFile_args getEmptyArgsInstance() {
+      public DeployModelWithFile_args getEmptyArgsInstance() {
         return new DeployModelWithFile_args();
       }
 
-      protected DeployModelWithFile_result getResult(I iface, DeployModelWithFile_args args) throws org.apache.thrift.TException {
+      public DeployModelWithFile_result getResult(I iface, DeployModelWithFile_args args) throws org.apache.thrift.TException {
         DeployModelWithFile_result result = new DeployModelWithFile_result();
         try {
           iface.DeployModelWithFile(args.filename, args.modelInXml);
@@ -2932,6 +2956,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class NewModel<I extends Iface> extends org.apache.thrift.ProcessFunction<I, NewModel_args> {
@@ -2939,15 +2969,21 @@ public class AsapiServer {
         super("NewModel");
       }
 
-      protected NewModel_args getEmptyArgsInstance() {
+      public NewModel_args getEmptyArgsInstance() {
         return new NewModel_args();
       }
 
-      protected NewModel_result getResult(I iface, NewModel_args args) throws org.apache.thrift.TException {
+      public NewModel_result getResult(I iface, NewModel_args args) throws org.apache.thrift.TException {
         NewModel_result result = new NewModel_result();
         iface.NewModel();
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class RunModel<I extends Iface> extends org.apache.thrift.ProcessFunction<I, RunModel_args> {
@@ -2955,11 +2991,11 @@ public class AsapiServer {
         super("RunModel");
       }
 
-      protected RunModel_args getEmptyArgsInstance() {
+      public RunModel_args getEmptyArgsInstance() {
         return new RunModel_args();
       }
 
-      protected RunModel_result getResult(I iface, RunModel_args args) throws org.apache.thrift.TException {
+      public RunModel_result getResult(I iface, RunModel_args args) throws org.apache.thrift.TException {
         RunModel_result result = new RunModel_result();
         try {
           iface.RunModel();
@@ -2968,6 +3004,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class PauseModel<I extends Iface> extends org.apache.thrift.ProcessFunction<I, PauseModel_args> {
@@ -2975,11 +3017,11 @@ public class AsapiServer {
         super("PauseModel");
       }
 
-      protected PauseModel_args getEmptyArgsInstance() {
+      public PauseModel_args getEmptyArgsInstance() {
         return new PauseModel_args();
       }
 
-      protected PauseModel_result getResult(I iface, PauseModel_args args) throws org.apache.thrift.TException {
+      public PauseModel_result getResult(I iface, PauseModel_args args) throws org.apache.thrift.TException {
         PauseModel_result result = new PauseModel_result();
         try {
           iface.PauseModel();
@@ -2988,6 +3030,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class StopModel<I extends Iface> extends org.apache.thrift.ProcessFunction<I, StopModel_args> {
@@ -2995,11 +3043,11 @@ public class AsapiServer {
         super("StopModel");
       }
 
-      protected StopModel_args getEmptyArgsInstance() {
+      public StopModel_args getEmptyArgsInstance() {
         return new StopModel_args();
       }
 
-      protected StopModel_result getResult(I iface, StopModel_args args) throws org.apache.thrift.TException {
+      public StopModel_result getResult(I iface, StopModel_args args) throws org.apache.thrift.TException {
         StopModel_result result = new StopModel_result();
         try {
           iface.StopModel();
@@ -3008,6 +3056,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetComponents<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetComponents_args> {
@@ -3015,15 +3069,21 @@ public class AsapiServer {
         super("GetComponents");
       }
 
-      protected GetComponents_args getEmptyArgsInstance() {
+      public GetComponents_args getEmptyArgsInstance() {
         return new GetComponents_args();
       }
 
-      protected GetComponents_result getResult(I iface, GetComponents_args args) throws org.apache.thrift.TException {
+      public GetComponents_result getResult(I iface, GetComponents_args args) throws org.apache.thrift.TException {
         GetComponents_result result = new GetComponents_result();
         result.success = iface.GetComponents();
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetChannels<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetChannels_args> {
@@ -3031,15 +3091,21 @@ public class AsapiServer {
         super("GetChannels");
       }
 
-      protected GetChannels_args getEmptyArgsInstance() {
+      public GetChannels_args getEmptyArgsInstance() {
         return new GetChannels_args();
       }
 
-      protected GetChannels_result getResult(I iface, GetChannels_args args) throws org.apache.thrift.TException {
+      public GetChannels_result getResult(I iface, GetChannels_args args) throws org.apache.thrift.TException {
         GetChannels_result result = new GetChannels_result();
         result.success = iface.GetChannels(args.componentID);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class InsertComponent<I extends Iface> extends org.apache.thrift.ProcessFunction<I, InsertComponent_args> {
@@ -3047,11 +3113,11 @@ public class AsapiServer {
         super("InsertComponent");
       }
 
-      protected InsertComponent_args getEmptyArgsInstance() {
+      public InsertComponent_args getEmptyArgsInstance() {
         return new InsertComponent_args();
       }
 
-      protected InsertComponent_result getResult(I iface, InsertComponent_args args) throws org.apache.thrift.TException {
+      public InsertComponent_result getResult(I iface, InsertComponent_args args) throws org.apache.thrift.TException {
         InsertComponent_result result = new InsertComponent_result();
         try {
           iface.InsertComponent(args.componentID, args.componentType);
@@ -3060,6 +3126,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class RemoveComponent<I extends Iface> extends org.apache.thrift.ProcessFunction<I, RemoveComponent_args> {
@@ -3067,11 +3139,11 @@ public class AsapiServer {
         super("RemoveComponent");
       }
 
-      protected RemoveComponent_args getEmptyArgsInstance() {
+      public RemoveComponent_args getEmptyArgsInstance() {
         return new RemoveComponent_args();
       }
 
-      protected RemoveComponent_result getResult(I iface, RemoveComponent_args args) throws org.apache.thrift.TException {
+      public RemoveComponent_result getResult(I iface, RemoveComponent_args args) throws org.apache.thrift.TException {
         RemoveComponent_result result = new RemoveComponent_result();
         try {
           iface.RemoveComponent(args.componentID);
@@ -3080,6 +3152,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetAllPorts<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetAllPorts_args> {
@@ -3087,11 +3165,11 @@ public class AsapiServer {
         super("GetAllPorts");
       }
 
-      protected GetAllPorts_args getEmptyArgsInstance() {
+      public GetAllPorts_args getEmptyArgsInstance() {
         return new GetAllPorts_args();
       }
 
-      protected GetAllPorts_result getResult(I iface, GetAllPorts_args args) throws org.apache.thrift.TException {
+      public GetAllPorts_result getResult(I iface, GetAllPorts_args args) throws org.apache.thrift.TException {
         GetAllPorts_result result = new GetAllPorts_result();
         try {
           result.success = iface.GetAllPorts(args.componentID);
@@ -3100,6 +3178,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetInputPorts<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetInputPorts_args> {
@@ -3107,11 +3191,11 @@ public class AsapiServer {
         super("GetInputPorts");
       }
 
-      protected GetInputPorts_args getEmptyArgsInstance() {
+      public GetInputPorts_args getEmptyArgsInstance() {
         return new GetInputPorts_args();
       }
 
-      protected GetInputPorts_result getResult(I iface, GetInputPorts_args args) throws org.apache.thrift.TException {
+      public GetInputPorts_result getResult(I iface, GetInputPorts_args args) throws org.apache.thrift.TException {
         GetInputPorts_result result = new GetInputPorts_result();
         try {
           result.success = iface.GetInputPorts(args.componentID);
@@ -3120,6 +3204,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetOutputPorts<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetOutputPorts_args> {
@@ -3127,11 +3217,11 @@ public class AsapiServer {
         super("GetOutputPorts");
       }
 
-      protected GetOutputPorts_args getEmptyArgsInstance() {
+      public GetOutputPorts_args getEmptyArgsInstance() {
         return new GetOutputPorts_args();
       }
 
-      protected GetOutputPorts_result getResult(I iface, GetOutputPorts_args args) throws org.apache.thrift.TException {
+      public GetOutputPorts_result getResult(I iface, GetOutputPorts_args args) throws org.apache.thrift.TException {
         GetOutputPorts_result result = new GetOutputPorts_result();
         try {
           result.success = iface.GetOutputPorts(args.componentID);
@@ -3140,6 +3230,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class InsertChannel<I extends Iface> extends org.apache.thrift.ProcessFunction<I, InsertChannel_args> {
@@ -3147,11 +3243,11 @@ public class AsapiServer {
         super("InsertChannel");
       }
 
-      protected InsertChannel_args getEmptyArgsInstance() {
+      public InsertChannel_args getEmptyArgsInstance() {
         return new InsertChannel_args();
       }
 
-      protected InsertChannel_result getResult(I iface, InsertChannel_args args) throws org.apache.thrift.TException {
+      public InsertChannel_result getResult(I iface, InsertChannel_args args) throws org.apache.thrift.TException {
         InsertChannel_result result = new InsertChannel_result();
         try {
           iface.InsertChannel(args.channelID, args.sourceComponentID, args.sourcePortID, args.targetComponentID, args.targetPortID);
@@ -3160,6 +3256,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class RemoveChannel<I extends Iface> extends org.apache.thrift.ProcessFunction<I, RemoveChannel_args> {
@@ -3167,11 +3269,11 @@ public class AsapiServer {
         super("RemoveChannel");
       }
 
-      protected RemoveChannel_args getEmptyArgsInstance() {
+      public RemoveChannel_args getEmptyArgsInstance() {
         return new RemoveChannel_args();
       }
 
-      protected RemoveChannel_result getResult(I iface, RemoveChannel_args args) throws org.apache.thrift.TException {
+      public RemoveChannel_result getResult(I iface, RemoveChannel_args args) throws org.apache.thrift.TException {
         RemoveChannel_result result = new RemoveChannel_result();
         try {
           iface.RemoveChannel(args.channelID);
@@ -3180,6 +3282,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetComponentPropertyKeys<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetComponentPropertyKeys_args> {
@@ -3187,15 +3295,21 @@ public class AsapiServer {
         super("GetComponentPropertyKeys");
       }
 
-      protected GetComponentPropertyKeys_args getEmptyArgsInstance() {
+      public GetComponentPropertyKeys_args getEmptyArgsInstance() {
         return new GetComponentPropertyKeys_args();
       }
 
-      protected GetComponentPropertyKeys_result getResult(I iface, GetComponentPropertyKeys_args args) throws org.apache.thrift.TException {
+      public GetComponentPropertyKeys_result getResult(I iface, GetComponentPropertyKeys_args args) throws org.apache.thrift.TException {
         GetComponentPropertyKeys_result result = new GetComponentPropertyKeys_result();
         result.success = iface.GetComponentPropertyKeys(args.componentID);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetComponentProperty<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetComponentProperty_args> {
@@ -3203,15 +3317,21 @@ public class AsapiServer {
         super("GetComponentProperty");
       }
 
-      protected GetComponentProperty_args getEmptyArgsInstance() {
+      public GetComponentProperty_args getEmptyArgsInstance() {
         return new GetComponentProperty_args();
       }
 
-      protected GetComponentProperty_result getResult(I iface, GetComponentProperty_args args) throws org.apache.thrift.TException {
+      public GetComponentProperty_result getResult(I iface, GetComponentProperty_args args) throws org.apache.thrift.TException {
         GetComponentProperty_result result = new GetComponentProperty_result();
         result.success = iface.GetComponentProperty(args.componentID, args.key);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class SetComponentProperty<I extends Iface> extends org.apache.thrift.ProcessFunction<I, SetComponentProperty_args> {
@@ -3219,15 +3339,21 @@ public class AsapiServer {
         super("SetComponentProperty");
       }
 
-      protected SetComponentProperty_args getEmptyArgsInstance() {
+      public SetComponentProperty_args getEmptyArgsInstance() {
         return new SetComponentProperty_args();
       }
 
-      protected SetComponentProperty_result getResult(I iface, SetComponentProperty_args args) throws org.apache.thrift.TException {
+      public SetComponentProperty_result getResult(I iface, SetComponentProperty_args args) throws org.apache.thrift.TException {
         SetComponentProperty_result result = new SetComponentProperty_result();
         result.success = iface.SetComponentProperty(args.componentID, args.key, args.value);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetPortPropertyKeys<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetPortPropertyKeys_args> {
@@ -3235,15 +3361,21 @@ public class AsapiServer {
         super("GetPortPropertyKeys");
       }
 
-      protected GetPortPropertyKeys_args getEmptyArgsInstance() {
+      public GetPortPropertyKeys_args getEmptyArgsInstance() {
         return new GetPortPropertyKeys_args();
       }
 
-      protected GetPortPropertyKeys_result getResult(I iface, GetPortPropertyKeys_args args) throws org.apache.thrift.TException {
+      public GetPortPropertyKeys_result getResult(I iface, GetPortPropertyKeys_args args) throws org.apache.thrift.TException {
         GetPortPropertyKeys_result result = new GetPortPropertyKeys_result();
         result.success = iface.GetPortPropertyKeys(args.componentID, args.portID);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetPortProperty<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetPortProperty_args> {
@@ -3251,15 +3383,21 @@ public class AsapiServer {
         super("GetPortProperty");
       }
 
-      protected GetPortProperty_args getEmptyArgsInstance() {
+      public GetPortProperty_args getEmptyArgsInstance() {
         return new GetPortProperty_args();
       }
 
-      protected GetPortProperty_result getResult(I iface, GetPortProperty_args args) throws org.apache.thrift.TException {
+      public GetPortProperty_result getResult(I iface, GetPortProperty_args args) throws org.apache.thrift.TException {
         GetPortProperty_result result = new GetPortProperty_result();
         result.success = iface.GetPortProperty(args.componentID, args.portID, args.key);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class SetPortProperty<I extends Iface> extends org.apache.thrift.ProcessFunction<I, SetPortProperty_args> {
@@ -3267,15 +3405,21 @@ public class AsapiServer {
         super("SetPortProperty");
       }
 
-      protected SetPortProperty_args getEmptyArgsInstance() {
+      public SetPortProperty_args getEmptyArgsInstance() {
         return new SetPortProperty_args();
       }
 
-      protected SetPortProperty_result getResult(I iface, SetPortProperty_args args) throws org.apache.thrift.TException {
+      public SetPortProperty_result getResult(I iface, SetPortProperty_args args) throws org.apache.thrift.TException {
         SetPortProperty_result result = new SetPortProperty_result();
         result.success = iface.SetPortProperty(args.componentID, args.portID, args.key, args.value);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetChannelPropertyKeys<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetChannelPropertyKeys_args> {
@@ -3283,15 +3427,21 @@ public class AsapiServer {
         super("GetChannelPropertyKeys");
       }
 
-      protected GetChannelPropertyKeys_args getEmptyArgsInstance() {
+      public GetChannelPropertyKeys_args getEmptyArgsInstance() {
         return new GetChannelPropertyKeys_args();
       }
 
-      protected GetChannelPropertyKeys_result getResult(I iface, GetChannelPropertyKeys_args args) throws org.apache.thrift.TException {
+      public GetChannelPropertyKeys_result getResult(I iface, GetChannelPropertyKeys_args args) throws org.apache.thrift.TException {
         GetChannelPropertyKeys_result result = new GetChannelPropertyKeys_result();
         result.success = iface.GetChannelPropertyKeys(args.channelID);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class GetChannelProperty<I extends Iface> extends org.apache.thrift.ProcessFunction<I, GetChannelProperty_args> {
@@ -3299,15 +3449,21 @@ public class AsapiServer {
         super("GetChannelProperty");
       }
 
-      protected GetChannelProperty_args getEmptyArgsInstance() {
+      public GetChannelProperty_args getEmptyArgsInstance() {
         return new GetChannelProperty_args();
       }
 
-      protected GetChannelProperty_result getResult(I iface, GetChannelProperty_args args) throws org.apache.thrift.TException {
+      public GetChannelProperty_result getResult(I iface, GetChannelProperty_args args) throws org.apache.thrift.TException {
         GetChannelProperty_result result = new GetChannelProperty_result();
         result.success = iface.GetChannelProperty(args.channelID, args.key);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class SetChannelProperty<I extends Iface> extends org.apache.thrift.ProcessFunction<I, SetChannelProperty_args> {
@@ -3315,15 +3471,21 @@ public class AsapiServer {
         super("SetChannelProperty");
       }
 
-      protected SetChannelProperty_args getEmptyArgsInstance() {
+      public SetChannelProperty_args getEmptyArgsInstance() {
         return new SetChannelProperty_args();
       }
 
-      protected SetChannelProperty_result getResult(I iface, SetChannelProperty_args args) throws org.apache.thrift.TException {
+      public SetChannelProperty_result getResult(I iface, SetChannelProperty_args args) throws org.apache.thrift.TException {
         SetChannelProperty_result result = new SetChannelProperty_result();
         result.success = iface.SetChannelProperty(args.channelID, args.key, args.value);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class RegisterRemoteConsumer<I extends Iface> extends org.apache.thrift.ProcessFunction<I, RegisterRemoteConsumer_args> {
@@ -3331,11 +3493,11 @@ public class AsapiServer {
         super("RegisterRemoteConsumer");
       }
 
-      protected RegisterRemoteConsumer_args getEmptyArgsInstance() {
+      public RegisterRemoteConsumer_args getEmptyArgsInstance() {
         return new RegisterRemoteConsumer_args();
       }
 
-      protected RegisterRemoteConsumer_result getResult(I iface, RegisterRemoteConsumer_args args) throws org.apache.thrift.TException {
+      public RegisterRemoteConsumer_result getResult(I iface, RegisterRemoteConsumer_args args) throws org.apache.thrift.TException {
         RegisterRemoteConsumer_result result = new RegisterRemoteConsumer_result();
         try {
           result.success = iface.RegisterRemoteConsumer(args.sourceComponentID, args.sourceOutputPortID);
@@ -3344,6 +3506,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class UnregisterRemoteConsumer<I extends Iface> extends org.apache.thrift.ProcessFunction<I, UnregisterRemoteConsumer_args> {
@@ -3351,11 +3519,11 @@ public class AsapiServer {
         super("UnregisterRemoteConsumer");
       }
 
-      protected UnregisterRemoteConsumer_args getEmptyArgsInstance() {
+      public UnregisterRemoteConsumer_args getEmptyArgsInstance() {
         return new UnregisterRemoteConsumer_args();
       }
 
-      protected UnregisterRemoteConsumer_result getResult(I iface, UnregisterRemoteConsumer_args args) throws org.apache.thrift.TException {
+      public UnregisterRemoteConsumer_result getResult(I iface, UnregisterRemoteConsumer_args args) throws org.apache.thrift.TException {
         UnregisterRemoteConsumer_result result = new UnregisterRemoteConsumer_result();
         try {
           iface.UnregisterRemoteConsumer(args.remoteConsumerID);
@@ -3364,6 +3532,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class RegisterRemoteProducer<I extends Iface> extends org.apache.thrift.ProcessFunction<I, RegisterRemoteProducer_args> {
@@ -3371,11 +3545,11 @@ public class AsapiServer {
         super("RegisterRemoteProducer");
       }
 
-      protected RegisterRemoteProducer_args getEmptyArgsInstance() {
+      public RegisterRemoteProducer_args getEmptyArgsInstance() {
         return new RegisterRemoteProducer_args();
       }
 
-      protected RegisterRemoteProducer_result getResult(I iface, RegisterRemoteProducer_args args) throws org.apache.thrift.TException {
+      public RegisterRemoteProducer_result getResult(I iface, RegisterRemoteProducer_args args) throws org.apache.thrift.TException {
         RegisterRemoteProducer_result result = new RegisterRemoteProducer_result();
         try {
           result.success = iface.RegisterRemoteProducer(args.targetComponentID, args.targetInputPortID);
@@ -3384,6 +3558,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class UnregisterRemoteProducer<I extends Iface> extends org.apache.thrift.ProcessFunction<I, UnregisterRemoteProducer_args> {
@@ -3391,11 +3571,11 @@ public class AsapiServer {
         super("UnregisterRemoteProducer");
       }
 
-      protected UnregisterRemoteProducer_args getEmptyArgsInstance() {
+      public UnregisterRemoteProducer_args getEmptyArgsInstance() {
         return new UnregisterRemoteProducer_args();
       }
 
-      protected UnregisterRemoteProducer_result getResult(I iface, UnregisterRemoteProducer_args args) throws org.apache.thrift.TException {
+      public UnregisterRemoteProducer_result getResult(I iface, UnregisterRemoteProducer_args args) throws org.apache.thrift.TException {
         UnregisterRemoteProducer_result result = new UnregisterRemoteProducer_result();
         try {
           iface.UnregisterRemoteProducer(args.remoteProducerID);
@@ -3404,6 +3584,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class PollData<I extends Iface> extends org.apache.thrift.ProcessFunction<I, PollData_args> {
@@ -3411,11 +3597,11 @@ public class AsapiServer {
         super("PollData");
       }
 
-      protected PollData_args getEmptyArgsInstance() {
+      public PollData_args getEmptyArgsInstance() {
         return new PollData_args();
       }
 
-      protected PollData_result getResult(I iface, PollData_args args) throws org.apache.thrift.TException {
+      public PollData_result getResult(I iface, PollData_args args) throws org.apache.thrift.TException {
         PollData_result result = new PollData_result();
         try {
           result.success = iface.PollData(args.courceComponentID, args.sourceOutputPortID);
@@ -3424,6 +3610,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class SendData<I extends Iface> extends org.apache.thrift.ProcessFunction<I, SendData_args> {
@@ -3431,11 +3623,11 @@ public class AsapiServer {
         super("SendData");
       }
 
-      protected SendData_args getEmptyArgsInstance() {
+      public SendData_args getEmptyArgsInstance() {
         return new SendData_args();
       }
 
-      protected SendData_result getResult(I iface, SendData_args args) throws org.apache.thrift.TException {
+      public SendData_result getResult(I iface, SendData_args args) throws org.apache.thrift.TException {
         SendData_result result = new SendData_result();
         try {
           iface.SendData(args.targetComponentID, args.targetInputPortID, args.data);
@@ -3444,6 +3636,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class RegisterLogListener<I extends Iface> extends org.apache.thrift.ProcessFunction<I, RegisterLogListener_args> {
@@ -3451,15 +3649,21 @@ public class AsapiServer {
         super("RegisterLogListener");
       }
 
-      protected RegisterLogListener_args getEmptyArgsInstance() {
+      public RegisterLogListener_args getEmptyArgsInstance() {
         return new RegisterLogListener_args();
       }
 
-      protected RegisterLogListener_result getResult(I iface, RegisterLogListener_args args) throws org.apache.thrift.TException {
+      public RegisterLogListener_result getResult(I iface, RegisterLogListener_args args) throws org.apache.thrift.TException {
         RegisterLogListener_result result = new RegisterLogListener_result();
         result.success = iface.RegisterLogListener();
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class UnregisterLogListener<I extends Iface> extends org.apache.thrift.ProcessFunction<I, UnregisterLogListener_args> {
@@ -3467,15 +3671,21 @@ public class AsapiServer {
         super("UnregisterLogListener");
       }
 
-      protected UnregisterLogListener_args getEmptyArgsInstance() {
+      public UnregisterLogListener_args getEmptyArgsInstance() {
         return new UnregisterLogListener_args();
       }
 
-      protected UnregisterLogListener_result getResult(I iface, UnregisterLogListener_args args) throws org.apache.thrift.TException {
+      public UnregisterLogListener_result getResult(I iface, UnregisterLogListener_args args) throws org.apache.thrift.TException {
         UnregisterLogListener_result result = new UnregisterLogListener_result();
         iface.UnregisterLogListener(args.logListenerID);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class storeModel<I extends Iface> extends org.apache.thrift.ProcessFunction<I, storeModel_args> {
@@ -3483,11 +3693,11 @@ public class AsapiServer {
         super("storeModel");
       }
 
-      protected storeModel_args getEmptyArgsInstance() {
+      public storeModel_args getEmptyArgsInstance() {
         return new storeModel_args();
       }
 
-      protected storeModel_result getResult(I iface, storeModel_args args) throws org.apache.thrift.TException {
+      public storeModel_result getResult(I iface, storeModel_args args) throws org.apache.thrift.TException {
         storeModel_result result = new storeModel_result();
         try {
           iface.storeModel(args.modelInXML, args.filename);
@@ -3496,6 +3706,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class deleteModelFile<I extends Iface> extends org.apache.thrift.ProcessFunction<I, deleteModelFile_args> {
@@ -3503,11 +3719,11 @@ public class AsapiServer {
         super("deleteModelFile");
       }
 
-      protected deleteModelFile_args getEmptyArgsInstance() {
+      public deleteModelFile_args getEmptyArgsInstance() {
         return new deleteModelFile_args();
       }
 
-      protected deleteModelFile_result getResult(I iface, deleteModelFile_args args) throws org.apache.thrift.TException {
+      public deleteModelFile_result getResult(I iface, deleteModelFile_args args) throws org.apache.thrift.TException {
         deleteModelFile_result result = new deleteModelFile_result();
         try {
           result.success = iface.deleteModelFile(args.filename);
@@ -3517,6 +3733,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class listAllStoredModels<I extends Iface> extends org.apache.thrift.ProcessFunction<I, listAllStoredModels_args> {
@@ -3524,11 +3746,11 @@ public class AsapiServer {
         super("listAllStoredModels");
       }
 
-      protected listAllStoredModels_args getEmptyArgsInstance() {
+      public listAllStoredModels_args getEmptyArgsInstance() {
         return new listAllStoredModels_args();
       }
 
-      protected listAllStoredModels_result getResult(I iface, listAllStoredModels_args args) throws org.apache.thrift.TException {
+      public listAllStoredModels_result getResult(I iface, listAllStoredModels_args args) throws org.apache.thrift.TException {
         listAllStoredModels_result result = new listAllStoredModels_result();
         try {
           result.success = iface.listAllStoredModels();
@@ -3537,6 +3759,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class getModelFromFile<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getModelFromFile_args> {
@@ -3544,11 +3772,11 @@ public class AsapiServer {
         super("getModelFromFile");
       }
 
-      protected getModelFromFile_args getEmptyArgsInstance() {
+      public getModelFromFile_args getEmptyArgsInstance() {
         return new getModelFromFile_args();
       }
 
-      protected getModelFromFile_result getResult(I iface, getModelFromFile_args args) throws org.apache.thrift.TException {
+      public getModelFromFile_result getResult(I iface, getModelFromFile_args args) throws org.apache.thrift.TException {
         getModelFromFile_result result = new getModelFromFile_result();
         try {
           result.success = iface.getModelFromFile(args.filename);
@@ -3557,6 +3785,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class getLogFile<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getLogFile_args> {
@@ -3564,15 +3798,21 @@ public class AsapiServer {
         super("getLogFile");
       }
 
-      protected getLogFile_args getEmptyArgsInstance() {
+      public getLogFile_args getEmptyArgsInstance() {
         return new getLogFile_args();
       }
 
-      protected getLogFile_result getResult(I iface, getLogFile_args args) throws org.apache.thrift.TException {
+      public getLogFile_result getResult(I iface, getLogFile_args args) throws org.apache.thrift.TException {
         getLogFile_result result = new getLogFile_result();
         result.success = iface.getLogFile();
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class QueryStatus<I extends Iface> extends org.apache.thrift.ProcessFunction<I, QueryStatus_args> {
@@ -3580,15 +3820,21 @@ public class AsapiServer {
         super("QueryStatus");
       }
 
-      protected QueryStatus_args getEmptyArgsInstance() {
+      public QueryStatus_args getEmptyArgsInstance() {
         return new QueryStatus_args();
       }
 
-      protected QueryStatus_result getResult(I iface, QueryStatus_args args) throws org.apache.thrift.TException {
+      public QueryStatus_result getResult(I iface, QueryStatus_args args) throws org.apache.thrift.TException {
         QueryStatus_result result = new QueryStatus_result();
         result.success = iface.QueryStatus(args.fullList);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class getRuntimePropertyList<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getRuntimePropertyList_args> {
@@ -3596,11 +3842,11 @@ public class AsapiServer {
         super("getRuntimePropertyList");
       }
 
-      protected getRuntimePropertyList_args getEmptyArgsInstance() {
+      public getRuntimePropertyList_args getEmptyArgsInstance() {
         return new getRuntimePropertyList_args();
       }
 
-      protected getRuntimePropertyList_result getResult(I iface, getRuntimePropertyList_args args) throws org.apache.thrift.TException {
+      public getRuntimePropertyList_result getResult(I iface, getRuntimePropertyList_args args) throws org.apache.thrift.TException {
         getRuntimePropertyList_result result = new getRuntimePropertyList_result();
         try {
           result.success = iface.getRuntimePropertyList(args.componentID, args.key);
@@ -3609,6 +3855,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class getBundleDescriptors<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getBundleDescriptors_args> {
@@ -3616,11 +3868,11 @@ public class AsapiServer {
         super("getBundleDescriptors");
       }
 
-      protected getBundleDescriptors_args getEmptyArgsInstance() {
+      public getBundleDescriptors_args getEmptyArgsInstance() {
         return new getBundleDescriptors_args();
       }
 
-      protected getBundleDescriptors_result getResult(I iface, getBundleDescriptors_args args) throws org.apache.thrift.TException {
+      public getBundleDescriptors_result getResult(I iface, getBundleDescriptors_args args) throws org.apache.thrift.TException {
         getBundleDescriptors_result result = new getBundleDescriptors_result();
         try {
           result.success = iface.getBundleDescriptors();
@@ -3629,6 +3881,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class Ping<I extends Iface> extends org.apache.thrift.ProcessFunction<I, Ping_args> {
@@ -3636,11 +3894,11 @@ public class AsapiServer {
         super("Ping");
       }
 
-      protected Ping_args getEmptyArgsInstance() {
+      public Ping_args getEmptyArgsInstance() {
         return new Ping_args();
       }
 
-      protected Ping_result getResult(I iface, Ping_args args) throws org.apache.thrift.TException {
+      public Ping_result getResult(I iface, Ping_args args) throws org.apache.thrift.TException {
         Ping_result result = new Ping_result();
         try {
           result.success = iface.Ping();
@@ -3650,6 +3908,12 @@ public class AsapiServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
   }

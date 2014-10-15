@@ -10,12 +10,24 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import java.awt.EventQueue;
+
+
+
+
+import com.sun.javafx.event.EventQueue;
+
+
+
+//import java.awt.EventQueue;
 import java.io.File;
 import java.util.logging.Logger;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javafx.application.Platform;
+import javafx.scene.control.Dialogs;
+import javafx.scene.layout.Pane;
+
+//import javax.swing.JFrame;
+//import javax.swing.JOptionPane;
 
 
 /*
@@ -59,7 +71,7 @@ public class Main implements BundleActivator
 	private BundleManager bundleManager = null;
 
 	private AstericsGUI astericsGUI=null;
-	private JFrame astericsFrame;
+	private Pane astericsFrame;
 	
 
 	private static BundleContext areContext;
@@ -87,10 +99,10 @@ public class Main implements BundleActivator
 			}
 			logger.info("JVM "+bits+" bit detected");
 			
-			EventQueue.invokeLater(new Runnable() { public void run() {
+			Platform.runLater(new Runnable() { public void run() {
 			astericsGUI = new AstericsGUI (context);
 		
-			astericsFrame = astericsGUI.getFrame();
+			//astericsFrame = astericsGUI.getFrame(); //TODO wieder in GUI einbauen
 
 			DeploymentManager.instance.setGui(astericsGUI);
 
@@ -145,10 +157,9 @@ public class Main implements BundleActivator
 		catch (Throwable t) 
 		{
 			//custom title, error icon
-			JOptionPane.showMessageDialog(null,
+			Dialogs.showErrorDialog(null,
 					"The AsTeRICS Runtime Environemnt could not be initiated!",
-					"ARE startup error",
-					JOptionPane.ERROR_MESSAGE);
+					"ARE startup error");
 			System.exit(0);
 		}
 

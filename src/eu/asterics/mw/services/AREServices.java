@@ -25,10 +25,10 @@
 
 package eu.asterics.mw.services;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Point;
+//import java.awt.Component;
+//import java.awt.Dimension;
+//import java.awt.Font;
+//import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -40,14 +40,14 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
-import javax.swing.text.JTextComponent;
+//import javax.swing.JButton;
+//import javax.swing.JInternalFrame;
+//import javax.swing.JLabel;
+//import javax.swing.JPanel;
+//import javax.swing.JSlider;
+//import javax.swing.border.Border;
+//import javax.swing.border.TitledBorder;
+//import javax.swing.text.JTextComponent;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;

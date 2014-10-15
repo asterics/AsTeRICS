@@ -25,7 +25,7 @@
 
 package eu.asterics.mw.gui;
 
-import java.awt.BorderLayout;
+/*import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -39,12 +39,24 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage;*/
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 
-import javax.imageio.ImageIO;
+import javafx.event.EventHandler;
+import javafx.scene.Cursor;
+import javafx.scene.control.Dialogs;
+import javafx.scene.control.Dialogs.DialogResponse;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+
+/*import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -59,7 +71,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.border.TitledBorder;
+import javax.swing.border.TitledBorder;*/
+
+
+
+
+
+
+
+
+
+
 
 import org.osgi.framework.BundleContext;
 
@@ -71,42 +93,42 @@ import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.services.AREServices;
 
 
-public class ControlPane extends JPanel 
+public class ControlPane extends Pane 
 {
 
 	
 	private static final int CONTROLPANEL_WIDTH = 30;
 		
 	private BundleContext bundleContext;
-	private JPanel  jplPanel, iconPanel, mainPanel;
-	private JFrame mainFrame;
+	private Pane  jplPanel, iconPanel, mainPanel;
+	private Pane mainFrame;
 	
 	private AsapiSupport as;
 	private AstericsGUI astericsGUI;
 	
-	private JLabel startLabel;
-	private JLabel pauseLabel;
-	private ImageIcon startIcon;
-	private ImageIcon startIcon_ro;
-	private ImageIcon pauseIcon;
-	private ImageIcon pauseIcon_ro; 
-	private ImageIcon stopIcon;
-	private ImageIcon stopIcon_ro;
-	private JLabel stopLabel;
-	private ImageIcon deployIcon;
-	private ImageIcon deployIcon_ro;
-	private JLabel deployLabel;
-	private JLabel optionsLabel;
-	private ImageIcon optionsIcon;
-	private ImageIcon optionsIcon_ro;
-	private JLabel exitLabel;
-	private ImageIcon exitIcon;
-	private ImageIcon exitIcon_ro;
-	private ImageIcon statusIcon;
-	private JLabel statusLabel;
+	private Label startLabel;
+	private Label pauseLabel;
+	private Image startIcon;
+	private Image startIcon_ro;
+	private Image pauseIcon;
+	private Image pauseIcon_ro; 
+	private Image stopIcon;
+	private Image stopIcon_ro;
+	private Label stopLabel;
+	private Image deployIcon;
+	private Image deployIcon_ro;
+	private Label deployLabel;
+	private Label optionsLabel;
+	private Image optionsIcon;
+	private Image optionsIcon_ro;
+	private Label exitLabel;
+	private Image exitIcon;
+	private Image exitIcon_ro;
+	private Image statusIcon;
+	private Label statusLabel;
 	private ErrorLogPane errorLogPane;
 	private boolean statusDialogActive=false;
-	private int controlPanelOrientation= BoxLayout.Y_AXIS;
+	//private int controlPanelOrientation= BoxLayout.Y_AXIS;
 
 
 
@@ -149,57 +171,58 @@ public class ControlPane extends JPanel
 	URL runningIconPath = null; 
 	URL neutralIconPath = null;
 
-	BufferedImage deployIconImg = null;
-	BufferedImage deployIconImg_ro = null;
-	BufferedImage startIconImg = null;
-	BufferedImage startIconImg_ro = null;
-	BufferedImage pauseIconImg = null;
-	BufferedImage pauseIconImg_ro = null;
-	BufferedImage stopIconImg = null;
-	BufferedImage stopIconImg_ro = null;
-	BufferedImage optionsIconImg = null;
-	BufferedImage optionsIconImg_ro = null;
-	BufferedImage exitIconImg = null;
-	BufferedImage exitIconImg_ro = null;
+	Image deployIconImg = null;
+	Image deployIconImg_ro = null;
+	Image startIconImg = null;
+	Image startIconImg_ro = null;
+	Image pauseIconImg = null;
+	Image pauseIconImg_ro = null;
+	Image stopIconImg = null;
+	Image stopIconImg_ro = null;
+	Image optionsIconImg = null;
+	Image optionsIconImg_ro = null;
+	Image exitIconImg = null;
+	Image exitIconImg_ro = null;
 
-	BufferedImage unknownIconImg = null;
-	BufferedImage errorIconImg = null;
-	BufferedImage runningIconImg = null; 
-	BufferedImage neutralIconImg = null;
-	BufferedImage actStatusImg = null;
+	Image unknownIconImg = null;
+	Image errorIconImg = null;
+	Image runningIconImg = null; 
+	Image neutralIconImg = null;
+	Image actStatusImg = null;
 	
 	
-	public ControlPane(BundleContext bc, JFrame mainFrame, AsapiSupport as, 
+	public ControlPane(BundleContext bc, Pane mainFrame, AsapiSupport as, 
 			AstericsGUI gui ) 
 	{
-		super(new GridLayout(1, 1));
+		super(new GridPane());
 		this.as = as;
 		this.bundleContext = bc;
 		this.mainFrame = mainFrame;
-		int axis = BoxLayout.Y_AXIS;
+		//int axis = BoxLayout.Y_AXIS;
 		this.astericsGUI = gui;
 
 		errorLogPane = new ErrorLogPane(); 
 
-		JComponent controlPanel = makeControlPanel("", axis);
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BoxLayout(mainPanel, axis));
-		mainPanel.setPreferredSize(new Dimension (CONTROLPANEL_WIDTH,astericsGUI.screenSize.height));
-		mainPanel.add(controlPanel);
-		add(mainPanel);
+		//JComponent controlPanel = makeControlPanel("", axis);
+		Pane controlPanel = makeControlPanel("", 0);
+		mainPanel = new Pane();
+		//mainPanel.setLayout(new BoxLayout(mainPanel, axis));
+		//mainPanel.setPreferredSize(new Dimension (CONTROLPANEL_WIDTH,astericsGUI.screenSize.height));
+		mainPanel.getChildren().add(controlPanel);
+		getChildren().add(mainPanel);
 	}
 
 	
 
-	protected JComponent makeControlPanel(String text, int axis) 
+	protected Pane makeControlPanel(String text, int axis) 
 	{
 	
-		jplPanel = new JPanel();
+		jplPanel = new Pane();
 		//jplPanel.setPreferredSize(new Dimension(100,300));
-		jplPanel.setLayout(new BoxLayout(jplPanel, axis));
-		jplPanel.setBorder(new TitledBorder(text));
+		//jplPanel.setLayout(new BoxLayout(jplPanel, axis));
+		//jplPanel.setBorder(new TitledBorder(text));
 
-		this.add(jplPanel);
+		this.getChildren().add(jplPanel);
 
 		deployIconPath = bundleContext.getBundle().getResource(DEPLOY_ICON_PATH);
 		deployIconPath_ro = bundleContext.getBundle().getResource(DEPLOY_ICON_PATH_RO);
@@ -220,197 +243,236 @@ public class ControlPane extends JPanel
 		neutralIconPath = bundleContext.getBundle().getResource(NEUTRAL_ICON_PATH);
 
 
-		iconPanel = new JPanel();
-		iconPanel.setLayout(new BoxLayout(iconPanel, axis));
+		iconPanel = new Pane();
+		//iconPanel.setLayout(new BoxLayout(iconPanel, axis));
 
 		try {
-			deployIcon = new ImageIcon(deployIconPath);
-			deployIcon_ro = new ImageIcon(deployIconPath_ro);
-			deployLabel = new JLabel(deployIcon);
-			deployLabel.setToolTipText("Choose a new Model");
-			deployIconImg = ImageIO.read(deployIconPath);
-			deployIconImg_ro = ImageIO.read(deployIconPath_ro);
+			deployIcon = new Image(deployIconPath.toString());
+			deployIcon_ro = new Image(deployIconPath_ro.toString());
+			deployLabel = new Label(deployIcon.toString());
+			deployLabel.setTooltip(new Tooltip("Choose a new Model"));
+			deployIconImg = new Image(deployIconPath.toString());
+			deployIconImg_ro = new Image(deployIconPath_ro.toString());
 			
-			startIcon = new ImageIcon(startIconPath);
-			startIcon_ro = new ImageIcon(startIconPath_ro);
-			startLabel = new JLabel(startIcon);
-			startLabel.setToolTipText("Start Model");
-			startIconImg = ImageIO.read(startIconPath);
-			startIconImg_ro = ImageIO.read(startIconPath_ro);
+			startIcon = new Image(startIconPath.toString());
+			startIcon_ro = new Image(startIconPath_ro.toString());
+			startLabel = new Label(startIcon.toString());
+			startLabel.setTooltip(new Tooltip("Start Model"));
+			startIconImg = new Image(startIconPath.toString());
+			startIconImg_ro = new Image(startIconPath_ro.toString());
 
-			pauseIcon = new ImageIcon(pauseIconPath);
-			pauseIcon_ro = new ImageIcon(pauseIconPath_ro);
-			pauseLabel = new JLabel(pauseIcon);
-			pauseLabel.setToolTipText("Pause Model");
-			pauseIconImg = ImageIO.read(pauseIconPath);
-			pauseIconImg_ro = ImageIO.read(pauseIconPath_ro);
+			pauseIcon = new Image(pauseIconPath.toString());
+			pauseIcon_ro = new Image(pauseIconPath_ro.toString());
+			pauseLabel = new Label(pauseIcon.toString());
+			pauseLabel.setTooltip(new Tooltip("Pause Model"));
+			pauseIconImg = new Image(pauseIconPath.toString());
+			pauseIconImg_ro = new Image(pauseIconPath_ro.toString());
 	
-			stopIcon	= new ImageIcon(stopIconPath);
-			stopIcon_ro = new ImageIcon(stopIconPath_ro);
-			stopLabel = new JLabel(stopIcon);
-			stopLabel.setToolTipText("Stop model");
-			stopIconImg = ImageIO.read(stopIconPath);
-			stopIconImg_ro = ImageIO.read(stopIconPath_ro);
+			stopIcon	= new Image(stopIconPath.toString());
+			stopIcon_ro = new Image(stopIconPath_ro.toString());
+			stopLabel = new Label(stopIcon.toString());
+			stopLabel.setTooltip(new Tooltip("Stop model"));
+			stopIconImg = new Image(stopIconPath.toString());
+			stopIconImg_ro = new Image(stopIconPath_ro.toString());
 	
-			optionsIcon	= new ImageIcon(optionsIconPath);
-			optionsIcon_ro = new ImageIcon(optionsIconPath_ro);
-			optionsLabel = new JLabel(optionsIcon);
-			optionsLabel.setToolTipText("Display Model Help and Options");
-			optionsIconImg = ImageIO.read(optionsIconPath);
-			optionsIconImg_ro = ImageIO.read(optionsIconPath_ro);
+			optionsIcon	= new Image(optionsIconPath.toString());
+			optionsIcon_ro = new Image(optionsIconPath_ro.toString());
+			optionsLabel = new Label(optionsIcon.toString());
+			optionsLabel.setTooltip(new Tooltip("Display Model Help and Options"));
+			optionsIconImg = new Image(optionsIconPath.toString());
+			optionsIconImg_ro = new Image(optionsIconPath_ro.toString());
 	
-			exitIcon	= new ImageIcon(exitIconPath);
-			exitIcon_ro = new ImageIcon(exitIconPath_ro);
-			exitLabel = new JLabel(exitIcon);
-			exitLabel.setToolTipText("Exit ARE");
-			exitIconImg = ImageIO.read(exitIconPath);
-			exitIconImg_ro = ImageIO.read(exitIconPath_ro);
+			exitIcon	= new Image(exitIconPath.toString());
+			exitIcon_ro = new Image(exitIconPath_ro.toString());
+			exitLabel = new Label(exitIcon.toString());
+			exitLabel.setTooltip(new Tooltip("Exit ARE"));
+			exitIconImg = new Image(exitIconPath.toString());
+			exitIconImg_ro = new Image(exitIconPath_ro.toString());
 
-			statusIcon = new ImageIcon(neutralIconPath);
-			statusLabel = new JLabel(statusIcon);
-			statusLabel.setToolTipText("Status / Display Error Messages");
-			runningIconImg = ImageIO.read(runningIconPath);
-			errorIconImg = ImageIO.read(errorIconPath);
-			unknownIconImg = ImageIO.read(unknownIconPath); 
-			neutralIconImg = ImageIO.read(neutralIconPath);
+			statusIcon = new Image(neutralIconPath.toString());
+			statusLabel = new Label(statusIcon.toString());
+			statusLabel.setTooltip(new Tooltip("Status / Display Error Messages"));
+			runningIconImg = new Image(runningIconPath.toString());
+			errorIconImg = new Image(errorIconPath.toString());
+			unknownIconImg = new Image(unknownIconPath.toString()); 
+			neutralIconImg = new Image(neutralIconPath.toString());
 			
 			actStatusImg=neutralIconImg;
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		
-		deployLabel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent me) {
+		deployLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
 				astericsGUI.fileChooser (as);
 				try {
 					as.runModel();
-				} catch (AREAsapiException e) {	}
-				mainFrame.validate();
+				} catch (AREAsapiException ex) {	}
+				//mainFrame.validate();
 				System.out.println ("Run/resume model OK!");
 			}
-			public void mouseEntered(MouseEvent e) {	
-				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				deployLabel.setIcon(deployIcon_ro);
-				iconPanel.revalidate();
-				
-			}
-			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				deployLabel.setIcon(deployIcon);
-				iconPanel.revalidate();
-			}	
-		});
 
-		startLabel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent me) {
-				try {
-					as.runModel();
-				} catch (AREAsapiException e) {
-
-					//e.printStackTrace();
-				}
-				mainFrame.validate();
-				System.out.println ("Run/resume model OK!");
-			}
-			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				startLabel.setIcon(startIcon_ro);
-				iconPanel.revalidate();
-				
-			}
-			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				startLabel.setIcon(startIcon);
-				iconPanel.revalidate();
-			}	
-		});
-
-		stopLabel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent me) {
-				try {
-					as.stopModel();
-				} catch (AREAsapiException e) {
-
-					//e.printStackTrace();
-				}
-			}
-			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				stopLabel.setIcon(stopIcon_ro);
-				iconPanel.revalidate();
-			}
-			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				stopLabel.setIcon(stopIcon);
-				iconPanel.revalidate();
-			}
-		});
-
-		pauseLabel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent me) {
-				try {
-					as.pauseModel();
-				} catch (AREAsapiException e) {
-
-					//e.printStackTrace();
-				}
-			}
-			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				pauseLabel.setIcon(pauseIcon_ro);
-				iconPanel.revalidate();
-			}
-			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				pauseLabel.setIcon(pauseIcon);
-				iconPanel.revalidate();
-			}
-		});
-
-		optionsLabel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent me) {
-				
-				astericsGUI.optionsFrame.showFrame();
-				
-			}
-			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				optionsLabel.setIcon(optionsIcon_ro);
-				iconPanel.revalidate();
-			}
-			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				optionsLabel.setIcon(optionsIcon);
-				iconPanel.revalidate();
-			}
-		});
-
-		exitLabel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent me) {
-				 int n = JOptionPane.showConfirmDialog(
-                         mainFrame, "Are you sure to stop and close the ARE?",
-                         "ARE Exit",
-                         JOptionPane.YES_NO_OPTION);
-                 if (n == JOptionPane.YES_OPTION) {
-     				astericsGUI.closeAction();
-                 } 
-			}
-			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				exitLabel.setIcon(exitIcon_ro);
-				iconPanel.revalidate();
-			}
-			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				exitLabel.setIcon(exitIcon);
-				iconPanel.revalidate();
-			}
 		});
 		
-		statusLabel.addMouseListener(new MouseAdapter() {
+		deployLabel.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				deployLabel.setGraphic(new ImageView(deployIcon_ro));
+			}
+					
+		});
+
+		deployLabel.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				deployLabel.setGraphic(new ImageView(deployIcon));
+			}
+					
+		});
+		
+		startLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				try {
+					as.runModel();
+				} catch (AREAsapiException ex) {
+
+					//e.printStackTrace();
+				}
+				//mainFrame.validate();
+				System.out.println ("Run/resume model OK!");
+			}
+
+		});
+		
+		startLabel.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				startLabel.setGraphic(new ImageView(startIcon_ro));
+			}
+					
+		});
+
+		startLabel.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				startLabel.setGraphic(new ImageView(startIcon));
+			}
+					
+		});
+		
+
+		stopLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				try {
+					as.stopModel();
+				} catch (AREAsapiException ex) {
+
+					//e.printStackTrace();
+				}
+			}
+
+		});
+		
+		stopLabel.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				stopLabel.setGraphic(new ImageView(stopIcon_ro));
+			}
+					
+		});
+
+		stopLabel.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				stopLabel.setGraphic(new ImageView(stopIcon));
+			}
+					
+		});
+
+		pauseLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				try {
+					as.pauseModel();
+				} catch (AREAsapiException ex) {
+
+					//e.printStackTrace();
+				}
+			}
+
+		});
+		
+		pauseLabel.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				pauseLabel.setGraphic(new ImageView(pauseIcon_ro));
+			}
+					
+		});
+
+		pauseLabel.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				pauseLabel.setGraphic(new ImageView(pauseIcon));
+			}
+					
+		});
+		
+		optionsLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				astericsGUI.optionsFrame.showFrame();
+			}
+
+		});
+		
+		optionsLabel.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				optionsLabel.setGraphic(new ImageView(optionsIcon_ro));
+			}
+					
+		});
+
+		optionsLabel.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				optionsLabel.setGraphic(new ImageView(optionsIcon));
+			}
+					
+		});
+		
+
+		exitLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				DialogResponse n = Dialogs.showConfirmDialog(
+                        null, "Are you sure to stop and close the ARE?", "",
+                        "ARE Exit");
+
+                if (n == DialogResponse.YES) {
+    				//astericsGUI.closeAction(); //TODO wieder in GUI aktivieren
+                } ;
+			}
+
+		});
+		
+		exitLabel.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				exitLabel.setGraphic(new ImageView(exitIcon_ro));
+			}
+					
+		});
+
+		exitLabel.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override public void handle(MouseEvent e){
+				setCursor(Cursor.CLOSED_HAND);
+				exitLabel.setGraphic(new ImageView(exitIcon));
+			}
+					
+		});
+		
+		
+		/*statusLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				//System.out.println ("Display Status!");
 				if ( statusDialogActive==false)
@@ -454,24 +516,24 @@ public class ControlPane extends JPanel
 			public void mouseExited(MouseEvent e) {			
 				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}	
-		});
+		});*/
 		
-		iconPanel.add(deployLabel);
-		iconPanel.add(startLabel);
-		iconPanel.add(pauseLabel);
-		iconPanel.add(stopLabel);
-		iconPanel.add(optionsLabel);
-		iconPanel.add(statusLabel);
-		iconPanel.add(exitLabel);
+		iconPanel.getChildren().add(deployLabel);
+		iconPanel.getChildren().add(startLabel);
+		iconPanel.getChildren().add(pauseLabel);
+		iconPanel.getChildren().add(stopLabel);
+		iconPanel.getChildren().add(optionsLabel);
+		iconPanel.getChildren().add(statusLabel);
+		iconPanel.getChildren().add(exitLabel);
 
-		jplPanel.add(iconPanel);
+		jplPanel.getChildren().add(iconPanel);
 	
 		return jplPanel;
 	}
 	
 	public void resizeLabels(int orientation)
 	{
-		int newSize=mainFrame.getHeight()/8;
+		/*int newSize=mainFrame.getHeight()/8;
 		int maxSize=astericsGUI.screenSize.width/30;
 		
 		if (newSize>maxSize) newSize=maxSize;
@@ -501,14 +563,14 @@ public class ControlPane extends JPanel
 				mainPanel.setPreferredSize(new Dimension(astericsGUI.screenSize.height,newSize));
 
 			iconPanel.revalidate();
-		}
+		}*/
 	}
 	
 
 	public void reAlign(int axis) 
 	{
 		
-		mainPanel.setLayout(new BoxLayout(mainPanel,axis));
+		/*mainPanel.setLayout(new BoxLayout(mainPanel,axis));
 		jplPanel.setLayout(new BoxLayout(jplPanel,axis));
 		// cpWrapperPanel.setLayout(new BoxLayout(cpWrapperPanel,axis));
 		iconPanel.setLayout(new BoxLayout(iconPanel,axis));
@@ -519,9 +581,9 @@ public class ControlPane extends JPanel
 					(VERTICAL_BAR_WIDTH,VERTICAL_BAR_HEIGHT));
 		else
 			setPreferredSize(new Dimension
-					(HORIZONTAL_BAR_WIDTH,HORIZONTAL_BAR_HEIGHT));*/
+					(HORIZONTAL_BAR_WIDTH,HORIZONTAL_BAR_HEIGHT));*//*
 		mainPanel.revalidate();
-		
+		*/
 	}
 	
 
@@ -545,9 +607,9 @@ public class ControlPane extends JPanel
 			break;
 		}
 		
-		int bHeight=mainFrame.getHeight()/8;
-		int bWidth=mainFrame.getWidth()/20;
-		int max=0;
+		double bHeight=mainFrame.getHeight()/8;
+		double bWidth=mainFrame.getWidth()/20;
+		double max=0;
 		if (bHeight>bWidth) max=bHeight; else max=bWidth;
 		if (max>0)
 		{
@@ -555,10 +617,9 @@ public class ControlPane extends JPanel
 			if (max>64) max=64;
 			bHeight=max;
 			bWidth=max;
-			statusIcon.setImage(actStatusImg.getScaledInstance(bWidth,bHeight,Image.SCALE_DEFAULT)); 
+			ImageView actStatus = new ImageView(actStatusImg);
+			actStatus.resize(bWidth, bHeight);
+			statusIcon = actStatus.getImage(); 
 		}
-		iconPanel.revalidate();
-		iconPanel.repaint();
-		mainFrame.getContentPane().repaint();
 	}
 }

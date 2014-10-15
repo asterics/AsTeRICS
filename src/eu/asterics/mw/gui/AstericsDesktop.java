@@ -27,16 +27,10 @@
 
 package eu.asterics.mw.gui;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JPanel;
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 
 import eu.asterics.mw.are.AREProperties;
 
@@ -46,10 +40,9 @@ import eu.asterics.mw.are.AREProperties;
  * @author weissch
  *
  */
-public class AstericsDesktop extends JPanel implements ActionListener,
-MouseMotionListener 
+public class AstericsDesktop extends Pane 
 {
-	private Dimension screenSize, sizeBefore;
+	private Dimension2D screenSize, sizeBefore;
 	private boolean onFullScreen;
 	private int DEFAULT_WIDTH=200;
 	private int DEFAULT_HEIGHT=200;
@@ -67,87 +60,29 @@ MouseMotionListener
 		else
 			onFullScreen=false;
 
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setPreferredSize(new Dimension(screenSize.width, 
-				screenSize.height));
-		//setBorder(BorderFactory.createTitledBorder(
-		//"Desktop"));
-		addMouseMotionListener(this);
-		//sizeBefore = new Dimension (DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
-		//this.getInputMap().put(KeyStroke.getKeyStroke("F11"), "fullscreen");
-		//this.getActionMap().put("fullscreen", setFullscreen());
-
+		this.setFullScreenMode(onFullScreen);
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		this.setPrefSize(primaryScreenBounds.getWidth(), primaryScreenBounds.getHeight());
 	}
 
-	public Action setFullscreen() {
-		Action fullScreenAction = new FullScreenAction ();
-		return fullScreenAction;
+	public void setFullscreen() {
+		//TODO...
 	}
 
 
-	public class FullScreenAction extends AbstractAction 
-	{
-		public FullScreenAction() 
-		{
-			super();
-		}
-		public void actionPerformed(ActionEvent e) 
-		{
-
-//			if (!onFullScreen)
-//			{
-//				sizeBefore = parentFrame.getSize();
-//				parentFrame.dispose();
-//				parentFrame.setUndecorated(true); 
-//				parentFrame.pack();
-//				parentFrame.setVisible(true);
-//				((AstericsGUI) parentFrame).setVisible("lineStartPanel", false);
-//				parentFrame.setExtendedState(Frame.MAXIMIZED_BOTH);  
-//
-//				onFullScreen=true;
-//			}
-//			else
-//			{
-//				parentFrame.dispose();
-//				parentFrame.setUndecorated(false); 
-//				parentFrame.pack();
-//				parentFrame.setVisible(true);
-//				if (sizeBefore!=null)
-//					parentFrame.setSize(sizeBefore);
-//				else
-//					parentFrame.setExtendedState(Frame.NORMAL); 
-//				((AstericsGUI) parentFrame).setVisible("lineStartPanel", true);
-//
-//				onFullScreen=false;
-//			}
-		}
-	}
-
-	public void addPanel (JPanel panel, int x, int y, int width, 
+	public void addPanel (Pane panel, int x, int y, int width, 
 			int height)
 	{
-		panel.setBounds(x, y, width, height);
-		add(panel);
-		validate();
+		panel.setLayoutX(x);
+		panel.setLayoutY(y);
+		panel.setMinSize(width, height);
+		panel.setMaxSize(width, height);
+		
+		this.getChildren().add(panel);
 	}
 	
 	public void setFullScreenMode (boolean b)
 	{
 		this.onFullScreen=b;
 	}
-
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent arg0) {
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent arg0) {
-	}
-
 }

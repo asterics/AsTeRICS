@@ -1,6 +1,6 @@
 package eu.asterics.mw.model.deployment.impl;
 
-import java.awt.Point;
+import javafx.geometry.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -56,7 +56,7 @@ extends DefaultPropertyful implements IComponentInstance
 	private final Set<IInputPort> bufferedPorts;
 
 	private final Set<IOutputPort> outputPorts;
-	private final Point layout;
+	private final Point2D layout;
 	//private final boolean easyConfig;
 	private final AREGUIElement guiElement;
 	
@@ -68,7 +68,7 @@ extends DefaultPropertyful implements IComponentInstance
 			final Set<IInputPort> inputPorts,
 			final Set<IOutputPort> outputPorts,
 			final Map<String, Object> propertyValues,
-			final Point layout, 
+			final Point2D layout, 
 			//final boolean easyConfig,
 			final AREGUIElement guiElement, 
 			Set<IInputPort> bufferedPorts)
@@ -143,7 +143,7 @@ extends DefaultPropertyful implements IComponentInstance
 	 * IComponentInstance#getComponentLayout()
 	 * @return the component's layout coordinates
 	 */
-	public Point getComponentLayout() {
+	public Point2D getComponentLayout() {
 		return this.layout;
 	}
 
@@ -248,18 +248,18 @@ extends DefaultPropertyful implements IComponentInstance
 		{
 			Element layoutElement = doc.createElement("layout");
 			component.appendChild(layoutElement);
-			if (this.layout.x>=0)
+			if (this.layout.getX()>=0)
 			{
 				Element posXElement = doc.createElement("posX");
-				posXElement.setTextContent(Integer.
-						toString(this.layout.x));
+				posXElement.setTextContent(Double.
+						toString(this.layout.getX()));
 				layoutElement.appendChild(posXElement);
 			}
-			if (this.layout.y>=0)
+			if (this.layout.getY()>=0)
 			{
 				Element posYElement = doc.createElement("posY");
-				posYElement.setTextContent(Integer.
-						toString(this.layout.y));
+				posYElement.setTextContent(Double.
+						toString(this.layout.getY()));
 				layoutElement.appendChild(posYElement);
 			}
 

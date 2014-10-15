@@ -25,9 +25,10 @@
 
 package eu.asterics.mw.model.deployment.impl;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.Iterator;
+
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -101,14 +102,14 @@ public class ModelGUIInfo
 		this.height = height;
 	}
 	
-	public Point getPosition()
+	public Point2D getPosition()
 	{
-		return new Point(posX, posY);
+		return new Point2D(posX, posY);
 	}
 	
-	public Dimension getDimension()
+	public Dimension2D getDimension()
 	{
-		return new Dimension(width, height);
+		return new Dimension2D(width, height);
 	}
 
 

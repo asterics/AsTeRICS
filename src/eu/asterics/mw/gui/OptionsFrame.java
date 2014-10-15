@@ -25,18 +25,23 @@
 
 package eu.asterics.mw.gui;
 
-import java.awt.BorderLayout;
+/*import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ActionListener;*/
 import java.net.URL;
 
-import javax.swing.JButton;
+/*import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JPanel;*/
+
+
+
+import javafx.scene.control.Dialogs;
+import javafx.scene.layout.Pane;
 
 import org.osgi.framework.BundleContext;
 
@@ -47,18 +52,18 @@ import org.osgi.framework.BundleContext;
  * 
  * Date: Oct 10, 2011
  */
-public class OptionsFrame extends JDialog 
+public class OptionsFrame 
 {
 	private static final int OPTIONS_PRAME_WIDTH = 650;
 	private static final int OPTIONS_PRAME_HEIGHT = 550;
 	static String ICON_PATH = "/images/icon.gif";
-	JDialog thisDialog;
+	Dialogs thisDialog;
 	AstericsGUI parent;
 	private TabbedPane tabbedPane;
-	public OptionsFrame (AstericsGUI parent, JFrame mainFrame)
+	public OptionsFrame (AstericsGUI parent, Pane mainFrame)
 	{
-		super(mainFrame);
-		thisDialog=this;
+		//super(mainFrame);
+		/*thisDialog=this;
 		this.parent = parent;
 		final URL iconPath = parent.getBundleContext().getBundle().
 			getResource(ICON_PATH);
@@ -85,22 +90,22 @@ public class OptionsFrame extends JDialog
 			});
 	        panel.add(savebutton);
 
-		add(panel, BorderLayout.SOUTH);
+		add(panel, BorderLayout.SOUTH);*/
 	}
 	
 	public void showFrame()
 	{
-		remove(tabbedPane);                    // TBD: improve this !
+		/*remove(tabbedPane);                    // TBD: improve this !
 		tabbedPane = new TabbedPane(parent);
 		add(tabbedPane, BorderLayout.CENTER);
 		pack();
 		//this.setLocation(parent.getFrame().getLocation());
         this.setLocationRelativeTo(parent.getFrame());
-	    setVisible(true);
+	    setVisible(true);*/
 	}
 	public void hideFrame()
 	{ 
-	    setVisible(false);
+	    //setVisible(false);
 	}
 
 }

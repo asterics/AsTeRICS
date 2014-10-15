@@ -1,6 +1,6 @@
 package eu.asterics.mw.gui;
 
-import java.awt.BorderLayout;
+/*import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -25,8 +25,16 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.StyledDocument;*/
 
+import javafx.geometry.Dimension2D;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
@@ -63,46 +71,45 @@ import eu.asterics.mw.model.deployment.IRuntimeModel;
  * 
  * Date: Oct 10, 2011
  */
-public class TabbedPane extends JPanel 
+public class TabbedPane extends Pane 
 {
 	private AstericsGUI parent;
 	
-	JCheckBox iconifyBox;
-	JCheckBox defaultInfullScreen;
-	JCheckBox undecoratedBox;
-	JCheckBox onTopBox;
-	JCheckBox showSideBarBox;
+	CheckBox iconifyBox;
+	CheckBox defaultInfullScreen;
+	CheckBox undecoratedBox;
+	CheckBox onTopBox;
+	CheckBox showSideBarBox;
 
-	JColorChooser tcc;
+	ColorPicker tcc;
 	
 	public TabbedPane(AstericsGUI parent) 
 	{
-		super(new GridLayout(1, 1));
+		super(new GridPane());
 
-		JTabbedPane tabbedPane = new JTabbedPane();
 		this.parent = parent;
 
-		JComponent panel1 = makeDescriptionPanel("Model Description");
-		tabbedPane.addTab("Model Description and Requirements", panel1);
-		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+		HBox panel1 = makeDescriptionPanel("Model Description");
+		this.getChildren().add(panel1);
+		//tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 	
-		JComponent panel3 = makeColorChooserPanel ("Background Color");
-		tabbedPane.addTab("Background Color", panel3);
-		tabbedPane.setMnemonicAt(1,KeyEvent.VK_2);
+		HBox panel3 = makeColorChooserPanel ("Background Color");
+		this.getChildren().add(panel3);
+		//tabbedPane.setMnemonicAt(1,KeyEvent.VK_2);
 
 		//Add the tabbed pane to this panel.
-		add(tabbedPane);
+		//add(tabbedPane);
 
 		//The following line enables to use scrolling tabs.
-		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		//tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 	}
 
-	protected JComponent makeDescriptionPanel(String text) 
+	protected HBox makeDescriptionPanel(String text) 
 	{
-		JPanel panel = new JPanel(false);
-		panel.setBorder(BorderFactory.createTitledBorder(text));
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setPreferredSize(new Dimension(460, 380));
+		HBox panel = new HBox();
+		//panel.setBorder(BorderFactory.createTitledBorder(text));
+		//panel.setLayoutFlag(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setPrefSize(460, 380);
 			
 		IRuntimeModel currentRuntimeModel
 		= DeploymentManager.instance.getCurrentRuntimeModel();
@@ -127,16 +134,16 @@ public class TabbedPane extends JPanel
  		textArea.setVisible(true);
  		*/
 
-        JTextPane textPane = new JTextPane();
-        StyledDocument doc = textPane.getStyledDocument();
-        textPane.setEditable(false);
-        SimpleAttributeSet boldAttrib = new SimpleAttributeSet(); 
-        StyleConstants.setBold(boldAttrib, true);
-        JScrollPane scrollPane = new JScrollPane(textPane);
+        HBox textPane = new HBox();
+        //StyledDocument doc = textPane.getStyledDocument();
+        //textPane.setEditable(false);
+        //SimpleAttributeSet boldAttrib = new SimpleAttributeSet(); 
+        //StyleConstants.setBold(boldAttrib, true);
+        //JScrollPane scrollPane = new JScrollPane(textPane);
        
         if (currentRuntimeModel !=null)
         {
-	        try {
+	        /*try {
 				doc.insertString(doc.getLength(),"ShortDescription:\n",boldAttrib);
 				if (currentRuntimeModel.getModelShortDescription()=="")
 			        doc.insertString(doc.getLength(), "<not available>", null);
@@ -153,26 +160,26 @@ public class TabbedPane extends JPanel
 			} catch (BadLocationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
         }
-        Font font = textPane.getFont();
-        textPane.setFont(textPane.getFont().deriveFont(font.PLAIN,14.0f));
+        //Font font = textPane.getFont();
+       // textPane.setFont(textPane.getFont().deriveFont(font.PLAIN,14.0f));
 
- 		textPane.setVisible(true);
- 		scrollPane.setVisible(true);
-		panel.add(scrollPane);
+ 		//textPane.setVisible(true);
+ 		//scrollPane.setVisible(true);
+		panel.getChildren().add(textPane);
 
 		return panel;
 	}
 	
-	private JComponent makeColorChooserPanel(String text) 
+	private HBox makeColorChooserPanel(String text) 
 	{
 		AREProperties props = AREProperties.instance;
-		JPanel panel = new JPanel(false);
-		panel.setBorder(BorderFactory.createTitledBorder(text));
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		HBox panel = new HBox();
+		//panel.setBorder(BorderFactory.createTitledBorder(text));
+		//panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		 
-		JPanel colorPanel = new JPanel();
+		/*JPanel colorPanel = new JPanel();
 		colorPanel.setLayout(new BoxLayout(colorPanel, BoxLayout.Y_AXIS));
 		if (props.containsKey("background_color"))
 			tcc = new JColorChooser(new Color(Integer
@@ -180,7 +187,7 @@ public class TabbedPane extends JPanel
 		else	
 			tcc = new JColorChooser(colorPanel.getForeground());
 		colorPanel.add(tcc);
-		panel.add(colorPanel);
+		panel.add(colorPanel);*/
 		return panel;
 	}
 	
@@ -188,12 +195,12 @@ public class TabbedPane extends JPanel
 	{
 		AREProperties props = AREProperties.instance;
 		props.setProperty("background_color", 
-				Integer.toString(tcc.getColor().getRGB()));
+				Double.toString(tcc.getValue().getRed() + tcc.getValue().getBlue() + tcc.getValue().getGreen()));
 		props.storeProperties();
 
-		Color nc = new Color(tcc.getColor().getRGB());
-		parent.desktop.setBackground(nc);
-		parent.desktop.validate();
+		Color nc = new Color(tcc.getValue().getRed(),tcc.getValue().getBlue(),tcc.getValue().getGreen(),0);
+		//parent.desktop.setBackground(nc);
+		//parent.desktop.validate();
 		
 	}
 }

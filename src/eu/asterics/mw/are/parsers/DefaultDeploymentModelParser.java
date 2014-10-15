@@ -1,6 +1,5 @@
 package eu.asterics.mw.are.parsers;
 
-import java.awt.Point;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +13,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import javafx.geometry.Point2D;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -691,7 +692,7 @@ public class DefaultDeploymentModelParser
 					inputPorts,
 					outputPorts,
 					cPropertyValues,
-					new Point(Integer.parseInt(posX),
+					new Point2D(Integer.parseInt(posX),
 							Integer.parseInt(posY)),
 							//easyConfig,
 					areGUIElement,

@@ -1,8 +1,8 @@
 package eu.asterics.mw.are;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Toolkit;
+//import java.awt.Dimension;
+//import java.awt.Point;
+//import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,9 +13,22 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Logger;
 
-import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+//import javax.swing.JInternalFrame;
+//import javax.swing.JOptionPane;
+//import javax.swing.JPanel;
+
+
+
+
+
+
+
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Dialogs;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -111,7 +124,7 @@ public class DeploymentManager
 	public void setStatus (AREStatus status)
 	{
 		areStatus = status; 
-		gui.setStatus(status);
+		//gui.setStatus(status); //TODO: in GUI wieder einbauen
 	}
 
 	public AREStatus getStatus()
@@ -211,10 +224,9 @@ public class DeploymentManager
 			}
 			catch (NullPointerException e){
 
-				JOptionPane.showMessageDialog(null,
+				Dialogs.showErrorDialog(null,
 						canonicalName+ " prevents the model from starting!",
-						"ARE runtime error",
-						JOptionPane.WARNING_MESSAGE);
+						"ARE runtime error");
 				return;
 			}
 
@@ -668,11 +680,9 @@ public class DeploymentManager
 			}
 			catch (Throwable t) 
 			{
+				Dialogs.showErrorDialog(null, componentInstance+ ":\n"+t.getMessage()
+						, "ARE Runtime Error");
 				//custom title, error icon
-				JOptionPane.showMessageDialog(null,
-						componentInstance+ ":\n"+t.getMessage()
-						, "ARE Runtime Error",
-						JOptionPane.ERROR_MESSAGE);
 				t.printStackTrace();
 				//System.exit(0);
 				stopModel();
@@ -721,11 +731,9 @@ public class DeploymentManager
 			}
 			catch (Throwable t) 
 			{
+				Dialogs.showErrorDialog(null, componentInstance+ " Runtime Error!",
+						"ARE runtime error");
 				//custom title, error icon
-				JOptionPane.showMessageDialog(null,
-						componentInstance+ " Runtime Error!",
-						"ARE runtime error",
-						JOptionPane.ERROR_MESSAGE);
 				//System.exit(0);
 			}
 
@@ -961,7 +969,7 @@ public class DeploymentManager
 
 	}
 
-	public void displayPanel(JPanel panel, 
+	public void displayPanel(StackPane panel, 
 			IRuntimeComponentInstance componentInstance, boolean display) 
 	{
 
@@ -977,8 +985,8 @@ public class DeploymentManager
 				ele = instance.getAREGUIElement();
 				if (ele != null)
 				{
-					gui.displayPanel(panel, ele.posX, ele.posY, ele.width, 
-							ele.height, display);
+					//gui.displayPanel(panel, ele.posX, ele.posY, ele.width, 
+					//		ele.height, display);
 				}
 			}
 		}
@@ -989,12 +997,12 @@ public class DeploymentManager
 	 * @param internalFrame
 	 * @param display
 	 */
-	public void displayFrame (JInternalFrame internalFrame, boolean display)
+	public void displayFrame (StackPane internalFrame, boolean display)
 	{
-		gui.displayFrame(internalFrame, display);
+		//gui.displayFrame(internalFrame, display);
 	}
 
-	public Dimension getAvailableSpace (IRuntimeComponentInstance componentInstance)
+	public Dimension2D getAvailableSpace (IRuntimeComponentInstance componentInstance)
 	{
 
 		String componentInstanceID = 
@@ -1006,18 +1014,18 @@ public class DeploymentManager
 		AREGUIElement el = component.getAREGUIElement();
 		if (el!=null)
 		{
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			int width = (int) (screenSize.width*el.width/10000f);
-			int height = (int) (screenSize.height*el.height/10000f);
-			return new Dimension( width , height );
+			Rectangle2D screenSize = Screen.getPrimary().getBounds();
+			int width = (int) (screenSize.getWidth()*el.width/10000f);
+			int height = (int) (screenSize.getHeight()*el.height/10000f);
+			return new Dimension2D( width , height );
 		}
 		else
-			return new Dimension (0, 0);
+			return new Dimension2D (0, 0);
 
 
 	}
 
-	public Point getComponentPosition (IRuntimeComponentInstance componentInstance)
+	public Point2D getComponentPosition (IRuntimeComponentInstance componentInstance)
 	{
 
 		String componentInstanceID = 
@@ -1030,17 +1038,14 @@ public class DeploymentManager
 
 		if (el!=null)
 		{
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			JPanel desktop = gui.getDesktop();
-			//int x = ((screenSize.width*el.posX/100) + desktop.getLocationOnScreen().x);
-			//int y = ((screenSize.height*el.posY/100) + desktop.getLocationOnScreen().y);
-			int x = (int) ((screenSize.width*el.posX/10000f));
-			int y = (int) ((screenSize.height*el.posY/10000f));
+			Rectangle2D screenSize = Screen.getPrimary().getBounds();
+			int x = (int) ((screenSize.getWidth()*el.posX/10000f));
+			int y = (int) ((screenSize.getHeight()*el.posY/10000f));
 
-			return new Point( x , y );
+			return new Point2D( x , y );
 		}
 		else
-			return new Point (0, 0);
+			return new Point2D (0, 0);
 
 
 	}

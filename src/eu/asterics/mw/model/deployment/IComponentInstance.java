@@ -1,10 +1,11 @@
 package eu.asterics.mw.model.deployment;
 
 
-import java.awt.Point;
+import javafx.geometry.Point2D;
 import java.util.List;
 import java.util.Set;
 
+import javafx.geometry.Point2D;
 import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.deployment.impl.AREGUIElement;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -56,7 +57,7 @@ public interface IComponentInstance extends IPropertyful
 
     public void appendXMLElements(Document doc);
 
-    public Point getComponentLayout ();
+    public Point2D getComponentLayout ();
     
     public AREGUIElement getAREGUIElement ();
     
