@@ -486,6 +486,7 @@ namespace Asterics.ACS {
                 }
             }
             CalcMaxXandYofGUI();
+            guiComponentCanvas.ToolTip = modelComp.id + " (" + modelComp.type_id + ")" + "\n" + modelComp.description;
         }
 
         /// <summary>

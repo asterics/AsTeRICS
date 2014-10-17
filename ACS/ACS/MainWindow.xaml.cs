@@ -200,7 +200,8 @@ namespace Asterics.ACS {
 
         // Constants
         private static int MAXNUMBEROFRECENTFILES = 12;
-
+        private const int TOOLTIP_SHOW_DURATION = 10000;
+        
         private String activeBundle = "default";
 
         #endregion
@@ -1885,6 +1886,7 @@ namespace Asterics.ACS {
             else {
                 MessageBox.Show(Properties.Resources.SingletonErrorHeaderFormat(typeId), Properties.Resources.SingletonErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+            UpdateToolTips();
         }
 
         /// <summary>
@@ -6739,8 +6741,213 @@ namespace Asterics.ACS {
             }
         }
 
+        /// <summary>
+        /// Find a channel with the given id.
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <returns></returns>
+        private channel findChannel(String channelId)
+        {
+            foreach (channel chn in deploymentChannelList.Values)
+            {
+                if (chn.id.Equals(channelId))
+                {
+                    return chn;
+                }
+            }
+            return null;
+        }
 
-      
+        /// <summary>
+        /// Updates the ToolTip texts of the canvas elements.
+        /// </summary>
+        private void UpdateToolTips()
+        {
+            UpdateEventChannelToolTips();
+            UpdateComponentTypeToolTips();
+        }
+
+        /// <summary>
+        /// Updates the tooltips for the event channels.
+        /// </summary>
+        private void UpdateEventChannelToolTips()
+        {
+            //update tooltips for event channels
+            foreach (eventChannelLine evchnlLine in eventChannelLinesList)
+            {
+                List<eventChannel> evtChannels = findEventChannels(evchnlLine.TriggerComponentId, evchnlLine.ListenerComponentId);
+                String toolTipString = "";
+
+                int ctr = 0;
+                foreach (eventChannel chn in evtChannels)
+                {
+                    String sourceComponentId = chn.sources.source.component.id;
+                    String sourceEventId = chn.sources.source.eventPort.id;
+                    String targetComponentId = chn.targets.target.component.id;
+                    String targetEventId = chn.targets.target.eventPort.id;
+                    String description = chn.description;
+
+                    //Unfortunately we always have to do extra work because of Groups                    
+                    if (chn.GroupOriginalSource != null)
+                    {
+                        sourceComponentId = chn.GroupOriginalSource.component.id;
+                        sourceEventId = chn.GroupOriginalSource.eventPort.id;
+                    }
+                    if (chn.GroupOriginalTarget != null)
+                    {
+                        targetComponentId = chn.GroupOriginalTarget.component.id;
+                        targetEventId = chn.GroupOriginalTarget.eventPort.id;
+                    }
+                    eventChannel origChn = findEventChannel(sourceComponentId, sourceEventId, targetComponentId, targetEventId);
+                    if (origChn != null)
+                    {
+                        description = origChn.description;
+                    }
+
+                    if (ctr > 0) toolTipString += "\n";
+                    toolTipString += sourceComponentId + "." + sourceEventId + "->" +
+                         targetComponentId + "." + targetEventId;
+                    if (description != null && !description.Equals(""))
+                    {
+                        toolTipString += " (" + description + ")";
+                    }
+                    ctr++;
+                }
+                ToolTipService.SetShowDuration(evchnlLine.Line, TOOLTIP_SHOW_DURATION);
+                evchnlLine.Line.ToolTip = toolTipString;
+            }
+        }
+        private void UpdateComponentTypeToolTips()
+        {
+            //update tooltips for components
+            foreach (componentType comp in deploymentComponentList.Values)
+            {
+                if (comp.ComponentCanvas != null)
+                {
+                    comp.ComponentCanvas.ToolTip = "Type: " + comp.type_id + "\n" + comp.description;
+                    UpdateEventPortsToolTips(comp);
+                    UpdatePortsToolTips(comp);
+                }
+                if (comp.gui != null && comp.gui.GuiElementCanvas != null)
+                {
+                    comp.gui.GuiElementCanvas.ToolTip = "Type: " + comp.type_id + "\n" + comp.description;
+                }
+            }
+        }
+
+        private void UpdatePortsToolTips(componentType comp)
+        {
+            if (comp.PortsList != null)
+            {
+                foreach (object port in comp.PortsList.Values)
+                {
+                    if (port is outputPortType)
+                    {
+                        outputPortType p = (outputPortType)port;
+
+                        String portName = (p.PortAliasForGroups != null && !p.PortAliasForGroups.Equals("")) ? p.PortAliasForGroups : p.PortLabel.Text;
+                        if (p.PortRectangle != null)
+                        {
+                            p.PortRectangle.ToolTip = portName + " (" + p.PortDataType + "): " + p.Description;
+                            if (p.ChannelIds != null)
+                            {
+                                foreach (String channelId in p.ChannelIds)
+                                {
+                                    channel chn = findChannel(channelId);
+                                    if (chn != null)
+                                    {
+                                        if (chn.GroupOriginalTarget != null)
+                                        {
+                                            chn = findChannel(bindingEdgeGetRealId(chn.target, chn.GroupOriginalTarget));
+                                        }
+                                        if (chn != null)
+                                        {
+                                            p.PortRectangle.ToolTip += "\n-> " + bindingEdgeGetRealId(chn.target, chn.GroupOriginalTarget);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (port is inputPortType)
+                    {
+                        inputPortType p = (inputPortType)port;
+
+                        String portName = (p.PortAliasForGroups != null && !p.PortAliasForGroups.Equals("")) ? p.PortAliasForGroups : p.PortLabel.Text;
+                        if (p.PortRectangle != null)
+                        {
+                            p.PortRectangle.ToolTip = portName + " (" + p.PortDataType + "): " + p.Description;
+                            if (p.ChannelId != null)
+                            {
+                                channel chn = findChannel(p.ChannelId);
+                                if (chn != null)
+                                {
+                                    if (chn.GroupOriginalSource != null)
+                                    {
+                                        chn = findChannel(bindingEdgeGetRealId(chn.source, chn.GroupOriginalSource));
+                                    }
+                                    if (chn != null)
+                                    {
+                                        p.PortRectangle.ToolTip += "\n" + bindingEdgeGetRealId(chn.source, chn.GroupOriginalSource)+" ->";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// Returns the composed Id of componentId and portId. If groupBindingEdge != null the respective values are taken from the groupBindingEdge.
+        /// </summary>
+        /// <param name="normalBindingEdge"></param>
+        /// <param name="groupBindingEdge"></param>
+        /// <returns></returns>
+        private String bindingEdgeGetRealId(bindingEdge normalBindingEdge, bindingEdge groupBindingEdge)
+        {
+            String componentId = normalBindingEdge.component.id;
+            String portId = normalBindingEdge.port.id;
+
+            if (groupBindingEdge != null)
+            {
+                componentId = groupBindingEdge.component.id;
+                portId = groupBindingEdge.port.id;
+            }
+            return componentId + "." + portId;
+        }
+
+        /// <summary>
+        /// Updates the tooltips for the event ports.
+        /// </summary>
+        /// <param name="comp"></param>
+        private void UpdateEventPortsToolTips(componentType comp)
+        {
+            if (comp.EventListenerPolygon != null && comp.EventListenerPolygon.InputEventPortCanvas != null)
+            {
+                comp.EventListenerPolygon.InputEventPortCanvas.ToolTip = "";
+                int ctr = 0;
+                foreach (EventListenerPort evtListenerPort in comp.EventListenerList)
+                {
+                    if (ctr++ > 0) comp.EventListenerPolygon.InputEventPortCanvas.ToolTip += "\n";
+                    comp.EventListenerPolygon.InputEventPortCanvas.ToolTip += evtListenerPort.EventListenerId + ": " + evtListenerPort.EventDescription;
+                }
+
+            }
+            if (comp.EventTriggerPolygon != null && comp.EventTriggerPolygon.OutputEventPortCanvas != null)
+            {
+                comp.EventTriggerPolygon.OutputEventPortCanvas.ToolTip = "";
+                int ctr = 0;
+                foreach (EventTriggerPort evtTriggerPort in comp.EventTriggerList)
+                {
+                    if (ctr++ > 0) comp.EventTriggerPolygon.OutputEventPortCanvas.ToolTip += "\n";
+                    comp.EventTriggerPolygon.OutputEventPortCanvas.ToolTip += evtTriggerPort.EventTriggerId + ": " + evtTriggerPort.EventDescription;
+                }
+            }
+
+        }
         /// <summary>
         /// Timer so set the focus on the first element of a canvas. This is needed to set the focus after
         /// tabs have been switched, otherwise, the elements are not visible and therefore, the focus
@@ -8105,6 +8312,7 @@ namespace Asterics.ACS {
                     }
                 }
             }
+            UpdateToolTips();
         }
 
         /// <summary>
@@ -8348,6 +8556,11 @@ namespace Asterics.ACS {
             }
         }
 
+        /// <summary>
+        /// Is called when the event channel description field lost focus --> the corresponding event channel object is updated.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EvtChnlDescription_LostFocus(Object sender, RoutedEventArgs e)
         {
             EvtChannelDescriptionTextBox evtChnlDescTextBox = (EvtChannelDescriptionTextBox)e.Source;
@@ -8386,8 +8599,17 @@ namespace Asterics.ACS {
                     updateEventChannel.description = constructEvtChannelDescription(updateEventChannel.sources.source.eventPort.id, updateEventChannel.targets.target.eventPort.id, evtChnlDescTextBox);
                 }
             }
+            UpdateToolTips();
         }
 
+        /// <summary>
+        /// Finds the eventChannel that is connected between the given ids.
+        /// </summary>
+        /// <param name="sourceComponentId"></param>
+        /// <param name="sourceEventId"></param>
+        /// <param name="targetComponentId"></param>
+        /// <param name="targetEventId"></param>
+        /// <returns></returns>
         eventChannel findEventChannel(String sourceComponentId, String sourceEventId, String targetComponentId, String targetEventId)
         {
             foreach (eventChannel updateEvent in eventChannelList)
@@ -8402,6 +8624,27 @@ namespace Asterics.ACS {
             }
             return null;
         }
+
+        /// <summary>
+        /// Returns a list of event channels with the given sourceComponentId and targetComponentId.
+        /// </summary>
+        /// <param name="sourceComponentId"></param>
+        /// <param name="targetComponentId"></param>
+        /// <returns></returns>
+        List<eventChannel> findEventChannels(String sourceComponentId, String targetComponentId)
+        {
+            List<eventChannel> list=new List<eventChannel>();
+            foreach (eventChannel updateEvent in eventChannelList)
+            {
+                if ((updateEvent.sources.source.component.id == sourceComponentId) &&
+                    (updateEvent.targets.target.component.id == targetComponentId))
+                {
+                    list.Add(updateEvent);
+                }
+            }
+            return list;
+        }
+
 
         /// <summary>
         /// Listener for the componentComboBox in the property dock. This compobox is available, when the
@@ -8767,6 +9010,7 @@ namespace Asterics.ACS {
                     eventChannelList.Remove(ec);
                 deploymentModel.eventChannels = (eventChannel[])eventChannelList.ToArray(typeof(eventChannel));
             }
+            UpdateToolTips();
         }
 
         String constructEvtChannelDescription(String sourceId, String targetId, EvtChannelDescriptionTextBox evtChnlDescriptionTxtBox)
@@ -10308,6 +10552,8 @@ namespace Asterics.ACS {
             else {
                 Keyboard.Focus(canvas);
             }
+
+            UpdateToolTips();
         }
 
 
@@ -10879,6 +11125,7 @@ namespace Asterics.ACS {
                 }
                 AddGUIComponent(newComponent);
             }
+            UpdateToolTips();
         }
 
         /// <summary>
@@ -11076,6 +11323,8 @@ namespace Asterics.ACS {
             // adding the new channel to the channel-array (required for the schema consistency)
             deploymentModel.channels = deploymentChannelList.Values.ToArray();
             modelHasBeenEdited = true;
+
+            UpdateToolTips();
         }
 
         /// <summary>
@@ -11327,6 +11576,7 @@ namespace Asterics.ACS {
                 areStatus.Status = AREStatus.ConnectionStatus.Disconnected;
             }
         }
+
     }
 
 }
