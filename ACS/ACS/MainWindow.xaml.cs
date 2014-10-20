@@ -1063,6 +1063,7 @@ namespace Asterics.ACS {
             if (nd.DialogResult == true) {
                 deploymentModel.modelName = nd.componentNameBox.Text;
                 modelHasBeenEdited = true;
+                UpdateToolTips();
             }
         }
 
@@ -1088,6 +1089,7 @@ namespace Asterics.ACS {
                 deploymentModel.modelDescription.requirements = mdd.requirementsText.Text;
                 deploymentModel.modelDescription.description = mdd.logDecriptionText.Text;
                 modelHasBeenEdited = true;
+                UpdateToolTips();
             }
         }
 
@@ -2122,6 +2124,7 @@ namespace Asterics.ACS {
             else {
                 Keyboard.Focus(canvas);
             }
+            UpdateToolTips();
         }
 
         
@@ -2157,6 +2160,7 @@ namespace Asterics.ACS {
                         break;
                 }
             }
+            UpdateToolTips();
         }
 
         /// <summary>
@@ -2442,6 +2446,7 @@ namespace Asterics.ACS {
             else {
                 Keyboard.Focus(canvas);
             }
+            UpdateToolTips();
         }
 
         // Delete a component, called by the ribbon menu
@@ -8343,6 +8348,7 @@ namespace Asterics.ACS {
 
             }
             modelHasBeenEdited = true;
+            UpdateToolTips();
         }
 
         /// <summary>
@@ -8372,6 +8378,7 @@ namespace Asterics.ACS {
                 }
             }
             modelHasBeenEdited = true;
+            UpdateToolTips();
         }
 
         /// <summary>
@@ -8396,6 +8403,7 @@ namespace Asterics.ACS {
                     } 
             }
             modelHasBeenEdited = true;
+            UpdateToolTips();
         }
 
         /// <summary>
@@ -9974,6 +9982,7 @@ namespace Asterics.ACS {
                 selectedComponentList.AddLast(mc);
             }
             UpdateSelectedComponents();
+            UpdateToolTips();
         }
 
         private void LoadComponentsCommand() {
@@ -11162,6 +11171,7 @@ namespace Asterics.ACS {
             deleteComponent.ComponentCanvas.LostKeyboardFocus -= ComponentCanvas_LostKeyboardFocus;
 
             modelHasBeenEdited = true;
+            UpdateToolTips();
         }
 
         /// <summary>
@@ -11407,6 +11417,8 @@ namespace Asterics.ACS {
             deleteChannel.Line.LostKeyboardFocus -= Channel_LostKeyboardFocus;
             deleteChannel.Line.KeyDown -= Channel_KeyDown;
             modelHasBeenEdited = true;
+
+            UpdateToolTips();
         }
 
         /// <summary>
@@ -11437,6 +11449,7 @@ namespace Asterics.ACS {
             deploymentModel.eventChannels = (eventChannel[])eventChannelList.ToArray(typeof(eventChannel));
             ResetPropertyDock();
             modelHasBeenEdited = true;
+            UpdateToolTips();
         }
 
 
@@ -11486,6 +11499,8 @@ namespace Asterics.ACS {
             eventChannel ec = new eventChannel();
             ec.sources.source.component.id = addEventChannel.TriggerComponentId;
             //canvas.Children.Add(addEventChannel.Line);
+
+            UpdateToolTips();
             return true;
         }
 
