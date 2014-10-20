@@ -23,6 +23,10 @@ IRTrans universal IR remote module</div>
 <ul>
 <li><STRONG>action[string]:</STRONG> A string, which will be sent to the IRTrans module, must start with "@IRTRANS".</li>
 </ul>
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>output[string]:</STRONG> The IRTrans can also receive IR-Commands. With the IRTrans Configuration tool string commands can be defined for every received IR-Command which will be sent to a custom UDP server. If the target is the computer where the ARE runs on, the given string will be received by this output port.</li>
+</ul>
 <H2>Event Listener Description</H2>
 <ul>
 <li><STRONG>sendprop1:</STRONG> sends the command, stored in the property send1 to the IRTrans (including the prestring).</li>
