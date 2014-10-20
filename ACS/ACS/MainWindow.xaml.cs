@@ -5144,7 +5144,7 @@ namespace Asterics.ACS {
                             Asterics.ACS2.componentTypesComponentType comp = (Asterics.ACS2.componentTypesComponentType)o;
                             comp.InitGraphPorts(comp.id);
                             componentList.Add(comp.id, comp);
-                            AddSearchSuggestion(comp.id.Replace("asterics.",""));
+                            AddSearchSuggestion(comp.id.Replace("asterics.",""),comp.description);
                         }
                     }
                     foreach (Asterics.ACS2.componentTypesComponentType component in componentList.Values) {
@@ -5174,6 +5174,7 @@ namespace Asterics.ACS {
                         i.Header = header;
                         i.Click += AddComponentFromRibbonMenu;
                         i.CommandParameter = component.id;
+                        i.ToolTipTitle = component.description;
                         RibbonSplitMenuItem rmi = new RibbonSplitMenuItem();
                         rmi.StaysOpenOnClick = true;
                         rmi.Height = 37;
@@ -5332,9 +5333,10 @@ namespace Asterics.ACS {
             }
         }
 
-        private void AddSearchSuggestion(string name) {
+        private void AddSearchSuggestion(string name, string description) {
            
             AutoCompleteEntry entry = new AutoCompleteEntry(name);
+            entry.ToolTip = description;
             List<string> keywords = new List<string>();
             for (int i = 0; i < name.Length; i++)
             {
@@ -5957,6 +5959,7 @@ namespace Asterics.ACS {
                 Background = (Brush)bc.ConvertFrom("#FFE9ECFA")
             };
 
+
             TextBox headingListener = new TextBox() {
                 Text = targetComponent.id,
                 Margin = new Thickness(0, 0, 0, 0),
@@ -5966,6 +5969,12 @@ namespace Asterics.ACS {
                 IsReadOnly = true,
                 Background = (Brush)bc.ConvertFrom("#FFE9ECFA")
             };
+            componentType comp = findComponentType(targetComponent.id);
+            if (comp != null)
+            {
+                headingListener.ToolTip = constructComponentTypeToolTip(comp, true);
+            }
+
             TextBox headingTrigger = new TextBox() {
                 Text = sourceComponent.id,
                 Margin = new Thickness(0, 0, 0, 0),
@@ -5975,6 +5984,11 @@ namespace Asterics.ACS {
                 IsReadOnly = true,
                 Background = (Brush)bc.ConvertFrom("#FFE9ECFA")
             };
+            comp = findComponentType(sourceComponent.id);
+            if (comp != null)
+            {
+                headingTrigger.ToolTip = constructComponentTypeToolTip(comp, true);
+            }
 
 
             Grid.SetRow(headingListener, 0);
@@ -5991,7 +6005,7 @@ namespace Asterics.ACS {
             Border headline = new Border();
             Grid.SetColumn(headline, 0);
             Grid.SetRow(headline, 0);
-            Grid.SetColumnSpan(headline, 2);
+            Grid.SetColumnSpan(headline, 3);
             headline.BorderBrush = (Brush)bc.ConvertFrom("#FFE9ECFA");
             //headline.BorderBrush = Brushes.Black;
             headline.BorderThickness = new Thickness(1);
@@ -6747,6 +6761,21 @@ namespace Asterics.ACS {
         }
 
         /// <summary>
+        /// Return the componentType object with the given id.
+        /// </summary>
+        /// <param name="componentTypeId"></param>
+        /// <returns></returns>
+        private componentType findComponentType(String componentTypeId) {
+            foreach (componentType comp in deploymentComponentList.Values)
+            {
+                if (comp.id.Equals(componentTypeId))
+                {
+                    return comp;
+                }
+            }
+            return null;
+        }
+        /// <summary>
         /// Find a channel with the given id.
         /// </summary>
         /// <param name="channelId"></param>
@@ -6822,6 +6851,32 @@ namespace Asterics.ACS {
                 evchnlLine.Line.ToolTip = toolTipString;
             }
         }
+
+        /// <summary>
+        /// Construct tooltip string for the given componentType.
+        /// </summary>
+        /// <param name="comp"></param>
+        /// <param name="withProperties">true: Property values are included.</param>
+        /// <returns></returns>
+        private String constructComponentTypeToolTip(componentType comp, Boolean withProperties)
+        {
+            String toolTip="Type: " + comp.type_id + "\n" + comp.description;
+            if (withProperties)
+            {
+                int ctr = 0;
+                foreach (propertyType prop in comp.properties)
+                {
+                    if(ctr++==0) toolTip += "\n\nProperties:";
+                    toolTip += "\n" + prop.name + "=" + prop.value;
+                }
+            }
+            return toolTip;
+
+        }
+
+        /// <summary>
+        /// Update the tooltips of all componentType instances.
+        /// </summary>
         private void UpdateComponentTypeToolTips()
         {
             //update tooltips for components
@@ -6829,7 +6884,7 @@ namespace Asterics.ACS {
             {
                 if (comp.ComponentCanvas != null)
                 {
-                    comp.ComponentCanvas.ToolTip = "Type: " + comp.type_id + "\n" + comp.description;
+                    comp.ComponentCanvas.ToolTip = constructComponentTypeToolTip(comp, false);
                     UpdateEventPortsToolTips(comp);
                     UpdatePortsToolTips(comp);
                 }
@@ -6840,6 +6895,10 @@ namespace Asterics.ACS {
             }
         }
 
+        /// <summary>
+        /// Update the tooltips of the ports of a given componentType instance.
+        /// </summary>
+        /// <param name="comp"></param>
         private void UpdatePortsToolTips(componentType comp)
         {
             if (comp.PortsList != null)

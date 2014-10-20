@@ -134,6 +134,7 @@ namespace Asterics.ACS
                             if (word.StartsWith(textBox.Text, StringComparison.CurrentCultureIgnoreCase))
                             {
                                 ComboBoxItem cbItem = new ComboBoxItem();
+                                cbItem.ToolTip = entry.ToolTip;
                                 cbItem.Content = entry.ToString();
                                 comboBox.Items.Add(cbItem);
                                 break;
