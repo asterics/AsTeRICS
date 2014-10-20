@@ -6,7 +6,7 @@
                    canonical_name="eu.asterics.component.processor.stringdispatcher.StringDispatcherInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
-        <description>Send test from chosen slot</description>
+        <description>Send text from chosen slot</description>
         <ports>
             <outputPort id="output">
                 <description>Output text</description>
