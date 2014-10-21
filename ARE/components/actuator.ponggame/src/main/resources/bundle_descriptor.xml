@@ -5,7 +5,7 @@
     <componentType id="asterics.PongGame"
                    canonical_name="eu.asterics.component.actuator.ponggame.PongGameInstance">
         <type subtype="Others">actuator</type>
-        <singleton>false</singleton>
+        <singleton>true</singleton>
         <description>Plugin displays a pong game in the AsTeRICS GUI</description>
         <ports>
 			<inputPort id="playerOnePos">

@@ -48,7 +48,7 @@ settings on Win8/8.1 switch the device off per default - this can be changed by 
 <li><STRONG>houseCode [int]:</STRONG> The houseCode to which the command should be sent. Overrides the houseCode set in the properties</li>
 <li><STRONG>address [int]:</STRONG> The address of the target device. Overrides the houseCode set in the properties.</li>
 <li><STRONG>action [string]:</STRONG> Action input to send commands from other components which output a variable string, for example OSKA. The string format is as follows:
-	@FS20:houseCode_address_command; e.g.@FS20:11111111_1234_18 to send the toggle command to the device with housecode 11111111 and address 1234. For the indices of the commands see the table below.
+	@FS20:houseCode,address,command; e.g.@FS20:11111111,1234,18 to send the toggle command to the device with housecode 11111111 and address 1234. The delimiters ',', '_' and ' ' are allowed. For the indices of the commands see the table below.
 </li>
 </ul>
 

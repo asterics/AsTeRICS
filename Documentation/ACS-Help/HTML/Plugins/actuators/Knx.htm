@@ -33,7 +33,7 @@ The KNX plugin has also some Event Trigger which can be assigned to various KNX 
 
 <H2>Input Port Description</H2>
 <ul>
-<li><STRONG>command [string]:</STRONG> This port receives string commands for the KNX component. The commands have to be in the format "@KNX: group_address#type#value". An example for a valid command is"@KNX:1/1/1#boolean#true". As a valid command is received by the input port, the value is sent to the KNX group address. The group addresses comply to the setup of the KNX network which can be configured with the ETS4 software.</li>
+<li><STRONG>command [string]:</STRONG> This port receives string commands for the KNX component. The commands have to be in the format "@KNX: group_address,type,value". The delimiters ',', '#' and ' ' are allowed. An example for a valid command is"@KNX:1/1/1,boolean,true". As a valid command is received by the input port, the value is sent to the KNX group address. The group addresses comply to the setup of the KNX network which can be configured with the ETS4 software.</li>
 <li><STRONG>slider[1-6] [double]:</STRONG> Input port for a double value which is converted to an integer and forwarded to a dedicated KNX datapoint</li>
 </ul>
 <H2>Properties</H2>
