@@ -6849,6 +6849,7 @@ namespace Asterics.ACS {
                         if (p.PortRectangle != null)
                         {
                             p.PortRectangle.ToolTip = portName + " (" + p.PortDataType + "): " + p.Description;
+                            
                             if (p.ChannelIds != null)
                             {
                                 foreach (String channelId in p.ChannelIds)
@@ -6872,11 +6873,19 @@ namespace Asterics.ACS {
                     if (port is inputPortType)
                     {
                         inputPortType p = (inputPortType)port;
-
+                        
                         String portName = (p.PortAliasForGroups != null && !p.PortAliasForGroups.Equals("")) ? p.PortAliasForGroups : p.PortLabel.Text;
                         if (p.PortRectangle != null)
                         {
-                            p.PortRectangle.ToolTip = portName + " (" + p.PortDataType + "): " + p.Description;
+                            p.PortRectangle.ToolTip = portName + " (" + p.PortDataType + "): " + p.Description +  " --> synchronized: ";
+                            if (p.sync)
+                            {
+                                p.PortRectangle.ToolTip += "true";
+                            }
+                            else
+                            {
+                                p.PortRectangle.ToolTip += "false";
+                            }
                             if (p.ChannelId != null)
                             {
                                 channel chn = findChannel(p.ChannelId);
@@ -11368,8 +11377,8 @@ namespace Asterics.ACS {
             if (deploymentComponentList.ContainsKey(deleteChannel.source.component.id)) {
                 componentType tempComponent = null;
                 tempComponent = deploymentComponentList[deleteChannel.source.component.id];
-                
                 ((outputPortType)tempComponent.PortsList[deleteChannel.source.port.id]).ChannelIds.Remove(deleteChannel.id);
+                UpdatePortsToolTips(tempComponent);
             }
 
             if (deploymentComponentList.ContainsKey(deleteChannel.target.component.id)) {
@@ -11381,6 +11390,7 @@ namespace Asterics.ACS {
                 else {
                     ((inputPortType)tempComponent.PortsList[deleteChannel.target.port.id]).ChannelId = "";
                 }
+                UpdatePortsToolTips(tempComponent);
             }
             
             if (deleteChannel.id.StartsWith("group") && deleteChannel.source.component.id.StartsWith("group")) {
