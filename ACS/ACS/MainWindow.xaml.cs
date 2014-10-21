@@ -8182,6 +8182,13 @@ namespace Asterics.ACS {
 
         private void InputPortIntPropertyChanged(Object sender, PropertyChangedEventArgs e) {
             inputPortType groupPort = (inputPortType)sender;            
+            if (e.PropertyName == "sync")
+            {
+                if (deploymentComponentList.ContainsKey(groupPort.ComponentId)) {
+                    UpdatePortsToolTips(deploymentComponentList[groupPort.ComponentId]);
+                }
+                return;
+            }
             if ((deploymentModel.groups != null)  && (deploymentComponentList[groupPort.ComponentId].ComponentType == ACS2.componentTypeDataTypes.group)) {
                 foreach (group groupToUpdate in deploymentModel.groups) {
                     if (groupToUpdate.id == groupPort.ComponentId) {
