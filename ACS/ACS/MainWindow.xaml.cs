@@ -2572,7 +2572,14 @@ namespace Asterics.ACS {
                     System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.KeywordIndex, focusedComponent.type_id);
                 }
                 else {
-                    System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.TableOfContents);
+                    if (selectedComponentList.Count == 0)
+                    {
+                        System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.TableOfContents);
+                    }
+                    else
+                    {
+                        System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.KeywordIndex, selectedComponentList.First.Value.type_id);
+                    }
                 }
             }
         }
