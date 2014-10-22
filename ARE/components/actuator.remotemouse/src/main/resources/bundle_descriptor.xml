@@ -49,7 +49,7 @@
             <eventListenerPort id="wheelDown">
                 <description>On incoming event, mouse wheel position is decreased</description>
             </eventListenerPort>
-            			 <eventListenerPort id="nextClickRight">
+            <eventListenerPort id="nextClickRight">
                 <description>the next left click event will generate a right click</description>
             </eventListenerPort> 
 			 <eventListenerPort id="nextClickDouble">
