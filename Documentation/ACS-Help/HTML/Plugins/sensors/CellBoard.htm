@@ -29,7 +29,7 @@
         in directed scanning mode to set the number of the highlighted
         cell.</li>
       <li><strong>xmlFile [string]:</strong> This port can be used to
-        set the xml file with the keyboard definition.</li>
+        set the xml file with the keyboard definition (data/cellBoardKeyboards/nameOfFile.xml).</li>
     </ul>
     <h2>Output Port Description</h2>
     <ul>
@@ -66,9 +66,9 @@
     <ul>
       <li><strong>caption [string]:</strong> The component caption.</li>
       <li><strong>rows [integer]:</strong> The number of the cell rows
-        (1-6).</li>
+        (1-36, rows x cols <= 100).</li>
       <li><strong>columns [integer]:</strong> The number of the cell
-        columns (1-6).</li>
+        columns (1-36, rows x cols <= 100).</li>
       <li><strong>textColor [integer]:</strong> The color of the cell
         text.</li>
       <li><strong>backgroundColor [integer]:</strong> The color of the

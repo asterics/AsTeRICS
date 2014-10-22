@@ -6,7 +6,7 @@
                    canonical_name="eu.asterics.component.sensor.cellboard.CellBoardInstance">
         <type subtype="Graphical User Interface">sensor</type>
         <singleton>false</singleton>
-        <description>GUI component</description>
+        <description>Adjustable matrix of button cells with scanning support</description>
         <ports>
 			<inputPort id="row">
 				<description>Row of the cell</description>
@@ -14,7 +14,7 @@
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="column">
-				<description>column of the cell</description>
+				<description>Column of the cell</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
@@ -24,7 +24,7 @@
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="xmlFile">
-				<description>XML file path to load when the load event occurs</description>
+				<description>XML file path to load when the load event occurs (data/cellBoardKeyboards/nameOfFile.xml)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
@@ -181,13 +181,13 @@
 			<property name="rows"
 				type="integer"
 				value="2"
-				combobox="1//2//3//4//5//6"
-				description="Number of rows"/>
+				combobox="1//2//3//4//5//6//7//8//9//10//11//12//13//14//15//16//17//18//19//20//21//22//23//24//25//26//27//28//29//30//31//32//33//34//35//36"
+				description="Number of rows (rows x cols &lt;= 100)"/>
 			<property name="columns"
 				type="integer"
 				value="2"
-				combobox="1//2//3//4//5//6"
-				description="Number of rows"/>
+				combobox="1//2//3//4//5//6//7//8//9//10//11//12//13//14//15//16//17//18//19//20//21//22//23//24//25//26//27//28//29//30//31//32//33//34//35//36"
+				description="Number of columns (rows x cols &lt;= 100)"/>
 			<property name="textColor"
 				type="integer"
 				value="0"

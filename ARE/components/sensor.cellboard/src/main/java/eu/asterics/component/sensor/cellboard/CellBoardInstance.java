@@ -72,9 +72,9 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	//final IRuntimeEventTriggererPort etpSelectedCell = new DefaultRuntimeEventTriggererPort();
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
     final int NUMBER_OF_CELLS = 100;
-    final int MAX_ROWS=10;
-    final int MAX_COLUMNS=10;
-    
+    final int MAX_ROWS=36;
+    final int MAX_COLUMNS=36;
+	private static final int MAX_MATRIX_ROWS_COLS = 9;    
     
     private final String ETP_CELL_CLICKED="cellClicked";
     private final String ETP_CELL = "cell";
@@ -507,6 +507,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			{
 				propRows=MAX_ROWS;
 			}
+			checkMatrixSize();
 			return oldValue;
 		}
 		else if (PROP_COLUMNS.equalsIgnoreCase(propertyName))
@@ -521,6 +522,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			{
 				propColumns=MAX_COLUMNS;
 			}
+			checkMatrixSize();
 			return oldValue;
 		}
 		else if (PROP_SCAN_TYPE.equalsIgnoreCase(propertyName))
@@ -772,6 +774,9 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 				propColumns = handler.getCols();
 				propFontSize = handler.getFontSize();
 				propScanType = handler.getScanning();
+				
+				checkMatrixSize();
+				
 				if (propRows == -1 || propColumns == -1) {
 					reportError("Error parsing rows or cols attribute of CellBoard plugin");
 					return;
@@ -801,8 +806,15 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 				e.printStackTrace();
 			}
 		}
+
 	};
 	
+	private void checkMatrixSize() {
+		if((propRows*propColumns) >= NUMBER_OF_CELLS ) {
+			propRows=MAX_MATRIX_ROWS_COLS;
+			propColumns=MAX_MATRIX_ROWS_COLS;
+		}
+	}
 	
 	 /**
      * Returns the color of the text.
