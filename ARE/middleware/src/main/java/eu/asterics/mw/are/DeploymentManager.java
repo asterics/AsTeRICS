@@ -199,7 +199,7 @@ public class DeploymentManager
 
 			final String canonicalName = componentType.getCanonicalName();
 
-			IRuntimeComponentInstance runtimeComponentInstance;
+			IRuntimeComponentInstance runtimeComponentInstance=null;
 
 			try{
 				runtimeComponentInstance =
@@ -207,11 +207,9 @@ public class DeploymentManager
 
 			}
 			catch (NullPointerException e){
-
-				JOptionPane.showMessageDialog(null,
-						canonicalName+ " prevents the model from starting!",
-						"ARE runtime error",
-						JOptionPane.WARNING_MESSAGE);
+				//logger.severe(canonicalName+ " prevents the model from starting: "+e.getMessage());
+				e.printStackTrace();
+				AstericsErrorHandling.instance.reportError(runtimeComponentInstance, "Could not deploy component ["+runtimeComponentInstance+"]: \n"+e.getMessage());
 				return;
 			}
 
@@ -582,13 +580,8 @@ public class DeploymentManager
 			catch (Throwable t) 
 			{
 				//custom title, error icon
-				JOptionPane.showMessageDialog(null,
-						componentInstance+ ":\n"+t.getMessage()
-						, "ARE Runtime Error",
-						JOptionPane.ERROR_MESSAGE);
 				t.printStackTrace();
-				//System.exit(0);
-				stopModel();
+				AstericsErrorHandling.instance.reportError(componentInstance, "Could not run component ["+componentInstance+"]: \n"+t.getMessage());
 			}
 		}
 
@@ -644,11 +637,8 @@ public class DeploymentManager
 			catch (Throwable t) 
 			{
 				//custom title, error icon
-				JOptionPane.showMessageDialog(null,
-						componentInstance+ " Runtime Error!",
-						"ARE runtime error",
-						JOptionPane.ERROR_MESSAGE);
-				//System.exit(0);
+				t.printStackTrace();
+				AstericsErrorHandling.instance.reportError(componentInstance, "Could not stop component ["+componentInstance+"]: \n"+t.getMessage());
 			}
 
 

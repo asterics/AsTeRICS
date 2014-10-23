@@ -342,8 +342,9 @@ public class AREServices implements IAREServices{
 						}
 					});
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			String message=e!=null ? e.getMessage() : e.toString();
-			logger.warning("Could not execute stopModel: "+message);
+			String message="Could not execute stopModel: "+e!=null ? e.getMessage() : e.toString();
+			//logger.warning("Could not execute stopModel: "+message);
+			AstericsErrorHandling.instance.reportError(null, message);
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
 		}
 	}
@@ -479,9 +480,10 @@ public class AREServices implements IAREServices{
 
 						}
 					});
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			String message=e!=null ? e.getMessage() : e.toString();
-			logger.warning("Could not execute runModel: "+message+", trying to stop model again");
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {			
+			String message="Could not execute runModel: "+e!=null ? e.getMessage() : e.toString()+", trying to stop model again";
+			//logger.warning("Could not execute runModel: "+message+", trying to stop model again");
+			AstericsErrorHandling.instance.reportError(null, message);
 			stopModel();
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
 		}
@@ -516,8 +518,9 @@ public class AREServices implements IAREServices{
 						}
 					});
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			String message=e!=null ? e.getMessage() : e.toString();
-			logger.warning("Could not execute pauseModel: "+message);
+			String message="Could not execute pauseModel: "+e!=null ? e.getMessage() : e.toString();
+			//logger.warning("Could not execute pauseModel: "+message);
+			AstericsErrorHandling.instance.reportError(null, message);
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
 		}
 	}

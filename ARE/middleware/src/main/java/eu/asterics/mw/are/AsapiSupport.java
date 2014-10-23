@@ -398,6 +398,14 @@ public class AsapiSupport
 					"deployModel: Failed to deploy model -> \n"
 					+e4.getMessage());
 			throw (new AREAsapiException(e4.getMessage()));
+		} catch(Throwable t) {
+			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
+			AstericsErrorHandling.instance.setStatusObject
+			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+			logger.warning(this.getClass().getName()+"." +
+					"deployModel: Failed to deploy model -> \n"
+					+t.getMessage());
+			throw (new AREAsapiException(t.getMessage()));			
 		}
 
 			}
@@ -1885,8 +1893,9 @@ public class AsapiSupport
 	 * a default model without the need of pressing deploy and start model 
 	 * first.
 	 * @param startModel TODO
+	 * @throws AREAsapiException 
 	 */
-	public void autostart(String startModel) {
+	public void autostart(String startModel) throws AREAsapiException {
 		try {
 			if(startModel== null || startModel.equals("")) {
 				startModel=AUTO_START_MODEL;
@@ -1898,7 +1907,7 @@ public class AsapiSupport
 
 			logger.fine(this.getClass().getName()+".autostart: Failed -> \n" 
 					+e.getMessage());
-
+			throw e;
 		}
 
 	}

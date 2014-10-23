@@ -121,13 +121,20 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	public void reportError(IRuntimeComponentInstance component, 
 			final String errorMsg) 
 	{
-		
-		String componentID = DeploymentManager.instance.
-				getComponentInstanceIDFromComponentInstance(component);
-		logger.warning(componentID+": "+errorMsg);
+		//System.out.println("componet: "+component);
+		if(component!=null) {
+			String componentID = DeploymentManager.instance
+					.getComponentInstanceIDFromComponentInstance(component);
+			if (componentID != null) {
+				//System.out.println("componentID: "+componentID);
+				logger.warning(componentID + ": " + errorMsg);
+				setStatusObject(AREStatus.ERROR.toString(), componentID,
+						errorMsg);
+			}
+		}
 		ErrorLogPane.appendLog(errorMsg);
 		DeploymentManager.instance.setStatus(AREStatus.ERROR);
-		setStatusObject(AREStatus.ERROR.toString(), componentID, errorMsg);
+	
 		this.notifyAREEventListeners("onAreError", errorMsg);	
 
 		
