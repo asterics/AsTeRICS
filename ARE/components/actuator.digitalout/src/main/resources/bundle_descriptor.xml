@@ -16,36 +16,69 @@
         </ports>
         <events>
             <eventListenerPort id="setOutput1">
-                <description>An incoming event switches Output1 to high level</description>
+                <description>Switches Output1 to high level</description>
             </eventListenerPort>
             <eventListenerPort id="setOutput2">
-                <description>An incoming event switches Output2 to high level</description>
+                <description>Switches Output2 to high level</description>
             </eventListenerPort>
             <eventListenerPort id="setOutput3">
-                <description>An incoming event switches Output3 to high level</description>
+                <description>Switches Output3 to high level</description>
             </eventListenerPort>
             <eventListenerPort id="setOutput4">
-                <description>An incoming event switches Output4 to high level</description>
+                <description>Switches Output4 to high level</description>
             </eventListenerPort>
             <eventListenerPort id="setOutput5">
-                <description>An incoming event switches Output5 to high level</description>
+                <description>Switches Output5 to high level</description>
             </eventListenerPort>
 
             <eventListenerPort id="clearOutput1">
-                <description>An incoming event switches Output1 to low level</description>
+                <description>Switches Output1 to low level</description>
             </eventListenerPort>
             <eventListenerPort id="clearOutput2">
-                <description>An incoming event switches Output2 to low level</description>
+                <description>Switches Output2 to low level</description>
             </eventListenerPort>
             <eventListenerPort id="clearOutput3">
-                <description>An incoming event switches Output3 to low level</description>
+                <description>Switches Output3 to low level</description>
             </eventListenerPort>
             <eventListenerPort id="clearOutput4">
-                <description>An incoming event switches Output4 to low level</description>
+                <description>Switches Output4 to low level</description>
             </eventListenerPort>
             <eventListenerPort id="clearOutput5">
-                <description>An incoming event switches Output5 to low level</description>
+                <description>Switches Output5 to low level</description>
             </eventListenerPort>
+
+            <eventListenerPort id="toggleOutput1">
+                <description>Toggles the state of Output1</description>
+            </eventListenerPort>
+            <eventListenerPort id="toggleOutput2">
+                <description>Toggles the state of Output2</description>
+            </eventListenerPort>
+            <eventListenerPort id="toggleOutput3">
+                <description>Toggles the state of Output3</description>
+            </eventListenerPort>
+            <eventListenerPort id="toggleOutput4">
+                <description>Toggles the state of Output4</description>
+            </eventListenerPort>
+            <eventListenerPort id="toggleOutput5">
+                <description>Toggles the state of Output5</description>
+            </eventListenerPort>
+            
+            <eventListenerPort id="pressOutput1">
+                <description>Presses Output1: Clears the state and after 500ms sets the state to high</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressOutput2">
+                <description>Presses Output2: Clears the state and after 500ms sets the state to high</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressOutput3">
+                <description>Presses Output3: Clears the state and after 500ms sets the state to high</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressOutput4">
+                <description>Presses Output4: Clears the state and after 500ms sets the state to high</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressOutput5">
+                <description>Presses Output5: Clears the state and after 500ms sets the state to high</description>
+            </eventListenerPort>
+            
         </events>        
         <properties>
             <property name="pullupStateOut3"

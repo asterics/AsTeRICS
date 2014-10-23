@@ -30,6 +30,8 @@ This component requires the GPIO CIM (CIM Id: 0x0801) to be connected to an USB 
 <ul>
 <li><STRONG>setOutput1 to setOutput5:</STRONG> an incoming event on these ports will cause the corresponding output port on the CIM to go to the high level.</li>
 <li><STRONG>clearOutput1 to clearOutput5:</STRONG> an incoming event on these ports will cause the corresponding output port on the CIM to go to the low level.</li>
+<li><STRONG>toggleOutput1 to toggleOutput5:</STRONG>Toggles the state of the output port.</li>
+<li><STRONG>pressOutput1 to pressOutput5:</STRONG>Presses the output port: Clears the state and after 500ms sets the state to high.</li>
 </ul>
 <H2>Properties</H2>
 <ul>
