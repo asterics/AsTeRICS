@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-06-12_1310" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="2012-06-12_1310" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
-      <description>GUI component</description>
+      <description>Adjustable matrix of button cells with scanning support</description>
       <ports>
         <inputPort portTypeID="row">
           <properties />
@@ -13,15 +13,15 @@
         <inputPort portTypeID="cellNumber">
           <properties />
         </inputPort>
+        <inputPort portTypeID="xmlFile">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="selectedCell">
           <properties />
         </outputPort>
         <outputPort portTypeID="selectedCellText">
           <properties />
         </outputPort>
-        <inputPort portTypeID="xmlFile">
-          <properties />
-        </inputPort>
       </ports>
       <properties>
         <property name="caption" value="Cell Board" />
@@ -32,6 +32,7 @@
         <property name="scanColor" value="10" />
         <property name="scanMode" value="0" />
         <property name="hoverTime" value="1000" />
+        <property name="keyboardFile" value="" />
         <property name="cellText1" value="Cell 1" />
         <property name="cellImage1" value="" />
         <property name="actionText1" value="Cell 1 Selected" />
