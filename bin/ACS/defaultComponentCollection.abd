@@ -4944,7 +4944,7 @@
         <properties>
 				<property description="property description" name="InPort" type="integer" value="8000"/>
 				<property description="property description" name="OutPort" type="integer" value="9000"/>
-				<property description="filename for loading or storing gesture data" name="filename" type="string" value="gestures.mubu"/>
+				<property description="filename for loading or storing gesture data" getStringList="true" name="filename" type="string" value="nodding.mubu"/>
         </properties>
 
     </componentType>

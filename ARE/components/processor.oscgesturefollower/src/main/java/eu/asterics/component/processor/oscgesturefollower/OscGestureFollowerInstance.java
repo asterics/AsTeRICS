@@ -40,6 +40,7 @@ import java.util.logging.Logger;
 
 
 
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -99,7 +100,7 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
 	OSCBundle			bndlData;
 	
     float outdataA, outdataB, outdataC, outdataD;
-    String propFilename = "gestures.mubu";
+    String propFilename = "nodding.mubu";
 	
 	private double inA=0,inB=0,inC=0,inD=0;
     
@@ -500,6 +501,51 @@ public class OscGestureFollowerInstance extends AbstractRuntimeComponentInstance
 			sendOscMsg ("/parameters","follow");   
 		}
 	};
+
+	
+	
+	/**
+	 * Returns the filenames inside the path folder data/music
+	 * and data/sounds
+	 */
+	public List<String> getRuntimePropertyList(String key) 
+	{
+
+		List<String> res = new ArrayList<String>(); 
+		if (key.compareToIgnoreCase("filename")==0)
+		{
+			List<String> nextDir = new ArrayList<String>(); //Directories
+			nextDir.add("tools/GestureFollower");	
+			while(nextDir.size() > 0) 
+			{
+				File pathName = new File(nextDir.get(0)); 
+				String[] fileNames = pathName.list();  // lists all files in the directory
+
+				for(int i = 0; i < fileNames.length; i++) 
+				{ 
+					if (fileNames[i].contains(".mubu"))
+					{
+						res.add(fileNames[i]);
+/*
+						File f = new File(pathName.getPath(), fileNames[i]); // getPath converts abstract path to path in String, 
+						// constructor creates new File object with fileName name   
+						if (f.isDirectory()) 
+						{  
+							// nextDir.add(f.getPath()); 
+						} 
+						else 
+						{
+							res.add(f.getPath());
+						}
+						*/
+					}
+				} 
+				nextDir.remove(0); 
+			}  
+		}
+		return res;
+
+	} 
 
 	
 
