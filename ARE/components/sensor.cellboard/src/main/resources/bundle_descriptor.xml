@@ -24,7 +24,7 @@
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="xmlFile">
-				<description>XML file path to load when the load event occurs (data/cellBoardKeyboards/nameOfFile.xml)</description>
+				<description>Name of keyboard file (in data/cellBoardKeyboards) which is used when the 'load' event occurs.</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
@@ -61,7 +61,7 @@
 				<description>Cell is clicked</description>
 			</eventTriggererPort>
 			<eventListenerPort id="load">
-				<description>Load xml file with filename from input xmlfile</description>
+				<description>Load keyboard file which is defined by the input port 'xmlFile'</description>
 			</eventListenerPort>
 			<eventTriggererPort id="cell1">
 				<description>Cell 1 selected</description>
@@ -212,6 +212,11 @@
 				type="integer"
 				value="1000"
 				description="Time of hovering needed to cell selection [ms]."/>
+			<property name="keyboardFile"
+				type="string"
+				value=""
+				getStringList="true"
+				description="Name of keyboard file (in data/cellBoardKeyboards) to load at startup."/>
 			<property name="cellText1"
 				type="string"
 				value=""
