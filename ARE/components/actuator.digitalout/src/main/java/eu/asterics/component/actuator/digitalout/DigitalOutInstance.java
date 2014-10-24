@@ -70,10 +70,31 @@ public class DigitalOutInstance extends AbstractRuntimeComponentInstance
 	private final String NAME_ELP_OUT7_L  	= "clearOutput7";
 	private final String NAME_ELP_OUT8_L  	= "clearOutput8";
 	
+	private final String NAME_ELP_OUT1_T  	= "toggleOutput1";
+	private final String NAME_ELP_OUT2_T  	= "toggleOutput2";
+	private final String NAME_ELP_OUT3_T  	= "toggleOutput3";
+	private final String NAME_ELP_OUT4_T  	= "toggleOutput4";
+	private final String NAME_ELP_OUT5_T  	= "toggleOutput5";
+	private final String NAME_ELP_OUT6_T  	= "toggleOutput6";
+	private final String NAME_ELP_OUT7_T  	= "toggleOutput7";
+	private final String NAME_ELP_OUT8_T  	= "toggleOutput8";
+	
+	private final String NAME_ELP_OUT1_P  	= "pressOutput1";	
+	private final String NAME_ELP_OUT2_P  	= "pressOutput2";
+	private final String NAME_ELP_OUT3_P  	= "pressOutput3";
+	private final String NAME_ELP_OUT4_P  	= "pressOutput4";
+	private final String NAME_ELP_OUT5_P  	= "pressOutput5";	
+	private final String NAME_ELP_OUT6_P  	= "pressOutput6";
+	private final String NAME_ELP_OUT7_P  	= "pressOutput7";
+	private final String NAME_ELP_OUT8_P  	= "pressOutput8";	
+	
 	private final int NUMBER_OF_OUTPUTS = 8;
 
     final IRuntimeEventListenerPort [] elpSetOutput    = new RuntimeEventListenerPortHigh[NUMBER_OF_OUTPUTS];    
-    final IRuntimeEventListenerPort [] elpClearOutput  = new RuntimeEventListenerPortLow[NUMBER_OF_OUTPUTS];    
+    final IRuntimeEventListenerPort [] elpClearOutput  = new RuntimeEventListenerPortLow[NUMBER_OF_OUTPUTS];
+    final IRuntimeEventListenerPort [] elpToggleOutput    = new RuntimeEventListenerPortToggle[NUMBER_OF_OUTPUTS];    
+    final IRuntimeEventListenerPort [] elpPressOutput  = new RuntimeEventListenerPortPress[NUMBER_OF_OUTPUTS];    
+    
 	
 	private static final short GPIO_CIM_ID 			= 0x0801;
 	private static final short LEGACY_GPIO_CIM_ID 			= 0x0201;
@@ -96,6 +117,8 @@ public class DigitalOutInstance extends AbstractRuntimeComponentInstance
 		{
 			elpSetOutput[i] = new RuntimeEventListenerPortHigh(this, i);
 			elpClearOutput[i]  = new RuntimeEventListenerPortLow( this, i);
+			elpToggleOutput[i]=new RuntimeEventListenerPortToggle( this, i);
+			elpPressOutput[i]=new RuntimeEventListenerPortPress( this, i);			
 		}
     }
     public IRuntimeInputPort getInputPort(String portID)
@@ -174,6 +197,72 @@ public class DigitalOutInstance extends AbstractRuntimeComponentInstance
         {
             return elpClearOutput[7];
         }
+        else if(NAME_ELP_OUT1_T.equalsIgnoreCase(eventPortID))
+        {
+            return elpToggleOutput[0];
+        }
+        else if(NAME_ELP_OUT2_T.equalsIgnoreCase(eventPortID))
+        {
+            return elpToggleOutput[1];
+        }
+        else if(NAME_ELP_OUT3_T.equalsIgnoreCase(eventPortID))
+        {
+            return elpToggleOutput[2];
+        }
+        else if(NAME_ELP_OUT4_T.equalsIgnoreCase(eventPortID))
+        {
+            return elpToggleOutput[3];
+        }
+        else if(NAME_ELP_OUT5_T.equalsIgnoreCase(eventPortID))
+        {
+            return elpToggleOutput[4];
+        }
+        else if(NAME_ELP_OUT6_T.equalsIgnoreCase(eventPortID))
+        {
+            return elpToggleOutput[5];
+        }
+        else if(NAME_ELP_OUT7_T.equalsIgnoreCase(eventPortID))
+        {
+            return elpToggleOutput[6];
+        }
+        else if(NAME_ELP_OUT8_T.equalsIgnoreCase(eventPortID))
+        {
+            return elpToggleOutput[7];
+        }
+        else if(NAME_ELP_OUT1_P.equalsIgnoreCase(eventPortID))
+        {
+            return elpPressOutput[0];
+        }
+        else if(NAME_ELP_OUT2_P.equalsIgnoreCase(eventPortID))
+        {
+            return elpPressOutput[1];
+        }
+        else if(NAME_ELP_OUT3_P.equalsIgnoreCase(eventPortID))
+        {
+            return elpPressOutput[2];
+        }
+        else if(NAME_ELP_OUT4_P.equalsIgnoreCase(eventPortID))
+        {
+            return elpPressOutput[3];
+        }
+        else if(NAME_ELP_OUT5_P.equalsIgnoreCase(eventPortID))
+        {
+            return elpPressOutput[4];
+        }
+        else if(NAME_ELP_OUT6_P.equalsIgnoreCase(eventPortID))
+        {
+            return elpPressOutput[5];
+        }
+        else if(NAME_ELP_OUT7_P.equalsIgnoreCase(eventPortID))
+        {
+            return elpPressOutput[6];
+        }
+        else if(NAME_ELP_OUT8_P.equalsIgnoreCase(eventPortID))
+        {
+            return elpPressOutput[7];
+        }
+        
+
         
         return null;
     }
@@ -468,7 +557,7 @@ public class DigitalOutInstance extends AbstractRuntimeComponentInstance
 		 */
 		public void receiveEvent(final String data)
 	   	{
-			AstericsErrorHandling.instance.reportInfo(owner, String.format("Received event on high listener port #" + index));
+			AstericsErrorHandling.instance.reportInfo(owner, String.format("Received set event on high listener port #" + index));
 			owner.setOutputBitHigh(index);
 	   	}
 	}
@@ -501,8 +590,62 @@ public class DigitalOutInstance extends AbstractRuntimeComponentInstance
 		 */
 		public void receiveEvent(final String data)
 	   	{
-			AstericsErrorHandling.instance.reportInfo(owner, String.format("Received event on low listener port #" + index));
+			AstericsErrorHandling.instance.reportInfo(owner, String.format("Received clear event on low listener port #" + index));
 			owner.setOutputBitLow(index);
+	   	}
+	}	
+
+	class RuntimeEventListenerPortToggle implements IRuntimeEventListenerPort
+	{
+		int index;
+		DigitalOutInstance owner;
+		
+		/**
+		 * The constructor
+		 * 
+		 * @param owner the DigitalOutInstance that owns this
+		 * @param i the index of the CIM port
+		 */
+		public RuntimeEventListenerPortToggle(DigitalOutInstance owner, int i)
+		{
+			index = i;
+			this.owner = owner;
+		}
+		
+		/**
+		 * Reacts to event and clears the output port
+		 */
+		public void receiveEvent(final String data)
+	   	{
+			AstericsErrorHandling.instance.reportInfo(owner, String.format("Received toggle event on low listener port #" + index));
+			owner.toggleOutputBit(index);
+	   	}
+	}	
+
+	class RuntimeEventListenerPortPress implements IRuntimeEventListenerPort
+	{
+		int index;
+		DigitalOutInstance owner;
+		
+		/**
+		 * The constructor
+		 * 
+		 * @param owner the DigitalOutInstance that owns this
+		 * @param i the index of the CIM port
+		 */
+		public RuntimeEventListenerPortPress(DigitalOutInstance owner, int i)
+		{
+			index = i;
+			this.owner = owner;
+		}
+		
+		/**
+		 * Reacts to event and clears the output port
+		 */
+		public void receiveEvent(final String data)
+	   	{
+			AstericsErrorHandling.instance.reportInfo(owner, String.format("Received press event on low listener port #" + index));
+        	AstericsThreadPool.instance.execute(new ToggleThread(index));
 	   	}
 	}	
 	

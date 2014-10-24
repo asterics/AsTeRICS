@@ -28,8 +28,7 @@
       <li><strong>cellNumber [integer]:</strong> This port can be used
         in directed scanning mode to set the number of the highlighted
         cell.</li>
-      <li><strong>xmlFile [string]:</strong> This port can be used to
-        set the xml file with the keyboard definition (data/cellBoardKeyboards/nameOfFile.xml).</li>
+      <li><strong>xmlFile [string]:</strong> Name of keyboard file (in data/cellBoardKeyboards) which is used when the 'load' event occurs.</li>
     </ul>
     <h2>Output Port Description</h2>
     <ul>
@@ -66,9 +65,9 @@
     <ul>
       <li><strong>caption [string]:</strong> The component caption.</li>
       <li><strong>rows [integer]:</strong> The number of the cell rows
-        (1-36, rows x cols <= 100).</li>
+        (1-36, rows x cols &lt;= 100).</li>
       <li><strong>columns [integer]:</strong> The number of the cell
-        columns (1-36, rows x cols <= 100).</li>
+        columns (1-36, rows x cols &lt;= 100).</li>
       <li><strong>textColor [integer]:</strong> The color of the cell
         text.</li>
       <li><strong>backgroundColor [integer]:</strong> The color of the
@@ -103,6 +102,7 @@
       <li><strong>hoverTime [integer]:</strong> This parameter is used
         in the hover selection mode. It defines the time of hovering
         needed to select the cell (in milliseconds).</li>
+      <li><strong>keyboardFile [string]:</strong> Name of keyboard file (in data/cellBoardKeyboards) to load at startup.<b>Supports value suggestions from ARE (dynamic property)</b></li>
       <li><strong>cellText1...cellText36 [string]:</strong> The text
         displayed on the cell.</li>
       <li><strong>cellImage1...cellImage36 [string]:</strong> The path

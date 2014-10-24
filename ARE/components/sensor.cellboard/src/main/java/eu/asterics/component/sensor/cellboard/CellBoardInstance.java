@@ -31,14 +31,20 @@ package eu.asterics.component.sensor.cellboard;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
+import javax.sound.midi.MidiDevice.Info;
 import javax.swing.SwingUtilities;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
+
+
+
 
 
 
@@ -54,6 +60,8 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsThreadPool;
+import eu.asterics.mw.services.ComponentUtils;
+import eu.asterics.mw.services.MidiManager;
 
 /**
  * 
@@ -74,7 +82,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     final int NUMBER_OF_CELLS = 100;
     final int MAX_ROWS=36;
     final int MAX_COLUMNS=36;
-	private static final int MAX_MATRIX_ROWS_COLS = 9;    
+	private static final int MAX_MATRIX_ROWS_COLS = 9;
+	private static final String FILE_PATH_PREFIX="data/cellBoardKeyboards/";
     
     private final String ETP_CELL_CLICKED="cellClicked";
     private final String ETP_CELL = "cell";
@@ -96,6 +105,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     private final String PROP_SCAN_COLOR="scanColor";
     private final String PROP_TEXT_COLOR="textColor";
     private final String PROP_HOVER_TIME="hoverTime";
+    private final String PROP_KEYBOARD_FILE="keyboardFile";
+
     private final String OP_SELECTED_CELL="selectedCell";
     private final String OP_SELECTED_CELL_TEXT="selectedCellText";
     private final String IP_ROW="row";
@@ -116,6 +127,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	//public String propCellText1 = "";
 	//public String propCellImage1 = "";
 	public String propCaption="Cell Board";
+	public String propKeyboardFile="";
 	
 	final EventPort [] etpCellArray = new EventPort[NUMBER_OF_CELLS];
 	private String [] propCellTextArray = new String[NUMBER_OF_CELLS];
@@ -381,6 +393,10 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		{
 			return propHoverTime;
 		}
+		else if (PROP_KEYBOARD_FILE.equalsIgnoreCase(propertyName))
+		{
+			return propKeyboardFile;
+		}    	
 		else 
 		{
 			int propCellTextSize=PROP_CELL_TEXT.length();
@@ -575,6 +591,15 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			propHoverTime= Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
+		else if (PROP_KEYBOARD_FILE.equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propKeyboardFile;
+			propKeyboardFile= (String) newValue;
+			//also set the xmlFile variable to the new value, so the next time the cellboard can be loaded from the file
+			xmlFile=propKeyboardFile;
+			return oldValue;
+		}
+    	
 		else 
 		{
 			int propCellTextSize=PROP_CELL_TEXT.length();
@@ -677,7 +702,30 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 
         
     }
+	public List<String> getRuntimePropertyList(String key) 
+	{
+		List<String> res = new ArrayList<String>();
+		res.add("");
+		try
+		{
+			if (key.equals(PROP_KEYBOARD_FILE))
+			{
+				List<File> files = ComponentUtils.findFiles(new File("data/cellBoardKeyboards"), ".xml", 200);
+				for (File file : files)
+				{
+					res.add(file.getName()); //.getPath().substring(file.getPath().indexOf("set")));
+				}
+			}
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			AstericsErrorHandling.instance.getLogger().warning("Could not search for keyboard files: "+e.getMessage());
+		}
+		return res;
+	} 
 
+    
 
      /**
       * Event Listerner Ports.
@@ -755,59 +803,64 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-			
-			if(xmlFile==null)
-			{
-				return;
-			}
-			
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			SAXParser saxParser;
-			try {
-				saxParser = factory.newSAXParser();
-				XMLCellBoardLoader handler =  new XMLCellBoardLoader(NUMBER_OF_CELLS);
-				saxParser.parse( new File(xmlFile), handler );
-				propCellTextArray = handler.getPropCellTextArray();
-				propCellActionTextArray = handler.getPropCellActionTextArray();
-				propCellImageArray = handler.getPropCellImageArray();
-				propRows = handler.getRows();
-				propColumns = handler.getCols();
-				propFontSize = handler.getFontSize();
-				propScanType = handler.getScanning();
-				
-				checkMatrixSize();
-				
-				if (propRows == -1 || propColumns == -1) {
-					reportError("Error parsing rows or cols attribute of CellBoard plugin");
-					return;
-				}
-				int hheight = handler.getHeight();
-				if (hheight >= 0)
-					space.height = hheight;
-				else 
-					space.height = getAvailableSpace().height;
-				int hwidth = handler.getWidth();
-				if (hwidth >= 0) 
-					space.width = hwidth;
-				else 
-					space.width = getAvailableSpace().width;
-				
-				gui.update(space,propFontSize);					
-			} catch (ParserConfigurationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}catch(Exception e){
-				e.printStackTrace();
-			}
+			loadXmlFile();
 		}
 
 	};
+	
+	private void loadXmlFile() {
+		if(xmlFile==null || "".equals(xmlFile))
+		{
+			AstericsErrorHandling.instance.getLogger().fine("CellBoard: no xmlFile for keyboard set");
+			return;
+		}
+		
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		SAXParser saxParser;
+		try {
+			saxParser = factory.newSAXParser();
+			XMLCellBoardLoader handler =  new XMLCellBoardLoader(NUMBER_OF_CELLS);
+			saxParser.parse( new File(FILE_PATH_PREFIX,xmlFile), handler );
+			propCellTextArray = handler.getPropCellTextArray();
+			propCellActionTextArray = handler.getPropCellActionTextArray();
+			propCellImageArray = handler.getPropCellImageArray();
+			propRows = handler.getRows();
+			propColumns = handler.getCols();
+			propFontSize = handler.getFontSize();
+			propScanType = handler.getScanning();
+			
+			checkMatrixSize();
+			
+			if (propRows == -1 || propColumns == -1) {
+				reportError("Error parsing rows or cols attribute of CellBoard plugin");
+				return;
+			}
+			int hheight = handler.getHeight();
+			if (hheight >= 0)
+				space.height = hheight;
+			else 
+				space.height = getAvailableSpace().height;
+			int hwidth = handler.getWidth();
+			if (hwidth >= 0) 
+				space.width = hwidth;
+			else 
+				space.width = getAvailableSpace().width;
+			
+			gui.update(space,propFontSize);					
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
 	
 	private void checkMatrixSize() {
 		if((propRows*propColumns) >= NUMBER_OF_CELLS ) {
@@ -967,7 +1020,12 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     	  space = AREServices.instance.getAvailableSpace(this);
     	  gui = new GUI(this,space);
 		  AREServices.instance.displayPanel(gui, this, true);
-		  paintCells.run();
+		  if(xmlFile!=null && !"".equals(xmlFile)) {
+			  loadXmlFile();			  
+		  } else {
+			  paintCells.run();
+		  }
+		  
 		  //AstericsThreadPool.instance.execute(paintCells);
 		  //SwingUtilities.invokeLater(paintCells);
 		  //gui.defineTextFontSize();
