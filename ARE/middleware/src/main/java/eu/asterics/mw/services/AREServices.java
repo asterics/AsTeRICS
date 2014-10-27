@@ -47,8 +47,10 @@ import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
@@ -140,16 +142,42 @@ public class AREServices implements IAREServices{
 	 * should be already available on the ARE file system.
 	 * @param filename the filename of the model to be deployed
 	 */
-	public void deployFile(String filename) {
+	public void deployFile(final String filename) {
+		deployFileInternal(filename);
+		//ideally this should also be executed in the same thread as the others, but unfortunately AsapiSupport does not even use this.
+		/*
+		try {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+						@Override
+						public void run() {
+							deployFileInternal(filename);
+						}
+					});
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {			
+			final String message="Could not execute deployFile, exception occured: "+(e.getMessage()!=null ? e.getMessage() : e.getClass());
+			//final String message="Could not start model: execution timeouted.";
+			logger.warning(message);			
+			//AstericsErrorHandling.instance.reportError(null, message);
+			//AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
+			//throw new AREAsapiException(message);
+		} */		
+	}
+	/**
+	 * Deploys the model associated to the specified filename. The file 
+	 * should be already available on the ARE file system.
+	 * @param filename the filename of the model to be deployed
+	 */
 
-
+	private void deployFileInternal(String filename) {		
 		filename = MODELS_FOLDER + "/" + filename;
+		logger.fine("deployFile <"+filename+">");
+		
 		final IRuntimeModel currentRuntimeModel
 		= DeploymentManager.instance.getCurrentRuntimeModel();
 
 		if(currentRuntimeModel != null)
 		{
-			this.stopModel();
+			this.stopModelInternal();
 			DeploymentManager.instance.undeployModel();
 		}
 
@@ -172,7 +200,7 @@ public class AREServices implements IAREServices{
 				transformer.transform(domSource, result);
 				String modelInString = writer.toString();
 				//calling the asapi function with a string representation of the model
-				deployModel(modelInString);
+				deployModelInternal(modelInString);
 				logger.fine(this.getClass().getName()+"." +
 						"deployFile: OK\n");
 			}
@@ -202,6 +230,7 @@ public class AREServices implements IAREServices{
 					"deployFile: Failed to deploy file -> \n"
 					+e7.getMessage());
 		}
+		
 	}
 
 	/**
@@ -210,10 +239,38 @@ public class AREServices implements IAREServices{
 	 * This method will also start the model as soon as it is deployed.
 	 * @param filename the filename of the model to be deployed
 	 */
-	public void deployAndStartFile(String filename) {
+	public void deployAndStartFile(final String filename) {
+		deployAndStartFileInternal(filename);		
+		//ideally this should also be executed in the same thread as the others, but unfortunately AsapiSupport does not even use this.
+		/*
+		try {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+						@Override
+						public void run() {
+							deployAndStartFileInternal(filename);
+						}
+					});
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {			
+			final String message="Could not execute deployAndStartFile, exception occured: "+(e.getMessage()!=null ? e.getMessage() : e.getClass());
+			//final String message="Could not start model: execution timeouted.";
+			logger.warning(message);			
+			//AstericsErrorHandling.instance.reportError(null, message);
+			//AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
+			//throw new AREAsapiException(message);
+		} */		
+	}
 
+	/**
+	 * Deploys the model associated to the specified filename. The file 
+	 * should be already available on the ARE file system. 
+	 * This method will also start the model as soon as it is deployed.
+	 * @param filename the filename of the model to be deployed
+	 */
 
+	private void deployAndStartFileInternal(String filename) {
 		filename = MODELS_FOLDER + "/" + filename;
+		
+		logger.fine("Deploying file <"+filename+">");
 		final IRuntimeModel currentRuntimeModel
 		= DeploymentManager.instance.getCurrentRuntimeModel();
 
@@ -239,15 +296,15 @@ public class AREServices implements IAREServices{
 
 				if(currentRuntimeModel != null)
 				{
-					this.stopModel();
+					this.stopModelInternal();
 					DeploymentManager.instance.undeployModel();
 				}
 				//calling the asapi function with a string 
 				//representation of the model
-				deployModel(modelInString);
+				deployModelInternal(modelInString);
 				logger.fine(this.getClass().getName()+"." +
 						"deployAndStartFile: OK\n");
-				runModel();
+				runModelInternal();
 
 			}
 		}catch (SAXException e3) {
@@ -274,11 +331,11 @@ public class AREServices implements IAREServices{
 			logger.warning(this.getClass().getName()+"." +
 					"deployAndStartFile: Failed to deploy file -> \n"
 					+e7.getMessage());
-		} catch (AREAsapiException e) {
+		}/* catch (AREAsapiException e) {
 			logger.warning(this.getClass().getName()+"." +
 					"deployAndStartFile: Failed to start file -> \n"
 					+e.getMessage());
-		}
+		}*/
 	}
 
 	/**
@@ -319,34 +376,38 @@ public class AREServices implements IAREServices{
 	 * method, this one resets the components, which means that when the model
 	 * is started again it starts from scratch (i.e., with a new state).
 	 */
+	//NOTE: Don't use synchronized here, because in some cases it leads to a dead lock.
 	public void stopModel() {
 		try {
 			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
 				@Override
 						public void run() {
-
-							if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING
-									|| DeploymentManager.instance.getStatus() == AREStatus.PAUSED
-									|| DeploymentManager.instance.getStatus() == AREStatus.ERROR) {
-								DeploymentManager.instance.stopModel();
-								DeploymentManager.instance
-										.getCurrentRuntimeModel().setState(
-												ModelState.STOPPED);
-								DeploymentManager.instance
-										.setStatus(AREStatus.OK);
-								AstericsErrorHandling.instance.setStatusObject(
-										AREStatus.OK.toString(), "", "");
-								logger.fine(this.getClass().getName()
-										+ ".stopModel: model stopped \n");
-							}
+							stopModelInternal();
 						}
 					});
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			String message="Could not execute stopModel: "+e!=null ? e.getMessage() : e.toString();
-			//logger.warning("Could not execute stopModel: "+message);
-			AstericsErrorHandling.instance.reportError(null, message);
+			String message="Could not execute stopModel, exception occurred: "+e.getMessage()!=null ? e.getMessage() : e.toString();
+			logger.warning(message);
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
 		}
+	}
+	
+	private void stopModelInternal() {
+		logger.fine("stopModelInternal");
+		if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING
+				|| DeploymentManager.instance.getStatus() == AREStatus.PAUSED
+				|| DeploymentManager.instance.getStatus() == AREStatus.ERROR) {
+			DeploymentManager.instance.stopModel();
+			DeploymentManager.instance
+					.getCurrentRuntimeModel().setState(
+							ModelState.STOPPED);
+			DeploymentManager.instance
+					.setStatus(AREStatus.OK);
+			AstericsErrorHandling.instance.setStatusObject(
+					AREStatus.OK.toString(), "", "");
+			logger.fine(this.getClass().getName()
+					+ ".stopModel: model stopped \n");
+		}		
 	}
 
 	/**
@@ -356,13 +417,32 @@ public class AREServices implements IAREServices{
 	 * occurred after reading the model.
 	 * @param modelInXML a string representation in XML of the model to be
 	 * deployed
-	 */
-	private void deployModel(final String modelInXML)
+	 */	
+
+	public void deployModel(final String modelInXML) {
+		deployModelInternal(modelInXML);
+		/*
+		try {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+				@Override
+						public void run() {
+							deployModelInternal(modelInXML);
+						}
+					});
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			String message="Could not execute deployModel: "+e.getMessage()!=null ? e.getMessage() : e.toString();
+			logger.warning(message);
+			//AstericsErrorHandling.instance.reportError(null, message);
+			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
+		}*/		
+	}
+	
+	private void deployModelInternal(String modelInXML)
 	{
 		//Stop running model first if there is one
 		if (DeploymentManager.instance.getStatus()==AREStatus.RUNNING)
 		{
-			stopModel();	
+			stopModelInternal();	
 			DeploymentManager.instance.undeployModel();
 		}
 		DefaultDeploymentModelParser defaultDeploymentModelParser = 
@@ -445,48 +525,59 @@ public class AREServices implements IAREServices{
 	/**
 	 * It starts or resumes the execution of the model.
 	 */
+	//NOTE: Don't use synchronized here, because in some cases it leads to a dead lock.
 	public void runModel() throws AREAsapiException {
 		try {
 			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
 						@Override
 						public void run() {
-							// TODO Auto-generated method stub
-							ModelState modelState = DeploymentManager.instance
-									.getCurrentRuntimeModel().getState();
-							logger.fine(this.getClass().getName()
-									+ ".runModel: model state: " + modelState
-									+ " \n");
-							if (ModelState.STOPPED.equals(modelState)) {
-								DeploymentManager.instance.runModel();
-							} else if (modelState.STARTED.equals(modelState)) {
-								// if model is already running, stop it first to
-								// ensure that native libs are not
-								// loaded and instantiated twice.
-								stopModel();
-								DeploymentManager.instance.runModel();
-							}
-							// ModelState.PAUSED
-							else {
-								DeploymentManager.instance.resumeModel();
-							}
-							DeploymentManager.instance.getCurrentRuntimeModel()
-									.setState(ModelState.STARTED);
-							DeploymentManager.instance
-									.setStatus(AREStatus.RUNNING);
-							AstericsErrorHandling.instance.setStatusObject(
-									AREStatus.RUNNING.toString(), "", "");
-							logger.fine(this.getClass().getName()
-									+ ".runModel: model running \n");
-
+							runModelInternal();
 						}
 					});
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {			
-			String message="Could not execute runModel: "+e!=null ? e.getMessage() : e.toString()+", trying to stop model again";
-			//logger.warning("Could not execute runModel: "+message+", trying to stop model again");
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			String message="Could not execute runModel, exception occurred: "+(e.getMessage()!=null ? e.getMessage() : e.getClass());
+			if(e instanceof TimeoutException) {
+				message="Could not start model, execution timeouted!";
+			}
+			
+			logger.warning(message);			
 			AstericsErrorHandling.instance.reportError(null, message);
-			stopModel();
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
+			
+			//Should we through exception to notify ACS?? Maybe for the next release, unfortunately ACS disconnects when doing this
+			//throw new AREAsapiException(message);
+		} 		
+	}
+	
+	private void runModelInternal() {
+		// TODO Auto-generated method stub
+		ModelState modelState = DeploymentManager.instance
+				.getCurrentRuntimeModel().getState();
+		logger.fine(this.getClass().getName()
+				+ ".runModel: model state: " + modelState
+				+ " \n");
+		if (ModelState.STOPPED.equals(modelState)) {
+			DeploymentManager.instance.runModel();
+		} else if (modelState.STARTED.equals(modelState)) {
+			// if model is already running, stop it first to
+			// ensure that native libs are not
+			// loaded and instantiated twice.
+			stopModelInternal();
+			DeploymentManager.instance.runModel();
 		}
+		// ModelState.PAUSED
+		else {
+			DeploymentManager.instance.resumeModel();
+		}
+		DeploymentManager.instance.getCurrentRuntimeModel()
+				.setState(ModelState.STARTED);
+		DeploymentManager.instance
+				.setStatus(AREStatus.RUNNING);
+		AstericsErrorHandling.instance.setStatusObject(
+				AREStatus.RUNNING.toString(), "", "");
+		logger.fine(this.getClass().getName()
+				+ ".runModel: model running \n");
+		
 	}
 	
 	/**
@@ -495,33 +586,36 @@ public class AREServices implements IAREServices{
 	 * (e.g., the buffers are not cleared).
 	 *
 	 */
+	//NOTE: Don't use synchronized here, because in some cases it leads to a dead lock.
 	public void pauseModel() {
 		try {
 			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
 						@Override
 						public void run() {
-
-							if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING) {
-								DeploymentManager.instance.pauseModel();
-								DeploymentManager.instance
-										.getCurrentRuntimeModel().setState(
-												ModelState.PAUSED);
-								DeploymentManager.instance
-										.setStatus(AREStatus.PAUSED);
-								AstericsErrorHandling.instance.setStatusObject(
-										AREStatus.PAUSED.toString(), "", "");
-								logger.fine(this.getClass().getName()
-										+ ".pauseModel: model paused \n");
-								System.out.println("Model paused!");
-
-							}
+							AREServices.instance.pausModelInternal();
 						}
 					});
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			String message="Could not execute pauseModel: "+e!=null ? e.getMessage() : e.toString();
-			//logger.warning("Could not execute pauseModel: "+message);
-			AstericsErrorHandling.instance.reportError(null, message);
+			String message="Could not execute pauseModel, execption occurred: "+e.getMessage()!=null ? e.getMessage() : e.toString();
+			logger.warning(message);
+			//AstericsErrorHandling.instance.reportError(null, message);
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
+		}
+	}
+	
+	private void pausModelInternal() {
+		if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING) {
+			DeploymentManager.instance.pauseModel();
+			DeploymentManager.instance
+					.getCurrentRuntimeModel().setState(
+							ModelState.PAUSED);
+			DeploymentManager.instance
+					.setStatus(AREStatus.PAUSED);
+			AstericsErrorHandling.instance.setStatusObject(
+					AREStatus.PAUSED.toString(), "", "");
+			logger.fine(this.getClass().getName()
+					+ ".pauseModel: model paused \n");
+			System.out.println("Model paused!");
 		}
 	}
 
