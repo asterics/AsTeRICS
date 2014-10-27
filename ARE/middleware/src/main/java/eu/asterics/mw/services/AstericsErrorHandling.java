@@ -132,11 +132,6 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 						errorMsg);
 			}
 		}
-		ErrorLogPane.appendLog(errorMsg);
-		DeploymentManager.instance.setStatus(AREStatus.ERROR);
-	
-		this.notifyAREEventListeners("onAreError", errorMsg);	
-
 		
 		AREProperties props = AREProperties.instance;
 		if (props.checkProperty("showErrorDialogs", "1")) 
@@ -145,6 +140,10 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
+					ErrorLogPane.appendLog(errorMsg);
+					DeploymentManager.instance.setStatus(AREStatus.ERROR);
+				
+					AstericsErrorHandling.this.notifyAREEventListeners("onAreError", errorMsg);	
 
 					JOptionPane op = new JOptionPane (errorMsg,
 						    JOptionPane.WARNING_MESSAGE);
@@ -156,7 +155,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	*/				
 					JDialog dialog = op.createDialog("AsTeRICS RuntimeEnvironment: An Error occurred !");
 					dialog.setAlwaysOnTop(true);
-					dialog.setModal(true);
+					dialog.setModal(false);
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 					}
