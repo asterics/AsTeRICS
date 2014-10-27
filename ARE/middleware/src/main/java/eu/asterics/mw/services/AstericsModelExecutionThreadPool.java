@@ -89,6 +89,7 @@ public class AstericsModelExecutionThreadPool {
 	private ExecutorService pool;
 	//is used as a fallbackpool to stop a hanging model in case of a single-threaded approach
 	private ExecutorService fallbackPool;
+	private static int fallbackNr=0;
 	
 	//This the executor for the single threaded approach
 	private ExecutorService modelExecutorLifecycle = Executors
@@ -132,18 +133,6 @@ public class AstericsModelExecutionThreadPool {
 		} else {
 			logger.info(THREAD_POOL_SIZE+" <= 1, using single threaded model execution approach");
 		}
-		fallbackPool=Executors.newCachedThreadPool(new ThreadFactory() {
-			private int threadNr=0;				
-			@Override
-			public Thread newThread(Runnable r) {
-				String threadName=MODEL_EXECUTOR+"-Lifecycle-Fallback-"+threadNr++;
-				logger.fine("Creating Thread: "+threadName);
-				
-				Thread newThread=Executors.defaultThreadFactory().newThread(r);
-				newThread.setName(threadName);
-				return newThread;					
-			}
-		});
 		
 		//pool = Executors.newCachedThreadPool();
 		/*
@@ -207,13 +196,31 @@ public class AstericsModelExecutionThreadPool {
 			catch(TimeoutException e) {
 				logger.warning("["+MODEL_EXECUTOR+"]: Task execution timeouted");
 				throw e;
-			    //fallbackPool.submit(r).get(TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS);
 			}			
 		}
 	}
 	
+	/**
+	 * Creates a new threadpool of size 1, that is used for future lifecycle and model executions.
+	 */
 	public void switchToFallbackPool() {
 		logger.warning("ModelExecutor ["+Thread.currentThread()+"]: Switching to fallbackPool");
+		
+		//Each time an execution timeouts the caller can switch to a new threadpool, to not risk a hanging ARE
+		//NOTE: keep it of size one to ensure that the models are executed thread safe!!
+		fallbackPool=Executors.newFixedThreadPool(1, new ThreadFactory() {
+				
+				@Override
+				public Thread newThread(Runnable r) {
+					String threadName=MODEL_EXECUTOR+"-Lifecycle-Fallback-"+fallbackNr++;
+					logger.fine("Creating Thread: "+threadName);
+					
+					Thread newThread=Executors.defaultThreadFactory().newThread(r);
+					newThread.setName(threadName);
+					return newThread;					
+				}
+			});
+
 		modelExecutorLifecycle=fallbackPool;		
 	}
 
