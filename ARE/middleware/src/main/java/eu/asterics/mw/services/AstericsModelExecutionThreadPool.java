@@ -173,7 +173,7 @@ public class AstericsModelExecutionThreadPool {
 
 	/**
 	 * Executes (waits for termination) the given Runnable by the Thread instance "ModelExecutor".
-	 * If the execution hangs a timeout arises after TASK_SUBMIT_TIMEOUT. In such a case a fallback thread is used to execute the Runnable.
+	 * If the execution hangs a timeout arises after TASK_SUBMIT_TIMEOUT.
 	 * @param r
 	 * @throws InterruptedException
 	 * @throws ExecutionException
@@ -181,24 +181,56 @@ public class AstericsModelExecutionThreadPool {
 	 */
 	public void execAndWaitOnModelExecutorLifecycleThread(Runnable r) throws InterruptedException,
 			ExecutionException, TimeoutException {
-		
-		if(MODEL_EXECUTOR.equals(Thread.currentThread().getName())) {
-			//We are already executed by the AREMain Thread so just call the Runnable.run() method
-			AstericsErrorHandling.instance.getLogger().fine("ModelExecutor: Current thread: "+Thread.currentThread().getName()+", running r.run() in this thread");
-			r.run();
-		} else {
-			//execute with AREMainExecuter and wait for response "blocked execution"
-			AstericsErrorHandling.instance.getLogger().fine("ModelExecutor: Current thread: "+Thread.currentThread().getName()+", Submitting on modelExecutorLifecycle thread");
-			Future f=modelExecutorLifecycle.submit(r);
-			try{				
-				f.get(TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS);
+		try {
+			execAndWaitOnModelExecutorLifecycleThread(Executors.callable(r));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			if(e instanceof InterruptedException) {
+				throw (InterruptedException)e;
+			} else if(e instanceof ExecutionException) {
+				throw (ExecutionException)e;
+			} else if (e instanceof TimeoutException) {
+				throw (TimeoutException)e;
+			} else {
+				logger.warning("Exception occurred: "+e.getClass()+", message: "+e.getMessage());
 			}
-			catch(TimeoutException e) {
-				logger.warning("["+MODEL_EXECUTOR+"]: Task execution timeouted");
-				throw e;
-			}			
 		}
 	}
+	
+	/**
+	 * Executes (waits for termination) the given Callable by the Thread instance "ModelExecutor".
+	 * If the execution hangs a timeout arises after TASK_SUBMIT_TIMEOUT.
+	 * @param c
+	 * @throws Exception
+	 */
+	public void execAndWaitOnModelExecutorLifecycleThread(Callable c) throws Exception {
+
+		if (MODEL_EXECUTOR.equals(Thread.currentThread().getName())) {
+			// We are already executed by the AREMain Thread so just call the
+			// Runnable.run() method
+			AstericsErrorHandling.instance.getLogger().fine(
+					"ModelExecutor: Current thread: "
+							+ Thread.currentThread().getName()
+							+ ", running r.run() in this thread");
+			c.call();
+		} else {
+			// execute with AREMainExecuter and wait for response
+			// "blocked execution"
+			AstericsErrorHandling.instance.getLogger().fine(
+					"ModelExecutor: Current thread: "
+							+ Thread.currentThread().getName()
+							+ ", Submitting on modelExecutorLifecycle thread");
+			Future f = modelExecutorLifecycle.submit(c);
+			try {
+				f.get(TASK_SUBMIT_TIMEOUT, TimeUnit.MILLISECONDS);
+			} catch (TimeoutException e) {
+				logger.warning("[" + MODEL_EXECUTOR
+						+ "]: Task execution timeouted");
+				throw e;
+			}
+		}
+	}
+	
 	
 	/**
 	 * Creates a new threadpool of size 1, that is used for future lifecycle and model executions.
