@@ -437,7 +437,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 				selectedNote =  (int)((double)(pitchInput-propPitchMin) / (double)(propPitchMax-propPitchMin) * (double) amountOfNotes); 
 			}
     			
-			if (propDisplayGUI == true) gui.repaint();
+			if (gui!=null && propDisplayGUI == true) gui.repaint();
 			noteOn();
 
 		}
