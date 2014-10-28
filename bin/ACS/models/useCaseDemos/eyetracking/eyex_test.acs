@@ -24,7 +24,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="minBlinkTime" value="50" />
+        <property name="minBlinkTime" value="100" />
         <property name="midBlinkTime" value="300" />
         <property name="maxBlinkTime" value="2000" />
         <property name="fixationTime" value="700" />
