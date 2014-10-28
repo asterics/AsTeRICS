@@ -75,6 +75,7 @@ import eu.asterics.mw.are.AREProperties;
  */
 public class AstericsModelExecutionThreadPool {
 	public static int TASK_SUBMIT_TIMEOUT=20000;
+	private static final int DEFAULT_POOL_SIZE = 5;
 	
 	private static final String MODEL_EXECUTOR = "ModelExecutor";
 
@@ -84,6 +85,7 @@ public class AstericsModelExecutionThreadPool {
 	
 
 	public static final AstericsModelExecutionThreadPool instance = new AstericsModelExecutionThreadPool();
+
 			
 	//pool for the execution of model tasks: is identical with modelExecutorLifecycle in case of the single threaded approach.
 	private ExecutorService pool;
@@ -110,7 +112,7 @@ public class AstericsModelExecutionThreadPool {
 		logger.info(TASK_SUBMIT_TIMEOUT_PROPERTY+"="+TASK_SUBMIT_TIMEOUT);		
 		AREProperties.instance.setProperty(TASK_SUBMIT_TIMEOUT_PROPERTY, Integer.toString(TASK_SUBMIT_TIMEOUT));
 		
-		int poolSize=new Integer(AREProperties.instance.getProperty(THREAD_POOL_SIZE, "0"));
+		int poolSize=new Integer(AREProperties.instance.getProperty(THREAD_POOL_SIZE, Integer.toString(DEFAULT_POOL_SIZE)));
 		logger.info(THREAD_POOL_SIZE+"="+poolSize);
 		AREProperties.instance.setProperty(THREAD_POOL_SIZE,Integer.toString(poolSize));		
 		
@@ -235,9 +237,9 @@ public class AstericsModelExecutionThreadPool {
 	/**
 	 * Creates a new threadpool of size 1, that is used for future lifecycle and model executions.
 	 */
-	public void switchToFallbackPool() {
-		logger.warning("ModelExecutor ["+Thread.currentThread()+"]: Switching to fallbackPool");
-		
+	public void switchToFallbackPool() {		
+		logger.warning("ModelExecutor ["+Thread.currentThread()+"]: Switching to fallbackPool: DISABLED");
+		/*
 		//Each time an execution timeouts the caller can switch to a new threadpool, to not risk a hanging ARE
 		//NOTE: keep it of size one to ensure that the models are executed thread safe!!
 		fallbackPool=Executors.newFixedThreadPool(1, new ThreadFactory() {
@@ -253,7 +255,8 @@ public class AstericsModelExecutionThreadPool {
 				}
 			});
 
-		modelExecutorLifecycle=fallbackPool;		
+		modelExecutorLifecycle=fallbackPool;
+		*/		
 	}
 
 	/**
