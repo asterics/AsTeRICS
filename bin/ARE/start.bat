@@ -6,8 +6,6 @@ if exist java\bin\java.exe (
 	set JAVA_BIN=java\bin\javaw.exe
 )
 
-@ECHO AsTeRICS ARE Version 2.4
-@ECHO.
 %JAVA_BIN% -version 2>&1  | jtester.exe
 
 @ECHO OFF
