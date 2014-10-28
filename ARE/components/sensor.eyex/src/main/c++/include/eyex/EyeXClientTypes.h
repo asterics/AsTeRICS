@@ -569,10 +569,10 @@ typedef struct {
     The panning profile. See TX_PANNINGPROFILE.
     
   @field PeakVelocity:
-    The maximum velocity of panning action, in millimeters per second.
+    The maximum velocity of panning action, in pixels per second.
   
   @field PanDirectionsAvailable:
-    The available pan direction flags. See TX_PANDIRECTION.
+    The available pan direction flags. See TX_PANDIRECTION. Proper directions are needed for panning to work. 
  */
 typedef struct {
     TX_BOOL            IsHandsFreeEnabled;             
@@ -587,10 +587,10 @@ typedef struct {
   Struct for pannable pan event parameters.
    
   @field PanVelocityX:
-    The X velocity for the pan. In millimeters per second.
+    The X velocity for the pan. In pixels per second.
   
   @field PanVelocityY:
-    The Y velocity for the pan. In millimeters per second.
+    The Y velocity for the pan. In pixels per second.
  */
 typedef struct {
     TX_REAL PanVelocityX;
@@ -603,10 +603,10 @@ typedef struct {
   Struct for pannable step event parameters.
    
   @field PanStepX:
-    The step length on the X axis in millimeters.
+    The step length on the X axis in pixels.
   
   @field PanStepY:    
-    The step length on the X axis in millimeters.
+    The step length on the X axis in pixels.
     
   @field PanStepDuration:    
     The amount of time in seconds during which the step should be performed.
@@ -793,6 +793,15 @@ typedef struct {
     
   @field LeftEyeZ:
     The Z coordinate of the left eye in millimiters.
+
+  @field LeftEyeXNormalized:
+    The X coordinate of the left eye normalized in the track box.
+    
+  @field LeftEyeYNormalized:
+    The Y coordinate of the left eye normalized in the track box.
+    
+  @field LeftEyeZNormalized:
+    The Z coordinate of the left eye normalized in the track box.
     
   @field RightEyeX:
     The X coordinate of the right eye in millimiters.
@@ -802,6 +811,15 @@ typedef struct {
     
   @field RightEyeZ:
     The Z coordinate of the right eye in millimiters.
+
+  @field RightEyeXNormalized:
+    The X coordinate of the right eye normalized in the track box.
+    
+  @field RightEyeYNormalized:
+    The Y coordinate of the right eye normalized in the track box.
+    
+  @field RightEyeZNormalized:
+    The Z coordinate of the right eye normalized in the track box.
  */
 typedef struct {
     TX_REAL Timestamp;
@@ -810,9 +828,15 @@ typedef struct {
     TX_REAL LeftEyeX;
     TX_REAL LeftEyeY;
     TX_REAL LeftEyeZ;
+    TX_REAL LeftEyeXNormalized;
+    TX_REAL LeftEyeYNormalized;
+    TX_REAL LeftEyeZNormalized;
     TX_REAL RightEyeX;
     TX_REAL RightEyeY;
     TX_REAL RightEyeZ;
+    TX_REAL RightEyeXNormalized;
+    TX_REAL RightEyeYNormalized;
+    TX_REAL RightEyeZNormalized;
 } TX_EYEPOSITIONDATAEVENTPARAMS;
 
 /*********************************************************************************************************************/

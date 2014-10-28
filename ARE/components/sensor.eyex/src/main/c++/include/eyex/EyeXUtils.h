@@ -6,23 +6,6 @@
 #if !defined(__TOBII_TX_UTILS__H__)
 #define __TOBII_TX_UTILS__H__
 
-#if !defined(TX_NODEBUGOBJECT)
-
-static const char* __txDbgObject(TX_CONSTHANDLE hObject)
-{
-    static char buf[65536];
-    TX_SIZE bufSize;
-
-    bufSize = sizeof(buf);
-    txFormatObjectAsText(hObject, buf, &bufSize);
-    return buf;
-}
-
-typedef const char* (*TX_DEBUGOBJECT)(TX_CONSTHANDLE hObject);
-static TX_DEBUGOBJECT txDebugObject = __txDbgObject;
-
-#endif /* !defined(TX_NODEBUGOBJECT) */
-
 /*********************************************************************************************************************/
 
 #if defined(__cplusplus)
@@ -52,7 +35,7 @@ namespace Tx
             {
                 SafeRelease();
                 return &_handle;
-            }
+            }            
 
             operator const THandle () const
             {
@@ -147,9 +130,44 @@ namespace Tx
             };
 
             return GetString(pTargetString, fnGetString);
-        }
+        }        
     }   
 }
+
+#endif /* defined(__cplusplus) */
+
+#if !defined(TX_NODEBUGOBJECT)
+
+static const char* __txDbgObject(TX_CONSTHANDLE hObject)
+{
+    static char buf[65536];
+    TX_SIZE bufSize;
+
+    bufSize = sizeof(buf);
+    txFormatObjectAsText(hObject, buf, &bufSize);
+    return buf;
+}
+
+typedef const char* (*TX_DEBUGOBJECT)(TX_CONSTHANDLE hObject);
+static TX_DEBUGOBJECT txDebugObject = __txDbgObject;
+
+#endif /* !defined(TX_NODEBUGOBJECT) */
+
+#if defined(__cplusplus)
+
+#if !defined(TX_NODEBUGOBJECT)
+
+// This variation is needed to make ScopedHandles debuggable in Visual Studios watch window
+static const char* __txDbgScoped(const Tx::Utils::ScopedHandle& hObject)
+{
+    return txDebugObject(hObject);
+}
+
+typedef const char* (*TX_DEBUGSCOPEDHANDLE)(const Tx::Utils::ScopedHandle& hObject);
+static TX_DEBUGSCOPEDHANDLE txDebugScopedHandle = __txDbgScoped;
+
+#endif /* !defined(TX_NODEBUGOBJECT) */
+
 
 /*********************************************************************************************************************/
 

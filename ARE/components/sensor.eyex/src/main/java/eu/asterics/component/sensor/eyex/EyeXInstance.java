@@ -45,7 +45,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
 
-
+ 
 /**
  * 
  * Interfaces to the Tobii EyeX Gaze tracker server

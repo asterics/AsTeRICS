@@ -115,6 +115,8 @@
     */
     static const char* TX_LITERAL_LEFTEYEPOSITION = "LeftEyePosition";    
     static const char* TX_LITERAL_RIGHTEYEPOSITION = "RightEyePosition";
+    static const char* TX_LITERAL_LEFTEYEPOSITIONNORMALIZED = "LeftEyePositionNormalized";    
+    static const char* TX_LITERAL_RIGHTEYEPOSITIONNORMALIZED = "RightEyePositionNormalized";
     static const char* TX_LITERAL_HASLEFTEYEPOSITION = "HasLeftEyePosition";
     static const char* TX_LITERAL_HASRIGHTEYEPOSITION = "HasRightEyePosition";
 
@@ -205,7 +207,9 @@
     static const char* TX_STATEPATH_SCREENBOUNDS = "eyeTracking.screenBounds";
     static const char* TX_STATEPATH_DISPLAYSIZE = "eyeTracking.displaySize";
     static const char* TX_STATEPATH_EYETRACKINGSTATE = "eyeTracking.state";
+	static const char* TX_STATEPATH_PROFILENAME = "eyeTracking.profileName";
     static const char* TX_STATEPATH_USERPRESENCE = "userPresence";
+    static const char* TX_STATEPATH_LASTACTION = "lastAction";
     static const char* TX_STATEPATH_FAILEDACTION = "failedAction";
     static const char* TX_STATEPATH_ENGINEVERSION = "engineVersion";
 
