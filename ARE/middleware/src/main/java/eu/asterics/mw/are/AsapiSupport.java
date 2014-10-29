@@ -310,7 +310,11 @@ public class AsapiSupport
 	public void deployModel(final String modelInXML)
 			throws AREAsapiException
 			{
-
+		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
+			logger.warning("Model lifecycle task pending, ignoring model switch");
+			return;
+		}
+		
 		//Stop running model first if there is one
 		if (DeploymentManager.instance.getCurrentRuntimeModel()!=null)
 		{
@@ -450,6 +454,11 @@ public class AsapiSupport
 	 */
 	public void newModel() throws AREAsapiException
 	{
+		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
+			logger.warning("Model lifecycle task pending, ignoring model switch");
+			return;
+		}
+
 		final URL url = Main.getAREContext().getBundle().getResource(DEFAULT_MODEL_URL);
 
 		try {
@@ -1619,7 +1628,11 @@ public class AsapiSupport
 	 * cannot be deployed
 	 */
 	public void deployFile(String filename) throws AREAsapiException {
-
+		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
+			logger.warning("Model lifecycle task pending, ignoring model switch");
+			return;
+		}
+		
 		File file = new File(filename);
 		if (!file.isAbsolute()) {
 			filename = MODELS_FOLDER + "/" + filename;

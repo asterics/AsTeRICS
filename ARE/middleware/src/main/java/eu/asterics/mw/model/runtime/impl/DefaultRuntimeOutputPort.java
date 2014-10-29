@@ -73,9 +73,19 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 						
 						IComponentInstance targetComponent=DeploymentManager.instance.getCurrentRuntimeModel().getComponentInstance(endPoint.targetComponentID);
 						if(targetComponent == null) {
-							logger.warning("Data could not be propagated, target component not found: targetComponentId: "+endPoint.targetComponentID);
+							//logger.warning("Data could not be propagated, target component not found: targetComponentId: "+endPoint.targetComponentID);							
 							continue;
 						}
+						//block data propagation if model and component is not up and running
+						//Disabled for now, because has some strange side effects with camera			
+						/*
+						if(!DeploymentManager.instance.isComponentRunning(endPoint.targetComponentID)) {
+							//logger.warning("Data could not be propagated, target component not running: targetComponentId: "+endPoint.targetComponentID);
+							System.out.print("D");
+							continue;							
+						}
+						*/
+						
 						String conversion = DefaultRuntimeOutputPort.this.portIdToConversion.get(endPoint.portID);
 						byte[] newData = data;
 						if (conversion != null && !"".equals(conversion)) {

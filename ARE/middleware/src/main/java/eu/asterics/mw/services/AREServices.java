@@ -143,6 +143,11 @@ public class AREServices implements IAREServices{
 	 * @param filename the filename of the model to be deployed
 	 */
 	public void deployFile(final String filename) {
+		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
+			logger.warning("Model lifecycle task pending, ignoring model switch");
+			return;
+		}
+		
 		deployFileInternal(filename);
 		//ideally this should also be executed in the same thread as the others, but unfortunately AsapiSupport does not even use this.
 		/*
@@ -240,6 +245,10 @@ public class AREServices implements IAREServices{
 	 * @param filename the filename of the model to be deployed
 	 */
 	public void deployAndStartFile(final String filename) {
+		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
+			logger.warning("Model lifecycle task pending, ignoring model switch");
+			return;
+		}
 		deployAndStartFileInternal(filename);		
 		//ideally this should also be executed in the same thread as the others, but unfortunately AsapiSupport does not even use this.
 		/*
