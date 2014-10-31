@@ -71,6 +71,16 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
 						@Override
 						public void run() {
 							String targetComponentId = getTargetComponentId(elem.getKey());
+							//block event propagation if model and component is not up and running
+							//Disabled for now, because some important events are lost at startup.
+							/*
+							if(!DeploymentManager.instance.isComponentRunning(targetComponentId)) {
+								//logger.warning("Event could not be notified, target component not running: targetComponentId: "+targetComponentId);
+								//System.out.println("E: "+targetComponentId);
+								//return;
+							}
+							*/
+							
 							if (targetComponentId != null) {
 								IComponentInstance targetComponent = DeploymentManager.instance
 										.getCurrentRuntimeModel()
@@ -78,7 +88,7 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
 								if (targetComponent != null) {									
 									//synchronize using the target component, because the component can be considered a black box, that must
 									//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.
-									//System.out.println("Syncing on targetComponentId: "+targetComponentId+", targetComponent: "+targetComponent);
+									//System.out.println("Syncing on targetComponentId: "+targetComponentId+", targetComponent: "+targetComponent);								
 									synchronized (targetComponent) {
 										eventListenerPort.receiveEvent(channelID);
 										return;										

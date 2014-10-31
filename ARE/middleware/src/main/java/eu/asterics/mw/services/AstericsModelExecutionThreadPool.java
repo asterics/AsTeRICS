@@ -75,6 +75,7 @@ import eu.asterics.mw.are.AREProperties;
  */
 public class AstericsModelExecutionThreadPool {
 	public static int TASK_SUBMIT_TIMEOUT=20000;
+	private static final int DEFAULT_POOL_SIZE = 5;
 	
 	private static final String MODEL_EXECUTOR = "ModelExecutor";
 
@@ -84,11 +85,13 @@ public class AstericsModelExecutionThreadPool {
 	
 
 	public static final AstericsModelExecutionThreadPool instance = new AstericsModelExecutionThreadPool();
+
 			
 	//pool for the execution of model tasks: is identical with modelExecutorLifecycle in case of the single threaded approach.
 	private ExecutorService pool;
 	//is used as a fallbackpool to stop a hanging model in case of a single-threaded approach
 	private ExecutorService fallbackPool;
+	private static int fallbackNr=0;
 	
 	//This the executor for the single threaded approach
 	private ExecutorService modelExecutorLifecycle = Executors
@@ -109,7 +112,7 @@ public class AstericsModelExecutionThreadPool {
 		logger.info(TASK_SUBMIT_TIMEOUT_PROPERTY+"="+TASK_SUBMIT_TIMEOUT);		
 		AREProperties.instance.setProperty(TASK_SUBMIT_TIMEOUT_PROPERTY, Integer.toString(TASK_SUBMIT_TIMEOUT));
 		
-		int poolSize=new Integer(AREProperties.instance.getProperty(THREAD_POOL_SIZE, "0"));
+		int poolSize=new Integer(AREProperties.instance.getProperty(THREAD_POOL_SIZE, Integer.toString(DEFAULT_POOL_SIZE)));
 		logger.info(THREAD_POOL_SIZE+"="+poolSize);
 		AREProperties.instance.setProperty(THREAD_POOL_SIZE,Integer.toString(poolSize));		
 		
@@ -132,18 +135,6 @@ public class AstericsModelExecutionThreadPool {
 		} else {
 			logger.info(THREAD_POOL_SIZE+" <= 1, using single threaded model execution approach");
 		}
-		fallbackPool=Executors.newCachedThreadPool(new ThreadFactory() {
-			private int threadNr=0;				
-			@Override
-			public Thread newThread(Runnable r) {
-				String threadName=MODEL_EXECUTOR+"-Lifecycle-Fallback-"+threadNr++;
-				logger.fine("Creating Thread: "+threadName);
-				
-				Thread newThread=Executors.defaultThreadFactory().newThread(r);
-				newThread.setName(threadName);
-				return newThread;					
-			}
-		});
 		
 		//pool = Executors.newCachedThreadPool();
 		/*
@@ -184,7 +175,7 @@ public class AstericsModelExecutionThreadPool {
 
 	/**
 	 * Executes (waits for termination) the given Runnable by the Thread instance "ModelExecutor".
-	 * If the execution hangs a timeout arises after TASK_SUBMIT_TIMEOUT. In such a case a fallback thread is used to execute the Runnable.
+	 * If the execution hangs a timeout arises after TASK_SUBMIT_TIMEOUT.
 	 * @param r
 	 * @throws InterruptedException
 	 * @throws ExecutionException
@@ -192,29 +183,80 @@ public class AstericsModelExecutionThreadPool {
 	 */
 	public void execAndWaitOnModelExecutorLifecycleThread(Runnable r) throws InterruptedException,
 			ExecutionException, TimeoutException {
-		
-		if(MODEL_EXECUTOR.equals(Thread.currentThread().getName())) {
-			//We are already executed by the AREMain Thread so just call the Runnable.run() method
-			AstericsErrorHandling.instance.getLogger().fine("ModelExecutor: Current thread: "+Thread.currentThread().getName()+", running r.run() in this thread");
-			r.run();
-		} else {
-			//execute with AREMainExecuter and wait for response "blocked execution"
-			AstericsErrorHandling.instance.getLogger().fine("ModelExecutor: Current thread: "+Thread.currentThread().getName()+", Submitting on modelExecutorLifecycle thread");
-			Future f=modelExecutorLifecycle.submit(r);
-			try{				
-				f.get(TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS);
+		try {
+			execAndWaitOnModelExecutorLifecycleThread(Executors.callable(r));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			if(e instanceof InterruptedException) {
+				throw (InterruptedException)e;
+			} else if(e instanceof ExecutionException) {
+				throw (ExecutionException)e;
+			} else if (e instanceof TimeoutException) {
+				throw (TimeoutException)e;
+			} else {
+				logger.warning("Exception occurred: "+e.getClass()+", message: "+e.getMessage());
 			}
-			catch(TimeoutException e) {
-				logger.warning("["+MODEL_EXECUTOR+"]: Task execution timeouted");
-				throw e;
-			    //fallbackPool.submit(r).get(TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS);
-			}			
 		}
 	}
 	
-	public void switchToFallbackPool() {
-		logger.warning("ModelExecutor ["+Thread.currentThread()+"]: Switching to fallbackPool");
-		modelExecutorLifecycle=fallbackPool;		
+	/**
+	 * Executes (waits for termination) the given Callable by the Thread instance "ModelExecutor".
+	 * If the execution hangs a timeout arises after TASK_SUBMIT_TIMEOUT.
+	 * @param c
+	 * @throws Exception
+	 */
+	public void execAndWaitOnModelExecutorLifecycleThread(Callable c) throws Exception {
+
+		if (MODEL_EXECUTOR.equals(Thread.currentThread().getName())) {
+			// We are already executed by the AREMain Thread so just call the
+			// Runnable.run() method
+			AstericsErrorHandling.instance.getLogger().fine(
+					"ModelExecutor: Current thread: "
+							+ Thread.currentThread().getName()
+							+ ", running r.run() in this thread");
+			c.call();
+		} else {
+			// execute with AREMainExecuter and wait for response
+			// "blocked execution"
+			AstericsErrorHandling.instance.getLogger().fine(
+					"ModelExecutor: Current thread: "
+							+ Thread.currentThread().getName()
+							+ ", Submitting on modelExecutorLifecycle thread");
+			Future f = modelExecutorLifecycle.submit(c);
+			try {
+				f.get(TASK_SUBMIT_TIMEOUT, TimeUnit.MILLISECONDS);
+			} catch (TimeoutException e) {
+				logger.warning("[" + MODEL_EXECUTOR
+						+ "]: Task execution timeouted");
+				throw e;
+			}
+		}
+	}
+	
+	
+	/**
+	 * Creates a new threadpool of size 1, that is used for future lifecycle and model executions.
+	 */
+	public void switchToFallbackPool() {		
+		logger.warning("ModelExecutor ["+Thread.currentThread()+"]: Switching to fallbackPool: DISABLED");
+		/*
+		//Each time an execution timeouts the caller can switch to a new threadpool, to not risk a hanging ARE
+		//NOTE: keep it of size one to ensure that the models are executed thread safe!!
+		fallbackPool=Executors.newFixedThreadPool(1, new ThreadFactory() {
+				
+				@Override
+				public Thread newThread(Runnable r) {
+					String threadName=MODEL_EXECUTOR+"-Lifecycle-Fallback-"+fallbackNr++;
+					logger.fine("Creating Thread: "+threadName);
+					
+					Thread newThread=Executors.defaultThreadFactory().newThread(r);
+					newThread.setName(threadName);
+					return newThread;					
+				}
+			});
+
+		modelExecutorLifecycle=fallbackPool;
+		*/		
 	}
 
 	/**

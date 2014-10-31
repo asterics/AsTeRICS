@@ -1,7 +1,5 @@
 :Initialization
 CLS
-@ECHO AsTeRICS ARE Version 2.4
-@ECHO.
 
 SET PROFILE_PATH="profile"
 

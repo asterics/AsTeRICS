@@ -121,15 +121,17 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	public void reportError(IRuntimeComponentInstance component, 
 			final String errorMsg) 
 	{
-		
-		String componentID = DeploymentManager.instance.
-				getComponentInstanceIDFromComponentInstance(component);
-		logger.warning(componentID+": "+errorMsg);
-		ErrorLogPane.appendLog(errorMsg);
-		DeploymentManager.instance.setStatus(AREStatus.ERROR);
-		setStatusObject(AREStatus.ERROR.toString(), componentID, errorMsg);
-		this.notifyAREEventListeners("onAreError", errorMsg);	
-
+		//System.out.println("componet: "+component);
+		if(component!=null) {
+			String componentID = DeploymentManager.instance
+					.getComponentInstanceIDFromComponentInstance(component);
+			if (componentID != null) {
+				//System.out.println("componentID: "+componentID);
+				logger.warning(componentID + ": " + errorMsg);
+				setStatusObject(AREStatus.ERROR.toString(), componentID,
+						errorMsg);
+			}
+		}
 		
 		AREProperties props = AREProperties.instance;
 		if (props.checkProperty("showErrorDialogs", "1")) 
@@ -138,6 +140,10 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
+					ErrorLogPane.appendLog(errorMsg);
+					DeploymentManager.instance.setStatus(AREStatus.ERROR);
+				
+					AstericsErrorHandling.this.notifyAREEventListeners("onAreError", errorMsg);	
 
 					JOptionPane op = new JOptionPane (errorMsg,
 						    JOptionPane.WARNING_MESSAGE);
@@ -149,7 +155,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	*/				
 					JDialog dialog = op.createDialog("AsTeRICS RuntimeEnvironment: An Error occurred !");
 					dialog.setAlwaysOnTop(true);
-					dialog.setModal(true);
+					dialog.setModal(false);
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 					}

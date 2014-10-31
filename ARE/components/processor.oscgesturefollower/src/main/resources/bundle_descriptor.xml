@@ -81,7 +81,8 @@
 				description="property description"/>
 				<property name="filename"
 				type="string"
-				value="gestures.mubu"
+				value="nodding.mubu"
+				getStringList="true"
 				description="filename for loading or storing gesture data"/>
         </properties>
 

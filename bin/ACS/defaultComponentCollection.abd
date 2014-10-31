@@ -181,36 +181,69 @@
         </ports>
         <events>
             <eventListenerPort id="setOutput1">
-                <description>An incoming event switches Output1 to high level</description>
+                <description>Switches Output1 to high level</description>
             </eventListenerPort>
             <eventListenerPort id="setOutput2">
-                <description>An incoming event switches Output2 to high level</description>
+                <description>Switches Output2 to high level</description>
             </eventListenerPort>
             <eventListenerPort id="setOutput3">
-                <description>An incoming event switches Output3 to high level</description>
+                <description>Switches Output3 to high level</description>
             </eventListenerPort>
             <eventListenerPort id="setOutput4">
-                <description>An incoming event switches Output4 to high level</description>
+                <description>Switches Output4 to high level</description>
             </eventListenerPort>
             <eventListenerPort id="setOutput5">
-                <description>An incoming event switches Output5 to high level</description>
+                <description>Switches Output5 to high level</description>
             </eventListenerPort>
 
             <eventListenerPort id="clearOutput1">
-                <description>An incoming event switches Output1 to low level</description>
+                <description>Switches Output1 to low level</description>
             </eventListenerPort>
             <eventListenerPort id="clearOutput2">
-                <description>An incoming event switches Output2 to low level</description>
+                <description>Switches Output2 to low level</description>
             </eventListenerPort>
             <eventListenerPort id="clearOutput3">
-                <description>An incoming event switches Output3 to low level</description>
+                <description>Switches Output3 to low level</description>
             </eventListenerPort>
             <eventListenerPort id="clearOutput4">
-                <description>An incoming event switches Output4 to low level</description>
+                <description>Switches Output4 to low level</description>
             </eventListenerPort>
             <eventListenerPort id="clearOutput5">
-                <description>An incoming event switches Output5 to low level</description>
+                <description>Switches Output5 to low level</description>
             </eventListenerPort>
+
+            <eventListenerPort id="toggleOutput1">
+                <description>Toggles the state of Output1</description>
+            </eventListenerPort>
+            <eventListenerPort id="toggleOutput2">
+                <description>Toggles the state of Output2</description>
+            </eventListenerPort>
+            <eventListenerPort id="toggleOutput3">
+                <description>Toggles the state of Output3</description>
+            </eventListenerPort>
+            <eventListenerPort id="toggleOutput4">
+                <description>Toggles the state of Output4</description>
+            </eventListenerPort>
+            <eventListenerPort id="toggleOutput5">
+                <description>Toggles the state of Output5</description>
+            </eventListenerPort>
+            
+            <eventListenerPort id="pressOutput1">
+                <description>Presses Output1: Clears the state and after 500ms sets the state to high</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressOutput2">
+                <description>Presses Output2: Clears the state and after 500ms sets the state to high</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressOutput3">
+                <description>Presses Output3: Clears the state and after 500ms sets the state to high</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressOutput4">
+                <description>Presses Output4: Clears the state and after 500ms sets the state to high</description>
+            </eventListenerPort>
+            <eventListenerPort id="pressOutput5">
+                <description>Presses Output5: Clears the state and after 500ms sets the state to high</description>
+            </eventListenerPort>
+            
         </events>        
         <properties>
             <property description="Sets pull up state for output 3, true enables pull up" name="pullupStateOut3" type="boolean" value="false"/>
@@ -1296,6 +1329,23 @@
             <eventListenerPort id="wheelDown">
                 <description>moves wheel down one step</description>
             </eventListenerPort>
+
+			 <eventListenerPort id="nextClickRight">
+                <description>the next left click event will generate a right click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickDouble">
+                <description>the next left click event will generate a double click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickMiddle">
+                <description>the next left click event will generate a middle click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickDrag">
+                <description>the next left click event will generate a drag click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickRelease">
+                <description>the next left click event will release a drag click</description>
+            </eventListenerPort> 
+
             <eventListenerPort id="center">
                 <description>On incoming event, the mouse cursor position will be centered</description>
             </eventListenerPort>
@@ -1760,7 +1810,7 @@
 
  <componentType canonical_name="eu.asterics.component.actuator.ponggame.PongGameInstance" id="asterics.PongGame">
         <type subtype="Others">actuator</type>
-        <singleton>false</singleton>
+        <singleton>true</singleton>
         <description>Plugin displays a pong game in the AsTeRICS GUI</description>
         <ports>
 			<inputPort id="playerOnePos">
@@ -2109,6 +2159,22 @@
             <eventListenerPort id="wheelDown">
                 <description>On incoming event, mouse wheel position is decreased</description>
             </eventListenerPort>
+            <eventListenerPort id="nextClickRight">
+                <description>the next left click event will generate a right click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickDouble">
+                <description>the next left click event will generate a double click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickMiddle">
+                <description>the next left click event will generate a middle click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickDrag">
+                <description>the next left click event will generate a drag click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickRelease">
+                <description>the next left click event will release a drag click</description>
+            </eventListenerPort> 
+            
             <eventListenerPort id="center">
                 <description>On incoming event, the mouse cursor position will be centered</description>
             </eventListenerPort>
@@ -2169,6 +2235,21 @@
             <eventListenerPort id="wheelDown">
                 <description>On incoming event, mouse wheel position is decreased</description>
             </eventListenerPort>
+			 <eventListenerPort id="nextClickRight">
+                <description>the next left click event will generate a right click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickDouble">
+                <description>the next left click event will generate a double click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickMiddle">
+                <description>the next left click event will generate a middle click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickDrag">
+                <description>the next left click event will generate a drag click</description>
+            </eventListenerPort> 
+			 <eventListenerPort id="nextClickRelease">
+                <description>the next left click event will release a drag click</description>
+            </eventListenerPort>             
             <eventListenerPort id="center">
                 <description>On incoming event, the mouse cursor position will be centered</description>
             </eventListenerPort>
@@ -3031,7 +3112,7 @@
 
 		</events>			
         <properties>
-			<property description="automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="0"/>
+			<property description="automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="200"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 2 Mode" name="pin2Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 500Hz" description="Pin 3 Mode" name="pin3Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 4 Mode" name="pin4Mode" type="integer" value="0"/>
@@ -4863,7 +4944,7 @@
         <properties>
 				<property description="property description" name="InPort" type="integer" value="8000"/>
 				<property description="property description" name="OutPort" type="integer" value="9000"/>
-				<property description="filename for loading or storing gesture data" name="filename" type="string" value="gestures.mubu"/>
+				<property description="filename for loading or storing gesture data" getStringList="true" name="filename" type="string" value="nodding.mubu"/>
         </properties>
 
     </componentType>
@@ -5931,7 +6012,7 @@
  <componentType canonical_name="eu.asterics.component.processor.stringdispatcher.StringDispatcherInstance" id="asterics.StringDispatcher">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
-        <description>Send test from chosen slot</description>
+        <description>Send text from chosen slot</description>
         <ports>
             <outputPort id="output">
                 <description>Output text</description>
@@ -6295,89 +6376,6 @@
     </componentType>
 
 
- <componentType canonical_name="eu.asterics.component.processor.websocket.WebSocketInstance" id="asterics.WebSocket">
-        <type subtype="Web">processor</type>
-        <singleton>false</singleton>
-        <description>This plugin uses a websocket connection to send and read data</description>
-        <ports>
-			<inputPort id="InA">
-				<description>Double Input A</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-			<inputPort id="InB">
-				<description>Double Input B</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-			<inputPort id="InC">
-				<description>Integer Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-			<inputPort id="InD">
-				<description>Integer Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-			<inputPort id="InE">
-				<description>String Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="InF">
-				<description>String Input F</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-
-			<outputPort id="OutA">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="OutB">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="OutC">
-				<description>output port description</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="OutD">
-				<description>output port description</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="OutE">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-			<outputPort id="OutF">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-			<eventListenerPort id="event1">
-				<description>elp description</description>
-			</eventListenerPort>
-			<eventListenerPort id="reset">
-				<description>Clears buffers and resets websocket connection</description>
-			</eventListenerPort>
-
-			<eventTriggererPort id="reconnect">
-				<description>Reconnect to websockect</description>
-			</eventTriggererPort>
-
-		</events>			
-        <properties>
-			<property description="hostname or ip address to use for URL" name="host" type="string" value="localhost"/>
-			<property description="port number used for websocket" name="port" type="integer" value="8080"/>
-
-        </properties>
-
-    </componentType>
-
  <componentType canonical_name="eu.asterics.component.processor.yaak.YaakInstance" id="asterics.Yaak">
         <type subtype="Phone Interface">processor</type>
         <singleton>false</singleton>
@@ -6665,7 +6663,7 @@
  <componentType canonical_name="eu.asterics.component.sensor.cellboard.CellBoardInstance" id="asterics.CellBoard">
         <type subtype="Graphical User Interface">sensor</type>
         <singleton>false</singleton>
-        <description>GUI component</description>
+        <description>Adjustable matrix of button cells with scanning support</description>
         <ports>
 			<inputPort id="row">
 				<description>Row of the cell</description>
@@ -6673,7 +6671,7 @@
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="column">
-				<description>column of the cell</description>
+				<description>Column of the cell</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>integer</dataType>
 			</inputPort>
@@ -6683,7 +6681,7 @@
 				<dataType>integer</dataType>
 			</inputPort>
 			<inputPort id="xmlFile">
-				<description>XML file path to load when the load event occurs</description>
+				<description>Name of keyboard file (in data/cellBoardKeyboards) which is used when the 'load' event occurs.</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
@@ -6720,7 +6718,7 @@
 				<description>Cell is clicked</description>
 			</eventTriggererPort>
 			<eventListenerPort id="load">
-				<description>Load xml file with filename from input xmlfile</description>
+				<description>Load keyboard file which is defined by the input port 'xmlFile'</description>
 			</eventListenerPort>
 			<eventTriggererPort id="cell1">
 				<description>Cell 1 selected</description>
@@ -6834,13 +6832,14 @@
 		</events>			
         <properties>
         	<property description="Caption of the component" name="caption" type="string" value="Cell Board"/>
-			<property combobox="1//2//3//4//5//6" description="Number of rows" name="rows" type="integer" value="2"/>
-			<property combobox="1//2//3//4//5//6" description="Number of rows" name="columns" type="integer" value="2"/>
+			<property combobox="1//2//3//4//5//6//7//8//9//10//11//12//13//14//15//16//17//18//19//20//21//22//23//24//25//26//27//28//29//30//31//32//33//34//35//36" description="Number of rows (rows x cols &lt;= 100)" name="rows" type="integer" value="2"/>
+			<property combobox="1//2//3//4//5//6//7//8//9//10//11//12//13//14//15//16//17//18//19//20//21//22//23//24//25//26//27//28//29//30//31//32//33//34//35//36" description="Number of columns (rows x cols &lt;= 100)" name="columns" type="integer" value="2"/>
 			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="Text color" name="textColor" type="integer" value="0"/>
 			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="Background color" name="backgroundColor" type="integer" value="11"/>
 			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="Color of the scan frame" name="scanColor" type="integer" value="10"/>
 			<property combobox="none//row-column//column-row//directed//hover selection" description="Scanning mode" name="scanMode" type="integer" value="0"/>
 			<property description="Time of hovering needed to cell selection [ms]." name="hoverTime" type="integer" value="1000"/>
+			<property description="Name of keyboard file (in data/cellBoardKeyboards) to load at startup." getStringList="true" name="keyboardFile" type="string" value=""/>
 			<property description="Text of cell 1" name="cellText1" type="string" value=""/>
 			<property description="Image of cell 1" name="cellImage1" type="string" value=""/>
 			<property description="Action text of cell 1" name="actionText1" type="string" value=""/>
@@ -7194,83 +7193,6 @@
 		</events>			
         <properties>
 			<property description="Update period for EOG values (in milliseconds)" name="updatePeriod" type="integer" value="100"/>
-
-        </properties>
-
-    </componentType>
-
- <componentType canonical_name="eu.asterics.component.sensor.eshoe.ESHOEInstance" id="asterics.ESHOE">
-        <type subtype="Sensor Modules">sensor</type>
-        <singleton>false</singleton>
-        <description>eSHOE implementation</description>
-        <ports>
-
-			<outputPort id="Angle">
-				<description>Foot angle in respect to ground</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="AccX">
-				<description>acceleration x-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="AccY">
-				<description>acceleration y-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="AccZ">
-				<description>acceleration z-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Heel">
-				<description>pressure heel sensor</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Meta1">
-				<description>pressure metatarsal1 sensor</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Meta5">
-				<description>pressure metatarsal5 sensor</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="Toe">
-				<description>pressure toe sensor</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="GyroX">
-				<description>angular velocity x-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="GyroY">
-				<description>angular velocity y-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="GyroZ">
-				<description>angular velocity z-axis</description>
-				<dataType>double</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-			<eventListenerPort id="start">
-				<description>start data transmission</description>
-			</eventListenerPort>
-			<eventListenerPort id="stop">
-				<description>stop data transmission</description>
-			</eventListenerPort>
-			<eventListenerPort id="calibrate">
-				<description>calibrate baseline position</description>
-			</eventListenerPort>
-
-			<eventTriggererPort id="toePressureReached">
-				<description>threshold pressure for toe exceeded</description>
-			</eventTriggererPort>
-
-		</events>			
-        <properties>
-        	<property description="The COM Port which will be opened to connect to the eSHOE" name="ComPort" type="string" value="COM4"/>
-			<property combobox="50 Hz//200 Hz" description="Choose sampling rate between 50 and 200 Hz" name="SamplingRate" type="integer" value="0"/>
-			<property description="Threshold for toe pressure event" name="ToePressureThreshold" type="double" value="100"/>
 
         </properties>
 

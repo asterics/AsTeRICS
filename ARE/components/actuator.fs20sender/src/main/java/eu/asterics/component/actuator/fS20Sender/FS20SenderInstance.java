@@ -643,13 +643,12 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 
 				pcs = new PCSDevice();
 				if (!pcs.open()) {
+					logger.warning("["+ curThread+ "]"
+								   + "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
 					AstericsErrorHandling.instance
 							.reportError(
 									FS20SenderInstance.this,
-									"["
-											+ curThread
-											+ "]"
-											+ "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
+									"Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
 					pcs = null;
 					return;
 				}

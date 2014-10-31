@@ -19,6 +19,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 
@@ -135,11 +136,17 @@ public class DeploymentManager
 
 	private Map<String, IRuntimeComponentInstance> runtimeComponentInstances
 	= new LinkedHashMap<String, IRuntimeComponentInstance>();
+	//stores started components, is used to find started components 
+	private Map<String,AREStatus> runtimeComponentInstancesStatus = new HashMap<String, AREStatus>(); 
+	
 	private Map<String, Set<IRuntimeComponentInstance>> 
 	componentTypeIdToRuntimeComponentInstances
 	= new LinkedHashMap<String, Set<IRuntimeComponentInstance>>();
 	private BundleManager bundleManager;
 	private Map<IRuntimeComponentInstance,String > runtimeInstanceToComponentTypeID = new LinkedHashMap<IRuntimeComponentInstance, String>();
+	private volatile boolean modelStartupFinished=false;
+	private volatile boolean modelLifecycleTaskPending=false;
+	
 	private Map<String, Stack<LinkedHashMap<String, byte[]>>> bufferedPortsMap
 	= new LinkedHashMap<String, Stack<LinkedHashMap<String,byte[]>>>();
 
@@ -148,6 +155,9 @@ public class DeploymentManager
 		// unget components
 		runtimeComponentInstances.clear();
 		componentTypeIdToRuntimeComponentInstances.clear();
+		runtimeComponentInstancesStatus.clear();		
+		modelStartupFinished=false;
+		modelLifecycleTaskPending=false;
 
 		// todo unget components
 	}
@@ -163,6 +173,8 @@ public class DeploymentManager
 	public void deployModel(final IRuntimeModel runtimeModel)
 			throws DeploymentException
 			{
+		
+		modelStartupFinished=false;
 		if (runtimeModel == null)
 		{
 			logger.severe(this.getClass().getName()+
@@ -199,7 +211,7 @@ public class DeploymentManager
 
 			final String canonicalName = componentType.getCanonicalName();
 
-			IRuntimeComponentInstance runtimeComponentInstance;
+			IRuntimeComponentInstance runtimeComponentInstance=null;
 
 			try{
 				runtimeComponentInstance =
@@ -207,11 +219,9 @@ public class DeploymentManager
 
 			}
 			catch (NullPointerException e){
-
-				JOptionPane.showMessageDialog(null,
-						canonicalName+ " prevents the model from starting!",
-						"ARE runtime error",
-						JOptionPane.WARNING_MESSAGE);
+				//logger.severe(canonicalName+ " prevents the model from starting: "+e.getMessage());
+				e.printStackTrace();
+				AstericsErrorHandling.instance.reportError(runtimeComponentInstance, "Could not deploy component ["+runtimeComponentInstance+"]: \n"+e.getMessage());
 				return;
 			}
 
@@ -225,8 +235,10 @@ public class DeploymentManager
 							componentInstance.getPropertyValue(propertyName);
 					if (propertyName != null)
 					{
-						runtimeComponentInstance.
-						setRuntimePropertyValue(propertyName, propertyValue);
+						synchronized(runtimeComponentInstance) {
+							runtimeComponentInstance.
+							setRuntimePropertyValue(propertyName, propertyValue);
+						}
 					}
 				}
 			}
@@ -247,6 +259,10 @@ public class DeploymentManager
 
 			componentTypeIdToRuntimeComponentInstances.
 			put(componentInstance.getComponentTypeID(), set);
+			
+			//set component status
+			runtimeComponentInstancesStatus.put(componentInstance.getInstanceID(), AREStatus.DEPLOYED);
+			
 		}
 
 		// handle channel formation
@@ -381,7 +397,8 @@ public class DeploymentManager
 	 * 
 	 */
 	public void undeployModel()
-	{
+	{		
+		modelStartupFinished=false;
 		final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
 
 		final Set<IChannel> channels = runtimeModel.getChannels();
@@ -475,6 +492,7 @@ public class DeploymentManager
 		}
 
 		runtimeComponentInstances.values().clear();
+		runtimeComponentInstancesStatus.clear();
 		System.gc();
 
 	}
@@ -491,13 +509,16 @@ public class DeploymentManager
 		IRuntimeComponentInstance ci = runtimeComponentInstances.get(componentID);
 		if (ci == null)
 			return;
-		ci.stop();
+		synchronized(ci) {
+			ci.stop();
+		}
 
 		String cType = getCurrentRuntimeModel().
 				getComponentInstance(componentID).
 				getComponentTypeID();
 
 		runtimeComponentInstances.remove(ci);
+		runtimeComponentInstancesStatus.remove(componentID);
 		if (cType == null)
 			return;
 		Set<IRuntimeComponentInstance> set =
@@ -513,8 +534,10 @@ public class DeploymentManager
 				componentTypeIdToRuntimeComponentInstances.remove(set);
 
 				//No instances of this type stop the Bundle possible
-				BundleManager.
-				stopBundleComponent(componentRepository.getComponentType(cType));
+				synchronized(ci) {
+					BundleManager.
+					stopBundleComponent(componentRepository.getComponentType(cType));
+				}
 			}
 		}
 	}
@@ -529,69 +552,73 @@ public class DeploymentManager
 
 	public void runModel()
 	{
-
-		notifyAREEventListeners (AREEvent.PRE_START_EVENT);
-		for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
-		{
-			try 
+		try{
+			modelLifecycleTaskPending=true;
+			notifyAREEventListeners (AREEvent.PRE_START_EVENT);
+			for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
 			{
-				String compRefName=componentInstance.getClass().getSimpleName();
-				logger.fine("Trying to start component instance: "+compRefName);
-				String id = runtimeInstanceToComponentTypeID.get(componentInstance);
-				bundleManager.getBundleFromId(id).start();
-				componentInstance.start();
-
-
-				IRuntimeModel runtimeModel = getCurrentRuntimeModel();
-				String s = getComponentInstanceIDFromComponentInstance(componentInstance);
-				IComponentInstance ci = runtimeModel.getComponentInstance(s);
-
-				Set<IInputPort> bufferedPorts = ci.getBufferedInputPorts();
-				Iterator<IInputPort> itr = bufferedPorts.iterator();
-				while(itr.hasNext())
-				{			
-					IInputPort port = itr.next();
-					IRuntimeInputPort runtimePort = componentInstance.getInputPort(port.getPortType());
+				try 
+				{
+					String compRefName=componentInstance.getClass().getSimpleName();
+					logger.fine("Trying to start component instance: "+compRefName);
+					String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 					
-					boolean isConnected=false;
-					Set<IChannel> channels = runtimeModel.getChannels();
-					Iterator<IChannel> itc = channels.iterator();
-					while (itc.hasNext())
-					{
-						IChannel channel =  itc.next();
-						
-						if ((channel.getTargetInputPortID().equals(port.getPortType()))  &&
-								(channel.getTargetComponentInstanceID().equals(s)))
-						{
-							isConnected=true;
-						}
+					String s = getComponentInstanceIDFromComponentInstance(componentInstance);
+					synchronized (componentInstance) {
+						bundleManager.getBundleFromId(id).start();
+						componentInstance.start();
+						runtimeComponentInstancesStatus.put(s, AREStatus.RUNNING);
 					}
+	
+	
+					IRuntimeModel runtimeModel = getCurrentRuntimeModel();
 					
-					if (!isConnected)
-						logger.severe("The synchronized port "+ s + " (" +port.getPortType() + ") is not connected to a data source - this blocks the component operation !");
+					IComponentInstance ci = runtimeModel.getComponentInstance(s);
+	
+					Set<IInputPort> bufferedPorts = ci.getBufferedInputPorts();
+					Iterator<IInputPort> itr = bufferedPorts.iterator();
+					while(itr.hasNext())
+					{			
+						IInputPort port = itr.next();
+						IRuntimeInputPort runtimePort = componentInstance.getInputPort(port.getPortType());
 						
-					runtimePort.startBuffering((AbstractRuntimeComponentInstance) componentInstance, port.getPortType());
+						boolean isConnected=false;
+						Set<IChannel> channels = runtimeModel.getChannels();
+						Iterator<IChannel> itc = channels.iterator();
+						while (itc.hasNext())
+						{
+							IChannel channel =  itc.next();
+							
+							if ((channel.getTargetInputPortID().equals(port.getPortType()))  &&
+									(channel.getTargetComponentInstanceID().equals(s)))
+							{
+								isConnected=true;
+							}
+						}
+						
+						if (!isConnected)
+							logger.severe("The synchronized port "+ s + " (" +port.getPortType() + ") is not connected to a data source - this blocks the component operation !");
+							
+						runtimePort.startBuffering((AbstractRuntimeComponentInstance) componentInstance, port.getPortType());
+						
+						IRuntimeInputPort wrapper = ci.getWrapper(port.getPortType());
+						if (wrapper!=null)
+							wrapper.startBuffering((AbstractRuntimeComponentInstance) componentInstance, port.getPortType());
+					}
+					logger.fine("Started component instance: "+compRefName);
 					
-					IRuntimeInputPort wrapper = ci.getWrapper(port.getPortType());
-					if (wrapper!=null)
-						wrapper.startBuffering((AbstractRuntimeComponentInstance) componentInstance, port.getPortType());
 				}
-				logger.fine("Started component instance: "+compRefName);
-				
+				catch (Throwable t) 
+				{
+					//custom title, error icon
+					t.printStackTrace();
+					AstericsErrorHandling.instance.reportError(componentInstance, "Could not run component ["+componentInstance+"]: \n"+t.getMessage());
+				}
 			}
-			catch (Throwable t) 
-			{
-				//custom title, error icon
-				JOptionPane.showMessageDialog(null,
-						componentInstance+ ":\n"+t.getMessage()
-						, "ARE Runtime Error",
-						JOptionPane.ERROR_MESSAGE);
-				t.printStackTrace();
-				//System.exit(0);
-				stopModel();
-			}
+		}finally {
+			modelStartupFinished=true;
+			modelLifecycleTaskPending=false;
 		}
-
 	}
 
 	/**
@@ -600,14 +627,24 @@ public class DeploymentManager
 	 */
 	public void pauseModel()
 	{
-		for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
-		{
-			String compRefName=componentInstance.getClass().getSimpleName();
-			logger.fine("Trying to pause component instance: "+compRefName);
-			componentInstance.pause();
-			logger.fine("Paused component instance: "+compRefName);
+		try {
+			modelLifecycleTaskPending=true;
+			modelStartupFinished=false;
+			for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
+			{
+				String compRefName=componentInstance.getClass().getSimpleName();
+				logger.fine("Trying to pause component instance: "+compRefName);
+				synchronized(componentInstance) {
+					componentInstance.pause();
+					String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
+					runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.PAUSED);
+				}
+				logger.fine("Paused component instance: "+compRefName);
+			}
+		}finally {
+			modelLifecycleTaskPending=false;			
 		}
-	}
+	}		
 
 	/**
 	 * This method resumes the paused model.
@@ -615,12 +652,22 @@ public class DeploymentManager
 	 */
 	public void resumeModel()
 	{
-		for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
-		{
-			String compRefName=componentInstance.getClass().getSimpleName();
-			logger.fine("Trying to resume component instance: "+compRefName);
-			componentInstance.resume();
-			logger.fine("Resumed component instance: "+compRefName);
+		try{
+			modelLifecycleTaskPending=true;
+			for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
+			{
+				String compRefName=componentInstance.getClass().getSimpleName();
+				logger.fine("Trying to resume component instance: "+compRefName);
+				synchronized(componentInstance) {
+					componentInstance.resume();
+					String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
+					runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.RUNNING);				
+				}
+				logger.fine("Resumed component instance: "+compRefName);
+			}
+		}finally{
+			modelStartupFinished=true;
+			modelLifecycleTaskPending=false;
 		}
 	}
 
@@ -630,34 +677,79 @@ public class DeploymentManager
 	 */
 	public void stopModel()
 	{
-		for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
-		{
-			try 
+		try{
+			modelLifecycleTaskPending=true;
+			modelStartupFinished=false;
+			for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
 			{
-				String compRefName=componentInstance.getClass().getSimpleName();
-				logger.fine("Trying to stop component instance: "+compRefName);
-				String id = runtimeInstanceToComponentTypeID.get(componentInstance);
-				bundleManager.getBundleFromId(id).stop();
-				componentInstance.stop();
-				logger.fine("Stopped component instance: "+compRefName);
+				try 
+				{
+					String compRefName=componentInstance.getClass().getSimpleName();
+					logger.fine("Trying to stop component instance: "+compRefName);
+					String id = runtimeInstanceToComponentTypeID.get(componentInstance);
+	
+					synchronized(componentInstance) {
+						bundleManager.getBundleFromId(id).stop();
+						componentInstance.stop();
+						String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
+						//There is no state for STOP, so use DEPLOYED? or better OK?
+						runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.DEPLOYED);
+					}
+					
+					logger.fine("Stopped component instance: "+compRefName);
+				}
+				catch (Throwable t) 
+				{
+					//custom title, error icon
+					t.printStackTrace();
+					AstericsErrorHandling.instance.reportError(componentInstance, "Could not stop component ["+componentInstance+"]: \n"+t.getMessage());
+				}
+	
+	
 			}
-			catch (Throwable t) 
-			{
-				//custom title, error icon
-				JOptionPane.showMessageDialog(null,
-						componentInstance+ " Runtime Error!",
-						"ARE runtime error",
-						JOptionPane.ERROR_MESSAGE);
-				//System.exit(0);
-			}
-
-
+			notifyAREEventListeners (AREEvent.POST_STOP_EVENT);
+		}finally{
+			modelLifecycleTaskPending=false;
 		}
-		notifyAREEventListeners (AREEvent.POST_STOP_EVENT);
 		System.gc();
 	}
 
 	// ------------------- End of model lifecycle support ------------------- //
+	/**
+	 * Checks if the DeploymentManager is currently performing a lifecycle task (start, pause, resume, stop) of a model 
+	 * @return
+	 */
+	public boolean isModelLifecycleTaskPending() {
+		return modelLifecycleTaskPending;
+	}
+	
+	/**
+	 * Checks if the DeploymentManager has finished starting a model and the model is up and running.
+	 * @return
+	 */
+	public boolean isModelStartupFinished() {
+		return modelStartupFinished;
+	}
+	
+	/**
+	 * Checks if a model is running and the component with the given Id is started.
+	 * @NOTE: currently disabled
+	 * @param componentInstanceId
+	 * @return true: Returns true if the component is running and ready
+	 */
+	public boolean isComponentRunning(String componentInstanceId) {		
+		if(!modelLifecycleTaskPending && modelStartupFinished) {			
+			AREStatus compStatus=runtimeComponentInstancesStatus.get(componentInstanceId);
+			if(compStatus!=null) {
+				//logger.fine("Component <"+componentInstanceId+">, state: "+compStatus);
+				if(compStatus.equals(AREStatus.RUNNING)) {
+					return true;
+				}
+			}
+		}
+		//logger.fine("Component <"+componentInstanceId+"> not running");
+		return false;		 
+	}
 
 	/**
 	 * This method returns the model that is currently at runtime
@@ -783,8 +875,9 @@ public class DeploymentManager
 
 					if (propertyName.equals(key))
 					{
-						runtimeComponentInstance.
-						setRuntimePropertyValue(key, value);
+						synchronized(runtimeComponentInstance) {
+							runtimeComponentInstance.setRuntimePropertyValue(key, value);
+						}
 					}
 				}
 			}

@@ -310,7 +310,11 @@ public class AsapiSupport
 	public void deployModel(final String modelInXML)
 			throws AREAsapiException
 			{
-
+		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
+			logger.warning("Model lifecycle task pending, ignoring model switch");
+			return;
+		}
+		
 		//Stop running model first if there is one
 		if (DeploymentManager.instance.getCurrentRuntimeModel()!=null)
 		{
@@ -398,6 +402,14 @@ public class AsapiSupport
 					"deployModel: Failed to deploy model -> \n"
 					+e4.getMessage());
 			throw (new AREAsapiException(e4.getMessage()));
+		} catch(Throwable t) {
+			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
+			AstericsErrorHandling.instance.setStatusObject
+			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+			logger.warning(this.getClass().getName()+"." +
+					"deployModel: Failed to deploy model -> \n"
+					+t.getMessage());
+			throw (new AREAsapiException(t.getMessage()));			
 		}
 
 			}
@@ -442,6 +454,11 @@ public class AsapiSupport
 	 */
 	public void newModel() throws AREAsapiException
 	{
+		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
+			logger.warning("Model lifecycle task pending, ignoring model switch");
+			return;
+		}
+
 		final URL url = Main.getAREContext().getBundle().getResource(DEFAULT_MODEL_URL);
 
 		try {
@@ -1611,7 +1628,11 @@ public class AsapiSupport
 	 * cannot be deployed
 	 */
 	public void deployFile(String filename) throws AREAsapiException {
-
+		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
+			logger.warning("Model lifecycle task pending, ignoring model switch");
+			return;
+		}
+		
 		File file = new File(filename);
 		if (!file.isAbsolute()) {
 			filename = MODELS_FOLDER + "/" + filename;
@@ -1885,8 +1906,9 @@ public class AsapiSupport
 	 * a default model without the need of pressing deploy and start model 
 	 * first.
 	 * @param startModel TODO
+	 * @throws AREAsapiException 
 	 */
-	public void autostart(String startModel) {
+	public void autostart(String startModel) throws AREAsapiException {
 		try {
 			if(startModel== null || startModel.equals("")) {
 				startModel=AUTO_START_MODEL;
@@ -1898,7 +1920,7 @@ public class AsapiSupport
 
 			logger.fine(this.getClass().getName()+".autostart: Failed -> \n" 
 					+e.getMessage());
-
+			throw e;
 		}
 
 	}

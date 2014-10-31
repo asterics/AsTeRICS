@@ -52,8 +52,8 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 	//Sync
 	private final Map<EndPoint, IRuntimeInputPort> inputPortEndpoints = 
 			new LinkedHashMap<EndPoint,IRuntimeInputPort>();
-	private final Map<String, String> portIdToConversion = 
-			new LinkedHashMap<String,String>();
+	private final Map<EndPoint, String> portIdToConversion = 
+			new LinkedHashMap<EndPoint,String>();
 
 	public void sendData(final byte[] data)
 	{
@@ -73,10 +73,22 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 						
 						IComponentInstance targetComponent=DeploymentManager.instance.getCurrentRuntimeModel().getComponentInstance(endPoint.targetComponentID);
 						if(targetComponent == null) {
-							logger.warning("Data could not be propagated, target component not found: targetComponentId: "+endPoint.targetComponentID);
+							//logger.warning("Data could not be propagated, target component not found: targetComponentId: "+endPoint.targetComponentID);							
 							continue;
 						}
-						String conversion = DefaultRuntimeOutputPort.this.portIdToConversion.get(endPoint.portID);
+						//block data propagation if model and component is not up and running
+						//Disabled for now, because has some strange side effects with camera			
+						/*
+						if(!DeploymentManager.instance.isComponentRunning(endPoint.targetComponentID)) {
+							//logger.warning("Data could not be propagated, target component not running: targetComponentId: "+endPoint.targetComponentID);
+							System.out.print("D");
+							continue;							
+						}
+						*/
+						
+						String conversion = DefaultRuntimeOutputPort.this.portIdToConversion.get(endPoint);
+						//logger.fine("targetCompId: "+endPoint.targetComponentID+", conversion: "+conversion+", data.length: "+data.length);
+						//logger.fine("portIdToConversion: "+portIdToConversion.entrySet().toString());
 						byte[] newData = data;
 						if (conversion != null && !"".equals(conversion)) {
 							newData = ConversionUtils.convertData(data, conversion);
@@ -112,9 +124,10 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 	{
 		synchronized (inputPortEndpoints)
 		{
-			inputPortEndpoints.put(new EndPoint(targetComponentID, portID), inputPort);
+			EndPoint ep=new EndPoint(targetComponentID, portID);
+			inputPortEndpoints.put(ep, inputPort);
 			if (conversion.compareTo("")!=0) {
-				this.portIdToConversion.put(portID, conversion);
+				this.portIdToConversion.put(ep, conversion);
 			}
 		}
 	}
@@ -123,29 +136,65 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 	{
 		synchronized (inputPortEndpoints)
 		{
-			inputPortEndpoints.remove(getUniqueID(targetComponentID, portID));
+			inputPortEndpoints.remove(new EndPoint(targetComponentID, portID));
 		}
 	}
 
-	private String getUniqueID(final String targetComponentID, final String portID)
-	{
-		return targetComponentID + ":" + portID;
-	}
 
 	class EndPoint  
 	{
-		String targetComponentID ="";
-		String portID="";
+		private String uniqueId;
+
+		private String targetComponentID ="";
+		private String portID="";
 		EndPoint (final String targetComponentID, final String portID)
 		{
 			this.targetComponentID=targetComponentID;
 			this.portID=portID;
+			this.uniqueId=getUniqueID(targetComponentID, portID);
 		}
+		
+		public String getUniqueID(final String targetComponentID, final String portID)
+		{
+			return targetComponentID + ":" + portID;
+		}		
+
 		@Override
-		public String toString() {
-			return targetComponentID+"."+ portID;
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result
+					+ ((uniqueId == null) ? 0 : uniqueId.hashCode());
+			return result;
 		}
 
-		
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			EndPoint other = (EndPoint) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (uniqueId == null) {
+				if (other.uniqueId != null)
+					return false;
+			} else if (!uniqueId.equals(other.uniqueId))
+				return false;
+			return true;
+		}
+				
+		@Override
+		public String toString() {
+			return getUniqueID(targetComponentID, portID);
+		}
+
+		private DefaultRuntimeOutputPort getOuterType() {
+			return DefaultRuntimeOutputPort.this;
+		}		
 	}
 }

@@ -285,9 +285,12 @@ public class DefaultDeploymentModelParser
 							if (componentNode instanceof Element)
 							{
 								// get a component element
+								
 								final Element componentElement =
 									(Element) componentNode;
-								componentsSet.add(getComponentInstance(componentElement));
+								IComponentInstance componentInstance = getComponentInstance(componentElement);
+								if(componentInstance == null) throw new ParseException("Could not find component instance for component element: "+componentElement);
+								componentsSet.add(componentInstance);
 							}
 						}
 					}
