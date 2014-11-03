@@ -2422,6 +2422,113 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.actuator.skywatchermount.SkyWatcherMountInstance" id="asterics.SkyWatcherMount">
+        <type subtype="Others">actuator</type>
+        <singleton>false</singleton>
+        <description>Plugin to control telescope mounts using the NEXStar 5 protocol</description>
+        <ports>
+			<inputPort id="speed">
+                <description>movement speed of the mount</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="panPosition">
+                <description>Position to go for pan</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="tiltPosition">
+                <description>Position to go for tilt</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointLeft">
+                <description>max left step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointRight">
+                <description>max right step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointUp">
+                <description>max up step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointDown">
+                <description>max down step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<outputPort id="posX">
+				<description>x coordinates of the head</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="posY">
+				<description>x coordinates of the head</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="goLeft">
+				<description>moves the head to the left</description>
+			</eventListenerPort>
+			<eventListenerPort id="goRandom">
+				<description>moves the head to a random position between the set direction limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="goRight">
+				<description>moves the head to the right</description>
+			</eventListenerPort>
+			<eventListenerPort id="goUp">
+				<description>moves the head to the up</description>
+			</eventListenerPort>
+			<eventListenerPort id="goDown">
+				<description>moves the head to the down</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopPan">
+				<description>stops the pan axis</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopTilt">
+				<description>stops the tilt axis</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stops the pan and tilt axis</description>
+			</eventListenerPort>
+			<eventListenerPort id="goToPanPosition">
+				<description>moves the head to the specified Pan position</description>
+			</eventListenerPort>
+			<eventListenerPort id="goToTiltPosition">
+				<description>moves the head to the specified tilt position</description>
+			</eventListenerPort>
+			<eventListenerPort id="triggerOn">
+				<description>turns the shutter on</description>
+			</eventListenerPort>
+			<eventListenerPort id="triggerOff">
+				<description>turns the shutter off</description>
+			</eventListenerPort>
+			<eventListenerPort id="enableLimits">
+				<description>enables the maximum and minimum movement limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="disableLimits">
+				<description>disable the maximum and minimum movement limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="disable">
+				<description>disable all movements of the skywatcher mount</description>
+			</eventListenerPort>
+			<eventListenerPort id="enable">
+				<description>enable all movements of the skywatcher mount</description>
+			</eventListenerPort>
+		</events>			
+        <properties>
+			<property description="Serial Port of the skywatcher device" name="SerialPort" type="string" value="COMX"/>
+			<property description="defines if the endpoints are used by the mount" name="EndPointsActive" type="boolean" value="false"/> 
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="com.starlab.component.actuator.ssvepfilewriter.SSVEPFileWriterInstance" id="asterics.SSVEPFileWriter">
         <type subtype="Brain Computer Interface">actuator</type>
         <singleton>false</singleton>
