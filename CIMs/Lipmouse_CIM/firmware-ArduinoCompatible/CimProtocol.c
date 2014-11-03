@@ -268,21 +268,26 @@ void generate_ADCFrame()
 	CIM_frame.data[0]=(uint8_t)(adcval&0xff);
 	CIM_frame.data[1]=(uint8_t)(adcval>>8);
 	
-	adcval=ADC_Read(4); //pressure
+	adcval=ADC_Read(4); //y down (y+) --> Plugin Port: A3
 	CIM_frame.data[2]=(uint8_t)(adcval&0xff);
 	CIM_frame.data[3]=(uint8_t)(adcval>>8);
 
-	adcval=ADC_Read(5); //pressure
+	adcval=ADC_Read(5); //x left (x-) --> Plugin Port: A2
 	CIM_frame.data[4]=(uint8_t)(adcval&0xff);
 	CIM_frame.data[5]=(uint8_t)(adcval>>8);
 
-	adcval=ADC_Read(6); //pressure
+	adcval=ADC_Read(6); //y up (y-) --> Plugin Port: A1
 	CIM_frame.data[6]=(uint8_t)(adcval&0xff);
 	CIM_frame.data[7]=(uint8_t)(adcval>>8);
 
-	adcval=ADC_Read(7); //pressure
+	adcval=ADC_Read(7); //x right (x+) --> Plugin Port: A4
 	CIM_frame.data[8]=(uint8_t)(adcval&0xff);
 	CIM_frame.data[9]=(uint8_t)(adcval>>8);
+
+	//resulting x should be calculated by:
+        //(7) - (5)
+	//resulting y should be calculated by:
+	//(4) - (6)
 
 	CIM_frame.data[10]=10;
 	CIM_frame.data[11]=0;
