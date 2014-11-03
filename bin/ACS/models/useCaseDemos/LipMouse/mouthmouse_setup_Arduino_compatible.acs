@@ -175,7 +175,7 @@
         <height>1400</height>
       </gui>
     </component>
-    <component id="OsciX-" type_id="asterics.Oscilloscope">
+    <component id="OsciXLinks" type_id="asterics.Oscilloscope">
       <description>Oscilloscope display for one signal channel</description>
       <ports>
         <inputPort portTypeID="in">
@@ -193,7 +193,7 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="X-" />
+        <property name="caption" value="XLinks" />
       </properties>
       <layout>
         <posX>480</posX>
@@ -206,7 +206,7 @@
         <height>1400</height>
       </gui>
     </component>
-    <component id="OsciX+" type_id="asterics.Oscilloscope">
+    <component id="OsciXRechts" type_id="asterics.Oscilloscope">
       <description>Oscilloscope display for one signal channel</description>
       <ports>
         <inputPort portTypeID="in">
@@ -224,7 +224,7 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="X+" />
+        <property name="caption" value="XRechts" />
       </properties>
       <layout>
         <posX>330</posX>
@@ -288,7 +288,7 @@
         <posY>100</posY>
       </layout>
     </component>
-    <component id="OsciY-" type_id="asterics.Oscilloscope">
+    <component id="OsciYUnten" type_id="asterics.Oscilloscope">
       <description>Oscilloscope display for one signal channel</description>
       <ports>
         <inputPort portTypeID="in">
@@ -306,11 +306,11 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="Y-" />
+        <property name="caption" value="YUnten" />
       </properties>
       <layout>
         <posX>338</posX>
-        <posY>470</posY>
+        <posY>471</posY>
       </layout>
       <gui>
         <posX>275</posX>
@@ -319,7 +319,7 @@
         <height>1400</height>
       </gui>
     </component>
-    <component id="OsciY+" type_id="asterics.Oscilloscope">
+    <component id="OsciYOben" type_id="asterics.Oscilloscope">
       <description>Oscilloscope display for one signal channel</description>
       <ports>
         <inputPort portTypeID="in">
@@ -337,10 +337,10 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="Y+" />
+        <property name="caption" value="YOben" />
       </properties>
       <layout>
-        <posX>459</posX>
+        <posX>458</posX>
         <posY>470</posY>
       </layout>
       <gui>
@@ -496,65 +496,11 @@
         <height>622</height>
       </gui>
     </component>
-    <component id="OffsetX" type_id="asterics.MathEvaluator">
-      <description>Mathematical expression evaluator</description>
-      <ports>
-        <inputPort portTypeID="inA">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="inB">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="inC">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="inD">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="expression" value="a+0" />
-      </properties>
-      <layout>
-        <posX>914</posX>
-        <posY>247</posY>
-      </layout>
-    </component>
-    <component id="OffsetY" type_id="asterics.MathEvaluator">
-      <description>Mathematical expression evaluator</description>
-      <ports>
-        <inputPort portTypeID="inA">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="inB">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="inC">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="inD">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="out">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="expression" value="a+0" />
-      </properties>
-      <layout>
-        <posX>913</posX>
-        <posY>412</posY>
-      </layout>
-    </component>
   </components>
   <channels>
-    <channel id="binding.26">
+    <channel id="binding.18">
       <source>
-        <component id="OffsetX" />
+        <component id="AdjustmentCurveX" />
         <port id="out" />
       </source>
       <target>
@@ -588,7 +534,7 @@
         <port id="A1" />
       </source>
       <target>
-        <component id="OsciY-" />
+        <component id="OsciYUnten" />
         <port id="in" />
       </target>
     </channel>
@@ -598,18 +544,18 @@
         <port id="A2" />
       </source>
       <target>
-        <component id="OsciX-" />
+        <component id="OsciXLinks" />
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.27">
+    <channel id="binding.19">
       <source>
-        <component id="OffsetY" />
+        <component id="AdjustmentCurveY" />
         <port id="out" />
       </source>
       <target>
-        <component id="OsciY" />
-        <port id="in" />
+        <component id="Mouse.1" />
+        <port id="mouseY" />
       </target>
     </channel>
     <channel id="binding.20">
@@ -668,7 +614,7 @@
         <port id="A4" />
       </source>
       <target>
-        <component id="OsciX+" />
+        <component id="OsciXRechts" />
         <port id="in" />
       </target>
     </channel>
@@ -678,7 +624,7 @@
         <port id="A3" />
       </source>
       <target>
-        <component id="OsciY+" />
+        <component id="OsciYOben" />
         <port id="in" />
       </target>
     </channel>
@@ -702,9 +648,9 @@
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.18">
+    <channel id="binding.24">
       <source>
-        <component id="OffsetX" />
+        <component id="AdjustmentCurveX" />
         <port id="out" />
       </source>
       <target>
@@ -712,34 +658,14 @@
         <port id="mouseX" />
       </target>
     </channel>
-    <channel id="binding.19">
+    <channel id="binding.25">
       <source>
         <component id="AdjustmentCurveY" />
         <port id="out" />
       </source>
       <target>
-        <component id="OffsetY" />
-        <port id="inA" />
-      </target>
-    </channel>
-    <channel id="binding.24">
-      <source>
-        <component id="AdjustmentCurveX" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="OffsetX" />
-        <port id="inA" />
-      </target>
-    </channel>
-    <channel id="binding.25">
-      <source>
-        <component id="OffsetY" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="Mouse.1" />
-        <port id="mouseY" />
+        <component id="OsciY" />
+        <port id="in" />
       </target>
     </channel>
   </channels>
