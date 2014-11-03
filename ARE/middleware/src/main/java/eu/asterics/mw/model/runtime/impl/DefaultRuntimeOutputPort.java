@@ -73,7 +73,7 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 						
 						IComponentInstance targetComponent=DeploymentManager.instance.getCurrentRuntimeModel().getComponentInstance(endPoint.targetComponentID);
 						if(targetComponent == null) {
-							//logger.warning("Data could not be propagated, target component not found: targetComponentId: "+endPoint.targetComponentID);							
+							logger.warning("Data could not be propagated, target component not found: targetComponentId: "+endPoint.targetComponentID);							
 							continue;
 						}
 						//block data propagation if model and component is not up and running
