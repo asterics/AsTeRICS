@@ -1,0 +1,717 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="07.05.2013_1035" version="20130320">
+  <components>
+    <component id="OsciX" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="X" />
+      </properties>
+      <layout>
+        <posX>464</posX>
+        <posY>244</posY>
+      </layout>
+      <gui>
+        <posX>325</posX>
+        <posY>2156</posY>
+        <width>2325</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="MathEvaluatorX" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a-b" />
+      </properties>
+      <layout>
+        <posX>324</posX>
+        <posY>238</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluatorY" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a-b" />
+      </properties>
+      <layout>
+        <posX>322</posX>
+        <posY>643</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="False" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="2000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1024" />
+      </properties>
+      <layout>
+        <posX>1043</posX>
+        <posY>371</posY>
+      </layout>
+    </component>
+    <component id="Pressure" type_id="asterics.BarDisplay">
+      <description>Bar-display</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="0" />
+        <property name="min" value="0" />
+        <property name="max" value="1000" />
+        <property name="threshold" value="500" />
+        <property name="displayThreshold" value="false" />
+        <property name="integerDisplay" value="false" />
+        <property name="mode" value="1" />
+        <property name="gridColor" value="0" />
+        <property name="barColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Pressure" />
+      </properties>
+      <layout>
+        <posX>179</posX>
+        <posY>16</posY>
+      </layout>
+      <gui>
+        <posX>7388</posX>
+        <posY>556</posY>
+        <width>1000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="OsciY" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Y" />
+      </properties>
+      <layout>
+        <posX>472</posX>
+        <posY>647</posY>
+      </layout>
+      <gui>
+        <posX>312</posX>
+        <posY>5978</posY>
+        <width>2325</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="OsciXLinks" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="XLinks" />
+      </properties>
+      <layout>
+        <posX>480</posX>
+        <posY>97</posY>
+      </layout>
+      <gui>
+        <posX>275</posX>
+        <posY>689</posY>
+        <width>2325</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="OsciXRechts" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="XRechts" />
+      </properties>
+      <layout>
+        <posX>330</posX>
+        <posY>89</posY>
+      </layout>
+      <gui>
+        <posX>2650</posX>
+        <posY>711</posY>
+        <width>2325</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="Arduino.1" type_id="asterics.Arduino">
+      <description>Arduino Microcontroller CIM</description>
+      <ports>
+        <inputPort portTypeID="pwm3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pwm5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pwm6">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="A0">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A5">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="periodicADCUpdate" value="20" />
+        <property name="pin2Mode" value="0" />
+        <property name="pin3Mode" value="0" />
+        <property name="pin4Mode" value="0" />
+        <property name="pin5Mode" value="0" />
+        <property name="pin6Mode" value="0" />
+        <property name="pin7Mode" value="0" />
+        <property name="pin8Mode" value="0" />
+        <property name="pin9Mode" value="0" />
+        <property name="pin10Mode" value="0" />
+        <property name="pin11Mode" value="0" />
+        <property name="pin12Mode" value="0" />
+        <property name="pin13Mode" value="0" />
+      </properties>
+      <layout>
+        <posX>0</posX>
+        <posY>100</posY>
+      </layout>
+    </component>
+    <component id="OsciYUnten" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="YUnten" />
+      </properties>
+      <layout>
+        <posX>338</posX>
+        <posY>471</posY>
+      </layout>
+      <gui>
+        <posX>275</posX>
+        <posY>4489</posY>
+        <width>2325</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="OsciYOben" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="YOben" />
+      </properties>
+      <layout>
+        <posX>458</posX>
+        <posY>470</posY>
+      </layout>
+      <gui>
+        <posX>2650</posX>
+        <posY>4511</posY>
+        <width>2325</width>
+        <height>1400</height>
+      </gui>
+    </component>
+    <component id="AdjustmentCurveX" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="mouthmouse_x" />
+        <property name="displayGui" value="true" />
+        <property name="inMin" value="-10" />
+        <property name="inMax" value="10" />
+        <property name="outMin" value="-10" />
+        <property name="outMax" value="10" />
+        <property name="mode" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="dotMeter" />
+      </properties>
+      <layout>
+        <posX>764</posX>
+        <posY>271</posY>
+      </layout>
+      <gui>
+        <posX>5025</posX>
+        <posY>5000</posY>
+        <width>2250</width>
+        <height>4222</height>
+      </gui>
+    </component>
+    <component id="AdjustmentCurveY" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="mouthmouse_y" />
+        <property name="displayGui" value="true" />
+        <property name="inMin" value="-10" />
+        <property name="inMax" value="10" />
+        <property name="outMin" value="-10" />
+        <property name="outMax" value="10" />
+        <property name="mode" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="dotMeter" />
+      </properties>
+      <layout>
+        <posX>756</posX>
+        <posY>422</posY>
+      </layout>
+      <gui>
+        <posX>5025</posX>
+        <posY>733</posY>
+        <width>2125</width>
+        <height>4222</height>
+      </gui>
+    </component>
+    <component id="AveragerX" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="7" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>631</posX>
+        <posY>269</posY>
+      </layout>
+    </component>
+    <component id="AveragerY" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="7" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>635</posX>
+        <posY>418</posY>
+      </layout>
+    </component>
+    <component id="ButtonMenu" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="buttonCaption1" value="Enable Mouse" />
+        <property name="buttonCaption2" value="Disable Mouse" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>656</posX>
+        <posY>651</posY>
+      </layout>
+      <gui>
+        <posX>7388</posX>
+        <posY>3689</posY>
+        <width>1150</width>
+        <height>622</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.18">
+      <source>
+        <component id="AdjustmentCurveX" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="OsciX" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <source>
+        <component id="MathEvaluatorX" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="AveragerX" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.23">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A3" />
+      </source>
+      <target>
+        <component id="MathEvaluatorY" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A1" />
+      </source>
+      <target>
+        <component id="OsciYUnten" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A2" />
+      </source>
+      <target>
+        <component id="OsciXLinks" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="AdjustmentCurveY" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A4" />
+      </source>
+      <target>
+        <component id="MathEvaluatorX" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A2" />
+      </source>
+      <target>
+        <component id="MathEvaluatorX" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A0" />
+      </source>
+      <target>
+        <component id="Pressure" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.15">
+      <source>
+        <component id="MathEvaluatorY" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="AveragerY" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.22">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A1" />
+      </source>
+      <target>
+        <component id="MathEvaluatorY" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A4" />
+      </source>
+      <target>
+        <component id="OsciXRechts" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="Arduino.1" />
+        <port id="A3" />
+      </source>
+      <target>
+        <component id="OsciYOben" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="AveragerY" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="AdjustmentCurveY" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="AveragerX" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="AdjustmentCurveX" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.24">
+      <source>
+        <component id="AdjustmentCurveX" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.25">
+      <source>
+        <component id="AdjustmentCurveY" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="OsciY" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_activate">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonMenu" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="activate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_deactivate">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonMenu" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="deactivate" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>280</posX>
+      <posY>0</posY>
+      <width>9658</width>
+      <height>10000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -13,7 +13,7 @@
       </ports>
       <properties>
         <property name="resetValue" value="80" />
-        <property name="upperLimit" value="255" />
+        <property name="upperLimit" value="250" />
         <property name="lowerLimit" value="0" />
         <property name="wrapAround" value="false" />
       </properties>
@@ -41,24 +41,24 @@
       <properties>
         <property name="midiDevice" value="Gervill" />
         <property name="channel" value="1" />
-        <property name="instrument" value="Shakuhachi  " />
-        <property name="triggerThreshold" value="530" />
+        <property name="instrument" value="Trumpet     " />
+        <property name="triggerThreshold" value="515" />
         <property name="triggerMax" value="600" />
         <property name="pitchMin" value="0" />
         <property name="pitchMax" value="255" />
-        <property name="toneScale" value="major30-102.sc" />
-        <property name="playOnlyChangingNotes" value="true" />
+        <property name="toneScale" value="entlein.sc" />
+        <property name="playOnlyChangingNotes" value="True" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>787</posX>
-        <posY>39</posY>
+        <posY>38</posY>
       </layout>
       <gui>
         <posX>88</posX>
-        <posY>978</posY>
-        <width>5000</width>
-        <height>2000</height>
+        <posY>1022</posY>
+        <width>2875</width>
+        <height>1933</height>
       </gui>
     </component>
     <component id="AdjustmentCurve.1" type_id="asterics.AdjustmentCurve">
@@ -90,10 +90,10 @@
         <posY>275</posY>
       </layout>
       <gui>
-        <posX>5138</posX>
-        <posY>1000</posY>
-        <width>3025</width>
-        <height>3089</height>
+        <posX>2988</posX>
+        <posY>1022</posY>
+        <width>2150</width>
+        <height>3067</height>
       </gui>
     </component>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
@@ -130,8 +130,8 @@
       <gui>
         <posX>75</posX>
         <posY>3022</posY>
-        <width>5025</width>
-        <height>1089</height>
+        <width>2900</width>
+        <height>1045</height>
       </gui>
     </component>
     <component id="MathEvaluator.1.1" type_id="asterics.MathEvaluator">
@@ -232,7 +232,7 @@
         <posY>52</posY>
       </layout>
       <gui>
-        <posX>8212</posX>
+        <posX>5162</posX>
         <posY>1044</posY>
         <width>1000</width>
         <height>3000</height>
@@ -259,6 +259,82 @@
         <posY>278</posY>
       </layout>
     </component>
+    <component id="Comparator.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="3" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="0" />
+        <property name="threshold" value="515" />
+        <property name="threshold2" value="514" />
+      </properties>
+      <layout>
+        <posX>492</posX>
+        <posY>53</posY>
+      </layout>
+    </component>
+    <component id="ConstantDispatcher.1" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="0" />
+        <property name="slot2" value="800" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>642</posX>
+        <posY>38</posY>
+      </layout>
+    </component>
+    <component id="AutostartEvent.1.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="0" />
+      </properties>
+      <layout>
+        <posX>856</posX>
+        <posY>198</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.3">
@@ -271,14 +347,14 @@
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.4">
+    <channel id="binding.11">
       <source>
-        <component id="Integrate.1" />
-        <port id="out" />
+        <component id="ConstantDispatcher.1" />
+        <port id="output" />
       </source>
       <target>
         <component id="MidiPlayer.1" />
-        <port id="pitch" />
+        <port id="trigger" />
       </target>
     </channel>
     <channel id="binding.7">
@@ -321,16 +397,6 @@
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.11">
-      <source>
-        <component id="Lipmouse.1" />
-        <port id="pressure" />
-      </source>
-      <target>
-        <component id="MidiPlayer.1" />
-        <port id="trigger" />
-      </target>
-    </channel>
     <channel id="binding.10">
       <source>
         <component id="Lipmouse.1" />
@@ -339,6 +405,26 @@
       <target>
         <component id="BarDisplay.1" />
         <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.12">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="Comparator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.13">
+      <source>
+        <component id="Integrate.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MidiPlayer.1" />
+        <port id="pitch" />
       </target>
     </channel>
   </channels>
@@ -385,6 +471,51 @@
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="conditionFalse_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionFalse" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
     <Decoration>true</Decoration>
@@ -395,7 +526,7 @@
     <AREGUIWindow>
       <posX>38</posX>
       <posY>67</posY>
-      <width>9800</width>
+      <width>6662</width>
       <height>4089</height>
     </AREGUIWindow>
   </modelGUI>

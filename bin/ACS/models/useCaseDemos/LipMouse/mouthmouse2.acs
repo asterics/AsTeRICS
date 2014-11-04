@@ -419,7 +419,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="-a*b/50" />
+        <property name="expression" value="a*b/50" />
       </properties>
       <layout>
         <posX>621</posX>
@@ -446,7 +446,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="-a*b/50" />
+        <property name="expression" value="a*b/50" />
       </properties>
       <layout>
         <posX>627</posX>

@@ -617,6 +617,7 @@ public class DeploymentManager
 			}
 		}finally {
 			modelStartupFinished=true;
+			logger.fine("Setting modelLifecycleTaskPending=false");
 			modelLifecycleTaskPending=false;
 		}
 	}
@@ -642,6 +643,7 @@ public class DeploymentManager
 				logger.fine("Paused component instance: "+compRefName);
 			}
 		}finally {
+			logger.fine("Setting modelLifecycleTaskPending=false");
 			modelLifecycleTaskPending=false;			
 		}
 	}		
@@ -667,6 +669,7 @@ public class DeploymentManager
 			}
 		}finally{
 			modelStartupFinished=true;
+			logger.fine("Setting modelLifecycleTaskPending=false");
 			modelLifecycleTaskPending=false;
 		}
 	}
@@ -709,12 +712,24 @@ public class DeploymentManager
 			}
 			notifyAREEventListeners (AREEvent.POST_STOP_EVENT);
 		}finally{
+			logger.fine("Setting modelLifecycleTaskPending=false");
 			modelLifecycleTaskPending=false;
 		}
 		System.gc();
 	}
 
 	// ------------------- End of model lifecycle support ------------------- //
+	
+	/**
+	 * Resets the flags modelLifecycleTaskPending and others to a clean state.
+	 * This should be used after e.g. an error occurred by the caller of a lifecycle task (e.g. AREServices.runModel) after an execution timeout
+	 */
+	public void reseToCleanState() {
+		logger.fine("Setting modelLifecycleTaskPending=false");
+		modelStartupFinished=false;
+		modelLifecycleTaskPending=false;
+	}
+	
 	/**
 	 * Checks if the DeploymentManager is currently performing a lifecycle task (start, pause, resume, stop) of a model 
 	 * @return
