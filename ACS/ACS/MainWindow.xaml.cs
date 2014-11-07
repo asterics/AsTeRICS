@@ -5151,7 +5151,7 @@ namespace Asterics.ACS {
                             Asterics.ACS2.componentTypesComponentType comp = (Asterics.ACS2.componentTypesComponentType)o;
                             comp.InitGraphPorts(comp.id);
                             componentList.Add(comp.id, comp);
-                            AddSearchSuggestion(comp.id.Replace("asterics.",""),comp.description);
+                            AddSearchSuggestion(comp.id,comp.description);
                         }
                     }
                     foreach (Asterics.ACS2.componentTypesComponentType component in componentList.Values) {
@@ -5341,11 +5341,11 @@ namespace Asterics.ACS {
         }
 
         private void AddSearchSuggestion(string name, string description) {
-           
-            AutoCompleteEntry entry = new AutoCompleteEntry(name);
+            string tmpName = name.Replace("asterics.", "");
+            AutoCompleteEntry entry = new AutoCompleteEntry(tmpName,name);
             entry.ToolTip = description;
             List<string> keywords = new List<string>();
-            for (int i = 0; i < name.Length; i++)
+            for (int i = 0; i < tmpName.Length; i++)
             {
                 keywords.Add(name.Substring(i));
             }
@@ -5355,7 +5355,13 @@ namespace Asterics.ACS {
 
         private void searchItemSelected()
         {
-            AddComponent("asterics." + autoCompleteTextBox.Text, false, true, false);
+            foreach (AutoCompleteEntry entry in autoCompleteTextBox.Items) 
+            {
+                if (entry.DisplayName.Replace("asterics.", "") == autoCompleteTextBox.Text)
+                {
+                    AddComponent(entry.Key, false, true, false);
+                }
+            }
             autoCompleteTextBox.Text = "";
         }
 
