@@ -223,12 +223,14 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
         if("channel".equalsIgnoreCase(propertyName))
         {
             final Object oldValue = propChannel;
+			lastNoteOff();
             propChannel = Integer.parseInt(newValue.toString());
             return oldValue;
         }
         if("instrument".equalsIgnoreCase(propertyName))
         {
             final Object oldValue = propInstrument;
+			lastNoteOff();
             propInstrument = (String) newValue;
             MidiManager.instance.instrumentChange (propMidiDevice, propChannel, propInstrument);
             return oldValue;
@@ -236,6 +238,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
         if("triggerThreshold".equalsIgnoreCase(propertyName))
         {
             final Object oldValue = propTriggerThreshold;
+			lastNoteOff();
             propTriggerThreshold = Integer.parseInt(newValue.toString());
             return oldValue;
         }
@@ -248,12 +251,14 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
         if("pitchMin".equalsIgnoreCase(propertyName))
         {
             final Object oldValue = propPitchMin;
+			lastNoteOff();
             propPitchMin = Integer.parseInt(newValue.toString());
             return oldValue;
         }
         if("pitchMax".equalsIgnoreCase(propertyName))
         {
             final Object oldValue = propPitchMax;
+			lastNoteOff();
             propPitchMax = Integer.parseInt(newValue.toString());
             return oldValue;
         }
@@ -261,6 +266,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
         {
         	int i;
             final Object oldValue = propToneScale;
+			lastNoteOff();
             propToneScale = (String) newValue;
 
             scale.loadScale(propToneScale);
@@ -287,6 +293,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 
             if("true".equalsIgnoreCase((String)newValue))
             {
+				lastNoteOff();
             	propPlayOnlyChangingNotes = true;
             }
             else if("false".equalsIgnoreCase((String)newValue))
@@ -378,7 +385,6 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 			else
 			{
 				lastNoteOff();
-				System.out.println("note On "+scale.noteNumberArray[selectedNote]+" velocity "+velocity);
 				MidiManager.instance.midiNoteOn(propMidiDevice, propChannel,scale.noteNumberArray[selectedNote], 127);
 			} 
 			oldNote = selectedNote;
@@ -387,7 +393,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 		}
 		if (oldVelocity!=velocity)
 		{
-			System.out.println("update velocity "+velocity);
+			//System.out.println("update velocity "+velocity);
 			MidiManager.instance.midiControlChange(propMidiDevice, propChannel, 7,velocity);
 			oldVelocity=velocity;
 		}
@@ -454,6 +460,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveData(byte[] data)
 		{
+			lastNoteOff();
 		    propToneScale = ConversionUtils.stringFromBytes(data);
             scale.loadScale(propToneScale);
 			amountOfNotes = scale.size;
@@ -466,6 +473,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveData(byte[] data)
 		{
+			lastNoteOff();
 		    propInstrument = ConversionUtils.stringFromBytes(data);
             MidiManager.instance.instrumentChange (propMidiDevice, propChannel, propInstrument);
 		}

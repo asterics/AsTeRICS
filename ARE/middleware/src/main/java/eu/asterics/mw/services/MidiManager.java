@@ -182,7 +182,17 @@ public class MidiManager {
 			}
 			
 			if (instrument>=midiUnit.instrumentNames.size())
+			{
+				Integer tempint;
 				instrument=0;
+				try {
+					 tempint= Integer.parseInt(newInstrumentName);
+				} catch (NumberFormatException e) {
+					tempint=-1;
+				}
+				if ((tempint>-1) && (tempint<midiUnit.instrumentNames.size()))
+						instrument=tempint;
+			}
 			
 			if (midiUnit.synthesizer != null) 
 			{
@@ -216,11 +226,16 @@ public class MidiManager {
 		{
 			MidiUnit midiUnit=midiUnitsByName.get(deviceName);
 			if (midiUnit==null) return;
-			if (midiUnit.synthesizer != null) midiUnit.midiChannels[channel].noteOn(note, velocity);
+			if (midiUnit.synthesizer != null) 
+			{
+				if (debugOutput) System.out.println("Midimanager: Channel  "+channel+" Note "+note+" on using synth, velocity "+velocity);
+				midiUnit.midiChannels[channel].noteOn(note, velocity);
+			}
 			else if (midiUnit.receiver!=null)
 			{
 				try 
 				{
+					if (debugOutput) System.out.println("Midimanager: Channel  "+channel+" Note "+note+" on using Midi Unit, velocity "+velocity);
 					ShortMessage myMsg = new ShortMessage();
 					myMsg.setMessage(ShortMessage.NOTE_ON, channel, note, velocity); 
 					midiUnit.receiver.send(myMsg, -1);
@@ -235,13 +250,17 @@ public class MidiManager {
 			MidiUnit midiUnit=midiUnitsByName.get(deviceName);
 			if (midiUnit==null) return;
 			if (midiUnit.synthesizer != null) 
+			{
+				if (debugOutput) System.out.println("Channel  "+channel+" Note "+note+" off using synth");
 				midiUnit.midiChannels[channel].noteOff(note);
+			}
 			if (midiUnit.receiver!=null)
 			{
 				try 
 				{
+					if (debugOutput) System.out.println("Channel  "+channel+" Note "+note+" off using midi unit");
 					ShortMessage myMsg = new ShortMessage();
-					myMsg.setMessage(ShortMessage.NOTE_OFF, channel, note);  
+					myMsg.setMessage(ShortMessage.NOTE_OFF, channel, note, 0 );  
 					midiUnit.receiver.send(myMsg, -1);
 				} catch (Exception e1) {
 					e1.printStackTrace();
