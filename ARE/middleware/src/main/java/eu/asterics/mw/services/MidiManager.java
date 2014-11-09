@@ -234,8 +234,9 @@ public class MidiManager {
 		{
 			MidiUnit midiUnit=midiUnitsByName.get(deviceName);
 			if (midiUnit==null) return;
-			if (midiUnit.synthesizer != null) midiAllSoundOff(deviceName,channel);
-			else if (midiUnit.receiver!=null)
+			if (midiUnit.synthesizer != null) 
+				midiUnit.midiChannels[channel].noteOff(note);
+			if (midiUnit.receiver!=null)
 			{
 				try 
 				{
@@ -248,11 +249,69 @@ public class MidiManager {
 			}
 		}
 
+		public void midiChannelPressure(String deviceName, int channel, int pressure)
+		{
+			MidiUnit midiUnit=midiUnitsByName.get(deviceName);
+			if (midiUnit==null) return;
+			if (midiUnit.synthesizer != null)
+				midiUnit.midiChannels[channel].setChannelPressure(pressure);
+			if (midiUnit.receiver!=null)
+			{
+				try 
+				{
+					ShortMessage myMsg = new ShortMessage();
+					myMsg.setMessage(ShortMessage.CHANNEL_PRESSURE, channel, pressure);  
+					midiUnit.receiver.send(myMsg, -1);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+
+		public void midiChannelPolyPressure(String deviceName, int channel, int note, int pressure)
+		{
+			MidiUnit midiUnit=midiUnitsByName.get(deviceName);
+			if (midiUnit==null) return;
+			if (midiUnit.synthesizer != null)
+				midiUnit.midiChannels[channel].setPolyPressure(note,pressure);
+			if (midiUnit.receiver!=null)
+			{
+				try 
+				{
+					ShortMessage myMsg = new ShortMessage();
+					myMsg.setMessage(ShortMessage.POLY_PRESSURE, channel, note, pressure);  
+					midiUnit.receiver.send(myMsg, -1);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+
+		public void midiPitchBend(String deviceName, int channel, int bend)
+		{
+			MidiUnit midiUnit=midiUnitsByName.get(deviceName);
+			if (midiUnit==null) return;
+			if (midiUnit.synthesizer != null)
+				midiUnit.midiChannels[channel].setPitchBend(bend);
+			else if (midiUnit.receiver!=null)
+			{
+				try 
+				{
+					ShortMessage myMsg = new ShortMessage();
+					myMsg.setMessage(ShortMessage.PITCH_BEND, 0, bend);  
+					midiUnit.receiver.send(myMsg, -1);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+
 		public void midiControlChange(String deviceName, int channel, int data1, int data2)
 		{
 			MidiUnit midiUnit=midiUnitsByName.get(deviceName);
 			if (midiUnit==null) return;
-			if (midiUnit.synthesizer != null) return;
+			if (midiUnit.synthesizer != null)
+				midiUnit.midiChannels[channel].controlChange(data1,data2);
 			if (midiUnit.receiver!=null)
 			{
 				try 
