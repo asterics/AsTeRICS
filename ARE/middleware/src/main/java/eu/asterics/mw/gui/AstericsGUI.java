@@ -199,7 +199,7 @@ public class AstericsGUI implements IAREEventListener
 		
 	}
 
-	public class ResizeListener extends ComponentAdapter {
+	private class ResizeListener extends ComponentAdapter {
 
 		  @Override
 		  public void componentResized(ComponentEvent evt) {
@@ -232,7 +232,7 @@ public class AstericsGUI implements IAREEventListener
 		  }
 	}
 
-	public class DesktopListener implements MouseListener, MouseMotionListener {
+	private class DesktopListener implements MouseListener, MouseMotionListener {
 
 		@Override
 		public void mouseClicked(MouseEvent e) 
@@ -306,7 +306,7 @@ public class AstericsGUI implements IAREEventListener
 		
 		
 
-	public void setSystemTray() {
+	private void setSystemTray() {
 
 
 		if (SystemTray.isSupported()) {
@@ -455,6 +455,7 @@ public class AstericsGUI implements IAREEventListener
 	public void closeAction()
 	{	//if (mainFrame.isShowing())
 		//	setDesktopSize("both");
+		//all gui related operations should be executed in EventDispatchThread, but when closing an application it does not matter
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.setVisible(false);
 		AREServices.instance.stopModel();
@@ -464,6 +465,7 @@ public class AstericsGUI implements IAREEventListener
 
 	void fileChooser (AsapiSupport as)
 	{
+		//Should only be invoked by a gui action (mouse click) and hence no check for EventDispatchThread necessary.
 		fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
@@ -516,7 +518,7 @@ public class AstericsGUI implements IAREEventListener
 	}
 	
 	
-	class ModelFilter  extends FileFilter {
+	private class ModelFilter  extends FileFilter {
 
 		//Accept only .xml and .acs files
 		public boolean accept(File f) {
@@ -547,7 +549,7 @@ public class AstericsGUI implements IAREEventListener
 		}
 	}
 
-	public void setVisible(String name, boolean b)
+	private void setVisible(String name, boolean b)
 	{
 		Component[] components = pane.getComponents();
 
@@ -565,7 +567,7 @@ public class AstericsGUI implements IAREEventListener
 	}
 	
 
-	void applyChanges ()
+	private void applyChanges ()
 	{
 		
 		mainFrame.setVisible(false);
@@ -652,9 +654,16 @@ public class AstericsGUI implements IAREEventListener
 	}
 	
 	
-	public void setStatus (AREStatus s)
+	public void setStatus (final AREStatus s)
 	{
-		controlPane.setStatus (s);
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				controlPane.setStatus (s);	
+			}
+		});
 	}
 	
 	
@@ -673,15 +682,21 @@ public class AstericsGUI implements IAREEventListener
 	@Override
 	public void postDeployModel() 
 	{
-		ModelGUIInfo info = DeploymentManager.instance
+		final ModelGUIInfo info = DeploymentManager.instance
 			.getCurrentRuntimeModel().getModelGuiInfo();
 		
 		if (info != null)
 		{
-			// System.out.println(info.toString());
-			modelGuiInfo = info;
-			modelGuiInfo.updateProperties();			
-			applyChanges();
+			SwingUtilities.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					modelGuiInfo = info;
+					modelGuiInfo.updateProperties();			
+					applyChanges();					
+				}
+			});
 		}
 	}
 
