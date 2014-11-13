@@ -5342,12 +5342,17 @@ namespace Asterics.ACS {
 
         private void AddSearchSuggestion(string name, string description) {
             string tmpName = name.Replace("asterics.", "");
+            if (tmpName == "Averager")
+            {
+                int k = 17;
+                k++;
+            }
             AutoCompleteEntry entry = new AutoCompleteEntry(tmpName,name);
             entry.ToolTip = description;
             List<string> keywords = new List<string>();
             for (int i = 0; i < tmpName.Length; i++)
             {
-                keywords.Add(name.Substring(i));
+                keywords.Add(tmpName.Substring(i));
             }
             entry.KeywordStrings = (string[])keywords.ToArray();
             autoCompleteTextBox.AddItem(entry);
