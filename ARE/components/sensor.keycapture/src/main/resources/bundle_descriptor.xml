@@ -4,7 +4,7 @@
 
     <componentType id="asterics.KeyCapture"
                    canonical_name="eu.asterics.component.sensor.keycapture.KeyCaptureInstance">
-        <type subtype="Common Input Devices">sensor</type>
+        <type subtype="Standard Input Devices">sensor</type>
         <singleton>false</singleton>
         <description>captures key presses and releases for a single keyboard key</description>
         <ports>
@@ -15,7 +15,7 @@
 			</inputPort>
 
 
-        </ports>
+        </ports> 
 		<events>
 			<eventListenerPort id="enable">
 				<description>enable capturing and blocking</description>

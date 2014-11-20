@@ -25,7 +25,7 @@
  * 
  */
 
-package eu.asterics.component.sensor.keycapture;
+package eu.asterics.component.sensor.keycapture; 
 
 
 import java.util.logging.Logger;
