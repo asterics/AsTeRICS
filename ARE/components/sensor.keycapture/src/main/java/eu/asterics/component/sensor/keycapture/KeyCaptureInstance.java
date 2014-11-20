@@ -310,7 +310,7 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
 	{
 		if (enabled == false)
 			return;
-		int keyCode = nke.getRawCode();
+		int keyCode = nke.getKeyCode();
 		if (pressed == false && keyCode == propKeyCode) {
 			etpKeyPressed.raiseEvent();
 			pressed = true;
@@ -335,7 +335,7 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
     public void nativeKeyReleased(NativeKeyEvent nke) {
 		if (enabled == false)
 			return;
-        int keyCode = nke.getRawCode();
+        int keyCode = nke.getKeyCode();
 		if (keyCode == propKeyCode) {
 			etpKeyReleased.raiseEvent();
 			pressed = false;
