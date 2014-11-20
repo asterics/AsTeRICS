@@ -1,0 +1,261 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="20.11.2014_744" version="20130320">
+  <components>
+    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="65" />
+        <property name="block" value="false" />
+      </properties>
+      <layout>
+        <posX>501</posX>
+        <posY>226</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>686</posX>
+        <posY>230</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>1711</posY>
+        <width>6162</width>
+        <height>3244</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="buttonCaption1" value="Enable" />
+        <property name="buttonCaption2" value="Disable" />
+        <property name="buttonCaption3" value="Block" />
+        <property name="buttonCaption4" value="Unblock" />
+        <property name="buttonCaption5" value="Capture key A" />
+        <property name="buttonCaption6" value="Capture key F1" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>263</posX>
+        <posY>369</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>644</posY>
+        <width>6162</width>
+        <height>889</height>
+      </gui>
+    </component>
+    <component id="ConstantDispatcher.1" type_id="asterics.ConstantDispatcher">
+      <description>Send double values from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="number" value="20" />
+        <property name="delay" value="300" />
+        <property name="slot1" value="65" />
+        <property name="slot2" value="112" />
+        <property name="slot3" value="0" />
+        <property name="slot4" value="0" />
+        <property name="slot5" value="0" />
+        <property name="slot6" value="0" />
+        <property name="slot7" value="0" />
+        <property name="slot8" value="0" />
+        <property name="slot9" value="0" />
+        <property name="slot10" value="0" />
+        <property name="slot11" value="0" />
+        <property name="slot12" value="0" />
+        <property name="slot13" value="0" />
+        <property name="slot14" value="0" />
+        <property name="slot15" value="0" />
+        <property name="slot16" value="0" />
+        <property name="slot17" value="0" />
+        <property name="slot18" value="0" />
+        <property name="slot19" value="0" />
+        <property name="slot20" value="0" />
+        <property name="autosendSlot" value="0" />
+      </properties>
+      <layout>
+        <posX>288</posX>
+        <posY>151</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="ConstantDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="KeyCapture.1" />
+        <port id="keyCode" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="keyPressed_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyReleased_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyReleased" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_enable">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="enable" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_disable">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="disable" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_block">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="block" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_unblock">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="unblock" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ConstantDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9000</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

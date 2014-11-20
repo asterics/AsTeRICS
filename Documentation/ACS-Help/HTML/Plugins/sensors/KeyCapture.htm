@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>KeyCapture</Title>
+</HEAD>
+<BODY>
+<H1>Key Capture</H1> 
+<H3>Component Type: Sensor (Subcategory: Standard Input Devices)</H3>
+<p>This component provides access to keystrokes of a single key on the keyboard. The keystroke capture does not depend on a particular window or text field to have the input focus. For every keypress and release of the specified key an event gets fired. Possible applications include triggering functions by keyboard input, interfacing to speech recognition software or remapping keys to other keycodes. </p>
+<div class="image"><img src="img/keycapture.jpg" alt="Screenshot: KeyCapture plugin" title="Screenshot: KeyCapture plugin" /><br>
+KeybCapture plugin</div>
+<H2>Requirements</H2>
+A keyboard which generates keystrokes or a software component which injects keystrokes into the operating system message queue. 
+<H2>Mapping of keyCodes to actual keys</H2>
+<div class="image"><img src="img/keycapture2.jpg" alt="Mapping of keycodes to keys" title="Mapping of keycodes to keys" /><br>
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>keyCode [integer]:</STRONG> The keycode of the key which should be captured. For a list of the mapping between keycodes and keys see the graphics above.</li>
+</ul>
+<H2>Event Trigger Description</H2>
+<ul>
+<li><STRONG>keyPressed:</STRONG> This event port fires an event if the key with the specified keyCode was pressed.</li>
+<li><STRONG>keyReleased:</STRONG> This event port fires an event if the key with the specified keyCode was released.</li>
+</ul>
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>enable:</STRONG> The keystate is captured and events get fired</li>
+<li><STRONG>disable:</STRONG> The plugin does not fire any event.</li>
+<li><STRONG>block:</STRONG> After this event, the keystroke of the key with the specified keyCode is not forwarded to the operating system.</li>
+<li><STRONG>unblock:</STRONG> After this event, the keystroke of the key with the specified keyCode is forwarded to the operating system.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>block [boolean]:</STRONG> If this property is set to true, no key press activities will be routed to the operating system </li>
+<li><STRONG>keyCode[integer]:</STRONG>The keycode of the key which should be captured. For a list of the mapping between keycodes and keys see the graphics above.</li>
+</ul>
+</BODY>
+</HTML>
