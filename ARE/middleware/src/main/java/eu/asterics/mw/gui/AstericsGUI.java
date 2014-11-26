@@ -94,7 +94,7 @@ import eu.asterics.mw.services.IAREEventListener;
  */
 public class AstericsGUI implements IAREEventListener
 {
-	public final static String ARE_VERSION="2.5RC1";
+	public final static String ARE_VERSION="2.5";
 	static int DEFAULT_SCREEN_X=0;
 	static int DEFAULT_SCREEN_Y=0;
 	static int DEFAULT_SCREEN_W=0;
