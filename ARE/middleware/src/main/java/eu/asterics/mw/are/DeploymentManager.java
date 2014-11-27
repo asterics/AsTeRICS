@@ -509,9 +509,10 @@ public class DeploymentManager
 		IRuntimeComponentInstance ci = runtimeComponentInstances.get(componentID);
 		if (ci == null)
 			return;
-		synchronized(ci) {
+//Removed synchronized again due to issue #59							
+//		synchronized(ci) {
 			ci.stop();
-		}
+//		}
 
 		String cType = getCurrentRuntimeModel().
 				getComponentInstance(componentID).
@@ -691,13 +692,14 @@ public class DeploymentManager
 					logger.fine("Trying to stop component instance: "+compRefName);
 					String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 	
-					synchronized(componentInstance) {
+//Removed synchronized again due to issue #59					
+//					synchronized(componentInstance) {
 						bundleManager.getBundleFromId(id).stop();
 						componentInstance.stop();
 						String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
 						//There is no state for STOP, so use DEPLOYED? or better OK?
 						runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.DEPLOYED);
-					}
+//					}
 					
 					logger.fine("Stopped component instance: "+compRefName);
 				}
