@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.KeyCapture"
+                   canonical_name="eu.asterics.component.sensor.keycapture.KeyCaptureInstance">
+        <type subtype="Standard Input Devices">sensor</type>
+        <singleton>false</singleton>
+        <description>captures key presses and releases for a single keyboard key</description>
+        <ports>
+			<inputPort id="keyCode">
+				<description>keycode of the key to capture</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports> 
+		<events>
+			<eventListenerPort id="enable">
+				<description>enable capturing and blocking</description>
+			</eventListenerPort>
+			<eventListenerPort id="disable">
+				<description>disable capturing and blocking</description>
+			</eventListenerPort>
+			<eventListenerPort id="block">
+				<description>don't propagate keypresses of the key with the specified keycode</description>
+			</eventListenerPort>
+			<eventListenerPort id="unblock">
+				<description>propagate keypresses of the key with the specified keycode</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="keyPressed">
+				<description>event gets fired when the specified key was pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="keyReleased">
+				<description>event gets fired when the specified key was released</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="keyCode"
+				type="integer"
+				value="0"
+				description="keycode of the key to capture, see help for more information"/>
+			<property name="block"
+				type="boolean"
+				value="false"
+				description="if ticked keypresses of the specified key will not be sent to the operating system"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
