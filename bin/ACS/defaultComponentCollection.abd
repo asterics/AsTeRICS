@@ -2422,6 +2422,113 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.actuator.skywatchermount.SkyWatcherMountInstance" id="asterics.SkyWatcherMount">
+        <type subtype="Others">actuator</type>
+        <singleton>false</singleton>
+        <description>Plugin to control telescope mounts using the NEXStar 5 protocol</description>
+        <ports>
+			<inputPort id="speed">
+                <description>movement speed of the mount</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="panPosition">
+                <description>Position to go for pan</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="tiltPosition">
+                <description>Position to go for tilt</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointLeft">
+                <description>max left step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointRight">
+                <description>max right step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointUp">
+                <description>max up step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointDown">
+                <description>max down step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<outputPort id="posX">
+				<description>x coordinates of the head</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="posY">
+				<description>x coordinates of the head</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="goLeft">
+				<description>moves the head to the left</description>
+			</eventListenerPort>
+			<eventListenerPort id="goRandom">
+				<description>moves the head to a random position between the set direction limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="goRight">
+				<description>moves the head to the right</description>
+			</eventListenerPort>
+			<eventListenerPort id="goUp">
+				<description>moves the head to the up</description>
+			</eventListenerPort>
+			<eventListenerPort id="goDown">
+				<description>moves the head to the down</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopPan">
+				<description>stops the pan axis</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopTilt">
+				<description>stops the tilt axis</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stops the pan and tilt axis</description>
+			</eventListenerPort>
+			<eventListenerPort id="goToPanPosition">
+				<description>moves the head to the specified Pan position</description>
+			</eventListenerPort>
+			<eventListenerPort id="goToTiltPosition">
+				<description>moves the head to the specified tilt position</description>
+			</eventListenerPort>
+			<eventListenerPort id="triggerOn">
+				<description>turns the shutter on</description>
+			</eventListenerPort>
+			<eventListenerPort id="triggerOff">
+				<description>turns the shutter off</description>
+			</eventListenerPort>
+			<eventListenerPort id="enableLimits">
+				<description>enables the maximum and minimum movement limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="disableLimits">
+				<description>disable the maximum and minimum movement limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="disable">
+				<description>disable all movements of the skywatcher mount</description>
+			</eventListenerPort>
+			<eventListenerPort id="enable">
+				<description>enable all movements of the skywatcher mount</description>
+			</eventListenerPort>
+		</events>			
+        <properties>
+			<property description="Serial Port of the skywatcher device" name="SerialPort" type="string" value="COMX"/>
+			<property description="defines if the endpoints are used by the mount" name="EndPointsActive" type="boolean" value="false"/> 
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="com.starlab.component.actuator.ssvepfilewriter.SSVEPFileWriterInstance" id="asterics.SSVEPFileWriter">
         <type subtype="Brain Computer Interface">actuator</type>
         <singleton>false</singleton>
@@ -6376,89 +6483,6 @@
     </componentType>
 
 
- <componentType canonical_name="eu.asterics.component.processor.websocket.WebSocketInstance" id="asterics.WebSocket">
-        <type subtype="Web">processor</type>
-        <singleton>false</singleton>
-        <description>This plugin uses a websocket connection to send and read data</description>
-        <ports>
-			<inputPort id="InA">
-				<description>Double Input A</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-			<inputPort id="InB">
-				<description>Double Input B</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-			<inputPort id="InC">
-				<description>Integer Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-			<inputPort id="InD">
-				<description>Integer Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-			<inputPort id="InE">
-				<description>String Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="InF">
-				<description>String Input F</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-
-			<outputPort id="OutA">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="OutB">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="OutC">
-				<description>output port description</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="OutD">
-				<description>output port description</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="OutE">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-			<outputPort id="OutF">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-			<eventListenerPort id="event1">
-				<description>elp description</description>
-			</eventListenerPort>
-			<eventListenerPort id="reset">
-				<description>Clears buffers and resets websocket connection</description>
-			</eventListenerPort>
-
-			<eventTriggererPort id="reconnect">
-				<description>Reconnect to websockect</description>
-			</eventTriggererPort>
-
-		</events>			
-        <properties>
-			<property description="hostname or ip address to use for URL" name="host" type="string" value="localhost"/>
-			<property description="port number used for websocket" name="port" type="integer" value="8080"/>
-
-        </properties>
-
-    </componentType>
-
  <componentType canonical_name="eu.asterics.component.processor.yaak.YaakInstance" id="asterics.Yaak">
         <type subtype="Phone Interface">processor</type>
         <singleton>false</singleton>
@@ -7406,6 +7430,139 @@
             <width>2000</width>
             <height>1500</height>
         </gui>
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.sensor.eyetribe.EyeTribeInstance" id="asterics.EyeTribe">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>true</singleton>
+        <description>interfaces to the EyeTribe Gaze tracking system</description>
+        <ports>
+
+			<outputPort id="gazeX">
+				<description>eye gaze x-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="gazeY">
+				<description>eye gaze y-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="posX">
+				<description>eye x-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="posY">
+				<description>eye y-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="fixationTime">
+				<description>time user fixates a spot</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="closeTime">
+				<description>time user closes eyes</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="startCalibration">
+				<description>to start the calibration process</description>
+			</eventListenerPort>
+			<eventListenerPort id="offsetCorrection">
+				<description>to apply an offset correction to the current gazepoint</description>
+			</eventListenerPort>
+			<eventListenerPort id="removeLastOffsetCorrection">
+				<description>remove the last offset correction point from the list of correction points</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="blink">
+				<description>triggered when eye blink occurs</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="longblink">
+				<description>triggered when long eye blink occurs</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fixation">
+				<description>triggered when user fixates spot on screen for a particular time</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fixationEnd">
+				<description>triggered when user stops a fixation</description>
+			</eventTriggererPort>
+		</events>			
+        <properties>
+			<property description="minimum eye close time (in milliseconds) for triggering an eye blink event" name="minBlinkTime" type="integer" value="50"/>
+			<property description="eye close time (in milliseconds) to decide short/long blink event" name="midBlinkTime" type="integer" value="200"/>
+			<property description="longer eye close times (in milliseconds) will not create eye blink events" name="maxBlinkTime" type="integer" value="2000"/>
+			<property description="time for triggering a fixation event (in milliseconds)" name="fixationTime" type="integer" value="700"/>
+			<property combobox="left eye//right eye//average of left and right eye" description="the mode decides which pupil coordinates are sent to the posX and posY output ports: left eye, right eye or average;  the coordinates are in the range (0-1000)" name="pupilPositionMode" type="integer" value="0"/>
+			<property description="radius (in pixels) in which offset correction spots are active" name="offsetCorrectionRadius" type="integer" value="150"/>
+			<property combobox="one stage manual offset correction//two stage automatic offset correction" description="one stage: look around to change offset, send another event to finish; two stage: look at gaze point first, then on cursor " name="offsetCorrectionMode" type="integer" value="0"/>
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.sensor.eyex.EyeXInstance" id="asterics.EyeX">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>true</singleton>
+        <description>interfaces to the EyeX Gaze tracking system</description>
+        <ports>
+
+			<outputPort id="gazeX">
+				<description>eye gaze x-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="gazeY">
+				<description>eye gaze y-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="posX">
+				<description>eye x-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="posY">
+				<description>eye y-coordinate</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="fixationTime">
+				<description>time user fixates a spot</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="closeTime">
+				<description>time user closes eyes</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="offsetCorrection">
+				<description>to apply an offset correction to the current gazepoint</description>
+			</eventListenerPort>
+			<eventListenerPort id="removeLastOffsetCorrection">
+				<description>remove the last offset correction point from the list of correction points</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="blink">
+				<description>triggered when eye blink occurs</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="longblink">
+				<description>triggered when long eye blink occurs</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fixation">
+				<description>triggered when user fixates spot on screen for a particular time</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="fixationEnd">
+				<description>triggered when user stops a fixation</description>
+			</eventTriggererPort>
+		</events>			
+        <properties>
+			<property description="minimum eye close time (in milliseconds) for triggering an eye blink event" name="minBlinkTime" type="integer" value="50"/>
+			<property description="eye close time (in milliseconds) to decide short/long blink event" name="midBlinkTime" type="integer" value="200"/>
+			<property description="longer eye close times (in milliseconds) will not create eye blink events" name="maxBlinkTime" type="integer" value="2000"/>
+			<property description="time for triggering a fixation event (in milliseconds)" name="fixationTime" type="integer" value="700"/>
+			<property combobox="left eye//right eye//average of left and right eye//off" description="the mode decides which pupil coordinates are sent to the posX and posY output ports: left eye, right eye or average;  the coordinates are in the range (0-1000)" name="pupilPositionMode" type="integer" value="0"/>
+			<property description="radius (in pixels) in which offset correction spots are active" name="offsetCorrectionRadius" type="integer" value="150"/>
+			<property combobox="one stage manual offset correction//two stage automatic offset correction" description="one stage: look around to change offset, send another event to finish; two stage: look at gaze point first, then on cursor " name="offsetCorrectionMode" type="integer" value="0"/>
+        </properties>
+
     </componentType>
 
  <componentType canonical_name="eu.asterics.component.sensor.facetrackerCLM2.FacetrackerCLM2Instance" id="asterics.FacetrackerCLM">
