@@ -390,9 +390,15 @@ public class EventCascadeInstance extends AbstractRuntimeComponentInstance imple
 					}
 				}
 	
+				long starttime=System.currentTimeMillis();
+				long endtime=starttime+propDelayBeforeTrigger[currentTrigger];
 				try {
-					if (propDelayBeforeTrigger[currentTrigger]>0)
-						Thread.sleep(propDelayBeforeTrigger[currentTrigger]);
+					
+//					if (propDelayBeforeTrigger[currentTrigger]>0)
+//						Thread.sleep(propDelayBeforeTrigger[currentTrigger]);					
+					while ((System.currentTimeMillis()<endtime) && (threadRunning==true) && (threadActive==true))
+						Thread.sleep(2);
+					
 				} catch (InterruptedException e) {}
 				
 				if ((threadRunning==true) && (threadActive==true))
