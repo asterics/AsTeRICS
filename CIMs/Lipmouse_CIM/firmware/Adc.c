@@ -12,7 +12,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define PCB_VERSION
+#define TEENSY_VERSION
 
 void ADC_Init(void) {
  
@@ -38,7 +38,7 @@ void ADC_Init(void) {
 uint16_t ADC_Read(uint8_t channel )
 {
 
-#ifndef PCB_VERSION
+#ifndef TEENSY_VERSION
   if (channel==4) channel=1;
   else if (channel==5) channel=3;
   else if (channel==6) channel=2;
