@@ -83,7 +83,7 @@
       <properties>
         <property name="number" value="20" />
         <property name="delay" value="300" />
-        <property name="slot1" value="59" />
+        <property name="slot1" value="30" />
         <property name="slot2" value="59" />
         <property name="slot3" value="0" />
         <property name="slot4" value="0" />
