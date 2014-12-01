@@ -26,50 +26,20 @@ package eu.asterics.mw.gui;
  */
 
 
-import java.awt.AWTException;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.Point;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
-//import java.io.BufferedWriter;
 import java.io.File;
-//import java.io.FileWriter;
-//import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
-//import java.util.logging.Logger;
-
-import javax.swing.BoxLayout;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
 import org.osgi.framework.BundleContext;
@@ -81,7 +51,6 @@ import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
 import eu.asterics.mw.services.AREServices;
-//import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.IAREEventListener;
 
 
@@ -140,6 +109,48 @@ public class AstericsGUI implements IAREEventListener
 	{
 		super();
 
+		UIManager.getLookAndFeelDefaults().put("defaultFont", new Font("Arial", Font.PLAIN, 18));
+
+		Font defaultFont = (Font)UIManager.get("messageFont");
+		UIManager.put("OptionPane.messageFont", new Font("Arial", Font.PLAIN, 18));
+
+		Font defaultColor = (Font)UIManager.get("messageForeground");
+		UIManager.put("OptionPane.messageForeground", Color.black);
+				
+
+		UIManager.put("Button.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("ToggleButton.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("RadioButton.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("CheckBox.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("ColorChooser.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("ComboBox.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("List.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("MenuBar.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("MenuItem.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("RadioButtonMenuItem.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("CheckBoxMenuItem.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("Menu.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("PopupMenu.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("OptionPane.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("Panel.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("ProgressBar.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("ScrollPane.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("Viewport.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("TabbedPane.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("Table.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("TableHeader.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("TextField.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("PasswordField.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("TextArea.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("TextPane.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("EditorPane.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("TitledBorder.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("ToolBar.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("ToolTip.font", new Font("Arial", Font.PLAIN, 18));
+		UIManager.put("Tree.font", new Font("Arial", Font.PLAIN, 18));
+		
+		
 		// logger = AstericsErrorHandling.instance.getLogger();
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		AREServices.instance.registerAREEventListener(this);

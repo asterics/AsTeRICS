@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.DialogBox"
+                   canonical_name="eu.asterics.component.actuator.dialogbox.DialogBoxInstance">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>creates a dialog box to display information</description>
+        <ports>
+			<inputPort id="setText">
+				<description>updates the text to be displayed</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="displayBox">
+				<description>displays the dialog box</description>
+			</eventListenerPort>
+			<eventListenerPort id="hideBox">
+				<description>hides the dialog box</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="caption"
+				type="string"
+				value="info"
+				description="the caption of the dialog box"/>
+			<property name="text"
+				type="string"
+				value="this is an information"
+				description="the caption of the dialog box"/>
+			<property name="alwaysOnTop"
+				type="boolean"
+				value="true"
+				description="the caption of the dialog box"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

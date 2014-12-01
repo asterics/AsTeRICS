@@ -168,6 +168,38 @@
         </gui>
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.actuator.dialogbox.DialogBoxInstance" id="asterics.DialogBox">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>creates a dialog box to display information</description>
+        <ports>
+			<inputPort id="setText">
+				<description>updates the text to be displayed</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="displayBox">
+				<description>displays the dialog box</description>
+			</eventListenerPort>
+			<eventListenerPort id="hideBox">
+				<description>hides the dialog box</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="the caption of the dialog box" name="caption" type="string" value="info"/>
+			<property description="the caption of the dialog box" name="text" type="string" value="this is an information"/>
+			<property description="the caption of the dialog box" name="alwaysOnTop" type="boolean" value="true"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.actuator.digitalout.DigitalOutInstance" id="asterics.DigitalOut">
         <type subtype="Generic Control Output">actuator</type>
         <singleton>true</singleton>

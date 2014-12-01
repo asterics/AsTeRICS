@@ -25,6 +25,7 @@
 package eu.asterics.component.sensor.facetrackerCLM2.jni;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 import eu.asterics.component.sensor.facetrackerCLM2.FacetrackerCLM2Instance;
 /**
  * @author Andrea Carbone
@@ -115,7 +116,14 @@ public class FacetrackerCLM2Bridge {
     			,	final int eyeLeftState
     			, 	final int eyeRightState)
         {
-    		owner.newValuesCallback(roll, pitch, yaw, posx, posy, scale, eyeLeftState, eyeRightState);
+	    	AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+		    		owner.newValuesCallback(roll, pitch, yaw, posx, posy, scale, eyeLeftState, eyeRightState);				
+				}
+			});
         }
     
     /**
