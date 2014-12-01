@@ -47,3 +47,10 @@ Improved case design: Main mechanics part (2 plates + sensors + PCB) can be put 
 
 
 
+
+###lipmouse_case_lasercut_v2.3_backmount.cdr
+
+Improved case design: No glued screw nut neccessary for the housing. In addition, a screw thread is cut to the mechanical carrier plates, so no screw nuts are neccessary for the whole design
+
+
+
