@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="23.09.2014_915" version="20130320">
+  <modelDescription>
+    <shortDescription />
+    <requirements />
+    <description />
+  </modelDescription>
   <components>
     <component id="MouseCapture.1" type_id="asterics.MouseCapture">
       <description>Captures mouse cursor activity from local system</description>
@@ -41,8 +46,8 @@
         <property name="yMax" value="0" />
       </properties>
       <layout>
-        <posX>687</posX>
-        <posY>174</posY>
+        <posX>748</posX>
+        <posY>200</posY>
       </layout>
     </component>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
@@ -77,10 +82,10 @@
         <posY>0</posY>
       </layout>
       <gui>
-        <posX>4362</posX>
+        <posX>7974</posX>
         <posY>244</posY>
-        <width>1988</width>
-        <height>1000</height>
+        <width>2013</width>
+        <height>645</height>
       </gui>
     </component>
     <component id="Slider.1" type_id="asterics.Slider">
@@ -106,10 +111,10 @@
         <posY>23</posY>
       </layout>
       <gui>
-        <posX>25</posX>
+        <posX>3638</posX>
         <posY>244</posY>
-        <width>4000</width>
-        <height>1000</height>
+        <width>4012</width>
+        <height>623</height>
       </gui>
     </component>
     <component id="Integrate.1" type_id="asterics.Integrate">
@@ -307,9 +312,19 @@
         <posY>307</posY>
       </layout>
     </component>
+    <component id="EventFlipFlop.1" type_id="asterics.EventFlipFlop">
+      <description>Event Flip-flop: First event-in fires event-out1, second event-in fires event-out2, etc.</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>774</posX>
+        <posY>21</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.15">
+      <description />
       <source>
         <component id="Slider.1" />
         <port id="value" />
@@ -320,6 +335,7 @@
       </target>
     </channel>
     <channel id="binding.14">
+      <description />
       <source>
         <component id="Slider.1" />
         <port id="value" />
@@ -330,6 +346,7 @@
       </target>
     </channel>
     <channel id="binding.2">
+      <description />
       <source>
         <component id="MouseCapture.1" />
         <port id="mouseX" />
@@ -340,6 +357,7 @@
       </target>
     </channel>
     <channel id="binding.4">
+      <description />
       <source>
         <component id="MouseCapture.1" />
         <port id="mouseY" />
@@ -350,6 +368,7 @@
       </target>
     </channel>
     <channel id="binding.9">
+      <description />
       <source>
         <component id="Sampler.1.1" />
         <port id="output" />
@@ -360,6 +379,7 @@
       </target>
     </channel>
     <channel id="binding.7">
+      <description />
       <source>
         <component id="Integrate.1.1" />
         <port id="out" />
@@ -370,6 +390,7 @@
       </target>
     </channel>
     <channel id="binding.8">
+      <description />
       <source>
         <component id="Integrate.1" />
         <port id="out" />
@@ -380,6 +401,7 @@
       </target>
     </channel>
     <channel id="binding.6">
+      <description />
       <source>
         <component id="Sampler.1" />
         <port id="output" />
@@ -390,6 +412,7 @@
       </target>
     </channel>
     <channel id="binding.10">
+      <description />
       <source>
         <component id="MathEvaluator.1" />
         <port id="out" />
@@ -400,6 +423,7 @@
       </target>
     </channel>
     <channel id="binding.11">
+      <description />
       <source>
         <component id="Deadzone.1" />
         <port id="outY" />
@@ -410,6 +434,7 @@
       </target>
     </channel>
     <channel id="binding.12">
+      <description />
       <source>
         <component id="Deadzone.1" />
         <port id="outX" />
@@ -420,6 +445,7 @@
       </target>
     </channel>
     <channel id="binding.13">
+      <description />
       <source>
         <component id="MathEvaluator.1.1" />
         <port id="out" />
@@ -432,6 +458,7 @@
   </channels>
   <eventChannels>
     <eventChannel id="recognizedCommand1_reset">
+      <description />
       <sources>
         <source>
           <component id="KeyboardCapture.1" />
@@ -446,6 +473,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="recognizedCommand1_reset">
+      <description />
       <sources>
         <source>
           <component id="KeyboardCapture.1" />
@@ -460,6 +488,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="leftButtonPressed_reset">
+      <description />
       <sources>
         <source>
           <component id="MouseCapture.1" />
@@ -474,6 +503,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="leftButtonPressed_reset">
+      <description />
       <sources>
         <source>
           <component id="MouseCapture.1" />
@@ -488,6 +518,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="leftButtonPressed_leftClick">
+      <description />
       <sources>
         <source>
           <component id="MouseCapture.1" />
@@ -502,6 +533,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="rightButtonPressed_rightClick">
+      <description />
       <sources>
         <source>
           <component id="MouseCapture.1" />
@@ -515,17 +547,78 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button2_nextClickDrag">
+    <eventChannel id="button1_event-in">
+      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button2" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_blockEvents">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCapture.1" />
+          <eventPort id="blockEvents" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out2_forwardEvents">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="MouseCapture.1" />
+          <eventPort id="forwardEvents" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_activate">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out2" />
         </source>
       </sources>
       <targets>
         <target>
           <component id="Mouse.1" />
-          <eventPort id="nextClickDrag" />
+          <eventPort id="activate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out2_deactivate">
+      <description />
+      <sources>
+        <source>
+          <component id="EventFlipFlop.1" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="deactivate" />
         </target>
       </targets>
     </eventChannel>
@@ -537,10 +630,10 @@
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
-      <posX>0</posX>
+      <posX>3612</posX>
       <posY>0</posY>
-      <width>6462</width>
-      <height>1467</height>
+      <width>6388</width>
+      <height>1067</height>
     </AREGUIWindow>
   </modelGUI>
 </model>
