@@ -9,11 +9,11 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="keyCode" value="65" />
+        <property name="keyCode" value="30" />
         <property name="block" value="false" />
       </properties>
       <layout>
-        <posX>501</posX>
+        <posX>502</posX>
         <posY>226</posY>
       </layout>
     </component>
@@ -60,8 +60,8 @@
         <property name="buttonCaption20" value="" />
       </properties>
       <layout>
-        <posX>263</posX>
-        <posY>369</posY>
+        <posX>262</posX>
+        <posY>371</posY>
       </layout>
       <gui>
         <posX>0</posX>
@@ -83,8 +83,8 @@
       <properties>
         <property name="number" value="20" />
         <property name="delay" value="300" />
-        <property name="slot1" value="65" />
-        <property name="slot2" value="112" />
+        <property name="slot1" value="59" />
+        <property name="slot2" value="59" />
         <property name="slot3" value="0" />
         <property name="slot4" value="0" />
         <property name="slot5" value="0" />
