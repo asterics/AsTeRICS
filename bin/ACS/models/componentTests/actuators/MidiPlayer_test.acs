@@ -34,7 +34,7 @@ A tone can be played e.g. by the Sip/Puff sensor (by blowing)
         <property name="midiDevice" value="Gervill" />
         <property name="channel" value="1" />
         <property name="instrument" value="Glockenspiel" />
-        <property name="triggerThreshold" value="10" />
+        <property name="triggerThreshold" value="50" />
         <property name="triggerMax" value="100" />
         <property name="pitchMin" value="0" />
         <property name="pitchMax" value="200" />
@@ -102,7 +102,7 @@ A tone can be played e.g. by the Sip/Puff sensor (by blowing)
         <property name="min" value="0" />
         <property name="max" value="200" />
         <property name="default" value="50" />
-        <property name="autosend" value="true" />
+        <property name="autosend" value="False" />
         <property name="caption" value="pitch" />
         <property name="majorTickSpacing" value="20" />
         <property name="minorTickSpacing" value="5" />
@@ -169,7 +169,7 @@ A tone can be played e.g. by the Sip/Puff sensor (by blowing)
         <property name="min" value="0" />
         <property name="max" value="100" />
         <property name="default" value="50" />
-        <property name="autosend" value="true" />
+        <property name="autosend" value="False" />
         <property name="caption" value="volume" />
         <property name="majorTickSpacing" value="20" />
         <property name="minorTickSpacing" value="5" />

@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-actuators.dialogbox
+Bundle-SymbolicName: eu.asterics.component.actuator.dialogbox
+Bundle-Version: 0.1.0
+DynamicImport-Package: *

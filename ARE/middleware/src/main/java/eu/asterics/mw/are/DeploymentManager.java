@@ -509,9 +509,10 @@ public class DeploymentManager
 		IRuntimeComponentInstance ci = runtimeComponentInstances.get(componentID);
 		if (ci == null)
 			return;
-		synchronized(ci) {
+//Removed synchronized again due to issue #59							
+//		synchronized(ci) {
 			ci.stop();
-		}
+//		}
 
 		String cType = getCurrentRuntimeModel().
 				getComponentInstance(componentID).
@@ -617,6 +618,7 @@ public class DeploymentManager
 			}
 		}finally {
 			modelStartupFinished=true;
+			logger.fine("Setting modelLifecycleTaskPending=false");
 			modelLifecycleTaskPending=false;
 		}
 	}
@@ -642,6 +644,7 @@ public class DeploymentManager
 				logger.fine("Paused component instance: "+compRefName);
 			}
 		}finally {
+			logger.fine("Setting modelLifecycleTaskPending=false");
 			modelLifecycleTaskPending=false;			
 		}
 	}		
@@ -667,6 +670,7 @@ public class DeploymentManager
 			}
 		}finally{
 			modelStartupFinished=true;
+			logger.fine("Setting modelLifecycleTaskPending=false");
 			modelLifecycleTaskPending=false;
 		}
 	}
@@ -688,13 +692,14 @@ public class DeploymentManager
 					logger.fine("Trying to stop component instance: "+compRefName);
 					String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 	
-					synchronized(componentInstance) {
+//Removed synchronized again due to issue #59					
+//					synchronized(componentInstance) {
 						bundleManager.getBundleFromId(id).stop();
 						componentInstance.stop();
 						String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
 						//There is no state for STOP, so use DEPLOYED? or better OK?
 						runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.DEPLOYED);
-					}
+//					}
 					
 					logger.fine("Stopped component instance: "+compRefName);
 				}
@@ -709,12 +714,24 @@ public class DeploymentManager
 			}
 			notifyAREEventListeners (AREEvent.POST_STOP_EVENT);
 		}finally{
+			logger.fine("Setting modelLifecycleTaskPending=false");
 			modelLifecycleTaskPending=false;
 		}
 		System.gc();
 	}
 
 	// ------------------- End of model lifecycle support ------------------- //
+	
+	/**
+	 * Resets the flags modelLifecycleTaskPending and others to a clean state.
+	 * This should be used after e.g. an error occurred by the caller of a lifecycle task (e.g. AREServices.runModel) after an execution timeout
+	 */
+	public void reseToCleanState() {
+		logger.fine("Setting modelLifecycleTaskPending=false");
+		modelStartupFinished=false;
+		modelLifecycleTaskPending=false;
+	}
+	
 	/**
 	 * Checks if the DeploymentManager is currently performing a lifecycle task (start, pause, resume, stop) of a model 
 	 * @return

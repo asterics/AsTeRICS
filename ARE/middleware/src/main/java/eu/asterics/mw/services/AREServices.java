@@ -397,6 +397,7 @@ public class AREServices implements IAREServices{
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			String message="Could not execute stopModel, exception occurred: "+e.getMessage()!=null ? e.getMessage() : e.toString();
 			logger.warning(message);
+			DeploymentManager.instance.reseToCleanState();
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
 		}
 	}
@@ -551,6 +552,7 @@ public class AREServices implements IAREServices{
 			
 			logger.warning(message);			
 			AstericsErrorHandling.instance.reportError(null, message);
+			DeploymentManager.instance.reseToCleanState();
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
 			
 			//Should we through exception to notify ACS?? Maybe for the next release, unfortunately ACS disconnects when doing this
@@ -606,8 +608,9 @@ public class AREServices implements IAREServices{
 					});
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			String message="Could not execute pauseModel, execption occurred: "+e.getMessage()!=null ? e.getMessage() : e.toString();
-			logger.warning(message);
+			logger.warning(message);			
 			//AstericsErrorHandling.instance.reportError(null, message);
+			DeploymentManager.instance.reseToCleanState();
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
 		}
 	}

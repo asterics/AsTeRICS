@@ -42,7 +42,6 @@ public class ModelGUIInfo
 	public boolean  valwaysOnTop = false;
 	public boolean  toSysTray = false; 
 	public boolean  shopControlPanel = true;
-	public boolean  showErrorDialogs = true;
 	public int posX;
 	public int posY;
 	public int width;
@@ -84,12 +83,12 @@ public class ModelGUIInfo
 	public void updateProperties()
 	{
 		AREProperties props = AREProperties.instance;
+		
 		props.setProperty("show_side_bar", shopControlPanel ? "1" : "0");
 		props.setProperty("iconify", toSysTray ? "1" : "0");
 		props.setProperty("always_on_top", valwaysOnTop ? "1" : "0");
 		props.setProperty("undecorated", decoration ? "0" : "1");
 		props.setProperty("fullscreen", fullscreen ? "1" : "0");
-		props.setProperty("showErrorDialogs", showErrorDialogs ? "1" : "0");
 		props.storeProperties();
 	}
 

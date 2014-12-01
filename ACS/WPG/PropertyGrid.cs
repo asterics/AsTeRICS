@@ -25,6 +25,16 @@ namespace WPG {
             this.DataContext = this;
             PreviewMouseDown += new MouseButtonEventHandler(PropertyGrid_PreviewMouseDown);
             PreviewKeyDown += new KeyEventHandler(PropertyGrid_PreviewKeyDown);
+            PreviewLostKeyboardFocus += new KeyboardFocusChangedEventHandler(PropertyGrid_PreviewFocusChanged);
+        }
+
+        void PropertyGrid_PreviewFocusChanged(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            var OrginalSource = (e.OriginalSource as FrameworkElement);
+            if (OrginalSource.DataContext != null && OrginalSource.DataContext.GetType() == typeof(Property))
+            {
+                SelectedProperty = (Property)OrginalSource.DataContext;
+            }
         }
 
         //Finish Editing of a TextBox with Enter!

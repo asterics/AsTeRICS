@@ -168,6 +168,38 @@
         </gui>
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.actuator.dialogbox.DialogBoxInstance" id="asterics.DialogBox">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>creates a dialog box to display information</description>
+        <ports>
+			<inputPort id="setText">
+				<description>updates the text to be displayed</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="displayBox">
+				<description>displays the dialog box</description>
+			</eventListenerPort>
+			<eventListenerPort id="hideBox">
+				<description>hides the dialog box</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="the caption of the dialog box" name="caption" type="string" value="info"/>
+			<property description="the caption of the dialog box" name="text" type="string" value="this is an information"/>
+			<property description="the caption of the dialog box" name="alwaysOnTop" type="boolean" value="true"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.actuator.digitalout.DigitalOutInstance" id="asterics.DigitalOut">
         <type subtype="Generic Control Output">actuator</type>
         <singleton>true</singleton>
@@ -2418,6 +2450,113 @@
 			<property description="slot delay to send data" name="slot14Delay" type="integer" value="0"/>
 			<property description="slot delay to send data" name="slot15Delay" type="integer" value="0"/>
 
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.actuator.skywatchermount.SkyWatcherMountInstance" id="asterics.SkyWatcherMount">
+        <type subtype="Others">actuator</type>
+        <singleton>false</singleton>
+        <description>Plugin to control telescope mounts using the NEXStar 5 protocol</description>
+        <ports>
+			<inputPort id="speed">
+                <description>movement speed of the mount</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="panPosition">
+                <description>Position to go for pan</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="tiltPosition">
+                <description>Position to go for tilt</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointLeft">
+                <description>max left step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointRight">
+                <description>max right step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointUp">
+                <description>max up step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<inputPort id="EndPointDown">
+                <description>max down step position</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+			<outputPort id="posX">
+				<description>x coordinates of the head</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="posY">
+				<description>x coordinates of the head</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="goLeft">
+				<description>moves the head to the left</description>
+			</eventListenerPort>
+			<eventListenerPort id="goRandom">
+				<description>moves the head to a random position between the set direction limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="goRight">
+				<description>moves the head to the right</description>
+			</eventListenerPort>
+			<eventListenerPort id="goUp">
+				<description>moves the head to the up</description>
+			</eventListenerPort>
+			<eventListenerPort id="goDown">
+				<description>moves the head to the down</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopPan">
+				<description>stops the pan axis</description>
+			</eventListenerPort>
+			<eventListenerPort id="stopTilt">
+				<description>stops the tilt axis</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stops the pan and tilt axis</description>
+			</eventListenerPort>
+			<eventListenerPort id="goToPanPosition">
+				<description>moves the head to the specified Pan position</description>
+			</eventListenerPort>
+			<eventListenerPort id="goToTiltPosition">
+				<description>moves the head to the specified tilt position</description>
+			</eventListenerPort>
+			<eventListenerPort id="triggerOn">
+				<description>turns the shutter on</description>
+			</eventListenerPort>
+			<eventListenerPort id="triggerOff">
+				<description>turns the shutter off</description>
+			</eventListenerPort>
+			<eventListenerPort id="enableLimits">
+				<description>enables the maximum and minimum movement limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="disableLimits">
+				<description>disable the maximum and minimum movement limits</description>
+			</eventListenerPort>
+			<eventListenerPort id="disable">
+				<description>disable all movements of the skywatcher mount</description>
+			</eventListenerPort>
+			<eventListenerPort id="enable">
+				<description>enable all movements of the skywatcher mount</description>
+			</eventListenerPort>
+		</events>			
+        <properties>
+			<property description="Serial Port of the skywatcher device" name="SerialPort" type="string" value="COMX"/>
+			<property description="defines if the endpoints are used by the mount" name="EndPointsActive" type="boolean" value="false"/> 
         </properties>
 
     </componentType>
@@ -7897,6 +8036,49 @@
         </properties>
     </componentType>
 
+
+ <componentType canonical_name="eu.asterics.component.sensor.keycapture.KeyCaptureInstance" id="asterics.KeyCapture">
+        <type subtype="Standard Input Devices">sensor</type>
+        <singleton>false</singleton>
+        <description>captures key presses and releases for a single keyboard key</description>
+        <ports>
+			<inputPort id="keyCode">
+				<description>keycode of the key to capture</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports> 
+		<events>
+			<eventListenerPort id="enable">
+				<description>enable capturing and blocking</description>
+			</eventListenerPort>
+			<eventListenerPort id="disable">
+				<description>disable capturing and blocking</description>
+			</eventListenerPort>
+			<eventListenerPort id="block">
+				<description>don't propagate keypresses of the key with the specified keycode</description>
+			</eventListenerPort>
+			<eventListenerPort id="unblock">
+				<description>propagate keypresses of the key with the specified keycode</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="keyPressed">
+				<description>event gets fired when the specified key was pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="keyReleased">
+				<description>event gets fired when the specified key was released</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property description="keycode of the key to capture, see help for more information" name="keyCode" type="integer" value="0"/>
+			<property description="if ticked keypresses of the specified key will not be sent to the operating system" name="block" type="boolean" value="false"/>
+
+        </properties>
+
+    </componentType>
 
  <componentType canonical_name="eu.asterics.component.sensor.kinect.KinectInstance" id="asterics.Kinect">
         <type subtype="Computer Vision">sensor</type>

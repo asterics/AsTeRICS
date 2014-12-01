@@ -35,7 +35,9 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
+
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
  *   KeyboardCaptureInstance intercepts local keyboard input
@@ -66,12 +68,16 @@ public class KeyboardCaptureInstance extends AbstractRuntimeComponentInstance
 	private int wordCountOld=0;
 	private String actString="";
 
+    private Vector<Integer> keyCodeArray; 
+
 	
 	/**
 	 * The class constructor, creates the event ports
 	 */
 	public KeyboardCaptureInstance() 
 	{
+        keyCodeArray = new Vector<Integer>();
+
 		for (int i = 0; i < NUMBER_OF_COMMANDS; i++)
 		{
 			etpCmdRecognized[i] = new DefaultRuntimeEventTriggererPort();
@@ -198,12 +204,47 @@ public class KeyboardCaptureInstance extends AbstractRuntimeComponentInstance
 	{
 		String lastWord="";
 
-		if (press==false) opKeyCode.sendData(0);
+		if (press==false)
+		{
+			//System.out.println("release ! keycode array size="+keyCodeArray.size());
+
+			if (keyCodeArray.contains(keycode))
+				keyCodeArray.remove(keyCodeArray.indexOf(keycode));
+			
+			if (keyCodeArray.size()==0)
+			{
+				//System.out.println("send 0 !");
+				opKeyCode.sendData(0);
+			}
+			else
+			{
+				//System.out.println("send last key");
+				opKeyCode.sendData(keyCodeArray.lastElement());
+			}
+		}
 		// System.out.println("released "+keycode); 
 		
 		if (press == true)
 		{
-			opKeyCode.sendData(keycode);
+			if (keyCodeArray.size()==0)
+			{
+				keyCodeArray.add(keycode);
+				opKeyCode.sendData(keycode);
+				//System.out.println("first key");
+			}
+			else
+			{
+			
+				//System.out.println("send, keycode array size="+keyCodeArray.size()+" actkey="+keycode+" lastkey="+keyCodeArray.get(keyCodeArray.size()-1));
+				opKeyCode.sendData(keycode);
+				if (keycode != keyCodeArray.get(keyCodeArray.size()-1))
+				{
+					keyCodeArray.add(keycode);
+					//System.out.println("new key, keycode array size="+keyCodeArray.size());
+				}
+			}
+			
+			
 			/*    convert UTF-16 special chars if necessary ...*/
 
 			actString+=(char)keycode;

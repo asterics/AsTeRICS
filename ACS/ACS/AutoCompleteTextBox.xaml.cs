@@ -89,6 +89,11 @@ namespace Asterics.ACS
             set { searchThreshold = value; }
         }
 
+        public Collection<AutoCompleteEntry> Items
+        {
+            get { return autoCompletionList; }
+        }
+        
         public void AddItem(AutoCompleteEntry entry)
         {
             autoCompletionList.Add(entry);

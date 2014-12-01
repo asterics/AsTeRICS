@@ -129,7 +129,17 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 	
 	private void sendCommand(String cmd) {
 		cmdList.add(cmd);
-		System.out.println("Cmdlist: " + cmdList.size());
+		//System.out.println("Cmdlist: " + cmdList.size());
+		if (cmdList.size() > 150) {
+			cmdList.clear();
+			try {
+			senderThread.interrupt();
+			senderThread.join(500);
+			senderThread.start(); 
+			} catch (InterruptedException ie) {
+				System.out.println("interrupted while recovering senderThread");
+			}
+		}		
 	}
 	
 	public void setLimitActive(boolean state) {
@@ -173,6 +183,7 @@ public class SkyWatcher extends AbstractRuntimeComponentInstance
 			}
 		} catch (Exception ex) {
 			AstericsErrorHandling.instance.reportInfo(this,"Could not send command "+cmd);
+			System.out.println("Could not send cmd");
 		}
 	}
 	

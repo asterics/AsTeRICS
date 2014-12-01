@@ -10,6 +10,7 @@ namespace Asterics.ACS
         private string[] keywordStrings;
         private string displayString;
         private string toolTop="";
+        private string key;
 
         public string[] KeywordStrings
         {
@@ -33,15 +34,22 @@ namespace Asterics.ACS
             set { displayString = value; }
         }
 
+        public string Key
+        {
+            get { return key; }
+            set { key = value; }
+        }
+
         public string ToolTip
         {
             get { return toolTop; }
             set { toolTop = value; }
         }
 
-        public AutoCompleteEntry(string name, params string[] keywords)
+        public AutoCompleteEntry(string name,string keyString, params string[] keywords)
         {
             displayString = name;
+            key = keyString;
             keywordStrings = keywords;
         }
 

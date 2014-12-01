@@ -37,6 +37,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -187,9 +189,41 @@ public class ControlPane extends JPanel
 		mainPanel.setPreferredSize(new Dimension (CONTROLPANEL_WIDTH,astericsGUI.screenSize.height));
 		mainPanel.add(controlPanel);
 		add(mainPanel);
+		addStopMnemnonic();
 	}
 
 	
+
+	private void addStopMnemnonic() {
+		// TODO Auto-generated method stub
+		mainFrame.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				if(KeyEvent.VK_F7==arg0.getKeyCode()) {
+					try {
+						as.stopModel();
+					} catch (AREAsapiException e) {
+					}					
+				}
+			}
+		});
+	}
+
+
 
 	protected JComponent makeControlPanel(String text, int axis) 
 	{
@@ -248,7 +282,7 @@ public class ControlPane extends JPanel
 			stopIcon	= new ImageIcon(stopIconPath);
 			stopIcon_ro = new ImageIcon(stopIconPath_ro);
 			stopLabel = new JLabel(stopIcon);
-			stopLabel.setToolTipText("Stop model");
+			stopLabel.setToolTipText("Stop model [F7]");
 			stopIconImg = ImageIO.read(stopIconPath);
 			stopIconImg_ro = ImageIO.read(stopIconPath_ro);
 	
