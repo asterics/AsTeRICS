@@ -234,7 +234,7 @@ A button press selects the current action.
         <property name="buttonCaption2" value="right" />
         <property name="buttonCaption3" value="drag" />
         <property name="buttonCaption4" value="OSKA" />
-        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption5" value="?" />
         <property name="buttonCaption6" value="" />
         <property name="buttonCaption7" value="" />
         <property name="buttonCaption8" value="" />
@@ -583,6 +583,23 @@ A button press selects the current action.
       <layout>
         <posX>990</posX>
         <posY>565</posY>
+      </layout>
+    </component>
+    <component id="DialogBox.1" type_id="asterics.DialogBox">
+      <description>creates a dialog box to display information</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Help for this model" />
+        <property name="text" value="This is a one-switch mouse emulation. /nYou can use a momentary Switch connected to Input 1 of the DigitalIn CIM, /n or alternatively the Keyboard (Right Ctrl Key) to move the cursor and click !/n/nEnjoy !!" />
+        <property name="alwaysOnTop" value="true" />
+      </properties>
+      <layout>
+        <posX>645</posX>
+        <posY>251</posY>
       </layout>
     </component>
   </components>
@@ -1333,6 +1350,21 @@ A button press selects the current action.
         <target>
           <component id="ApplicationLauncher.1" />
           <eventPort id="launchNow" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_displayBox">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DialogBox.1" />
+          <eventPort id="displayBox" />
         </target>
       </targets>
     </eventChannel>
