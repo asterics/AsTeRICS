@@ -35,6 +35,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.FontUIResource;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
@@ -219,7 +221,7 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-			//if (op==null)
+			if (op==null)
 			{
 				SwingUtilities.invokeLater(new Runnable() {				
 					
@@ -231,11 +233,33 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
 						    JOptionPane.WARNING_MESSAGE);
 
 
+					
 					dialog = op.createDialog(propCaption);
 					dialog.setAlwaysOnTop(propAlwaysOnTop);
-					dialog.setModal(true);
+					dialog.setModal(false);
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true); 
+					
+					op.addPropertyChangeListener(
+						    new PropertyChangeListener() {
+						        public void propertyChange(PropertyChangeEvent e) {
+						            String prop = e.getPropertyName();
+						            //System.out.println("PROPERTY CHANGED:" + prop);
+						            
+						            if (prop.equals(JOptionPane.VALUE_PROPERTY)) 
+						             {
+						            	closeDialog();
+						             }
+						            /*		
+						            if (dialog.isVisible() 
+						             && (e.getSource() == op)
+						             && (prop.equals(JOptionPane.VALUE_PROPERTY))) {
+						            
+						            }	*/
+						        }
+						    });
+
+					dialog.setVisible(true);
+					
 					}
 				});	
 			}
@@ -245,8 +269,27 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
+			closeDialog();
 		}
 	};
+
+	private void closeDialog ()
+	{
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				if (dialog != null)
+				{
+					//dialog.setVisible(false);
+					dialog.dispose();
+					dialog=null;
+					op=null;
+					
+				}				
+			}
+		});
+	}
 
 	
 
@@ -283,8 +326,8 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
       */
       @Override
       public void stop()
-      {
-
+      {	
+    	  closeDialog();
           super.stop();
       }
 }
