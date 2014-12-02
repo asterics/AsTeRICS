@@ -311,9 +311,12 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
 		if (enabled == false)
 			return;
 		int keyCode = nke.getKeyCode();
-		if (pressed == false && keyCode == propKeyCode) {
-			etpKeyPressed.raiseEvent();
-			pressed = true;
+		if (keyCode == propKeyCode) 
+		{
+			if (pressed == false) {
+				etpKeyPressed.raiseEvent();
+				pressed = true;
+			}
 			if (propBlock) 
 			{
 				try 
@@ -321,9 +324,11 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
 					Field f = NativeInputEvent.class.getDeclaredField("reserved");
 					f.setAccessible(true);
 					f.setShort(nke, (short) 0x01);
-				} catch (NoSuchFieldException nsfe) {
+				} catch (NoSuchFieldException nsfe) 
+				{
 					AstericsErrorHandling.instance.reportError(this, "Error blocking keycode --> NativeInputField not found");
-				} catch (IllegalAccessException iae) { 
+				} catch (IllegalAccessException iae) 
+				{ 
 					AstericsErrorHandling.instance.reportError(this, "Error blocking keycode --> IllegalAccess on NativeInputfield");
 				}
 				
@@ -346,7 +351,7 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
 
     @Override
     public void nativeKeyTyped(NativeKeyEvent nke) {
-        
+        		
     }
 	
 	private static class VoidExecutorService extends AbstractExecutorService {
