@@ -322,7 +322,9 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
 					f.setAccessible(true);
 					f.setShort(nke, (short) 0x01);
 				} catch (NoSuchFieldException nsfe) {
+					AstericsErrorHandling.instance.reportError(this, "Error blocking keycode --> NativeInputField not found");
 				} catch (IllegalAccessException iae) { 
+					AstericsErrorHandling.instance.reportError(this, "Error blocking keycode --> IllegalAccess on NativeInputfield");
 				}
 				
 			}
