@@ -55,7 +55,18 @@ added teensy RC CIM
 ARE: Improved Error handling
 MicGPI-Plugin: added
 
-v2.5 (2014-10-24)
+v2.5 (2014-12-10)
+added Keycapture plugin
+fixed Issue #59
+fixed Issue #54
+fixed Issue #53
+fixed Issue #52
+fixed Issue #50
+fixed Issue #49
+fixed Issue #48
+fixed Issue #42
+fixed Issue #41
+fixed Issue #39 and many more
 TimerPlugin: cured timing issues
 fixed Issue #21
 added ReadEDF/WriteEDF, TeensyRCPrototype plugins
