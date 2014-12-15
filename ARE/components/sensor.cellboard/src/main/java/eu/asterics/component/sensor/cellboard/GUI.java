@@ -570,6 +570,12 @@ public class GUI extends JPanel
 									scanRow=scanRow-1;
 									cells[scanRow][scanColumn].setScanActive(true);
 								}
+								else
+								{
+									cells[scanRow][scanColumn].setScanActive(false);
+									scanRow=rows;
+									cells[scanRow][scanColumn].setScanActive(true);
+								}
 								break;
 							}
 							case down:
@@ -578,6 +584,12 @@ public class GUI extends JPanel
 								{
 									cells[scanRow][scanColumn].setScanActive(false);
 									scanRow=scanRow+1;
+									cells[scanRow][scanColumn].setScanActive(true);
+								}
+								else
+								{
+									cells[scanRow][scanColumn].setScanActive(false);
+									scanRow=0;
 									cells[scanRow][scanColumn].setScanActive(true);
 								}
 								break;
@@ -590,6 +602,12 @@ public class GUI extends JPanel
 									scanColumn=scanColumn-1;
 									cells[scanRow][scanColumn].setScanActive(true);
 								}
+								else
+								{
+									cells[scanRow][scanColumn].setScanActive(false);
+									scanColumn=columns;
+									cells[scanRow][scanColumn].setScanActive(true);
+								}
 								break;
 							}
 							case right:
@@ -598,6 +616,12 @@ public class GUI extends JPanel
 								{	
 									cells[scanRow][scanColumn].setScanActive(false);
 									scanColumn=scanColumn+1;
+									cells[scanRow][scanColumn].setScanActive(true);	
+								}
+								else
+								{	
+									cells[scanRow][scanColumn].setScanActive(false);
+									scanColumn=0;
 									cells[scanRow][scanColumn].setScanActive(true);	
 								}
 								break;
