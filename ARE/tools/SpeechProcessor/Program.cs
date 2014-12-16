@@ -37,7 +37,7 @@ namespace AsynchronousRecognition
 
         static SpeechSynthesizer tts = null;
         static VoiceInfo voiceInfo = null;
-        static SoundPlayer player = new SoundPlayer();
+ //       static SoundPlayer player = new SoundPlayer();
 
         static long speechTimeStamp=0;
         static String spokenText = "";
@@ -233,6 +233,13 @@ namespace AsynchronousRecognition
                             CreateSynthesizer();
                             CreateRecognizer();
 
+                        }
+                        else if (token.StartsWith("ttsonly:"))
+                        {
+                            string newCulture = (token.Substring(8, token.Length - 8));
+                            Console.WriteLine("Speech Processor: Initialising TTS-Engine for new culture:" + newCulture);
+                            strCulture = newCulture;
+                            CreateSynthesizer();
                         }
                         else if (token.StartsWith("grammar:"))
                         {

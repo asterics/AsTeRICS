@@ -138,8 +138,8 @@
             <property name="mode"
                 type="integer"
                 value="0"
-                description="mode for activation/deactivation of the recognition"
-                combobox="always active//voice-triggered activation and deactivation//automatic deactivation after command recognition"/>			
+                description="mode for activation/deactivation of speech recognition"
+                combobox="always active//voice-triggered activation and deactivation//automatic deactivation after command recognition//speech recognition disabled (TTS only)"/>			
 			<property name="command1"
 				type="string"
 				value="hello"

@@ -77,9 +77,12 @@ public class SpeechProcessorInstance extends AbstractRuntimeComponentInstance
 {
 	
 	public final int NUMBER_OF_COMMANDS = 25;
+	
 	public final int MODE_ALWAYSACTIVE = 0;
 	public final int MODE_VOICETRIGGERED = 1;
 	public final int MODE_AUTO = 2;
+	public final int MODE_TTSONLY = 3;
+	
 	public final int CONNECTION_TIMEOUT = 7000;
 	public final String speechProcessorExePath = ".\\tools\\SpeechProcessor.exe";
 	
@@ -643,7 +646,12 @@ public class SpeechProcessorInstance extends AbstractRuntimeComponentInstance
 			if ((propRecognitionConfidence<0.01) || (propRecognitionConfidence>1)) 
 				propRecognitionConfidence=0.5;
 			
-			String message = "culture:";
+			String message = "";
+			if (propMode < MODE_TTSONLY)
+			  message+= "culture:";
+			else
+			  message+= "ttsonly:";
+
 			switch (propLanguage)
 			{
 				case 0:message+="en-US"; break;
