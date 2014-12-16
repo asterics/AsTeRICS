@@ -1,0 +1,1715 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="07.05.2013_1035" version="20130320">
+  <modelDescription>
+    <shortDescription />
+    <requirements />
+    <description />
+  </modelDescription>
+  <components>
+    <component id="Lipmouse.1" type_id="asterics.Lipmouse">
+      <description>Lipmouse CIM</description>
+      <ports>
+        <outputPort portTypeID="X">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Y">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="pressure">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="periodicADCUpdate" value="20" />
+      </properties>
+      <layout>
+        <posX>12</posX>
+        <posY>425</posY>
+      </layout>
+    </component>
+    <component id="KeyboardLaunchTimer" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="700" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>299</posX>
+        <posY>946</posY>
+      </layout>
+    </component>
+    <component id="KeyboardToggleSound" type_id="asterics.WavefilePlayer">
+      <description>Plays .Wav - soundfiles on event or filename reception. </description>
+      <ports>
+        <inputPort portTypeID="wavefileName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="data\sounds\17.WAV" />
+      </properties>
+      <layout>
+        <posX>402</posX>
+        <posY>942</posY>
+      </layout>
+    </component>
+    <component id="StartOSKA" type_id="asterics.ApplicationLauncher">
+      <description>starts external software applications via path and  filename (.exe)</description>
+      <ports>
+        <inputPort portTypeID="filename">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="defaultApplication" value="../oska/start keyboard.exe" />
+        <property name="arguments" value="" />
+        <property name="workingDirectory" value="." />
+        <property name="autoLaunch" value="false" />
+        <property name="autoClose" value="False" />
+        <property name="onlyByEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>564</posX>
+        <posY>1084</posY>
+      </layout>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="300" />
+      </properties>
+      <layout>
+        <posX>45</posX>
+        <posY>648</posY>
+      </layout>
+    </component>
+    <component id="Mouse.1" type_id="asterics.Mouse">
+      <description>Local mouse actuator, emulates mouse activity on local system</description>
+      <ports>
+        <inputPort portTypeID="mouseX">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="mouseY">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="enableMouse" value="False" />
+        <property name="absolutePosition" value="False" />
+        <property name="xMin" value="0" />
+        <property name="xMax" value="4000" />
+        <property name="yMin" value="0" />
+        <property name="yMax" value="1080" />
+      </properties>
+      <layout>
+        <posX>736</posX>
+        <posY>442</posY>
+      </layout>
+    </component>
+    <component id="SipThreshold" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="490" />
+        <property name="thresholdLow" value="490" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>168</posX>
+        <posY>835</posY>
+      </layout>
+    </component>
+    <component id="RightPuffThreshold" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="550" />
+        <property name="thresholdLow" value="550" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>380</posX>
+        <posY>3</posY>
+      </layout>
+    </component>
+    <component id="CalibrationStart" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="900" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>289</posX>
+        <posY>402</posY>
+      </layout>
+    </component>
+    <component id="AdjustmentCurve.1" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="mouthmouse_x" />
+        <property name="displayGui" value="False" />
+        <property name="inMin" value="-10" />
+        <property name="inMax" value="10" />
+        <property name="outMin" value="-10" />
+        <property name="outMax" value="10" />
+        <property name="mode" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="dotMeter" />
+      </properties>
+      <layout>
+        <posX>264</posX>
+        <posY>474</posY>
+      </layout>
+      <gui>
+        <posX>9625</posX>
+        <posY>2289</posY>
+        <width>250</width>
+        <height>222</height>
+      </gui>
+    </component>
+    <component id="Menu" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Menü" />
+        <property name="horizontalOrientation" value="False" />
+        <property name="buttonCaption1" value="Ein / Aus" />
+        <property name="buttonCaption2" value="Keyboard" />
+        <property name="buttonCaption3" value="Pusten =" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+      </properties>
+      <layout>
+        <posX>48</posX>
+        <posY>1090</posY>
+      </layout>
+      <gui>
+        <posX>9600</posX>
+        <posY>2244</posY>
+        <width>400</width>
+        <height>1467</height>
+      </gui>
+    </component>
+    <component id="AdjustmentCurve.1.1" type_id="asterics.AdjustmentCurve">
+      <description>AdjustmentCurve</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="curveName">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="mouthmouse_y" />
+        <property name="displayGui" value="False" />
+        <property name="inMin" value="-10" />
+        <property name="inMax" value="10" />
+        <property name="outMin" value="-10" />
+        <property name="outMax" value="10" />
+        <property name="mode" value="0" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="dotMeter" />
+      </properties>
+      <layout>
+        <posX>269</posX>
+        <posY>628</posY>
+      </layout>
+      <gui>
+        <posX>9600</posX>
+        <posY>2578</posY>
+        <width>250</width>
+        <height>222</height>
+      </gui>
+    </component>
+    <component id="Averager.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="7" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>109</posX>
+        <posY>470</posY>
+      </layout>
+    </component>
+    <component id="Averager.1.1" type_id="asterics.Averager">
+      <description>Linked list-based averager or accumulator</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="bufferSize" value="7" />
+        <property name="mode" value="0" />
+      </properties>
+      <layout>
+        <posX>116</posX>
+        <posY>616</posY>
+      </layout>
+    </component>
+    <component id="CalibrationEnd" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="2000" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>418</posX>
+        <posY>496</posY>
+      </layout>
+    </component>
+    <component id="CalibrationSound" type_id="asterics.WavefilePlayer">
+      <description>Plays .Wav - soundfiles on event or filename reception. </description>
+      <ports>
+        <inputPort portTypeID="wavefileName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="data\sounds\15.WAV" />
+      </properties>
+      <layout>
+        <posX>424</posX>
+        <posY>354</posY>
+      </layout>
+    </component>
+    <component id="SpeedSlider" type_id="asterics.Slider">
+      <description>a slider GUI element which provides the slider value at an output port</description>
+      <ports>
+        <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="min" value="10" />
+        <property name="max" value="100" />
+        <property name="default" value="15" />
+        <property name="autosend" value="true" />
+        <property name="caption" value="Geschw." />
+        <property name="majorTickSpacing" value="10" />
+        <property name="minorTickSpacing" value="5" />
+        <property name="alignment" value="1" />
+        <property name="fontSize" value="12" />
+      </properties>
+      <layout>
+        <posX>68</posX>
+        <posY>797</posY>
+      </layout>
+      <gui>
+        <posX>9600</posX>
+        <posY>4200</posY>
+        <width>400</width>
+        <height>2756</height>
+      </gui>
+    </component>
+    <component id="MathEvaluator.1.2.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*b/50" />
+      </properties>
+      <layout>
+        <posX>412</posX>
+        <posY>503</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluator.1.2.1.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="a*b/50" />
+      </properties>
+      <layout>
+        <posX>432</posX>
+        <posY>654</posY>
+      </layout>
+    </component>
+    <component id="DoublePuffTimer" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="250" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>960</posX>
+        <posY>0</posY>
+      </layout>
+    </component>
+    <component id="DoublePuffComparator" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="4" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="1" />
+        <property name="threshold" value="2" />
+        <property name="threshold2" value="10" />
+      </properties>
+      <layout>
+        <posX>1207</posX>
+        <posY>24</posY>
+      </layout>
+    </component>
+    <component id="DoublePuffCounter" type_id="asterics.EventCounter">
+      <description>Two-direction event counter</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="minValue" value="0" />
+        <property name="maxValue" value="1000" />
+        <property name="initialValue" value="0" />
+        <property name="wrapAround" value="false" />
+        <property name="sendInitialValue" value="false" />
+      </properties>
+      <layout>
+        <posX>1074</posX>
+        <posY>13</posY>
+      </layout>
+    </component>
+    <component id="DoublePuffSound" type_id="asterics.WavefilePlayer">
+      <description>Plays .Wav - soundfiles on event or filename reception. </description>
+      <ports>
+        <inputPort portTypeID="wavefileName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="filename" value="data\sounds\7.wav" />
+      </properties>
+      <layout>
+        <posX>1327</posX>
+        <posY>38</posY>
+      </layout>
+    </component>
+    <component id="PuffAssignmentSelector" type_id="asterics.PathSelector">
+      <description>Pathselector routes signal to one of four output ports</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="activePorts" value="3" />
+      </properties>
+      <layout>
+        <posX>266</posX>
+        <posY>131</posY>
+      </layout>
+    </component>
+    <component id="WheelUpThreshold" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="550" />
+        <property name="thresholdLow" value="550" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>986</posX>
+        <posY>247</posY>
+      </layout>
+    </component>
+    <component id="WheelDownThreshold" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="550" />
+        <property name="thresholdLow" value="550" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>977</posX>
+        <posY>415</posY>
+      </layout>
+    </component>
+    <component id="PuffAssignmentStrings" type_id="asterics.StringDispatcher">
+      <description>Send test from chosen slot</description>
+      <ports>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="Rechts Klick" />
+        <property name="slot2" value="Maus Ziehen" />
+        <property name="slot3" value="Runter Scrollen" />
+        <property name="slot4" value="Rauf Scrollen" />
+        <property name="slot5" value="" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>6</posX>
+        <posY>54</posY>
+      </layout>
+    </component>
+    <component id="WheelUpTimer" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="2" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="250" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>1115</posX>
+        <posY>243</posY>
+      </layout>
+    </component>
+    <component id="WheelDownTimer" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="2" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="250" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>1100</posX>
+        <posY>417</posY>
+      </layout>
+    </component>
+    <component id="ToggleKeyboardLaunch" type_id="asterics.EventFlipFlop">
+      <description>Event Flip-flop: First event-in fires event-out1, second event-in fires event-out2, etc.</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>403</posX>
+        <posY>1095</posY>
+      </layout>
+    </component>
+    <component id="DestroyOSKA" type_id="asterics.ApplicationLauncher">
+      <description>starts external software applications via path and  filename (.exe)</description>
+      <ports>
+        <inputPort portTypeID="filename">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="defaultApplication" value="C:\Windows\System32\taskkill.exe" />
+        <property name="arguments" value="/IM &quot;OSKA Keyboard.exe&quot;" />
+        <property name="workingDirectory" value="." />
+        <property name="autoLaunch" value="false" />
+        <property name="autoClose" value="False" />
+        <property name="onlyByEvent" value="True" />
+      </properties>
+      <layout>
+        <posX>567</posX>
+        <posY>1242</posY>
+      </layout>
+    </component>
+    <component id="PuffAssignmentDisplay" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="Rechts Click" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="1" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>136</posX>
+        <posY>39</posY>
+      </layout>
+      <gui>
+        <posX>9600</posX>
+        <posY>3689</posY>
+        <width>400</width>
+        <height>511</height>
+      </gui>
+    </component>
+    <component id="DragThreshold" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="550" />
+        <property name="thresholdLow" value="550" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>776</posX>
+        <posY>244</posY>
+      </layout>
+    </component>
+    <component id="PuffThreshold" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="550" />
+        <property name="thresholdLow" value="550" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="2" />
+      </properties>
+      <layout>
+        <posX>739</posX>
+        <posY>4</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.15">
+      <description />
+      <source>
+        <component id="Averager.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="AdjustmentCurve.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.19">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="SipThreshold" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.21">
+      <description />
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="Y" />
+      </source>
+      <target>
+        <component id="Averager.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.31">
+      <description />
+      <source>
+        <component id="MathEvaluator.1.2.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseX" />
+      </target>
+    </channel>
+    <channel id="binding.36">
+      <description />
+      <source>
+        <component id="MathEvaluator.1.2.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="Mouse.1" />
+        <port id="mouseY" />
+      </target>
+    </channel>
+    <channel id="binding.20">
+      <description />
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="X" />
+      </source>
+      <target>
+        <component id="Averager.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.14">
+      <description />
+      <source>
+        <component id="Averager.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="AdjustmentCurve.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.22">
+      <description />
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="PuffAssignmentSelector" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.35">
+      <description />
+      <source>
+        <component id="SpeedSlider" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.2.1.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.32">
+      <description />
+      <source>
+        <component id="AdjustmentCurve.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.2.1.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.33">
+      <description />
+      <source>
+        <component id="AdjustmentCurve.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.2.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.34">
+      <description />
+      <source>
+        <component id="SpeedSlider" />
+        <port id="value" />
+      </source>
+      <target>
+        <component id="MathEvaluator.1.2.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.37">
+      <description />
+      <source>
+        <component id="DoublePuffCounter" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="DoublePuffComparator" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.38">
+      <description />
+      <source>
+        <component id="PuffAssignmentSelector" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="RightPuffThreshold" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="PuffAssignmentSelector" />
+        <port id="out3" />
+      </source>
+      <target>
+        <component id="WheelUpThreshold" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.17">
+      <source>
+        <component id="PuffAssignmentSelector" />
+        <port id="out4" />
+      </source>
+      <target>
+        <component id="WheelDownThreshold" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.16">
+      <source>
+        <component id="PuffAssignmentStrings" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="PuffAssignmentDisplay" />
+        <port id="setText" />
+      </target>
+    </channel>
+    <channel id="binding.23">
+      <source>
+        <component id="PuffAssignmentSelector" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="DragThreshold" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.24">
+      <source>
+        <component id="Lipmouse.1" />
+        <port id="pressure" />
+      </source>
+      <target>
+        <component id="PuffThreshold" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="eventNegEdge_leftClick">
+      <description />
+      <sources>
+        <source>
+          <component id="SipThreshold" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_toggle">
+      <description />
+      <sources>
+        <source>
+          <component id="Menu" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="toggle" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_activate">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="activate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_start">
+      <description />
+      <sources>
+        <source>
+          <component id="SipThreshold" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyboardLaunchTimer" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="SipThreshold" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyboardLaunchTimer" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="SipThreshold" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyboardLaunchTimer" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_Start">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyboardLaunchTimer" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyboardToggleSound" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_Start">
+      <description />
+      <sources>
+        <source>
+          <component id="CalibrationStart" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CalibrationSound" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_start">
+      <description />
+      <sources>
+        <source>
+          <component id="CalibrationStart" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CalibrationEnd" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_resetToZero">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffTimer" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DoublePuffCounter" />
+          <eventPort id="resetToZero" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_Start">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DoublePuffSound" />
+          <eventPort id="Start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_resetToZero">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DoublePuffCounter" />
+          <eventPort id="resetToZero" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_selectNext">
+      <description />
+      <sources>
+        <source>
+          <component id="Menu" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PuffAssignmentSelector" />
+          <eventPort id="selectNext" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_calibration">
+      <description />
+      <sources>
+        <source>
+          <component id="CalibrationEnd" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Lipmouse.1" />
+          <eventPort id="calibration" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_calibration">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Lipmouse.1" />
+          <eventPort id="calibration" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_dispatchNextSlot">
+      <description />
+      <sources>
+        <source>
+          <component id="Menu" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PuffAssignmentStrings" />
+          <eventPort id="dispatchNextSlot" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PuffAssignmentStrings" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_start">
+      <description />
+      <sources>
+        <source>
+          <component id="WheelUpThreshold" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WheelUpTimer" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="WheelUpThreshold" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WheelUpTimer" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="WheelUpThreshold" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WheelUpTimer" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_wheelUp">
+      <description />
+      <sources>
+        <source>
+          <component id="WheelUpTimer" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="wheelUp" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_wheelDown">
+      <description />
+      <sources>
+        <source>
+          <component id="WheelDownTimer" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="wheelDown" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_start">
+      <description />
+      <sources>
+        <source>
+          <component id="WheelDownThreshold" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WheelDownTimer" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="WheelDownThreshold" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WheelDownTimer" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="WheelDownThreshold" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WheelDownTimer" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_launchNow">
+      <description />
+      <sources>
+        <source>
+          <component id="ToggleKeyboardLaunch" />
+          <eventPort id="event-out1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StartOSKA" />
+          <eventPort id="launchNow" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_event-in">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyboardLaunchTimer" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ToggleKeyboardLaunch" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event-out1_launchNow">
+      <description />
+      <sources>
+        <source>
+          <component id="ToggleKeyboardLaunch" />
+          <eventPort id="event-out2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DestroyOSKA" />
+          <eventPort id="launchNow" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_dragPress">
+      <description />
+      <sources>
+        <source>
+          <component id="DragThreshold" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="dragPress" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_event-in">
+      <description />
+      <sources>
+        <source>
+          <component id="Menu" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ToggleKeyboardLaunch" />
+          <eventPort id="event-in" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_reset">
+      <description>Reset in case of double puff</description>
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DoublePuffTimer" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_dispatchNextSlot">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PuffAssignmentStrings" />
+          <eventPort id="dispatchNextSlot" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_selectNext">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PuffAssignmentSelector" />
+          <eventPort id="selectNext" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_start">
+      <description />
+      <sources>
+        <source>
+          <component id="PuffThreshold" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DoublePuffTimer" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_increase">
+      <description />
+      <sources>
+        <source>
+          <component id="PuffThreshold" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DoublePuffCounter" />
+          <eventPort id="increase" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_start">
+      <description />
+      <sources>
+        <source>
+          <component id="RightPuffThreshold" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CalibrationStart" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="RightPuffThreshold" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CalibrationStart" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="RightPuffThreshold" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CalibrationStart" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WheelUpTimer" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WheelUpTimer" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WheelDownTimer" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="WheelDownTimer" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CalibrationStart" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_reset">
+      <description />
+      <sources>
+        <source>
+          <component id="DoublePuffComparator" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CalibrationStart" />
+          <eventPort id="reset" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventPosEdge_rightClick">
+      <description />
+      <sources>
+        <source>
+          <component id="RightPuffThreshold" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <groups>
+    <group id="Speed_AdjustmentCurve">
+      <componentId>Averager.1</componentId>
+      <componentId>AdjustmentCurve.1</componentId>
+      <componentId>MathEvaluator.1.2.1</componentId>
+      <componentId>MathEvaluator.1.2.1.1</componentId>
+      <componentId>AdjustmentCurve.1.1</componentId>
+      <componentId>Averager.1.1</componentId>
+      <componentId>SpeedSlider</componentId>
+    </group>
+  </groups>
+  <modelGUI>
+    <Decoration>false</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>true</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>false</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>9600</posX>
+      <posY>2244</posY>
+      <width>400</width>
+      <height>4733</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
