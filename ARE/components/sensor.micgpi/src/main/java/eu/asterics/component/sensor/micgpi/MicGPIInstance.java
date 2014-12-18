@@ -328,21 +328,24 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 						lowState = false;
 						value=0;
 					}					
-					
-					if (value < propThresholdLow) {
-						if (lowState == false) {
-							etpInLow.raiseEvent();
-							lowState = true;
-						}
-					} 
-					if (value > propThresholdHigh) {
-						if (highState == false) {
-							etpInHigh.raiseEvent();
-							highState = true;
+					else
+					{
+						if (value < propThresholdLow) {
+							if (lowState == false) {
+								etpInLow.raiseEvent();
+								lowState = true;
+							}
+						} 
+						if (value > propThresholdHigh) {
+							if (highState == false) {
+								etpInHigh.raiseEvent();
+								highState = true;
+							}
 						}
 					}
-
-					sum+=Math.abs(value);
+					
+					if (propThresholdLow!=-1000) sum+=Math.abs(value);
+					else sum+=value;
 				}
 				opPressure.sendData(ConversionUtils.doubleToBytes((double)sum/readBytes));
 
