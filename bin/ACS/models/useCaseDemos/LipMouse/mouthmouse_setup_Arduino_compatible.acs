@@ -10,11 +10,11 @@
       </ports>
       <properties>
         <property name="displayBuffer" value="3" />
-        <property name="drawingMode" value="0" />
+        <property name="drawingMode" value="1" />
         <property name="displayMode" value="0" />
-        <property name="drawingInterval" value="100" />
-        <property name="min" value="-100" />
-        <property name="max" value="100" />
+        <property name="drawingInterval" value="10" />
+        <property name="min" value="-50" />
+        <property name="max" value="50" />
         <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
@@ -22,14 +22,14 @@
         <property name="caption" value="X" />
       </properties>
       <layout>
-        <posX>464</posX>
-        <posY>244</posY>
+        <posX>785</posX>
+        <posY>50</posY>
       </layout>
       <gui>
-        <posX>325</posX>
-        <posY>2156</posY>
-        <width>2325</width>
-        <height>1400</height>
+        <posX>3812</posX>
+        <posY>556</posY>
+        <width>1212</width>
+        <height>4400</height>
       </gui>
     </component>
     <component id="MathEvaluatorX" type_id="asterics.MathEvaluator">
@@ -55,8 +55,8 @@
         <property name="expression" value="a-b" />
       </properties>
       <layout>
-        <posX>324</posX>
-        <posY>238</posY>
+        <posX>186</posX>
+        <posY>209</posY>
       </layout>
     </component>
     <component id="MathEvaluatorY" type_id="asterics.MathEvaluator">
@@ -82,8 +82,8 @@
         <property name="expression" value="a-b" />
       </properties>
       <layout>
-        <posX>322</posX>
-        <posY>643</posY>
+        <posX>185</posX>
+        <posY>470</posY>
       </layout>
     </component>
     <component id="Mouse.1" type_id="asterics.Mouse">
@@ -108,8 +108,8 @@
         <property name="yMax" value="1024" />
       </properties>
       <layout>
-        <posX>1043</posX>
-        <posY>371</posY>
+        <posX>956</posX>
+        <posY>194</posY>
       </layout>
     </component>
     <component id="Pressure" type_id="asterics.BarDisplay">
@@ -134,14 +134,14 @@
         <property name="caption" value="Pressure" />
       </properties>
       <layout>
-        <posX>179</posX>
-        <posY>16</posY>
+        <posX>125</posX>
+        <posY>18</posY>
       </layout>
       <gui>
-        <posX>7388</posX>
-        <posY>556</posY>
-        <width>1000</width>
-        <height>3000</height>
+        <posX>8362</posX>
+        <posY>2778</posY>
+        <width>1288</width>
+        <height>6867</height>
       </gui>
     </component>
     <component id="OsciY" type_id="asterics.Oscilloscope">
@@ -153,11 +153,11 @@
       </ports>
       <properties>
         <property name="displayBuffer" value="3" />
-        <property name="drawingMode" value="0" />
+        <property name="drawingMode" value="1" />
         <property name="displayMode" value="0" />
         <property name="drawingInterval" value="100" />
-        <property name="min" value="-100" />
-        <property name="max" value="100" />
+        <property name="min" value="-50" />
+        <property name="max" value="50" />
         <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
@@ -165,14 +165,14 @@
         <property name="caption" value="Y" />
       </properties>
       <layout>
-        <posX>472</posX>
-        <posY>647</posY>
+        <posX>819</posX>
+        <posY>460</posY>
       </layout>
       <gui>
-        <posX>312</posX>
-        <posY>5978</posY>
-        <width>2325</width>
-        <height>1400</height>
+        <posX>3812</posX>
+        <posY>5133</posY>
+        <width>1188</width>
+        <height>4444</height>
       </gui>
     </component>
     <component id="OsciXLinks" type_id="asterics.Oscilloscope">
@@ -196,14 +196,14 @@
         <property name="caption" value="XLinks" />
       </properties>
       <layout>
-        <posX>480</posX>
-        <posY>97</posY>
+        <posX>241</posX>
+        <posY>12</posY>
       </layout>
       <gui>
-        <posX>275</posX>
-        <posY>689</posY>
-        <width>2325</width>
-        <height>1400</height>
+        <posX>375</posX>
+        <posY>556</posY>
+        <width>3400</width>
+        <height>2200</height>
       </gui>
     </component>
     <component id="OsciXRechts" type_id="asterics.Oscilloscope">
@@ -227,14 +227,14 @@
         <property name="caption" value="XRechts" />
       </properties>
       <layout>
-        <posX>330</posX>
-        <posY>89</posY>
+        <posX>340</posX>
+        <posY>13</posY>
       </layout>
       <gui>
-        <posX>2650</posX>
-        <posY>711</posY>
-        <width>2325</width>
-        <height>1400</height>
+        <posX>375</posX>
+        <posY>2778</posY>
+        <width>3400</width>
+        <height>2178</height>
       </gui>
     </component>
     <component id="Arduino.1" type_id="asterics.Arduino">
@@ -309,14 +309,14 @@
         <property name="caption" value="YUnten" />
       </properties>
       <layout>
-        <posX>338</posX>
-        <posY>471</posY>
+        <posX>537</posX>
+        <posY>13</posY>
       </layout>
       <gui>
-        <posX>275</posX>
-        <posY>4489</posY>
-        <width>2325</width>
-        <height>1400</height>
+        <posX>375</posX>
+        <posY>7356</posY>
+        <width>3388</width>
+        <height>2200</height>
       </gui>
     </component>
     <component id="OsciYOben" type_id="asterics.Oscilloscope">
@@ -340,14 +340,14 @@
         <property name="caption" value="YOben" />
       </properties>
       <layout>
-        <posX>458</posX>
-        <posY>470</posY>
+        <posX>439</posX>
+        <posY>14</posY>
       </layout>
       <gui>
-        <posX>2650</posX>
-        <posY>4511</posY>
-        <width>2325</width>
-        <height>1400</height>
+        <posX>375</posX>
+        <posY>5133</posY>
+        <width>3388</width>
+        <height>2200</height>
       </gui>
     </component>
     <component id="AdjustmentCurveX" type_id="asterics.AdjustmentCurve">
@@ -375,14 +375,14 @@
         <property name="caption" value="dotMeter" />
       </properties>
       <layout>
-        <posX>764</posX>
-        <posY>271</posY>
+        <posX>691</posX>
+        <posY>216</posY>
       </layout>
       <gui>
-        <posX>5025</posX>
-        <posY>5000</posY>
-        <width>2250</width>
-        <height>4222</height>
+        <posX>5075</posX>
+        <posY>578</posY>
+        <width>3175</width>
+        <height>4200</height>
       </gui>
     </component>
     <component id="AdjustmentCurveY" type_id="asterics.AdjustmentCurve">
@@ -410,14 +410,14 @@
         <property name="caption" value="dotMeter" />
       </properties>
       <layout>
-        <posX>756</posX>
-        <posY>422</posY>
+        <posX>673</posX>
+        <posY>469</posY>
       </layout>
       <gui>
-        <posX>5025</posX>
-        <posY>733</posY>
-        <width>2125</width>
-        <height>4222</height>
+        <posX>5050</posX>
+        <posY>5133</posY>
+        <width>3175</width>
+        <height>4444</height>
       </gui>
     </component>
     <component id="AveragerX" type_id="asterics.Averager">
@@ -435,8 +435,8 @@
         <property name="mode" value="0" />
       </properties>
       <layout>
-        <posX>631</posX>
-        <posY>269</posY>
+        <posX>553</posX>
+        <posY>222</posY>
       </layout>
     </component>
     <component id="AveragerY" type_id="asterics.Averager">
@@ -454,19 +454,19 @@
         <property name="mode" value="0" />
       </properties>
       <layout>
-        <posX>635</posX>
-        <posY>418</posY>
+        <posX>546</posX>
+        <posY>476</posY>
       </layout>
     </component>
     <component id="ButtonMenu" type_id="asterics.ButtonGrid">
       <description>Keyboard which sends event after button press</description>
       <ports />
       <properties>
-        <property name="caption" value="Keyboard" />
+        <property name="caption" value="Actions" />
         <property name="horizontalOrientation" value="false" />
         <property name="buttonCaption1" value="Enable Mouse" />
         <property name="buttonCaption2" value="Disable Mouse" />
-        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption3" value="Calibrate zero position" />
         <property name="buttonCaption4" value="" />
         <property name="buttonCaption5" value="" />
         <property name="buttonCaption6" value="" />
@@ -486,15 +486,114 @@
         <property name="buttonCaption20" value="" />
       </properties>
       <layout>
-        <posX>656</posX>
-        <posY>651</posY>
+        <posX>982</posX>
+        <posY>444</posY>
       </layout>
       <gui>
-        <posX>7388</posX>
-        <posY>3689</posY>
-        <width>1150</width>
-        <height>622</height>
+        <posX>8325</posX>
+        <posY>600</posY>
+        <width>1362</width>
+        <height>2044</height>
       </gui>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="1000" />
+      </properties>
+      <layout>
+        <posX>23</posX>
+        <posY>329</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluatorX.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="-(a-b)" />
+      </properties>
+      <layout>
+        <posX>431</posX>
+        <posY>221</posY>
+      </layout>
+    </component>
+    <component id="SampleAndHold.1" type_id="asterics.SampleAndHold">
+      <description>Sample and hold for up to 4 input values</description>
+      <ports>
+        <inputPort portTypeID="in1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in4">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>307</posX>
+        <posY>312</posY>
+      </layout>
+    </component>
+    <component id="MathEvaluatorY.1" type_id="asterics.MathEvaluator">
+      <description>Mathematical expression evaluator</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="expression" value="-(a-b)" />
+      </properties>
+      <layout>
+        <posX>423</posX>
+        <posY>481</posY>
+      </layout>
     </component>
   </components>
   <channels>
@@ -508,9 +607,9 @@
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.14">
+    <channel id="binding.27">
       <source>
-        <component id="MathEvaluatorX" />
+        <component id="MathEvaluatorX.1" />
         <port id="out" />
       </source>
       <target>
@@ -588,9 +687,9 @@
         <port id="input" />
       </target>
     </channel>
-    <channel id="binding.15">
+    <channel id="binding.32">
       <source>
-        <component id="MathEvaluatorY" />
+        <component id="MathEvaluatorY.1" />
         <port id="out" />
       </source>
       <target>
@@ -668,6 +767,66 @@
         <port id="in" />
       </target>
     </channel>
+    <channel id="binding.26">
+      <source>
+        <component id="MathEvaluatorX" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluatorX.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.28">
+      <source>
+        <component id="MathEvaluatorX" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="SampleAndHold.1" />
+        <port id="in1" />
+      </target>
+    </channel>
+    <channel id="binding.29">
+      <source>
+        <component id="SampleAndHold.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="MathEvaluatorX.1" />
+        <port id="inB" />
+      </target>
+    </channel>
+    <channel id="binding.30">
+      <source>
+        <component id="MathEvaluatorY" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="SampleAndHold.1" />
+        <port id="in2" />
+      </target>
+    </channel>
+    <channel id="binding.31">
+      <source>
+        <component id="MathEvaluatorY" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="MathEvaluatorY.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.33">
+      <source>
+        <component id="SampleAndHold.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="MathEvaluatorY.1" />
+        <port id="inB" />
+      </target>
+    </channel>
   </channels>
   <eventChannels>
     <eventChannel id="button1_activate">
@@ -700,6 +859,36 @@
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="button3_sampleNow">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonMenu" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="SampleAndHold.1" />
+          <eventPort id="sampleNow" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_sampleNow">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="SampleAndHold.1" />
+          <eventPort id="sampleNow" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
     <Decoration>true</Decoration>
@@ -708,10 +897,10 @@
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
-      <posX>280</posX>
+      <posX>375</posX>
       <posY>0</posY>
-      <width>9658</width>
-      <height>10000</height>
+      <width>9375</width>
+      <height>9800</height>
     </AREGUIWindow>
   </modelGUI>
 </model>
