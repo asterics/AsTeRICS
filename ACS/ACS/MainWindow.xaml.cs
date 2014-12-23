@@ -57,6 +57,7 @@ using Asterics.ASAPI;
 using AvalonDock;
 using Microsoft.VisualBasic.Logging;
 using Microsoft.Windows.Controls.Ribbon;
+using NLog;
 
 namespace Asterics.ACS {
     /// <summary>
@@ -81,6 +82,9 @@ namespace Asterics.ACS {
         private String copyDummyName = "copydummyftwsurrockslolcatftwnyannyannyan";
         private String pasteDummyName = "";
         
+        // Logger using NLog
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
 
         private bool hiddenChannels = false;
         private bool connectedChannelLastClick = false;
@@ -211,8 +215,7 @@ namespace Asterics.ACS {
         /// <summary>
         /// Constructor
         /// </summary>
-        public MainWindow() {            
-
+        public MainWindow() {
             // make an ACS folder in the AppData folder
             // uncomment for the final version
             // Also, change useAppDateFolder in asterics.ini !!!
@@ -3926,6 +3929,7 @@ namespace Asterics.ACS {
         #region Mouse listeners
 
 
+
         /// <summary>
         /// Function called, when the left mouse button will be released. If the release will be done over a channel or an event channel, the channel will get the focus
         /// </summary>
@@ -4864,6 +4868,7 @@ namespace Asterics.ACS {
                     zoomSlider.Value -= 0.1;
                 }
                 e.Handled = true;
+
             }
         }
 
