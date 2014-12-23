@@ -721,15 +721,7 @@ namespace Asterics.ACS {
             bool isError = false;
             bool doOverride = false;
 
-            // If a property has been edited and the focus has not been set to another element, the property will not be set. 
-            // Clicking ribbon elments did not remove focus from property editor, so the property will
-            // not be set. Causes problems, saving, uplaoding, ... the model
-            if (canvas.Children.Count > 0) {
-                Keyboard.Focus(canvas.Children[0]);
-            }
-            else {
-                Keyboard.Focus(canvas);
-            }
+            
             if (deploymentComponentList.Count == 0) {
                 MessageBox.Show(Properties.Resources.EmptyModel, Properties.Resources.EmptyModelHeader, MessageBoxButton.OK, MessageBoxImage.Error);
             } else {
@@ -1176,16 +1168,6 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SaveLocal_Click(object sender, RoutedEventArgs e) {
-            // If a property has been edited and the focus has not been set to another element, the property will not be set. 
-            // Clicking ribbon elments did not remove focus from property editor, so the property will
-            // not be set. Causes problems, saving, uplaoding, ... the model
-            if (canvas.Children.Count > 0) {
-                Keyboard.Focus(canvas.Children[0]);
-            }
-            else {
-                Keyboard.Focus(canvas);
-            }
-
             String mustBeConnectedError = MustBeConnectedChecker();
             if (mustBeConnectedError != "") {
                 MessageBox.Show(mustBeConnectedError, Properties.Resources.MustBeConnectedCheckerHeader, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -1208,16 +1190,7 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SaveLocalAs_Click(object sender, RoutedEventArgs e) {
-            // If a property has been edited and the focus has not been set to another element, the property will not be set. 
-            // Clicking ribbon elments did not remove focus from property editor, so the property will
-            // not be set. Causes problems, saving, uplaoding, ... the model
-            if (canvas.Children.Count > 0) {
-                Keyboard.Focus(canvas.Children[0]);
-            }
-            else {
-                Keyboard.Focus(canvas);
-            }
-
+            
             String mustBeConnectedError = MustBeConnectedChecker();
             if (mustBeConnectedError != "") {
                 MessageBox.Show(mustBeConnectedError, Properties.Resources.MustBeConnectedCheckerHeader, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -2118,12 +2091,6 @@ namespace Asterics.ACS {
                         break;
                 }
             }
-            if (canvas.Children.Count > 0) {
-                Keyboard.Focus(canvas.Children[0]);
-            }
-            else {
-                Keyboard.Focus(canvas);
-            }
             UpdateToolTips();
         }
 
@@ -2440,12 +2407,6 @@ namespace Asterics.ACS {
                         break;
                 }
             }
-            if (canvas.Children.Count > 0) {
-                Keyboard.Focus(canvas.Children[0]);
-            }
-            else {
-                Keyboard.Focus(canvas);
-            }
             UpdateToolTips();
         }
 
@@ -2590,16 +2551,6 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void StartModel_Click(object sender, RoutedEventArgs e) {
-            // If a property has been edited and the focus has not been set to another element, the property will not be set. 
-            // Clicking ribbon elments did not remove focus from property editor, so the property will
-            // not be set. Causes problems, saving, uplaoding, ... the model
-            if (canvas.Children.Count > 0) {
-                Keyboard.Focus(canvas.Children[0]);
-            }
-            else {
-                Keyboard.Focus(canvas);
-            }
-
             try {
 
                 // check, if a model is loaded and remove error marker
@@ -2635,16 +2586,6 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void PauseModel_Click(object sender, RoutedEventArgs e) {
-            // If a property has been edited and the focus has not been set to another element, the property will not be set. 
-            // Clicking ribbon elments did not remove focus from property editor, so the property will
-            // not be set. Causes problems, saving, uplaoding, ... the model
-            if (canvas.Children.Count > 0) {
-                Keyboard.Focus(canvas.Children[0]);
-            }
-            else {
-                Keyboard.Focus(canvas);
-            }
-
             try {
                 areStatus.Status = AREStatus.ConnectionStatus.Pause;
                 asapiClient.PauseModel();            
@@ -2672,12 +2613,7 @@ namespace Asterics.ACS {
             // If a property has been edited and the focus has not been set to another element, the property will not be set. 
             // Clicking ribbon elments did not remove focus from property editor, so the property will
             // not be set. Causes problems, saving, uplaoding, ... the model
-            if (canvas.Children.Count > 0) {
-                Keyboard.Focus(canvas.Children[0]);
-            }
-            else {
-                Keyboard.Focus(canvas);
-            }
+            Keyboard.Focus(canvas);
 
             try {
                 asapiClient.StopModel();
@@ -7717,13 +7653,7 @@ namespace Asterics.ACS {
                     DeleteChannel(c);
                 }
 
-
-                if (canvas.Children.Count > 0) {
-                    Keyboard.Focus(canvas.Children[0]);
-                }
-                else {
-                    Keyboard.Focus(canvas);
-                }
+                Keyboard.Focus(canvas);
                 if (focusedComponent == mc)
                     focusedComponent = null;
                 DeleteComponent(mc);
@@ -8179,14 +8109,6 @@ namespace Asterics.ACS {
                     Redo_Click(sender, e);
                 }
             } else if (e.Key == Key.S && ModifierKeys.Control == e.KeyboardDevice.Modifiers) {
-                // If a property has been edited and the focus has not been set to another element, the property will not be set. 
-                // Clicking ribbon elments did not remove focus from property editor, so the property will
-                // not be set. Causes problems, saving, uplaoding, ... the model
-                if (canvas.Children.Count > 0) {
-                    Keyboard.Focus(canvas.Children[0]);
-                } else {
-                    Keyboard.Focus(canvas);
-                }
                 String mustBeConnectedError = MustBeConnectedChecker();
                 if (mustBeConnectedError != "") {
                     MessageBox.Show(mustBeConnectedError, Properties.Resources.MustBeConnectedCheckerHeader, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -9846,13 +9768,6 @@ namespace Asterics.ACS {
                 deploymentModel.eventChannels = (eventChannel[])eventChannelList.ToArray(typeof(eventChannel));
             }
 
-            // focus the first element
-            if (canvas.Children.Count > 0) {
-                Keyboard.Focus(canvas.Children[0]);
-            }
-            else {
-                Keyboard.Focus(canvas);
-            }
             copyOffsetMulti++;
             ClearSelectedChannelList();
             if (modelToPaste.channels != null) {
