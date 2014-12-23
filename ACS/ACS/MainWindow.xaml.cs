@@ -494,7 +494,7 @@ namespace Asterics.ACS {
             //showPortsRibbonButton.IsChecked = true;
             //showEventsRibbonButton.IsChecked = true;
             this.KeyDown += Global_KeyDown;
-            canvas.MouseWheel += Zoom_MouseWheele;
+            canvas.MouseWheel += Zoom_MouseWheel;
             canvas.Focusable = true;
             canvas.Focus();
 
@@ -4856,20 +4856,53 @@ namespace Asterics.ACS {
         }
 
         /// <summary>
-        /// Changing the Zoom-Slider value when the mouse wheele is used and Crtl is pressed
+        /// Changing the Zoom-Slider value when the mouse wheel is used and Crtl is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void Zoom_MouseWheele(object sender, MouseWheelEventArgs e) {
-            if (e.Delta != 0 && Keyboard.Modifiers == ModifierKeys.Control) {
-                if (e.Delta > 0) {
-                    zoomSlider.Value += 0.1;
-                } else {
-                    zoomSlider.Value -= 0.1;
-                }
-                e.Handled = true;
+        void Zoom_MouseWheel(object sender, MouseWheelEventArgs e) {
+            
+            if (canvas.IsMouseOver && e.Delta != 0 && Keyboard.Modifiers == ModifierKeys.Control)
+            {
 
+                Point mouseAtCanvas = e.GetPosition(canvas);
+                Point mouseAtScrollViewer = e.GetPosition(scrollViewer);
+
+                ScaleTransform st = canvas.LayoutTransform as ScaleTransform;
+                if (st == null)
+                {
+                    st = new ScaleTransform();
+                    canvas.LayoutTransform = st;
+                }
+                if (e.Delta > 0)
+                {
+                    setZoomSliderValue(zoomSlider.Value + 0.1);
+                }
+                else
+                {
+                    setZoomSliderValue(zoomSlider.Value - 0.1);
+                }
+                st.ScaleX = st.ScaleY = zoomSlider.Value;
+                scrollViewer.ScrollToHorizontalOffset(0);
+                scrollViewer.ScrollToVerticalOffset(0);
+                this.UpdateLayout();
+
+                Vector offset = canvas.TranslatePoint(mouseAtCanvas, scrollViewer) - mouseAtScrollViewer;
+                scrollViewer.ScrollToHorizontalOffset(offset.X);
+                scrollViewer.ScrollToVerticalOffset(offset.Y);
+                this.UpdateLayout();
+
+                e.Handled = true;
             }
+        }
+
+        private void setZoomSliderValue(double value)
+        {
+            zoomSlider.Value = value;
+            if (zoomSlider.Value < 0.2)
+                zoomSlider.Value = 0.2;
+            if (zoomSlider.Value > 2)
+                zoomSlider.Value = 2;
         }
 
         /// <summary>

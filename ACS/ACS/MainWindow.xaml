@@ -212,10 +212,6 @@
             <ScrollViewer x:Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsTabStop="True">
 
                 <Canvas Background="White" x:Name="canvas"  Focusable="True" Width="4096" Height="2048" >
-                <Canvas.LayoutTransform>
-                    <ScaleTransform ScaleX="{Binding Path=Value, ElementName=zoomSlider}"
-                            ScaleY="{Binding Path=Value, ElementName=zoomSlider}"/>
-                </Canvas.LayoutTransform>
                 </Canvas>
             </ScrollViewer>
 

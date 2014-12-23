@@ -1099,10 +1099,12 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void zoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            if (guiCanvas != null) {
-                //guiCanvas.LayoutTransform = new ScaleTransform(zoomSlider.Value, zoomSlider.Value);
-                guiScrollViewer.LayoutTransform = new ScaleTransform(zoomSlider.Value, zoomSlider.Value);
+            if (canvas != null) {
+                canvas.LayoutTransform = new ScaleTransform(zoomSlider.Value, zoomSlider.Value);
             }
+            /*if (guiCanvas != null) {
+                guiCanvas.LayoutTransform = new ScaleTransform(zoomSlider.Value, zoomSlider.Value);
+            }*/
         }
 
         #endregion
