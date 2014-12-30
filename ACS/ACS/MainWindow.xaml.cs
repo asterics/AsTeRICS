@@ -75,8 +75,8 @@ namespace Asterics.ACS {
         private int offsetY = 0;
 
         private int copyOffsetMulti = 1;
-        private int copyXOffset = 150;
-        private int copyYOffset = 150;
+        private int copyXOffset = 15;
+        private int copyYOffset = 15;
         //private Hashtable model = new Hashtable();
 
         private String copyDummyName = "copydummyftwsurrockslolcatftwnyannyannyan";
@@ -1818,7 +1818,8 @@ namespace Asterics.ACS {
                         }
                     }
 
-                    int[] pos = ProperComponentCoordinates(40, 40);
+                    int[] pos = ProperComponentCoordinates((int)(scrollViewer.HorizontalOffset) + 40,
+                                    (int)(scrollViewer.VerticalOffset) + 40);
                     int positionX = pos[0];
                     if (positionX < 0)
                         positionX = 0;
@@ -2997,7 +2998,7 @@ namespace Asterics.ACS {
                 recentFileItem.ToolTip = str;
                 recentFileItem.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(recentFileItem_MouseDown);
                 recentFileItem.PreviewKeyDown += new KeyEventHandler(recentFileItem_KeyDown);
-                rf.AddItem(recentFileItem);
+                //// CV:temporarily removed because of HotKey- and CursorLeft bug in recent files menu //// rf.AddItem(recentFileItem);
             }
         }
 
@@ -6395,7 +6396,7 @@ namespace Asterics.ACS {
             int[] retVal = new int[2];
             foreach (componentType dc in deploymentComponentList.Values) {
                 if ((Int32.Parse(dc.layout.posX) == x) && (Int32.Parse(dc.layout.posY) == y)) {
-                    retVal = ProperComponentCoordinates(x + 40, y + 40);
+                    retVal = ProperComponentCoordinates(x + 10, y + 10);
                     return retVal;
                 }
             }
@@ -6616,7 +6617,7 @@ namespace Asterics.ACS {
                         statusTimer.IsEnabled = true;
                     }
                     catch (Exception ex) {
-                        MessageBox.Show(Properties.Resources.StatusPollingThreadErrorDialog, Properties.Resources.StatusPollingThreadErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                        //// CV:temporarily removed messagebox //// MessageBox.Show(Properties.Resources.StatusPollingThreadErrorDialog, Properties.Resources.StatusPollingThreadErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                         traceSource.TraceEvent(TraceEventType.Error, 3, ex.Message);
                     }
                 }
@@ -6668,7 +6669,7 @@ namespace Asterics.ACS {
                 }
                 catch (IOException ie)
                 {
-                    MessageBox.Show(Properties.Resources.StatusPollingThreadErrorDialog, Properties.Resources.StatusPollingThreadErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                    //// CV:temporarily removed messagebox ////  MessageBox.Show(Properties.Resources.StatusPollingThreadErrorDialog, Properties.Resources.StatusPollingThreadErrorDialogHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                     StopStatusPolling();
                     areStatus.Status = AREStatus.ConnectionStatus.Disconnected;
                     return;
@@ -10241,11 +10242,11 @@ namespace Asterics.ACS {
                         // the component in the bundle descriptor
                         //modelComp.HasVersionConflict = true;
                         modelComp.ComponentCanvas.Background = new SolidColorBrush(Colors.Orange);
-                        MessageBox.Show(Properties.Resources.CopyPortsErrorTextFormat(lPortEx.Message, modelComp.id), Properties.Resources.CopyPortsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                        //// CV:temporarily removed messagebox //// MessageBox.Show(Properties.Resources.CopyPortsErrorTextFormat(lPortEx.Message, modelComp.id), Properties.Resources.CopyPortsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                         traceSource.TraceEvent(TraceEventType.Error, 3, lPortEx.Message);
 
                     } catch (Exception lPropEx) { //LoadPropertiesException
-                        MessageBox.Show(Properties.Resources.CopyPropertiesErrorTextFormat(modelComp.id), Properties.Resources.CopyPropertiesErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                        //// CV:temporarily removed messagebox ////  MessageBox.Show(Properties.Resources.CopyPropertiesErrorTextFormat(modelComp.id), Properties.Resources.CopyPropertiesErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                         traceSource.TraceEvent(TraceEventType.Error, 3, lPropEx.Message);
 
                         //versionconflict
@@ -10452,7 +10453,7 @@ namespace Asterics.ACS {
                             }
                             else {
                                 // if no event listener Port can be found, the component has a version conflict
-                                MessageBox.Show(Properties.Resources.CopyChannelsErrorTextFormat(tempCompOut.id, tempCompIn.id), Properties.Resources.CopyChannelsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                                //// CV:temporarily removed messagebox //// MessageBox.Show(Properties.Resources.CopyChannelsErrorTextFormat(tempCompOut.id, tempCompIn.id), Properties.Resources.CopyChannelsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                                 tempCompIn.ComponentCanvas.Background = new SolidColorBrush(Colors.Orange);
                                 tempCompIn.HasVersionConflict = true;
                                 tempCompOut.ComponentCanvas.Background = new SolidColorBrush(Colors.Orange);
@@ -10461,12 +10462,12 @@ namespace Asterics.ACS {
                         }
                         else {
                             if (!tempCompOut.PortsList.Contains(modChannel.source.port.id)) {
-                                MessageBox.Show(Properties.Resources.CopyChannelErrorNotFoundFormat(tempCompOut.id, tempCompIn.id, modChannel.source.port.id), Properties.Resources.CopyChannelsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                                //// CV:temporarily removed messagebox //// MessageBox.Show(Properties.Resources.CopyChannelErrorNotFoundFormat(tempCompOut.id, tempCompIn.id, modChannel.source.port.id), Properties.Resources.CopyChannelsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                                 tempCompOut.ComponentCanvas.Background = new SolidColorBrush(Colors.Orange);
                                 tempCompOut.HasVersionConflict = true;
                             }
                             else {
-                                MessageBox.Show(Properties.Resources.CopyChannelErrorNotFoundFormat(tempCompOut.id, tempCompIn.id, modChannel.source.port.id), Properties.Resources.CopyChannelsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                                //// CV:temporarily removed messagebox //// MessageBox.Show(Properties.Resources.CopyChannelErrorNotFoundFormat(tempCompOut.id, tempCompIn.id, modChannel.source.port.id), Properties.Resources.CopyChannelsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                                 tempCompIn.ComponentCanvas.Background = new SolidColorBrush(Colors.Orange);
                                 tempCompIn.HasVersionConflict = true;
                             }
@@ -10534,21 +10535,20 @@ namespace Asterics.ACS {
                             }
                             else {
                                 // if no event listener Port can be found, the component has a version conflict
-                                MessageBox.Show(Properties.Resources.CopyEventsErrorTextFormat(evChannel.targets.target.component.id), Properties.Resources.CopyEventsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                                //// CV:temporarily removed messagebox //// MessageBox.Show(Properties.Resources.CopyEventsErrorTextFormat(evChannel.targets.target.component.id), Properties.Resources.CopyEventsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                                 ((componentType)deploymentComponentList[evChannel.targets.target.component.id]).ComponentCanvas.Background = new SolidColorBrush(Colors.Orange);
                                 ((componentType)deploymentComponentList[evChannel.targets.target.component.id]).HasVersionConflict = true;
                             }
                         }
                         else {
                             // if no event trigger Port can be found, the component has a version conflict
-                            MessageBox.Show(Properties.Resources.CopyEventsErrorTextFormat(evChannel.sources.source.component.id), Properties.Resources.CopyEventsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                            //// CV:temporarily removed messagebox //// MessageBox.Show(Properties.Resources.CopyEventsErrorTextFormat(evChannel.sources.source.component.id), Properties.Resources.CopyEventsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                             ((componentType)deploymentComponentList[evChannel.sources.source.component.id]).ComponentCanvas.Background = new SolidColorBrush(Colors.Orange);
                             ((componentType)deploymentComponentList[evChannel.sources.source.component.id]).HasVersionConflict = true;
                         }
                     }
                     catch (Exception) {
-                        MessageBox.Show(Properties.Resources.CopyEventsExceptionTextFormat(evChannel.sources.source.component.id, evChannel.sources.source.eventPort.id,
-                            evChannel.targets.target.component.id, evChannel.targets.target.component.id), Properties.Resources.CopyEventsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
+                        //// CV:temporarily removed messagebox //// MessageBox.Show(Properties.Resources.CopyEventsExceptionTextFormat(evChannel.sources.source.component.id, evChannel.sources.source.eventPort.id, evChannel.targets.target.component.id, evChannel.targets.target.component.id), Properties.Resources.CopyEventsErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 deploymentModel.eventChannels = (eventChannel[])eventChannelList.ToArray(typeof(eventChannel));
