@@ -69,6 +69,7 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 	
     private String propKeyCodeString = "";
     private int propInputMethod = 1;
+    private int propWaitTime = 1000;
 
     private int actSendPos = 0;
     private Vector<Integer> keyCodeArray; 
@@ -197,6 +198,10 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
         { 
             return propInputMethod;
         }
+        if("waitTime".equalsIgnoreCase(propertyName))
+        { 
+            return propWaitTime;
+        }
         return null;
     }
 
@@ -219,6 +224,13 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 		{
 			final Integer oldValue = this.propInputMethod;
 			propInputMethod = Integer.parseInt((String) newValue);
+			return oldValue;
+		}
+		else if("waitTime".equalsIgnoreCase(propertyName))
+		{
+			final Integer oldValue = propWaitTime;
+			propWaitTime = Integer.parseInt((String) newValue);
+			if (propWaitTime<1) propWaitTime=1;
 			return oldValue;
 		}
 
@@ -328,7 +340,7 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 		{
 			actcode= keyCodeArray.get(index);
 			switch (actcode) {
-				case 1: try {Thread.sleep(1000);} catch (Exception e) {}; break;
+				case 1: try {Thread.sleep(propWaitTime);} catch (Exception e) {}; break;
 				case 16:
 				case 17: 
 				case 18:
