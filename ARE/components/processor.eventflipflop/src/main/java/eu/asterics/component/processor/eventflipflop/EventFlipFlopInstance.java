@@ -51,7 +51,6 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 public class EventFlipFlopInstance extends AbstractRuntimeComponentInstance
 {
-	private final String EVENTINSTRING 	= "event-in";
     private final DefaultRuntimeEventTriggererPort etpOut1  = new DefaultRuntimeEventTriggererPort();    
     private final DefaultRuntimeEventTriggererPort etpOut2  = new DefaultRuntimeEventTriggererPort(); 
     private boolean status = false;    
@@ -90,9 +89,17 @@ public class EventFlipFlopInstance extends AbstractRuntimeComponentInstance
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
     {
 
-        if(EVENTINSTRING.equalsIgnoreCase(eventPortID))
+        if("event-in".equalsIgnoreCase(eventPortID))
         {
             return elpTriggerEvent;
+        }
+        if("selectOut1".equalsIgnoreCase(eventPortID))
+        {
+            return elpSelectOut1;
+        }
+        if("selectOut2".equalsIgnoreCase(eventPortID))
+        {
+            return elpSelectOut2;
         }
         return null;
     }
@@ -135,6 +142,21 @@ public class EventFlipFlopInstance extends AbstractRuntimeComponentInstance
     	 }
     };    
 
+    final IRuntimeEventListenerPort elpSelectOut1 = new IRuntimeEventListenerPort()
+    {
+    	 public void receiveEvent(final String data)
+    	 {
+    		 status=false; 
+    	 }
+    };    
+
+    final IRuntimeEventListenerPort elpSelectOut2 = new IRuntimeEventListenerPort()
+    {
+    	 public void receiveEvent(final String data)
+    	 {
+    		 status=true; 
+    	 }
+    };    
     /**
      * Standard method from framework
      * @param eventPortID
@@ -159,6 +181,7 @@ public class EventFlipFlopInstance extends AbstractRuntimeComponentInstance
     @Override
     public void start()
     {
+    	status=false;
         super.start();
         AstericsErrorHandling.instance.reportInfo(this, "EventFlipFlop Instance started");
     }
