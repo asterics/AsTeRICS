@@ -74,7 +74,12 @@ import eu.asterics.mw.services.MidiManager;
 public class CellBoardInstance extends AbstractRuntimeComponentInstance
 {
 	final IRuntimeOutputPort opSelectedCell = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opSelectedCellCaption = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opSelectedCellText = new DefaultRuntimeOutputPort();
+
+	final IRuntimeOutputPort opActCell = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opActCellCaption = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opActCellText = new DefaultRuntimeOutputPort();
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 
 	//final IRuntimeEventTriggererPort etpSelectedCell = new DefaultRuntimeEventTriggererPort();
@@ -108,7 +113,11 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     private final String PROP_KEYBOARD_FILE="keyboardFile";
 
     private final String OP_SELECTED_CELL="selectedCell";
+    private final String OP_SELECTED_CELL_CAPTION="selectedCellCaption";
     private final String OP_SELECTED_CELL_TEXT="selectedCellText";
+    private final String OP_ACT_CELL="actCell";
+    private final String OP_ACT_CELL_CAPTION="actCellCaption";
+    private final String OP_ACT_CELL_TEXT="actCellText";
     private final String IP_ROW="row";
     private final String IP_COLUMN="column";
     private final String IP_CELL_NUMBER="cellNumber";
@@ -130,8 +139,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	public String propKeyboardFile="";
 	
 	final EventPort [] etpCellArray = new EventPort[NUMBER_OF_CELLS];
+	private String [] propCellCaptionArray = new String[NUMBER_OF_CELLS];
 	private String [] propCellTextArray = new String[NUMBER_OF_CELLS];
-	private String [] propCellActionTextArray = new String[NUMBER_OF_CELLS];
 	private String [] propCellImageArray = new String[NUMBER_OF_CELLS];
 
 	final IRuntimeEventTriggererPort etpCellClicked = new DefaultRuntimeEventTriggererPort();
@@ -148,9 +157,9 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
         for(int i=0;i<NUMBER_OF_CELLS;i++)
         {
         	etpCellArray[i]=new EventPort();
-        	propCellTextArray[i]="";
+        	propCellCaptionArray[i]="";
         	propCellImageArray[i]="";
-        	propCellActionTextArray[i]="";
+        	propCellTextArray[i]="";
         }
     }
 
@@ -250,9 +259,25 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		{
 			return opSelectedCell;
 		}
+		if (OP_SELECTED_CELL_CAPTION.equalsIgnoreCase(portID))
+		{
+			return opSelectedCellCaption;
+		}
 		if (OP_SELECTED_CELL_TEXT.equalsIgnoreCase(portID))
 		{
 			return opSelectedCellText;
+		}
+		if (OP_ACT_CELL.equalsIgnoreCase(portID))
+		{
+			return opActCell;
+		}
+		if (OP_ACT_CELL_CAPTION.equalsIgnoreCase(portID))
+		{
+			return opActCellCaption;
+		}
+		if (OP_ACT_CELL_TEXT.equalsIgnoreCase(portID))
+		{
+			return opActCellText;
 		}
 
 		return null;
@@ -422,7 +447,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		    	  {
 		    		  if(cellNumberValue>0 && cellNumberValue<=NUMBER_OF_CELLS)
 		    		  {
-		    			  return propCellTextArray[cellNumberValue-1];
+		    			  return propCellCaptionArray[cellNumberValue-1];
 		    		  }
 		    	  }
 		    	  
@@ -483,7 +508,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		    	  {
 		    		  if(cellNumberValue>0 && cellNumberValue<=NUMBER_OF_CELLS)
 		    		  {
-		    			  return propCellActionTextArray[cellNumberValue-1];
+		    			  return propCellTextArray[cellNumberValue-1];
 		    		  }
 		    	  }
 		        }
@@ -625,8 +650,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		    	  {
 		    		  if(cellNumberValue>0 && cellNumberValue<=NUMBER_OF_CELLS)
 		    		  {
-		    			  final String oldValue = propCellTextArray[cellNumberValue-1];         
-		    			  propCellTextArray[cellNumberValue-1]=(String)newValue;
+		    			  final String oldValue = propCellCaptionArray[cellNumberValue-1];         
+		    			  propCellCaptionArray[cellNumberValue-1]=(String)newValue;
 		    			  return oldValue;
 		    		  }
 		    	  
@@ -689,8 +714,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		    	  {
 		    		  if(cellNumberValue>0 && cellNumberValue<=NUMBER_OF_CELLS)
 		    		  {
-		    			  final String oldValue = propCellActionTextArray[cellNumberValue-1];         
-		    			  propCellActionTextArray[cellNumberValue-1]=(String)newValue;
+		    			  final String oldValue = propCellTextArray[cellNumberValue-1];         
+		    			  propCellTextArray[cellNumberValue-1]=(String)newValue;
 		    			  return oldValue;
 		    		  }
 		    	  
@@ -821,8 +846,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			saxParser = factory.newSAXParser();
 			XMLCellBoardLoader handler =  new XMLCellBoardLoader(NUMBER_OF_CELLS);
 			saxParser.parse( new File(FILE_PATH_PREFIX,xmlFile), handler );
-			propCellTextArray = handler.getPropCellTextArray();
-			propCellActionTextArray = handler.getPropCellActionTextArray();
+			propCellCaptionArray = handler.getPropCellTextArray();
+			propCellTextArray = handler.getPropCellActionTextArray();
 			propCellImageArray = handler.getPropCellImageArray();
 			propRows = handler.getRows();
 			propColumns = handler.getCols();
@@ -940,9 +965,9 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param index index of the cell
      * @return   text of the cell
      */
-	synchronized String getText(int index)
+	synchronized String getCellCaption(int index)
 	{
-		return propCellTextArray[index];
+		return propCellCaptionArray[index];
 	}
 	
 	/**
@@ -950,9 +975,9 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * @param index index of the cell
      * @return   action text of the cell
      */
-	synchronized String getActionText(int index)
+	synchronized String getCellText(int index)
 	{
-		return propCellActionTextArray[index];
+		return propCellTextArray[index];
 	}
 	
 	/**
@@ -984,25 +1009,38 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	 }
 	 
 	 /**
-	  * Returns the cell number output port.
-	  * @return   cell output port
+	  * getter methods for output ports the cell number output port.
 	  */
-	synchronized IRuntimeOutputPort getCellOutputPort()
+	synchronized IRuntimeOutputPort getSelectedCellOutputPort()
 	 {
 		 return opSelectedCell;
 	 }
-	 
-	 
-	 /**
-	  * Returns the cell text output port.
-	  * @return   cell text output port
-	  */
-	synchronized IRuntimeOutputPort getCellTextOutputPort()
+	synchronized IRuntimeOutputPort getSelectedCellCaptionOutputPort()
+	 {
+		 return opSelectedCellCaption;
+	 }
+	synchronized IRuntimeOutputPort getSelectedCellTextOutputPort()
 	 {
 		 return opSelectedCellText;
 	 }
-	 
-	 /**
+
+	synchronized IRuntimeOutputPort getActCellOutputPort()
+	 {
+		 return opActCell;
+	 }
+	synchronized IRuntimeOutputPort getActCellCaptionOutputPort()
+	 {
+		 return opActCellCaption;
+	 }
+	synchronized IRuntimeOutputPort getActCellTextOutputPort()
+	 {
+		 return opActCellText;
+	 }
+
+
+	
+	
+	/**
 	  * Returns the hover time.
 	  * @return   hover time.
 	  */

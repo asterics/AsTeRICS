@@ -61,15 +61,13 @@ import java.io.*;
 
 public class GUICell extends JPanel implements Runnable
 {
-	private GUI owner;
-	final IRuntimeEventTriggererPort etpClicked;
-	final IRuntimeOutputPort opSelectedCell;
-	final IRuntimeOutputPort opSelectedCellText;
-	
-	final IRuntimeEventTriggererPort etpGeralEvent;
+	private final GUI owner;
+	final IRuntimeEventTriggererPort etpGeneralEvent;
 	
 	private boolean blockSendEvent=true;
 	private int index=-1;
+	private int row=-1;
+	private int column=-1;
 	private float fontSize=-1;
 	
 	BufferedImage  image=null;
@@ -93,31 +91,25 @@ public class GUICell extends JPanel implements Runnable
      * The class constructor.
      * @param owner    the GUI instance
      * @param eventPort the event port
-     * @param cellNumberPort the cell number output port
-     * @param cellTextOutputPort the cell text output port
+     * @param cellPort the cell number output port
+     * @param cellTextPort the cell text output port
      */
-	public GUICell(GUI owner,IRuntimeEventTriggererPort eventPort,IRuntimeOutputPort cellNumberPort,IRuntimeOutputPort cellTextOutputPort,IRuntimeEventTriggererPort generalEvent)
+	public GUICell(final GUI owner,  IRuntimeEventTriggererPort generalEvent) 
 	{
 		super();
 		this.owner=owner;
-		this.etpClicked=eventPort;
-		opSelectedCell=cellNumberPort;
-		opSelectedCellText=cellTextOutputPort;
-		etpGeralEvent=generalEvent;
+		etpGeneralEvent=generalEvent;
 		
 		blockSendEvent=true;
 		hoverFinish=false;
 		
 		addMouseListener(new MouseAdapter() { 
 	          public void mousePressed(MouseEvent me) { 
-	            
 	        	
 	        	if(blockSendEvent==false)
 	            {
-	            	etpClicked.raiseEvent();
-	            	opSelectedCell.sendData(ConversionUtils.intToBytes(index+1));
-	            	opSelectedCellText.sendData(ConversionUtils.stringToBytes(actionText));
-	            	 AstericsThreadPool.instance.execute(selectFeedback);
+	        		owner.performCellSelection(row, column);
+	                AstericsThreadPool.instance.execute(selectFeedback);
 	            }
 	        	
 	        	sendGeneralEvent();
@@ -127,12 +119,14 @@ public class GUICell extends JPanel implements Runnable
 	        		  hoverExit=false;
 	        		  cellhovering=true;
 	        		  hoverSelected=false;
+	        		  owner.performActCellUpdate(row, column);
 	        		  repaintNow();
 	        		  AstericsThreadPool.instance.execute(hoverTimer);
 	        	  }else{
 	        		  if(!blockSendEvent)
 	        		  {
 	        			  cellhovering=true;
+	            		  owner.performActCellUpdate(row, column);
 	        			  repaintNow();
 	        		  }
 	        	  }
@@ -429,12 +423,22 @@ public class GUICell extends JPanel implements Runnable
     {
     	this.text=text;
     }
+
     
+    /**
+     * Returns the cell ID.
+     * @return cell ID
+     */
+    public int getCellID()
+    {
+    	return index+1;
+    }
+
     /**
      * Returns the cell text.
      * @return cell text
      */
-    public String getText()
+    public String getCellCaption()
     {
     	return text;
     }
@@ -452,11 +456,22 @@ public class GUICell extends JPanel implements Runnable
      * Returns the cell action text.
      * @return cell action text
      */
-    public String getActionText()
+    public String getCellText()
     {
     	return actionText;
     }
+
     
+    public void setRow(int row)
+    {
+    	this.row=row;
+    }
+
+    public void setColumn(int column)
+    {
+    	this.column=column;
+    }
+
 
 	/**
      * Sets the font size.
@@ -609,7 +624,7 @@ public class GUICell extends JPanel implements Runnable
     
     
     /**
-     * Sends deleyed general click event.
+     * Sends delayed general click event.
      */
     private void sendGeneralEvent()
     {
@@ -625,13 +640,13 @@ public class GUICell extends JPanel implements Runnable
     }
     
     /**
-     * Thread function.
+     * Thread function to send delayed general cell clicked event.
      */
     @Override
 	public void run() {
     	try{
 			Thread.sleep(100);
-			etpGeralEvent.raiseEvent();
+			etpGeneralEvent.raiseEvent();
 		}catch (InterruptedException e) {}
     	
     }
@@ -663,9 +678,7 @@ public class GUICell extends JPanel implements Runnable
 				if(currentTime>=hoverTime)
 				{
 					hoverSelected=true;
-					etpClicked.raiseEvent();
-	            	opSelectedCell.sendData(ConversionUtils.intToBytes(index+1));
-	            	opSelectedCellText.sendData(ConversionUtils.stringToBytes(actionText));
+					owner.performCellSelection(row,column);
 	            	sendGeneralEvent();
 	            	repaintNow();
 	            	try{
