@@ -214,24 +214,27 @@ public class GUI extends JPanel
 				g.drawString("max:"+format.format(chnMax),5,txtHeight);
 				g.drawString("min:"+format.format(chnMin),5,y+h-2);
 			}
-			if (chnPos>0) 
-				g.drawString(" "+format.format(chnValues[chnPos-1]),
-						x+w-metrics.stringWidth(" "+format.format(chnValues[chnPos-1])),y+h-2);
-
-			g.drawRect(x,y,w,h);
-			g.drawLine(x, y+h/2,x+w, y+h/2);
-
-			g.setColor(getColorProperty(owner.propChannelColor));
-			for (int i = 0;i<chnPos;i++)
-			{
-				new_y=y+h-(int)((chnValues[i]-chnMin)* drawFactorY);
-				if (i>0)
+			try {
+				if (chnPos>0) 
+					g.drawString(" "+format.format(chnValues[chnPos-1]),
+							x+w-metrics.stringWidth(" "+format.format(chnValues[chnPos-1])),y+h-2);
+	
+				g.drawRect(x,y,w,h);
+				g.drawLine(x, y+h/2,x+w, y+h/2);
+	
+				g.setColor(getColorProperty(owner.propChannelColor));
+				for (int i = 0;i<chnPos;i++)
 				{
-					g.drawLine(x+(int)(i*drawFactorX), old_y,
-							x+(int)((i+1)*drawFactorX),new_y);
+					new_y=y+h-(int)((chnValues[i]-chnMin)* drawFactorY);
+					if (i>0)
+					{
+						g.drawLine(x+(int)(i*drawFactorX), old_y,
+								x+(int)((i+1)*drawFactorX),new_y);
+					}
+					old_y=new_y; 
 				}
-				old_y=new_y; 
-			}         
+			}
+			catch (ArrayIndexOutOfBoundsException e) { System.out.println("exception in paint paintComponent, Oscilloscope"); }
 		}  
 	}
 
