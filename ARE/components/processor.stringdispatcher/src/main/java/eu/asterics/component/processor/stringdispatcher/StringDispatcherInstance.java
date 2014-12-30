@@ -54,8 +54,10 @@ public class StringDispatcherInstance  extends AbstractRuntimeComponentInstance
   private final String PROP_DELAY="delay";
   private final String ELP_DISPATCH_SLOT="dispatchSlot";
   private final String ELP_DISPATCH_NEXT_SLOT="dispatchNextSlot";
+  private final String ELP_DISPATCH_CURRENT_SLOT="dispatchCurrentSlot";
   private final String ELP_DISPATCH_PREVIOUS_SLOT="dispatchPreviousSlot";
   private final String ELP_DISPATCH_SLOT_SERIES="dispatchSlotSeries";
+  private final String ELP_RESET_TO_FIRST_SLOT="resetToFirstSlot";
   private final String OP_OUTPUT="output";
   private final String IP_SLOT_DISPATCH="slotDispatch";
  
@@ -220,7 +222,17 @@ public class StringDispatcherInstance  extends AbstractRuntimeComponentInstance
       index=index-1;
     }
   }
- 
+
+  void sendCurrent()
+  {
+    if (currentIndex==0) currentIndex=1;
+    if(propSlotArray[currentIndex].length()>0)
+    {
+        sendText(currentIndex);
+    }
+  }
+
+  
   /**
    * Sends the string value from the next slot. 
    * If the current current slot is the last,
@@ -381,6 +393,10 @@ public class StringDispatcherInstance  extends AbstractRuntimeComponentInstance
     {
       return sendNext;
     }
+    else if(ELP_DISPATCH_CURRENT_SLOT.equalsIgnoreCase(eventPortID))
+    {
+      return sendCurrent;
+    }
     else if(ELP_DISPATCH_PREVIOUS_SLOT.equalsIgnoreCase(eventPortID))
     {
       return sendPrevious;
@@ -388,6 +404,10 @@ public class StringDispatcherInstance  extends AbstractRuntimeComponentInstance
     else if(ELP_DISPATCH_SLOT_SERIES.equalsIgnoreCase(eventPortID))
     {
       return sendAll ;
+    }
+    else if(ELP_RESET_TO_FIRST_SLOT.equalsIgnoreCase(eventPortID))
+    {
+      return resetToFirst;
     }
     else
     {
@@ -437,6 +457,18 @@ public class StringDispatcherInstance  extends AbstractRuntimeComponentInstance
   };
   
   /**
+   * Event Listener Port for the Dispatch Current Slot event.
+   */
+  final IRuntimeEventListenerPort sendCurrent 	= new IRuntimeEventListenerPort()
+  {
+    @Override 
+    public void receiveEvent(String data)
+    {
+      sendCurrent();
+    }
+  };
+
+  /**
    * Event Listener Port for the Dispatch Previous Slot event.
    */
   final IRuntimeEventListenerPort sendPrevious 	= new IRuntimeEventListenerPort()
@@ -448,6 +480,20 @@ public class StringDispatcherInstance  extends AbstractRuntimeComponentInstance
     }
   };
  
+  /**
+   * Event Listener Port for the Reset To First Slot event.
+   */
+  final IRuntimeEventListenerPort resetToFirst 	= new IRuntimeEventListenerPort()
+  {
+    @Override 
+    public void receiveEvent(String data)
+    {
+    	if (block==false)
+    	{
+    		currentIndex=0;
+    	}
+    }
+  };
   /**
    * Event Listener Port for the Dispatch Slot Series event.
    */
