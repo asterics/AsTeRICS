@@ -11,8 +11,9 @@
   <body>
     <h1>Edit Box</h1>
     <h3>Component Type: Sensor (Subcategory: Graphical User Interface)</h3>
-    <p>This component creates GUI text box which can pass the text to
-      other components.</p>
+    <p>This component creates a GUI edit field which can send the text to
+      other components. The text will be sent to the output port when enter 
+	  is pressed or when the edit box looses the input focus (when the cursor is removed from the edit field). </p>
     <div class="image"><img src="img/EditBox.jpg" alt="Screenshot:
         EditBox plugin" title="Screenshot: EditBox plugin"><br>
       EditBox plugin</div>
@@ -27,15 +28,15 @@
     <h2>Properties</h2>
     <ul>
       <li><strong>caption [string]:</strong> Caption of the component.</li>
-      <li><strong>default [string]:</strong> The text, which is in the
-        box after start.<br>
+      <li><strong>default [string]:</strong> The default text, which is set
+        at startup.<br>
       </li>
       <li><strong>textColor [integer]:</strong> Defines color of the
         text.</li>
       <li><strong>backgroundColor [integer]:</strong> Defines background
         color.</li>
       <li><strong>insertAction [integer]:</strong> Defines behaviour of
-        the component after text insertion. The text in the component
+        the component after the text has been sent to the output port. The text in the component
         can be selected or removed.</li>
     </ul>
   </body>

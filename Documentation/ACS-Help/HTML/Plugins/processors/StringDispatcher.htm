@@ -12,8 +12,8 @@
     <h1>String Dispatcher </h1>
     <h3>Component Type: Processor (Subcategory: Event and String
       Processing)</h3>
-    <p>This component has twenty slots for text strings. After the
-      appropriate command, the text is sent through the output port.</p>
+    <p>This component has twenty slots for text strings. These strings can be sent to the output port
+	   via incoming events or by directly addressing a slot number using the input port.</p>
     <div class="image"><img src="img/StringDispatcher.jpg"
         alt="Screenshot: StringDispatcher plugin" title="Screenshot:
         StringDispatcher plugin"><br>
@@ -29,12 +29,16 @@
     </ul>
     <h2>Event Listener Description</h2>
     <ul>
-      <li><strong>dispatchSlot1...dispatchSlot20:</strong> This event
-        causes text from the slot: 1..20 to be sent.</li>
+      <li><strong>dispatchSlot1...dispatchSlot20:</strong> These events
+        cause text from the slot: 1..20 to be sent.</li>
       <li><strong>dispatchNextSlot:</strong> This event causes text from
-        the next not empty slot to be sent.</li>
+        the next (not empty) slot to be sent.</li>
+      <li><strong>dispatchCurrentSlot:</strong> This event causes text
+        from the current slot to be sent.</li>
       <li><strong>dispatchPreviousSlot:</strong> This event causes text
-        from the previous not empty slot to be sent.</li>
+        from the previous (not empty) slot to be sent.</li>
+      <li><strong>resetToFirstSlot:</strong> This event resets the internal 
+	    slot counter (for next/previous) to the first slot. </li>
       <li><strong>dispatchSlotSeries:</strong> This event causes text in
         sequence from all not empty slots to be sent, with a delay
         defined by the delay property. </li>
@@ -42,10 +46,10 @@
     </ul>
     <h2>Properties</h2>
     <ul>
-      <li><strong>delay [integer]:</strong> The interval (ms) which will
-        be used for sending strings from all slots.</li>
-      <li><strong>slot1...slot20 [string]:</strong> Contains the text
-        for the slot: 1...20.<br>
+      <li><strong>delay [integer]:</strong> The interval (in milliseconds) which will
+        be used for sending strings sequentially from all slots.</li>
+      <li><strong>slot1...slot20 [string]:</strong> 20 slots which contains the text
+        to be sent<br>
       </li>
     </ul>
   </body>
