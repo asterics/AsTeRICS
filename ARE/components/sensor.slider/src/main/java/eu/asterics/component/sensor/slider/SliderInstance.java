@@ -28,7 +28,15 @@
 package eu.asterics.component.sensor.slider;
 
 
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
@@ -36,8 +44,8 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
@@ -55,17 +63,22 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class SliderInstance extends AbstractRuntimeComponentInstance
 {
 	final IRuntimeOutputPort opValue = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opOut = new DefaultRuntimeOutputPort();
 	// Usage of an output port e.g.: opMyOutPort.sendData(10); 
 
 	public int propMin = 0;
 	public int propMax = 100;
 	public int propDefault = 50;
+	public double propGain = 0.01;
 	public String propCaption = "my slider";
 	public int propMajorTickSpacing = 20;
 	public int propMinorTickSpacing = 5;
     public int propFontSize =14; 
 	public int propAlignment = 0;
 	public boolean propAutosend = true;
+	public boolean propStoreValue = false;
+	
+	public File runtimeStorageFile = null;
 
 	// declare member variables here
 
@@ -86,6 +99,14 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 	 */
 	public IRuntimeInputPort getInputPort(String portID)
 	{
+		if ("setValue".equalsIgnoreCase(portID))
+		{
+			return ipSetValue;
+		}
+		if ("in".equalsIgnoreCase(portID))
+		{
+			return ipIn;
+		}
 
 		return null;
 	}
@@ -100,6 +121,10 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 		if ("value".equalsIgnoreCase(portID))
 		{
 			return opValue;
+		}
+		else if ("out".equalsIgnoreCase(portID))
+		{
+			return opOut;
 		}
 
 		return null;
@@ -146,7 +171,11 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 		{
 			return propDefault;
 		}
-		if("autosend".equalsIgnoreCase(propertyName))
+		if ("gain".equalsIgnoreCase(propertyName))
+		{
+			return propGain;
+		}
+		if ("autosend".equalsIgnoreCase(propertyName))
 		{
 			return propAutosend;
 		}
@@ -169,6 +198,10 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
         if("fontSize".equalsIgnoreCase(propertyName))
         {
             return propFontSize;
+        }
+        if("storeValue".equalsIgnoreCase(propertyName))
+        {
+            return propStoreValue;
         }
 		return null;
 	}
@@ -200,6 +233,13 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 			if (propDefault > propMax) propDefault = propMax;
 			return oldValue;
 		}
+		if ("gain".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propGain;
+			propGain = Double.parseDouble((String) newValue);
+			//System.out.println("set new slider gain:"+propGain);
+			return oldValue;
+		}
 		if("autosend".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propAutosend;
@@ -210,6 +250,19 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 			else if("false".equalsIgnoreCase((String)newValue))
 			{
 				propAutosend = false;
+			}
+			return oldValue;
+		}		
+		if("storeValue".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propStoreValue;
+			if("true".equalsIgnoreCase((String)newValue))
+			{
+				propStoreValue = true;
+			}
+			else if("false".equalsIgnoreCase((String)newValue))
+			{
+				propStoreValue = false;
 			}
 			return oldValue;
 		}		
@@ -246,7 +299,42 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 		return null;
 	}
 
+    /**
+     * Input Ports for receiving values.
+     */
 
+	private final IRuntimeInputPort ipSetValue  = new DefaultRuntimeInputPort()
+	{
+		public void receiveData(byte[] data)
+		{
+			int value = ConversionUtils.intFromBytes(data);
+			
+
+				if (value < propMin)
+				{
+					value=propMin;
+				}
+				else
+				{
+					if(value > propMax)
+						value = propMax;
+				}
+				if (gui != null)
+					gui.valueChanged(value);
+		}
+
+	};
+	private final IRuntimeInputPort ipIn  = new DefaultRuntimeInputPort()
+	{
+		public void receiveData(byte[] data)
+		{
+			double value = ConversionUtils.doubleFromBytes(data);
+			if (gui !=null)
+				opOut.sendData(ConversionUtils.doubleToBytes(value*propGain*gui.getSliderValue()));
+		}
+
+	};
+		
 
 	/**
 	 * called when model is started.
@@ -254,15 +342,75 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 	@Override
 	public void start()
 	{
+		int initialSliderValue;
+		
 		if (propDefault < propMin) propDefault = propMin;
 		if (propDefault > propMax) propDefault = propMax;
 
+		initialSliderValue = propDefault;
+		
 		gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
 		AREServices.instance.displayPanel(gui, this, true);
-		if (propAutosend == true) opValue.sendData(ConversionUtils.intToBytes(propDefault));
+		
+		runtimeStorageFile=AREServices.instance.getLocalStorageFile(this, "properties.txt");
+		if (propStoreValue==true)
+		{
+			int value= readRuntimeValue("sliderPosition");
+			if (value != Integer.MAX_VALUE)
+			{
+				initialSliderValue=value;
+				gui.valueChanged(value);
+			}
+		}
+		if (propAutosend == true) opValue.sendData(ConversionUtils.intToBytes(initialSliderValue));
+
 		super.start();
 	}
+	 
+	public void storeRuntimeValue (String parameterName, int parameterValue)
+	{
+		try 
+		{
+			FileWriter fw=new FileWriter(runtimeStorageFile,false);          
+		        fw.write(parameterName+":"); 
+			    fw.write(String.valueOf(parameterValue)); 
+			    fw.append("\r\n"); 
+			    fw.close();
+		    	// System.out.println("Wrote Local Storage File for Slider at location " + runtimeStorageFile.getAbsolutePath());
+	     } catch(IOException fex){
+	    	 System.out.println("Error writing Local Storage File for Slider !");
+	     }
+	}
 
+	public int readRuntimeValue (String parameterName)
+	{
+		int value=Integer.MAX_VALUE;
+		try 
+		{
+			InputStream    fis;
+			BufferedReader br;
+			String         line;
+
+			fis = new FileInputStream(runtimeStorageFile);
+			br = new BufferedReader(new InputStreamReader(fis));
+			if ((line = br.readLine()) != null) {
+				StringTokenizer st = new StringTokenizer(line,":");
+				String command = st.nextToken();
+				if (command.equalsIgnoreCase(parameterName))
+				{
+					value = Integer.parseInt(st.nextToken());
+					// System.out.println("Found parameter "+parameterName+" with value "+value);
+				}	
+			}
+			br.close();
+			
+	     } catch(Exception e){
+	    	 System.out.println("Error reading Local Storage File for Slider !");
+	     }
+		 return (value);
+	}
+
+	
 	/**
 	 * called when model is paused.
 	 */

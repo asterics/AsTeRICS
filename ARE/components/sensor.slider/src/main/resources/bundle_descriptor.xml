@@ -8,10 +8,24 @@
         <singleton>false</singleton>
         <description>a slider GUI element which provides the slider value at an output port</description>
         <ports>
+            <inputPort id="setValue">
+                <description>sets the position of the slider</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+            <inputPort id="in">
+                <description>input signal</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
 
 			<outputPort id="value">
 				<description>the current slider value</description>
 				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="out">
+				<description>output signal (with applied gain)</description>
+				<dataType>double</dataType>
 			</outputPort>
 
         </ports>
@@ -29,6 +43,10 @@
 				type="integer"
 				value="50"
 				description="the default value for the slider"/>
+			<property name="gain"
+				type="double"
+				value="0.01"
+				description="signal gain factor (out = in * gain * slider_value)"/>
             <property name="autosend"
                       type="boolean"
                       value="true"
@@ -54,6 +72,11 @@
 				type="integer"
 				value="14"
 				description="slider font size"/>
+            <property name="storeValue"
+                      type="boolean"
+                      value="false"
+                      description="if enabled, the current slider value will be stored and reloaded when model starts next time"/>				
+				
         </properties>
         <gui>
             <width>4000</width>
