@@ -782,6 +782,39 @@ public class AREServices implements IAREServices{
 
 	}
 
+	public Point getScreenDimension ()
+	{
+		return DeploymentManager.instance.getScreenDimension();
+	}
+	public Point getAREWindowDimension ()
+	{
+		return DeploymentManager.instance.getAREWindowDimension();
+	}
+
+	public Point getAREWindowPosition ()
+	{
+		return DeploymentManager.instance.getAREWindowLocation();
+	}
+
+	public void setAREWindowPosition (int x, int y)
+	{
+		DeploymentManager.instance.setAREWindowLocation(x,y);
+	}
+	
+	public void setAREWindowState (int state)
+	{
+		DeploymentManager.instance.setAREWindowState(state);
+	}
+	public void setAREWindowToFront ()
+	{
+		DeploymentManager.instance.setAREWindowToFront();
+	}
+	public void allowAREWindowModification(boolean state)
+	{
+		DeploymentManager.instance.allowAREWindowModification(state);
+    }
+
+	
 	public void adjustFonts(final JPanel panel, final int maxFontSize,
 			final int minFontSize, final int offset) {
 		SwingUtilities.invokeLater(new Runnable() {
