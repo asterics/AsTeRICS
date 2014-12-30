@@ -28,7 +28,9 @@
 package eu.asterics.component.processor.eventrouter;
 
 
+
 import java.util.logging.Logger;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -52,6 +54,8 @@ import eu.asterics.mw.services.AREServices;
  */
 public class EventRouterInstance extends AbstractRuntimeComponentInstance
 {
+	public final int NUMBER_OF_ROUTES = 8;
+	public final int NUMBER_OF_INPUTS = 6;
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 
 	final IRuntimeEventTriggererPort etpEventOut1 = new DefaultRuntimeEventTriggererPort();
@@ -64,17 +68,29 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
 	final IRuntimeEventTriggererPort etpEventOut8 = new DefaultRuntimeEventTriggererPort();
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
+	public final EventInListener [] elpEventIn = new EventInListener[NUMBER_OF_INPUTS];    
+	public final EventSelectListener [] elpSelect = new EventSelectListener[NUMBER_OF_ROUTES];    
+	public final IRuntimeEventTriggererPort [][] etpEventOut = new DefaultRuntimeEventTriggererPort[NUMBER_OF_INPUTS][NUMBER_OF_ROUTES];    
 
 	// declare member variables here
 
-	private int actPort=1;
+	private int actRoute=1;
+	private int propActiveRoutes=3;
+	private boolean propWrapAround=true;
     
    /**
     * The class constructor.
     */
     public EventRouterInstance()
     {
-        // empty constructor
+    	for (int i = 0; i < NUMBER_OF_INPUTS; i++)
+    	{
+    		elpEventIn[i] = new EventInListener(i);
+        	for (int t = 0; t < NUMBER_OF_ROUTES; t++)
+        		etpEventOut[i][t] = new DefaultRuntimeEventTriggererPort();
+		}    
+    	for (int t = 0; t < NUMBER_OF_ROUTES; t++)
+    		elpSelect[t] = new  EventSelectListener(t);
     }
 
    /**
@@ -98,7 +114,6 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
-
 		return null;
 	}
 
@@ -110,14 +125,13 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
     {
         public void receiveData(byte[] data)
         {
-			actPort = ConversionUtils.intFromBytes(data);
-			if (actPort < 1)
-				actPort = 1;
+			actRoute = ConversionUtils.intFromBytes(data);
+			if (actRoute < 1)
+				actRoute = 1;
 			
-			if (actPort > 8)
-					actPort = 8;
+			if (actRoute > NUMBER_OF_ROUTES)
+					actRoute = NUMBER_OF_ROUTES;
        }
-
     };
 	
     /**
@@ -126,44 +140,37 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
      * @return         the EventListener port or null if not found
      */
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-		if ("eventIn".equalsIgnoreCase(eventPortID))
+    {	
+    	String s;
+		for (int i = 0; i < NUMBER_OF_INPUTS; i++)
 		{
-			return elpEventIn;
+			if (i==0) s = "eventIn";   // first without index for compatibility reasons !
+			else s="eventIn" + (i+1);
+			
+			if (s.equalsIgnoreCase(eventPortID))
+			{
+				return elpEventIn[i];
+			}
 		}
-		if ("select1".equalsIgnoreCase(eventPortID))
+		for (int i = 0; i < NUMBER_OF_ROUTES; i++)
 		{
-			return elpSelect1;
-		}
-		if ("select2".equalsIgnoreCase(eventPortID))
+			s = "select" + (i+1); 
+			
+			if (s.equalsIgnoreCase(eventPortID))
+			{
+				return elpSelect[i];
+			}
+		}	
+		
+		if ("selectNext".equalsIgnoreCase(eventPortID))
 		{
-			return elpSelect2;
+			return elpSelectNext;
 		}
-		if ("select3".equalsIgnoreCase(eventPortID))
+		if ("selectPrevious".equalsIgnoreCase(eventPortID))
 		{
-			return elpSelect3;
+			return elpSelectPrevious;
 		}
-		if ("select4".equalsIgnoreCase(eventPortID))
-		{
-			return elpSelect4;
-		}
-		if ("select5".equalsIgnoreCase(eventPortID))
-		{
-			return elpSelect5;
-		}
-		if ("select6".equalsIgnoreCase(eventPortID))
-		{
-			return elpSelect6;
-		}
-		if ("select7".equalsIgnoreCase(eventPortID))
-		{
-			return elpSelect7;
-		}
-		if ("select8".equalsIgnoreCase(eventPortID))
-		{
-			return elpSelect8;
-		}
-
+	
         return null;
     }
 
@@ -174,37 +181,19 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
     {
-		if ("eventOut1".equalsIgnoreCase(eventPortID))
+    	String s;
+		for (int i = 0; i < NUMBER_OF_INPUTS; i++)
 		{
-			return etpEventOut1;
-		}
-		if ("eventOut2".equalsIgnoreCase(eventPortID))
-		{
-			return etpEventOut2;
-		}
-		if ("eventOut3".equalsIgnoreCase(eventPortID))
-		{
-			return etpEventOut3;
-		}
-		if ("eventOut4".equalsIgnoreCase(eventPortID))
-		{
-			return etpEventOut4;
-		}
-		if ("eventOut5".equalsIgnoreCase(eventPortID))
-		{
-			return etpEventOut5;
-		}
-		if ("eventOut6".equalsIgnoreCase(eventPortID))
-		{
-			return etpEventOut6;
-		}
-		if ("eventOut7".equalsIgnoreCase(eventPortID))
-		{
-			return etpEventOut7;
-		}
-		if ("eventOut8".equalsIgnoreCase(eventPortID))
-		{
-			return etpEventOut8;
+			for (int t = 0; t < NUMBER_OF_ROUTES; t++)
+			{
+				if (i==0) s = "eventOut"+(t+1);   // first without index for compatibility reasons !
+				else s="eventOut" + (i+1) + "_" + (t+1);
+				
+				if (s.equalsIgnoreCase(eventPortID))
+				{
+					return etpEventOut[i][t];
+				}
+			}
 		}
 
         return null;
@@ -217,7 +206,14 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
      */
     public Object getRuntimePropertyValue(String propertyName)
     {
-
+		if ("activeRoutes".equalsIgnoreCase(propertyName))
+		{
+			return propActiveRoutes;
+		}
+		if ("wrapAround".equalsIgnoreCase(propertyName))
+		{
+			return propWrapAround;
+		}
         return null;
     }
 
@@ -228,7 +224,21 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
-
+		if ("activeRoutes".equalsIgnoreCase(propertyName)) {
+			final int oldValue = propActiveRoutes;
+			propActiveRoutes = Integer.parseInt((String) newValue);
+			if (propActiveRoutes < 1) propActiveRoutes=1;
+			if (propActiveRoutes > NUMBER_OF_ROUTES) propActiveRoutes=NUMBER_OF_ROUTES;
+			return oldValue;
+		}
+	    if("wrapAround".equalsIgnoreCase(propertyName))
+	    {
+	    	final boolean oldValue = propWrapAround;
+	        if("true".equalsIgnoreCase((String)newValue))
+	        	propWrapAround = true;
+	        else propWrapAround = false;
+	        return oldValue;
+	    }
         return null;
     }
 
@@ -238,83 +248,63 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
 
 
      /**
-      * Event Listerner Ports.
+      * Event Listener Ports.
       */
-	final IRuntimeEventListenerPort elpEventIn = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-				switch (actPort) {
-				case 1: etpEventOut1.raiseEvent(); break;
-				case 2: etpEventOut2.raiseEvent(); break;
-				case 3: etpEventOut3.raiseEvent(); break;
-				case 4: etpEventOut4.raiseEvent(); break;
-				case 5: etpEventOut5.raiseEvent(); break;
-				case 6: etpEventOut6.raiseEvent(); break;
-				case 7: etpEventOut7.raiseEvent(); break;
-				case 8: etpEventOut8.raiseEvent(); break;
-				}
-		}
-	};
-	final IRuntimeEventListenerPort elpSelect1 = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-				actPort=1; 
-		}
-	};
-	final IRuntimeEventListenerPort elpSelect2 = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			actPort=2; 
-		}
-	};
-	final IRuntimeEventListenerPort elpSelect3 = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			actPort=3; 
-		}
-	};
-	final IRuntimeEventListenerPort elpSelect4 = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			actPort=4; 
-		}
-	};
-	final IRuntimeEventListenerPort elpSelect5 = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			actPort=5; 
-		}
-	};
-	final IRuntimeEventListenerPort elpSelect6 = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			actPort=6; 
-		}
-	};
-	final IRuntimeEventListenerPort elpSelect7 = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			actPort=7; 
-		}
-	};
-	final IRuntimeEventListenerPort elpSelect8 = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			actPort=8; 
-		}
-	};
-
 	
+    final IRuntimeEventListenerPort elpSelectNext = new IRuntimeEventListenerPort() {
+        public void receiveEvent(String data) {
+        	actRoute=actRoute+1;
+        	if (actRoute > propActiveRoutes)
+        	{
+        		if (propWrapAround==true)
+        			actRoute=1;
+        		else actRoute=propActiveRoutes;
+        	}
+        }
+    };
 
+    final IRuntimeEventListenerPort elpSelectPrevious = new IRuntimeEventListenerPort() {
+        public void receiveEvent(String data) {
+        	actRoute=actRoute-1;
+        	if (actRoute < 1)
+        	{
+        		if (propWrapAround==true)
+        			actRoute=propActiveRoutes;
+        		else actRoute=1;
+        	}
+        }
+    };
+    
+    
+    class EventInListener implements IRuntimeEventListenerPort
+    {
+    	 private int index; 
+    	 EventInListener(int index)
+    	 {
+    		 this.index=index;
+    	 }
+    	 
+    	 public void receiveEvent(final String data)
+    	 {
+    		 etpEventOut[index][actRoute-1].raiseEvent();
+    	 }
+    } 
+    
+    
+    class EventSelectListener implements IRuntimeEventListenerPort
+    {
+    	 private int index; 
+    	 EventSelectListener(int index)
+    	 {
+    		 this.index=index;
+    	 }
+    	 
+    	 public void receiveEvent(final String data)
+    	 {
+             actRoute=index+1;
+    	 }
+    } 
+    
      /**
       * called when model is started.
       */

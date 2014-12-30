@@ -18,6 +18,22 @@
 			<eventListenerPort id="eventIn">
 				<description>the events to be routed</description>
 			</eventListenerPort>
+			<eventListenerPort id="eventIn2">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventIn3">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventIn4">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventIn5">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventIn6">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			
 			<eventListenerPort id="select1">
 				<description>select route 1</description>
 			</eventListenerPort>
@@ -43,34 +59,176 @@
 				<description>select route 8</description>
 			</eventListenerPort>
 
+			<eventListenerPort id="selectNext">
+				<description>select next route</description>
+			</eventListenerPort>
+
+			<eventListenerPort id="selectPrevious">
+				<description>select previous route</description>
+			</eventListenerPort>
+
+
 			<eventTriggererPort id="eventOut1">
-				<description>output route 1</description>
+				<description>output route 1 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut2">
-				<description>output route 2</description>
+				<description>output route 2 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut3">
-				<description>output route 3</description>
+				<description>output route 3 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut4">
-				<description>output route 4</description>
+				<description>output route 4 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut5">
-				<description>output route 5</description>
+				<description>output route 5 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut6">
-				<description>output route 6</description>
+				<description>output route 6 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut7">
-				<description>output route 7</description>
+				<description>output route 7 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut8">
-				<description>output route 8</description>
+				<description>output route 8 for eventIn 1</description>
 			</eventTriggererPort>
 
+			<eventTriggererPort id="eventOut2_1">
+				<description>output route 1 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_2">
+				<description>output route 2 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_3">
+				<description>output route 3 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_4">
+				<description>output route 4 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_5">
+				<description>output route 5 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_6">
+				<description>output route 6 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_7">
+				<description>output route 7 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_8">
+				<description>output route 8 for eventIn 2</description>
+			</eventTriggererPort>
+
+			<eventTriggererPort id="eventOut3_1">
+				<description>output route 1 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_2">
+				<description>output route 2 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_3">
+				<description>output route 3 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_4">
+				<description>output route 4 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_5">
+				<description>output route 5 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_6">
+				<description>output route 6 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_7">
+				<description>output route 7 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_8">
+				<description>output route 8 for eventIn 3</description>
+			</eventTriggererPort>
+
+			<eventTriggererPort id="eventOut4_1">
+				<description>output route 1 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_2">
+				<description>output route 2 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_3">
+				<description>output route 3 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_4">
+				<description>output route 4 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_5">
+				<description>output route 5 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_6">
+				<description>output route 6 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_7">
+				<description>output route 7 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_8">
+				<description>output route 8 for eventIn 4</description>
+			</eventTriggererPort>
+			
+			<eventTriggererPort id="eventOut5_1">
+				<description>output route 1 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_2">
+				<description>output route 2 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_3">
+				<description>output route 3 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_4">
+				<description>output route 4 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_5">
+				<description>output route 5 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_6">
+				<description>output route 6 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_7">
+				<description>output route 7 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_8">
+				<description>output route 8 for eventIn 5</description>
+			</eventTriggererPort>
+			
+			<eventTriggererPort id="eventOut6_1">
+				<description>output route 1 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_2">
+				<description>output route 2 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_3">
+				<description>output route 3 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_4">
+				<description>output route 4 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_5">
+				<description>output route 5 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_6">
+				<description>output route 6 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_7">
+				<description>output route 7 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_8">
+				<description>output route 8 for eventIn 6</description>
+			</eventTriggererPort>
+			
 		</events>			
         <properties>
-
+        	<property name="activeRoutes"
+				type="integer"
+				value="3"
+				description="number of active routes (for next / previous events)"/>
+        
+			<property name="wrapAround"
+                      type="boolean"
+                      value="true"
+                      description="wrap around to first or last route (for next / previous events)"/> 
         </properties>
 
     </componentType>
