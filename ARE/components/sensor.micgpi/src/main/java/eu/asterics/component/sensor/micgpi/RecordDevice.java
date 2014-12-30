@@ -44,7 +44,7 @@ import javax.sound.sampled.DataLine;
  */
 public class RecordDevice {
 
-    public TargetDataLine getTargetDataLine(String name) {
+    public TargetDataLine getTargetDataLine(String name, int sampleRate) {
         TargetDataLine line = null;
         Mixer.Info[] mixerInfos = AudioSystem.getMixerInfo();
         for (Mixer.Info info : mixerInfos) {
@@ -52,7 +52,7 @@ public class RecordDevice {
                 if (info.getDescription().contains("Capture") == false || info.getName().startsWith(name) == false) {
                     continue;
                 }
-                AudioFormat format = new AudioFormat(8000,8,1,true,true);
+                AudioFormat format = new AudioFormat(sampleRate,8,1,true,true);
                 line = AudioSystem.getTargetDataLine(format,info);
             } catch (LineUnavailableException ex) {
                 Logger.getLogger(RecordDevice.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,9 +61,9 @@ public class RecordDevice {
         return line;
     }
 	
-	public TargetDataLine getDefaultTargetDataLine() {
+	public TargetDataLine getDefaultTargetDataLine(int sampleRate) {
 		TargetDataLine line = null;
-		AudioFormat format = new AudioFormat(8000,8,1,true,true);
+		AudioFormat format = new AudioFormat(sampleRate,8,1,true,true);
 		DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 		try {
 			line = (TargetDataLine) AudioSystem.getLine(info);

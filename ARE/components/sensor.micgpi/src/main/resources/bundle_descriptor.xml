@@ -41,11 +41,20 @@
 
 		</events>			
         <properties>
+			<property name="samplingFrequency"
+				type="integer"
+				value="8000"
+				description="the sampling frequency setting for the audio input (min:300 Hz, max:44100 Hz)"/>
 			<property name="sampleSize"
 				type="integer"
-				value="3"
+				value="2"
 				combobox="32//64//128//256//512//1024//2048"				
-				description="interval length (in samples)"/>
+				description="interval length (samples per calculation block)"/>
+			<property name="mode"
+				type="integer"
+				value="1"
+				combobox="average sample values//average absolute sample values//min value//max value//max absolute value"				
+				description="the calculation mode for the threshold and pressure output port (applied to the samples of the interval)"/>
 			<property name="thresholdLow"
 				type="integer"
 				value="-30"
@@ -58,7 +67,6 @@
 				type="double"
 				value="1.5"
 				description="sound below noise level will be attenuated"/>
-
 			<property name="calculateFrequency"
                       type="boolean"
                       value="false"
