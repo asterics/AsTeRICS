@@ -1,0 +1,373 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="12/29/2014_033" version="20130320">
+  <components>
+    <component id="AREWindow.1" type_id="asterics.AREWindow">
+      <description>provides basic ARE Window manipulation</description>
+      <ports>
+        <inputPort portTypeID="xPos">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="yPos">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="xPos" value="0" />
+        <property name="yPos" value="0" />
+        <property name="autoSetPosition" value="True" />
+        <property name="allowWindowModification" value="False" />
+      </properties>
+      <layout>
+        <posX>446</posX>
+        <posY>38</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="buttonCaption1" value="top" />
+        <property name="buttonCaption2" value="bottom" />
+        <property name="buttonCaption3" value="left" />
+        <property name="buttonCaption4" value="right" />
+        <property name="buttonCaption5" value="center" />
+        <property name="buttonCaption6" value="minimize(restore in 2 sec)" />
+        <property name="buttonCaption7" value="toFront (in 2 sec)" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>58</posX>
+        <posY>124</posY>
+      </layout>
+      <gui>
+        <posX>2188</posX>
+        <posY>1889</posY>
+        <width>2692</width>
+        <height>2647</height>
+      </gui>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="2000" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>240</posX>
+        <posY>248</posY>
+      </layout>
+    </component>
+    <component id="Timer.1.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="2000" />
+        <property name="resolution" value="50" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>383</posX>
+        <posY>245</posY>
+      </layout>
+    </component>
+    <component id="EditBox.1" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="xOffset" />
+        <property name="default" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+      </properties>
+      <layout>
+        <posX>168</posX>
+        <posY>23</posY>
+      </layout>
+      <gui>
+        <posX>1875</posX>
+        <posY>889</posY>
+        <width>1625</width>
+        <height>889</height>
+      </gui>
+    </component>
+    <component id="EditBox.1.1" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="yOffset" />
+        <property name="default" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+      </properties>
+      <layout>
+        <posX>262</posX>
+        <posY>57</posY>
+      </layout>
+      <gui>
+        <posX>3562</posX>
+        <posY>889</posY>
+        <width>1562</width>
+        <height>889</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="EditBox.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="AREWindow.1" />
+        <port id="xPos" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="EditBox.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="AREWindow.1" />
+        <port id="yPos" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_moveToTop">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AREWindow.1" />
+          <eventPort id="moveToTop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_moveToBottom">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AREWindow.1" />
+          <eventPort id="moveToBottom" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_moveToLeft">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AREWindow.1" />
+          <eventPort id="moveToLeft" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_moveToRight">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AREWindow.1" />
+          <eventPort id="moveToRight" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_minimize">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AREWindow.1" />
+          <eventPort id="minimize" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_moveToCenter">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AREWindow.1" />
+          <eventPort id="moveToCenter" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_start">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_restore">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AREWindow.1" />
+          <eventPort id="restore" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_bringToFront">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AREWindow.1" />
+          <eventPort id="bringToFront" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button7_start">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>885</posX>
+      <posY>0</posY>
+      <width>5438</width>
+      <height>4889</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
