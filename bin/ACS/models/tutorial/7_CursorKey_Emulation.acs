@@ -22,6 +22,7 @@ This model can be used for game control.</description>
       <properties>
         <property name="keyCodeString" value="{LEFT}" />
         <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
       </properties>
       <layout>
         <posX>231</posX>
@@ -71,6 +72,7 @@ This model can be used for game control.</description>
       <properties>
         <property name="keyCodeString" value="{UP}" />
         <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
       </properties>
       <layout>
         <posX>342</posX>
@@ -87,6 +89,7 @@ This model can be used for game control.</description>
       <properties>
         <property name="keyCodeString" value="{RIGHT}" />
         <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
       </properties>
       <layout>
         <posX>471</posX>
@@ -103,6 +106,7 @@ This model can be used for game control.</description>
       <properties>
         <property name="keyCodeString" value="{DOWN}" />
         <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
       </properties>
       <layout>
         <posX>345</posX>
@@ -119,6 +123,7 @@ This model can be used for game control.</description>
       <properties>
         <property name="keyCodeString" value="A" />
         <property name="inputMethod" value="0" />
+        <property name="waitTime" value="1000" />
       </properties>
       <layout>
         <posX>636</posX>

@@ -4,7 +4,16 @@
     <component id="Slider.1" type_id="asterics.Slider">
       <description>a slider GUI element which provides the slider value at an output port</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
           <properties />
         </outputPort>
       </ports>
@@ -12,12 +21,14 @@
         <property name="min" value="0" />
         <property name="max" value="15" />
         <property name="default" value="1" />
+        <property name="gain" value="0.01" />
         <property name="autosend" value="False" />
         <property name="caption" value="col" />
         <property name="majorTickSpacing" value="5" />
         <property name="minorTickSpacing" value="1" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
+        <property name="storeValue" value="false" />
       </properties>
       <layout>
         <posX>40</posX>
@@ -74,7 +85,16 @@
     <component id="Slider.2" type_id="asterics.Slider">
       <description>a slider GUI element which provides the slider value at an output port</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
           <properties />
         </outputPort>
       </ports>
@@ -82,12 +102,14 @@
         <property name="min" value="0" />
         <property name="max" value="15" />
         <property name="default" value="1" />
+        <property name="gain" value="0.01" />
         <property name="autosend" value="False" />
         <property name="caption" value="row" />
         <property name="majorTickSpacing" value="5" />
         <property name="minorTickSpacing" value="1" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
+        <property name="storeValue" value="false" />
       </properties>
       <layout>
         <posX>57</posX>
@@ -106,6 +128,12 @@
       <properties>
         <property name="caption" value="Keyboard" />
         <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
         <property name="buttonCaption1" value="Press !" />
         <property name="buttonCaption2" value="nextX" />
         <property name="buttonCaption3" value="prevX" />
@@ -126,6 +154,26 @@
         <property name="buttonCaption18" value="" />
         <property name="buttonCaption19" value="" />
         <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
       </properties>
       <layout>
         <posX>249</posX>

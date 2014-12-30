@@ -509,6 +509,9 @@ Switch 4 presses the currently highlighted key on the on-screen keyboard to sele
     <component id="EventCounter.1" type_id="asterics.EventCounter">
       <description>Two-direction event counter</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
@@ -520,6 +523,7 @@ Switch 4 presses the currently highlighted key on the on-screen keyboard to sele
         <property name="initialValue" value="0" />
         <property name="wrapAround" value="false" />
         <property name="sendInitialValue" value="false" />
+        <property name="autoSend" value="true" />
       </properties>
       <layout>
         <posX>206</posX>
@@ -579,6 +583,9 @@ Switch 4 presses the currently highlighted key on the on-screen keyboard to sele
     <component id="EventCounter.2" type_id="asterics.EventCounter">
       <description>Two-direction event counter</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
@@ -590,6 +597,7 @@ Switch 4 presses the currently highlighted key on the on-screen keyboard to sele
         <property name="initialValue" value="0" />
         <property name="wrapAround" value="false" />
         <property name="sendInitialValue" value="false" />
+        <property name="autoSend" value="true" />
       </properties>
       <layout>
         <posX>223</posX>

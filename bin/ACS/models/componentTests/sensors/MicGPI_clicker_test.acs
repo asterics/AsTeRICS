@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="4/20/2014_1117" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="4/20/2014_1117" version="20130320">
   <components>
     <component id="MicGPI.1" type_id="asterics.MicGPI">
       <description>This plugin reads an input signal via the microphone input</description>
@@ -18,7 +18,9 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="samplingFrequency" value="8000" />
         <property name="sampleSize" value="3" />
+        <property name="mode" value="1" />
         <property name="thresholdLow" value="-30" />
         <property name="thresholdHigh" value="30" />
         <property name="noiseLevel" value="1.5" />
@@ -282,7 +284,16 @@
     <component id="Slider.1" type_id="asterics.Slider">
       <description>a slider GUI element which provides the slider value at an output port</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
           <properties />
         </outputPort>
       </ports>
@@ -290,12 +301,14 @@
         <property name="min" value="0" />
         <property name="max" value="2000" />
         <property name="default" value="1200" />
+        <property name="gain" value="0.01" />
         <property name="autosend" value="True" />
         <property name="caption" value="mic volume" />
         <property name="majorTickSpacing" value="200" />
         <property name="minorTickSpacing" value="50" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
+        <property name="storeValue" value="false" />
       </properties>
       <layout>
         <posX>17</posX>

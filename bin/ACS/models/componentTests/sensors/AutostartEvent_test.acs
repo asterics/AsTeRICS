@@ -18,6 +18,9 @@
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="text" value="Event received" />

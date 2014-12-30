@@ -1,55 +1,6 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="18.06.2014_1242" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="18.06.2014_1242" version="20130320">
   <components>
-    <component id="WebSocket.1" type_id="asterics.WebSocket">
-      <description>This plugin uses a websocket connection to send and read data</description>
-      <ports>
-        <inputPort portTypeID="InA">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InB">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InC">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InD">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InE">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InF">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="OutA">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutB">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutC">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutD">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutE">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutF">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="host" value="localhost" />
-        <property name="port" value="8080" />
-      </properties>
-      <layout>
-        <posX>234</posX>
-        <posY>130</posY>
-      </layout>
-    </component>
     <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
       <description>Signal Generator</description>
       <ports>
@@ -103,16 +54,6 @@
     </component>
   </components>
   <channels>
-    <channel id="binding.0">
-      <source>
-        <component id="SignalGenerator.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="WebSocket.1" />
-        <port id="InA" />
-      </target>
-    </channel>
     <channel id="binding.1">
       <source>
         <component id="SignalGenerator.1" />

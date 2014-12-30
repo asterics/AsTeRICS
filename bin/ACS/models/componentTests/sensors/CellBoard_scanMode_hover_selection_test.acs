@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="2012-06-12_1310" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-06-12_1310" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -20,6 +20,9 @@
           <properties />
         </outputPort>
         <outputPort portTypeID="selectedCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCell">
           <properties />
         </outputPort>
       </ports>

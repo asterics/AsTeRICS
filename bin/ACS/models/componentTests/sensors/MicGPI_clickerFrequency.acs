@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="4/20/2014_1117" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="4/20/2014_1117" version="20130320">
   <components>
     <component id="MicGPI.1" type_id="asterics.MicGPI">
       <description>This plugin reads an input signal via the microphone input</description>
@@ -18,7 +18,9 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="samplingFrequency" value="8000" />
         <property name="sampleSize" value="3" />
+        <property name="mode" value="1" />
         <property name="thresholdLow" value="-30" />
         <property name="thresholdHigh" value="30" />
         <property name="noiseLevel" value="1.5" />

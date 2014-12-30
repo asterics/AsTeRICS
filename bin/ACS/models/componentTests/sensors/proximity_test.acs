@@ -101,7 +101,16 @@
     <component id="Slider.1" type_id="asterics.Slider">
       <description>a slider GUI element which provides the slider value at an output port</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
           <properties />
         </outputPort>
       </ports>
@@ -109,12 +118,14 @@
         <property name="min" value="0" />
         <property name="max" value="1023" />
         <property name="default" value="200" />
+        <property name="gain" value="0.01" />
         <property name="autosend" value="true" />
         <property name="caption" value="threshold" />
         <property name="majorTickSpacing" value="200" />
         <property name="minorTickSpacing" value="50" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
+        <property name="storeValue" value="false" />
       </properties>
       <layout>
         <posX>40</posX>

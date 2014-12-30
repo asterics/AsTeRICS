@@ -262,7 +262,16 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="Slider.1" type_id="asterics.Slider">
       <description>a slider GUI element which provides the slider value at an output port</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
           <properties />
         </outputPort>
       </ports>
@@ -270,12 +279,14 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="min" value="0" />
         <property name="max" value="100" />
         <property name="default" value="100" />
+        <property name="gain" value="0.01" />
         <property name="autosend" value="true" />
         <property name="caption" value="Speed mouse X" />
         <property name="majorTickSpacing" value="20" />
         <property name="minorTickSpacing" value="5" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
+        <property name="storeValue" value="false" />
       </properties>
       <layout>
         <posX>154</posX>
@@ -291,7 +302,16 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="Slider.2" type_id="asterics.Slider">
       <description>a slider GUI element which provides the slider value at an output port</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="value">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out">
           <properties />
         </outputPort>
       </ports>
@@ -299,12 +319,14 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="min" value="0" />
         <property name="max" value="100" />
         <property name="default" value="100" />
+        <property name="gain" value="0.01" />
         <property name="autosend" value="true" />
         <property name="caption" value="Speed mouse Y" />
         <property name="majorTickSpacing" value="20" />
         <property name="minorTickSpacing" value="5" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
+        <property name="storeValue" value="false" />
       </properties>
       <layout>
         <posX>172</posX>

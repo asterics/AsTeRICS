@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="8/18/2014_2046" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="8/18/2014_2046" version="20130320">
   <components>
     <component id="EyeX.1" type_id="asterics.EyeX">
       <description>interfaces to the EyeX Gaze tracking system</description>
@@ -56,6 +56,12 @@
           <properties />
         </outputPort>
         <outputPort portTypeID="selectedCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellCaption">
           <properties />
         </outputPort>
       </ports>
@@ -437,6 +443,9 @@
     <component id="EventCounter.1" type_id="asterics.EventCounter">
       <description>Two-direction event counter</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
@@ -448,6 +457,7 @@
         <property name="initialValue" value="0" />
         <property name="wrapAround" value="false" />
         <property name="sendInitialValue" value="false" />
+        <property name="autoSend" value="true" />
       </properties>
       <layout>
         <posX>195</posX>
