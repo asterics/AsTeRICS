@@ -47,6 +47,13 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
 {
   final int NUMBER_OF_KEYS = 20;
   private final String PROP_CAPTION ="caption";
+  private final String PROP_TOOLTIP ="toolTip";
+  private final String PROP_TEXT_COLOR ="textColor";
+  private final String PROP_BACKGROUND_COLOR ="backgroundColor";
+  private final String PROP_BORDER_COLOR ="borderColor";
+  private final String PROP_BORDER_THICKNESS ="borderThickness";
+  private final String PROP_SELECTIONFRAME_COLOR ="selectionFrameColor";
+  private final String PROP_SELECTIONFRAME_THICKNESS ="selectionFrameThickness";
   private final String PROP_BUTTON_CAPTION="ButtonCaption";
   private final String PROP_BUTTON_CAPTION_VALUE="Button ";
   private final String PROP_HORIZONTAL_ORIENTATION="horizontalOrientation";
@@ -56,7 +63,15 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
   boolean propHorizontalOrientation=false; 
   
   private String propCaption="Keyboard";
+  public int propTextColor=13;
+  public int propBackgroundColor=13;
+  public int propBorderColor=13;
+  public int propBorderThickness=2;
+  public int propSelectionFrameColor=13;
+  public int propSelectionFrameThickness=4;
+
   private String [] propKeyCaptionArray = new String[NUMBER_OF_KEYS];
+  private String [] propToolTipArray = new String[NUMBER_OF_KEYS];
   final EventPort [] etpKeyArray = new EventPort[NUMBER_OF_KEYS];
 	
   private  GUI gui = null;
@@ -68,7 +83,7 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
   {
     for(int i=0;i<NUMBER_OF_KEYS;i++)
     {
-      if(i<6)
+      if(i<3)
       {
         propKeyCaptionArray[i]=PROP_BUTTON_CAPTION_VALUE+Integer.toString(i+1);
       }
@@ -76,8 +91,9 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
       {
         propKeyCaptionArray[i]="";
       }
-	
-        etpKeyArray[i]=new EventPort();
+      
+      propToolTipArray[i]="";
+      etpKeyArray[i]=new EventPort();
     		
     }
     	
@@ -113,48 +129,48 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
   {
     if(PROP_CAPTION.equalsIgnoreCase(propertyName))
     {
-      return propCaption;
-    		
+      return propCaption;  		
     }
     else  if(PROP_HORIZONTAL_ORIENTATION.equalsIgnoreCase(propertyName))
     {
-      return propHorizontalOrientation;
-      		
+      return propHorizontalOrientation;   		
+    }
+    else  if(PROP_TEXT_COLOR.equalsIgnoreCase(propertyName))
+    {
+      return propTextColor;      		
+    }
+    else  if(PROP_BACKGROUND_COLOR.equalsIgnoreCase(propertyName))
+    {
+      return propBackgroundColor;      		
+    }
+    else  if(PROP_BORDER_COLOR.equalsIgnoreCase(propertyName))
+    {
+      return propBorderColor;      		
+    }
+    else  if(PROP_BORDER_THICKNESS.equalsIgnoreCase(propertyName))
+    {
+      return propBorderThickness;      		
+    }
+    else  if(PROP_SELECTIONFRAME_COLOR.equalsIgnoreCase(propertyName))
+    {
+      return propSelectionFrameColor;      		
+    }
+    else  if(PROP_SELECTIONFRAME_THICKNESS.equalsIgnoreCase(propertyName))
+    {
+      return propSelectionFrameThickness;      		
     }
     else
     {
-      int propKeyCaptionSize=PROP_BUTTON_CAPTION.length();
-      if(propertyName.length()>propKeyCaptionSize)
-      {
-        String testName=propertyName.substring(0,propKeyCaptionSize);
-    	if(testName.equalsIgnoreCase(PROP_BUTTON_CAPTION))
+    	for (int i=1;i<=NUMBER_OF_KEYS;i++)
     	{
-    	  String captionNumberText=propertyName.substring(propKeyCaptionSize);
-    	  int captionNumberValue;
-    	    	  
-    	  try
-    	  {
-    	    captionNumberValue = Integer.parseInt(captionNumberText);
-    	  }
-    	  catch(NumberFormatException ex)
-    	  {
-    	    return null;
-    	  }
-    	    			
-    	  if(captionNumberValue>0 && captionNumberValue<=NUMBER_OF_KEYS)
-    	  {
-    	    return propKeyCaptionArray[captionNumberValue-1];
-    	  }
-    	  else
-    	  {
-    	    return null;
-    	  }
-        }
-      }
-   
-      return null;
+    		if (propertyName.equalsIgnoreCase(PROP_BUTTON_CAPTION + i))
+    			   return propKeyCaptionArray[i-1];
+    		if (propertyName.equalsIgnoreCase(PROP_TOOLTIP + i))
+ 			   return propToolTipArray[i-1];
+    	}
+    	
     }     	
-       
+    return null;       
   }
  
   /**
@@ -185,41 +201,63 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
         }
         return oldValue;
     }
+    else  if(PROP_TEXT_COLOR.equalsIgnoreCase(propertyName))
+    {
+		final Object oldValue = propTextColor;
+		propTextColor = Integer.parseInt(newValue.toString());
+		return oldValue;
+    }
+    else  if(PROP_BACKGROUND_COLOR.equalsIgnoreCase(propertyName))
+    {
+		final Object oldValue = propBackgroundColor;
+		propBackgroundColor = Integer.parseInt(newValue.toString());
+		return oldValue;
+    }
+    else  if(PROP_BORDER_COLOR.equalsIgnoreCase(propertyName))
+    {
+		final Object oldValue = propBorderColor;
+		propBorderColor = Integer.parseInt(newValue.toString());
+		return oldValue;
+    }
+    else  if(PROP_BORDER_THICKNESS.equalsIgnoreCase(propertyName))
+    {
+		final Object oldValue = propBorderThickness;
+		propBorderThickness = Integer.parseInt(newValue.toString());
+		return oldValue;
+    }
+    else  if(PROP_SELECTIONFRAME_COLOR.equalsIgnoreCase(propertyName))
+    {
+		final Object oldValue = propSelectionFrameColor;
+		propSelectionFrameColor = Integer.parseInt(newValue.toString());
+		return oldValue;
+    }
+    else  if(PROP_SELECTIONFRAME_THICKNESS.equalsIgnoreCase(propertyName))
+    {
+		final Object oldValue = propSelectionFrameThickness;
+		propSelectionFrameThickness = Integer.parseInt(newValue.toString());
+		return oldValue;
+    }    
     else
     {
-      int propKeyCaptionSize=PROP_BUTTON_CAPTION.length();
-      if(propertyName.length()>propKeyCaptionSize)
-      {
-        String testName=propertyName.substring(0,propKeyCaptionSize);
-    	if(testName.equalsIgnoreCase(PROP_BUTTON_CAPTION))
+    	
+    	for (int i=1;i<=NUMBER_OF_KEYS;i++)
     	{
-    	  String captionNumberText=propertyName.substring(propKeyCaptionSize);
-    	  int captionNumberValue;
-    	    	  
-    	  try
-    	  {
-    	    captionNumberValue = Integer.parseInt(captionNumberText);
-    	  }
-    	  catch(NumberFormatException ex)
-    	  {
-    	     return null;
-    	  }
-    	    			
-    	  if(captionNumberValue>0 && captionNumberValue<=NUMBER_OF_KEYS)
-    	  {    	    	    
-    	    final String oldValue = propKeyCaptionArray[captionNumberValue-1];         
-    	    propKeyCaptionArray[captionNumberValue-1]=(String)newValue;
-    	    return oldValue;
-    	  }
-    	  else
-    	  {
-    	    return null;
-    	  }
+    		if (propertyName.equalsIgnoreCase(PROP_BUTTON_CAPTION + i))
+    		{
+    	   	    final String oldValue = propKeyCaptionArray[i-1];         
+        	    propKeyCaptionArray[i-1]=(String)newValue;
+        	    return oldValue;
+    		}
+    		if (propertyName.equalsIgnoreCase(PROP_TOOLTIP + i))
+    		{
+    	   	    final String oldValue = propToolTipArray[i-1];         
+    	   	    propToolTipArray[i-1]=(String)newValue;
+    	   	    return oldValue;
+    		}
     	}
-      }
-      
+    }
+
       return null;
-    }        	
         
   }
 
@@ -281,7 +319,17 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
   {
     return propKeyCaptionArray[i];
   }
-  
+
+  /**
+   * Returns the tooltip text.
+   * @param    button index
+   * @return  tooltip text
+   */
+  String getToolTip(int i)
+  {
+    return propToolTipArray[i];
+  }
+
   /**
    * Called when model is started.
    */
