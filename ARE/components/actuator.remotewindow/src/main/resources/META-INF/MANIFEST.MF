@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-actuators.remotewindow
+Bundle-SymbolicName: eu.asterics.component.actuator.remotewindow
+Bundle-Version: 0.1.0
+Bundle-ClassPath: . , lib/jna-4.1.0.jar , lib/jna-platform-4.1.0.jar
+DynamicImport-Package: *
