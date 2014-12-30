@@ -102,6 +102,10 @@ public class TextSenderInstance  extends AbstractRuntimeComponentInstance
    */
   public IRuntimeInputPort getInputPort(String portID)
   {
+    if("setText".equalsIgnoreCase(portID))
+    {
+      return ipSetText;
+    }
     return null;
   }
   
@@ -198,6 +202,21 @@ public class TextSenderInstance  extends AbstractRuntimeComponentInstance
     }
   };    
  
+  
+
+  /**
+   * Plugin input port.
+   */
+  
+	private final IRuntimeInputPort ipSetText  = new DefaultRuntimeInputPort()
+	{
+		public void receiveData(byte[] data)
+		{
+			propText=ConversionUtils.stringFromBytes(data);
+		}
+
+	};
+
   /**
    * Plugin output port.
    */
