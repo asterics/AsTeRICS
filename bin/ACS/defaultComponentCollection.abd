@@ -137,6 +137,61 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.actuator.arewindow.AREWindowInstance" id="asterics.AREWindow">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>provides basic ARE Window manipulation</description>
+        <ports>
+			<inputPort id="xPos">
+				<description>desired X position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="yPos">
+				<description>desired Y position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="moveToTop">
+				<description>moves Window to top of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveToBottom">
+				<description>moves Window to bottom of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveToLeft">
+				<description>moves Window to left side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveToRight">
+				<description>moves Window to right side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveToCenter">
+				<description>moves Window to center of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="minimize">
+				<description>moves Window to right side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="restore">
+				<description>moves Window to right side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="bringToFront">
+				<description>set the ARE Window to foreground</description>
+			</eventListenerPort>
+
+		</events>			
+        <properties>
+			<property description="offset for x Position" name="xPos" type="integer" value="0"/>
+			<property description="offset for y Position" name="yPos" type="integer" value="0"/>
+			<property description="if true, ARE window will be moved automatically after model is started or when new position values come in" name="autoSetPosition" type="boolean" value="false"/>
+			<property description="if true, ARE window decoration and control panel can be activated / deactivated via mouse clicks" name="allowWindowModification" type="boolean" value="true"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.actuator.bardisplay.BardisplayInstance" id="asterics.BarDisplay">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -1070,6 +1125,7 @@
         <properties>
             <property description="Keycodes to send" name="keyCodeString" type="string" value="a"/>
             <property combobox="sending window messages//using system-wide SendInput API function" description="defines the way how keyboard input is injected" name="inputMethod" type="integer" value="1"/>
+            <property description="defines the wait period which is done whenever the special sequence {WAIT} is found in the input keycode string (in milliseconds)" name="waitTime" type="integer" value="1000"/>
                       
         </properties>
     </componentType>
@@ -1208,7 +1264,7 @@
 				<dataType>string</dataType>
 			</inputPort>
 			<inputPort id="position">
-				<description>position in media file (0-100%)</description>
+				<description>set position in media file (0-100%)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
@@ -1217,6 +1273,10 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
+            <outputPort id="actPos">
+                <description>current playback position (0-100%)</description>
+                <dataType>double</dataType>
+            </outputPort>
         </ports>
 		<events>
 			<eventListenerPort id="play">
@@ -1231,13 +1291,12 @@
 			<eventListenerPort id="reset">
 				<description>resets the mediafile to initial position</description>
 			</eventListenerPort>
-
-
 		</events>			
         <properties>
 			<property description="path and filename of a valid media file" getStringList="true" name="filename" type="string" value=""/>
-			<property description="automatically play the media file ar startup or as filename is received" name="autoplay" type="boolean" value="true"/>
-
+			<property description="automatically play the media file at startup or when a filename is received" name="autoplay" type="boolean" value="true"/>
+			<property description="shall a window be displayed (e.g for movies) or not ?" name="displayGui" type="boolean" value="true"/>
+			<property description="default path to the VLC media player installation (libvlc.dll)" name="pathToVLC" type="string" value="C:\Program Files (x86)\VideoLAN\VLC"/>
         </properties>
 		<gui>
 			<width>3000</width>
@@ -2301,6 +2360,69 @@
         </properties>
     </componentType>
 
+
+ <componentType canonical_name="eu.asterics.component.actuator.remotewindow.RemoteWindowInstance" id="asterics.RemoteWindow">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>provides basic  Window manipulation for another active window</description>
+        <ports>
+			<inputPort id="name">
+				<description>the title of the window</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="XPos">
+				<description>desired X offset</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="YPos">
+				<description>desired Y offset</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="MoveToTop">
+				<description>moves Window to top of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveToBottom">
+				<description>moves Window to bottom of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveToLeft">
+				<description>moves Window to left side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveToRight">
+				<description>moves Window to right side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveToCenter">
+				<description>moves Window to center of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="Minimize">
+				<description>minimizes the Window to the taskbar</description>
+			</eventListenerPort>
+			<eventListenerPort id="Restore">
+				<description>restores the Window from the taskbar</description>
+			</eventListenerPort>
+			<eventListenerPort id="bringToFront">
+				<description>brings the Window to foreground position</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveNow">
+				<description>moves the Window to selected x/y position</description>
+			</eventListenerPort>
+		</events>			
+        <properties>
+			<property description="the title (caption) of the window" name="windowName" type="string" value="Notepad"/>
+			<property combobox="exact match//window title contains text" description="mode for searching the window title" name="mode" type="integer" value="1"/>
+			<property description="default x position" name="xPos" type="integer" value="0"/>
+			<property description="default y position" name="yPos" type="integer" value="0"/>
+			<property description="if true, the window will be moved automatically when new position values come in" name="autoSetPosition" type="boolean" value="false"/>
+
+        </properties>
+
+    </componentType>
 
  <componentType canonical_name="eu.asterics.component.actuator.serialSender.SerialSenderInstance" id="asterics.serialSender">
         <type subtype="Generic Control Output">actuator</type>
@@ -3691,6 +3813,79 @@
     </componentType>
 
 
+ <componentType canonical_name="eu.asterics.component.processor.datatype.DataTypeInstance" id="asterics.DataType">
+        <type subtype="Data Converters">processor</type>
+        <singleton>false</singleton>
+        <description>Uses the given outValue and sends it to each output port using the respective data type</description>
+        <ports>
+			<inputPort id="inByte">
+				<description>byte value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>byte</dataType>
+			</inputPort>
+			<inputPort id="inChar">
+				<description>char value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>char</dataType>
+			</inputPort>
+			<inputPort id="inInteger">
+				<description>integer value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="inDouble">
+				<description>double value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="inString">
+				<description>string value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inBoolean">
+				<description>boolean value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>boolean</dataType>
+			</inputPort>
+
+			<outputPort id="outByte">
+				<description>byte value</description>
+				<dataType>byte</dataType>
+			</outputPort>
+			<outputPort id="outChar">
+				<description>char value</description>
+				<dataType>char</dataType>
+			</outputPort>
+			<outputPort id="outInteger">
+				<description>integer value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="outDouble">
+				<description>double value</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="outString">
+				<description>string value</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="outBoolean">
+				<description>boolean value</description>
+				<dataType>boolean</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property description="Value that is converted and sent to out ports" name="outValue" type="double" value="1.1"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.processor.deadzone.DeadzoneInstance" id="asterics.Deadzone">
         <type subtype="Signal Shaping">processor</type>
         <singleton>false</singleton>
@@ -3762,6 +3957,34 @@
         </properties>
     </componentType>
 
+
+ <componentType canonical_name="eu.asterics.component.processor.delay.DelayInstance" id="asterics.Delay">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>delays the incoming signal by a given time</description>
+        <ports>
+			<inputPort id="in">
+				<description>input value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="out">
+				<description>delayed output value</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property description="delay time in milliseconds" name="delay" type="integer" value="1000"/>
+
+        </properties>
+
+    </componentType>
 
  <componentType canonical_name="com.starlab.component.processor.derivative.DerivativeInstance" id="asterics.Derivative">
         <type subtype="Basic Math">processor</type>
@@ -3995,6 +4218,11 @@
         <singleton>false</singleton>
         <description>Two-direction event counter</description>
         <ports>
+        	<inputPort id="setValue">
+                <description>Sets the current value of the event counter to the incoming value</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
         	<outputPort id="output">
                 <description>Sends the number of events</description>
                 <dataType>integer</dataType>
@@ -4013,6 +4241,9 @@
             <eventListenerPort id="resetToInitial">
                 <description>Sets the event number to the initial value</description>
             </eventListenerPort>
+            <eventListenerPort id="sendNow">
+                <description>(re-)sends the current counter value to the output port</description>
+            </eventListenerPort>
         </events>         
         <properties>
             <property combobox="no limit//limit maximum//limit minimum//limit minimum and maximum" description="the mode of operation" name="mode" type="integer" value="0"/>
@@ -4021,6 +4252,7 @@
             <property description="the initial value" name="initialValue" type="integer" value="0"/>
             <property description="if selected, exceeding the max value will wrap to the min value and vice versa" name="wrapAround" type="boolean" value="false"/>
             <property description="if selected, the initial value is sent at startup" name="sendInitialValue" type="boolean" value="false"/>
+            <property description="if selected, changing values are sent automatically to the output port" name="autoSend" type="boolean" value="true"/>
         </properties>
     </componentType>
 
@@ -4118,12 +4350,20 @@
             <eventListenerPort id="event-in">
                 <description>Receive an event and store the state</description>
             </eventListenerPort>
+            <eventListenerPort id="selectOut1">
+                <description>select state 1 (next event will be sent to out1)</description>
+            </eventListenerPort>
+            <eventListenerPort id="selectOut2">
+                <description>select state 2 (next event will be sent to out2)</description>
+            </eventListenerPort>
+
             <eventTriggererPort id="event-out1">
-                <description>Fired, if internal state is 0</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="event-out2">
                 <description>Fired, if internal state is 1</description>
             </eventTriggererPort>
+            <eventTriggererPort id="event-out2">
+                <description>Fired, if internal state is 2</description>
+            </eventTriggererPort>
+
         </events>         
         <properties/>
     </componentType>
@@ -4144,6 +4384,22 @@
 			<eventListenerPort id="eventIn">
 				<description>the events to be routed</description>
 			</eventListenerPort>
+			<eventListenerPort id="eventIn2">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventIn3">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventIn4">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventIn5">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventIn6">
+				<description>the events to be routed</description>
+			</eventListenerPort>
+			
 			<eventListenerPort id="select1">
 				<description>select route 1</description>
 			</eventListenerPort>
@@ -4169,34 +4425,170 @@
 				<description>select route 8</description>
 			</eventListenerPort>
 
+			<eventListenerPort id="selectNext">
+				<description>select next route</description>
+			</eventListenerPort>
+
+			<eventListenerPort id="selectPrevious">
+				<description>select previous route</description>
+			</eventListenerPort>
+
+
 			<eventTriggererPort id="eventOut1">
-				<description>output route 1</description>
+				<description>output route 1 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut2">
-				<description>output route 2</description>
+				<description>output route 2 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut3">
-				<description>output route 3</description>
+				<description>output route 3 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut4">
-				<description>output route 4</description>
+				<description>output route 4 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut5">
-				<description>output route 5</description>
+				<description>output route 5 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut6">
-				<description>output route 6</description>
+				<description>output route 6 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut7">
-				<description>output route 7</description>
+				<description>output route 7 for eventIn 1</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="eventOut8">
-				<description>output route 8</description>
+				<description>output route 8 for eventIn 1</description>
 			</eventTriggererPort>
 
+			<eventTriggererPort id="eventOut2_1">
+				<description>output route 1 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_2">
+				<description>output route 2 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_3">
+				<description>output route 3 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_4">
+				<description>output route 4 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_5">
+				<description>output route 5 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_6">
+				<description>output route 6 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_7">
+				<description>output route 7 for eventIn 2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut2_8">
+				<description>output route 8 for eventIn 2</description>
+			</eventTriggererPort>
+
+			<eventTriggererPort id="eventOut3_1">
+				<description>output route 1 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_2">
+				<description>output route 2 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_3">
+				<description>output route 3 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_4">
+				<description>output route 4 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_5">
+				<description>output route 5 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_6">
+				<description>output route 6 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_7">
+				<description>output route 7 for eventIn 3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut3_8">
+				<description>output route 8 for eventIn 3</description>
+			</eventTriggererPort>
+
+			<eventTriggererPort id="eventOut4_1">
+				<description>output route 1 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_2">
+				<description>output route 2 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_3">
+				<description>output route 3 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_4">
+				<description>output route 4 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_5">
+				<description>output route 5 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_6">
+				<description>output route 6 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_7">
+				<description>output route 7 for eventIn 4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut4_8">
+				<description>output route 8 for eventIn 4</description>
+			</eventTriggererPort>
+			
+			<eventTriggererPort id="eventOut5_1">
+				<description>output route 1 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_2">
+				<description>output route 2 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_3">
+				<description>output route 3 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_4">
+				<description>output route 4 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_5">
+				<description>output route 5 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_6">
+				<description>output route 6 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_7">
+				<description>output route 7 for eventIn 5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut5_8">
+				<description>output route 8 for eventIn 5</description>
+			</eventTriggererPort>
+			
+			<eventTriggererPort id="eventOut6_1">
+				<description>output route 1 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_2">
+				<description>output route 2 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_3">
+				<description>output route 3 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_4">
+				<description>output route 4 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_5">
+				<description>output route 5 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_6">
+				<description>output route 6 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_7">
+				<description>output route 7 for eventIn 6</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eventOut6_8">
+				<description>output route 8 for eventIn 6</description>
+			</eventTriggererPort>
+			
 		</events>			
         <properties>
-
+        	<property description="number of active routes (for next / previous events)" name="activeRoutes" type="integer" value="3"/>
+        
+			<property description="wrap around to first or last route (for next / previous events)" name="wrapAround" type="boolean" value="true"/> 
         </properties>
 
     </componentType>
@@ -5953,7 +6345,7 @@
 			<property description="speech command which activates command recognition" name="activationCommand" type="string" value="computer, listen!"/>
 			<property description="speech command which stops command recognition" name="deactivationCommand" type="string" value="computer, stop!"/>
 			<property description="speech command which says all other commands" name="helpCommand" type="string" value="computer, help!"/>
-            <property combobox="always active//voice-triggered activation and deactivation//automatic deactivation after command recognition" description="mode for activation/deactivation of the recognition" name="mode" type="integer" value="0"/>			
+            <property combobox="always active//voice-triggered activation and deactivation//automatic deactivation after command recognition//speech recognition disabled (TTS only)" description="mode for activation/deactivation of speech recognition" name="mode" type="integer" value="0"/>			
 			<property description="speech command, triggers event1 if recognized" name="command1" type="string" value="hello"/>
 			<property description="speech command, triggers event2 if recognized" name="command2" type="string" value=""/>
 			<property description="speech command, triggers event3 if recognized" name="command3" type="string" value=""/>
@@ -6148,6 +6540,34 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.processor.stringdelay.StringDelayInstance" id="asterics.StringDelay">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>delays the incoming string by a given time</description>
+        <ports>
+			<inputPort id="in">
+				<description>input value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="out">
+				<description>delayed output value</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property description="delay time in milliseconds" name="Delay" type="integer" value="1000"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.processor.stringdispatcher.StringDispatcherInstance" id="asterics.StringDispatcher">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -6158,7 +6578,7 @@
                 <dataType>string</dataType>
             </outputPort>
             <inputPort id="slotDispatch">
-                <description>Send the string from the slot defined by number</description>
+                <description>Send the string from the slot defined by the incoming value</description>
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>integer</dataType>
             </inputPort>
@@ -6225,17 +6645,24 @@
                 <description>Send text from slot 20</description>
             </eventListenerPort>
             <eventListenerPort id="dispatchNextSlot">
-                <description>Send text from the next not empty slot</description>
+                <description>Send text from the next (not empty) slot</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchCurrentSlot">
+                <description>Send text from the current slot (if not empty)</description>
             </eventListenerPort>
             <eventListenerPort id="dispatchPreviousSlot">
-                <description>Send text from the previous not empty slot</description>
+                <description>Send text from the previous (not empty) slot</description>
             </eventListenerPort>
             <eventListenerPort id="dispatchSlotSeries">
                 <description>Send text in sequence from all not empty slots with delay defined by Delay property</description>
             </eventListenerPort>
+            <eventListenerPort id="resetToFirstSlot">
+                <description>Sets the internal slot counter to the first slot</description>
+            </eventListenerPort>
+            
         </events>        
         <properties>
-            <property description="Send all slots delay" name="delay" type="integer" value="300"/>
+            <property description="Delay in milliseconds for sending all slots sequentially" name="delay" type="integer" value="300"/>
             <property description="String slot 1" name="slot1" type="string" value=""/>
             <property description="String slot 2" name="slot2" type="string" value=""/>
             <property description="String slot 3" name="slot3" type="string" value=""/>
@@ -6462,18 +6889,23 @@
         <singleton>false</singleton>
         <description>Send text when gets event</description>
         <ports>
+            <inputPort id="setText">
+                <description>set the text to the incoming string</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
             <outputPort id="output">
-                <description>Output text</description>
+                <description>Output text, triggered via event</description>
                 <dataType>string</dataType>
             </outputPort>
         </ports>
         <events>
             <eventListenerPort id="sendText">
-                <description>Trigger event</description>
+                <description>this event triggers sending the text to the output port</description>
             </eventListenerPort>
         </events>        
         <properties>
-            <property description="Text to send" name="text" type="string" value="This is a sample text."/>
+            <property description="default text to send" name="text" type="string" value="This is a sample text."/>
                       
         </properties>
     </componentType>
@@ -6770,11 +7202,18 @@
         <properties>
             <property description="Caption of the keyboard" name="caption" type="string" value="Keyboard"/>
             <property description="Sets keys in horizontal orientation" name="horizontalOrientation" type="boolean" value="false"/> 
+			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default" description="Text color" name="textColor" type="integer" value="13"/>
+			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default" description="Background color of the button" name="backgroundColor" type="integer" value="13"/>
+			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default" description="Color of the button frame" name="borderColor" type="integer" value="13"/>
+			<property description="Thickness of the button frame" name="borderThickness" type="integer" value="2"/>
+			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default" description="Color of the selection frame (active when hovering over the button)" name="selectionFrameColor" type="integer" value="13"/>
+			<property description="Thickness of the selection frame (active when hovering over the button)" name="selectionFrameThickness" type="integer" value="4"/>
+
             <property description="Caption of the button 1" name="buttonCaption1" type="string" value="Button 1"/>
             <property description="Caption of the button 2" name="buttonCaption2" type="string" value="Button 2"/>
-            <property description="Caption of the button 3" name="buttonCaption3" type="string" value="Button 3"/>
-            <property description="Caption of the button 4" name="buttonCaption4" type="string" value="Button 4"/>
-            <property description="Caption of the button 5" name="buttonCaption5" type="string" value="Button 5"/>
+            <property description="Caption of the button 3" name="buttonCaption3" type="string" value=""/>
+            <property description="Caption of the button 4" name="buttonCaption4" type="string" value=""/>
+            <property description="Caption of the button 5" name="buttonCaption5" type="string" value=""/>
             <property description="Caption of the button 6" name="buttonCaption6" type="string" value=""/>
             <property description="Caption of the button 7" name="buttonCaption7" type="string" value=""/>
             <property description="Caption of the button 8" name="buttonCaption8" type="string" value=""/>
@@ -6790,7 +7229,27 @@
             <property description="Caption of the button 18" name="buttonCaption18" type="string" value=""/>
             <property description="Caption of the button 19" name="buttonCaption19" type="string" value=""/>
             <property description="Caption of the button 20" name="buttonCaption20" type="string" value=""/>
-                            
+
+            <property description="Tooltip text for button 1" name="toolTip1" type="string" value=""/>
+            <property description="Tooltip text for button 2" name="toolTip2" type="string" value=""/>
+            <property description="Tooltip text for button 3" name="toolTip3" type="string" value=""/>
+            <property description="Tooltip text for button 4" name="toolTip4" type="string" value=""/>
+            <property description="Tooltip text for button 5" name="toolTip5" type="string" value=""/>
+            <property description="Tooltip text for button 6" name="toolTip6" type="string" value=""/>
+            <property description="Tooltip text for button 7" name="toolTip7" type="string" value=""/>
+            <property description="Tooltip text for button 8" name="toolTip8" type="string" value=""/>
+            <property description="Tooltip text for button 9" name="toolTip9" type="string" value=""/>
+            <property description="Tooltip text for button 10" name="toolTip10" type="string" value=""/>
+            <property description="Tooltip text for button 11" name="toolTip11" type="string" value=""/>
+            <property description="Tooltip text for button 12" name="toolTip12" type="string" value=""/>
+            <property description="Tooltip text for button 13" name="toolTip13" type="string" value=""/>
+            <property description="Tooltip text for button 14" name="toolTip14" type="string" value=""/>
+            <property description="Tooltip text for button 15" name="toolTip15" type="string" value=""/>
+            <property description="Tooltip text for button 16" name="toolTip16" type="string" value=""/>
+            <property description="Tooltip text for button 17" name="toolTip17" type="string" value=""/>
+            <property description="Tooltip text for button 18" name="toolTip18" type="string" value=""/>
+            <property description="Tooltip text for button 19" name="toolTip19" type="string" value=""/>
+            <property description="Tooltip text for button 20" name="toolTip20" type="string" value=""/>                       
         </properties>
         <gui>
             <width>500</width>
@@ -6824,14 +7283,33 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
-			<outputPort id="selectedCell">
-				<description>Selected cell ID</description>
+
+			<outputPort id="actCell">
+				<description>the ID (index number) of the current cell (if single cell can be determined)</description>
 				<dataType>integer</dataType>
 			</outputPort>
-			<outputPort id="selectedCellText">
-				<description>Selected cell Text</description>
+			<outputPort id="actCellCaption">
+				<description>the caption (label text) of the current cell (if single cell can be determined)</description>
 				<dataType>string</dataType>
 			</outputPort>
+			<outputPort id="actCellText">
+				<description>the action text of the current cell (if single cell can be determined)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="selectedCell">
+				<description>The ID (index number) of the selected cell</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="selectedCellCaption">
+				<description>The caption (label text) of the selected cell</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="selectedCellText">
+				<description>The action text of the selected cell</description>
+				<dataType>string</dataType>
+			</outputPort>
+
 
         </ports>
 		<events>
@@ -6853,6 +7331,7 @@
 			<eventListenerPort id="moveDown">
 				<description>Move frame down</description>
 			</eventListenerPort>
+			
 			<eventTriggererPort id="cellClicked">
 				<description>Cell is clicked</description>
 			</eventTriggererPort>
@@ -8192,6 +8671,43 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.sensor.linereader.LineReaderInstance" id="asterics.LineReader">
+        <type subtype="File System">sensor</type>
+        <singleton>false</singleton>
+        <description>reads contents of a text file line by line</description>
+        <ports>
+			<inputPort id="skipLines">
+				<description>a number of lines to skip (read continues at next line)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+			<outputPort id="actLine">
+				<description>the curent line which is read from the file</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="readNextLine">
+				<description>reads the next line from the file</description>
+			</eventListenerPort>
+			<eventListenerPort id="resetToFirstLine">
+				<description>resets the file pointer to the beginning of the file</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="endOfFile">
+				<description>triggered when end of file or other error occurred </description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property description="name of the file to open" name="fileName" type="string" value="test.txt"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.sensor.mousecapture.MouseCaptureInstance" id="asterics.MouseCapture">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>
@@ -8283,11 +8799,12 @@
 
 		</events>			
         <properties>
-			<property combobox="32//64//128//256//512//1024//2048" description="interval length (in samples)" name="sampleSize" type="integer" value="3"/>
+			<property description="the sampling frequency setting for the audio input (min:300 Hz, max:44100 Hz)" name="samplingFrequency" type="integer" value="8000"/>
+			<property combobox="32//64//128//256//512//1024//2048" description="interval length (samples per calculation block)" name="sampleSize" type="integer" value="2"/>
+			<property combobox="average sample values//average absolute sample values//min value//max value//max absolute value" description="the calculation mode for the threshold and pressure output port (applied to the samples of the interval)" name="mode" type="integer" value="1"/>
 			<property description="threshold for low event" name="thresholdLow" type="integer" value="-30"/>
 			<property description="threshold for high event" name="thresholdHigh" type="integer" value="30"/>
 			<property description="sound below noise level will be attenuated" name="noiseLevel" type="double" value="1.5"/>
-
 			<property description="if selected, the dominant frequency is calculated" name="calculateFrequency" type="boolean" value="false"/> 
 			<property description="if selected, the frequency spectrum is shown in the console window" name="printSpectrum" type="boolean" value="false"/> 
 			<property description="Specifies which device should be used for recording" getStringList="true" name="captureDevice" type="string" value="System Default"/>
@@ -9043,10 +9560,24 @@
         <singleton>false</singleton>
         <description>a slider GUI element which provides the slider value at an output port</description>
         <ports>
+            <inputPort id="setValue">
+                <description>sets the position of the slider</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+            <inputPort id="in">
+                <description>input signal</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
 
 			<outputPort id="value">
 				<description>the current slider value</description>
 				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="out">
+				<description>output signal (with applied gain)</description>
+				<dataType>double</dataType>
 			</outputPort>
 
         </ports>
@@ -9055,12 +9586,15 @@
 			<property description="the minimum value for the slider" name="min" type="integer" value="0"/>
 			<property description="the maximum value for the slider" name="max" type="integer" value="100"/>
 			<property description="the default value for the slider" name="default" type="integer" value="50"/>
+			<property description="signal gain factor (out = in * gain * slider_value)" name="gain" type="double" value="0.01"/>
             <property description="automatically send the Slider's default value at model startup" name="autosend" type="boolean" value="true"/>				
 			<property description="the slider caption" name="caption" type="string" value="my slider"/>
 			<property description="the major tick spacing" name="majorTickSpacing" type="integer" value="20"/>
 			<property description="the minor tick spacing" name="minorTickSpacing" type="integer" value="5"/>
 			<property combobox="horizontal//vertical" description="slider alignment" name="alignment" type="integer" value="0"/>
 			<property description="slider font size" name="fontSize" type="integer" value="14"/>
+            <property description="if enabled, the current slider value will be stored and reloaded when model starts next time" name="storeValue" type="boolean" value="false"/>				
+				
         </properties>
         <gui>
             <width>4000</width>
