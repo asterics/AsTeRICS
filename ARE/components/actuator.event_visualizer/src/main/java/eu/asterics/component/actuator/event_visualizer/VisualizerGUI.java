@@ -52,10 +52,12 @@ public class VisualizerGUI extends JPanel
     public static final Dimension PREFERRED_SIZE = new Dimension(320, 240);
     public JScrollPane scroll;
     
+    public long startTime=0;
+    
     VisualizerGUI(final EventVisualizerInstance owner, final Dimension space)
     {
         super();
-
+        startTime=System.currentTimeMillis();
 		this.setPreferredSize(new Dimension (space.width, space.height));
 		design (space.width, space.height);    
     }
@@ -81,8 +83,16 @@ public class VisualizerGUI extends JPanel
     
     public void addEvent(final String payload)
     {
-        stringBuilder.append(new Date()).append(": ").append(payload).append("\n");
-        textArea.setText(stringBuilder.toString());
-        scroll.getVerticalScrollBar().setValue(scroll.getVerticalScrollBar().getMaximum());
+			//    stringBuilder.append(new Date()).append(": ").append(payload).append("\n");
+			//    textArea.setText(stringBuilder.toString());
+    	
+			long millis= System.currentTimeMillis()-startTime;
+			long second = (millis / 1000) % 60;
+			long minute = (millis / (1000 * 60)) % 60;
+			long hour = (millis / (1000 * 60 * 60)) % 24;
+			
+			String time = String.format("%02d:%02d:%02d:%03d", hour, minute, second, millis%1000);
+			textArea.append(time+": "+payload+"\n");
+			scroll.getVerticalScrollBar().setValue(scroll.getVerticalScrollBar().getMaximum());
     }
 }
