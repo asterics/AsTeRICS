@@ -1776,6 +1776,7 @@ public class AsapiSupport
 	 */
 	public String[] listAllStoredModels() throws AREAsapiException
 	{
+		/*
 		ArrayList <String> fileNames = new ArrayList<String> ();
 		File dir = new File(MODELS_FOLDER+"/");
 
@@ -1801,6 +1802,48 @@ public class AsapiSupport
 		}
 		return res;
 
+		*/
+		
+		List<String> res = new ArrayList<String>(); 
+			List<String> nextDir = new ArrayList<String>(); //Directories
+			nextDir.add(MODELS_FOLDER);	
+			//nextDir.add("data/sounds");	
+			
+			try 
+			{
+				while(nextDir.size() > 0) 
+				{
+					File pathName = new File(nextDir.get(0)); 
+					String[] fileNames = pathName.list();  // lists all files in the directory
+	
+					for(int i = 0; i < fileNames.length; i++) 
+					{ 
+						File f = new File(pathName.getPath(), fileNames[i]); // getPath converts abstract path to path in String, 
+						// constructor creates new File object with fileName name   
+						if (f.isDirectory()) 
+						{  
+							nextDir.add(f.getPath()); 
+						} 
+						else 
+						{
+							if (f.getPath().toLowerCase().endsWith(".acs")) 
+									res.add(f.getPath().substring(MODELS_FOLDER.length()+1));
+						}
+					} 
+					nextDir.remove(0); 
+				} 
+			}
+			catch (Exception e) {System.out.println ("could not find directories for model files !");}
+
+		
+		String[] res2 = new String[res.size()];
+		for (int i=0; i<res2.length; i++)
+		{
+			res2[i] = res.get(i);
+		}
+		return res2;		
+		
+		
 	}
 
 
