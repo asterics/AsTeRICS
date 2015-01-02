@@ -286,6 +286,7 @@ public class EventRouterInstance extends AbstractRuntimeComponentInstance
     	 
     	 public void receiveEvent(final String data)
     	 {
+    		// etpEventOut[index][actRoute-1].setEventChannelID("event "+(index+1)+" route "+actRoute);
     		 etpEventOut[index][actRoute-1].raiseEvent();
     	 }
     } 
