@@ -27,28 +27,25 @@
 package eu.asterics.component.sensor.cellboard;
 
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.border.TitledBorder;
-
-import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.services.AstericsThreadPool;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.text.DecimalFormat;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+
 import javax.imageio.ImageIO;
-import java.io.*;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+
+import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
  *   Implements the cell panel for the
@@ -120,7 +117,7 @@ public class GUICell extends JPanel implements Runnable
 	        		  cellhovering=true;
 	        		  hoverSelected=false;
 	        		  owner.performActCellUpdate(row, column);
-	        		  repaintNow();
+	        		  repaintNow(0);
 	        		  AstericsThreadPool.instance.execute(hoverTimer);
 	        	  }else{
 	        		  if(!blockSendEvent)
@@ -145,6 +142,11 @@ public class GUICell extends JPanel implements Runnable
 	
 	public void repaintNow()
 	{
+		repaintNow(1);
+	}
+	
+	public void repaintNow(double hoverPercent)
+	{
 		if(scanActive)
 		{
 			Color scanBorderColor=new Color(255-getColorProperty(owner.getScanColor()).getRed(),255-getColorProperty(owner.getScanColor()).getGreen(),255-getColorProperty(owner.getScanColor()).getBlue());
@@ -154,8 +156,13 @@ public class GUICell extends JPanel implements Runnable
 		{
 			if(cellhovering)
 			{
-				Color scanBorderColor=new Color(getColorProperty(owner.getScanColor()).getRed(),getColorProperty(owner.getScanColor()).getGreen(),getColorProperty(owner.getScanColor()).getBlue());
-				setBorder(BorderFactory.createLineBorder(scanBorderColor,scanFrameWidth));
+				if(hoverSelection){					
+					Color scanBorderColor=new Color((int)(getColorProperty(owner.getScanColor()).getRed() * hoverPercent),(int)(getColorProperty(owner.getScanColor()).getGreen()*hoverPercent),(int)(getColorProperty(owner.getScanColor()).getBlue()*hoverPercent));
+					setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth+scanFrameWidth*hoverPercent)));
+				} else{					
+					Color scanBorderColor=new Color(getColorProperty(owner.getScanColor()).getRed(),getColorProperty(owner.getScanColor()).getGreen(),getColorProperty(owner.getScanColor()).getBlue());
+					setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth)));
+				}
 			}
 			else
 			{
@@ -493,7 +500,7 @@ public class GUICell extends JPanel implements Runnable
     }
     
     private int hoverTime=1000;
-    private boolean hoverSelection=false;
+	private boolean hoverSelection=false;
     
     /**
      * Sets hover time.
@@ -688,6 +695,8 @@ public class GUICell extends JPanel implements Runnable
 	            	cellhovering=false;
 	            	repaintNow();
 					finish=true;
+				} else {
+					repaintNow(currentTime / (double)hoverTime);
 				}
 				
 				if(hoverExit||hoverFinish)
