@@ -25,14 +25,16 @@
  */
 
 package eu.asterics.component.processor.averager;
+import java.util.LinkedList;
+
+import org.apache.commons.math3.stat.StatUtils;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import java.util.*;
-import java.util.logging.*;
 
 
 /**
@@ -51,6 +53,7 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
     public static final int MODE_AVERAGE = 0;
     public static final int MODE_AVERAGE_ROUND = 1;
     public static final int MODE_ACCUMULATE = 2;
+    public static final int MODE_MEDIAN = 3;
     
     private IRuntimeInputPort ipInput = new InputPort1();
     private IRuntimeOutputPort opOutput = new OutputPort1();
@@ -228,6 +231,20 @@ public class AveragerInstance extends AbstractRuntimeComponentInstance
 	              opOutput.sendData(ConversionUtils.doubleToBytes(accu));
 	    		  accu=0;
 	    	  }   	
+    	}
+    	else if (propMode==MODE_MEDIAN)
+    	{
+	        buffer.addFirst(in);
+	        if(buffer.size() > propBufferSize) 
+	        {
+	        	buffer.removeLast();
+	        }
+//	        System.out.println(Arrays.toString(buffer.toArray()));
+	        double[] array = new double[buffer.size()];
+	        for(int i=0;i<array.length;++i){
+	        	array[i] = buffer.get(i);
+	        }
+	        opOutput.sendData(ConversionUtils.doubleToBytes(StatUtils.percentile(array,50)));
     	}
     }
 
