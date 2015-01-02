@@ -591,7 +591,7 @@ public class AstericsGUI implements IAREEventListener
 		public boolean accept(File f) {
 
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 
 			String fileName = f.getName();

@@ -373,11 +373,13 @@ public class DeploymentManager
 				= sourceComponentInstance.
 				getEventTriggererPort(sourceEventPortID);
 
-				eventTriggererPort.setEventChannelID(eventChannelID);
+				//eventTriggererPort.setEventChannelID(eventChannelID);
 
 				for(final EventListenerDetails eventListenerDetails : 
 					targetEventListenerPorts)
 				{
+					eventTriggererPort.setEventChannelID(sourceEventPortID+" > "+eventListenerDetails.portID);
+
 					eventTriggererPort.addEventListener(
 							eventListenerDetails.componentID, 
 							eventListenerDetails.portID,
