@@ -3458,7 +3458,7 @@
         </ports>
         <properties>
             <property description="The size of the averager's buffer or milliseconds to accumulate" name="bufferSize" type="integer" value="50"/>
-            <property combobox="average//averager with integer output//accumulate for n milliseconds" description="The averager or accumulator mode" name="mode" type="integer" value="0"/>
+            <property combobox="average//averager with integer output//accumulate for n milliseconds//median" description="The averager or accumulator mode" name="mode" type="integer" value="0"/>
         </properties>
     </componentType>
 
