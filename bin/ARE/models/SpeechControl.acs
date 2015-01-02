@@ -264,6 +264,9 @@ Please note that the actuators for environemntal control are not connected in th
         <outputPort portTypeID="actCellCaption">
           <properties />
         </outputPort>
+        <outputPort portTypeID="actCellText">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="caption" value="Cell Board" />

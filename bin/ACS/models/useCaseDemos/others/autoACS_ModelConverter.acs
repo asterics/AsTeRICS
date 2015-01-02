@@ -52,13 +52,13 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="preString" value="{ALT}x{WAIT}o{WAIT}" />
+        <property name="preString" value="{ALT}x{WAIT}o{WAIT}  " />
         <property name="postString" value="{ALT}o{WAIT}{ALT}x{WAIT}s" />
         <property name="trim" value="false" />
       </properties>
       <layout>
         <posX>484</posX>
-        <posY>534</posY>
+        <posY>602</posY>
       </layout>
     </component>
     <component id="TextDisplay.1" type_id="asterics.TextDisplay">

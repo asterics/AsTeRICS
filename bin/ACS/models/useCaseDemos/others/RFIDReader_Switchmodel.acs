@@ -143,6 +143,9 @@
         <outputPort portTypeID="actCell">
           <properties />
         </outputPort>
+        <outputPort portTypeID="actCellCaption">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="caption" value="Cell Board" />

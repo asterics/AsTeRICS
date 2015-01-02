@@ -724,6 +724,9 @@ left/right movements influence the tone height</description>
         <outputPort portTypeID="actCellCaption">
           <properties />
         </outputPort>
+        <outputPort portTypeID="actCellText">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="caption" value="Maus-Kontrolle" />
@@ -1017,6 +1020,9 @@ left/right movements influence the tone height</description>
           <properties />
         </outputPort>
         <outputPort portTypeID="actCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellText">
           <properties />
         </outputPort>
       </ports>
