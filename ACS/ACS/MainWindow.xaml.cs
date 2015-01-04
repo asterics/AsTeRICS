@@ -75,8 +75,8 @@ namespace Asterics.ACS {
         private int offsetY = 0;
 
         private int copyOffsetMulti = 1;
-        private int copyXOffset = 15;
-        private int copyYOffset = 15;
+        private int copyXOffset = 30;
+        private int copyYOffset = 30;
         //private Hashtable model = new Hashtable();
 
         private String copyDummyName = "copydummyftwsurrockslolcatftwnyannyannyan";
@@ -759,6 +759,8 @@ namespace Asterics.ACS {
                         List<String> availableComponents;
 
                         model deploymentModelWithoutGroups = RemoveGroupingElementsInDeployment(deploymentModel);
+
+                        /*  //// CV: removed check for missing components (because of on-demand load of bundles in ARE!)  The user info (error dialog when components are missing) is still created in ACS and ARE.
                         try {
 
                             availableComponents = asapiClient.GetAvailableComponentTypes();
@@ -774,7 +776,7 @@ namespace Asterics.ACS {
                             isError = true;
                             CheckASAPIConnection();
                         }
-
+                        */
                         if (!isError) {
                             try {
                                 if ((deploymentModel.eventChannels != null) && (deploymentModel.eventChannels.Length == 0)) {
@@ -811,7 +813,7 @@ namespace Asterics.ACS {
                             } catch (Exception ex) {
                                 MessageBox.Show(Properties.Resources.SynchronisationUploadError, Properties.Resources.SynchronisationUploadErrorHeader, MessageBoxButton.OK, MessageBoxImage.Error);
                                 traceSource.TraceEvent(TraceEventType.Error, 3, ex.Message);
-                                CheckASAPIConnection();
+                                //// CV: temporarily removed to keep connection alive //   CheckASAPIConnection();
                             }
                         }
                     }
