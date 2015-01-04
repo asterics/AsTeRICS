@@ -339,7 +339,7 @@ public class AsapiSupport
 				throw (new AREAsapiException(e1.getMessage()));
 			}
 		}
-
+		
 		//Convert the string to a byte array.
 		String s = modelInXML;
 		byte data[] = s.getBytes();
@@ -357,15 +357,13 @@ public class AsapiSupport
 				c.flush();
 				c.close();
 			}
-
+  
 			InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
 
 			synchronized (DefaultDeploymentModelParser.instance) {
 
-
 				IRuntimeModel runtimeModel = 
 						DefaultDeploymentModelParser.instance.parseModel(is);
-
 
 				/*if (runtimeModel==null)
 			{
@@ -376,7 +374,6 @@ public class AsapiSupport
 				DeploymentManager.instance.setStatus(AREStatus.DEPLOYED);
 				AstericsErrorHandling.instance.setStatusObject(AREStatus.DEPLOYED.toString(), 
 						"", "");
-				System.out.println("New model deployed.");
 			}
 		}  catch (IOException e2) {
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
@@ -418,11 +415,13 @@ public class AsapiSupport
 
 		ArrayList<String> res = new ArrayList<String> ();
 		URL url= null;
+		
+		// System.out.println("*** Get Component Collection -> load all available bundles !");
+		BundleManager bm=DeploymentManager.instance.getBundleManager();
+		bm.install(bm.MODE_GET_ALL_COMPONENTS);
 
 		for (Bundle bundle : Main.getAREContext().getBundles())
 		{
-
-
 			url = bundle.getResource(BUNDLE_DESCRIPTOR);
 			if (url!=null)
 			{

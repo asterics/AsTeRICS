@@ -68,6 +68,7 @@ public class AsapiServerHandler implements AsapiServer.Iface{
 	 */
 	@Override
 	public void DeployFile(String filename) throws AsapiException, TException {
+	   // System.out.println("*** DEPLOY FILE");
 
 		try {
 			asapiSupport.deployFile (filename);
@@ -85,6 +86,7 @@ public class AsapiServerHandler implements AsapiServer.Iface{
 	 */
 	public void DeployModel(String modelInXml) throws AsapiException,
 	TException {
+	   // System.out.println("*** DEPLOY FROM STRING");
 
 		try {
 			asapiSupport.deployModel(modelInXml);
@@ -134,6 +136,7 @@ public class AsapiServerHandler implements AsapiServer.Iface{
 	 * @return A list of the available component types
 	 */
 	public List<String> GetAvailableComponentTypes() throws TException {
+		// System.out.println("*** GET AVAILABLE COMPONENTS");
 		String[] types = asapiSupport.getAvailableComponentTypes();
 		return new ArrayList<String>(Arrays.asList(types)); 
 	}
@@ -627,6 +630,7 @@ public class AsapiServerHandler implements AsapiServer.Iface{
 	}
 	
 	public List<String> getBundleDescriptors() throws AsapiException, TException {
+	    // System.out.println("*** GET BUNDLE DESCRIPTORS");
 		
 		try {
 			return asapiSupport.getBundelDescriptors();
@@ -726,6 +730,8 @@ public class AsapiServerHandler implements AsapiServer.Iface{
 	 */
 	@Override
 	public String getModelFromFile(String filename) throws TException {
+	    // System.out.println("*** GET MODEL FROM FILE");
+
 		try {
 			return asapiSupport.getModelFromFile(filename);
 		} catch (AREAsapiException e) {

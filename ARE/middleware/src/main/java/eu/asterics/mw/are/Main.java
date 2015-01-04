@@ -15,6 +15,7 @@ import org.osgi.framework.BundleContext;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
@@ -107,11 +108,12 @@ public class Main implements BundleActivator
 								AREStatus.UNKNOWN.toString(), "", "");
 						areContext = context;
 
+
 						bundleManager = new BundleManager(context);
 						context.addBundleListener(bundleManager);
 						context.addFrameworkListener(bundleManager);
 						bundleManager.start();
-
+						
 						DeploymentManager.instance
 								.setBundleManager(bundleManager);
 
@@ -148,10 +150,12 @@ public class Main implements BundleActivator
 						astericsFrame.setVisible(true);
 
 						AsapiSupport as = new AsapiSupport();
+						// System.out.println("***  starting model !");
 						as.autostart(startModel);
+
 					} catch (Throwable e) {
 						JOptionPane.showMessageDialog(null,
-								"The AsTeRICS Runtime Environemnt could not be initiated!"
+								"The AsTeRICS Runtime Environment could not be initiated!"
 								, "ARE startup error",
 								JOptionPane.ERROR_MESSAGE);
 						System.exit(0);
@@ -161,7 +165,7 @@ public class Main implements BundleActivator
 		} catch (Throwable t) {
 			// custom title, error icon
 			JOptionPane.showMessageDialog(null,
-					"The AsTeRICS Runtime Environemnt could not be initiated!",
+					"The AsTeRICS Runtime Environment could not be initiated!",
 					"ARE startup error", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}

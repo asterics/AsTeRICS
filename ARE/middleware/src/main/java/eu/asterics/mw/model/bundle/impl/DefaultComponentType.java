@@ -79,6 +79,7 @@ public class DefaultComponentType
         super(propertyTypes);
 
         this.ID = ID;
+        // System.out.println("*** got canonical :"+canonicalName);
         this.canonicalName = canonicalName;
         this.componentType = componentType;
         this.isSingleton = isSingleton;

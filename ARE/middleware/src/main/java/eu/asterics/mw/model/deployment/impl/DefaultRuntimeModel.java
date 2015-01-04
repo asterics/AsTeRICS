@@ -315,6 +315,7 @@ public class DefaultRuntimeModel implements IRuntimeModel
 			if (component.getInstanceID().equals(componentID))
 			{
 				keys = component.getPropertyKeys();
+				for (String str: keys)
 				return (String[]) keys.toArray(new String[keys.size()]);
 
 			}
@@ -470,7 +471,6 @@ public class DefaultRuntimeModel implements IRuntimeModel
 
 				for (IPort port : ports)
 				{
-
 					if (port.getPortType().equals(portID))
 					{
 						return port;
@@ -486,7 +486,6 @@ public class DefaultRuntimeModel implements IRuntimeModel
 	public DataType getPortDataType(String componentID, String portID)
 	{
 		final IPort port = getPort(componentID, portID);
-
 		return port == null ? null : port.getPortDataType();
 	}
 

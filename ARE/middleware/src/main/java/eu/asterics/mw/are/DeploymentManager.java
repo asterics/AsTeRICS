@@ -197,7 +197,6 @@ public class DeploymentManager
 			final String componentTypeID =
 					componentInstance.getComponentTypeID();
 
-
 			final IComponentType componentType = 
 					componentRepository.getComponentType(componentTypeID);
 
@@ -1117,6 +1116,9 @@ public class DeploymentManager
 
 	}
 
+	public BundleManager getBundleManager() {
+		return(this.bundleManager);
+	}
 
 	public Collection<IRuntimeComponentInstance> getComponentRuntimeInstances ()
 	{

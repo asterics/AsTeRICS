@@ -28,8 +28,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import eu.asterics.mw.are.ComponentRepository;
+import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.model.DataType;
+import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.model.bundle.impl.GroupReferences;
 import eu.asterics.mw.model.deployment.IChannel;
 import eu.asterics.mw.model.deployment.IComponentInstance;
@@ -141,7 +143,7 @@ public class DefaultDeploymentModelParser
 			modelInputStream.reset();
 			builder = builderFactory.newDocumentBuilder();
 			synchronized(builder){
-			Document document = builder.parse(modelInputStream);         
+			Document document = builder.parse(modelInputStream);  
 			return parse(document);
 			}
 		} 
@@ -243,6 +245,7 @@ public class DefaultDeploymentModelParser
 	private DefaultRuntimeModel parse(Document document)
 	throws ParseException
 	{
+		// System.out.println("*** IN PARSE !");
 		final Set<IChannel> channelsSet = new LinkedHashSet<IChannel>();
 		final Set<IEventChannel> eventChannelsSet =
 			new LinkedHashSet<IEventChannel>();
@@ -250,7 +253,6 @@ public class DefaultDeploymentModelParser
 			new LinkedHashSet<IComponentInstance>();
 		final ArrayList <DefaultACSGroup> groups = new ArrayList<DefaultACSGroup>();
 
-		
 		// model - get the root element
 		final Element rootElement = document.getDocumentElement();
 
@@ -280,7 +282,7 @@ public class DefaultDeploymentModelParser
 					{
 						//Iterate through component elements
 						for (int j = 0; j < components.getLength(); j++)
-						{
+						{				
 							final Node componentNode = components.item(j);
 							if (componentNode instanceof Element)
 							{
@@ -288,6 +290,7 @@ public class DefaultDeploymentModelParser
 								
 								final Element componentElement =
 									(Element) componentNode;
+								
 								IComponentInstance componentInstance = getComponentInstance(componentElement);
 								if(componentInstance == null) throw new ParseException("Could not find component instance for component element: "+componentElement);
 								componentsSet.add(componentInstance);
@@ -532,6 +535,10 @@ public class DefaultDeploymentModelParser
 
 		if (componentNode instanceof Element)
 		{
+	
+			ComponentRepository componentRepository = 
+					ComponentRepository.instance;
+
 			AREGUIElement areGUIElement = null;
 			// get a component element
 			final Element componentElement =
@@ -539,12 +546,22 @@ public class DefaultDeploymentModelParser
 			//Get attributes
 			final String cTypeID = componentElement.getAttribute("type_id");
 			final String cID = componentElement.getAttribute("id");
+
+			IComponentType desiredComponent=
+			componentRepository.getComponentType(cTypeID);
+			if (desiredComponent==null)
+			{
+				// System.out.println("*** Requesting installation of component " +cTypeID);
+				DeploymentManager.instance.getBundleManager().install_single(cTypeID);
+			}
+						
 			//boolean easyConfig = 
 				//Boolean.parseBoolean
 				//(componentElement.getAttribute("easyConfig"));
 			//get component children
 			NodeList componentChildren =
 				componentNode.getChildNodes();
+
 			String cDescription = null;
 			Set<IInputPort> inputPorts = new LinkedHashSet<IInputPort>();
 			Set<IOutputPort> outputPorts = new LinkedHashSet<IOutputPort>();
@@ -552,6 +569,7 @@ public class DefaultDeploymentModelParser
 			String posX = "0";
 			String posY = "0";
 			Map<String, Object> cPropertyValues = new LinkedHashMap<String, Object>();
+	
 			//Iterate through component children elements
 			for (int k = 0; k < componentChildren.getLength(); k++)
 			{
@@ -687,8 +705,6 @@ public class DefaultDeploymentModelParser
 				}
 			}
 
-			ComponentRepository componentRepository = 
-				ComponentRepository.instance;
 			return new DefaultComponentInstance(
 					cID,
 					componentRepository.getComponentType(cTypeID).getID(),
@@ -787,11 +803,10 @@ public class DefaultDeploymentModelParser
 					groupReferences = getReferences (refsElement);
 			}
 		}
-		
-		
+				
 		final DataType inputPortDataType = ComponentRepository.instance.
 		getPortDataType(cTypeID, ipPortID);
-
+		
 		final IInputPort inputPort = 
 			new DefaultInputPort(ipPortID, 
 					inputPortDataType, 
