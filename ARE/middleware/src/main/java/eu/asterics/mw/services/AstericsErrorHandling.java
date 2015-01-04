@@ -121,7 +121,6 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	public void reportError(IRuntimeComponentInstance component, 
 			final String errorMsg) 
 	{
-		//System.out.println("componet: "+component);
 		if(component!=null) {
 			String componentID = DeploymentManager.instance
 					.getComponentInstanceIDFromComponentInstance(component);
@@ -148,12 +147,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 					JOptionPane op = new JOptionPane (errorMsg,
 						    JOptionPane.WARNING_MESSAGE);
 
-/*					JOptionPane.showMessageDialog (null,
-						    errorMsg,
-						    "AsTeRICS RuntimeEnvironment: An Error occurred !",
-						    JOptionPane.WARNING_MESSAGE);
-	*/				
-					JDialog dialog = op.createDialog("AsTeRICS RuntimeEnvironment: An Error occurred !");
+					JDialog dialog = op.createDialog("AsTeRICS Runtime Environment:");
 					dialog.setAlwaysOnTop(true);
 					dialog.setModal(false);
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
