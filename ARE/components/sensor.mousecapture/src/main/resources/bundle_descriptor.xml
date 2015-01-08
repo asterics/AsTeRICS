@@ -48,6 +48,9 @@
 			<eventListenerPort id="forwardEvents">
                 <description>Forward mouse events to the local system</description>
             </eventListenerPort>
+  			<eventListenerPort id="toggleBlock">
+                <description>Toggles the block mouse event</description>
+            </eventListenerPort>
         </events>
         
         <properties>
