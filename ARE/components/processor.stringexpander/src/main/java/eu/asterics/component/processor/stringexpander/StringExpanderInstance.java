@@ -28,6 +28,7 @@
 package eu.asterics.component.processor.stringexpander;
 
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
@@ -83,6 +84,14 @@ public class StringExpanderInstance extends AbstractRuntimeComponentInstance
 		if ("input".equalsIgnoreCase(portID))
 		{
 			return ipInput;
+		}
+		if ("preString".equalsIgnoreCase(portID))
+		{
+			return ipPreString;
+		}
+		if ("postString".equalsIgnoreCase(portID))
+		{
+			return ipPostString;
 		}
 
 		return null;
@@ -203,11 +212,66 @@ public class StringExpanderInstance extends AbstractRuntimeComponentInstance
 		}
 	};
 
+	private final IRuntimeInputPort ipPreString  = new DefaultRuntimeInputPort()
+	{
+		public void receiveData(byte[] data)
+		{
+				 
+			String tmpString=ConversionUtils.stringFromBytes(data);
+			if(propTrim)
+			{
+				tmpString=tmpString.trim();
+			}
+			propPreString = tmpString;
+			// opOutput.sendData(ConversionUtils.stringToBytes(tmpString));
+		}
+	};
 
-     /**
-      * Event Listerner Ports.
-      */
+	private final IRuntimeInputPort ipPostString  = new DefaultRuntimeInputPort()
+	{
+		public void receiveData(byte[] data)
+		{
+				 
+			String tmpString=ConversionUtils.stringFromBytes(data);
+			if(propTrim)
+			{
+				tmpString=tmpString.trim();
+			}
+			propPostString = tmpString;
+			// opOutput.sendData(ConversionUtils.stringToBytes(tmpString));
+		}
+	};
 
+
+	@Override
+	public void syncedValuesReceived(HashMap<String, byte[]> dataRow) {
+		
+		String inputString = null;
+		
+		
+		for (String s: dataRow.keySet())
+		{
+			
+			byte [] data = dataRow.get(s);
+			if (s.equals("input"))
+			{
+				inputString = ConversionUtils.stringFromBytes(data);
+				if(propTrim) inputString= inputString.trim();
+			}
+			if (s.equals("preString"))
+			{
+				propPreString = ConversionUtils.stringFromBytes(data);
+				if(propTrim) propPreString= propPreString.trim();
+			}
+			if (s.equals("postString"))
+			{
+				propPostString = ConversionUtils.stringFromBytes(data);
+				if(propTrim) propPostString= propPostString.trim();
+			}
+		}
+
+		opOutput.sendData(ConversionUtils.stringToBytes(propPreString + inputString + propPostString));
+	}
 	
 
      /**
