@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="09.01.2015_1721" version="20130320">
+  <components>
+    <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="400" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="0.1" />
+        <property name="amplitude" value="100" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>16</posX>
+        <posY>163</posY>
+      </layout>
+    </component>
+    <component id="SignalGenerator.1.1" type_id="asterics.SignalGenerator">
+      <description>Signal Generator</description>
+      <ports>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="sendInterval" value="400" />
+        <property name="waveForm" value="1" />
+        <property name="frequency" value="0.1" />
+        <property name="amplitude" value="200" />
+        <property name="phaseShift" value="0" />
+        <property name="offset" value="0" />
+      </properties>
+      <layout>
+        <posX>172</posX>
+        <posY>51</posY>
+      </layout>
+    </component>
+    <component id="StringExpander.1" type_id="asterics.StringExpander">
+      <description>Adds the preString and postString strings to the incoming string and sends the new string to the output port.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="preString">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="postString">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="preString" value="" />
+        <property name="postString" value=", " />
+        <property name="trim" value="false" />
+      </properties>
+      <layout>
+        <posX>194</posX>
+        <posY>212</posY>
+      </layout>
+    </component>
+    <component id="StringExpander.1.1" type_id="asterics.StringExpander">
+      <description>Adds the preString and postString strings to the incoming string and sends the new string to the output port.</description>
+      <ports>
+        <inputPort portTypeID="input" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="preString" sync="true">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="postString">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="preString" value="" />
+        <property name="postString" value="" />
+        <property name="trim" value="false" />
+      </properties>
+      <layout>
+        <posX>353</posX>
+        <posY>193</posY>
+      </layout>
+    </component>
+    <component id="TextArea.1" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>524</posX>
+        <posY>124</posY>
+      </layout>
+      <gui>
+        <posX>72</posX>
+        <posY>898</posY>
+        <width>3000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="LineWriter.1" type_id="asterics.LineWriter">
+      <description>Writes single Lines into a file</description>
+      <ports>
+        <inputPort portTypeID="actLine">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="fileName" value="data\outfile" />
+        <property name="lineEndMark" value="0" />
+        <property name="append" value="false" />
+        <property name="addTimeToFileName" value="True" />
+      </properties>
+      <layout>
+        <posX>533</posX>
+        <posY>287</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="StringExpander.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="StringExpander.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="StringExpander.1.1" />
+        <port id="preString" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="SignalGenerator.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="StringExpander.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="StringExpander.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextArea.1" />
+        <port id="appendText" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="StringExpander.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="LineWriter.1" />
+        <port id="actLine" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>3625</width>
+      <height>3444</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

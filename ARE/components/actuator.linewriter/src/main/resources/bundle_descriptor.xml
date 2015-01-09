@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.LineWriter"
+                   canonical_name="eu.asterics.component.actuator.linewriter.LineWriterInstance">
+        <type subtype="File System">actuator</type>
+        <singleton>false</singleton>
+        <description>Writes single Lines into a file</description>
+        <ports>
+			<inputPort id="actLine">
+				<description>input string to be written</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="fileName"
+				type="string"
+				value="outfile"
+				description="the name and path of the output file (.txt will be added automatically)"/>
+			<property name="lineEndMark"
+				type="integer"
+				value="0"
+				combobox="CR//LF//CR+LF"
+				description="the character(s) which mark a line end"/>
+			<property name="append"
+				type="boolean"
+				value="false"
+				description="if true, the file will be appended (not deleted)"/>
+			<property name="addTimeToFileName"
+				type="boolean"
+				value="false"
+				description="if true, the filename will be unique by adding the current time"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
