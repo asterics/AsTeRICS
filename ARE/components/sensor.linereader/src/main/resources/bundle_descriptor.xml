@@ -15,7 +15,7 @@
 			</inputPort>
 
 			<outputPort id="actLine">
-				<description>the curent line which is read from the file</description>
+				<description>the current line which is read from the file</description>
 				<dataType>string</dataType>
 			</outputPort>
 
