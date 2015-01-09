@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.EShoe"
+                   canonical_name="eu.asterics.component.sensor.eshoe.EShoeInstance">
+        <type subtype="Sensor Modules">sensor</type>
+        <singleton>false</singleton>
+        <description>eShoe-Plugin to gather data from the eShoe</description>
+        <ports>
+			<inputPort id="InputString">
+				<description>Triggers the desired event</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="AccX">
+				<description>Acceleration in X-Direction  [mg]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccY">
+				<description>Acceleration in Y-Direction  [mg]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccZ">
+				<description>Acceleration in Z-Direction  [mg]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Heel">
+				<description>Pressure of the heel  [g]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="MetaV">
+				<description>Pressure of the outer ball [g]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="MetaI">
+				<description>Pressure of the inner ball [g]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Toe">
+				<description>Pressure of the big Toe [g]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="GyroX">
+				<description>rotational velocity around the X-achses  [Grad/sec]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="GyroY">
+				<description>rotational velocity around the Y-achses  [Grad/sec]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="GyroZ">
+				<description>rotational velocity around the Z-achses  [Grad/sec]</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Angle">
+				<description>The angle of the eShoe to the Ground  [Grad]</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="Calibrate">
+				<description>Calibrates the eShoe</description>
+			</eventListenerPort>
+			<eventListenerPort id="Start">
+				<description>Starts the eShoe</description>
+			</eventListenerPort>
+			<eventListenerPort id="Stop">
+				<description>Stops the eShoe</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="ComPort"
+				type="integer"
+				value="1"
+				description="Com Port of the eShoe"/>
+			<property name="SamplingRate"
+				type="integer"
+				value="50"
+				combobox="50//200"
+				description="Com Port of the eShoe [Hz]"/>
+			<property name="SDMemory"
+				type="boolean"
+				value="false"
+				description="Use of SD Memory"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
