@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.TrueSense"
+                   canonical_name="eu.asterics.component.sensor.truesense.TrueSenseInstance">
+        <type subtype="Bioelectric Measurement">sensor</type>
+        <singleton>false</singleton>
+        <description>Interface to the OPI Truesense biolelectric sensor</description>
+        <ports>
+
+			<outputPort id="Signal">
+				<description>the raw data signal</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Temp">
+				<description>temperature</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccX">
+				<description>acceleration x axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccY">
+				<description>acceleration y axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccZ">
+				<description>acceleration z axis</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="start">
+				<description>start data acquisition</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stop data acquisition</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="ComPort"
+				type="string"
+				value="Com4"
+				description="the COM port to which the Truesense ZigBee module is connected"/>
+			<property name="BaudRate"
+				type="integer"
+				value="57600"
+				description="the baud rate for the connection"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
