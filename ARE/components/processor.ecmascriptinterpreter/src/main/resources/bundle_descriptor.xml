@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.ECMAScriptInterpreter"
+                   canonical_name="org.whitesoft.asterics.component.processor.ecmascriptinterpreter.ECMAScriptInterpreterInstance">
+        <type subtype="Scripting">processor</type>
+        <singleton>false</singleton>
+        <description>A plugin that can interpret ECMAScript files</description>
+        <ports>
+			<inputPort id="inputPort1">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort2">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort3">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort4">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort5">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort6">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inputPort7">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+		    <inputPort id="inputPort8">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+							
+			    					
+			<outputPort id="outputPort1">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+			<outputPort id="outputPort2">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+			<outputPort id="outputPort3">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="outputPort4">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+						
+			<outputPort id="outputPort5">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="outputPort6">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="outputPort7">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="outputPort8">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+																								
+        </ports>
+		<events>
+			<eventListenerPort id="elpPort1">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort2">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort3">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort4">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort5">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort6">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort7">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="elpPort8">
+				<description>elp description</description>
+			</eventListenerPort>
+																											
+			<eventTriggererPort id="etpPort1">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort2">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort3">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort4">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort5">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort6">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort7">
+				<description>etp description</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="etpPort8">
+				<description>etp description</description>
+			</eventTriggererPort>
+																					
+		</events>			
+        <properties>
+			<property name="scriptname"
+				type="string"
+				value=""
+				description="the script to be executed"/>
+
+			<property name="value1"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value2"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value3"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value4"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value5"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value6"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value7"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+			<property name="value8"
+				type="string"
+				value=""
+				description="a general purpose value that can be read by the script"/>
+																		
+        </properties>
+
+    </componentType>
+</componentTypes>

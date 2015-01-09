@@ -1,0 +1,543 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="24.02.2014_1319" version="20130320">
+  <components>
+    <component id="EditBox.1" type_id="asterics.EditBox">
+      <description>Text edit box</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Edit Box" />
+        <property name="default" value="" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="insertAction" value="0" />
+      </properties>
+      <layout>
+        <posX>40</posX>
+        <posY>40</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>645</posY>
+        <width>4962</width>
+        <height>1978</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>599</posX>
+        <posY>121</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>4689</posY>
+        <width>4975</width>
+        <height>1467</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>459</posX>
+        <posY>19</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>3022</posY>
+        <width>4975</width>
+        <height>1356</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="buttonCaption1" value="1" />
+        <property name="buttonCaption2" value="2" />
+        <property name="buttonCaption3" value="3" />
+        <property name="buttonCaption4" value="4" />
+        <property name="buttonCaption5" value="5" />
+        <property name="buttonCaption6" value="6" />
+        <property name="buttonCaption7" value="7" />
+        <property name="buttonCaption8" value="8" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>26</posX>
+        <posY>225</posY>
+      </layout>
+      <gui>
+        <posX>5263</posX>
+        <posY>689</posY>
+        <width>3137</width>
+        <height>1978</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>469</posX>
+        <posY>302</posY>
+      </layout>
+      <gui>
+        <posX>5237</posX>
+        <posY>3045</posY>
+        <width>3175</width>
+        <height>1933</height>
+      </gui>
+    </component>
+    <component id="ECMAScriptInterpreter.2" type_id="asterics.ECMAScriptInterpreter">
+      <description>A plugin that can interpret ECMAScript files</description>
+      <ports>
+        <inputPort portTypeID="inputPort1">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inputPort2">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inputPort3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inputPort4">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inputPort5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inputPort6">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inputPort7">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inputPort8">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="outputPort1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputPort2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputPort3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputPort4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputPort5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputPort6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputPort7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputPort8">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="scriptname" value="script.js" />
+        <property name="value1" value=" asdf" />
+        <property name="value2" value="bla" />
+        <property name="value3" value="jojo" />
+        <property name="value4" value=" fd" />
+        <property name="value5" value="alb" />
+        <property name="value6" value="" />
+        <property name="value7" value="" />
+        <property name="value8" value="" />
+      </properties>
+      <layout>
+        <posX>211</posX>
+        <posY>47</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.3" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>627</posX>
+        <posY>283</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>6489</posY>
+        <width>4988</width>
+        <height>1333</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.1">
+      <source>
+        <component id="EditBox.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="ECMAScriptInterpreter.2" />
+        <port id="inputPort4" />
+      </target>
+    </channel>
+    <channel id="binding.0">
+      <source>
+        <component id="EditBox.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="ECMAScriptInterpreter.2" />
+        <port id="inputPort1" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="ECMAScriptInterpreter.2" />
+        <port id="outputPort1" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="ECMAScriptInterpreter.2" />
+        <port id="outputPort4" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="ECMAScriptInterpreter.2" />
+        <port id="outputPort2" />
+      </source>
+      <target>
+        <component id="TextDisplay.3" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="etpPort1_eventDisplay">
+      <sources>
+        <source>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="etpPort1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="etpPort2_eventDisplay">
+      <sources>
+        <source>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="etpPort2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="etpPort3_eventDisplay">
+      <sources>
+        <source>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="etpPort3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="etpPort4_eventDisplay">
+      <sources>
+        <source>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="etpPort4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="etpPort5_eventDisplay">
+      <sources>
+        <source>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="etpPort5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="etpPort6_eventDisplay">
+      <sources>
+        <source>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="etpPort6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="etpPort7_eventDisplay">
+      <sources>
+        <source>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="etpPort7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="etpPort8_eventDisplay">
+      <sources>
+        <source>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="etpPort8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_elpPort1">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="elpPort1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_elpPort2">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="elpPort2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_elpPort3">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="elpPort3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_elpPort4">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="elpPort4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_elpPort5">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="elpPort5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_elpPort6">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="elpPort6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button7_elpPort7">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="elpPort7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button8_elpPort8">
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ECMAScriptInterpreter.2" />
+          <eventPort id="elpPort8" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9275</width>
+      <height>7822</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
