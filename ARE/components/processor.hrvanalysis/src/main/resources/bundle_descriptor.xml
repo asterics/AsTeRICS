@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.HRVAnalysis"
+                   canonical_name="eu.asterics.component.processor.hrvanalysis.HRVAnalysisInstance">
+        <type subtype="DSP and Feature Detection">processor</type>
+        <singleton>false</singleton>
+        <description>HRV - Analysis</description>
+        <ports>
+			<inputPort id="HRVInput">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<outputPort id="Runtime">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Pulserate">
+				<description>Pulserate of patient</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="SDNN">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="rMSSD">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="SDSD">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="pNN50">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>		
+			<outputPort id="pNN20">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="DD">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="start">
+				<description>Start HRV detection</description>
+			</eventListenerPort>
+
+		</events>	
+		<properties>		
+        <property name="samplerate"
+                      type="double"
+                      value="100"
+                      description="Samplerate of Inputsignal"/>     
+          <property name="OutlierRange"
+                      type="double"
+                      value="1.5"
+                      description="OutlierRange of peak"/>           
+        </properties>
+
+
+    </componentType>
+</componentTypes>
