@@ -158,7 +158,7 @@
         <property name="scanColor" value="10" />
         <property name="scanMode" value="2" />
         <property name="hoverTime" value="1000" />
-        <property name="keyboardFile" value="" />
+        <property name="keyboardFile" value="test.xml" />
         <property name="cellText1" value="Cell 1" />
         <property name="cellImage1" value="" />
         <property name="actionText1" value="Cell 1 action !" />

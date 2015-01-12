@@ -42,7 +42,9 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import eu.asterics.mw.gui.OptionsFrame;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
@@ -58,7 +60,7 @@ import eu.asterics.mw.services.AstericsThreadPool;
 
 public class GUICell extends JPanel implements Runnable
 {
-	private final GUI owner;
+	public final GUI owner;
 	final IRuntimeEventTriggererPort etpGeneralEvent;
 	
 	private boolean blockSendEvent=true;
@@ -73,14 +75,18 @@ public class GUICell extends JPanel implements Runnable
 	int scaledImageWidth=-1;
 	int scaledImageHeight=-1;
 	
-	String text="";
-	String actionText="";
+	 String text="";
+	 String actionText="";
+	 String picturePath="";
+	 String wavPath="";
 	
 	private final float fontSizeMax=150;
 	private final float fontIncrementStep=0.5f;
 	
 	private final int frameWidth=1;
 	private final int scanFrameWidth=4;
+	
+	private CellEditFrame editFrame;
 	
 	boolean scanActive=false;
 	
@@ -96,20 +102,30 @@ public class GUICell extends JPanel implements Runnable
 		super();
 		this.owner=owner;
 		etpGeneralEvent=generalEvent;
-		
+	
+		editFrame = new CellEditFrame (this);
+
 		blockSendEvent=true;
 		hoverFinish=false;
 		
 		addMouseListener(new MouseAdapter() { 
 	          public void mousePressed(MouseEvent me) { 
 	        	
-	        	if(blockSendEvent==false)
-	            {
-	        		owner.performCellSelection(row, column);
-	                AstericsThreadPool.instance.execute(selectFeedback);
-	            }
-	        	
-	        	sendGeneralEvent();
+	        	if (SwingUtilities.isRightMouseButton(me))
+	        	{
+	        		// System.out.println("Cell "+index+ " was right-clicked !");
+	        		editFrame.showFrame();
+	        	}
+	        	else
+	        	{
+		        	if(blockSendEvent==false)
+		            {
+		        		owner.performCellSelection(row, column);
+		                AstericsThreadPool.instance.execute(selectFeedback);
+		            }
+		        	
+		        	sendGeneralEvent();
+	        	}
 	          }
 	          public void mouseEntered(MouseEvent e){
 	        	  if(hoverSelection){
@@ -342,6 +358,7 @@ public class GUICell extends JPanel implements Runnable
 				image.flush();
 			}
 			image=null;
+			picturePath="";
 		}
 		else
 		{
@@ -353,6 +370,8 @@ public class GUICell extends JPanel implements Runnable
 				}
 				image=null;
 				File imageFile = new File(path.trim());
+				picturePath=path.trim();
+
 				image = ImageIO.read(imageFile);
 			}
 			catch(Exception ex)
@@ -367,6 +386,16 @@ public class GUICell extends JPanel implements Runnable
 		}
 	}
 	
+	String getPicturePath()
+	{
+		return picturePath;
+	}
+
+	String getWavPath()
+	{
+		return wavPath;
+	}
+
 	
 	/**
      * Sets the cell index.
@@ -385,33 +414,16 @@ public class GUICell extends JPanel implements Runnable
 	{
 		return index;
 	}
-	
-	/**
-     * returns a color for a given color index
-     * @param index    the color index
-     * @return         the associated color
-     */
-    Color getColorProperty(int index)
-    {
-    	switch (index) {
-    	case 0: return(Color.BLACK); 
-    	case 1: return(Color.BLUE); 
-    	case 2: return(Color.CYAN); 
-    	case 3: return(Color.DARK_GRAY); 
-    	case 4: return(Color.GRAY); 
-    	case 5: return(Color.GREEN); 
-    	case 6: return(Color.LIGHT_GRAY);
-    	case 7: return(Color.MAGENTA); 
-    	case 8: return(Color.ORANGE); 
-    	case 9: return(Color.PINK); 
-    	case 10: return(Color.RED); 
-    	case 11: return(Color.WHITE);
-    	case 12: return(Color.YELLOW); 
-    	default: return(Color.BLUE);
-    	}
-    }
-    
 
+	/**
+     * Returns the cell ID.
+     * @return cell ID
+     */
+    public int getCellID()
+    {
+    	return index+1;
+    }
+	
 	/**
      * Sets or removes the scanning frame.
      * @param scanActive if true, the scanning frame is activated.
@@ -422,25 +434,17 @@ public class GUICell extends JPanel implements Runnable
     }
     
 
+
 	/**
      * Sets the cell text.
      * @param text text of the cell
      */
-    public void setText(String text)
+    public void setCellCaption(String text)
     {
     	this.text=text;
     }
 
     
-    /**
-     * Returns the cell ID.
-     * @return cell ID
-     */
-    public int getCellID()
-    {
-    	return index+1;
-    }
-
     /**
      * Returns the cell text.
      * @return cell text
@@ -628,6 +632,33 @@ public class GUICell extends JPanel implements Runnable
 		}while(!finish);
     	return fontSize;
     }
+    
+	/**
+     * returns a color for a given color index
+     * @param index    the color index
+     * @return         the associated color
+     */
+    Color getColorProperty(int index)
+    {
+    	switch (index) {
+    	case 0: return(Color.BLACK); 
+    	case 1: return(Color.BLUE); 
+    	case 2: return(Color.CYAN); 
+    	case 3: return(Color.DARK_GRAY); 
+    	case 4: return(Color.GRAY); 
+    	case 5: return(Color.GREEN); 
+    	case 6: return(Color.LIGHT_GRAY);
+    	case 7: return(Color.MAGENTA); 
+    	case 8: return(Color.ORANGE); 
+    	case 9: return(Color.PINK); 
+    	case 10: return(Color.RED); 
+    	case 11: return(Color.WHITE);
+    	case 12: return(Color.YELLOW); 
+    	default: return(Color.BLUE);
+    	}
+    }
+    
+
     
     
     /**

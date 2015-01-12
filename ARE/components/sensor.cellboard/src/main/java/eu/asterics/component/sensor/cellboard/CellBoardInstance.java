@@ -48,6 +48,7 @@ import org.xml.sax.SAXException;
 
 
 
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -125,7 +126,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     
     private String xmlFile = null;
     private Dimension space;
-	private float propFontSize = -1;
+	public float propFontSize = -1;
 	private int propRows = 2;
 	private int propColumns = 2;
 	private int propScanType = 2;
@@ -142,6 +143,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	private String [] propCellCaptionArray = new String[NUMBER_OF_CELLS];
 	private String [] propCellTextArray = new String[NUMBER_OF_CELLS];
 	private String [] propCellImageArray = new String[NUMBER_OF_CELLS];
+	private String [] propCellWavArray = new String[NUMBER_OF_CELLS];
 
 	final IRuntimeEventTriggererPort etpCellClicked = new DefaultRuntimeEventTriggererPort();
 	
@@ -160,6 +162,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
         	propCellCaptionArray[i]="";
         	propCellImageArray[i]="";
         	propCellTextArray[i]="";
+        	propCellWavArray[i]="";
         }
     }
 
@@ -219,9 +222,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			{
 				gui.setSelectionColumn(columnValue);
 			}
-			
 		}
-		
 	};
 	
 	private final IRuntimeInputPort ipCellNumber  = new DefaultRuntimeInputPort()
@@ -234,7 +235,6 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			{
 				gui.setSelectionNumber(columnValue);
 			}
-			
 		}
 		
 	};
@@ -317,8 +317,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		}
 		if (ELP_LOAD.equalsIgnoreCase(eventPortID)) {
 			return elpLoad;
-		}
-		
+		}		
         return null;
     }
     
@@ -513,16 +512,24 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		    	  }
 		        }
 		    }
-		    
-		    
-		    
-		    
 		    return null;
 		}
-		
-        //return null;
     }
 
+    
+    
+    /**
+     * sanity check for matrix size.
+     */
+	private void checkMatrixSize() {
+		if((propRows*propColumns) >= NUMBER_OF_CELLS ) {
+			propRows=MAX_MATRIX_ROWS_COLS;
+			propColumns=MAX_MATRIX_ROWS_COLS;
+		}
+	}
+
+    
+    
     /**
      * sets a new value for the given property.
      * @param propertyName   the name of the property
@@ -724,10 +731,12 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		    }
 		    return null;
 		}
-
-        
     }
-	public List<String> getRuntimePropertyList(String key) 
+
+    /**
+     * Get the list of available Keyboard xml files from ARE
+     */
+    public List<String> getRuntimePropertyList(String key) 
 	{
 		List<String> res = new ArrayList<String>();
 		res.add("");
@@ -753,7 +762,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     
 
      /**
-      * Event Listerner Ports.
+      * Event Listener Ports.
       */
 	final IRuntimeEventListenerPort elpScanMove = new IRuntimeEventListenerPort()
 	{
@@ -765,6 +774,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			}
 		}
 	};
+	
 	final IRuntimeEventListenerPort elpScanSelect = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
@@ -775,6 +785,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			}
 		}
 	};
+	
 	final IRuntimeEventListenerPort elpMoveUp = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
@@ -785,6 +796,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			}
 		}
 	};
+	
 	final IRuntimeEventListenerPort elpMoveRight = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
@@ -795,6 +807,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			}	 
 		}
 	};
+	
 	final IRuntimeEventListenerPort elpMoveLeft = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
@@ -805,6 +818,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			}
 		}
 	};
+	
 	final IRuntimeEventListenerPort elpMoveDown = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
@@ -832,7 +846,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		}
 
 	};
-	
+
 	private void loadXmlFile() {
 		if(xmlFile==null || "".equals(xmlFile))
 		{
@@ -853,7 +867,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			propColumns = handler.getCols();
 			propFontSize = handler.getFontSize();
 			propScanType = handler.getScanning();
-			
+			System.out.println("read scantype :"+propScanType);
+
 			checkMatrixSize();
 			
 			if (propRows == -1 || propColumns == -1) {
@@ -871,7 +886,9 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			else 
 				space.width = getAvailableSpace().width;
 			
-			gui.update(space,propFontSize);					
+		    paintCells.run();
+			gui.update(space,propFontSize);
+
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -887,13 +904,16 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 
 	}
 	
-	private void checkMatrixSize() {
-		if((propRows*propColumns) >= NUMBER_OF_CELLS ) {
-			propRows=MAX_MATRIX_ROWS_COLS;
-			propColumns=MAX_MATRIX_ROWS_COLS;
-		}
+	 /**
+     * saves current cell board to an xml file.
+     * @param fileName name (and path) of the xml file to be created
+     */
+	public void saveXmlFile(String fileName)
+	{
+		XMLCellBoardWriter writer = new XMLCellBoardWriter(this);
+		writer.writeXML(fileName);
 	}
-	
+		
 	 /**
      * Returns the color of the text.
      * @return   color of the text
@@ -934,7 +954,6 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * Returns the number of the columns.
      * @return   number of the columns
      */
-	
 	synchronized int getColumnCount()
 	{
 		return propColumns+1;
@@ -959,6 +978,37 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	{
 		return propCellImageArray[index];
 	}
+
+	/**
+     * Sets the image path of the cell defined by index.
+     * @param index index of the cell
+     * @param path path of the cell image file
+     */
+	synchronized void setImagePath(int index, String path)
+	{
+		propCellImageArray[index]=path;
+	}
+
+	/**
+     * Returns the path of the wave file of the cell defined by index.
+     * @param index index of the cell
+     * @return   image path
+     */
+	synchronized String getWavPath(int index)
+	{
+		return propCellWavArray[index];
+	}
+
+	/**
+     * Sets the image path of the cell defined by index.
+     * @param index index of the cell
+     * @param path  path of the wav file
+     */
+	synchronized void setWavPath(int index, String path)
+	{
+		propCellWavArray[index]=path;
+	}
+	
 	
 	/**
      * Returns the text of the cell defined by index.
@@ -969,6 +1019,16 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	{
 		return propCellCaptionArray[index];
 	}
+
+	/**
+     * Sets the caption of the cell defined by index.
+     * @param index index of the cell
+     * @param text caption of the cell
+     */
+	synchronized void setCellCaption(int index, String text)
+	{
+		propCellCaptionArray[index]=text;
+	}
 	
 	/**
      * Returns the action text of the cell defined by index.
@@ -978,6 +1038,17 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	synchronized String getCellText(int index)
 	{
 		return propCellTextArray[index];
+	}
+	
+	/**
+     * Sets the action text of the cell defined by index.
+     * @param index index of the cell
+     * @param text action text of the cell
+     * @return   action text of the cell
+     */
+	synchronized void setCellText(int index, String text)
+	{
+		propCellTextArray[index]=text;
 	}
 	
 	/**
@@ -1007,18 +1078,30 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	 {
 		 return etpCellArray[index];
 	 }
-	 
+
+	/**
+	  * Returns the hover time.
+	  * @return   hover time.
+	  */
+	synchronized int getHoverTime()
+	 {
+		 return propHoverTime;
+	 }
+
+	
 	 /**
-	  * getter methods for output ports the cell number output port.
+	  * getter methods for the plugin's output ports 
 	  */
 	synchronized IRuntimeOutputPort getSelectedCellOutputPort()
 	 {
 		 return opSelectedCell;
 	 }
+
 	synchronized IRuntimeOutputPort getSelectedCellCaptionOutputPort()
 	 {
 		 return opSelectedCellCaption;
 	 }
+
 	synchronized IRuntimeOutputPort getSelectedCellTextOutputPort()
 	 {
 		 return opSelectedCellText;
@@ -1028,26 +1111,17 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	 {
 		 return opActCell;
 	 }
+
 	synchronized IRuntimeOutputPort getActCellCaptionOutputPort()
 	 {
 		 return opActCellCaption;
 	 }
+
 	synchronized IRuntimeOutputPort getActCellTextOutputPort()
 	 {
 		 return opActCellText;
 	 }
 
-
-	
-	
-	/**
-	  * Returns the hover time.
-	  * @return   hover time.
-	  */
-	synchronized int getHoverTime()
-	 {
-		 return propHoverTime;
-	 }
 
      /**
       * called when model is started.
@@ -1061,7 +1135,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		  if(xmlFile!=null && !"".equals(xmlFile)) {
 			  loadXmlFile();			  
 		  } else {
-			  paintCells.run();
+			 paintCells.run();
 		  }
 		  
 		  //AstericsThreadPool.instance.execute(paintCells);
@@ -1113,10 +1187,6 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     	     */	
     		@Override
     		public void run() {
-/*    	        	try{
-    					Thread.sleep(400);
-    				}catch (InterruptedException e) {}
-    				*/
     	        	gui.defineTextFontSize(propFontSize);
 					gui.setScanning();
 			        guiReady=true;

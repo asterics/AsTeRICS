@@ -63,7 +63,7 @@ public class GUI extends JPanel
     // add more GUI elements here
 
     private Lock lock = new ReentrantLock();
-	private CellBoardInstance owner;
+	public CellBoardInstance owner;
 	int rows;
 	int columns;
     /**
@@ -125,7 +125,7 @@ public class GUI extends JPanel
 				cells[i][j].setIndex(index);
 				cells[i][j].setRow(i);
 				cells[i][j].setColumn(j);
-				cells[i][j].setText(owner.getCellCaption(index));
+				cells[i][j].setCellCaption(owner.getCellCaption(index));
 				cells[i][j].setActionText(owner.getCellText(index));
 				cells[i][j].setPicturePath(owner.getImagePath(index));
 				cells[i][j].setScanActive(false);
