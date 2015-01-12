@@ -690,6 +690,8 @@ public class AREServices implements IAREServices{
 			return null;
 		}
 
+		modelName=modelName.replace('/', '.');
+		modelName=modelName.replace('\\', '.');
 		StringBuffer fullFilePath = new StringBuffer(STORAGE_FOLDER);
 		fullFilePath.append("/");
 		fullFilePath.append(modelName);
@@ -697,6 +699,7 @@ public class AREServices implements IAREServices{
 		fullFilePath.append(DeploymentManager.instance
 				.getComponentInstanceIDFromComponentInstance(component));
 		fullFilePath.append("/");
+		//System.out.println("Model File Name for Local Storage Service="+fullFilePath);
 
 		File localDir  = new File(fullFilePath.toString());
 		File localFile = new File(fullFilePath.toString() + fileName);
