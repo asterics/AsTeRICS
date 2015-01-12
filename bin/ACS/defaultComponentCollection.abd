@@ -2010,9 +2010,11 @@
 		</events>			
         <properties>
 			<property description="the name and path of the output file (.txt will be added automatically)" name="fileName" type="string" value="outfile"/>
-			<property combobox="CR//LF//CR+LF" description="the character(s) which mark a line end" name="lineEndMark" type="integer" value="0"/>
-			<property description="if true, the file will be appended (not deleted)" name="append" type="boolean" value="false"/>
 			<property description="if true, the filename will be unique by adding the current time" name="addTimeToFileName" type="boolean" value="false"/>
+			<property description="an optional title string which will be inserted as first line" name="titleCaption" type="string" value=""/>
+			<property combobox="no timestamp//milliseconds" description="an optional timestamp can be added at the beginning of the each line" name="timestamp" type="integer" value="0"/>
+			<property combobox="System-Default//LF (\n)//CR+LF (\r\n)" description="the character(s) which mark a line end" name="lineEndMark" type="integer" value="0"/>
+			<property description="if true, the file will be appended (not deleted)" name="append" type="boolean" value="false"/>
 
         </properties>
 
