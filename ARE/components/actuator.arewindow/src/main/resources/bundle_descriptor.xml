@@ -46,6 +46,12 @@
 			<eventListenerPort id="bringToFront">
 				<description>set the ARE Window to foreground</description>
 			</eventListenerPort>
+			<eventListenerPort id="setWindowFocusalbe">
+				<description>makes the ARE Window focusable</description>
+			</eventListenerPort>
+			<eventListenerPort id="setWindowNotFocusalbe">
+				<description>ARE Window is not focusable</description>
+			</eventListenerPort>
 
 		</events>			
         <properties>

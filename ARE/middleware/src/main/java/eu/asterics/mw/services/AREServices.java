@@ -816,6 +816,9 @@ public class AREServices implements IAREServices{
 	{
 		DeploymentManager.instance.allowAREWindowModification(state);
     }
+	public void setFocusableWindowState (boolean state){
+		DeploymentManager.instance.setFocusableWindowState(state);
+	}
 
 	
 	public void adjustFonts(final JPanel panel, final int maxFontSize,

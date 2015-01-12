@@ -1080,6 +1080,9 @@ public class DeploymentManager
 	{
 		gui.allowAREWindowModification(state);
     }
+	public void setFocusableWindowState(boolean state){
+		gui.setFocusableWindowState(state);
+	}
 
 	
 	public Point getComponentPosition (IRuntimeComponentInstance componentInstance)

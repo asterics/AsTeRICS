@@ -150,6 +150,12 @@ public class AREWindowInstance extends AbstractRuntimeComponentInstance
 			return elpBringToFront;
 		}
 
+		if ("setWindowFocusalbe".equalsIgnoreCase(eventPortID)){
+			return elpSetWindowFocusable;
+		}
+		if ("setWindowNotFocusalbe".equalsIgnoreCase(eventPortID)){
+			return elpSetWindowNotFocusable;
+		}
         return null;
     }
 
@@ -356,6 +362,21 @@ public class AREWindowInstance extends AbstractRuntimeComponentInstance
 		}
 	};
 	
+	final IRuntimeEventListenerPort elpSetWindowFocusable = new IRuntimeEventListenerPort() {
+		
+		@Override
+		public void receiveEvent(String data) {
+			AREServices.instance.setFocusableWindowState(true);
+		}
+	};
+
+	final IRuntimeEventListenerPort elpSetWindowNotFocusable = new IRuntimeEventListenerPort() {
+		
+		@Override
+		public void receiveEvent(String data) {
+			AREServices.instance.setFocusableWindowState(false);
+		}
+	};
 
      /**
       * called when model is started.

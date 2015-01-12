@@ -368,6 +368,9 @@ public class AstericsGUI implements IAREEventListener
 		mainFrame.toFront();
 		mainFrame.repaint();		
     }
+	public void setFocusableWindowState(boolean state){
+		mainFrame.setFocusableWindowState(state);
+	}
 	public void allowAREWindowModification(boolean state)
 	{
 		allowModification=state;
