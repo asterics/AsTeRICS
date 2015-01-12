@@ -355,6 +355,18 @@ inline void Context::EnableBuiltinKeys(const std::string& windowId, AsyncDataHan
 
 /*********************************************************************************************************************/
 
+inline void Context::LaunchConfigurationTool(TX_CONFIGURATIONTOOL configurationTool, AsyncDataHandler fnCompletion) const
+{
+	auto callback = [&, fnCompletion](TX_CONSTHANDLE hAsyncData)
+	{
+		InvokeAsyncDataHandler(hAsyncData, fnCompletion);
+	};
+
+	TX_VALIDATE(Tx::LaunchConfigurationTool(_hContext, configurationTool, callback));
+}
+
+/*********************************************************************************************************************/
+
 template <typename TInteractionObject>
 inline std::shared_ptr<TInteractionObject> Context::CreateObject(TX_HANDLE hObject) const
 {

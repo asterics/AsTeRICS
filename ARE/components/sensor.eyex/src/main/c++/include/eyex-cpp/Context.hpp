@@ -61,6 +61,8 @@ public:
     void DisableBuiltinKeys(const std::string& windowId, AsyncDataHandler fnCompletion = nullptr) const;
     void EnableBuiltinKeys(const std::string& windowId, AsyncDataHandler fnCompletion = nullptr) const;
 
+	void LaunchConfigurationTool(TX_CONFIGURATIONTOOL configurationTool, AsyncDataHandler fnCompletion = nullptr) const;
+
     template <typename TInteractionObject>
     std::shared_ptr<TInteractionObject> CreateObject(TX_HANDLE hObject) const;
 	

@@ -82,6 +82,7 @@
     static const char* TX_LITERAL_HASTENTATIVEACTIVATIONFOCUS = "HasTentativeActivationFocus";
     static const char* TX_LITERAL_ISACTIVATED = "IsActivated";
     static const char* TX_LITERAL_ISTENTATIVEFOCUSENABLED = "IsTentativeFocusEnabled";
+    static const char* TX_LITERAL_ISSMALLITEMDETECTIONENABLED = "IsSmallItemDetectionEnabled";
 
     /**
     * Fixation Data Behavior Literals
@@ -163,6 +164,11 @@
     static const char* TX_LITERAL_STATEPATH = "StatePath";
     static const char* TX_LITERAL_STATEPATHDELIMITER = ".";    
 
+	/*
+	*  Configuration Tool Literals
+	*/
+	static const char* TX_LITERAL_CONFIGURATIONTOOL = "ConfigurationTool";
+
 
 
 /*********************************************************************************************************************/
@@ -187,7 +193,20 @@
  *   GETTABLE.
  *
  * @field TX_STATEPATH_STATE: 
- *   Holds the eyetracking status. The value is of type TX_EYETRACKINGDEVICESTATUS.
+ *   Holds the eye tracking status. The value is of type TX_EYETRACKINGDEVICESTATUS.
+ *   GETTABLE.
+ *
+ * @field TX_STATEPATH_PROFILENAME: 
+ *   Holds the name of the eye tracking profile used. The value is of type TX_STRING.
+ *   GETTABLE.
+ *
+ * @field TX_STATEPATH_CONFIGURATIONSTATUS:
+ *   Holds the configuration status of the eye tracker. The value is of type TX_EYETRACKINGCONFIGURATIONSTATUS.
+ *   GETTABLE.
+ *   \since Version 1.1.0
+ *
+ * @field TX_STATEPATH_ENGINEVERSION:
+ *   Reports the engine version. The value is of type TX_STRING.
  *   GETTABLE.
  *
  * @field TX_STATEPATH_USERPRESENCE:
@@ -195,12 +214,14 @@
  *   GETTABLE.
  *
  * @field TX_STATEPATH_FAILEDACTION:
- *   Notifies when a data when interactions fails. The value is of type TX_FAILEDACTIONTYPE.
+ *   Notifies when interactions fail. The value is of type TX_FAILEDACTIONTYPE.
+ *   SUBSCRIBABLE.
+ * 
+ * @field TX_STATEPATH_INTERACTIONMODES:
+ *   Holds the current engine interaction mode. The value is of type TX_INTERACTIONMODES.
  *   GETTABLE.
- *
- * @field TX_STATEPATH_ENGINEVERSION:
- *   Notifies when a data when interactions fails. The value is of type TX_FAILEDACTIONTYPE.
- *   GETTABLE.
+ *   \since Version 1.1.0
+ * 
  */
     
     static const char* TX_STATEPATH_EYETRACKING = "eyeTracking";
@@ -208,10 +229,15 @@
     static const char* TX_STATEPATH_DISPLAYSIZE = "eyeTracking.displaySize";
     static const char* TX_STATEPATH_EYETRACKINGSTATE = "eyeTracking.state";
 	static const char* TX_STATEPATH_PROFILENAME = "eyeTracking.profileName";
-    static const char* TX_STATEPATH_USERPRESENCE = "userPresence";
-    static const char* TX_STATEPATH_LASTACTION = "lastAction";
-    static const char* TX_STATEPATH_FAILEDACTION = "failedAction";
+	static const char* TX_STATEPATH_CONFIGURATIONSTATUS = "eyeTracking.configurationStatus";
+    
     static const char* TX_STATEPATH_ENGINEVERSION = "engineVersion";
+
+    static const char* TX_STATEPATH_USERPRESENCE = "userPresence";
+
+    static const char* TX_STATEPATH_FAILEDACTION = "failedAction";
+
+	static const char* TX_STATEPATH_INTERACTIONMODES = "status.interaction.interactionModes";
 
 
 /*********************************************************************************************************************/

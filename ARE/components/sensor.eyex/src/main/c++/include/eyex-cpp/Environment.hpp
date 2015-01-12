@@ -30,6 +30,8 @@ public:
 		TX_THREADINGMODEL* pThreadingModel,
 		TX_SCHEDULINGMODEL* pSchedulingModel,
         void* pMemoryModel);
+
+	TX_EYEXAVAILABILITY GetEyeXAvailability();
 };
 
 /*********************************************************************************************************************/

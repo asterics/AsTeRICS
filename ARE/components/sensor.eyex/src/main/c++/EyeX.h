@@ -66,6 +66,14 @@ JNIEXPORT jstring JNICALL Java_eu_asterics_component_sensor__jni_Bridge_getPrope
 JNIEXPORT jstring JNICALL Java_eu_asterics_component_sensor_eyex_jni_Bridge_setProperty
   (JNIEnv *, jobject, jstring, jstring);
 
+/*
+ * Class:     eu_asterics_component_sensor_eyex_jni_Bridge
+ * Method:    recalibrate
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_eu_asterics_component_sensor_eyex_jni_Bridge_recalibrate
+	(JNIEnv * env, jobject obj, jboolean guest);
+
 #ifdef __cplusplus
 }
 #endif

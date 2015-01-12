@@ -241,6 +241,28 @@ typedef enum {
     TX_PROPERTYBAGTYPE_ARRAY
 } TX_PROPERTYBAGTYPE;
 
+/*********************************************************************************************************************/
+
+/**
+  TX_EYEXAVAILABILITY
+
+  Enumeration for the availability status of the EyeX Engine.
+
+  @field TX_EYEXAVAILABILITY_NOTAVAILABLE:
+    EyeX Engine is not installed on the system or otherwise not available.
+
+  @field TX_EYEXAVAILABILITY_NOTRUNNING:
+	EyeX Engine is not running.
+  
+  @field TX_EYEXAVAILABILITY_RUNNING:
+	EyeX Engine is running.
+ */
+typedef enum {
+	TX_EYEXAVAILABILITY_NOTAVAILABLE = TX_ENUM_STARTVALUE,
+	TX_EYEXAVAILABILITY_NOTRUNNING,
+	TX_EYEXAVAILABILITY_RUNNING
+} TX_EYEXAVAILABILITY;
+
 /*********************************************************************************************************************
  * Callbacks
  *********************************************************************************************************************/
@@ -563,16 +585,17 @@ typedef struct {
   Struct for pannable behavior parameters.
    
   @field IsHandsFreeEnabled:
-    Specifies if a user input action is needed to initiate pan.
+    Set to false - hands free panning is not yet implemented.
   
   @field Profile:
     The panning profile. See TX_PANNINGPROFILE.
     
   @field PeakVelocity:
-    The maximum velocity of panning action, in pixels per second.
+    Currently not used.
   
   @field PanDirectionsAvailable:
-    The available pan direction flags. See TX_PANDIRECTION. Proper directions are needed for panning to work. 
+    Flags specifying which pan directions are currently possible. See TX_PANDIRECTION.
+    Correct pan direction flags are needed for panning to work properly. 
  */
 typedef struct {
     TX_BOOL            IsHandsFreeEnabled;             
@@ -636,9 +659,13 @@ typedef struct {
    
   @field EnableTentativeFocus:
     Specifies if tentative focus should be enabled.
+  @field EnableSmallItemActivation:
+    Specifies if small item detection should be enabled.
+	For internal use only.
  */
 typedef struct {
-    TX_BOOL EnableTentativeFocus;                       
+    TX_BOOL EnableTentativeFocus;    
+    TX_BOOL EnableSmallItemDetection;
 } TX_ACTIVATABLEPARAMS;
 
 /*********************************************************************************************************************/

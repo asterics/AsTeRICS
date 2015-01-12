@@ -172,7 +172,7 @@ static TX_DEBUGSCOPEDHANDLE txDebugScopedHandle = __txDbgScoped;
 /*********************************************************************************************************************/
 
 /**
-  txCommitSnapshotAsync. This is a functional-enabled version txCommitSnapshotAsync defined in EyeXSnapshot.h
+  txCommitSnapshotAsync. This is a functional-enabled version of txCommitSnapshotAsync defined in EyeXSnapshot.h
  */
 
 /*********************************************************************************************************************/
@@ -186,7 +186,7 @@ TX_API_FUNCTION_CPP(CommitSnapshotAsync, (
 /*********************************************************************************************************************/
 
 /**
-  txGetStateAsync. This is a functional-enabled version txGetStateAsync defined in EyeXStates.h
+  txGetStateAsync. This is a functional-enabled version of txGetStateAsync defined in EyeXStates.h
  */
 
 /*********************************************************************************************************************/
@@ -199,7 +199,7 @@ TX_API_FUNCTION_CPP(GetStateAsync,(
 /*********************************************************************************************************************/
 
 /**
-  txSetStateAsync. This is a functional-enabled version txESetStateAsync defined in EyeXStates.h
+  txSetStateAsync. This is a functional-enabled version of txESetStateAsync defined in EyeXStates.h
  */
 
 /*********************************************************************************************************************/
@@ -211,7 +211,7 @@ TX_API_FUNCTION_CPP(SetStateAsync, (
 /*********************************************************************************************************************/
 
 /**
-  txRegisterStateChangedHandler. This is a functional-enabled version txRegisterStateChangedHandler defined in EyeXStates.h
+  txRegisterStateChangedHandler. This is a functional-enabled version of txRegisterStateChangedHandler defined in EyeXStates.h
  */
 
 /*********************************************************************************************************************/
@@ -225,7 +225,7 @@ TX_API_FUNCTION_CPP(RegisterStateChangedHandler, (
 /*********************************************************************************************************************/
 
 /**
-  txExecuteCommandAsync. This is a functional-enabled version txExecuteCommandAsync defined in EyeXCommand.h
+  txExecuteCommandAsync. This is a functional-enabled version of txExecuteCommandAsync defined in EyeXCommand.h
  */
 
 /*********************************************************************************************************************/
@@ -238,7 +238,7 @@ TX_API_FUNCTION_CPP(ExecuteCommandAsync, (
 /*********************************************************************************************************************/
 
 /**
-  txRegisterMessageHandler. This is a functional-enabled version txRegisterMessageHandler defined in EyeXContext.h
+  txRegisterMessageHandler. This is a functional-enabled version of txRegisterMessageHandler defined in EyeXContext.h
  */
 
 /*********************************************************************************************************************/
@@ -253,7 +253,7 @@ TX_API_FUNCTION_CPP(RegisterMessageHandler,(
 /*********************************************************************************************************************/
 
 /**
-  txDisableBuiltinKeys. This is a functional-enabled version txDisableBuiltinKeys defined in EyeXActions.h
+  txDisableBuiltinKeys. This is a functional-enabled version of txDisableBuiltinKeys defined in EyeXActions.h
  */
 
 /*********************************************************************************************************************/
@@ -266,7 +266,7 @@ TX_API_FUNCTION_CPP(DisableBuiltinKeys,(
 /*********************************************************************************************************************/
 
 /**
-  txEnableBuiltinKeys. This is a functional-enabled version txEnableBuiltinKeys defined in EyeXActions.h
+  txEnableBuiltinKeys. This is a functional-enabled version of txEnableBuiltinKeys defined in EyeXActions.h
  */
 
 /*********************************************************************************************************************/
@@ -275,6 +275,19 @@ TX_API_FUNCTION_CPP(EnableBuiltinKeys,(
     TX_CONTEXTHANDLE hContext,
     TX_CONSTSTRING windowId,    
     const Tx::AsyncDataCallback& completionHandler));
+
+/*********************************************************************************************************************/
+
+/**
+  txLaunchConfigurationTool. This is a functional-enabled version of txLaunchConfigurationTool defined in EyeXActions.h
+*/
+
+/*********************************************************************************************************************/
+
+TX_API_FUNCTION_CPP(LaunchConfigurationTool, (
+	TX_CONTEXTHANDLE hContext,
+	TX_CONFIGURATIONTOOL configurationTool,
+	const Tx::AsyncDataCallback& completionHandler));
 
 /*********************************************************************************************************************/
 
