@@ -352,9 +352,9 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 		gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
 		AREServices.instance.displayPanel(gui, this, true);
 		
-		runtimeStorageFile=AREServices.instance.getLocalStorageFile(this, "properties.txt");
 		if (propStoreValue==true)
 		{
+			runtimeStorageFile=AREServices.instance.getLocalStorageFile(this, "properties.txt");
 			int value= readRuntimeValue("sliderPosition");
 			if (value != Integer.MAX_VALUE)
 			{
@@ -369,6 +369,7 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 	 
 	public void storeRuntimeValue (String parameterName, int parameterValue)
 	{
+		if (runtimeStorageFile==null) return;
 		try 
 		{
 			FileWriter fw=new FileWriter(runtimeStorageFile,false);          
