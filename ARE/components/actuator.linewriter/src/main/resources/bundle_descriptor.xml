@@ -25,19 +25,28 @@
 				type="string"
 				value="outfile"
 				description="the name and path of the output file (.txt will be added automatically)"/>
+			<property name="addTimeToFileName"
+				type="boolean"
+				value="false"
+				description="if true, the filename will be unique by adding the current time"/>
+			<property name="titleCaption"
+				type="string"
+				value=""
+				description="an optional title string which will be inserted as first line"/>
+			<property name="timestamp"
+				type="integer"
+				value="0"
+				combobox="no timestamp//milliseconds"
+				description="an optional timestamp can be added at the beginning of the each line"/>
 			<property name="lineEndMark"
 				type="integer"
 				value="0"
-				combobox="CR//LF//CR+LF"
+				combobox="System-Default//LF (\n)//CR+LF (\r\n)"
 				description="the character(s) which mark a line end"/>
 			<property name="append"
 				type="boolean"
 				value="false"
 				description="if true, the file will be appended (not deleted)"/>
-			<property name="addTimeToFileName"
-				type="boolean"
-				value="false"
-				description="if true, the filename will be unique by adding the current time"/>
 
         </properties>
 

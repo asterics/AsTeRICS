@@ -134,9 +134,11 @@
       </ports>
       <properties>
         <property name="fileName" value="data\outfile" />
-        <property name="lineEndMark" value="0" />
-        <property name="append" value="false" />
         <property name="addTimeToFileName" value="True" />
+        <property name="titleCaption" value="Time, value1, value2" />
+        <property name="timestamp" value="1" />
+        <property name="lineEndMark" value="0" />
+        <property name="append" value="False" />
       </properties>
       <layout>
         <posX>533</posX>

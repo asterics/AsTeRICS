@@ -64,13 +64,16 @@ public class LineWriterInstance extends AbstractRuntimeComponentInstance
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
 	String propFileName = "outfile.txt";
-	private BufferedWriter out = null;
 	int propLineEndMark = 0;
+	int propTimestamp = 0;
+	String propTitleCaption = "";
 	boolean propAppend = false;
 	boolean propAddTimeToFileName = false;
 
 	// declare member variables here
-
+	private BufferedWriter out = null;
+	String newline="\n";
+	long starttime=0;
   
     
    /**
@@ -140,6 +143,14 @@ public class LineWriterInstance extends AbstractRuntimeComponentInstance
 		{
 			return propFileName;
 		}
+		if ("titleCaption".equalsIgnoreCase(propertyName))
+		{
+			return propTitleCaption;
+		}
+		if ("timestamp".equalsIgnoreCase(propertyName))
+		{
+			return propTimestamp;
+		}
 		if ("lineEndMark".equalsIgnoreCase(propertyName))
 		{
 			return propLineEndMark;
@@ -167,6 +178,18 @@ public class LineWriterInstance extends AbstractRuntimeComponentInstance
 		{
 			final Object oldValue = propFileName;
 			propFileName = (String)newValue;
+			return oldValue;
+		}
+		if ("titleCaption".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propTitleCaption;
+			propTitleCaption = (String)newValue;
+			return oldValue;
+		}
+		if ("timestamp".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propTimestamp;
+			propTimestamp = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
 		if ("lineEndMark".equalsIgnoreCase(propertyName))
@@ -215,7 +238,12 @@ public class LineWriterInstance extends AbstractRuntimeComponentInstance
 
             String valueToWrite = ConversionUtils.stringFromBytes(data);
 			try {
-				out.write(valueToWrite + System.getProperty("line.separator"));
+				switch (propTimestamp) {
+					case 0:out.write(valueToWrite + newline);
+						break;
+					case 1:out.write((System.currentTimeMillis()-starttime)+", "+valueToWrite + newline);
+						break;
+				}
 			} catch (IOException e) {
 				AstericsErrorHandling.instance.getLogger().severe("Error writing file");
 			}
@@ -235,26 +263,42 @@ public class LineWriterInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
-  		if (out != null)
-  		{
-  			try {
-  				out.close();
-  			} catch (IOException e) {
-  				AstericsErrorHandling.instance.reportInfo(this, "Error closing previous file");
-  			}
-  		}
-  		Calendar cal = Calendar.getInstance();
-  		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-  		try {
-  			if (propAddTimeToFileName)
-  				out = new BufferedWriter(new FileWriter(propFileName + "_" + sdf.format(cal.getTime()) + ".txt"));
-  			else
-  	  			out = new BufferedWriter(new FileWriter(propFileName+".txt"));
-
-  		} catch (IOException e) {
-  			AstericsErrorHandling.instance.reportInfo(this, "Error creating file");
-  		}	
-          super.start();
+    	  	starttime=System.currentTimeMillis();
+	  		if (out != null)
+	  		{
+	  			try {
+	  				out.close();
+	  			} catch (IOException e) {
+	  				AstericsErrorHandling.instance.reportInfo(this, "Error closing previous file");
+	  			}
+	  		}
+	
+	  		switch(propLineEndMark) {
+	  			case 0: newline=System.getProperty("line.separator");
+	  				break;
+	  			case 2: newline="\r\n";
+					break;
+	  			default: newline="\n";
+					break;
+	  		}
+	  		
+	  		Calendar cal = Calendar.getInstance();
+	  		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+	  		try {
+	  			if (propAddTimeToFileName)
+	  				out = new BufferedWriter(new FileWriter(propFileName + "_" + sdf.format(cal.getTime()) + ".txt",propAppend));
+	  			else
+	  	  			out = new BufferedWriter(new FileWriter(propFileName+".txt",propAppend));
+	
+	  			if (propTitleCaption!="")
+					out.write(propTitleCaption + newline);
+	
+	
+	  		} catch (IOException e) {
+	  			AstericsErrorHandling.instance.reportInfo(this, "Error creating file");
+	  		}	
+    	  	starttime=System.currentTimeMillis();
+	  		super.start();
       }
 
      /**
