@@ -16,7 +16,23 @@
 
 
         </ports>
+        
 		<events>
+            <eventTriggererPort id="button1">
+                <description>Button 1 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button2">
+                <description>Button 2 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button3">
+                <description>Button 3 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button4">
+                <description>Button 4 pressed</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="button5">
+                <description>Button 5 pressed</description>
+            </eventTriggererPort>
 			<eventListenerPort id="displayBox">
 				<description>displays the dialog box</description>
 			</eventListenerPort>
@@ -39,7 +55,26 @@
 				type="boolean"
 				value="true"
 				description="the caption of the dialog box"/>
-
+            <property name="messageType"
+                type="integer"
+                value="0"
+                description="the message type of the dialog box"
+                combobox="plain//information//question//warning//error"/>
+            <property name="buttonText1"
+                type="string"
+                value="OK"/>
+            <property name="buttonText2"
+                type="string"
+                value=""/>
+            <property name="buttonText3"
+                type="string"
+                value=""/>
+            <property name="buttonText4"
+                type="string"
+                value=""/>
+            <property name="buttonText5"
+                type="string"
+                value=""/>
         </properties>
 
     </componentType>
