@@ -310,7 +310,11 @@ public class SpeechProcessorInstance extends AbstractRuntimeComponentInstance
 		}
 		else if("speechLoopDelay".equalsIgnoreCase(propertyName)){
 			final Object oldValue = propSpeechLoopDelay;
-			propSpeechLoopDelay = Integer.parseInt((String)newValue);
+			if(newValue!=null){				
+				propSpeechLoopDelay = Integer.parseInt((String)newValue);
+			} else {
+				propSpeechLoopDelay = 1500;
+			}
 			return oldValue;
 		}
 		else 
