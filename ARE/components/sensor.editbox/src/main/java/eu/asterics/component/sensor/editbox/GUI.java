@@ -200,6 +200,20 @@ public class GUI extends JPanel
 	}
 	
 	/**
+     * Sets the Edit Box text
+     * @param text new Edit Box text
+     */
+	String getText()
+	{
+		if(textField!=null)
+		{
+			return textField.getText();	
+		}
+		return null;
+	}
+	
+	
+	/**
      * returns a color for a given color index
      * @param index    the color index
      * @return         the associated color
