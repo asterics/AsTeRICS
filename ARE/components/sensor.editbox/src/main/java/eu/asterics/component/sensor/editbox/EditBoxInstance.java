@@ -62,13 +62,16 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
 	private final String PROP_TEXT_COLOR="textColor";
 	private final String PROP_BACKGROUND_COLOR="backgroundColor";
 	private final String PROP_INSERT_ACTION="insertAction";
+	private final String PROP_SEND_DEFAULT_VALUE="sendDefaultValue";
 	private final String ELP_CLEAR="clear";
+	private final String ELP_SEND="send";
 	
 	String propCaption = "Edit Box";
 	String propDefault = "";
 	int propTextColor=0;
 	int propBackgroundColor=11;
 	int propInsertAction=0;
+	boolean propSendDefaultValue = false;
 	
 	// declare member variables here
 	private  GUI gui = null;
@@ -120,6 +123,11 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
       {
         return elpClear;
       }
+      else if (ELP_SEND.equalsIgnoreCase(eventPortID)) 
+      {
+        return elpSend;
+      }
+	  
       else
       {
         return null;
@@ -141,6 +149,23 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
       }
     };    
 
+	/**
+     * Input event port.
+     */
+    final IRuntimeEventListenerPort elpSend	= new IRuntimeEventListenerPort()
+    {
+      @Override 
+      public void receiveEvent(String data)
+      {
+    	  if(guiReady)
+    	  {
+    		  opOutput.sendData(gui.getText());
+    	  }
+		  
+      }
+    };    
+
+	
     /**
      * returns an Event Triggerer Port.
      * @param eventPortID   the name of the port
@@ -178,6 +203,10 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
 		if (PROP_INSERT_ACTION.equalsIgnoreCase(propertyName))
 		{
 			return propInsertAction;
+		}
+		if (PROP_SEND_DEFAULT_VALUE.equalsIgnoreCase(propertyName))
+		{
+			return propSendDefaultValue;
 		}
 
         return null;
@@ -232,7 +261,12 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
 			}
 			return oldValue;
 		}
-
+		if (PROP_SEND_DEFAULT_VALUE.equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propSendDefaultValue;
+			propSendDefaultValue = Boolean.parseBoolean((String) newValue);
+			return oldValue;
+		}
         return null;
     }
 
@@ -265,6 +299,13 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
 			gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
 			AREServices.instance.displayPanel(gui, this, true);
 			guiReady=true;
+			if (propSendDefaultValue) 
+			{
+				if(guiReady)
+				{
+					opOutput.sendData(gui.getText());
+				}
+			}
           super.start();
       }
 
@@ -324,6 +365,7 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
         return propInsertAction;
       }
       
+	  
       /**
        * Plugin output port.
        */

@@ -107,7 +107,7 @@ namespace Asterics.ACS {
 
         private IniFile ini;
 
-        private String saveFile = null;
+        private static String saveFile = null;
 
         private model deploymentModel;
         private model copyModel;
@@ -389,8 +389,8 @@ namespace Asterics.ACS {
             eventChannelLinesList = new ArrayList();
             eventChannelList = new ArrayList();
             NewAREGUIWindow();
-            DateTime dt = DateTime.UtcNow;
-            deploymentModel.modelName = dt.ToShortDateString() + "_" + dt.Hour + dt.Minute;
+            
+            deploymentModel.modelName = GenerateModelName();
 
             // Set the keyboard navigation
             KeyboardNavigation.SetTabIndex(canvas, 1);
@@ -4989,8 +4989,13 @@ namespace Asterics.ACS {
         /// </summary>
         /// <returns>the model name</returns>
         public static string GenerateModelName() {
-            DateTime dt = DateTime.UtcNow;
-            return dt.ToShortDateString() + "_" + dt.Hour + dt.Minute;
+            DateTime dt = DateTime.Now;
+            string modelName = "";
+            if (saveFile != null) {
+                modelName = saveFile + "_";
+            }
+            modelName += dt.Year + "_" + dt.Month + "_" + dt.Day + "_" + dt.Hour + "_" + dt.Minute;
+            return modelName;
         }
 
         /// <summary>
@@ -10846,7 +10851,8 @@ namespace Asterics.ACS {
                             SetSaveFile(saveLocalXML.FileName);
 
                             str = new FileStream(saveFile, FileMode.Create);
-                            //x.Serialize(str, deploymentModel);
+                            
+                            deploymentModel.modelName = GenerateModelName();
                             x.Serialize(str, RemoveGroupingElementsInDeployment(deploymentModel));
                             str.Close();
                             modelHasBeenEdited = false;
@@ -10860,6 +10866,7 @@ namespace Asterics.ACS {
                         }
 
                         str = new FileStream(saveFile, FileMode.Create);
+                        deploymentModel.modelName = GenerateModelName();
                         x.Serialize(str, RemoveGroupingElementsInDeployment(deploymentModel));
                         str.Close();
                         modelHasBeenEdited = false;
