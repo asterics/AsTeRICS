@@ -70,7 +70,10 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 	
 	int [] sampleSizeList = {32,64,128,256,512,1024,2048};
  	
+	int propSamplingFrequency = 8000; 
 	int propSampleSize = 2;    //  32//64//128//256//512//1024//2048  default = 128 
+	int propMode = 1;          //  average sample values//average absolute sample values//min value//max value//max absolute value 				
+ 
 	int propThresholdHigh = 30;
 	int propThresholdLow = -30;
 	double propNoiseLevel = 1.5;
@@ -185,9 +188,17 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
      */
     public Object getRuntimePropertyValue(String propertyName)
     {
+		if ("samplingFrequency".equalsIgnoreCase(propertyName))
+		{
+			return propSamplingFrequency;
+		}
 		if ("sampleSize".equalsIgnoreCase(propertyName))
 		{
 			return propSampleSize;
+		}
+		if ("mode".equalsIgnoreCase(propertyName))
+		{
+			return propMode;
 		}
 	
 		if ("captureDevice".equalsIgnoreCase(propertyName))
@@ -228,12 +239,27 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
+		if ("samplingFrequency".equalsIgnoreCase(propertyName))
+		{
+			final int oldValue = propSamplingFrequency;
+			propSamplingFrequency = Integer.parseInt((String)newValue);
+			if (propSamplingFrequency<300) propSamplingFrequency=300;
+			else if (propSamplingFrequency>44100) propSamplingFrequency=44100;
+			return oldValue;
+		}
 		if ("sampleSize".equalsIgnoreCase(propertyName))
 		{
 			final int oldValue = propSampleSize;
 			propSampleSize = Integer.parseInt((String)newValue);
 			return oldValue;
 		}
+		if ("mode".equalsIgnoreCase(propertyName))
+		{
+			final int oldValue = propMode;
+			propMode = Integer.parseInt((String)newValue);
+			return oldValue;
+		}
+
 		if ("captureDevice".equalsIgnoreCase(propertyName)) {
 			final String oldValue = propCaptureDevice;
 			propCaptureDevice = (String) newValue;
@@ -311,45 +337,84 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 			int sampleCount = sampleSizeList[propSampleSize];
 			byte [] data = new byte[sampleCount];
 			double [] fftMagnitudes = new double[sampleCount/2];
+			int readBytes;
+			int calcBuffer; 
+			int value;
+			int inMin;
+			int inMax;
+			int result;
+			
             running = true;
 
 			while (running == true) {
-				int readBytes = targetDataLine.read(data, 0, sampleCount);
+				readBytes = targetDataLine.read(data, 0, sampleCount);
 				if (readBytes <= 0)
 					continue;
 				
-				int sum=0;
+				calcBuffer=0; 
+				inMin=Integer.MAX_VALUE;
+				inMax=Integer.MIN_VALUE;
+				
 				for (int i = 0; i< readBytes; i++) {
-					int value = data[i];
-
+					value = data[i];
 					if (Math.abs(value)<propNoiseLevel)
-					{
-						highState = false;
-						lowState = false;
 						value=0;
-					}					
-					else
-					{
-						if (value < propThresholdLow) {
-							if (lowState == false) {
-								etpInLow.raiseEvent();
-								lowState = true;
-							}
-						} 
-						if (value > propThresholdHigh) {
-							if (highState == false) {
-								etpInHigh.raiseEvent();
-								highState = true;
-							}
-						}
-					}
-					
-					if (propThresholdLow!=-1000) sum+=Math.abs(value);
-					else sum+=value;
+					switch (propMode) {
+						case 0: // average sample values
+							calcBuffer+=value;
+							break;
+						case 1:	 //average absolute sample values
+							calcBuffer+=Math.abs(value);
+							break;
+						case 2:	//min value
+							if (value < inMin) inMin=value;
+							break;
+						case 3: //max value
+							if (value > inMax) inMax=value;
+							break;
+						case 4: //max absolute value
+							if (Math.abs(value) > inMax) inMax=Math.abs(value);
+							break;
+					}						
 				}
-				opPressure.sendData(ConversionUtils.doubleToBytes((double)sum/readBytes));
 
-				if (propCalculateFrequency == true)
+				result=0;
+				switch (propMode) {
+				case 0: // average sample values
+					result=calcBuffer/readBytes;
+					break;
+				case 1:	 //average absolute sample values
+					result=calcBuffer/readBytes;
+					break;
+				case 2:	//min value
+					result=inMin;
+					break;
+				case 3: //max value
+				case 4: //max absolute value
+					result=inMax;
+					break;
+				}
+
+				opPressure.sendData(ConversionUtils.doubleToBytes((double)result));
+
+				if (result < propThresholdLow) {
+					if (lowState == false) {
+						etpInLow.raiseEvent();
+						lowState = true;
+					}
+				} else lowState=false;
+				
+				if (result > propThresholdHigh) {
+					if (highState == false) {
+						etpInHigh.raiseEvent();
+						highState = true;
+					}
+				} else highState = false;
+
+				
+				
+				
+				if (propCalculateFrequency == true)  // TBD: make something useful with fft data :)
 				{
 					calculateFFT (data,fftMagnitudes,sampleCount);
 					String spectrum = "";
@@ -357,7 +422,7 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 					int maxIndex=-1;
 					for (int i=0;i<sampleCount/2;i++)
 					{
-						double r=fftMagnitudes[i]*10;
+						double r=fftMagnitudes[i]*10;  // guesswork
 						if (r<propNoiseLevel) r=0;
 						if (r>max) {max=r; maxIndex=i;}
 						if (propPrintSpectrum == true) {
@@ -368,7 +433,7 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 							else spectrum+="*";
 						}
 					}
-					int dominantFrequency = maxIndex*8000/sampleCount;
+					int dominantFrequency = maxIndex*propSamplingFrequency/sampleCount;
 					if (propPrintSpectrum == true)
 					{
 						spectrum+=(" DomF="+dominantFrequency);
@@ -385,10 +450,10 @@ public class MicGPIInstance extends AbstractRuntimeComponentInstance implements 
 	
 		if (propCaptureDevice.equals("System Default")) {
 			System.out.println("Getting Default Device");
-			return recDev.getDefaultTargetDataLine();
+			return recDev.getDefaultTargetDataLine(propSamplingFrequency);
 		} else {
 			System.out.println("Getting Device: " + propCaptureDevice);
-			return recDev.getTargetDataLine(propCaptureDevice);
+			return recDev.getTargetDataLine(propCaptureDevice,propSamplingFrequency);
 		}
 	}
 	  

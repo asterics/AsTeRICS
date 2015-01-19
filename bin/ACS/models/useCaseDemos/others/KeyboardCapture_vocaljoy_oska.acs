@@ -127,6 +127,9 @@ C:\Program Files (x86)\Vocal Joystick\vjapp\bin\win\</requirements>
     <component id="EventCounter.1" type_id="asterics.EventCounter">
       <description>Two-direction event counter</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
@@ -138,6 +141,7 @@ C:\Program Files (x86)\Vocal Joystick\vjapp\bin\win\</requirements>
         <property name="initialValue" value="7" />
         <property name="wrapAround" value="True" />
         <property name="sendInitialValue" value="False" />
+        <property name="autoSend" value="true" />
       </properties>
       <layout>
         <posX>280</posX>
@@ -147,6 +151,9 @@ C:\Program Files (x86)\Vocal Joystick\vjapp\bin\win\</requirements>
     <component id="EventCounter.1.1" type_id="asterics.EventCounter">
       <description>Two-direction event counter</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
@@ -158,6 +165,7 @@ C:\Program Files (x86)\Vocal Joystick\vjapp\bin\win\</requirements>
         <property name="initialValue" value="3" />
         <property name="wrapAround" value="false" />
         <property name="sendInitialValue" value="False" />
+        <property name="autoSend" value="true" />
       </properties>
       <layout>
         <posX>279</posX>

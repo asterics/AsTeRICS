@@ -12,14 +12,14 @@ import eu.asterics.mw.services.IAREEventListener;
 
 import org.osgi.framework.*;
 
-
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -74,8 +74,13 @@ import javax.swing.filechooser.FileSystemView;
 public class BundleManager implements BundleListener, FrameworkListener
 {
 	static String LOADER_LOCATION = "./profile/loader.ini";
+	static String LOADER_MINIMAL_LOCATION = "./profile/loader_mini.ini";
+	static String LOADER_COMPONENTLIST_LOCATION = "./profile/loader_componentlist.ini";
 	static String SERVICES_LOCATION = "./profile/services.ini";
 
+	final int MODE_DEFAULT = 0;
+	final int MODE_GET_ALL_COMPONENTS = 1;
+	
 	private static Logger logger = null;
 
 	private final BundleContext bundleContext;
@@ -103,7 +108,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 
 	void start()
 	{
-		install();
+		install(MODE_DEFAULT);
 	
 	}
 
@@ -244,9 +249,10 @@ public class BundleManager implements BundleListener, FrameworkListener
 		return componentTypeIDToBundle.get(componentTypeId);
 	}
 	
-	private void registerBundle(final Bundle bundle)
+	private String registerBundle(final Bundle bundle)
 	{
 		final URL url = bundle.getResource(DEFAULT_BUNDLE_DESCRIPTOR_URL);
+		String componentTypeIDs = ""; 
 
 		try
 		{
@@ -259,6 +265,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 			
 				for(final IComponentType componentType : componentTypeSet)
 				{
+					componentTypeIDs+=("; "+componentType.getID());
 					componentTypeIDToBundle.put(componentType.getID(), bundle);
 					// install in global component repository
 					ComponentRepository.instance.install(componentType);
@@ -304,6 +311,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 					bundle + " -> \n" + bme.getMessage());
 			throw new RuntimeException(bme);
 		}
+		return(componentTypeIDs);
 	}
 
 	private void unregisterBundle(final Bundle bundle)
@@ -332,90 +340,151 @@ public class BundleManager implements BundleListener, FrameworkListener
 		//System.out.println ("Framework said: "+e.getType()+" from "+e.getBundle().getSymbolicName());
 	}
 
-	public void install() 
+	public void showBundleInstallErrorMessage( Bundle bundle, String path)
+	{
+		if (bundle!=null)
+		{
+			// Log the exception and continue
+			logger.warning(this.getClass().getName()+".start: " 
+					+"Couldn't start " + bundle.getBundleId());
+			JOptionPane op = new JOptionPane ("Couldn't start " + bundle.getBundleId()+ "from location "+path,
+				    JOptionPane.WARNING_MESSAGE);
+			JDialog dialog = op.createDialog("AsTeRICS Runtime Environment - Deploy Error: Cannot start the Model !");
+			dialog.setAlwaysOnTop(true);
+			dialog.setModal(false);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		}
+		else
+		{
+			logger.warning(this.getClass().getName()+".start: " 
+					+"Couldn't start unknown bundle");
+			JOptionPane op = new JOptionPane ("Couldn't start bundle "+path,
+				    JOptionPane.WARNING_MESSAGE);
+			JDialog dialog = op.createDialog("AsTeRICS Runtime Environment - Deploy Error: Cannot start the Model !");
+			dialog.setAlwaysOnTop(true);
+			dialog.setModal(false);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		}
+	}
+	
+	public void install_single (String cTypeID)
+	{
+		BufferedReader in;
+		Bundle bundle= null;
+		String actLine;
+		String bundleJar=null;
+		String installBundleName=null;
+
+		try {
+
+				in = new BufferedReader(new FileReader(LOADER_COMPONENTLIST_LOCATION));
+		
+				while ( (actLine = in.readLine()) != null)
+				{
+					if (actLine.contains(cTypeID))
+					{
+						bundleJar=actLine.substring(0,actLine.indexOf(";"));
+						// System.out.println("*** FOUND BUNDLE JAR:"+bundleJar);
+						break;
+					}
+				}
+					
+				if (bundleJar!=null)
+				{	
+					File directory = new File (".");
+
+					installBundleName= directory.getCanonicalPath()+"/"+bundleJar;
+				    System.out.println("*** installing bundle on-demand: "+installBundleName);
+					bundle = bundleContext.installBundle("file:///"+installBundleName);
+					if(checkForAstericsMetadata(bundle))
+						registerBundle(bundle);
+			    }
+			}
+			catch (Throwable t) 
+			{
+				showBundleInstallErrorMessage(bundle,installBundleName);
+			}
+	}
+	
+	public void install(int mode) 
 	{
 		String path;	
 		BufferedReader in;
+		BufferedWriter out=null;
 		Bundle bundle= null;
 
-		try {
-			in = new BufferedReader(new FileReader(SERVICES_LOCATION));
-
-			while ( (path = in.readLine()) != null)
-			{
-				try 
-				{	
-					File directory = new File (".");
-					//bundle = this.bundleContext.installBundle("file:///C:/AsTeRICS/bin/ARE/"+path);
-				
-					bundle = bundleContext.installBundle("file:///"+directory.getCanonicalPath()+"/"+path);
-					bundle.start();
-				}
-				catch (Throwable t) 
+		if (mode==MODE_DEFAULT)
+		{
+			try {
+				in = new BufferedReader(new FileReader(SERVICES_LOCATION));
+	
+				while ( (path = in.readLine()) != null)
 				{
-					if (bundle!=null)
-					{
-					// Log the exception and continue
-					logger.warning(this.getClass().getName()+".start: " 
-							+"Couldn't start " + bundle.getBundleId());
-					
+					try 
+					{	
+						File directory = new File (".");				
+						bundle = bundleContext.installBundle("file:///"+directory.getCanonicalPath()+"/"+path);
+						bundle.start();
 					}
-					else
+					catch (Throwable t) 
 					{
-						logger.warning(this.getClass().getName()+".start: " 
-								+"Couldn't start unknown bundle");
+						showBundleInstallErrorMessage (bundle,path);
+						continue;
 					}
-					continue;
 				}
+				in.close();
+			} catch (FileNotFoundException e) {
+				logger.severe(this.getClass().getName()+"." +
+				"The services file is missing!");
+			} catch (IOException e) {
+				logger.severe(this.getClass().getName()+"." +
+				"Error while reading the services file!");
 			}
-			in.close();
-		} catch (FileNotFoundException e) {
-			logger.severe(this.getClass().getName()+"." +
-			"The services file is missing!");
-		} catch (IOException e) {
-			logger.severe(this.getClass().getName()+"." +
-			"Error while reading the services file!");
 		}
 		
+		
 		try {
-			in = new BufferedReader(new FileReader(LOADER_LOCATION));
+			if ((mode==MODE_DEFAULT) && (new File(LOADER_MINIMAL_LOCATION).exists()))
+			{
+				System.out.println("*** Bundle install mode: minimal");
+				in = new BufferedReader(new FileReader(LOADER_MINIMAL_LOCATION));
+			}
+			else
+			{
+				System.out.println("*** Bundle install mode: all");
 
+				in = new BufferedReader(new FileReader(LOADER_LOCATION));
+				if (mode== MODE_GET_ALL_COMPONENTS)
+				   out = new BufferedWriter(new FileWriter(LOADER_COMPONENTLIST_LOCATION));
+			}
+			
 			while ( (path = in.readLine()) != null)
 			{
 				try 
 				{	
 			
 					File directory = new File (".");
-					//bundle = this.bundleContext.installBundle("file:///C:/AsTeRICS/bin/ARE/"+path);
-				
+					System.out.println("*** installing bundle: "+directory.getCanonicalPath()+"/"+path);
+					
 					bundle = bundleContext.installBundle("file:///"+directory.getCanonicalPath()+"/"+path);
-					//bundle.start();
 					if(checkForAstericsMetadata(bundle))
 					{
-//						logger.fine(this.getClass().getName()+".start: " 
-//								+"Registering bundle " + bundle);
-						registerBundle(bundle);
-//						logger.fine((bundle.getSymbolicName()+" Installed!"));
+						String componentTypeIDs =registerBundle(bundle);
+						if (mode== MODE_GET_ALL_COMPONENTS)
+							out.write(path+componentTypeIDs+"\n");
 					}
 				}
 				catch (Throwable t) 
 				{
-					if (bundle!=null)
-					{
-					// Log the exception and continue
-					logger.warning(this.getClass().getName()+".start: " 
-							+"Couldn't start " + bundle.getBundleId());
-					
-					}
-					else
-					{
-						logger.warning(this.getClass().getName()+".start: " 
-								+"Couldn't start unknown bundle");
-					}
+					showBundleInstallErrorMessage(bundle,path);
 					continue;
 				}
 			}
 			in.close();
+			if (mode== MODE_GET_ALL_COMPONENTS)
+				out.close();
 			notifyAREEventListeners ("postBundlesInstalled");				
 		} catch (FileNotFoundException e) {
 			logger.severe(this.getClass().getName()+"." +

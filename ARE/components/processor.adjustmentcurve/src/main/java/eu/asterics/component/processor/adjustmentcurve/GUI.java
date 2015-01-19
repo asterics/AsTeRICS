@@ -471,6 +471,7 @@ public class GUI extends JPanel implements MouseListener, MouseMotionListener
     		  }
     		  
     	  }
+       	 thisPanel.repaint();    		
       }
     
       public void mouseDragged(MouseEvent e) {
@@ -488,11 +489,14 @@ public class GUI extends JPanel implements MouseListener, MouseMotionListener
         	  mouseX=e.getX();mouseY=e.getY();
 
     	  }
+       	 thisPanel.repaint();    		
    	  }
 
    	  public void mouseMoved(MouseEvent e) {
     	  // System.out.println("Mouse moved:"+e.getX()+"/"+e.getY());
-    	  mouseX=e.getX();mouseY=e.getY();
+    	 mouseX=e.getX();mouseY=e.getY();
+      	 thisPanel.repaint();    		
+
    	  }
 
 }

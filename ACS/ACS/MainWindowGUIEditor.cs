@@ -193,7 +193,7 @@ namespace Asterics.ACS {
         /// <param name="e"></param>
         void guiProp_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName.Equals("showGrid")) {
-                if (guiProp.ShowGrid == true) {
+                if (guiProp.ShowGrid == true) {  
                     guiGridCanvas.Visibility = System.Windows.Visibility.Visible;
                 }
                 else {

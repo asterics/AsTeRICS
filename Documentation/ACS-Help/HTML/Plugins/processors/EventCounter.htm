@@ -12,11 +12,15 @@
     <h1>Event Counter</h1>
     <h3>Component Type: Processor (Subcategory: Event and String
       Processing)</h3>
-    <p>This component counts events. It can add and subtract incoming
+    <p>This component counts events. It can increase and decrease a counts via incoming
       events.</p>
     <div class="image"><img src="img/EventCounter.jpg" alt="Screenshot:
         EventCounter plugin" title="Screenshot: EventCounter plugin"><br>
       EventCounter plugin</div>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>setValue [integer]:</strong> Sets the event counter to the incoming value. Note that this value is not propagated to the output port (to avoid loops).</li>
+    </ul>
     <h2>Output Port Description</h2>
     <ul>
       <li><strong>output [integer]:</strong> Sends the number of events.</li>
@@ -25,9 +29,9 @@
     <ul>
       <li><strong>increase:</strong> Increases the number of events.</li>
       <li><strong>decrease:</strong> Decreases the number of events.</li>
-      <li><strong>resetToZero:</strong> Sets the event number to zero.</li>
-      <li><strong>resetToInitial:</strong> Sets the event number to the
-        initial value.</li>
+      <li><strong>resetToZero:</strong> Sets the event counter to zero.</li>
+      <li><strong>resetToInitial:</strong> Sets the event counter to the initial value (property).</li>
+      <li><strong>sendNow:</strong> sendes the current value of the counter to the output port</li>
     </ul>
     <h2>Properties</h2>
     <ul>
@@ -52,8 +56,10 @@
       <li><strong>wrapAround [boolean]:</strong> if selected and the
         appropriate mode is set, exceeding the maximum value will wrap
         to the minimum value and vice versa.</li>
-      <li><strong>initialValue [boolean]:</strong> if selected, the
+      <li><strong>sendInitialValue [boolean]:</strong> if selected, the
         initial value is sent at the startup.</li>
+      <li><strong>autoSend [boolean]:</strong> if selected, the
+        changes of the event counter are sent immediately to the output port</li>
     </ul>
   </body>
 </html>

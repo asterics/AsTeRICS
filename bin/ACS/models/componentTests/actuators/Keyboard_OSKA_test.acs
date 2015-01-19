@@ -48,6 +48,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
       <properties>
         <property name="keyCodeString" value="a" />
         <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
       </properties>
       <layout>
         <posX>359</posX>

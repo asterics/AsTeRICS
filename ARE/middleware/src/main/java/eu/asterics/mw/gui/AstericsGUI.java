@@ -86,6 +86,8 @@ public class AstericsGUI implements IAREEventListener
 	private int xOffset=20;
 	private int yOffset=20;
 
+	private boolean allowModification = true;
+
 	JButton restartButton;
 	JPanel centerPanel,
 	controlPanel, jplPanel, copyrightPanel, modelWrapperPanel, cpWrapperPanel;
@@ -260,28 +262,32 @@ public class AstericsGUI implements IAREEventListener
 			if (e.getButton()==MouseEvent.BUTTON3) 
 			{
 				//System.out.println(" MOUSE CLICKED RIGHT " + e.getClickCount() + " TIMES **");
-				controlPanel.setVisible(!controlPanel.isVisible());
+				if (allowModification==true)
+					controlPanel.setVisible(!controlPanel.isVisible());
 			}
 			else if (e.getButton()==MouseEvent.BUTTON1)
 			{
 				//System.out.println(" MOUSE CLICKED LEFT" + e.getClickCount() + " TIMES **");
-				if (e.getClickCount() ==2) 
+				if (allowModification==true)
 				{
-					mainFrame.setPreferredSize(mainFrame.getSize());
-					
-					if (mainFrame.isUndecorated() == false)
+					if (e.getClickCount() ==2) 
 					{
-						mainFrame.dispose();
-						mainFrame.setUndecorated(true);
-						mainFrame.pack();
-						mainFrame.setVisible(true);
-					}
-					else
-					{
-						mainFrame.dispose();
-						mainFrame.setUndecorated(false);
-						mainFrame.pack();
-						mainFrame.setVisible(true);
+						mainFrame.setPreferredSize(mainFrame.getSize());
+						
+						if (mainFrame.isUndecorated() == false)
+						{
+							mainFrame.dispose();
+							mainFrame.setUndecorated(true);
+							mainFrame.pack();
+							mainFrame.setVisible(true);
+						}
+						else
+						{
+							mainFrame.dispose();
+							mainFrame.setUndecorated(false);
+							mainFrame.pack();
+							mainFrame.setVisible(true);
+						}
 					}
 				}
 			}
@@ -323,9 +329,53 @@ public class AstericsGUI implements IAREEventListener
 	        mainFrame.setLocation(X, Y);
 	    }
 	}
-		
-		
 
+	public Point getScreenDimension()
+	{
+		Point p = new Point();
+        p.x = screenSize.width;
+        p.y = screenSize.height;
+        return(p);
+    }
+
+	public Point getAREWindowDimension()
+	{
+		Point p = new Point();
+        p.x = mainFrame.getWidth();
+        p.y = mainFrame.getHeight();
+        return(p);
+    }
+
+	public Point getAREWindowLocation()
+	{
+		Point p = new Point();
+        p.x = mainFrame.getLocationOnScreen().x;
+        p.y = mainFrame.getLocationOnScreen().y;
+        return(p);
+    }
+    // do we need invokeLater for these ?
+	public void setAREWindowLocation(int x, int y)
+	{
+		mainFrame.setLocation(x, y);
+    }
+	
+	public void setAREWindowState(int state)
+	{
+		mainFrame.setState(state);
+    }
+	public void setAREWindowToFront()
+	{
+		mainFrame.toFront();
+		mainFrame.repaint();		
+    }
+	public void setFocusableWindowState(boolean state){
+		mainFrame.setFocusableWindowState(state);
+	}
+	public void allowAREWindowModification(boolean state)
+	{
+		allowModification=state;
+    }
+	
 	private void setSystemTray() {
 
 
@@ -544,7 +594,7 @@ public class AstericsGUI implements IAREEventListener
 		public boolean accept(File f) {
 
 			if (f.isDirectory()) {
-				return false;
+				return true;
 			}
 
 			String fileName = f.getName();

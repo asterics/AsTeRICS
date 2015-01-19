@@ -49,7 +49,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
  *         Date: Dec 19, 2011
  *         Time: 12:31:41 AM
  */
-public class GUI extends JPanel 
+public class GUI extends JPanel implements FocusListener
 {
     
     private JPanel guiPanel;  
@@ -98,6 +98,8 @@ public class GUI extends JPanel
 		
 		textField = new JTextField(owner.getDefaultText());
 		//textField.setMargin(new Insets(0,0,0,0));
+		
+		textField.addFocusListener(this);
 		
 		textField.addActionListener(new ActionListener() 
 	      {
@@ -186,6 +188,29 @@ public class GUI extends JPanel
 	    
 	}
 	
+	@Override
+	public void focusGained(FocusEvent e) {
+        //System.out.println("Focus gained");
+    }
+	
+	@Override
+	public void focusLost(FocusEvent e) {
+	   {
+	    	opOutput.sendData( textField.getText());
+	    	if(owner.getInsertAction()==selectText)
+	    	{
+	    		textField.selectAll();
+	    	}
+	    	else
+	    	{
+	    		if(owner.getInsertAction()==removeText)
+	        	{
+	    			textField.setText("");
+	        	}
+	    	}
+	    }
+	  }
+
 	/**
      * Sets the Edit Box text
      * @param text new Edit Box text

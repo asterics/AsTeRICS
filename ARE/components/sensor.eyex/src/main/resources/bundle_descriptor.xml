@@ -42,7 +42,12 @@
 			<eventListenerPort id="removeLastOffsetCorrection">
 				<description>remove the last offset correction point from the list of correction points</description>
 			</eventListenerPort>
-
+			<eventListenerPort id="createAndCalibrateGuestProfile">
+				<description>creates a new guest-profile and calibrates it</description>
+			</eventListenerPort>
+			<eventListenerPort id="calibrateCurrentProfile">
+				<description>calibrates the current profile</description>
+			</eventListenerPort>
 			<eventTriggererPort id="blink">
 				<description>triggered when eye blink occurs</description>
 			</eventTriggererPort>

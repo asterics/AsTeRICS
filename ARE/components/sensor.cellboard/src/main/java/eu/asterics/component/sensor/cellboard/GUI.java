@@ -63,7 +63,7 @@ public class GUI extends JPanel
     // add more GUI elements here
 
     private Lock lock = new ReentrantLock();
-	private CellBoardInstance owner;
+	public CellBoardInstance owner;
 	int rows;
 	int columns;
     /**
@@ -120,11 +120,13 @@ public class GUI extends JPanel
 		{
 			for(int j=0;j<columns;j++)
 			{
-				cells[i][j]=new GUICell(this,owner.getEventPort(index),owner.getCellOutputPort(),owner.getCellTextOutputPort(),owner.getGeneralEventPort());
+				cells[i][j]=new GUICell(this,owner.getGeneralEventPort());
 				cells[i][j].setVisible(true);
 				cells[i][j].setIndex(index);
-				cells[i][j].setText(owner.getText(index));
-				cells[i][j].setActionText(owner.getActionText(index));
+				cells[i][j].setRow(i);
+				cells[i][j].setColumn(j);
+				cells[i][j].setCellCaption(owner.getCellCaption(index));
+				cells[i][j].setActionText(owner.getCellText(index));
 				cells[i][j].setPicturePath(owner.getImagePath(index));
 				cells[i][j].setScanActive(false);
 				cells[i][j].setHoverTime(owner.getHoverTime());
@@ -573,9 +575,10 @@ public class GUI extends JPanel
 								else
 								{
 									cells[scanRow][scanColumn].setScanActive(false);
-									scanRow=rows;
+									scanRow=rows-1;
 									cells[scanRow][scanColumn].setScanActive(true);
 								}
+								performActCellUpdate(scanRow, scanColumn);
 								break;
 							}
 							case down:
@@ -592,6 +595,7 @@ public class GUI extends JPanel
 									scanRow=0;
 									cells[scanRow][scanColumn].setScanActive(true);
 								}
+								performActCellUpdate(scanRow, scanColumn);
 								break;
 							}
 							case left:
@@ -605,9 +609,10 @@ public class GUI extends JPanel
 								else
 								{
 									cells[scanRow][scanColumn].setScanActive(false);
-									scanColumn=columns;
+									scanColumn=columns-1;
 									cells[scanRow][scanColumn].setScanActive(true);
 								}
+								performActCellUpdate(scanRow, scanColumn);
 								break;
 							}
 							case right:
@@ -624,6 +629,7 @@ public class GUI extends JPanel
 									scanColumn=0;
 									cells[scanRow][scanColumn].setScanActive(true);	
 								}
+								performActCellUpdate(scanRow, scanColumn);
 								break;
 							}
 					
@@ -719,6 +725,9 @@ public class GUI extends JPanel
 										repeatCount=repeatCount+1;
 									}
 									cells[scanRow][scanColumn].setScanActive(true);
+									if(repeatCount<maxRepeatCount) 
+										performActCellUpdate(scanRow, scanColumn);
+
 								}
 								else
 								{
@@ -733,6 +742,9 @@ public class GUI extends JPanel
 										repeatCount=repeatCount+1;
 									}
 									cells[scanRow][scanColumn].setScanActive(true);
+									if(repeatCount<maxRepeatCount)
+										performActCellUpdate(scanRow, scanColumn);
+
 								}
 							
 								if(repeatCount>=maxRepeatCount)
@@ -788,6 +800,8 @@ public class GUI extends JPanel
 							}
 						
 							cells[scanRow][scanColumn].setScanActive(true);
+							performActCellUpdate(scanRow, scanColumn);
+
 						}
 					}
 				}
@@ -830,6 +844,7 @@ public class GUI extends JPanel
 									scanColumn=0;
 							
 									cells[scanRow][scanColumn].setScanActive(true);
+									performActCellUpdate(scanRow, scanColumn);
 							
 								}
 								else
@@ -840,15 +855,14 @@ public class GUI extends JPanel
 									}
 							
 									scanRow=0;
-						
 									cells[scanRow][scanColumn].setScanActive(true);
-							
+									performActCellUpdate(scanRow, scanColumn);
 								}
 							}
 							else if(level==1)
 							{
 								cells[scanRow][scanColumn].setScanActive(false);
-								makeCellAction(scanRow,scanColumn);
+								performCellSelection(scanRow,scanColumn);
 								level=0;
 								repeatCount=0;
 								scanRow=0;
@@ -872,7 +886,7 @@ public class GUI extends JPanel
 						else
 						{
 							cells[scanRow][scanColumn].setScanActive(false);
-							makeCellAction(scanRow,scanColumn);
+							performCellSelection(scanRow,scanColumn);
 							level=1;
 							scanRow=0;
 							scanColumn=0;
@@ -883,7 +897,7 @@ public class GUI extends JPanel
 					{
 						if(scanType==3)
 						{
-							makeCellAction(scanRow,scanColumn);
+							performCellSelection(scanRow,scanColumn);
 						}
 					}
 				}
@@ -901,15 +915,23 @@ public class GUI extends JPanel
 	/**
      * Performs the cell action.
      */
-	private void makeCellAction(int row,int column)
+	public void performCellSelection(int row,int column)
 	{
 		int index=cells[row][column].getIndex();
 		owner.getEventPort(index).raiseEvent();
-		owner.getCellOutputPort().sendData(ConversionUtils.intToBytes(index+1));
-		owner.getCellTextOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getActionText()));
+		owner.getSelectedCellOutputPort().sendData(ConversionUtils.intToBytes(index+1));
+		owner.getSelectedCellCaptionOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellCaption()));
+		owner.getSelectedCellTextOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellText()));
 	
 	}
-	
+
+	public void performActCellUpdate(int row,int column)
+	{
+		owner.getActCellOutputPort().sendData(ConversionUtils.intToBytes(cells[row][column].getCellID()));
+		owner.getActCellCaptionOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellCaption()));
+		owner.getActCellTextOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellText()));
+	}
+
 	/**
      * Prepares the cells to close.
      */

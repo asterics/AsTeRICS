@@ -28,22 +28,17 @@
 package eu.asterics.component.sensor.eyex;
 
 
-import java.io.IOException;
-import java.util.logging.Logger;
 import java.awt.Point;
-  
+
 import eu.asterics.component.sensor.eyex.jni.Bridge;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 
  
 /**
@@ -187,6 +182,12 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 		if ("removeLastOffsetCorrection".equalsIgnoreCase(eventPortID))
 		{
 			return elpRemoveLastOffsetCorrection;
+		}
+		if("calibrateCurrentProfile".equalsIgnoreCase(eventPortID)){
+			return elpCalibrateCurrentProfile;
+		}
+		if("createAndCalibrateGuestProfile".equalsIgnoreCase(eventPortID)){
+			return elpCreateGuestProfile;
 		}
 
         return null;
@@ -345,6 +346,21 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     	 }
     };    
 	
+    final IRuntimeEventListenerPort elpCreateGuestProfile = new IRuntimeEventListenerPort() {
+		
+		@Override
+		public void receiveEvent(String data) {
+			bridge.recalibrate(true);
+		}
+	};
+	
+    final IRuntimeEventListenerPort elpCalibrateCurrentProfile = new IRuntimeEventListenerPort() {
+		
+		@Override
+		public void receiveEvent(String data) {
+			bridge.recalibrate(false);
+		}
+	}; 
     
     synchronized public void newEyeData(boolean isFixated, int gazeDataX, int gazeDataY, int leftEyeX, int leftEyeY)
     {   

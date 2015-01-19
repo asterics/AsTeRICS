@@ -339,7 +339,7 @@ public class AsapiSupport
 				throw (new AREAsapiException(e1.getMessage()));
 			}
 		}
-
+		
 		//Convert the string to a byte array.
 		String s = modelInXML;
 		byte data[] = s.getBytes();
@@ -357,15 +357,13 @@ public class AsapiSupport
 				c.flush();
 				c.close();
 			}
-
+  
 			InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
 
 			synchronized (DefaultDeploymentModelParser.instance) {
 
-
 				IRuntimeModel runtimeModel = 
 						DefaultDeploymentModelParser.instance.parseModel(is);
-
 
 				/*if (runtimeModel==null)
 			{
@@ -376,7 +374,6 @@ public class AsapiSupport
 				DeploymentManager.instance.setStatus(AREStatus.DEPLOYED);
 				AstericsErrorHandling.instance.setStatusObject(AREStatus.DEPLOYED.toString(), 
 						"", "");
-				System.out.println("New model deployed.");
 			}
 		}  catch (IOException e2) {
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
@@ -418,11 +415,13 @@ public class AsapiSupport
 
 		ArrayList<String> res = new ArrayList<String> ();
 		URL url= null;
+		
+		// System.out.println("*** Get Component Collection -> load all available bundles !");
+		BundleManager bm=DeploymentManager.instance.getBundleManager();
+		bm.install(bm.MODE_GET_ALL_COMPONENTS);
 
 		for (Bundle bundle : Main.getAREContext().getBundles())
 		{
-
-
 			url = bundle.getResource(BUNDLE_DESCRIPTOR);
 			if (url!=null)
 			{
@@ -1776,6 +1775,7 @@ public class AsapiSupport
 	 */
 	public String[] listAllStoredModels() throws AREAsapiException
 	{
+		/*
 		ArrayList <String> fileNames = new ArrayList<String> ();
 		File dir = new File(MODELS_FOLDER+"/");
 
@@ -1801,6 +1801,48 @@ public class AsapiSupport
 		}
 		return res;
 
+		*/
+		
+		List<String> res = new ArrayList<String>(); 
+			List<String> nextDir = new ArrayList<String>(); //Directories
+			nextDir.add(MODELS_FOLDER);	
+			//nextDir.add("data/sounds");	
+			
+			try 
+			{
+				while(nextDir.size() > 0) 
+				{
+					File pathName = new File(nextDir.get(0)); 
+					String[] fileNames = pathName.list();  // lists all files in the directory
+	
+					for(int i = 0; i < fileNames.length; i++) 
+					{ 
+						File f = new File(pathName.getPath(), fileNames[i]); // getPath converts abstract path to path in String, 
+						// constructor creates new File object with fileName name   
+						if (f.isDirectory()) 
+						{  
+							nextDir.add(f.getPath()); 
+						} 
+						else 
+						{
+							if (f.getPath().toLowerCase().endsWith(".acs")) 
+									res.add(f.getPath().substring(MODELS_FOLDER.length()+1));
+						}
+					} 
+					nextDir.remove(0); 
+				} 
+			}
+			catch (Exception e) {System.out.println ("could not find directories for model files !");}
+
+		
+		String[] res2 = new String[res.size()];
+		for (int i=0; i<res2.length; i++)
+		{
+			res2[i] = res.get(i);
+		}
+		return res2;		
+		
+		
 	}
 
 

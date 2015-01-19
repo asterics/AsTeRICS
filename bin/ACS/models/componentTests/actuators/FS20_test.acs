@@ -52,6 +52,9 @@
     <component id="EventCounter.1" type_id="asterics.EventCounter">
       <description>Two-direction event counter</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
@@ -63,6 +66,7 @@
         <property name="initialValue" value="0" />
         <property name="wrapAround" value="false" />
         <property name="sendInitialValue" value="false" />
+        <property name="autoSend" value="true" />
       </properties>
       <layout>
         <posX>411</posX>
@@ -243,6 +247,9 @@
     <component id="EventCounter.1.1" type_id="asterics.EventCounter">
       <description>Two-direction event counter</description>
       <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
@@ -254,6 +261,7 @@
         <property name="initialValue" value="0" />
         <property name="wrapAround" value="false" />
         <property name="sendInitialValue" value="false" />
+        <property name="autoSend" value="true" />
       </properties>
       <layout>
         <posX>387</posX>

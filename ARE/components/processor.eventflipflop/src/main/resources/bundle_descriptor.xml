@@ -12,12 +12,20 @@
             <eventListenerPort id="event-in">
                 <description>Receive an event and store the state</description>
             </eventListenerPort>
+            <eventListenerPort id="selectOut1">
+                <description>select state 1 (next event will be sent to out1)</description>
+            </eventListenerPort>
+            <eventListenerPort id="selectOut2">
+                <description>select state 2 (next event will be sent to out2)</description>
+            </eventListenerPort>
+
             <eventTriggererPort id="event-out1">
-                <description>Fired, if internal state is 0</description>
-            </eventTriggererPort>
-            <eventTriggererPort id="event-out2">
                 <description>Fired, if internal state is 1</description>
             </eventTriggererPort>
+            <eventTriggererPort id="event-out2">
+                <description>Fired, if internal state is 2</description>
+            </eventTriggererPort>
+
         </events>         
         <properties/>
     </componentType>

@@ -115,6 +115,10 @@
 
   @field TX_RESULT_MASKTOOLARGE:
     The supplied mask is too large, width*height must be less than 65536
+
+   @field TX_RESULT_INVALIDEYETRACKERSTATE
+    \since Version 1.1.0
+    The submitted command can not be executed in the current state of the eye tracker
  */
 typedef enum {
     TX_RESULT_UNKNOWN = TX_ENUM_STARTVALUE,
@@ -146,7 +150,8 @@ typedef enum {
     TX_RESULT_INVALIDCOMMAND,
     TX_RESULT_CANCELLED,
     TX_RESULT_INVALIDSCHEDULINGMODE,
-    TX_RESULT_MASKTOOLARGE
+    TX_RESULT_MASKTOOLARGE,
+	TX_RESULT_INVALIDEYETRACKERSTATE
 } TX_RESULT;
 
 /*********************************************************************************************************************
@@ -360,6 +365,9 @@ typedef enum {
     A pan action occured when there was no tracking
   @field TX_FAILEDACTIONTYPE_ZOOMDURINGNOTRACKING
     A zoom action occured when there was no tracking
+  @field TX_FAILEDACTIONTYPE_ACTIVATIONSMALLITEMS
+	For internal use only.
+    An activation occured near multiple small interactors and was therefore undecided
  */
 typedef enum {    
     TX_FAILEDACTIONTYPE_ACTIVATIONNOHIT = TX_ENUM_STARTVALUE,
@@ -367,7 +375,8 @@ typedef enum {
     TX_FAILEDACTIONTYPE_ZOOMNOHIT,
     TX_FAILEDACTIONTYPE_ACTIVATIONDURINGNOTRACKING,
     TX_FAILEDACTIONTYPE_PANDURINGNOTRACKING,
-    TX_FAILEDACTIONTYPE_ZOOMDURINGNOTRACKING
+    TX_FAILEDACTIONTYPE_ZOOMDURINGNOTRACKING,
+    TX_FAILEDACTIONTYPE_ACTIVATIONSMALLITEMS
 } TX_FAILEDACTIONTYPE;
 
 /*********************************************************************************************************************/
@@ -524,10 +533,11 @@ typedef enum {
     TX_COMMANDTYPE_ENABLEBUILTINKEYS,
     TX_COMMANDTYPE_DISABLEBUILTINKEYS,
     TX_COMMANDTYPE_CLIENTCONNECTION,
-    TX_COMMANDTYPE_LAUNCHEYETRACKINGCONTROLPANEL,
+	TX_COMMANDTYPE_LAUNCHEYETRACKINGCONTROLPANEL, /** Deprecated */
     TX_COMMANDTYPE_REGISTERQUERYHANDLER,
     TX_COMMANDTYPE_UNREGISTERQUERYHANDLER,
-	TX_COMMANDTYPE_DIAGNOSTICSREQUEST
+	TX_COMMANDTYPE_DIAGNOSTICSREQUEST,
+	TX_COMMANDTYPE_LAUNCHCONFIGURATIONTOOL		
 } TX_COMMANDTYPE;
 
 /*********************************************************************************************************************/
@@ -556,13 +566,13 @@ typedef enum {
     Performs a panning step action. This corresponds to a click on the panning button.
 
   @field TX_ACTIONTYPE_ZOOMIN:
-    Performs a zoom-in action. This corresponds to a click on the zoom-in button.
+    Not yet supported. 
 
   @field TX_ACTIONTYPE_ZOOMOUT:
-    Performs a zoom-out action. This corresponds to a click on the zoom-out button. 
+    Not yet supported. 
 
   @field TX_ACTIONTYPE_PANNINGTOGGLEHANDSFREE:
-    Toggles auto-panning mode on or off.  
+    Not yet supported. 
  */
 typedef enum {
     TX_ACTIONTYPE_ACTIVATE = TX_ENUM_STARTVALUE,
@@ -592,7 +602,7 @@ typedef enum {
     The interactor has been stepped.
 
   @field TX_PANNABLEEVENTTYPE_HANDSFREE:
-    The interactor does not need any hand user input to pan.
+    Not yet supported.
  */
 typedef enum {    
     TX_PANNABLEEVENTTYPE_PAN = TX_ENUM_STARTVALUE,
@@ -648,7 +658,7 @@ typedef enum {
     No panning profile.
 
   @field TX_PANNINGPROFILE_READING:
-    Panning profile for reading, will be available in subsequent versions.
+    Panning profile for reading, currently same as TX_PANNINGPROFILE_VERTICAL. Will be available in subsequent versions.
 
   @field TX_PANNINGPROFILE_HORIZONTAL:
     Left and right only panning profile.
@@ -727,10 +737,127 @@ typedef enum {
 
 /*********************************************************************************************************************/
 
+/**
+  TX_INTERACTIONMODES 
+
+  \since Version 1.1.0
+
+  Flags for describing engine interaction modes. These influence what behaviors are being 
+  treated and what interaction behavior events are being generated.
+
+  @field TX_INTERACTIONMODES_NONE:
+    Engine is not in any specific interacion mode, gaze aware behaviors and data stream 
+    behaviors are being treated only.
+
+  @field TX_INTERACTIONMODES_ACTIVATIONMODE:
+    Engine is in activation mode, meaning activatable interactors are prioritized and 
+    tentative activation focus events are being generated.
+
+  @field TX_INTERACTIONMODES_PANNINGMODE:
+    Engine is in panning mode, meaning pannable interactors are being prioritzed, and 
+    approperitate events being generated.
+
+ */
+typedef enum {
+    TX_INTERACTIONMODES_NONE           = TX_FLAGS_NONE_VALUE,
+    TX_INTERACTIONMODES_ACTIVATIONMODE = 1,
+    TX_INTERACTIONMODES_PANNINGMODE    = 1 << 2
+} TX_INTERACTIONMODES;
+
+/*********************************************************************************************************************/
+
+
 typedef enum {
     TX_CLIENTMODE_AGENT = TX_ENUM_STARTVALUE,
 	TX_CLIENTMODE_DIAGNOSTICS
 } TX_CLIENTMODE;
+
+
+/*********************************************************************************************************************/
+
+/**
+  TX_CONFIGURATIONTOOL
+
+  \since Version 1.1.0
+  
+  Enumeration for configuration tools.
+
+  @field TX_CONFIGURATIONTOOL_EYEXSETTINGS:
+    EyeX Settings. Always available. 
+
+  @field TX_CONFIGURATIONTOOL_RECALIBRATE: 
+    Re-Calibrate the current profile. 
+	Available when the following is fulfilled:
+	- Eye Tracking Device Status is "Tracking" or "InvalidConfiguration".
+	- Eye Tracking Configuration Status is "Valid" or "InvalidCalibration".
+	- State TX_STATEPATH_PROFILENAME has a value other than empty string.
+
+	When the Recalibrate tool is active the Eye Tracking Device Status will be "Configuring", i.e. tracking is off.
+  
+  @field TX_CONFIGURATIONTOOL_GUESTCALIBRATION:
+    Create and calibrate a guest profile and set it as active profile.
+	Available when the following is fulfilled:
+	- Eye Tracking Device Status is "Tracking" or "InvalidConfiguration".
+	- Eye Tracking Configuration Status is "Valid" or "InvalidCalibration".
+
+	When the Guest Calibration tool is active the Eye Tracking Device Status will be "Configuring", i.e. tracking is off.
+	  
+  @field TX_CONFIGURATIONTOOL_CREATENEWPROFILE:
+    Create and calibrate a new profile and set it as active profile.
+	Available when the following is fulfilled:
+	- Eye Tracking Device Status is "Tracking" or "InvalidConfiguration".
+	- Eye Tracking Configuration Status is "Valid" or "InvalidCalibration".
+
+	When the Create New Profile tool is active the Eye Tracking Device Status will be "Configuring", i.e. tracking is off.
+
+  @field TX_CONFIGURATIONTOOL_TESTEYETRACKING:
+	Test your eye tracking.
+	Available when the following is fulfilled:
+	- Eye Tracking Device Status is "Tracking".	
+*/
+
+typedef enum {
+	TX_CONFIGURATIONTOOL_EYEXSETTINGS = TX_ENUM_STARTVALUE,
+	TX_CONFIGURATIONTOOL_RECALIBRATE,
+	TX_CONFIGURATIONTOOL_GUESTCALIBRATION,
+	TX_CONFIGURATIONTOOL_CREATENEWPROFILE,
+	TX_CONFIGURATIONTOOL_TESTEYETRACKING,
+
+	/* for internal use only */
+	TX_CONFIGURATIONTOOL_SETUPDISPLAY = TX_INTERNAL_ENUM_STARTVALUE,
+	TX_CONFIGURATIONTOOL_EYEPOSITION
+} TX_CONFIGURATIONTOOL;
+
+/*********************************************************************************************************************/
+/**
+  TX_EYETRACKINGCONFIGURATIONSTATUS 
+  
+  \since Version 1.1.0
+
+  Enumeration for configuration status. Gives information about the configuration status of the eye tracker,
+  for example if it needs to be calibrated or if we need to setup display. Can be used as input to determine 
+  when to enable launching of configuration tools, see txLaunchConfigurationTool
+  and TX_CONFIGURATIONTOOL.
+
+  @field TX_EYETRACKINGCONFIGURATIONSTATUS_VALID:
+    The configuration status of the eye tracker is valid.
+
+  @field TX_EYETRACKINGCONFIGURATIONSTATUS_INVALIDMONITORCONFIGURATION:
+	The monitor where the eye tracker is mounted need to be configured. 
+
+  @field TX_EYETRACKINGCONFIGURATIONSTATUS_INVALIDCALIBRATION:
+	The eye tracker need to be calibrated. If no user profile exists (see state TX_STATEPATH_PROFILENAME) a new profile should be created. 
+
+  @field TX_EYETRACKINGCONFIGURATIONSTATUS_UNKNOWNERROR:
+	The configuration is in an unknown error state.
+*/
+
+typedef enum {
+TX_EYETRACKINGCONFIGURATIONSTATUS_VALID = TX_ENUM_STARTVALUE,
+TX_EYETRACKINGCONFIGURATIONSTATUS_INVALIDMONITORCONFIGURATION,
+TX_EYETRACKINGCONFIGURATIONSTATUS_INVALIDCALIBRATION,
+TX_EYETRACKINGCONFIGURATIONSTATUS_UNKNOWNERROR
+} TX_EYETRACKINGCONFIGURATIONSTATUS;
 
 /*********************************************************************************************************************/
 

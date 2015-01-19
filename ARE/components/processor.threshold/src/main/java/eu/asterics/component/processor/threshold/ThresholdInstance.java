@@ -86,7 +86,7 @@ public class ThresholdInstance extends AbstractRuntimeComponentInstance
 	int propEventCondition = 0;
 	
 	// internal variables
-	boolean belowThreshold = true;
+	boolean belowThreshold = false;
 	boolean initialized = false;
 	
 	/**
@@ -523,6 +523,11 @@ public class ThresholdInstance extends AbstractRuntimeComponentInstance
             // convert input to int
             double in = ConversionUtils.doubleFromBytes(data);
             
+            if (initialized==false)
+            {
+            	if (in<propThresholdLow) belowThreshold=true; 
+            	else belowThreshold=false;
+            }
             owner.processInput(in);
         }
 

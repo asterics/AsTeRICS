@@ -90,6 +90,14 @@ public class Bridge
      */
     native public String setProperty(String key, final String value); 
  
+   /**
+    * Calls the calibration of the EyeX Engine
+    * 
+    * @param guest specifies if a guest profile should be used
+    * @return 0 if everything was OK
+    */
+    native public int recalibrate(final boolean guest);
+    
     /** 
      * This method is called back from the native code on demand to signify an
      * internal error. The first argument corresponds to an error code and the

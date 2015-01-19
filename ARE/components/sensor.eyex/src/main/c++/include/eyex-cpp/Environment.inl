@@ -43,6 +43,15 @@ inline std::shared_ptr<Environment> Environment::Initialize(
 
 /*********************************************************************************************************************/
 
+inline TX_EYEXAVAILABILITY Environment::GetEyeXAvailability()
+{
+	TX_EYEXAVAILABILITY availability;
+	TX_VALIDATE(txGetEyeXAvailability(&availability));
+	return availability;
+}
+
+/*********************************************************************************************************************/
+
 TX_NAMESPACE_END
 
 /*********************************************************************************************************************/

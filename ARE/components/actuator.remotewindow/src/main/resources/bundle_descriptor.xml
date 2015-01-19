@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.RemoteWindow"
+                   canonical_name="eu.asterics.component.actuator.remotewindow.RemoteWindowInstance">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>provides basic  Window manipulation for another active window</description>
+        <ports>
+			<inputPort id="name">
+				<description>the title of the window</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="XPos">
+				<description>desired X offset</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="YPos">
+				<description>desired Y offset</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="MoveToTop">
+				<description>moves Window to top of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveToBottom">
+				<description>moves Window to bottom of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveToLeft">
+				<description>moves Window to left side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveToRight">
+				<description>moves Window to right side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveToCenter">
+				<description>moves Window to center of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="Minimize">
+				<description>minimizes the Window to the taskbar</description>
+			</eventListenerPort>
+			<eventListenerPort id="Restore">
+				<description>restores the Window from the taskbar</description>
+			</eventListenerPort>
+			<eventListenerPort id="bringToFront">
+				<description>brings the Window to foreground position</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveNow">
+				<description>moves the Window to selected x/y position</description>
+			</eventListenerPort>
+		</events>			
+        <properties>
+			<property name="windowName"
+				type="string"
+				value="Notepad"
+				description="the title (caption) of the window"/>
+			<property name="mode"
+				type="integer"
+				value="1"
+				combobox="exact match//window title contains text"
+				description="mode for searching the window title"/>
+			<property name="xPos"
+				type="integer"
+				value="0"
+				description="default x position"/>
+			<property name="yPos"
+				type="integer"
+				value="0"
+				description="default y position"/>
+			<property name="autoSetPosition"
+				type="boolean"
+				value="false"
+				description="if true, the window will be moved automatically when new position values come in"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

@@ -32,9 +32,12 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
 
@@ -44,6 +47,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 /**
  * Implements the graphic interface for the GuiKeyboardInstance class.
  * 
@@ -53,6 +61,9 @@ import java.io.InputStreamReader;
  */
 public class GUI extends JPanel
 {
+	private final int USE_DEFAULT_COLOR = 13;
+	private final int DEFAULT_BORDER_THICKNESS = 2;
+	
   private final ButtonGridInstance owner;
   private JPanel panel;
 
@@ -92,7 +103,7 @@ public class GUI extends JPanel
     }
    
  	
-    for(int i=0;i<owner.NUMBER_OF_KEYS;i++)
+    for( int i=0;i<owner.NUMBER_OF_KEYS;i++)
     {
       buttons[i]=new JButton();
       String caption = owner.getButtonCaption(i);
@@ -107,6 +118,45 @@ public class GUI extends JPanel
     	numberOfKeys=numberOfKeys+1;
     	buttons[i].setEnabled(true);
         buttons[i].setVisible(true);
+
+        final JButton b =buttons[i];
+
+        //final Border raisedBevelBorder = BorderFactory.createRaisedBevelBorder();
+        //final Insets insets = raisedBevelBorder.getBorderInsets(buttons[i]);
+        //final EmptyBorder emptyBorder = new EmptyBorder(insets);
+        //b.setBorder(emptyBorder);
+        //b.setOpaque(false);
+        //b.setContentAreaFilled(false);
+        
+        if (owner.propBorderColor != USE_DEFAULT_COLOR)
+        	b.setBorder(BorderFactory.createLineBorder(getColorProperty(owner.propBorderColor), owner.propBorderThickness));
+
+        b.setFocusPainted(false);
+        if (!("".equalsIgnoreCase(owner.getToolTip(i))))
+        		b.setToolTipText(owner.getToolTip(i));
+        
+        if (owner.propBackgroundColor != USE_DEFAULT_COLOR)
+        	b.setBackground(getColorProperty(owner.propBackgroundColor));
+        
+        if (owner.propTextColor != USE_DEFAULT_COLOR)
+        	b.setForeground(getColorProperty(owner.propTextColor));
+
+        if (owner.propSelectionFrameColor != USE_DEFAULT_COLOR)
+        {
+	        b.getModel().addChangeListener(new ChangeListener() {
+	            @Override
+	            public void stateChanged(ChangeEvent e) {
+	                ButtonModel model = (ButtonModel) e.getSource();
+	                if (model.isRollover()) {
+	                	// b.setBorder(raisedBevelBorder);
+	               	   b.setBorder(BorderFactory.createLineBorder(getColorProperty(owner.propSelectionFrameColor), owner.propSelectionFrameThickness));
+	                } else {
+	                	// b.setBorder(emptyBorder);
+	                	b.setBorder(BorderFactory.createLineBorder(getColorProperty(owner.propBorderColor), owner.propBorderThickness));
+	                }
+	            }
+	        });
+        }        
       }
         	
       final int y =i;
@@ -116,7 +166,10 @@ public class GUI extends JPanel
         public void actionPerformed(ActionEvent e) 
         {
           if (colSav==null) colSav=buttons[y].getBackground();
-          buttons[y].setBackground(Color.RED);
+          if (owner.propSelectionFrameColor==USE_DEFAULT_COLOR)
+        	  buttons[y].setBackground(Color.RED);
+          else
+        	  buttons[y].setBackground(getColorProperty(owner.propSelectionFrameColor));
           owner.etpKeyArray[y].raiseEvent();
           
 		  AstericsThreadPool.instance.execute(new Runnable() {
@@ -257,4 +310,26 @@ public class GUI extends JPanel
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
   }
 
+  
+  Color getColorProperty(int index)
+  {
+  	switch (index) {
+  	case 0: return(Color.BLACK); 
+  	case 1: return(Color.BLUE); 
+  	case 2: return(Color.CYAN); 
+  	case 3: return(Color.DARK_GRAY); 
+  	case 4: return(Color.GRAY); 
+  	case 5: return(Color.GREEN); 
+  	case 6: return(Color.LIGHT_GRAY);
+  	case 7: return(Color.MAGENTA); 
+  	case 8: return(Color.ORANGE); 
+  	case 9: return(Color.PINK); 
+  	case 10: return(Color.RED); 
+  	case 11: return(Color.WHITE);
+  	case 12: return(Color.YELLOW); 
+  	default: return(Color.BLUE);
+  	}
+  }
+  
+  
 }

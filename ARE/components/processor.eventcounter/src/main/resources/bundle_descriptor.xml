@@ -8,6 +8,11 @@
         <singleton>false</singleton>
         <description>Two-direction event counter</description>
         <ports>
+        	<inputPort id="setValue">
+                <description>Sets the current value of the event counter to the incoming value</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
         	<outputPort id="output">
                 <description>Sends the number of events</description>
                 <dataType>integer</dataType>
@@ -25,6 +30,9 @@
             </eventListenerPort>
             <eventListenerPort id="resetToInitial">
                 <description>Sets the event number to the initial value</description>
+            </eventListenerPort>
+            <eventListenerPort id="sendNow">
+                <description>(re-)sends the current counter value to the output port</description>
             </eventListenerPort>
         </events>         
         <properties>
@@ -53,6 +61,10 @@
                       type="boolean"
                       value="false"
                       description="if selected, the initial value is sent at startup"/>
+            <property name="autoSend"
+                      type="boolean"
+                      value="true"
+                      description="if selected, changing values are sent automatically to the output port"/>
         </properties>
     </componentType>
 

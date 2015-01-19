@@ -57,7 +57,7 @@ namespace Asterics.ACS {
 
         public enum ScreenResolution { FiveFour, SixteenNine, FourThree };
 
-        bool enableGrid = false;
+        bool enableGrid = true;  //// CV:set to true by default
 
         [Category("Editor Properties")]
         public bool EnableGrid {
@@ -65,7 +65,7 @@ namespace Asterics.ACS {
             set { enableGrid = value; }
         }
 
-        bool showGrid = false;
+        bool showGrid = true;  //// CV:set to true by default
 
         [Category("Editor Properties")]
         public bool ShowGrid {
@@ -73,7 +73,7 @@ namespace Asterics.ACS {
             set { showGrid = value; OnPropertyChanged("showGrid"); }
         }
 
-        GridStep step = GridStep.medium;
+        GridStep step = GridStep.small;    //// CV:set to small by default
 
         [Category("Editor Properties")]
         public GridStep GridSteps {

@@ -12,7 +12,7 @@
   txInitializeEyeX
 
   Initializes the Tobii EyeX client environment.
-  This function must be called prior to any other in the API, except txEnableMonoCallbacks.
+  This function must be called prior to any other in the API, except txGetEyeXAvailability and txEnableMonoCallbacks.
   A client can choose to override the default memory model, threading model and logging model by supplying custom models
   to this function.
 
@@ -193,7 +193,7 @@ typedef TX_RESULT (TX_CALLCONVENTION *SetInvalidArgumentHandlerHook)(
   @return 
     TX_RESULT_OK: The mono callbacks were successfully enabled.
     TX_RESULT_INVALIDARGUMENT: The Mono module name could not be used to resolve the necessary Mono functions.
- */
+  */
 TX_C_BEGIN
 TX_API TX_RESULT TX_CALLCONVENTION txEnableMonoCallbacks(
 	TX_CONSTSTRING monoModuleName
@@ -204,6 +204,29 @@ typedef TX_RESULT (TX_CALLCONVENTION *EnableMonoCallbacksHook)(
 	TX_CONSTSTRING monoModuleName
     );
 
+
+/*********************************************************************************************************************/
+/**
+  txGetEyeXAvailability
+
+  Gets the availability of the EyeX Engine.
+
+  @param pEyeXAvailability [out]:
+    The availability of EyeX Engine.
+  
+  @return
+    TX_RESULT_OK: The status was fetched successfully.
+	TX_RESULT_INVALIDARGUMENT: An invalid argument was supplied.
+  */
+TX_C_BEGIN
+TX_API TX_RESULT TX_CALLCONVENTION txGetEyeXAvailability(
+	TX_EYEXAVAILABILITY* pEyeXAvailability
+	);
+TX_C_END
+
+typedef TX_RESULT (TX_CALLCONVENTION *GetEyeXAvailabilityHook)(
+	TX_EYEXAVAILABILITY* pEyeXAvailability
+	);
 
 
 /*********************************************************************************************************************/

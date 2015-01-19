@@ -13,7 +13,7 @@
                 <dataType>string</dataType>
             </outputPort>
             <inputPort id="slotDispatch">
-                <description>Send the string from the slot defined by number</description>
+                <description>Send the string from the slot defined by the incoming value</description>
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>integer</dataType>
             </inputPort>
@@ -80,20 +80,27 @@
                 <description>Send text from slot 20</description>
             </eventListenerPort>
             <eventListenerPort id="dispatchNextSlot">
-                <description>Send text from the next not empty slot</description>
+                <description>Send text from the next (not empty) slot</description>
+            </eventListenerPort>
+            <eventListenerPort id="dispatchCurrentSlot">
+                <description>Send text from the current slot (if not empty)</description>
             </eventListenerPort>
             <eventListenerPort id="dispatchPreviousSlot">
-                <description>Send text from the previous not empty slot</description>
+                <description>Send text from the previous (not empty) slot</description>
             </eventListenerPort>
             <eventListenerPort id="dispatchSlotSeries">
                 <description>Send text in sequence from all not empty slots with delay defined by Delay property</description>
             </eventListenerPort>
+            <eventListenerPort id="resetToFirstSlot">
+                <description>Sets the internal slot counter to the first slot</description>
+            </eventListenerPort>
+            
         </events>        
         <properties>
             <property name="delay"
                       type="integer"
                       value="300"
-                      description="Send all slots delay"/>
+                      description="Delay in milliseconds for sending all slots sequentially"/>
             <property name="slot1"
                       type="string"
                       value=""

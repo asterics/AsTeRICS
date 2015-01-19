@@ -7,21 +7,29 @@
 </HEAD>
 <BODY>
 <H1>EventRouter</H1>
-This component allows routing incoming events to one out of 8 output (trigger) event ports. 
+This component allows routing up to 6 incoming events to one of 8 corresponding output (trigger) event ports. 
 <h3>Component Type: Processor (Subcategory: Event and Signal Processing)</h3>
 <div class="image"><img src="img/EventRouter.jpg" alt="Screenshot: EventRouter" title="Screenshot: Event Router plugin" /><br>
 Event Router plugin</div>
 
 <H2>Event Listener Description</H2>
 <ul>
-<li><STRONG>eventIn:</STRONG> The incoming events to be routed.</li>
-<li><STRONG>select1-select8:</STRONG> incoming events on these listener ports select one of the 8 trigger output ports for routing the events of the eventIn port</li>
+<li><STRONG>eventIn1-6:</STRONG> The incoming events to be routed.</li>
+<li><STRONG>select1-select8:</STRONG> selects one of the 8 corresponding event routes (trigger output ports) events entering  the eventIn ports</li>
+<li><STRONG>selectNext:</STRONG> selects the next event route</li>
+<li><STRONG>selectPrevious:</STRONG> selects the next event route</li>
 </ul>
 <H2>Event Trigger Description</H2>
 <ul>
-<li><STRONG>eventOut1-eventOut8:</STRONG> 8 event trigger ports where the event entering the listener port eventIn can be routed to.</li>
+<li><STRONG>eventOut1-eventOut8:</STRONG> 8 event trigger ports where the events entering the listener port eventIn can be routed to.</li>
+<li><STRONG>eventOut2_1-eventOut2_8:</STRONG> 8 event trigger ports where the events entering the listener port eventIn2 can be routed to.</li>
+<li><STRONG>eventOut3_1-eventOut3_8:</STRONG> 8 event trigger ports where the events entering the listener port eventIn3 can be routed to.</li>
+<li><STRONG>eventOut4_1-eventOut4_8:</STRONG> 8 event trigger ports where the events entering the listener port eventIn4 can be routed to.</li>
+<li><STRONG>eventOut5_1-eventOut5_8:</STRONG> 8 event trigger ports where the events entering the listener port eventIn5 can be routed to.</li>
+<li><STRONG>eventOut6_1-eventOut6_8:</STRONG> 8 event trigger ports where the events entering the listener port eventIn6 can be routed to.</li>
 </ul>
 <H2>Properties</H2>
-No Properties.
+<li><STRONG>activeRoutes (integer):</STRONG> number of active routes (relevant for the selectNext and selectPrevious functions and the wrapAround feature)</li>
+<li><STRONG>wrapAround (boolean):</STRONG> if selected selectNext srats again at the first route when the last active route was reached, and selectPrevious continues at the last active route when triggered at the first route.</li>
 </BODY>
 </HTML>

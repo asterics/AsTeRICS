@@ -521,7 +521,8 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
       public void stop()
       {
     	  lastNoteOff();
-    	  if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, false);
+    	  // if (propDisplayGUI) 
+    	  AREServices.instance.displayPanel(gui, this, false);
           super.stop();
       }
 }

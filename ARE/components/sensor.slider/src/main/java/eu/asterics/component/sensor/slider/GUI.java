@@ -54,7 +54,7 @@ public class GUI extends JPanel implements ChangeListener
     //private MyPanel paintPanel = new MyPanel();
     
     private JPanel sliderPanel,paintPanel; 
-    private JSlider slider;
+    private JSlider slider=null;
     private JLabel sliderLabel;
     private Dimension sliderPanelSize;
     private Dimension sliderSize;
@@ -64,6 +64,8 @@ public class GUI extends JPanel implements ChangeListener
     
 	private GUI thisPanel;
 	private final SliderInstance owner;
+	private boolean changingSliderByInputValue=false;
+
 
     /**
      * The class constructor, initialises the GUI
@@ -135,10 +137,31 @@ public class GUI extends JPanel implements ChangeListener
     /** Listen to the slider. */
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider)e.getSource();
-       // if (!source.getValueIsAdjusting()) {
+    	
+    	if (changingSliderByInputValue==false)
+    	{
+         // if (!source.getValueIsAdjusting()) {
             owner.opValue.sendData(
-            		ConversionUtils.intToBytes(source.getValue()));
-            
-        //}
+            		ConversionUtils.intToBytes(source.getValue()));   
+          //}
+    	}
+        changingSliderByInputValue=false;
+		if (owner.propStoreValue == true)
+			owner.storeRuntimeValue("sliderPosition",source.getValue());
     }
+
+    public int getSliderValue() {
+    	if (slider != null)
+    		return(slider.getValue());
+    	else return(0);
+    }
+
+    public void valueChanged(int value) {
+    	if (slider != null)
+    	{
+    		changingSliderByInputValue=true;
+    		slider.setValue(value);
+    	}
+    }
+
 }

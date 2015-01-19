@@ -257,7 +257,8 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
 		 try {
     		socketOut = new DatagramSocket();
     		
-    		//String sendString = prestring + eventSendString; 
+    		//String sendString = prestring + eventSendString;
+    		stringToSend=stringToSend.replaceAll("\\s","");   // remove spaces !
     		sendBuf = stringToSend.getBytes();
     		 
     		address = InetAddress.getByName(propHostname);

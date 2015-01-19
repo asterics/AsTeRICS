@@ -203,7 +203,7 @@ namespace AsynchronousRecognition
 
                     foreach (string token in tokenList)
                     {
-                        // Console.WriteLine("act token =" + token);
+                        // Console.WriteLine("Speech Processor: act token =" + token);
 
                         if (String.Compare(token, "@close@") == 0)
                         {
@@ -291,10 +291,16 @@ namespace AsynchronousRecognition
 
             if (tts == null)
             {
-                Console.WriteLine("\nSpeech Processor: creating Speech Synthesizer");
-                tts = new SpeechSynthesizer();
-                tts.SetOutputToDefaultAudioDevice();
-                tts.SpeakCompleted += new EventHandler<SpeakCompletedEventArgs>(tts_SpeakCompleted);
+                try
+                {
+                    Console.WriteLine("\nSpeech Processor: creating Speech Synthesizer");
+                    tts = new SpeechSynthesizer();
+                    Console.WriteLine("\nSpeech Processor: created");
+                    tts.SetOutputToDefaultAudioDevice();
+                    tts.SpeakCompleted += new EventHandler<SpeakCompletedEventArgs>(tts_SpeakCompleted);
+                }
+                catch (Exception e) { Console.WriteLine("Speech Processor: Exception at Speech Synthesizer creation: \n" + e.Message+"\n please check your Audio playback device !" ); }
+
             }
 
             voiceInfo = null;

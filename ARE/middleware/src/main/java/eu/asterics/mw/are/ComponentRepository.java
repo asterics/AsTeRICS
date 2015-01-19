@@ -129,7 +129,6 @@ public class ComponentRepository
 
     public IComponentType getComponentType(final String componentTypeID)
     {
-    
        IComponentType res = repository.get(componentTypeID);
        return res;
     }

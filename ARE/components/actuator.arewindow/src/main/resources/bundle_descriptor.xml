@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.AREWindow"
+                   canonical_name="eu.asterics.component.actuator.arewindow.AREWindowInstance">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>provides basic ARE Window manipulation</description>
+        <ports>
+			<inputPort id="xPos">
+				<description>desired X position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="yPos">
+				<description>desired Y position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="moveToTop">
+				<description>moves Window to top of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveToBottom">
+				<description>moves Window to bottom of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveToLeft">
+				<description>moves Window to left side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveToRight">
+				<description>moves Window to right side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="moveToCenter">
+				<description>moves Window to center of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="minimize">
+				<description>moves Window to right side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="restore">
+				<description>moves Window to right side of the screen</description>
+			</eventListenerPort>
+			<eventListenerPort id="bringToFront">
+				<description>set the ARE Window to foreground</description>
+			</eventListenerPort>
+			<eventListenerPort id="setWindowFocusalbe">
+				<description>makes the ARE Window focusable</description>
+			</eventListenerPort>
+			<eventListenerPort id="setWindowNotFocusalbe">
+				<description>ARE Window is not focusable</description>
+			</eventListenerPort>
+
+		</events>			
+        <properties>
+			<property name="xPos"
+				type="integer"
+				value="0"
+				description="offset for x Position"/>
+			<property name="yPos"
+				type="integer"
+				value="0"
+				description="offset for y Position"/>
+			<property name="autoSetPosition"
+				type="boolean"
+				value="false"
+				description="if true, ARE window will be moved automatically after model is started or when new position values come in"/>
+			<property name="allowWindowModification"
+				type="boolean"
+				value="true"
+				description="if true, ARE window decoration and control panel can be activated / deactivated via mouse clicks"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

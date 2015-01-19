@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<keyboard rows="3" columns="3" scanning="2">
+	<button>
+		<text>Cell 1</text>
+		<icon></icon>
+		<action>action 1</action>
+		<soundfile></soundfile>
+	</button>
+	<button>
+		<text>Cell 2</text>
+		<icon></icon>
+		<action>action 2</action>
+		<soundfile></soundfile>
+	</button>
+	<button>
+		<text>Cell 3</text>
+		<icon></icon>
+		<action>action 3</action>
+		<soundfile></soundfile>
+	</button>
+	<button>
+		<text>Cell 4</text>
+		<icon></icon>
+		<action>Cell 4 action !</action>
+		<soundfile></soundfile>
+	</button>
+	<button>
+		<text>middle</text>
+		<icon></icon>
+		<action>middle Cell  action !</action>
+		<soundfile></soundfile>
+	</button>
+	<button>
+		<text>Cell 6</text>
+		<icon></icon>
+		<action>Cell 6 action !</action>
+		<soundfile></soundfile>
+	</button>
+	<button>
+		<text>Cell 7</text>
+		<icon></icon>
+		<action>Cell 7 action !</action>
+		<soundfile></soundfile>
+	</button>
+	<button>
+		<text>Cell 8</text>
+		<icon></icon>
+		<action>Cell 8 action !</action>
+		<soundfile></soundfile>
+	</button>
+	<button>
+		<text>Cell 9</text>
+		<icon></icon>
+		<action>Cell 9 action !</action>
+		<soundfile></soundfile>
+	</button>
+</keyboard>

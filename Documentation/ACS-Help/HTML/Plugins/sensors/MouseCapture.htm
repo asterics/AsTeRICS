@@ -18,6 +18,12 @@ A mouse or mouse-equivalent must be connected to the computer/personal platform.
 <li><STRONG>mouseX [integer]:</STRONG> This port provides current absolute mouse X-position or relative mouse X-movement as integer value (depending on the mode of operation).</li>
 <li><STRONG>mouseY [integer]:</STRONG> This port provides current absolute mouse Y-position or relative mouse Y-movement as integer value (depending on the mode of operation).</li>
 </ul>
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>blockEvents:</STRONG> After this incoming event no mouse activities will be routed to the operating system.</li>
+<li><STRONG>forwardEvents:</STRONG> After this incoming event all mouse activities will also be forwarded to the operating system.</li>
+<li><STRONG>toggleBlock:</STRONG> An incoming event toggles the current blockEvents. If the mouse activities were forwarded they will now be kept and vica versa.</li>
+</ul>
 <H2>Event Trigger Description</H2>
 <ul>
 <li><STRONG>leftButtonPressed:</STRONG> This port fires an event as the left mouse button is pressed.</li>

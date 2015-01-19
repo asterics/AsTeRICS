@@ -8,21 +8,26 @@
         <singleton>false</singleton>
         <description>Send text when gets event</description>
         <ports>
+            <inputPort id="setText">
+                <description>set the text to the incoming string</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
             <outputPort id="output">
-                <description>Output text</description>
+                <description>Output text, triggered via event</description>
                 <dataType>string</dataType>
             </outputPort>
         </ports>
         <events>
             <eventListenerPort id="sendText">
-                <description>Trigger event</description>
+                <description>this event triggers sending the text to the output port</description>
             </eventListenerPort>
         </events>        
         <properties>
             <property name="text"
                       type="string"
                       value="This is a sample text."
-                      description="Text to send"/>
+                      description="default text to send"/>
                       
         </properties>
     </componentType>

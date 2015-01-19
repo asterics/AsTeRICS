@@ -36,6 +36,8 @@
         the selected cell.</li>
       <li><strong>selectedCellText [string]:</strong> Sends the action
         text of the selected cell.</li>
+      <li><strong>currentCellText [string]:</strong> Sends the action
+        text of the currently active cell (relevant only for the moveUp / moveDown / moveLeft / moveRight events)</li>
     </ul>
     <h2>Event Listener Description</h2>
     <ul>
@@ -44,13 +46,13 @@
       <li><strong>scanSelect:</strong> Selects the highlighted cell in
         the row-column, column-row and directed scanning modes.</li>
       <li><strong>moveUp:</strong> Moves the scanning highlight up in
-        the directed scanning mode.</li>
+        the directed scanning mode (wrap around is possible).</li>
       <li><strong>moveRight:</strong> Moves the scanning highlight to
-        the right in the directed scanning mode.</li>
+        the right in the directed scanning mode (wrap around is possible).</li>
       <li><strong>moveLeft:</strong> Moves the scanning highlight to the
-        left in the directed scanning mode.</li>
+        left in the directed scanning mode (wrap around is possible).</li>
       <li><strong>moveDown:</strong> Moves the scanning highlight down
-        in the directed scanning mode.</li>
+        in the directed scanning mode (wrap around is possible).</li>
     </ul>
     <h2>Event Trigger Description</h2>
     <ul>

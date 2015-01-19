@@ -149,7 +149,19 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance
 			bridge.setProperty("blockEvents", "false"); 
 		}
 	};
-	
+
+	final IRuntimeEventListenerPort elpToggleBlock = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			if("true".equals(bridge.getProperty("blockEvents"))){				
+				bridge.setProperty("blockEvents", "false"); 
+			}
+			else{
+				bridge.setProperty("blockEvents", "true");
+			}
+		}
+	};
 	
 	/**
      * returns an Event Listener Port.
@@ -162,6 +174,8 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance
 			return elpBlockEvents;
 		else if ("forwardEvents".equalsIgnoreCase(eventPortID))
 			return elpForwardEvents;
+		else if("toggleBlock".equalsIgnoreCase(eventPortID))
+			return elpToggleBlock;
 		return null;
     }
 

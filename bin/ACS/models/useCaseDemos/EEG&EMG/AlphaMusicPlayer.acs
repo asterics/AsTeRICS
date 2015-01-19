@@ -181,6 +181,9 @@ state.</description>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="text" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Play.png" />
@@ -196,6 +199,9 @@ state.</description>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="text" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Stop.png" />

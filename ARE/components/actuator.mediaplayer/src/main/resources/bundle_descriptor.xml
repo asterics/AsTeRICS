@@ -14,7 +14,7 @@
 				<dataType>string</dataType>
 			</inputPort>
 			<inputPort id="position">
-				<description>position in media file (0-100%)</description>
+				<description>set position in media file (0-100%)</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
@@ -23,6 +23,10 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>double</dataType>
 			</inputPort>
+            <outputPort id="actPos">
+                <description>current playback position (0-100%)</description>
+                <dataType>double</dataType>
+            </outputPort>
         </ports>
 		<events>
 			<eventListenerPort id="play">
@@ -37,8 +41,6 @@
 			<eventListenerPort id="reset">
 				<description>resets the mediafile to initial position</description>
 			</eventListenerPort>
-
-
 		</events>			
         <properties>
 			<property name="filename"
@@ -49,8 +51,15 @@
 			<property name="autoplay"
 				type="boolean"
 				value="true"
-				description="automatically play the media file ar startup or as filename is received"/>
-
+				description="automatically play the media file at startup or when a filename is received"/>
+			<property name="displayGui"
+				type="boolean"
+				value="true"
+				description="shall a window be displayed (e.g for movies) or not ?"/>
+			<property name="pathToVLC"
+				type="string"
+                value="C:\Program Files (x86)\VideoLAN\VLC"
+				description="default path to the VLC media player installation (libvlc.dll)"/>
         </properties>
 		<gui>
 			<width>3000</width>

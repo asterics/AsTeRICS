@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Delay"
+                   canonical_name="eu.asterics.component.processor.delay.DelayInstance">
+        <type subtype="Basic Math">processor</type>
+        <singleton>false</singleton>
+        <description>delays the incoming signal by a given time</description>
+        <ports>
+			<inputPort id="in">
+				<description>input value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="out">
+				<description>delayed output value</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="delay"
+				type="integer"
+				value="1000"
+				description="delay time in milliseconds"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

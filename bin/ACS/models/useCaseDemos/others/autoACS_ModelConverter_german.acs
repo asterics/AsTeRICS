@@ -1,0 +1,632 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="12/27/2014_2135" version="20130320">
+  <components>
+    <component id="Timer.2" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="1" />
+        <property name="repeatCounter" value="10" />
+        <property name="timePeriod" value="1000" />
+        <property name="resolution" value="100" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="True" />
+      </properties>
+      <layout>
+        <posX>8</posX>
+        <posY>413</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="a" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="500" />
+      </properties>
+      <layout>
+        <posX>753</posX>
+        <posY>470</posY>
+      </layout>
+    </component>
+    <component id="StringExpander.1" type_id="asterics.StringExpander">
+      <description>Adds the preString and postString strings to the incoming string and sends the new string to the output port.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="preString" value="{ALT}x{WAIT}o{WAIT}  " />
+        <property name="postString" value="{ALT}f{WAIT}{ALT}x{WAIT}s" />
+        <property name="trim" value="false" />
+      </properties>
+      <layout>
+        <posX>484</posX>
+        <posY>602</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="send keyboard commands:" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>668</posX>
+        <posY>622</posY>
+      </layout>
+      <gui>
+        <posX>138</posX>
+        <posY>1978</posY>
+        <width>5487</width>
+        <height>489</height>
+      </gui>
+    </component>
+    <component id="LineReader.1" type_id="asterics.LineReader">
+      <description>reads contents of a text file line by line</description>
+      <ports>
+        <outputPort portTypeID="actLine">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="skipLines">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="fileName" value="modelfile.txt" />
+      </properties>
+      <layout>
+        <posX>218</posX>
+        <posY>68</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="currently processing:" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="1" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>545</posX>
+        <posY>29</posY>
+      </layout>
+      <gui>
+        <posX>125</posX>
+        <posY>1267</posY>
+        <width>5488</width>
+        <height>644</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="True" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="12" />
+        <property name="borderColor" value="0" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="10" />
+        <property name="selectionFrameThickness" value="10" />
+        <property name="buttonCaption1" value="STOP !" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>74</posX>
+        <posY>209</posY>
+      </layout>
+      <gui>
+        <posX>2512</posX>
+        <posY>578</posY>
+        <width>1163</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties />
+      <layout>
+        <posX>380</posX>
+        <posY>241</posY>
+      </layout>
+      <gui>
+        <posX>5675</posX>
+        <posY>1867</posY>
+        <width>2688</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="TextArea.1" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="list of lines" />
+        <property name="default" value="" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>561</posX>
+        <posY>145</posY>
+      </layout>
+      <gui>
+        <posX>5675</posX>
+        <posY>511</posY>
+        <width>2700</width>
+        <height>1289</height>
+      </gui>
+    </component>
+    <component id="Timer.1" type_id="asterics.Timer">
+      <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
+      <ports>
+        <inputPort portTypeID="period">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="time">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="2" />
+        <property name="repeatCounter" value="1" />
+        <property name="timePeriod" value="3500" />
+        <property name="resolution" value="10" />
+        <property name="waitPeriod" value="0" />
+        <property name="autostart" value="false" />
+      </properties>
+      <layout>
+        <posX>196</posX>
+        <posY>244</posY>
+      </layout>
+    </component>
+    <component id="EventCounter.1" type_id="asterics.EventCounter">
+      <description>Two-direction event counter</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="minValue" value="0" />
+        <property name="maxValue" value="1000" />
+        <property name="initialValue" value="0" />
+        <property name="wrapAround" value="false" />
+        <property name="sendInitialValue" value="false" />
+        <property name="autoSend" value="true" />
+      </properties>
+      <layout>
+        <posX>505</posX>
+        <posY>315</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Converted Models:" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>646</posX>
+        <posY>323</posY>
+      </layout>
+      <gui>
+        <posX>4475</posX>
+        <posY>556</posY>
+        <width>1112</width>
+        <height>667</height>
+      </gui>
+    </component>
+    <component id="Comparator.1" type_id="asterics.Comparator">
+      <description>Comparator for two inputs</description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="condition" value="4" />
+        <property name="outputMode" value="2" />
+        <property name="eventMode" value="0" />
+        <property name="threshold" value="0" />
+        <property name="threshold2" value="10" />
+      </properties>
+      <layout>
+        <posX>270</posX>
+        <posY>431</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.3" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+      </properties>
+      <layout>
+        <posX>242</posX>
+        <posY>590</posY>
+      </layout>
+      <gui>
+        <posX>1925</posX>
+        <posY>578</posY>
+        <width>525</width>
+        <height>578</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.4" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="start in:" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="10" />
+        <property name="backgroundColor" value="12" />
+      </properties>
+      <layout>
+        <posX>95</posX>
+        <posY>12</posY>
+      </layout>
+      <gui>
+        <posX>125</posX>
+        <posY>578</posY>
+        <width>1762</width>
+        <height>600</height>
+      </gui>
+    </component>
+    <component id="EventCounter.2" type_id="asterics.EventCounter">
+      <description>Two-direction event counter</description>
+      <ports>
+        <inputPort portTypeID="setValue">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="mode" value="0" />
+        <property name="minValue" value="0" />
+        <property name="maxValue" value="1000" />
+        <property name="initialValue" value="10" />
+        <property name="wrapAround" value="false" />
+        <property name="sendInitialValue" value="false" />
+        <property name="autoSend" value="true" />
+      </properties>
+      <layout>
+        <posX>122</posX>
+        <posY>414</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.2">
+      <source>
+        <component id="StringExpander.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Keyboard.1" />
+        <port id="keyCodes" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="LineReader.1" />
+        <port id="actLine" />
+      </source>
+      <target>
+        <component id="StringExpander.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="StringExpander.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="LineReader.1" />
+        <port id="actLine" />
+      </source>
+      <target>
+        <component id="TextDisplay.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="LineReader.1" />
+        <port id="actLine" />
+      </source>
+      <target>
+        <component id="TextArea.1" />
+        <port id="appendText" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="EventCounter.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="EventCounter.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Comparator.1" />
+        <port id="inA" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="EventCounter.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.3" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="endOfFile_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="LineReader.1" />
+          <eventPort id="endOfFile" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_readNextLine">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="LineReader.1" />
+          <eventPort id="readNextLine" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="endOfFile_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="LineReader.1" />
+          <eventPort id="endOfFile" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_increase">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.1" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.1" />
+          <eventPort id="increase" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.2" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="periodFinished_decrease">
+      <description />
+      <sources>
+        <source>
+          <component id="Timer.2" />
+          <eventPort id="periodFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCounter.2" />
+          <eventPort id="decrease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_start">
+      <description />
+      <sources>
+        <source>
+          <component id="Comparator.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="start" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>8925</width>
+      <height>2578</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

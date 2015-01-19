@@ -27,28 +27,27 @@
 package eu.asterics.component.sensor.cellboard;
 
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.border.TitledBorder;
-
-import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.services.AstericsThreadPool;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.text.DecimalFormat;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+
 import javax.imageio.ImageIO;
-import java.io.*;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import eu.asterics.mw.gui.OptionsFrame;
+import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
  *   Implements the cell panel for the
@@ -61,15 +60,13 @@ import java.io.*;
 
 public class GUICell extends JPanel implements Runnable
 {
-	private GUI owner;
-	final IRuntimeEventTriggererPort etpClicked;
-	final IRuntimeOutputPort opSelectedCell;
-	final IRuntimeOutputPort opSelectedCellText;
-	
-	final IRuntimeEventTriggererPort etpGeralEvent;
+	public final GUI owner;
+	final IRuntimeEventTriggererPort etpGeneralEvent;
 	
 	private boolean blockSendEvent=true;
 	private int index=-1;
+	private int row=-1;
+	private int column=-1;
 	private float fontSize=-1;
 	
 	BufferedImage  image=null;
@@ -78,8 +75,10 @@ public class GUICell extends JPanel implements Runnable
 	int scaledImageWidth=-1;
 	int scaledImageHeight=-1;
 	
-	String text="";
-	String actionText="";
+	 String text="";
+	 String actionText="";
+	 String picturePath="";
+	 String wavPath="";
 	
 	private final float fontSizeMax=150;
 	private final float fontIncrementStep=0.5f;
@@ -87,52 +86,60 @@ public class GUICell extends JPanel implements Runnable
 	private final int frameWidth=1;
 	private final int scanFrameWidth=4;
 	
+	private CellEditFrame editFrame;
+	
 	boolean scanActive=false;
 	
 	 /**
      * The class constructor.
      * @param owner    the GUI instance
      * @param eventPort the event port
-     * @param cellNumberPort the cell number output port
-     * @param cellTextOutputPort the cell text output port
+     * @param cellPort the cell number output port
+     * @param cellTextPort the cell text output port
      */
-	public GUICell(GUI owner,IRuntimeEventTriggererPort eventPort,IRuntimeOutputPort cellNumberPort,IRuntimeOutputPort cellTextOutputPort,IRuntimeEventTriggererPort generalEvent)
+	public GUICell(final GUI owner,  IRuntimeEventTriggererPort generalEvent) 
 	{
 		super();
 		this.owner=owner;
-		this.etpClicked=eventPort;
-		opSelectedCell=cellNumberPort;
-		opSelectedCellText=cellTextOutputPort;
-		etpGeralEvent=generalEvent;
-		
+		etpGeneralEvent=generalEvent;
+	
+		editFrame = new CellEditFrame (this);
+
 		blockSendEvent=true;
 		hoverFinish=false;
 		
 		addMouseListener(new MouseAdapter() { 
 	          public void mousePressed(MouseEvent me) { 
-	            
 	        	
-	        	if(blockSendEvent==false)
-	            {
-	            	etpClicked.raiseEvent();
-	            	opSelectedCell.sendData(ConversionUtils.intToBytes(index+1));
-	            	opSelectedCellText.sendData(ConversionUtils.stringToBytes(actionText));
-	            	 AstericsThreadPool.instance.execute(selectFeedback);
-	            }
-	        	
-	        	sendGeneralEvent();
+	        	if (SwingUtilities.isRightMouseButton(me))
+	        	{
+	        		// System.out.println("Cell "+index+ " was right-clicked !");
+	        		editFrame.showFrame();
+	        	}
+	        	else
+	        	{
+		        	if(blockSendEvent==false)
+		            {
+		        		owner.performCellSelection(row, column);
+		                AstericsThreadPool.instance.execute(selectFeedback);
+		            }
+		        	
+		        	sendGeneralEvent();
+	        	}
 	          }
 	          public void mouseEntered(MouseEvent e){
 	        	  if(hoverSelection){
 	        		  hoverExit=false;
 	        		  cellhovering=true;
 	        		  hoverSelected=false;
-	        		  repaintNow();
+	        		  owner.performActCellUpdate(row, column);
+	        		  repaintNow(0);
 	        		  AstericsThreadPool.instance.execute(hoverTimer);
 	        	  }else{
 	        		  if(!blockSendEvent)
 	        		  {
 	        			  cellhovering=true;
+	            		  owner.performActCellUpdate(row, column);
 	        			  repaintNow();
 	        		  }
 	        	  }
@@ -151,6 +158,11 @@ public class GUICell extends JPanel implements Runnable
 	
 	public void repaintNow()
 	{
+		repaintNow(1);
+	}
+	
+	public void repaintNow(double hoverPercent)
+	{
 		if(scanActive)
 		{
 			Color scanBorderColor=new Color(255-getColorProperty(owner.getScanColor()).getRed(),255-getColorProperty(owner.getScanColor()).getGreen(),255-getColorProperty(owner.getScanColor()).getBlue());
@@ -160,8 +172,13 @@ public class GUICell extends JPanel implements Runnable
 		{
 			if(cellhovering)
 			{
-				Color scanBorderColor=new Color(getColorProperty(owner.getScanColor()).getRed(),getColorProperty(owner.getScanColor()).getGreen(),getColorProperty(owner.getScanColor()).getBlue());
-				setBorder(BorderFactory.createLineBorder(scanBorderColor,scanFrameWidth));
+				if(hoverSelection){					
+					Color scanBorderColor=new Color((int)(getColorProperty(owner.getScanColor()).getRed() * hoverPercent),(int)(getColorProperty(owner.getScanColor()).getGreen()*hoverPercent),(int)(getColorProperty(owner.getScanColor()).getBlue()*hoverPercent));
+					setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth+scanFrameWidth*hoverPercent)));
+				} else{					
+					Color scanBorderColor=new Color(getColorProperty(owner.getScanColor()).getRed(),getColorProperty(owner.getScanColor()).getGreen(),getColorProperty(owner.getScanColor()).getBlue());
+					setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth)));
+				}
 			}
 			else
 			{
@@ -341,6 +358,7 @@ public class GUICell extends JPanel implements Runnable
 				image.flush();
 			}
 			image=null;
+			picturePath="";
 		}
 		else
 		{
@@ -352,6 +370,8 @@ public class GUICell extends JPanel implements Runnable
 				}
 				image=null;
 				File imageFile = new File(path.trim());
+				picturePath=path.trim();
+
 				image = ImageIO.read(imageFile);
 			}
 			catch(Exception ex)
@@ -366,6 +386,16 @@ public class GUICell extends JPanel implements Runnable
 		}
 	}
 	
+	String getPicturePath()
+	{
+		return picturePath;
+	}
+
+	String getWavPath()
+	{
+		return wavPath;
+	}
+
 	
 	/**
      * Sets the cell index.
@@ -384,33 +414,16 @@ public class GUICell extends JPanel implements Runnable
 	{
 		return index;
 	}
-	
-	/**
-     * returns a color for a given color index
-     * @param index    the color index
-     * @return         the associated color
-     */
-    Color getColorProperty(int index)
-    {
-    	switch (index) {
-    	case 0: return(Color.BLACK); 
-    	case 1: return(Color.BLUE); 
-    	case 2: return(Color.CYAN); 
-    	case 3: return(Color.DARK_GRAY); 
-    	case 4: return(Color.GRAY); 
-    	case 5: return(Color.GREEN); 
-    	case 6: return(Color.LIGHT_GRAY);
-    	case 7: return(Color.MAGENTA); 
-    	case 8: return(Color.ORANGE); 
-    	case 9: return(Color.PINK); 
-    	case 10: return(Color.RED); 
-    	case 11: return(Color.WHITE);
-    	case 12: return(Color.YELLOW); 
-    	default: return(Color.BLUE);
-    	}
-    }
-    
 
+	/**
+     * Returns the cell ID.
+     * @return cell ID
+     */
+    public int getCellID()
+    {
+    	return index+1;
+    }
+	
 	/**
      * Sets or removes the scanning frame.
      * @param scanActive if true, the scanning frame is activated.
@@ -421,20 +434,22 @@ public class GUICell extends JPanel implements Runnable
     }
     
 
+
 	/**
      * Sets the cell text.
      * @param text text of the cell
      */
-    public void setText(String text)
+    public void setCellCaption(String text)
     {
     	this.text=text;
     }
+
     
     /**
      * Returns the cell text.
      * @return cell text
      */
-    public String getText()
+    public String getCellCaption()
     {
     	return text;
     }
@@ -452,11 +467,22 @@ public class GUICell extends JPanel implements Runnable
      * Returns the cell action text.
      * @return cell action text
      */
-    public String getActionText()
+    public String getCellText()
     {
     	return actionText;
     }
+
     
+    public void setRow(int row)
+    {
+    	this.row=row;
+    }
+
+    public void setColumn(int column)
+    {
+    	this.column=column;
+    }
+
 
 	/**
      * Sets the font size.
@@ -478,7 +504,7 @@ public class GUICell extends JPanel implements Runnable
     }
     
     private int hoverTime=1000;
-    private boolean hoverSelection=false;
+	private boolean hoverSelection=false;
     
     /**
      * Sets hover time.
@@ -607,9 +633,36 @@ public class GUICell extends JPanel implements Runnable
     	return fontSize;
     }
     
+	/**
+     * returns a color for a given color index
+     * @param index    the color index
+     * @return         the associated color
+     */
+    Color getColorProperty(int index)
+    {
+    	switch (index) {
+    	case 0: return(Color.BLACK); 
+    	case 1: return(Color.BLUE); 
+    	case 2: return(Color.CYAN); 
+    	case 3: return(Color.DARK_GRAY); 
+    	case 4: return(Color.GRAY); 
+    	case 5: return(Color.GREEN); 
+    	case 6: return(Color.LIGHT_GRAY);
+    	case 7: return(Color.MAGENTA); 
+    	case 8: return(Color.ORANGE); 
+    	case 9: return(Color.PINK); 
+    	case 10: return(Color.RED); 
+    	case 11: return(Color.WHITE);
+    	case 12: return(Color.YELLOW); 
+    	default: return(Color.BLUE);
+    	}
+    }
+    
+
+    
     
     /**
-     * Sends deleyed general click event.
+     * Sends delayed general click event.
      */
     private void sendGeneralEvent()
     {
@@ -625,13 +678,13 @@ public class GUICell extends JPanel implements Runnable
     }
     
     /**
-     * Thread function.
+     * Thread function to send delayed general cell clicked event.
      */
     @Override
 	public void run() {
     	try{
 			Thread.sleep(100);
-			etpGeralEvent.raiseEvent();
+			etpGeneralEvent.raiseEvent();
 		}catch (InterruptedException e) {}
     	
     }
@@ -663,9 +716,7 @@ public class GUICell extends JPanel implements Runnable
 				if(currentTime>=hoverTime)
 				{
 					hoverSelected=true;
-					etpClicked.raiseEvent();
-	            	opSelectedCell.sendData(ConversionUtils.intToBytes(index+1));
-	            	opSelectedCellText.sendData(ConversionUtils.stringToBytes(actionText));
+					owner.performCellSelection(row,column);
 	            	sendGeneralEvent();
 	            	repaintNow();
 	            	try{
@@ -675,6 +726,8 @@ public class GUICell extends JPanel implements Runnable
 	            	cellhovering=false;
 	            	repaintNow();
 					finish=true;
+				} else {
+					repaintNow(currentTime / (double)hoverTime);
 				}
 				
 				if(hoverExit||hoverFinish)

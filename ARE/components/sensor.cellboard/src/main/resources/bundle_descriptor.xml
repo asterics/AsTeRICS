@@ -28,14 +28,33 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
-			<outputPort id="selectedCell">
-				<description>Selected cell ID</description>
+
+			<outputPort id="actCell">
+				<description>the ID (index number) of the current cell (if single cell can be determined)</description>
 				<dataType>integer</dataType>
 			</outputPort>
-			<outputPort id="selectedCellText">
-				<description>Selected cell Text</description>
+			<outputPort id="actCellCaption">
+				<description>the caption (label text) of the current cell (if single cell can be determined)</description>
 				<dataType>string</dataType>
 			</outputPort>
+			<outputPort id="actCellText">
+				<description>the action text of the current cell (if single cell can be determined)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="selectedCell">
+				<description>The ID (index number) of the selected cell</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="selectedCellCaption">
+				<description>The caption (label text) of the selected cell</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="selectedCellText">
+				<description>The action text of the selected cell</description>
+				<dataType>string</dataType>
+			</outputPort>
+
 
         </ports>
 		<events>
@@ -57,6 +76,7 @@
 			<eventListenerPort id="moveDown">
 				<description>Move frame down</description>
 			</eventListenerPort>
+			
 			<eventTriggererPort id="cellClicked">
 				<description>Cell is clicked</description>
 			</eventTriggererPort>

@@ -13,6 +13,16 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
+			<inputPort id="preString">
+				<description>sets the preString</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="postString">
+				<description>sets the postString property</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
 
 			<outputPort id="output">
 				<description>String output port</description>

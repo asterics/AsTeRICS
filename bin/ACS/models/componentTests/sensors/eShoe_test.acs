@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="16.06.2014_175" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="16.06.2014_175" version="20130320">
   <components>
-    <component id="ESHOE.1" type_id="asterics.ESHOE">
-      <description>eSHOE implementation</description>
+    <component id="EShoe.1" type_id="asterics.EShoe">
+      <description>eShoe-Plugin to gather data from the eShoe</description>
       <ports>
-        <outputPort portTypeID="Angle">
+        <inputPort portTypeID="InputString">
           <properties />
-        </outputPort>
+        </inputPort>
         <outputPort portTypeID="AccX">
           <properties />
         </outputPort>
@@ -19,10 +19,10 @@
         <outputPort portTypeID="Heel">
           <properties />
         </outputPort>
-        <outputPort portTypeID="Meta1">
+        <outputPort portTypeID="MetaV">
           <properties />
         </outputPort>
-        <outputPort portTypeID="Meta5">
+        <outputPort portTypeID="MetaI">
           <properties />
         </outputPort>
         <outputPort portTypeID="Toe">
@@ -37,11 +37,14 @@
         <outputPort portTypeID="GyroZ">
           <properties />
         </outputPort>
+        <outputPort portTypeID="Angle">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
-        <property name="ComPort" value="COM72" />
+        <property name="ComPort" value="1" />
         <property name="SamplingRate" value="0" />
-        <property name="ToePressureThreshold" value="100" />
+        <property name="SDMemory" value="false" />
       </properties>
       <layout>
         <posX>175</posX>
@@ -52,8 +55,14 @@
       <description>Keyboard which sends event after button press</description>
       <ports />
       <properties>
-        <property name="caption" value="eShoe" />
+        <property name="caption" value="EShoe" />
         <property name="horizontalOrientation" value="True" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
         <property name="buttonCaption1" value="start" />
         <property name="buttonCaption2" value="stop" />
         <property name="buttonCaption3" value="" />
@@ -74,10 +83,30 @@
         <property name="buttonCaption18" value="" />
         <property name="buttonCaption19" value="" />
         <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
       </properties>
       <layout>
         <posX>32</posX>
-        <posY>194</posY>
+        <posY>169</posY>
       </layout>
       <gui>
         <posX>3650</posX>
@@ -478,7 +507,7 @@
   <channels>
     <channel id="binding.0">
       <source>
-        <component id="ESHOE.1" />
+        <component id="EShoe.1" />
         <port id="Angle" />
       </source>
       <target>
@@ -488,7 +517,7 @@
     </channel>
     <channel id="binding.1">
       <source>
-        <component id="ESHOE.1" />
+        <component id="EShoe.1" />
         <port id="AccX" />
       </source>
       <target>
@@ -498,7 +527,7 @@
     </channel>
     <channel id="binding.2">
       <source>
-        <component id="ESHOE.1" />
+        <component id="EShoe.1" />
         <port id="AccY" />
       </source>
       <target>
@@ -508,7 +537,7 @@
     </channel>
     <channel id="binding.3">
       <source>
-        <component id="ESHOE.1" />
+        <component id="EShoe.1" />
         <port id="AccZ" />
       </source>
       <target>
@@ -518,7 +547,7 @@
     </channel>
     <channel id="binding.4">
       <source>
-        <component id="ESHOE.1" />
+        <component id="EShoe.1" />
         <port id="Heel" />
       </source>
       <target>
@@ -526,29 +555,9 @@
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.5">
-      <source>
-        <component id="ESHOE.1" />
-        <port id="Meta1" />
-      </source>
-      <target>
-        <component id="Oscilloscope.1.3" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.6">
-      <source>
-        <component id="ESHOE.1" />
-        <port id="Meta5" />
-      </source>
-      <target>
-        <component id="Oscilloscope.1.4" />
-        <port id="in" />
-      </target>
-    </channel>
     <channel id="binding.7">
       <source>
-        <component id="ESHOE.1" />
+        <component id="EShoe.1" />
         <port id="Toe" />
       </source>
       <target>
@@ -558,7 +567,7 @@
     </channel>
     <channel id="binding.8">
       <source>
-        <component id="ESHOE.1" />
+        <component id="EShoe.1" />
         <port id="GyroX" />
       </source>
       <target>
@@ -568,7 +577,7 @@
     </channel>
     <channel id="binding.9">
       <source>
-        <component id="ESHOE.1" />
+        <component id="EShoe.1" />
         <port id="GyroY" />
       </source>
       <target>
@@ -578,7 +587,7 @@
     </channel>
     <channel id="binding.10">
       <source>
-        <component id="ESHOE.1" />
+        <component id="EShoe.1" />
         <port id="GyroZ" />
       </source>
       <target>
@@ -588,7 +597,7 @@
     </channel>
     <channel id="binding.11">
       <source>
-        <component id="ESHOE.1" />
+        <component id="EShoe.1" />
         <port id="Toe" />
       </source>
       <target>
@@ -598,7 +607,8 @@
     </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="button1_start">
+    <eventChannel id="button1_Start">
+      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -607,12 +617,13 @@
       </sources>
       <targets>
         <target>
-          <component id="ESHOE.1" />
-          <eventPort id="start" />
+          <component id="EShoe.1" />
+          <eventPort id="Start" />
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button2_stop">
+    <eventChannel id="button2_Stop">
+      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
@@ -621,22 +632,8 @@
       </sources>
       <targets>
         <target>
-          <component id="ESHOE.1" />
-          <eventPort id="stop" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="toePressureReached_Start">
-      <sources>
-        <source>
-          <component id="ESHOE.1" />
-          <eventPort id="toePressureReached" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="WavefilePlayer.1" />
-          <eventPort id="Start" />
+          <component id="EShoe.1" />
+          <eventPort id="Stop" />
         </target>
       </targets>
     </eventChannel>

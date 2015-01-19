@@ -197,7 +197,6 @@ public class DeploymentManager
 			final String componentTypeID =
 					componentInstance.getComponentTypeID();
 
-
 			final IComponentType componentType = 
 					componentRepository.getComponentType(componentTypeID);
 
@@ -373,11 +372,13 @@ public class DeploymentManager
 				= sourceComponentInstance.
 				getEventTriggererPort(sourceEventPortID);
 
-				eventTriggererPort.setEventChannelID(eventChannelID);
+				//eventTriggererPort.setEventChannelID(eventChannelID);
 
 				for(final EventListenerDetails eventListenerDetails : 
 					targetEventListenerPorts)
 				{
+					eventTriggererPort.setEventChannelID(sourceEventPortID+" > "+eventListenerDetails.portID);
+
 					eventTriggererPort.addEventListener(
 							eventListenerDetails.componentID, 
 							eventListenerDetails.portID,
@@ -1049,6 +1050,41 @@ public class DeploymentManager
 
 	}
 
+	public Point getScreenDimension()
+	{
+        return(gui.getScreenDimension());
+    }
+
+	public Point getAREWindowLocation()
+	{
+        return(gui.getAREWindowLocation());
+    }
+
+	public Point getAREWindowDimension()
+	{
+        return(gui.getAREWindowDimension());
+    }
+	public void setAREWindowState(int state)
+	{
+        gui.setAREWindowState(state);
+    }
+	public void setAREWindowToFront()
+	{
+		gui.setAREWindowToFront();
+	}
+	public void setAREWindowLocation(int x, int y)
+	{
+        gui.setAREWindowLocation(x,y);
+    }
+	public void allowAREWindowModification(boolean state)
+	{
+		gui.allowAREWindowModification(state);
+    }
+	public void setFocusableWindowState(boolean state){
+		gui.setFocusableWindowState(state);
+	}
+
+	
 	public Point getComponentPosition (IRuntimeComponentInstance componentInstance)
 	{
 
@@ -1083,6 +1119,9 @@ public class DeploymentManager
 
 	}
 
+	public BundleManager getBundleManager() {
+		return(this.bundleManager);
+	}
 
 	public Collection<IRuntimeComponentInstance> getComponentRuntimeInstances ()
 	{

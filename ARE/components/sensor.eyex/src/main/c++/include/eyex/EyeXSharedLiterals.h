@@ -25,10 +25,9 @@
     static const char* TX_SHAREDLITERAL_SERIALNUMBER = "SerialNumber";
 
     static const char* TX_SHAREDLITERAL_MESSAGETYPE = "MessageType";
-
     static const char* TX_SHAREDLITERAL_WINDOWID = "WindowId";
-
     static const char* TX_SHAREDLITERAL_COMMANDTYPE = "CommandType";
+	static const char* TX_SHAREDLITERAL_ISVISIBLE = "IsVisible";
 
     /**
     *   Callback Response Literals

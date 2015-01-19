@@ -120,7 +120,7 @@
       </layout>
     </component>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
-      <description>GUI component</description>
+      <description>Adjustable matrix of button cells with scanning support</description>
       <ports>
         <inputPort portTypeID="row">
           <properties />
@@ -134,7 +134,19 @@
         <inputPort portTypeID="xmlFile">
           <properties />
         </inputPort>
+        <outputPort portTypeID="actCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellText">
+          <properties />
+        </outputPort>
         <outputPort portTypeID="selectedCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellCaption">
           <properties />
         </outputPort>
         <outputPort portTypeID="selectedCellText">
@@ -150,6 +162,7 @@
         <property name="scanColor" value="10" />
         <property name="scanMode" value="4" />
         <property name="hoverTime" value="1000" />
+        <property name="keyboardFile" value="" />
         <property name="cellText1" value="CameraMouse" />
         <property name="cellImage1" value="" />
         <property name="actionText1" value="" />

@@ -31,6 +31,7 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsThreadPool;
@@ -61,9 +62,10 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
   private final String ELP_DECREASE="decrease";
   private final String ELP_RESET_TO_ZERO="resetToZero";
   private final String ELP_RESET_TO_INITIAL="resetToInitial";
+  private final String ELP_SEND_NOW="sendNow";
   
   private final OutputPort opOutput = new OutputPort();
-  private int EventCounter=0;
+  private int eventCounterValue=0;
   
   private int propMode =0;
   private int propMinValue =0;
@@ -71,6 +73,7 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
   private int propInitialValue =0;
   private boolean propWrapAround =false;
   private boolean propSendInitialValue =false;
+  private boolean propAutoSend =true;
 
  /**
    * The class constructor.
@@ -86,6 +89,10 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
    */
   public IRuntimeInputPort getInputPort(String portID)
   {
+	    if("setValue".equalsIgnoreCase(portID))
+	    {
+	      return ipSetValue;
+	    }
     return null;
   }
 
@@ -126,6 +133,10 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
     {
       return elpResetToInitial;
     }
+    else if(ELP_SEND_NOW.equalsIgnoreCase(eventPortID))
+    {
+      return elpSendNow;
+    }
         
     return null;
   }
@@ -160,6 +171,10 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
 	  else if("sendInitialValue".equalsIgnoreCase(propertyName))
 	  {
 			return (propSendInitialValue);
+	  } 
+	  else if("autoSend".equalsIgnoreCase(propertyName))
+	  {
+			return (propAutoSend);
 	  } 
 
     return null;
@@ -229,6 +244,19 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
 			}
 			return oldValue;
 		}
+	  else	if ("autoSend".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propSendInitialValue;
+			if("true".equalsIgnoreCase((String)newValue))
+			{
+				propAutoSend = true;
+			}
+			else if("false".equalsIgnoreCase((String)newValue))
+			{
+				propAutoSend = false;
+			}
+			return oldValue;
+		}
 
 
     return null;
@@ -244,21 +272,24 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
     {    	
         if ((propMode==MODE_LIMIT_MAX)||(propMode==MODE_LIMIT_BOTH))	
         {
-    	    if (EventCounter<propMaxValue)
+    	    if (eventCounterValue<propMaxValue)
     	    {
-    	      EventCounter=EventCounter+1;
-    	      opOutput.sendData(EventCounter);
+    	      eventCounterValue=eventCounterValue+1;
+    	      if (propAutoSend==true)
+    	    	  opOutput.sendData(eventCounterValue);
     	    }    	  
         	else if (propWrapAround==true) 
         	{
-        		EventCounter=propMinValue;
-  	       	    opOutput.sendData(EventCounter);
+        		eventCounterValue=propMinValue;
+      	        if (propAutoSend==true)
+  	       	      opOutput.sendData(eventCounterValue);
         	}
         }
         else
         {
-	        EventCounter=EventCounter+1;
-	        opOutput.sendData(EventCounter);
+	        eventCounterValue=eventCounterValue+1;
+  	        if (propAutoSend==true)
+  	    	  opOutput.sendData(eventCounterValue);
         }
     }
   };
@@ -273,21 +304,24 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
     {
         if ((propMode==MODE_LIMIT_MIN)||(propMode==MODE_LIMIT_BOTH))	
         {
-      	  if (EventCounter>propMinValue)
+      	  if (eventCounterValue>propMinValue)
       	  {
-      	      EventCounter=EventCounter-1;
-      	      opOutput.sendData(EventCounter);
+      	      eventCounterValue=eventCounterValue-1;
+    	      if (propAutoSend==true)
+    	    	  opOutput.sendData(eventCounterValue);
       	  }    	
       	  else if (propWrapAround==true) 
       	  {
-    		  EventCounter=propMaxValue;
-	       	  opOutput.sendData(EventCounter);
+    		  eventCounterValue=propMaxValue;
+    	      if (propAutoSend==true)
+    	    	  opOutput.sendData(eventCounterValue);
     	  } 
         }
         else
         {
-	        EventCounter=EventCounter-1;
-	        opOutput.sendData(EventCounter);
+	        eventCounterValue=eventCounterValue-1;
+  	        if (propAutoSend==true)
+  	    	    opOutput.sendData(eventCounterValue);
         }
     }
   };
@@ -300,8 +334,9 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
     @Override 
     public void receiveEvent(String data)
     {
-      EventCounter=0;
-      opOutput.sendData(EventCounter);
+      eventCounterValue=0;
+      if (propAutoSend==true)
+    	  opOutput.sendData(eventCounterValue);
     }
   };
 
@@ -310,10 +345,42 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
     @Override 
     public void receiveEvent(String data)
     {
-      EventCounter=propInitialValue;
-      opOutput.sendData(EventCounter);
+      eventCounterValue=propInitialValue;
+      if (propAutoSend==true)
+    	  opOutput.sendData(eventCounterValue);
     }
   };
+  final IRuntimeEventListenerPort elpSendNow 	= new IRuntimeEventListenerPort()
+  {
+    @Override 
+    public void receiveEvent(String data)
+    {
+    	opOutput.sendData(eventCounterValue);
+    }
+  };
+
+  
+  /**
+   * Plugin input port.
+   */  
+	private final IRuntimeInputPort ipSetValue  = new DefaultRuntimeInputPort()
+	{
+		public void receiveData(byte[] data)
+		{
+			int value = ConversionUtils.intFromBytes(data);
+				if (value < propMinValue)
+				{
+					value=propMinValue;
+				}
+				else
+				{
+					if(value > propMaxValue)
+						value = propMaxValue;
+				}
+				eventCounterValue=value;
+		}
+	};
+  
   /**
    * Plugin output port.
    */  
@@ -332,16 +399,16 @@ public class EventCounterInstance extends AbstractRuntimeComponentInstance
   public void start()
   {
 	  super.start();
-	  EventCounter=propInitialValue; 
+	  eventCounterValue=propInitialValue; 
 	  if (propSendInitialValue==true){
 		  Runnable delay = new Runnable(){
 
 			@Override
 			public void run() {
 				try{
-	  				  Thread.sleep(300);
+	  				  Thread.sleep(30);
 	  			}catch (InterruptedException e) {}
-				opOutput.sendData(EventCounter);
+				opOutput.sendData(eventCounterValue);
 				
 			}
 			  

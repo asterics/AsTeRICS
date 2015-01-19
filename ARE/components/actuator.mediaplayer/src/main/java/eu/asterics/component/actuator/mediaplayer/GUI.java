@@ -31,6 +31,7 @@ import javax.swing.event.*;
 import javax.swing.border.TitledBorder;
 
 import eu.asterics.mw.data.ConversionUtils;
+import eu.asterics.mw.services.AstericsThreadPool;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -38,7 +39,6 @@ import java.text.DecimalFormat;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.io.*;
-
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -86,6 +86,8 @@ public class GUI extends JPanel
 	private String actMediaFile = "";
 	private boolean playerCreated=false;
 	
+	private boolean positionOutputRunning=false;
+	
 
     // The size does NOT need to match the mediaPlayer size - it's the size that
     // the media will be scaled to
@@ -111,10 +113,15 @@ public class GUI extends JPanel
     public GUI(final MediaPlayerInstance owner, final Dimension space)
     {
         super();
-    	this.owner=owner;
+
+    	System.out.println("In Constructor");
+
+        this.owner=owner;
     	this.setPreferredSize(new Dimension (space.width, space.height));
     	
-    	if (new File("C:\\Program Files (x86)\\VideoLAN\\VLC").exists())
+    	if (new File(owner.propPathToVLC).exists())
+    		NativeLibrary.addSearchPath("libvlc", owner.propPathToVLC);
+    	else if (new File("C:\\Program Files (x86)\\VideoLAN\\VLC").exists())
     		NativeLibrary.addSearchPath("libvlc", "C:\\Program Files (x86)\\VideoLAN\\VLC");
     	else if (new File("C:\\Program Files\\VideoLAN\\VLC").exists())
     		NativeLibrary.addSearchPath("libvlc", "C:\\Program Files\\VideoLAN\\VLC");
@@ -127,8 +134,7 @@ public class GUI extends JPanel
 
     	}
 		design (space.width, space.height);  	
-		
-
+		createPlayer();
     }
 
     
@@ -139,6 +145,8 @@ public class GUI extends JPanel
 	 */
 	private void design (int width, int height)
 	{
+    	System.out.println("In Design");
+
 		//Create Panels
 		guiPanel = new JPanel ();
 		guiPanelSize = new Dimension (width, height);
@@ -146,7 +154,7 @@ public class GUI extends JPanel
 		guiPanel.setMaximumSize(guiPanelSize);
 		guiPanel.setPreferredSize(guiPanelSize);
 		
-		guiPanel.setVisible(true);
+		guiPanel.setVisible(owner.propDisplayGui);
 /*		
 		 JButton openFile = new JButton( "Open file to play" );
 		 openFile.addActionListener( new ActionListener() 
@@ -163,6 +171,9 @@ public class GUI extends JPanel
 		
 	     canvas = new WindowsCanvas();
 	     canvas.setSize(width,height);
+	     
+  	    canvas.setVisible(owner.propDisplayGui);
+			
 	     guiPanel.add(canvas);
 	     guiPanel.revalidate();
 	     guiPanel.repaint();
@@ -196,14 +207,19 @@ public class GUI extends JPanel
 	        mediaPlayerFactory = new MediaPlayerFactory();
 	        mediaPlayer = mediaPlayerFactory.newEmbeddedMediaPlayer();
 	        CanvasVideoSurface videoSurface = mediaPlayerFactory.newVideoSurface(canvas);
-	        mediaPlayer.setVideoSurface(videoSurface);
+	        
+	        if (owner.propDisplayGui == true)
+	          mediaPlayer.setVideoSurface(videoSurface);
 	        playerCreated=true;
+	        owner.playerActive=true;	        
 	 }
 	 
 	 
 	 public void play(String mediafile)
 	 {
-
+		 System.out.println("Play method called !!");
+		 
+		 positionOutputRunning=false;
 		 if (!actMediaFile.equals(mediafile)) stop();
 		 if (playerCreated==false) createPlayer();
 		 if (playerCreated==true)
@@ -215,21 +231,42 @@ public class GUI extends JPanel
 			 
 			if (!actMediaFile.equals(mediafile))
 	        {
-		        System.out.println("Trying to open and play file:"+ mediafile);
+		        //System.out.println("Trying to open and play file:"+ mediafile);
 	        	mediaPlayer.playMedia(mediafile);
 	        	actMediaFile=mediafile;
 	        }
 	        else
 	        {
-		        System.out.println("Trying to play mediafile");
+		        //System.out.println("Trying to play mediafile");
 	        	mediaPlayer.play();
 
 	        }
+			  AstericsThreadPool.instance.execute(new Runnable() {
+				  public void run()
+				  {
+					  positionOutputRunning=true;
+					  
+					  System.out.println("Started Position Report Thread");
+					  while (positionOutputRunning)
+					  {
+	    				try
+	    				{
+							   Thread.sleep(250);
+	    				}
+	    				catch (InterruptedException e) {}
+	    				if (positionOutputRunning==true)
+	    					owner.opActPos.sendData(ConversionUtils.doubleToBytes(mediaPlayer.getPosition()*100));
+					  }
+					  System.out.println("Ended Position Report Thread ");
+		    		}
+		    	  }
+		    	  );	
 		 }
 	 }
 
 	 public void pause()
 	 {
+		 System.out.println("Pause");
 		 if (playerCreated==true)
 		 {
 		        mediaPlayer.pause();
@@ -239,16 +276,32 @@ public class GUI extends JPanel
 
 	 public void stop()
 	 {
+		  System.out.println("Stop");
+		  positionOutputRunning=false;
+
+
 		 if (playerCreated==true)
 		 {
+			 System.out.println("Sending Stop to player");
+
 		        mediaPlayer.stop();
-	//	        mediaPlayer.release();
-	//	        playerCreated=false;
-	//	        actMediaFile="";
 		 }
 
 	 }
-	
+
+	 public void disposePlayer()
+	 {
+		 System.out.println("Dispose Player");
+	       owner.playerActive=false;
+		 if (mediaPlayer!=null)
+		 {
+		        mediaPlayer.stop();
+		        mediaPlayer.release();
+		 }
+         playerCreated=false;
+         actMediaFile="";
+	 }
+	 
 	 public void setRate(double rate)
 	 {
 		 if (playerCreated==true)
@@ -259,6 +312,8 @@ public class GUI extends JPanel
 	 }
 	 public void setPosition(double position)
 	 {
+		 System.out.println("Setposition");
+
 		 if (playerCreated==true)
 		 {
 			   	//  System.out.println(mediaPlayer.getMediaPlayerState().toString());

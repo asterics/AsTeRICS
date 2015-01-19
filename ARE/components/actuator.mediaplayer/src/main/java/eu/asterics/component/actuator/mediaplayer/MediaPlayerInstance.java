@@ -32,6 +32,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -55,18 +56,19 @@ import eu.asterics.mw.services.AREServices;
  */
 public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 {
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
-
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+	final IRuntimeOutputPort opActPos = new DefaultRuntimeOutputPort();
 
 	private String propFilename = "movie.avi";
 	private double propPosition = 0;
 	private double propRate = 100;
-	boolean propAutoplay = true;
+	boolean propAutoplay = false;
+	boolean propDisplayGui = true;
+	String propPathToVLC = "C:\\Program Files (x86)\\VideoLAN\\VLC";
 
 	// declare member variables here
 	private  GUI gui = null;
-  
+ 
+	public boolean playerActive =false;
     
    /**
     * The class constructor.
@@ -106,7 +108,10 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
-
+		if ("actPos".equalsIgnoreCase(portID))
+		{
+			return opActPos;
+		}
 		return null;
 	}
 
@@ -163,7 +168,14 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 		{
 			return propAutoplay;
 		}
-
+		if ("displayGui".equalsIgnoreCase(propertyName))
+		{
+			return propDisplayGui;
+		}
+		if ("pathToVLC".equalsIgnoreCase(propertyName))
+		{
+			return propPathToVLC;
+		}
         return null;
     }
 
@@ -180,6 +192,12 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 			propFilename = (String)newValue;
 			return oldValue;
 		}
+		if ("pathToVLC".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propPathToVLC;
+			propPathToVLC = (String)newValue;
+			return oldValue;
+		}
 		if ("autoplay".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propAutoplay;
@@ -190,6 +208,19 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 			else if("false".equalsIgnoreCase((String)newValue))
 			{
 				propAutoplay = false;
+			}
+			return oldValue;
+		}
+		if ("displayGui".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propDisplayGui;
+			if("true".equalsIgnoreCase((String)newValue))
+			{
+				propDisplayGui = true;
+			}
+			else if("false".equalsIgnoreCase((String)newValue))
+			{
+				propDisplayGui = false;
 			}
 			return oldValue;
 		}
@@ -207,7 +238,10 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 			String filename = new String(data);
 			propFilename = filename;
             if (propAutoplay==true)
-	        	  gui.play(propFilename);   
+            {
+    	    	System.out.println("play via inputport");
+	        	 if (playerActive) gui.play(propFilename);   
+            }
 		}
 	};
 
@@ -216,7 +250,7 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			propPosition=  ConversionUtils.doubleFromBytes(data);
-			gui.setPosition(propPosition);
+			if (playerActive) gui.setPosition(propPosition);
 		}
 	};
 
@@ -225,7 +259,7 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			propRate=  ConversionUtils.doubleFromBytes(data);
-			gui.setRate(propRate);
+			if (playerActive) gui.setRate(propRate);
 		}
 	};
 	
@@ -237,28 +271,29 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-			gui.play(propFilename);   		
+	    	System.out.println("play via eventlistener");
+	    	if (playerActive) gui.play(propFilename);   		
 		}
 	};
 	final IRuntimeEventListenerPort elpPause = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			gui.pause();   		
+			if (playerActive) gui.pause();   		
 		}
 	};
 	final IRuntimeEventListenerPort elpStop = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			gui.stop();   		
+			if (playerActive) gui.stop();   		
 		}
 	};
 	final IRuntimeEventListenerPort elpReset = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			gui.setPosition(0);    
+			if (playerActive) gui.setPosition(0);    
 		}
 	};
 
@@ -307,10 +342,7 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 		return res;
 
 	} 
-	
-
-	
-	
+		
 
      /**
       * called when model is started.
@@ -319,10 +351,14 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
       public void start()
       {
 		  gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
-		  AREServices.instance.displayPanel(gui, this, true);
+		  if (propDisplayGui) AREServices.instance.displayPanel(gui, this, true);
+		  else AREServices.instance.displayPanel(gui, this, false);
           super.start();
           if (propAutoplay==true)
-        	  gui.play(propFilename);   
+          {
+     		  System.out.println("play via Start method");
+     		  if (playerActive) gui.play(propFilename);   
+          }
       }
 
      /**
@@ -332,7 +368,7 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
       public void pause()
       {
           super.pause();
-    	  gui.pause();   	
+          if (playerActive) gui.pause();   	
 
       }
 
@@ -343,7 +379,8 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
       public void resume()
       {
           super.resume();
-    	  gui.play(propFilename);   	
+ 		  System.out.println("play via resume method");
+ 		  if (playerActive) gui.play(propFilename);   	
       }
 
      /**
@@ -352,8 +389,13 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
-    	  gui.stop();
- 		  AREServices.instance.displayPanel(gui, this, false);
           super.stop();
+ 		  System.out.println("Stop method");
+
+		  AREServices.instance.displayPanel(gui, this, false);
+    	  gui.stop();
+    	  gui.disposePlayer();
+  		  System.out.println("Stop method done");
+ 
       }
 }

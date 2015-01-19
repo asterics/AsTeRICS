@@ -287,6 +287,17 @@ int stopEyeX(void)
 	return 0;
 }
 
+int recalibrateEyeX(boolean guest)
+{
+	if(guest){
+		txLaunchConfigurationTool(hContext, TX_CONFIGURATIONTOOL_GUESTCALIBRATION, NULL, NULL);
+	}
+	else{
+		txLaunchConfigurationTool(hContext, TX_CONFIGURATIONTOOL_RECALIBRATE, NULL, NULL);
+	}
+
+	return 0;
+}
 
 
 extern "C" 
@@ -322,7 +333,18 @@ JNIEXPORT jint JNICALL Java_eu_asterics_component_sensor_eyex_jni_Bridge_activat
     return (jint)0;
 }
 
-
+JNIEXPORT jint JNICALL Java_eu_asterics_component_sensor_eyex_jni_Bridge_recalibrate
+	(JNIEnv * env, jobject obj, jboolean guest)
+{
+	boolean g;
+	if(guest)
+		g=true;
+	else
+		g=false;
+	recalibrateEyeX(g);
+	printf("C++: EyeX recalibrate called\n");
+	return (jint)0;
+}
 
 
 JNIEXPORT jint JNICALL Java_eu_asterics_component_sensor_eyex_jni_Bridge_deactivate

@@ -690,6 +690,8 @@ public class AREServices implements IAREServices{
 			return null;
 		}
 
+		modelName=modelName.replace('/', '.');
+		modelName=modelName.replace('\\', '.');
 		StringBuffer fullFilePath = new StringBuffer(STORAGE_FOLDER);
 		fullFilePath.append("/");
 		fullFilePath.append(modelName);
@@ -697,6 +699,7 @@ public class AREServices implements IAREServices{
 		fullFilePath.append(DeploymentManager.instance
 				.getComponentInstanceIDFromComponentInstance(component));
 		fullFilePath.append("/");
+		//System.out.println("Model File Name for Local Storage Service="+fullFilePath);
 
 		File localDir  = new File(fullFilePath.toString());
 		File localFile = new File(fullFilePath.toString() + fileName);
@@ -782,6 +785,42 @@ public class AREServices implements IAREServices{
 
 	}
 
+	public Point getScreenDimension ()
+	{
+		return DeploymentManager.instance.getScreenDimension();
+	}
+	public Point getAREWindowDimension ()
+	{
+		return DeploymentManager.instance.getAREWindowDimension();
+	}
+
+	public Point getAREWindowPosition ()
+	{
+		return DeploymentManager.instance.getAREWindowLocation();
+	}
+
+	public void setAREWindowPosition (int x, int y)
+	{
+		DeploymentManager.instance.setAREWindowLocation(x,y);
+	}
+	
+	public void setAREWindowState (int state)
+	{
+		DeploymentManager.instance.setAREWindowState(state);
+	}
+	public void setAREWindowToFront ()
+	{
+		DeploymentManager.instance.setAREWindowToFront();
+	}
+	public void allowAREWindowModification(boolean state)
+	{
+		DeploymentManager.instance.allowAREWindowModification(state);
+    }
+	public void setFocusableWindowState (boolean state){
+		DeploymentManager.instance.setFocusableWindowState(state);
+	}
+
+	
 	public void adjustFonts(final JPanel panel, final int maxFontSize,
 			final int minFontSize, final int offset) {
 		SwingUtilities.invokeLater(new Runnable() {
