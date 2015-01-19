@@ -123,6 +123,11 @@
 				type="double"
                 value="0.5"
 				description="the needed recognition confidence (0-1), high value needs precise pronunciation"/>
+			<property name="speechLoopDelay"
+				type="integer"
+				value="1500"
+				description="the minimal time between two speech commands. Avoids loops"
+			/>
 			<property name="activationCommand"
 				type="string"
 				value="computer, listen!"
