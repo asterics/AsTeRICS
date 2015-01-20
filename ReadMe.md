@@ -16,17 +16,22 @@ Possible applications are
 For more information see our website http://www.asterics.eu.
 
 ## Quick Build Instructions for Windows
-* ```git clone https://github.com/asterics/AsTeRICS.git```
-* Download and Install the Java Development Kit (JDK) >= 7 from http://www.oracle.com/technetwork/java/javase/downloads/index.html 
-  (Choose the 32bit version for your operating system, because some necessary components for interfacing hardware are not supported by the 64bit version by now)
-  Create a System Environment Variable “JAVA_HOME” which points to the folder where you installed the Java JDK.
-  Add the JDK bin path to the System Environment Variable “Path”
+* Clone repository
+```
+git clone https://github.com/asterics/AsTeRICS.git
+```
+* Download and Install the Java Development Kit (JDK) >= 7 from http://www.oracle.com/technetwork/java/javase/downloads/index.html
+  * (Choose the 32bit version for your operating system, because some necessary components for interfacing hardware are not supported by the 64bit version by now)
+  * Create a System Environment Variable “JAVA_HOME” which points to the folder where you installed the Java JDK.
+  * Add the JDK bin path to the System Environment Variable “Path”
 * Download and install the apache ant build framework (version >= 1.9.1) http://ant.apache.org/bindownload.cgi
-  Create a System Environment Variable “ANT_HOME” which points to the installation directory of ant.
-  Add the ant bin path to the System Environment Variable “Path”
+  * Create a System Environment Variable “ANT_HOME” which points to the installation directory of ant.
+  * Add the ant bin path to the System Environment Variable “Path”
 * Open a terminal and go to the ARE subfolder
 * Start ant
-```ant```
+```
+ant
+```
 
 ##Documentation
 
