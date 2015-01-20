@@ -32,7 +32,6 @@ git clone https://github.com/asterics/AsTeRICS.git
 ```
 ant
 ```
-
 ##Documentation
 
 * [Quickstart Guide] (http://www.asterics.eu/download/DeveloperManual.pdf)
