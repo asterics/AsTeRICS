@@ -1,0 +1,263 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.KinectJ4K"
+                   canonical_name="eu.asterics.component.sensor.kinectj4k.KinectJ4KInstance">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>false</singleton>
+        <description>My Plugin description</description>
+        <ports>
+
+			<outputPort id="FootLeftX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="FootLeftY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="FootLeftZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="FootRightX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="FootRightY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="FootRightZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AnkleLeftX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AnkleLeftY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AnkleLeftZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AnkleRightX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AnkleRightY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AnkleRightZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="KneeLeftX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="KneeLeftY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="KneeLeftZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="KneeRightX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="KneeRightY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="KneeRightZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HipLeftX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HipLeftY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HipLeftZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HipCenterX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HipCenterY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HipCenterZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HipRightX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HipRightY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HipRightZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="SpineX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="SpineY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="SpineZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ShoulderLeftX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ShoulderLeftY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ShoulderLeftZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ShoulderCenterX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ShoulderCenterY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ShoulderCenterZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ShoulderRightX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ShoulderRightY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ShoulderRightZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ElbowLeftX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ElbowLeftY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ElbowLeftZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ElbowRightX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ElbowRightY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="ElbowRightZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="WristLeftX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="WristLeftY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="WristLeftZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="WristRightX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="WristRightY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="WristRightZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HandLeftX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HandLeftY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HandLeftZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HandRightX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HandRightY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HandRightZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HeadX">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HeadY">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="HeadZ">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
