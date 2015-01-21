@@ -1,0 +1,3 @@
+echo AsTeRICS ARE Version 2.2
+echo Starting AsTeRICS Runtime Environment ...
+java -Djava.util.logging.config.file=logging.properties -Dorg.osgi.framework.bootdelegation=* -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
