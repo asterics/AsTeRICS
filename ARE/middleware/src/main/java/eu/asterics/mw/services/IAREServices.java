@@ -53,12 +53,6 @@ public interface IAREServices {
 	public void deployAndStartFile (String filename);
 	public void registerAREEventListener (IAREEventListener clazz);
 	public void unregisterAREEventListener (IAREEventListener clazz);
-	/**
-	 * @deprecated
-	 * @param internalFrame
-	 * @param display
-	 */
-	public void displayFrame (JInternalFrame internalFrame, boolean display);
 	public void displayPanel (JPanel panel, 
 			IRuntimeComponentInstance componentInstance, boolean display);
 	public Dimension getAvailableSpace(IRuntimeComponentInstance componentInstance);
