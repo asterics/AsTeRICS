@@ -32,12 +32,18 @@
   </target>
 
   <target name="jar" depends="compile" description="generate the OSGi bundle" >
-    <jar jarfile="${dist}/asterics.${component.id}.jar" basedir="${build}"
+    <jar jarfile="${dist}/asterics.${component.id}-windows.jar" basedir="${build}"
+         manifest="${resources}/META-INF/MANIFEST-windows.MF">
+        <fileset dir="${resources}"/>
+    </jar>      
+      <jar jarfile="${dist}/asterics.${component.id}.jar" basedir="${build}"
          manifest="${resources}/META-INF/MANIFEST.MF">
         <fileset dir="${resources}"/>
     </jar>
     <copy file="${dist}/asterics.${component.id}.jar" 
           tofile="${runtime}/asterics.${component.id}.jar"/>
+    <copy file="${dist}/asterics.${component.id}-windows.jar" 
+          tofile="${runtime}/asterics.${component.id}-windows.jar"/>
   </target>
 
 </project>
