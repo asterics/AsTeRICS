@@ -272,6 +272,7 @@ public class AstericsGUI implements IAREEventListener
 				{
 					if (e.getClickCount() ==2) 
 					{
+						mainFrame.pack();
 						mainFrame.setPreferredSize(mainFrame.getSize());
 						
 						if (mainFrame.isUndecorated() == false)
@@ -279,6 +280,7 @@ public class AstericsGUI implements IAREEventListener
 							mainFrame.dispose();
 							mainFrame.setUndecorated(true);
 							mainFrame.pack();
+							mainFrame.revalidate();
 							mainFrame.setVisible(true);
 						}
 						else
@@ -286,6 +288,7 @@ public class AstericsGUI implements IAREEventListener
 							mainFrame.dispose();
 							mainFrame.setUndecorated(false);
 							mainFrame.pack();
+							mainFrame.revalidate();
 							mainFrame.setVisible(true);
 						}
 					}
@@ -439,39 +442,6 @@ public class AstericsGUI implements IAREEventListener
 		return this.desktop;
 	}
 
-	public void displayFrame (final JInternalFrame frame, final boolean display)
-	{
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-
-				if (display)
-				{
-					openFrameCount++;
-					frame.setResizable(true);
-					frame.setClosable(true);
-					frame.setMaximizable(true);
-					frame.setIconifiable(true);
-					frame.setLocation(xOffset*openFrameCount, yOffset*openFrameCount);
-					frame.setVisible(true);
-					desktop.validate();
-					desktop.add(frame);
-
-					frame.moveToFront();
-					desktop.repaint();
-				}
-				else
-				{
-					desktop.remove(frame);
-					frame.setVisible(false);
-					frame.dispose();
-					desktop.repaint();
-				}
-			}
-		});
-
-	}
-
 	public void displayPanel (final JPanel panel, final int posX, final int posY, 
 			final int width, final int height, 
 			final boolean display)
@@ -505,7 +475,7 @@ public class AstericsGUI implements IAREEventListener
 				{
 					desktop.validate();
 					if (panel!=null) desktop.addPanel(panel, nposX - position.x , nposY - position.y, nwidth, nheight);
-					desktop.repaint();
+					//desktop.repaint();
 				}
 				else
 				{
@@ -513,10 +483,13 @@ public class AstericsGUI implements IAREEventListener
 					  panel.setVisible(false);
 					  desktop.remove(panel);
 					}
-					desktop.repaint();
-					desktop.validate();
+					//desktop.repaint();
+					//desktop.validate();
 
 				}
+				mainFrame.pack();
+				mainFrame.revalidate();
+				mainFrame.repaint();
 			}
 		});
 
@@ -639,7 +612,7 @@ public class AstericsGUI implements IAREEventListener
 
 	private void applyChanges ()
 	{
-		
+
 		mainFrame.setVisible(false);
 		AREProperties props = AREProperties.instance;
 		
@@ -720,7 +693,8 @@ public class AstericsGUI implements IAREEventListener
 				tray.remove(trayIcon);
 		}
 		mainFrame.pack();
-		mainFrame.revalidate();		
+		mainFrame.revalidate();
+		mainFrame.repaint();
 	}
 	
 	
