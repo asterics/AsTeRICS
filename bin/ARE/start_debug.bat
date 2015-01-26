@@ -62,7 +62,7 @@ rd /s/q %PROFILE_PATH%\org.eclipse.osgi
 
 ECHO Starting AsTeRICS Runtime Environment with Debug output ...
 ECHO error_level:FINE>.logger
-%JAVA_BIN% -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%AUTOSTART_MODEL% -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console
+%JAVA_BIN% -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 -Dosgi.clean=true -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%AUTOSTART_MODEL% -Deu.asterics.ARE.ServicesFiles="services.ini;services-windows.ini" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console
 
 REM If you want to enable Java Mission Control and Flight Recording flags use the line below
 REM %JAVA_BIN% -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044 -Dorg.osgi.framework.bootdelegation=* -DAnsi=true -Djava.util.logging.config.file=logging.properties  -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console

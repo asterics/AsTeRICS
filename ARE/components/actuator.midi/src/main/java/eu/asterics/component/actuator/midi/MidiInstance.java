@@ -73,6 +73,8 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
     public int propTriggerThreshold=50;
     public int propTriggerMax = 100;
     public int propChannel=1;
+    
+    public boolean triggerTrue = true;
     String propToneScale="alltones.sc";
     String propMidiDevice="Gervill";
     String propInstrument="Vibraphone";
@@ -413,6 +415,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 				{
 					velocity=0;
 					lastNoteOff();
+					triggerTrue = false;
 				}
 				else
 				{
@@ -425,6 +428,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 					}
 					//oldNote=-1;
 					//toneTriggerMode=1;
+					triggerTrue = true;
 					noteOn();
 				}
 		}
@@ -450,7 +454,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 			}
     			
 			if (gui!=null && propDisplayGUI == true) gui.repaint();
-			noteOn();
+			if (triggerTrue) noteOn();
 
 		}
 		
@@ -490,6 +494,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
     	  //toneTriggerMode=0;
     	  velocity=127;
     	  oldVelocity=0;
+    	  triggerTrue = true;
 		  gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
 		  if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
           super.start();

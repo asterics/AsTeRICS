@@ -755,14 +755,6 @@ public class AREServices implements IAREServices{
 			return new ArrayList<IAREEventListener>();	
 	}
 
-	/**
-	 * @deprecated
-	 */
-	public void displayFrame(JInternalFrame internalFrame, boolean display) {
-		DeploymentManager.instance.displayFrame (internalFrame, display);
-
-	}
-
 	public void displayPanel(JPanel panel, 
 			IRuntimeComponentInstance componentInstance, boolean display) {
 		DeploymentManager.instance.displayPanel (panel, componentInstance, 

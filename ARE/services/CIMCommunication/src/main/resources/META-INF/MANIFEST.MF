@@ -3,18 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: asterics-services.cimcommunication
 Bundle-SymbolicName: eu.asterics.mw.cimcommunication
 Bundle-Version: 0.1.0
-Bundle-ClassPath: . , lib/native/RXTXcomm.jar
-Bundle-NativeCode: lib/native/rxtxSerial.dll;
- osname=win32;processor=x86;
- osname=win;processor=x86-64;
- osname=win8;processor=x86;
- osname=win8;processor=x86-64;
- osname=windows 8;processor=x86;
- osname=windows 8;processor=x86-64;
- osname=windows8;processor=x86;
- osname=windows8;processor=x86-64;
- osname=Windows 8.1;processor=x86;
- osname=Windows 8.1;processor=x86-64
+Bundle-ClassPath: ., lib/native/nrjavaserial-3.9.2.jar
 Export-Package: eu.asterics.mw.cimcommunication
 Require-Bundle: org.asterics.middleware
 Bundle-Activator: eu.asterics.mw.cimcommunication.CIMCommunicationBundleActivator

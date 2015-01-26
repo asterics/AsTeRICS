@@ -32,10 +32,10 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+
 import java.awt.event.InputEvent;
 import java.io.*;
 import java.net.*;
-//import java.util.logging.Logger;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 
@@ -257,28 +257,40 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance
 		 try {
     		socketOut = new DatagramSocket();
     		
-    		//String sendString = prestring + eventSendString;
-    		stringToSend=stringToSend.replaceAll("\\s","");   // remove spaces !
-    		sendBuf = stringToSend.getBytes();
+    		stringToSend=stringToSend.trim();
+    		int spacePos=stringToSend.indexOf(' ');
+    		if(spacePos>0)
+    		{
+    			spacePos++;
+    			String startStr=stringToSend.substring(0, spacePos);
+    			String tailStr=stringToSend.substring(spacePos);
+        		tailStr=tailStr.replaceAll("\\s","");   // remove spaces !
+        		stringToSend=startStr+tailStr;
+        		sendBuf = stringToSend.getBytes();
     		 
-    		address = InetAddress.getByName(propHostname);
-    		intPort = Integer.parseInt(propPort);
-    		packet = new DatagramPacket(sendBuf, sendBuf.length, address, intPort);
-    		socketOut.send(packet);
-    	    AstericsErrorHandling.instance.reportInfo(this, "IRTrans sent data: "+stringToSend);
-    	    socketOut.close();
+        		address = InetAddress.getByName(propHostname);
+        		intPort = Integer.parseInt(propPort);
+        		packet = new DatagramPacket(sendBuf, sendBuf.length, address, intPort);
+        		socketOut.send(packet);
+        		AstericsErrorHandling.instance.reportInfo(this, "IRTrans sent data: "+stringToSend);
+        		socketOut.close();
     		
-    	    // This block just receives the answers, not required
-    	    /*
-    	    Thread.sleep(100);
-    	    socketIn = new DatagramSocket(21000);
-    		byte[] buf = new byte[256];
-    		packet = new DatagramPacket(buf, buf.length);
-    		socketIn.receive(packet);
-    		String received = new String(packet.getData(), 0, packet.getLength());
-    		System.out.println("IRTrans, received: " + received);
-    		socketIn.close();
-    		*/
+	    	    // This block just receives the answers, not required
+	    	    /*
+	    	    Thread.sleep(100);
+	    	    socketIn = new DatagramSocket(21000);
+	    		byte[] buf = new byte[256];
+	    		packet = new DatagramPacket(buf, buf.length);
+	    		socketIn.receive(packet);
+	    		String received = new String(packet.getData(), 0, packet.getLength());
+	    		System.out.println("IRTrans, received: " + received);
+	    		socketIn.close();
+	    		*/
+    		}
+    		else 
+    		{
+    			AstericsErrorHandling.instance.reportError(this,"The IRTrans - Plugin could not send the command "+stringToSend); 
+    		}
     		
 		 } catch (Exception e) {
 			 AstericsErrorHandling.instance.reportError(this,"The IRTrans - Plugin could not send data. Please verify that the IRTrans Module is connected and installed, and that the IP-address is correctly specified.");

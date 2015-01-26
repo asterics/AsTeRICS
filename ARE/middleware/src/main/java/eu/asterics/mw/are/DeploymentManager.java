@@ -1017,16 +1017,6 @@ public class DeploymentManager
 		}
 	}
 	
-	/**
-	 * @deprecated
-	 * @param internalFrame
-	 * @param display
-	 */
-	public void displayFrame (JInternalFrame internalFrame, boolean display)
-	{
-		gui.displayFrame(internalFrame, display);
-	}
-
 	public Dimension getAvailableSpace (IRuntimeComponentInstance componentInstance)
 	{
 

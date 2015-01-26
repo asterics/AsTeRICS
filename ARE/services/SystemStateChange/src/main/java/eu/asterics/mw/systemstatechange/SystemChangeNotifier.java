@@ -31,6 +31,7 @@ package eu.asterics.mw.systemstatechange;
 import java.util.logging.Logger;
 import java.util.Vector;
 
+import com.sun.org.apache.bcel.internal.generic.LoadInstruction;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
@@ -47,19 +48,31 @@ import eu.asterics.mw.services.AstericsThreadPool;
 
 public class SystemChangeNotifier 
 { 
-	public static SystemChangeNotifier instance = null; 
+	public static SystemChangeNotifier instance = null;
+	private static boolean loadingSuccessful=false;
 	
-    static      
-    {
-        System.loadLibrary("systemevent");
-    	AstericsErrorHandling.instance.getLogger().fine("Loading \"systemevent.dll\" for lowlevel event notifications... ok!");
-    	instance = new SystemChangeNotifier();
-    }
+	static      
+	{   
+		String os_name_lowercase=System.getProperty("os.name").toLowerCase();
+		if(os_name_lowercase.startsWith("win")) {
+			AstericsErrorHandling.instance.getLogger().fine("os.name: "+os_name_lowercase+", Loading \"systemevent.dll\" for lowlevel event notifications... ok!");
+			try{
+				System.loadLibrary("systemevent");
+				loadingSuccessful=true;
+			}catch(Exception e) {
+				loadingSuccessful=false;
+				AstericsErrorHandling.instance.getLogger().severe("Could not load \"systemevent.dll\" for lowlevel event notifications...Restart ARE manually!");    		
+			}
+		} else {
+			AstericsErrorHandling.instance.getLogger().fine("os.name: "+os_name_lowercase+", don't loading systemevent lib");
+		}
+		instance = new SystemChangeNotifier();
+	}
  
 	// declare member variables here
 	native public int systemEventInit();
 	native public int systemEventExit();
- 
+	
 	final int  EVENT_REQUEST_SLEEP = 0;
 	final int  EVENT_SLEEP=1;
 	final int  EVENT_WAKE=2;
@@ -76,11 +89,24 @@ public class SystemChangeNotifier
     */
     private SystemChangeNotifier()
     {
-		systemEventInit();
+    	systemEventInit_generic();
     }
     
     
-    synchronized private void systemEventCallback(final int eventType)
+    private void systemEventInit_generic() {
+    	if(loadingSuccessful)
+	    	try{
+	    		systemEventInit();    		
+	    	}catch(Exception e) {
+	    		e.printStackTrace();
+	    	}
+    	else {
+    		AstericsErrorHandling.instance.getLogger().fine("Ignoring systemEventInit");
+    	}
+    }
+
+
+	synchronized private void systemEventCallback(final int eventType)
     {
     	switch (eventType) {
     		case EVENT_REQUEST_SLEEP: 

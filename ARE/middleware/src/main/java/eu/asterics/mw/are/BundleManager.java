@@ -73,10 +73,13 @@ import javax.swing.filechooser.FileSystemView;
 
 public class BundleManager implements BundleListener, FrameworkListener
 {
-	static String LOADER_LOCATION = "./profile/loader.ini";
-	static String LOADER_MINIMAL_LOCATION = "./profile/loader_mini.ini";
-	static String LOADER_COMPONENTLIST_LOCATION = "./profile/loader_componentlist.ini";
-	static String SERVICES_LOCATION = "./profile/services.ini";
+	private static final String SERVICES_FILES_DELIM = ";";
+	static String PROFILE_LOCATION=new File(System.getProperty("osgi.configuration.area","./profile")).getName();
+	static String LOADER_LOCATION = "./"+PROFILE_LOCATION+"/loader.ini";
+	static String LOADER_MINIMAL_LOCATION = "./"+PROFILE_LOCATION+"/loader_mini.ini";
+	static String LOADER_COMPONENTLIST_LOCATION = "./"+PROFILE_LOCATION+"/loader_componentlist.ini";
+	static String SERVICES_LOCATION = "./"+PROFILE_LOCATION;
+	static String SERVICES_FILES=System.getProperty("eu.asterics.ARE.ServicesFiles", "services.ini");
 
 	final int MODE_DEFAULT = 0;
 	final int MODE_GET_ALL_COMPONENTS = 1;
@@ -385,7 +388,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 				{
 					if (actLine.contains(cTypeID))
 					{
-						bundleJar=actLine.substring(0,actLine.indexOf(";"));
+						bundleJar=actLine.substring(0,actLine.indexOf(SERVICES_FILES_DELIM));
 						// System.out.println("*** FOUND BUNDLE JAR:"+bundleJar);
 						break;
 					}
@@ -411,40 +414,42 @@ public class BundleManager implements BundleListener, FrameworkListener
 	public void install(int mode) 
 	{
 		String path;	
-		BufferedReader in;
-		BufferedWriter out=null;
 		Bundle bundle= null;
 
 		if (mode==MODE_DEFAULT)
 		{
-			try {
-				in = new BufferedReader(new FileReader(SERVICES_LOCATION));
-	
-				while ( (path = in.readLine()) != null)
-				{
-					try 
-					{	
-						File directory = new File (".");				
-						bundle = bundleContext.installBundle("file:///"+directory.getCanonicalPath()+"/"+path);
-						bundle.start();
-					}
-					catch (Throwable t) 
+			for(String servicesFile : SERVICES_FILES.split(SERVICES_FILES_DELIM)) {
+				String curFile=SERVICES_LOCATION+"/"+servicesFile;
+				logger.fine("Loading services from file: "+curFile);
+				try(BufferedReader in = new BufferedReader(new FileReader(curFile));) {
+					while ( (path = in.readLine()) != null)
 					{
-						showBundleInstallErrorMessage (bundle,path);
-						continue;
+						try 
+						{	
+							File directory = new File (".");				
+							bundle = bundleContext.installBundle("file:///"+directory.getCanonicalPath()+"/"+path);
+							bundle.start();
+						}
+						catch (Throwable t) 
+						{
+							t.printStackTrace();
+							showBundleInstallErrorMessage (bundle,path);
+							continue;
+						}
 					}
+					in.close();
+				} catch (FileNotFoundException e) {
+					logger.severe(this.getClass().getName()+"." +
+							"The services file is missing!");
+				} catch (IOException e) {
+					logger.severe(this.getClass().getName()+"." +
+							"Error while reading the services file!");
 				}
-				in.close();
-			} catch (FileNotFoundException e) {
-				logger.severe(this.getClass().getName()+"." +
-				"The services file is missing!");
-			} catch (IOException e) {
-				logger.severe(this.getClass().getName()+"." +
-				"Error while reading the services file!");
 			}
 		}
 		
-		
+		BufferedWriter out=null;
+		BufferedReader in=null;
 		try {
 			if ((mode==MODE_DEFAULT) && (new File(LOADER_MINIMAL_LOCATION).exists()))
 			{
@@ -492,6 +497,19 @@ public class BundleManager implements BundleListener, FrameworkListener
 		} catch (IOException e) {
 			logger.severe(this.getClass().getName()+"." +
 			"Error while reading the loader file!");
+		} finally {
+			if(in!=null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+				}
+			}
+			if(out!=null) {
+				try {
+					out.close();
+				} catch (IOException e) {					
+				}				
+			}
 		}
 	}
 	

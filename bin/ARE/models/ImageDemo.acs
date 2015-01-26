@@ -107,21 +107,21 @@ A sound is played in the background.</description>
       </ports>
       <properties>
         <property name="delay" value="10000" />
-        <property name="slot1" value=".\data\pictures\slide1.jpg" />
-        <property name="slot2" value=".\data\pictures\slide2.jpg" />
-        <property name="slot3" value=".\data\pictures\slide3.jpg" />
-        <property name="slot4" value=".\data\pictures\slide4.jpg" />
-        <property name="slot5" value=".\data\pictures\slide5.jpg" />
-        <property name="slot6" value=".\data\pictures\slide6.jpg" />
-        <property name="slot7" value=".\data\pictures\slide7.jpg" />
-        <property name="slot8" value=".\data\pictures\slide8.jpg" />
-        <property name="slot9" value=".\data\pictures\slide9.jpg" />
-        <property name="slot10" value=".\data\pictures\slide10.jpg" />
-        <property name="slot11" value=".\data\pictures\slide11.jpg" />
-        <property name="slot12" value=".\data\pictures\slide12.jpg" />
-        <property name="slot13" value=".\data\pictures\slide13.jpg" />
-        <property name="slot14" value=".\data\pictures\slide14.jpg" />
-        <property name="slot15" value=".\data\pictures\slide15.jpg" />
+        <property name="slot1" value="data/pictures/slide1.jpg" />
+        <property name="slot2" value="data/pictures/slide2.jpg" />
+        <property name="slot3" value="data/pictures/slide3.jpg" />
+        <property name="slot4" value="data/pictures/slide4.jpg" />
+        <property name="slot5" value="data/pictures/slide5.jpg" />
+        <property name="slot6" value="data/pictures/slide6.jpg" />
+        <property name="slot7" value="data/pictures/slide7.jpg" />
+        <property name="slot8" value="data/pictures/slide8.jpg" />
+        <property name="slot9" value="data/pictures/slide9.jpg" />
+        <property name="slot10" value="data/pictures/slide10.jpg" />
+        <property name="slot11" value="data/pictures/slide11.jpg" />
+        <property name="slot12" value="data/pictures/slide12.jpg" />
+        <property name="slot13" value="data/pictures/slide13.jpg" />
+        <property name="slot14" value="data/pictures/slide14.jpg" />
+        <property name="slot15" value="data/pictures/slide15.jpg" />
         <property name="slot16" value="" />
         <property name="slot17" value="" />
         <property name="slot18" value="" />
@@ -141,7 +141,7 @@ A sound is played in the background.</description>
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\music\demosound.wav" />
+        <property name="filename" value="data/music/demosound.wav" />
       </properties>
       <layout>
         <posX>431</posX>

@@ -28,7 +28,7 @@ REM sleeper 5
 
 
 REM use the next line instead for starting with the shell window (or next line without splash screen)
-%JAVA_BIN% -splash:images/asterics_startup.png -Djava.util.logging.config.file=logging.properties -Dorg.osgi.framework.bootdelegation=* -Deu.asterics.ARE.startModel=%1 -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
+%JAVA_BIN% -splash:images/asterics_startup.png -Djava.util.logging.config.file=logging.properties -Dosgi.clean=true -Dorg.osgi.framework.bootdelegation=* -Deu.asterics.ARE.startModel=%1 -Deu.asterics.ARE.ServicesFiles="services.ini;services-windows.ini" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
 REM %JAVA_BIN% -Djava.util.logging.config.file=logging.properties -Dorg.osgi.framework.bootdelegation=* -Deu.asterics.ARE.startModel=%1 -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration profile -console
 
 GOTO Quit
