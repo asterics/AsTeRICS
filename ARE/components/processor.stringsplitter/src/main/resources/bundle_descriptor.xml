@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.StringSplitter"
+                   canonical_name="eu.asterics.component.processor.stringsplitter.StringSplitterInstance">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>Split the string in up to 16 strings</description>
+        <ports>
+			<inputPort id="input">
+				<description>String input to split</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="out1">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out2">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out3">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out4">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out5">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out6">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out7">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out8">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out9">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out10">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out11">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out12">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out13">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out14">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out15">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="out16">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="Seperator"
+				type="string"
+				value=";"
+				description="defines the seperator of the strings"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
