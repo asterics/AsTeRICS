@@ -249,7 +249,6 @@ public class StringSplitterInstance extends AbstractRuntimeComponentInstance
 					opOut1.sendData(ConversionUtils.stringToBytes(stringparts[i]));
 					break;
 				case 1:
-					System.out.println(stringparts[i]);
 					opOut2.sendData(ConversionUtils.stringToBytes(stringparts[i]));
 					break;
 				case 2:
