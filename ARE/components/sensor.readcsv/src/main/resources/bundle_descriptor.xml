@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.ReadCSV"
+                   canonical_name="eu.asterics.component.sensor.readcsv.ReadCSVInstance">
+        <type subtype="File System">sensor</type>
+        <singleton>false</singleton>
+        <description>Open and read a CSV file</description>
+        <ports>
+
+			<outputPort id="Output">
+				<description>output of the string</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="read">
+				<description>open a file</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+        	<property name="FilePath" type="string" value=".\\data\\csv\\" description="path of the file"></property></properties>
+
+    </componentType>
+</componentTypes>

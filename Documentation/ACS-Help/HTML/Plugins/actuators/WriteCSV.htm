@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>WriteCSV</Title>
+</HEAD>
+<BODY>
+<H1>CSV Writer</H1> 
+<H3>Component Type: Actuator (Subcategory: File System)</H3>
+<p>This plugin writes the incoming data into an .csv file.</p>
+<p>The data gets live recorded, so it can be viewed simultaneously in an oscilloscope.</p>
+<div class="image"><img src="img/WriteCSV.png" alt="Screenshot: WriteCSV plugin" title="Screenshot: WriteCSV plugin" /><br>
+WriteCSV</div>
+
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>StartWriting:</STRONG> Creates a new file to save the data.</li>
+<li><STRONG>StopWriting:</STRONG> Stops a saving process.</li>
+</ul>
+<H2>Input port Description</H2>
+<ul>
+<li><STRONG>Input[string]:</STRONG> The string contains the data. Example of one string: "data1;data2;data3". To get data into this string the StringExpander can be used.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>FileName[string]:</STRONG>  Specifies the name of the file (without extension ), in which the data will be recorded.</li>
+<li><STRONG>FilePath[string]:</STRONG>  Defines the Path were the File shoud be saved.</li>
+</ul>
+
+</BODY>
+</HTML>
