@@ -344,31 +344,21 @@ public class BundleManager implements BundleListener, FrameworkListener
 	}
 
 	public void showBundleInstallErrorMessage( Bundle bundle, String path)
-	{
+	{		
 		if (bundle!=null)
 		{
 			// Log the exception and continue
 			logger.warning(this.getClass().getName()+".start: " 
 					+"Couldn't start " + bundle.getBundleId());
-			JOptionPane op = new JOptionPane ("Couldn't start " + bundle.getBundleId()+ "from location "+path,
-				    JOptionPane.WARNING_MESSAGE);
-			JDialog dialog = op.createDialog("AsTeRICS Runtime Environment - Deploy Error: Cannot start the Model !");
-			dialog.setAlwaysOnTop(true);
-			dialog.setModal(false);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
+			String errorMsg="Deployment Error: Couldn't start " + bundle.getBundleId()+ " from location "+path;
+			AstericsErrorHandling.instance.reportError(null, errorMsg);
 		}
 		else
 		{
 			logger.warning(this.getClass().getName()+".start: " 
 					+"Couldn't start unknown bundle");
-			JOptionPane op = new JOptionPane ("Couldn't start bundle "+path,
-				    JOptionPane.WARNING_MESSAGE);
-			JDialog dialog = op.createDialog("AsTeRICS Runtime Environment - Deploy Error: Cannot start the Model !");
-			dialog.setAlwaysOnTop(true);
-			dialog.setModal(false);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
+			String errorMsg="Deployment Error: Couldn't start bundle "+path;
+			AstericsErrorHandling.instance.reportError(null, errorMsg);
 		}
 	}
 	
