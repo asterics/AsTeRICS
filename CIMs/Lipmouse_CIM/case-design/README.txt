@@ -53,4 +53,12 @@ Improved case design: Main mechanics part (2 plates + sensors + PCB) can be put 
 Improved case design: No glued screw nut neccessary for the housing. In addition, a screw thread is cut to the mechanical carrier plates, so no screw nuts are neccessary for the whole design
 
 
+###lipmouse_case_lasercut_v2.4_backmount.cdr
+
+Improved case design: top plate mounting parts are moved inside the housing, making a smaller outline;
+closed a small gap at the backplane (improves stability and design)
+contains a part for testing and productive laser cutting.
+Future versions will have 2 housings on a 250mmx250mm acrylic glass.
+Added the settings file lipsy_v2.3.sgx for the laser cutter software (Spirit GX). These settings are valid for all future versions of the CDR files, except there is a SGX file with a higher version number
+
 

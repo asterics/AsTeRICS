@@ -75,7 +75,8 @@ import eu.asterics.mw.are.AREProperties;
  */
 public class AstericsModelExecutionThreadPool {
 	public static int TASK_SUBMIT_TIMEOUT=20000;
-	private static final int DEFAULT_POOL_SIZE = 5;
+	/* Set default value to 1, because only in the single threaded approach there is deterministic execution of data propagation and event notification */
+	private static final int DEFAULT_POOL_SIZE = 1;
 	
 	private static final String MODEL_EXECUTOR = "ModelExecutor";
 

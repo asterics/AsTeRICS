@@ -1,0 +1,1 @@
+Use this package for Asterics-specific common libraries related to keyboard and mouse capturing and emulating.
