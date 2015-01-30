@@ -331,7 +331,7 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 	public int sendKeyCode(int index, int mode)
 	{ 
 		int i=0;
-		int actcode;
+		int actcode=-1;
 		int modifier[]=new int[20];
 		int mcount=0;
 		boolean waitForKey=true;
@@ -339,49 +339,58 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 		while ((index<keyCodeArray.size()) && (waitForKey))
 		{
 			actcode= keyCodeArray.get(index);
-			switch (actcode) {
-				case 1: try {Thread.sleep(propWaitTime);} catch (Exception e) {}; break;
-				case 16:
-				case 17: 
-				case 18:
-				case 157:
-				case 164:
-					    if (mcount<20) 
-						{
-							modifier[mcount++]=actcode;
-							if (mode!=MODE_RELEASE)
+			if ((mode == MODE_PRESS) || (mode == MODE_HOLD))
+			{
+				switch (actcode) {
+					case 1: 	System.out.println("waiting: "+propWaitTime);
+								try {Thread.sleep(propWaitTime);} catch (Exception e) {}; break;
+					case 11:
+					case 16:
+					case 17: 
+					case 18:
+					case 91:
+					case 92:
+					case 157:
+					case 164:
+						    if (mcount<20) 
 							{
-								if (propInputMethod==1)
-									keyPressSi(actcode);
-								else keyPress(actcode);
-						    }
-						}
-					break;
-				default: 			 
-					if (mode!=MODE_RELEASE)
-					{
-						if (propInputMethod==1)
-							keyPressSi(actcode);
-						else keyPress(actcode);
-					} 
-					if (mode != MODE_HOLD)
-					{  
-						if (propInputMethod==1)
-							keyReleaseSi(actcode);
-						else keyRelease(actcode);
-
-						while (mcount>0)
-						{
-							if (propInputMethod==1)
-								keyReleaseSi(modifier[--mcount]);
-							else keyRelease(modifier[--mcount]);
-						}
-					}
-					waitForKey=false;
-					break;
+								System.out.println("modifier: "+actcode);
+								modifier[mcount++]=actcode;
+							}
+						break;
+					default: waitForKey=false;
+				}
+				if (actcode !=1)
+				{
+					System.out.println("press "+actcode);
+					if (propInputMethod==1)
+						keyPressSi(actcode);
+					else keyPress(actcode);
+				}
 			}
+			
 			index++;
 			i++;
+		}
+		
+		if (mode != MODE_HOLD)
+		{  
+			if (actcode!=-1)
+			{
+				System.out.println("release "+actcode);
+				if (propInputMethod==1)
+					keyReleaseSi(actcode);
+				else keyRelease(actcode);
+			}
+
+			while (mcount>0)
+			{
+				System.out.println("release modifier "+modifier[mcount-1]);
+
+				if (propInputMethod==1)
+					keyReleaseSi(modifier[--mcount]);
+				else keyRelease(modifier[--mcount]);
+			}
 		}
         return(i);
 	}

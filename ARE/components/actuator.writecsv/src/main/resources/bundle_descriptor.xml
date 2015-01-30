@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.WriteCSV"
+                   canonical_name="eu.asterics.component.actuator.writecsv.WriteCSVInstance">
+        <type subtype="File System">actuator</type>
+        <singleton>false</singleton>
+        <description>Write a csv file</description>
+        <ports>
+			<inputPort id="Input">
+				<description>string input to write in the csv file</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="StartWriting">
+				<description>start to write</description>
+			</eventListenerPort>
+			<eventListenerPort id="StopWriting">
+				<description>stop to write</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="FileName"
+				type="string"
+				value="fileName"
+				description="name of the file"/>
+
+			<property name="FilePath" type="string" value=".\\data" description="path of the file"></property></properties>
+
+    </componentType>
+</componentTypes>
