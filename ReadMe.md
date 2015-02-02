@@ -33,16 +33,16 @@ If you just want to use the current snapshot.
   ```
 6. Go to the ```bin/ARE```folder and start the ARE by executing ```start.bat```
 
-If you want to modify/add a plugin or generally want to contribute to the project, please consult the [Developer Manual https://github.com/asterics/AsTeRICS/blob/master/Documentation/DeveloperManual.pdf?raw=true]
+If you want to modify/add a plugin or generally want to contribute to the project, please consult the [Developer Manual] (https://github.com/asterics/AsTeRICS/blob/master/Documentation/DeveloperManual.pdf?raw=true])
 
 ##Documentation
 
-* [Quickstart Guide] (http://www.asterics.eu/download/DeveloperManual.pdf)
-* [User Manual] (http://www.asterics.eu/download/UserManual.pdf)
+* [Quickstart Guide] (https://github.com/asterics/AsTeRICS/blob/master/Documentation/QuickStart.pdf?raw=true)
+* [User Manual] (https://github.com/asterics/AsTeRICS/blob/master/Documentation/UserManual.pdf?raw=true)
 * [Developer Manual] (https://github.com/asterics/AsTeRICS/blob/master/Documentation/DeveloperManual.pdf?raw=true)
 
 
-You can find more documentation and build plans for some hardware devices [here] (http://www.asterics.eu/index.php?id=26).
+You can find more documentation and build plans for some hardware devices in [ModelGuides] (https://github.com/asterics/AsTeRICS/tree/master/Documentation/ModelGuides) and  [DIYGuides] (https://github.com/asterics/AsTeRICS/tree/master/Documentation/DIYGuides).
 
 ##Contact
 
