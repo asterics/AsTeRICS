@@ -27,7 +27,7 @@ If you just want to use the current snapshot.
 3. Install the [**apache ant build framework (version >= 1.9.1)**] (http://ant.apache.org/bindownload.cgi)
   * Ensure to set “ANT_HOME” to the folder where you installed ant and add the ant bin path to the Environment Variable “Path”
 4. Open a terminal and go to the ```ARE``` subfolder
-5. Start ant by calling
+5. Compile the ARE by calling
   ```
   ant
   ```
