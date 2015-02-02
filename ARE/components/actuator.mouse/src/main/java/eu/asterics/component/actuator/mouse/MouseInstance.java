@@ -346,8 +346,8 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 		{
 			Point p= MouseInfo.getPointerInfo().getLocation(); 
 			
-			mouseXPos-= (mouseLastXPos- p.x);
-			mouseYPos-= (mouseLastYPos- p.y);
+			mouseXPos-= ((int)mouseLastXPos- p.x);
+			mouseYPos-= ((int)mouseLastYPos- p.y);
 		}
 		first=false;
 
