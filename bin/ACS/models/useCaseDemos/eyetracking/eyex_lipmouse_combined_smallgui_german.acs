@@ -120,11 +120,11 @@
       <properties>
         <property name="caption" value="" />
         <property name="horizontalOrientation" value="False" />
-        <property name="textColor" value="13" />
-        <property name="backgroundColor" value="13" />
-        <property name="borderColor" value="13" />
-        <property name="borderThickness" value="2" />
-        <property name="selectionFrameColor" value="13" />
+        <property name="textColor" value="11" />
+        <property name="backgroundColor" value="1" />
+        <property name="borderColor" value="6" />
+        <property name="borderThickness" value="1" />
+        <property name="selectionFrameColor" value="10" />
         <property name="selectionFrameThickness" value="4" />
         <property name="buttonCaption1" value="Kombiniert" />
         <property name="buttonCaption2" value="Nur Joystick" />
@@ -168,14 +168,14 @@
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>763</posX>
-        <posY>515</posY>
+        <posX>765</posX>
+        <posY>514</posY>
       </layout>
       <gui>
-        <posX>8885</posX>
-        <posY>1565</posY>
+        <posX>8822</posX>
+        <posY>3565</posY>
         <width>1125</width>
-        <height>1222</height>
+        <height>1889</height>
       </gui>
     </component>
     <component id="Lipmouse.1" type_id="asterics.Lipmouse">
@@ -262,8 +262,8 @@
         <posY>152</posY>
       </layout>
       <gui>
-        <posX>9375</posX>
-        <posY>1600</posY>
+        <posX>9322</posX>
+        <posY>3676</posY>
         <width>188</width>
         <height>333</height>
       </gui>
@@ -297,8 +297,8 @@
         <posY>334</posY>
       </layout>
       <gui>
-        <posX>9625</posX>
-        <posY>1556</posY>
+        <posX>9635</posX>
+        <posY>3676</posY>
         <width>188</width>
         <height>333</height>
       </gui>
@@ -363,11 +363,11 @@
       <properties>
         <property name="caption" value="" />
         <property name="horizontalOrientation" value="False" />
-        <property name="textColor" value="13" />
-        <property name="backgroundColor" value="13" />
-        <property name="borderColor" value="13" />
-        <property name="borderThickness" value="2" />
-        <property name="selectionFrameColor" value="13" />
+        <property name="textColor" value="11" />
+        <property name="backgroundColor" value="1" />
+        <property name="borderColor" value="6" />
+        <property name="borderThickness" value="1" />
+        <property name="selectionFrameColor" value="10" />
         <property name="selectionFrameThickness" value="4" />
         <property name="buttonCaption1" value="Ein / Aus" />
         <property name="buttonCaption2" value="Einstellungen" />
@@ -411,14 +411,14 @@
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>914</posX>
+        <posX>916</posX>
         <posY>378</posY>
       </layout>
       <gui>
-        <posX>8885</posX>
-        <posY>3010</posY>
+        <posX>8822</posX>
+        <posY>5676</posY>
         <width>1125</width>
-        <height>1111</height>
+        <height>1556</height>
       </gui>
     </component>
     <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
@@ -470,8 +470,8 @@
         <posY>77</posY>
       </layout>
       <gui>
-        <posX>8875</posX>
-        <posY>1600</posY>
+        <posX>8822</posX>
+        <posY>3676</posY>
         <width>188</width>
         <height>333</height>
       </gui>
@@ -510,8 +510,8 @@
         <posY>280</posY>
       </layout>
       <gui>
-        <posX>9188</posX>
-        <posY>1600</posY>
+        <posX>9072</posX>
+        <posY>3676</posY>
         <width>188</width>
         <height>333</height>
       </gui>
@@ -1102,7 +1102,7 @@
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button2" />
+          <eventPort id="button1" />
         </source>
       </sources>
       <targets>
@@ -1116,14 +1116,14 @@
   <modelGUI>
     <Decoration>false</Decoration>
     <Fullscreen>false</Fullscreen>
-    <AlwaysOnTop>false</AlwaysOnTop>
+    <AlwaysOnTop>true</AlwaysOnTop>
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
-      <posX>8875</posX>
-      <posY>1622</posY>
-      <width>1125</width>
-      <height>2556</height>
+      <posX>8775</posX>
+      <posY>3533</posY>
+      <width>1250</width>
+      <height>3889</height>
     </AREGUIWindow>
   </modelGUI>
 </model>
