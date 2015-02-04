@@ -117,7 +117,7 @@ void reply_Acknowledge(void);
 void reply_DataFrame(void);
 
 void generate_ADCFrame(void);
-//void generate_PINFrame(void);
+void generate_PINFrame(void);
 
 // void reply_UnknownFeature(uint8_t serial_number,uint8_t request_code, uint8_t status_code,uint8_t cim_feature);
 

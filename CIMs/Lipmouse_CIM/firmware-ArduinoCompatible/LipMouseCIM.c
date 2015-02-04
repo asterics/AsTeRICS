@@ -32,10 +32,10 @@
 
 
 extern struct CIM_frame_t CIM_frame;
-//extern unsigned char PIND_Mask;
-//extern unsigned char PINB_Mask;
+extern unsigned char PIND_Mask;
+extern unsigned char PINB_Mask;
 
-//uint8_t old_PIND,old_PINB;
+uint8_t old_PIND,old_PINB;
 uint8_t autoreply_num=0x80;   // sequential number for automatic replies, 0x80-0xff
 
 
@@ -49,7 +49,7 @@ void setupHardware(void)
 {
 	Timer_Init();
 	ADC_Init();
-	DDRA= (1<<3);
+	DDRA= (1<<3);  // power supply for BT module (only BT-version !)
 	PORTA= (1<<3);
 
 }
@@ -72,8 +72,8 @@ int main(void)
 	setupHardware();
 	init_CIM_frame();
 
-	//old_PIND=PIND;
-	//old_PINB=PINB;
+	old_PIND=PIND;
+	old_PINB=PINB;
     sei();           // enable global interrupts
 
 	while (1)
@@ -94,6 +94,26 @@ int main(void)
 	     
 		   //DDRB |= (1<<5); PORTB ^= (1<<5);  // indicate frame send with led
 	    }
+
+		if (check_PINChange_now)  // this is updated in the pinchange ISR
+		{ 
+		    check_PINChange_now=0;
+			if ((old_PINB!=PINB) || (old_PIND!=PIND))
+			{
+		    	autoreply_num++; 
+		    	if (autoreply_num==0) autoreply_num=0x80;
+
+		    	CIM_frame.cim_feature=ARDUINO_CIM_FEATURE_GET_PINVALUES;
+		    	CIM_frame.serial_number=autoreply_num;
+				CIM_frame.reply_code=CMD_EVENT_REPLY;
+			    generate_PINFrame();	     
+				old_PIND=PIND;
+				old_PINB=PINB;
+
+			    reply_DataFrame();
+			}
+		}
+
 
 	}
 }
