@@ -12,7 +12,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define TEENSY_VERSION
 
 void ADC_Init(void) {
  
@@ -32,19 +31,10 @@ void ADC_Init(void) {
      Wandlung nicht übernommen. */
   result = ADCW;
 }
- 
 
 /* ADC Einzelmessung */
 uint16_t ADC_Read(uint8_t channel )
 {
-
-#ifndef TEENSY_VERSION
-  if (channel==4) channel=1;
-  else if (channel==5) channel=3;
-  else if (channel==6) channel=2;
-  else if (channel==7) channel=4;
-#endif
-
 
   // Kanal waehlen, ohne andere Bits zu beeinflußen
   ADMUX = (1<<REFS0) | channel;
