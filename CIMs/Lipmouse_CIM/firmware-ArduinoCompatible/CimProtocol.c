@@ -41,6 +41,9 @@
 
 #define ARE_MINIMAL_VERSION 1
 
+// const ADCMAP[5] = {0,4,5,6,7};     // LIPSY Version 0
+const uint8_t ADCMAP[5] = {0,7,5,6,4};      // LIPSY Version 1.0
+
 
 	const uint32_t LIPMOUSE_CIM_UNIQUE_NUMBER = 0x05060708;  
 	const char LIPMOUSE_CIM_FEATURELIST[]=
@@ -54,7 +57,6 @@
 	   0x06,0x00,  // Set InputPin Mask for Pin state updates, data: 2 bytes: active input change reports for pins 0-13
 	   0x07,0x00,  // Set PWM; data: byte 1: PWM-number 3,5 or 6, byte 2: PWM value(0-100%)
 	} ;
-
 
 struct ARE_frame_t ARE_frame;
 struct CIM_frame_t CIM_frame;
@@ -263,24 +265,25 @@ void reply_DataFrame(void)
 void generate_ADCFrame()
 {
 	short int adcval;
+	uint8_t pos=0;
 
-	adcval=ADC_Read(0); //pressure
+	adcval=ADC_Read(ADCMAP[pos++]); //pressure     --> Plugin Port: A0
 	CIM_frame.data[0]=(uint8_t)(adcval&0xff);
 	CIM_frame.data[1]=(uint8_t)(adcval>>8);
-	
-	adcval=ADC_Read(4); //y down (y+) --> Plugin Port: A3
+
+	adcval=ADC_Read(ADCMAP[pos++]); //y down (y+)  --> Plugin Port: A1
 	CIM_frame.data[2]=(uint8_t)(adcval&0xff);
 	CIM_frame.data[3]=(uint8_t)(adcval>>8);
 
-	adcval=ADC_Read(5); //x left (x-) --> Plugin Port: A2
+	adcval=ADC_Read(ADCMAP[pos++]); //x left (x-)  --> Plugin Port: A2
 	CIM_frame.data[4]=(uint8_t)(adcval&0xff);
 	CIM_frame.data[5]=(uint8_t)(adcval>>8);
 
-	adcval=ADC_Read(6); //y up (y-) --> Plugin Port: A1
+	adcval=ADC_Read(ADCMAP[pos++]); //y up (y-)    --> Plugin Port: A3
 	CIM_frame.data[6]=(uint8_t)(adcval&0xff);
 	CIM_frame.data[7]=(uint8_t)(adcval>>8);
 
-	adcval=ADC_Read(7); //x right (x+) --> Plugin Port: A4
+	adcval=ADC_Read(ADCMAP[pos++]); //x right (x+) --> Plugin Port: A4
 	CIM_frame.data[8]=(uint8_t)(adcval&0xff);
 	CIM_frame.data[9]=(uint8_t)(adcval>>8);
 

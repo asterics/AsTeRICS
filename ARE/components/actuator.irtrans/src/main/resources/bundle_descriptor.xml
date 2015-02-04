@@ -95,7 +95,7 @@
         <properties>
             <property name="hostname"
                       type="string"
-                      value=""
+                      value="localhost"
                       description="the hostname / IP of the IRTrans"/>
             <property name="port"
                       type="string"

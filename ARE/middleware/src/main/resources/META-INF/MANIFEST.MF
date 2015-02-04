@@ -10,7 +10,8 @@ Export-Package: eu.asterics.mw.are.exceptions,
  eu.asterics.mw.model.runtime.impl,
  eu.asterics.mw.logger,
  eu.asterics.mw.services,
- eu.asterics.mw.gui
+ eu.asterics.mw.gui,
+ eu.asterics.mw.utils
 Bundle-Activator: eu.asterics.mw.are.Main
 Bundle-ClassPath: .,
  lib/libthrift.jar,

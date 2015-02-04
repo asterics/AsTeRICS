@@ -217,11 +217,13 @@ public class DeploymentManager
 						componentRepository.getInstance(canonicalName);
 
 			}
-			catch (NullPointerException e){
+			catch (Exception e){
 				//logger.severe(canonicalName+ " prevents the model from starting: "+e.getMessage());
 				e.printStackTrace();
-				AstericsErrorHandling.instance.reportError(runtimeComponentInstance, "Could not deploy component ["+runtimeComponentInstance+"]: \n"+e.getMessage());
-				return;
+				String message="Could not deploy component of type ["+componentTypeID+"]: \n"+e.getMessage();
+				AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
+				throw new DeploymentException(message);
+				//return;
 			}
 
 			//Set runtime property values to component instances
@@ -1017,16 +1019,6 @@ public class DeploymentManager
 		}
 	}
 	
-	/**
-	 * @deprecated
-	 * @param internalFrame
-	 * @param display
-	 */
-	public void displayFrame (JInternalFrame internalFrame, boolean display)
-	{
-		gui.displayFrame(internalFrame, display);
-	}
-
 	public Dimension getAvailableSpace (IRuntimeComponentInstance componentInstance)
 	{
 

@@ -28,24 +28,23 @@
 package eu.asterics.component.processor.speechprocessor;
 
 
-import java.io.IOException;
-import java.util.logging.Logger;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsThreadPool;
 import eu.asterics.mw.services.IRemoteConnectionListener;
 import eu.asterics.mw.services.RemoteConnectionManager;
-import eu.asterics.mw.services.AstericsThreadPool;
 
 
 /**
@@ -102,6 +101,7 @@ public class SpeechProcessorInstance extends AbstractRuntimeComponentInstance
 	private String propDeActivationCommand = "";
 	private String propHelpCommand = "";
 	public String[] propCommand= new String[NUMBER_OF_COMMANDS];
+	private int propSpeechLoopDelay=1500;
 
 	public Process p=null;
 	// declare member variables here
@@ -242,6 +242,9 @@ public class SpeechProcessorInstance extends AbstractRuntimeComponentInstance
 		{
 			return propHelpCommand;
 		}
+		else if("speechLoopDelay".equalsIgnoreCase(propertyName)){
+			return propSpeechLoopDelay;
+		}
 		else 
 		{
 			String s;
@@ -303,6 +306,15 @@ public class SpeechProcessorInstance extends AbstractRuntimeComponentInstance
 		{
 			final Object oldValue = propHelpCommand;
 			propHelpCommand = newValue.toString();
+			return oldValue;
+		}
+		else if("speechLoopDelay".equalsIgnoreCase(propertyName)){
+			final Object oldValue = propSpeechLoopDelay;
+			if(newValue!=null){				
+				propSpeechLoopDelay = Integer.parseInt((String)newValue);
+			} else {
+				propSpeechLoopDelay = 1500;
+			}
 			return oldValue;
 		}
 		else 
@@ -661,6 +673,7 @@ public class SpeechProcessorInstance extends AbstractRuntimeComponentInstance
 				default: message +="en-US"; break;
 			}
 			message += "#confidence:"+propRecognitionConfidence;
+			message += "#speechLoopDelay:"+propSpeechLoopDelay;
  			message += "#grammar:"+propActivationCommand+";"+propDeActivationCommand+";"+propHelpCommand;
 			
 			for (int i=0;i<NUMBER_OF_COMMANDS;i++)

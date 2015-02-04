@@ -28,30 +28,23 @@
 package eu.asterics.component.actuator.dialogbox;
 
 
-import java.util.logging.Logger;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.plaf.FontUIResource;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 
-import eu.asterics.mw.are.AREStatus;
-import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.gui.ErrorLogPane;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 
 /**
  * 
@@ -72,7 +65,11 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
 	String propCaption = "info";
 	String propText = "this is an information";
 	boolean propAlwaysOnTop = true;
-
+	private int propMessageType=0;
+	private int NUM_BUTTONS = 5;
+	private String [] propButtonTextArray = new String[NUM_BUTTONS];
+	final IRuntimeEventTriggererPort[] etpButtonPressed = new DefaultRuntimeEventTriggererPort[NUM_BUTTONS];
+	
 	// declare member variables here
 
 	JOptionPane op = null;
@@ -84,7 +81,9 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
     */
     public DialogBoxInstance()
     {
-        // empty constructor
+        for(int i=0;i<NUM_BUTTONS;++i){
+        	etpButtonPressed[i] = new DefaultRuntimeEventTriggererPort();
+        }
     }
 
    /**
@@ -139,7 +138,11 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
     {
-
+    	for(int i=1;i<NUM_BUTTONS+1;++i){    		
+    		if(("button"+i).equals(eventPortID)){
+    			return etpButtonPressed[i-1];
+    		}
+    	}
         return null;
     }
 		
@@ -161,6 +164,14 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
 		if ("alwaysOnTop".equalsIgnoreCase(propertyName))
 		{
 			return propAlwaysOnTop;
+		}
+		if("messageType".equalsIgnoreCase(propertyName)){
+			return propMessageType;
+		}
+		for(int i=1;i<NUM_BUTTONS+1;++i){			
+			if(("buttonText"+i).equalsIgnoreCase(propertyName)){
+				return propButtonTextArray[i-1];
+			}
 		}
 
         return null;
@@ -198,6 +209,18 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
 			}
 			return oldValue;
 		}
+		if("messageType".equalsIgnoreCase(propertyName)){
+			final Object oldValue = propMessageType;
+			propMessageType = Integer.parseInt((String) newValue);
+			return oldValue;
+		}
+		for(int i=1;i<NUM_BUTTONS+1;++i){
+			if(("buttonText"+i).equalsIgnoreCase(propertyName)){
+				final Object oldValue = propButtonTextArray[i-1];
+				propButtonTextArray[i-1] = (String)newValue;
+				return oldValue;
+			}
+		}
 
         return null;
     }
@@ -229,11 +252,30 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
 				public void run() {
 					propText=propText.replaceAll("/n", "\n");
 					
-					op = new JOptionPane (propText,
-						    JOptionPane.WARNING_MESSAGE);
-
-
+					int messageType;
+					if (propMessageType==1){
+						messageType = JOptionPane.INFORMATION_MESSAGE;
+					} else if(propMessageType ==2){
+						messageType = JOptionPane.QUESTION_MESSAGE;
+					} else if(propMessageType == 3){
+						messageType = JOptionPane.WARNING_MESSAGE;
+					} else if(propMessageType == 4){
+						messageType = JOptionPane.ERROR_MESSAGE;
+					} else{
+						messageType = JOptionPane.PLAIN_MESSAGE;
+					} 
 					
+					List<String> buttons = new ArrayList<String>();
+					for(int i=0;i<NUM_BUTTONS;++i){
+						if(propButtonTextArray[i]==null || "".equals(propButtonTextArray[i])){
+							break;
+						}
+						buttons.add(propButtonTextArray[i]);
+					}
+					
+					op = new JOptionPane (propText, messageType, JOptionPane.DEFAULT_OPTION,
+						    null, buttons.toArray(),null);
+
 					dialog = op.createDialog(propCaption);
 					dialog.setAlwaysOnTop(propAlwaysOnTop);
 					dialog.setModal(false);
@@ -247,6 +289,14 @@ public class DialogBoxInstance extends AbstractRuntimeComponentInstance
 						            
 						            if (prop.equals(JOptionPane.VALUE_PROPERTY)) 
 						             {
+						            	if(e.getNewValue()!=null){						            			
+							            	for(int i=0;i<NUM_BUTTONS;++i){
+							            		if(e.getNewValue().equals(propButtonTextArray[i])){							            			
+							            			etpButtonPressed[i].raiseEvent();
+							            			break;
+							            		}
+						            		}
+						            	}
 						            	closeDialog();
 						             }
 						            /*		

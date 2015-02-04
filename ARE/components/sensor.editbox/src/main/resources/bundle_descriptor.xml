@@ -19,7 +19,9 @@
 			<eventListenerPort id="clear">
                 <description>clear the text</description>
             </eventListenerPort>
-
+			<eventListenerPort id="send">
+                <description>Send the text of the editbox</description>
+            </eventListenerPort>
 		</events>			
         <properties>
 			<property name="caption"
@@ -45,6 +47,10 @@
                 value="0"
                 combobox="do nothing//select text//remove text"
                 description="defines behaviour of the component after text insert"/>
+			<property name="sendDefaultValue"
+                type="boolean"
+                value="0"
+                description="defines if the initial value should be sent at model startup"/>
 
         </properties>
 		<gui>

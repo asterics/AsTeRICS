@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-sensors.kinectj4k
+Bundle-SymbolicName: eu.asterics.component.sensor.kinectj4k
+Bundle-Version: 0.1.0
+Bundle-ClassPath: . , lib/edu.ufl.digitalworlds.j4k.jar
+Bundle-NativeCode: lib/native/ufdw_j4k_32bit.dll;
+ lib/native/ufdw_j4k_64bit.dll;
+ lib/native/ufdw_j4k2_32bit.dll;
+ lib/native/ufdw_j4k2_64bit.dll;
+ osname=win32;processor=x86;
+ osname=win;processor=x86-64;
+ osname=win8;processor=x86;
+ osname=win8;processor=x86-64;
+ osname=windows 8;processor=x86;
+ osname=windows 8;processor=x86-64;
+ osname=windows8;processor=x86;
+ osname=windows8;processor=x86-64;
+ osname=Windows 8.1;processor=x86;
+ osname=Windows 8.1;processor=x86-64
+DynamicImport-Package: *

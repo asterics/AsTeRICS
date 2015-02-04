@@ -29,6 +29,7 @@ package eu.asterics.component.sensor.eyex;
 
 
 import java.awt.Point;
+import java.util.LinkedList;
 
 import eu.asterics.component.sensor.eyex.jni.Bridge;
 import eu.asterics.mw.data.ConversionUtils;
@@ -38,6 +39,7 @@ import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 
  
@@ -74,6 +76,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 
 	final static int MODE_MANUALCORRECTION=0;
 	final static int MODE_AUTOCORRECTION=1;
+	final static int MODE_COMBINEDTRACKING=2;
 	
 	final static int POS_LEFT =0;
 	final static int POS_RIGHT =1;
@@ -88,6 +91,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 
 	static int state = STATE_IDLE;
 	
+	static int propAveraging = 4;
 	static int propMinBlinkTime = 50;
 	static int propMidBlinkTime = 200;
 	static int propMaxBlinkTime = 2000;
@@ -96,7 +100,6 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	static int propOffsetPointRemovalRadius = 50;   // TBD: make this adjustable via property
 	static int propOffsetCorrectionMode= MODE_MANUALCORRECTION;
 	static int propPupilPositionMode= POS_BOTH;
-
 	
 	static boolean measuringClose=false; 
 	static boolean measuringFixation=false;
@@ -110,11 +113,20 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 
 	static long  offsetCorrectionStartTime, actTimestamp=0, lastTimestamp=0;
 	static int  gazeX,gazeY,eyeX,eyeY;
-	static int  correctedGazeX,correctedGazeY,weakGazePointX,weakGazePointY, saveCorrectedGazeX, saveCorrectedGazeY;
+	static int  correctedGazeX,correctedGazeY,weakGazePointX,weakGazePointY;
+	static int  lastGazeX=0,lastGazeY=0,saveCorrectedGazeX, saveCorrectedGazeY;
+	static double  oldOffsetX=0,offsetX=0,oldOffsetY=0,offsetY=0;
 	
 	private final Bridge bridge = new Bridge(this);
 	private final CalibrationGenerator calib = new CalibrationGenerator(this);
-    
+
+    private final LinkedList<Integer> bufferX = new LinkedList<Integer>();
+    private final LinkedList<Integer> bufferY = new LinkedList<Integer>();
+	private int sumX=0, sumY=0, offsetmode=0;
+
+
+	
+	
    /**
     * The class constructor.
     */
@@ -130,6 +142,14 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     */
     public IRuntimeInputPort getInputPort(String portID)
     {
+		if ("xOffset".equalsIgnoreCase(portID))
+		{
+			return ipXOffset;
+		}
+		if ("yOffset".equalsIgnoreCase(portID))
+		{
+			return ipYOffset;
+		}
 
 		return null;
 	}
@@ -183,11 +203,23 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 		{
 			return elpRemoveLastOffsetCorrection;
 		}
+		if ("stopOffsetCorrection".equalsIgnoreCase(eventPortID))
+		{
+			return elpStopOffsetCorrection;
+		}
 		if("calibrateCurrentProfile".equalsIgnoreCase(eventPortID)){
 			return elpCalibrateCurrentProfile;
 		}
 		if("createAndCalibrateGuestProfile".equalsIgnoreCase(eventPortID)){
 			return elpCreateGuestProfile;
+		}
+		if ("activate".equalsIgnoreCase(eventPortID))
+		{
+			return elpActivate;
+		}
+		if ("deactivate".equalsIgnoreCase(eventPortID))
+		{
+			return elpDeactivate;
 		}
 
         return null;
@@ -226,6 +258,10 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
      */
     public Object getRuntimePropertyValue(String propertyName)
     {
+		if ("averaging".equalsIgnoreCase(propertyName))
+		{
+			return propAveraging;
+		}
 		if ("minBlinkTime".equalsIgnoreCase(propertyName))
 		{
 			return propMinBlinkTime;
@@ -264,6 +300,12 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
+		if ("averaging".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propAveraging;
+			propAveraging = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
 		if ("minBlinkTime".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propMinBlinkTime;
@@ -309,6 +351,31 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         return null;
     }
     
+    
+    
+    /**
+     * Input Ports for receiving values.
+     */
+	private final IRuntimeInputPort ipXOffset  = new DefaultRuntimeInputPort()
+	{
+		public void receiveData(byte[] data)
+		{ 
+			offsetX+= ConversionUtils.doubleFromBytes(data); 				 
+				 
+		}
+	
+	};
+
+	private final IRuntimeInputPort ipYOffset  = new DefaultRuntimeInputPort()
+	{
+		public void receiveData(byte[] data)
+		{ 
+			offsetY+= ConversionUtils.doubleFromBytes(data); 				 
+		}
+	
+	};
+
+    
 	/**
 	 * Event Listener Port for offset correction.
 	 */
@@ -345,7 +412,17 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
    				System.out.println ("Removed last offset correction point. Now there are "+remainingPoints+" points left.");
     	 }
     };    
-	
+
+    final IRuntimeEventListenerPort elpStopOffsetCorrection 	= new IRuntimeEventListenerPort()
+    {
+    	@Override 
+    	public synchronized void receiveEvent(String data)
+    	 {
+				System.out.println ("stop offset correction mode");
+    	 }
+    };    
+
+    
     final IRuntimeEventListenerPort elpCreateGuestProfile = new IRuntimeEventListenerPort() {
 		
 		@Override
@@ -361,7 +438,31 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 			bridge.recalibrate(false);
 		}
 	}; 
-    
+
+	final IRuntimeEventListenerPort elpActivate 	= new IRuntimeEventListenerPort()
+    {
+    	@Override 
+    	public synchronized void receiveEvent(String data)
+    	 {
+    		bridge.activate();
+    		closeTimeWatchDogStart();
+        }
+
+    };    
+
+	final IRuntimeEventListenerPort elpDeactivate 	= new IRuntimeEventListenerPort()
+    {
+    	@Override 
+    	public synchronized void receiveEvent(String data)
+    	 {
+  		  	closeTimeWatchDogStop();
+  		  	bridge.deactivate();
+    	 }
+    };    
+	
+	
+	
+	
     synchronized public void newEyeData(boolean isFixated, int gazeDataX, int gazeDataY, int leftEyeX, int leftEyeY)
     {   
         actTimestamp=System.currentTimeMillis();
@@ -383,8 +484,34 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 
     	//System.out.println("eyepos: "+leftEyeX+"/"+leftEyeY);
 
-        gazeX = (int)gazeDataX;
-        gazeY = (int)gazeDataY;
+        bufferX.addFirst((int)gazeDataX);
+        sumX += gazeDataX;
+        if(bufferX.size() > propAveraging) 
+        {
+        	sumX -=bufferX.removeLast();
+        } 
+        gazeX=(sumX / bufferX.size());
+
+        bufferY.addFirst((int)gazeDataY);
+        sumY += gazeDataY;
+        if(bufferY.size() > propAveraging) 
+        {
+        	sumY -=bufferY.removeLast();
+        }
+        gazeY=(sumY / bufferY.size());
+
+        /*
+        int distX=0,distY=0;
+        
+        for(int i=0;i<bufferX.size();++i)
+        {
+        	distX+=Math.abs(bufferX.get(i)-gazeX);
+        	distY+=Math.abs(bufferY.get(i)-gazeY);
+        }
+        distX/=bufferX.size();
+        distY/=bufferY.size();
+        System.out.println("distance="+(distX+distY));
+        */
 
         Point offset = calib.calcOffset(gazeX, gazeY);  // look if we have an active offset correction point
 		correctedGazeX=gazeX+offset.x;
@@ -508,7 +635,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	        opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY));
 		}
 		lastTimestamp=actTimestamp;
-	*/
+	    */
         
         if ((gazeX==0) && (gazeY==0))   // eyes closed
         {
@@ -543,13 +670,47 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
                     opPosY.sendData(ConversionUtils.intToBytes(eyeY));
             	}
 
-            	if ((gazeX != 0) || (gazeY != 0))
-            	{
-		            opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX));
-		            opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY));
-            	}
-            	
- 	            if ((isFixated==true) && (measuringFixation ==false))
+     		    if (propOffsetCorrectionMode==MODE_COMBINEDTRACKING)  
+     		    {
+
+     		    	if ((offsetmode==0) && ((offsetX!=oldOffsetX) || (offsetY!=oldOffsetY)))
+     		    	{
+     		    		offsetmode=1;
+			            lastGazeX=correctedGazeX;
+			            lastGazeY=correctedGazeY;
+     		    	}
+     		  
+     		    	if (offsetmode == 0)
+     		    	{
+     		    		opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX)); //+(int)offsetX));
+     		    		opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY)); //+(int)offsetY));
+     		    	}
+     		    	else
+     		    	{
+     		    		opGazeX.sendData(ConversionUtils.intToBytes(lastGazeX+(int)offsetX));
+     		    		opGazeY.sendData(ConversionUtils.intToBytes(lastGazeY+(int)offsetY));
+
+     		    		int	dist=(int)Math.sqrt((lastGazeX-correctedGazeX)*(lastGazeX-correctedGazeX)
+         		    			+(lastGazeY-correctedGazeY)*(lastGazeY-correctedGazeY));
+
+     		    		if (dist>propOffsetCorrectionRadius)
+         		    	{
+     		    			// oldOffsetX=offsetX;
+     		    			// oldOffsetY=offsetY;
+     		    			offsetX=0;
+     		    			offsetY=0;
+     		    			offsetmode=0;
+         		    	}
+     		    	}
+     		    }
+     		    else 
+     		    {
+    	            opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX));
+    	            opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY));
+     		    }
+
+
+         		if ((isFixated==true) && (measuringFixation ==false))
 	            {
 	            	startFixationTimestamp = System.currentTimeMillis();
 	            	measuringFixation = true;
@@ -621,7 +782,10 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
       @Override
       public void start()
       {    	  
-      	 System.out.println("EyeX activate ! ");
+      	  System.out.println("EyeX activate ! ");
+      	  bufferX.clear(); sumX=0;
+      	  bufferY.clear(); sumY=0;
+      	  
   		  bridge.activate();
   		  closeTimeWatchDogStart();
     	  super.start(); 

@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.EasyHomeControl"
+                   canonical_name="eu.asterics.component.actuator.easyhomecontrol.EasyHomeControlInstance">
+        <type subtype="Home Control">actuator</type>
+        <singleton>true</singleton>
+        <description>EasyHome controller</description>
+        <ports>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="onDevice1">
+				<description>turns on device 1</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice2">
+				<description>turns on device 2</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice3">
+				<description>turns on device 3</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice4">
+				<description>turns on device 4</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice5">
+				<description>turns on device 5</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice6">
+				<description>turns on device 6</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice7">
+				<description>turns on device 7</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice8">
+				<description>turns on device 8</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice9">
+				<description>turns on device 9</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice10">
+				<description>turns on device 10</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice11">
+				<description>turns on device 11</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice12">
+				<description>turns on device 12</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice13">
+				<description>turns on device 13</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice14">
+				<description>turns on device 14</description>
+			</eventListenerPort>
+			<eventListenerPort id="onDevice15">
+				<description>turns on device 15</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice1">
+				<description>turns off device 1</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice2">
+				<description>turns off device 2</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice3">
+				<description>turns off device 3</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice4">
+				<description>turns off device 4</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice5">
+				<description>turns off device 5</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice6">
+				<description>turns off device 6</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice7">
+				<description>turns off device 7</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice8">
+				<description>turns off device 8</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice9">
+				<description>turns off device 9</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice10">
+				<description>turns off device 10</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice11">
+				<description>turns off device 11</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice12">
+				<description>turns off device 12</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice13">
+				<description>turns off device 13</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice14">
+				<description>turns off device 14</description>
+			</eventListenerPort>
+			<eventListenerPort id="offDevice15">
+				<description>turns off device 15</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="nameDevice1"
+				type="string"
+				value="1"
+				description="name of device"/>
+			<property name="nameDevice2"
+				type="string"
+				value="2"
+				description="name of device"/>
+			<property name="nameDevice3"
+				type="string"
+				value="3"
+				description="name of device"/>
+			<property name="nameDevice4"
+				type="string"
+				value="4"
+				description="name of device"/>
+			<property name="nameDevice5"
+				type="string"
+				value="5"
+				description="name of device"/>
+			<property name="nameDevice6"
+				type="string"
+				value="6"
+				description="name of device"/>
+			<property name="nameDevice7"
+				type="string"
+				value="7"
+				description="name of device"/>
+			<property name="nameDevice8"
+				type="string"
+				value="8"
+				description="name of device"/>
+			<property name="nameDevice9"
+				type="string"
+				value="9"
+				description="name of device"/>
+			<property name="nameDevice10"
+				type="string"
+				value="10"
+				description="name of device"/>
+			<property name="nameDevice11"
+				type="string"
+				value="11"
+				description="name of device"/>
+			<property name="nameDevice12"
+				type="string"
+				value="12"
+				description="name of device"/>
+			<property name="nameDevice13"
+				type="string"
+				value="13"
+				description="name of device"/>
+			<property name="nameDevice14"
+				type="string"
+				value="14"
+				description="name of device"/>
+			<property name="nameDevice15"
+				type="string"
+				value="15"
+				description="name of device"/>
+			<property name="numberDevice1"
+				type="integer"
+				value="1"
+				description="number of device"/>
+			<property name="numberDevice2"
+				type="integer"
+				value="2"
+				description="number of device"/>
+			<property name="numberDevice3"
+				type="integer"
+				value="3"
+				description="number of device"/>
+			<property name="numberDevice4"
+				type="integer"
+				value="4"
+				description="number of device"/>
+			<property name="numberDevice5"
+				type="integer"
+				value="5"
+				description="number of device"/>
+			<property name="numberDevice6"
+				type="integer"
+				value="6"
+				description="number of device"/>
+			<property name="numberDevice7"
+				type="integer"
+				value="7"
+				description="number of device"/>
+			<property name="numberDevice8"
+				type="integer"
+				value="8"
+				description="number of device"/>
+			<property name="numberDevice9"
+				type="integer"
+				value="9"
+				description="number of device"/>
+			<property name="numberDevice10"
+				type="integer"
+				value="10"
+				description="number of device"/>
+			<property name="numberDevice11"
+				type="integer"
+				value="11"
+				description="number of device"/>
+			<property name="numberDevice12"
+				type="integer"
+				value="12"
+				description="number of device"/>
+			<property name="numberDevice13"
+				type="integer"
+				value="13"
+				description="number of device"/>
+			<property name="numberDevice14"
+				type="integer"
+				value="14"
+				description="number of device"/>
+			<property name="numberDevice15"
+				type="integer"
+				value="15"
+				description="number of device"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

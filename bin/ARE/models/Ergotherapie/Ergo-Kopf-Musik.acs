@@ -1131,7 +1131,7 @@ left/right movements influence the tone height</description>
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="Ergotherapie\ergomenu.acs" />
+        <property name="model" value="Ergotherapie/ergomenu.acs" />
       </properties>
       <layout>
         <posX>341</posX>

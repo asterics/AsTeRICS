@@ -219,10 +219,10 @@
       </ports>
       <properties>
         <property name="delay" value="300" />
-        <property name="slot1" value="Ergotherapie\Ergo-Kopf-Musik-einfach.acs" />
-        <property name="slot2" value="Ergotherapie\Ergo-Kopf-Musik.acs" />
-        <property name="slot3" value="Ergotherapie\Ergo-Kopf-Schreiben.acs" />
-        <property name="slot4" value="Ergotherapie\Umweltsteuerung.acs" />
+        <property name="slot1" value="Ergotherapie/Ergo-Kopf-Musik-einfach.acs" />
+        <property name="slot2" value="Ergotherapie/Ergo-Kopf-Musik.acs" />
+        <property name="slot3" value="Ergotherapie/Ergo-Kopf-Schreiben.acs" />
+        <property name="slot4" value="Ergotherapie/Umweltsteuerung.acs" />
         <property name="slot5" value="demomenu.acs" />
         <property name="slot6" value="" />
         <property name="slot7" value="" />

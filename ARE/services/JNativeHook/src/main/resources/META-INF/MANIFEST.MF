@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-services.jnativehook
+Bundle-SymbolicName: eu.asterics.mw.jnativehook
+Bundle-Version: 0.1.0
+Bundle-ClassPath: .
+Export-Package: org.jnativehook,
+ org.jnativehook.keyboard,
+ org.jnativehook.mouse,
+ eu.asterics.mw.jnativehook
+DynamicImport-Package: *

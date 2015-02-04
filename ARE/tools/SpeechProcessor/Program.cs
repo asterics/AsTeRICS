@@ -40,6 +40,7 @@ namespace AsynchronousRecognition
  //       static SoundPlayer player = new SoundPlayer();
 
         static long speechTimeStamp=0;
+        static Int32 speechLoopDelay = 1500;
         static String spokenText = "";
 
 
@@ -267,6 +268,10 @@ namespace AsynchronousRecognition
                             //Console.WriteLine("confidence update:" + token.Substring(11, token.Length - 11));
                             Console.WriteLine("Speech Processor: confidence update:" + confidenceLevel);
 
+                        }
+                        else if (token.StartsWith("speechLoopDelay:"))
+                        {
+                            speechLoopDelay = int.Parse(token.Substring(16, token.Length - 16), System.Globalization.CultureInfo.InvariantCulture);
                         }
                     }
                 }
@@ -536,7 +541,7 @@ namespace AsynchronousRecognition
             {
 
                 //if ((resultText == spokenText)  &&
-                if ((speaking==true) || ((DateTime.Now.Ticks - speechTimeStamp) / 10000 < 1500))
+                if ((speaking==true) || ((DateTime.Now.Ticks - speechTimeStamp) / 10000 < speechLoopDelay))
                     Console.WriteLine(" bypassed recognition to avoid loop.");
                 else
                 {

@@ -44,6 +44,7 @@ SpeechProcessor plugin</div>
 <ul>
 <li><STRONG>language [integer] (combobox selection):</STRONG> A combobox which defines which speech pack is to be used (currently: English, German, Spanish, Polish) – these language packs need to be installed !</li>
 <li><STRONG>recognitionConfidence [double]:</STRONG> This value defines the needed confidence for a valid recognition. The value can range from 0 to 1. A higher value results in a more precise pronunciation needed to detect a command, a lower level could lead to more false-positive recognition results.</li>
+<li><STRONG>speechLoopDelay [integer]:</STRONG> This value defines the minimal time between two speech commands. It is used to avoid recognition-loops</li>
 <li><STRONG>activationCommand [string]: </STRONG> a speech command to start the recognition of the other commands.</li>
 <li><STRONG>deactivationCommand [string]: </STRONG> a speech command to stop the recognition of the other commands.</li>
 <li><STRONG>helpCommand [string]: </STRONG> a speech command to speak out all supported voice commands.</li>

@@ -224,7 +224,7 @@
         <property name="slot3" value="SpeechControl.acs" />
         <property name="slot4" value="GamepadMouse.acs" />
         <property name="slot5" value="ImageDemo.acs" />
-        <property name="slot6" value="Ergotherapie\ergomenu.acs" />
+        <property name="slot6" value="Ergotherapie/ergomenu.acs" />
         <property name="slot7" value="" />
         <property name="slot8" value="" />
         <property name="slot9" value="" />

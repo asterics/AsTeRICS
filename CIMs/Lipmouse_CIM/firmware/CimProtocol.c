@@ -244,21 +244,50 @@ void reply_DataFrame(void)
 	}*/	    
 }
 
+
+#define LIPSY_V1_0
+
+
+#ifdef LIPSY_BT
+  #define AD_PRESSURE 0
+  #define AD_UP 2 
+  #define AD_DOWN 1  
+  #define AD_LEFT  3 
+  #define AD_RIGHT 4 
+#endif
+
+#ifdef LIPSY_V0
+  #define AD_PRESSURE 0
+  #define AD_UP 6 
+  #define AD_DOWN 4 
+  #define AD_LEFT  5 
+  #define AD_RIGHT 7 
+#endif
+
+#ifdef LIPSY_V1_0
+  #define AD_PRESSURE 0
+  #define AD_UP 6 
+  #define AD_DOWN 7 
+  #define AD_LEFT  5 
+  #define AD_RIGHT 4 
+#endif
+
+
 void generate_ADCFrame()
 {
 	uint16_t adcval;
 	
-	adcval=ADC_Read(7); //right
-	adcval=adcval-ADC_Read(5); //left -> value = right - left
+	adcval=ADC_Read(AD_RIGHT); //right
+	adcval=adcval-ADC_Read(AD_LEFT); //left -> value = right - left
 	CIM_frame.data[0]=adcval&0xff;
 	CIM_frame.data[1]=adcval>>8;
 	
-	adcval=ADC_Read(4); //down
-	adcval=adcval-ADC_Read(6); //up -> value = down-up
+	adcval=ADC_Read(AD_DOWN); //down
+	adcval=adcval-ADC_Read(AD_UP); //up -> value = down-up
 	CIM_frame.data[2]=adcval&0xff;
 	CIM_frame.data[3]=adcval>>8;
 	
-	adcval=ADC_Read(0); //pressure
+	adcval=ADC_Read(AD_PRESSURE); //pressure
 	CIM_frame.data[4]=adcval&0xff;
 	CIM_frame.data[5]=adcval>>8;
 	CIM_frame.data_size=6; 

@@ -8,7 +8,16 @@
         <singleton>true</singleton>
         <description>interfaces to the EyeX Gaze tracking system</description>
         <ports>
-
+			<inputPort id="xOffset">
+				<description>offset for x gaze position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="yOffset">
+				<description>offset for y gaze position</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
 			<outputPort id="gazeX">
 				<description>eye gaze x-coordinate</description>
 				<dataType>integer</dataType>
@@ -42,11 +51,20 @@
 			<eventListenerPort id="removeLastOffsetCorrection">
 				<description>remove the last offset correction point from the list of correction points</description>
 			</eventListenerPort>
+			<eventListenerPort id="stopOffsetCorrection">
+				<description>to stop offset correction mode</description>
+			</eventListenerPort>
 			<eventListenerPort id="createAndCalibrateGuestProfile">
 				<description>creates a new guest-profile and calibrates it</description>
 			</eventListenerPort>
 			<eventListenerPort id="calibrateCurrentProfile">
 				<description>calibrates the current profile</description>
+			</eventListenerPort>
+			<eventListenerPort id="activate">
+				<description>activate eyetracker</description>
+			</eventListenerPort>
+			<eventListenerPort id="deactivate">
+				<description>deactivate eyetracker</description>
 			</eventListenerPort>
 			<eventTriggererPort id="blink">
 				<description>triggered when eye blink occurs</description>
@@ -62,6 +80,10 @@
 			</eventTriggererPort>
 		</events>			
         <properties>
+			<property name="averaging"
+				type="integer"
+				value="4"
+				description="number of values for internal averaging of gazeX and gazeY outputs"/>
 			<property name="minBlinkTime"
 				type="integer"
 				value="50"
@@ -86,12 +108,12 @@
 			<property name="offsetCorrectionRadius"
 				type="integer"
 				value="150"
-				description="radius (in pixels) in which offset correction spots are active"/>
+				description="radius (in pixels) where offset correction spots are active"/>
 			<property name="offsetCorrectionMode"
 				type="integer"
 				value="0"
-                description="one stage: look around to change offset, send another event to finish; two stage: look at gaze point first, then on cursor "
-                combobox="one stage manual offset correction//two stage automatic offset correction"/>
+                description="one stage: look around to change offset, send another event to finish; two stage: look at gaze point first, then on cursor; combined: coarse positioning via eye gaze and fine positioning via offset inputs !"
+                combobox="one stage manual offset correction//two stage automatic offset correction//combined tracking mode"/>
         </properties>
 
     </componentType>

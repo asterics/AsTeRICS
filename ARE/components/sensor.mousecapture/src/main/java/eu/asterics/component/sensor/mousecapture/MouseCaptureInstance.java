@@ -154,7 +154,7 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-			if("true".equals(bridge.getProperty("blockEvents"))){				
+			if("true".equals(bridge.getProperty("blockEvents")) || "True".equals(bridge.getProperty("blockEvents"))){				
 				bridge.setProperty("blockEvents", "false"); 
 			}
 			else{
