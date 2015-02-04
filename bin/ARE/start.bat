@@ -1,4 +1,9 @@
 :Initialization
+@REM VERY IMPORTANT: The two lines ensure that the script is executed in the current directy (ARE), also when called
+@REM as administrator
+@setlocal enableextensions
+@cd /d "%~dp0"
+
 CLS
 set JAVA_BIN="javaw"
 
