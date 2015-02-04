@@ -63,7 +63,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="enableMouse" value="False" />
+        <property name="enableMouse" value="True" />
         <property name="absolutePosition" value="true" />
         <property name="xMin" value="0" />
         <property name="xMax" value="0" />
@@ -414,9 +414,9 @@
         <posY>514</posY>
       </layout>
       <gui>
-        <posX>1300</posX>
-        <posY>6467</posY>
-        <width>2375</width>
+        <posX>1260</posX>
+        <posY>6565</posY>
+        <width>2438</width>
         <height>1667</height>
       </gui>
     </component>
@@ -578,6 +578,57 @@
         <width>4000</width>
         <height>1000</height>
       </gui>
+    </component>
+    <component id="Arduino.1" type_id="asterics.Arduino">
+      <description>Arduino Microcontroller CIM</description>
+      <ports>
+        <inputPort portTypeID="pwm3">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pwm5">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="pwm6">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="A0">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="A5">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="periodicADCUpdate" value="200" />
+        <property name="pin2Mode" value="0" />
+        <property name="pin3Mode" value="0" />
+        <property name="pin4Mode" value="0" />
+        <property name="pin5Mode" value="0" />
+        <property name="pin6Mode" value="0" />
+        <property name="pin7Mode" value="0" />
+        <property name="pin8Mode" value="2" />
+        <property name="pin9Mode" value="2" />
+        <property name="pin10Mode" value="2" />
+        <property name="pin11Mode" value="0" />
+        <property name="pin12Mode" value="0" />
+        <property name="pin13Mode" value="0" />
+      </properties>
+      <layout>
+        <posX>1141</posX>
+        <posY>184</posY>
+      </layout>
     </component>
   </components>
   <channels>
@@ -950,6 +1001,66 @@
         <source>
           <component id="ButtonGrid.1.1.1" />
           <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="modelSwitcher.1" />
+          <eventPort id="switchModel" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin9ChangedHighToLow_dragPress">
+      <description />
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin9ChangedHighToLow" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="dragPress" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin9ChangedLowToHigh_dragRelease">
+      <description />
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin9ChangedLowToHigh" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="dragRelease" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin8ChangedHighToLow_rightClick">
+      <description />
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin10ChangedHighToLow" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="rightClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="pin8ChangedHighToLow_switchModel">
+      <description />
+      <sources>
+        <source>
+          <component id="Arduino.1" />
+          <eventPort id="pin8ChangedLowToHigh" />
         </source>
       </sources>
       <targets>

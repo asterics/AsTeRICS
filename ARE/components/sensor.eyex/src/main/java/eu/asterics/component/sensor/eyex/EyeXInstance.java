@@ -74,9 +74,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	final static int STATE_AUTOCORRECTION=3;
 	final static int STATE_MANUALCORRECTION=4;
 
-	final static int MODE_MANUALCORRECTION=0;
-	final static int MODE_AUTOCORRECTION=1;
-	final static int MODE_COMBINEDTRACKING=2;
+	final static int MODE_CORRECTION_SPOTS=0;
+	final static int MODE_PERMANENT_CORRECTION=1;
+	final static int MODE_COMBINED_TRACKING=2;
 	
 	final static int POS_LEFT =0;
 	final static int POS_RIGHT =1;
@@ -91,6 +91,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 
 	static int state = STATE_IDLE;
 	
+	static boolean propEnabled = true;
 	static int propAveraging = 4;
 	static int propMinBlinkTime = 50;
 	static int propMidBlinkTime = 200;
@@ -98,7 +99,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	static int propFixationTime = 700;
 	static int propOffsetCorrectionRadius=150;
 	static int propOffsetPointRemovalRadius = 50;   // TBD: make this adjustable via property
-	static int propOffsetCorrectionMode= MODE_MANUALCORRECTION;
+	static int propOffsetCorrectionMode= MODE_PERMANENT_CORRECTION;
 	static int propPupilPositionMode= POS_BOTH;
 	
 	static boolean measuringClose=false; 
@@ -213,6 +214,18 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 		if("createAndCalibrateGuestProfile".equalsIgnoreCase(eventPortID)){
 			return elpCreateGuestProfile;
 		}
+		if ("switchToOffsetCorrectionSpots".equalsIgnoreCase(eventPortID))
+		{
+			return elpSwitchToOffsetCorrectionSpots;
+		}
+		if ("switchToPermanentOffsetCorrection".equalsIgnoreCase(eventPortID))
+		{
+			return elpSwitchToPermanentOffsetCorrection;
+		}
+		if ("switchToCombinedOffsetCorrection".equalsIgnoreCase(eventPortID))
+		{
+			return elpSwitchToCombinedOffsetCorrection;
+		}
 		if ("activate".equalsIgnoreCase(eventPortID))
 		{
 			return elpActivate;
@@ -258,6 +271,10 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
      */
     public Object getRuntimePropertyValue(String propertyName)
     {
+		if ("enabled".equalsIgnoreCase(propertyName))
+		{
+			return propEnabled;
+		}
 		if ("averaging".equalsIgnoreCase(propertyName))
 		{
 			return propAveraging;
@@ -300,6 +317,21 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
+        if("enabled".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propEnabled;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+                propEnabled = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+                propEnabled = false;
+            }
+
+            return oldValue;
+        }
 		if ("averaging".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propAveraging;
@@ -384,21 +416,24 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     	@Override 
     	public synchronized void receiveEvent(String data)
     	 {    		
-    		if (state==STATE_MANUALCORRECTION)
+    		if (propOffsetCorrectionMode == MODE_CORRECTION_SPOTS)
     		{
-           		calib.newOffsetPoint(weakGazePointX,weakGazePointY,(int)currentManualOffsetX,(int)currentManualOffsetY);
-   				System.out.println("Manual correction finished.");
-    			state=STATE_IDLE;
-    		}
-    		else
-    		{
-				calib.playWavFile(CALIB_SOUND_START);
-
-   				System.out.println("Offset correction triggered."); 
-    			measuringClose=false;
-    			measuringFixation=false;
-     		    offsetCorrectionStartTime=System.currentTimeMillis();
-     		    state=STATE_INITIATE_CORRECTION;
+	    		if (state==STATE_MANUALCORRECTION)
+	    		{
+	           		calib.newOffsetPoint(weakGazePointX,weakGazePointY,(int)currentManualOffsetX,(int)currentManualOffsetY);
+	   				System.out.println("Manual correction finished.");
+	    			state=STATE_IDLE;
+	    		}
+	    		else
+	    		{
+					calib.playWavFile(CALIB_SOUND_START);
+	
+	   				System.out.println("Offset correction triggered."); 
+	    			measuringClose=false;
+	    			measuringFixation=false;
+	     		    offsetCorrectionStartTime=System.currentTimeMillis();
+	     		    state=STATE_INITIATE_CORRECTION;
+	    		}
     		}
     	 }
     };    
@@ -461,6 +496,32 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     };    
 	
 	
+    final IRuntimeEventListenerPort elpSwitchToOffsetCorrectionSpots 	= new IRuntimeEventListenerPort()
+    {
+    	@Override 
+    	public synchronized void receiveEvent(String data)
+    	 {
+    		propOffsetCorrectionMode= MODE_CORRECTION_SPOTS;
+    	 }
+    };    
+    final IRuntimeEventListenerPort elpSwitchToPermanentOffsetCorrection 	= new IRuntimeEventListenerPort()
+    {
+    	@Override 
+    	public synchronized void receiveEvent(String data)
+    	 {
+    		propOffsetCorrectionMode= MODE_PERMANENT_CORRECTION;
+    		offsetX=0; offsetY=0;
+    	 }
+    };    
+    final IRuntimeEventListenerPort elpSwitchToCombinedOffsetCorrection 	= new IRuntimeEventListenerPort()
+    {
+    	@Override 
+    	public synchronized void receiveEvent(String data)
+    	 {
+    		propOffsetCorrectionMode= MODE_COMBINED_TRACKING;
+    		offsetX=0; offsetY=0;
+    	 }
+    };    
 	
 	
     synchronized public void newEyeData(boolean isFixated, int gazeDataX, int gazeDataY, int leftEyeX, int leftEyeY)
@@ -514,9 +575,18 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         */
 
         Point offset = calib.calcOffset(gazeX, gazeY);  // look if we have an active offset correction point
-		correctedGazeX=gazeX+offset.x;
-        correctedGazeY=gazeY+offset.y;
-	       
+        
+        if (propOffsetCorrectionMode == MODE_CORRECTION_SPOTS)
+    	{    
+			correctedGazeX=gazeX+offset.x;
+	        correctedGazeY=gazeY+offset.y;
+    	}
+        else
+        {
+			correctedGazeX=gazeX;
+			correctedGazeY=gazeY;
+        }
+        
         switch (propPupilPositionMode)  {
     	case POS_LEFT: 
 	            eyeX=(int)(leftEyeX);
@@ -552,13 +622,15 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
             	    saveCorrectedGazeY=correctedGazeY;
 
             	    calib.playWavFile(CALIB_SOUND_NOTICE);
-            	    
+
+            	    /*
          		    if (propOffsetCorrectionMode==MODE_AUTOCORRECTION)  // continue depending on mode
          		    {
 	       				System.out.println("Got weak gaze spot for automatic correction");
          		    	state=STATE_AUTOCORRECTION;
          		    }
-         		    else { 
+         		    else*/
+         		     { 
 	       				System.out.println("Got weak gaze spot for manual correction");
 //		                    Point oldOffset = calib.getOffsetPoint(weakGazePointY, weakGazePointY);
          		    	currentManualOffsetX=offset.x;
@@ -670,7 +742,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
                     opPosY.sendData(ConversionUtils.intToBytes(eyeY));
             	}
 
-     		    if (propOffsetCorrectionMode==MODE_COMBINEDTRACKING)  
+     		    if (propOffsetCorrectionMode==MODE_COMBINED_TRACKING)  
      		    {
 
      		    	if ((offsetmode==0) && ((offsetX!=oldOffsetX) || (offsetY!=oldOffsetY)))
@@ -703,7 +775,13 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
          		    	}
      		    	}
      		    }
-     		    else 
+     		    else if (propOffsetCorrectionMode == MODE_PERMANENT_CORRECTION)
+     		    {
+ 		    		opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX+(int)offsetX));
+ 		    		opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY+(int)offsetY));
+
+     		    }
+     		    else
      		    {
     	            opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX));
     	            opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY));
@@ -786,8 +864,11 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
       	  bufferX.clear(); sumX=0;
       	  bufferY.clear(); sumY=0;
       	  
-  		  bridge.activate();
-  		  closeTimeWatchDogStart();
+      	  if (propEnabled==true)
+      	  {
+      		  bridge.activate();
+      		  closeTimeWatchDogStart();
+      	  }
     	  super.start(); 
       }
 
