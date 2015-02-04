@@ -70,8 +70,8 @@ uint8_t first_packet=1;
 //extern unsigned char old_PIND;
 //extern unsigned char old_PINB;
 
-//unsigned char PIND_Mask =0;
-//unsigned char PINB_Mask =0;
+unsigned char PIND_Mask =0;
+unsigned char PINB_Mask =0;
 
 void init_CIM_frame (void)
 {
@@ -145,10 +145,7 @@ uint8_t process_ARE_frame(uint8_t status_code)
 				     break;
 
 			     case ARDUINO_CIM_FEATURE_GET_PINVALUES:
-					 	CIM_frame.data[0]=PIND;
-						CIM_frame.data[1]=PINB;
-						CIM_frame.data_size=2;
-						reply_DataFrame();				
+				    	generate_PINFrame();	 
 					    ack_needed=0;
 					break;
 
@@ -173,8 +170,25 @@ uint8_t process_ARE_frame(uint8_t status_code)
 				     break;
 
 			        case ARDUINO_CIM_FEATURE_SET_PINDIRECTION:
+	  		            if (data_size==2) {    
+				 		  DDRD=ARE_frame.data[0];
+				 		  DDRB=ARE_frame.data[1];
+  						} else status_code |= CIM_ERROR_INVALID_FEATURE;
+						break;
+
 					case ARDUINO_CIM_FEATURE_SET_PINSTATE:
+	  		            if (data_size==2) {    
+							PORTD=ARE_frame.data[0];
+							PORTB=ARE_frame.data[1];
+  						} else status_code |= CIM_ERROR_INVALID_FEATURE;
+						break;
+
 					case ARDUINO_CIM_FEATURE_SET_PINMASK:
+						if (data_size==2) {
+							PIND_Mask=ARE_frame.data[0];
+							PINB_Mask=ARE_frame.data[1];
+						} else status_code |= CIM_ERROR_INVALID_FEATURE;
+
 					case ARDUINO_CIM_FEATURE_SET_PWM:
 						break;
 
@@ -299,6 +313,13 @@ void generate_ADCFrame()
 
 }
 
+
+void generate_PINFrame()
+{
+	CIM_frame.data[0]=PIND;
+	CIM_frame.data[1]=PINB;
+	CIM_frame.data_size=2;
+}
 
 #define FRAME_DONE 99
 

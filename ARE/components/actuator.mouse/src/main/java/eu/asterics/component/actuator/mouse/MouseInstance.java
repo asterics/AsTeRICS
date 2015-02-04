@@ -342,6 +342,7 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
  
     private void updateMousePosition()
     {
+    	
 		if (!first)
 		{
 			Point p= MouseInfo.getPointerInfo().getLocation(); 
@@ -380,11 +381,12 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 	        	}
 	        	else 
 	        	{
-	                mouseXPos += ConversionUtils.doubleFromBytes(data);
+	                mouseXPos = mouseXPos + ConversionUtils.doubleFromBytes(data);
 	          	}
 
 				if (mouseXPos != mouseLastXPos) 
 					updateMousePosition();
+					
             }
         }
     };

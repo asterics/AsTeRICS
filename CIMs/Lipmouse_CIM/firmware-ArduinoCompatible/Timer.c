@@ -25,7 +25,7 @@
 // updated in timer ISR (-> volatile is important !!)
 volatile uint16_t ADC_updatetime=0;     // milliseconds for ADC update Frame (0=off)
 volatile uint8_t send_ADCFrame_now=0;     // flag for adc send packet request
-//volatile uint8_t check_PINChange_now=0;   // flag for pinstate update
+volatile uint8_t check_PINChange_now=0;   // flag for pinstate update
 
 //volatile uint16_t pwm3=0;   
 //volatile uint16_t pwm5=0;   
@@ -58,8 +58,16 @@ void disable_timer_ISR()
 ISR (TIMER0_OVF_vect)           // Timer0 overflow interrupt service routine, triggered every millisecond
 {
    static uint16_t adc_counter=0;   // millisecond_counter for adc reports
+   static uint16_t pin_counter=0;   // millisecond_counter for adc reports
    
    TCNT0 = RELOAD;        // Reload timer value to maintain the desired frequency of 1000Hz.
+   pin_counter++;
+   if (pin_counter>=10)
+   {
+       pin_counter=0;
+       check_PINChange_now=1;
+    }
+
    if (ADC_updatetime >0)
    {
      adc_counter++;

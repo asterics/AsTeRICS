@@ -20,7 +20,7 @@ void disable_timer_ISR();
 
 extern uint16_t ADC_updatetime;
 extern uint8_t send_ADCFrame_now;
-//extern uint8_t check_PINChange_now;
+extern uint8_t check_PINChange_now;
 
 //extern uint16_t pwm3;
 //extern uint16_t pwm5;
