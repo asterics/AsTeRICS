@@ -42,6 +42,7 @@
 const uint32_t ARDUINO_CIM_UNIQUE_NUMBER = 0x05060708;  
 
 
+
 const char ARDUINO_CIM_FEATURELIST[]=
 {
    0x00,0x00,  // unique number, data: 4 bytes 

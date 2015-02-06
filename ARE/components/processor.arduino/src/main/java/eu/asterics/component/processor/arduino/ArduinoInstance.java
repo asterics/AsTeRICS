@@ -28,6 +28,9 @@
 package eu.asterics.component.processor.arduino;
 
  
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.cimcommunication.*;
@@ -87,24 +90,15 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 	private final String ETP_HIGHLOW_POSTFIX = "ChangedHighToLow";
 	private final String PROP_MODE_POSTFIX = "Mode";
 
-//	final IRuntimeOutputPort opA0 = new DefaultRuntimeOutputPort();
-//	final IRuntimeOutputPort opA1 = new DefaultRuntimeOutputPort();
-//	final IRuntimeOutputPort opA2 = new DefaultRuntimeOutputPort();
-//	final IRuntimeOutputPort opA3 = new DefaultRuntimeOutputPort();
-//	final IRuntimeOutputPort opA4 = new DefaultRuntimeOutputPort();
-
 	public final SetPinListener [] elpSetPin = new SetPinListener[NUMBER_OF_PINS];    
 	public final ClearPinListener [] elpClearPin = new ClearPinListener[NUMBER_OF_PINS];    
 	public final IRuntimeOutputPort [] opAdc = new DefaultRuntimeOutputPort[NUMBER_OF_ADCPORTS];
 	public final IRuntimeEventTriggererPort [] etpChangedLowToHigh = new DefaultRuntimeEventTriggererPort[NUMBER_OF_PINS];    
 	public final IRuntimeEventTriggererPort [] etpChangedHighToLow = new DefaultRuntimeEventTriggererPort[NUMBER_OF_PINS];    
 
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
-
-	//use default value 200
 	public int propPeriodicADCUpdate = 200;
 	public int[] propPinMode= new int[NUMBER_OF_PINS];
+	private String propUniqueID = "not used"; 
 	
 	// declare member variables here
 
@@ -249,6 +243,11 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 				return propPinMode[i];
 			}
 		}
+        if("uniqueID".equalsIgnoreCase(propertyName))
+        {
+            return propUniqueID;
+        }
+
         return null;
     }
 
@@ -267,6 +266,30 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
  			sendArduinoWriteFeature(ARDUINO_CIM_FEATURE_SET_ADCPERIOD,propPeriodicADCUpdate);
 			return oldValue;
 		}
+
+        if("uniqueID".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propUniqueID;
+			propUniqueID = (String)newValue;
+			CIMPortController tempPort = openCIM (ARDUINO_CIM_ID, propUniqueID);
+			if (tempPort != null)
+			{
+				port=tempPort;
+				if ((!propUniqueID.equals("")) && (!propUniqueID.equals("not used")))
+				{
+					for (int i=0;i<4;i++)
+					{
+					  CIMPortManager.getInstance().sendPacket  (port, null, 
+							  CIMProtocolPacket.FEATURE_UNIQUE_SERIAL_NUMBER, 
+							  CIMProtocolPacket.COMMAND_REQUEST_READ_FEATURE, false);
+					  try { Thread.sleep (100); }  catch (InterruptedException e) {}
+					}
+				}
+			} 
+			return oldValue;
+		}        
+
+		
 		
 		for (int i = 0; i < NUMBER_OF_PINS; i++)
 		{
@@ -354,6 +377,26 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
         return null;
     }
 
+	public CIMPortController openCIM(short CIMID, String uniqueID)
+	{
+	   if ("not used".equalsIgnoreCase(propUniqueID) || (propUniqueID==""))
+	   {
+		    return (CIMPortManager.getInstance().getConnection(ARDUINO_CIM_ID));
+	   }
+	   else
+	   {
+			Long id;
+			try {
+				id=Long.parseLong(propUniqueID);
+				return (CIMPortManager.getInstance().getConnection(ARDUINO_CIM_ID, id));
+			} catch (Exception e) {
+				return(null);
+			}	   
+	   }
+	}
+
+    
+    
      /**
       * Input Ports for receiving values.
       */
@@ -528,6 +571,30 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 	}
 
 
+	/**
+	 * Returns the unique ID
+	 */
+	public List<String> getRuntimePropertyList(String key) 
+	{
+		List<String> res = new ArrayList<String>(); 
+		if (key.compareToIgnoreCase("uniqueID")==0)
+		{
+			res.add("not used");
+			Vector<Long> ids;
+			ids=CIMPortManager.getInstance().getUniqueIdentifiersofCIMs(ARDUINO_CIM_ID);
+			if (ids != null)
+			{ 
+				for (Long l : ids)
+				{
+					res.add(l.toString());
+					// System.out.println(" found unique ID: "+l.toString());
+				}
+			}
+		}
+		return res;
+	} 
+
+	
 	
      /**
       * called when model is started.
@@ -537,7 +604,8 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
       {
     	  if (port==null)
     	  {
-  		     port = CIMPortManager.getInstance().getConnection(ARDUINO_CIM_ID);
+    		    port = openCIM (ARDUINO_CIM_ID,propUniqueID);
+    		    // port = CIMPortManager.getInstance().getConnection(ARDUINO_CIM_ID);
     	  }
 		  if (port != null )
 		  {
@@ -556,7 +624,7 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 		  }
 		  else
 		  {
-	       		AstericsErrorHandling.instance.reportError(this, "Could not find Arduino. Please verify that the Arduino Module is connected to an USB Port and that the correct firmware is installed.");
+	       		AstericsErrorHandling.instance.reportError(this, "Could not find Arduino (ID "+propUniqueID+") Please verify that the Arduino Module is connected to an USB Port and that the correct firmware is installed.");
 		  }
 
           super.start();

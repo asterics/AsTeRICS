@@ -199,6 +199,12 @@
 
 		</events>			
         <properties>
+            <property name="uniqueID"
+              type="string"
+              value="not used"
+              getStringList="true"
+              description="ID (if more than one devices of this kind are connected)"/>
+        
 			<property name="periodicADCUpdate"
 				type="integer"
 				value="200"
