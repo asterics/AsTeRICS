@@ -49,9 +49,8 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
  * 
  * 
  *  
- * @author <your name> [<your email address>]
- *         Date: 
- *         Time: 
+ * @author Chris Veigl [veigl@technikum-wien.at]
+ *         Date: 01/2015
  */
 public class EyeXInstance extends AbstractRuntimeComponentInstance // implements ICalibrationProcessHandler
 {
@@ -66,8 +65,10 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	final static IRuntimeEventTriggererPort etpLongblink = new DefaultRuntimeEventTriggererPort();
 	final static IRuntimeEventTriggererPort etpFixation = new DefaultRuntimeEventTriggererPort();
 	final static IRuntimeEventTriggererPort etpFixationEnd = new DefaultRuntimeEventTriggererPort();
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
+	final static int MANUALOFFSETBOX=200;
+	final static int MANUALOFFSETMAXTIME=7000;
+	
 	final static int STATE_IDLE=0;
 	final static int STATE_CALIBRATION=1;
 	final static int STATE_INITIATE_CORRECTION=2;
@@ -77,6 +78,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	final static int MODE_CORRECTION_SPOTS=0;
 	final static int MODE_PERMANENT_CORRECTION=1;
 	final static int MODE_COMBINED_TRACKING=2;
+	
+	final static int COMBINED_CORRECTION_IDLE = 0;
+	final static int COMBINED_CORRECTION_ACTIVE = 1;
 	
 	final static int POS_LEFT =0;
 	final static int POS_RIGHT =1;
@@ -123,10 +127,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 
     private final LinkedList<Integer> bufferX = new LinkedList<Integer>();
     private final LinkedList<Integer> bufferY = new LinkedList<Integer>();
-	private int sumX=0, sumY=0, offsetmode=0;
-
-
-	
+	private int sumX=0, sumY=0, combinedCorrectionMode=COMBINED_CORRECTION_IDLE;
+    private Point offset = new Point(0,0);
+    
 	
    /**
     * The class constructor.
@@ -478,9 +481,8 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     {
     	@Override 
     	public synchronized void receiveEvent(String data)
-    	 {
-    		bridge.activate();
-    		closeTimeWatchDogStart();
+    	{
+    		startTracker();
         }
 
     };    
@@ -490,12 +492,11 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     	@Override 
     	public synchronized void receiveEvent(String data)
     	 {
-  		  	closeTimeWatchDogStop();
-  		  	bridge.deactivate();
+    		stopTracker();
     	 }
     };    
-	
-	
+
+    
     final IRuntimeEventListenerPort elpSwitchToOffsetCorrectionSpots 	= new IRuntimeEventListenerPort()
     {
     	@Override 
@@ -508,211 +509,176 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     {
     	@Override 
     	public synchronized void receiveEvent(String data)
-    	 {
+    	{
     		propOffsetCorrectionMode= MODE_PERMANENT_CORRECTION;
-    		offsetX=0; offsetY=0;
-    	 }
+    		initTrackingVars();
+    	}
     };    
     final IRuntimeEventListenerPort elpSwitchToCombinedOffsetCorrection 	= new IRuntimeEventListenerPort()
     {
     	@Override 
     	public synchronized void receiveEvent(String data)
-    	 {
+    	{
     		propOffsetCorrectionMode= MODE_COMBINED_TRACKING;
-    		offsetX=0; offsetY=0;
-    	 }
+    		initTrackingVars();
+    	}
     };    
-	
-	
+	    
+    
     synchronized public void newEyeData(boolean isFixated, int gazeDataX, int gazeDataY, int leftEyeX, int leftEyeY)
     {   
         actTimestamp=System.currentTimeMillis();
         firstGazeData=false;
         waitForGazeData=0;
                 
-        int rightEyeX=leftEyeX+20;
+        int rightEyeX=leftEyeX+20;  // TBD: improve: get right eye coordinates from API !
         int rightEyeY=leftEyeY;
         
-        int eyestate = 1; 
-        if ((eyestate & 7) == 0)     // tracking lost ?
-        { 
-			measuringClose=false;  
-			measuringFixation=false;
-        	return; 
-        } 
+
+        /*
+          
+	        // TBD: get eyestate from API
+	        if ((eyestate & 7) == 0)    // tracking lost ?
+	        { 
+				measuringClose=false;  
+				measuringFixation=false;
+	        	return; 
+	        } 
+
+         */        
         
-        // here we have at least valid pupil coordinates (maybe also valid gaze data ;)
-
-    	//System.out.println("eyepos: "+leftEyeX+"/"+leftEyeY);
-
+        // calculate gazePoint and perform avaraging
+        
         bufferX.addFirst((int)gazeDataX);
         sumX += gazeDataX;
         if(bufferX.size() > propAveraging) 
-        {
         	sumX -=bufferX.removeLast();
-        } 
-        gazeX=(sumX / bufferX.size());
 
         bufferY.addFirst((int)gazeDataY);
         sumY += gazeDataY;
         if(bufferY.size() > propAveraging) 
-        {
         	sumY -=bufferY.removeLast();
-        }
+
+        gazeX=(sumX / bufferX.size());
         gazeY=(sumY / bufferY.size());
 
-        /*
-        int distX=0,distY=0;
         
-        for(int i=0;i<bufferX.size();++i)
-        {
-        	distX+=Math.abs(bufferX.get(i)-gazeX);
-        	distY+=Math.abs(bufferY.get(i)-gazeY);
+        // calculate eye position
+        
+        switch (propPupilPositionMode)  {
+	    	case POS_LEFT: 
+		            eyeX=(int)(leftEyeX);
+		            eyeY=(int)(leftEyeY);
+		            if ((eyeX==0) && (eyeY==0)) eyePositionValid=false; else eyePositionValid=true;
+		            break;
+	    	case POS_RIGHT: 
+		            eyeX=(int)(rightEyeX);
+		            eyeY=(int)(rightEyeX);
+		            if ((eyeX==0) && (eyeY==0)) eyePositionValid=false; else eyePositionValid=true;
+		            break;
+	    	case POS_BOTH: 
+	    			if (((leftEyeX==0) && (leftEyeY==0)) ||
+	    				((rightEyeX==0) && (rightEyeY==0)))
+	    			{	eyePositionValid=false;  }
+	    			else {
+	    				eyePositionValid=true;
+			            eyeX=(int)((leftEyeX+rightEyeX)/2);
+			            eyeY=(int)((leftEyeY+rightEyeY)/2);
+	    			}
+		            break;
         }
-        distX/=bufferX.size();
-        distY/=bufferY.size();
-        System.out.println("distance="+(distX+distY));
-        */
 
-        Point offset = calib.calcOffset(gazeX, gazeY);  // look if we have an active offset correction point
+        
+        // involve offset corrections spots (get  linear interpolation)
         
         if (propOffsetCorrectionMode == MODE_CORRECTION_SPOTS)
     	{    
+            offset = calib.calcOffset(gazeX, gazeY);  // look if we have an active offset correction point
 			correctedGazeX=gazeX+offset.x;
 	        correctedGazeY=gazeY+offset.y;
     	}
         else
         {
+            offset.x=0;
+            offset.y=0;
 			correctedGazeX=gazeX;
 			correctedGazeY=gazeY;
         }
         
-        switch (propPupilPositionMode)  {
-    	case POS_LEFT: 
-	            eyeX=(int)(leftEyeX);
-	            eyeY=(int)(leftEyeY);
-	            if ((eyeX==0) && (eyeY==0)) eyePositionValid=false; else eyePositionValid=true;
-	            break;
-    	case POS_RIGHT: 
-	            eyeX=(int)(rightEyeX);
-	            eyeY=(int)(rightEyeX);
-	            if ((eyeX==0) && (eyeY==0)) eyePositionValid=false; else eyePositionValid=true;
-	            break;
-    	case POS_BOTH: 
-    			if (((leftEyeX==0) && (leftEyeY==0)) ||
-    				((rightEyeX==0) && (rightEyeY==0)))
-    			{	eyePositionValid=false;  }
-    			else {
-    				eyePositionValid=true;
-		            eyeX=(int)((leftEyeX+rightEyeX)/2);
-		            eyeY=(int)((leftEyeY+rightEyeY)/2);
-    			}
-	            break;
-    }
-
+        // handle oofset correction spot creation
         switch (state)  {
 
-            case STATE_INITIATE_CORRECTION:  // get weak gaze point coordinates
-            	if (actTimestamp>=offsetCorrectionStartTime+1000)
-        	    {
-       				weakGazePointX=gazeX;
-            	    weakGazePointY=gazeY;
-            	    
-            	    saveCorrectedGazeX=correctedGazeX;
-            	    saveCorrectedGazeY=correctedGazeY;
-
-            	    calib.playWavFile(CALIB_SOUND_NOTICE);
-
-            	    /*
-         		    if (propOffsetCorrectionMode==MODE_AUTOCORRECTION)  // continue depending on mode
-         		    {
-	       				System.out.println("Got weak gaze spot for automatic correction");
-         		    	state=STATE_AUTOCORRECTION;
-         		    }
-         		    else*/
-         		     { 
-	       				System.out.println("Got weak gaze spot for manual correction");
-//		                    Point oldOffset = calib.getOffsetPoint(weakGazePointY, weakGazePointY);
-         		    	currentManualOffsetX=offset.x;
-         		    	currentManualOffsetY=offset.y;
-         		    	state= STATE_MANUALCORRECTION;	         		    	
-         		    }
-        	    }
-            	break;
-            	
-            case STATE_AUTOCORRECTION:   // get estimated offset to desired gazepoint
-            	if (actTimestamp>=offsetCorrectionStartTime+2000)
-            	{
-                    Point oldOffset = calib.calcOffset(weakGazePointY, weakGazePointY);
-               		calib.newOffsetPoint(weakGazePointX,weakGazePointY,oldOffset.x+(saveCorrectedGazeX-correctedGazeX),oldOffset.y+(saveCorrectedGazeY-correctedGazeY));
-       				System.out.println("Automatic correction finished.");
-               		state = STATE_IDLE;
-            	}
-            	return;
-            	
-            case STATE_MANUALCORRECTION:   // modify offset by gaze actions
-            		double currentXDirection=weakGazePointX-gazeX;
-            		double currentYDirection=weakGazePointY-gazeY;
-            		
-            		if ((currentXDirection > -MANUAL_CORRECTION_DEADZONE) && (currentXDirection < MANUAL_CORRECTION_DEADZONE)) 
-            			currentXDirection =0;
-            		if ((currentYDirection > -MANUAL_CORRECTION_DEADZONE) && (currentYDirection < MANUAL_CORRECTION_DEADZONE)) 
-            			currentYDirection =0;
-            		
-            		currentXDirection*=MANUAL_CORRECTION_SPEEDFACTOR;
-            		currentYDirection*=MANUAL_CORRECTION_SPEEDFACTOR;
-
-            		if (currentXDirection < -MANUAL_CORRECTION_MAXSPEED) currentXDirection=-MANUAL_CORRECTION_MAXSPEED; 
-            		if (currentXDirection > MANUAL_CORRECTION_MAXSPEED) currentXDirection=MANUAL_CORRECTION_MAXSPEED; 
-            		if (currentYDirection < -MANUAL_CORRECTION_MAXSPEED) currentYDirection=-MANUAL_CORRECTION_MAXSPEED; 
-            		if (currentYDirection > MANUAL_CORRECTION_MAXSPEED) currentYDirection=MANUAL_CORRECTION_MAXSPEED; 
-            		
-            		currentManualOffsetX+=currentXDirection;
-            		currentManualOffsetY+=currentYDirection;
-
-            		if (currentManualOffsetX < -200) currentManualOffsetX=-200; 
-            		if (currentManualOffsetX > 200) currentManualOffsetX=200; 
-            		if (currentManualOffsetY < -200) currentManualOffsetX=-200; 
-            		if (currentManualOffsetY > 200) currentManualOffsetX=200; 
-            		
-       				System.out.println("Manual correction: "+currentManualOffsetX+"/"+currentManualOffsetY);
-
-		            opGazeX.sendData(ConversionUtils.intToBytes(weakGazePointX+(int)currentManualOffsetX));
-		            opGazeY.sendData(ConversionUtils.intToBytes(weakGazePointY+(int)currentManualOffsetY));
-		            
-	            	if (System.currentTimeMillis()>=offsetCorrectionStartTime+7000)
-	            	{
-    	           		calib.newOffsetPoint(weakGazePointX,weakGazePointY,(int)currentManualOffsetX,(int)currentManualOffsetY);
-    	   				System.out.println("Manual correction finished.");
-    	    			state=STATE_IDLE;
-	            	    calib.playWavFile(CALIB_SOUND_NOTICE);
-	            	}
-            		return;            	
-    	}
- 
-       
-        
-        /*
-		long blinktime=actTimestamp - lastTimestamp;
-		  
-		if ((blinktime > propMinBlinkTime) && (blinktime < propMidBlinkTime))
-			etpBlink.raiseEvent();
-		else if ((blinktime >= propMidBlinkTime) && (blinktime <= propMaxBlinkTime))
-			etpLongblink.raiseEvent();
-		
+	        case STATE_INITIATE_CORRECTION:  // get weak gaze point coordinates
+	        	if (actTimestamp>=offsetCorrectionStartTime+1000)
+	    	    {
+	   				weakGazePointX=gazeX;
+	        	    weakGazePointY=gazeY;
+	        	    
+	        	    saveCorrectedGazeX=correctedGazeX;
+	        	    saveCorrectedGazeY=correctedGazeY;
 	
-		if ((gazeX != 0) || (gazeY != 0))
-		{
-	        opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX));
-	        opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY));
-		}
-		lastTimestamp=actTimestamp;
-	    */
+	        	    calib.playWavFile(CALIB_SOUND_NOTICE);
+	
+	   				System.out.println("Got weak gaze spot for manual correction");
+	   				//	Point oldOffset = calib.getOffsetPoint(weakGazePointY, weakGazePointY);
+	 		    	currentManualOffsetX=offset.x;
+	 		    	currentManualOffsetY=offset.y;
+	 		    	state= STATE_MANUALCORRECTION;	         		    	
+	    	    }
+	        	break;
+	        	
+	        case STATE_AUTOCORRECTION:   // get estimated offset to desired gazepoint
+	        	if (actTimestamp>=offsetCorrectionStartTime+2000)
+	        	{
+	                Point oldOffset = calib.calcOffset(weakGazePointY, weakGazePointY);
+	           		calib.newOffsetPoint(weakGazePointX,weakGazePointY,oldOffset.x+(saveCorrectedGazeX-correctedGazeX),oldOffset.y+(saveCorrectedGazeY-correctedGazeY));
+	   				System.out.println("Automatic correction finished.");
+	           		state = STATE_IDLE;
+	        	}
+	        	return;
+	        	
+	        case STATE_MANUALCORRECTION:   // modify offset by gaze actions
+        		double currentXDirection=weakGazePointX-gazeX;
+        		double currentYDirection=weakGazePointY-gazeY;
+        		
+        		if ((currentXDirection > -MANUAL_CORRECTION_DEADZONE) && (currentXDirection < MANUAL_CORRECTION_DEADZONE)) 
+        			currentXDirection =0;
+        		if ((currentYDirection > -MANUAL_CORRECTION_DEADZONE) && (currentYDirection < MANUAL_CORRECTION_DEADZONE)) 
+        			currentYDirection =0;
+        		
+        		currentXDirection*=MANUAL_CORRECTION_SPEEDFACTOR;
+        		currentYDirection*=MANUAL_CORRECTION_SPEEDFACTOR;
+
+        		if (currentXDirection < -MANUAL_CORRECTION_MAXSPEED) currentXDirection=-MANUAL_CORRECTION_MAXSPEED; 
+        		if (currentXDirection > MANUAL_CORRECTION_MAXSPEED) currentXDirection=MANUAL_CORRECTION_MAXSPEED; 
+        		if (currentYDirection < -MANUAL_CORRECTION_MAXSPEED) currentYDirection=-MANUAL_CORRECTION_MAXSPEED; 
+        		if (currentYDirection > MANUAL_CORRECTION_MAXSPEED) currentYDirection=MANUAL_CORRECTION_MAXSPEED; 
+        		
+        		currentManualOffsetX+=currentXDirection;
+        		currentManualOffsetY+=currentYDirection;
+
+        		if (currentManualOffsetX < -MANUALOFFSETBOX) currentManualOffsetX=-MANUALOFFSETBOX; 
+        		if (currentManualOffsetX > MANUALOFFSETBOX) currentManualOffsetX=MANUALOFFSETBOX; 
+        		if (currentManualOffsetY < -MANUALOFFSETBOX) currentManualOffsetX=-MANUALOFFSETBOX; 
+        		if (currentManualOffsetY > MANUALOFFSETBOX) currentManualOffsetX=MANUALOFFSETBOX; 
+        		
+   				System.out.println("Manual correction: "+currentManualOffsetX+"/"+currentManualOffsetY);
+
+	            opGazeX.sendData(ConversionUtils.intToBytes(weakGazePointX+(int)currentManualOffsetX));
+	            opGazeY.sendData(ConversionUtils.intToBytes(weakGazePointY+(int)currentManualOffsetY));
+	            
+            	if (System.currentTimeMillis()>=offsetCorrectionStartTime+MANUALOFFSETMAXTIME)
+            	{
+	           		calib.newOffsetPoint(weakGazePointX,weakGazePointY,(int)currentManualOffsetX,(int)currentManualOffsetY);
+	   				System.out.println("Manual correction finished.");
+	    			state=STATE_IDLE;
+            	    calib.playWavFile(CALIB_SOUND_NOTICE);
+            	}
+        		return;            	
+	    }
         
         if ((gazeX==0) && (gazeY==0))   // eyes closed
         {
-        	// System.out.print("*");
-
         	if (measuringClose == false)
         	{
             	startCloseTimestamp = System.currentTimeMillis();
@@ -720,10 +686,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         	}
         	opCloseTime.sendData(ConversionUtils.intToBytes((int)(System.currentTimeMillis() - startCloseTimestamp)));
         }
-        else
+        else   // eyes detected
         { 
-        	// System.out.print("+");
-
+        		// create long and short blink events
             	if (measuringClose == true)
             	{
             		long blinktime=System.currentTimeMillis() - startCloseTimestamp;
@@ -736,42 +701,42 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
             	    measuringClose = false;
             	}
             	
-            	if (eyePositionValid)
+            	if (eyePositionValid)  // send eye position
             	{
                     opPosX.sendData(ConversionUtils.intToBytes(eyeX));
                     opPosY.sendData(ConversionUtils.intToBytes(eyeY));
             	}
 
+            	// send gaze point according to offset correction mode            	
      		    if (propOffsetCorrectionMode==MODE_COMBINED_TRACKING)  
      		    {
 
-     		    	if ((offsetmode==0) && ((offsetX!=oldOffsetX) || (offsetY!=oldOffsetY)))
+     		    	if ((combinedCorrectionMode==COMBINED_CORRECTION_IDLE) && ((offsetX!=oldOffsetX) || (offsetY!=oldOffsetY)))
      		    	{
-     		    		offsetmode=1;
+     		    		combinedCorrectionMode=COMBINED_CORRECTION_ACTIVE;
 			            lastGazeX=correctedGazeX;
 			            lastGazeY=correctedGazeY;
      		    	}
      		  
-     		    	if (offsetmode == 0)
+     		    	if (combinedCorrectionMode == COMBINED_CORRECTION_IDLE)
      		    	{
-     		    		opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX)); //+(int)offsetX));
-     		    		opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY)); //+(int)offsetY));
+     		    		opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX));
+     		    		opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY));
      		    	}
      		    	else
      		    	{
      		    		opGazeX.sendData(ConversionUtils.intToBytes(lastGazeX+(int)offsetX));
      		    		opGazeY.sendData(ConversionUtils.intToBytes(lastGazeY+(int)offsetY));
 
-     		    		int	dist=(int)Math.sqrt((lastGazeX-correctedGazeX)*(lastGazeX-correctedGazeX)
-         		    			+(lastGazeY-correctedGazeY)*(lastGazeY-correctedGazeY));
+     		    		int	dist=(int)Math.sqrt((lastGazeX+(int)offsetX-correctedGazeX)*(lastGazeX+(int)offsetX-correctedGazeX)
+         		    			+(lastGazeY+(int)offsetY-correctedGazeY)*(lastGazeY+(int)offsetY-correctedGazeY));
 
      		    		if (dist>propOffsetCorrectionRadius)
          		    	{
-     		    			// oldOffsetX=offsetX;
-     		    			// oldOffsetY=offsetY;
-     		    			offsetX=0;
-     		    			offsetY=0;
-     		    			offsetmode=0;
+     		    			//offsetX=0;
+     		    			//offsetY=0;
+     		    			//combinedCorrectionMode=COMBINED_CORRECTION_IDLE;
+     		    			initTrackingVars();
          		    	}
      		    	}
      		    }
@@ -818,6 +783,8 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	private boolean running = false;
 	private boolean firstGazeData = true;
 	private int waitForGazeData = 0;
+    int avgIdle=0;
+
 
     public void closeTimeWatchDogStop()
     {
@@ -852,6 +819,37 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	  });
 	  readerThread.start();
     }
+
+    
+    synchronized private void initTrackingVars()
+    {
+		offsetX=0; offsetY=0; oldOffsetX=0; oldOffsetY=0; combinedCorrectionMode=COMBINED_CORRECTION_IDLE;
+		sumX=0;sumY=0;
+		bufferX.clear(); bufferY.clear();
+		avgIdle=10;
+    }
+
+    synchronized public void stopTracker()
+    {
+		if (running==true)
+		{
+  		  	closeTimeWatchDogStop();
+  		  	bridge.deactivate();
+		}
+    }
+
+    synchronized public void startTracker()
+    {
+		if (running==false)
+		{
+			initTrackingVars();
+			bridge.activate();
+			closeTimeWatchDogStart();
+		}
+    }
+
+    
+
     
  
      /**
@@ -860,14 +858,9 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
       @Override
       public void start()
       {    	  
-      	  System.out.println("EyeX activate ! ");
-      	  bufferX.clear(); sumX=0;
-      	  bufferY.clear(); sumY=0;
-      	  
       	  if (propEnabled==true)
       	  {
-      		  bridge.activate();
-      		  closeTimeWatchDogStart();
+      		  startTracker();
       	  }
     	  super.start(); 
       }
@@ -878,8 +871,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
       @Override
       public void pause()
       {
-    	  closeTimeWatchDogStop();
-  		  bridge.deactivate();
+    	  stopTracker();
           super.pause();
       }
 
@@ -889,8 +881,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
       @Override
       public void resume()
       {
-  		  bridge.activate();
-  		  closeTimeWatchDogStart();
+    	  startTracker();
           super.resume();
       }
   
@@ -900,8 +891,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
       @Override
       public void stop()
       {
-    	  closeTimeWatchDogStop();
-  		  bridge.deactivate();
+    	  stopTracker();
           super.stop();
       }
 }
