@@ -484,6 +484,8 @@
 			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="Color of the scan frame" name="scanColor" type="integer" value="10"/>
 			<property combobox="none//row-column//column-row//directed//hover selection" description="Scanning mode" name="scanMode" type="integer" value="0"/>
 			<property description="Time of hovering needed to cell selection [ms]." name="hoverTime" type="integer" value="1000"/>
+			<property description="if selected, Cells can be edited via right-click" name="enableEdit" type="boolean" value="true"/>
+			<property description="if selected, Cells can be selected via left mouse click even if a scanning mode is active" name="enableClickSelection" type="boolean" value="true"/>
 			<property description="Name of keyboard file (in data/cellBoardKeyboards) to load at startup." getStringList="true" name="keyboardFile" type="string" value=""/>
 			<property description="Text of cell 1" name="cellText1" type="string" value=""/>
 			<property description="Image of cell 1" name="cellImage1" type="string" value=""/>
@@ -4248,6 +4250,8 @@
 
 		</events>			
         <properties>
+            <property description="ID (if more than one devices of this kind are connected)" getStringList="true" name="uniqueID" type="string" value="not used"/>
+        
 			<property description="automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="200"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high" description="Pin 2 Mode" name="pin2Mode" type="integer" value="0"/>
 			<property combobox="not used//input without pullup//input with pullup//output, default low//output, default high//PWM for Servo//PWM 500Hz" description="Pin 3 Mode" name="pin3Mode" type="integer" value="0"/>
@@ -9666,6 +9670,8 @@
 
 		</events>			
         <properties>
+            <property description="ID (if more than one devices of this kind are connected)" getStringList="true" name="uniqueID" type="string" value="not used"/>
+        
 			<property description="Automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="50"/>
 
         </properties>

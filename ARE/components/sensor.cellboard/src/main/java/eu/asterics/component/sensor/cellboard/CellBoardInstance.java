@@ -49,6 +49,7 @@ import org.xml.sax.SAXException;
 
 
 
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -111,6 +112,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     private final String PROP_SCAN_COLOR="scanColor";
     private final String PROP_TEXT_COLOR="textColor";
     private final String PROP_HOVER_TIME="hoverTime";
+    private final String PROP_ENABLE_EDIT="enableEdit";
+    private final String PROP_ENABLE_CLICKSELECTION="enableClickSelection";
     private final String PROP_KEYBOARD_FILE="keyboardFile";
 
     private final String OP_SELECTED_CELL="selectedCell";
@@ -134,8 +137,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	private int propBackgroundColor=11;
 	private int propScanColor=10;
 	private int propHoverTime=1000;
-	//public String propCellText1 = "";
-	//public String propCellImage1 = "";
+	public boolean propEnableEdit = true;
+	public boolean propEnableClickSelection = true;
 	public String propCaption="Cell Board";
 	public String propKeyboardFile="";
 	
@@ -417,6 +420,14 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		{
 			return propHoverTime;
 		}
+		else if (PROP_ENABLE_EDIT.equalsIgnoreCase(propertyName))
+		{
+			return propEnableEdit;
+		}		
+		else if (PROP_ENABLE_CLICKSELECTION.equalsIgnoreCase(propertyName))
+		{
+			return propEnableClickSelection;
+		}		
 		else if (PROP_KEYBOARD_FILE.equalsIgnoreCase(propertyName))
 		{
 			return propKeyboardFile;
@@ -623,6 +634,32 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			propHoverTime= Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
+	    else if(PROP_ENABLE_EDIT.equalsIgnoreCase(propertyName))
+	    {
+	    	final Object oldValue = propEnableEdit;
+	        if("true".equalsIgnoreCase((String)newValue))
+	        {
+	        	propEnableEdit = true;
+	        }
+	        else if("false".equalsIgnoreCase((String)newValue))
+	        {
+	        	propEnableEdit = false;
+	        }
+	        return oldValue;
+	    }    	
+	    else if(PROP_ENABLE_CLICKSELECTION.equalsIgnoreCase(propertyName))
+	    {
+	    	final Object oldValue = propEnableClickSelection;
+	        if("true".equalsIgnoreCase((String)newValue))
+	        {
+	        	propEnableClickSelection = true;
+	        }
+	        else if("false".equalsIgnoreCase((String)newValue))
+	        {
+	        	propEnableClickSelection = false;
+	        }
+	        return oldValue;
+	    }    	
 		else if (PROP_KEYBOARD_FILE.equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propKeyboardFile;

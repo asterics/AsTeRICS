@@ -232,6 +232,14 @@
 				type="integer"
 				value="1000"
 				description="Time of hovering needed to cell selection [ms]."/>
+			<property name="enableEdit"
+				type="boolean"
+				value="true"
+				description="if selected, Cells can be edited via right-click"/>
+			<property name="enableClickSelection"
+				type="boolean"
+				value="true"
+				description="if selected, Cells can be selected via left mouse click even if a scanning mode is active"/>
 			<property name="keyboardFile"
 				type="string"
 				value=""

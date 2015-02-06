@@ -111,14 +111,14 @@ public class GUICell extends JPanel implements Runnable
 		addMouseListener(new MouseAdapter() { 
 	          public void mousePressed(MouseEvent me) { 
 	        	
-	        	if (SwingUtilities.isRightMouseButton(me))
+	        	if ((owner.owner.propEnableEdit) &&(SwingUtilities.isRightMouseButton(me)))
 	        	{
 	        		// System.out.println("Cell "+index+ " was right-clicked !");
 	        		editFrame.showFrame();
 	        	}
 	        	else
 	        	{
-		        	if(blockSendEvent==false)
+		        	if((owner.owner.propEnableClickSelection) || (blockSendEvent==false))
 		            {
 		        		owner.performCellSelection(row, column);
 		                AstericsThreadPool.instance.execute(selectFeedback);
