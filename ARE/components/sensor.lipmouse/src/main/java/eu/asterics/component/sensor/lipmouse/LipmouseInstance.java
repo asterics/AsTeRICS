@@ -28,6 +28,9 @@
 package eu.asterics.component.sensor.lipmouse;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.cimcommunication.*;
@@ -68,6 +71,8 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
 	public int propPeriodicADCUpdate = 50;
+	private String propUniqueID = "not used"; 
+
 
 	private int calibX = 0;
 	private int calibY = 0;
@@ -156,6 +161,11 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		{
 			return propPeriodicADCUpdate;
 		}
+        if("uniqueID".equalsIgnoreCase(propertyName))
+        {
+            return propUniqueID;
+        }
+
 
         return null;
     }
@@ -174,10 +184,50 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 			sendLipmouseWriteFeature(LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD,propPeriodicADCUpdate);
 			return oldValue;
 		}
+        if("uniqueID".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propUniqueID;
+			propUniqueID = (String)newValue;
+			CIMPortController tempPort = openCIM (LIPMOUSE_CIM_ID, propUniqueID);
+			if (tempPort != null)
+			{
+				port=tempPort;
+				if ((!propUniqueID.equals("")) && (!propUniqueID.equals("not used")))
+				{
+					for (int i=0;i<4;i++)
+					{
+					  CIMPortManager.getInstance().sendPacket  (port, null, 
+							  CIMProtocolPacket.FEATURE_UNIQUE_SERIAL_NUMBER, 
+							  CIMProtocolPacket.COMMAND_REQUEST_READ_FEATURE, false);
+					  try { Thread.sleep (100); }  catch (InterruptedException e) {}
+					}
+				}
+			} 
+			return oldValue;
+		}        
 
         return null;
     }
 
+	public CIMPortController openCIM(short CIMID, String uniqueID)
+	{
+	   if ("not used".equalsIgnoreCase(propUniqueID) || (propUniqueID==""))
+	   {
+		    return (CIMPortManager.getInstance().getConnection(LIPMOUSE_CIM_ID));
+	   }
+	   else
+	   {
+			Long id;
+			try {
+				id=Long.parseLong(propUniqueID);
+				return (CIMPortManager.getInstance().getConnection(LIPMOUSE_CIM_ID, id));
+			} catch (Exception e) {
+				return(null);
+			}	   
+	   }
+	}
+
+    
      /**
       * Input Ports for receiving values.
       */
@@ -301,6 +351,28 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		AstericsErrorHandling.instance.reportInfo(this, "Faulty packet received");
 	}
 
+	/**
+	 * Returns the unique ID
+	 */
+	public List<String> getRuntimePropertyList(String key) 
+	{
+		List<String> res = new ArrayList<String>(); 
+		if (key.compareToIgnoreCase("uniqueID")==0)
+		{
+			res.add("not used");
+			Vector<Long> ids;
+			ids=CIMPortManager.getInstance().getUniqueIdentifiersofCIMs(LIPMOUSE_CIM_ID);
+			if (ids != null)
+			{ 
+				for (Long l : ids)
+				{
+					res.add(l.toString());
+					// System.out.println(" found unique ID: "+l.toString());
+				}
+			}
+		}
+		return res;
+	} 
 
 	
      /**
@@ -311,7 +383,8 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
       {
     	  if (port==null)
     	  {
-  		     port = CIMPortManager.getInstance().getConnection(LIPMOUSE_CIM_ID );
+  		     port = openCIM (LIPMOUSE_CIM_ID,propUniqueID);
+  		     //    port = CIMPortManager.getInstance().getConnection(LIPMOUSE_CIM_ID );
     	  }
 		  if (port != null )
 		  {
@@ -321,7 +394,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		  }
 		  else
 		  {
-	       		AstericsErrorHandling.instance.reportError(this, "Could not find LipMouse Module. Please verify that the Module is connected to an USB Port and that the driver is installed.");
+	       		AstericsErrorHandling.instance.reportError(this, "Could not find LipMouse Module (ID "+propUniqueID+"). Please verify that the Module is connected to an USB Port and that the driver is installed.");
 		  }
 
           super.start();
