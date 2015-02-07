@@ -45,7 +45,7 @@
 const uint8_t ADCMAP[5] = {0,7,5,6,4};      // LIPSY Version 1.0
 
 
-	const uint32_t LIPMOUSE_CIM_UNIQUE_NUMBER = 0x05060708;  
+	const uint32_t LIPMOUSE_CIM_UNIQUE_NUMBER = 1007;  
 	const char LIPMOUSE_CIM_FEATURELIST[]=
 	{
 	   0x00,0x00,  // unique number, data: 4 bytes 
