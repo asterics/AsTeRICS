@@ -42,12 +42,12 @@
         <property name="maxBlinkTime" value="1501" />
         <property name="fixationTime" value="700" />
         <property name="pupilPositionMode" value="0" />
-        <property name="offsetCorrectionRadius" value="200" />
+        <property name="offsetCorrectionRadius" value="100" />
         <property name="offsetCorrectionMode" value="2" />
       </properties>
       <layout>
-        <posX>415</posX>
-        <posY>180</posY>
+        <posX>511</posX>
+        <posY>171</posY>
       </layout>
     </component>
     <component id="Mouse.1" type_id="asterics.Mouse">
@@ -72,46 +72,8 @@
         <property name="yMax" value="0" />
       </properties>
       <layout>
-        <posX>967</posX>
-        <posY>139</posY>
-      </layout>
-    </component>
-    <component id="Averager.1" type_id="asterics.Averager">
-      <description>Linked list-based averager or accumulator</description>
-      <ports>
-        <inputPort portTypeID="input">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="output">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="bufferSize" value="3" />
-        <property name="mode" value="0" />
-      </properties>
-      <layout>
-        <posX>564</posX>
-        <posY>51</posY>
-      </layout>
-    </component>
-    <component id="Averager.1.1" type_id="asterics.Averager">
-      <description>Linked list-based averager or accumulator</description>
-      <ports>
-        <inputPort portTypeID="input">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="output">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="bufferSize" value="3" />
-        <property name="mode" value="0" />
-      </properties>
-      <layout>
-        <posX>556</posX>
-        <posY>236</posY>
+        <posX>907</posX>
+        <posY>174</posY>
       </layout>
     </component>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
@@ -127,8 +89,8 @@
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
         <property name="buttonCaption1" value="Augen &amp; Joystick kombiniert" />
-        <property name="buttonCaption2" value="Nur Joystick" />
-        <property name="buttonCaption3" value="Nur Augen" />
+        <property name="buttonCaption2" value="nur Joysticksteuerung" />
+        <property name="buttonCaption3" value="nur Augensteuerung" />
         <property name="buttonCaption4" value="" />
         <property name="buttonCaption5" value="" />
         <property name="buttonCaption6" value="" />
@@ -168,8 +130,8 @@
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>763</posX>
-        <posY>574</posY>
+        <posX>781</posX>
+        <posY>548</posY>
       </layout>
       <gui>
         <posX>3822</posX>
@@ -192,11 +154,12 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="uniqueID" value="not used" />
         <property name="periodicADCUpdate" value="20" />
       </properties>
       <layout>
-        <posX>0</posX>
-        <posY>361</posY>
+        <posX>6</posX>
+        <posY>325</posY>
       </layout>
     </component>
     <component id="Threshold.1" type_id="asterics.Threshold">
@@ -218,8 +181,8 @@
         <property name="eventCondition" value="2" />
       </properties>
       <layout>
-        <posX>318</posX>
-        <posY>448</posY>
+        <posX>345</posX>
+        <posY>449</posY>
       </layout>
     </component>
     <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
@@ -229,8 +192,8 @@
         <property name="Delay" value="200" />
       </properties>
       <layout>
-        <posX>605</posX>
-        <posY>550</posY>
+        <posX>514</posX>
+        <posY>542</posY>
       </layout>
     </component>
     <component id="AdjustmentCurve.1" type_id="asterics.AdjustmentCurve">
@@ -255,11 +218,11 @@
         <property name="outMax" value="10" />
         <property name="mode" value="1" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="signal mapper" />
+        <property name="caption" value="Beschleunigung X" />
       </properties>
       <layout>
-        <posX>154</posX>
-        <posY>152</posY>
+        <posX>187</posX>
+        <posY>123</posY>
       </layout>
       <gui>
         <posX>1135</posX>
@@ -290,11 +253,11 @@
         <property name="outMax" value="10" />
         <property name="mode" value="1" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="signal mapper" />
+        <property name="caption" value="Beschleunigung Y" />
       </properties>
       <layout>
-        <posX>149</posX>
-        <posY>334</posY>
+        <posX>185</posX>
+        <posY>319</posY>
       </layout>
       <gui>
         <posX>5260</posX>
@@ -326,8 +289,8 @@
         <property name="number" value="1" />
       </properties>
       <layout>
-        <posX>734</posX>
-        <posY>67</posY>
+        <posX>698</posX>
+        <posY>94</posY>
       </layout>
     </component>
     <component id="PathMultiplexer.1.1" type_id="asterics.PathMultiplexer">
@@ -353,8 +316,8 @@
         <property name="number" value="1" />
       </properties>
       <layout>
-        <posX>742</posX>
-        <posY>241</posY>
+        <posX>693</posX>
+        <posY>286</posY>
       </layout>
     </component>
     <component id="ButtonGrid.1.1" type_id="asterics.ButtonGrid">
@@ -411,8 +374,8 @@
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>491</posX>
-        <posY>554</posY>
+        <posX>164</posX>
+        <posY>516</posY>
       </layout>
       <gui>
         <posX>6697</posX>
@@ -433,8 +396,8 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
-        <property name="buttonCaption1" value="Cursorkontrolle ein/aus" />
-        <property name="buttonCaption2" value="Wechsel auf kleines Panel" />
+        <property name="buttonCaption1" value="Cursorsteuerung ein / aus" />
+        <property name="buttonCaption2" value="auf kleines Panel umschalten" />
         <property name="buttonCaption3" value="" />
         <property name="buttonCaption4" value="" />
         <property name="buttonCaption5" value="" />
@@ -475,8 +438,8 @@
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>914</posX>
-        <posY>378</posY>
+        <posX>959</posX>
+        <posY>391</posY>
       </layout>
       <gui>
         <posX>1197</posX>
@@ -496,8 +459,8 @@
         <property name="model" value="eyex_lipmouse_combined_smallGUI_german.acs" />
       </properties>
       <layout>
-        <posX>1066</posX>
-        <posY>388</posY>
+        <posX>1077</posX>
+        <posY>389</posY>
       </layout>
     </component>
     <component id="Slider.1" type_id="asterics.Slider">
@@ -530,8 +493,8 @@
         <property name="storeValue" value="True" />
       </properties>
       <layout>
-        <posX>285</posX>
-        <posY>77</posY>
+        <posX>345</posX>
+        <posY>83</posY>
       </layout>
       <gui>
         <posX>1135</posX>
@@ -570,8 +533,8 @@
         <property name="storeValue" value="True" />
       </properties>
       <layout>
-        <posX>286</posX>
-        <posY>280</posY>
+        <posX>348</posX>
+        <posY>282</posY>
       </layout>
       <gui>
         <posX>5260</posX>
@@ -612,6 +575,7 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="uniqueID" value="not used" />
         <property name="periodicADCUpdate" value="200" />
         <property name="pin2Mode" value="0" />
         <property name="pin3Mode" value="0" />
@@ -627,20 +591,20 @@
         <property name="pin13Mode" value="0" />
       </properties>
       <layout>
-        <posX>1111</posX>
-        <posY>158</posY>
+        <posX>1096</posX>
+        <posY>131</posY>
       </layout>
     </component>
   </components>
   <channels>
-    <channel id="binding.0">
+    <channel id="binding.12">
       <source>
         <component id="EyeX.1" />
-        <port id="gazeX" />
+        <port id="gazeY" />
       </source>
       <target>
-        <component id="Averager.1" />
-        <port id="input" />
+        <component id="PathMultiplexer.1.1" />
+        <port id="input1" />
       </target>
     </channel>
     <channel id="binding.10">
@@ -651,26 +615,6 @@
       <target>
         <component id="Mouse.1" />
         <port id="mouseX" />
-      </target>
-    </channel>
-    <channel id="binding.2">
-      <source>
-        <component id="EyeX.1" />
-        <port id="gazeY" />
-      </source>
-      <target>
-        <component id="Averager.1.1" />
-        <port id="input" />
-      </target>
-    </channel>
-    <channel id="binding.21">
-      <source>
-        <component id="Averager.1.1" />
-        <port id="output" />
-      </source>
-      <target>
-        <component id="PathMultiplexer.1.1" />
-        <port id="input1" />
       </target>
     </channel>
     <channel id="binding.4">
@@ -725,10 +669,10 @@
         <port id="yOffset" />
       </target>
     </channel>
-    <channel id="binding.20">
+    <channel id="binding.11">
       <source>
-        <component id="Averager.1" />
-        <port id="output" />
+        <component id="EyeX.1" />
+        <port id="gazeX" />
       </source>
       <target>
         <component id="PathMultiplexer.1" />

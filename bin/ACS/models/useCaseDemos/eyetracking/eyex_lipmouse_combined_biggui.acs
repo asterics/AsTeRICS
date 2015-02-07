@@ -35,18 +35,19 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="False" />
         <property name="averaging" value="30" />
         <property name="minBlinkTime" value="150" />
         <property name="midBlinkTime" value="1500" />
         <property name="maxBlinkTime" value="1501" />
         <property name="fixationTime" value="700" />
         <property name="pupilPositionMode" value="0" />
-        <property name="offsetCorrectionRadius" value="200" />
+        <property name="offsetCorrectionRadius" value="100" />
         <property name="offsetCorrectionMode" value="2" />
       </properties>
       <layout>
-        <posX>420</posX>
-        <posY>230</posY>
+        <posX>511</posX>
+        <posY>171</posY>
       </layout>
     </component>
     <component id="Mouse.1" type_id="asterics.Mouse">
@@ -55,62 +56,24 @@
         <inputPort portTypeID="mouseX">
           <properties />
         </inputPort>
-        <inputPort portTypeID="mouseY">
+        <inputPort portTypeID="mouseY" sync="false">
           <properties />
         </inputPort>
-        <inputPort portTypeID="action">
+        <inputPort portTypeID="action" sync="false">
           <properties />
         </inputPort>
       </ports>
       <properties>
         <property name="enableMouse" value="True" />
-        <property name="absolutePosition" value="true" />
+        <property name="absolutePosition" value="True" />
         <property name="xMin" value="0" />
         <property name="xMax" value="0" />
         <property name="yMin" value="0" />
         <property name="yMax" value="0" />
       </properties>
       <layout>
-        <posX>1015</posX>
-        <posY>140</posY>
-      </layout>
-    </component>
-    <component id="Averager.1" type_id="asterics.Averager">
-      <description>Linked list-based averager or accumulator</description>
-      <ports>
-        <inputPort portTypeID="input">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="output">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="bufferSize" value="3" />
-        <property name="mode" value="0" />
-      </properties>
-      <layout>
-        <posX>555</posX>
-        <posY>75</posY>
-      </layout>
-    </component>
-    <component id="Averager.1.1" type_id="asterics.Averager">
-      <description>Linked list-based averager or accumulator</description>
-      <ports>
-        <inputPort portTypeID="input">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="output">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="bufferSize" value="3" />
-        <property name="mode" value="0" />
-      </properties>
-      <layout>
-        <posX>564</posX>
-        <posY>244</posY>
+        <posX>907</posX>
+        <posY>174</posY>
       </layout>
     </component>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
@@ -125,10 +88,10 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
-        <property name="buttonCaption1" value="cursorcontrol on/off" />
-        <property name="buttonCaption2" value="eyeX recalibration" />
-        <property name="buttonCaption3" value="switch to combined control" />
-        <property name="buttonCaption4" value="switch to lipmouse only " />
+        <property name="buttonCaption1" value="Eye &amp; Joystick combined" />
+        <property name="buttonCaption2" value="only Joystick" />
+        <property name="buttonCaption3" value="only Eyecontrol" />
+        <property name="buttonCaption4" value="" />
         <property name="buttonCaption5" value="" />
         <property name="buttonCaption6" value="" />
         <property name="buttonCaption7" value="" />
@@ -167,11 +130,11 @@
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>745</posX>
-        <posY>425</posY>
+        <posX>781</posX>
+        <posY>548</posY>
       </layout>
       <gui>
-        <posX>3885</posX>
+        <posX>3822</posX>
         <posY>6343</posY>
         <width>2750</width>
         <height>2222</height>
@@ -191,11 +154,12 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="uniqueID" value="not used" />
         <property name="periodicADCUpdate" value="20" />
       </properties>
       <layout>
-        <posX>18</posX>
-        <posY>385</posY>
+        <posX>6</posX>
+        <posY>325</posY>
       </layout>
     </component>
     <component id="Threshold.1" type_id="asterics.Threshold">
@@ -217,8 +181,8 @@
         <property name="eventCondition" value="2" />
       </properties>
       <layout>
-        <posX>250</posX>
-        <posY>497</posY>
+        <posX>345</posX>
+        <posY>449</posY>
       </layout>
     </component>
     <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
@@ -228,8 +192,8 @@
         <property name="Delay" value="200" />
       </properties>
       <layout>
-        <posX>71</posX>
-        <posY>559</posY>
+        <posX>514</posX>
+        <posY>542</posY>
       </layout>
     </component>
     <component id="AdjustmentCurve.1" type_id="asterics.AdjustmentCurve">
@@ -254,15 +218,15 @@
         <property name="outMax" value="10" />
         <property name="mode" value="1" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="signal mapper" />
+        <property name="caption" value="Acceleration X" />
       </properties>
       <layout>
-        <posX>120</posX>
-        <posY>172</posY>
+        <posX>187</posX>
+        <posY>123</posY>
       </layout>
       <gui>
-        <posX>1072</posX>
-        <posY>1454</posY>
+        <posX>1135</posX>
+        <posY>1565</posY>
         <width>4000</width>
         <height>4556</height>
       </gui>
@@ -289,15 +253,15 @@
         <property name="outMax" value="10" />
         <property name="mode" value="1" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="signal mapper" />
+        <property name="caption" value="Acceleration Y" />
       </properties>
       <layout>
-        <posX>149</posX>
-        <posY>334</posY>
+        <posX>185</posX>
+        <posY>319</posY>
       </layout>
       <gui>
-        <posX>5322</posX>
-        <posY>1454</posY>
+        <posX>5260</posX>
+        <posY>1565</posY>
         <width>4000</width>
         <height>4556</height>
       </gui>
@@ -325,8 +289,8 @@
         <property name="number" value="1" />
       </properties>
       <layout>
-        <posX>728</posX>
-        <posY>85</posY>
+        <posX>698</posX>
+        <posY>94</posY>
       </layout>
     </component>
     <component id="PathMultiplexer.1.1" type_id="asterics.PathMultiplexer">
@@ -352,8 +316,8 @@
         <property name="number" value="1" />
       </properties>
       <layout>
-        <posX>721</posX>
-        <posY>238</posY>
+        <posX>693</posX>
+        <posY>286</posY>
       </layout>
     </component>
     <component id="ButtonGrid.1.1" type_id="asterics.ButtonGrid">
@@ -368,8 +332,8 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
-        <property name="buttonCaption1" value="calibrate eyex" />
-        <property name="buttonCaption2" value="calibrate lipmouse" />
+        <property name="buttonCaption1" value="Calibrate Eye controller" />
+        <property name="buttonCaption2" value="set Joystick zero position" />
         <property name="buttonCaption3" value="" />
         <property name="buttonCaption4" value="" />
         <property name="buttonCaption5" value="" />
@@ -410,14 +374,14 @@
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>447</posX>
-        <posY>514</posY>
+        <posX>164</posX>
+        <posY>549</posY>
       </layout>
       <gui>
-        <posX>1260</posX>
-        <posY>6565</posY>
-        <width>2438</width>
-        <height>1667</height>
+        <posX>6697</posX>
+        <posY>6454</posY>
+        <width>2500</width>
+        <height>2000</height>
       </gui>
     </component>
     <component id="ButtonGrid.1.1.1" type_id="asterics.ButtonGrid">
@@ -432,8 +396,8 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
-        <property name="buttonCaption1" value="switch to small GUI" />
-        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption1" value="cursor control on / off" />
+        <property name="buttonCaption2" value="switch to small panel" />
         <property name="buttonCaption3" value="" />
         <property name="buttonCaption4" value="" />
         <property name="buttonCaption5" value="" />
@@ -474,14 +438,14 @@
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>576</posX>
-        <posY>593</posY>
+        <posX>959</posX>
+        <posY>391</posY>
       </layout>
       <gui>
-        <posX>6822</posX>
+        <posX>1197</posX>
         <posY>6454</posY>
-        <width>2375</width>
-        <height>1667</height>
+        <width>2500</width>
+        <height>1889</height>
       </gui>
     </component>
     <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
@@ -495,8 +459,8 @@
         <property name="model" value="eyex_lipmouse_combined_smallGUI.acs" />
       </properties>
       <layout>
-        <posX>699</posX>
-        <posY>595</posY>
+        <posX>1077</posX>
+        <posY>389</posY>
       </layout>
     </component>
     <component id="Slider.1" type_id="asterics.Slider">
@@ -521,20 +485,20 @@
         <property name="default" value="50" />
         <property name="gain" value="0.1" />
         <property name="autosend" value="true" />
-        <property name="caption" value="my slider" />
+        <property name="caption" value="x" />
         <property name="majorTickSpacing" value="20" />
         <property name="minorTickSpacing" value="5" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
-        <property name="storeValue" value="false" />
+        <property name="storeValue" value="True" />
       </properties>
       <layout>
-        <posX>285</posX>
-        <posY>126</posY>
+        <posX>345</posX>
+        <posY>83</posY>
       </layout>
       <gui>
-        <posX>1072</posX>
-        <posY>343</posY>
+        <posX>1135</posX>
+        <posY>454</posY>
         <width>4000</width>
         <height>1000</height>
       </gui>
@@ -566,15 +530,15 @@
         <property name="minorTickSpacing" value="5" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
-        <property name="storeValue" value="false" />
+        <property name="storeValue" value="True" />
       </properties>
       <layout>
-        <posX>288</posX>
-        <posY>265</posY>
+        <posX>348</posX>
+        <posY>282</posY>
       </layout>
       <gui>
-        <posX>5322</posX>
-        <posY>343</posY>
+        <posX>5260</posX>
+        <posY>454</posY>
         <width>4000</width>
         <height>1000</height>
       </gui>
@@ -611,6 +575,7 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="uniqueID" value="not used" />
         <property name="periodicADCUpdate" value="200" />
         <property name="pin2Mode" value="0" />
         <property name="pin3Mode" value="0" />
@@ -626,20 +591,20 @@
         <property name="pin13Mode" value="0" />
       </properties>
       <layout>
-        <posX>1141</posX>
-        <posY>184</posY>
+        <posX>1096</posX>
+        <posY>131</posY>
       </layout>
     </component>
   </components>
   <channels>
-    <channel id="binding.0">
+    <channel id="binding.12">
       <source>
         <component id="EyeX.1" />
-        <port id="gazeX" />
+        <port id="gazeY" />
       </source>
       <target>
-        <component id="Averager.1" />
-        <port id="input" />
+        <component id="PathMultiplexer.1.1" />
+        <port id="input1" />
       </target>
     </channel>
     <channel id="binding.10">
@@ -650,26 +615,6 @@
       <target>
         <component id="Mouse.1" />
         <port id="mouseX" />
-      </target>
-    </channel>
-    <channel id="binding.2">
-      <source>
-        <component id="EyeX.1" />
-        <port id="gazeY" />
-      </source>
-      <target>
-        <component id="Averager.1.1" />
-        <port id="input" />
-      </target>
-    </channel>
-    <channel id="binding.12">
-      <source>
-        <component id="Averager.1.1" />
-        <port id="output" />
-      </source>
-      <target>
-        <component id="PathMultiplexer.1.1" />
-        <port id="input1" />
       </target>
     </channel>
     <channel id="binding.4">
@@ -726,15 +671,15 @@
     </channel>
     <channel id="binding.11">
       <source>
-        <component id="Averager.1" />
-        <port id="output" />
+        <component id="EyeX.1" />
+        <port id="gazeX" />
       </source>
       <target>
         <component id="PathMultiplexer.1" />
         <port id="input1" />
       </target>
     </channel>
-    <channel id="binding.20">
+    <channel id="binding.22">
       <source>
         <component id="Slider.1" />
         <port id="out" />
@@ -786,21 +731,6 @@
     </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="button1_toggle">
-      <description />
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Mouse.1" />
-          <eventPort id="toggle" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="output_calibration">
       <sources>
         <source>
@@ -850,7 +780,7 @@
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button3" />
+          <eventPort id="button1" />
         </source>
       </sources>
       <targets>
@@ -865,7 +795,7 @@
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button4" />
+          <eventPort id="button2" />
         </source>
       </sources>
       <targets>
@@ -875,27 +805,12 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button3_passPort1">
-      <description />
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button3" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="PathMultiplexer.1" />
-          <eventPort id="passPort1" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="button4_passPort2">
       <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button4" />
+          <eventPort id="button2" />
         </source>
       </sources>
       <targets>
@@ -910,7 +825,7 @@
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button3" />
+          <eventPort id="button1" />
         </source>
       </sources>
       <targets>
@@ -925,7 +840,7 @@
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button4" />
+          <eventPort id="button2" />
         </source>
       </sources>
       <targets>
@@ -940,7 +855,7 @@
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button4" />
+          <eventPort id="button2" />
         </source>
       </sources>
       <targets>
@@ -955,7 +870,7 @@
       <sources>
         <source>
           <component id="ButtonGrid.1" />
-          <eventPort id="button3" />
+          <eventPort id="button1" />
         </source>
       </sources>
       <targets>
@@ -1000,7 +915,7 @@
       <sources>
         <source>
           <component id="ButtonGrid.1.1.1" />
-          <eventPort id="button1" />
+          <eventPort id="button2" />
         </source>
       </sources>
       <targets>
@@ -1067,6 +982,171 @@
         <target>
           <component id="modelSwitcher.1" />
           <eventPort id="switchModel" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_toggle">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1.1.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="toggle" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_passPort2">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathMultiplexer.1" />
+          <eventPort id="passPort2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_passPort2">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathMultiplexer.1.1" />
+          <eventPort id="passPort2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_relativePosition">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="relativePosition" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_passPort1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathMultiplexer.1" />
+          <eventPort id="passPort1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_activate">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EyeX.1" />
+          <eventPort id="activate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_switchToCombinedOffsetCorrection">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EyeX.1" />
+          <eventPort id="switchToCombinedOffsetCorrection" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_switchToPermanentOffsetCorrection">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EyeX.1" />
+          <eventPort id="switchToPermanentOffsetCorrection" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_passPort1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathMultiplexer.1" />
+          <eventPort id="passPort1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_passPort1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="PathMultiplexer.1.1" />
+          <eventPort id="passPort1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_absolutePosition">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Mouse.1" />
+          <eventPort id="absolutePosition" />
         </target>
       </targets>
     </eventChannel>
