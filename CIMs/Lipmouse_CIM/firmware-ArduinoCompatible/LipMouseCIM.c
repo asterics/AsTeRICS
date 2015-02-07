@@ -86,7 +86,7 @@ int main(void)
 		    autoreply_num++; 
 		    if (autoreply_num==0) autoreply_num=0x80;
 
-		    CIM_frame.cim_feature=LIPMOUSE_CIM_FEATURE_ADCREPORT;
+		    CIM_frame.cim_feature=ARDUINO_CIM_FEATURE_ADCREPORT;
 		    CIM_frame.serial_number=autoreply_num;
 		    CIM_frame.reply_code=CMD_EVENT_REPLY;
 			generate_ADCFrame();
@@ -107,10 +107,9 @@ int main(void)
 		    	CIM_frame.serial_number=autoreply_num;
 				CIM_frame.reply_code=CMD_EVENT_REPLY;
 			    generate_PINFrame();	     
+			    reply_DataFrame();
 				old_PIND=PIND;
 				old_PINB=PINB;
-
-			    reply_DataFrame();
 			}
 		}
 

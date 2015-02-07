@@ -248,9 +248,7 @@ implements Runnable {
 									long uid = 0;
 									byte [] data = packet.getData(); 
 									for (int i = 3; i >= 0 ; i--)
-									{											
-										uid = (uid << 8) + data[i];
-									}
+										uid = (uid << 8) | (((int)data[i]) & 0xff);
 	
 									CIMUniqueIdentifier cuid 
 									= new CIMUniqueIdentifier(cimId, uid);

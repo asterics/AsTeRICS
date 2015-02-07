@@ -540,22 +540,23 @@ public class ArduinoInstance extends AbstractRuntimeComponentInstance implements
 				break;
 			case CIMProtocolPacket.COMMAND_REPLY_WRITE_FEATURE:
 				/*
-				System.out.print ("Reply Write: ");
+				System.out.print ("Reply Write: "+(int)packet.getSerialNumber());
+				
 				if (featureAddress == ARDUINO_CIM_FEATURE_SET_PINDIRECTION)
 				{
-					 System.out.println ("Set PinDirection.");
+					 System.out.println (" Set PinDirection.");
 				}
 				if (featureAddress == ARDUINO_CIM_FEATURE_SET_PINSTATE)
 				{
-					 System.out.println ("Set PinState.");
+					 System.out.println (" Set PinState.");
 				}
 				if (featureAddress == ARDUINO_CIM_FEATURE_SET_PINMASK)
 				{
-					 System.out.println ("Set PinMask.");
+					 System.out.println (" Set PinMask.");
 				}
 				if (featureAddress == ARDUINO_CIM_FEATURE_SET_ADCPERIOD)
 				{
-					 System.out.println ("Set AdcPeriod.");
+					 System.out.println (" Set AdcPeriod.");
 				}
 				*/
 				break;

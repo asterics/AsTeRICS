@@ -63,14 +63,14 @@
 #define CIM_ERROR_CIM_NOT_READY       (1<<5)
 #define CIM_ERROR_CIM_OTHER_ERROR     (1<<7)
 
-#define LIPMOUSE_CIM_FEATURE_UNIQUENUMBER     0x00
+#define ARDUINO_CIM_FEATURE_UNIQUENUMBER     0x00
 
 	#define ARDUINO_CIM_FEATURE_SET_PINDIRECTION 0x01
 	#define ARDUINO_CIM_FEATURE_SET_PINSTATE     0x02
 	#define ARDUINO_CIM_FEATURE_GET_PINVALUES 	 0x03
 
-	#define LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD 	 0x04
-	#define LIPMOUSE_CIM_FEATURE_ADCREPORT 	     0x05
+	#define ARDUINO_CIM_FEATURE_SET_ADCPERIOD 	 0x04
+	#define ARDUINO_CIM_FEATURE_ADCREPORT 	     0x05
 
 	#define ARDUINO_CIM_FEATURE_SET_PINMASK 	 0x06
 	#define ARDUINO_CIM_FEATURE_SET_PWM 	 	 0x07
@@ -80,7 +80,7 @@
 #define DATABUF_SIZE 15       // max. 15 bytes needed for data field
 
 
-struct ARE_frame_t {
+struct ARE_frame_t { 
    uint16_t packet_id;
    uint16_t are_id;
    uint16_t data_size;

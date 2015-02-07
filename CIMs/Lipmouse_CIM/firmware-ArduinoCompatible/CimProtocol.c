@@ -45,8 +45,8 @@
 const uint8_t ADCMAP[5] = {0,7,5,6,4};      // LIPSY Version 1.0
 
 
-	const uint32_t LIPMOUSE_CIM_UNIQUE_NUMBER = 1007;  
-	const char LIPMOUSE_CIM_FEATURELIST[]=
+	const uint32_t ARDUINO_CIM_UNIQUE_NUMBER =  1001;  
+	const char ARDUINO_CIM_FEATURELIST[]=
 	{
 	   0x00,0x00,  // unique number, data: 4 bytes 
 	   0x01,0x00,  // Set Pin Directions, data: 2 bytes, in(0) or out(1) for pins 0-13
@@ -67,8 +67,8 @@ unsigned int  datapos=0;
 uint8_t first_packet=1;
 //int ADCValues[6];
 
-//extern unsigned char old_PIND;
-//extern unsigned char old_PINB;
+extern unsigned char old_PIND;
+extern unsigned char old_PINB;
 
 unsigned char PIND_Mask =0;
 unsigned char PINB_Mask =0;
@@ -131,23 +131,24 @@ uint8_t process_ARE_frame(uint8_t status_code)
 			case CMD_REQUEST_READ_FEATURE:  //  read feature from CIM
 
 			  switch (ARE_frame.cim_feature) {
-			     case LIPMOUSE_CIM_FEATURE_UNIQUENUMBER:   // read unique serial number
+			     case ARDUINO_CIM_FEATURE_UNIQUENUMBER:   // read unique serial number
   		            if (data_size==0) {    
 				     reply_UniqueNumber();
 					 ack_needed=0;
 					} else status_code |= CIM_ERROR_INVALID_FEATURE;
   			     	break;
 
-			     case LIPMOUSE_CIM_FEATURE_ADCREPORT:
+			     case ARDUINO_CIM_FEATURE_GET_PINVALUES:
+				    	generate_PINFrame();	
+						reply_DataFrame();				 
+					    ack_needed=0;
+					break;
+
+			     case ARDUINO_CIM_FEATURE_ADCREPORT:
 						generate_ADCFrame();
 						reply_DataFrame();
 					    ack_needed=0;
 				     break;
-
-			     case ARDUINO_CIM_FEATURE_GET_PINVALUES:
-				    	generate_PINFrame();	 
-					    ack_needed=0;
-					break;
 
   			      default: 				// not a valid read  feature;		 
 					status_code |= CIM_ERROR_INVALID_FEATURE;
@@ -160,19 +161,13 @@ uint8_t process_ARE_frame(uint8_t status_code)
 
 				switch (ARE_frame.cim_feature) {  // which feature address ?
 
-			        case LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD:
-	  		            if (data_size==2) {    
-							cli();
-							ADC_updatetime=  (uint16_t)ARE_frame.data[0];
-							ADC_updatetime+= ((uint16_t)ARE_frame.data[1])<<8;
-							sei();
-						}
-				     break;
-
 			        case ARDUINO_CIM_FEATURE_SET_PINDIRECTION:
 	  		            if (data_size==2) {    
 				 		  DDRD=ARE_frame.data[0];
 				 		  DDRB=ARE_frame.data[1];
+						  old_PINB=PINB;
+						  old_PIND=PIND;
+
   						} else status_code |= CIM_ERROR_INVALID_FEATURE;
 						break;
 
@@ -180,14 +175,26 @@ uint8_t process_ARE_frame(uint8_t status_code)
 	  		            if (data_size==2) {    
 							PORTD=ARE_frame.data[0];
 							PORTB=ARE_frame.data[1];
+						    old_PINB=PINB;
+						    old_PIND=PIND;
   						} else status_code |= CIM_ERROR_INVALID_FEATURE;
 						break;
+
+			        case ARDUINO_CIM_FEATURE_SET_ADCPERIOD:
+	  		            if (data_size==2) {    
+							cli();
+							ADC_updatetime=  (uint16_t)ARE_frame.data[0];
+							ADC_updatetime+= ((uint16_t)ARE_frame.data[1])<<8;
+							sei();
+						} else status_code |= CIM_ERROR_INVALID_FEATURE;
+				     break;
 
 					case ARDUINO_CIM_FEATURE_SET_PINMASK:
 						if (data_size==2) {
 							PIND_Mask=ARE_frame.data[0];
 							PINB_Mask=ARE_frame.data[1];
 						} else status_code |= CIM_ERROR_INVALID_FEATURE;
+						break;
 
 					case ARDUINO_CIM_FEATURE_SET_PWM:
 						break;
@@ -223,9 +230,9 @@ void reply_FeatureList(void)
 //		 LEDs_TurnOnLEDs(LED6);  // indicate frame loss
     }
 	if (!(UEINTX & (1<<RWAL))) { //wenn Buffer voll ist
-		CIM_frame.data_size=sizeof(LIPMOUSE_CIM_FEATURELIST);     // feature list length
+		CIM_frame.data_size=sizeof(ARDUINO_CIM_FEATURELIST);     // feature list length
 	    usb_serial_write ( (uint8_t *)&CIM_frame, CIM_HEADER_LEN);
-    	usb_serial_write ( (uint8_t *)&LIPMOUSE_CIM_FEATURELIST, CIM_frame.data_size);
+    	usb_serial_write ( (uint8_t *)&ARDUINO_CIM_FEATURELIST, CIM_frame.data_size);
 	} 
 }
 
@@ -233,7 +240,7 @@ void reply_UniqueNumber(void)
 {
 		CIM_frame.data_size=4;    // lenght of unique number
     	usb_serial_write ((uint8_t *) &CIM_frame, CIM_HEADER_LEN);
-    	usb_serial_write ((uint8_t *) &LIPMOUSE_CIM_UNIQUE_NUMBER, CIM_frame.data_size);
+    	usb_serial_write ((uint8_t *) &ARDUINO_CIM_UNIQUE_NUMBER, CIM_frame.data_size);
 
 /*	if (UEINTX & (1<<RWAL)) { //wenn Buffer nicht voll ist
 	     CIM_frame.reply_code |= (CIM_ERROR_CIM_NOT_READY<<8);
