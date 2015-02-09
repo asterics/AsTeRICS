@@ -52,6 +52,55 @@
         <height>3000</height>
       </gui>
     </component>
+    <component id="WebSocket.1" type_id="asterics.WebSocket">
+      <description>This plugin uses a websocket connection to send and read data</description>
+      <ports>
+        <inputPort portTypeID="InA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="InB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="InC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="InD">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="InE">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="InF">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="OutA">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="OutB">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="OutC">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="OutD">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="OutE">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="OutF">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="host" value="localhost" />
+        <property name="port" value="8080" />
+      </properties>
+      <layout>
+        <posX>353</posX>
+        <posY>135</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.1">
@@ -62,6 +111,16 @@
       <target>
         <component id="Oscilloscope.1" />
         <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="WebSocket.1" />
+        <port id="InA" />
       </target>
     </channel>
   </channels>
