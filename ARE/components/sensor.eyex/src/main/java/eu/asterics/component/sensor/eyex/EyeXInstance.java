@@ -677,7 +677,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
         		return;            	
 	    }
         
-        if ((gazeX==0) && (gazeY==0))   // eyes closed
+        if ((gazeDataX==0) && (gazeDataY==0))   // eyes closed
         {
         	if (measuringClose == false)
         	{
