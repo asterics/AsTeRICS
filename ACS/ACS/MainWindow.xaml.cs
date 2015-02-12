@@ -68,11 +68,11 @@ namespace Asterics.ACS {
         #region Global variables
 
         public const String ACS_VERSION="2.5";
-        private int mouseMoveComponentX;
-        private int mouseMoveComponentY;
+        private double mouseMoveComponentX;
+        private double mouseMoveComponentY;
 
-        private int offsetX = 0;
-        private int offsetY = 0;
+        private double offsetX = 0;
+        private double offsetY = 0;
 
         private int copyOffsetMulti = 1;
         private int copyXOffset = 30;
@@ -4460,16 +4460,16 @@ namespace Asterics.ACS {
                 if (args.Source is Rectangle) {
                     if ((focusedComponent.MainRectangle == (Rectangle)args.Source) || (focusedComponent.TopRectangle == (Rectangle)args.Source)) {
                         componentToMove = focusedComponent;
-                        offsetX = (int)args.GetPosition(canvas).X - (int)Canvas.GetLeft(focusedComponent.ComponentCanvas);
-                        offsetY = (int)args.GetPosition(canvas).Y - (int)Canvas.GetTop(focusedComponent.ComponentCanvas);
+                        offsetX = args.GetPosition(canvas).X - Canvas.GetLeft(focusedComponent.ComponentCanvas);
+                        offsetY = args.GetPosition(canvas).Y - Canvas.GetTop(focusedComponent.ComponentCanvas);
                         
                     }
                 }
                 else if (args.Source is TextBlock) {
                     if ((focusedComponent.ComponentCanvas == ((TextBlock)args.Source).Parent) || (focusedComponent.Label) == (TextBlock)args.Source) {
                         componentToMove = focusedComponent;
-                        offsetX = (int)args.GetPosition(canvas).X - (int)Canvas.GetLeft(focusedComponent.ComponentCanvas);
-                        offsetY = (int)args.GetPosition(canvas).Y - (int)Canvas.GetTop(focusedComponent.ComponentCanvas);
+                        offsetX = args.GetPosition(canvas).X - Canvas.GetLeft(focusedComponent.ComponentCanvas);
+                        offsetY = args.GetPosition(canvas).Y - Canvas.GetTop(focusedComponent.ComponentCanvas);
                     }
                 }
                 //MoveComponent(componentToMove, (int)args.GetPosition(canvas).X, (int)args.GetPosition(canvas).Y);
@@ -4714,7 +4714,11 @@ namespace Asterics.ACS {
         const int SELECTED_LINE_THICKNESS = 4;
         const int UNSELECTED_LINE_THICKNESS = 2;
         const int LINE_SELECTION_DISTANCE = 20;
-      
+
+
+        static double roundX = 0;
+        static double roundY = 0;
+
         /////  *** end patch for easier selection of channels and ports
         
         /// <summary>
@@ -4806,9 +4810,14 @@ namespace Asterics.ACS {
             //MoveComponent(selectedComponentList.First(), (int)args.GetPosition(canvas).X, (int)args.GetPosition(canvas).Y);
             if (selectionRectangle == null && Mouse.LeftButton == MouseButtonState.Pressed && (ModifierKeys.Control & Keyboard.Modifiers) == 0 && mouseMoveComponentX >= 0 && mouseMoveComponentY >= 0) {
                 Point actPos = args.GetPosition(canvas);
-                MoveSelectedComponents((int)(mouseMoveComponentX - actPos.X), (int)(mouseMoveComponentY - actPos.Y));
-                mouseMoveComponentX = (int)actPos.X;
-                mouseMoveComponentY = (int)actPos.Y;
+                MoveSelectedComponents(mouseMoveComponentX - actPos.X, mouseMoveComponentY - actPos.Y);
+
+                mouseMoveComponentX = (actPos.X);
+                mouseMoveComponentY = (actPos.Y);
+
+//                roundX+= actPos.X-(double)mouseMoveComponentX ;
+//                roundY+= actPos.Y-(double)mouseMoveComponentY ;
+
             }
             // if a new channel is to be connected (already connected to an out-port, searching for an in-port),
             // the line will be drown to the mouse pointer
@@ -6402,7 +6411,7 @@ namespace Asterics.ACS {
         private int[] ProperComponentCoordinates(int x, int y) {
             int[] retVal = new int[2];
             foreach (componentType dc in deploymentComponentList.Values) {
-                if ((Int32.Parse(dc.layout.posX) == x) && (Int32.Parse(dc.layout.posY) == y)) {
+                if (((int)(double.Parse(dc.layout.posX)) == x) && ((int)(double.Parse(dc.layout.posY)) == y)) {
                     retVal = ProperComponentCoordinates(x + 10, y + 10);
                     return retVal;
                 }
@@ -7591,8 +7600,8 @@ namespace Asterics.ACS {
             CommandObject co = new CommandObject("moveComponent", selectedComponentList.ToArray());
             for (int i = 0; i < selectedComponentList.Count; i++) {
                 componentType mc = selectedComponentList.ElementAt(i);
-                co.Parameter.Add(int.Parse(mc.layout.posX));
-                co.Parameter.Add(int.Parse(mc.layout.posY));
+                co.Parameter.Add(double.Parse(mc.layout.posX));
+                co.Parameter.Add(double.Parse(mc.layout.posY));
             }
             return co;
         }
@@ -7885,7 +7894,7 @@ namespace Asterics.ACS {
                     e.Handled = true;
                     //MoveComponent(componentToMove, (int)Canvas.GetLeft(componentToMove.ComponentCanvas) + offsetX, (int)Canvas.GetTop(componentToMove.ComponentCanvas) - 2 + offsetY );
                     foreach (componentType mc in selectedComponentList)
-                        MoveComponent(mc, (int)Canvas.GetLeft(mc.ComponentCanvas) + offsetX, (int)Canvas.GetTop(mc.ComponentCanvas) - 2 + offsetY);
+                        MoveComponent(mc, Canvas.GetLeft(mc.ComponentCanvas) + offsetX, Canvas.GetTop(mc.ComponentCanvas) - 2 + offsetY);
                 }
             }
             else if (e.Key == Key.Down) {
@@ -7893,7 +7902,7 @@ namespace Asterics.ACS {
                     e.Handled = true;
                     //MoveComponent(componentToMove, (int)Canvas.GetLeft(componentToMove.ComponentCanvas) + offsetX, (int)Canvas.GetTop(componentToMove.ComponentCanvas) + 2 + offsetY);
                     foreach (componentType mc in selectedComponentList)
-                        MoveComponent(mc, (int)Canvas.GetLeft(mc.ComponentCanvas) + offsetX, (int)Canvas.GetTop(mc.ComponentCanvas) + 2 + offsetY);
+                        MoveComponent(mc, Canvas.GetLeft(mc.ComponentCanvas) + offsetX, Canvas.GetTop(mc.ComponentCanvas) + 2 + offsetY);
                 }
             }
             else if (e.Key == Key.Left) {
@@ -10948,13 +10957,12 @@ namespace Asterics.ACS {
         }
 
 
-
         /// <summary>
         /// Move all selected components on the canvas relative to the given offset
         /// </summary>
         /// <param name="xOffset"></param>
         /// <param name="yOffset"></param>
-        private void MoveSelectedComponents(int xOffset, int yOffset) {
+        private void MoveSelectedComponents(double xOffset, double yOffset) {
             bool moveX = true;
             bool moveY = true;
             if (moveTracking == false) {
@@ -10964,10 +10972,11 @@ namespace Asterics.ACS {
                 redoStack.Clear();
             }
             foreach (componentType tempComponent in selectedComponentList) {
-                int xPos = (int)Canvas.GetLeft(tempComponent.ComponentCanvas);
-                int yPos = (int)Canvas.GetTop(tempComponent.ComponentCanvas);
-                int newxPos = xPos - xOffset;
-                int newyPos = yPos - yOffset;
+                double xPos = Canvas.GetLeft(tempComponent.ComponentCanvas);
+                double yPos = Canvas.GetTop(tempComponent.ComponentCanvas);
+
+                double newxPos = xPos - xOffset;
+                double newyPos = yPos - yOffset;
                 if (tempComponent.ComponentCanvas.Visibility == System.Windows.Visibility.Visible) {
                     if (newxPos < 0)
                         moveX = false;
@@ -10980,10 +10989,10 @@ namespace Asterics.ACS {
                 }
             }
             foreach (componentType tempComponent in selectedComponentList) {
-                int xPos = (int)Canvas.GetLeft(tempComponent.ComponentCanvas);
-                int yPos = (int)Canvas.GetTop(tempComponent.ComponentCanvas);
-                int newxPos = xPos;
-                int newyPos = yPos;
+                double xPos = Canvas.GetLeft(tempComponent.ComponentCanvas);
+                double yPos = Canvas.GetTop(tempComponent.ComponentCanvas);
+                double newxPos = xPos;
+                double newyPos = yPos;
                 if (moveX)
                     newxPos = newxPos - xOffset;
                 if (moveY)
@@ -10992,11 +11001,11 @@ namespace Asterics.ACS {
                     if (newxPos < 0)
                         newxPos = 0;
                     else if (newxPos + tempComponent.ComponentCanvas.Width > canvas.RenderSize.Width)
-                        newxPos = (int)(canvas.RenderSize.Width - tempComponent.ComponentCanvas.Width);
+                        newxPos = (canvas.RenderSize.Width - tempComponent.ComponentCanvas.Width);
                     if (newyPos < 0)
                         newyPos = 0;
                     else if (newyPos + tempComponent.ComponentCanvas.Height > canvas.RenderSize.Height)
-                        newyPos = (int)(canvas.RenderSize.Height - tempComponent.ComponentCanvas.Height);
+                        newyPos = (canvas.RenderSize.Height - tempComponent.ComponentCanvas.Height);
                 } else {
                     newxPos =xPos - xOffset; 
                     newyPos = yPos - yOffset;
@@ -11067,17 +11076,17 @@ namespace Asterics.ACS {
         /// <param name="moveComponent">The component to move</param>
         /// <param name="xPos"></param>
         /// <param name="yPos"></param>
-        private void MoveComponent(componentType moveComponent, int xPos, int yPos) {
-            int leftVal = xPos - offsetX;
-            int topVal = yPos - offsetY;
+        private void MoveComponent(componentType moveComponent, double xPos, double yPos) {
+            double leftVal = xPos - offsetX;
+            double topVal = yPos - offsetY;
             Size csize = canvas.RenderSize;
             if (moveComponent.ComponentCanvas.Visibility == System.Windows.Visibility.Visible) {
                 if (leftVal + moveComponent.ComponentCanvas.Width > csize.Width)
-                    leftVal = (int)(csize.Width - moveComponent.ComponentCanvas.Width);
+                    leftVal = (csize.Width - moveComponent.ComponentCanvas.Width);
                 else if (leftVal < 0)
                     leftVal = 0;
                 if (topVal + moveComponent.ComponentCanvas.Height > csize.Height)
-                    topVal = (int)(csize.Height - moveComponent.ComponentCanvas.Height);
+                    topVal = (csize.Height - moveComponent.ComponentCanvas.Height);
                 else if (topVal < 0)
                     topVal = 0;
             } else {

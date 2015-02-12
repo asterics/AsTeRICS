@@ -128,7 +128,7 @@ namespace Asterics.ACS {
             gUIComponentContextMenu.Items.Add(gUIComponentContextMenuMoveStop);
             gUIComponentContextMenuMoveStop.Click += gUIComponentContextMenuMoveStop_Click;
 
-            // creating the tab fot the gui designer
+            // creating the tab for the gui designer
             DockPanel guiDockPanel = new DockPanel();
             guiDockPanel.LastChildFill = true;
 
@@ -297,7 +297,7 @@ namespace Asterics.ACS {
 
 
         /// <summary>
-        /// Initialication of the GUCanvas (the drawing areea for the GUI elements)
+        /// Initialisation of the GUICanvas (the drawing area for the GUI elements)
         /// </summary>
         private void InitGUICanvas() {
             guiCanvas.Width = GUIFRAMEWIDTH;
@@ -355,8 +355,16 @@ namespace Asterics.ACS {
         /// </summary>
         /// <param name="modelComp">Component, which is represented by the GUI element</param>
         public void AddGUIComponent(componentType modelComp) {
+            foreach (propertyType p in modelComp.properties)
+            {
+              //  Console.Out.WriteLine("hello:" + p.name + " " + p.value);
+                if ((p.name.ToLower().Equals("displaygui")) && (p.value.ToLower().Equals("false")))
+                    return;
+            }
+
             Canvas guiComponentCanvas = new Canvas();
             Rectangle guiComponent = new Rectangle();
+
             guiComponentCanvas.Width = guiCanvas.Width * int.Parse(modelComp.gui.width) / 10000;
             guiComponentCanvas.Height = guiCanvas.Height * int.Parse(modelComp.gui.height) / 10000;
             guiComponentCanvas.Name = "guiCanvas";
@@ -583,11 +591,11 @@ namespace Asterics.ACS {
                     }
                 }
                 else if (e.Key == Key.Right) {
-                    if ((selectedGUIElement.Width + Canvas.GetLeft(selectedGUIElement)) < guiCanvas.Width) {
+                //    if ((selectedGUIElement.Width + Canvas.GetLeft(selectedGUIElement)) < guiCanvas.Width) {
                         selectedGUIElement.Width++;
                         selectedGUIRectangle.Width++;
                         focusGUIRectangle.Width++;
-                    }
+                //    }
                 }
                 else if (e.Key == Key.Up) {
                     if (selectedGUIElement.Height > 15) {
@@ -597,34 +605,34 @@ namespace Asterics.ACS {
                     }
                 }
                 else if (e.Key == Key.Down) {
-                    if ((selectedGUIElement.Height + Canvas.GetTop(selectedGUIElement)) < guiCanvas.Height) {
+                 //   if ((selectedGUIElement.Height + Canvas.GetTop(selectedGUIElement)) < guiCanvas.Height) {
                         selectedGUIElement.Height++;
                         selectedGUIRectangle.Height++;
                         focusGUIRectangle.Height++;
-                    }
+                 //   }
                 }
             }
             else if (gUIComponentContextMenuMoveStop.IsEnabled) {
                 e.Handled = true;
                 if (e.Key == Key.Left) {
-                    if (Canvas.GetLeft(selectedGUIElement) > 0) {
+                  //  if (Canvas.GetLeft(selectedGUIElement) > 0) {
                         Canvas.SetLeft(selectedGUIElement, Canvas.GetLeft(selectedGUIElement) - 1);
-                    }
+                  //  }
                 }
                 else if (e.Key == Key.Right) {
-                    if ((Canvas.GetLeft(selectedGUIElement) + selectedGUIElement.Width) < guiCanvas.Width) {
+                 //   if ((Canvas.GetLeft(selectedGUIElement) + selectedGUIElement.Width) < guiCanvas.Width) {
                         Canvas.SetLeft(selectedGUIElement, Canvas.GetLeft(selectedGUIElement) + 1);
-                    }
+                 //   }
                 }
                 else if (e.Key == Key.Up) {
-                    if (Canvas.GetTop(selectedGUIElement) > 0) {
+                 //   if (Canvas.GetTop(selectedGUIElement) > 0) {
                         Canvas.SetTop(selectedGUIElement, Canvas.GetTop(selectedGUIElement) - 1);
-                    }
+                 //   }
                 }
                 else if (e.Key == Key.Down) {
-                    if ((Canvas.GetTop(selectedGUIElement) + selectedGUIElement.Height) < guiCanvas.Height) {
+                 //   if ((Canvas.GetTop(selectedGUIElement) + selectedGUIElement.Height) < guiCanvas.Height) {
                         Canvas.SetTop(selectedGUIElement, Canvas.GetTop(selectedGUIElement) + 1);
-                    }
+                 //   }
                 }
             }
         }
@@ -860,9 +868,10 @@ namespace Asterics.ACS {
                     int intNewXpos = (int)args.GetPosition(guiCanvas).X;
                     int intNewYpos = (int)args.GetPosition(guiCanvas).Y;
 
-                    int deltaX;
-                    int deltaY;
+                    double deltaX;
+                    double deltaY;
 
+                    /*
                     // check, if the x-cooridnate is within the canvas
                     if (guiSelectedModelComponent.id == modelCompGUIARE.id || guiSelectedModelComponent.gui.IsExternalGUIElement) { // or an GUI element without the ARE, e.g. the webcam. These objects can move on the GUI canvas
                         if ((intNewXpos - guiOffsetX) < 1) {
@@ -880,6 +889,7 @@ namespace Asterics.ACS {
                             intNewXpos = Convert.ToInt16(modelCompGUIARE.gui.GuiElementCanvas.Width - guiSelectedRectangle.Width) + guiOffsetX + (int)Canvas.GetLeft(modelCompGUIARE.gui.GuiElementCanvas) - areRightMargin;
                         }
                     }
+                    
 
                     // check, if the y-cooridnate is within the canvas
                     if (guiSelectedModelComponent.id == modelCompGUIARE.id || guiSelectedModelComponent.gui.IsExternalGUIElement) { // or an GUI element without the ARE, e.g. the webcam. These objects can move on the GUI canvas
@@ -899,38 +909,39 @@ namespace Asterics.ACS {
                             intNewYpos = Convert.ToInt16(modelCompGUIARE.gui.GuiElementCanvas.Height - guiSelectedRectangle.Height) + guiOffsetY + (int)Canvas.GetTop(modelCompGUIARE.gui.GuiElementCanvas) - areBottomMargin;
                         }
                     }
+                    */
 
                     if (guiProp.EnableGrid) {
                         int stepDivX = (intNewXpos - guiOffsetX) / (int)guiProp.GridSteps;
-                        deltaX = stepDivX * (int)guiProp.GridSteps - (int)Canvas.GetLeft(guiSelectedCanvas);
-                        double canvasLeft =stepDivX * (int)guiProp.GridSteps;
+                        deltaX = stepDivX * (double)guiProp.GridSteps - (double)Canvas.GetLeft(guiSelectedCanvas);
+                        double canvasLeft = stepDivX * (double)guiProp.GridSteps;
                         if (guiSelectedModelComponent != modelCompGUIARE) {
-                            int areLeft = (int)(Int32.Parse(deploymentModel.modelGUI.AREGUIWindow.posX));
-                            int scaledAreLeft = (int)((areLeft / 10000.0) * GUIFRAMEWIDTH);
+                            double areLeft = (double)(Int32.Parse(deploymentModel.modelGUI.AREGUIWindow.posX));
+                            double scaledAreLeft = (double)((areLeft / 10000.0) * GUIFRAMEWIDTH);
                             if (canvasLeft < scaledAreLeft) {
-                                canvasLeft = scaledAreLeft;
+                            //    canvasLeft = scaledAreLeft;
                             }
                         }
                         Canvas.SetLeft( guiSelectedCanvas, canvasLeft);
                         int stepDivY = (intNewYpos - guiOffsetY) / (int)guiProp.GridSteps;
-                        deltaY = stepDivY * (int)guiProp.GridSteps - (int)Canvas.GetTop(guiSelectedCanvas);
-                        double canvasTop = stepDivY * (int)guiProp.GridSteps;
+                        deltaY = stepDivY * (double)guiProp.GridSteps - (double)Canvas.GetTop(guiSelectedCanvas);
+                        double canvasTop = stepDivY * (double)guiProp.GridSteps;
                         if (guiSelectedModelComponent != modelCompGUIARE) {
-                            int areTop = (int) (Int32.Parse(deploymentModel.modelGUI.AREGUIWindow.posY));
-                            int scaledAreTop = 0;
+                            double areTop = (double)(Int32.Parse(deploymentModel.modelGUI.AREGUIWindow.posY));
+                            double scaledAreTop = 0;
                             switch (guiProp.ScreenRes) {
                                 case GUIProperties.ScreenResolution.FiveFour:
-                                    scaledAreTop = (int)((areTop / 10000.0) * GUIFRAMEHEIGHTFIVEFOUR);
+                                    scaledAreTop = (double)((areTop / 10000.0) * GUIFRAMEHEIGHTFIVEFOUR);
                                     break;
                                 case GUIProperties.ScreenResolution.FourThree:
-                                    scaledAreTop = (int)((areTop / 10000.0) * GUIFRAMEHEIGHTFOURTHREE);
+                                    scaledAreTop = (double)((areTop / 10000.0) * GUIFRAMEHEIGHTFOURTHREE);
                                     break;
                                 case GUIProperties.ScreenResolution.SixteenNine:
-                                    scaledAreTop = (int)((areTop / 10000.0) * GUIFRAMEHEIGHTSIXTEENNINE);
+                                    scaledAreTop = (double)((areTop / 10000.0) * GUIFRAMEHEIGHTSIXTEENNINE);
                                     break;
                             }
                             if (canvasTop < scaledAreTop) {
-                                canvasTop = scaledAreTop;
+                            //    canvasTop = scaledAreTop;
                             }
                         }
                         Canvas.SetTop(guiSelectedCanvas, canvasTop);
@@ -957,9 +968,9 @@ namespace Asterics.ACS {
                         }
                     }
                     else {
-                        deltaX = intNewXpos - guiOffsetX - (int)Canvas.GetLeft(guiSelectedCanvas);
+                        deltaX = intNewXpos - guiOffsetX - (double)Canvas.GetLeft(guiSelectedCanvas);
                         Canvas.SetLeft(guiSelectedCanvas, intNewXpos - guiOffsetX);
-                        deltaY = intNewYpos - guiOffsetY - (int)Canvas.GetTop(guiSelectedCanvas);
+                        deltaY = intNewYpos - guiOffsetY - (double)Canvas.GetTop(guiSelectedCanvas);
                         Canvas.SetTop(guiSelectedCanvas, intNewYpos - guiOffsetY);
                         if (guiSelectedModelComponent == modelCompGUIARE) {
                             // write new cooridinates of the ARE
@@ -1011,7 +1022,7 @@ namespace Asterics.ACS {
                             newWidth = 15;
                         }
                         else if (newWidth > guiCanvas.Width) {
-                            newWidth = guiCanvas.Width;
+                      //      newWidth = guiCanvas.Width;
                         }
                     }
                     else {
@@ -1019,7 +1030,7 @@ namespace Asterics.ACS {
                             newWidth = 15;
                         }
                         else if (newWidth + areRightMargin > Canvas.GetLeft(modelCompGUIARE.gui.GuiElementCanvas) + modelCompGUIARE.gui.GuiElementCanvas.Width - Canvas.GetLeft(guiSelectedCanvas)) {
-                            newWidth = Canvas.GetLeft(modelCompGUIARE.gui.GuiElementCanvas) + modelCompGUIARE.gui.GuiElementCanvas.Width - Canvas.GetLeft(guiSelectedCanvas) - areRightMargin;
+                        //    newWidth = Canvas.GetLeft(modelCompGUIARE.gui.GuiElementCanvas) + modelCompGUIARE.gui.GuiElementCanvas.Width - Canvas.GetLeft(guiSelectedCanvas) - areRightMargin;
                         }
                     }
 
@@ -1029,7 +1040,7 @@ namespace Asterics.ACS {
                             newHeight = 15;
                         }
                         else if (newHeight > guiCanvas.Height) {
-                            newHeight = guiCanvas.Height;
+                        //    newHeight = guiCanvas.Height;
                         }
                     }
                     else {
@@ -1037,11 +1048,13 @@ namespace Asterics.ACS {
                             newHeight = 15;
                         }
                         else if (newHeight + areBottomMargin > Canvas.GetTop(modelCompGUIARE.gui.GuiElementCanvas) + modelCompGUIARE.gui.GuiElementCanvas.Height - Canvas.GetTop(guiSelectedCanvas)) {
-                            newHeight = Canvas.GetTop(modelCompGUIARE.gui.GuiElementCanvas) + modelCompGUIARE.gui.GuiElementCanvas.Height - Canvas.GetTop(guiSelectedCanvas) - areBottomMargin;
+                         //   newHeight = Canvas.GetTop(modelCompGUIARE.gui.GuiElementCanvas) + modelCompGUIARE.gui.GuiElementCanvas.Height - Canvas.GetTop(guiSelectedCanvas) - areBottomMargin;
                         }
                     }
 
-                    // check, if ARE window is not smaller than the space, needed for the components
+
+                   // check, if ARE window is not smaller than the space, needed for the components
+                    /*
                     if (guiSelectedModelComponent == modelCompGUIARE) {
                         if (newWidth - areRightMargin < guiComponentsMaxX) {
                             newWidth = guiComponentsMaxX + areRightMargin;
@@ -1055,6 +1068,7 @@ namespace Asterics.ACS {
                             newHeight = areBottomMargin + 10;
                     }
 
+                    */
 
                     if (guiProp.EnableGrid) {
                         int stepDivX = (int)newWidth / (int)guiProp.GridSteps;
