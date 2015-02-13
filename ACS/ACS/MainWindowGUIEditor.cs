@@ -357,8 +357,7 @@ namespace Asterics.ACS {
         public void AddGUIComponent(componentType modelComp) {
             foreach (propertyType p in modelComp.properties)
             {
-              //  Console.Out.WriteLine("hello:" + p.name + " " + p.value);
-                if ((p.name.ToLower().Equals("displaygui")) && (p.value.ToLower().Equals("false")))
+                if ((p.name.ToLower().Equals(PROP_DISPLAYGUI)) && (p.value.ToLower().Equals(FALSE_STRING)))
                     return;
             }
 

@@ -79,7 +79,7 @@ namespace Asterics.ACS {
         private int copyYOffset = 30;
         //private Hashtable model = new Hashtable();
 
-        private String copyDummyName = "copydummyftwsurrockslolcatftwnyannyannyan";
+        private String copyDummyName = "copydummykiisurrockslolcatkiinyannyannyan";
         private String pasteDummyName = "";
         
         // Logger using NLog
@@ -205,6 +205,11 @@ namespace Asterics.ACS {
         // Constants
         private static int MAXNUMBEROFRECENTFILES = 12;
         private const int TOOLTIP_SHOW_DURATION = 10000;
+        
+        //Constants for displayGui
+        private const string PROP_DISPLAYGUI = "displayGUI";
+        private const string TRUE_STRING = "True";
+        private const string FALSE_STRING = "False";
         
         private String activeBundle = "default";
 
@@ -724,7 +729,9 @@ namespace Asterics.ACS {
             bool isError = false;
             bool doOverride = false;
 
-            
+//            if (activePropertyGrid != null)
+//                activePropertyGrid.StopEditing();   // update property editor (TBD)
+
             if (deploymentComponentList.Count == 0) {
                 MessageBox.Show(Properties.Resources.EmptyModel, Properties.Resources.EmptyModelHeader, MessageBoxButton.OK, MessageBoxImage.Error);
             } else {
@@ -8293,6 +8300,7 @@ namespace Asterics.ACS {
         /// <param name="e"></param>
         private void ComponentIntPropertyChanged(Object sender, PropertyChangedEventArgs e) {
             componentType tempComponent = (componentType)sender;
+
             if (e.PropertyName == "Component Name" && !deploymentComponentList.Keys.Contains(tempComponent.id) && tempComponent.id != "" && tempComponent.id != backupIdForPropertyEditor) {
                 string backupName = tempComponent.Label.Text;
                 tempComponent.Label.Text = tempComponent.id;
@@ -8457,6 +8465,23 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ComponentPropertyChanged(Object sender, PropertyChangedEventArgs e) {
+            propertyType prop = (propertyType)sender;
+            if (prop.name.ToLower().Equals(PROP_DISPLAYGUI))
+            {
+                Console.WriteLine("Component with property displayGui changed, prop.name: " + prop.name + ", value: " + prop.value + ", backupId: " + backupIdForPropertyEditor);
+                if (prop.value.ToLower().Equals(TRUE_STRING))
+                {
+                    componentType comp = findComponentType(backupIdForPropertyEditor);
+                    AddGUIComponent(comp);
+                }
+                if (prop.value.ToLower().Equals(FALSE_STRING))
+                {
+                    componentType comp = findComponentType(backupIdForPropertyEditor);
+                    RemoveGUIComponent(comp);
+                }
+            }
+
+            
             if ((asapiClient != null) && (areStatus.Status == AREStatus.ConnectionStatus.Running ||
                 areStatus.Status == AREStatus.ConnectionStatus.Pause || areStatus.Status == AREStatus.ConnectionStatus.Synchronised)) {
                     try {
@@ -9636,8 +9661,8 @@ namespace Asterics.ACS {
                     double positionY = (Int32.Parse(modelComp.layout.posY) + copyYOffset * copyOffsetMulti);
                     if (positionY + modelComp.ComponentCanvas.Height > canvas.RenderSize.Height)
                         positionY = canvas.RenderSize.Height - modelComp.ComponentCanvas.Height;
-                    modelComp.layout.posX = positionX.ToString();
-                    modelComp.layout.posY = positionY.ToString();
+                    modelComp.layout.posX = ((int)positionX).ToString();
+                    modelComp.layout.posY = ((int)positionY).ToString();
                     deploymentComponentList.Add(modelComp.id, modelComp);
                     //componentList.Add(modelComp.id, modelComp);
                     // adding context menu
@@ -11012,8 +11037,8 @@ namespace Asterics.ACS {
                 }
                 Canvas.SetLeft(tempComponent.ComponentCanvas, newxPos);
                 Canvas.SetTop(tempComponent.ComponentCanvas, newyPos);
-                tempComponent.layout.posX = newxPos.ToString();
-                tempComponent.layout.posY = newyPos.ToString();
+                tempComponent.layout.posX = ((int)newxPos).ToString();
+                tempComponent.layout.posY = ((int)newyPos).ToString();
 
                 int counterIn = 0;
                 int counterOut = 0;
@@ -11096,8 +11121,8 @@ namespace Asterics.ACS {
             Canvas.SetLeft(moveComponent.ComponentCanvas, leftVal);
             Canvas.SetTop(moveComponent.ComponentCanvas, topVal);
 
-            moveComponent.layout.posX = (leftVal).ToString();
-            moveComponent.layout.posY = (topVal).ToString();
+            moveComponent.layout.posX = ((int)leftVal).ToString();
+            moveComponent.layout.posY = ((int)topVal).ToString();
             int counterIn = 0;
             int counterOut = 0;
 
