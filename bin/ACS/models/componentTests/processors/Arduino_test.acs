@@ -33,6 +33,7 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="uniqueID" value="not used" />
         <property name="periodicADCUpdate" value="10" />
         <property name="pin2Mode" value="0" />
         <property name="pin3Mode" value="0" />
