@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-services.computervision
+Bundle-SymbolicName: eu.asterics.mw.computervision
+Bundle-Version: 0.1.0
+Bundle-ClassPath: .
+Export-Package: eu.asterics.mw.computervision
+Require-Bundle: org.bytedeco.javacv;bundle-version=0.10.0
+DynamicImport-Package: *
