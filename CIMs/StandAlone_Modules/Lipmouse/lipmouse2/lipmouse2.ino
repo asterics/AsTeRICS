@@ -5,10 +5,10 @@
 // live feedback of values in GUI
 // activate / deactivety mouse function in GUI during setup - DONE - button added
 // selectable threshold values and click types for sip and puff
-// store values in EEPROM, read on startup
+// store values in EEPROM, read on startup - in progress
 // later: sepcial keyboard mode (cursor left/rigth/up/down, enter, space
 
-
+#include <EEPROM.h>
 
 unsigned long previousTime = 0;
 float accumXpos = 0.f;
@@ -21,16 +21,21 @@ static int y_offset;
 
 static int calib_now = 1;
 
-int  deadzoneX = 20;
-int  deadzoneY = 20;
+int  deadzoneX = 30;
+int  deadzoneY = 30;
 
 int  sipThreshold = 500;
 int  puffThreshold = 530;
 int  clickState = 0;
 
-static int speedNum = 5;
+static int mouseSpeed = 10;
 static int mouseOn = 1;
+static  int speedNum ;
 
+static int eepromSpeedValue;
+static int eepromDeadzoneValue;
+
+static int isEEPROMChanged = 1;
 
 void setup()
 { 
@@ -68,37 +73,53 @@ void loop()
     {
       if (input[0] == 'm') // speed command
       {
-        speedNum = (input[1] - '0')*2;
+       
+        if (input[2] >= '0' && input[2] <= '9')
+        {
+          speedNum = ((input[1] - '0')*10) + (input[2] - '0'); 
+          
+          if (input[3] >= '0' && input[3] <= '9')
+          {
+            speedNum = (speedNum*10)+(input[3]- '0');
+          }
+        }
+        else
+        {
+          speedNum = input[1] - '0';
+        }
+        
+        mouseSpeed = (speedNum+2)/3; //the addition of 2 prevents it from rounding to 0
       }
       else if (input[0] == 'd') // deadzone command
       {
         deadzoneX = (input[1] - '0')*15;
         deadzoneY = (input[1] - '0')*15;
       }
+      else if (input[0] == 's') //save to EEPROM
+        {
+           EEPROM.write(3,mouseSpeed); 
+           EEPROM.write(2,deadzoneX);
+           isEEPROMChanged = 1;
+        }
       else if (input[0] == 'c') //calibration command
       {
         calib_now = 1;
       }
       else if (input[0] == 'o') // turn on/off command
       {
-        if (input[1] == 'n')
-        {
-          mouseOn = 1;
-            Serial.print("on");
-        }
-        else if (input[1] == 'f')
-        {
-           mouseOn = 0;
-           Serial.print("off");
-        }
+        if (input[1] == 'n')   mouseOn = 1;
+        else if (input[1] == 'f') mouseOn = 0;
+      }
+      else if (input[0] == 'a') //send mouse properties
+      {
+       Serial.print("speed");
+       Serial.print(((mouseSpeed/3)-2)); 
       }
 
       input[i] = '\0';
       i = 0;
       }
   }
-
-
 
   int pressure = analogRead(A0);
   int down = analogRead(42);
@@ -117,21 +138,30 @@ void loop()
       x = (left-right) - x_offset;
       y = (up-down) - y_offset;
   }
+  
+if (abs(x)< deadzoneX) x=0;
+if (abs(y)< deadzoneY) y=0;
 
-  if (abs(x)< deadzoneX) x=0;
-  if (abs(y)< deadzoneY) y=0;
+eepromSpeedValue = EEPROM.read(3);
+eepromDeadzoneValue = EEPROM.read(2);
 
-if (mouseOn== 1)
+if (eepromSpeedValue << 255 && isEEPROMChanged == 1 ) //if EEPROM address has been altered by saving settings
 {
-  accumYpos += y*speedNum*timeDifference; 
-  accumXpos += x*speedNum*timeDifference; 
+  mouseSpeed = eepromSpeedValue;
+  deadzoneX = eepromDeadzoneValue;
+  deadzoneY = eepromDeadzoneValue;
+  isEEPROMChanged = 0;
+}
+
+if (mouseOn == 1)
+{
+  accumYpos += y*mouseSpeed*timeDifference; 
+  accumXpos += x*mouseSpeed*timeDifference; 
 
   int xMove = (int)accumXpos;
   int yMove = (int)accumYpos;
 
-
   Mouse.move(xMove, yMove);
-  
 
   accumXpos -= xMove;
   accumYpos -= yMove;
@@ -162,10 +192,6 @@ if (mouseOn== 1)
    Serial.println("");
    delay (100);
 */
-   Serial.print("      x: ");
-   Serial.print(x);
-   Serial.print("      y: ");
-   Serial.print(y);
 
 
 }
