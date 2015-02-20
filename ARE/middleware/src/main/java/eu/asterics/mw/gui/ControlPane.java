@@ -71,6 +71,7 @@ import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsThreadPool;
 
 
 public class ControlPane extends JPanel 
@@ -317,12 +318,24 @@ public class ControlPane extends JPanel
 		
 		deployLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				astericsGUI.fileChooser (as);
-				try {
-					as.runModel();
-				} catch (AREAsapiException e) {	}
-				mainFrame.validate();
-				System.out.println ("Run/resume model OK!");
+				final String selectedModelFile=astericsGUI.fileChooser(as);
+				
+				//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
+				//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread
+				AstericsThreadPool.instance.execute(new Runnable() {
+					public void run() {
+						try {
+							//If a new model was selected, deploy it.
+							if(selectedModelFile!=null) {
+								as.deployFile(selectedModelFile);
+							}
+							//Also, if no model was selected, restart old one.
+							as.runModel();
+						} catch (AREAsapiException e) {	}
+						mainFrame.validate();
+						System.out.println ("Run/resume model OK!");
+					}
+				});
 			}
 			public void mouseEntered(MouseEvent e) {	
 				
@@ -340,14 +353,19 @@ public class ControlPane extends JPanel
 
 		startLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				try {
-					as.runModel();
-				} catch (AREAsapiException e) {
+				//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
+				//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread
+				AstericsThreadPool.instance.execute(new Runnable() {
+					public void run() {
+						try {
+							as.runModel();
+						} catch (AREAsapiException e) {
+						}
+						mainFrame.validate();
+						System.out.println ("Run/resume model OK!");
+					}
+				});
 
-					//e.printStackTrace();
-				}
-				mainFrame.validate();
-				System.out.println ("Run/resume model OK!");
 			}
 			public void mouseEntered(MouseEvent e) {				
 				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -364,12 +382,16 @@ public class ControlPane extends JPanel
 
 		stopLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				try {
-					as.stopModel();
-				} catch (AREAsapiException e) {
-
-					//e.printStackTrace();
-				}
+				//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
+				//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread				
+				AstericsThreadPool.instance.execute(new Runnable() {
+					public void run() {
+						try {
+							as.stopModel();
+						} catch (AREAsapiException e) {
+						}
+					}
+				});
 			}
 			public void mouseEntered(MouseEvent e) {				
 				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -384,13 +406,17 @@ public class ControlPane extends JPanel
 		});
 
 		pauseLabel.addMouseListener(new MouseAdapter() {
+			//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
+			//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread			
 			public void mouseClicked(MouseEvent me) {
-				try {
-					as.pauseModel();
-				} catch (AREAsapiException e) {
-
-					//e.printStackTrace();
-				}
+				AstericsThreadPool.instance.execute(new Runnable() {
+					public void run() {
+						try {
+							as.pauseModel();
+						} catch (AREAsapiException e) {
+						}
+					}
+				});
 			}
 			public void mouseEntered(MouseEvent e) {				
 				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

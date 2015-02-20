@@ -506,8 +506,9 @@ public class AstericsGUI implements IAREEventListener
 	}
 
 
-	void fileChooser (AsapiSupport as)
+	String fileChooser (final AsapiSupport as)
 	{
+		String selectedModelFile=null;
 		//Should only be invoked by a gui action (mouse click) and hence no check for EventDispatchThread necessary.
 		fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -524,7 +525,7 @@ public class AstericsGUI implements IAREEventListener
 		//Process the results.
 		if (returnVal == JFileChooser.APPROVE_OPTION)
 		{
-			File file = fc.getSelectedFile();
+			final File file = fc.getSelectedFile();
 			String fileName = file.getName();
 			int mid= fileName.lastIndexOf(".");
 			String extension=fileName.substring(mid+1,fileName.length());  
@@ -534,15 +535,18 @@ public class AstericsGUI implements IAREEventListener
 				if (extension.equals("xml") ||
 						extension.equals("acs") ) 
 				{
-					try 
-					{
-						as.deployFile(file.getAbsolutePath());
-						//as.runModel();
-					} 
-					catch (AREAsapiException e) 
-					{
-						//e.printStackTrace();
-					}
+					selectedModelFile=file.getAbsolutePath();
+					/*
+							try 
+							{
+								as.deployFile(file.getAbsolutePath());
+								//as.runModel();
+							} 
+							catch (AREAsapiException e) 
+							{
+								AstericsErrorHandling.instance.reportError(null, e.getMessage());
+							}
+							*/
 				} 
 				else 
 				{
@@ -558,6 +562,7 @@ public class AstericsGUI implements IAREEventListener
 
 		//Reset the file chooser for the next time it's shown.
 		fc.setSelectedFile(null);
+		return selectedModelFile;
 	}
 	
 	
