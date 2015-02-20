@@ -51,7 +51,7 @@ public class SharedFrameGrabber {
 			try{
 				//default try to load videoInput
 				grabber = FrameGrabber.create(FrameGrabber.list.get(5),0);
-			}catch(Exception e) {
+			}catch(Throwable e) {
 				//if videoInput fails, try to load OpenCV
 				grabber = FrameGrabber.create(FrameGrabber.list.get(6),0);				
 			}
