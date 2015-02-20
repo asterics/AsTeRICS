@@ -2,6 +2,8 @@ package eu.asterics.mw.computervision;
 
 import java.util.*;
 
+import javax.swing.SwingUtilities;
+
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.CanvasFrame;
 
@@ -20,8 +22,7 @@ public class SharedCanvasFrame {
 	public CanvasFrame createCanvasFrame(String canvasKey, String title, double gammaOfGrabber) {
 		if(key2canvasFrame.containsKey(canvasKey)) {
 			AstericsErrorHandling.instance.getLogger().fine("Removing existing CanvasFrame with key <"+canvasKey+">");
-			CanvasFrame frame=key2canvasFrame.get(canvasKey);
-			frame.dispose();
+			disposeFrame(canvasKey);			
 			key2canvasFrame.remove(canvasKey);
 		}
  		
@@ -37,11 +38,31 @@ public class SharedCanvasFrame {
 		return key2canvasFrame.get(canvasKey);
 	}
 	
-	public void showImage(String canvasKey, IplImage image) {
-		getCanvasFrame(canvasKey).showImage(image);
+	public void showImage(String canvasKey,final IplImage image) {
+		final CanvasFrame frame=getCanvasFrame(canvasKey);
+		if(frame!=null) {
+			//invoke in Event Dispatch Thread, because of Swing
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					frame.showImage(image);					
+				}
+			});
+		}
 	}
 	
-	public void disposeFrame(String canvasKey) {
-		getCanvasFrame(canvasKey).dispose();
+	public void disposeFrame(final String canvasKey) {
+		//Invoke the disposal in the event dispatch thread to resolve a potential deadlock if the dispose is actually called from an ARE GUI action. 
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				CanvasFrame frame=getCanvasFrame(canvasKey);
+				if(frame!=null) {
+					getCanvasFrame(canvasKey).dispose();
+				}
+			}
+		});
+
 	}
 }
