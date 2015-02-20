@@ -42,12 +42,12 @@ public class SharedCanvasFrame {
 		final CanvasFrame frame=getCanvasFrame(canvasKey);
 		if(frame!=null) {
 			//invoke in Event Dispatch Thread, because of Swing
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
+//			SwingUtilities.invokeLater(new Runnable() {
+//				@Override
+//				public void run() {
 					frame.showImage(image);					
-				}
-			});
+//				}
+//			});
 		}
 	}
 	
