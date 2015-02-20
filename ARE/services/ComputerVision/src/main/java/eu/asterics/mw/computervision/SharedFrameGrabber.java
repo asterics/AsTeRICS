@@ -22,7 +22,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class SharedFrameGrabber {
 	public static SharedFrameGrabber instance=new SharedFrameGrabber();
 	
-	private FrameGrabber grabber=null;
+	
 	private Map<String,FrameGrabber> device2FrameGrabber=new HashMap<String,FrameGrabber>();
 	private Map<String, List<GrabbedImageListener>> listeners=new HashMap<String, List<GrabbedImageListener>>(); 
 	private Map<String, GrabberThread> grabberThreads=new HashMap<String, GrabberThread>();
@@ -32,6 +32,7 @@ public class SharedFrameGrabber {
 		init(-1,"0",320,240);
 	}
 	private void init(int frameGrabberIdx, String deviceKey, int userWidth, int userHeight) throws Exception {
+		FrameGrabber grabber=null;
 		
 		if(device2FrameGrabber.containsKey(deviceKey)) {
 			AstericsErrorHandling.instance.getLogger().fine("Removing old FrameGrabber with key <"+deviceKey+">");
@@ -46,7 +47,14 @@ public class SharedFrameGrabber {
 		int camIdx=Integer.parseInt(deviceKey);
 		if(frameGrabberIdx == -1) {
 			System.out.println("Creating default FrameGrabber");
-			grabber=FrameGrabber.createDefault(camIdx);
+			//grabber=FrameGrabber.createDefault(camIdx);
+			try{
+				//default try to load videoInput
+				grabber = FrameGrabber.create(FrameGrabber.list.get(5),0);
+			}catch(Exception e) {
+				//if videoInput fails, try to load OpenCV
+				grabber = FrameGrabber.create(FrameGrabber.list.get(6),0);				
+			}
 		} else {
 	        System.out.println("List of grabbers (indices): "+FrameGrabber.list);
 	        System.out.println("Using grabber: "+FrameGrabber.list.get(frameGrabberIdx)+", and camIdx: "+camIdx);
@@ -64,7 +72,7 @@ public class SharedFrameGrabber {
         
 		AstericsErrorHandling.instance.getLogger().fine("Adding FrameGrabber with key <"+deviceKey+">");
         device2FrameGrabber.put(deviceKey, grabber);
-        grabber.start();		
+        grabber.start();		       
 	}
 	
 	public List<String> getDeviceStrings() {
@@ -98,6 +106,20 @@ public class SharedFrameGrabber {
 		List<GrabbedImageListener> deviceListeners=listeners.get(deviceKey);
 		if(deviceListeners!=null) {
 			deviceListeners.remove(listener);
+		}
+		if(deviceListeners==null || (deviceListeners!= null && deviceListeners.isEmpty())) {
+			//if there are no listeners, stop and remove grabber again.
+			stopGrabbing(deviceKey);
+			FrameGrabber grabber=device2FrameGrabber.get(deviceKey);
+			if(grabber!=null) {
+				try {
+					grabber.release();
+					device2FrameGrabber.remove(deviceKey);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		System.out.println("After deregistering: Registered grabbing listeners: "+deviceListeners);
 	}
