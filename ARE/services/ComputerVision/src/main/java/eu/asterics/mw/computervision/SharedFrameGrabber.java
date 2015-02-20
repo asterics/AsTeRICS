@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 import org.bytedeco.javacpp.opencv_core.*;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.FrameGrabber.Exception;
+import org.bytedeco.javacv.OpenCVFrameGrabber;
+import org.bytedeco.javacv.VideoInputFrameGrabber;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 
@@ -50,10 +52,14 @@ public class SharedFrameGrabber {
 			//grabber=FrameGrabber.createDefault(camIdx);
 			try{
 				//default try to load videoInput
-				grabber = FrameGrabber.create(FrameGrabber.list.get(5),0);
+				VideoInputFrameGrabber.tryLoad();
+				grabber=VideoInputFrameGrabber.createDefault(0);
+				//grabber = FrameGrabber.create(FrameGrabber.list.get(5),0);
 			}catch(Throwable e) {
 				//if videoInput fails, try to load OpenCV
-				grabber = FrameGrabber.create(FrameGrabber.list.get(6),0);				
+				//grabber = FrameGrabber.create(FrameGrabber.list.get(6),0);	
+				OpenCVFrameGrabber.tryLoad();
+				grabber=OpenCVFrameGrabber.createDefault(0);
 			}
 		} else {
 	        System.out.println("List of grabbers (indices): "+FrameGrabber.list);
