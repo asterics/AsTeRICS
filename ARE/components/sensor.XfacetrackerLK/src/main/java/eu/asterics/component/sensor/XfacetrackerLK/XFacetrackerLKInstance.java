@@ -226,7 +226,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			SharedCanvasFrame.instance.createCanvasFrame("CanvasFrame1", "Face", grabber.getGamma());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
         super.start();
     }
@@ -247,13 +247,13 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     @Override
     public void stop()
     {
-    	System.out.println("Stopping XFaceTrackerLK, Executed in: "+Thread.currentThread());
+    	//System.out.println("Stopping XFaceTrackerLK, Executed in: "+Thread.currentThread().getName());
     	
     	SharedFrameGrabber.instance.stopGrabbing("0");
     	SharedFrameGrabber.instance.deregisterGrabbedImageListener("0", this);
     	SharedCanvasFrame.instance.disposeFrame("CanvasFrame1");
     	super.stop();
-    	System.out.println("Stopped XFaceTrackerLK, Executed in: "+Thread.currentThread());
+    	//System.out.println("Stopped XFaceTrackerLK, Executed in: "+Thread.currentThread().getName());
     }
 
     /**
