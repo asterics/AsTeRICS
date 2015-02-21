@@ -67,6 +67,10 @@
                 value="11"
                 combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
                 description="background color"/> 
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
         </properties>
 		<gui>
 			<width>3000</width>

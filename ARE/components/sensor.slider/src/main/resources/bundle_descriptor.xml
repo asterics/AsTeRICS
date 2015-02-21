@@ -76,6 +76,10 @@
                       type="boolean"
                       value="false"
                       description="if enabled, the current slider value will be stored and reloaded when model starts next time"/>				
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
 				
         </properties>
         <gui>

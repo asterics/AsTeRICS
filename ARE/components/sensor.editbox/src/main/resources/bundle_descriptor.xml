@@ -51,6 +51,10 @@
                 type="boolean"
                 value="0"
                 description="defines if the initial value should be sent at model startup"/>
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
 
         </properties>
 		<gui>

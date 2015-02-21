@@ -29,6 +29,7 @@ package eu.asterics.component.actuator.imagebox;
 
 
 import java.util.logging.Logger;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -67,6 +68,7 @@ public class ImageBoxInstance extends AbstractRuntimeComponentInstance
 	String propCaption = "Image Box";
 	String propDefault = "";
 	int propBackgroundColor =  11;
+    public boolean propDisplayGUI=true;
 
 	// declare member variables here
 	private  GUI gui = null;
@@ -170,6 +172,10 @@ public class ImageBoxInstance extends AbstractRuntimeComponentInstance
 		{
 			return propBackgroundColor;
 		}
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            return propDisplayGUI;
+        }
 		
 
         return null;
@@ -204,6 +210,20 @@ public class ImageBoxInstance extends AbstractRuntimeComponentInstance
 			}
 			return oldValue;
 		}
+	   	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propDisplayGUI;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
 		
 
         return null;
@@ -238,7 +258,7 @@ public class ImageBoxInstance extends AbstractRuntimeComponentInstance
       public void start()
       {
     	  gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
-		  AREServices.instance.displayPanel(gui, this, true);
+    	  if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
           super.start();
       }
 

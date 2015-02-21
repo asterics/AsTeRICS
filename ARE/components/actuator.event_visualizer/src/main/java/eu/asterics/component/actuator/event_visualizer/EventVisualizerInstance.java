@@ -43,6 +43,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class EventVisualizerInstance extends AbstractRuntimeComponentInstance
 {
     private VisualizerGUI visualizerGUI = null; 
+    public boolean propDisplayGUI=true;
 
     
     public EventVisualizerInstance()
@@ -53,12 +54,30 @@ public class EventVisualizerInstance extends AbstractRuntimeComponentInstance
     @Override
     public Object getRuntimePropertyValue(String propertyName)
     {
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            return propDisplayGUI;
+        }
         return null;
     }
 
     @Override
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propDisplayGUI;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
         return null;
     }
     
@@ -100,7 +119,7 @@ public class EventVisualizerInstance extends AbstractRuntimeComponentInstance
     {
 
     	visualizerGUI = new VisualizerGUI(this,AREServices.instance.getAvailableSpace(this));
-        AREServices.instance.displayPanel(visualizerGUI, this, true);
+    	if (propDisplayGUI) AREServices.instance.displayPanel(visualizerGUI, this, true);
     	super.start();
         
     }

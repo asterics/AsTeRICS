@@ -245,6 +245,10 @@
 				value=""
 				getStringList="true"
 				description="Name of keyboard file (in data/cellBoardKeyboards) to load at startup."/>
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
 			<property name="cellText1"
 				type="string"
 				value=""

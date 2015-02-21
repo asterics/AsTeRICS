@@ -88,6 +88,10 @@
                       type="string"
                       value="dotMeter"
                       description="caption of the meter"/>                                                       
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
         </properties>
         <gui>
             <width>3000</width>

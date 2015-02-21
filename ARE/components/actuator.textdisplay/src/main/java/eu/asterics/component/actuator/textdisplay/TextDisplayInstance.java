@@ -31,6 +31,7 @@ package eu.asterics.component.actuator.textdisplay;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Logger;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -75,6 +76,7 @@ public class TextDisplayInstance extends AbstractRuntimeComponentInstance
 	int propTextPosition=1;
 	int propTextColor=0;
 	int propBackgroundColor=11;
+    public boolean propDisplayGUI=true;
 	
 	final IRuntimeEventTriggererPort etpClicked = new DefaultRuntimeEventTriggererPort();
 	
@@ -191,6 +193,10 @@ public class TextDisplayInstance extends AbstractRuntimeComponentInstance
 		{
 			return propBackgroundColor;
 		}
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            return propDisplayGUI;
+        }
 
         return null;
     }
@@ -244,6 +250,20 @@ public class TextDisplayInstance extends AbstractRuntimeComponentInstance
 			}
 			return oldValue;
 		}
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propDisplayGUI;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
 
         return null;
     }
@@ -273,7 +293,7 @@ public class TextDisplayInstance extends AbstractRuntimeComponentInstance
       public void start()
       {
 			gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
-			AREServices.instance.displayPanel(gui, this, true);
+			if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
 			guiReady=true;
           super.start();
       }

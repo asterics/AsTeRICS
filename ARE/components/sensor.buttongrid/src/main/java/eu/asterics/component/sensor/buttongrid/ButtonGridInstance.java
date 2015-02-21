@@ -69,6 +69,7 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
   public int propBorderThickness=2;
   public int propSelectionFrameColor=13;
   public int propSelectionFrameThickness=4;
+  public boolean propDisplayGUI=true;
 
   private String [] propKeyCaptionArray = new String[NUMBER_OF_KEYS];
   private String [] propToolTipArray = new String[NUMBER_OF_KEYS];
@@ -159,6 +160,10 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
     {
       return propSelectionFrameThickness;      		
     }
+    else if("displayGUI".equalsIgnoreCase(propertyName))
+    {
+        return propDisplayGUI;
+    }
     else
     {
     	for (int i=1;i<=NUMBER_OF_KEYS;i++)
@@ -237,7 +242,21 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
 		propSelectionFrameThickness = Integer.parseInt(newValue.toString());
 		return oldValue;
     }    
-    else
+    else if("displayGUI".equalsIgnoreCase(propertyName))
+    {
+        final Object oldValue = propDisplayGUI;
+
+        if("true".equalsIgnoreCase((String)newValue))
+        {
+        	propDisplayGUI = true;
+        }
+        else if("false".equalsIgnoreCase((String)newValue))
+        {
+        	propDisplayGUI = false;
+        }
+        return oldValue;
+    }    	
+	else
     {
     	
     	for (int i=1;i<=NUMBER_OF_KEYS;i++)
@@ -337,7 +356,7 @@ public class ButtonGridInstance extends AbstractRuntimeComponentInstance
   public void start()
   {
     gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
-    AREServices.instance.displayPanel(gui, this, true);
+    if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
     super.start();
   }
 

@@ -64,7 +64,12 @@
             <property name="caption"
                       type="string"
                       value="oscilloscope"
-                      description="caption of the oscilloscope"/>                                                       
+                      description="caption of the oscilloscope"/>
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
+            
         </properties>
         <gui>
             <width>6000</width>

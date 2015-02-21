@@ -70,6 +70,10 @@
                       type="string"
                       value="seven"
                       description="if recognized, event7 will be triggered"/>
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
         </properties>
     </componentType>
 

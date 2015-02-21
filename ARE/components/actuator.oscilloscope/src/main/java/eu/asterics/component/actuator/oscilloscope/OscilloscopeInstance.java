@@ -71,6 +71,8 @@ public class OscilloscopeInstance extends AbstractRuntimeComponentInstance
     public int propBackgroundColor =11;
     public int propFontSize =14; 
     public String propCaption="oscilloscope";
+    public boolean propDisplayGUI=true;
+
     
     private  GUI gui = null;
     
@@ -158,6 +160,10 @@ public class OscilloscopeInstance extends AbstractRuntimeComponentInstance
         {
             return propCaption;
         }        
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            return propDisplayGUI;
+        }
 
         return null;
     }
@@ -235,6 +241,20 @@ public class OscilloscopeInstance extends AbstractRuntimeComponentInstance
             propCaption = newValue.toString();
             return oldValue;
         }
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propDisplayGUI;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
 
         return null;
     }
@@ -263,7 +283,7 @@ public class OscilloscopeInstance extends AbstractRuntimeComponentInstance
     {
     	int id=1;    	
       	gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
-        AREServices.instance.displayPanel(gui, this, true);
+      	if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
         active=1;
         
         if ((threadStarted==false) && (propDisplayMode==DISPLAYMODE_PERIODIC))

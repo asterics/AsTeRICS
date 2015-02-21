@@ -33,7 +33,9 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+
 import java.util.StringTokenizer;
+
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
@@ -57,6 +59,7 @@ public class TextfieldreaderInstance extends AbstractRuntimeComponentInstance
 
 	private int wordcnt_old=0;
 	private String act_string="";
+    public boolean propDisplayGUI=true;
 
 	private final GUI gui = new GUI(this);
 	private String[] commands = {"one","two","three","four","five","six","seven"};
@@ -110,6 +113,11 @@ public class TextfieldreaderInstance extends AbstractRuntimeComponentInstance
 	 */
 	public Object getRuntimePropertyValue(String propertyName)
 	{
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            return propDisplayGUI;
+        }
+    	else
 		for (int i = 0; i < NUMBER_OF_COMMANDS; i++)
 		{
 			String s = KEY_PROPERTY_COMMAND + (i + 1);
@@ -128,6 +136,21 @@ public class TextfieldreaderInstance extends AbstractRuntimeComponentInstance
 	 */
 	public Object setRuntimePropertyValue(String propertyName, Object newValue)
 	{
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propDisplayGUI;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
+    	else
 		for (int i = 0; i < NUMBER_OF_COMMANDS; i++)
 		{
 			String s = KEY_PROPERTY_COMMAND + (i + 1);
@@ -238,7 +261,7 @@ public class TextfieldreaderInstance extends AbstractRuntimeComponentInstance
 	@Override
 	public void start()
 	{
-		gui.setVisible(true);
+		if (propDisplayGUI) gui.setVisible(true);
 		super.start();
 	}
 

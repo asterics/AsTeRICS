@@ -67,6 +67,10 @@
                       type="string"
                       value="bar-graph"
                       description="caption of the bar graph"/>                                                       
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
         </properties>
         <gui>
             <width>1000</width>

@@ -32,7 +32,6 @@ import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.services.AREServices;
  
@@ -68,7 +67,8 @@ public class DotmeterInstance extends AbstractRuntimeComponentInstance
     public int propBackgroundColor =11;
     public int propFontSize =14; 
     public String propCaption="dotMeter";
-    
+    public boolean propDisplayGUI=true;
+
   
     private  GUI gui = null;
     
@@ -173,6 +173,10 @@ public class DotmeterInstance extends AbstractRuntimeComponentInstance
         {
             return propCaption;
         }        
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            return propDisplayGUI;
+        }
         return null;
     }
     
@@ -314,6 +318,20 @@ public class DotmeterInstance extends AbstractRuntimeComponentInstance
             propCaption = newValue.toString();
             return oldValue;
         }
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propDisplayGUI;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
         return null;
     }
 
@@ -400,7 +418,7 @@ public class DotmeterInstance extends AbstractRuntimeComponentInstance
     	inputY=(propYMin+propYMax)/2;
     	
       	gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
-        AREServices.instance.displayPanel(gui, this, true);
+      	if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
         gui.updateInput(inputX,inputY);
          
     	active=1;

@@ -77,6 +77,7 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 	public int propAlignment = 0;
 	public boolean propAutosend = true;
 	public boolean propStoreValue = false;
+    public boolean propDisplayGUI=true;
 	
 	public File runtimeStorageFile = null;
 
@@ -203,6 +204,10 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
         {
             return propStoreValue;
         }
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            return propDisplayGUI;
+        }
 		return null;
 	}
 
@@ -296,6 +301,20 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
             propFontSize = Integer.parseInt(newValue.toString());
             return oldValue;
         }
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propDisplayGUI;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
 		return null;
 	}
 
@@ -350,7 +369,7 @@ public class SliderInstance extends AbstractRuntimeComponentInstance
 		initialSliderValue = propDefault;
 		
 		gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
-		AREServices.instance.displayPanel(gui, this, true);
+		if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
 		
 		if (propStoreValue==true)
 		{

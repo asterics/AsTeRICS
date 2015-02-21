@@ -29,6 +29,7 @@ package eu.asterics.component.sensor.editbox;
 
 
 import java.util.logging.Logger;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -72,6 +73,7 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
 	int propBackgroundColor=11;
 	int propInsertAction=0;
 	boolean propSendDefaultValue = false;
+    public boolean propDisplayGUI=true;
 	
 	// declare member variables here
 	private  GUI gui = null;
@@ -208,6 +210,10 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
 		{
 			return propSendDefaultValue;
 		}
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            return propDisplayGUI;
+        }
 
         return null;
     }
@@ -267,7 +273,22 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
 			propSendDefaultValue = Boolean.parseBoolean((String) newValue);
 			return oldValue;
 		}
-        return null;
+    	if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propDisplayGUI;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
+
+		return null;
     }
 
     /**
@@ -297,7 +318,7 @@ public class EditBoxInstance extends AbstractRuntimeComponentInstance
       public void start()
       {
 			gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
-			AREServices.instance.displayPanel(gui, this, true);
+			if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
 			guiReady=true;
 			if (propSendDefaultValue) 
 			{

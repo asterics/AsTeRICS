@@ -53,6 +53,7 @@ public class GUI extends JPanel
     public int selectedNote;
     private final MidiInstance owner;
 
+    String[] noteNames= {"A","A#","B","C","C#","D","D#","E","F","F#","G","G#"};
 
     /**
      * The class constructor, initializes the GUI
@@ -146,8 +147,33 @@ public class GUI extends JPanel
         
         for(int i = 0; i <= owner.amountOfNotes-1; i++)
         {
-            g2d.setPaint(Color.BLACK);
-            g2d.fill (new Ellipse2D.Double(xEllipse + ellipseWidth*i, yEllipse, ellipseWidth, ellipseHeight)); 
+	          //   g2d.setPaint(Color.BLACK);
+	          //   g2d.fill (new Ellipse2D.Double(xEllipse + ellipseWidth*i, yEllipse, ellipseWidth, ellipseHeight)); 
+	          g2d.setPaint(Color.WHITE);
+	          //   g2d.fill (new Ellipse2D.Double(xEllipse + ellipseWidth*i, yEllipse, ellipseWidth, ellipseHeight)); 
+	 
+	          g2d.setPaint(Color.BLACK);
+	          g2d.drawRect((int)(xEllipse + ellipseWidth*i), (int)yEllipse, (int)ellipseWidth, (int)ellipseHeight);
+	          
+	          int note=owner.scale.noteNumberArray[i];
+	          int noteNameIndex=note % 12;
+	          String noteName=Integer.toString(note);
+	          
+	          if (noteNameIndex < noteNames.length)
+	          { 
+	        	  noteName=noteNames[noteNameIndex];
+	        	  noteName+= ((int)(note / 12)+1);
+	          }
+	     
+	          if (noteName.contains("#"))
+		          g2d.setPaint(Color.GRAY);
+	          else
+	        	  g2d.setPaint(Color.WHITE);
+	          
+	          g2d.fill(new Rectangle2D.Double(xEllipse + ellipseWidth*i+1, yEllipse+1, ellipseWidth-2, ellipseHeight-2));
+
+	          g2d.setPaint(Color.RED);
+		      g2d.drawString(noteName,(int)(xEllipse + ellipseWidth*i), (int)yEllipse);        
         }
         
         g2d.setPaint(Color.BLACK);
@@ -156,8 +182,12 @@ public class GUI extends JPanel
         g2d.setPaint(Color.RED);
         g2d.fill(new Rectangle2D.Double(xRect + getXLocation() - rectWidth/200, yRect, rectWidth/100, rectHeight));
         
+        //  g2d.setPaint(Color.GREEN);
+        //  g2d.fill (new Ellipse2D.Double(xEllipse + ellipseWidth*owner.selectedNote, yEllipse, ellipseWidth, ellipseHeight));
         g2d.setPaint(Color.GREEN);
-        g2d.fill (new Ellipse2D.Double(xEllipse + ellipseWidth*owner.selectedNote, yEllipse, ellipseWidth, ellipseHeight));
+        //  g2d.fill (new Ellipse2D.Double(xEllipse + ellipseWidth*owner.selectedNote, yEllipse, ellipseWidth, ellipseHeight));
+        g2d.fill(new Rectangle2D.Double(xEllipse + ellipseWidth*owner.selectedNote, yEllipse, ellipseWidth, ellipseHeight));
+      
 	}
 	
 	public double getXLocation()

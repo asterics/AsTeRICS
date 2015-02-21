@@ -50,6 +50,7 @@ import org.xml.sax.SAXException;
 
 
 
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -141,7 +142,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	public boolean propEnableClickSelection = true;
 	public String propCaption="Cell Board";
 	public String propKeyboardFile="";
-	
+    public boolean propDisplayGUI=true;
+
 	final EventPort [] etpCellArray = new EventPort[NUMBER_OF_CELLS];
 	private String [] propCellCaptionArray = new String[NUMBER_OF_CELLS];
 	private String [] propCellTextArray = new String[NUMBER_OF_CELLS];
@@ -431,7 +433,11 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		else if (PROP_KEYBOARD_FILE.equalsIgnoreCase(propertyName))
 		{
 			return propKeyboardFile;
-		}    	
+		} 
+		else if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            return propDisplayGUI;
+        }
 		else 
 		{
 			int propCellTextSize=PROP_CELL_TEXT.length();
@@ -668,7 +674,20 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			xmlFile=propKeyboardFile;
 			return oldValue;
 		}
-    	
+		else if("displayGUI".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propDisplayGUI;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
 		else 
 		{
 			int propCellTextSize=PROP_CELL_TEXT.length();
@@ -1168,7 +1187,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
       {
     	  space = AREServices.instance.getAvailableSpace(this);
     	  gui = new GUI(this,space);
-		  AREServices.instance.displayPanel(gui, this, true);
+    	  if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
 		  if(xmlFile!=null && !"".equals(xmlFile)) {
 			  loadXmlFile();			  
 		  } else {

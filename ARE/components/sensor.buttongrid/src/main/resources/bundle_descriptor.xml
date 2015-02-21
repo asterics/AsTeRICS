@@ -108,6 +108,10 @@
 				type="integer"
 				value="4"
 				description="Thickness of the selection frame (active when hovering over the button)"/>
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>
 
             <property name="buttonCaption1"
                       type="string"
