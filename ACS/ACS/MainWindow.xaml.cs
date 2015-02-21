@@ -207,9 +207,9 @@ namespace Asterics.ACS {
         private const int TOOLTIP_SHOW_DURATION = 10000;
         
         //Constants for displayGui
-        private const string PROP_DISPLAYGUI = "displayGUI";
-        private const string TRUE_STRING = "True";
-        private const string FALSE_STRING = "False";
+        private const string PROP_DISPLAYGUI = "displaygui";
+        private const string TRUE_STRING = "true";
+        private const string FALSE_STRING = "false";
         
         private String activeBundle = "default";
 
