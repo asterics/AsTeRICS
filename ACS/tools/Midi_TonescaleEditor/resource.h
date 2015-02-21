@@ -29,6 +29,8 @@
 #define IDC_TONEBAR                     1159
 #define IDC_MIDIPORTCOMBO               1160
 #define IDC_MIDIINSTCOMBO               1161
+#define IDC_ACTTONE2                    1162
+#define IDC_ACTTONETEXT                 1162
 #define IDC_SCROLLBAR1                  1163
 #define IDM_PROCESS                     32771
 #define IDM_ABHOL                       32773

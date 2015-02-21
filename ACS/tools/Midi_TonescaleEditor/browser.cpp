@@ -29,6 +29,9 @@ int midiports=0;
 
 char DEFPATH[]="..\\..\\data";
 
+char noteNames[12][10]= {"A","A#","B","C","C#","D","D#","E","F","F#","G","G#"};
+
+
 char midi_instnames[256][30]= {
 {"Acoustic Grand Piano"},
 {"Bright Acoustic Piano"},
@@ -410,8 +413,18 @@ void update_harmonic( HWND hCtrlWnd)
 	SendMessage(hCtrlWnd, LB_RESETCONTENT, 0, 0);
 	for (t=0;t<LOADSCALE.len;t++) 
 	{
-		wsprintf(szdata, "%d", LOADSCALE.tones[t]);
-		index=SendMessage(hCtrlWnd, LB_ADDSTRING, 0,(LPARAM) szdata);
+		int n=LOADSCALE.tones[t];
+		wsprintf(szdata, "%d", n);
+
+		int x=n % 12;
+		int y=(int)(n / 12)+1;
+		char str[20];
+		char numstr[10];
+		itoa(y,numstr,10);
+		strcpy (str,noteNames[x]);
+		strcat(str,numstr);
+
+		index=SendMessage(hCtrlWnd, LB_ADDSTRING, 0,(LPARAM) str);
 		SendMessage(hCtrlWnd, LB_SETITEMDATA, (WPARAM)index, (LPARAM)LOADSCALE.tones[t]);
 	}
 
@@ -456,7 +469,7 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 
 				lpsi.cbSize=sizeof(SCROLLINFO);
 				lpsi.fMask=SIF_RANGE|SIF_POS;
-				lpsi.nMin=1; lpsi.nMax=127;
+				lpsi.nMin=0; lpsi.nMax=127;
 				SetScrollInfo(GetDlgItem(hDlg,IDC_TONEBAR),SB_CTL,&lpsi,TRUE);
  			    SetScrollPos(GetDlgItem(hDlg, IDC_TONEBAR), SB_CTL, 64, 1);
 			    SetDlgItemInt(hDlg, IDC_ACTTONE, 64,0);
@@ -516,7 +529,7 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 					{
 					  select=SendDlgItemMessage( hDlg, IDC_HARMONICLIST, LB_GETCURSEL , 0, 0L )+1 ;
 					  if ((select<1)||(select>LOADSCALE.len)) select=LOADSCALE.len;
-					  GetDlgItemText(hDlg, IDC_ACTTONE, szdata, 4);
+					  GetDlgItemText(hDlg, IDC_ACTTONETEXT, szdata, 4);
 					  dataint=GetDlgItemInt(hDlg, IDC_ACTTONE, 0,0);
 					  index=SendDlgItemMessage( hDlg, IDC_HARMONICLIST, LB_INSERTSTRING , (WPARAM) select, (LPARAM) szdata) ;
 					  SendDlgItemMessage(hDlg, IDC_HARMONICLIST, LB_SETITEMDATA, (WPARAM)index, (LPARAM)dataint);
@@ -609,12 +622,22 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 			int nNewPos; 
 			if ((nNewPos=get_scrollpos(wParam,lParam))>=0)
 			{   
-			  if (lParam == (long) GetDlgItem(hDlg,IDC_TONEBAR))  { SetDlgItemInt(hDlg, IDC_ACTTONE,nNewPos,0);
-																	midi_NoteOff(&(MIDIPORTS[port].midiout), midichn,oldtone);
-																	oldtone=nNewPos;
-																	midi_NoteOn(&(MIDIPORTS[port].midiout), midichn,nNewPos,127);
-																	apply_harmonic(hDlg);
-																	}
+			  if (lParam == (long) GetDlgItem(hDlg,IDC_TONEBAR)) 
+			  { 
+				int x=nNewPos % 12;
+				int y=(int)(nNewPos / 12)+1;
+				char str[20];
+				char numstr[10];
+				itoa(y,numstr,10);
+				strcpy (str,noteNames[x]);
+				strcat(str,numstr);
+				SetDlgItemInt(hDlg, IDC_ACTTONE,nNewPos,0);
+				SetDlgItemText(hDlg, IDC_ACTTONETEXT, str);
+				midi_NoteOff(&(MIDIPORTS[port].midiout), midichn,oldtone);
+				oldtone=nNewPos;
+				midi_NoteOn(&(MIDIPORTS[port].midiout), midichn,nNewPos,127);
+				apply_harmonic(hDlg);
+				}
 			}
 		
 		}
