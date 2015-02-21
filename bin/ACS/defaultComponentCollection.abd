@@ -9,6 +9,9 @@
                 <description>Incoming events are displayed in the visualizer window</description>
             </eventListenerPort>
         </events>
+        <properties>
+                <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>        
+        </properties>
         <gui>
             <width>3000</width>
             <height>1000</height>
@@ -61,7 +64,9 @@
             <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="color of channel 1 signal" name="channelColor" type="integer" value="10"/> 
             <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="background color" name="backgroundColor" type="integer" value="11"/>                 
             <property description="font size of oscilloscope captions" name="fontSize" type="integer" value="14"/>
-            <property description="caption of the oscilloscope" name="caption" type="string" value="oscilloscope"/>                                                       
+            <property description="caption of the oscilloscope" name="caption" type="string" value="oscilloscope"/>
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
+            
         </properties>
         <gui>
             <width>6000</width>
@@ -147,6 +152,7 @@
 			<property description="Thickness of the button frame" name="borderThickness" type="integer" value="2"/>
 			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow//default" description="Color of the selection frame (active when hovering over the button)" name="selectionFrameColor" type="integer" value="13"/>
 			<property description="Thickness of the selection frame (active when hovering over the button)" name="selectionFrameThickness" type="integer" value="4"/>
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
 
             <property description="Caption of the button 1" name="buttonCaption1" type="string" value="Button 1"/>
             <property description="Caption of the button 2" name="buttonCaption2" type="string" value="Button 2"/>
@@ -236,6 +242,7 @@
 			<property combobox="horizontal//vertical" description="slider alignment" name="alignment" type="integer" value="0"/>
 			<property description="slider font size" name="fontSize" type="integer" value="14"/>
             <property description="if enabled, the current slider value will be stored and reloaded when model starts next time" name="storeValue" type="boolean" value="false"/>				
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
 				
         </properties>
         <gui>
@@ -487,6 +494,7 @@
 			<property description="if selected, Cells can be edited via right-click" name="enableEdit" type="boolean" value="true"/>
 			<property description="if selected, Cells can be selected via left mouse click even if a scanning mode is active" name="enableClickSelection" type="boolean" value="true"/>
 			<property description="Name of keyboard file (in data/cellBoardKeyboards) to load at startup." getStringList="true" name="keyboardFile" type="string" value=""/>
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
 			<property description="Text of cell 1" name="cellText1" type="string" value=""/>
 			<property description="Image of cell 1" name="cellImage1" type="string" value=""/>
 			<property description="Action text of cell 1" name="actionText1" type="string" value=""/>
@@ -628,6 +636,7 @@
 			<property combobox="left//center//right" description="Position of the text" name="textPosition" type="integer" value="1"/>
 			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="color of text" name="textColor" type="integer" value="0"/> 
             <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="background color" name="backgroundColor" type="integer" value="11"/> 
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
         </properties>
 		<gui>
 			<width>3000</width>
@@ -980,6 +989,7 @@
             <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="background color" name="backgroundColor" type="integer" value="11"/> 
             <property description="font size of bardisplay captions" name="fontSize" type="integer" value="14"/>
             <property description="caption of the bar graph" name="caption" type="string" value="bar-graph"/>                                                       
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
         </properties>
         <gui>
             <width>1000</width>
@@ -1241,6 +1251,7 @@
             <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="background color" name="backgroundColor" type="integer" value="11"/> 
             <property description="font size of dotmeter captions" name="fontSize" type="integer" value="14"/>
             <property description="caption of the meter" name="caption" type="string" value="dotMeter"/>                                                       
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
         </properties>
         <gui>
             <width>3000</width>
@@ -1868,6 +1879,7 @@
 			<property description="Caption of the component" name="caption" type="string" value="Image Box"/>
 			<property description="Default picture" name="default" type="string" value=""/>
 			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="Background color" name="backgroundColor" type="integer" value="11"/>
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
 
         </properties>
 		<gui>
@@ -3777,6 +3789,7 @@
 			<property description="the font size" name="fontSize" type="integer" value="14"/>
 			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="color of text" name="textColor" type="integer" value="0"/> 
             <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="background color" name="backgroundColor" type="integer" value="11"/> 
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
         </properties>
 		<gui>
 			<width>3000</width>
@@ -8048,6 +8061,89 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.processor.websocket.WebSocketInstance" id="asterics.WebSocket">
+        <type subtype="Web">processor</type>
+        <singleton>false</singleton>
+        <description>This plugin uses a websocket connection to send and read data</description>
+        <ports>
+			<inputPort id="InA">
+				<description>Double Input A</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="InB">
+				<description>Double Input B</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="InC">
+				<description>Integer Input D</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="InD">
+				<description>Integer Input D</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="InE">
+				<description>String Input D</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="InF">
+				<description>String Input F</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="OutA">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="OutB">
+				<description>output port description</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="OutC">
+				<description>output port description</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="OutD">
+				<description>output port description</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="OutE">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="OutF">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="event1">
+				<description>elp description</description>
+			</eventListenerPort>
+			<eventListenerPort id="reset">
+				<description>Clears buffers and resets websocket connection</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="reconnect">
+				<description>Reconnect to websockect</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property description="hostname or ip address to use for URL" name="host" type="string" value="localhost"/>
+			<property description="port number used for websocket" name="port" type="integer" value="8080"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.sensor.acceleration.AccelerationInstance" id="asterics.Acceleration">
         <type subtype="Inertial Measurement">sensor</type>
         <singleton>false</singleton>
@@ -8366,6 +8462,7 @@
             <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="background color" name="backgroundColor" type="integer" value="11"/> 
             <property combobox="do nothing//select text//remove text" description="defines behaviour of the component after text insert" name="insertAction" type="integer" value="0"/>
 			<property description="defines if the initial value should be sent at model startup" name="sendDefaultValue" type="boolean" value="0"/>
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
 
         </properties>
 		<gui>
@@ -9657,7 +9754,7 @@
 				<dataType>integer</dataType>
 			</outputPort>
 			<outputPort id="pressure">
-				<description>Presure value</description>
+				<description>Pressure value</description>
 				<dataType>integer</dataType>
 			</outputPort>
 
@@ -9667,12 +9764,40 @@
 				<description>For calibrating the mouse</description>
 			</eventListenerPort>
 
+			<eventTriggererPort id="sip">
+				<description>sip action performed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="longSip">
+				<description>long sip action performed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="puff">
+				<description>puff action performed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="longPuff">
+				<description>long puff action performed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button1Pressed">
+				<description>button1 has been pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button1Released">
+				<description>button1 has been released</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button2Pressed">
+				<description>button2 has been pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button2Released">
+				<description>button2 has been released</description>
+			</eventTriggererPort>
 
 		</events>			
         <properties>
             <property description="ID (if more than one devices of this kind are connected)" getStringList="true" name="uniqueID" type="string" value="not used"/>
         
 			<property description="Automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="50"/>
+			<property description="Threshold for a sip action" name="sipThreshold" type="integer" value="505"/>
+			<property description="time to select short/long sip action " name="sipTime" type="integer" value="700"/>
+			<property description="Threshold for a puff action" name="puffThreshold" type="integer" value="520"/>
+			<property description="time to select short/long puff action " name="puffTime" type="integer" value="700"/>
 
         </properties>
 
@@ -10672,6 +10797,7 @@
             <property description="if recognized, event5 will be triggered" name="command5" type="string" value="five"/>
             <property description="if recognized, event6 will be triggered" name="command6" type="string" value="six"/>
             <property description="if recognized, event7 will be triggered" name="command7" type="string" value="seven"/>
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
         </properties>
     </componentType>
 
@@ -10895,5 +11021,52 @@
             <property description="the update period for getting new values from the WiiMote device (in milliseconds)" name="updatePeriod" type="integer" value="5"/>	
         </properties>
     </componentType>
+
+ <componentType canonical_name="eu.asterics.component.sensor.XfacetrackerLK.XFacetrackerLKInstance" id="asterics.XFacetrackerLK">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>false</singleton>
+        <description>X-platform webcamera-based face tracking sensor</description>
+        <ports>
+            <outputPort id="noseX">
+                <description>Output port of nose X coordinate</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="noseY">
+                <description>Output port of nose Y coordinate</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="chinX">
+                <description>Output port of chin X coordinate</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="chinY">
+                <description>Output port of chin Y coordinate</description>
+                <dataType>integer</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="init">
+                <description>perform new face detection when head is centered</description>
+            </eventListenerPort>
+            <eventListenerPort id="showCameraSettings">
+                <description>shows Camera Settings Window</description>
+            </eventListenerPort> 
+            <eventListenerPort id="saveProfile">
+                <description>save camera profile to file</description>
+            </eventListenerPort>                        
+        </events>
+        <properties>
+            <property combobox="first camera//second camera//third camera//forth camera//fifth camera" description="the camera device to be used" name="cameraSelection" type="integer" value="0"/>
+            <property combobox="160x120//320x240//352x288//640x480//800x600//1024x768//1600x1200" description="desired camera resolution" name="cameraResolution" type="integer" value="1"/>
+            <property description="the update period for the camera display in milliseconds (0=no display window)" name="cameraDisplayUpdate" type="integer" value="100"/>
+            <property description="Filename of the camera profile" name="cameraProfile" type="string" value=""/>            
+                              
+        </properties>
+        <gui IsExternalGUIElement="true">
+            <width>2000</width>
+            <height>1500</height>
+        </gui>
+    </componentType>
+
 
 </componentTypes>

@@ -67,12 +67,22 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 	final IRuntimeOutputPort opY = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opPressure = new DefaultRuntimeOutputPort();
 
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+	final IRuntimeEventTriggererPort etpSip = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpLongSip = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpPuff = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpLongPuff = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpButton1Pressed = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpButton1Released = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpButton2Pressed = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpButton2Released = new DefaultRuntimeEventTriggererPort();
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
 	public int propPeriodicADCUpdate = 50;
 	private String propUniqueID = "not used"; 
-
+	public int propSipThreshold = 505;
+	public int propSipTime = 700;
+	public int propPuffThreshold = 520;
+	public int propPuffTime = 700;
 
 	private int calibX = 0;
 	private int calibY = 0;
@@ -146,6 +156,38 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
      */
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) //It doesn't have event trigger ports, it can be deleted
     {
+		if ("sip".equalsIgnoreCase(eventPortID))
+		{
+			return etpSip;
+		}
+		if ("longSip".equalsIgnoreCase(eventPortID))
+		{
+			return etpLongSip;
+		}
+		if ("puff".equalsIgnoreCase(eventPortID))
+		{
+			return etpPuff;
+		}
+		if ("longPuff".equalsIgnoreCase(eventPortID))
+		{
+			return etpLongPuff;
+		}
+		if ("button1Pressed".equalsIgnoreCase(eventPortID))
+		{
+			return etpButton1Pressed;
+		}
+		if ("button1Released".equalsIgnoreCase(eventPortID))
+		{
+			return etpButton1Released;
+		}
+		if ("button2Pressed".equalsIgnoreCase(eventPortID))
+		{
+			return etpButton2Pressed;
+		}
+		if ("button2Released".equalsIgnoreCase(eventPortID))
+		{
+			return etpButton2Released;
+		}
 
         return null;
     }
@@ -165,8 +207,22 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
         {
             return propUniqueID;
         }
-
-
+        if("sipThreshold".equalsIgnoreCase(propertyName))
+        {
+            return propSipThreshold;
+        }
+        if("sipTime".equalsIgnoreCase(propertyName))
+        {
+            return propSipTime;
+        }
+        if("puffThreshold".equalsIgnoreCase(propertyName))
+        {
+            return propPuffThreshold;
+        }
+        if("puffTime".equalsIgnoreCase(propertyName))
+        {
+            return propPuffTime;
+        }
         return null;
     }
 
@@ -184,7 +240,31 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 			sendLipmouseWriteFeature(LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD,propPeriodicADCUpdate);
 			return oldValue;
 		}
-        if("uniqueID".equalsIgnoreCase(propertyName))
+		if ("sipThreshold".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propSipThreshold;
+			propSipThreshold = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
+		if ("sipTime".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propSipTime;
+			propSipTime = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
+		if ("puffThreshold".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propPuffThreshold;
+			propPuffThreshold = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
+		if ("puffTime".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propPuffTime;
+			propPuffTime = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
+		if("uniqueID".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propUniqueID;
 			propUniqueID = (String)newValue;
