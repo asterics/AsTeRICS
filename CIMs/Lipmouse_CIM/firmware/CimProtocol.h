@@ -56,9 +56,11 @@
 #define CIM_ERROR_CIM_NOT_READY       (1<<5)
 #define CIM_ERROR_CIM_OTHER_ERROR     (1<<7)
 
-#define LIPMOUSE_CIM_FEATURE_UNIQUENUMBER     0x00
+#define LIPMOUSE_CIM_FEATURE_UNIQUENUMBER    0x00
 #define LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD 	 0x01
 #define LIPMOUSE_CIM_FEATURE_ADCREPORT 	     0x02
+#define LIPMOUSE_CIM_FEATURE_BUTTONREPORT 	 0x03
+#define LIPMOUSE_CIM_FEATURE_SET_LEDS 		 0x04
 
 
 #define DATABUF_SIZE 15       // max. 15 bytes needed for data field
@@ -95,16 +97,14 @@ uint16_t adcval;
 uint16_t  ADC_Read(uint16_t);
 uint16_t sendCont; 
 
+uint8_t update_Buttonval();
+
 void reply_FeatureList(void);
 void reply_UniqueNumber(void);
 void reply_Acknowledge(void);
 void reply_DataFrame(void);
 
 void generate_ADCFrame(void);
-//void generate_PINFrame(void);
-
-// void reply_UnknownFeature(uint8_t serial_number,uint8_t request_code, uint8_t status_code,uint8_t cim_feature);
-
-
+void generate_ButtonFrame(void);
 
 #endif

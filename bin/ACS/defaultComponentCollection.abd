@@ -9761,7 +9761,25 @@
         </ports>
 		<events>
 			<eventListenerPort id="calibration">
-				<description>For calibrating the mouse</description>
+				<description>for calibrating the mouse</description>
+			</eventListenerPort>
+			<eventListenerPort id="setLed1">
+				<description>switch on led1</description>
+			</eventListenerPort>
+			<eventListenerPort id="clearLed1">
+				<description>switch off led1</description>
+			</eventListenerPort>
+			<eventListenerPort id="setLed2">
+				<description>switch on led2</description>
+			</eventListenerPort>
+			<eventListenerPort id="clearLed2">
+				<description>switch off led2</description>
+			</eventListenerPort>
+			<eventListenerPort id="setLed3">
+				<description>switch on led3</description>
+			</eventListenerPort>
+			<eventListenerPort id="clearLed3">
+				<description>switch off led3</description>
 			</eventListenerPort>
 
 			<eventTriggererPort id="sip">
@@ -9770,11 +9788,23 @@
 			<eventTriggererPort id="longSip">
 				<description>long sip action performed</description>
 			</eventTriggererPort>
+			<eventTriggererPort id="sipStart">
+				<description>sip action started</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="sipEnd">
+				<description>sip action ended</description>
+			</eventTriggererPort>
 			<eventTriggererPort id="puff">
 				<description>puff action performed</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="longPuff">
 				<description>long puff action performed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="puffStart">
+				<description>puff action started</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="puffEnd">
+				<description>puff action ended</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="button1Pressed">
 				<description>button1 has been pressed</description>
@@ -9787,6 +9817,12 @@
 			</eventTriggererPort>
 			<eventTriggererPort id="button2Released">
 				<description>button2 has been released</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button3Pressed">
+				<description>button3 has been pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button3Released">
+				<description>button3 has been released</description>
 			</eventTriggererPort>
 
 		</events>			

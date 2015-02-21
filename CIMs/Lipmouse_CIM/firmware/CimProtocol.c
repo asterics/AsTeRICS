@@ -59,11 +59,13 @@ const char LIPMOUSE_CIM_FEATURELIST[]=
 struct ARE_frame_t ARE_frame;
 struct CIM_frame_t CIM_frame;
 
+uint8_t buttonval;
 
 unsigned char readstate=0;
 unsigned int  datapos=0;
 uint8_t first_packet=1;
-//int ADCValues[6];
+
+
 
 //extern unsigned char old_PIND;
 //extern unsigned char old_PINB;
@@ -142,6 +144,12 @@ uint8_t process_ARE_frame(uint8_t status_code)
 					    ack_needed=0;
 				     break;
 
+			     case LIPMOUSE_CIM_FEATURE_BUTTONREPORT:
+						generate_ButtonFrame();
+						reply_DataFrame();
+					    ack_needed=0;
+				     break;
+
 
   			      default: 				// not a valid read  feature;		 
 					status_code |= CIM_ERROR_INVALID_FEATURE;
@@ -160,6 +168,14 @@ uint8_t process_ARE_frame(uint8_t status_code)
 							ADC_updatetime=  (uint16_t)ARE_frame.data[0];
 							ADC_updatetime+= ((uint16_t)ARE_frame.data[1])<<8;
 							sei();
+						}
+				     break;
+			        case LIPMOUSE_CIM_FEATURE_SET_LEDS:
+	  		            if (data_size==1) {
+							uint8_t actLeds=ARE_frame.data[0];    
+							if (actLeds&1) PORTB&=~(1<<0); else PORTB|=(1<<0);
+							if (actLeds&2) PORTE&=~(1<<7); else PORTE|=(1<<7);
+							if (actLeds&4) PORTE&=~(1<<6); else PORTE|=(1<<6);
 						}
 				     break;
 					default:         // not a valid write  feature;
@@ -295,9 +311,34 @@ void generate_ADCFrame()
 }
 
 
+
+uint8_t update_Buttonval()
+{
+	static uint8_t actval;
+
+	if (!(PINC & (1<<3))) actval|=1; 
+	if (!(PINB & (1<<1))) actval|=2; 
+	if (!(PINB & (1<<2))) actval|=4; 
+
+    if (actval != buttonval)
+	{
+	   buttonval=actval;
+	   return(1);
+    }
+	else return (0);
+}
+
+void generate_ButtonFrame()
+{
+    update_Buttonval();
+
+	CIM_frame.data[0]=buttonval;
+	CIM_frame.data_size=1; 
+}
+
 #define FRAME_DONE 99
 
-//void parse_CIM_protocol(unsigned char actbyte)
+
 void parse_CIM_protocol(void)
 {
     uint32_t checksum=0;
@@ -309,10 +350,9 @@ void parse_CIM_protocol(void)
 	
 
     while (usb_serial_available()) 
-	{ //PORTD |= (1<<6);
+	{ 
       actbyte=usb_serial_getchar();
 		
-
       switch (readstate) 
 	  {
 		  case 0: // first sync byte

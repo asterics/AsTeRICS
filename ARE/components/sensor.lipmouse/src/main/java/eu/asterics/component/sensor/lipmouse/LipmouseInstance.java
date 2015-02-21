@@ -60,8 +60,10 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 {
 	private final short LIPMOUSE_CIM_ID  			= (short) 0xa401;
 	private static final short LIPMOUSE_CIM_FEATURE_UNIQUENUMBER = 0x0000;
-	private static final short LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD   	= 0x0001;
+	private static final short LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD   = 0x0001;
 	private static final short LIPMOUSE_CIM_FEATURE_ADCREPORT 	  	= 0x0002;
+	private static final short LIPMOUSE_CIM_FEATURE_BUTTONREPORT 	= 0x0003;
+	private static final short LIPMOUSE_CIM_FEATURE_SETLEDS 	= 0x0004;
 	
 	final IRuntimeOutputPort opX = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opY = new DefaultRuntimeOutputPort();
@@ -71,10 +73,16 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 	final IRuntimeEventTriggererPort etpLongSip = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpPuff = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpLongPuff = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpSipStart = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpSipEnd = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpPuffStart = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpPuffEnd = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpButton1Pressed = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpButton1Released = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpButton2Pressed = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpButton2Released = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpButton3Pressed = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpButton3Released = new DefaultRuntimeEventTriggererPort();
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
 	public int propPeriodicADCUpdate = 50;
@@ -86,6 +94,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 
 	private int calibX = 0;
 	private int calibY = 0;
+	private int ledState = 1;
 	private boolean calibNow = false;
 
 	// declare member variables here
@@ -97,7 +106,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
     */
     public LipmouseInstance()
     {
-    	//System.out.println("Lipmouse firmware");
+    	//System.out.println("Lipmouse instance created");
     }
 
    /**
@@ -105,7 +114,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
     * @param portID   the name of the port
     * @return         the input port or null if not found
     */
-    public IRuntimeInputPort getInputPort(String portID) //It doesn't have input ports, it can be deleted
+    public IRuntimeInputPort getInputPort(String portID) 
     {
 
 		return null;
@@ -145,6 +154,30 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		{
 			return elpCalibration;
 		}
+		if ("setLed1".equalsIgnoreCase(eventPortID))
+		{
+			return elpSetLed1;
+		}
+		if ("clearLed1".equalsIgnoreCase(eventPortID))
+		{
+			return elpClearLed1;
+		}
+		if ("setLed2".equalsIgnoreCase(eventPortID))
+		{
+			return elpSetLed2;
+		}
+		if ("clearLed2".equalsIgnoreCase(eventPortID))
+		{
+			return elpClearLed2;
+		}
+		if ("setLed3".equalsIgnoreCase(eventPortID))
+		{
+			return elpSetLed3;
+		}
+		if ("clearLed3".equalsIgnoreCase(eventPortID))
+		{
+			return elpClearLed3;
+		}
 
         return null;
     }
@@ -172,6 +205,22 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		{
 			return etpLongPuff;
 		}
+		if ("sipStart".equalsIgnoreCase(eventPortID))
+		{
+			return etpSipStart;
+		}
+		if ("sipEnd".equalsIgnoreCase(eventPortID))
+		{
+			return etpSipEnd;
+		}
+		if ("puffStart".equalsIgnoreCase(eventPortID))
+		{
+			return etpPuffStart;
+		}
+		if ("puffEnd".equalsIgnoreCase(eventPortID))
+		{
+			return etpPuffEnd;
+		}
 		if ("button1Pressed".equalsIgnoreCase(eventPortID))
 		{
 			return etpButton1Pressed;
@@ -187,6 +236,14 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		if ("button2Released".equalsIgnoreCase(eventPortID))
 		{
 			return etpButton2Released;
+		}
+		if ("button3Pressed".equalsIgnoreCase(eventPortID))
+		{
+			return etpButton3Pressed;
+		}
+		if ("button3Released".equalsIgnoreCase(eventPortID))
+		{
+			return etpButton3Released;
 		}
 
         return null;
@@ -309,31 +366,82 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 
     
      /**
-      * Input Ports for receiving values.
-      */
-
-
-     /**
       * Event Listerner Ports.
       */
 	final IRuntimeEventListenerPort elpCalibration = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
-		{
-		    
-			//sendLipmouseWriteFeature(LIPMOUSE_CIM_FEATURE_CALLIBRATION,calibrationData);   // calib in firmware 
+		{		    
+			//sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_CALIBRATION,0);   // calib in firmware 
 			calibNow=true;
 			
 		}
 	};
 
-	
+	final IRuntimeEventListenerPort elpSetLed1 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+		    ledState|=1;
+			sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_SETLEDS,ledState);  
+		}
+	};
+	final IRuntimeEventListenerPort elpClearLed1 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+		    ledState&=(~1);
+			sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_SETLEDS,ledState);  
+		}
+	};
+
+	final IRuntimeEventListenerPort elpSetLed2 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+		    ledState|=2;
+			sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_SETLEDS,ledState);  
+		}
+	};
+	final IRuntimeEventListenerPort elpClearLed2 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+		    ledState&=(~2);
+			sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_SETLEDS,ledState);  
+		}
+	};
+	final IRuntimeEventListenerPort elpSetLed3 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+		    ledState|=4;
+			sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_SETLEDS,ledState);  
+		}
+	};
+	final IRuntimeEventListenerPort elpClearLed3 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+		    ledState&=(~3);
+			sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_SETLEDS,ledState);  
+		}
+	};
+
 
 	/**
 	 * Handles an input packet from Lipmouse CIM. Reads the values 
 	 * of all ADC channels and sends the data to the corresponding output ports 
 	 * @param packet the incoming packet
 	 */
+
+	static int pressure=-1;
+	static int oldPressure=-1;
+	static long sipStartTime=0;
+	static long sipTime=0;
+	static long puffStartTime=0;
+	static long puffTime=0;
+	
 	private void handleLipmouseAdcReport(CIMProtocolPacket packet)
 	{
 		// System.out.println("handleLipmouseAdcPacket");
@@ -353,8 +461,87 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		opY.sendData(ConversionUtils.intToBytes(y-calibY));
 				
 		opPressure.sendData(ADCDataToBytes(b[4],b[5]));
+
+		pressure= ConversionUtils.intFromBytes(ADCDataToBytes(b[4],b[5]));
+		if (oldPressure!= -1)
+		{
+			if ((oldPressure > propSipThreshold) && (pressure <= propSipThreshold))
+			{
+				sipStartTime=System.currentTimeMillis();
+				etpSipStart.raiseEvent();
+			}
+			else if ((oldPressure <= propSipThreshold) && (pressure > propSipThreshold))
+			{
+				sipTime=System.currentTimeMillis()-sipStartTime;
+				etpSipEnd.raiseEvent();
+				if (sipTime >= propSipTime)
+					etpLongSip.raiseEvent();
+				else
+					etpSip.raiseEvent();
+			}
+
+			if ((oldPressure < propPuffThreshold) && (pressure >= propPuffThreshold))
+			{
+				puffStartTime=System.currentTimeMillis();
+				etpPuffStart.raiseEvent();
+			}
+			else if ((oldPressure > propPuffThreshold) && (pressure <= propPuffThreshold))
+			{
+				puffTime=System.currentTimeMillis()-puffStartTime;
+				etpPuffEnd.raiseEvent();
+				if (puffTime >= propPuffTime)
+					etpLongPuff.raiseEvent();
+				else
+					etpPuff.raiseEvent();
+			}
+			
+		}
 	}
+	static int button1State = 0;
+	static int button2State = 0;
+	static int button3State = 0;
 	
+	private void handleLipmouseButtonReport(CIMProtocolPacket packet)
+	{
+		// System.out.println("handleLipmouseAdcPacket");
+		byte [] b = packet.getData();
+
+		if ((button1State==0) && ((b[0]&1)!=0))
+		{
+			etpButton1Pressed.raiseEvent();
+			button1State=1;
+		}
+		else if ((button1State==1) && ((b[0]&1)==0))
+		{
+			etpButton1Released.raiseEvent();
+			button1State=0;
+		}
+
+		
+		if ((button2State==0) && ((b[0]&2)!=0))
+		{
+			etpButton2Pressed.raiseEvent();
+			button2State=1;
+		}
+		else if ((button2State==1) && ((b[0]&2)==0))
+		{
+			etpButton2Released.raiseEvent();
+			button2State=0;
+		}
+
+		if ((button3State==0) && ((b[0]&4)!=0))
+		{
+			etpButton3Pressed.raiseEvent();
+			button3State=1;
+		}
+		else if ((button3State==1) && ((b[0]&4)==0))
+		{
+			etpButton3Released.raiseEvent();
+			button3State=0;
+		}
+
+	}
+
 	//This is a function to convert the data sent by the microcontroller to the format that the 
 	//output port send it through the channel
     private byte [] ADCDataToBytes(byte first,byte second)
@@ -362,7 +549,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
     	if ( (second & 80) == 0) //If the number is positive, i.e, if 8th bit is 0
     	{
     		return new byte [] {(byte)(0x00),(byte)(0x00),second,first};
-    	}else{ //If the numbe is negative, i.e, if 8th bit is 1
+    	}else{ //If the number is negative, i.e, if 8th bit is 1
     		return new byte [] {(byte)(0xff),(byte)(0xff),second,first};
     	}
     	
@@ -402,10 +589,15 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 					//System.out.println ("UniqueNumber");
 					handleLipmouseUniqueNumber(packet);
 				}
-				if (featureAddress == LIPMOUSE_CIM_FEATURE_ADCREPORT)
+				else if (featureAddress == LIPMOUSE_CIM_FEATURE_ADCREPORT)
 				{
 					//System.out.println ("ADCReport.");
 				 	handleLipmouseAdcReport(packet);
+				}
+				else if (featureAddress == LIPMOUSE_CIM_FEATURE_BUTTONREPORT)
+				{
+					 // System.out.println ("Incoming Event: ADCReport "+(128+(int)packet.getSerialNumber()));
+					 handleLipmouseButtonReport(packet);
 				}
 				
 				break;
@@ -415,6 +607,11 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 				{
 					 // System.out.println ("Incoming Event: ADCReport "+(128+(int)packet.getSerialNumber()));
 					 handleLipmouseAdcReport(packet);
+				}
+				else if (featureAddress == LIPMOUSE_CIM_FEATURE_BUTTONREPORT)
+				{
+					 // System.out.println ("Incoming Event: ADCReport "+(128+(int)packet.getSerialNumber()));
+					 handleLipmouseButtonReport(packet);
 				}
 				
 				break;
@@ -532,6 +729,17 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		if (port != null)
 		{
               // System.out.println("sending lipmouse-packet !");
+			CIMPortManager.getInstance().sendPacket(port, b, feature, CIMProtocolPacket.COMMAND_REQUEST_WRITE_FEATURE,false);
+		}
+     }
+  	synchronized private final void sendLipmouseWriteFeatureByte (short feature, int value)
+  	{
+		// send packet
+		byte [] b = new byte[1];
+		b[0] = (byte) (value & 0xff);
+		
+		if (port != null)
+		{
 			CIMPortManager.getInstance().sendPacket(port, b, feature, CIMProtocolPacket.COMMAND_REQUEST_WRITE_FEATURE,false);
 		}
      }
