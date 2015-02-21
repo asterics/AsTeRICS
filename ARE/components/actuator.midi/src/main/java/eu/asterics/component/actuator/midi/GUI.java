@@ -156,13 +156,15 @@ public class GUI extends JPanel
 	          g2d.drawRect((int)(xEllipse + ellipseWidth*i), (int)yEllipse, (int)ellipseWidth, (int)ellipseHeight);
 	          
 	          int note=owner.scale.noteNumberArray[i];
-	          int noteNameIndex=note % 12;
+	          int noteNameIndex=0;
 	          String noteName=Integer.toString(note);
 	          
-	          if (noteNameIndex < noteNames.length)
+	          if (note > 20)
 	          { 
+	        	  note-=20;
+	        	  noteNameIndex=note%12;
 	        	  noteName=noteNames[noteNameIndex];
-	        	  noteName+= ((int)(note / 12)+1);
+	        	  noteName+= (int)(note / 12);
 	          }
 	     
 	          if (noteName.contains("#"))

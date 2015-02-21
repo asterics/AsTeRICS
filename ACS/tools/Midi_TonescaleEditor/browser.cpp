@@ -413,16 +413,23 @@ void update_harmonic( HWND hCtrlWnd)
 	SendMessage(hCtrlWnd, LB_RESETCONTENT, 0, 0);
 	for (t=0;t<LOADSCALE.len;t++) 
 	{
+		char str[20];
+		char numstr[10];
 		int n=LOADSCALE.tones[t];
 		wsprintf(szdata, "%d", n);
 
-		int x=n % 12;
-		int y=(int)(n / 12)+1;
-		char str[20];
-		char numstr[10];
-		itoa(y,numstr,10);
-		strcpy (str,noteNames[x]);
-		strcat(str,numstr);
+		if (n<21)
+		{
+			itoa(n,str,10);
+		}
+		else{			
+			n-=21;
+			int x=n % 12;
+			int y=(int)(n / 12);
+			itoa(y,numstr,10);
+			strcpy (str,noteNames[x]);
+			strcat(str,numstr);
+		}
 
 		index=SendMessage(hCtrlWnd, LB_ADDSTRING, 0,(LPARAM) str);
 		SendMessage(hCtrlWnd, LB_SETITEMDATA, (WPARAM)index, (LPARAM)LOADSCALE.tones[t]);
@@ -624,19 +631,28 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 			{   
 			  if (lParam == (long) GetDlgItem(hDlg,IDC_TONEBAR)) 
 			  { 
-				int x=nNewPos % 12;
-				int y=(int)(nNewPos / 12)+1;
-				char str[20];
-				char numstr[10];
-				itoa(y,numstr,10);
-				strcpy (str,noteNames[x]);
-				strcat(str,numstr);
-				SetDlgItemInt(hDlg, IDC_ACTTONE,nNewPos,0);
-				SetDlgItemText(hDlg, IDC_ACTTONETEXT, str);
-				midi_NoteOff(&(MIDIPORTS[port].midiout), midichn,oldtone);
-				oldtone=nNewPos;
-				midi_NoteOn(&(MIDIPORTS[port].midiout), midichn,nNewPos,127);
-				apply_harmonic(hDlg);
+				  int n=nNewPos;
+				  char str[20];
+				  char numstr[10];
+
+			  		if (n<21)
+					{
+						itoa(n,str,10);
+					}
+					else{			
+						n-=21;
+						int x=n % 12;
+						int y=(int)(n / 12);
+						itoa(y,numstr,10);
+						strcpy (str,noteNames[x]);
+						strcat(str,numstr);
+					}
+					SetDlgItemInt(hDlg, IDC_ACTTONE,nNewPos,0);
+					SetDlgItemText(hDlg, IDC_ACTTONETEXT, str);
+					midi_NoteOff(&(MIDIPORTS[port].midiout), midichn,oldtone);
+					oldtone=nNewPos;
+					midi_NoteOn(&(MIDIPORTS[port].midiout), midichn,nNewPos,127);
+					apply_harmonic(hDlg);
 				}
 			}
 		
