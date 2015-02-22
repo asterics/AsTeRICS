@@ -48,10 +48,26 @@ public class XMLCellBoardWriter extends DefaultHandler
 			out.writeStartDocument();
 			out.writeCharacters(newline);
 			out.writeStartElement("keyboard");
+			
+			out.writeAttribute("rows", Integer.toString(0));
+			out.writeAttribute("columns", Integer.toString(0));
+			/*
 			out.writeAttribute("rows", Integer.toString(owner.getRowCount()));
 			out.writeAttribute("columns", Integer.toString(owner.getColumnCount()));
 			out.writeAttribute("scanning", Integer.toString(owner.getScanType()));
-		
+			out.writeAttribute("textColor", Integer.toString(owner.getTextColor()));
+			out.writeAttribute("scanColor", Integer.toString(owner.getScanColor()));
+			out.writeAttribute("backgroundColor", Integer.toString(owner.getBackgroundColor()));
+			out.writeAttribute("hoverTime", Integer.toString(owner.getHoverTime()));
+			out.writeAttribute("caption", owner.getCaption());
+			if (owner.getEnableEdit()==true)	
+				out.writeAttribute("enableEdit", "true"); else out.writeAttribute("enableEdit", "false");
+			if (owner.getEnableClickSelection()==true)	
+				out.writeAttribute("enableClickSelection", "true"); else out.writeAttribute("enableClickSelection", "false");
+			if (owner.getDisplayGUI()==true)	
+				out.writeAttribute("displayGUI", "true"); else out.writeAttribute("displayGUI", "false");
+			 */
+
 			for (int i=0;i<owner.getColumnCount()*owner.getRowCount();i++)
 			{
 				out.writeCharacters(newline);
@@ -78,8 +94,15 @@ public class XMLCellBoardWriter extends DefaultHandler
 
 				out.writeCharacters(newline);
 				out.writeCharacters("\t\t");
-				out.writeStartElement("soundfile");
-				out.writeCharacters(owner.getWavPath(i));
+				out.writeStartElement("sound");
+				out.writeCharacters(owner.getSoundPath(i));
+				out.writeEndElement();
+				out.writeCharacters(newline);
+
+				out.writeCharacters(newline);
+				out.writeCharacters("\t\t");
+				out.writeStartElement("soundPreview");
+				out.writeCharacters(owner.getSoundPreviewPath(i));
 				out.writeEndElement();
 				out.writeCharacters(newline);
 

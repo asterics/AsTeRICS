@@ -11,61 +11,19 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class XMLCellBoardLoader extends DefaultHandler 
 {
+	CellBoardInstance owner;
 	
 	private StringBuilder sb;
-	private int size;
-	private int rows;
-	private int cols;
-	private int fontSize;
-	private int height;
-	private int width;
-	private int scanning;
-	//final EventPort [] etpCellArray = new EventPort[NUMBER_OF_CELLS];
-	private String [] propCellTextArray;
-	private String [] propCellActionTextArray;
-	private String [] propCellImageArray;
 	private int buttons;
+	private int size;
+	int temprows=-1;
+	int tempcols=-1;
 	
-	
-	public int getRows() {
-		return rows-1;
-	}
 
-	public int getFontSize() {
-		return fontSize;
-	}
-	
-	public int getCols() {
-		return cols-1;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-	
-	public int getWidth() {
-		return width;
-	}
-	
-	public int getScanning() {
-		return scanning;
-	}
-	
-	public String[] getPropCellTextArray() {
-		return propCellTextArray;
-	}
-
-	public String[] getPropCellActionTextArray() {
-		return propCellActionTextArray;
-	}
-
-	public String[] getPropCellImageArray() {
-		return propCellImageArray;
-	}
-
-	public XMLCellBoardLoader(int size) {
+	public XMLCellBoardLoader(int size,CellBoardInstance owner ) {
 		sb = new StringBuilder();
 		this.size = size;
+		this.owner=owner;
 		buttons = 0;
 	}
 	
@@ -75,45 +33,81 @@ public class XMLCellBoardLoader extends DefaultHandler
 	  {
 			if (qName.equalsIgnoreCase("keyboard")) {
 				try {
-					rows = Integer.parseInt(atts.getValue("rows"));
-					cols = Integer.parseInt(atts.getValue("columns"));
-					if (atts.getIndex("fontsize") != -1) {
-						fontSize = Integer.parseInt(atts.getValue("fontsize"));
-					} else {
-						fontSize = -1;
-					}
-				} catch (NumberFormatException ne) {
-					rows = -1;
-					cols = -1;
+					temprows = Integer.parseInt(atts.getValue("rows"));
+					tempcols = Integer.parseInt(atts.getValue("columns"));
+					
+				} catch (Exception e) {
+					System.out.println("Cellboard loader: rows/cols not found!");
 				}
-	    		try {
+
+				if ((temprows>0) && (tempcols>0))  // load primary properties only if not saved from Cellboard's own editor !!
+				{
+					owner.propRows=temprows-1;
+					owner.propColumns=tempcols-1;
+					
+					try 
+					{
+						if (atts.getIndex("fontsize") != -1) 
+							owner.propFontSize = (float) (Integer.parseInt(atts.getValue("fontsize")));
+					}
+					catch (Exception e) {	System.out.println("Cellboard xml parser error: fontsize not found"); }
+					/*
 	    			width = Integer.parseInt(atts.getValue("width"));
-	    		} catch (NumberFormatException ne) {
-	    			width = -1;
-	    		}
-	    		try {
-	    			height = Integer.parseInt(atts.getValue("height"));
-    			} catch (NumberFormatException ne) {
-    				height = -1;
-    			}
-	    		try {
-	    			scanning = Integer.parseInt(atts.getValue("scanning"));
-    			} catch (NumberFormatException ne) {
-    				scanning = 0;
-    			}
-	    		propCellTextArray = new String[size];
-	    		propCellActionTextArray = new String[size];
-	    		propCellImageArray = new String[size];
+	    			height = Integer.parseInt(atts.getValue("height")); */
+		    		try	 {owner.propScanType = Integer.parseInt(atts.getValue("scanning not found")); }
+					catch (Exception e) {	System.out.println("Cellboard xml parser: scanning not found not found"); } 
+		    		try {	owner.propTextColor = Integer.parseInt(atts.getValue("textColor not found")); }
+					catch (Exception e) {	System.out.println("Cellboard xml parser error: textColor not found");  }
+		    		try {	owner.propScanColor = Integer.parseInt(atts.getValue("scanColor not found"));}
+					catch (Exception e) {	System.out.println("Cellboard xml parser error: scanColor not found");  }
+					try {	owner.propBackgroundColor = Integer.parseInt(atts.getValue("backgroundColor not found")); }
+					catch (Exception e) {	System.out.println("Cellboard xml parser error: backgroundColor not found");  }
+					try {	owner.propHoverTime = Integer.parseInt(atts.getValue("hoverTime"));}
+					catch (Exception e) {	System.out.println("Cellboard xml parser error: hoverTime not found"); }
+					try {	    		
+			    		if (atts.getValue("enableEdit").equalsIgnoreCase("true"))
+			    			owner.propEnableEdit=true;
+			    		else owner.propEnableEdit=false;
+					}
+					catch (Exception e) {	System.out.println("Cellboard xml parser error: enableEdit not found");  }
+					try {
+			    		if (atts.getValue("enableClickSelection").equalsIgnoreCase("true"))
+			    			owner.propEnableClickSelection=true;
+			    		else owner.propEnableClickSelection=false;
+					}
+					catch (Exception e) {	System.out.println("Cellboard xml parser error: enableClickSelection not found");  }
+		    		
+					try {	owner.propCaption=atts.getValue("caption");}
+					catch (Exception e) {	System.out.println("Cellboard xml parser error: caption not found");  }
+					try {
+						if (atts.getValue("displayGUI").equalsIgnoreCase("true"))
+			    			owner.propDisplayGUI=true;
+			    		else owner.propDisplayGUI=false;
+					}
+					catch (Exception e) {	System.out.println("Cellboard xml parser error: displayGUI not found");  }
+				}
+
+		    	owner.propCellCaptionArray = new String[size];
+				owner.propCellTextArray = new String[size];
+				owner.propCellImageArray = new String[size];
+				owner.propCellSoundArray = new String[size];
+				owner.propCellSoundPreviewArray = new String[size];
 	    		for (int i = 0; i < size; i++) {
-	    			propCellTextArray[i] = "";
-	    			propCellActionTextArray[i] = "";
-	    			propCellImageArray[i] = "";
+	    			owner.propCellCaptionArray[i] = "";
+	    			owner.propCellTextArray[i] = "";
+	    			owner.propCellImageArray[i] = "";
+	    			owner.propCellSoundArray[i] = "";
+	    			owner.propCellSoundPreviewArray[i] = "";
 	    		}
 	    	} else if (qName.equalsIgnoreCase("text")) {
 	    		sb = new StringBuilder();
 	    	} else if (qName.equalsIgnoreCase("action")) {
 	    		sb = new StringBuilder();
 	    	} else if (qName.equalsIgnoreCase("icon")) {
+	    		sb = new StringBuilder();
+	    	} else if (qName.equalsIgnoreCase("sound")) {
+	    		sb = new StringBuilder();
+	    	} else if (qName.equalsIgnoreCase("soundPreview")) {
 	    		sb = new StringBuilder();
 	    	}
 	  }
@@ -132,14 +126,20 @@ public class XMLCellBoardLoader extends DefaultHandler
 		  	} else if (qName.equalsIgnoreCase("icon")) {
 				String iconPath = sb.toString(); 
 				if (iconPath.length() > 0) {
-					propCellImageArray[buttons] = iconPath;
+					owner.propCellImageArray[buttons] = iconPath;
 				}
 			} else if (qName.equalsIgnoreCase("text")) {
 				String text = sb.toString(); 
-				propCellTextArray[buttons] = text;
+				owner.propCellCaptionArray[buttons] = text;
 			} else if (qName.equalsIgnoreCase("action")) {
 				String action = sb.toString(); 
-				propCellActionTextArray[buttons] = action;
+				owner.propCellTextArray[buttons] = action;
+			} else if (qName.equalsIgnoreCase("sound")) {
+				String sound = sb.toString(); 
+				owner.propCellSoundArray[buttons] = sound;
+			} else if (qName.equalsIgnoreCase("soundPreview")) {
+				String soundPreview = sb.toString(); 
+				owner.propCellSoundPreviewArray[buttons] = soundPreview;
 			}
 
 		}
@@ -156,11 +156,4 @@ public class XMLCellBoardLoader extends DefaultHandler
 	    // System.out.println( "Document ends." );
 	  }
 	  
-	  public void print() {
-		  for (int i = 0; i < propCellTextArray.length;i++) {
-			  System.out.print(propCellTextArray[i]+"////");
-			  System.out.print(propCellActionTextArray[i]+"/////");
-			  System.out.println(propCellImageArray[i]);
-		  }
-	  }
 }

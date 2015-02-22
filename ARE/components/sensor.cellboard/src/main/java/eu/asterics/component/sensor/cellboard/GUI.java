@@ -27,6 +27,13 @@
 package eu.asterics.component.sensor.cellboard;
 
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.TitledBorder;
@@ -41,6 +48,8 @@ import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -128,6 +137,8 @@ public class GUI extends JPanel
 				cells[i][j].setCellCaption(owner.getCellCaption(index));
 				cells[i][j].setActionText(owner.getCellText(index));
 				cells[i][j].setPicturePath(owner.getImagePath(index));
+				cells[i][j].setSoundPath(owner.getSoundPath(index));
+				cells[i][j].setSoundPreviewPath(owner.getSoundPreviewPath(index));
 				cells[i][j].setScanActive(false);
 				cells[i][j].setHoverTime(owner.getHoverTime());
 				index++;
@@ -922,7 +933,21 @@ public class GUI extends JPanel
 		owner.getSelectedCellOutputPort().sendData(ConversionUtils.intToBytes(index+1));
 		owner.getSelectedCellCaptionOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellCaption()));
 		owner.getSelectedCellTextOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellText()));
-	
+
+		final int r=row;
+		final int c=column;
+		
+		if (cells[row][column].getSoundPath().length()>4)
+		{
+			System.out.println("Trying to play sound "+cells[row][column].getSoundPath());
+			SwingUtilities.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					playWavFile(cells[r][c].getSoundPath());
+				}
+			});
+		}
 	}
 
 	public void performActCellUpdate(int row,int column)
@@ -930,6 +955,21 @@ public class GUI extends JPanel
 		owner.getActCellOutputPort().sendData(ConversionUtils.intToBytes(cells[row][column].getCellID()));
 		owner.getActCellCaptionOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellCaption()));
 		owner.getActCellTextOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellText()));
+
+		final int r=row;
+		final int c=column;
+		
+		if (cells[row][column].getSoundPreviewPath().length()>4)
+		{
+			System.out.println("Trying to play preview sound "+cells[row][column].getSoundPreviewPath());
+			SwingUtilities.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					playWavFile(cells[r][c].getSoundPreviewPath());
+				}
+			});
+		}
 	}
 
 	/**
@@ -945,5 +985,61 @@ public class GUI extends JPanel
 			}
 		}
 	}
+
+    private final int WAVE_BUFFER_SIZE = 524288; // 128Kb 
+
+    public void playWavFile(String filename)
+    {
+        File soundFile = new File(filename);
+        if (!soundFile.exists()) { 
+        	return;
+        } 
+
+        AudioInputStream audioInputStream = null;
+        try { 
+            audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+        } catch (UnsupportedAudioFileException e1) { 
+            e1.printStackTrace();
+            return;
+        } catch (IOException e1) { 
+            e1.printStackTrace();
+            return;
+        } 
+
+        AudioFormat format = audioInputStream.getFormat();
+        SourceDataLine auline = null;
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+
+        try { 
+            auline = (SourceDataLine) AudioSystem.getLine(info);
+            auline.open(format);
+        } catch (LineUnavailableException e) { 
+            e.printStackTrace();
+            return;
+        } catch (Exception e) {  
+            e.printStackTrace();
+            return;
+        } 
+
+        auline.start();
+        int nBytesRead = 0;
+        byte[] abData = new byte[WAVE_BUFFER_SIZE];
+
+        try { 
+            while (nBytesRead != -1) { 
+                nBytesRead = audioInputStream.read(abData, 0, abData.length);
+                if (nBytesRead >= 0) 
+                    auline.write(abData, 0, nBytesRead);
+            } 
+        } catch (IOException e) { 
+            e.printStackTrace();
+            return;
+        } finally { 
+            auline.drain();
+            auline.close();
+        }
+   
+    }
+
 	
 }

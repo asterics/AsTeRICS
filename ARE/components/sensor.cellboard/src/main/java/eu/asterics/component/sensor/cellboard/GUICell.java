@@ -78,7 +78,8 @@ public class GUICell extends JPanel implements Runnable
 	 String text="";
 	 String actionText="";
 	 String picturePath="";
-	 String wavPath="";
+	 String soundPath="";
+	 String soundPreviewPath="";
 	
 	private final float fontSizeMax=150;
 	private final float fontIncrementStep=0.5f;
@@ -391,11 +392,25 @@ public class GUICell extends JPanel implements Runnable
 		return picturePath;
 	}
 
-	String getWavPath()
+	void setSoundPath(String soundPath)
 	{
-		return wavPath;
+		this.soundPath=soundPath;
+	}
+	
+	String getSoundPath()
+	{
+		return soundPath;
 	}
 
+	void setSoundPreviewPath(String soundPreviewPath)
+	{
+		this.soundPreviewPath=soundPreviewPath;
+	}
+
+	String getSoundPreviewPath()
+	{
+		return soundPreviewPath;
+	}
 	
 	/**
      * Sets the cell index.

@@ -131,13 +131,13 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     private String xmlFile = null;
     private Dimension space;
 	public float propFontSize = -1;
-	private int propRows = 2;
-	private int propColumns = 2;
-	private int propScanType = 2;
-	private int propTextColor=0;
-	private int propBackgroundColor=11;
-	private int propScanColor=10;
-	private int propHoverTime=1000;
+	public int propRows = 2;
+	public int propColumns = 2;
+	public int propScanType = 2;
+	public int propTextColor=0;
+	public int propBackgroundColor=11;
+	public int propScanColor=10;
+	public int propHoverTime=1000;
 	public boolean propEnableEdit = true;
 	public boolean propEnableClickSelection = true;
 	public String propCaption="Cell Board";
@@ -145,10 +145,11 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     public boolean propDisplayGUI=true;
 
 	final EventPort [] etpCellArray = new EventPort[NUMBER_OF_CELLS];
-	private String [] propCellCaptionArray = new String[NUMBER_OF_CELLS];
-	private String [] propCellTextArray = new String[NUMBER_OF_CELLS];
-	private String [] propCellImageArray = new String[NUMBER_OF_CELLS];
-	private String [] propCellWavArray = new String[NUMBER_OF_CELLS];
+	public String [] propCellCaptionArray = new String[NUMBER_OF_CELLS];
+	public String [] propCellTextArray = new String[NUMBER_OF_CELLS];
+	public String [] propCellImageArray = new String[NUMBER_OF_CELLS];
+	public String [] propCellSoundArray = new String[NUMBER_OF_CELLS];
+	public String [] propCellSoundPreviewArray = new String[NUMBER_OF_CELLS];
 
 	final IRuntimeEventTriggererPort etpCellClicked = new DefaultRuntimeEventTriggererPort();
 	
@@ -167,7 +168,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
         	propCellCaptionArray[i]="";
         	propCellImageArray[i]="";
         	propCellTextArray[i]="";
-        	propCellWavArray[i]="";
+        	propCellSoundArray[i]="";
+        	propCellSoundPreviewArray[i]="";
         }
     }
 
@@ -914,23 +916,17 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		SAXParser saxParser;
 		try {
 			saxParser = factory.newSAXParser();
-			XMLCellBoardLoader handler =  new XMLCellBoardLoader(NUMBER_OF_CELLS);
+			XMLCellBoardLoader handler =  new XMLCellBoardLoader(NUMBER_OF_CELLS,this);
 			saxParser.parse( new File(FILE_PATH_PREFIX,xmlFile), handler );
-			propCellCaptionArray = handler.getPropCellTextArray();
-			propCellTextArray = handler.getPropCellActionTextArray();
-			propCellImageArray = handler.getPropCellImageArray();
-			propRows = handler.getRows();
-			propColumns = handler.getCols();
-			propFontSize = handler.getFontSize();
-			propScanType = handler.getScanning();
-			System.out.println("read scantype :"+propScanType);
-
+			
+			
 			checkMatrixSize();
 			
 			if (propRows == -1 || propColumns == -1) {
 				reportError("Error parsing rows or cols attribute of CellBoard plugin");
 				return;
 			}
+			/*
 			int hheight = handler.getHeight();
 			if (hheight >= 0)
 				space.height = hheight;
@@ -941,7 +937,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 				space.width = hwidth;
 			else 
 				space.width = getAvailableSpace().width;
-			
+			*/
 		    paintCells.run();
 			gui.update(space,propFontSize);
 
@@ -1024,6 +1020,22 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	{
 		return propCaption;
 	}
+
+	synchronized boolean getEnableEdit()
+	{
+		return propEnableEdit;
+	}
+	
+	synchronized boolean getEnableClickSelection()
+	{
+		return propEnableClickSelection;
+	}
+	
+	synchronized boolean getDisplayGUI()
+	{
+		return propDisplayGUI;
+	}
+
 	
 	/**
      * Returns the image path of the cell defined by index.
@@ -1046,25 +1058,45 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	}
 
 	/**
-     * Returns the path of the wave file of the cell defined by index.
+     * Returns the path of the sound file of the cell defined by index.
      * @param index index of the cell
-     * @return   image path
+     * @return   sound file path
      */
-	synchronized String getWavPath(int index)
+	synchronized String getSoundPath(int index)
 	{
-		return propCellWavArray[index];
+		return propCellSoundArray[index];
 	}
 
 	/**
      * Sets the image path of the cell defined by index.
      * @param index index of the cell
-     * @param path  path of the wav file
+     * @param path  path of the sound file
      */
-	synchronized void setWavPath(int index, String path)
+	synchronized void setSoundPath(int index, String path)
 	{
-		propCellWavArray[index]=path;
+		propCellSoundArray[index]=path;
 	}
-	
+
+
+	/**
+     * Returns the path of the sound preview file of the cell defined by index.
+     * @param index index of the cell
+     * @return   preview sound file path
+     */
+	synchronized String getSoundPreviewPath(int index)
+	{
+		return propCellSoundPreviewArray[index];
+	}
+
+	/**
+     * Sets the preview sound file path of the cell defined by index.
+     * @param index index of the cell
+     * @param path  path of the preview sound file
+     */
+	synchronized void setSoundPreviewPath(int index, String path)
+	{
+		propCellSoundPreviewArray[index]=path;
+	}
 	
 	/**
      * Returns the text of the cell defined by index.
