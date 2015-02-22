@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="28.10.2011_1555" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\gaming&amp;Toys\PS3_ModNation_Camera.acs_2015_2_23_0_43" version="20130320">
   <modelDescription>
     <shortDescription>PS3 control for the ModNationRacing Game</shortDescription>
     <requirements>Webcamera for Facetracking 
@@ -40,7 +40,9 @@ Switch 4 is the Square button
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>707</posX>
         <posY>96</posY>
@@ -242,6 +244,7 @@ Switch 4 is the Square button
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Joystick-X" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>680</posX>

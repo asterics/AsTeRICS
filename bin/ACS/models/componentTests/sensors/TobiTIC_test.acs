@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="03.11.2012_1248" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\TobiTIC_test.acs_2015_2_23_0_31" version="20130320">
   <components>
     <component id="TobiTiC.1" type_id="asterics.TobiTiC">
       <description>Implements a simple TOBI TiC  interface and outputs classifier values</description>
@@ -53,6 +53,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="signal 0x769" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>236</posX>
@@ -85,6 +86,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="signal 0x770" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>242</posX>

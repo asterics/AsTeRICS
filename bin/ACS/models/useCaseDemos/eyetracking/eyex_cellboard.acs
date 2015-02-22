@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="8/18/2014_2046" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\eyetracking\eyex_cellboard.acs_2015_2_23_0_42" version="20130320">
   <components>
     <component id="EyeX.1" type_id="asterics.EyeX">
       <description>interfaces to the EyeX Gaze tracking system</description>
       <ports>
+        <inputPort portTypeID="xOffset">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="yOffset">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="gazeX">
           <properties />
         </outputPort>
@@ -24,6 +30,8 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
+        <property name="averaging" value="4" />
         <property name="minBlinkTime" value="50" />
         <property name="midBlinkTime" value="300" />
         <property name="maxBlinkTime" value="2000" />
@@ -52,12 +60,6 @@
         <inputPort portTypeID="xmlFile">
           <properties />
         </inputPort>
-        <outputPort portTypeID="selectedCell">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="selectedCellText">
-          <properties />
-        </outputPort>
         <outputPort portTypeID="actCell">
           <properties />
         </outputPort>
@@ -65,6 +67,15 @@
           <properties />
         </outputPort>
         <outputPort portTypeID="actCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellText">
           <properties />
         </outputPort>
       </ports>
@@ -77,7 +88,10 @@
         <property name="scanColor" value="10" />
         <property name="scanMode" value="4" />
         <property name="hoverTime" value="1000" />
+        <property name="enableEdit" value="true" />
+        <property name="enableClickSelection" value="true" />
         <property name="keyboardFile" value="" />
+        <property name="displayGUI" value="true" />
         <property name="cellText1" value="on/off" />
         <property name="cellImage1" value="" />
         <property name="actionText1" value="" />

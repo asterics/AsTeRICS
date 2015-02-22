@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="02/08/2012_718" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\EnobioCameraMouse.acs_2015_2_23_0_41" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 
@@ -287,6 +287,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>154</posX>
@@ -327,6 +328,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>172</posX>
@@ -342,7 +344,9 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>910</posX>
         <posY>558</posY>

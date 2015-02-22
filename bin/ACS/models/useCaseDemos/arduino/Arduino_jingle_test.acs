@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="11.11.2011_2352" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\arduino\Arduino_jingle_test.acs_2015_2_23_0_41" version="20130320">
   <components>
     <component id="Arduino.1" type_id="asterics.Arduino">
       <description>Arduino Microcontroller CIM</description>
@@ -33,6 +33,7 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="uniqueID" value="not used" />
         <property name="periodicADCUpdate" value="0" />
         <property name="pin2Mode" value="0" />
         <property name="pin3Mode" value="0" />
@@ -83,7 +84,9 @@
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>173</posX>
         <posY>8</posY>
@@ -107,6 +110,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="1" />
         <property name="buttonCaption2" value="2" />
         <property name="buttonCaption3" value="3" />
@@ -284,6 +288,7 @@
       <properties>
         <property name="language" value="0" />
         <property name="recognitionConfidence" value="0.5" />
+        <property name="speechLoopDelay" value="1500" />
         <property name="activationCommand" value="computer, listen!" />
         <property name="deactivationCommand" value="computer, stop!" />
         <property name="helpCommand" value="computer, help!" />

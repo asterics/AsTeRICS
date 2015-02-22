@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="02/07/2012_1122" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\SSVEPMusicPlayer.acs_2015_2_23_0_41" version="20130320">
   <modelDescription>
     <shortDescription>This model implements a SSVEP music player that manages a pre-defined playlist
 </shortDescription>
@@ -305,6 +305,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>1328</posX>
@@ -328,6 +329,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="caption" value="" />
         <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Play.png" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>1339</posX>
@@ -351,6 +353,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="caption" value="" />
         <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Stop.png" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>1342</posX>
@@ -410,6 +413,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="caption" value="" />
         <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s4.jpg" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>946</posX>
@@ -451,6 +455,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="caption" value="" />
         <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s2.jpg" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>952</posX>
@@ -510,6 +515,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="caption" value="" />
         <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s1.jpg" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>349</posX>
@@ -533,6 +539,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="caption" value="" />
         <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s3.jpg" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>352</posX>
@@ -576,6 +583,8 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="0" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>453</posX>
@@ -601,6 +610,8 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="0" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>612</posX>
@@ -625,6 +636,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Calc Config File" />
         <property name="buttonCaption2" value="Update Config File" />
         <property name="buttonCaption3" value="" />
@@ -715,6 +727,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>825</posX>

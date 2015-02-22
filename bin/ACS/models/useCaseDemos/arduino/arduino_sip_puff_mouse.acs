@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="09.01.2012_1836" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\arduino\arduino_sip_puff_mouse.acs_2015_2_23_0_41" version="20130320">
   <modelDescription>
     <shortDescription>A mouse-replacement via Sip/Puff Sensor.
 This model is described in the AsTeRICS User Manual 
@@ -48,6 +48,7 @@ Audio feedback for the timeouts is provided by the Wavfileplayer plugins.
         </outputPort>
       </ports>
       <properties>
+        <property name="uniqueID" value="not used" />
         <property name="periodicADCUpdate" value="10" />
         <property name="pin2Mode" value="0" />
         <property name="pin3Mode" value="0" />
@@ -86,6 +87,7 @@ Audio feedback for the timeouts is provided by the Wavfileplayer plugins.
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>148</posX>
@@ -267,6 +269,7 @@ Audio feedback for the timeouts is provided by the Wavfileplayer plugins.
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="X-pos" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>769</posX>
@@ -299,6 +302,7 @@ Audio feedback for the timeouts is provided by the Wavfileplayer plugins.
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Y-pos" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>761</posX>
@@ -393,7 +397,9 @@ Audio feedback for the timeouts is provided by the Wavfileplayer plugins.
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>243</posX>
         <posY>460</posY>

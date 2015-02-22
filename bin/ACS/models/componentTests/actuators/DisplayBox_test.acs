@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="11/30/2014_1550" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\actuators\DisplayBox_test.acs_2015_2_23_0_19" version="20130320">
   <components>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
       <description>Keyboard which sends event after button press</description>
@@ -13,6 +13,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="display" />
         <property name="buttonCaption2" value="set new text" />
         <property name="buttonCaption3" value="" />
@@ -114,6 +115,12 @@
         <property name="caption" value="Help Text for this Model" />
         <property name="text" value="AsTeRICS - Assistive Technology Rapid Integration and Construction Set /n /n Here you can display help text /n  and setup information for a model !!  /n /n This could be helpful for users who start this model for the first time ! /n  especially when the model needs non-standard hardware /n /n  Add relevant weblinks where the necessary components for the model could be ordered !" />
         <property name="alwaysOnTop" value="true" />
+        <property name="messageType" value="0" />
+        <property name="buttonText1" value="OK" />
+        <property name="buttonText2" value="" />
+        <property name="buttonText3" value="" />
+        <property name="buttonText4" value="" />
+        <property name="buttonText5" value="" />
       </properties>
       <layout>
         <posX>481</posX>

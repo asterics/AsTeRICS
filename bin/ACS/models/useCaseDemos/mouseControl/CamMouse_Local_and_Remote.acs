@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="23.11.2011_176" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\mouseControl\CamMouse_Local_and_Remote.acs_2015_2_23_0_44" version="20130320">
   <components>
     <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
       <description>Webcamera-based face tracking sensor</description>
@@ -115,6 +115,7 @@
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>319</posX>
@@ -139,6 +140,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="enable/disable Mouse" />
         <property name="buttonCaption2" value="Drag Click" />
         <property name="buttonCaption3" value="Right Click" />
@@ -257,6 +259,7 @@
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>282</posX>
@@ -357,6 +360,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Click = 500" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>576</posX>
@@ -638,6 +642,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>40</posX>

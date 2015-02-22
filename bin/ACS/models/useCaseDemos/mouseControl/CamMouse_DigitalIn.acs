@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="23.11.2011_176" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\mouseControl\CamMouse_DigitalIn.acs_2015_2_23_0_44" version="20130320">
   <modelDescription>
     <shortDescription>Camera controlled mouse</shortDescription>
     <requirements>Webcam connected.
@@ -127,6 +127,7 @@ The camera mouse sensitivity and the dwell time can be selected via a GUI slider
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>296</posX>
@@ -151,6 +152,7 @@ The camera mouse sensitivity and the dwell time can be selected via a GUI slider
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="start/stop" />
         <property name="buttonCaption2" value="Drag click" />
         <property name="buttonCaption3" value="Right Click" />
@@ -329,6 +331,7 @@ The camera mouse sensitivity and the dwell time can be selected via a GUI slider
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="click" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>772</posX>
@@ -371,6 +374,7 @@ The camera mouse sensitivity and the dwell time can be selected via a GUI slider
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="reset Camera" />
         <property name="buttonCaption2" value="show cam settings" />
         <property name="buttonCaption3" value="save camera profile" />
@@ -478,6 +482,7 @@ The camera mouse sensitivity and the dwell time can be selected via a GUI slider
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>534</posX>

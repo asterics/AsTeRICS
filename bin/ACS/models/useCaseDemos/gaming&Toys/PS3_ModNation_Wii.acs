@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="09.03.2012_82" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\gaming&amp;Toys\PS3_ModNation_Wii.acs_2015_2_23_0_43" version="20130320">
   <components>
     <component id="WiiMote.1" type_id="asterics.WiiMote">
       <description>Interfaces to the WiiMote via Bluetooth HID and provides data from Wiimote and Nunchuck controller</description>
@@ -60,6 +60,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>967</posX>
@@ -111,6 +112,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>1013</posX>
@@ -277,7 +279,9 @@
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>982</posX>
         <posY>770</posY>
@@ -309,6 +313,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>223</posX>
@@ -341,6 +346,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>353</posX>
@@ -373,6 +379,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>506</posX>
@@ -405,6 +412,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>646</posX>
@@ -437,6 +445,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Lenken" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>87</posX>

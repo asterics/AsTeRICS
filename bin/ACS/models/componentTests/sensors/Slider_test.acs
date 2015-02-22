@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="12.10.2011_1325" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\Slider_test.acs_2015_2_23_0_30" version="20130320">
   <components>
     <component id="Slider.2" type_id="asterics.Slider">
       <description>a slider GUI element which provides the slider value at an output port</description>
@@ -29,6 +29,7 @@
         <property name="alignment" value="0" />
         <property name="fontSize" value="10" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>108</posX>
@@ -61,6 +62,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="10" />
         <property name="caption" value="bar-graph" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>304</posX>
@@ -101,6 +103,7 @@
         <property name="alignment" value="1" />
         <property name="fontSize" value="10" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>101</posX>
@@ -132,6 +135,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="10" />
         <property name="caption" value="Oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>307</posX>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-05-24_1220" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\mouseControl\OneEventMouse.acs_2015_2_23_0_45" version="20130320">
   <modelDescription>
     <shortDescription>One event mouse</shortDescription>
     <requirements>HID Actuator</requirements>
@@ -245,6 +245,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Scan/Select" />
         <property name="buttonCaption2" value="" />
         <property name="buttonCaption3" value="" />
@@ -348,6 +349,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>550</posX>
@@ -415,6 +417,7 @@
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>0</posX>

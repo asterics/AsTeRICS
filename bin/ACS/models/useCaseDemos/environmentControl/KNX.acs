@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="23.11.2011_176" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\environmentControl\KNX.acs_2015_2_23_0_42" version="20130320">
   <modelDescription>
     <shortDescription>KNX Demo application
 This model controls the lightning of the KNX Gamma Trainingskit.</shortDescription>
@@ -30,6 +30,7 @@ individually with other string formatting plugins.
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Light dinning table on" />
         <property name="buttonCaption2" value="Light dinning table off" />
         <property name="buttonCaption3" value="Light office 1 on" />
@@ -110,6 +111,7 @@ individually with other string formatting plugins.
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>59</posX>
@@ -150,6 +152,7 @@ individually with other string formatting plugins.
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>149</posX>
@@ -208,6 +211,7 @@ individually with other string formatting plugins.
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>59</posX>
@@ -248,6 +252,7 @@ individually with other string formatting plugins.
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>150</posX>
@@ -288,6 +293,7 @@ individually with other string formatting plugins.
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>61</posX>
@@ -393,6 +399,7 @@ individually with other string formatting plugins.
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>151</posX>
@@ -408,7 +415,9 @@ individually with other string formatting plugins.
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>541</posX>
         <posY>188</posY>

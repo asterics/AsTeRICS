@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-06-14_720" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\actuators\SyntheticVoice_test.acs_2015_2_23_0_21" version="20130320">
   <components>
     <component id="SyntheticVoice.1" type_id="asterics.SyntheticVoice">
       <description>Uses SAPI technology to generate synthetic voice</description>
@@ -69,6 +69,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Speech text 1" />
         <property name="buttonCaption2" value="Speech text 2" />
         <property name="buttonCaption3" value="Speech text 3" />

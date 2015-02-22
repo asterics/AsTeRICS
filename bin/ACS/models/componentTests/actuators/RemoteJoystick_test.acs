@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="09.11.2011_1628" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\actuators\RemoteJoystick_test.acs_2015_2_23_0_20" version="20130320">
   <components>
     <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
       <description>Signal Generator</description>
@@ -109,6 +109,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="POV-hat direction" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>231</posX>
@@ -140,6 +141,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="X/Z-Axis" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>245</posX>
@@ -171,6 +173,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Y/R axis" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>234</posX>
@@ -195,6 +198,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Button 1 press" />
         <property name="buttonCaption2" value="Button 1 release" />
         <property name="buttonCaption3" value="Button 2 press" />
@@ -250,7 +254,9 @@
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>552</posX>
         <posY>225</posY>

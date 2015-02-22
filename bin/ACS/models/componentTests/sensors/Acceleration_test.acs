@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="16.12.2011_1454" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\Acceleration_test.acs_2015_2_23_0_25" version="20130320">
   <components>
     <component id="Acceleration.1" type_id="asterics.Acceleration">
       <description>Acceleration sensor CIM</description>
@@ -48,6 +48,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="X-Acceleration" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>263</posX>
@@ -79,6 +80,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Y-Acceleration" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>259</posX>
@@ -110,6 +112,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Z-Acceleration" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>379</posX>
@@ -141,6 +144,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Total Acceleration" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>377</posX>
@@ -194,6 +198,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="FPS" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>386</posX>

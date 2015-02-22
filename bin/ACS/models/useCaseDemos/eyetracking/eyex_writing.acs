@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="8/18/2014_2046" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\eyetracking\eyex_writing.acs_2015_2_23_0_42" version="20130320">
   <components>
     <component id="EyeX.1" type_id="asterics.EyeX">
       <description>interfaces to the EyeX Gaze tracking system</description>
       <ports>
+        <inputPort portTypeID="xOffset">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="yOffset">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="gazeX">
           <properties />
         </outputPort>
@@ -24,6 +30,8 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
+        <property name="averaging" value="4" />
         <property name="minBlinkTime" value="150" />
         <property name="midBlinkTime" value="1500" />
         <property name="maxBlinkTime" value="1501" />
@@ -86,6 +94,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="on/off" />
         <property name="buttonCaption2" value="Notepad" />
         <property name="buttonCaption3" value="WebBrowser" />

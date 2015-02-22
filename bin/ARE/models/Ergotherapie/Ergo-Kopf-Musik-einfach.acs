@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="31.08.2012_2336" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ARE\models\Ergotherapie\Ergo-Kopf-Musik-einfach.acs_2015_2_23_0_50" version="20130320">
   <modelDescription>
     <shortDescription>A head-movement controlled musical instrument</shortDescription>
     <requirements>A midi-capabable soundcard must be installed and a webcamera must be connected to an USB port</requirements>
@@ -113,6 +113,7 @@ left/right movements influence the tone height</description>
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Menu" />
         <property name="buttonCaption2" value="" />
         <property name="buttonCaption3" value="" />
@@ -219,6 +220,7 @@ left/right movements influence the tone height</description>
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Vibraphone" />
         <property name="buttonCaption2" value="Glockenspiel" />
         <property name="buttonCaption3" value="Woodblock" />
@@ -321,6 +323,7 @@ left/right movements influence the tone height</description>
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="alle Töne" />
         <property name="buttonCaption2" value="harmonisch 1" />
         <property name="buttonCaption3" value="Dur" />
@@ -439,6 +442,7 @@ left/right movements influence the tone height</description>
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>301</posX>
@@ -479,6 +483,7 @@ left/right movements influence the tone height</description>
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>217</posX>
@@ -503,6 +508,7 @@ left/right movements influence the tone height</description>
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="rauf-runter" />
         <property name="buttonCaption2" value="links-rechts" />
         <property name="buttonCaption3" value="" />

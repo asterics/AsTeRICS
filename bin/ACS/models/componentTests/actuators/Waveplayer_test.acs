@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="10.12.2011_2343" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\actuators\Waveplayer_test.acs_2015_2_23_0_21" version="20130320">
   <components>
     <component id="WavefilePlayer.1" type_id="asterics.WavefilePlayer">
       <description>Simple SAPI component. It uses default system voice settings. </description>
@@ -28,6 +28,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Play 1.wav (via event)" />
         <property name="buttonCaption2" value="Play 2.wav" />
         <property name="buttonCaption3" value="Play 3.wav" />

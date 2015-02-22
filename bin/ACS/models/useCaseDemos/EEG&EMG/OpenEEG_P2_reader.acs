@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="04.07.2013_1113" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\OpenEEG_P2_reader.acs_2015_2_23_0_41" version="20130320">
   <components>
     <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
       <description>Oscilloscope display for one signal channel</description>
@@ -20,6 +20,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>313</posX>
@@ -51,6 +52,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>327</posX>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="23.09.2014_915" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\mouseControl\relative_mouse.acs_2015_2_23_0_45" version="20130320">
   <components>
     <component id="MouseCapture.1" type_id="asterics.MouseCapture">
       <description>Captures mouse cursor activity from local system</description>
@@ -64,6 +64,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>265</posX>
@@ -95,6 +96,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>280</posX>

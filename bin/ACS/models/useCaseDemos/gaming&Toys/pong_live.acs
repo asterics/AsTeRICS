@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="13.08.2013_1641" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\gaming&amp;Toys\pong_live.acs_2015_2_23_0_43" version="20130320">
   <components>
     <component id="Arduino.1" type_id="asterics.Arduino">
       <description>Arduino Microcontroller CIM</description>
@@ -33,6 +33,7 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="uniqueID" value="not used" />
         <property name="periodicADCUpdate" value="50" />
         <property name="pin2Mode" value="2" />
         <property name="pin3Mode" value="2" />
@@ -184,6 +185,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>535</posX>
@@ -215,6 +217,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="pulse Player1" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>288</posX>
@@ -282,6 +285,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>940</posX>
@@ -307,6 +311,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>818</posX>
@@ -442,6 +447,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="pulse Player2" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>307</posX>
@@ -467,6 +473,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>812</posX>
@@ -779,6 +786,9 @@
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
+        <inputPort portTypeID="preString">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="preString" value="@FS20:11111111_1115_" />
@@ -849,6 +859,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Go!" />
         <property name="buttonCaption2" value="" />
         <property name="buttonCaption3" value="" />

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="12/30/2014_202" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\StringDelay_test.acs_2015_2_23_0_24" version="20130320">
   <components>
     <component id="Timer.1" type_id="asterics.Timer">
       <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
@@ -100,6 +100,7 @@
         <property name="fontSize" value="14" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>491</posX>
@@ -132,6 +133,7 @@
         <property name="fontSize" value="14" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>575</posX>

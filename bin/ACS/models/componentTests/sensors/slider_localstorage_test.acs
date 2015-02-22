@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="12/26/2014_1626" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\slider_localstorage_test.acs_2015_2_23_0_30" version="20130320">
   <components>
     <component id="Slider.1" type_id="asterics.Slider">
       <description>a slider GUI element which provides the slider value at an output port</description>
@@ -29,6 +29,7 @@
         <property name="alignment" value="0" />
         <property name="fontSize" value="18" />
         <property name="storeValue" value="True" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>567</posX>
@@ -54,6 +55,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>729</posX>
@@ -98,6 +100,7 @@
         <property name="borderThickness" value="4" />
         <property name="selectionFrameColor" value="10" />
         <property name="selectionFrameThickness" value="8" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="-" />
         <property name="buttonCaption2" value="+" />
         <property name="buttonCaption3" value="" />
@@ -193,6 +196,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>745</posX>
@@ -218,6 +222,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>731</posX>
@@ -268,6 +273,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>961</posX>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="02/07/2012_1122" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\AlphaMusicPlayer.acs_2015_2_23_0_41" version="20130320">
   <modelDescription>
     <shortDescription>This model allows the user to start/stop an audio player by measuring his/her
 relaxation level.</shortDescription>
@@ -117,6 +117,7 @@ state.</description>
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>652</posX>
@@ -140,6 +141,7 @@ state.</description>
         <property name="caption" value="" />
         <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Play.png" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>900</posX>
@@ -163,6 +165,7 @@ state.</description>
         <property name="caption" value="" />
         <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Stop.png" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>780</posX>
@@ -276,6 +279,7 @@ state.</description>
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="bar-graph" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>337</posX>

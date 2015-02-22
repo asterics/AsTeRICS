@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="8/18/2014_2046" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\eyetracking\eyex_test.acs_2015_2_23_0_42" version="20130320">
   <components>
     <component id="EyeX.1" type_id="asterics.EyeX">
       <description>interfaces to the EyeX Gaze tracking system</description>
       <ports>
+        <inputPort portTypeID="xOffset">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="yOffset">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="gazeX">
           <properties />
         </outputPort>
@@ -24,6 +30,8 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="enabled" value="true" />
+        <property name="averaging" value="4" />
         <property name="minBlinkTime" value="100" />
         <property name="midBlinkTime" value="300" />
         <property name="maxBlinkTime" value="2000" />
@@ -56,6 +64,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="gaze X" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>224</posX>
@@ -87,6 +96,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="gaze Y" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>317</posX>
@@ -118,6 +128,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Close Time" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>284</posX>
@@ -149,6 +160,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Fixation Time" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>412</posX>
@@ -164,7 +176,9 @@
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>157</posX>
         <posY>272</posY>
@@ -188,6 +202,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="" />
         <property name="buttonCaption2" value="offset correction" />
         <property name="buttonCaption3" value="remove last " />
@@ -553,6 +568,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="gaze X" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>422</posX>
@@ -584,6 +600,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="gaze X" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>526</posX>

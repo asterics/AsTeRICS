@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="04.10.2012_1223" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\environmentControl\Speech_tv_irtrans.acs_2015_2_23_0_42" version="20130320">
   <modelDescription>
     <shortDescription>Control your television by speech commands</shortDescription>
     <requirements>1) IR-Trans device connected to the AsTeRICS platform. The IR-Trans is a learnable IR-Sender which can be remotely controlled over a network connection or USB, depending which version you buy. The AsTeRICS plugin is compatible to all versions of IR-Trans. 
@@ -26,6 +26,7 @@ see http://www.microsoft.com/en-us/download/details.aspx?id=27225 and the ACS he
       <properties>
         <property name="language" value="0" />
         <property name="recognitionConfidence" value="0.35" />
+        <property name="speechLoopDelay" value="1500" />
         <property name="activationCommand" value="Asterics" />
         <property name="deactivationCommand" value="computer, stop!" />
         <property name="helpCommand" value="computer, help!" />

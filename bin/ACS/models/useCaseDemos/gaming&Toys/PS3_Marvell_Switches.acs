@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="28.10.2011_1555" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\gaming&amp;Toys\PS3_Marvell_Switches.acs_2015_2_23_0_43" version="20130320">
   <modelDescription>
     <shortDescription>PS3 control for the pinball game Marvell</shortDescription>
     <requirements>GPIO with switches 1-4 connected 
@@ -76,7 +76,9 @@ Swtich3  and Switch4 start / resume  the game.</description>
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>730</posX>
         <posY>97</posY>

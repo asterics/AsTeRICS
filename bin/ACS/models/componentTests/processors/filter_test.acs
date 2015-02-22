@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="28.06.2012_152" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\filter_test.acs_2015_2_23_0_23" version="20130320">
   <components>
     <component id="Filter.1" type_id="asterics.Filter">
       <description>Filter plugin</description>
@@ -47,6 +47,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="filtered" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>406</posX>
@@ -78,6 +79,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="power" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>404</posX>
@@ -109,6 +111,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="original" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>138</posX>

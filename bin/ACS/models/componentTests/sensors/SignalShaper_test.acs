@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-11-09_848" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\SignalShaper_test.acs_2015_2_23_0_30" version="20130320">
   <components>
     <component id="SignalShaper.1" type_id="asterics.SignalShaper">
       <description>This component allow to shape signal from the lines</description>
@@ -52,6 +52,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Repeat - 5 lines" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>448</posX>
@@ -158,6 +159,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Do nothing - 2 lines" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>437</posX>
@@ -189,6 +191,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Send the last value - 1 line" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>431</posX>

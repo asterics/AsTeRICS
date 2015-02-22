@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="30.09.2012_828" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\sip_puff_mouse.acs_2015_2_23_0_44" version="20130320">
   <modelDescription>
     <shortDescription>Sip/Puff controlled local mouse</shortDescription>
     <requirements>Sip/Puff sensor connected to A0 of the Arduino Uno or Duemilanove.
@@ -206,6 +206,7 @@ Sensitivity and Dwell time can be selected via two GUI sliders.</description>
         <property name="backgroundColor" value="0" />
         <property name="fontSize" value="14" />
         <property name="caption" value="select X/Y" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>438</posX>
@@ -261,6 +262,7 @@ Sensitivity and Dwell time can be selected via two GUI sliders.</description>
         <property name="backgroundColor" value="0" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Click" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>692</posX>
@@ -331,6 +333,7 @@ Sensitivity and Dwell time can be selected via two GUI sliders.</description>
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>119</posX>
@@ -371,6 +374,7 @@ Sensitivity and Dwell time can be selected via two GUI sliders.</description>
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>93</posX>
@@ -460,6 +464,7 @@ Sensitivity and Dwell time can be selected via two GUI sliders.</description>
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="double" />
         <property name="buttonCaption2" value="right" />
         <property name="buttonCaption3" value="drag" />
@@ -618,7 +623,12 @@ Sensitivity and Dwell time can be selected via two GUI sliders.</description>
         </outputPort>
       </ports>
       <properties>
+        <property name="uniqueID" value="not used" />
         <property name="periodicADCUpdate" value="50" />
+        <property name="sipThreshold" value="505" />
+        <property name="sipTime" value="700" />
+        <property name="puffThreshold" value="520" />
+        <property name="puffTime" value="700" />
       </properties>
       <layout>
         <posX>5</posX>

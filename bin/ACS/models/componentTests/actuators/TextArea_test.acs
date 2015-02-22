@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="21.07.2013_056" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\actuators\TextArea_test.acs_2015_2_23_0_21" version="20130320">
   <components>
     <component id="TextArea.1" type_id="asterics.TextArea">
       <description>GUI component, which displays text.</description>
@@ -21,6 +21,7 @@
         <property name="fontSize" value="18" />
         <property name="textColor" value="10" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>257</posX>
@@ -83,6 +84,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Text1" />
         <property name="buttonCaption2" value="Text2" />
         <property name="buttonCaption3" value="delete" />
@@ -155,6 +157,7 @@
         <property name="fontSize" value="12" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>411</posX>
@@ -179,6 +182,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="speak it all !" />
         <property name="buttonCaption2" value="" />
         <property name="buttonCaption3" value="" />

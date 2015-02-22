@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="10.09.2012_955" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\Eyetracker_eval_TM4.acs_2015_2_23_0_27" version="20130320">
   <components>
     <component id="Eyetracker.1" type_id="asterics.Eyetracker">
       <description>Webcamera-based eye tracking sensor with gaze tracking support</description>
@@ -79,6 +79,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="Start Evaluation" />
         <property name="buttonCaption2" value="" />
         <property name="buttonCaption3" value="" />

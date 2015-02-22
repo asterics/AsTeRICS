@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="2012-06-12_1310" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\Cellboard_output_test.acs_2015_2_23_0_25" version="20130320">
   <components>
     <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
       <description>GUI component, which displays text.</description>
@@ -14,6 +14,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>380</posX>
@@ -39,6 +40,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="10" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>378</posX>
@@ -63,6 +65,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="left" />
         <property name="buttonCaption2" value="up" />
         <property name="buttonCaption3" value="down" />
@@ -161,6 +164,7 @@
         <property name="enableEdit" value="True" />
         <property name="enableClickSelection" value="True" />
         <property name="keyboardFile" value="test.xml" />
+        <property name="displayGUI" value="true" />
         <property name="cellText1" value="Cell 1" />
         <property name="cellImage1" value="" />
         <property name="actionText1" value="Cell 1 action !" />
@@ -294,6 +298,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>509</posX>
@@ -319,6 +324,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>664</posX>
@@ -344,6 +350,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>503</posX>
@@ -369,6 +376,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>649</posX>
@@ -393,6 +401,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="scanMove" />
         <property name="buttonCaption2" value="scanSelect" />
         <property name="buttonCaption3" value="" />

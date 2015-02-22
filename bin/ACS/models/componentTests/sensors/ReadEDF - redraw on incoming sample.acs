@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="10.09.2013_1832" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\ReadEDF - redraw on incoming sample.acs_2015_2_23_0_30" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />
@@ -14,17 +14,18 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="min" value="-100" />
         <property name="displayBuffer" value="3" />
-        <property name="max" value="100" />
-        <property name="backgroundColor" value="11" />
-        <property name="drawingInterval" value="100" />
-        <property name="gridColor" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="caption" value="oscilloscope" />
         <property name="drawingMode" value="0" />
-        <property name="fontSize" value="14" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>302</posX>
@@ -45,17 +46,18 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="min" value="-100" />
         <property name="displayBuffer" value="3" />
-        <property name="max" value="100" />
-        <property name="backgroundColor" value="11" />
-        <property name="drawingInterval" value="100" />
-        <property name="gridColor" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="caption" value="oscilloscope" />
         <property name="drawingMode" value="0" />
-        <property name="fontSize" value="14" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>216</posX>
@@ -112,17 +114,18 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="min" value="-100" />
         <property name="displayBuffer" value="3" />
-        <property name="max" value="100" />
-        <property name="backgroundColor" value="11" />
-        <property name="drawingInterval" value="100" />
-        <property name="gridColor" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="caption" value="oscilloscope" />
         <property name="drawingMode" value="0" />
-        <property name="fontSize" value="14" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>303</posX>
@@ -143,17 +146,18 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="min" value="-100" />
         <property name="displayBuffer" value="3" />
-        <property name="max" value="100" />
-        <property name="backgroundColor" value="11" />
-        <property name="drawingInterval" value="1" />
-        <property name="gridColor" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="caption" value="oscilloscope" />
         <property name="drawingMode" value="0" />
-        <property name="fontSize" value="14" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="1" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>213</posX>
@@ -174,17 +178,18 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="min" value="-100" />
         <property name="displayBuffer" value="3" />
-        <property name="max" value="100" />
-        <property name="backgroundColor" value="11" />
-        <property name="drawingInterval" value="1" />
-        <property name="gridColor" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="caption" value="oscilloscope" />
         <property name="drawingMode" value="0" />
-        <property name="fontSize" value="14" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="1" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>214</posX>
@@ -205,17 +210,18 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="min" value="-100" />
         <property name="displayBuffer" value="3" />
-        <property name="max" value="100" />
-        <property name="backgroundColor" value="11" />
-        <property name="drawingInterval" value="1" />
-        <property name="gridColor" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="caption" value="oscilloscope" />
         <property name="drawingMode" value="0" />
-        <property name="fontSize" value="14" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="1" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>213</posX>
@@ -236,17 +242,18 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="min" value="-100" />
         <property name="displayBuffer" value="3" />
-        <property name="max" value="100" />
-        <property name="backgroundColor" value="11" />
-        <property name="drawingInterval" value="100" />
-        <property name="gridColor" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="caption" value="oscilloscope" />
         <property name="drawingMode" value="0" />
-        <property name="fontSize" value="14" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>303</posX>
@@ -267,17 +274,18 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="min" value="-100" />
         <property name="displayBuffer" value="3" />
-        <property name="max" value="100" />
-        <property name="backgroundColor" value="11" />
-        <property name="drawingInterval" value="100" />
-        <property name="gridColor" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="caption" value="oscilloscope" />
         <property name="drawingMode" value="0" />
-        <property name="fontSize" value="14" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>302</posX>

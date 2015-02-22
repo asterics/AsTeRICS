@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="25.06.2012_1240" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ARE\models\SpeechControl.acs_2015_2_23_0_49" version="20130320">
   <modelDescription>
     <shortDescription>A demonstration of the speech processing capabilities.</shortDescription>
     <requirements>The Microsoft Speech Server Runtime and the english language packs for speech recognition and speech synthesis must be installed. Please refer to the SpeechProcessor plugin help section in the ACS for details.</requirements>
@@ -20,6 +20,7 @@ Please note that the actuators for environemntal control are not connected in th
       <properties>
         <property name="language" value="0" />
         <property name="recognitionConfidence" value="0.5" />
+        <property name="speechLoopDelay" value="1500" />
         <property name="activationCommand" value="" />
         <property name="deactivationCommand" value="" />
         <property name="helpCommand" value="computer, help!" />
@@ -68,6 +69,7 @@ Please note that the actuators for environemntal control are not connected in th
         <property name="textPosition" value="1" />
         <property name="textColor" value="10" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>501</posX>
@@ -107,6 +109,7 @@ Please note that the actuators for environemntal control are not connected in th
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="tell all commands" />
         <property name="buttonCaption2" value="" />
         <property name="buttonCaption3" value="" />
@@ -252,12 +255,6 @@ Please note that the actuators for environemntal control are not connected in th
         <inputPort portTypeID="xmlFile">
           <properties />
         </inputPort>
-        <outputPort portTypeID="selectedCell">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="selectedCellText">
-          <properties />
-        </outputPort>
         <outputPort portTypeID="actCell">
           <properties />
         </outputPort>
@@ -265,6 +262,15 @@ Please note that the actuators for environemntal control are not connected in th
           <properties />
         </outputPort>
         <outputPort portTypeID="actCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellText">
           <properties />
         </outputPort>
       </ports>
@@ -277,7 +283,10 @@ Please note that the actuators for environemntal control are not connected in th
         <property name="scanColor" value="10" />
         <property name="scanMode" value="2" />
         <property name="hoverTime" value="1000" />
+        <property name="enableEdit" value="true" />
+        <property name="enableClickSelection" value="true" />
         <property name="keyboardFile" value="" />
+        <property name="displayGUI" value="true" />
         <property name="cellText1" value="computer, help!" />
         <property name="cellImage1" value="" />
         <property name="actionText1" value="computer, help!" />

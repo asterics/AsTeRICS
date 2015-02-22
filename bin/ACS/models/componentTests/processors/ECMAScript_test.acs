@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="24.02.2014_1319" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\ECMAScript_test.acs_2015_2_23_0_22" version="20130320">
   <components>
     <component id="EditBox.1" type_id="asterics.EditBox">
       <description>Text edit box</description>
@@ -14,6 +14,8 @@
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
+        <property name="sendDefaultValue" value="0" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>40</posX>
@@ -39,6 +41,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>599</posX>
@@ -64,6 +67,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>459</posX>
@@ -88,6 +92,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="1" />
         <property name="buttonCaption2" value="2" />
         <property name="buttonCaption3" value="3" />
@@ -143,7 +148,9 @@
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>469</posX>
         <posY>302</posY>
@@ -236,6 +243,7 @@
         <property name="textPosition" value="1" />
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>627</posX>

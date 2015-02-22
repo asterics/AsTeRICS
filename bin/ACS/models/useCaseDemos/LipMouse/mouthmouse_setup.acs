@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="07.05.2013_1035" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\mouthmouse_setup.acs_2015_2_23_0_44" version="20130320">
   <components>
     <component id="BarDisplay.1" type_id="asterics.BarDisplay">
       <description>Bar-display</description>
@@ -21,6 +21,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="bar-graph" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>175</posX>
@@ -47,7 +48,12 @@
         </outputPort>
       </ports>
       <properties>
+        <property name="uniqueID" value="not used" />
         <property name="periodicADCUpdate" value="50" />
+        <property name="sipThreshold" value="505" />
+        <property name="sipTime" value="700" />
+        <property name="puffThreshold" value="520" />
+        <property name="puffTime" value="700" />
       </properties>
       <layout>
         <posX>32</posX>
@@ -90,6 +96,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="dotMeter" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>634</posX>
@@ -198,6 +205,7 @@
         <property name="borderThickness" value="2" />
         <property name="selectionFrameColor" value="13" />
         <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="enable/disable mouse" />
         <property name="buttonCaption2" value="calibrate x/y" />
         <property name="buttonCaption3" value="" />
@@ -304,6 +312,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>415</posX>
@@ -335,6 +344,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>544</posX>

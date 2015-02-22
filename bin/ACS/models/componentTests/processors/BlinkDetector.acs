@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="27/08/2012_1344" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\BlinkDetector.acs_2015_2_23_0_21" version="20130320">
   <components>
     <component id="EnobioDisplay.1" type_id="asterics.EnobioDisplay">
       <description>Enobio actuator which displays the Enobio data</description>
@@ -95,7 +95,9 @@
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>426</posX>
         <posY>211</posY>
@@ -110,7 +112,9 @@
     <component id="EventVisualizer.2" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>425</posX>
         <posY>379</posY>
@@ -141,6 +145,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Filtered signal" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>556</posX>
@@ -172,6 +177,7 @@
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
         <property name="caption" value="Derivative" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>550</posX>

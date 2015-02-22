@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="16.12.2011_1438" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\TextfieldReader_test.acs_2015_2_23_0_31" version="20130320">
   <components>
     <component id="TextfieldReader.1" type_id="asterics.TextfieldReader">
       <description>Captures key input from a text field and compares input with a set of command-words</description>
@@ -19,6 +19,7 @@
         <property name="command5" value="five" />
         <property name="command6" value="six" />
         <property name="command7" value="seven" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
         <posX>114</posX>
@@ -28,7 +29,9 @@
     <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
       <description>Simple Event Visualizer</description>
       <ports />
-      <properties />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
       <layout>
         <posX>264</posX>
         <posY>73</posY>
