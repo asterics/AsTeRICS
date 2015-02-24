@@ -36,6 +36,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.security.acl.Owner;
 
@@ -74,6 +75,9 @@ public class CellEditFrame extends JDialog
 	private static final int FIELDWIDTH = 500;
 	private static final int FIELDHEIGHT = 30;
 	private JFileChooser fc;
+	//The current directory of the running ARE. This assumes that the ARE is started from within the location of the start file.
+	//Eventually we should use a java property to set the ARE_START_DIR
+	private static URI areStartURI=new File(".").getAbsoluteFile().toURI();
 
 	JDialog thisDialog;
 	
@@ -135,16 +139,10 @@ public class CellEditFrame extends JDialog
 		 	openImageButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 
-				final String selectedImageFile=fileChooser("./data/pictures");
-				
-				AstericsThreadPool.instance.execute(new Runnable() {
-					public void run() {
-							//If a new model was selected, deploy it.
-							if(selectedImageFile!=null) {
-								imageField.setText(selectedImageFile);
-							}
-					}
-				});
+				final String selectedImageFile=relativizePath(fileChooser("./data/pictures"));
+				if(selectedImageFile!=null) {
+					imageField.setText(selectedImageFile);
+				}
 			}
 		});		
 		panel.add(openImageButton);
@@ -163,16 +161,10 @@ public class CellEditFrame extends JDialog
 		 	openSoundButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 
-				final String selectedSoundFile=fileChooser("./data/sounds");
-				
-				AstericsThreadPool.instance.execute(new Runnable() {
-					public void run() {
-							//If a new model was selected, deploy it.
-							if(selectedSoundFile!=null) {
-								soundField.setText(selectedSoundFile);
-							}
-					}
-				});
+				final String selectedSoundFile=relativizePath(fileChooser("./data/sounds"));
+				if(selectedSoundFile!=null) {
+					soundField.setText(selectedSoundFile);
+				}
 			}
 		});		
 		panel.add(openSoundButton);
@@ -190,16 +182,10 @@ public class CellEditFrame extends JDialog
 		    //openSoundPreviewButton.setPreferredSize(new Dimension(25, FIELDHEIGHT));
 				public void actionPerformed(ActionEvent arg0) {
 
-				final String selectedSoundPreviewFile=fileChooser("./data/sounds");
-				
-				AstericsThreadPool.instance.execute(new Runnable() {
-					public void run() {
-							//If a new model was selected, deploy it.
-							if(selectedSoundPreviewFile!=null) {
-								soundPreviewField.setText(selectedSoundPreviewFile);
-							}
-					}
-				});
+				final String selectedSoundPreviewFile=relativizePath(fileChooser("./data/sounds"));
+				if(selectedSoundPreviewFile!=null) {
+					soundPreviewField.setText(selectedSoundPreviewFile);
+				}
 			}
 		});		
 		panel.add(openSoundPreviewButton);
@@ -225,9 +211,9 @@ public class CellEditFrame extends JDialog
 					instance.setCellCaption(parent.getIndex(), captionField.getText());
 					parent.setActionText(actionField.getText());
 					instance.setCellText(parent.getIndex(), actionField.getText());
-					instance.setImagePath(parent.getIndex(), imageField.getText());
-					instance.setSoundPath(parent.getIndex(), soundField.getText());
-					instance.setSoundPreviewPath(parent.getIndex(), soundPreviewField.getText());
+					instance.setImagePath(parent.getIndex(), relativizePath(imageField.getText()));
+					instance.setSoundPath(parent.getIndex(), relativizePath(soundField.getText()));
+					instance.setSoundPreviewPath(parent.getIndex(), relativizePath(soundPreviewField.getText()));
 					
 					gui.update(AREServices.instance.getAvailableSpace(instance), instance.propFontSize);					
 					parent.repaint();
@@ -250,6 +236,14 @@ public class CellEditFrame extends JDialog
 	    pack();
 	    setLocationRelativeTo(null);
 		add(panel, BorderLayout.CENTER);
+	}
+	
+	private String relativizePath(String absolute) {
+		URI absoluteURI=new File(absolute).toURI();
+		
+		URI relativeURI=areStartURI.relativize(absoluteURI);
+		//System.out.println("relative URI: "+relativeURI);
+		return relativeURI.getPath();		
 	}
 	
 	public void showFrame()
