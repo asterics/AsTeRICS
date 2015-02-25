@@ -48,7 +48,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
  * Interfaces to the Tobii EyeX Gaze tracker server
  * 
  * 
- *  
+ *   
  * @author Chris Veigl [veigl@technikum-wien.at]
  *         Date: 01/2015
  */
@@ -120,7 +120,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	static int  gazeX,gazeY,eyeX,eyeY;
 	static int  correctedGazeX,correctedGazeY,weakGazePointX,weakGazePointY;
 	static int  lastGazeX=0,lastGazeY=0,saveCorrectedGazeX, saveCorrectedGazeY;
-	static double  oldOffsetX=0,offsetX=0,oldOffsetY=0,offsetY=0;
+	static double  oldOffsetX=0,offsetX=0,oldOffsetY=0,offsetY=0,sameOffset=0;
 	
 	private final Bridge bridge = new Bridge(this);
 	private final CalibrationGenerator calib = new CalibrationGenerator(this);
@@ -711,7 +711,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
      		    if (propOffsetCorrectionMode==MODE_COMBINED_TRACKING)  
      		    {
 
-     		    	if ((combinedCorrectionMode==COMBINED_CORRECTION_IDLE) && ((offsetX!=oldOffsetX) || (offsetY!=oldOffsetY)))
+     		    	if ((combinedCorrectionMode==COMBINED_CORRECTION_IDLE) && ((offsetX!=0) || (offsetY!=0)))
      		    	{
      		    		combinedCorrectionMode=COMBINED_CORRECTION_ACTIVE;
 			            lastGazeX=correctedGazeX;
@@ -730,14 +730,21 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 
      		    		int	dist=(int)Math.sqrt((lastGazeX+(int)offsetX-correctedGazeX)*(lastGazeX+(int)offsetX-correctedGazeX)
          		    			+(lastGazeY+(int)offsetY-correctedGazeY)*(lastGazeY+(int)offsetY-correctedGazeY));
+     		    		
 
      		    		if (dist>propOffsetCorrectionRadius)
          		    	{
-     		    			//offsetX=0;
-     		    			//offsetY=0;
-     		    			//combinedCorrectionMode=COMBINED_CORRECTION_IDLE;
-     		    			initTrackingVars();
-         		    	}
+
+     		    			if ((Math.abs(offsetX-oldOffsetX)+Math.abs(offsetY-oldOffsetY))==0) 
+     		    			  sameOffset++;
+     		    			
+     		    			if (sameOffset>7)
+     		    			   initTrackingVars();
+
+     		    			oldOffsetX=offsetX;
+     		   			    oldOffsetY=offsetY;
+
+         		    	} else sameOffset=0;
      		    	}
      		    }
      		    else if (propOffsetCorrectionMode == MODE_PERMANENT_CORRECTION)
@@ -823,10 +830,11 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     
     synchronized private void initTrackingVars()
     {
-		offsetX=0; offsetY=0; oldOffsetX=0; oldOffsetY=0; combinedCorrectionMode=COMBINED_CORRECTION_IDLE;
+		offsetX=0; offsetY=0; oldOffsetX=0; oldOffsetY=0;
+		combinedCorrectionMode=COMBINED_CORRECTION_IDLE;
 		sumX=0;sumY=0;
 		bufferX.clear(); bufferY.clear();
-		avgIdle=10;
+		avgIdle=5;
     }
 
     synchronized public void stopTracker()
