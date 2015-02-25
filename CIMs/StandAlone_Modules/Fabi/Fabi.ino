@@ -65,7 +65,7 @@
 #define DEBUG_OUTPUT
 
 #include <EEPROM.h>
-#include <Bounce2.h>        //  Bounce library used for button debouncing
+#include "Bounce2.h"        //  Bounce library used for button debouncing
 
 // Constants and Macro definitions
 
