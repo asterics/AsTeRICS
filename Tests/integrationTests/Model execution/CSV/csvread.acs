@@ -1,0 +1,394 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS\bin\ACS\models\integrationTests\Model data propagation\CSV\csvread.acs_2015_2_27_17_46" version="20130320">
+  <components>
+    <component id="ReadCSV.1" type_id="asterics.ReadCSV">
+      <description>Open and read a CSV file</description>
+      <ports>
+        <outputPort portTypeID="Output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="FilePath" value=".\\data\\csv\\" />
+      </properties>
+      <layout>
+        <posX>194</posX>
+        <posY>134</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Read File" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>51</posX>
+        <posY>132</posY>
+      </layout>
+      <gui>
+        <posX>7197</posX>
+        <posY>1343</posY>
+        <width>500</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="StringSplitter.1" type_id="asterics.StringSplitter">
+      <description>Split the string in up to 16 strings</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out6">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out7">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out9">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out10">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out11">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out12">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out13">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out14">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out15">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out16">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="Seperator" value=";" />
+      </properties>
+      <layout>
+        <posX>385</posX>
+        <posY>87</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>750</posX>
+        <posY>61</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>1010</posY>
+        <width>6000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="StringToDouble.1" type_id="asterics.StringToDouble">
+      <description>Converts string to values</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>558</posX>
+        <posY>65</posY>
+      </layout>
+    </component>
+    <component id="StringToDouble.1.1" type_id="asterics.StringToDouble">
+      <description>Converts string to values</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>566</posX>
+        <posY>229</posY>
+      </layout>
+    </component>
+    <component id="StringToDouble.1.2" type_id="asterics.StringToDouble">
+      <description>Converts string to values</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>564</posX>
+        <posY>409</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>770</posX>
+        <posY>236</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>4010</posY>
+        <width>6000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.2" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="oscilloscope" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>774</posX>
+        <posY>442</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>7010</posY>
+        <width>6000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="ReadCSV.1" />
+        <port id="Output" />
+      </source>
+      <target>
+        <component id="StringSplitter.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out1" />
+      </source>
+      <target>
+        <component id="StringToDouble.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out2" />
+      </source>
+      <target>
+        <component id="StringToDouble.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="StringSplitter.1" />
+        <port id="out3" />
+      </source>
+      <target>
+        <component id="StringToDouble.1.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="StringToDouble.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="StringToDouble.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="StringToDouble.1.2" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.2" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_read">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="ReadCSV.1" />
+          <eventPort id="read" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>8938</width>
+      <height>10000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
