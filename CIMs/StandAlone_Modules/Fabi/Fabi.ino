@@ -505,7 +505,7 @@ void parseByte (int newByte)  // parse an incoming commandbyte from serial inter
   }
 }
 
-void saveToEEPROM()  // saves a new slot to EEPROM (appends a slot !)
+void saveToEEPROM()
 {
    uint8_t done;
    int address = EmptySlotAddress;
@@ -523,6 +523,7 @@ void saveToEEPROM()  // saves a new slot to EEPROM (appends a slot !)
         else p++;
       }
    }
+   EEPROM.write(address,0);  // indicates last slot !
       
    #ifdef DEBUG_OUTPUT
      Serial.print(address); Serial.println(" bytes saved to EEPROM");
@@ -530,15 +531,16 @@ void saveToEEPROM()  // saves a new slot to EEPROM (appends a slot !)
 }
 
 
-void deleteSlots()  // removes all slot from EEPROM (clears slots)
+void deleteSlots()
 {
    int address=0;
+   EmptySlotAddress=0;
    EEPROM.write(0,0);
    numSlots=1;
 }
 
 
-void readFromEEPROM(uint8_t slot)  // reads all slots from EEPROM and activates selected slot
+void readFromEEPROM(uint8_t slot)
 {
    int address=0;
    uint8_t done;
@@ -556,6 +558,8 @@ void readFromEEPROM(uint8_t slot)  // reads all slots from EEPROM and activates 
         for (int t=0;(t<MAX_KEYSTRING_LEN+4)&&(!done);t++)
         {
           b=EEPROM.read(address++);
+         //Serial.print("address:"); Serial.print(address-1);
+         //Serial.print("value: ");Serial.println(b);
           if (slot==slots) *p++=b;         // copy to SRAM only if intended slot !
           if ((t>3) && (b==0)) done=1;     // skip rest of keystring when end detected !
         }
@@ -606,12 +610,12 @@ void setKeyValues(char* text)
   int modifiers=0;
   numKeys=0;
 
-  #ifdef ARDUINO_PRO_MICRO
+ #ifdef ARDUINO_PRO_MICRO
       #define KEY_UP    KEY_UP_ARROW
       #define KEY_DOWN  KEY_DOWN_ARROW
       #define KEY_LEFT  KEY_LEFT_ARROW
       #define KEY_RIGHT KEY_RIGHT_ARROW
-      #define KEY_ENTER KEY_RETURN
+      #define KEY_ENTER KEY_RETURN  
       #define KEY_SPACE ' '
       #define KEY_A 'a'
       #define KEY_B 'b'
