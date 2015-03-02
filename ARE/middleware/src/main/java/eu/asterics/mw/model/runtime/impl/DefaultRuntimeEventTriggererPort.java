@@ -57,51 +57,55 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
 
     @Override
 	public void raiseEvent() {
-		synchronized (eventListeners) {
-			// for(final IRuntimeEventListenerPort eventListenerPort :
-			// eventListeners.values())
-			for (final Map.Entry<String, IRuntimeEventListenerPort> elem : eventListeners.entrySet()) {
-				{
-					final IRuntimeEventListenerPort eventListenerPort = elem.getValue();
-					if (eventListenerPort == null)
-						continue;
+    	AstericsModelExecutionThreadPool.instance.execute(new Runnable()
+    	{
+    		@Override
+    		public void run() {
+				//Remove comments if you want to reenable multi-threaded execution approach.
+				//syncing on eventListeners ensures that a deployed model is not changed during event notification.
+    			//logger.fine("Synchronizing on eventListeners");
+    			synchronized (eventListeners) 
+    			{
+    				for (final Map.Entry<String, IRuntimeEventListenerPort> elem : eventListeners.entrySet()) {
+    					{
+    						final IRuntimeEventListenerPort eventListenerPort = elem.getValue();
+    						if (eventListenerPort == null)
+    							continue;
 
-					AstericsModelExecutionThreadPool.instance.execute(new Runnable()
-					{
-						@Override
-						public void run() {
-							String targetComponentId = getTargetComponentId(elem.getKey());
-							//block event propagation if model and component is not up and running
-							//Disabled for now, because some important events are lost at startup.
-							/*
+    						String targetComponentId = getTargetComponentId(elem.getKey());
+    						//block event propagation if model and component is not up and running
+    						//Disabled for now, because some important events are lost at startup.
+    						/*
 							if(!DeploymentManager.instance.isComponentRunning(targetComponentId)) {
 								//logger.warning("Event could not be notified, target component not running: targetComponentId: "+targetComponentId);
 								//System.out.println("E: "+targetComponentId);
 								//return;
 							}
-							*/
-							
-							if (targetComponentId != null) {
-								IComponentInstance targetComponent = DeploymentManager.instance
-										.getCurrentRuntimeModel()
-										.getComponentInstance(targetComponentId);
-								if (targetComponent != null) {									
-									//synchronize using the target component, because the component can be considered a black box, that must
-									//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.
-									//System.out.println("Syncing on targetComponentId: "+targetComponentId+", targetComponent: "+targetComponent);								
-									synchronized (targetComponent) {
-										eventListenerPort.receiveEvent(channelID);
-										return;										
-									}
-								}
-							}
-							
-							logger.warning("Event could not be notified, target component not found: targetComponentId: "+targetComponentId);
-						}
-					});
-				}
-			}
-		}
+    						 */
+
+    						if (targetComponentId != null) {
+    							IComponentInstance targetComponent = DeploymentManager.instance
+    									.getCurrentRuntimeModel()
+    									.getComponentInstance(targetComponentId);
+    							if (targetComponent != null) {									
+    								//Remove comments if you want to reenable multi-threaded execution approach.
+    								//We have to synchronize using the target component, because the component can be considered a black box, that must
+    								//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
+    								logger.fine("Synchronizing on targetComponentId: "+targetComponentId);
+    								//synchronized (targetComponent) 
+    								{
+    									eventListenerPort.receiveEvent(channelID);
+    									return;										
+    								}
+    							}
+    						}
+
+    						logger.warning("Event could not be notified, target component not found: targetComponentId: "+targetComponentId);
+    					}
+    				}
+    			}
+    		}
+    	});
 	}
 
     @Override
