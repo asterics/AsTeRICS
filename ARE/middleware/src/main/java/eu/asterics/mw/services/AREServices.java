@@ -395,10 +395,28 @@ public class AREServices implements IAREServices{
 						}
 					});
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			String message="Could not execute stopModel, exception occurred: "+e.getMessage()!=null ? e.getMessage() : e.toString();
+			//String message="Could not execute stopModel, exception occurred: "+e.getMessage()!=null ? e.getMessage() : e.toString();
+			String message=createErrorMsg("Could not stop model", e);
 			logger.warning(message);
 			DeploymentManager.instance.reseToCleanState();
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
+			
+			//Try stopping again with fallback thread
+			try {
+				AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+					@Override
+							public void run() {
+								stopModelInternal();
+							}
+						});
+			} catch (InterruptedException | ExecutionException | TimeoutException se) {
+				//String message2="Could not execute second try of stopModel, exception occurred: "+se.getMessage()!=null ? se.getMessage() : se.toString();
+				message=createErrorMsg("Could not stop model", e);
+				logger.warning("Second Try: "+message);
+				AstericsErrorHandling.instance.reportError(null, message);
+				DeploymentManager.instance.reseToCleanState();
+				AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();				
+			}
 		}
 	}
 	
@@ -545,11 +563,8 @@ public class AREServices implements IAREServices{
 						}
 					});
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			String message="Could not execute runModel, exception occurred: "+(e.getMessage()!=null ? e.getMessage() : e.getClass());
-			if(e instanceof TimeoutException) {
-				message="Could not start model, execution timeouted!";
-			}
-			
+			//String message="Could not execute runModel, exception occurred: "+(e.getMessage()!=null ? e.getMessage() : e.getClass());
+			String message=createErrorMsg("Could not start model", e);
 			logger.warning(message);			
 			AstericsErrorHandling.instance.reportError(null, message);
 			DeploymentManager.instance.reseToCleanState();
@@ -607,12 +622,24 @@ public class AREServices implements IAREServices{
 						}
 					});
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			String message="Could not execute pauseModel, execption occurred: "+e.getMessage()!=null ? e.getMessage() : e.toString();
+			//String message="Could not execute pauseModel, execption occurred: "+e.getMessage()!=null ? e.getMessage() : e.toString();
+			String message=createErrorMsg("Could not pause model",e);			
 			logger.warning(message);			
-			//AstericsErrorHandling.instance.reportError(null, message);
+			AstericsErrorHandling.instance.reportError(null, message);
 			DeploymentManager.instance.reseToCleanState();
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
 		}
+	}
+	
+	private String createErrorMsg(String baseMsg, Exception e) {		
+		if(e instanceof TimeoutException) {
+			return baseMsg+", execution timeouted!";
+		} else if(e instanceof ExecutionException) {
+			if(e.getCause()!=null && e.getCause().getMessage()!=null) {
+				return baseMsg+", "+e.getCause().getMessage();
+			}
+		}
+		return baseMsg;
 	}
 	
 	private void pausModelInternal() {
