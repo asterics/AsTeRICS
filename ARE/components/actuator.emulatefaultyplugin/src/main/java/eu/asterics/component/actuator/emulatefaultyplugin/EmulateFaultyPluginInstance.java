@@ -681,6 +681,7 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
       }
       
       private Object handleCall(final int duration, boolean throwException, String exceptionMessage, boolean returnNullValue) {
+    	  AstericsErrorHandling.instance.getLogger().fine("handleCall: duration: "+duration+", throw Exception: "+throwException+", exceptionMessage: "+exceptionMessage+", returnNullValue: "+returnNullValue);
     	  if(throwException) {
 			  AstericsErrorHandling.instance.getLogger().warning("Before entering throwing exception with message: "+exceptionMessage);
     		  throw new RuntimeException(exceptionMessage);
