@@ -236,7 +236,11 @@ public class DeploymentManager
 							componentInstance.getPropertyValue(propertyName);
 					if (propertyName != null)
 					{
-						synchronized(runtimeComponentInstance) {
+						//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+						//We have to synchronize using the target component, because the component can be considered a black box, that must
+						//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
+						//synchronized(runtimeComponentInstance) 
+						{
 							runtimeComponentInstance.
 							setRuntimePropertyValue(propertyName, propertyValue);
 						}
@@ -538,7 +542,12 @@ public class DeploymentManager
 				componentTypeIdToRuntimeComponentInstances.remove(set);
 
 				//No instances of this type stop the Bundle possible
-				synchronized(ci) {
+
+				//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+				//We have to synchronize using the target component, because the component can be considered a black box, that must
+				//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
+				//synchronized(ci) 
+				{
 					BundleManager.
 					stopBundleComponent(componentRepository.getComponentType(cType));
 				}
@@ -568,7 +577,11 @@ public class DeploymentManager
 					String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 					
 					String s = getComponentInstanceIDFromComponentInstance(componentInstance);
-					synchronized (componentInstance) {
+					//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+					//We have to synchronize using the target component, because the component can be considered a black box, that must
+					//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
+					//synchronized (componentInstance) 
+					{
 						bundleManager.getBundleFromId(id).start();
 						componentInstance.start();
 						runtimeComponentInstancesStatus.put(s, AREStatus.RUNNING);
@@ -639,7 +652,11 @@ public class DeploymentManager
 			{
 				String compRefName=componentInstance.getClass().getSimpleName();
 				logger.fine("Trying to pause component instance: "+compRefName);
-				synchronized(componentInstance) {
+				//MULTI-THREADING: Remove comments if you want to reenable multi-threaded execution approach.
+				//We have to synchronize using the target component, because the component can be considered a black box, that must
+				//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	 				
+				//synchronized(componentInstance) 
+				{
 					componentInstance.pause();
 					String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
 					runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.PAUSED);
@@ -664,7 +681,11 @@ public class DeploymentManager
 			{
 				String compRefName=componentInstance.getClass().getSimpleName();
 				logger.fine("Trying to resume component instance: "+compRefName);
-				synchronized(componentInstance) {
+				//MULTI-THREADING: Remove comments if you want to reenable multi-threaded execution approach.
+				//We have to synchronize using the target component, because the component can be considered a black box, that must
+				//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	 								
+				//synchronized(componentInstance) 
+				{
 					componentInstance.resume();
 					String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
 					runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.RUNNING);				
@@ -695,7 +716,7 @@ public class DeploymentManager
 					logger.fine("Trying to stop component instance: "+compRefName);
 					String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 	
-//Removed synchronized again due to issue #59					
+//Removed synchronized again due to issue #59								
 //					synchronized(componentInstance) {
 						bundleManager.getBundleFromId(id).stop();
 						componentInstance.stop();
@@ -895,7 +916,11 @@ public class DeploymentManager
 
 					if (propertyName.equals(key))
 					{
-						synchronized(runtimeComponentInstance) {
+						//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+						//We have to synchronize using the target component, because the component can be considered a black box, that must
+						//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
+						//synchronized(runtimeComponentInstance) 
+						{
 							runtimeComponentInstance.setRuntimePropertyValue(key, value);
 						}
 					}
@@ -1167,10 +1192,12 @@ public class DeploymentManager
 							
 							IRuntimeComponentInstance rci = this.runtimeComponentInstances.get(targetComponentID);
 							
-							//synchronize using the target component, because the component can be considered a black box, that must
-							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.	
+							//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+							//We have to synchronize using the target component, because the component can be considered a black box, that must
+							//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
 							if(rci != null) {
-								synchronized(rci) {
+								//synchronized(rci) 
+								{
 									rci.syncedValuesReceived(row);
 								}
 							} else {
@@ -1195,10 +1222,12 @@ public class DeploymentManager
 						{
 							IRuntimeComponentInstance rci = this.runtimeComponentInstances.get(targetComponentID);
 							
-							//synchronize using the target component, because the component can be considered a black box, that must
-							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.	
+							//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+							//We have to synchronize using the target component, because the component can be considered a black box, that must
+							//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
 							if(rci != null) {
-								synchronized(rci) {
+								//synchronized(rci) 
+								{
 									rci.syncedValuesReceived(row);
 								}
 							} else {
@@ -1227,10 +1256,12 @@ public class DeploymentManager
 					
 					IRuntimeComponentInstance rci = runtimeComponentInstances.get(targetComponentID);
 					
-					//synchronize using the target component, because the component can be considered a black box, that must
-					//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.			
+					//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+					//We have to synchronize using the target component, because the component can be considered a black box, that must
+					//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
 					if(rci != null) {
-						synchronized(rci) {
+						//synchronized(rci) 
+						{
 							rci.syncedValuesReceived(row);
 						}
 					} else {
