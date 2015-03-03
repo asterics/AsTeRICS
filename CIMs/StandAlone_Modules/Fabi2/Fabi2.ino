@@ -75,10 +75,10 @@
     
 */
 
- #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used  (comment or remove if Teensy is used !)
+// #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used  (comment or remove if Teensy is used !)
 // #define TEENSY              //  if teensy is used (but not a lipmouse module)
  
-// #define LIPMOUSE         //  Lipmouse module with Teensy!
+ #define LIPMOUSE         //  Lipmouse module with Teensy!
 // #define LIPMOUSE_V0      //  first HW version of lipmouse, powers pressure sensor via GPIO pins !
 
 #define DEBUG_OUTPUT
@@ -373,7 +373,7 @@ void loop() {
       if (pressure > settings.tp) rightMouseButton=1;
       else rightMouseButton=0; 
 
-      if (pressure > settings.ts) leftMouseButton=1;
+      if (pressure < settings.ts) leftMouseButton=1;
       else leftMouseButton=0;       
       
     #endif
