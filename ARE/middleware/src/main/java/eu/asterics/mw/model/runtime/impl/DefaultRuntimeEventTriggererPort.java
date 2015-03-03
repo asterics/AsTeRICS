@@ -34,6 +34,9 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 /**
@@ -57,50 +60,44 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
 
     @Override
 	public void raiseEvent() {
-    	AstericsModelExecutionThreadPool.instance.execute(new Runnable()
-    	{
-    		@Override
+    	AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
     		public void run() {
-				//Remove comments if you want to reenable multi-threaded execution approach.
-				//syncing on eventListeners ensures that a deployed model is not changed during event notification.
-    			//logger.fine("Synchronizing on eventListeners");
-    			synchronized (eventListeners) 
+    			//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+    			//syncing on eventListeners ensures that a deployed model is not changed during event notification.
+    			logger.fine("Synchronizing on eventListeners, curThread: "+Thread.currentThread().getName()+", eventListeners: "+eventListeners.entrySet());
+    			//synchronized (eventListeners) 
     			{
-    				for (final Map.Entry<String, IRuntimeEventListenerPort> elem : eventListeners.entrySet()) {
-    					{
-    						final IRuntimeEventListenerPort eventListenerPort = elem.getValue();
-    						if (eventListenerPort == null)
-    							continue;
+    				for (Map.Entry<String, IRuntimeEventListenerPort> elem : eventListeners.entrySet()) {
 
-    						String targetComponentId = getTargetComponentId(elem.getKey());
-    						//block event propagation if model and component is not up and running
-    						//Disabled for now, because some important events are lost at startup.
-    						/*
-							if(!DeploymentManager.instance.isComponentRunning(targetComponentId)) {
-								//logger.warning("Event could not be notified, target component not running: targetComponentId: "+targetComponentId);
-								//System.out.println("E: "+targetComponentId);
-								//return;
-							}
-    						 */
+    					IRuntimeEventListenerPort eventListenerPort = elem.getValue();
+    					if (eventListenerPort == null)
+    						continue;
 
-    						if (targetComponentId != null) {
-    							IComponentInstance targetComponent = DeploymentManager.instance
-    									.getCurrentRuntimeModel()
-    									.getComponentInstance(targetComponentId);
-    							if (targetComponent != null) {									
-    								//Remove comments if you want to reenable multi-threaded execution approach.
-    								//We have to synchronize using the target component, because the component can be considered a black box, that must
-    								//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
-    								logger.fine("Synchronizing on targetComponentId: "+targetComponentId);
-    								//synchronized (targetComponent) 
-    								{
-    									eventListenerPort.receiveEvent(channelID);
-    									return;										
-    								}
-    							}
+    					String targetComponentId = getTargetComponentId(elem.getKey());
+    					//block event propagation if model and component is not up and running
+    					//Disabled for now, because some important events are lost at startup.
+    					/*
+								if(!DeploymentManager.instance.isComponentRunning(targetComponentId)) {
+									//logger.warning("Event could not be notified, target component not running: targetComponentId: "+targetComponentId);
+									//System.out.println("E: "+targetComponentId);
+									//return;
+								}
+    					 */
+
+    					IComponentInstance targetComponent = DeploymentManager.instance
+    							.getCurrentRuntimeModel()
+    							.getComponentInstance(targetComponentId);
+    					if (targetComponent != null) {									
+    						//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+    						//We have to synchronize using the target component, because the component can be considered a black box, that must
+    						//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
+    						logger.fine("Synchronizing on targetComponentId: "+targetComponentId);
+    						//synchronized (targetComponent) 
+    						{
+    							eventListenerPort.receiveEvent(channelID);
     						}
-
-    						logger.warning("Event could not be notified, target component not found: targetComponentId: "+targetComponentId);
+    					} else {
+    						logger.warning("Event could not be notified, target component not found: targetComponentId: "+targetComponentId);    							
     					}
     				}
     			}
@@ -111,7 +108,9 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
     @Override
     public void addEventListener(String targetComponentID, String eventPortID, IRuntimeEventListenerPort eventListenerPort)
     {
-        synchronized (eventListeners)
+		//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+		//syncing on eventListeners ensures that a deployed model is not changed during event notification.
+        //synchronized (eventListeners)
         {
             eventListeners.put(getUniqueID(targetComponentID, eventPortID), eventListenerPort);
         }
@@ -120,7 +119,9 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
     @Override
     public void removeEventListener(String targetComponentID, String eventPortID)
     {
-        synchronized (eventListeners)
+		//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+		//syncing on eventListeners ensures that a deployed model is not changed during event notification.    	
+        //synchronized (eventListeners)
         {
             eventListeners.remove(getUniqueID(targetComponentID, eventPortID));
         }
