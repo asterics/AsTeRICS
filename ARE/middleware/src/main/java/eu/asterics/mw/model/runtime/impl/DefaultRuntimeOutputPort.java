@@ -62,9 +62,9 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 		{
 			public void run()
 			{
-				//Remove comments if you want to reenable multi-threaded execution approach.
+				//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
 				//syncing on inputPortEndpoints ensures that a deployed model is not changed during data propagation.
-				logger.fine("Synchronizing on inputPortEndpoints");
+				//logger.fine("Synchronizing on inputPortEndpoints ["+inputPortEndpoints+"], curThread: "+Thread.currentThread().getName());
 				//synchronized (inputPortEndpoints)
 				{
 
@@ -103,10 +103,10 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 							DeploymentManager.instance.bufferData(newData, endPoint.portID, endPoint.targetComponentID);
 						}
 						else {
-							//Remove comments if you want to reenable multi-threaded execution approach.
+							//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
 							//We have to synchronize using the target component, because the component can be considered a black box, that must
 							//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
-							logger.fine("Synchronizing on targetComponentId: "+endPoint.targetComponentID);
+							//logger.fine("Synchronizing on targetComponentId: "+endPoint.targetComponentID);
 							//synchronized(targetComponent) 
 							{
 								runtimeInputPort.receiveData(newData);
@@ -124,7 +124,9 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 			final IRuntimeInputPort inputPort,
 			String conversion)
 	{
-		synchronized (inputPortEndpoints)
+		//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+		//syncing on inputPortEndpoints ensures that a deployed model is not changed during data propagation.		
+		//synchronized (inputPortEndpoints)
 		{
 			EndPoint ep=new EndPoint(targetComponentID, portID);
 			inputPortEndpoints.put(ep, inputPort);
@@ -136,7 +138,9 @@ public class DefaultRuntimeOutputPort implements IRuntimeOutputPort
 
 	public void removeInputPortEndpoint(final String targetComponentID, final String portID)
 	{
-		synchronized (inputPortEndpoints)
+		//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+		//syncing on inputPortEndpoints ensures that a deployed model is not changed during data propagation.		
+		//synchronized (inputPortEndpoints)
 		{
 			inputPortEndpoints.remove(new EndPoint(targetComponentID, portID));
 		}
