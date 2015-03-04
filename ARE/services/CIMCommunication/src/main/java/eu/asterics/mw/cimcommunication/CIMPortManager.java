@@ -72,6 +72,9 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
     private List<String> ignoredComPorts = new ArrayList<String>();
     private HashMap<Long, String> cimIdToName = new HashMap<Long, String>(); 
     private Logger logger = null; 
+    //Indicate that new devices have been attached since the last rescan
+    private boolean usbDevicesAttached = false;
+    //Indicate that devices have been detached since the last rescan
     private boolean usbDevicesRemoved = false;
 	private boolean modelRunning = false;
     
@@ -115,6 +118,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 	 */
 	private void rescan(int timeout)
 	{
+		logger.info("Starting rescan of COM ports");
 		boolean waitForResponses = false;
 
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
@@ -173,7 +177,9 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 	        catch (InterruptedException e)
 	        {
 	        	e.printStackTrace();
-	        }        
+	        }   
+        usbDevicesAttached=false;
+        logger.info("Finished rescan of COM ports");
 	}
 	
 	private void printActiveCimControllers()
@@ -205,9 +211,9 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 	}
 	
 	private void stopCIMThreads() 
-	{
-		StringBuffer buf = new StringBuffer();
-		buf.append("Stopping currently active COM ports:\n");
+	{ 				
+		logger.info("Begin: Stopping currently active COM ports:\n");
+		printActiveCimControllers();
 		Iterator<CIMUniqueIdentifier> it = comPorts.keySet().iterator();
 		while (it.hasNext())
 		{
@@ -227,7 +233,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 			buf.append("  Stopped: " +  ctrl.comPortName + "\n");
 		}
 */		
- 		logger.info(buf.toString());
+
  		
         try
         {
@@ -236,7 +242,9 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
         catch (InterruptedException e)
         {
         	e.printStackTrace();
-        }    		
+        } 
+        usbDevicesRemoved = false;
+        logger.info("End: Stopping currently active COM ports");
 	}
 	 
 	private void generateCIMDescriptionMap()
@@ -502,8 +510,9 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 			short featureAddress, short requestCode, boolean crc)
 	{
 		CIMPortController ctrl = comPorts.get(cuid);
-		if (ctrl != null)
+		if (ctrl != null) {
 			return sendPacket(ctrl, data, featureAddress, requestCode, crc);
+		}
 		return 0;
 	}
 	
@@ -605,14 +614,16 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 	@Override
 	public void preStartModel() 
 	{
-		if (usbDevicesRemoved)
+		logger.fine("Begin preStartModel: usbDevicesRemoved: "+usbDevicesRemoved+", usbDevicesAttached: "+usbDevicesAttached);
+		if (usbDevicesRemoved||usbDevicesAttached)
 		{
 			stopCIMThreads();
-			usbDevicesRemoved = false;
+			//usbDevicesRemoved = false;
 			rescan();
 		}
 		modelRunning = true;
 		printActiveCimControllers();
+		logger.fine("End preStartModel: usbDevicesRemoved: "+usbDevicesRemoved+", usbDevicesAttached: "+usbDevicesAttached);
 	}
 
 	/**
@@ -621,7 +632,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 	 */
 	@Override
 	public void postStopModel() {
-		logger.fine("PostStop callback");
+		logger.fine("Begin postStopModel: usbDevicesRemoved: "+usbDevicesRemoved);
 		if (usbDevicesRemoved)
 		{
 			stopCIMThreads();
@@ -629,6 +640,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 //			rescan();
 		}
 		modelRunning = false;
+		logger.fine("End postStopModel: usbDevicesRemoved: "+usbDevicesRemoved);
 	}
 
 	/**
@@ -638,7 +650,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 	public void usbDevicesAttached()
 	{
 		logger.fine("usbDevicesAttached callback");
-		usbDevicesRemoved = true;
+		usbDevicesAttached = true;
 //		rescan();		
 	}
 
@@ -649,7 +661,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 	@Override
 	public void usbDevicesRemoved()
 	{
-		logger.fine("usbDevicesRemoved callback");
+		//logger.fine("usbDevicesRemoved callback");
 		usbDevicesRemoved = true;
 		
 		if (!modelRunning)
