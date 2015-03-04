@@ -217,8 +217,9 @@ public class AstericsModelExecutionThreadPool {
 	 * @param c
 	 * @throws Exception
 	 */
-	public void execAndWaitOnModelExecutorLifecycleThread(Callable c) throws Exception {
+	public <V> V execAndWaitOnModelExecutorLifecycleThread(Callable<V> c) throws Exception {
 		//if (MODEL_EXECUTOR.equals(Thread.currentThread().getName())) {
+		
 		if (Thread.currentThread().getName().startsWith(MODEL_EXECUTOR_LIFECYCLE)) {
 			// We are already executed by the ModelExecutor Thread so just call the
 			// Runnable.run() method
@@ -226,7 +227,7 @@ public class AstericsModelExecutionThreadPool {
 					"ModelExecutor: Current thread: "
 							+ Thread.currentThread().getName()
 							+ ", running r.run() in this thread");
-			c.call();
+			return c.call();
 		} else {
 			// Execute with ModelExecutor and wait for response
 			// "blocked execution"
@@ -234,9 +235,9 @@ public class AstericsModelExecutionThreadPool {
 					"ModelExecutor: Current thread: "
 							+ Thread.currentThread().getName()
 							+ ", Submitting on modelExecutorLifecycle thread");
-			Future f = modelExecutorLifecycle.submit(c);
+			Future<V> f = modelExecutorLifecycle.submit(c);
 			try {
-				f.get(TASK_SUBMIT_TIMEOUT, TimeUnit.MILLISECONDS);
+				return f.get(TASK_SUBMIT_TIMEOUT, TimeUnit.MILLISECONDS);
 			} catch (TimeoutException e) {				
 				logger.warning("[" + MODEL_EXECUTOR_LIFECYCLE
 						+ "]: Task execution timeouted");
