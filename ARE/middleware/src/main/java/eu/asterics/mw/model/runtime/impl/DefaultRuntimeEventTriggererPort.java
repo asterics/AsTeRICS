@@ -64,7 +64,7 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
     		public void run() {
     			//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
     			//syncing on eventListeners ensures that a deployed model is not changed during event notification.
-    			logger.fine("Synchronizing on eventListeners, curThread: "+Thread.currentThread().getName()+", eventListeners: "+eventListeners.entrySet());
+    			//logger.fine("Synchronizing on eventListeners, curThread: "+Thread.currentThread().getName()+", eventListeners: "+eventListeners.entrySet());
     			//synchronized (eventListeners) 
     			{
     				for (Map.Entry<String, IRuntimeEventListenerPort> elem : eventListeners.entrySet()) {
@@ -91,7 +91,7 @@ public class DefaultRuntimeEventTriggererPort implements IRuntimeEventTriggererP
     						//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
     						//We have to synchronize using the target component, because the component can be considered a black box, that must
     						//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
-    						logger.fine("Synchronizing on targetComponentId: "+targetComponentId);
+    						//logger.fine("Synchronizing on targetComponentId: "+targetComponentId);
     						//synchronized (targetComponent) 
     						{
     							eventListenerPort.receiveEvent(channelID);
