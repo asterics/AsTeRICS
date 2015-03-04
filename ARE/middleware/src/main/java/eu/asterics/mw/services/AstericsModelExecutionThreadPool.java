@@ -80,6 +80,7 @@ public class AstericsModelExecutionThreadPool {
 	private static final int DEFAULT_POOL_SIZE = 1;
 	
 	private static final String MODEL_EXECUTOR = "ModelExecutor";
+	private static final String MODEL_EXECUTOR_LIFECYCLE = MODEL_EXECUTOR+"-Lifecycle";
 
 	private static final String TASK_SUBMIT_TIMEOUT_PROPERTY = "ThreadPoolTasks.submitTimeout";	
 	private static final String THREAD_POOL_SIZE = "ThreadPool."+MODEL_EXECUTOR+".size";
@@ -95,7 +96,7 @@ public class AstericsModelExecutionThreadPool {
 	private ThreadFactory fallbackThreadFactory=new ThreadFactory() {				
 		@Override
 		public Thread newThread(Runnable r) {
-			String threadName=MODEL_EXECUTOR+"-Lifecycle-Fallback-"+fallbackNr++;
+			String threadName=MODEL_EXECUTOR_LIFECYCLE+"-Fallback-"+fallbackNr++;
 			logger.warning("ModelExecutor ["+Thread.currentThread().getName()+"]: Switching to fallbackPool with Thread: "+threadName);
 
 			Thread newThread=Executors.defaultThreadFactory().newThread(r);
@@ -110,10 +111,10 @@ public class AstericsModelExecutionThreadPool {
 				
 				@Override
 				public Thread newThread(Runnable arg0) {
-					logger.fine("Creating Thread: "+MODEL_EXECUTOR);
+					logger.fine("Creating Thread: "+MODEL_EXECUTOR_LIFECYCLE);
 					
 					Thread newThread=Executors.defaultThreadFactory().newThread(arg0);
-					newThread.setName(MODEL_EXECUTOR);
+					newThread.setName(MODEL_EXECUTOR_LIFECYCLE);
 					return newThread;
 				}
 			});
@@ -217,7 +218,8 @@ public class AstericsModelExecutionThreadPool {
 	 * @throws Exception
 	 */
 	public void execAndWaitOnModelExecutorLifecycleThread(Callable c) throws Exception {
-		if (MODEL_EXECUTOR.equals(Thread.currentThread().getName())) {
+		//if (MODEL_EXECUTOR.equals(Thread.currentThread().getName())) {
+		if (Thread.currentThread().getName().startsWith(MODEL_EXECUTOR_LIFECYCLE)) {
 			// We are already executed by the ModelExecutor Thread so just call the
 			// Runnable.run() method
 			AstericsErrorHandling.instance.getLogger().fine(
@@ -235,22 +237,20 @@ public class AstericsModelExecutionThreadPool {
 			Future f = modelExecutorLifecycle.submit(c);
 			try {
 				f.get(TASK_SUBMIT_TIMEOUT, TimeUnit.MILLISECONDS);
-			} catch (TimeoutException e) {
-				logger.warning("[" + MODEL_EXECUTOR
+			} catch (TimeoutException e) {				
+				logger.warning("[" + MODEL_EXECUTOR_LIFECYCLE
 						+ "]: Task execution timeouted");
+				switchToFallbackPoolInternal();
 				throw e;
 			}
 		}
 	}
 	
-	
 	/**
 	 * Creates a new thread pool of size 1 and exchanges (currently hanging) thread pools (modelExecutorLifecycle, pool) 
 	 * for model execution with the new instance.
-	 */
-	public void switchToFallbackPool() {		
-		//logger.warning("ModelExecutor ["+Thread.currentThread()+"]: Switching to fallbackPool: DISABLED");
-
+	 */	
+	private void switchToFallbackPoolInternal() {
 		//Each time an execution timeouts the caller can switch to a new threadpool, to not risk a hanging ARE
 		//NOTE: keep it of size one to ensure that the models are executed thread safe!!
 		//is used as a fallbackpool to stop a hanging model in case of a single-threaded approach		
@@ -260,6 +260,16 @@ public class AstericsModelExecutionThreadPool {
 			ExecutorService fallbackPool=Executors.newFixedThreadPool(1, fallbackThreadFactory);
 			modelExecutorLifecycle=fallbackPool;
 			pool=fallbackPool;
-		}
+		}		
+	}
+	
+	/**
+	 * Creates a new thread pool of size 1 and exchanges (currently hanging) thread pools (modelExecutorLifecycle, pool) 
+	 * for model execution with the new instance.
+	 */
+	public void switchToFallbackPool() {		
+		//logger.warning("ModelExecutor ["+Thread.currentThread()+"]: Switching to fallbackPool: DISABLED");
+		
+		//Don't use manual switching any more, use automatic switchToFallbackPoolInternal() after a timeout in execAndWaitOnModelExecutorLifecycleThread instead
 	}
 }
