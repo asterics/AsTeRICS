@@ -39,6 +39,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
@@ -143,14 +144,9 @@ public class AREServices implements IAREServices{
 	 * @param filename the filename of the model to be deployed
 	 */
 	public void deployFile(final String filename) {
-		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
-			logger.warning("Model lifecycle task pending, ignoring model switch");
-			return;
-		}
-		
-		deployFileInternal(filename);
+		//deployFileInternal(filename);
 		//ideally this should also be executed in the same thread as the others, but unfortunately AsapiSupport does not even use this.
-		/*
+		
 		try {
 			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
 						@Override
@@ -159,13 +155,11 @@ public class AREServices implements IAREServices{
 						}
 					});
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {			
-			final String message="Could not execute deployFile, exception occured: "+(e.getMessage()!=null ? e.getMessage() : e.getClass());
-			//final String message="Could not start model: execution timeouted.";
-			logger.warning(message);			
-			//AstericsErrorHandling.instance.reportError(null, message);
-			//AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
-			//throw new AREAsapiException(message);
-		} */		
+			String message=createErrorMsg("Could not deploy model", e);
+			logger.warning(message);
+			DeploymentManager.instance.reseToCleanState();					
+			AstericsErrorHandling.instance.reportError(null, message);
+		}		
 	}
 	/**
 	 * Deploys the model associated to the specified filename. The file 
@@ -245,13 +239,9 @@ public class AREServices implements IAREServices{
 	 * @param filename the filename of the model to be deployed
 	 */
 	public void deployAndStartFile(final String filename) {
-		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
-			logger.warning("Model lifecycle task pending, ignoring model switch");
-			return;
-		}
-		deployAndStartFileInternal(filename);		
+		//deployAndStartFileInternal(filename);		
 		//ideally this should also be executed in the same thread as the others, but unfortunately AsapiSupport does not even use this.
-		/*
+		
 		try {
 			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
 						@Override
@@ -259,14 +249,16 @@ public class AREServices implements IAREServices{
 							deployAndStartFileInternal(filename);
 						}
 					});
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {			
-			final String message="Could not execute deployAndStartFile, exception occured: "+(e.getMessage()!=null ? e.getMessage() : e.getClass());
-			//final String message="Could not start model: execution timeouted.";
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			String message=createErrorMsg("Could not deploy and start model", e);
+			logger.warning(message);
+			DeploymentManager.instance.reseToCleanState();
+			
 			logger.warning(message);			
-			//AstericsErrorHandling.instance.reportError(null, message);
+			AstericsErrorHandling.instance.reportError(null, message);
 			//AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
 			//throw new AREAsapiException(message);
-		} */		
+		}		
 	}
 
 	/**
@@ -359,8 +351,10 @@ public class AREServices implements IAREServices{
 	 * component with the specified ID as a string, or an empty string if the
 	 * property was not previously set
 	 */
-	public String setComponentProperty(String componentID, String key,
-			String value) {
+	
+	public String setComponentProperty(final String componentID, final String key,
+			final String value) {
+		/*
 		String result = DeploymentManager.instance.getCurrentRuntimeModel().
 				setComponentProperty(componentID, key, value);
 		DeploymentManager.instance.setComponentProperty (componentID, key, value);
@@ -377,9 +371,45 @@ public class AREServices implements IAREServices{
 					"setComponentProperty: OK\n");
 			return result;
 		}
+		*/
+		
+		try {
+			return AstericsModelExecutionThreadPool.instance
+					.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+
+						@Override
+						public String call() throws Exception {
+
+							String result = DeploymentManager.instance
+									.getCurrentRuntimeModel()
+									.setComponentProperty(componentID, key,
+											value);
+							DeploymentManager.instance.setComponentProperty(
+									componentID, key, value);
+							if (result == null) {
+								logger.warning(this.getClass().getName()
+										+ "."
+										+ "setComponentProperty: Undefined component "
+										+ componentID + "\n");
+								throw new AREAsapiException(
+										"Undefined component ID: "
+												+ componentID);
+							} else {
+								logger.fine(this.getClass().getName() + "."
+										+ "setComponentProperty: OK\n");
+								return result;
+							}
+
+						}
+					});
+		} catch (Exception e) {
+			String message=createErrorMsg("Could not setComponentProperty", e);
+			logger.warning(message);
+			AstericsErrorHandling.instance.reportError(null, message);
+		}
+		return "";		
 	}
-
-
+	
 	/**
 	 * Stops the execution of the model. Unlike the {@link #pauseModel()}
 	 * method, this one resets the components, which means that when the model
