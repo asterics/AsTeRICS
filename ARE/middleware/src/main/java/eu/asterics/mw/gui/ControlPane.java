@@ -71,6 +71,7 @@ import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 
@@ -329,9 +330,18 @@ public class ControlPane extends JPanel
 							if(selectedModelFile!=null) {
 								as.deployFile(selectedModelFile);
 							}
-							//Also, if no model was selected, restart old one.
+						} catch (AREAsapiException e) {	
+							//do a catch only for deployFile here because runModel automatically shows error dialog.
+							String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
+							AstericsErrorHandling.instance.reportError(null, "Could not deploy model!"+ reason);
+							//Give up, if deployment fails.
+							return;
+						}
+						try {							
+							//Also, if no model was selected or the deployment failed, restart old one.
 							as.runModel();
-						} catch (AREAsapiException e) {	}
+						} catch (AREAsapiException e) {}
+						
 						mainFrame.validate();
 						System.out.println ("Run/resume model OK!");
 					}
