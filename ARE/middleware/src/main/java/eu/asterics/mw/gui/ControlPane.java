@@ -43,6 +43,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -61,6 +62,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import org.osgi.framework.BundleContext;
@@ -216,10 +218,28 @@ public class ControlPane extends JPanel
 			public void keyPressed(KeyEvent arg0) {
 				// TODO Auto-generated method stub
 				if(KeyEvent.VK_F7==arg0.getKeyCode()) {
-					try {
-						as.stopModel();
-					} catch (AREAsapiException e) {
-					}					
+					//Stop model non-blocking, because some plugins perform GUI-actions running in the 
+					//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread
+					mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					AstericsThreadPool.instance.execute(new Runnable() {
+						public void run() {
+							try{
+								try {
+									as.stopModel();
+								} catch (AREAsapiException e) {
+								}
+							}finally{															
+								SwingUtilities.invokeLater(new Runnable() {
+									@Override
+									public void run() {
+										mainFrame.setCursor(Cursor.getDefaultCursor());
+										mainFrame.validate();
+										System.out.println ("Stop model OK!");										
+									}
+								});
+							}						
+						}
+					});
 				}
 			}
 		});
@@ -323,27 +343,38 @@ public class ControlPane extends JPanel
 				
 				//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
 				//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread
+				mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				AstericsThreadPool.instance.execute(new Runnable() {
 					public void run() {
-						try {
-							//If a new model was selected, deploy it.
-							if(selectedModelFile!=null) {
-								as.deployFile(selectedModelFile);
+						try{
+							try {
+								//If a new model was selected, deploy it.
+								if(selectedModelFile!=null) {
+									as.deployFile(selectedModelFile);
+								}
+							} catch (AREAsapiException e) {	
+								//do a catch only for deployFile here because runModel automatically shows error dialog.
+								String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
+								AstericsErrorHandling.instance.reportError(null, "Could not deploy model!"+ reason);
+								//Give up, if deployment fails.
+								return;
 							}
-						} catch (AREAsapiException e) {	
-							//do a catch only for deployFile here because runModel automatically shows error dialog.
-							String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
-							AstericsErrorHandling.instance.reportError(null, "Could not deploy model!"+ reason);
-							//Give up, if deployment fails.
-							return;
+							try {							
+								//Also, if no model was selected or the deployment failed, restart old one.
+								as.runModel();
+							} catch (AREAsapiException e) {}
+
+						}finally{
+							//Restore mouse cursor in any case
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {
+									mainFrame.setCursor(Cursor.getDefaultCursor());
+									mainFrame.validate();
+									System.out.println ("Run/resume model OK!");										
+								}
+							});
 						}
-						try {							
-							//Also, if no model was selected or the deployment failed, restart old one.
-							as.runModel();
-						} catch (AREAsapiException e) {}
-						
-						mainFrame.validate();
-						System.out.println ("Run/resume model OK!");
 					}
 				});
 			}
@@ -365,14 +396,26 @@ public class ControlPane extends JPanel
 			public void mouseClicked(MouseEvent me) {
 				//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
 				//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread
+				mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				AstericsThreadPool.instance.execute(new Runnable() {
+
 					public void run() {
-						try {
-							as.runModel();
-						} catch (AREAsapiException e) {
+						try{
+							try {
+								as.runModel();
+							} catch (AREAsapiException e) {
+							}
+
+						}finally{															
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {
+									mainFrame.setCursor(Cursor.getDefaultCursor());
+									mainFrame.validate();
+									System.out.println ("Run/resume model OK!");										
+								}
+							});
 						}
-						mainFrame.validate();
-						System.out.println ("Run/resume model OK!");
 					}
 				});
 
@@ -393,13 +436,25 @@ public class ControlPane extends JPanel
 		stopLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
-				//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread				
+				//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread
+				mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				AstericsThreadPool.instance.execute(new Runnable() {
 					public void run() {
-						try {
-							as.stopModel();
-						} catch (AREAsapiException e) {
-						}
+						try{
+							try {
+								as.stopModel();
+							} catch (AREAsapiException e) {
+							}
+						}finally{															
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {
+									mainFrame.setCursor(Cursor.getDefaultCursor());
+									mainFrame.validate();
+									System.out.println ("Stop model OK!");										
+								}
+							});
+						}						
 					}
 				});
 			}
@@ -418,12 +473,24 @@ public class ControlPane extends JPanel
 		pauseLabel.addMouseListener(new MouseAdapter() {
 			//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
 			//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread			
-			public void mouseClicked(MouseEvent me) {
+			public void mouseClicked(MouseEvent me) {				
+				mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				AstericsThreadPool.instance.execute(new Runnable() {
 					public void run() {
-						try {
-							as.pauseModel();
-						} catch (AREAsapiException e) {
+						try{
+							try {
+								as.pauseModel();
+							} catch (AREAsapiException e) {
+							}
+						}finally{															
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {
+									mainFrame.setCursor(Cursor.getDefaultCursor());
+									mainFrame.validate();
+									System.out.println ("Pause model OK!");										
+								}
+							});
 						}
 					}
 				});
