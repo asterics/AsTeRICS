@@ -42,7 +42,8 @@
                             (e.g. AT KP KEY_UP presses the "Cursor-Up" key, AT KP KEY_CTRL KEY_ALT KEY_DELETE presses all three keys)
                             for a list of supported key idientifier strings see below ! 
                             
-          AT KR             key release: releases all currently pressed keys (TBD: release individual keys ...)    
+          AT KR <text>      key release: releases all keys identified in text    
+          AT RA             release all: releases all currently pressed keys and buttons    
           
           AT SAVE <name>    save settings and current button modes to next free eeprom slot under given name (e.g. AT SAVE mouse1)
           AT LOAD <name>    load button modes from eeprom slot (e.g. AT LOAD mouse1 -> loads profile named "mouse1")
@@ -76,7 +77,8 @@
     
     KEY_RIGHT   KEY_LEFT       KEY_DOWN        KEY_UP      KEY_ENTER    KEY_ESC   KEY_BACKSPACE   KEY_TAB	
     KEY_HOME    KEY_PAGE_UP    KEY_PAGE_DOWN   KEY_DELETE  KEY_INSERT   KEY_END	  KEY_NUM_LOCK    KEY_SCROLL_LOCK
-    KEY_SPACE   KEY_CAPS_LOCK  KEY_PAUSE       KEY_SHIFT   KEY_CTRL     KEY_ALT   KEY_GUI 
+    KEY_SPACE   KEY_CAPS_LOCK  KEY_PAUSE       KEY_SHIFT   KEY_CTRL     KEY_ALT   KEY_RIGHT_ALT   KEY_GUI 
+    KEY_RIGHT_GUI
     
 */
 
@@ -96,7 +98,7 @@
 #define DOUBLECLICK_MULTIPLIER  5    // CLICK_TIME factor for double clicks
 #define DEFAULT_DEBOUNCING_TIME 7   // debouncing interval for button-press / release
 
-#define UP_BUTTON       3
+#define UP_BUTTON       3     // index numbers of the virtual buttons (not pin numbers)
 #define DOWN_BUTTON     4
 #define LEFT_BUTTON     5
 #define RIGHT_BUTTON    6
@@ -106,26 +108,31 @@
 #define LONGPUFF_BUTTON 10
 
 
+// global variables
+
 #ifdef TEENSY
-  struct settingsType settings = {
-    {13,2,3},                //  physical button pins  
-    25,                      //  Led pin
-    1,                       //  Mouse cursor movement active (not alternative functions )
+  int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={13,2,3};  //  mapa physical button pins to button index 0,1,2  
+  int8_t  led_map[NUMBER_OF_LEDS]={18,19,29};              //  maps leds pins   
+  uint8_t LED_PIN = 25;                                    //  Led output pin
+#endif
+
+#ifdef ARDUINO_PRO_MICRO
+  int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={2,3,4};
+  int8_t  led_map[NUMBER_OF_LEDS]={8,9,10};            
+  uint8_t LED_PIN = 17;
+#endif
+
+struct settingsType settings = {         // type definition see fabi.h
+    1,                                   //  Mouse cursor movement active (not the alternative functions )
     3, 10, 10, 30, 30, 500, 525, 1000    // wheel step, accx, accy, deadzone x, deadzone y, threshold sip, threshold puff, threshold time (short/longpress)
-  }; 
-#else 
-  struct settingsType settings = {  // default for Arduino Pro Micro
-    {2,3,4},              
-    17, 
-    1,
-    3,10,10,30,30,500,525,1000 
-  }; 
-#endif 
+}; 
 
-struct buttonType buttons [NUMBER_OF_BUTTONS];   // array for all buttons - defines one memory slot 
+struct buttonType buttons [NUMBER_OF_BUTTONS];   // array for all buttons - type definition see fabi.h 
 
-uint8_t calib_now = 1;                       // calib zeropoint right at startup !
-uint8_t DebugOutput = DEFAULT_DEBUGLEVEL;
+uint8_t calib_now = 1;                           // calibrate zeropoint right at startup !
+uint8_t DebugOutput = DEFAULT_DEBUGLEVEL;        // default: very chatty at the serial interface ...
+int clickTime=DEFAULT_CLICK_TIME;
+int waitTime=DEFAULT_WAIT_TIME;
 
 int EmptySlotAddress = 0;
 
@@ -135,51 +142,47 @@ float timeDifference;
 uint32_t timeStamp = 0;
 unsigned long time=0;
 
+uint8_t actButton=0;
+uint8_t actSlot=0;
+
 int pressure;
 int down;
 int left;
 int up;
 int right;
-
 float accumXpos = 0.f;
 float accumYpos = 0.f;
+float accelFactor;
 int x;
 int y;
 int x_offset;
 int y_offset;
 
-int clickTime=DEFAULT_CLICK_TIME;
-int waitTime=DEFAULT_WAIT_TIME;
-
-uint8_t actButton=0;
-
+int8_t moveX=0;       
+int8_t moveY=0;       
 uint8_t leftMouseButton=0,old_leftMouseButton=0;
 uint8_t middleMouseButton=0,old_middleMouseButton=0;
 uint8_t rightMouseButton=0,old_rightMouseButton=0;
-
-int leftClickRunning=0;
-int rightClickRunning=0;
-int middleClickRunning=0;
-int doubleClickRunning=0;
-
-int8_t moveX=0;       
-int8_t moveY=0;       
-
-uint8_t cnt =0;
+uint8_t leftClickRunning=0;
+uint8_t rightClickRunning=0;
+uint8_t middleClickRunning=0;
+uint8_t doubleClickRunning=0;
 
 int inByte=0;
 char * keystring=0;
 char * writeKeystring=0;
+uint8_t cnt =0,cnt2=0;
 
 
 // function declarations 
 void handlePress (int buttonIndex);      // a button was pressed
 void handleRelease (int buttonIndex);    // a button was released
 uint32_t handleButton(int i, uint8_t b);  // button debouncing
+void UpdateLeds();
 
-
-
+////////////////////////////////////////
 // Setup: program execution starts here
+////////////////////////////////////////
 
 void setup() {
    Serial.begin(9600);
@@ -194,7 +197,7 @@ void setup() {
      TXLED1;
    #endif  
 
-   #ifdef LIPMOUSE_V0     // only needed if first lipmouse hardware version
+   #ifdef LIPMOUSE_V0     // only needed for first lipmouse hardware version
      pinMode(21,OUTPUT);
      pinMode(22,OUTPUT);  
      digitalWrite(21,HIGH);  // supply voltage for pressure sensor
@@ -202,10 +205,13 @@ void setup() {
    #endif
 
 
-   pinMode(settings.LED_PIN,OUTPUT);
+   pinMode(LED_PIN,OUTPUT);
 
    for (int i=0; i<NUMBER_OF_PHYSICAL_BUTTONS; i++)   // initialize physical buttons and bouncers
-      pinMode (settings.input_map[i], INPUT_PULLUP);   // configure the pins for input mode with pullup resistors
+      pinMode (input_map[i], INPUT_PULLUP);   // configure the pins for input mode with pullup resistors
+
+   for (int i=0; i<NUMBER_OF_LEDS; i++)   // initialize physical buttons and bouncers
+      pinMode (led_map[i], OUTPUT);   // configure the pins for input mode with pullup resistors
 
    for (int i=0; i<NUMBER_OF_BUTTONS; i++)   // initialize button array
    {
@@ -219,18 +225,22 @@ void setup() {
    }
    
    readFromEEPROM(0);  // read button modes from first EEPROM slot if available !  
+
    BlinkLed();
    if (DebugOutput==DEBUG_FULLOUTPUT)  
      Serial.print("Free RAM:");  Serial.println(freeRam());
 }
 
+///////////////////////////////
 // Loop: the main program loop
+///////////////////////////////
 
 void loop() {  
 
       currentTime = millis();
-      timeDifference = (currentTime - previousTime)/5000.f;
+      timeDifference = currentTime - previousTime;
       previousTime = currentTime;
+      accelFactor= timeDifference / 10000.0f;      
 
       pressure = analogRead(PRESSURE_SENSOR_PIN);
       up = analogRead(UP_SENSOR_PIN);
@@ -254,7 +264,7 @@ void loop() {
       }
     
       for (int i=0;i<NUMBER_OF_PHYSICAL_BUTTONS;i++)    // update button press / release events
-          handleButton(i, -1, digitalRead(settings.input_map[i]) == LOW ? 1 : 0);
+          handleButton(i, -1, digitalRead(input_map[i]) == LOW ? 1 : 0);
 
       handleButton(SIP_BUTTON, LONGSIP_BUTTON, pressure < settings.ts ? 1 : 0); 
       handleButton(PUFF_BUTTON, LONGPUFF_BUTTON, pressure > settings.tp ? 1 : 0);
@@ -276,14 +286,14 @@ void loop() {
       
       if (settings.mouseOn == 1) {
         if (y>settings.dy)
-           accumYpos += (y-settings.dy)*settings.ay*timeDifference; 
+           accumYpos += (float)((y-settings.dy)*settings.ay) * accelFactor; 
         else if (y<-settings.dy)
-           accumYpos += (y+settings.dy)*settings.ay*timeDifference; 
+           accumYpos += (float)((y+settings.dy)*settings.ay) * accelFactor; 
 
         if (x>settings.dx)
-           accumXpos += (x-settings.dx)*settings.ax*timeDifference; 
+           accumXpos += (float)((x-settings.dx)*settings.ax) * accelFactor; 
         else if (x<-settings.dx)
-           accumXpos += (x+settings.dx)*settings.ax*timeDifference; 
+           accumXpos += (float)((x+settings.dx)*settings.ax) * accelFactor; 
       
         int xMove = (int)accumXpos;
         int yMove = (int)accumYpos;
@@ -299,7 +309,10 @@ void loop() {
       }
 
       if ((moveX!=0) || (moveY!=0))   // movement induced by button actions  
+      {
+        if (cnt2++%4==0)
           Mouse.move(moveX, moveY);
+      }
 
       // handle running clicks or double clicks
       if (leftClickRunning)
@@ -320,19 +333,16 @@ void loop() {
       }
  
       // if any changes were made, update the Mouse buttons
-      if((leftMouseButton!=old_leftMouseButton) ||
-        (middleMouseButton!=old_middleMouseButton) ||
-        (rightMouseButton!=old_rightMouseButton))  {
-
-         #ifdef ARDUINO_PRO_MICRO
-           if (leftMouseButton) Mouse.press(MOUSE_LEFT); else Mouse.release(MOUSE_LEFT);
-           if (rightMouseButton) Mouse.press(MOUSE_RIGHT); else Mouse.release(MOUSE_RIGHT);
-           if (middleMouseButton) Mouse.press(MOUSE_MIDDLE); else Mouse.release(MOUSE_MIDDLE);
-         #else         
-           Mouse.set_buttons(leftMouseButton, middleMouseButton, rightMouseButton);
-         #endif
+      if(leftMouseButton!=old_leftMouseButton) {
+         if (leftMouseButton) Mouse.press(MOUSE_LEFT); else Mouse.release(MOUSE_LEFT);
          old_leftMouseButton=leftMouseButton;
+      }
+      if  (middleMouseButton!=old_middleMouseButton) {
+         if (middleMouseButton) Mouse.press(MOUSE_MIDDLE); else Mouse.release(MOUSE_MIDDLE);
          old_middleMouseButton=middleMouseButton;
+      }
+      if  (rightMouseButton!=old_rightMouseButton)  {
+         if (rightMouseButton) Mouse.press(MOUSE_RIGHT); else Mouse.release(MOUSE_RIGHT);
          old_rightMouseButton=rightMouseButton;
      }
     
@@ -342,6 +352,7 @@ void loop() {
         writeKeystring=0;
     }    
        
+    UpdateLeds();
     delay(waitTime);  // to limit move movement speed. TBD: remove delay, use millis() !
 }
 
@@ -359,12 +370,12 @@ void handleRelease (int buttonIndex)    // a button was released
      case CMD_MOUSE_PRESS_MIDDLE: middleMouseButton=0; break;
      case CMD_MOUSE_MOVEX: moveX=0; break;      
      case CMD_MOUSE_MOVEY: moveY=0; break;      
-     case CMD_KEY_PRESS: releaseKeys(); break; 
+     case CMD_KEY_PRESS: releaseKeys(buttons[buttonIndex].keystring); break; 
    }
 }
 
-void handleButton(int i, int l, uint8_t state)
-{
+void handleButton(int i, int l, uint8_t state)    // button debouncing and longpress detection  
+{                                                 //   (if button i is pressed long and index l>=0, virtual button l is activated !)
    if ( buttons[i].bounceState == state) {
      if (buttons[i].bounceCount < DEFAULT_DEBOUNCING_TIME) {
        buttons[i].bounceCount++;
@@ -537,9 +548,16 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
              break;
       case CMD_KEY_RELEASE:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.print("key release: ");
-             releaseKeys();             
+               Serial.print("key release: ");  Serial.println(keystring);
+             strcat(keystring," ");
+             releaseKeys(keystring);             
              break;
+      case CMD_RELEASE_ALL:
+             if (DebugOutput==DEBUG_FULLOUTPUT)  
+               Serial.print("release all");
+             release_all();             
+             break;
+            
       case CMD_SAVE_SLOT:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.print("save slot ");  Serial.println(keystring);
@@ -567,64 +585,64 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
           break;
 
 
-      case CMD_LM_MM:
+      case CMD_MM:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("mouse function on");
              settings.mouseOn=1;
           break;
-      case CMD_LM_AF:
+      case CMD_AF:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("alternative functions on");
              settings.mouseOn=0;
           break;
-      case CMD_LM_SW:
+      case CMD_SW:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("switch mouse / alternative function");
              if (settings.mouseOn==0) settings.mouseOn=1;
              else settings.mouseOn=0;
           break;
-      case CMD_LM_CA:
+      case CMD_CA:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("start calibration");
              calib_now=1;
           break;
-      case CMD_LM_AX:
+      case CMD_AX:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("set acc x");
              settings.ax=par1;
           break;
-      case CMD_LM_AY:
+      case CMD_AY:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("set acc y");
              settings.ay=par1;
           break;
-      case CMD_LM_DX:
+      case CMD_DX:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("set deadzone x");
              settings.dx=par1;
           break;
-      case CMD_LM_DY:
+      case CMD_DY:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("set deadzone y");
              settings.dy=par1;
           break;
-      case CMD_LM_TS:
+      case CMD_TS:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("set threshold sip");
              settings.ts=par1;
           break;
-      case CMD_LM_TP:
+      case CMD_TP:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("set threshold puff");
              settings.tp=par1;
           break;
-      case CMD_LM_SR:
+      case CMD_SR:
              DebugOutput=DEBUG_LIVEREPORTS;
           break;
-      case CMD_LM_ER:
+      case CMD_ER:
              DebugOutput=DEBUG_NOOUTPUT;
           break;
-      case CMD_LM_TT:
+      case CMD_TT:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("set time threshold");
              settings.tt=par1;
@@ -636,10 +654,17 @@ void BlinkLed()
 {
     for (uint8_t i=0; i < 5;i++)
     {
-        digitalWrite (settings.LED_PIN, !digitalRead(settings.LED_PIN));
+        digitalWrite (LED_PIN, !digitalRead(LED_PIN));
         delay(100);
     }
-    digitalWrite (settings.LED_PIN, HIGH);
+    digitalWrite (LED_PIN, HIGH);
+}
+
+void UpdateLeds()
+{  
+   if (actSlot & 1) digitalWrite (led_map[0],LOW); else digitalWrite (led_map[0],HIGH); 
+   if (actSlot & 2) digitalWrite (led_map[1],LOW); else digitalWrite (led_map[1],HIGH); 
+   if (actSlot & 4) digitalWrite (led_map[2],LOW); else digitalWrite (led_map[2],HIGH); 
 }
 
 

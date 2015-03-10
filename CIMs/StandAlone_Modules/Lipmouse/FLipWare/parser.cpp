@@ -74,24 +74,25 @@ void parseCommand (char * cmdstr)
         if (!strcmp(actpos,"MY")) { actpos=strtok(NULL," "); if (get_int(actpos, &num)) cmd=CMD_MOUSE_MOVEY; }
         if (!strcmp(actpos,"KW")) { actpos+=3; cmd=CMD_KEY_WRITE; }
         if (!strcmp(actpos,"KP")) { actpos+=3; cmd=CMD_KEY_PRESS; }
-        if (!strcmp(actpos,"KR")) cmd=CMD_KEY_RELEASE;
+        if (!strcmp(actpos,"KR")) { actpos+=3; cmd=CMD_KEY_RELEASE; }
+        if (!strcmp(actpos,"RA")) cmd=CMD_RELEASE_ALL;
     
     
         // FLipMouse specific commands
         
-        if (!strcmp(actpos,"MM"))  cmd=CMD_LM_MM;
-        if (!strcmp(actpos,"AF"))  cmd=CMD_LM_AF;
-        if (!strcmp(actpos,"SW"))  cmd=CMD_LM_SW;
-        if (!strcmp(actpos,"SR"))  cmd=CMD_LM_SR;
-        if (!strcmp(actpos,"ER"))  cmd=CMD_LM_ER;
-        if (!strcmp(actpos,"CA"))  cmd=CMD_LM_CA;
-        if (!strcmp(actpos,"AX"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_AX;}
-        if (!strcmp(actpos,"AY"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_AY;}
-        if (!strcmp(actpos,"DX"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_DX;}
-        if (!strcmp(actpos,"DY"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_DY;}
-        if (!strcmp(actpos,"TS"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_TS;}
-        if (!strcmp(actpos,"TP"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_TP;}
-        if (!strcmp(actpos,"TT"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_TT;}
+        if (!strcmp(actpos,"MM"))  cmd=CMD_MM;
+        if (!strcmp(actpos,"AF"))  cmd=CMD_AF;
+        if (!strcmp(actpos,"SW"))  cmd=CMD_SW;
+        if (!strcmp(actpos,"SR"))  cmd=CMD_SR;
+        if (!strcmp(actpos,"ER"))  cmd=CMD_ER;
+        if (!strcmp(actpos,"CA"))  cmd=CMD_CA;
+        if (!strcmp(actpos,"AX"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_AX;}
+        if (!strcmp(actpos,"AY"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_AY;}
+        if (!strcmp(actpos,"DX"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_DX;}
+        if (!strcmp(actpos,"DY"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_DY;}
+        if (!strcmp(actpos,"TS"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_TS;}
+        if (!strcmp(actpos,"TP"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_TP;}
+        if (!strcmp(actpos,"TT"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_TT;}
     }
     if (cmd)
     {

@@ -51,7 +51,7 @@ namespace MouseApp2
                                    "KEY_F1","KEY_F2","KEY_F3","KEY_F4","KEY_F5","KEY_F6","KEY_F7","KEY_F8","KEY_F9","KEY_F10","KEY_F11","KEY_F12",	
                                    "KEY_RIGHT","KEY_LEFT","KEY_DOWN","KEY_UP","KEY_ENTER","KEY_ESC","KEY_BACKSPACE","KEY_TAB",
                                    "KEY_HOME","KEY_PAGE_UP","KEY_PAGE_DOWN","KEY_DELETE","KEY_INSERT","KEY_END","KEY_NUM_LOCK",
-                                   "KEY_SCROLL_LOCK","KEY_SPACE","KEY_CAPS_LOCK","KEY_PAUSE","KEY_SHIFT","KEY_CTRL","KEY_ALT","KEY_GUI" 
+                                   "KEY_SCROLL_LOCK","KEY_SPACE","KEY_CAPS_LOCK","KEY_PAUSE","KEY_SHIFT","KEY_CTRL","KEY_ALT","KEY_RIGHT_ALT","KEY_GUI", "KEY_RIGHT_GUI" 
                               };
 
         
@@ -62,6 +62,8 @@ namespace MouseApp2
         public delegate void RawValuesDelegate(string newValues);
         public RawValuesDelegate rawValuesDelegate;
 
+        public delegate void SlotValuesDelegate(string newValues);
+        public SlotValuesDelegate slotValuesDelegate;
 
         public FLipMouseGUI()
         {
@@ -132,6 +134,7 @@ namespace MouseApp2
 
         private void LipmouseGUI_Load(object sender, EventArgs e)
         {
+            this.slotValuesDelegate = new SlotValuesDelegate(gotSlotValues);
             this.rawValuesDelegate = new RawValuesDelegate(gotValues);
             BeginInvoke(this.rawValuesDelegate, new Object[] { "512,512,512,512,512" });
         }
@@ -164,7 +167,16 @@ namespace MouseApp2
                 serialPort1.ReadTimeout =4000;
                 serialPort1.WriteTimeout =4000;
                 serialPort1.NewLine = "\n";
-                serialPort1.Open();
+
+                try{
+                  serialPort1.Open();
+                }
+                catch (Exception ex)
+                {
+                    addToLog("Could not open COM port ...");
+                }
+
+
             }
         }
 
@@ -201,6 +213,7 @@ namespace MouseApp2
                         calButton.Enabled = true;
                         dcButton.Enabled = true;
                         ClearButton.Enabled = true;
+                        ListButton.Enabled = true;
                         ApplyButton.Enabled = true;
 
                         readDone = false;
@@ -227,10 +240,19 @@ namespace MouseApp2
                     {
                         BeginInvoke(this.rawValuesDelegate, new Object[] { receivedString.Substring(6) });
                     }
+                    else if (receivedString.ToUpper().StartsWith("SLOT"))  // raw report found ?
+                    {
+                        BeginInvoke(this.slotValuesDelegate, new Object[] { receivedString });
+                    }
                 }
             }
             catch (Exception ex)
             { }
+        }
+
+        public void gotSlotValues(String newValues)
+        {
+            addToLog(newValues);
         }
         
         private void dcButton_Click(object sender, EventArgs e) //disconnect button
@@ -248,6 +270,7 @@ namespace MouseApp2
                 saveSettings.Enabled = false;
                 calButton.Enabled = false;
                 dcButton.Enabled = false;
+                ListButton.Enabled = false;
                 ClearButton.Enabled = false;
                 ApplyButton.Enabled = false;
 
@@ -257,7 +280,7 @@ namespace MouseApp2
         }
 
         // update assigned actions
-        private void updateOneButton(int button, int cmdIndex, String parameter)
+        private void updateOneButton(int button, int cmdIndex, String parameter, String numParameter)
         {
             sendCmd("AT BM " + button);  // store command to this button function !
             switch (cmdIndex)
@@ -275,8 +298,8 @@ namespace MouseApp2
                 case CMD_WHEEL_DOWN:   sendCmd("AT WD"); break;
                 case CMD_CALIBRATE:    sendCmd("AT CA"); break;
                 case CMD_SWITCH_ALTER: sendCmd("AT SW " + parameter); break;
-                case CMD_MOVE_X:       sendCmd("AT MX " + parameter); break;
-                case CMD_MOVE_Y:       sendCmd("AT MY " + parameter); break;
+                case CMD_MOVE_X:       sendCmd("AT MX " + numParameter); break;
+                case CMD_MOVE_Y:       sendCmd("AT MY " + numParameter); break;
                 case CMD_WRITE_TEXT:   sendCmd("AT KW " + parameter); break;
                 case CMD_PRESS_KEYS:   sendCmd("AT KP " + parameter); break;
             }
@@ -313,17 +336,17 @@ namespace MouseApp2
                 else sendCmd("AT MM");
 
                 // update the 11 button functions (starting with the 3 physical buttons)
-                updateOneButton(1, Button1FunctionBox.SelectedIndex, Button1ParameterText.Text);
-                updateOneButton(2, Button2FunctionBox.SelectedIndex, Button2ParameterText.Text);
-                updateOneButton(3, Button3FunctionBox.SelectedIndex, Button3ParameterText.Text);
-                updateOneButton(4, UpFunctionMenu.SelectedIndex, UpParameterText.Text);
-                updateOneButton(5, DownFunctionMenu.SelectedIndex, DownParameterText.Text);
-                updateOneButton(6, LeftFunctionMenu.SelectedIndex, LeftParameterText.Text);
-                updateOneButton(7, RightFunctionMenu.SelectedIndex, RightParameterText.Text);
-                updateOneButton(8, SipFunctionMenu.SelectedIndex, SipParameterText.Text);
-                updateOneButton(9, LongSipFunctionMenu.SelectedIndex, LongSipParameterText.Text);
-                updateOneButton(10, PuffFunctionMenu.SelectedIndex, PuffParameterText.Text);
-                updateOneButton(11, LongPuffFunctionMenu.SelectedIndex, LongPuffParameterText.Text);
+                updateOneButton(1, Button1FunctionBox.SelectedIndex, Button1ParameterText.Text, Button1NumericParameter.Value.ToString());
+                updateOneButton(2, Button2FunctionBox.SelectedIndex, Button2ParameterText.Text, Button2NumericParameter.Value.ToString());
+                updateOneButton(3, Button3FunctionBox.SelectedIndex, Button3ParameterText.Text, Button3NumericParameter.Value.ToString());
+                updateOneButton(4, UpFunctionMenu.SelectedIndex, UpParameterText.Text, UpNumericParameter.Value.ToString());
+                updateOneButton(5, DownFunctionMenu.SelectedIndex, DownParameterText.Text, DownNumericParameter.Value.ToString());
+                updateOneButton(6, LeftFunctionMenu.SelectedIndex, LeftParameterText.Text, LeftNumericParameter.Value.ToString());
+                updateOneButton(7, RightFunctionMenu.SelectedIndex, RightParameterText.Text, RightNumericParameter.Value.ToString());
+                updateOneButton(8, SipFunctionMenu.SelectedIndex, SipParameterText.Text, SipNumericParameter.Value.ToString());
+                updateOneButton(9, LongSipFunctionMenu.SelectedIndex, LongSipParameterText.Text, LongSipNumericParameter.Value.ToString());
+                updateOneButton(10, PuffFunctionMenu.SelectedIndex, PuffParameterText.Text, PuffNumericParameter.Value.ToString());
+                updateOneButton(11, LongPuffFunctionMenu.SelectedIndex, LongPuffParameterText.Text, LongPuffNumericParameter.Value.ToString());
 
                 addToLog("The selected settings have been applied.");
                 // sendLipmouseCmd("AT SR");
@@ -337,7 +360,7 @@ namespace MouseApp2
             addToLog("Save Settings ...");
             if (serialPort1.IsOpen)
             {
-                sendCmd("AT SAVE" + slotName.Text);
+                sendCmd("AT SAVE " + slotName.Text);
                 addToLog("The settings were saved");
             }
             else addToLog("Could not send to device - please connect COM port !");
@@ -352,6 +375,19 @@ namespace MouseApp2
                 addToLog("The EEPROM settings have been cleared.");
             }
             else addToLog("Could not send to device - please connect COM port !");
+        }
+
+        private void list_Click(object sender, EventArgs e)
+        {
+            sendCmd("AT ER");  // end reporting raw values !
+            addToLog("List Slot in EEPROM ...");
+            if (serialPort1.IsOpen)
+            {
+                sendCmd("AT LIST\n");
+            }
+            else addToLog("Could not send to device - please connect COM port !");
+            sendCmd("AT SR");  // start reporting raw values !
+
         }
 
         // update scroll bars :
@@ -390,7 +426,7 @@ namespace MouseApp2
                 case CMD_MOVE_X:
                 case CMD_MOVE_Y:     la.Visible = true; la.Text = "   Speed:"; nud.Visible = true; tb.Visible = false; cb.Visible = false; break;
                 case CMD_WRITE_TEXT: la.Visible = true; la.Text = "    Text:"; nud.Visible = false; tb.Enabled = true; tb.Visible = true; tb.Text = ""; cb.Visible = false; break;
-                case CMD_PRESS_KEYS: la.Visible = true; la.Text = "KeyCodes:"; nud.Visible = false; tb.Enabled = false; tb.Visible = true; tb.Text = ""; cb.Visible = true; break;
+                case CMD_PRESS_KEYS: la.Visible = true; la.Text = "KeyCodes:"; nud.Visible = false; tb.Visible = true; tb.Text = ""; cb.Visible = true; break; // tb.Enabled = false; 
                 default: la.Visible = false;  nud.Visible = false; tb.Visible = false; cb.Visible = false; break;
             }
         }
@@ -575,18 +611,18 @@ namespace MouseApp2
             LongPuffParameterText.Text = LongPuffNumericParameter.Value.ToString();
         }
 
-        public void gotValues(String newValues) //n
+        public void gotValues(String newValues)
         {
             if (newValues.Length == 0)
                 return;
 
-            //            Console.WriteLine(newValues);
+            //  Console.WriteLine(newValues);
 
             String[] values = newValues.Split(',');
             if (values.Length == 5)
             {
                 pressureLabel.Text = values[0];
-                Int32 value = Convert.ToInt32(values[0]);
+                Int32 value = 1023-Convert.ToInt32(values[0]);
                 Graphics g = panel1.CreateGraphics();
                 Brush brush = new SolidBrush(Color.Green);
                 Brush brush2 = new SolidBrush(Color.White);
@@ -594,30 +630,30 @@ namespace MouseApp2
                 g.FillRectangle(brush, 0, panel1.Height - value, 30, value);
                 g.FillRectangle(brush2, 0, 0, 30, panel1.Height - value);
 
-                brush = new SolidBrush(Color.Red);
+                brush = new SolidBrush(Color.Orange);
                 upSensorLabel.Text = values[1];
-                value = Convert.ToInt32(values[1]);
+                value = 1023 - Convert.ToInt32(values[1]);
                 g = upPanel.CreateGraphics();
                 value = value * upPanel.Height / 1024;
                 g.FillRectangle(brush, 0, upPanel.Height - value, upPanel.Width, value);
                 g.FillRectangle(brush2, 0, 0, upPanel.Width, upPanel.Height - value);
 
                 downSensorLabel.Text = values[2];
-                value = Convert.ToInt32(values[2]);
+                value = 1023 - Convert.ToInt32(values[2]);
                 g = downPanel.CreateGraphics();
                 value = value * downPanel.Height / 1024;
                 g.FillRectangle(brush, 0, 0, downPanel.Width, value);
                 g.FillRectangle(brush2, 0, value, downPanel.Width, downPanel.Height - value);
 
                 leftSensorLabel.Text = values[3];
-                value = Convert.ToInt32(values[3]);
+                value = 1023 - Convert.ToInt32(values[3]);
                 g = leftPanel.CreateGraphics();
                 value = value * leftPanel.Width / 1024;
                 g.FillRectangle(brush, leftPanel.Width - value,0, value, leftPanel.Height);
                 g.FillRectangle(brush2, 0, 0, leftPanel.Width - value, leftPanel.Height);
 
                 rightSensorLabel.Text = values[4];
-                value = Convert.ToInt32(values[4]);
+                value = 1023 - Convert.ToInt32(values[4]);
                 g = rightPanel.CreateGraphics();
                 value = value * rightPanel.Width/ 1024;
                 g.FillRectangle(brush, 0, 0, value, rightPanel.Height);
@@ -627,16 +663,15 @@ namespace MouseApp2
 
         private void selectStick_CheckedChanged(object sender, EventArgs e)
         {
-            Console.WriteLine("stick selected");
+            // Console.WriteLine("stick selected");
             useAlternativeFunctions = false;
         }
 
         private void selectAlternative_CheckedChanged(object sender, EventArgs e)
         {
-            Console.WriteLine("alternative selected");
+            // Console.WriteLine("alternative selected");
             useAlternativeFunctions = true;
 
         }
-
     }
 }

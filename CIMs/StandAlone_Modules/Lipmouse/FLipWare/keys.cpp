@@ -1,46 +1,6 @@
 
 #include "fabi.h"
 
-int numKeys=0;
-char tmptxt[MAX_KEYSTRING_LEN];   // for parsing keystrings
-
-void addKey(uint8_t key)
-{
-  #ifdef ARDUINO_PRO_MICRO
-     Keyboard.press(key);   // for Arduino Micro: press keys individually 
-    
-  #else    // for Teensy2.0++
-  numKeys++;
-  switch (numKeys) {
-     case 1:  Keyboard.set_key1(key); break;
-     case 2:  Keyboard.set_key2(key); break;
-     case 3:  Keyboard.set_key3(key); break;
-     case 4:  Keyboard.set_key4(key); break;
-     case 5:  Keyboard.set_key5(key); break;
-     case 6:  Keyboard.set_key6(key); break;
-  }
-  #endif
-}
-
-void releaseKeys()  // releases all previously pressed keys
-{
-  if (DebugOutput==DEBUG_FULLOUTPUT)  
-    Serial.println("key release");
-
-  #ifdef ARDUINO_PRO_MICRO
-    Keyboard.releaseAll();
-  #else   // for Teensy2.0++
-   Keyboard.set_modifier(0);
-   Keyboard.set_key1(0);
-   Keyboard.set_key2(0);
-   Keyboard.set_key3(0);
-   Keyboard.set_key4(0);
-   Keyboard.set_key5(0);
-   Keyboard.set_key6(0);
-   Keyboard.send_now();
-  #endif
-}
-
  #ifdef ARDUINO_PRO_MICRO
       #define KEY_UP    KEY_UP_ARROW
       #define KEY_DOWN  KEY_DOWN_ARROW
@@ -86,6 +46,32 @@ void releaseKeys()  // releases all previously pressed keys
       #define KEY_9 '9'
 #endif
 
+#define KEY_ADD     0
+#define KEY_RELEASE 1
+
+int keyAction=KEY_ADD;
+char tmptxt[MAX_KEYSTRING_LEN];   // for parsing keystrings
+
+void updateKey(int key)
+{
+   if (keyAction==KEY_ADD)
+      Keyboard.press(key);     // press keys individually   
+   else
+      Keyboard.release(key);   // release keys individually    
+}
+
+
+void release_all()  // releases all previously pressed keys
+{
+    Keyboard.releaseAll();
+}
+
+void releaseKeys (char * text)
+{
+   keyAction=KEY_RELEASE; 
+   setKeyValues(text);
+   keyAction=KEY_ADD; 
+}
 
 // press all supported keys 
 // text is a string which contains the key identifiers eg. "KEY_CTRL KEY_C" for Ctrl-C
@@ -93,106 +79,93 @@ void setKeyValues(char* text)
 {
   char * acttoken;
   int modifiers=0;
-  numKeys=0; 
 
   strcpy(tmptxt, text); 
   acttoken = strtok(tmptxt," ");
   
   while (acttoken)
   {
-    #ifdef ARDUINO_PRO_MICRO
-        if (!strcmp(acttoken,"KEY_SHIFT"))  addKey(KEY_LEFT_SHIFT);
-        if (!strcmp(acttoken,"KEY_CTRL"))  addKey(KEY_LEFT_CTRL);
-        if (!strcmp(acttoken,"KEY_ALT"))  addKey(KEY_RIGHT_ALT);
-        if (!strcmp(acttoken,"KEY_GUI"))  addKey(KEY_RIGHT_GUI);
-        // if (!strcmp(acttoken,"KEY_PRINTSCREEN")) addKey(KEY_PRINTSCREEN);   
-    #else     // for Teensy2.0++
-        if (!strcmp(acttoken,"KEY_SCROLL_LOCK")) addKey(KEY_SCROLL_LOCK);
-        if (!strcmp(acttoken,"KEY_PAUSE")) addKey(KEY_PAUSE);
-        if (!strcmp(acttoken,"KEY_NUM_LOCK")) addKey(KEY_NUM_LOCK);
-        if (!strcmp(acttoken,"KEY_PRINTSCREEN")) addKey(KEY_PRINTSCREEN);
-        
-        if (!strcmp(acttoken,"KEY_SHIFT"))  modifiers|=MODIFIERKEY_SHIFT;
-        if (!strcmp(acttoken,"KEY_CTRL"))  modifiers|=MODIFIERKEY_CTRL;
-        if (!strcmp(acttoken,"KEY_ALT"))  modifiers|=MODIFIERKEY_ALT;
-        if (!strcmp(acttoken,"KEY_GUI"))  modifiers|=MODIFIERKEY_GUI;
+    if (!strcmp(acttoken,"KEY_SHIFT"))  updateKey(KEY_LEFT_SHIFT);
+    if (!strcmp(acttoken,"KEY_CTRL"))  updateKey(KEY_LEFT_CTRL);
+    if (!strcmp(acttoken,"KEY_ALT"))  updateKey(KEY_LEFT_ALT);
+    if (!strcmp(acttoken,"KEY_RIGHT_ALT"))  updateKey(KEY_RIGHT_ALT);
+    if (!strcmp(acttoken,"KEY_GUI"))  updateKey(KEY_LEFT_GUI);
+    if (!strcmp(acttoken,"KEY_RIGHT_GUI"))  updateKey(KEY_RIGHT_GUI);
+    if (!strcmp(acttoken,"KEY_UP")) updateKey(KEY_UP);
+    if (!strcmp(acttoken,"KEY_DOWN")) updateKey(KEY_DOWN);
+    if (!strcmp(acttoken,"KEY_LEFT")) updateKey(KEY_LEFT);
+    if (!strcmp(acttoken,"KEY_RIGHT")) updateKey(KEY_RIGHT);
+    if (!strcmp(acttoken,"KEY_ENTER")) updateKey(KEY_ENTER);
+    if (!strcmp(acttoken,"KEY_SPACE")) updateKey(KEY_SPACE);
+    if (!strcmp(acttoken,"KEY_ESC")) updateKey(KEY_ESC);
+    if (!strcmp(acttoken,"KEY_BACKSPACE")) updateKey(KEY_BACKSPACE);
+    if (!strcmp(acttoken,"KEY_TAB")) updateKey(KEY_TAB);
+    if (!strcmp(acttoken,"KEY_CAPS_LOCK")) updateKey(KEY_CAPS_LOCK);
+    if (!strcmp(acttoken,"KEY_F1")) updateKey(KEY_F1);
+    if (!strcmp(acttoken,"KEY_F2")) updateKey(KEY_F2);
+    if (!strcmp(acttoken,"KEY_F3")) updateKey(KEY_F3);
+    if (!strcmp(acttoken,"KEY_F4")) updateKey(KEY_F4);
+    if (!strcmp(acttoken,"KEY_F5")) updateKey(KEY_F5);
+    if (!strcmp(acttoken,"KEY_F6")) updateKey(KEY_F6);
+    if (!strcmp(acttoken,"KEY_F7")) updateKey(KEY_F7);
+    if (!strcmp(acttoken,"KEY_F8")) updateKey(KEY_F8);
+    if (!strcmp(acttoken,"KEY_F9")) updateKey(KEY_F9);
+    if (!strcmp(acttoken,"KEY_F10")) updateKey(KEY_F10);
+    if (!strcmp(acttoken,"KEY_F11")) updateKey(KEY_F11);
+    if (!strcmp(acttoken,"KEY_F12")) updateKey(KEY_F12);
+    if (!strcmp(acttoken,"KEY_INSERT")) updateKey(KEY_INSERT);
+    if (!strcmp(acttoken,"KEY_HOME")) updateKey(KEY_HOME);
+    if (!strcmp(acttoken,"KEY_PAGE_UP")) updateKey(KEY_PAGE_UP);
+    if (!strcmp(acttoken,"KEY_DELETE")) updateKey(KEY_DELETE);
+    if (!strcmp(acttoken,"KEY_END")) updateKey(KEY_END);
+    if (!strcmp(acttoken,"KEY_PAGE_DOWN")) updateKey(KEY_PAGE_DOWN);
+
+    if (!strcmp(acttoken,"KEY_A")) updateKey(KEY_A);
+    if (!strcmp(acttoken,"KEY_B")) updateKey(KEY_B);
+    if (!strcmp(acttoken,"KEY_C")) updateKey(KEY_C);
+    if (!strcmp(acttoken,"KEY_D")) updateKey(KEY_D);
+    if (!strcmp(acttoken,"KEY_E")) updateKey(KEY_E);
+    if (!strcmp(acttoken,"KEY_F")) updateKey(KEY_F);
+    if (!strcmp(acttoken,"KEY_G")) updateKey(KEY_G);
+    if (!strcmp(acttoken,"KEY_H")) updateKey(KEY_H);
+    if (!strcmp(acttoken,"KEY_I")) updateKey(KEY_I);
+    if (!strcmp(acttoken,"KEY_J")) updateKey(KEY_J);
+    if (!strcmp(acttoken,"KEY_K")) updateKey(KEY_K);
+    if (!strcmp(acttoken,"KEY_L")) updateKey(KEY_L);
+    if (!strcmp(acttoken,"KEY_M")) updateKey(KEY_M);
+    if (!strcmp(acttoken,"KEY_N")) updateKey(KEY_N);
+    if (!strcmp(acttoken,"KEY_O")) updateKey(KEY_O);
+    if (!strcmp(acttoken,"KEY_P")) updateKey(KEY_P);
+    if (!strcmp(acttoken,"KEY_Q")) updateKey(KEY_Q);
+    if (!strcmp(acttoken,"KEY_R")) updateKey(KEY_R);
+    if (!strcmp(acttoken,"KEY_S")) updateKey(KEY_S);
+    if (!strcmp(acttoken,"KEY_T")) updateKey(KEY_T);
+    if (!strcmp(acttoken,"KEY_U")) updateKey(KEY_U);
+    if (!strcmp(acttoken,"KEY_V")) updateKey(KEY_V);
+    if (!strcmp(acttoken,"KEY_W")) updateKey(KEY_W);
+    if (!strcmp(acttoken,"KEY_X")) updateKey(KEY_X);
+    if (!strcmp(acttoken,"KEY_Y")) updateKey(KEY_Y);
+    if (!strcmp(acttoken,"KEY_Z")) updateKey(KEY_Z);
+    if (!strcmp(acttoken,"KEY_1")) updateKey(KEY_1);
+    if (!strcmp(acttoken,"KEY_2")) updateKey(KEY_2);
+    if (!strcmp(acttoken,"KEY_3")) updateKey(KEY_3);
+    if (!strcmp(acttoken,"KEY_4")) updateKey(KEY_4);
+    if (!strcmp(acttoken,"KEY_5")) updateKey(KEY_5);
+    if (!strcmp(acttoken,"KEY_6")) updateKey(KEY_6);
+    if (!strcmp(acttoken,"KEY_7")) updateKey(KEY_7);
+    if (!strcmp(acttoken,"KEY_8")) updateKey(KEY_8);
+    if (!strcmp(acttoken,"KEY_9")) updateKey(KEY_9);
+    if (!strcmp(acttoken,"KEY_0")) updateKey(KEY_0);
+    
+    #ifdef TEENSY     // for Teensy2.0++
+      if (!strcmp(acttoken,"KEY_SCROLL_LOCK")) updateKey(KEY_SCROLL_LOCK);
+      if (!strcmp(acttoken,"KEY_PAUSE")) updateKey(KEY_PAUSE);
+      if (!strcmp(acttoken,"KEY_NUM_LOCK")) updateKey(KEY_NUM_LOCK);
+      if (!strcmp(acttoken,"KEY_PRINTSCREEN")) updateKey(KEY_PRINTSCREEN);
     #endif
 
-    if (!strcmp(acttoken,"KEY_UP")) addKey(KEY_UP);
-    if (!strcmp(acttoken,"KEY_DOWN")) addKey(KEY_DOWN);
-    if (!strcmp(acttoken,"KEY_LEFT")) addKey(KEY_LEFT);
-    if (!strcmp(acttoken,"KEY_RIGHT")) addKey(KEY_RIGHT);
-    if (!strcmp(acttoken,"KEY_ENTER")) addKey(KEY_ENTER);
-    if (!strcmp(acttoken,"KEY_SPACE")) addKey(KEY_SPACE);
-    if (!strcmp(acttoken,"KEY_ESC")) addKey(KEY_ESC);
-    if (!strcmp(acttoken,"KEY_BACKSPACE")) addKey(KEY_BACKSPACE);
-    if (!strcmp(acttoken,"KEY_TAB")) addKey(KEY_TAB);
-    if (!strcmp(acttoken,"KEY_CAPS_LOCK")) addKey(KEY_CAPS_LOCK);
-    if (!strcmp(acttoken,"KEY_F1")) addKey(KEY_F1);
-    if (!strcmp(acttoken,"KEY_F2")) addKey(KEY_F2);
-    if (!strcmp(acttoken,"KEY_F3")) addKey(KEY_F3);
-    if (!strcmp(acttoken,"KEY_F4")) addKey(KEY_F4);
-    if (!strcmp(acttoken,"KEY_F5")) addKey(KEY_F5);
-    if (!strcmp(acttoken,"KEY_F6")) addKey(KEY_F6);
-    if (!strcmp(acttoken,"KEY_F7")) addKey(KEY_F7);
-    if (!strcmp(acttoken,"KEY_F8")) addKey(KEY_F8);
-    if (!strcmp(acttoken,"KEY_F9")) addKey(KEY_F9);
-    if (!strcmp(acttoken,"KEY_F10")) addKey(KEY_F10);
-    if (!strcmp(acttoken,"KEY_F11")) addKey(KEY_F11);
-    if (!strcmp(acttoken,"KEY_F12")) addKey(KEY_F12);
-    if (!strcmp(acttoken,"KEY_INSERT")) addKey(KEY_INSERT);
-    if (!strcmp(acttoken,"KEY_HOME")) addKey(KEY_HOME);
-    if (!strcmp(acttoken,"KEY_PAGE_UP")) addKey(KEY_PAGE_UP);
-    if (!strcmp(acttoken,"KEY_DELETE")) addKey(KEY_DELETE);
-    if (!strcmp(acttoken,"KEY_END")) addKey(KEY_END);
-    if (!strcmp(acttoken,"KEY_PAGE_DOWN")) addKey(KEY_PAGE_DOWN);
-
-    if (!strcmp(acttoken,"KEY_A")) addKey(KEY_A);
-    if (!strcmp(acttoken,"KEY_B")) addKey(KEY_B);
-    if (!strcmp(acttoken,"KEY_C")) addKey(KEY_C);
-    if (!strcmp(acttoken,"KEY_D")) addKey(KEY_D);
-    if (!strcmp(acttoken,"KEY_E")) addKey(KEY_E);
-    if (!strcmp(acttoken,"KEY_F")) addKey(KEY_F);
-    if (!strcmp(acttoken,"KEY_G")) addKey(KEY_G);
-    if (!strcmp(acttoken,"KEY_H")) addKey(KEY_H);
-    if (!strcmp(acttoken,"KEY_I")) addKey(KEY_I);
-    if (!strcmp(acttoken,"KEY_J")) addKey(KEY_J);
-    if (!strcmp(acttoken,"KEY_K")) addKey(KEY_K);
-    if (!strcmp(acttoken,"KEY_L")) addKey(KEY_L);
-    if (!strcmp(acttoken,"KEY_M")) addKey(KEY_M);
-    if (!strcmp(acttoken,"KEY_N")) addKey(KEY_N);
-    if (!strcmp(acttoken,"KEY_O")) addKey(KEY_O);
-    if (!strcmp(acttoken,"KEY_P")) addKey(KEY_P);
-    if (!strcmp(acttoken,"KEY_Q")) addKey(KEY_Q);
-    if (!strcmp(acttoken,"KEY_R")) addKey(KEY_R);
-    if (!strcmp(acttoken,"KEY_S")) addKey(KEY_S);
-    if (!strcmp(acttoken,"KEY_T")) addKey(KEY_T);
-    if (!strcmp(acttoken,"KEY_U")) addKey(KEY_U);
-    if (!strcmp(acttoken,"KEY_V")) addKey(KEY_V);
-    if (!strcmp(acttoken,"KEY_W")) addKey(KEY_W);
-    if (!strcmp(acttoken,"KEY_X")) addKey(KEY_X);
-    if (!strcmp(acttoken,"KEY_Y")) addKey(KEY_Y);
-    if (!strcmp(acttoken,"KEY_Z")) addKey(KEY_Z);
-    if (!strcmp(acttoken,"KEY_1")) addKey(KEY_1);
-    if (!strcmp(acttoken,"KEY_2")) addKey(KEY_2);
-    if (!strcmp(acttoken,"KEY_3")) addKey(KEY_3);
-    if (!strcmp(acttoken,"KEY_4")) addKey(KEY_4);
-    if (!strcmp(acttoken,"KEY_5")) addKey(KEY_5);
-    if (!strcmp(acttoken,"KEY_6")) addKey(KEY_6);
-    if (!strcmp(acttoken,"KEY_7")) addKey(KEY_7);
-    if (!strcmp(acttoken,"KEY_8")) addKey(KEY_8);
-    if (!strcmp(acttoken,"KEY_9")) addKey(KEY_9);
-    if (!strcmp(acttoken,"KEY_0")) addKey(KEY_0);
-    
     acttoken = strtok(NULL," ");
   }
-   
-  #ifndef ARDUINO_PRO_MICRO     // for Teensy2.0++: send pressed keys at once
-      Keyboard.set_modifier(modifiers);
-      Keyboard.send_now();
-      numKeys=0;
-  #endif  
-  
 }
 
 

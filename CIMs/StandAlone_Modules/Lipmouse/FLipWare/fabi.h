@@ -3,14 +3,15 @@
 #include <stdint.h>
 
 
-// #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used  (comment or remove if Teensy is used !)
 #define TEENSY                 //  if teensy is used (but not a lipmouse module)
+// #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used  (comment or remove if Teensy is used !)
 // #define LIPMOUSE_V0         //  first HW version of lipmouse, powers pressure sensor via GPIO pins !
  
 
 #define NUMBER_OF_BUTTONS 11          // number of connected or virtual switches
 #define NUMBER_OF_PHYSICAL_BUTTONS 3  // number of connected switches
-#define MAX_SLOTS         10          // maximum number of EEPROM memory slots
+#define NUMBER_OF_LEDS      3         // number of connected leds
+#define MAX_SLOTS          10          // maximum number of EEPROM memory slots
 
 #define MAX_KEYSTRING_LEN 50          // maximum lenght for key identifiers / keyboard text
 #define MAX_CMDLEN MAX_KEYSTRING_LEN+3
@@ -41,25 +42,26 @@
 #define CMD_KEY_WRITE               18
 #define CMD_KEY_PRESS               19
 #define CMD_KEY_RELEASE             20
-#define CMD_SAVE_SLOT               21
-#define CMD_LOAD_SLOT               22
-#define CMD_LIST_SLOTS              23
-#define CMD_NEXT_SLOT               24
-#define CMD_DELETE_SLOTS            25
+#define CMD_RELEASE_ALL             21
+#define CMD_SAVE_SLOT               22
+#define CMD_LOAD_SLOT               23
+#define CMD_LIST_SLOTS              24
+#define CMD_NEXT_SLOT               25
+#define CMD_DELETE_SLOTS            26
 
-#define CMD_LM_MM                   50
-#define CMD_LM_AF                   51
-#define CMD_LM_SW                   52
-#define CMD_LM_CA                   53
-#define CMD_LM_AX                   54
-#define CMD_LM_AY                   55
-#define CMD_LM_DX                   56
-#define CMD_LM_DY                   57
-#define CMD_LM_TS                   58
-#define CMD_LM_TP                   59
-#define CMD_LM_SR                   60
-#define CMD_LM_ER                   61
-#define CMD_LM_TT                   62
+#define CMD_MM                      50
+#define CMD_AF                      51
+#define CMD_SW                      52
+#define CMD_CA                      53
+#define CMD_AX                      54
+#define CMD_AY                      55
+#define CMD_DX                      56
+#define CMD_DY                      57
+#define CMD_TS                      58
+#define CMD_TP                      59
+#define CMD_SR                      60
+#define CMD_ER                      61
+#define CMD_TT                      62
 
 #define CMD_IDLE                    100
 
@@ -67,9 +69,7 @@
 #include <stdint.h>
 
 struct settingsType {
-  int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS];
-  uint8_t LED_PIN;
-  uint8_t  mouseOn;
+  uint8_t  mouseOn;// mouse or alternative functions 
   uint8_t  ws;     // wheel stepsize  
   uint8_t  ax;     // acceleration x
   uint8_t  ay;     // acceleration y
@@ -80,11 +80,11 @@ struct settingsType {
   uint16_t tt;     // threshold time 
 };
 
-struct buttonType {                         // holds command and data for a button function 
+struct buttonType {                      // holds command and woring data for a button function 
   int mode;
   int value;
-  char keystring[MAX_KEYSTRING_LEN];
-  uint8_t bounceCount;
+  char keystring[MAX_KEYSTRING_LEN];     // EEPROM data is stored only until ths string's end
+  uint8_t bounceCount;                   // from here: working data for the button
   uint8_t bounceState;
   uint8_t stableState;
   uint8_t longPressed;
@@ -92,7 +92,7 @@ struct buttonType {                         // holds command and data for a butt
 } ; 
 
 extern uint8_t DebugOutput;
-
+extern uint8_t actSlot;
 extern struct settingsType settings;
 extern int EmptySlotAddress;
 extern struct buttonType buttons[NUMBER_OF_BUTTONS];
@@ -108,8 +108,9 @@ void BlinkLed();
 int freeRam ();
 void parseByte (int newByte);
 
-void releaseKeys();  // releases all previously pressed keys
-void setKeyValues(char* text);
+void setKeyValues(char* text); // presses individual keay
+void releaseKeys(char* text);  // releases individual keys
+void release_all();            // releases all previously pressed keys and buttons
 
 
 
