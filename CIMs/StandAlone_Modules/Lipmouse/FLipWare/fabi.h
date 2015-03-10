@@ -47,18 +47,19 @@
 #define CMD_NEXT_SLOT               24
 #define CMD_DELETE_SLOTS            25
 
-#define CMD_LM_ON                   50
-#define CMD_LM_OFF                  51
-#define CMD_LM_CA                   52
-#define CMD_LM_AX                   53
-#define CMD_LM_AY                   54
-#define CMD_LM_DX                   55
-#define CMD_LM_DY                   56
-#define CMD_LM_TS                   57
-#define CMD_LM_TP                   58
-#define CMD_LM_SR                   59
-#define CMD_LM_ER                   60
-#define CMD_LM_TT                   61
+#define CMD_LM_MM                   50
+#define CMD_LM_AF                   51
+#define CMD_LM_SW                   52
+#define CMD_LM_CA                   53
+#define CMD_LM_AX                   54
+#define CMD_LM_AY                   55
+#define CMD_LM_DX                   56
+#define CMD_LM_DY                   57
+#define CMD_LM_TS                   58
+#define CMD_LM_TP                   59
+#define CMD_LM_SR                   60
+#define CMD_LM_ER                   61
+#define CMD_LM_TT                   62
 
 #define CMD_IDLE                    100
 

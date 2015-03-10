@@ -44,7 +44,6 @@
             this.deadzoneLabel = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.deadzoneBar = new System.Windows.Forms.TrackBar();
-            this.mouseOffButton = new System.Windows.Forms.Button();
             this.calButton = new System.Windows.Forms.Button();
             this.speedLabel = new System.Windows.Forms.Label();
             this.speedBar = new System.Windows.Forms.TrackBar();
@@ -131,13 +130,25 @@
             this.label6 = new System.Windows.Forms.Label();
             this.Button1FunctionBox = new System.Windows.Forms.ComboBox();
             this.RawValueTab = new System.Windows.Forms.TabPage();
+            this.rightPanel = new System.Windows.Forms.Panel();
+            this.leftPanel = new System.Windows.Forms.Panel();
+            this.downPanel = new System.Windows.Forms.Panel();
+            this.upPanel = new System.Windows.Forms.Panel();
             this.slotName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.activityLogTextbox = new System.Windows.Forms.RichTextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
+            this.label10 = new System.Windows.Forms.Label();
+            this.upSensorLabel = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.rightSensorLabel = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.leftSensorLabel = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.downSensorLabel = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.selectStick = new System.Windows.Forms.RadioButton();
+            this.selectAlternative = new System.Windows.Forms.RadioButton();
             this.tabControl.SuspendLayout();
             this.LipmouseTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.deadzoneBar)).BeginInit();
@@ -286,10 +297,11 @@
             // LipmouseTab
             // 
             this.LipmouseTab.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.LipmouseTab.Controls.Add(this.selectAlternative);
+            this.LipmouseTab.Controls.Add(this.selectStick);
             this.LipmouseTab.Controls.Add(this.deadzoneLabel);
             this.LipmouseTab.Controls.Add(this.label2);
             this.LipmouseTab.Controls.Add(this.deadzoneBar);
-            this.LipmouseTab.Controls.Add(this.mouseOffButton);
             this.LipmouseTab.Controls.Add(this.calButton);
             this.LipmouseTab.Controls.Add(this.speedLabel);
             this.LipmouseTab.Controls.Add(this.speedBar);
@@ -300,22 +312,22 @@
             this.LipmouseTab.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.LipmouseTab.Size = new System.Drawing.Size(878, 441);
             this.LipmouseTab.TabIndex = 0;
-            this.LipmouseTab.Text = "Mouse Movement";
+            this.LipmouseTab.Text = "Cursor Movement";
             // 
             // deadzoneLabel
             // 
             this.deadzoneLabel.AutoSize = true;
-            this.deadzoneLabel.Location = new System.Drawing.Point(690, 169);
+            this.deadzoneLabel.Location = new System.Drawing.Point(699, 237);
             this.deadzoneLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.deadzoneLabel.Name = "deadzoneLabel";
-            this.deadzoneLabel.Size = new System.Drawing.Size(36, 20);
+            this.deadzoneLabel.Size = new System.Drawing.Size(27, 20);
             this.deadzoneLabel.TabIndex = 21;
-            this.deadzoneLabel.Text = "100";
+            this.deadzoneLabel.Text = "30";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(146, 169);
+            this.label2.Location = new System.Drawing.Point(146, 237);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 20);
@@ -325,34 +337,21 @@
             // deadzoneBar
             // 
             this.deadzoneBar.LargeChange = 10;
-            this.deadzoneBar.Location = new System.Drawing.Point(134, 194);
+            this.deadzoneBar.Location = new System.Drawing.Point(134, 262);
             this.deadzoneBar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.deadzoneBar.Maximum = 250;
             this.deadzoneBar.Name = "deadzoneBar";
             this.deadzoneBar.Size = new System.Drawing.Size(604, 69);
             this.deadzoneBar.TabIndex = 17;
-            this.deadzoneBar.TickFrequency = 20;
-            this.deadzoneBar.Value = 100;
+            this.deadzoneBar.TickFrequency = 15;
+            this.deadzoneBar.Value = 30;
             this.deadzoneBar.Scroll += new System.EventHandler(this.deadzone_Scroll);
-            // 
-            // mouseOffButton
-            // 
-            this.mouseOffButton.Enabled = false;
-            this.mouseOffButton.ForeColor = System.Drawing.Color.Black;
-            this.mouseOffButton.Location = new System.Drawing.Point(469, 325);
-            this.mouseOffButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.mouseOffButton.Name = "mouseOffButton";
-            this.mouseOffButton.Size = new System.Drawing.Size(298, 46);
-            this.mouseOffButton.TabIndex = 19;
-            this.mouseOffButton.Text = "Use Alternative Functions";
-            this.mouseOffButton.UseVisualStyleBackColor = true;
-            this.mouseOffButton.Click += new System.EventHandler(this.onOff_Click);
             // 
             // calButton
             // 
             this.calButton.Enabled = false;
             this.calButton.ForeColor = System.Drawing.Color.Black;
-            this.calButton.Location = new System.Drawing.Point(86, 325);
+            this.calButton.Location = new System.Drawing.Point(285, 352);
             this.calButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.calButton.Name = "calButton";
             this.calButton.Size = new System.Drawing.Size(280, 46);
@@ -364,31 +363,31 @@
             // speedLabel
             // 
             this.speedLabel.AutoSize = true;
-            this.speedLabel.Location = new System.Drawing.Point(699, 51);
+            this.speedLabel.Location = new System.Drawing.Point(699, 127);
             this.speedLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.speedLabel.Name = "speedLabel";
             this.speedLabel.Size = new System.Drawing.Size(27, 20);
             this.speedLabel.TabIndex = 16;
-            this.speedLabel.Text = "10";
+            this.speedLabel.Text = "40";
             // 
             // speedBar
             // 
             this.speedBar.LargeChange = 1;
-            this.speedBar.Location = new System.Drawing.Point(134, 76);
+            this.speedBar.Location = new System.Drawing.Point(134, 150);
             this.speedBar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.speedBar.Maximum = 100;
             this.speedBar.Minimum = 1;
             this.speedBar.Name = "speedBar";
             this.speedBar.Size = new System.Drawing.Size(604, 69);
             this.speedBar.TabIndex = 15;
-            this.speedBar.TickFrequency = 2;
-            this.speedBar.Value = 10;
+            this.speedBar.TickFrequency = 5;
+            this.speedBar.Value = 40;
             this.speedBar.Scroll += new System.EventHandler(this.speedBar_Scroll);
             // 
             // SpeedNameLabel
             // 
             this.SpeedNameLabel.AutoSize = true;
-            this.SpeedNameLabel.Location = new System.Drawing.Point(144, 53);
+            this.SpeedNameLabel.Location = new System.Drawing.Point(144, 127);
             this.SpeedNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SpeedNameLabel.Name = "SpeedNameLabel";
             this.SpeedNameLabel.Size = new System.Drawing.Size(56, 20);
@@ -1362,15 +1361,53 @@
             // RawValueTab
             // 
             this.RawValueTab.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.RawValueTab.Controls.Add(this.panel5);
-            this.RawValueTab.Controls.Add(this.panel4);
-            this.RawValueTab.Controls.Add(this.panel3);
-            this.RawValueTab.Controls.Add(this.panel2);
+            this.RawValueTab.Controls.Add(this.label25);
+            this.RawValueTab.Controls.Add(this.label24);
+            this.RawValueTab.Controls.Add(this.label22);
+            this.RawValueTab.Controls.Add(this.downSensorLabel);
+            this.RawValueTab.Controls.Add(this.label19);
+            this.RawValueTab.Controls.Add(this.leftSensorLabel);
+            this.RawValueTab.Controls.Add(this.label17);
+            this.RawValueTab.Controls.Add(this.rightSensorLabel);
+            this.RawValueTab.Controls.Add(this.label10);
+            this.RawValueTab.Controls.Add(this.upSensorLabel);
+            this.RawValueTab.Controls.Add(this.rightPanel);
+            this.RawValueTab.Controls.Add(this.leftPanel);
+            this.RawValueTab.Controls.Add(this.downPanel);
+            this.RawValueTab.Controls.Add(this.upPanel);
             this.RawValueTab.Location = new System.Drawing.Point(4, 29);
             this.RawValueTab.Name = "RawValueTab";
             this.RawValueTab.Size = new System.Drawing.Size(878, 441);
             this.RawValueTab.TabIndex = 4;
             this.RawValueTab.Text = "View Raw Values";
+            // 
+            // rightPanel
+            // 
+            this.rightPanel.Location = new System.Drawing.Point(475, 193);
+            this.rightPanel.Name = "rightPanel";
+            this.rightPanel.Size = new System.Drawing.Size(180, 51);
+            this.rightPanel.TabIndex = 94;
+            // 
+            // leftPanel
+            // 
+            this.leftPanel.Location = new System.Drawing.Point(200, 193);
+            this.leftPanel.Name = "leftPanel";
+            this.leftPanel.Size = new System.Drawing.Size(180, 45);
+            this.leftPanel.TabIndex = 93;
+            // 
+            // downPanel
+            // 
+            this.downPanel.Location = new System.Drawing.Point(406, 258);
+            this.downPanel.Name = "downPanel";
+            this.downPanel.Size = new System.Drawing.Size(44, 160);
+            this.downPanel.TabIndex = 92;
+            // 
+            // upPanel
+            // 
+            this.upPanel.Location = new System.Drawing.Point(406, 21);
+            this.upPanel.Name = "upPanel";
+            this.upPanel.Size = new System.Drawing.Size(44, 160);
+            this.upPanel.TabIndex = 91;
             // 
             // slotName
             // 
@@ -1406,33 +1443,133 @@
             this.activityLogTextbox.TabIndex = 63;
             this.activityLogTextbox.Text = "";
             // 
-            // panel2
+            // label10
             // 
-            this.panel2.Location = new System.Drawing.Point(288, 107);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(44, 223);
-            this.panel2.TabIndex = 91;
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(461, 25);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(91, 20);
+            this.label10.TabIndex = 108;
+            this.label10.Text = "Top Sensor";
             // 
-            // panel3
+            // upSensorLabel
             // 
-            this.panel3.Location = new System.Drawing.Point(356, 107);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(44, 223);
-            this.panel3.TabIndex = 92;
+            this.upSensorLabel.AutoSize = true;
+            this.upSensorLabel.Location = new System.Drawing.Point(468, 51);
+            this.upSensorLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.upSensorLabel.Name = "upSensorLabel";
+            this.upSensorLabel.Size = new System.Drawing.Size(18, 20);
+            this.upSensorLabel.TabIndex = 107;
+            this.upSensorLabel.Text = "0";
+            this.upSensorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // panel4
+            // label17
             // 
-            this.panel4.Location = new System.Drawing.Point(434, 107);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(44, 223);
-            this.panel4.TabIndex = 93;
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(676, 191);
+            this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(102, 20);
+            this.label17.TabIndex = 110;
+            this.label17.Text = "Right Sensor";
             // 
-            // panel5
+            // rightSensorLabel
             // 
-            this.panel5.Location = new System.Drawing.Point(510, 107);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(44, 223);
-            this.panel5.TabIndex = 94;
+            this.rightSensorLabel.AutoSize = true;
+            this.rightSensorLabel.Location = new System.Drawing.Point(683, 217);
+            this.rightSensorLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.rightSensorLabel.Name = "rightSensorLabel";
+            this.rightSensorLabel.Size = new System.Drawing.Size(18, 20);
+            this.rightSensorLabel.TabIndex = 109;
+            this.rightSensorLabel.Text = "0";
+            this.rightSensorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(89, 191);
+            this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(92, 20);
+            this.label19.TabIndex = 112;
+            this.label19.Text = "Left Sensor";
+            // 
+            // leftSensorLabel
+            // 
+            this.leftSensorLabel.AutoSize = true;
+            this.leftSensorLabel.Location = new System.Drawing.Point(136, 216);
+            this.leftSensorLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.leftSensorLabel.Name = "leftSensorLabel";
+            this.leftSensorLabel.Size = new System.Drawing.Size(18, 20);
+            this.leftSensorLabel.TabIndex = 111;
+            this.leftSensorLabel.Text = "0";
+            this.leftSensorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(461, 375);
+            this.label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(116, 20);
+            this.label22.TabIndex = 114;
+            this.label22.Text = "Bottom Sensor";
+            // 
+            // downSensorLabel
+            // 
+            this.downSensorLabel.AutoSize = true;
+            this.downSensorLabel.Location = new System.Drawing.Point(468, 401);
+            this.downSensorLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.downSensorLabel.Name = "downSensorLabel";
+            this.downSensorLabel.Size = new System.Drawing.Size(18, 20);
+            this.downSensorLabel.TabIndex = 113;
+            this.downSensorLabel.Text = "0";
+            this.downSensorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(53, 56);
+            this.label24.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(112, 20);
+            this.label24.TabIndex = 115;
+            this.label24.Text = "Live Feedback";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(53, 78);
+            this.label25.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(176, 20);
+            this.label25.TabIndex = 116;
+            this.label25.Text = "of Force Sensor values:";
+            // 
+            // selectStick
+            // 
+            this.selectStick.AutoSize = true;
+            this.selectStick.Checked = true;
+            this.selectStick.Location = new System.Drawing.Point(148, 56);
+            this.selectStick.Name = "selectStick";
+            this.selectStick.Size = new System.Drawing.Size(254, 24);
+            this.selectStick.TabIndex = 22;
+            this.selectStick.TabStop = true;
+            this.selectStick.Text = "Use Stick for Cursor Movement";
+            this.selectStick.UseVisualStyleBackColor = true;
+            this.selectStick.CheckedChanged += new System.EventHandler(this.selectStick_CheckedChanged);
+            // 
+            // selectAlternative
+            // 
+            this.selectAlternative.AutoSize = true;
+            this.selectAlternative.Location = new System.Drawing.Point(477, 56);
+            this.selectAlternative.Name = "selectAlternative";
+            this.selectAlternative.Size = new System.Drawing.Size(261, 24);
+            this.selectAlternative.TabIndex = 23;
+            this.selectAlternative.Text = "Use Stick for Alternative Actions";
+            this.selectAlternative.UseVisualStyleBackColor = true;
+            this.selectAlternative.CheckedChanged += new System.EventHandler(this.selectAlternative_CheckedChanged);
             // 
             // FLipMouseGUI
             // 
@@ -1484,6 +1621,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Button2NumericParameter)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Button1NumericParameter)).EndInit();
             this.RawValueTab.ResumeLayout(false);
+            this.RawValueTab.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1509,7 +1647,6 @@
         private System.Windows.Forms.Label deadzoneLabel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar deadzoneBar;
-        private System.Windows.Forms.Button mouseOffButton;
         private System.Windows.Forms.Button calButton;
         private System.Windows.Forms.Label speedLabel;
         private System.Windows.Forms.TrackBar speedBar;
@@ -1597,10 +1734,22 @@
         private System.Windows.Forms.NumericUpDown LongSipNumericParameter;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox LongSipFunctionMenu;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel rightPanel;
+        private System.Windows.Forms.Panel leftPanel;
+        private System.Windows.Forms.Panel downPanel;
+        private System.Windows.Forms.Panel upPanel;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label downSensorLabel;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label leftSensorLabel;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label rightSensorLabel;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label upSensorLabel;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.RadioButton selectAlternative;
+        private System.Windows.Forms.RadioButton selectStick;
     }
 }
 

@@ -11,6 +11,8 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.IO;
+using System.Timers;
+
 
 
 
@@ -30,15 +32,16 @@ namespace MouseApp2
         const int CMD_WHEEL_UP     = 9;
         const int CMD_WHEEL_DOWN   = 10;
         const int CMD_CALIBRATE    = 11;
-        const int CMD_MOVE_X       = 12;
-        const int CMD_MOVE_Y       = 13;
-        const int CMD_WRITE_TEXT   = 14;
-        const int CMD_PRESS_KEYS   = 15;
+        const int CMD_SWITCH_ALTER = 12;
+        const int CMD_MOVE_X       = 13;
+        const int CMD_MOVE_Y       = 14;
+        const int CMD_WRITE_TEXT   = 15;
+        const int CMD_PRESS_KEYS   = 16;
 
         String[] commands = {  "No Action", "Switch to next configuration", 
                                "Click Left Mouse Button", "Click Right Mouse Button", "Click Middle Mouse Button" , "Double Click Left Mouse Button",
                                "Press Left Mouse Button", "Press Right Mouse Button", "Press Middle Mouse Button", 
-                               "Wheel Up", "Wheel down", "Calibrate Middle",
+                               "Wheel Up", "Wheel down", "Calibrate Zeropoint", "Switch Cursor/Alternative",
                                "Move Mouse X", "Move Mouse Y",
                                "Write Text", "Press Keys"
                              };
@@ -51,9 +54,8 @@ namespace MouseApp2
                                    "KEY_SCROLL_LOCK","KEY_SPACE","KEY_CAPS_LOCK","KEY_PAUSE","KEY_SHIFT","KEY_CTRL","KEY_ALT","KEY_GUI" 
                               };
 
-        const int PARAMETERLESS_FUNCTIONS = 12;
         
-        int mouseOff = 0;
+        Boolean useAlternativeFunctions = false;
         String receivedString = "";
         Boolean readDone = false;
 
@@ -80,7 +82,7 @@ namespace MouseApp2
             }
 
             Button1FunctionBox.SelectedIndex = CMD_NEXT;
-            Button2FunctionBox.SelectedIndex = CMD_WHEEL_UP;
+            Button2FunctionBox.SelectedIndex = CMD_SWITCH_ALTER;
             Button3FunctionBox.SelectedIndex = CMD_WHEEL_DOWN;
             UpFunctionMenu.SelectedIndex = CMD_PRESS_KEYS; UpParameterText.Text = "KEY_UP ";
             DownFunctionMenu.SelectedIndex = CMD_PRESS_KEYS; DownParameterText.Text = "KEY_DOWN ";
@@ -106,14 +108,30 @@ namespace MouseApp2
                 LongPuffComboBox.Items.Add(str);
             }
 
+            updateComPorts();
+
+            System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
+            t.Interval = 4000; // udpate interval for COM ports
+            t.Tick += new EventHandler(OnTimedEvent);
+            t.Start();
+
             addToLog("FLipMouse GUI ready!");
             this.Load += LipmouseGUI_Load;
         }
 
-        private void LipmouseGUI_Load(object sender, EventArgs e)
+        private void updateComPorts()
         {
             var ports = SerialPort.GetPortNames();
             portComboBox.DataSource = ports;
+        }
+
+        private void OnTimedEvent(object source, EventArgs e)
+        {
+            updateComPorts();
+        }
+
+        private void LipmouseGUI_Load(object sender, EventArgs e)
+        {
             this.rawValuesDelegate = new RawValuesDelegate(gotValues);
             BeginInvoke(this.rawValuesDelegate, new Object[] { "512,512,512,512,512" });
         }
@@ -131,7 +149,6 @@ namespace MouseApp2
             activityLogTextbox.SelectedText = DateTime.Now.ToString() + ": ";
             activityLogTextbox.AppendText(text); activityLogTextbox.AppendText("\n");
         }
-
 
         // serial port / communication handling
         private void Connect(string portName)
@@ -181,7 +198,6 @@ namespace MouseApp2
                         portStatus.Text = "Connected";
                         portStatus.ForeColor = Color.Green;
                         saveSettings.Enabled = true;
-                        mouseOffButton.Enabled = true;
                         calButton.Enabled = true;
                         dcButton.Enabled = true;
                         ClearButton.Enabled = true;
@@ -191,8 +207,7 @@ namespace MouseApp2
                         Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
                         thread.Start();
 
-
-                        sendCmd("AT LMSR");   // start reporting raw values !
+                        sendCmd("AT SR");   // start reporting raw values !
                     }
                     else addToLog("Could not connect COM Port");
                 }
@@ -208,7 +223,7 @@ namespace MouseApp2
                 {
                     receivedString = serialPort1.ReadLine();
                     // Console.Write("received:" + receivedString);
-                    if (receivedString.ToUpper().StartsWith("AT PR "))
+                    if (receivedString.ToUpper().StartsWith("AT RR "))  // raw report found ?
                     {
                         BeginInvoke(this.rawValuesDelegate, new Object[] { receivedString.Substring(6) });
                     }
@@ -223,7 +238,7 @@ namespace MouseApp2
             addToLog("Disconnect from COM Port ...");
             if (serialPort1.IsOpen)
             {
-                sendCmd("AT LMER");  // end reporting raw values !
+                sendCmd("AT ER");  // end reporting raw values !
                 readDone = true;
 
                 portStatus.Text = "Disconnected";
@@ -231,7 +246,6 @@ namespace MouseApp2
 
                 portStatus.ForeColor = Color.SlateGray;
                 saveSettings.Enabled = false;
-                mouseOffButton.Enabled = false;
                 calButton.Enabled = false;
                 dcButton.Enabled = false;
                 ClearButton.Enabled = false;
@@ -245,24 +259,26 @@ namespace MouseApp2
         // update assigned actions
         private void updateOneButton(int button, int cmdIndex, String parameter)
         {
+            sendCmd("AT BM " + button);  // store command to this button function !
             switch (cmdIndex)
             {
-                case 0: sendCmd("AT BM " + button); sendCmd("AT IDLE"); break;
-                case 1: sendCmd("AT BM " + button); sendCmd("AT NEXT"); break;
-                case 2: sendCmd("AT BM " + button); sendCmd("AT CL"); break;
-                case 3: sendCmd("AT BM " + button); sendCmd("AT CR"); break;
-                case 4: sendCmd("AT BM " + button); sendCmd("AT CM"); break;
-                case 5: sendCmd("AT BM " + button); sendCmd("AT CD"); break;
-                case 6: sendCmd("AT BM " + button); sendCmd("AT PL"); break;
-                case 7: sendCmd("AT BM " + button); sendCmd("AT PR"); break;
-                case 8: sendCmd("AT BM " + button); sendCmd("AT PM"); break;
-                case 9: sendCmd("AT BM " + button); sendCmd("AT WU"); break;
-                case 10: sendCmd("AT BM " + button); sendCmd("AT WD"); break;
-                case 11: sendCmd("AT BM " + button); sendCmd("AT LMCA"); break;
-                case 12: sendCmd("AT BM " + button); sendCmd("AT MX " + parameter); break;
-                case 13: sendCmd("AT BM " + button); sendCmd("AT MY " + parameter); break;
-                case 14: sendCmd("AT BM " + button); sendCmd("AT KW " + parameter); break;
-                case 15: sendCmd("AT BM " + button); sendCmd("AT KP " + parameter); break;
+                case CMD_NOACTION:     sendCmd("AT IDLE"); break;
+                case CMD_NEXT:         sendCmd("AT NEXT"); break;
+                case CMD_CLICK_LEFT:   sendCmd("AT CL"); break;
+                case CMD_CLICK_RIGHT:  sendCmd("AT CR"); break;
+                case CMD_CLICK_MIDDLE: sendCmd("AT CM"); break;
+                case CMD_CLICK_DOUBLE: sendCmd("AT CD"); break;
+                case CMD_PRESS_LEFT:   sendCmd("AT PL"); break;
+                case CMD_PRESS_RIGHT:  sendCmd("AT PR"); break;
+                case CMD_PRESS_MIDDLE: sendCmd("AT PM"); break;
+                case CMD_WHEEL_UP:     sendCmd("AT WU"); break;
+                case CMD_WHEEL_DOWN:   sendCmd("AT WD"); break;
+                case CMD_CALIBRATE:    sendCmd("AT CA"); break;
+                case CMD_SWITCH_ALTER: sendCmd("AT SW " + parameter); break;
+                case CMD_MOVE_X:       sendCmd("AT MX " + parameter); break;
+                case CMD_MOVE_Y:       sendCmd("AT MY " + parameter); break;
+                case CMD_WRITE_TEXT:   sendCmd("AT KW " + parameter); break;
+                case CMD_PRESS_KEYS:   sendCmd("AT KP " + parameter); break;
             }
         }
 
@@ -273,29 +289,8 @@ namespace MouseApp2
             addToLog("Start Calibration ...");
             if (serialPort1.IsOpen)
             {
-                sendCmd("AT LMCA");
+                sendCmd("AT CA");
                 addToLog("Your device has been calibrated. \n");
-            }
-            else addToLog("Could not send to device - please connect COM port !");
-        }
-
-        private void onOff_Click(object sender, EventArgs e) // on/off button
-        {
-            addToLog("Mouse Function on/off ...");
-            if (serialPort1.IsOpen)
-            {
-                if (mouseOff == 0) //if the mouse function is on, turn it off
-                {
-                    mouseOffButton.Text = "Use Mouse Functions";
-                    mouseOff = 1;
-                    sendCmd("AT LMOFF");
-                }
-                else if (mouseOff == 1) //if the mouse function is off, turn it on
-                {
-                    mouseOffButton.Text = "Use Alternative Functions";
-                    mouseOff = 0;
-                    sendCmd("AT LMON");
-                }
             }
             else addToLog("Could not send to device - please connect COM port !");
         }
@@ -307,14 +302,17 @@ namespace MouseApp2
             {
                 // sendLipmouseCmd("AT LMER");
 
-                sendCmd("AT LMAX " + speedLabel.Text);
-                sendCmd("AT LMAY " + speedLabel.Text);
-                sendCmd("AT LMDX " + deadzoneLabel.Text);
-                sendCmd("AT LMDY " + deadzoneLabel.Text);
-                sendCmd("AT LMTS " + sipThresholdLabel.Text);
-                sendCmd("AT LMTP " + puffThresholdLabel.Text);
-                sendCmd("AT LMTT " + timeThresholdLabel.Text);
+                sendCmd("AT AX " + speedLabel.Text);
+                sendCmd("AT AY " + speedLabel.Text);
+                sendCmd("AT DX " + deadzoneLabel.Text);
+                sendCmd("AT DY " + deadzoneLabel.Text);
+                sendCmd("AT TS " + sipThresholdLabel.Text);
+                sendCmd("AT TP " + puffThresholdLabel.Text);
+                sendCmd("AT TT " + timeThresholdLabel.Text);
+                if (useAlternativeFunctions) sendCmd("AT AF"); 
+                else sendCmd("AT MM");
 
+                // update the 11 button functions (starting with the 3 physical buttons)
                 updateOneButton(1, Button1FunctionBox.SelectedIndex, Button1ParameterText.Text);
                 updateOneButton(2, Button2FunctionBox.SelectedIndex, Button2ParameterText.Text);
                 updateOneButton(3, Button3FunctionBox.SelectedIndex, Button3ParameterText.Text);
@@ -328,17 +326,18 @@ namespace MouseApp2
                 updateOneButton(11, LongPuffFunctionMenu.SelectedIndex, LongPuffParameterText.Text);
 
                 addToLog("The selected settings have been applied.");
-                // sendLipmouseCmd("AT LMSR");
+                // sendLipmouseCmd("AT SR");
             }
             else addToLog("Please connect a device before applying configuration changes.");
         }
 
         private void saveSettings_Click(object sender, EventArgs e) //button to save options to EEPROM
         {
+            ApplyButton_Click(this, null);
             addToLog("Save Settings ...");
             if (serialPort1.IsOpen)
             {
-                sendCmd("at save" + slotName.Text);
+                sendCmd("AT SAVE" + slotName.Text);
                 addToLog("The settings were saved");
             }
             else addToLog("Could not send to device - please connect COM port !");
@@ -349,7 +348,7 @@ namespace MouseApp2
             addToLog("Clear EEPROM settings ...");
             if (serialPort1.IsOpen)
             {
-                sendCmd("at clear\n");
+                sendCmd("AT CLEAR\n");
                 addToLog("The EEPROM settings have been cleared.");
             }
             else addToLog("Could not send to device - please connect COM port !");
@@ -388,10 +387,10 @@ namespace MouseApp2
         {
             switch (selectedFunction)
             {
-                case 12:
-                case 13: la.Visible = true; la.Text = "   Speed:"; nud.Visible = true; tb.Visible = false; cb.Visible = false; break;
-                case 14: la.Visible = true; la.Text = "    Text:"; nud.Visible = false; tb.Enabled = true; tb.Visible = true; tb.Text = "";  cb.Visible = false; break;
-                case 15: la.Visible = true; la.Text = "KeyCodes:"; nud.Visible = false; tb.Enabled = false; tb.Visible = true; tb.Text = "";  cb.Visible = true; break;
+                case CMD_MOVE_X:
+                case CMD_MOVE_Y:     la.Visible = true; la.Text = "   Speed:"; nud.Visible = true; tb.Visible = false; cb.Visible = false; break;
+                case CMD_WRITE_TEXT: la.Visible = true; la.Text = "    Text:"; nud.Visible = false; tb.Enabled = true; tb.Visible = true; tb.Text = ""; cb.Visible = false; break;
+                case CMD_PRESS_KEYS: la.Visible = true; la.Text = "KeyCodes:"; nud.Visible = false; tb.Enabled = false; tb.Visible = true; tb.Text = ""; cb.Visible = true; break;
                 default: la.Visible = false;  nud.Visible = false; tb.Visible = false; cb.Visible = false; break;
             }
         }
@@ -595,42 +594,49 @@ namespace MouseApp2
                 g.FillRectangle(brush, 0, panel1.Height - value, 30, value);
                 g.FillRectangle(brush2, 0, 0, 30, panel1.Height - value);
 
-                //Label.Text = values[1];
+                brush = new SolidBrush(Color.Red);
+                upSensorLabel.Text = values[1];
                 value = Convert.ToInt32(values[1]);
-                g = panel2.CreateGraphics();
-                brush = new SolidBrush(Color.Red);
-                brush2 = new SolidBrush(Color.White);
-                value = value * panel2.Height / 1024;
-                g.FillRectangle(brush, 0, panel2.Height - value, 30, value);
-                g.FillRectangle(brush2, 0, 0, 30, panel2.Height - value);
+                g = upPanel.CreateGraphics();
+                value = value * upPanel.Height / 1024;
+                g.FillRectangle(brush, 0, upPanel.Height - value, upPanel.Width, value);
+                g.FillRectangle(brush2, 0, 0, upPanel.Width, upPanel.Height - value);
 
-                //Label.Text = values[2];
+                downSensorLabel.Text = values[2];
                 value = Convert.ToInt32(values[2]);
-                g = panel3.CreateGraphics();
-                brush = new SolidBrush(Color.Red);
-                brush2 = new SolidBrush(Color.White);
-                value = value * panel3.Height / 1024;
-                g.FillRectangle(brush, 0, panel3.Height - value, 30, value);
-                g.FillRectangle(brush2, 0, 0, 30, panel3.Height - value);
+                g = downPanel.CreateGraphics();
+                value = value * downPanel.Height / 1024;
+                g.FillRectangle(brush, 0, 0, downPanel.Width, value);
+                g.FillRectangle(brush2, 0, value, downPanel.Width, downPanel.Height - value);
 
-                //Label.Text = values[3];
+                leftSensorLabel.Text = values[3];
                 value = Convert.ToInt32(values[3]);
-                g = panel4.CreateGraphics();
-                brush = new SolidBrush(Color.Red);
-                brush2 = new SolidBrush(Color.White);
-                value = value * panel4.Height / 1024;
-                g.FillRectangle(brush, 0, panel4.Height - value, 30, value);
-                g.FillRectangle(brush2, 0, 0, 30, panel4.Height - value);
+                g = leftPanel.CreateGraphics();
+                value = value * leftPanel.Width / 1024;
+                g.FillRectangle(brush, leftPanel.Width - value,0, value, leftPanel.Height);
+                g.FillRectangle(brush2, 0, 0, leftPanel.Width - value, leftPanel.Height);
 
-                //Label.Text = values[4];
+                rightSensorLabel.Text = values[4];
                 value = Convert.ToInt32(values[4]);
-                g = panel5.CreateGraphics();
-                brush = new SolidBrush(Color.Red);
-                brush2 = new SolidBrush(Color.White);
-                value = value * panel5.Height / 1024;
-                g.FillRectangle(brush, 0, panel5.Height - value, 30, value);
-                g.FillRectangle(brush2, 0, 0, 30, panel5.Height - value);
+                g = rightPanel.CreateGraphics();
+                value = value * rightPanel.Width/ 1024;
+                g.FillRectangle(brush, 0, 0, value, rightPanel.Height);
+                g.FillRectangle(brush2, value, 0, rightPanel.Width-value, rightPanel.Height);
             }
         }
+
+        private void selectStick_CheckedChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("stick selected");
+            useAlternativeFunctions = false;
+        }
+
+        private void selectAlternative_CheckedChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("alternative selected");
+            useAlternativeFunctions = true;
+
+        }
+
     }
 }

@@ -51,6 +51,21 @@
           AT CLEAR          clear EEPROM content (delete all stored slots)
           AT IDLE           idle command (no operation)
           
+    FLipMouse-specific commands:
+
+          AT MM           mouse movements on, alternative functions off
+          AT AF           alternative functions on, mouse movements off 
+          AT SW           switch between mouse movement and alternative functions
+          AT SR           start reporting raw values
+          AT ER           end reporting raw values
+          AT CA           calibration of zeropoint
+          AT AX <num>     acceleration x-axis 
+          AT AY <num>     acceleration y-axis 
+          AT DX <num>     deadzone x-axis 
+          AT DY <num>     deadzone y-axis
+          AT TS <num>     treshold sip action
+          AT TP <num>     treshold puff action
+          AT TT <num>     treshold short/long sip or puff (milliseconds)
 
    supported key identifiers for key press command (AT KP):
  
@@ -62,21 +77,6 @@
     KEY_RIGHT   KEY_LEFT       KEY_DOWN        KEY_UP      KEY_ENTER    KEY_ESC   KEY_BACKSPACE   KEY_TAB	
     KEY_HOME    KEY_PAGE_UP    KEY_PAGE_DOWN   KEY_DELETE  KEY_INSERT   KEY_END	  KEY_NUM_LOCK    KEY_SCROLL_LOCK
     KEY_SPACE   KEY_CAPS_LOCK  KEY_PAUSE       KEY_SHIFT   KEY_CTRL     KEY_ALT   KEY_GUI 
-
-   optional commands for lipmouse module support (uses force sensors for mouse x/y movement and pressure sensor for sip/puff):
-
-          AT LMON             lipmouse on
-          AT LMOFF            lipmouse off
-          AT LMSR             start reporting raw values
-          AT LMER             end reporting raw values
-          AT LMCA             start calibration
-          AT LMAX <num>       acceleration x-axis 
-          AT LMAY <num>       acceleration y-axis 
-          AT LMDX <num>       deadzone x-axis 
-          AT LMDY <num>       deadzone y-axis
-          AT LMTS <num>       treshold sip action
-          AT LMTP <num>       treshold puff action
-          AT LMTT <num>       treshold short/long sip or puff (milliseconds)
     
 */
 
@@ -108,23 +108,23 @@
 
 #ifdef TEENSY
   struct settingsType settings = {
-    {13,2,3},                // default physical button pins for Lipmouse / Teensy
-    25,                      // default Led pin for Lipmouse / Teensy
-    1,                       // default mouse on
-    3, 10, 10, 30, 30, 500, 525, 1000    // default values for acceleration, deadzone & thresholds
+    {13,2,3},                //  physical button pins  
+    25,                      //  Led pin
+    1,                       //  Mouse cursor movement active (not alternative functions )
+    3, 10, 10, 30, 30, 500, 525, 1000    // wheel step, accx, accy, deadzone x, deadzone y, threshold sip, threshold puff, threshold time (short/longpress)
   }; 
-#else
-  struct settingsType settings = {
-    {2,3,4},                 // default button pins for Arduino Pro Micro
-    17,                      // default Led pin for Arduino Pro Micro
-    1,                       // default mouse on
-    3,10,10,30,30,500,525,1000    // default values for acceleration, deadzone & thresholds
+#else 
+  struct settingsType settings = {  // default for Arduino Pro Micro
+    {2,3,4},              
+    17, 
+    1,
+    3,10,10,30,30,500,525,1000 
   }; 
 #endif 
 
 struct buttonType buttons [NUMBER_OF_BUTTONS];   // array for all buttons - defines one memory slot 
 
-uint8_t calib_now = 1;
+uint8_t calib_now = 1;                       // calib zeropoint right at startup !
 uint8_t DebugOutput = DEFAULT_DEBUGLEVEL;
 
 int EmptySlotAddress = 0;
@@ -183,7 +183,6 @@ uint32_t handleButton(int i, uint8_t b);  // button debouncing
 
 void setup() {
    Serial.begin(9600);
-   // delay(5000);
     //while (!Serial) ;
    
    if (DebugOutput==DEBUG_FULLOUTPUT)  
@@ -240,8 +239,8 @@ void loop() {
       right = analogRead(RIGHT_SENSOR_PIN);
 
       if (DebugOutput==DEBUG_LIVEREPORTS)   { 
-        if (cnt++ > 5) {  
-          Serial.print("AT PR ");Serial.print(pressure);Serial.print(",");
+        if (cnt++ > 10) {                    // report raw values !
+          Serial.print("AT RR ");Serial.print(pressure);Serial.print(",");
           Serial.print(up);Serial.print(",");Serial.print(down);Serial.print(",");
           Serial.print(left);Serial.print(",");Serial.println(right);
           cnt=0;
@@ -568,15 +567,21 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
           break;
 
 
-      case CMD_LM_ON:
+      case CMD_LM_MM:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("mouse function on");
              settings.mouseOn=1;
           break;
-      case CMD_LM_OFF:
+      case CMD_LM_AF:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("mouse function off");
+               Serial.println("alternative functions on");
              settings.mouseOn=0;
+          break;
+      case CMD_LM_SW:
+             if (DebugOutput==DEBUG_FULLOUTPUT)  
+               Serial.println("switch mouse / alternative function");
+             if (settings.mouseOn==0) settings.mouseOn=1;
+             else settings.mouseOn=0;
           break;
       case CMD_LM_CA:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
