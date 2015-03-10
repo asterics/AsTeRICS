@@ -49,6 +49,8 @@
           AT LIST           list all saved mode names 
           AT NEXT           next mode will be loaded (wrap around after last slot)
           AT CLEAR          clear EEPROM content (delete all stored slots)
+          AT IDLE           idle command (no operation)
+          
 
    supported key identifiers for key press command (AT KP):
  
@@ -74,6 +76,7 @@
           AT LMDY <num>       deadzone y-axis
           AT LMTS <num>       treshold sip action
           AT LMTP <num>       treshold puff action
+          AT LMTT <num>       treshold short/long sip or puff (milliseconds)
     
 */
 
@@ -82,56 +85,68 @@
 
 // Constants and Macro definitions
 
-#define DEFAULT_WAIT_TIME       10   // wait time for one loop interation in milliseconds
+#define PRESSURE_SENSOR_PIN A0
+#define DOWN_SENSOR_PIN     45
+#define LEFT_SENSOR_PIN     43
+#define UP_SENSOR_PIN       44
+#define RIGHT_SENSOR_PIN    42
+
+#define DEFAULT_WAIT_TIME       5   // wait time for one loop interation in milliseconds
 #define DEFAULT_CLICK_TIME      8    // time for mouse click (loop iterations from press to release)
 #define DOUBLECLICK_MULTIPLIER  5    // CLICK_TIME factor for double clicks
-#define DEFAULT_DEBOUNCING_TIME 10   // debouncing interval for button-press / release
+#define DEFAULT_DEBOUNCING_TIME 7   // debouncing interval for button-press / release
 
+#define UP_BUTTON       3
+#define DOWN_BUTTON     4
+#define LEFT_BUTTON     5
+#define RIGHT_BUTTON    6
+#define SIP_BUTTON      7
+#define LONGSIP_BUTTON  8
+#define PUFF_BUTTON     9
+#define LONGPUFF_BUTTON 10
 
-#define PRESSURESTATE_IDLE 0
-#define PRESSURESTATE_SIP  1
-#define PRESSURESTATE_PUFF 2
-
-#ifdef ARDUINO_PRO_MICRO
-  struct settingsType settings = {
-    {2,3,4,5,6,7},           // default button pins for Arduino Pro Micro
-    17,                      // default Led pin for Arduino Pro Micro
-    0,                       // default mouse off
-    0,0,0,0,0,0,0    // default values for acceleration, deadzone & thresholds (if lipmouse is used)
-  }; 
-#endif
 
 #ifdef TEENSY
- struct settingsType settings = {
-    {19,20,21,22,23,24},     // default button pins for Teensy
-    25,                      // default Led pin for Teensy
-    0,                       // default mouse off
-    0,0,0,0,0,0,0            // default values for acceleration, deadzone & thresholds (if lipmouse is used)
+  struct settingsType settings = {
+    {13,2,3},                // default physical button pins for Lipmouse / Teensy
+    25,                      // default Led pin for Lipmouse / Teensy
+    1,                       // default mouse on
+    3, 10, 10, 30, 30, 500, 525, 1000    // default values for acceleration, deadzone & thresholds
+  }; 
+#else
+  struct settingsType settings = {
+    {2,3,4},                 // default button pins for Arduino Pro Micro
+    17,                      // default Led pin for Arduino Pro Micro
+    1,                       // default mouse on
+    3,10,10,30,30,500,525,1000    // default values for acceleration, deadzone & thresholds
   }; 
 #endif 
 
-#ifdef LIPMOUSE
-  struct settingsType settings = {
-    {1,1,13,2,3,1},           // default button pins for Lipmouse / Teensy
-    25,                      // default Led pin for Lipmouse / Teensy
-    1,                       // default mouse on
-    3, 10, 10, 30, 30, 500, 530    // default values for acceleration, deadzone & thresholds (if lipmouse is used)
-  }; 
-#endif
+struct buttonType buttons [NUMBER_OF_BUTTONS];   // array for all buttons - defines one memory slot 
 
+uint8_t calib_now = 1;
+uint8_t DebugOutput = DEFAULT_DEBUGLEVEL;
+
+int EmptySlotAddress = 0;
+
+unsigned long currentTime;
 unsigned long previousTime = 0;
+float timeDifference;
+uint32_t timeStamp = 0;
+unsigned long time=0;
+
+int pressure;
+int down;
+int left;
+int up;
+int right;
+
 float accumXpos = 0.f;
 float accumYpos = 0.f;
 int x;
 int y;
 int x_offset;
 int y_offset;
-uint8_t calib_now = 1;
-uint8_t DebugOutput = DEFAULT_DEBUGLEVEL;
-uint8_t pressureState = PRESSURESTATE_IDLE;
-uint8_t pressureDebounce = 0;
-
-struct buttonType buttons [NUMBER_OF_BUTTONS];   // array for all buttons - defines one memory slot 
 
 int clickTime=DEFAULT_CLICK_TIME;
 int waitTime=DEFAULT_WAIT_TIME;
@@ -150,19 +165,18 @@ int doubleClickRunning=0;
 int8_t moveX=0;       
 int8_t moveY=0;       
 
-int cnt =0;
-
+uint8_t cnt =0;
 
 int inByte=0;
-
 char * keystring=0;
 char * writeKeystring=0;
 
-unsigned long time=0;
-int EmptySlotAddress = 0;
 
+// function declarations 
 void handlePress (int buttonIndex);      // a button was pressed
 void handleRelease (int buttonIndex);    // a button was released
+uint32_t handleButton(int i, uint8_t b);  // button debouncing
+
 
 
 // Setup: program execution starts here
@@ -191,17 +205,20 @@ void setup() {
 
    pinMode(settings.LED_PIN,OUTPUT);
 
+   for (int i=0; i<NUMBER_OF_PHYSICAL_BUTTONS; i++)   // initialize physical buttons and bouncers
+      pinMode (settings.input_map[i], INPUT_PULLUP);   // configure the pins for input mode with pullup resistors
+
    for (int i=0; i<NUMBER_OF_BUTTONS; i++)   // initialize button array
    {
-      pinMode (settings.input_map[i], INPUT_PULLUP);   // configure the pins for input mode with pullup resistors
-      buttons[i].bouncer=new Bounce();
-      buttons[i].bouncer->attach(settings.input_map[i]);
-      buttons[i].bouncer->interval(DEFAULT_DEBOUNCING_TIME);
+      buttons[i].bounceState=0;
+      buttons[i].stableState=0;
+      buttons[i].bounceCount=0;
+      buttons[i].longPressed=0;
       buttons[i].mode=CMD_MOUSE_PRESS_LEFT;              // default command for every button is left mouse click
       buttons[i].value='L';
       buttons[i].keystring[0]=0;
    }
-
+   
    readFromEEPROM(0);  // read button modes from first EEPROM slot if available !  
    BlinkLed();
    if (DebugOutput==DEBUG_FULLOUTPUT)  
@@ -211,97 +228,54 @@ void setup() {
 // Loop: the main program loop
 
 void loop() {  
-    if (Serial.available() > 0) {
-      // get incoming byte:
-      inByte = Serial.read();
-      parseByte (inByte);      // implemented in parser.cpp
-    }
-  
-    for (int i=0;i<NUMBER_OF_BUTTONS;i++)    // update button press / release events
-    {
-      buttons[i].bouncer->update();
-  
-      if (buttons[i].bouncer->fell()) 
-         handlePress(i); 
-      else if (buttons[i].bouncer->rose())
-         handleRelease(i);
-    }
-      
-    // handle running clicks or double clicks
-    if (leftClickRunning)
-        if (--leftClickRunning==0)  leftMouseButton=0; 
-    
-    if (rightClickRunning)
-        if (--rightClickRunning==0)  rightMouseButton=0; 
- 
-    if (middleClickRunning)
-        if (--middleClickRunning==0)  middleMouseButton=0; 
 
-    if (doubleClickRunning)
-    {
-        doubleClickRunning--;
-        if (doubleClickRunning==clickTime*2)  leftMouseButton=0; 
-        else if (doubleClickRunning==clickTime)    leftMouseButton=1; 
-        else if (doubleClickRunning==0)    leftMouseButton=0; 
-    }
-  
-    // handle mouse movement
-    if ((moveX!=0) || (moveY!=0))  
-         Mouse.move(moveX, moveY);
- 
-    // if any changes were made, update the Mouse buttons
-    if((leftMouseButton!=old_leftMouseButton) ||
-       (middleMouseButton!=old_middleMouseButton) ||
-       (rightMouseButton!=old_rightMouseButton))  {
-
-         #ifdef ARDUINO_PRO_MICRO
-           if (leftMouseButton) Mouse.press(MOUSE_LEFT); else Mouse.release(MOUSE_LEFT);
-           if (rightMouseButton) Mouse.press(MOUSE_RIGHT); else Mouse.release(MOUSE_RIGHT);
-           if (middleMouseButton) Mouse.press(MOUSE_MIDDLE); else Mouse.release(MOUSE_MIDDLE);
-         #else         
-           Mouse.set_buttons(leftMouseButton, middleMouseButton, rightMouseButton);
-         #endif
-         old_leftMouseButton=leftMouseButton;
-         old_middleMouseButton=middleMouseButton;
-         old_rightMouseButton=rightMouseButton;
-    }
-    
-    // handle Keyboard output (single key press/release is done seperately via setKeyValues() ) 
-    if (writeKeystring)
-    {
-        Keyboard.print(writeKeystring);
-        writeKeystring=0;
-    }    
-    
-    
-    #ifdef LIPMOUSE
-      unsigned long currentTime = millis();
-      float timeDifference = (currentTime - previousTime)/5000.f;
+      currentTime = millis();
+      timeDifference = (currentTime - previousTime)/5000.f;
       previousTime = currentTime;
+
+      pressure = analogRead(PRESSURE_SENSOR_PIN);
+      up = analogRead(UP_SENSOR_PIN);
+      down = analogRead(DOWN_SENSOR_PIN);
+      left = analogRead(LEFT_SENSOR_PIN);
+      right = analogRead(RIGHT_SENSOR_PIN);
+
+      if (DebugOutput==DEBUG_LIVEREPORTS)   { 
+        if (cnt++ > 5) {  
+          Serial.print("AT PR ");Serial.print(pressure);Serial.print(",");
+          Serial.print(up);Serial.print(",");Serial.print(down);Serial.print(",");
+          Serial.print(left);Serial.print(",");Serial.println(right);
+          cnt=0;
+        }
+      }
       
-      int pressure = analogRead(A0);
-      int down = analogRead(45);
-      int left = analogRead(43);
-      int up = analogRead(44);
-      int right = analogRead(42);
-  
-      if (calib_now == 1)
-      {
+      while (Serial.available() > 0) {
+        // get incoming byte:
+        inByte = Serial.read();
+        parseByte (inByte);      // implemented in parser.cpp
+      }
+    
+      for (int i=0;i<NUMBER_OF_PHYSICAL_BUTTONS;i++)    // update button press / release events
+          handleButton(i, -1, digitalRead(settings.input_map[i]) == LOW ? 1 : 0);
+
+      handleButton(SIP_BUTTON, LONGSIP_BUTTON, pressure < settings.ts ? 1 : 0); 
+      handleButton(PUFF_BUTTON, LONGPUFF_BUTTON, pressure > settings.tp ? 1 : 0);
+    
+        
+      // handle mouse movement
+      if (calib_now == 1)  {
          x_offset = (left-right);
          y_offset = (up-down);
          calib_now=0;
       }    
-      else
-      {
+      else  {
           x = (left-right) - x_offset;
           y = (up-down) - y_offset;
       }
-    
+      
       if (abs(x)< settings.dx) x=0;
       if (abs(y)< settings.dy) y=0;
       
-      if (settings.mouseOn == 1)
-      {
+      if (settings.mouseOn == 1) {
         if (y>settings.dy)
            accumYpos += (y-settings.dy)*settings.ay*timeDifference; 
         else if (y<-settings.dy)
@@ -314,61 +288,62 @@ void loop() {
       
         int xMove = (int)accumXpos;
         int yMove = (int)accumYpos;
-      
         Mouse.move(xMove, yMove);
-      
         accumXpos -= xMove;
         accumYpos -= yMove;
       }
-  
-      if (pressureDebounce==0)
-      {
-        if (pressure < settings.ts)
-        { 
-           if (pressureState != PRESSURESTATE_SIP)
-           {
-              pressureState=PRESSURESTATE_SIP;
-              handlePress(0); pressureDebounce=DEFAULT_DEBOUNCING_TIME;
-           }
-        }
-        else
-        {
-           if (pressureState == PRESSURESTATE_SIP)
-           {
-              pressureState=PRESSURESTATE_IDLE;
-              handleRelease(0); pressureDebounce=DEFAULT_DEBOUNCING_TIME;
-           }
-        }
-  
-        if (pressure > settings.tp)
-        { 
-           if (pressureState != PRESSURESTATE_PUFF)
-           {
-              pressureState=PRESSURESTATE_PUFF;
-              handlePress(1); pressureDebounce=DEFAULT_DEBOUNCING_TIME;
-           }
-        }
-        else
-        {
-           if (pressureState == PRESSURESTATE_PUFF)
-           {
-              pressureState=PRESSURESTATE_IDLE;
-              handleRelease(1); pressureDebounce=DEFAULT_DEBOUNCING_TIME;
-           }
-        }
-     } else pressureDebounce--;
+      else  { // handle alternative joystick actions
+        handleButton(UP_BUTTON, -1, y<-settings.dy ? 1 : 0);
+        handleButton(DOWN_BUTTON, -1, y>settings.dy ? 1 : 0);
+        handleButton(LEFT_BUTTON, -1, x<-settings.dx ? 1 : 0);
+        handleButton(RIGHT_BUTTON, -1, x>settings.dx ? 1 : 0);
+      }
 
-     if (DebugOutput==DEBUG_LIVEREPORTS)
-     { 
-       if (cnt++ > 5)
-       {  
-          Serial.print("AT PR ");Serial.println(pressure);
-          cnt=0;
-       }
+      if ((moveX!=0) || (moveY!=0))   // movement induced by button actions  
+          Mouse.move(moveX, moveY);
+
+      // handle running clicks or double clicks
+      if (leftClickRunning)
+          if (--leftClickRunning==0)  leftMouseButton=0; 
+      
+      if (rightClickRunning)
+          if (--rightClickRunning==0)  rightMouseButton=0; 
+   
+      if (middleClickRunning)
+          if (--middleClickRunning==0)  middleMouseButton=0; 
+  
+      if (doubleClickRunning)
+      {
+          doubleClickRunning--;
+          if (doubleClickRunning==clickTime*2)  leftMouseButton=0; 
+          else if (doubleClickRunning==clickTime)    leftMouseButton=1; 
+          else if (doubleClickRunning==0)    leftMouseButton=0; 
+      }
+ 
+      // if any changes were made, update the Mouse buttons
+      if((leftMouseButton!=old_leftMouseButton) ||
+        (middleMouseButton!=old_middleMouseButton) ||
+        (rightMouseButton!=old_rightMouseButton))  {
+
+         #ifdef ARDUINO_PRO_MICRO
+           if (leftMouseButton) Mouse.press(MOUSE_LEFT); else Mouse.release(MOUSE_LEFT);
+           if (rightMouseButton) Mouse.press(MOUSE_RIGHT); else Mouse.release(MOUSE_RIGHT);
+           if (middleMouseButton) Mouse.press(MOUSE_MIDDLE); else Mouse.release(MOUSE_MIDDLE);
+         #else         
+           Mouse.set_buttons(leftMouseButton, middleMouseButton, rightMouseButton);
+         #endif
+         old_leftMouseButton=leftMouseButton;
+         old_middleMouseButton=middleMouseButton;
+         old_rightMouseButton=rightMouseButton;
      }
-     #endif
+    
+     // handle Keyboard output (single key press/release is done seperately via setKeyValues() ) 
+     if (writeKeystring) {
+        Keyboard.print(writeKeystring);
+        writeKeystring=0;
+    }    
        
-     delay(waitTime);  // to limit move movement speed. TBD: remove delay, use millis() !
+    delay(waitTime);  // to limit move movement speed. TBD: remove delay, use millis() !
 }
 
 
@@ -389,6 +364,47 @@ void handleRelease (int buttonIndex)    // a button was released
    }
 }
 
+void handleButton(int i, int l, uint8_t state)
+{
+   if ( buttons[i].bounceState == state) {
+     if (buttons[i].bounceCount < DEFAULT_DEBOUNCING_TIME) {
+       buttons[i].bounceCount++;
+       if (buttons[i].bounceCount == DEFAULT_DEBOUNCING_TIME) {
+          if (state != buttons[i].stableState)
+          { 
+            buttons[i].stableState=state;
+            if (state == 1) { 
+              handlePress(i); 
+              buttons[i].timestamp=currentTime;
+            }
+            else {
+              if (buttons[i].longPressed)
+              {
+                 buttons[i].longPressed=0;
+                 handleRelease(l);
+              }
+              else handleRelease(i);  
+            }
+          }
+       }
+     }
+     else { 
+       if ((currentTime-buttons[i].timestamp > settings.tt) && (l>=0))
+       {
+            if ((state == 1) && (buttons[i].longPressed==0) && (buttons[l].mode!=CMD_IDLE)) {
+           buttons[i].longPressed=1; 
+           handleRelease(i);
+           handlePress(l);
+          }
+       }
+     }
+   }
+   else {
+     buttons[i].bounceState = state;
+     buttons[i].bounceCount=0;     
+   }
+}   
+
 
 // perform a command  (called from parser.cpp)
 //   cmd: command identifier
@@ -402,13 +418,13 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
       {  
         Serial.print("got new mode for button "); Serial.print(actButton);Serial.print(":");
         Serial.print(cmd);Serial.print(",");Serial.print(par1);Serial.print(",");Serial.println(keystring);
+        BlinkLed();
       }
       buttons[actButton-1].mode=cmd;
       buttons[actButton-1].value=par1;
       if (keystring==0) buttons[actButton-1].keystring[0]=0;
       else strcpy(buttons[actButton-1].keystring,keystring);
       actButton=0;
-      BlinkLed();
       return;
   }
   
@@ -554,47 +570,47 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
 
       case CMD_LM_ON:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("lipmouse on");
+               Serial.println("mouse function on");
              settings.mouseOn=1;
           break;
       case CMD_LM_OFF:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("lipmouse off");
+               Serial.println("mouse function off");
              settings.mouseOn=0;
           break;
       case CMD_LM_CA:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("lipmouse calibrate");
+               Serial.println("start calibration");
              calib_now=1;
           break;
       case CMD_LM_AX:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("lipmouse acc x");
+               Serial.println("set acc x");
              settings.ax=par1;
           break;
       case CMD_LM_AY:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("lipmouse acc y");
+               Serial.println("set acc y");
              settings.ay=par1;
           break;
       case CMD_LM_DX:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("lipmouse deadzone x");
+               Serial.println("set deadzone x");
              settings.dx=par1;
           break;
       case CMD_LM_DY:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("lipmouse deadzone y");
+               Serial.println("set deadzone y");
              settings.dy=par1;
           break;
       case CMD_LM_TS:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("lipmouse threshold sip");
+               Serial.println("set threshold sip");
              settings.ts=par1;
           break;
       case CMD_LM_TP:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("lipmouse threshold puff");
+               Serial.println("set threshold puff");
              settings.tp=par1;
           break;
       case CMD_LM_SR:
@@ -602,6 +618,11 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
           break;
       case CMD_LM_ER:
              DebugOutput=DEBUG_NOOUTPUT;
+          break;
+      case CMD_LM_TT:
+             if (DebugOutput==DEBUG_FULLOUTPUT)  
+               Serial.println("set time threshold");
+             settings.tt=par1;
           break;
   }
 }

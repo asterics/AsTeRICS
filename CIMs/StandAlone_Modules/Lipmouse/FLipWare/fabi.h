@@ -1,22 +1,19 @@
 #include <Arduino.h>
 #include <string.h>
 #include <stdint.h>
-#include "Bounce2.h"        //  Bounce library used for button debouncing
 
 
 // #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used  (comment or remove if Teensy is used !)
-// #define TEENSY              //  if teensy is used (but not a lipmouse module)
+#define TEENSY                 //  if teensy is used (but not a lipmouse module)
+// #define LIPMOUSE_V0         //  first HW version of lipmouse, powers pressure sensor via GPIO pins !
  
-#define LIPMOUSE         //  Lipmouse module with Teensy!
-// #define LIPMOUSE_V0      //  first HW version of lipmouse, powers pressure sensor via GPIO pins !
 
+#define NUMBER_OF_BUTTONS 11          // number of connected or virtual switches
+#define NUMBER_OF_PHYSICAL_BUTTONS 3  // number of connected switches
+#define MAX_SLOTS         10          // maximum number of EEPROM memory slots
 
-#define NUMBER_OF_BUTTONS 6             // number of connected switches
-#define MAX_SLOTS         10         // maximum number of EEPROM memory slots
-
-#define MAX_KEYSTRING_LEN 50         // maximum lenght for key identifiers / keyboard text
+#define MAX_KEYSTRING_LEN 50          // maximum lenght for key identifiers / keyboard text
 #define MAX_CMDLEN MAX_KEYSTRING_LEN+3
-
 
 #define DEBUG_NOOUTPUT 0
 #define DEBUG_FULLOUTPUT 1
@@ -50,39 +47,47 @@
 #define CMD_NEXT_SLOT               24
 #define CMD_DELETE_SLOTS            25
 
-#define CMD_LM_ON                   26
-#define CMD_LM_OFF                  27
-#define CMD_LM_CA                   28
-#define CMD_LM_AX                   29
-#define CMD_LM_AY                   30
-#define CMD_LM_DX                   31
-#define CMD_LM_DY                   32
-#define CMD_LM_TS                   33
-#define CMD_LM_TP                   34
-#define CMD_LM_SR                   35
-#define CMD_LM_ER                   36
+#define CMD_LM_ON                   50
+#define CMD_LM_OFF                  51
+#define CMD_LM_CA                   52
+#define CMD_LM_AX                   53
+#define CMD_LM_AY                   54
+#define CMD_LM_DX                   55
+#define CMD_LM_DY                   56
+#define CMD_LM_TS                   57
+#define CMD_LM_TP                   58
+#define CMD_LM_SR                   59
+#define CMD_LM_ER                   60
+#define CMD_LM_TT                   61
+
+#define CMD_IDLE                    100
 
 // Global Variables
 #include <stdint.h>
 
 struct settingsType {
-  uint8_t input_map[NUMBER_OF_BUTTONS];
+  int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS];
   uint8_t LED_PIN;
   uint8_t  mouseOn;
   uint8_t  ws;     // wheel stepsize  
-  uint8_t  ax;     // acceleration x (lipmouse only)
-  uint8_t  ay;     // acceleration y (lipmouse only)
-  uint8_t  dx;     // deadzone x (lipmouse only)
-  uint8_t  dy;     // deydzone y (lipmouse only)
-  uint16_t ts;     // threshold sip  (lipmouse only)
-  uint16_t tp;     // threshold puff (lipmouse only)
+  uint8_t  ax;     // acceleration x
+  uint8_t  ay;     // acceleration y
+  uint8_t  dx;     // deadzone x
+  uint8_t  dy;     // deadzone y
+  uint16_t ts;     // threshold sip
+  uint16_t tp;     // threshold puff 
+  uint16_t tt;     // threshold time 
 };
 
 struct buttonType {                         // holds command and data for a button function 
   int mode;
   int value;
   char keystring[MAX_KEYSTRING_LEN];
-  Bounce * bouncer;
+  uint8_t bounceCount;
+  uint8_t bounceState;
+  uint8_t stableState;
+  uint8_t longPressed;
+  uint32_t timestamp;
 } ; 
 
 extern uint8_t DebugOutput;

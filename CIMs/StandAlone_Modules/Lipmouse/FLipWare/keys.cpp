@@ -89,7 +89,6 @@ void releaseKeys()  // releases all previously pressed keys
 
 // press all supported keys 
 // text is a string which contains the key identifiers eg. "KEY_CTRL KEY_C" for Ctrl-C
-// TBD: improve ! add a real parser which iterated through key identifiers, add new commands e.g. WAIT etc...
 void setKeyValues(char* text)
 {
   char * acttoken;

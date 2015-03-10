@@ -48,12 +48,13 @@ void parseCommand (char * cmdstr)
         strup(actpos);
 
         // housekeeping commands
-        if (!strcmp(actpos,"ID")) cmd=CMD_PRINT_ID;
+        if (!strcmp(actpos,"ID"))   cmd=CMD_PRINT_ID;
         if (!strcmp(actpos,"SAVE"))  { actpos=strtok(NULL," "); strup (actpos); cmd=CMD_SAVE_SLOT; }
         if (!strcmp(actpos,"LOAD"))  { actpos=strtok(NULL," "); strup (actpos); cmd=CMD_LOAD_SLOT; }
         if (!strcmp(actpos,"NEXT"))  cmd=CMD_NEXT_SLOT;
         if (!strcmp(actpos,"CLEAR")) cmd=CMD_DELETE_SLOTS;
         if (!strcmp(actpos,"LIST"))  cmd=CMD_LIST_SLOTS;
+        if (!strcmp(actpos,"IDLE"))  cmd=CMD_IDLE;
         
         //  button feature commands
         if (!strcmp(actpos,"BM")) { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_BUTTON_MODE; }
@@ -89,6 +90,7 @@ void parseCommand (char * cmdstr)
         if (!strcmp(actpos,"LMDY"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_DY;}
         if (!strcmp(actpos,"LMTS"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_TS;}
         if (!strcmp(actpos,"LMTP"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_TP;}
+        if (!strcmp(actpos,"LMTT"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_LM_TT;}
     }
     if (cmd)
     {
@@ -122,7 +124,8 @@ void parseByte (int newByte)  // parse an incoming commandbyte from serial inter
         break;
     case 3: 
             if ((newByte==13) || (newByte==10) || (cmdlen>=MAX_CMDLEN-1))
-            {  cmdstring[cmdlen]=0; parseCommand(cmdstring); state=0; }
+            {  cmdstring[cmdlen]=0;  parseCommand(cmdstring); 
+              state=0; }
             else cmdstring[cmdlen++]=newByte;
         break;   
     default: err: Serial.println("?");state=0;
