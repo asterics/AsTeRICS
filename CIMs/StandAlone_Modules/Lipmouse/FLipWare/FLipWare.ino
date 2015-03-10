@@ -1,20 +1,19 @@
   
 /* 
-   Flexible Assistive Button Interface (FABI) Version 2.0  - AsTeRICS Academy 2015 - http://www.asterics-academy.net
-      allows control of HID functions via AT-commands and/or momentary switches 
+     FLipWare - built upon Assistive Button Interface (FABI) Version 2.0  - AsTeRICS Academy 2015 - http://www.asterics-academy.net
+      allows control of HID functions via FLipmouse module and/or AT-commands  
    
 
-   requirements:  USB HID capable Arduino (Leonardo / Pro Micro resp. Clone ;-)
+   requirements:  USB HID capable Arduino (Leonardo / Micro / Pro Micro)
                   or Teensy 2.0++ with Teensyduino AddOn setup as USB composite device (Mouse + Keyboard + Serial)
-                  Bounce2 library, see: https://github.com/thomasfredericks/Bounce2/wiki
-       optional:  Momentary switches connected to GPIO pins (first pin: see START_BUTTON_PIN)
+       optional:  Momentary switches connected to GPIO pins / force sensors connected to ADC pins
        
    
    Supported AT-commands:  
    (sent via serial interface, use spaces between parameters and Enter (<cr>, ASCII-code 0x0d) to finish a command)
    
           AT                returns "OK"
-          AT ID             identification string will be returned (e.g. "FABI Version 2.0" or "Lipmouse Version 1.0")
+          AT ID             identification string will be returned (e.g. "FLipmouse Version 1.0")
           AT BM <num>       button mode setting for a button (e.g. AT BM 2 -> next command defines the new function for button 2)
 
           AT CL             click left mouse button  
