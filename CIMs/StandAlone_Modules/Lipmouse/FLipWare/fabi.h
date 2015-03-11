@@ -3,8 +3,8 @@
 #include <stdint.h>
 
 
-#define TEENSY                 //  if teensy is used (but not a lipmouse module)
-// #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used  (comment or remove if Teensy is used !)
+#define TEENSY                 //  if Teensy controller is used
+// #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used
 // #define LIPMOUSE_V0         //  first HW version of lipmouse, powers pressure sensor via GPIO pins !
  
 
@@ -64,9 +64,6 @@
 #define CMD_TT                      62
 
 #define CMD_IDLE                    100
-
-// Global Variables
-#include <stdint.h>
 
 struct settingsType {
   uint8_t  mouseOn;// mouse or alternative functions 

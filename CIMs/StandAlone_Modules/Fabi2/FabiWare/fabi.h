@@ -1,16 +1,18 @@
 #include <Arduino.h>
 #include <string.h>
 #include <stdint.h>
-#include "Bounce2.h"        //  Bounce library used for button debouncing
 
 
-// #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used  (comment or remove if Teensy is used !)
-#define TEENSY                 //  if teensy is used (but not a lipmouse module)
+#define TEENSY                 //  if a Teensy controller is used
+// #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used 
+ 
 
-#define NUMBER_OF_BUTTONS 6          // number of connected switches
-#define MAX_SLOTS         10         // maximum number of EEPROM memory slots
+#define NUMBER_OF_BUTTONS 6          // number of connected or virtual switches
+#define NUMBER_OF_PHYSICAL_BUTTONS 6  // number of connected switches
+#define NUMBER_OF_LEDS      3         // number of connected leds
+#define MAX_SLOTS          10          // maximum number of EEPROM memory slots
 
-#define MAX_KEYSTRING_LEN 50         // maximum lenght for key identifiers / keyboard text
+#define MAX_KEYSTRING_LEN 50          // maximum lenght for key identifiers / keyboard text
 #define MAX_CMDLEN MAX_KEYSTRING_LEN+3
 
 #define DEBUG_NOOUTPUT 0
@@ -39,36 +41,34 @@
 #define CMD_KEY_WRITE               18
 #define CMD_KEY_PRESS               19
 #define CMD_KEY_RELEASE             20
-#define CMD_SAVE_SLOT               21
-#define CMD_LOAD_SLOT               22
-#define CMD_LIST_SLOTS              23
-#define CMD_NEXT_SLOT               24
-#define CMD_DELETE_SLOTS            25
+#define CMD_RELEASE_ALL             21
+#define CMD_SAVE_SLOT               22
+#define CMD_LOAD_SLOT               23
+#define CMD_LIST_SLOTS              24
+#define CMD_NEXT_SLOT               25
+#define CMD_DELETE_SLOTS            26
 
-// Global Variables
-#include <stdint.h>
+#define CMD_IDLE                    100
+
 
 struct settingsType {
-  uint8_t input_map[NUMBER_OF_BUTTONS];
-  uint8_t LED_PIN;
   uint8_t  ws;     // wheel stepsize  
-  uint8_t  ax;     // acceleration x (lipmouse only)
-  uint8_t  ay;     // acceleration y (lipmouse only)
-  uint8_t  dx;     // deadzone x (lipmouse only)
-  uint8_t  dy;     // deydzone y (lipmouse only)
-  uint16_t ts;     // threshold sip  (lipmouse only)
-  uint16_t tp;     // threshold puff (lipmouse only)
+  uint16_t tt;     // threshold time 
 };
 
-struct buttonType {                         // holds command and data for a button function 
+struct buttonType {                      // holds command and woring data for a button function 
   int mode;
   int value;
-  char keystring[MAX_KEYSTRING_LEN];
-  Bounce * bouncer;
+  char keystring[MAX_KEYSTRING_LEN];     // EEPROM data is stored only until ths string's end
+  uint8_t bounceCount;                   // from here: working data for the button
+  uint8_t bounceState;
+  uint8_t stableState;
+  uint8_t longPressed;
+  uint32_t timestamp;
 } ; 
 
 extern uint8_t DebugOutput;
-
+extern uint8_t actSlot;
 extern struct settingsType settings;
 extern int EmptySlotAddress;
 extern struct buttonType buttons[NUMBER_OF_BUTTONS];
@@ -84,8 +84,9 @@ void BlinkLed();
 int freeRam ();
 void parseByte (int newByte);
 
-void releaseKeys();  // releases all previously pressed keys
-void setKeyValues(char* text);
+void setKeyValues(char* text); // presses individual keay
+void releaseKeys(char* text);  // releases individual keys
+void release_all();            // releases all previously pressed keys and buttons
 
 
 

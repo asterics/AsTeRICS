@@ -19,10 +19,26 @@ namespace MouseApp2
     public partial class FabiGUI : Form
     {
 
-        String[] commands = {  "Switch to next configuration",
+        const int CMD_NOACTION = 0;
+        const int CMD_NEXT = 1;
+        const int CMD_CLICK_LEFT = 2;
+        const int CMD_CLICK_RIGHT = 3;
+        const int CMD_CLICK_MIDDLE = 4;
+        const int CMD_CLICK_DOUBLE = 5;
+        const int CMD_PRESS_LEFT = 6;
+        const int CMD_PRESS_RIGHT = 7;
+        const int CMD_PRESS_MIDDLE = 8;
+        const int CMD_WHEEL_UP = 9;
+        const int CMD_WHEEL_DOWN = 10;
+        const int CMD_MOVE_X = 11;
+        const int CMD_MOVE_Y = 12;
+        const int CMD_WRITE_TEXT = 13;
+        const int CMD_PRESS_KEYS = 14;
+
+        String[] commands = {  "No Action", "Switch to next configuration", 
                                "Click Left Mouse Button", "Click Right Mouse Button", "Click Middle Mouse Button" , "Double Click Left Mouse Button",
                                "Press Left Mouse Button", "Press Right Mouse Button", "Press Middle Mouse Button", 
-                               "Wheel Up", "Wheel down",
+                               "Wheel Up", "Wheel down", 
                                "Move Mouse X", "Move Mouse Y",
                                "Write Text", "Press Keys"
                              };
@@ -32,17 +48,12 @@ namespace MouseApp2
                                    "KEY_F1","KEY_F2","KEY_F3","KEY_F4","KEY_F5","KEY_F6","KEY_F7","KEY_F8","KEY_F9","KEY_F10","KEY_F11","KEY_F12",	
                                    "KEY_RIGHT","KEY_LEFT","KEY_DOWN","KEY_UP","KEY_ENTER","KEY_ESC","KEY_BACKSPACE","KEY_TAB",
                                    "KEY_HOME","KEY_PAGE_UP","KEY_PAGE_DOWN","KEY_DELETE","KEY_INSERT","KEY_END","KEY_NUM_LOCK",
-                                   "KEY_SCROLL_LOCK","KEY_SPACE","KEY_CAPS_LOCK","KEY_PAUSE","KEY_SHIFT","KEY_CTRL","KEY_ALT","KEY_GUI" 
+                                   "KEY_SCROLL_LOCK","KEY_SPACE","KEY_CAPS_LOCK","KEY_PAUSE","KEY_SHIFT","KEY_CTRL","KEY_ALT","KEY_RIGHT_ALT","KEY_GUI", "KEY_RIGHT_GUI" 
                               };
 
-        const int PARAMETERLESS_FUNCTIONS = 10;
 
         String receivedString = "";
         Boolean readDone=false;
-
-        public delegate void ChangePressureDelegate(string newPressureValue);
-        public ChangePressureDelegate pressureDelegate;
-
 
         public FabiGUI()
         {
@@ -57,12 +68,12 @@ namespace MouseApp2
                 Button6FunctionBox.Items.Add(str);
             }
 
-            Button1FunctionBox.SelectedIndex = 5;
-            Button2FunctionBox.SelectedIndex = 2;
-            Button3FunctionBox.SelectedIndex = 4;
-            Button4FunctionBox.SelectedIndex = 8;
-            Button5FunctionBox.SelectedIndex = 9;
-            Button6FunctionBox.SelectedIndex = 3;
+            Button1FunctionBox.SelectedIndex = CMD_PRESS_LEFT;
+            Button2FunctionBox.SelectedIndex = CMD_CLICK_RIGHT;
+            Button3FunctionBox.SelectedIndex = CMD_CLICK_DOUBLE;
+            Button4FunctionBox.SelectedIndex = CMD_WHEEL_UP;
+            Button5FunctionBox.SelectedIndex = CMD_WHEEL_DOWN;
+            Button6FunctionBox.SelectedIndex = CMD_NEXT;
 
             foreach (string str in keyOptions)
             {
@@ -74,27 +85,34 @@ namespace MouseApp2
                 Button6ComboBox.Items.Add(str);
             }
 
+            updateComPorts();
+
+            System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
+            t.Interval = 4000; // udpate interval for COM ports
+            t.Tick += new EventHandler(OnTimedEvent);
+            t.Start();
+
             addToLog("Fabi GUI ready!");
             this.Load += LipmouseGUI_Load;
+        }
+
+        private void updateComPorts()
+        {
+            var ports = SerialPort.GetPortNames();
+            portComboBox.DataSource = ports;
+        }
+
+        private void OnTimedEvent(object source, EventArgs e)
+        {
+            updateComPorts();
         }
 
         private void LipmouseGUI_Load(object sender, EventArgs e)
         {
             var ports = SerialPort.GetPortNames();
             portComboBox.DataSource = ports;
-
-            this.pressureDelegate = new ChangePressureDelegate(ChangePressure);
-
         }
 
-        public void ChangePressure(String newPressure) //n
-        {
-            if (newPressure.Length == 0)
-                return;
-
-            Console.WriteLine("newPressure");
-
-        }
 
         private void Connect(string portName)
         {
@@ -109,7 +127,14 @@ namespace MouseApp2
                 serialPort1.ReadTimeout =5000;
                 serialPort1.WriteTimeout =5000;
                 serialPort1.NewLine = "\n";
-                serialPort1.Open();
+                try
+                {
+                    serialPort1.Open();
+                }
+                catch (Exception ex)
+                {
+                    addToLog("Could not open COM port ...");
+                }
             }
         }
 
@@ -120,7 +145,7 @@ namespace MouseApp2
                 while (serialPort1.IsOpen && !readDone)
                 {
                     receivedString = serialPort1.ReadLine();
-                    BeginInvoke(this.pressureDelegate, new Object[] { receivedString });
+                   // BeginInvoke(this.pressureDelegate, new Object[] { receivedString });
                 }
             }
             catch (Exception ex)
@@ -197,32 +222,61 @@ namespace MouseApp2
 
         private void saveSettings_Click(object sender, EventArgs e) //button to save options to EEPROM
         {
+            ApplyButton_Click(this, null);
             addToLog("Save Settings ...");
             if (serialPort1.IsOpen)
             {
-                sendCmd("at save" + slotName.Text);
+                sendCmd("AT SAVE " + slotName.Text);
                 addToLog("The settings were saved");
             }
-            else addToLog("Could not send to device - please connect COM port !");        }
+            else addToLog("Could not send to device - please connect COM port !");
+        }
 
-        private void updateOneButton(int button, int cmdIndex, String parameter) 
+        private void ClearButton_Click(object sender, EventArgs e)
         {
+            addToLog("Clear EEPROM settings ...");
+            if (serialPort1.IsOpen)
+            {
+                sendCmd("AT CLEAR\n");
+                addToLog("The EEPROM settings have been cleared.");
+            }
+            else addToLog("Could not send to device - please connect COM port !");
+        }
+
+        private void list_Click(object sender, EventArgs e)
+        {
+            sendCmd("AT ER");  // end reporting raw values !
+            addToLog("List Slot in EEPROM ...");
+            if (serialPort1.IsOpen)
+            {
+                sendCmd("AT LIST\n");
+            }
+            else addToLog("Could not send to device - please connect COM port !");
+            sendCmd("AT SR");  // start reporting raw values !
+
+        }
+
+
+        private void updateOneButton(int button, int cmdIndex, String parameter, String numParameter)
+        {
+            sendCmd("AT BM " + button);  // store command to this button function !
             switch (cmdIndex)
             {
-                case 0: sendCmd("at bm " + button); sendCmd("at next"); break;
-                case 1: sendCmd("at bm " + button); sendCmd("at cl"); break;
-                case 2: sendCmd("at bm " + button); sendCmd("at cr"); break;
-                case 3: sendCmd("at bm " + button); sendCmd("at cm"); break;
-                case 4: sendCmd("at bm " + button); sendCmd("at cd"); break;
-                case 5: sendCmd("at bm " + button); sendCmd("at pl"); break;
-                case 6: sendCmd("at bm " + button); sendCmd("at pr"); break;
-                case 7: sendCmd("at bm " + button); sendCmd("at pm"); break;
-                case 8: sendCmd("at bm " + button); sendCmd("at wu"); break;
-                case 9: sendCmd("at bm " + button); sendCmd("at wd"); break;
-                case 10: sendCmd("at bm " + button); sendCmd("at mx " + parameter); break;
-                case 11: sendCmd("at bm " + button); sendCmd("at my " + parameter); break;
-                case 12: sendCmd("at bm " + button); sendCmd("at kw " + parameter); break;
-                case 13: sendCmd("at bm " + button); sendCmd("at kp " + parameter); break;
+                case CMD_NOACTION: sendCmd("AT IDLE"); break;
+                case CMD_NEXT: sendCmd("AT NEXT"); break;
+                case CMD_CLICK_LEFT: sendCmd("AT CL"); break;
+                case CMD_CLICK_RIGHT: sendCmd("AT CR"); break;
+                case CMD_CLICK_MIDDLE: sendCmd("AT CM"); break;
+                case CMD_CLICK_DOUBLE: sendCmd("AT CD"); break;
+                case CMD_PRESS_LEFT: sendCmd("AT PL"); break;
+                case CMD_PRESS_RIGHT: sendCmd("AT PR"); break;
+                case CMD_PRESS_MIDDLE: sendCmd("AT PM"); break;
+                case CMD_WHEEL_UP: sendCmd("AT WU"); break;
+                case CMD_WHEEL_DOWN: sendCmd("AT WD"); break;
+                case CMD_MOVE_X: sendCmd("AT MX " + numParameter); break;
+                case CMD_MOVE_Y: sendCmd("AT MY " + numParameter); break;
+                case CMD_WRITE_TEXT: sendCmd("AT KW " + parameter); break;
+                case CMD_PRESS_KEYS: sendCmd("AT KP " + parameter); break;
             }
         }
 
@@ -237,37 +291,26 @@ namespace MouseApp2
             addToLog("Apply Settings ...");
             if (serialPort1.IsOpen)
             {
-                updateOneButton(1, Button1FunctionBox.SelectedIndex, Button1ParameterText.Text);
-                updateOneButton(2, Button2FunctionBox.SelectedIndex, Button2ParameterText.Text);
-                updateOneButton(3, Button3FunctionBox.SelectedIndex, Button3ParameterText.Text);
-                updateOneButton(4, Button4FunctionBox.SelectedIndex, Button4ParameterText.Text);
-                updateOneButton(5, Button5FunctionBox.SelectedIndex, Button5ParameterText.Text);
-                updateOneButton(6, Button6FunctionBox.SelectedIndex, Button6ParameterText.Text);
+                updateOneButton(1, Button1FunctionBox.SelectedIndex, Button1ParameterText.Text, Button1NumericParameter.Value.ToString());
+                updateOneButton(2, Button2FunctionBox.SelectedIndex, Button2ParameterText.Text, Button2NumericParameter.Value.ToString());
+                updateOneButton(3, Button3FunctionBox.SelectedIndex, Button3ParameterText.Text, Button3NumericParameter.Value.ToString());
+                updateOneButton(4, Button4FunctionBox.SelectedIndex, Button4ParameterText.Text, Button4NumericParameter.Value.ToString());
+                updateOneButton(5, Button5FunctionBox.SelectedIndex, Button5ParameterText.Text, Button5NumericParameter.Value.ToString());
+                updateOneButton(6, Button6FunctionBox.SelectedIndex, Button6ParameterText.Text, Button6NumericParameter.Value.ToString());
                 addToLog("The selected settings have been applied.");
             }
             else addToLog("Please connect a device before applying configuration changes.");
-        }
-
-        private void ClearButton_Click(object sender, EventArgs e)
-        {
-            addToLog("Clear EEPROM settings ...");
-            if (serialPort1.IsOpen)
-            {
-                sendCmd("at clear\n");
-                addToLog("The EEPROM settings have been cleared.");
-            }
-            else addToLog("Could not send to device - please connect COM port !");
         }
 
         private void updateVisibility(int selectedFunction, TextBox tb, NumericUpDown nud, ComboBox cb, Label la)
         {
             switch (selectedFunction)
             {
-                case 10:
-                case 11: la.Visible = true; la.Text = "   Speed:"; nud.Visible = true; tb.Visible = false; cb.Visible = false; break;
-                case 12: la.Visible = true; la.Text = "    Text:"; nud.Visible = false; tb.Enabled = true; tb.Visible = true; cb.Visible = false; break;
-                case 13: la.Visible = true; la.Text = "KeyCodes:"; nud.Visible = false; tb.Enabled = false; tb.Visible = true; cb.Visible = true; break;
-                default: la.Visible = false;  nud.Visible = false; tb.Visible = false; cb.Visible = false; break;
+                case CMD_MOVE_X:
+                case CMD_MOVE_Y: la.Visible = true; la.Text = "   Speed:"; nud.Visible = true; tb.Visible = false; cb.Visible = false; break;
+                case CMD_WRITE_TEXT: la.Visible = true; la.Text = "    Text:"; nud.Visible = false; tb.Enabled = true; tb.Visible = true; tb.Text = ""; cb.Visible = false; break;
+                case CMD_PRESS_KEYS: la.Visible = true; la.Text = "KeyCodes:"; nud.Visible = false; tb.Visible = true; tb.Text = ""; cb.Visible = true; break; // tb.Enabled = false; 
+                default: la.Visible = false; nud.Visible = false; tb.Visible = false; cb.Visible = false; break;
             }
         }
 

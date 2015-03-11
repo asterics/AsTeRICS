@@ -126,10 +126,10 @@
             // 
             this.saveSettings.Enabled = false;
             this.saveSettings.ForeColor = System.Drawing.Color.Black;
-            this.saveSettings.Location = new System.Drawing.Point(761, 615);
+            this.saveSettings.Location = new System.Drawing.Point(660, 615);
             this.saveSettings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.saveSettings.Name = "saveSettings";
-            this.saveSettings.Size = new System.Drawing.Size(151, 47);
+            this.saveSettings.Size = new System.Drawing.Size(196, 47);
             this.saveSettings.TabIndex = 14;
             this.saveSettings.Text = "Store slot as:";
             this.saveSettings.UseVisualStyleBackColor = true;
@@ -173,10 +173,10 @@
             // 
             this.ClearButton.Enabled = false;
             this.ClearButton.ForeColor = System.Drawing.Color.Black;
-            this.ClearButton.Location = new System.Drawing.Point(1111, 617);
+            this.ClearButton.Location = new System.Drawing.Point(1055, 617);
             this.ClearButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ClearButton.Name = "ClearButton";
-            this.ClearButton.Size = new System.Drawing.Size(169, 49);
+            this.ClearButton.Size = new System.Drawing.Size(194, 49);
             this.ClearButton.TabIndex = 46;
             this.ClearButton.Text = "Clear all Slots";
             this.ClearButton.UseVisualStyleBackColor = true;
@@ -199,7 +199,7 @@
             // 
             this.slotName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.slotName.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.slotName.Location = new System.Drawing.Point(920, 623);
+            this.slotName.Location = new System.Drawing.Point(864, 623);
             this.slotName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.slotName.Multiline = true;
             this.slotName.Name = "slotName";
@@ -250,17 +250,17 @@
             this.ButtonsTab.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ButtonsTab.Name = "ButtonsTab";
             this.ButtonsTab.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.ButtonsTab.Size = new System.Drawing.Size(1220, 427);
+            this.ButtonsTab.Size = new System.Drawing.Size(1189, 427);
             this.ButtonsTab.TabIndex = 1;
             this.ButtonsTab.Text = "Select Button Functions";
             // 
             // Button6ComboBox
             // 
             this.Button6ComboBox.FormattingEnabled = true;
-            this.Button6ComboBox.Location = new System.Drawing.Point(1033, 324);
+            this.Button6ComboBox.Location = new System.Drawing.Point(994, 324);
             this.Button6ComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button6ComboBox.Name = "Button6ComboBox";
-            this.Button6ComboBox.Size = new System.Drawing.Size(109, 28);
+            this.Button6ComboBox.Size = new System.Drawing.Size(136, 28);
             this.Button6ComboBox.TabIndex = 132;
             this.Button6ComboBox.Visible = false;
             this.Button6ComboBox.SelectedIndexChanged += new System.EventHandler(this.Button6ComboBox_SelectedIndexChanged);
@@ -268,10 +268,10 @@
             // Button5ComboBox
             // 
             this.Button5ComboBox.FormattingEnabled = true;
-            this.Button5ComboBox.Location = new System.Drawing.Point(1034, 217);
+            this.Button5ComboBox.Location = new System.Drawing.Point(995, 217);
             this.Button5ComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button5ComboBox.Name = "Button5ComboBox";
-            this.Button5ComboBox.Size = new System.Drawing.Size(109, 28);
+            this.Button5ComboBox.Size = new System.Drawing.Size(135, 28);
             this.Button5ComboBox.TabIndex = 131;
             this.Button5ComboBox.Visible = false;
             this.Button5ComboBox.SelectedIndexChanged += new System.EventHandler(this.Button5ComboBox_SelectedIndexChanged);
@@ -279,23 +279,23 @@
             // Button4ComboBox
             // 
             this.Button4ComboBox.FormattingEnabled = true;
-            this.Button4ComboBox.Location = new System.Drawing.Point(1035, 120);
+            this.Button4ComboBox.Location = new System.Drawing.Point(996, 120);
             this.Button4ComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button4ComboBox.Name = "Button4ComboBox";
-            this.Button4ComboBox.Size = new System.Drawing.Size(109, 28);
+            this.Button4ComboBox.Size = new System.Drawing.Size(134, 28);
             this.Button4ComboBox.TabIndex = 130;
             this.Button4ComboBox.Visible = false;
             this.Button4ComboBox.SelectedIndexChanged += new System.EventHandler(this.Button4ComboBox_SelectedIndexChanged);
             // 
             // Button6NumericParameter
             // 
-            this.Button6NumericParameter.Location = new System.Drawing.Point(770, 328);
+            this.Button6NumericParameter.Location = new System.Drawing.Point(734, 328);
             this.Button6NumericParameter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button6NumericParameter.Minimum = new decimal(new int[] {
-            1,
+            100,
             0,
             0,
-            0});
+            -2147483648});
             this.Button6NumericParameter.Name = "Button6NumericParameter";
             this.Button6NumericParameter.Size = new System.Drawing.Size(68, 26);
             this.Button6NumericParameter.TabIndex = 129;
@@ -309,13 +309,13 @@
             // 
             // Button5NumericParameter
             // 
-            this.Button5NumericParameter.Location = new System.Drawing.Point(770, 218);
+            this.Button5NumericParameter.Location = new System.Drawing.Point(734, 218);
             this.Button5NumericParameter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button5NumericParameter.Minimum = new decimal(new int[] {
-            1,
+            100,
             0,
             0,
-            0});
+            -2147483648});
             this.Button5NumericParameter.Name = "Button5NumericParameter";
             this.Button5NumericParameter.Size = new System.Drawing.Size(68, 26);
             this.Button5NumericParameter.TabIndex = 128;
@@ -329,13 +329,13 @@
             // 
             // Button4NumericParameter
             // 
-            this.Button4NumericParameter.Location = new System.Drawing.Point(770, 119);
+            this.Button4NumericParameter.Location = new System.Drawing.Point(734, 119);
             this.Button4NumericParameter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button4NumericParameter.Minimum = new decimal(new int[] {
-            1,
+            100,
             0,
             0,
-            0});
+            -2147483648});
             this.Button4NumericParameter.Name = "Button4NumericParameter";
             this.Button4NumericParameter.Size = new System.Drawing.Size(68, 26);
             this.Button4NumericParameter.TabIndex = 127;
@@ -350,7 +350,7 @@
             // Button6Label
             // 
             this.Button6Label.AutoSize = true;
-            this.Button6Label.Location = new System.Drawing.Point(664, 330);
+            this.Button6Label.Location = new System.Drawing.Point(628, 330);
             this.Button6Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Button6Label.Name = "Button6Label";
             this.Button6Label.Size = new System.Drawing.Size(87, 20);
@@ -359,21 +359,21 @@
             // 
             // Button6ParameterText
             // 
-            this.Button6ParameterText.Location = new System.Drawing.Point(770, 326);
+            this.Button6ParameterText.Location = new System.Drawing.Point(734, 326);
             this.Button6ParameterText.Name = "Button6ParameterText";
             this.Button6ParameterText.Size = new System.Drawing.Size(253, 26);
             this.Button6ParameterText.TabIndex = 125;
             // 
             // Button5ParameterText
             // 
-            this.Button5ParameterText.Location = new System.Drawing.Point(770, 217);
+            this.Button5ParameterText.Location = new System.Drawing.Point(734, 217);
             this.Button5ParameterText.Name = "Button5ParameterText";
             this.Button5ParameterText.Size = new System.Drawing.Size(253, 26);
             this.Button5ParameterText.TabIndex = 123;
             // 
             // Button4ParameterText
             // 
-            this.Button4ParameterText.Location = new System.Drawing.Point(770, 121);
+            this.Button4ParameterText.Location = new System.Drawing.Point(734, 121);
             this.Button4ParameterText.Name = "Button4ParameterText";
             this.Button4ParameterText.Size = new System.Drawing.Size(253, 26);
             this.Button4ParameterText.TabIndex = 121;
@@ -381,7 +381,7 @@
             // Button5Label
             // 
             this.Button5Label.AutoSize = true;
-            this.Button5Label.Location = new System.Drawing.Point(664, 220);
+            this.Button5Label.Location = new System.Drawing.Point(628, 220);
             this.Button5Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Button5Label.Name = "Button5Label";
             this.Button5Label.Size = new System.Drawing.Size(87, 20);
@@ -391,7 +391,7 @@
             // Button4Label
             // 
             this.Button4Label.AutoSize = true;
-            this.Button4Label.Location = new System.Drawing.Point(664, 121);
+            this.Button4Label.Location = new System.Drawing.Point(628, 121);
             this.Button4Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Button4Label.Name = "Button4Label";
             this.Button4Label.Size = new System.Drawing.Size(87, 20);
@@ -402,7 +402,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(683, 289);
+            this.label9.Location = new System.Drawing.Point(647, 289);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(70, 20);
@@ -412,7 +412,7 @@
             // Button6FunctionBox
             // 
             this.Button6FunctionBox.FormattingEnabled = true;
-            this.Button6FunctionBox.Location = new System.Drawing.Point(770, 289);
+            this.Button6FunctionBox.Location = new System.Drawing.Point(734, 289);
             this.Button6FunctionBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button6FunctionBox.Name = "Button6FunctionBox";
             this.Button6FunctionBox.Size = new System.Drawing.Size(253, 28);
@@ -422,7 +422,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(683, 179);
+            this.label10.Location = new System.Drawing.Point(647, 179);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(70, 20);
@@ -432,7 +432,7 @@
             // Button5FunctionBox
             // 
             this.Button5FunctionBox.FormattingEnabled = true;
-            this.Button5FunctionBox.Location = new System.Drawing.Point(770, 179);
+            this.Button5FunctionBox.Location = new System.Drawing.Point(734, 179);
             this.Button5FunctionBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button5FunctionBox.Name = "Button5FunctionBox";
             this.Button5FunctionBox.Size = new System.Drawing.Size(253, 28);
@@ -442,7 +442,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(683, 81);
+            this.label11.Location = new System.Drawing.Point(647, 81);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(70, 20);
@@ -452,7 +452,7 @@
             // Button4FunctionBox
             // 
             this.Button4FunctionBox.FormattingEnabled = true;
-            this.Button4FunctionBox.Location = new System.Drawing.Point(770, 81);
+            this.Button4FunctionBox.Location = new System.Drawing.Point(734, 81);
             this.Button4FunctionBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button4FunctionBox.Name = "Button4FunctionBox";
             this.Button4FunctionBox.Size = new System.Drawing.Size(253, 28);
@@ -462,10 +462,10 @@
             // Button3ComboBox
             // 
             this.Button3ComboBox.FormattingEnabled = true;
-            this.Button3ComboBox.Location = new System.Drawing.Point(436, 321);
+            this.Button3ComboBox.Location = new System.Drawing.Point(424, 321);
             this.Button3ComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button3ComboBox.Name = "Button3ComboBox";
-            this.Button3ComboBox.Size = new System.Drawing.Size(109, 28);
+            this.Button3ComboBox.Size = new System.Drawing.Size(148, 28);
             this.Button3ComboBox.TabIndex = 114;
             this.Button3ComboBox.Visible = false;
             this.Button3ComboBox.SelectedIndexChanged += new System.EventHandler(this.Button3ComboBox_SelectedIndexChanged);
@@ -473,10 +473,10 @@
             // Button2ComboBox
             // 
             this.Button2ComboBox.FormattingEnabled = true;
-            this.Button2ComboBox.Location = new System.Drawing.Point(437, 214);
+            this.Button2ComboBox.Location = new System.Drawing.Point(425, 214);
             this.Button2ComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button2ComboBox.Name = "Button2ComboBox";
-            this.Button2ComboBox.Size = new System.Drawing.Size(109, 28);
+            this.Button2ComboBox.Size = new System.Drawing.Size(147, 28);
             this.Button2ComboBox.TabIndex = 113;
             this.Button2ComboBox.Visible = false;
             this.Button2ComboBox.SelectedIndexChanged += new System.EventHandler(this.Button2ComboBox_SelectedIndexChanged);
@@ -484,23 +484,23 @@
             // Button1ComboBox
             // 
             this.Button1ComboBox.FormattingEnabled = true;
-            this.Button1ComboBox.Location = new System.Drawing.Point(438, 117);
+            this.Button1ComboBox.Location = new System.Drawing.Point(426, 117);
             this.Button1ComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button1ComboBox.Name = "Button1ComboBox";
-            this.Button1ComboBox.Size = new System.Drawing.Size(109, 28);
+            this.Button1ComboBox.Size = new System.Drawing.Size(146, 28);
             this.Button1ComboBox.TabIndex = 112;
             this.Button1ComboBox.Visible = false;
             this.Button1ComboBox.SelectedIndexChanged += new System.EventHandler(this.Button1ComboBox_SelectedIndexChanged);
             // 
             // Button3NumericParameter
             // 
-            this.Button3NumericParameter.Location = new System.Drawing.Point(173, 325);
+            this.Button3NumericParameter.Location = new System.Drawing.Point(165, 325);
             this.Button3NumericParameter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button3NumericParameter.Minimum = new decimal(new int[] {
-            1,
+            100,
             0,
             0,
-            0});
+            -2147483648});
             this.Button3NumericParameter.Name = "Button3NumericParameter";
             this.Button3NumericParameter.Size = new System.Drawing.Size(68, 26);
             this.Button3NumericParameter.TabIndex = 109;
@@ -514,13 +514,13 @@
             // 
             // Button2NumericParameter
             // 
-            this.Button2NumericParameter.Location = new System.Drawing.Point(173, 215);
+            this.Button2NumericParameter.Location = new System.Drawing.Point(165, 215);
             this.Button2NumericParameter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button2NumericParameter.Minimum = new decimal(new int[] {
-            1,
+            100,
             0,
             0,
-            0});
+            -2147483648});
             this.Button2NumericParameter.Name = "Button2NumericParameter";
             this.Button2NumericParameter.Size = new System.Drawing.Size(68, 26);
             this.Button2NumericParameter.TabIndex = 108;
@@ -534,13 +534,13 @@
             // 
             // Button1NumericParameter
             // 
-            this.Button1NumericParameter.Location = new System.Drawing.Point(173, 116);
+            this.Button1NumericParameter.Location = new System.Drawing.Point(165, 116);
             this.Button1NumericParameter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button1NumericParameter.Minimum = new decimal(new int[] {
-            1,
+            100,
             0,
             0,
-            0});
+            -2147483648});
             this.Button1NumericParameter.Name = "Button1NumericParameter";
             this.Button1NumericParameter.Size = new System.Drawing.Size(68, 26);
             this.Button1NumericParameter.TabIndex = 107;
@@ -555,7 +555,7 @@
             // Button3Label
             // 
             this.Button3Label.AutoSize = true;
-            this.Button3Label.Location = new System.Drawing.Point(67, 327);
+            this.Button3Label.Location = new System.Drawing.Point(59, 327);
             this.Button3Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Button3Label.Name = "Button3Label";
             this.Button3Label.Size = new System.Drawing.Size(87, 20);
@@ -564,21 +564,21 @@
             // 
             // Button3ParameterText
             // 
-            this.Button3ParameterText.Location = new System.Drawing.Point(173, 323);
+            this.Button3ParameterText.Location = new System.Drawing.Point(165, 323);
             this.Button3ParameterText.Name = "Button3ParameterText";
             this.Button3ParameterText.Size = new System.Drawing.Size(253, 26);
             this.Button3ParameterText.TabIndex = 101;
             // 
             // Button2ParameterText
             // 
-            this.Button2ParameterText.Location = new System.Drawing.Point(173, 214);
+            this.Button2ParameterText.Location = new System.Drawing.Point(165, 214);
             this.Button2ParameterText.Name = "Button2ParameterText";
             this.Button2ParameterText.Size = new System.Drawing.Size(253, 26);
             this.Button2ParameterText.TabIndex = 99;
             // 
             // Button1ParameterText
             // 
-            this.Button1ParameterText.Location = new System.Drawing.Point(173, 118);
+            this.Button1ParameterText.Location = new System.Drawing.Point(165, 118);
             this.Button1ParameterText.Name = "Button1ParameterText";
             this.Button1ParameterText.Size = new System.Drawing.Size(253, 26);
             this.Button1ParameterText.TabIndex = 97;
@@ -586,7 +586,7 @@
             // Button2Label
             // 
             this.Button2Label.AutoSize = true;
-            this.Button2Label.Location = new System.Drawing.Point(67, 217);
+            this.Button2Label.Location = new System.Drawing.Point(59, 217);
             this.Button2Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Button2Label.Name = "Button2Label";
             this.Button2Label.Size = new System.Drawing.Size(87, 20);
@@ -596,7 +596,7 @@
             // Button1Label
             // 
             this.Button1Label.AutoSize = true;
-            this.Button1Label.Location = new System.Drawing.Point(67, 118);
+            this.Button1Label.Location = new System.Drawing.Point(59, 118);
             this.Button1Label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Button1Label.Name = "Button1Label";
             this.Button1Label.Size = new System.Drawing.Size(87, 20);
@@ -607,7 +607,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(86, 286);
+            this.label8.Location = new System.Drawing.Point(78, 286);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(70, 20);
@@ -617,7 +617,7 @@
             // Button3FunctionBox
             // 
             this.Button3FunctionBox.FormattingEnabled = true;
-            this.Button3FunctionBox.Location = new System.Drawing.Point(173, 286);
+            this.Button3FunctionBox.Location = new System.Drawing.Point(165, 286);
             this.Button3FunctionBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button3FunctionBox.Name = "Button3FunctionBox";
             this.Button3FunctionBox.Size = new System.Drawing.Size(253, 28);
@@ -627,7 +627,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(86, 176);
+            this.label7.Location = new System.Drawing.Point(78, 176);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(70, 20);
@@ -637,7 +637,7 @@
             // Button2FunctionBox
             // 
             this.Button2FunctionBox.FormattingEnabled = true;
-            this.Button2FunctionBox.Location = new System.Drawing.Point(173, 176);
+            this.Button2FunctionBox.Location = new System.Drawing.Point(165, 176);
             this.Button2FunctionBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button2FunctionBox.Name = "Button2FunctionBox";
             this.Button2FunctionBox.Size = new System.Drawing.Size(253, 28);
@@ -647,7 +647,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(86, 78);
+            this.label6.Location = new System.Drawing.Point(78, 78);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(70, 20);
@@ -657,7 +657,7 @@
             // Button1FunctionBox
             // 
             this.Button1FunctionBox.FormattingEnabled = true;
-            this.Button1FunctionBox.Location = new System.Drawing.Point(173, 78);
+            this.Button1FunctionBox.Location = new System.Drawing.Point(165, 78);
             this.Button1FunctionBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Button1FunctionBox.Name = "Button1FunctionBox";
             this.Button1FunctionBox.Size = new System.Drawing.Size(253, 28);
@@ -671,7 +671,7 @@
             this.tabControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1228, 460);
+            this.tabControl.Size = new System.Drawing.Size(1197, 460);
             this.tabControl.TabIndex = 61;
             // 
             // activityLogTextbox
@@ -682,7 +682,7 @@
             this.activityLogTextbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.activityLogTextbox.Name = "activityLogTextbox";
             this.activityLogTextbox.ReadOnly = true;
-            this.activityLogTextbox.Size = new System.Drawing.Size(563, 68);
+            this.activityLogTextbox.Size = new System.Drawing.Size(536, 68);
             this.activityLogTextbox.TabIndex = 75;
             this.activityLogTextbox.Text = "";
             // 
@@ -702,7 +702,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1336, 694);
+            this.ClientSize = new System.Drawing.Size(1304, 694);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.activityLogTextbox);
             this.Controls.Add(this.slotName);

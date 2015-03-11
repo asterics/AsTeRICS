@@ -13,7 +13,7 @@
    (sent via serial interface, use spaces between parameters and Enter (<cr>, ASCII-code 0x0d) to finish a command)
    
           AT                returns "OK"
-          AT ID             identification string will be returned (e.g. "FLipmouse Version 1.0")
+          AT ID             identification string will be returned (e.g. "FLipMouse V2.0")
           AT BM <num>       button mode setting for a button (e.g. AT BM 2 -> next command defines the new function for button 2)
 
           AT CL             click left mouse button  
@@ -439,7 +439,7 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
   
   switch(cmd) {
       case CMD_PRINT_ID:
-             Serial.println("FABI Version 2.0"); 
+             Serial.println("FLipMouse V2.0"); 
           break;
       case CMD_BUTTON_MODE:
              if (DebugOutput==DEBUG_FULLOUTPUT)  

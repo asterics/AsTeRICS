@@ -1,20 +1,19 @@
   
 /* 
-   Flexible Assistive Button Interface (FABI) Version 2.0  - AsTeRICS Academy 2015 - http://www.asterics-academy.net
-      allows control of HID functions via AT-commands and/or momentary switches 
+     Flexible Assistive Button Interface (FABI)  Version 2.0  - AsTeRICS Academy 2015 - http://www.asterics-academy.net
+      allows control of HID functions via momentary switches and/or AT-commands  
    
 
-   requirements:  USB HID capable Arduino (Leonardo / Pro Micro resp. Clone ;-)
+   requirements:  USB HID capable Arduino (Leonardo / Micro / Pro Micro)
                   or Teensy 2.0++ with Teensyduino AddOn setup as USB composite device (Mouse + Keyboard + Serial)
-                  Bounce2 library, see: https://github.com/thomasfredericks/Bounce2/wiki
-       optional:  Momentary switches connected to GPIO pins (first pin: see START_BUTTON_PIN)
+       optional:  Momentary switches connected to GPIO pins / force sensors connected to ADC pins
        
    
    Supported AT-commands:  
    (sent via serial interface, use spaces between parameters and Enter (<cr>, ASCII-code 0x0d) to finish a command)
    
           AT                returns "OK"
-          AT ID             identification string will be returned (e.g. "FABI Version 2.0" or "Lipmouse Version 1.0")
+          AT ID             identification string will be returned (e.g. "FLipmouse Version 1.0")
           AT BM <num>       button mode setting for a button (e.g. AT BM 2 -> next command defines the new function for button 2)
 
           AT CL             click left mouse button  
@@ -42,14 +41,16 @@
                             (e.g. AT KP KEY_UP presses the "Cursor-Up" key, AT KP KEY_CTRL KEY_ALT KEY_DELETE presses all three keys)
                             for a list of supported key idientifier strings see below ! 
                             
-          AT KR             key release: releases all currently pressed keys (TBD: release individual keys ...)    
+          AT KR <text>      key release: releases all keys identified in text    
+          AT RA             release all: releases all currently pressed keys and buttons    
           
           AT SAVE <name>    save settings and current button modes to next free eeprom slot under given name (e.g. AT SAVE mouse1)
           AT LOAD <name>    load button modes from eeprom slot (e.g. AT LOAD mouse1 -> loads profile named "mouse1")
           AT LIST           list all saved mode names 
           AT NEXT           next mode will be loaded (wrap around after last slot)
           AT CLEAR          clear EEPROM content (delete all stored slots)
-
+          AT IDLE           idle command (no operation)
+          
    supported key identifiers for key press command (AT KP):
  
     KEY_A   KEY_B   KEY_C   KEY_D    KEY_E   KEY_F   KEY_G   KEY_H   KEY_I   KEY_J    KEY_K    KEY_L
@@ -59,8 +60,9 @@
     
     KEY_RIGHT   KEY_LEFT       KEY_DOWN        KEY_UP      KEY_ENTER    KEY_ESC   KEY_BACKSPACE   KEY_TAB	
     KEY_HOME    KEY_PAGE_UP    KEY_PAGE_DOWN   KEY_DELETE  KEY_INSERT   KEY_END	  KEY_NUM_LOCK    KEY_SCROLL_LOCK
-    KEY_SPACE   KEY_CAPS_LOCK  KEY_PAUSE       KEY_SHIFT   KEY_CTRL     KEY_ALT   KEY_GUI 
-
+    KEY_SPACE   KEY_CAPS_LOCK  KEY_PAUSE       KEY_SHIFT   KEY_CTRL     KEY_ALT   KEY_RIGHT_ALT   KEY_GUI 
+    KEY_RIGHT_GUI
+    
 */
 
 #include "fabi.h"        //  Bounce library used for button debouncing
@@ -68,68 +70,71 @@
 
 // Constants and Macro definitions
 
-#define DEFAULT_WAIT_TIME       10   // wait time for one loop interation in milliseconds
+
+#define DEFAULT_WAIT_TIME       5   // wait time for one loop interation in milliseconds
 #define DEFAULT_CLICK_TIME      8    // time for mouse click (loop iterations from press to release)
 #define DOUBLECLICK_MULTIPLIER  5    // CLICK_TIME factor for double clicks
-#define DEFAULT_DEBOUNCING_TIME 10   // debouncing interval for button-press / release
+#define DEFAULT_DEBOUNCING_TIME 7   // debouncing interval for button-press / release
 
-#ifdef ARDUINO_PRO_MICRO
-  struct settingsType settings = {
-    {2,3,4,5,6,7},           // default button pins for Arduino Pro Micro
-    17,                      // default Led pin for Arduino Pro Micro
-    0,0,0,0,0,0,0    // default values for acceleration, deadzone & thresholds (if lipmouse is used)
-  }; 
-#endif
+
+// global variables
 
 #ifdef TEENSY
- struct settingsType settings = {
-    {19,20,21,22,23,24},     // default button pins for Teensy
-    25,                      // default Led pin for Teensy
-    0,0,0,0,0,0,0            // default values for acceleration, deadzone & thresholds (if lipmouse is used)
-  }; 
-#endif 
+  int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={19,20,21,22,23,24};  //  mapa physical button pins to button index 0,1,2  
+  int8_t  led_map[NUMBER_OF_LEDS]={1,2,3};                 //  maps leds pins   
+  uint8_t LED_PIN = 6;                                    //  Led output pin
+#endif
 
-uint8_t DebugOutput = DEFAULT_DEBUGLEVEL;
+#ifdef ARDUINO_PRO_MICRO
+  int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={2,3,4,5,6,7};
+  int8_t  led_map[NUMBER_OF_LEDS]={8,9,10};            
+  uint8_t LED_PIN = 17;
+#endif
 
-struct buttonType buttons [NUMBER_OF_BUTTONS];   // array for all buttons - defines one memory slot 
+struct settingsType settings = {      // type definition see fabi.h
+    3,  1000                          // wheel step,  threshold time (short/longpress)
+}; 
 
+
+struct buttonType buttons [NUMBER_OF_BUTTONS];   // array for all buttons - type definition see fabi.h 
+
+uint8_t DebugOutput = DEFAULT_DEBUGLEVEL;        // default: very chatty at the serial interface ...
 int clickTime=DEFAULT_CLICK_TIME;
 int waitTime=DEFAULT_WAIT_TIME;
 
+int EmptySlotAddress = 0;
+
 uint8_t actButton=0;
-
-uint8_t leftMouseButton=0,old_leftMouseButton=0;
-uint8_t middleMouseButton=0,old_middleMouseButton=0;
-uint8_t rightMouseButton=0,old_rightMouseButton=0;
-
-int leftClickRunning=0;
-int rightClickRunning=0;
-int middleClickRunning=0;
-int doubleClickRunning=0;
+uint8_t actSlot=0;
 
 int8_t moveX=0;       
 int8_t moveY=0;       
-
-int cnt =0;
-
+uint8_t leftMouseButton=0,old_leftMouseButton=0;
+uint8_t middleMouseButton=0,old_middleMouseButton=0;
+uint8_t rightMouseButton=0,old_rightMouseButton=0;
+uint8_t leftClickRunning=0;
+uint8_t rightClickRunning=0;
+uint8_t middleClickRunning=0;
+uint8_t doubleClickRunning=0;
 
 int inByte=0;
-
 char * keystring=0;
 char * writeKeystring=0;
+uint8_t cnt =0,cnt2=0;
 
-unsigned long time=0;
-int EmptySlotAddress = 0;
 
+// function declarations 
 void handlePress (int buttonIndex);      // a button was pressed
 void handleRelease (int buttonIndex);    // a button was released
+uint32_t handleButton(int i, uint8_t b);  // button debouncing
+void UpdateLeds();
 
-
+////////////////////////////////////////
 // Setup: program execution starts here
+////////////////////////////////////////
 
 void setup() {
    Serial.begin(9600);
-   // delay(5000);
     //while (!Serial) ;
    
    if (DebugOutput==DEBUG_FULLOUTPUT)  
@@ -140,89 +145,93 @@ void setup() {
      Keyboard.begin();
      TXLED1;
    #endif  
-   pinMode(settings.LED_PIN,OUTPUT);
+
+   pinMode(LED_PIN,OUTPUT);
+
+   for (int i=0; i<NUMBER_OF_PHYSICAL_BUTTONS; i++)   // initialize physical buttons and bouncers
+      pinMode (input_map[i], INPUT_PULLUP);   // configure the pins for input mode with pullup resistors
+
+   for (int i=0; i<NUMBER_OF_LEDS; i++)   // initialize physical buttons and bouncers
+      pinMode (led_map[i], OUTPUT);   // configure the pins for input mode with pullup resistors
 
    for (int i=0; i<NUMBER_OF_BUTTONS; i++)   // initialize button array
    {
-      pinMode (settings.input_map[i], INPUT_PULLUP);   // configure the pins for input mode with pullup resistors
-      buttons[i].bouncer=new Bounce();
-      buttons[i].bouncer->attach(settings.input_map[i]);
-      buttons[i].bouncer->interval(DEFAULT_DEBOUNCING_TIME);
+      buttons[i].bounceState=0;
+      buttons[i].stableState=0;
+      buttons[i].bounceCount=0;
+      buttons[i].longPressed=0;
       buttons[i].mode=CMD_MOUSE_PRESS_LEFT;              // default command for every button is left mouse click
       buttons[i].value='L';
       buttons[i].keystring[0]=0;
    }
-
+   
    readFromEEPROM(0);  // read button modes from first EEPROM slot if available !  
+
    BlinkLed();
    if (DebugOutput==DEBUG_FULLOUTPUT)  
      Serial.print("Free RAM:");  Serial.println(freeRam());
 }
 
+///////////////////////////////
 // Loop: the main program loop
+///////////////////////////////
 
 void loop() {  
-    if (Serial.available() > 0) {
-      // get incoming byte:
-      inByte = Serial.read();
-      parseByte (inByte);      // implemented in parser.cpp
-    }
-  
-    for (int i=0;i<NUMBER_OF_BUTTONS;i++)    // update button press / release events
-    {
-      buttons[i].bouncer->update();
-  
-      if (buttons[i].bouncer->fell()) 
-         handlePress(i); 
-      else if (buttons[i].bouncer->rose())
-         handleRelease(i);
-    }
+
+      while (Serial.available() > 0) {
+        // get incoming byte:
+        inByte = Serial.read();
+        parseByte (inByte);      // implemented in parser.cpp
+      }
+    
+      for (int i=0;i<NUMBER_OF_PHYSICAL_BUTTONS;i++)    // update button press / release events
+          handleButton(i, -1, digitalRead(input_map[i]) == LOW ? 1 : 0);    
+        
+      if ((moveX!=0) || (moveY!=0))   // movement induced by button actions  
+      {
+        if (cnt2++%4==0)
+          Mouse.move(moveX, moveY);
+      }
+
+      // handle running clicks or double clicks
+      if (leftClickRunning)
+          if (--leftClickRunning==0)  leftMouseButton=0; 
       
-    // handle running clicks or double clicks
-    if (leftClickRunning)
-        if (--leftClickRunning==0)  leftMouseButton=0; 
-    
-    if (rightClickRunning)
-        if (--rightClickRunning==0)  rightMouseButton=0; 
- 
-    if (middleClickRunning)
-        if (--middleClickRunning==0)  middleMouseButton=0; 
-
-    if (doubleClickRunning)
-    {
-        doubleClickRunning--;
-        if (doubleClickRunning==clickTime*2)  leftMouseButton=0; 
-        else if (doubleClickRunning==clickTime)    leftMouseButton=1; 
-        else if (doubleClickRunning==0)    leftMouseButton=0; 
-    }
+      if (rightClickRunning)
+          if (--rightClickRunning==0)  rightMouseButton=0; 
+   
+      if (middleClickRunning)
+          if (--middleClickRunning==0)  middleMouseButton=0; 
   
-    // handle mouse movement
-    if ((moveX!=0) || (moveY!=0))  
-         Mouse.move(moveX, moveY);
+      if (doubleClickRunning)
+      {
+          doubleClickRunning--;
+          if (doubleClickRunning==clickTime*2)  leftMouseButton=0; 
+          else if (doubleClickRunning==clickTime)    leftMouseButton=1; 
+          else if (doubleClickRunning==0)    leftMouseButton=0; 
+      }
  
-    // if any changes were made, update the Mouse buttons
-    if((leftMouseButton!=old_leftMouseButton) ||
-       (middleMouseButton!=old_middleMouseButton) ||
-       (rightMouseButton!=old_rightMouseButton))  {
-
-         #ifdef ARDUINO_PRO_MICRO
-           if (leftMouseButton) Mouse.press(MOUSE_LEFT); else Mouse.release(MOUSE_LEFT);
-           if (rightMouseButton) Mouse.press(MOUSE_RIGHT); else Mouse.release(MOUSE_RIGHT);
-           if (middleMouseButton) Mouse.press(MOUSE_MIDDLE); else Mouse.release(MOUSE_MIDDLE);
-         #else         
-           Mouse.set_buttons(leftMouseButton, middleMouseButton, rightMouseButton);
-         #endif
+      // if any changes were made, update the Mouse buttons
+      if(leftMouseButton!=old_leftMouseButton) {
+         if (leftMouseButton) Mouse.press(MOUSE_LEFT); else Mouse.release(MOUSE_LEFT);
          old_leftMouseButton=leftMouseButton;
+      }
+      if  (middleMouseButton!=old_middleMouseButton) {
+         if (middleMouseButton) Mouse.press(MOUSE_MIDDLE); else Mouse.release(MOUSE_MIDDLE);
          old_middleMouseButton=middleMouseButton;
+      }
+      if  (rightMouseButton!=old_rightMouseButton)  {
+         if (rightMouseButton) Mouse.press(MOUSE_RIGHT); else Mouse.release(MOUSE_RIGHT);
          old_rightMouseButton=rightMouseButton;
-    }
+     }
     
-    // handle Keyboard output (single key press/release is done seperately via setKeyValues() ) 
-    if (writeKeystring)
-    {
+     // handle Keyboard output (single key press/release is done seperately via setKeyValues() ) 
+     if (writeKeystring) {
         Keyboard.print(writeKeystring);
         writeKeystring=0;
-    }           
+    }    
+       
+    UpdateLeds();
     delay(waitTime);  // to limit move movement speed. TBD: remove delay, use millis() !
 }
 
@@ -240,9 +249,50 @@ void handleRelease (int buttonIndex)    // a button was released
      case CMD_MOUSE_PRESS_MIDDLE: middleMouseButton=0; break;
      case CMD_MOUSE_MOVEX: moveX=0; break;      
      case CMD_MOUSE_MOVEY: moveY=0; break;      
-     case CMD_KEY_PRESS: releaseKeys(); break; 
+     case CMD_KEY_PRESS: releaseKeys(buttons[buttonIndex].keystring); break; 
    }
 }
+
+void handleButton(int i, int l, uint8_t state)    // button debouncing and longpress detection  
+{                                                 //   (if button i is pressed long and index l>=0, virtual button l is activated !)
+   if ( buttons[i].bounceState == state) {
+     if (buttons[i].bounceCount < DEFAULT_DEBOUNCING_TIME) {
+       buttons[i].bounceCount++;
+       if (buttons[i].bounceCount == DEFAULT_DEBOUNCING_TIME) {
+          if (state != buttons[i].stableState)
+          { 
+            buttons[i].stableState=state;
+            if (state == 1) { 
+              handlePress(i); 
+              buttons[i].timestamp=millis();
+            }
+            else {
+              if (buttons[i].longPressed)
+              {
+                 buttons[i].longPressed=0;
+                 handleRelease(l);
+              }
+              else handleRelease(i);  
+            }
+          }
+       }
+     }
+     else { 
+       if ((millis()-buttons[i].timestamp > settings.tt ) && (l>=0))
+       {
+            if ((state == 1) && (buttons[i].longPressed==0) && (buttons[l].mode!=CMD_IDLE)) {
+           buttons[i].longPressed=1; 
+           handleRelease(i);
+           handlePress(l);
+          }
+       }
+     }
+   }
+   else {
+     buttons[i].bounceState = state;
+     buttons[i].bounceCount=0;     
+   }
+}   
 
 
 // perform a command  (called from parser.cpp)
@@ -257,13 +307,13 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
       {  
         Serial.print("got new mode for button "); Serial.print(actButton);Serial.print(":");
         Serial.print(cmd);Serial.print(",");Serial.print(par1);Serial.print(",");Serial.println(keystring);
+        // BlinkLed();
       }
       buttons[actButton-1].mode=cmd;
       buttons[actButton-1].value=par1;
       if (keystring==0) buttons[actButton-1].keystring[0]=0;
       else strcpy(buttons[actButton-1].keystring,keystring);
       actButton=0;
-      BlinkLed();
       return;
   }
   
@@ -377,9 +427,16 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
              break;
       case CMD_KEY_RELEASE:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.print("key release: ");
-             releaseKeys();             
+               Serial.print("key release: ");  Serial.println(keystring);
+             strcat(keystring," ");
+             releaseKeys(keystring);             
              break;
+      case CMD_RELEASE_ALL:
+             if (DebugOutput==DEBUG_FULLOUTPUT)  
+               Serial.print("release all");
+             release_all();             
+             break;
+            
       case CMD_SAVE_SLOT:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.print("save slot ");  Serial.println(keystring);
@@ -412,10 +469,17 @@ void BlinkLed()
 {
     for (uint8_t i=0; i < 5;i++)
     {
-        digitalWrite (settings.LED_PIN, !digitalRead(settings.LED_PIN));
+        digitalWrite (LED_PIN, !digitalRead(LED_PIN));
         delay(100);
     }
-    digitalWrite (settings.LED_PIN, HIGH);
+    digitalWrite (LED_PIN, HIGH);
+}
+
+void UpdateLeds()
+{  
+   if (actSlot & 1) digitalWrite (led_map[0],LOW); else digitalWrite (led_map[0],HIGH); 
+   if (actSlot & 2) digitalWrite (led_map[1],LOW); else digitalWrite (led_map[1],HIGH); 
+   if (actSlot & 4) digitalWrite (led_map[2],LOW); else digitalWrite (led_map[2],HIGH); 
 }
 
 
