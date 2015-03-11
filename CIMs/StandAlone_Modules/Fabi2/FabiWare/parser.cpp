@@ -61,6 +61,7 @@ void parseCommand (char * cmdstr)
         if (!strcmp(actpos,"CL")) cmd=CMD_MOUSE_CLICK_LEFT;
         if (!strcmp(actpos,"CR")) cmd=CMD_MOUSE_CLICK_RIGHT; 
         if (!strcmp(actpos,"CM")) cmd=CMD_MOUSE_CLICK_MIDDLE; 
+        if (!strcmp(actpos,"CD")) cmd=CMD_MOUSE_CLICK_DOUBLE; 
         if (!strcmp(actpos,"PL")) cmd=CMD_MOUSE_PRESS_LEFT; 
         if (!strcmp(actpos,"PR")) cmd=CMD_MOUSE_PRESS_RIGHT; 
         if (!strcmp(actpos,"PM")) cmd=CMD_MOUSE_PRESS_MIDDLE; 

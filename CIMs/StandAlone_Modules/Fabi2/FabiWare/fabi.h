@@ -3,8 +3,8 @@
 #include <stdint.h>
 
 
-#define TEENSY                 //  if a Teensy controller is used
-// #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used 
+// #define TEENSY                 //  if a Teensy controller is used
+#define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used 
  
 
 #define NUMBER_OF_BUTTONS 6          // number of connected or virtual switches

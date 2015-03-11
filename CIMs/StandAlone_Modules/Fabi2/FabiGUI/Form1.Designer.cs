@@ -80,6 +80,7 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.activityLogTextbox = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.ButtonsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Button6NumericParameter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Button5NumericParameter)).BeginInit();
@@ -116,7 +117,7 @@
             // SelectButton
             // 
             this.SelectButton.Location = new System.Drawing.Point(180, 50);
-            this.SelectButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.SelectButton.Margin = new System.Windows.Forms.Padding(4);
             this.SelectButton.Name = "SelectButton";
             this.SelectButton.Size = new System.Drawing.Size(82, 28);
             this.SelectButton.TabIndex = 8;
@@ -128,8 +129,8 @@
             // 
             this.saveSettings.Enabled = false;
             this.saveSettings.ForeColor = System.Drawing.Color.Black;
-            this.saveSettings.Location = new System.Drawing.Point(587, 492);
-            this.saveSettings.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.saveSettings.Location = new System.Drawing.Point(470, 491);
+            this.saveSettings.Margin = new System.Windows.Forms.Padding(4);
             this.saveSettings.Name = "saveSettings";
             this.saveSettings.Size = new System.Drawing.Size(174, 38);
             this.saveSettings.TabIndex = 14;
@@ -142,7 +143,7 @@
             this.dcButton.Enabled = false;
             this.dcButton.ForeColor = System.Drawing.Color.Black;
             this.dcButton.Location = new System.Drawing.Point(269, 50);
-            this.dcButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dcButton.Margin = new System.Windows.Forms.Padding(4);
             this.dcButton.Name = "dcButton";
             this.dcButton.Size = new System.Drawing.Size(93, 28);
             this.dcButton.TabIndex = 10;
@@ -175,10 +176,10 @@
             // 
             this.ClearButton.Enabled = false;
             this.ClearButton.ForeColor = System.Drawing.Color.Black;
-            this.ClearButton.Location = new System.Drawing.Point(938, 494);
-            this.ClearButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ClearButton.Location = new System.Drawing.Point(807, 490);
+            this.ClearButton.Margin = new System.Windows.Forms.Padding(4);
             this.ClearButton.Name = "ClearButton";
-            this.ClearButton.Size = new System.Drawing.Size(172, 39);
+            this.ClearButton.Size = new System.Drawing.Size(168, 39);
             this.ClearButton.TabIndex = 46;
             this.ClearButton.Text = "Clear all Slots";
             this.ClearButton.UseVisualStyleBackColor = true;
@@ -189,7 +190,7 @@
             this.ApplyButton.Enabled = false;
             this.ApplyButton.ForeColor = System.Drawing.Color.Black;
             this.ApplyButton.Location = new System.Drawing.Point(51, 492);
-            this.ApplyButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ApplyButton.Margin = new System.Windows.Forms.Padding(4);
             this.ApplyButton.Name = "ApplyButton";
             this.ApplyButton.Size = new System.Drawing.Size(332, 38);
             this.ApplyButton.TabIndex = 36;
@@ -201,8 +202,8 @@
             // 
             this.slotName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.slotName.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.slotName.Location = new System.Drawing.Point(768, 498);
-            this.slotName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.slotName.Location = new System.Drawing.Point(651, 497);
+            this.slotName.Margin = new System.Windows.Forms.Padding(4);
             this.slotName.Multiline = true;
             this.slotName.Name = "slotName";
             this.slotName.Size = new System.Drawing.Size(148, 26);
@@ -249,9 +250,9 @@
             this.ButtonsTab.Controls.Add(this.label6);
             this.ButtonsTab.Controls.Add(this.Button1FunctionBox);
             this.ButtonsTab.Location = new System.Drawing.Point(4, 25);
-            this.ButtonsTab.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonsTab.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonsTab.Name = "ButtonsTab";
-            this.ButtonsTab.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonsTab.Padding = new System.Windows.Forms.Padding(4);
             this.ButtonsTab.Size = new System.Drawing.Size(1056, 339);
             this.ButtonsTab.TabIndex = 1;
             this.ButtonsTab.Text = "Select Button Functions";
@@ -260,7 +261,7 @@
             // 
             this.Button6ComboBox.FormattingEnabled = true;
             this.Button6ComboBox.Location = new System.Drawing.Point(884, 259);
-            this.Button6ComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button6ComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button6ComboBox.Name = "Button6ComboBox";
             this.Button6ComboBox.Size = new System.Drawing.Size(121, 24);
             this.Button6ComboBox.TabIndex = 132;
@@ -271,7 +272,7 @@
             // 
             this.Button5ComboBox.FormattingEnabled = true;
             this.Button5ComboBox.Location = new System.Drawing.Point(884, 174);
-            this.Button5ComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button5ComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button5ComboBox.Name = "Button5ComboBox";
             this.Button5ComboBox.Size = new System.Drawing.Size(120, 24);
             this.Button5ComboBox.TabIndex = 131;
@@ -282,7 +283,7 @@
             // 
             this.Button4ComboBox.FormattingEnabled = true;
             this.Button4ComboBox.Location = new System.Drawing.Point(885, 96);
-            this.Button4ComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button4ComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button4ComboBox.Name = "Button4ComboBox";
             this.Button4ComboBox.Size = new System.Drawing.Size(120, 24);
             this.Button4ComboBox.TabIndex = 130;
@@ -292,7 +293,7 @@
             // Button6NumericParameter
             // 
             this.Button6NumericParameter.Location = new System.Drawing.Point(652, 262);
-            this.Button6NumericParameter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button6NumericParameter.Margin = new System.Windows.Forms.Padding(4);
             this.Button6NumericParameter.Minimum = new decimal(new int[] {
             100,
             0,
@@ -311,7 +312,7 @@
             // Button5NumericParameter
             // 
             this.Button5NumericParameter.Location = new System.Drawing.Point(652, 174);
-            this.Button5NumericParameter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button5NumericParameter.Margin = new System.Windows.Forms.Padding(4);
             this.Button5NumericParameter.Minimum = new decimal(new int[] {
             100,
             0,
@@ -330,7 +331,7 @@
             // Button4NumericParameter
             // 
             this.Button4NumericParameter.Location = new System.Drawing.Point(652, 95);
-            this.Button4NumericParameter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button4NumericParameter.Margin = new System.Windows.Forms.Padding(4);
             this.Button4NumericParameter.Minimum = new decimal(new int[] {
             100,
             0,
@@ -415,7 +416,7 @@
             // 
             this.Button6FunctionBox.FormattingEnabled = true;
             this.Button6FunctionBox.Location = new System.Drawing.Point(652, 231);
-            this.Button6FunctionBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button6FunctionBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button6FunctionBox.Name = "Button6FunctionBox";
             this.Button6FunctionBox.Size = new System.Drawing.Size(225, 24);
             this.Button6FunctionBox.TabIndex = 119;
@@ -435,7 +436,7 @@
             // 
             this.Button5FunctionBox.FormattingEnabled = true;
             this.Button5FunctionBox.Location = new System.Drawing.Point(652, 143);
-            this.Button5FunctionBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button5FunctionBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button5FunctionBox.Name = "Button5FunctionBox";
             this.Button5FunctionBox.Size = new System.Drawing.Size(225, 24);
             this.Button5FunctionBox.TabIndex = 117;
@@ -455,7 +456,7 @@
             // 
             this.Button4FunctionBox.FormattingEnabled = true;
             this.Button4FunctionBox.Location = new System.Drawing.Point(652, 65);
-            this.Button4FunctionBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button4FunctionBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button4FunctionBox.Name = "Button4FunctionBox";
             this.Button4FunctionBox.Size = new System.Drawing.Size(225, 24);
             this.Button4FunctionBox.TabIndex = 115;
@@ -465,7 +466,7 @@
             // 
             this.Button3ComboBox.FormattingEnabled = true;
             this.Button3ComboBox.Location = new System.Drawing.Point(377, 257);
-            this.Button3ComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button3ComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button3ComboBox.Name = "Button3ComboBox";
             this.Button3ComboBox.Size = new System.Drawing.Size(132, 24);
             this.Button3ComboBox.TabIndex = 114;
@@ -476,7 +477,7 @@
             // 
             this.Button2ComboBox.FormattingEnabled = true;
             this.Button2ComboBox.Location = new System.Drawing.Point(378, 171);
-            this.Button2ComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button2ComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button2ComboBox.Name = "Button2ComboBox";
             this.Button2ComboBox.Size = new System.Drawing.Size(131, 24);
             this.Button2ComboBox.TabIndex = 113;
@@ -487,7 +488,7 @@
             // 
             this.Button1ComboBox.FormattingEnabled = true;
             this.Button1ComboBox.Location = new System.Drawing.Point(379, 94);
-            this.Button1ComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button1ComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button1ComboBox.Name = "Button1ComboBox";
             this.Button1ComboBox.Size = new System.Drawing.Size(130, 24);
             this.Button1ComboBox.TabIndex = 112;
@@ -497,7 +498,7 @@
             // Button3NumericParameter
             // 
             this.Button3NumericParameter.Location = new System.Drawing.Point(147, 260);
-            this.Button3NumericParameter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button3NumericParameter.Margin = new System.Windows.Forms.Padding(4);
             this.Button3NumericParameter.Minimum = new decimal(new int[] {
             100,
             0,
@@ -516,7 +517,7 @@
             // Button2NumericParameter
             // 
             this.Button2NumericParameter.Location = new System.Drawing.Point(147, 172);
-            this.Button2NumericParameter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button2NumericParameter.Margin = new System.Windows.Forms.Padding(4);
             this.Button2NumericParameter.Minimum = new decimal(new int[] {
             100,
             0,
@@ -535,7 +536,7 @@
             // Button1NumericParameter
             // 
             this.Button1NumericParameter.Location = new System.Drawing.Point(147, 93);
-            this.Button1NumericParameter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button1NumericParameter.Margin = new System.Windows.Forms.Padding(4);
             this.Button1NumericParameter.Minimum = new decimal(new int[] {
             100,
             0,
@@ -620,7 +621,7 @@
             // 
             this.Button3FunctionBox.FormattingEnabled = true;
             this.Button3FunctionBox.Location = new System.Drawing.Point(147, 229);
-            this.Button3FunctionBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button3FunctionBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button3FunctionBox.Name = "Button3FunctionBox";
             this.Button3FunctionBox.Size = new System.Drawing.Size(225, 24);
             this.Button3FunctionBox.TabIndex = 91;
@@ -640,7 +641,7 @@
             // 
             this.Button2FunctionBox.FormattingEnabled = true;
             this.Button2FunctionBox.Location = new System.Drawing.Point(147, 141);
-            this.Button2FunctionBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button2FunctionBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button2FunctionBox.Name = "Button2FunctionBox";
             this.Button2FunctionBox.Size = new System.Drawing.Size(225, 24);
             this.Button2FunctionBox.TabIndex = 89;
@@ -660,7 +661,7 @@
             // 
             this.Button1FunctionBox.FormattingEnabled = true;
             this.Button1FunctionBox.Location = new System.Drawing.Point(147, 62);
-            this.Button1FunctionBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Button1FunctionBox.Margin = new System.Windows.Forms.Padding(4);
             this.Button1FunctionBox.Name = "Button1FunctionBox";
             this.Button1FunctionBox.Size = new System.Drawing.Size(225, 24);
             this.Button1FunctionBox.TabIndex = 87;
@@ -670,7 +671,7 @@
             // 
             this.tabControl.Controls.Add(this.ButtonsTab);
             this.tabControl.Location = new System.Drawing.Point(50, 106);
-            this.tabControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(1064, 368);
@@ -681,7 +682,7 @@
             this.activityLogTextbox.ForeColor = System.Drawing.SystemColors.MenuText;
             this.activityLogTextbox.HideSelection = false;
             this.activityLogTextbox.Location = new System.Drawing.Point(637, 50);
-            this.activityLogTextbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.activityLogTextbox.Margin = new System.Windows.Forms.Padding(4);
             this.activityLogTextbox.Name = "activityLogTextbox";
             this.activityLogTextbox.ReadOnly = true;
             this.activityLogTextbox.Size = new System.Drawing.Size(477, 55);
@@ -698,6 +699,19 @@
             this.label2.TabIndex = 76;
             this.label2.Text = "Activity Log:";
             // 
+            // button1
+            // 
+            this.button1.Enabled = false;
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(983, 490);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(127, 39);
+            this.button1.TabIndex = 77;
+            this.button1.Text = "List Slots";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.list_Click);
+            // 
             // FabiGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -705,6 +719,7 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1159, 555);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.activityLogTextbox);
             this.Controls.Add(this.slotName);
@@ -718,11 +733,12 @@
             this.Controls.Add(this.SelectButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.portComboBox);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FabiGUI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Fabi Settings Manager";
             this.Load += new System.EventHandler(this.LipmouseGUI_Load);
+            this.Click += new System.EventHandler(this.list_Click);
             this.ButtonsTab.ResumeLayout(false);
             this.ButtonsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Button6NumericParameter)).EndInit();
@@ -790,6 +806,7 @@
         private System.Windows.Forms.ComboBox Button4FunctionBox;
         private System.Windows.Forms.RichTextBox activityLogTextbox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button1;
     }
 }
 

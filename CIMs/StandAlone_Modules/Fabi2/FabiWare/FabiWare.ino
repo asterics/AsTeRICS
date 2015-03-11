@@ -4,7 +4,7 @@
       allows control of HID functions via momentary switches and/or AT-commands  
    
 
-   requirements:  USB HID capable Arduino (Leonardo / Micro / Pro Micro)
+   requirements:  USB HID capable Arduino (Leonardo / Micro / Pro Micro) - see #define in fabi.h !
                   or Teensy 2.0++ with Teensyduino AddOn setup as USB composite device (Mouse + Keyboard + Serial)
        optional:  Momentary switches connected to GPIO pins / force sensors connected to ADC pins
        
@@ -126,7 +126,7 @@ uint8_t cnt =0,cnt2=0;
 // function declarations 
 void handlePress (int buttonIndex);      // a button was pressed
 void handleRelease (int buttonIndex);    // a button was released
-uint32_t handleButton(int i, uint8_t b);  // button debouncing
+void handleButton(int i, int l, uint8_t b);  // button debouncing
 void UpdateLeds();
 
 ////////////////////////////////////////
