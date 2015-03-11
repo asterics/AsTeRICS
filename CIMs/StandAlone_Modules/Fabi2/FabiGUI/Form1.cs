@@ -87,11 +87,6 @@ namespace MouseApp2
 
             updateComPorts();
 
-            System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
-            t.Interval = 4000; // udpate interval for COM ports
-            t.Tick += new EventHandler(OnTimedEvent);
-            t.Start();
-
             addToLog("Fabi GUI ready!");
             this.Load += LipmouseGUI_Load;
         }
@@ -102,7 +97,7 @@ namespace MouseApp2
             portComboBox.DataSource = ports;
         }
 
-        private void OnTimedEvent(object source, EventArgs e)
+        private void portComboBox_Click(object sender, EventArgs e)
         {
             updateComPorts();
         }
@@ -124,15 +119,13 @@ namespace MouseApp2
                 serialPort1.Parity = Parity.None;
                 serialPort1.Handshake = Handshake.None;
 
-                serialPort1.ReadTimeout =5000;
-                serialPort1.WriteTimeout =5000;
+                serialPort1.ReadTimeout =2500;
+                serialPort1.WriteTimeout =2500;
                 serialPort1.NewLine = "\n";
-                try
-                {
+                try {
                     serialPort1.Open();
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex)  {
                     addToLog("Could not open COM port ...");
                 }
             }
@@ -144,8 +137,11 @@ namespace MouseApp2
             {
                 while (serialPort1.IsOpen && !readDone)
                 {
-                    receivedString = serialPort1.ReadLine();
-                   // BeginInvoke(this.pressureDelegate, new Object[] { receivedString });
+                    try  {
+                        receivedString = serialPort1.ReadLine();
+                    }
+                    catch (Exception ex)  {
+                    }
                 }
             }
             catch (Exception ex)
@@ -169,21 +165,17 @@ namespace MouseApp2
                     activityLogTextbox.SelectedText = DateTime.Now.ToString() + ": ";
                     activityLogTextbox.AppendText(String.Format("You selected port '{0}' \n", portComboBox.SelectedItem));
                     Connect(portComboBox.SelectedItem.ToString());
-                    if (serialPort1.IsOpen)
-                    {
-                        addToLog("COM Port openend");
-                        portStatus.Text = "Connected";
-                        portStatus.ForeColor = Color.Green;
-                        saveSettings.Enabled=true;
-                        dcButton.Enabled = true;
-                        ClearButton.Enabled = true;
-                        ApplyButton.Enabled = true;
+                    addToLog("COM Port openend");
+                    portStatus.Text = "Connected";
+                    portStatus.ForeColor = Color.Green;
+                    saveSettings.Enabled=true;
+                    dcButton.Enabled = true;
+                    ClearButton.Enabled = true;
+                    ApplyButton.Enabled = true;
 
-                        readDone = false;
-                        Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
-                        thread.Start();
-                    }
-                    else addToLog("Could not connect COM Port");
+                    readDone = false;
+                    Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
+                    thread.Start();
                 }
             }
             else addToLog("No port has been selected");
@@ -215,7 +207,12 @@ namespace MouseApp2
             if (serialPort1.IsOpen)
             {
                 addToLog("Send:" + command);
-                serialPort1.Write(command + "\r");
+                try {
+                    serialPort1.Write(command + "\r");
+                }
+                catch (Exception ex)  {
+                    addToLog("Could not write to COM port ...");
+                }
             }
         }
 
@@ -386,47 +383,6 @@ namespace MouseApp2
             updateKeyCodeParameter(Button6ComboBox, Button6ParameterText);
         }
 
-
-        private void Button1NumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            Button1ParameterText.Text = Button1NumericParameter.Value.ToString();
-        }
-
-        private void Button2NumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            Button2ParameterText.Text = Button2NumericParameter.Value.ToString();
-        }
-
-        private void Button3NumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            Button3ParameterText.Text = Button3NumericParameter.Value.ToString();
-        }
-
-        private void Button4NumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            Button4ParameterText.Text = Button4NumericParameter.Value.ToString();
-        }
-
-        private void Button5NumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            Button5ParameterText.Text = Button5NumericParameter.Value.ToString();
-        }
-
-        private void Button6NumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            Button6ParameterText.Text = Button6NumericParameter.Value.ToString();
-        }
-
-
-        private void SipParameterText_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PuffParameterText_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
     }
 }

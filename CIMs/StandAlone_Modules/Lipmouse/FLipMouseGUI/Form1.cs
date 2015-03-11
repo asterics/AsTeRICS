@@ -11,7 +11,6 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.IO;
-using System.Timers;
 
 
 
@@ -112,11 +111,6 @@ namespace MouseApp2
 
             updateComPorts();
 
-            System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
-            t.Interval = 4000; // udpate interval for COM ports
-            t.Tick += new EventHandler(OnTimedEvent);
-            t.Start();
-
             addToLog("FLipMouse GUI ready!");
             this.Load += LipmouseGUI_Load;
         }
@@ -127,10 +121,11 @@ namespace MouseApp2
             portComboBox.DataSource = ports;
         }
 
-        private void OnTimedEvent(object source, EventArgs e)
+        private void portComboBox_Click(object sender, EventArgs e)
         {
             updateComPorts();
         }
+
 
         private void LipmouseGUI_Load(object sender, EventArgs e)
         {
@@ -164,8 +159,8 @@ namespace MouseApp2
                 serialPort1.Parity = Parity.None;
                 serialPort1.Handshake = Handshake.None;
 
-                serialPort1.ReadTimeout =4000;
-                serialPort1.WriteTimeout =4000;
+                serialPort1.ReadTimeout =2500;
+                serialPort1.WriteTimeout =2500;
                 serialPort1.NewLine = "\n";
 
                 try{
@@ -185,8 +180,12 @@ namespace MouseApp2
             if (serialPort1.IsOpen)
             {
                 addToLog("Send:" + command);
-                //Console.WriteLine("Send:" + command);
-                serialPort1.Write(command + "\r");
+                try {
+                    serialPort1.Write(command + "\r");
+                }
+                catch (Exception ex)    {
+                    addToLog("Could not write to COM port ...");
+                }
             }
         }
 
@@ -204,25 +203,21 @@ namespace MouseApp2
                     activityLogTextbox.SelectedText = DateTime.Now.ToString() + ": ";
                     activityLogTextbox.AppendText(String.Format("You selected port '{0}' \n", portComboBox.SelectedItem));
                     Connect(portComboBox.SelectedItem.ToString());
-                    if (serialPort1.IsOpen)
-                    {
-                        addToLog("COM Port openend");
-                        portStatus.Text = "Connected";
-                        portStatus.ForeColor = Color.Green;
-                        saveSettings.Enabled = true;
-                        calButton.Enabled = true;
-                        dcButton.Enabled = true;
-                        ClearButton.Enabled = true;
-                        ListButton.Enabled = true;
-                        ApplyButton.Enabled = true;
+                    addToLog("COM Port openend");
+                    portStatus.Text = "Connected";
+                    portStatus.ForeColor = Color.Green;
+                    saveSettings.Enabled = true;
+                    calButton.Enabled = true;
+                    dcButton.Enabled = true;
+                    ClearButton.Enabled = true;
+                    ListButton.Enabled = true;
+                    ApplyButton.Enabled = true;
 
-                        readDone = false;
-                        Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
-                        thread.Start();
+                    readDone = false;
+                    Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
+                    thread.Start();
 
-                        sendCmd("AT SR");   // start reporting raw values !
-                    }
-                    else addToLog("Could not connect COM Port");
+                    sendCmd("AT SR");   // start reporting raw values !
                 }
             }
             else addToLog("No port has been selected");
@@ -234,15 +229,21 @@ namespace MouseApp2
             {
                 while (serialPort1.IsOpen && !readDone)
                 {
-                    receivedString = serialPort1.ReadLine();
-                    // Console.Write("received:" + receivedString);
-                    if (receivedString.ToUpper().StartsWith("AT RR "))  // raw report found ?
-                    {
-                        BeginInvoke(this.rawValuesDelegate, new Object[] { receivedString.Substring(6) });
+                    try  {
+                        receivedString = serialPort1.ReadLine();
+                        // Console.Write("received:" + receivedString);
+                        if (receivedString.ToUpper().StartsWith("AT RR "))  // raw report found ?
+                        {
+                            BeginInvoke(this.rawValuesDelegate, new Object[] { receivedString.Substring(6) });
+                        }
+                        else if (receivedString.ToUpper().StartsWith("SLOT"))  // raw report found ?
+                        {
+                            BeginInvoke(this.slotValuesDelegate, new Object[] { receivedString });
+                        }
                     }
-                    else if (receivedString.ToUpper().StartsWith("SLOT"))  // raw report found ?
+                    catch (Exception ex)
                     {
-                        BeginInvoke(this.slotValuesDelegate, new Object[] { receivedString });
+                        addToLog("Could not read from COM port ...");
                     }
                 }
             }
@@ -277,6 +278,19 @@ namespace MouseApp2
                 serialPort1.Close();
                 receivedString = "";
             }
+        }
+
+        private void selectStick_CheckedChanged(object sender, EventArgs e)
+        {
+            // Console.WriteLine("stick selected");
+            useAlternativeFunctions = false;
+        }
+
+        private void selectAlternative_CheckedChanged(object sender, EventArgs e)
+        {
+            // Console.WriteLine("alternative selected");
+            useAlternativeFunctions = true;
+
         }
 
         // update assigned actions
@@ -555,61 +569,7 @@ namespace MouseApp2
             updateKeyCodeParameter(LongPuffComboBox, LongPuffParameterText);
         }
 
-        // update numeric paramters:
-        private void Button1NumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            Button1ParameterText.Text = Button1NumericParameter.Value.ToString();
-        }
-
-        private void Button2NumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            Button2ParameterText.Text = Button2NumericParameter.Value.ToString();
-        }
-
-        private void Button3NumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            Button3ParameterText.Text = Button3NumericParameter.Value.ToString();
-        }
-
-        private void UpNumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            UpParameterText.Text = UpNumericParameter.Value.ToString();
-        }
-
-        private void DownNumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            DownParameterText.Text = DownNumericParameter.Value.ToString();
-        }
-
-        private void LeftNumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            LeftParameterText.Text = LeftNumericParameter.Value.ToString();
-        }
-
-        private void RightNumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            RightParameterText.Text = RightNumericParameter.Value.ToString();
-        }
-
-        private void SipNumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            SipParameterText.Text = SipNumericParameter.Value.ToString();
-        }
-
-        private void LongSipNumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            LongSipParameterText.Text = LongSipNumericParameter.Value.ToString();
-        }
-
-        private void PuffNumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            PuffParameterText.Text = PuffNumericParameter.Value.ToString();
-        }
-
-        private void LongPuffNumericParameter_ValueChanged(object sender, EventArgs e)
-        {
-            LongPuffParameterText.Text = LongPuffNumericParameter.Value.ToString();
-        }
+        // draw live values on panels 
 
         public void gotValues(String newValues)
         {
@@ -661,17 +621,5 @@ namespace MouseApp2
             }
         }
 
-        private void selectStick_CheckedChanged(object sender, EventArgs e)
-        {
-            // Console.WriteLine("stick selected");
-            useAlternativeFunctions = false;
-        }
-
-        private void selectAlternative_CheckedChanged(object sender, EventArgs e)
-        {
-            // Console.WriteLine("alternative selected");
-            useAlternativeFunctions = true;
-
-        }
     }
 }

@@ -111,7 +111,7 @@
 
 #ifdef TEENSY
   int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={13,2,3};  //  mapa physical button pins to button index 0,1,2  
-  int8_t  led_map[NUMBER_OF_LEDS]={18,19,29};              //  maps leds pins   
+  int8_t  led_map[NUMBER_OF_LEDS]={18,19,20};              //  maps leds pins   
   uint8_t LED_PIN = 25;                                    //  Led output pin
 #endif
 
@@ -285,14 +285,14 @@ void loop() {
       
       if (settings.mouseOn == 1) {
         if (y>settings.dy)
-           accumYpos += (float)((y-settings.dy)*settings.ay) * accelFactor; 
+           accumYpos += (float)(((int32_t)y-settings.dy)*settings.ay) * accelFactor; 
         else if (y<-settings.dy)
-           accumYpos += (float)((y+settings.dy)*settings.ay) * accelFactor; 
+           accumYpos += (float)(((int32_t)y+settings.dy)*settings.ay) * accelFactor; 
 
         if (x>settings.dx)
-           accumXpos += (float)((x-settings.dx)*settings.ax) * accelFactor; 
+           accumXpos += (float)(((int32_t)x-settings.dx)*settings.ax) * accelFactor; 
         else if (x<-settings.dx)
-           accumXpos += (float)((x+settings.dx)*settings.ax) * accelFactor; 
+           accumXpos += (float)(((int32_t)x+settings.dx)*settings.ax) * accelFactor; 
       
         int xMove = (int)accumXpos;
         int yMove = (int)accumYpos;
