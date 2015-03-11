@@ -221,7 +221,15 @@ public class DeploymentManager
 				//logger.severe(canonicalName+ " prevents the model from starting: "+e.getMessage());
 				e.printStackTrace();
 				String message="Could not deploy component of type ["+componentTypeID+"]: \n"+e.getMessage();
-				AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
+				//AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
+				
+				//before give up, try to cleanup and undeploy model again				
+				try{
+					logger.fine("Before giving up, trying to undeploy model again.");
+					undeployModel();
+				}catch(Throwable t) {
+					t.printStackTrace();
+				}			
 				throw new DeploymentException(message);
 				//return;
 			}
