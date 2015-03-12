@@ -726,12 +726,7 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void UploadSchema_Click(object sender, RoutedEventArgs e) {
-            if (canvas.Children.Count > 0) {
-                Keyboard.Focus(canvas.Children[0]);
-            }
-            else {
-                Keyboard.Focus(canvas);
-            }
+            resetFocus();
             bool isError = false;
             bool doOverride = false;
 
@@ -2578,6 +2573,7 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void StartModel_Click(object sender, RoutedEventArgs e) {
+            resetFocus();
             try {
 
                 // check, if a model is loaded and remove error marker
@@ -2613,6 +2609,7 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void PauseModel_Click(object sender, RoutedEventArgs e) {
+            resetFocus();
             try {
                 areStatus.Status = AREStatus.ConnectionStatus.Pause;
                 asapiClient.PauseModel();            
@@ -2640,8 +2637,7 @@ namespace Asterics.ACS {
             // If a property has been edited and the focus has not been set to another element, the property will not be set. 
             // Clicking ribbon elments did not remove focus from property editor, so the property will
             // not be set. Causes problems, saving, uplaoding, ... the model
-            Keyboard.Focus(canvas);
-
+            resetFocus();
             try {
                 asapiClient.StopModel();
                 
@@ -3142,6 +3138,31 @@ namespace Asterics.ACS {
             }
             focusedComponent = tempComponent;
             SetPropertyDock(tempComponent);
+        }
+
+        // Reset focus to show updates of a component/eventlistener --> e.g. refreshed dynamic properties
+        /// <summary>
+        /// 
+        /// </summary>
+        private void resetFocus()
+        {
+            if (dockableEventsTab.Visibility == System.Windows.Visibility.Visible && focusedEventChannel != null)
+            {
+                Keyboard.Focus(focusedEventChannel.Line);
+                ResetPropertyDock();
+                SetEventPropertyDock(deploymentComponentList[focusedEventChannel.TriggerComponentId], deploymentComponentList[focusedEventChannel.ListenerComponentId]);
+            } else if (focusedComponent != null)
+            {
+                Keyboard.Focus(focusedComponent.ComponentCanvas);
+            }
+            else if (canvas.Children.Count > 0)
+            {
+                Keyboard.Focus(canvas.Children[0]);
+            }
+            else
+            {
+                Keyboard.Focus(canvas);
+            }
         }
 
         // Function, when a component lost the focus
@@ -8671,6 +8692,7 @@ namespace Asterics.ACS {
                     statusBar.Text = Properties.Resources.AREStatusPause;
                     break;
             }
+            resetFocus();
         }
 
         /// <summary>
