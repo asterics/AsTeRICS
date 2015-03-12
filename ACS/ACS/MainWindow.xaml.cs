@@ -3162,6 +3162,8 @@ namespace Asterics.ACS {
             } else if (focusedComponent != null)
             {
                 Keyboard.Focus(focusedComponent.ComponentCanvas);
+                ResetPropertyDock();
+                SetPropertyDock(focusedComponent);
             }
             else if (canvas.Children.Count > 0)
             {
