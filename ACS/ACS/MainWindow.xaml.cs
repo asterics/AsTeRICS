@@ -2547,6 +2547,14 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Help_Click(object sender, RoutedEventArgs e) {
+            if (File.Exists(@"ACS_Help.chm"))
+            {
+                logger.Log(LogLevel.Debug, "Help file found!");
+            }
+            else
+            {
+                logger.Log(LogLevel.Debug, "Help file does not exist!");
+            }
             if (sender is RibbonButton) {
                 System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.TableOfContents);
             }
