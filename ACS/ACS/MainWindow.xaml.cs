@@ -726,6 +726,12 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void UploadSchema_Click(object sender, RoutedEventArgs e) {
+            if (canvas.Children.Count > 0) {
+                Keyboard.Focus(canvas.Children[0]);
+            }
+            else {
+                Keyboard.Focus(canvas);
+            }
             bool isError = false;
             bool doOverride = false;
 
@@ -1229,6 +1235,14 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void StoreModelOnARE_Click(object sender, RoutedEventArgs e) {
+            if (canvas.Children.Count > 0)
+            {
+                Keyboard.Focus(canvas.Children[0]);
+            }
+            else
+            {
+                Keyboard.Focus(canvas);
+            }
             List<string> storedModels = null;
             // load the list of all stored models
             try {
@@ -8465,10 +8479,10 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ComponentPropertyChanged(Object sender, PropertyChangedEventArgs e) {
+            logger.Log(LogLevel.Debug, "Property changed");
             propertyType prop = (propertyType)sender;
             if (prop.name.ToLower().Equals(PROP_DISPLAYGUI))
             {
-                Console.WriteLine("Component with property displayGui changed, prop.name: " + prop.name + ", value: " + prop.value + ", backupId: " + backupIdForPropertyEditor);
                 if (prop.value.ToLower().Equals(TRUE_STRING))
                 {
                     componentType comp = findComponentType(backupIdForPropertyEditor);
@@ -10843,7 +10857,14 @@ namespace Asterics.ACS {
         /// <param name="saveAs">If true, a file name dialog will be opened</param>
         /// <returns>True, if file was saved successfully</returns>
         private bool SaveLocalCommand(bool saveAs) {
-
+            if (canvas.Children.Count > 0)
+            {
+                Keyboard.Focus(canvas.Children[0]);
+            }
+            else
+            {
+                Keyboard.Focus(canvas);
+            }
             if ((deploymentModel.eventChannels != null) && (deploymentModel.eventChannels.Length == 0)) {
                 deploymentModel.eventChannels = null;
             }

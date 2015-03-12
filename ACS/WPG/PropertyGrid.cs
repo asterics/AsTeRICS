@@ -21,8 +21,8 @@ namespace WPG {
         }
 
 
-        public PropertyGrid() {
-            Console.Out.WriteLine("Hi Property Grid!");
+        public PropertyGrid() 
+        {
             this.DataContext = this;
             PreviewMouseDown += new MouseButtonEventHandler(PropertyGrid_PreviewMouseDown);
             PreviewKeyDown += new KeyEventHandler(PropertyGrid_PreviewKeyDown);
@@ -31,7 +31,6 @@ namespace WPG {
 
         void PropertyGrid_PreviewFocusChanged(object sender, KeyboardFocusChangedEventArgs e)
         {
-            Console.Out.WriteLine("FOCUS LOST!");
             var OrginalSource = (e.OriginalSource as FrameworkElement);
             if (OrginalSource.DataContext != null && OrginalSource.DataContext.GetType() == typeof(Property))
             {
