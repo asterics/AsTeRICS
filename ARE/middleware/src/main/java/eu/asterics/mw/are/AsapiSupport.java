@@ -311,18 +311,20 @@ public class AsapiSupport
 	 * validation error occurred after reading the model
 	 */
 	public void deployModel(final String modelInXML) throws AREAsapiException {
+		// Stop running model first if there is one
+		if (DeploymentManager.instance
+				.getCurrentRuntimeModel() != null) {
+			logger.fine("Before Deploying model, trying to stop old before.");
+			stopModel();
+			DeploymentManager.instance.undeployModel();
+		}
+
 		try {
 			AstericsModelExecutionThreadPool.instance
 					.execAndWaitOnModelExecutorLifecycleThread(new Callable<Object>() {
 
 						@Override
 						public Object call() throws Exception {
-							// Stop running model first if there is one
-							if (DeploymentManager.instance
-									.getCurrentRuntimeModel() != null) {
-								stopModel();
-								DeploymentManager.instance.undeployModel();
-							}
 
 							File modelFile = new File(MODELS_FOLDER
 									+ "/model.xml");
@@ -393,6 +395,7 @@ public class AsapiSupport
 
 					});
 		} catch (IOException e2) {
+			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
 			AstericsErrorHandling.instance.setStatusObject(
 					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
@@ -401,6 +404,7 @@ public class AsapiSupport
 					+ e2.getMessage());
 			throw (new AREAsapiException(e2.getMessage()));
 		} catch (DeploymentException e3) {
+			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
 			AstericsErrorHandling.instance.setStatusObject(
 					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
@@ -409,6 +413,7 @@ public class AsapiSupport
 					+ e3.getMessage());
 			throw (new AREAsapiException(e3.getMessage()));
 		} catch (ParseException e4) {
+			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
 			AstericsErrorHandling.instance.setStatusObject(
 					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
@@ -417,6 +422,7 @@ public class AsapiSupport
 					+ e4.getMessage());
 			throw (new AREAsapiException(e4.getMessage()));
 		} catch (Throwable t) {
+			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
 			AstericsErrorHandling.instance.setStatusObject(
 					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
@@ -1699,27 +1705,25 @@ public class AsapiSupport
 	 * cannot be deployed
 	 */
 	public void deployFile(final String filename) throws AREAsapiException {
+		//stopModel outside of try catch to ensure that a current model is stopped any way.
+		final IRuntimeModel currentRuntimeModel
+		= DeploymentManager.instance.getCurrentRuntimeModel();
+
+		if(currentRuntimeModel != null)
+			stopModel();
+
 		try {
 			AstericsModelExecutionThreadPool.instance
 			.execAndWaitOnModelExecutorLifecycleThread(new Callable<Object>() {
 
 				@Override
 				public Object call() throws Exception {
-
-
 					File file = new File(filename);
 					String absFilename=filename;
 					if (!file.isAbsolute()) {
 						absFilename = MODELS_FOLDER + "/" + filename;
 					}
 					//if (filename=="autostart.acs")
-
-					final IRuntimeModel currentRuntimeModel
-					= DeploymentManager.instance.getCurrentRuntimeModel();
-
-					if(currentRuntimeModel != null)
-						stopModel();
-
 
 					//try{
 					synchronized (this){
