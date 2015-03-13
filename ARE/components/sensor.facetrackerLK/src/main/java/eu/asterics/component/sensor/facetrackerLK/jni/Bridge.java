@@ -131,7 +131,7 @@ public class Bridge
     private void newCoordinates_callback(final int point1_x,
         final int point1_y, final int point2_x, final int point2_y)
     {
-    	//System.out.print(".");
+    	System.out.print(".");
     	owner.newCoordinates_callback(point1_x, point1_y, point2_x, point2_y);
     }
 }

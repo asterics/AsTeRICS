@@ -30,6 +30,9 @@ package eu.asterics.component.sensor.facetrackerLK;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
@@ -176,20 +179,18 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     	//Hand over callback data to model executor thread to ensure that the corresponding coordinate
     	//data is processed together without mixing up the coordinates.
     	AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+					System.out.print("a");
+					opNoseX.sendData(ConversionUtils.intToBytes(point1_x)); 
+					opNoseY.sendData(ConversionUtils.intToBytes(point1_y)); 
+					opChinX.sendData(ConversionUtils.intToBytes(point2_x)); 
+					opChinY.sendData(ConversionUtils.intToBytes(point2_y)); 
+					System.out.print("e");
+				}
 
-    		@Override
-    		public void run() {
-    			// TODO Auto-generated method stub
-    			//System.out.print("a");
-    			opNoseX.sendData(ConversionUtils.intToBytes(point1_x)); 
-    			opNoseY.sendData(ConversionUtils.intToBytes(point1_y)); 
-    			opChinX.sendData(ConversionUtils.intToBytes(point2_x)); 
-    			opChinY.sendData(ConversionUtils.intToBytes(point2_y)); 
-    			//System.out.print("e");
-
-    		}
-
-    	});
+			});
         }             
     
     
