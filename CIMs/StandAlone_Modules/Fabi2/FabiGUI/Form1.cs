@@ -55,6 +55,10 @@ namespace MouseApp2
         String receivedString = "";
         Boolean readDone=false;
 
+        public delegate void SlotValuesDelegate(string newValues);
+        public SlotValuesDelegate slotValuesDelegate;
+
+
         public FabiGUI()
         {
             InitializeComponent();
@@ -106,10 +110,16 @@ namespace MouseApp2
         {
             var ports = SerialPort.GetPortNames();
             portComboBox.DataSource = ports;
+
+            this.slotValuesDelegate = new SlotValuesDelegate(gotSlotValues);
         }
 
+        public void gotSlotValues(String newValues)
+        {
+            addToLog(newValues);
+        }
 
-        private void Connect(string portName)
+        bool Connect(string portName)
         {
             if (!serialPort1.IsOpen)
             {
@@ -124,25 +134,34 @@ namespace MouseApp2
                 serialPort1.NewLine = "\n";
                 try {
                     serialPort1.Open();
+                    return (true);
                 }
                 catch (Exception ex)  {
                     addToLog("Could not open COM port ...");
                 }
             }
+            return (false);
         }
 
         public void WorkThreadFunction()
         {
+            Console.WriteLine("Started ReaderThread");
             try
             {
                 while (serialPort1.IsOpen && !readDone)
                 {
                     try  {
                         receivedString = serialPort1.ReadLine();
+                        Console.WriteLine("received:"+receivedString);
+                        if (receivedString.ToUpper().StartsWith("SLOT"))  // raw report found ?
+                        {
+                            BeginInvoke(this.slotValuesDelegate, new Object[] { receivedString });
+                        }
                     }
                     catch (Exception ex)  {
                     }
                 }
+                Console.WriteLine("Ended ReaderThread");
             }
             catch (Exception ex)
             {
@@ -164,18 +183,22 @@ namespace MouseApp2
                 {
                     activityLogTextbox.SelectedText = DateTime.Now.ToString() + ": ";
                     activityLogTextbox.AppendText(String.Format("You selected port '{0}' \n", portComboBox.SelectedItem));
-                    Connect(portComboBox.SelectedItem.ToString());
-                    addToLog("COM Port openend");
-                    portStatus.Text = "Connected";
-                    portStatus.ForeColor = Color.Green;
-                    saveSettings.Enabled=true;
-                    dcButton.Enabled = true;
-                    ClearButton.Enabled = true;
-                    ApplyButton.Enabled = true;
+                    if (Connect(portComboBox.SelectedItem.ToString()))
+                    {
+                        addToLog("COM Port openend");
+                        portStatus.Text = "Connected";
+                        portStatus.ForeColor = Color.Green;
+                        saveSettings.Enabled = true;
+                        SelectButton.Enabled = false;
+                        dcButton.Enabled = true;
+                        listButton.Enabled = true;
+                        ClearButton.Enabled = true;
+                        ApplyButton.Enabled = true;
 
-                    readDone = false;
-                    Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
-                    thread.Start();
+                        readDone = false;
+                        Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
+                        thread.Start();
+                    }
                 }
             }
             else addToLog("No port has been selected");
@@ -193,9 +216,11 @@ namespace MouseApp2
 
                 portStatus.ForeColor = Color.SlateGray;
                 saveSettings.Enabled = false;
+                SelectButton.Enabled = true;
                 dcButton.Enabled = false;
                 ClearButton.Enabled = false;
                 ApplyButton.Enabled = false;
+                listButton.Enabled = false;
 
                 serialPort1.Close();
                 receivedString = "";
@@ -242,15 +267,12 @@ namespace MouseApp2
 
         private void list_Click(object sender, EventArgs e)
         {
-            sendCmd("AT ER");  // end reporting raw values !
             addToLog("List Slot in EEPROM ...");
             if (serialPort1.IsOpen)
             {
-                sendCmd("AT LIST\n");
+                sendCmd("AT LIST");
             }
             else addToLog("Could not send to device - please connect COM port !");
-            sendCmd("AT SR");  // start reporting raw values !
-
         }
 
 

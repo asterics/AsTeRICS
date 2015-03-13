@@ -80,7 +80,7 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.activityLogTextbox = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.listButton = new System.Windows.Forms.Button();
             this.ButtonsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Button6NumericParameter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Button5NumericParameter)).BeginInit();
@@ -699,18 +699,18 @@
             this.label2.TabIndex = 76;
             this.label2.Text = "Activity Log:";
             // 
-            // button1
+            // listButton
             // 
-            this.button1.Enabled = false;
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(983, 490);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(127, 39);
-            this.button1.TabIndex = 77;
-            this.button1.Text = "List Slots";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.list_Click);
+            this.listButton.Enabled = false;
+            this.listButton.ForeColor = System.Drawing.Color.Black;
+            this.listButton.Location = new System.Drawing.Point(983, 490);
+            this.listButton.Margin = new System.Windows.Forms.Padding(4);
+            this.listButton.Name = "listButton";
+            this.listButton.Size = new System.Drawing.Size(127, 39);
+            this.listButton.TabIndex = 77;
+            this.listButton.Text = "List Slots";
+            this.listButton.UseVisualStyleBackColor = true;
+            this.listButton.Click += new System.EventHandler(this.list_Click);
             // 
             // FabiGUI
             // 
@@ -719,7 +719,7 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1159, 555);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.listButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.activityLogTextbox);
             this.Controls.Add(this.slotName);
@@ -738,7 +738,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Fabi Settings Manager";
             this.Load += new System.EventHandler(this.LipmouseGUI_Load);
-            this.Click += new System.EventHandler(this.list_Click);
             this.ButtonsTab.ResumeLayout(false);
             this.ButtonsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Button6NumericParameter)).EndInit();
@@ -806,7 +805,7 @@
         private System.Windows.Forms.ComboBox Button4FunctionBox;
         private System.Windows.Forms.RichTextBox activityLogTextbox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button listButton;
     }
 }
 
