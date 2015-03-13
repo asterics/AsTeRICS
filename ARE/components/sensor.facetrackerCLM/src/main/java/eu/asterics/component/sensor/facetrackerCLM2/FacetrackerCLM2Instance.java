@@ -31,7 +31,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import eu.asterics.component.sensor.facetrackerCLM2.jni.*;
-
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -42,6 +41,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 
 /**
  * 
@@ -293,7 +293,7 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
     	 }
     };
     
-    synchronized public void newValuesCallback(
+    public void newValuesCallback(
 			final double roll  
 		, 	final double pitch
 		, 	final double yaw
@@ -303,6 +303,7 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
 		,	final int eyeLeftState
 		,	final int eyeRightState)
     {
+    	// TODO Auto-generated method stub
     	opRoll.sendData(ConversionUtils.doubleToBytes(roll));
     	opPitch.sendData(ConversionUtils.doubleToBytes(pitch));
     	opYaw.sendData(ConversionUtils.doubleToBytes(yaw));
@@ -311,7 +312,7 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
     	opPosY.sendData(ConversionUtils.doubleToBytes(posy));
 
     	opScale.sendData(ConversionUtils.doubleToBytes(scale));
-    	
+
     	opEyeLeft.sendData(ConversionUtils.intToBytes(eyeLeftState));
     	opEyeRight.sendData(ConversionUtils.intToBytes(eyeRightState));
     }

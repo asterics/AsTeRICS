@@ -106,7 +106,7 @@ public class FacetrackerCLM2Bridge {
     /**
      * 
      */
-    synchronized private void newValuesCallback(
+    private void newValuesCallback(
     				final double roll  
     			, 	final double pitch
     			, 	final double yaw
@@ -116,20 +116,24 @@ public class FacetrackerCLM2Bridge {
     			,	final int eyeLeftState
     			, 	final int eyeRightState)
         {
-	    	AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
-				
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-		    		owner.newValuesCallback(roll, pitch, yaw, posx, posy, scale, eyeLeftState, eyeRightState);				
-				}
-			});
+    	System.out.print(".");
+
+    	AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
+
+    		@Override
+    		public void run() {
+    			// TODO Auto-generated method stub
+    			System.out.print("a");
+    			owner.newValuesCallback(roll, pitch, yaw, posx, posy, scale, eyeLeftState, eyeRightState);			
+    			System.out.print("e");
+    		}
+    	});
         }
     
     /**
      * 
      */
-    synchronized public void raiseGestureSurpriseEvt()
+    public void raiseGestureSurpriseEvt()
     {	
     	//report_callback(0, "JNI >> etpEyebrowsRaised.raiseEvent();");
     	owner.etpEyebrowsRaised.raiseEvent();
