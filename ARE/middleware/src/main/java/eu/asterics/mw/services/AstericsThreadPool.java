@@ -67,10 +67,11 @@ import eu.asterics.mw.are.AREProperties;
  */
 
 /**
- * This thread pool is to perform diverse tasks, such as sending and receiving CIM data.
- * There is one special pool with size 1 for the execution of lifecycle tasks like starting, stopping modules. 
- * This one should also be used to interface hw to prevent multi-threading problems with not threadsafe libraries.  
- * @author mad
+ * This thread pool is to perform diverse tasks, such as sending and receiving CIM data, reading or writing to a socket, triggering timed tasks,....
+ * The thread pool is a cached thread pool with no maximum number of threads ({@link http://docs.oracle.com/javase/7/docs/api/java/util/concurrent/Executors.html#newCachedThreadPool%28java.util.concurrent.ThreadFactory%29}). 
+ * If you want to perform a model lifecycle task like starting, stopping, pausing or resuming or want to execute ensure that a certain task is executed
+ * in the model executor thread, don't use this class but use @see AstericsModelExecutionThreadPool.
+ *  @author mad
  *
  */
 public class AstericsThreadPool {	
@@ -106,10 +107,22 @@ public class AstericsThreadPool {
 		return instance;
 	}
 	
+	/**
+	 * Executes (non-blocking) the given Runnable in the thread pool.
+	 * @param r
+	 */
 	public void execute(Runnable r) {
 		pool.execute(r);
 	}
 	
+	/**
+	 * Executes (blocking) the given Callable in the thread pool.
+	 * @param r
+	 * @return
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws TimeoutException
+	 */
 	public <V> V submit(Callable<V> r) throws InterruptedException, ExecutionException, TimeoutException {
 		Future<V> f=pool.submit(r);
 		try{
