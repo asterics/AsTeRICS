@@ -1180,6 +1180,9 @@ public class DeploymentManager
 		
 
 			Stack<LinkedHashMap<String, byte[]>> stack = bufferedPortsMap.get(targetComponentID);
+			//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+			//We have to synchronize using the target component, because the component can be considered a black box, that must
+			//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
 			synchronized (stack)
 			{
 				if (stack.isEmpty()){
@@ -1187,6 +1190,9 @@ public class DeploymentManager
 					
 					
 					LinkedHashMap<String, byte[]> row = new LinkedHashMap<String, byte[]>();
+					//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+					//We have to synchronize using the target component, because the component can be considered a black box, that must
+					//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
 					synchronized (row)
 					{
 						row.put(portID, data);
@@ -1222,6 +1228,10 @@ public class DeploymentManager
 			
 					
 					LinkedHashMap<String, byte[]> row = stack.peek();
+					//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+					//We have to synchronize using the target component, because the component can be considered a black box, that must
+					//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
+					
 					synchronized (row)
 					{
 						//if (row.size()<=100) 
@@ -1251,6 +1261,10 @@ public class DeploymentManager
 		else //start buffering
 		{
 			Stack<LinkedHashMap<String, byte[]>> stack = new  Stack<LinkedHashMap<String, byte[]>>();
+			//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+			//We have to synchronize using the target component, because the component can be considered a black box, that must
+			//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
+
 			synchronized (stack)
 			{
 				bufferedPortsMap.put(targetComponentID, stack);
