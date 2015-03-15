@@ -203,10 +203,10 @@ public class GUICell extends JPanel implements Runnable
 		if(SwingUtilities.isEventDispatchThread()) {
 			performRepaint.run();
 		} else {
-			try {
-				SwingUtilities.invokeAndWait(performRepaint);
-			} catch (InvocationTargetException | InterruptedException e) {
-			}
+//			try {
+				SwingUtilities.invokeLater(performRepaint);
+//			} catch (InvocationTargetException | InterruptedException e) {
+//			}
 		}
 	}
 	
