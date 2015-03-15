@@ -174,7 +174,7 @@ public class AstericsModelExecutionThreadPool {
 		try{
 			pool.execute(r);
 		}catch(RejectedExecutionException re) {
-			System.out.println("-");
+			System.out.print("-");
 		}
 	}
 
@@ -196,7 +196,7 @@ public class AstericsModelExecutionThreadPool {
 				throw(e);
 			}
 		}catch(RejectedExecutionException re) {
-			System.out.println("-");
+			System.out.print("-");
 			return null;
 		}
 	}
@@ -312,7 +312,7 @@ public class AstericsModelExecutionThreadPool {
 			}
 			if(pool!=modelExecutorLifecycle && !pool.isShutdown()) {
 				logger.fine("Shutting down old pool Service");
-				modelExecutorLifecycle.shutdownNow();				
+				pool.shutdownNow();				
 			}
 			modelExecutorLifecycle=fallbackPool;
 			pool=fallbackPool;
