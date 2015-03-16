@@ -124,7 +124,7 @@
 struct settingsType settings = {         // type definition see fabi.h
     "empty",
     1,                                   //  Mouse cursor movement active (not the alternative functions )
-    3, 10, 10, 30, 30, 500, 525, 1000    // wheel step, accx, accy, deadzone x, deadzone y, threshold sip, threshold puff, threshold time (short/longpress)
+    10, 10, 30, 30, 500, 525, 3, 1000    // wheel step, accx, accy, deadzone x, deadzone y, threshold sip, threshold puff, threshold time (short/longpress)
 }; 
 
 struct buttonType buttons [NUMBER_OF_BUTTONS];                     // array for all buttons - type definition see fabi.h 
@@ -429,7 +429,7 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
       {  
         Serial.print("got new mode for button "); Serial.print(actButton);Serial.print(":");
         Serial.print(cmd);Serial.print(",");Serial.print(par1);Serial.print(",");Serial.println(keystring);
-        BlinkLed();
+        //BlinkLed();
       }
       buttons[actButton-1].mode=cmd;
       buttons[actButton-1].value=par1;
@@ -638,10 +638,10 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
              settings.tp=par1;
           break;
       case CMD_SR:
-             DebugOutput=DEBUG_LIVEREPORTS;
+            DebugOutput=DEBUG_LIVEREPORTS;
           break;
       case CMD_ER:
-             DebugOutput=DEBUG_NOOUTPUT;
+            DebugOutput=DEBUG_NOOUTPUT;
           break;
       case CMD_TT:
              if (DebugOutput==DEBUG_FULLOUTPUT)  

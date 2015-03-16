@@ -90,7 +90,6 @@ void readFromEEPROM(char * slotname)
       
       address=tmpStartAddress;
       if (found)  {
-        if (DebugOutput==DEBUG_FULLOUTPUT) 
            Serial.print("loading:");
            
         p = (uint8_t*) &settings;

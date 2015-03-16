@@ -49,8 +49,8 @@ void parseCommand (char * cmdstr)
 
         // housekeeping commands
         if (!strcmp(actpos,"ID"))   cmd=CMD_PRINT_ID;
-        if (!strcmp(actpos,"SAVE"))  { actpos=strtok(NULL," "); strup (actpos); cmd=CMD_SAVE_SLOT; }
-        if (!strcmp(actpos,"LOAD"))  { actpos=strtok(NULL," "); strup (actpos); cmd=CMD_LOAD_SLOT; }
+        if (!strcmp(actpos,"SAVE"))  { actpos=strtok(NULL," "); cmd=CMD_SAVE_SLOT; }
+        if (!strcmp(actpos,"LOAD"))  { actpos=strtok(NULL," "); cmd=CMD_LOAD_SLOT; }
         if (!strcmp(actpos,"NEXT"))  cmd=CMD_NEXT_SLOT;
         if (!strcmp(actpos,"CLEAR")) cmd=CMD_DELETE_SLOTS;
         if (!strcmp(actpos,"LIST"))  cmd=CMD_LIST_SLOTS;

@@ -43,10 +43,10 @@
 #define CMD_KEY_WRITE               13
 #define CMD_KEY_PRESS               14
 #define CMD_CA                      15
-#define CMD_AF                      16
+#define CMD_SW                      16
 
 #define CMD_MM                      17
-#define CMD_SW                      18
+#define CMD_AF                      18
 #define CMD_AX                      19
 #define CMD_AY                      20
 #define CMD_DX                      21
