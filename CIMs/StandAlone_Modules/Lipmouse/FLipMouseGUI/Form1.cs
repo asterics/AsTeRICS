@@ -30,19 +30,21 @@ namespace MouseApp2
         const int CMD_PRESS_MIDDLE = 8;
         const int CMD_WHEEL_UP     = 9;
         const int CMD_WHEEL_DOWN   = 10;
-        const int CMD_CALIBRATE    = 11;
-        const int CMD_SWITCH_ALTER = 12;
-        const int CMD_MOVE_X       = 13;
-        const int CMD_MOVE_Y       = 14;
-        const int CMD_WRITE_TEXT   = 15;
-        const int CMD_PRESS_KEYS   = 16;
+        const int CMD_MOVE_X       = 11;
+        const int CMD_MOVE_Y       = 12;
+        const int CMD_WRITE_TEXT   = 13;
+        const int CMD_PRESS_KEYS   = 14;
+        const int CMD_CALIBRATE    = 15;
+        const int CMD_SWITCH_ALTER = 16;
+
+        const String TOKEN_SEPERATOR = "-,-";
+
 
         String[] commands = {  "No Action", "Switch to next configuration", 
                                "Click Left Mouse Button", "Click Right Mouse Button", "Click Middle Mouse Button" , "Double Click Left Mouse Button",
                                "Press Left Mouse Button", "Press Right Mouse Button", "Press Middle Mouse Button", 
-                               "Wheel Up", "Wheel down", "Calibrate Zeropoint", "Switch Cursor/Alternative",
-                               "Move Mouse X", "Move Mouse Y",
-                               "Write Text", "Press Keys"
+                               "Wheel Up", "Wheel down",  "Move Mouse X", "Move Mouse Y",
+                               "Write Text", "Press Keys", "Calibrate Zeropoint", "Switch Cursor/Alternative"
                              };
         String[] keyOptions = {    "clear Keycodes!", "KEY_A","KEY_B","KEY_C","KEY_D","KEY_E","KEY_F","KEY_G","KEY_H","KEY_I","KEY_J","KEY_K","KEY_L",
                                    "KEY_M","KEY_N","KEY_O","KEY_P","KEY_Q","KEY_R","KEY_S","KEY_T","KEY_U","KEY_V","KEY_W","KEY_X",
@@ -63,6 +65,9 @@ namespace MouseApp2
 
         public delegate void SlotValuesDelegate(string newValues);
         public SlotValuesDelegate slotValuesDelegate;
+
+        public delegate void LoadValuesDelegate(string newValues);
+        public LoadValuesDelegate loadValuesDelegate;
 
         public FLipMouseGUI()
         {
@@ -131,9 +136,78 @@ namespace MouseApp2
         {
             this.slotValuesDelegate = new SlotValuesDelegate(gotSlotValues);
             this.rawValuesDelegate = new RawValuesDelegate(gotValues);
+            this.loadValuesDelegate = new LoadValuesDelegate(gotLoadValues);
+
             BeginInvoke(this.rawValuesDelegate, new Object[] { "512,512,512,512,512" });
         }
 
+
+        public void gotLoadValues(String newValues)
+        {
+            String actToken;
+            int i = 0;
+            bool done = false;
+            while (!done)
+            {
+                actToken = newValues.Substring(0, newValues.IndexOf("-,-"));
+                // Console.WriteLine("Found Token " + i + " " + actToken);
+                switch (i)
+                {
+                    case 0: break;  // slotname
+                    case 1: int d = Int32.Parse(actToken);
+                        if (d == 1) { selectStick.Checked = true; selectAlternative.Checked = false; useAlternativeFunctions = false; }
+                        else { selectStick.Checked = false; selectAlternative.Checked = true; useAlternativeFunctions = true; }
+                        break;  // cursor / alternative function
+                    case 2: speedBar.Value = Int32.Parse(actToken); break; // accelleration x
+                    case 3: break;  // accelleration y
+                    case 4: deadzoneBar.Value = Int32.Parse(actToken); break;  // deadzone x
+                    case 5: break;  // deadzone y
+                    case 6: sipThresholdBar.Value = Int32.Parse(actToken); break;  // threshold sip
+                    case 7: puffThresholdBar.Value = Int32.Parse(actToken); break;  // threshold puff
+                    case 8: break;  // mouse wheel stepsize, currently not used
+                    case 9: timeThresholdBar.Value = Int32.Parse(actToken); break;  // time threshold for longpress, currently not used
+                    
+                    case 10: Button1FunctionBox.SelectedIndex = Int32.Parse(actToken); break;
+                    case 11: Button1NumericParameter.Value = Int32.Parse(actToken); break;
+                    case 12: Button1ParameterText.Text = actToken; break;
+                    case 13: Button2FunctionBox.SelectedIndex = Int32.Parse(actToken); break;
+                    case 14: Button2NumericParameter.Value = Int32.Parse(actToken); break;
+                    case 15: Button2ParameterText.Text = actToken; break;
+                    case 16: Button3FunctionBox.SelectedIndex = Int32.Parse(actToken); break;
+                    case 17: Button3NumericParameter.Value = Int32.Parse(actToken); break;
+                    case 18: Button3ParameterText.Text = actToken; break;
+                    case 19: UpFunctionMenu.SelectedIndex = Int32.Parse(actToken); break;
+                    case 20: UpNumericParameter.Value = Int32.Parse(actToken); break;
+                    case 21: UpParameterText.Text = actToken; break;
+                    case 22: DownFunctionMenu.SelectedIndex = Int32.Parse(actToken); break;
+                    case 23: DownNumericParameter.Value = Int32.Parse(actToken); break;
+                    case 24: DownParameterText.Text = actToken; break;
+                    case 25: LeftFunctionMenu.SelectedIndex = Int32.Parse(actToken); break;
+                    case 26: LeftNumericParameter.Value = Int32.Parse(actToken); break;
+                    case 27: LeftParameterText.Text = actToken; break;
+                    case 28: RightFunctionMenu.SelectedIndex = Int32.Parse(actToken); break;
+                    case 29: RightNumericParameter.Value = Int32.Parse(actToken); break;
+                    case 30: RightParameterText.Text = actToken; break;
+                    case 31: SipFunctionMenu.SelectedIndex = Int32.Parse(actToken); break;
+                    case 32: SipNumericParameter.Value = Int32.Parse(actToken); break;
+                    case 33: SipParameterText.Text = actToken; break;
+                    case 34: LongSipFunctionMenu.SelectedIndex = Int32.Parse(actToken); break;
+                    case 35: LongSipNumericParameter.Value = Int32.Parse(actToken); break;
+                    case 36: LongSipParameterText.Text = actToken; break;
+                    case 37: PuffFunctionMenu.SelectedIndex = Int32.Parse(actToken); break;
+                    case 38: PuffNumericParameter.Value = Int32.Parse(actToken); break;
+                    case 39: PuffParameterText.Text = actToken; break;
+                    case 40: LongPuffFunctionMenu.SelectedIndex = Int32.Parse(actToken); break;
+                    case 41: LongPuffNumericParameter.Value = Int32.Parse(actToken); break;
+                    case 42: LongPuffParameterText.Text = actToken; break;
+
+                    default: done = true; break;
+                }
+                newValues = newValues.Substring(actToken.Length + 3);
+                if (newValues.ToUpper().StartsWith("END")) done = true;
+                else i++;
+            }
+        }
 
         // update paint areas if tabs are changed
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -210,13 +284,15 @@ namespace MouseApp2
                     calButton.Enabled = true;
                     dcButton.Enabled = true;
                     ClearButton.Enabled = true;
-                    ListButton.Enabled = true;
+                    LoadButton.Enabled = true;
                     ApplyButton.Enabled = true;
 
                     readDone = false;
                     Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
                     thread.Start();
 
+                    slotNames.Items.Clear();
+                    sendCmd("AT LIST");
                     sendCmd("AT SR");   // start reporting raw values !
                 }
             }
@@ -240,10 +316,15 @@ namespace MouseApp2
                         {
                             BeginInvoke(this.slotValuesDelegate, new Object[] { receivedString });
                         }
+                        else if (receivedString.ToUpper().StartsWith("LOADING:"))  // slot name found ?
+                        {
+                            BeginInvoke(this.loadValuesDelegate, new Object[] { receivedString.Substring(8) });
+                        }
+
                     }
                     catch (Exception ex)
                     {
-                        addToLog("Could not read from COM port ...");
+                        // addToLog("Could not read from COM port ...");
                     }
                 }
             }
@@ -253,7 +334,7 @@ namespace MouseApp2
 
         public void gotSlotValues(String newValues)
         {
-            addToLog(newValues);
+            slotNames.Items.Add(newValues);
         }
         
         private void dcButton_Click(object sender, EventArgs e) //disconnect button
@@ -271,12 +352,14 @@ namespace MouseApp2
                 saveSettings.Enabled = false;
                 calButton.Enabled = false;
                 dcButton.Enabled = false;
-                ListButton.Enabled = false;
+                LoadButton.Enabled = false;
                 ClearButton.Enabled = false;
                 ApplyButton.Enabled = false;
 
                 serialPort1.Close();
                 receivedString = "";
+                slotNames.Items.Clear();
+
             }
         }
 
@@ -370,12 +453,14 @@ namespace MouseApp2
 
         private void saveSettings_Click(object sender, EventArgs e) //button to save options to EEPROM
         {
-            ApplyButton_Click(this, null);
-            addToLog("Save Settings ...");
+            addToLog("Saving Slot: " + slotNames.Text);
             if (serialPort1.IsOpen)
             {
-                sendCmd("AT SAVE " + slotName.Text);
+                ApplyButton_Click(this, null);
+                sendCmd("AT SAVE " + slotNames.Text);
                 addToLog("The settings were saved");
+                slotNames.Items.Clear();
+                sendCmd("AT LIST");
             }
             else addToLog("Could not send to device - please connect COM port !");
         }
@@ -387,20 +472,18 @@ namespace MouseApp2
             {
                 sendCmd("AT CLEAR\n");
                 addToLog("The EEPROM settings have been cleared.");
+                slotNames.Items.Clear();
             }
             else addToLog("Could not send to device - please connect COM port !");
         }
 
-        private void list_Click(object sender, EventArgs e)
+        private void load_Click(object sender, EventArgs e)
         {
-            sendCmd("AT ER");  // end reporting raw values !
-            addToLog("List Slot in EEPROM ...");
+            addToLog("Load Slot: " + slotNames.Text);
             if (serialPort1.IsOpen)
             {
-                sendCmd("AT LIST\n");
+                sendCmd("AT LOAD " + slotNames.Text);
             }
-            else addToLog("Could not send to device - please connect COM port !");
-            sendCmd("AT SR");  // start reporting raw values !
 
         }
 

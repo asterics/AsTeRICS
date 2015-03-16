@@ -35,6 +35,8 @@ namespace MouseApp2
         const int CMD_WRITE_TEXT = 13;
         const int CMD_PRESS_KEYS = 14;
 
+        const String TOKEN_SEPERATOR = "-,-";
+
         String[] commands = {  "No Action", "Switch to next configuration", 
                                "Click Left Mouse Button", "Click Right Mouse Button", "Click Middle Mouse Button" , "Double Click Left Mouse Button",
                                "Press Left Mouse Button", "Press Right Mouse Button", "Press Middle Mouse Button", 
@@ -57,6 +59,8 @@ namespace MouseApp2
 
         public delegate void SlotValuesDelegate(string newValues);
         public SlotValuesDelegate slotValuesDelegate;
+        public delegate void LoadValuesDelegate(string newValues);
+        public LoadValuesDelegate loadValuesDelegate;
 
 
         public FabiGUI()
@@ -112,11 +116,53 @@ namespace MouseApp2
             portComboBox.DataSource = ports;
 
             this.slotValuesDelegate = new SlotValuesDelegate(gotSlotValues);
+            this.loadValuesDelegate = new LoadValuesDelegate(gotLoadValues);
         }
 
         public void gotSlotValues(String newValues)
         {
-            addToLog(newValues);
+            slotNames.Items.Add(newValues);
+        }
+
+
+        public void gotLoadValues(String newValues)
+        {
+            String actToken;
+            int i=0;
+            bool done = false;
+            while (!done)
+            {
+                actToken = newValues.Substring(0, newValues.IndexOf("-,-"));
+                // Console.WriteLine("Found Token " + i + " " + actToken);
+                switch (i)
+                {
+                    case 0: break;  // slotname
+                    case 1: break;  // mouse wheel stepsize, currently not used
+                    case 2: break;  // time threshold for longpress, currently not used
+                    case 3: Button1FunctionBox.SelectedIndex = Int32.Parse(actToken); break;
+                    case 4: Button1NumericParameter.Value = Int32.Parse(actToken); break;
+                    case 5: Button1ParameterText.Text = actToken; break;
+                    case 6: Button2FunctionBox.SelectedIndex = Int32.Parse(actToken); break;
+                    case 7: Button2NumericParameter.Value = Int32.Parse(actToken); break;
+                    case 8: Button2ParameterText.Text = actToken; break;
+                    case 9: Button3FunctionBox.SelectedIndex = Int32.Parse(actToken); break;
+                    case 10: Button3NumericParameter.Value = Int32.Parse(actToken); break;
+                    case 11: Button3ParameterText.Text = actToken; break;
+                    case 12: Button4FunctionBox.SelectedIndex = Int32.Parse(actToken); break;
+                    case 13: Button4NumericParameter.Value = Int32.Parse(actToken); break;
+                    case 14: Button4ParameterText.Text = actToken; break;
+                    case 15: Button5FunctionBox.SelectedIndex = Int32.Parse(actToken); break;
+                    case 16: Button5NumericParameter.Value = Int32.Parse(actToken); break;
+                    case 17: Button5ParameterText.Text = actToken; break;
+                    case 18: Button6FunctionBox.SelectedIndex = Int32.Parse(actToken); break;
+                    case 19: Button6NumericParameter.Value = Int32.Parse(actToken); break;
+                    case 20: Button6ParameterText.Text = actToken; break;
+                    default: done = true; break;
+                }
+                newValues = newValues.Substring(actToken.Length + 3);
+                if (newValues.ToUpper().StartsWith("END")) done = true;
+                else i++;
+            }            
         }
 
         bool Connect(string portName)
@@ -153,12 +199,17 @@ namespace MouseApp2
                     try  {
                         receivedString = serialPort1.ReadLine();
                         Console.WriteLine("received:"+receivedString);
-                        if (receivedString.ToUpper().StartsWith("SLOT"))  // raw report found ?
+                        if (receivedString.ToUpper().StartsWith("SLOT"))  // slot name found ?
                         {
-                            BeginInvoke(this.slotValuesDelegate, new Object[] { receivedString });
+                            BeginInvoke(this.slotValuesDelegate, new Object[] { receivedString.Substring(6) });
+                        }
+                        if (receivedString.ToUpper().StartsWith("LOADING:"))  // slot name found ?
+                        {
+                            BeginInvoke(this.loadValuesDelegate, new Object[] { receivedString.Substring(8) });
                         }
                     }
                     catch (Exception ex)  {
+                        //  Console.WriteLine("timed out ...");
                     }
                 }
                 Console.WriteLine("Ended ReaderThread");
@@ -191,13 +242,16 @@ namespace MouseApp2
                         saveSettings.Enabled = true;
                         SelectButton.Enabled = false;
                         dcButton.Enabled = true;
-                        listButton.Enabled = true;
+                        loadButton.Enabled = true;
                         ClearButton.Enabled = true;
                         ApplyButton.Enabled = true;
 
                         readDone = false;
                         Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
                         thread.Start();
+
+                        slotNames.Items.Clear();
+                        sendCmd("AT LIST");
                     }
                 }
             }
@@ -220,10 +274,12 @@ namespace MouseApp2
                 dcButton.Enabled = false;
                 ClearButton.Enabled = false;
                 ApplyButton.Enabled = false;
-                listButton.Enabled = false;
+                loadButton.Enabled = false;
 
                 serialPort1.Close();
                 receivedString = "";
+                slotNames.Items.Clear();
+
             }
         }
 
@@ -244,12 +300,14 @@ namespace MouseApp2
 
         private void saveSettings_Click(object sender, EventArgs e) //button to save options to EEPROM
         {
-            ApplyButton_Click(this, null);
-            addToLog("Save Settings ...");
+            addToLog("Saving Slot: "+slotNames.Text);
             if (serialPort1.IsOpen)
             {
-                sendCmd("AT SAVE " + slotName.Text);
+                ApplyButton_Click(this, null);
+                sendCmd("AT SAVE " + slotNames.Text);
                 addToLog("The settings were saved");
+                slotNames.Items.Clear();
+                sendCmd("AT LIST");
             }
             else addToLog("Could not send to device - please connect COM port !");
         }
@@ -261,16 +319,17 @@ namespace MouseApp2
             {
                 sendCmd("AT CLEAR\n");
                 addToLog("The EEPROM settings have been cleared.");
+                slotNames.Items.Clear();
             }
             else addToLog("Could not send to device - please connect COM port !");
         }
 
-        private void list_Click(object sender, EventArgs e)
+        private void load_Click(object sender, EventArgs e)
         {
-            addToLog("List Slot in EEPROM ...");
+            addToLog("Load Slot: "+slotNames.Text);
             if (serialPort1.IsOpen)
             {
-                sendCmd("AT LIST");
+                sendCmd("AT LOAD "+slotNames.Text);
             }
             else addToLog("Could not send to device - please connect COM port !");
         }

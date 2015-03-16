@@ -13,7 +13,7 @@
    (sent via serial interface, use spaces between parameters and Enter (<cr>, ASCII-code 0x0d) to finish a command)
    
           AT                returns "OK"
-          AT ID             identification string will be returned (e.g. "FLipmouse Version 1.0")
+          AT ID             identification string will be returned (e.g. "FABI Version 2.0")
           AT BM <num>       button mode setting for a button (e.g. AT BM 2 -> next command defines the new function for button 2)
 
           AT CL             click left mouse button  
@@ -92,11 +92,12 @@
 #endif
 
 struct settingsType settings = {      // type definition see fabi.h
-    3,  1000                          // wheel step,  threshold time (short/longpress)
+    "empty", 3,  1000                          // wheel step,  threshold time (short/longpress)
 }; 
 
 
-struct buttonType buttons [NUMBER_OF_BUTTONS];   // array for all buttons - type definition see fabi.h 
+struct buttonType buttons [NUMBER_OF_BUTTONS];                     // array for all buttons - type definition see fabi.h 
+struct buttonDebouncerType buttonDebouncers [NUMBER_OF_BUTTONS];   // array for all buttonsDebouncers - type definition see fabi.h 
 
 uint8_t DebugOutput = DEFAULT_DEBUGLEVEL;        // default: very chatty at the serial interface ...
 int clickTime=DEFAULT_CLICK_TIME;
@@ -156,12 +157,12 @@ void setup() {
 
    for (int i=0; i<NUMBER_OF_BUTTONS; i++)   // initialize button array
    {
-      buttons[i].bounceState=0;
-      buttons[i].stableState=0;
-      buttons[i].bounceCount=0;
-      buttons[i].longPressed=0;
+      buttonDebouncers[i].bounceState=0;
+      buttonDebouncers[i].stableState=0;
+      buttonDebouncers[i].bounceCount=0;
+      buttonDebouncers[i].longPressed=0;
       buttons[i].mode=CMD_MOUSE_PRESS_LEFT;              // default command for every button is left mouse click
-      buttons[i].value='L';
+      buttons[i].value=0;
       buttons[i].keystring[0]=0;
    }
    
@@ -255,21 +256,21 @@ void handleRelease (int buttonIndex)    // a button was released
 
 void handleButton(int i, int l, uint8_t state)    // button debouncing and longpress detection  
 {                                                 //   (if button i is pressed long and index l>=0, virtual button l is activated !)
-   if ( buttons[i].bounceState == state) {
-     if (buttons[i].bounceCount < DEFAULT_DEBOUNCING_TIME) {
-       buttons[i].bounceCount++;
-       if (buttons[i].bounceCount == DEFAULT_DEBOUNCING_TIME) {
-          if (state != buttons[i].stableState)
+   if ( buttonDebouncers[i].bounceState == state) {
+     if (buttonDebouncers[i].bounceCount < DEFAULT_DEBOUNCING_TIME) {
+       buttonDebouncers[i].bounceCount++;
+       if (buttonDebouncers[i].bounceCount == DEFAULT_DEBOUNCING_TIME) {
+          if (state != buttonDebouncers[i].stableState)
           { 
-            buttons[i].stableState=state;
+            buttonDebouncers[i].stableState=state;
             if (state == 1) { 
               handlePress(i); 
-              buttons[i].timestamp=millis();
+              buttonDebouncers[i].timestamp=millis();
             }
             else {
-              if (buttons[i].longPressed)
+              if (buttonDebouncers[i].longPressed)
               {
-                 buttons[i].longPressed=0;
+                 buttonDebouncers[i].longPressed=0;
                  handleRelease(l);
               }
               else handleRelease(i);  
@@ -278,10 +279,10 @@ void handleButton(int i, int l, uint8_t state)    // button debouncing and longp
        }
      }
      else { 
-       if ((millis()-buttons[i].timestamp > settings.tt ) && (l>=0))
+       if ((millis()-buttonDebouncers[i].timestamp > settings.tt ) && (l>=0))
        {
-            if ((state == 1) && (buttons[i].longPressed==0) && (buttons[l].mode!=CMD_IDLE)) {
-           buttons[i].longPressed=1; 
+            if ((state == 1) && (buttonDebouncers[i].longPressed==0) && (buttons[l].mode!=CMD_IDLE)) {
+           buttonDebouncers[i].longPressed=1; 
            handleRelease(i);
            handlePress(l);
           }
@@ -289,8 +290,8 @@ void handleButton(int i, int l, uint8_t state)    // button debouncing and longp
      }
    }
    else {
-     buttons[i].bounceState = state;
-     buttons[i].bounceCount=0;     
+     buttonDebouncers[i].bounceState = state;
+     buttonDebouncers[i].bounceCount=0;     
    }
 }   
 

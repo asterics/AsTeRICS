@@ -38,7 +38,7 @@ void strup (char * str)   // convert to upper case letters
 
 void parseCommand (char * cmdstr)
 {
-    uint8_t cmd=0;
+    int8_t cmd=-1;
     int16_t num=0;
     
      // Serial.print("parseCommand:"); Serial.println(cmdstr);
@@ -95,7 +95,7 @@ void parseCommand (char * cmdstr)
         if (!strcmp(actpos,"TP"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_TP;}
         if (!strcmp(actpos,"TT"))  { actpos=strtok(NULL," "); if (get_uint(actpos, &num)) cmd=CMD_TT;}
     }
-    if (cmd)
+    if (cmd>-1)
     {
         // Serial.print("cmd parser found:");Serial.print(cmd); Serial.print(", "); Serial.print(num); 
         // if (actpos) {Serial.print(", "); Serial.println(actpos);} else Serial.println();   
