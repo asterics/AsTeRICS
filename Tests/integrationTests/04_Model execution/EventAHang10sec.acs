@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_singleThreadedStabilization\AsTeRICS\Tests\integrationTests\04_Model execution\InAHang10sec.acs_2015_3_16_23_4" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_singleThreadedStabilization\AsTeRICS\Tests\integrationTests\04_Model execution\EventAHang10sec.acs_2015_3_16_23_16" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />
@@ -194,17 +194,6 @@
     </component>
   </components>
   <channels>
-    <channel id="binding.0">
-      <description />
-      <source>
-        <component id="ConstantDispatcher.1" />
-        <port id="output" />
-      </source>
-      <target>
-        <component id="EmulateFaultyPlugin.2" />
-        <port id="inA" />
-      </target>
-    </channel>
     <channel id="binding.1">
       <source>
         <component id="ConstantDispatcher.1" />
@@ -217,7 +206,23 @@
     </channel>
   </channels>
   <eventChannels>
+    <eventChannel id="button1_eventA">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EmulateFaultyPlugin.2" />
+          <eventPort id="eventA" />
+        </target>
+      </targets>
+    </eventChannel>
     <eventChannel id="button1_dispatchSlot1">
+      <description />
       <sources>
         <source>
           <component id="ButtonGrid.1" />
