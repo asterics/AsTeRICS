@@ -61,6 +61,8 @@
 				type="boolean"
 				value="false"
 				description="Produce an exception during stop method"/>
+				
+				<!-- 
 			<property name="getInputPortException"
 				type="boolean"
 				value="false"
@@ -97,58 +99,61 @@
 				type="boolean"
 				value="false"
 				description="Return a null value"/>
+				-->
 			<property name="startDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 			<property name="pauseDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 			<property name="resumeDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 			<property name="stopDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+				<!-- 
 			<property name="getRuntimePropertyDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 			<property name="setRuntimePropertyDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+				-->
 			<property name="inADuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 			<property name="inBDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 			<property name="inCDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 			<property name="inDDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 			<property name="eventADuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 			<property name="eventBDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 			<property name="eventCDuration"
 				type="integer"
 				value="0"
-				description="Duration of hanging call in ms (0=hangs forever)"/>
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
 
         </properties>
 		<gui>

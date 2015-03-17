@@ -115,6 +115,12 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
     */
     public IRuntimeInputPort getInputPort(String portID)
     {
+    	/*
+		handleCall(0,propGetInputPortException,"Exception in getInputPort");
+		if(propGetInputPortNullValue) {
+			return null;
+		}*/
+
 		if ("inA".equalsIgnoreCase(portID))
 		{
 			return ipInA;
@@ -142,6 +148,12 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
      */
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
+    	
+    	/*
+		handleCall(0,propGetOutputPortException,"Exception in getOutputPort");
+		if(propGetOutputPortNullValue) {
+			return null;
+		}*/
 
 		return null;
 	}
@@ -153,6 +165,12 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
      */
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
     {
+    	/*
+		handleCall(0,propGetEventListenerPortException,"Exception in getEventListenerPort");
+		if(propGetEventListenerPortNullValue) {
+			return null;
+		}*/
+
 		if ("eventA".equalsIgnoreCase(eventPortID))
 		{
 			return elpEventA;
@@ -187,6 +205,14 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
      */
     public Object getRuntimePropertyValue(String propertyName)
     {
+    	/*
+    	System.out.println("Getting propertyName: "+propertyName);
+
+		handleCall(propGetRuntimePropertyDuration,propGetRuntimePropertyValueException,"Exception in getRuntimePropertyValue");
+		if(propGetRuntimePropertyNullValue) {
+			return null;
+		}*/
+
 		if ("startException".equalsIgnoreCase(propertyName))
 		{
 			return propStartException;
@@ -291,8 +317,7 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
 		{
 			return propEventCDuration;
 		}
-
-        return null;
+		return null;
     }
 
     /**
@@ -302,6 +327,13 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
+    	/*
+    	System.out.println("Setting propertyName: "+propertyName+"="+newValue);
+    	
+		if(!"setRuntimePropertyValueException".equalsIgnoreCase(propertyName) && !"setRuntimePropertyDuration".equalsIgnoreCase(propertyName)) {
+			handleCall(propSetRuntimePropertyDuration,propSetRuntimePropertyValueException,"Exception in setRuntimePropertyValue");
+		}*/
+    	
 		if ("startException".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propStartException;
@@ -549,7 +581,7 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
 			propEventCDuration = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
-
+		
         return null;
     }
 
@@ -681,6 +713,7 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
       }
       
       private Object handleCall(final int duration, boolean throwException, String exceptionMessage, boolean returnNullValue) {
+    	  
     	  AstericsErrorHandling.instance.getLogger().fine("handleCall: duration: "+duration+", throw Exception: "+throwException+", exceptionMessage: "+exceptionMessage+", returnNullValue: "+returnNullValue);
     	  if(throwException) {
 			  AstericsErrorHandling.instance.getLogger().warning("Before entering throwing exception with message: "+exceptionMessage);

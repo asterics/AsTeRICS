@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_singleThreadedStabilization\AsTeRICS\Tests\integrationTests\04_Model execution\PluginStartTakes10Sec.acs_2015_3_16_20_24" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_singleThreadedStabilization\AsTeRICS\Tests\integrationTests\04_Model execution\PluginStartTakes10Sec.acs_2015_3_17_22_24" version="20130320">
   <components>
     <component id="EmulateFaultyPlugin.1" type_id="asterics.EmulateFaultyPlugin">
       <description>Emulates a faulty plugin - supports throwing exceptions during method calls or hanging (unresponsive) method calls </description>
@@ -22,21 +22,10 @@
         <property name="pauseException" value="False" />
         <property name="resumeException" value="false" />
         <property name="stopException" value="False" />
-        <property name="getInputPortException" value="false" />
-        <property name="getOutputPortException" value="false" />
-        <property name="getRuntimePropertyValueException" value="false" />
-        <property name="setRuntimePropertyValueException" value="false" />
-        <property name="getEventListenerPortException" value="false" />
-        <property name="getInputPortNullValue" value="false" />
-        <property name="getOutputPortNullValue" value="false" />
-        <property name="getRuntimePropertyNullValue" value="false" />
-        <property name="getEventListenerPortNullValue" value="false" />
         <property name="startDuration" value="10000" />
         <property name="pauseDuration" value="0" />
         <property name="resumeDuration" value="0" />
         <property name="stopDuration" value="0" />
-        <property name="getRuntimePropertyDuration" value="0" />
-        <property name="setRuntimePropertyDuration" value="0" />
         <property name="inADuration" value="0" />
         <property name="inBDuration" value="0" />
         <property name="inCDuration" value="0" />
