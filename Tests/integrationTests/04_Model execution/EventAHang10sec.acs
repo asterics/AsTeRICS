@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_singleThreadedStabilization\AsTeRICS\Tests\integrationTests\04_Model execution\EventAHang10sec.acs_2015_3_16_23_16" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_singleThreadedStabilization\AsTeRICS\Tests\integrationTests\04_Model execution\EventAHang10sec.acs_2015_3_17_14_45" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />
@@ -42,11 +42,11 @@
         <property name="stopDuration" value="0" />
         <property name="getRuntimePropertyDuration" value="0" />
         <property name="setRuntimePropertyDuration" value="0" />
-        <property name="inADuration" value="10000" />
+        <property name="inADuration" value="0" />
         <property name="inBDuration" value="0" />
         <property name="inCDuration" value="0" />
         <property name="inDDuration" value="0" />
-        <property name="eventADuration" value="0" />
+        <property name="eventADuration" value="10000" />
         <property name="eventBDuration" value="0" />
         <property name="eventCDuration" value="0" />
       </properties>
