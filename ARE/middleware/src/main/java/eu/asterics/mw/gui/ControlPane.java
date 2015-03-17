@@ -218,7 +218,7 @@ public class ControlPane extends JPanel
 			public void keyPressed(KeyEvent arg0) {
 				// TODO Auto-generated method stub
 				if(KeyEvent.VK_F7==arg0.getKeyCode()) {
-					mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 					
 					try{
 						try {
@@ -226,7 +226,7 @@ public class ControlPane extends JPanel
 						} catch (AREAsapiException e) {
 						}
 					}finally{															
-						mainFrame.setCursor(Cursor.getDefaultCursor());
+						//mainFrame.setCursor(Cursor.getDefaultCursor());
 						mainFrame.validate();
 						System.out.println ("Stop model OK!");										
 					}
@@ -331,7 +331,7 @@ public class ControlPane extends JPanel
 			public void mouseClicked(MouseEvent me) {
 				final String selectedModelFile=astericsGUI.fileChooser(as);
 				
-				mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				
 				try{
 					try {
@@ -354,7 +354,7 @@ public class ControlPane extends JPanel
 
 				}finally{
 					//Restore mouse cursor in any case
-					mainFrame.setCursor(Cursor.getDefaultCursor());
+					//mainFrame.setCursor(Cursor.getDefaultCursor());
 					mainFrame.validate();
 					System.out.println ("Run/resume model OK!");										
 				}
@@ -376,12 +376,12 @@ public class ControlPane extends JPanel
 
 		startLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				try {
 					as.runModel();
 				} catch (AREAsapiException e) {
 				} finally {
-					mainFrame.setCursor(Cursor.getDefaultCursor());
+					//mainFrame.setCursor(Cursor.getDefaultCursor());
 					mainFrame.validate();
 					System.out.println ("Run/resume model OK!");
 				}
@@ -401,7 +401,7 @@ public class ControlPane extends JPanel
 
 		stopLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				
 				try{
 					try {
@@ -409,7 +409,7 @@ public class ControlPane extends JPanel
 					} catch (AREAsapiException e) {
 					}
 				}finally{															
-					mainFrame.setCursor(Cursor.getDefaultCursor());
+					//mainFrame.setCursor(Cursor.getDefaultCursor());
 					mainFrame.validate();
 					System.out.println ("Stop model OK!");										
 				}						
@@ -428,7 +428,7 @@ public class ControlPane extends JPanel
 
 		pauseLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {				
-				mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				
 				try{
 					try {
@@ -436,7 +436,7 @@ public class ControlPane extends JPanel
 					} catch (AREAsapiException e) {
 					}
 				}finally{															
-					mainFrame.setCursor(Cursor.getDefaultCursor());
+					//mainFrame.setCursor(Cursor.getDefaultCursor());
 					mainFrame.validate();
 					System.out.println ("Pause model OK!");										
 				}
