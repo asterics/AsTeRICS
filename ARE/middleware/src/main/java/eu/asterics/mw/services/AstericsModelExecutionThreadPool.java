@@ -76,7 +76,7 @@ import eu.asterics.mw.are.AREProperties;
  *
  */
 public class AstericsModelExecutionThreadPool {
-	private static final int DEFAULT_EXECUTOR_QUEUE_SIZE = 100;
+	private static final int DEFAULT_EXECUTOR_QUEUE_SIZE = 500;
 	//The default submit timeout for a task when called blocking with execAndWaitOnModelExecutorLifecycleThread(...).
 	public static int TASK_SUBMIT_TIMEOUT=20000;
 	/* Set default value to 1, because only in the single threaded approach there is deterministic execution of data propagation and event notification */
