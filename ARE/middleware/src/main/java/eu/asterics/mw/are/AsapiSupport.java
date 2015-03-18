@@ -411,7 +411,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName() + "."
 					+ "deployModel: Failed to deploy model -> \n"
 					+ e3.getMessage());
-			throw (new AREAsapiException(e3.getMessage()));
+			throw (new AREAsapiException("Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program."));
 		} catch (ParseException e4) {
 			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
@@ -420,7 +420,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName() + "."
 					+ "deployModel: Failed to deploy model -> \n"
 					+ e4.getMessage());
-			throw (new AREAsapiException(e4.getMessage()));
+			throw (new AREAsapiException("Parsing of the model failed: "+e4.getMessage()));
 		} catch (Throwable t) {
 			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
@@ -429,7 +429,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName() + "."
 					+ "deployModel: Failed to deploy model -> \n"
 					+ t.getMessage());
-			throw (new AREAsapiException(t.getMessage()));
+			throw (new AREAsapiException("Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program."));
 		}
 
 	}
@@ -1759,7 +1759,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName()+"." +
 					"deployFile: Failed to deploy file -> \n"
 					+e1.getMessage());
-			throw (new AREAsapiException(e1.getMessage()));
+			throw e1;
 		} catch (SAXException e3) {
 			logger.warning(this.getClass().getName()+"." +
 					"deployFile: Failed to deploy file -> \n"
