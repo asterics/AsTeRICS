@@ -115,20 +115,10 @@ public class FacetrackerCLM2Bridge {
     			,	final double scale
     			,	final int eyeLeftState
     			, 	final int eyeRightState)
-        {
-    	System.out.print(".");
-
-    	AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
-
-    		@Override
-    		public void run() {
-    			// TODO Auto-generated method stub
-    			System.out.print("a");
-    			owner.newValuesCallback(roll, pitch, yaw, posx, posy, scale, eyeLeftState, eyeRightState);			
-    			System.out.print("e");
-    		}
-    	});
-        }
+    {
+    	//System.out.print(".");
+    	owner.newValuesCallback(roll, pitch, yaw, posx, posy, scale, eyeLeftState, eyeRightState);			
+    }
     
     /**
      * 
