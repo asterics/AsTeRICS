@@ -79,6 +79,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance implements GrabbedImageListener
 {
+	private static final int GAIN = 25;
 	final IRuntimeOutputPort opNoseX = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opNoseY = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opChinX = new DefaultRuntimeOutputPort();
@@ -88,6 +89,9 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 	FrameGrabber grabber;
 	CanvasFrame frame;
 	boolean running=false;
+	
+	private int lastX=0;
+	private int lastY=0;
      
 	/**
 	 * The class constructor.
@@ -216,6 +220,8 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     public void start()
     {
     	try {
+    		lastX=0;
+    		lastY=0;
     		//Get default grabber for this platform (VideoInput for Windows, OpenCV for Linux,...) using default camera (device 0)
 			FrameGrabber grabber=SharedFrameGrabber.instance.getDefaultFrameGrabber();
 			//register this as listener for grabbed images 
@@ -241,6 +247,8 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     @Override
     public void resume()
     {
+    	lastX=0;
+    	lastY=0;
         super.resume();
     }
 
@@ -269,6 +277,20 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			faceDetection.drawFaceRect(faceRect, image);
 			//and a very platform dependant Canvas/Frame!!
 			SharedCanvasFrame.instance.showImage("CanvasFrame1", image);
+			
+			//send coordinates to output ports
+			if(faceRect!=null) {
+				int x = faceRect.x()+faceRect.width()/2;
+				int y = faceRect.y()+faceRect.height()/2;
+				int relX=(x-lastX)*GAIN*-1;
+				int relY=(y-lastY)*GAIN;
+				System.out.println("["+relX+", "+relX+"]");
+				opNoseX.sendData(ConversionUtils.intToBytes(relX));
+				opNoseY.sendData(ConversionUtils.intToBytes(relY));
+				
+				lastX=x;
+				lastY=y;				
+			}
 		} catch (java.lang.Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
