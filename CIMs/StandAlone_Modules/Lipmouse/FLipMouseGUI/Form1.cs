@@ -43,17 +43,18 @@ namespace MouseApp2
 
         String[] commands = {  "No Action", "Switch to next configuration", 
                                "Click Left Mouse Button", "Click Right Mouse Button", "Click Middle Mouse Button" , "Double Click Left Mouse Button",
-                               "Press Left Mouse Button", "Press Right Mouse Button", "Press Middle Mouse Button", 
+                               "Hold Left Mouse Button", "Hold Right Mouse Button", "Hold Middle Mouse Button", 
                                "Wheel Up", "Wheel down",  "Move Mouse X", "Move Mouse Y",
-                               "Write Text", "Press Keys", "Calibrate Zeropoint", "Switch Cursor/Alternative"
+                               "Write Text", "Press Keys", "Calibrate Middle Position", "Switch Cursor/Alternative"
                              };
-        String[] keyOptions = {    "clear Keycodes!", "KEY_A","KEY_B","KEY_C","KEY_D","KEY_E","KEY_F","KEY_G","KEY_H","KEY_I","KEY_J","KEY_K","KEY_L",
+        String[] keyOptions = {    "Clear Keycodes!", "KEY_A","KEY_B","KEY_C","KEY_D","KEY_E","KEY_F","KEY_G","KEY_H","KEY_I","KEY_J","KEY_K","KEY_L",
                                    "KEY_M","KEY_N","KEY_O","KEY_P","KEY_Q","KEY_R","KEY_S","KEY_T","KEY_U","KEY_V","KEY_W","KEY_X",
                                    "KEY_Y","KEY_Z","KEY_1","KEY_2","KEY_3","KEY_4","KEY_5","KEY_6","KEY_7","KEY_8","KEY_9","KEY_0",
                                    "KEY_F1","KEY_F2","KEY_F3","KEY_F4","KEY_F5","KEY_F6","KEY_F7","KEY_F8","KEY_F9","KEY_F10","KEY_F11","KEY_F12",	
-                                   "KEY_RIGHT","KEY_LEFT","KEY_DOWN","KEY_UP","KEY_ENTER","KEY_ESC","KEY_BACKSPACE","KEY_TAB",
-                                   "KEY_HOME","KEY_PAGE_UP","KEY_PAGE_DOWN","KEY_DELETE","KEY_INSERT","KEY_END","KEY_NUM_LOCK",
-                                   "KEY_SCROLL_LOCK","KEY_SPACE","KEY_CAPS_LOCK","KEY_PAUSE","KEY_SHIFT","KEY_CTRL","KEY_ALT","KEY_RIGHT_ALT","KEY_GUI", "KEY_RIGHT_GUI" 
+                                   "KEY_UP","KEY_DOWN","KEY_LEFT","KEY_RIGHT","KEY_SPACE","KEY_ENTER",
+                                   "KEY_ALT","KEY_BACKSPACE","KEY_CAPS_LOCK","KEY_CTRL","KEY_DELETE","KEY_END","KEY_ESC","KEY_GUI",
+                                   "KEY_HOME","KEY_INSERT","KEY_NUM_LOCK","KEY_PAGE_DOWN","KEY_PAGE_UP","KEY_PAUSE","KEY_RIGHT_ALT",
+                                   "KEY_RIGHT_GUI","KEY_SCROLL_LOCK","KEY_SHIFT","KEY_TAB"
                               };
 
         
@@ -220,7 +221,8 @@ namespace MouseApp2
         private void addToLog(String text)
         {
             activityLogTextbox.SelectedText = DateTime.Now.ToString() + ": ";
-            activityLogTextbox.AppendText(text); activityLogTextbox.AppendText("\n");
+            activityLogTextbox.AppendText(text); 
+            activityLogTextbox.AppendText("\n");
         }
 
         // serial port / communication handling
@@ -243,7 +245,7 @@ namespace MouseApp2
                 }
                 catch (Exception ex)
                 {
-                    addToLog("Could not open COM port ...");
+                    addToLog("Could not open COM port");
                 }
 
 
@@ -254,19 +256,19 @@ namespace MouseApp2
         {
             if (serialPort1.IsOpen)
             {
-                addToLog("Send:" + command);
+                Console.Write("Send:" + command);
                 try {
                     serialPort1.Write(command + "\r");
                 }
                 catch (Exception ex)    {
-                    addToLog("Could not write to COM port ...");
+                    addToLog("Could not write to COM port");
                 }
             }
         }
 
         private void select_Click(object sender, EventArgs e) //select button
         {
-            addToLog("Connect to COM port ...");
+            addToLog("Connecting to COM port...");
             if (portComboBox.SelectedIndex > -1)
             {
                 if (serialPort1.IsOpen)
@@ -276,10 +278,9 @@ namespace MouseApp2
                 }
                 else
                 {
-                    activityLogTextbox.SelectedText = DateTime.Now.ToString() + ": ";
-                    activityLogTextbox.AppendText(String.Format("You selected port '{0}' \n", portComboBox.SelectedItem));
+                   
                     Connect(portComboBox.SelectedItem.ToString());
-                    addToLog("COM Port openend");
+                    addToLog(String.Format("Port '{0}' is now connected", portComboBox.SelectedItem));
                     portStatus.Text = "Connected";
                     portStatus.ForeColor = Color.Green;
                     saveSettings.Enabled = true;
@@ -327,7 +328,7 @@ namespace MouseApp2
                     }
                     catch (Exception ex)
                     {
-                        // addToLog("Could not read from COM port ...");
+                        // addToLog("Could not read from COM port...");
                     }
                 }
             }
@@ -342,7 +343,7 @@ namespace MouseApp2
         
         private void dcButton_Click(object sender, EventArgs e) //disconnect button
         {
-            addToLog("Disconnect from COM Port ...");
+            addToLog("Disconnecting from COM Port...");
             if (serialPort1.IsOpen)
             {
                 sendCmd("AT ER");  // end reporting raw values !
@@ -410,18 +411,18 @@ namespace MouseApp2
 
         private void calibration_Click(object sender, EventArgs e) //calibration button
         {
-            addToLog("Start Calibration ...");
+            addToLog("Starting Calibration...");
             if (serialPort1.IsOpen)
             {
                 sendCmd("AT CA");
-                addToLog("Your device has been calibrated. \n");
+                addToLog("Your device has been calibrated. ");
             }
-            else addToLog("Could not send to device - please connect COM port !");
+            else addToLog("Could not send to device - please connect COM port!");
         }
 
         private void ApplyButton_Click(object sender, EventArgs e)
         {
-            addToLog("Apply Settings ...");
+            addToLog("Applying Settings...");
             if (serialPort1.IsOpen)
             {
                 sendCmd("AT ER");
@@ -471,19 +472,19 @@ namespace MouseApp2
                 sendCmd("AT LIST");
                 sendCmd("AT SR");
             }
-            else addToLog("Could not send to device - please connect COM port !");
+            else addToLog("Could not send to device - please connect COM port!");
         }
 
         private void ClearButton_Click(object sender, EventArgs e)
         {
-            addToLog("Clear EEPROM settings ...");
+            addToLog("Clearing EEPROM settings...");
             if (serialPort1.IsOpen)
             {
                 sendCmd("AT CLEAR\n");
                 addToLog("The EEPROM settings have been cleared.");
                 slotNames.Items.Clear();
             }
-            else addToLog("Could not send to device - please connect COM port !");
+            else addToLog("Could not send to device - please connect COM port!");
         }
 
         private void load_Click(object sender, EventArgs e)
@@ -533,8 +534,8 @@ namespace MouseApp2
             {
                 case CMD_MOVE_X:
                 case CMD_MOVE_Y:     la.Visible = true; la.Text = "   Speed:"; nud.Visible = true; tb.Visible = false; cb.Visible = false; break;
-                case CMD_WRITE_TEXT: la.Visible = true; la.Text = "    Text:"; nud.Visible = false; tb.Enabled = true; tb.Visible = true; tb.Text = ""; cb.Visible = false; break;
-                case CMD_PRESS_KEYS: la.Visible = true; la.Text = "KeyCodes:"; nud.Visible = false; tb.Visible = true; tb.Text = ""; cb.Visible = true; break; // tb.Enabled = false; 
+                case CMD_WRITE_TEXT: la.Visible = true; la.Text = "    Text:"; nud.Visible = false; tb.Enabled = true; tb.ReadOnly = false; tb.Visible = true; tb.Text = ""; cb.Visible = false; break;
+                case CMD_PRESS_KEYS: la.Visible = true; la.Text = "KeyCodes:"; nud.Visible = false; tb.Visible = true; tb.Text = ""; tb.ReadOnly = true; cb.Visible = true; break; // tb.Enabled = false; 
                 default: la.Visible = false;  nud.Visible = false; tb.Visible = false; cb.Visible = false; break;
             }
         }
@@ -714,6 +715,8 @@ namespace MouseApp2
                 g.FillRectangle(brush2, value, 0, rightPanel.Width-value, rightPanel.Height);
             }
         }
+
+       
 
     }
 }

@@ -76,8 +76,8 @@ struct settingsType {
   uint8_t  mouseOn;// mouse or alternative functions 
   uint8_t  ax;     // acceleration x
   uint8_t  ay;     // acceleration y
-  uint8_t  dx;     // deadzone x
-  uint8_t  dy;     // deadzone y
+  int16_t  dx;     // deadzone x
+  int16_t  dy;     // deadzone y
   uint16_t ts;     // threshold sip
   uint16_t tp;     // threshold puff 
   uint8_t  ws;     // wheel stepsize  

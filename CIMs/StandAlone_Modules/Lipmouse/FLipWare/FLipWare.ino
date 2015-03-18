@@ -110,7 +110,7 @@
 // global variables
 
 #ifdef TEENSY
-  int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={13,2,3};  //  mapa physical button pins to button index 0,1,2  
+  int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={13,2,3};  //  maps physical button pins to button index 0,1,2  
   int8_t  led_map[NUMBER_OF_LEDS]={18,19,20};              //  maps leds pins   
   uint8_t LED_PIN = 25;                                    //  Led output pin
 #endif
@@ -124,13 +124,13 @@
 struct settingsType settings = {         // type definition see fabi.h
     "empty",
     1,                                   //  Mouse cursor movement active (not the alternative functions )
-    10, 10, 30, 30, 500, 525, 3, 1000    // wheel step, accx, accy, deadzone x, deadzone y, threshold sip, threshold puff, threshold time (short/longpress)
+    40, 40, 60, 60, 500, 525, 3, 2500    // accx, accy, deadzone x, deadzone y, threshold sip, threshold puff, wheel step, threshold time (short/longpress)
 }; 
 
 struct buttonType buttons [NUMBER_OF_BUTTONS];                     // array for all buttons - type definition see fabi.h 
 struct buttonDebouncerType buttonDebouncers [NUMBER_OF_BUTTONS];   // array for all buttonsDebouncers - type definition see fabi.h 
 
-uint8_t calib_now = 1;                           // calibrate zeropoint right at startup !
+uint16_t calib_now = 1;                           // calibrate zeropoint right at startup !
 uint8_t DebugOutput = DEFAULT_DEBUGLEVEL;        // default: very chatty at the serial interface ...
 int clickTime=DEFAULT_CLICK_TIME;
 int waitTime=DEFAULT_WAIT_TIME;
@@ -168,6 +168,10 @@ uint8_t leftClickRunning=0;
 uint8_t rightClickRunning=0;
 uint8_t middleClickRunning=0;
 uint8_t doubleClickRunning=0;
+
+uint8_t blinkCount=0;
+uint8_t blinkTime=0;
+uint8_t blinkStartTime=0;
 
 int inByte=0;
 char * keystring=0;
@@ -220,14 +224,26 @@ void setup() {
       buttonDebouncers[i].stableState=0;
       buttonDebouncers[i].bounceCount=0;
       buttonDebouncers[i].longPressed=0;
-      buttons[i].mode=CMD_MOUSE_PRESS_LEFT;              // default command for every button is left mouse click
       buttons[i].value=0;
       buttons[i].keystring[0]=0;
    }
    
+   buttons[0].mode=CMD_SW;            // befault for button 1: switch alternative / mouse cursur control mode
+   buttons[1].mode=CMD_MOUSE_WHEEL_UP;
+   buttons[2].mode=CMD_MOUSE_WHEEL_DOWN;
+   buttons[3].mode=CMD_KEY_PRESS; strcpy(buttons[4].keystring,"KEY_UP ");
+   buttons[4].mode=CMD_KEY_PRESS; strcpy(buttons[4].keystring,"KEY_DOWN ");
+   buttons[5].mode=CMD_KEY_PRESS; strcpy(buttons[4].keystring,"KEY_LEFT ");
+   buttons[6].mode=CMD_KEY_PRESS; strcpy(buttons[4].keystring,"KEY_RIGHT ");
+   buttons[7].mode=CMD_MOUSE_PRESS_LEFT;
+   buttons[8].mode=CMD_IDLE;    
+   buttons[9].mode=CMD_MOUSE_CLICK_RIGHT;                          
+   buttons[10].mode=CMD_CA;                               // calibrate    
+   
    readFromEEPROM(0);  // read button modes from first EEPROM slot if available !  
 
-   BlinkLed();
+   blinkCount=10;  blinkStartTime=25;
+   
    if (DebugOutput==DEBUG_FULLOUTPUT)  
      Serial.print("Free RAM:");  Serial.println(freeRam());
 }
@@ -237,7 +253,7 @@ void setup() {
 ///////////////////////////////
 
 void loop() {  
-
+  
       currentTime = millis();
       timeDifference = currentTime - previousTime;
       previousTime = currentTime;
@@ -272,15 +288,17 @@ void loop() {
     
         
       // handle mouse movement
-      if (calib_now == 1)  {
-         x_offset = (left-right);
-         y_offset = (up-down);
-         calib_now=0;
-      }    
-      else  {
+      if (calib_now == 0)  {
           x = (left-right) - x_offset;
           y = (up-down) - y_offset;
       }
+      else  {
+          calib_now--;           // wait for calibration
+          if (calib_now ==0) {   // calibrate now !!
+             x_offset = (left-right);                                                   
+             y_offset = (up-down);
+          }
+       }    
       
       if (abs(x)< settings.dx) x=0;
       if (abs(y)< settings.dy) y=0;
@@ -429,7 +447,6 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
       {  
         Serial.print("got new mode for button "); Serial.print(actButton);Serial.print(":");
         Serial.print(cmd);Serial.print(",");Serial.print(par1);Serial.print(",");Serial.println(keystring);
-        //BlinkLed();
       }
       buttons[actButton-1].mode=cmd;
       buttons[actButton-1].value=par1;
@@ -577,6 +594,7 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
       case CMD_NEXT_SLOT:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.print("load next slot");
+             blinkCount=10;  blinkStartTime=15;  
              readFromEEPROM(0); 
           break;
       case CMD_DELETE_SLOTS:
@@ -599,13 +617,15 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
       case CMD_SW:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("switch mouse / alternative function");
+             blinkCount=6                                  ;  blinkStartTime=15;
              if (settings.mouseOn==0) settings.mouseOn=1;
              else settings.mouseOn=0;
           break;
       case CMD_CA:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("start calibration");
-             calib_now=1;
+             blinkCount=10;  blinkStartTime=30;
+             calib_now=300;
           break;
       case CMD_AX:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
@@ -651,21 +671,26 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
   }
 }
 
-void BlinkLed()
-{
-    for (uint8_t i=0; i < 5;i++)
-    {
-        digitalWrite (LED_PIN, !digitalRead(LED_PIN));
-        delay(100);
-    }
-    digitalWrite (LED_PIN, HIGH);
-}
 
 void UpdateLeds()
 {  
+  if (blinkCount==0) {
    if (actSlot & 1) digitalWrite (led_map[0],LOW); else digitalWrite (led_map[0],HIGH); 
    if (actSlot & 2) digitalWrite (led_map[1],LOW); else digitalWrite (led_map[1],HIGH); 
    if (actSlot & 4) digitalWrite (led_map[2],LOW); else digitalWrite (led_map[2],HIGH); 
+  }
+  else {
+    if (blinkTime==0)
+    {
+       blinkTime=blinkStartTime;
+       blinkCount--;
+       if (blinkCount%2) { 
+           digitalWrite (led_map[0],LOW); digitalWrite (led_map[1],LOW); digitalWrite (led_map[2],LOW); }
+        else { 
+           digitalWrite (led_map[0],HIGH); digitalWrite (led_map[1],HIGH); digitalWrite (led_map[2],HIGH); }
+    } else blinkTime--;
+  }
+       
 }
 
 
