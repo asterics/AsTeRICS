@@ -38,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -162,34 +163,51 @@ public class GUICell extends JPanel implements Runnable
 		repaintNow(1);
 	}
 	
-	public void repaintNow(double hoverPercent)
+	public void repaintNow(final double hoverPercent)
 	{
-		if(scanActive)
-		{
-			Color scanBorderColor=new Color(255-getColorProperty(owner.getScanColor()).getRed(),255-getColorProperty(owner.getScanColor()).getGreen(),255-getColorProperty(owner.getScanColor()).getBlue());
-			setBorder(BorderFactory.createLineBorder(scanBorderColor,scanFrameWidth));
-		}
-		else
-		{
-			if(cellhovering)
-			{
-				if(hoverSelection){					
-					Color scanBorderColor=new Color((int)(getColorProperty(owner.getScanColor()).getRed() * hoverPercent),(int)(getColorProperty(owner.getScanColor()).getGreen()*hoverPercent),(int)(getColorProperty(owner.getScanColor()).getBlue()*hoverPercent));
-					setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth+scanFrameWidth*hoverPercent)));
-				} else{					
-					Color scanBorderColor=new Color(getColorProperty(owner.getScanColor()).getRed(),getColorProperty(owner.getScanColor()).getGreen(),getColorProperty(owner.getScanColor()).getBlue());
-					setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth)));
+		Runnable performRepaint=new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				if(scanActive)
+				{
+					Color scanBorderColor=new Color(255-getColorProperty(owner.getScanColor()).getRed(),255-getColorProperty(owner.getScanColor()).getGreen(),255-getColorProperty(owner.getScanColor()).getBlue());
+					setBorder(BorderFactory.createLineBorder(scanBorderColor,scanFrameWidth));
 				}
+				else
+				{
+					if(cellhovering)
+					{
+						if(hoverSelection){					
+							Color scanBorderColor=new Color((int)(getColorProperty(owner.getScanColor()).getRed() * hoverPercent),(int)(getColorProperty(owner.getScanColor()).getGreen()*hoverPercent),(int)(getColorProperty(owner.getScanColor()).getBlue()*hoverPercent));
+							setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth+scanFrameWidth*hoverPercent)));
+						} else{					
+							Color scanBorderColor=new Color(getColorProperty(owner.getScanColor()).getRed(),getColorProperty(owner.getScanColor()).getGreen(),getColorProperty(owner.getScanColor()).getBlue());
+							setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth)));
+						}
+					}
+					else
+					{
+						setBorder(BorderFactory.createLineBorder(getColorProperty(owner.getTextColor()),frameWidth));
+					}
+				}
+				
+				GUICell.this.repaint();
+				GUICell.this.revalidate();
+
 			}
-			else
-			{
-				setBorder(BorderFactory.createLineBorder(getColorProperty(owner.getTextColor()),frameWidth));
-			}
+
+			
+		};
+		if(SwingUtilities.isEventDispatchThread()) {
+			performRepaint.run();
+		} else {
+//			try {
+				SwingUtilities.invokeLater(performRepaint);
+//			} catch (InvocationTargetException | InterruptedException e) {
+//			}
 		}
-		
-		this.repaint();
-		this.revalidate();
-		
 	}
 	
 	/**

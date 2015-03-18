@@ -25,6 +25,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -66,6 +68,7 @@ import eu.asterics.mw.model.deployment.impl.ModelState;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 
 
 /*
@@ -307,109 +310,129 @@ public class AsapiSupport
 	 * well-defined XML, or not well defined ASAPI model encoding, or if a
 	 * validation error occurred after reading the model
 	 */
-	public void deployModel(final String modelInXML)
-			throws AREAsapiException
-			{
-		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
-			logger.warning("Model lifecycle task pending, ignoring model switch");
-			return;
-		}
-		
-		//Stop running model first if there is one
-		if (DeploymentManager.instance.getCurrentRuntimeModel()!=null)
-		{
-			stopModel();	
+	public void deployModel(final String modelInXML) throws AREAsapiException {
+		// Stop running model first if there is one
+		if (DeploymentManager.instance
+				.getCurrentRuntimeModel() != null) {
+			logger.fine("Before Deploying model, trying to stop old before.");
+			stopModel();
 			DeploymentManager.instance.undeployModel();
 		}
 
-		File modelFile = new File(MODELS_FOLDER+"/model.xml");
-		File modelsDir = new File(MODELS_FOLDER);
-		if (!modelFile.exists())
-		{
-			try {
-				modelsDir.mkdir();
-				modelFile.createNewFile();
-			} catch (IOException e1) {
-				DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-				AstericsErrorHandling.instance.setStatusObject
-				(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-				logger.warning(this.getClass().getName()+"." +
-						"deployModel: Failed to create file model.xml -> \n"
-						+e1.getMessage());
-				throw (new AREAsapiException(e1.getMessage()));
-			}
-		}
-		
-		//Convert the string to a byte array.
-		String s = modelInXML;
-		byte data[] = s.getBytes();
 		try {
+			AstericsModelExecutionThreadPool.instance
+					.execAndWaitOnModelExecutorLifecycleThread(new Callable<Object>() {
 
+						@Override
+						public Object call() throws Exception {
 
-			BufferedWriter c = new BufferedWriter(new OutputStreamWriter
-					(new FileOutputStream(modelFile),"UTF-16"));
+							File modelFile = new File(MODELS_FOLDER
+									+ "/model.xml");
+							File modelsDir = new File(MODELS_FOLDER);
+							if (!modelFile.exists()) {
+								try {
+									modelsDir.mkdir();
+									modelFile.createNewFile();
+								} catch (IOException e1) {
+									DeploymentManager.instance
+											.setStatus(AREStatus.FATAL_ERROR);
+									AstericsErrorHandling.instance
+											.setStatusObject(
+													AREStatus.FATAL_ERROR
+															.toString(), "",
+													"Deployment Error");
+									logger.warning(this.getClass().getName()
+											+ "."
+											+ "deployModel: Failed to create file model.xml -> \n"
+											+ e1.getMessage());
+									throw (new AREAsapiException(e1
+											.getMessage()));
+								}
+							}
 
-			//out = new BufferedOutputStream(new FileOutputStream(modelFile));
-			for (int i=0; i<data.length; i++)
-				c.write(data[i]);
+							// Convert the string to a byte array.
+							String s = modelInXML;
+							byte data[] = s.getBytes();
+							// try {
 
-			if (c != null) {
-				c.flush();
-				c.close();
-			}
-  
-			InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
+							BufferedWriter c = new BufferedWriter(
+									new OutputStreamWriter(
+											new FileOutputStream(modelFile),
+											"UTF-16"));
 
-			synchronized (DefaultDeploymentModelParser.instance) {
+							// out = new BufferedOutputStream(new
+							// FileOutputStream(modelFile));
+							for (int i = 0; i < data.length; i++)
+								c.write(data[i]);
 
-				IRuntimeModel runtimeModel = 
-						DefaultDeploymentModelParser.instance.parseModel(is);
+							if (c != null) {
+								c.flush();
+								c.close();
+							}
 
-				/*if (runtimeModel==null)
-			{
-				logger.fine("Failed to create model");
-			}*/
+							InputStream is = new ByteArrayInputStream(
+									modelInXML.getBytes("UTF-16"));
 
-				DeploymentManager.instance.deployModel(runtimeModel);
-				DeploymentManager.instance.setStatus(AREStatus.DEPLOYED);
-				AstericsErrorHandling.instance.setStatusObject(AREStatus.DEPLOYED.toString(), 
-						"", "");
-			}
-		}  catch (IOException e2) {
+							synchronized (DefaultDeploymentModelParser.instance) {
+
+								IRuntimeModel runtimeModel = DefaultDeploymentModelParser.instance
+										.parseModel(is);
+
+								/*
+								 * if (runtimeModel==null) {
+								 * logger.fine("Failed to create model"); }
+								 */
+
+								DeploymentManager.instance
+										.deployModel(runtimeModel);
+								DeploymentManager.instance
+										.setStatus(AREStatus.DEPLOYED);
+								AstericsErrorHandling.instance.setStatusObject(
+										AREStatus.DEPLOYED.toString(), "", "");
+							}							
+							return null;
+						}
+
+					});
+		} catch (IOException e2) {
+			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject
-			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName()+"." +
-					"deployModel: Failed to deploy model -> \n"
-					+e2.getMessage());
+			AstericsErrorHandling.instance.setStatusObject(
+					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+			logger.warning(this.getClass().getName() + "."
+					+ "deployModel: Failed to deploy model -> \n"
+					+ e2.getMessage());
 			throw (new AREAsapiException(e2.getMessage()));
 		} catch (DeploymentException e3) {
+			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject
-			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName()+"." +
-					"deployModel: Failed to deploy model -> \n"
-					+e3.getMessage());
-			throw (new AREAsapiException(e3.getMessage()));
+			AstericsErrorHandling.instance.setStatusObject(
+					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+			logger.warning(this.getClass().getName() + "."
+					+ "deployModel: Failed to deploy model -> \n"
+					+ e3.getMessage());
+			throw (new AREAsapiException("Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program."));
 		} catch (ParseException e4) {
+			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject
-			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName()+"." +
-					"deployModel: Failed to deploy model -> \n"
-					+e4.getMessage());
-			throw (new AREAsapiException(e4.getMessage()));
-		} catch(Throwable t) {
+			AstericsErrorHandling.instance.setStatusObject(
+					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+			logger.warning(this.getClass().getName() + "."
+					+ "deployModel: Failed to deploy model -> \n"
+					+ e4.getMessage());
+			throw (new AREAsapiException("Parsing of the model failed: "+e4.getMessage()));
+		} catch (Throwable t) {
+			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject
-			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName()+"." +
-					"deployModel: Failed to deploy model -> \n"
-					+t.getMessage());
-			throw (new AREAsapiException(t.getMessage()));			
+			AstericsErrorHandling.instance.setStatusObject(
+					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+			logger.warning(this.getClass().getName() + "."
+					+ "deployModel: Failed to deploy model -> \n"
+					+ t.getMessage());
+			throw (new AREAsapiException("Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program."));
 		}
 
-			}
+	}
 
 	public ArrayList<String> getBundelDescriptors() throws AREAsapiException {
 
@@ -453,32 +476,36 @@ public class AsapiSupport
 	 */
 	public void newModel() throws AREAsapiException
 	{
-		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
-			logger.warning("Model lifecycle task pending, ignoring model switch");
-			return;
-		}
-
-		final URL url = Main.getAREContext().getBundle().getResource(DEFAULT_MODEL_URL);
-
 		try {
-			synchronized (DefaultDeploymentModelParser.instance) {
+			AstericsModelExecutionThreadPool.instance
+			.execAndWaitOnModelExecutorLifecycleThread(new Callable<Object>() {
+
+				@Override
+				public Object call() throws Exception {
+					final URL url = Main.getAREContext().getBundle().getResource(DEFAULT_MODEL_URL);
+
+					//try {
+					synchronized (DefaultDeploymentModelParser.instance) {
 
 
-				IRuntimeModel runtimeModel = 
-						DefaultDeploymentModelParser.instance.parseModel(url.toString());
-				if (runtimeModel==null)
-				{
-					DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-					AstericsErrorHandling.instance.setStatusObject
-					(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+						IRuntimeModel runtimeModel = 
+								DefaultDeploymentModelParser.instance.parseModel(url.toString());
+						if (runtimeModel==null)
+						{
+							DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
+							AstericsErrorHandling.instance.setStatusObject
+							(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
 
-					logger.warning(this.getClass().getName()+"." +
-							"newModel: Failed to create new model ->" +
-							" the default model could not be found\n");
-					return;
+							logger.warning(this.getClass().getName()+"." +
+									"newModel: Failed to create new model ->" +
+									" the default model could not be found\n");
+							return null;
+						}
+						DeploymentManager.instance.deployModel(runtimeModel);
+					}
+					return null;
 				}
-				DeploymentManager.instance.deployModel(runtimeModel);
-			}
+			});			
 		}  catch (DeploymentException e) {
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
 			AstericsErrorHandling.instance.setStatusObject
@@ -503,6 +530,14 @@ public class AsapiSupport
 					"newModel: Failed to create new model -> \n" 
 					+e2.getMessage());
 			throw (new AREAsapiException(e2.getMessage()));
+		} catch (Exception e) {
+			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
+			AstericsErrorHandling.instance.setStatusObject
+			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+			logger.warning(this.getClass().getName()+"." +
+					"newModel: Failed to create new model -> \n" 
+					+e.getMessage());
+			throw (new AREAsapiException(e.getMessage()));
 		}
 	}
 
@@ -637,6 +672,8 @@ public class AsapiSupport
 			final String componentID, final String componentType)
 					throws AREAsapiException
 					{
+		//Should also be called with AstericsModelExecutorThreadPool
+		
 		Set<IComponentType> availableComponentTypes = 
 				componentRepository.getInstalledComponentTypes();
 		boolean isAvailable = false;
@@ -706,6 +743,8 @@ public class AsapiSupport
 	public void removeComponent(final String componentID)
 			throws AREAsapiException
 			{
+		//Should also be called with AstericsModelExecutorThreadPool		
+		
 		IComponentInstance componentInstance = 
 				DeploymentManager.instance.getCurrentRuntimeModel().
 				getComponentInstance(componentID);
@@ -841,6 +880,8 @@ public class AsapiSupport
 			final String targetPortID)
 					throws AREAsapiException
 					{
+		//Should also be called with AstericsModelExecutorThreadPool		
+		
 		IRuntimeModel model = DeploymentManager.instance.getCurrentRuntimeModel();
 
 		if (model.getComponentInstance(sourceComponentID)==null){
@@ -975,6 +1016,8 @@ public class AsapiSupport
 	public void removeChannel(final String channelID)
 			throws AREAsapiException
 			{
+		//Should also be called with AstericsModelExecutorThreadPool		
+		
 		DeploymentManager.instance.getCurrentRuntimeModel().
 		removeChannel(channelID);
 			}
@@ -1052,28 +1095,41 @@ public class AsapiSupport
 	 * property was not previously set
 	 * @throws AREAsapiException if the specified component is not found
 	 */
-	public String setComponentProperty(
-			final String componentID, final String key, final String value) 
-					throws AREAsapiException
-					{
-		String result = DeploymentManager.instance.getCurrentRuntimeModel().
-				setComponentProperty(componentID, key, value);
-		DeploymentManager.instance.setComponentProperty (componentID, key, value);
-		if (result == null)
-		{
-			logger.warning(this.getClass().getName()+"."+
-					"setComponentProperty: Undefined component "+
-					componentID+"\n");
-			throw new AREAsapiException ("Undefined component ID: "
-					+componentID);
+	public String setComponentProperty(final String componentID,
+			final String key, final String value) throws AREAsapiException {
+		try {
+			return AstericsModelExecutionThreadPool.instance
+					.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+
+						@Override
+						public String call() throws Exception {
+
+							String result = DeploymentManager.instance
+									.getCurrentRuntimeModel()
+									.setComponentProperty(componentID, key,
+											value);
+							DeploymentManager.instance.setComponentProperty(
+									componentID, key, value);
+							if (result == null) {
+								logger.warning(this.getClass().getName()
+										+ "."
+										+ "setComponentProperty: Undefined component "
+										+ componentID + "\n");
+								throw new AREAsapiException(
+										"Undefined component ID: "
+												+ componentID);
+							} else {
+								logger.fine(this.getClass().getName() + "."
+										+ "setComponentProperty: OK\n");
+								return result;
+							}
+
+						}
+					});
+		} catch (Exception e) {
+			throw (new AREAsapiException(e.getMessage()));
 		}
-		else
-		{
-			logger.fine(this.getClass().getName()+"."+
-					"setComponentProperty: OK\n");
-			return result;
-		}
-					}
+	}
 
 	/**
 	 * Reads the IDs of all properties set for the specified port.
@@ -1150,26 +1206,38 @@ public class AsapiSupport
 	 * @throws AREAsapiException if the specified component or port are not found
 	 */
 	public String setPortProperty(final String componentID,
-			final String portID, final String key, final String value) 
-					throws AREAsapiException
-					{
-		String result = DeploymentManager.instance.getCurrentRuntimeModel().
-				setPortProperty(componentID, portID, key, value);
-		if (result == null)
-		{
-			logger.warning(this.getClass().getName()+"."+
-					"setPortProperty: Undefined component or port "+
-					componentID+", "+portID+"\n");
-			throw new AREAsapiException ("Undefined component or port ID: "
-					+componentID+", "+portID);
+			final String portID, final String key, final String value)
+			throws AREAsapiException {
+		try {
+			return AstericsModelExecutionThreadPool.instance
+					.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+
+						@Override
+						public String call() throws Exception {
+
+							String result = DeploymentManager.instance
+									.getCurrentRuntimeModel().setPortProperty(
+											componentID, portID, key, value);
+							if (result == null) {
+								logger.warning(this.getClass().getName()
+										+ "."
+										+ "setPortProperty: Undefined component or port "
+										+ componentID + ", " + portID + "\n");
+								throw new AREAsapiException(
+										"Undefined component or port ID: "
+												+ componentID + ", " + portID);
+							} else {
+								logger.fine(this.getClass().getName() + "."
+										+ "setPortProperty: OK\n");
+								return result;
+							}
+
+						}
+					});
+		} catch (Exception e) {
+			throw (new AREAsapiException(e.getMessage()));
 		}
-		else
-		{
-			logger.fine(this.getClass().getName()+"."+
-					"setPortProperty: OK\n");
-			return result;
-		}
-					}
+	}
 
 	/**
 	 * Reads the IDs of all properties set for the specified component.
@@ -1244,26 +1312,36 @@ public class AsapiSupport
 	 * property was not previously set
 	 * @throws AREAsapiException if the specified channel is not found
 	 */
-	public String setChannelProperty(
-			final String channelID, final String key, final String value) 
-					throws AREAsapiException
-					{
-		String result = DeploymentManager.instance.getCurrentRuntimeModel().
-				setChannelProperty(channelID, key, value);
-		if (result == null)
-		{
-			logger.warning(this.getClass().getName()+"."+
-					"setChannelProperty: Undefined channel "+
-					channelID+"\n");
-			throw new AREAsapiException ("Undefined channel ID: "
-					+channelID);
+	public String setChannelProperty(final String channelID, final String key,
+			final String value) throws AREAsapiException {
+		try {
+			return AstericsModelExecutionThreadPool.instance
+					.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+
+						@Override
+						public String call() throws Exception {
+
+							String result = DeploymentManager.instance
+									.getCurrentRuntimeModel()
+									.setChannelProperty(channelID, key, value);
+							if (result == null) {
+								logger.warning(this.getClass().getName()
+										+ "."
+										+ "setChannelProperty: Undefined channel "
+										+ channelID + "\n");
+								throw new AREAsapiException(
+										"Undefined channel ID: " + channelID);
+							} else {
+								logger.fine(this.getClass().getName()
+										+ ".setChannelProperty: OK\n");
+								return result;
+							}
+						}
+					});
+		} catch (Exception e) {
+			throw (new AREAsapiException(e.getMessage()));
 		}
-		else
-		{
-			logger.fine(this.getClass().getName()+".setChannelProperty: OK\n");
-			return result;
-		}
-					}
+	}
 
 	/**
 	 * Registers a remote consumer to the data produced by the specified source
@@ -1626,56 +1704,62 @@ public class AsapiSupport
 	 * @throws AREAsapiException if the specified filename is not found or
 	 * cannot be deployed
 	 */
-	public void deployFile(String filename) throws AREAsapiException {
-		if(DeploymentManager.instance.isModelLifecycleTaskPending()) {
-			logger.warning("Model lifecycle task pending, ignoring model switch");
-			return;
-		}
-		
-		File file = new File(filename);
-		if (!file.isAbsolute()) {
-			filename = MODELS_FOLDER + "/" + filename;
-		}
-		//if (filename=="autostart.acs")
-		
+	public void deployFile(final String filename) throws AREAsapiException {
+		//stopModel outside of try catch to ensure that a current model is stopped any way.
 		final IRuntimeModel currentRuntimeModel
 		= DeploymentManager.instance.getCurrentRuntimeModel();
 
 		if(currentRuntimeModel != null)
-			this.stopModel();
+			stopModel();
 
-	
-		try{
-			synchronized (this){
-				//this is for getting the text xml and converting it to string
-				String xmlFile = filename;
-				
-				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder builder = factory.newDocumentBuilder();
-				synchronized (builder) {
+		try {
+			AstericsModelExecutionThreadPool.instance
+			.execAndWaitOnModelExecutorLifecycleThread(new Callable<Object>() {
 
-					
-					Document doc = builder.parse(new File(xmlFile));
-					DOMSource domSource = new DOMSource(doc);
-					StringWriter writer = new StringWriter();
-					StreamResult result = new StreamResult(writer);
-					TransformerFactory tf = TransformerFactory.newInstance();
-					Transformer transformer = tf.newTransformer();
-					transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-					transformer.transform(domSource, result);
-					String modelInString = writer.toString();
-					//calling the asapi function with a string representation of the model
-					deployModel(modelInString);
+				@Override
+				public Object call() throws Exception {
+					File file = new File(filename);
+					String absFilename=filename;
+					if (!file.isAbsolute()) {
+						absFilename = MODELS_FOLDER + "/" + filename;
+					}
+					//if (filename=="autostart.acs")
 
-					// logger.fine(this.getClass().getName()+"." + "deployFile: OK\n");
-					System.out.println("Deployed Model "+filename+" !");
+					//try{
+					synchronized (this){
+						//this is for getting the text xml and converting it to string
+						String xmlFile = absFilename;
+
+						DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+						DocumentBuilder builder = factory.newDocumentBuilder();
+						synchronized (builder) {
+
+
+							Document doc = builder.parse(new File(xmlFile));
+							DOMSource domSource = new DOMSource(doc);
+							StringWriter writer = new StringWriter();
+							StreamResult result = new StreamResult(writer);
+							TransformerFactory tf = TransformerFactory.newInstance();
+							Transformer transformer = tf.newTransformer();
+							transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
+							transformer.transform(domSource, result);
+							String modelInString = writer.toString();
+							//calling the asapi function with a string representation of the model
+							deployModel(modelInString);
+
+							// logger.fine(this.getClass().getName()+"." + "deployFile: OK\n");
+							System.out.println("Deployed Model "+absFilename+" !");
+						}
+					}
+					return null;
 				}
-			}
+			});
+
 		} catch (AREAsapiException e1) {
 			logger.warning(this.getClass().getName()+"." +
 					"deployFile: Failed to deploy file -> \n"
 					+e1.getMessage());
-			throw (new AREAsapiException(e1.getMessage()));
+			throw e1;
 		} catch (SAXException e3) {
 			logger.warning(this.getClass().getName()+"." +
 					"deployFile: Failed to deploy file -> \n"
@@ -1701,6 +1785,9 @@ public class AsapiSupport
 					"deployFile: Failed to deploy file -> \n"
 					+e7.getMessage());
 			throw (new AREAsapiException(e7.getMessage()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw (new AREAsapiException(e.getMessage()));
 		}
 	}
 

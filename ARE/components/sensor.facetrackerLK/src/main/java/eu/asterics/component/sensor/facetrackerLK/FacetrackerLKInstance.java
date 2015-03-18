@@ -30,6 +30,9 @@ package eu.asterics.component.sensor.facetrackerLK;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
@@ -40,6 +43,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.component.sensor.facetrackerLK.jni.Bridge;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 
 /**
  *   Implements the facetracker_lk plugin, which uses OpenCV 
@@ -171,10 +175,22 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     public void newCoordinates_callback(final int point1_x,
             final int point1_y, final int point2_x, final int point2_y)
         {
-    		opNoseX.sendData(ConversionUtils.intToBytes(point1_x)); 
-    		opNoseY.sendData(ConversionUtils.intToBytes(point1_y)); 
-    		opChinX.sendData(ConversionUtils.intToBytes(point2_x)); 
-    		opChinY.sendData(ConversionUtils.intToBytes(point2_y));    
+
+    	//Hand over callback data to model executor thread to ensure that the corresponding coordinate
+    	//data is processed together without mixing up the coordinates.
+    	AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+					System.out.print("a");
+					opNoseX.sendData(ConversionUtils.intToBytes(point1_x)); 
+					opNoseY.sendData(ConversionUtils.intToBytes(point1_y)); 
+					opChinX.sendData(ConversionUtils.intToBytes(point2_x)); 
+					opChinY.sendData(ConversionUtils.intToBytes(point2_y)); 
+					System.out.print("e");
+				}
+
+			});
         }             
     
     

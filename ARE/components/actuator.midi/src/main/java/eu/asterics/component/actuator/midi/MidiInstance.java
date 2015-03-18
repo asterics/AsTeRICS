@@ -40,6 +40,7 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.MidiManager;
 
 import javax.sound.midi.MidiDevice.Info;
@@ -83,6 +84,8 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 
     public int pitchInput=500;
     private int triggerInput=75;
+    
+    boolean stopMidiNoteOn=false;
 
     
    /**
@@ -380,6 +383,12 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 
 	private void noteOn()
 	{
+		
+		if(stopMidiNoteOn) {
+			AstericsErrorHandling.instance.getLogger().fine("Ignoring MIDI Note On, Plugin stopping");
+			return;
+		}
+		
 		if ((propPlayOnlyChangingNotes == false) || (oldNote != selectedNote)) // || (toneTriggerMode!=0))
 		{ 	
 			if (propInstrument.startsWith("Controller"))
@@ -497,6 +506,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
     	  triggerTrue = true;
 		  gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
 		  if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
+		  stopMidiNoteOn=false;
           super.start();
       }
 
@@ -506,6 +516,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
       @Override
       public void pause()
       {
+    	  stopMidiNoteOn=true;
     	  lastNoteOff();
           super.pause();
       }
@@ -516,6 +527,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
       @Override
       public void resume()
       {
+    	  stopMidiNoteOn=false;
           super.resume();
       }
 
@@ -525,6 +537,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
+    	  stopMidiNoteOn=true;
     	  lastNoteOff();
     	  // if (propDisplayGUI) 
     	  AREServices.instance.displayPanel(gui, this, false);

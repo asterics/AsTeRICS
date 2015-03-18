@@ -33,6 +33,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -69,16 +71,19 @@ import eu.asterics.mw.are.AREProperties;
 /**
  * This thread pool is used to perform the execution of a deployed model.
  * The default approach is a single threaded approach, this means that start, stop, setProperty, sendData and receiveEvent are all executed within the same single thread.
- * The pool size can be increased in areProperties 
+ * @deprecated: The multi-threaded approach is deprecated. If used, there is no guarantee for thread synchronization and data integrity when calling start, stop, setProperty, sendData or receiveEvent.  
  * @author mad
  *
  */
 public class AstericsModelExecutionThreadPool {
+	private static final int DEFAULT_EXECUTOR_QUEUE_SIZE = 100;
+	//The default submit timeout for a task when called blocking with execAndWaitOnModelExecutorLifecycleThread(...).
 	public static int TASK_SUBMIT_TIMEOUT=20000;
 	/* Set default value to 1, because only in the single threaded approach there is deterministic execution of data propagation and event notification */
 	private static final int DEFAULT_POOL_SIZE = 1;
 	
 	private static final String MODEL_EXECUTOR = "ModelExecutor";
+	private static final String MODEL_EXECUTOR_LIFECYCLE = MODEL_EXECUTOR+"-Lifecycle";
 
 	private static final String TASK_SUBMIT_TIMEOUT_PROPERTY = "ThreadPoolTasks.submitTimeout";	
 	private static final String THREAD_POOL_SIZE = "ThreadPool."+MODEL_EXECUTOR+".size";
@@ -86,28 +91,38 @@ public class AstericsModelExecutionThreadPool {
 	
 
 	public static final AstericsModelExecutionThreadPool instance = new AstericsModelExecutionThreadPool();
-
 			
 	//pool for the execution of model tasks: is identical with modelExecutorLifecycle in case of the single threaded approach.
 	private ExecutorService pool;
-	//is used as a fallbackpool to stop a hanging model in case of a single-threaded approach
-	private ExecutorService fallbackPool;
+	//stores last nr. of fallback thread
 	private static int fallbackNr=0;
+	private ThreadFactory fallbackThreadFactory=new ThreadFactory() {				
+		@Override
+		public Thread newThread(Runnable r) {
+			String threadName=MODEL_EXECUTOR_LIFECYCLE+"-Fallback-"+fallbackNr++;
+			logger.warning("ModelExecutor ["+Thread.currentThread().getName()+"]: Switching to fallbackPool with Thread: "+threadName);
+
+			Thread newThread=Executors.defaultThreadFactory().newThread(r);
+			newThread.setName(threadName);
+			return newThread;					
+		}
+	};
 	
 	//This the executor for the single threaded approach
-	private ExecutorService modelExecutorLifecycle = Executors
+	private ExecutorService modelExecutorLifecycle;
+	/*= Executors
 			.newSingleThreadExecutor(new ThreadFactory() {
 				
 				@Override
 				public Thread newThread(Runnable arg0) {
-					logger.fine("Creating Thread: "+MODEL_EXECUTOR);
+					logger.fine("Creating Thread: "+MODEL_EXECUTOR_LIFECYCLE);
 					
 					Thread newThread=Executors.defaultThreadFactory().newThread(arg0);
-					newThread.setName(MODEL_EXECUTOR);
+					newThread.setName(MODEL_EXECUTOR_LIFECYCLE);
 					return newThread;
 				}
 			});
-
+*/
 	private AstericsModelExecutionThreadPool() {
 		TASK_SUBMIT_TIMEOUT=new Integer(AREProperties.instance.getProperty(TASK_SUBMIT_TIMEOUT_PROPERTY, String.valueOf(TASK_SUBMIT_TIMEOUT)));
 		logger.info(TASK_SUBMIT_TIMEOUT_PROPERTY+"="+TASK_SUBMIT_TIMEOUT);		
@@ -117,9 +132,10 @@ public class AstericsModelExecutionThreadPool {
 		logger.info(THREAD_POOL_SIZE+"="+poolSize);
 		AREProperties.instance.setProperty(THREAD_POOL_SIZE,Integer.toString(poolSize));		
 		
+		modelExecutorLifecycle=createExecutorService();
 		pool=modelExecutorLifecycle;
 		if(poolSize > 1) {
-			logger.info(THREAD_POOL_SIZE+" > 1, creating thread pool");
+			logger.warning("\n\nWARNING: Multi-threaded mode ist DEPRECATED! - "+THREAD_POOL_SIZE+" > 1, creating thread pool\n\n");
 			pool=Executors.newFixedThreadPool(poolSize, new ThreadFactory() {
 				private int threadNr=0;				
 				@Override
@@ -150,32 +166,43 @@ public class AstericsModelExecutionThreadPool {
 	}	
 
 	/**
-	 * Executes the given Runnable either in the modelExecutorLifecycle thread (single threaded approach) or in a thread pool of userdefined size.
+	 * Executes (non-blocking) the given Runnable either in the modelExecutorLifecycle thread (single threaded approach) or in a thread pool of userdefined size.
+	 * @Note: In single threaded approach: the taks is operated off a bounded queue of size DEFAULT_EXECUTOR_QUEUE_SIZE. If the queue is full, the task is rejected to prevent knocking out the ARE.
 	 * @param r
 	 */
 	public void execute(Runnable r) {
-		pool.execute(r);
+		try{
+			pool.execute(r);
+		}catch(RejectedExecutionException re) {
+			System.out.print("-");
+		}
 	}
 
 	/**
-	 * Submits the given Callable and waits until completion either in the modelExecutorLifecycle thread (single threaded approach) or in a thread pool of userdefined size.
+	 * Submits (blocking) the given Callable and waits until completion either in the modelExecutorLifecycle thread (single threaded approach) or in a thread pool of userdefined size.
+	 * @Note: In single threaded approach: the taks is operated off a bounded queue of size DEFAULT_EXECUTOR_QUEUE_SIZE. If the queue is full, the task is rejected to prevent knocking out the ARE.
 	 * @param r
 	 */	
 	public <V> V submit(Callable<V> r) throws InterruptedException, ExecutionException, TimeoutException {
-		Future<V> f=pool.submit(r);
 		try{
-			return f.get(TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS);
-		}catch(TimeoutException e) {
-			logger.warning("["+Thread.currentThread()+"]: Task execution timeouted, trying to cancel task");
-			if(f!=null) {
-				f.cancel(true);
+			Future<V> f=pool.submit(r);
+			try{
+				return f.get(TASK_SUBMIT_TIMEOUT,TimeUnit.MILLISECONDS);
+			}catch(TimeoutException e) {
+				logger.warning("["+Thread.currentThread().getName()+"]: Task execution timeouted, trying to cancel task");
+				if(f!=null) {
+					f.cancel(true);
+				}
+				throw(e);
 			}
-			throw(e);
-		}		
+		}catch(RejectedExecutionException re) {
+			System.out.print("-");
+			return null;
+		}
 	}
 
 	/**
-	 * Executes (waits for termination) the given Runnable by the Thread instance "ModelExecutor".
+	 * Executes (blocking, waits for termination) the given Runnable by the Thread instance "ModelExecutor".
 	 * If the execution hangs a timeout arises after TASK_SUBMIT_TIMEOUT.
 	 * @param r
 	 * @throws InterruptedException
@@ -201,70 +228,113 @@ public class AstericsModelExecutionThreadPool {
 	}
 	
 	/**
-	 * Executes (waits for termination) the given Callable by the Thread instance "ModelExecutor".
+	 * Executes (blocking, waits for termination) the given Callable by the Thread instance "ModelExecutor".
 	 * If the execution hangs a timeout arises after TASK_SUBMIT_TIMEOUT.
 	 * @param c
 	 * @throws Exception
 	 */
-	public void execAndWaitOnModelExecutorLifecycleThread(Callable c) throws Exception {
+	public <V> V execAndWaitOnModelExecutorLifecycleThread(Callable<V> c) throws Exception {
+		//if (MODEL_EXECUTOR.equals(Thread.currentThread().getName())) {
+		try{		
+			try{
+				return execAndWaitOnModelExecutorLifecycleThreadInternal(c, modelExecutorLifecycle);
+			}catch(RejectedExecutionException re) {
+				//System.out.println("-");
+				re.printStackTrace();
+				//The queue of the current thread pool is full, this indicates that too much data propagation tasks or event notification tasks are pending or one of those tasks hangs due to dead lock or
+				//a blocked I/O call. So bypass old one and create a new one. To be sure that lifecycle tasks can always be executed.
+				logger.warning("[" + MODEL_EXECUTOR_LIFECYCLE
+						+ "]: Task execution rejected, queue full? Switching to new executor service."+modelExecutorLifecycle);
 
-		if (MODEL_EXECUTOR.equals(Thread.currentThread().getName())) {
-			// We are already executed by the AREMain Thread so just call the
+				//first create new executor, but don't officially switch it now to prevent new tasks already queued in the new one.
+				ExecutorService fallbackService=createExecutorService();
+				//now we should be the first task to be executed in this new executor service.
+				V ret=execAndWaitOnModelExecutorLifecycleThreadInternal(c, fallbackService);
+				//after the lifecycle task could be executed switch to this new one.
+				switchToFallbackPoolInternal(fallbackService);
+				return ret;
+			}
+		} catch (TimeoutException e) {				
+			logger.warning("[" + MODEL_EXECUTOR_LIFECYCLE
+					+ "]: Task execution timeouted, switching to new executor service");
+			switchToFallbackPoolInternal(createExecutorService());
+			throw e;
+		}
+	}
+	
+	/**
+	 * Internal implementation of either calling c.call on this thread or the submit method on the given executor.
+	 * This depends on the name of the current thread. If the current thread's name starts with MODEL_EXECUTOR_LIFECYCLE 
+	 * it is assumed that the task is already running in the current model executor thread. (Note: This should always be exactly
+	 * 1 thread, but in case of pool switching after a hanging task the fallback thread would also be treated as "equal".
+	 * @param c
+	 * @param executor
+	 * @return
+	 * @throws Exception
+	 */
+	private <V> V execAndWaitOnModelExecutorLifecycleThreadInternal(Callable<V> c, ExecutorService executor) throws Exception {
+		if(Thread.currentThread().getName().startsWith(MODEL_EXECUTOR_LIFECYCLE)) {
+			// We are already executed by the ModelExecutor Thread so just call the
 			// Runnable.run() method
 			AstericsErrorHandling.instance.getLogger().fine(
 					"ModelExecutor: Current thread: "
 							+ Thread.currentThread().getName()
 							+ ", running r.run() in this thread");
-			c.call();
+			return c.call();
 		} else {
-			// execute with AREMainExecuter and wait for response
+			// Execute with ModelExecutor and wait for response
 			// "blocked execution"
 			AstericsErrorHandling.instance.getLogger().fine(
 					"ModelExecutor: Current thread: "
 							+ Thread.currentThread().getName()
 							+ ", Submitting on modelExecutorLifecycle thread");
-			Future f = modelExecutorLifecycle.submit(c);
-			try {
-				f.get(TASK_SUBMIT_TIMEOUT, TimeUnit.MILLISECONDS);
-			} catch (TimeoutException e) {
-				logger.warning("[" + MODEL_EXECUTOR
-						+ "]: Task execution timeouted");
-				throw e;
-			}
+			Future<V> f = executor.submit(c);
+			return f.get(TASK_SUBMIT_TIMEOUT, TimeUnit.MILLISECONDS);
 		}
 	}
-	
-	
+ 	
 	/**
-	 * Creates a new threadpool of size 1, that is used for future lifecycle and model executions.
-	 */
-	public void switchToFallbackPool() {		
-		logger.warning("ModelExecutor ["+Thread.currentThread()+"]: Switching to fallbackPool: DISABLED");
-		/*
+	 * Creates a new thread pool of size 1 and exchanges (currently hanging) thread pools (modelExecutorLifecycle, pool) 
+	 * for model execution with the new instance.
+	 */	
+	private void switchToFallbackPoolInternal(ExecutorService fallbackPool) {
 		//Each time an execution timeouts the caller can switch to a new threadpool, to not risk a hanging ARE
 		//NOTE: keep it of size one to ensure that the models are executed thread safe!!
-		fallbackPool=Executors.newFixedThreadPool(1, new ThreadFactory() {
-				
-				@Override
-				public Thread newThread(Runnable r) {
-					String threadName=MODEL_EXECUTOR+"-Lifecycle-Fallback-"+fallbackNr++;
-					logger.fine("Creating Thread: "+threadName);
-					
-					Thread newThread=Executors.defaultThreadFactory().newThread(r);
-					newThread.setName(threadName);
-					return newThread;					
-				}
-			});
+		//is used as a fallbackpool to stop a hanging model in case of a single-threaded approach		
 
-		modelExecutorLifecycle=fallbackPool;
-		*/		
+		//Synchronize to ensure that both modelExecutorLifecycle and pool get the same instance.
+		synchronized(fallbackThreadFactory) {
+			//ExecutorService fallbackPool=Executors.newFixedThreadPool(1, fallbackThreadFactory);
+			//ExecutorService fallbackPool=createThreadPool();
+			if(!modelExecutorLifecycle.isShutdown()) {
+				logger.fine("Shutting down old ModelExecutor Service");
+				modelExecutorLifecycle.shutdownNow();
+			}
+			if(pool!=modelExecutorLifecycle && !pool.isShutdown()) {
+				logger.fine("Shutting down old pool Service");
+				pool.shutdownNow();				
+			}
+			modelExecutorLifecycle=fallbackPool;
+			pool=fallbackPool;
+		}		
 	}
-
+	
 	/**
-	 * Returns the instance of the AREMain thread ExecutorService.
+	 * @deprecated
+	 * Creates a new thread pool of size 1 and exchanges (currently hanging) thread pools (modelExecutorLifecycle, pool) 
+	 * for model execution with the new instance.
+	 */
+	public void switchToFallbackPool() {		
+		//logger.warning("ModelExecutor ["+Thread.currentThread()+"]: Switching to fallbackPool: DISABLED");
+		
+		//Don't use manual switching any more, use automatic switchToFallbackPoolInternal() after a timeout in execAndWaitOnModelExecutorLifecycleThread instead
+	}
+		
+	/**
+	 * 
 	 * @return
 	 */
-	public ExecutorService getModelExecutorLifecycleThread() {
-		return modelExecutorLifecycle;
+	private ExecutorService createExecutorService() {
+		return new ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(DEFAULT_EXECUTOR_QUEUE_SIZE),fallbackThreadFactory,new ThreadPoolExecutor.AbortPolicy());
 	}
 }

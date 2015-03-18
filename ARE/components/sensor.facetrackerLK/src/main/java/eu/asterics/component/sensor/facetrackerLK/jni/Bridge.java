@@ -128,9 +128,10 @@ public class Bridge
      * @param point2_x the x of point 2 (range is [0, Short.MAX_VALUE])
      * @param point2_y the y of point 2 (range is [0, Short.MAX_VALUE])
      */
-    synchronized private void newCoordinates_callback(final int point1_x,
+    private void newCoordinates_callback(final int point1_x,
         final int point1_y, final int point2_x, final int point2_y)
     {
+    	System.out.print(".");
     	owner.newCoordinates_callback(point1_x, point1_y, point2_x, point2_y);
     }
 }

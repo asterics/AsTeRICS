@@ -7,8 +7,8 @@
 
 CLS
 
-SET PROFILE_PATH="profile"
-SET ARE_OPTIONAL_SERVICES_INI=""
+SET PROFILE_PATH=profile
+SET ARE_OPTIONAL_SERVICES_INI=
 
 @REM Check commandline parameter
 @IF "%1" == "--webservice" (

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_singleThreadedStabilization\AsTeRICS\Tests\integrationTests\04_Model execution\PluginStopHangs4ever.acs_2015_3_17_22_24" version="20130320">
+  <components>
+    <component id="EmulateFaultyPlugin.1" type_id="asterics.EmulateFaultyPlugin">
+      <description>Emulates a faulty plugin - supports throwing exceptions during method calls or hanging (unresponsive) method calls </description>
+      <ports>
+        <inputPort portTypeID="inA">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inB">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inC">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="inD">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="startException" value="False" />
+        <property name="pauseException" value="False" />
+        <property name="resumeException" value="false" />
+        <property name="stopException" value="False" />
+        <property name="startDuration" value="0" />
+        <property name="pauseDuration" value="0" />
+        <property name="resumeDuration" value="0" />
+        <property name="stopDuration" value="-1" />
+        <property name="inADuration" value="0" />
+        <property name="inBDuration" value="0" />
+        <property name="inCDuration" value="0" />
+        <property name="inDDuration" value="0" />
+        <property name="eventADuration" value="0" />
+        <property name="eventBDuration" value="0" />
+        <property name="eventCDuration" value="0" />
+      </properties>
+      <layout>
+        <posX>106</posX>
+        <posY>40</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>444</posY>
+        <width>30</width>
+        <height>20</height>
+      </gui>
+    </component>
+  </components>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9000</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

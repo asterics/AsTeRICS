@@ -307,8 +307,9 @@ Runnable
 			inputStream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
-		port.close();
+		} finally {		
+			port.close();
+		}
 		CIMPortManager.getInstance().removeConnection(cimId);
 
 		logger.fine(this.getClass().getName()+".run: Thread on serial port " + 
@@ -321,14 +322,19 @@ Runnable
 	 */
 	@Override
 	public void closePort()
-	{
+	{		
 		logger.fine(this.getClass().getName()+".closePort on "+ comPortName 
 				+ ": This method currently waits until the port thread ends, " +
 				  "which might result in a deadlock but should not through " +
 				  "the timeouts of blocking \n");
 		threadRunning = false;
-		while (!threadEnded) 
-			Thread.yield(); 
+		try{
+			while (!threadEnded) 
+				Thread.yield();
+		}finally{
+			port.close();
+			logger.fine("Port: "+port.getName()+" closed");
+		}
 	}
 
 	/* (non-Javadoc)

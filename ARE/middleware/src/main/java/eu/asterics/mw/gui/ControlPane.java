@@ -43,6 +43,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -61,6 +62,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import org.osgi.framework.BundleContext;
@@ -71,6 +73,7 @@ import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 
@@ -215,10 +218,18 @@ public class ControlPane extends JPanel
 			public void keyPressed(KeyEvent arg0) {
 				// TODO Auto-generated method stub
 				if(KeyEvent.VK_F7==arg0.getKeyCode()) {
-					try {
-						as.stopModel();
-					} catch (AREAsapiException e) {
-					}					
+					//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					
+					try{
+						try {
+							as.stopModel();
+						} catch (AREAsapiException e) {
+						}
+					}finally{															
+						//mainFrame.setCursor(Cursor.getDefaultCursor());
+						mainFrame.validate();
+						System.out.println ("Stop model OK!");										
+					}
 				}
 			}
 		});
@@ -320,32 +331,44 @@ public class ControlPane extends JPanel
 			public void mouseClicked(MouseEvent me) {
 				final String selectedModelFile=astericsGUI.fileChooser(as);
 				
-				//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
-				//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread
-				AstericsThreadPool.instance.execute(new Runnable() {
-					public void run() {
-						try {
-							//If a new model was selected, deploy it.
-							if(selectedModelFile!=null) {
-								as.deployFile(selectedModelFile);
-							}
-							//Also, if no model was selected, restart old one.
-							as.runModel();
-						} catch (AREAsapiException e) {	}
-						mainFrame.validate();
-						System.out.println ("Run/resume model OK!");
+				//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				
+				try{
+					try {
+						//If a new model was selected, deploy it.
+						if(selectedModelFile!=null) {
+							as.deployFile(selectedModelFile);
+						}
+					} catch (AREAsapiException e) {	
+						//do a catch only for deployFile here because runModel automatically shows error dialog.
+						String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
+						AstericsErrorHandling.instance.reportError(null, "Could not deploy model!"+ reason);
+						//Give up, if deployment fails.
+						return;
 					}
-				});
+					try {							
+						//Also, if no model was selected or the deployment failed, restart old one.
+						AstericsErrorHandling.instance.getLogger().fine("Starting runModel of deployed model");
+						as.runModel();
+					} catch (AREAsapiException e) {}
+
+				}finally{
+					//Restore mouse cursor in any case
+					//mainFrame.setCursor(Cursor.getDefaultCursor());
+					mainFrame.validate();
+					System.out.println ("Run/resume model OK!");										
+				}
+				
 			}
 			public void mouseEntered(MouseEvent e) {	
 				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				deployLabel.setIcon(deployIcon_ro);
 				iconPanel.revalidate();
 				
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				deployLabel.setIcon(deployIcon);
 				iconPanel.revalidate();
 			}	
@@ -353,28 +376,24 @@ public class ControlPane extends JPanel
 
 		startLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
-				//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread
-				AstericsThreadPool.instance.execute(new Runnable() {
-					public void run() {
-						try {
-							as.runModel();
-						} catch (AREAsapiException e) {
-						}
-						mainFrame.validate();
-						System.out.println ("Run/resume model OK!");
-					}
-				});
-
+				//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				try {
+					as.runModel();
+				} catch (AREAsapiException e) {
+				} finally {
+					//mainFrame.setCursor(Cursor.getDefaultCursor());
+					mainFrame.validate();
+					System.out.println ("Run/resume model OK!");
+				}
 			}
 			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				startLabel.setIcon(startIcon_ro);
 				iconPanel.revalidate();
 				
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				startLabel.setIcon(startIcon);
 				iconPanel.revalidate();
 			}	
@@ -382,49 +401,53 @@ public class ControlPane extends JPanel
 
 		stopLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
-				//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread				
-				AstericsThreadPool.instance.execute(new Runnable() {
-					public void run() {
-						try {
-							as.stopModel();
-						} catch (AREAsapiException e) {
-						}
+				//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				
+				try{
+					try {
+						as.stopModel();
+					} catch (AREAsapiException e) {
 					}
-				});
+				}finally{															
+					//mainFrame.setCursor(Cursor.getDefaultCursor());
+					mainFrame.validate();
+					System.out.println ("Stop model OK!");										
+				}						
 			}
 			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				stopLabel.setIcon(stopIcon_ro);
 				iconPanel.revalidate();
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				stopLabel.setIcon(stopIcon);
 				iconPanel.revalidate();
 			}
 		});
 
 		pauseLabel.addMouseListener(new MouseAdapter() {
-			//Deploy and start model non-blocking, because some plugins perform GUI-actions running in the 
-			//Event-Dispatch-Thread, this would result in a deadlock between the ModelExecutor-Thread and the Event-Dispatch-Thread			
-			public void mouseClicked(MouseEvent me) {
-				AstericsThreadPool.instance.execute(new Runnable() {
-					public void run() {
-						try {
-							as.pauseModel();
-						} catch (AREAsapiException e) {
-						}
+			public void mouseClicked(MouseEvent me) {				
+				//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				
+				try{
+					try {
+						as.pauseModel();
+					} catch (AREAsapiException e) {
 					}
-				});
+				}finally{															
+					//mainFrame.setCursor(Cursor.getDefaultCursor());
+					mainFrame.validate();
+					System.out.println ("Pause model OK!");										
+				}
 			}
 			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				pauseLabel.setIcon(pauseIcon_ro);
 				iconPanel.revalidate();
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				pauseLabel.setIcon(pauseIcon);
 				iconPanel.revalidate();
 			}
@@ -437,12 +460,12 @@ public class ControlPane extends JPanel
 				
 			}
 			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				optionsLabel.setIcon(optionsIcon_ro);
 				iconPanel.revalidate();
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				optionsLabel.setIcon(optionsIcon);
 				iconPanel.revalidate();
 			}
@@ -459,12 +482,12 @@ public class ControlPane extends JPanel
                  } 
 			}
 			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				exitLabel.setIcon(exitIcon_ro);
 				iconPanel.revalidate();
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				exitLabel.setIcon(exitIcon);
 				iconPanel.revalidate();
 			}
@@ -509,10 +532,10 @@ public class ControlPane extends JPanel
 				}
 			}
 			public void mouseEntered(MouseEvent e) {	
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}	
 		});
 		

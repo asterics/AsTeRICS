@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.EmulateFaultyPlugin"
+                   canonical_name="eu.asterics.component.actuator.emulatefaultyplugin.EmulateFaultyPluginInstance">
+        <type subtype="Test">actuator</type>
+        <singleton>false</singleton>
+        <description>Emulates a faulty plugin - supports throwing exceptions during method calls or hanging (unresponsive) method calls </description>
+        <ports>
+			<inputPort id="inA">
+				<description>input A</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="inB">
+				<description>input C</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="inC">
+				<description>input C</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inD">
+				<description>input C</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="eventA">
+				<description>eventA</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventB">
+				<description>eventB</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventC">
+				<description>eventC</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="startException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during start method"/>
+			<property name="pauseException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during pause method"/>
+			<property name="resumeException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during resume method"/>
+			<property name="stopException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during stop method"/>
+				
+				<!-- 
+			<property name="getInputPortException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getOutputPortException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getRuntimePropertyValueException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="setRuntimePropertyValueException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getEventListenerPortException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getInputPortNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+			<property name="getOutputPortNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+			<property name="getRuntimePropertyNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+			<property name="getEventListenerPortNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+				-->
+			<property name="startDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="pauseDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="resumeDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="stopDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+				<!-- 
+			<property name="getRuntimePropertyDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="setRuntimePropertyDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+				-->
+			<property name="inADuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="inBDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="inCDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="inDDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="eventADuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="eventBDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="eventCDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+
+        </properties>
+		<gui>
+			<width>30</width>
+			<height>20</height>
+		</gui>
+
+    </componentType>
+</componentTypes>

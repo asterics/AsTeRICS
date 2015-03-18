@@ -154,8 +154,9 @@ public class Main implements BundleActivator
 						as.autostart(startModel);
 
 					} catch (Throwable e) {
+						String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
 						JOptionPane.showMessageDialog(null,
-								"The AsTeRICS Runtime Environment could not be initiated!"
+								"The AsTeRICS Runtime Environment could not be initiated!"+reason
 								, "ARE startup error",
 								JOptionPane.ERROR_MESSAGE);
 						System.exit(0);

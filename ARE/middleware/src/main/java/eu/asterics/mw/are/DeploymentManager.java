@@ -221,7 +221,15 @@ public class DeploymentManager
 				//logger.severe(canonicalName+ " prevents the model from starting: "+e.getMessage());
 				e.printStackTrace();
 				String message="Could not deploy component of type ["+componentTypeID+"]: \n"+e.getMessage();
-				AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
+				//AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
+				
+				//before give up, try to cleanup and undeploy model again				
+				try{
+					logger.fine("Before giving up, trying to undeploy model again.");
+					undeployModel();
+				}catch(Throwable t) {
+					t.printStackTrace();
+				}			
 				throw new DeploymentException(message);
 				//return;
 			}
@@ -236,7 +244,11 @@ public class DeploymentManager
 							componentInstance.getPropertyValue(propertyName);
 					if (propertyName != null)
 					{
-						synchronized(runtimeComponentInstance) {
+						//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+						//We have to synchronize using the target component, because the component can be considered a black box, that must
+						//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
+						//synchronized(runtimeComponentInstance) 
+						{
 							runtimeComponentInstance.
 							setRuntimePropertyValue(propertyName, propertyValue);
 						}
@@ -401,103 +413,108 @@ public class DeploymentManager
 	 */
 	public void undeployModel()
 	{		
-		modelStartupFinished=false;
-		final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
+		try{
+			modelStartupFinished=false;
+			final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
 
-		final Set<IChannel> channels = runtimeModel.getChannels();
-		final Set <IEventChannel> eventChannels = 
-				runtimeModel.getEventChannels();
+			final Set<IChannel> channels = runtimeModel.getChannels();
+			final Set <IEventChannel> eventChannels = 
+					runtimeModel.getEventChannels();
 
-		//Disconnect channels
-		for (IChannel channel : channels)
-		{
-			final IBindingEdge sourceBindingEdge = channel.getSource();
-			final IBindingEdge targetBindingEdge = channel.getTarget();
-			final String sourceComponentInstanceID = sourceBindingEdge.
-					getComponentInstanceID();
-			final String sourceOutputPortID = sourceBindingEdge.getPortID();
-			final String targetComponentInstanceID = targetBindingEdge.
-					getComponentInstanceID();
-			final String targetInputPortID = targetBindingEdge.getPortID();
-			final IRuntimeComponentInstance sourceComponentInstance
-			= runtimeComponentInstances.get(sourceComponentInstanceID);
-
-			if (sourceComponentInstance!=null)
+			//Disconnect channels
+			for (IChannel channel : channels)
 			{
-				final IRuntimeOutputPort sourceRuntimeOutputPort
-				= sourceComponentInstance.getOutputPort(sourceOutputPortID);			
-
-				sourceRuntimeOutputPort.
-				removeInputPortEndpoint(targetComponentInstanceID, 
-						targetInputPortID);
-			}
-
-		}
-		for (IEventChannel eventChannel : eventChannels)
-		{
-			final String eventChannelID = eventChannel.getChannelID();
-			final IEventEdge [] eventSources = eventChannel.getSources();
-			final IEventEdge [] eventTargets = eventChannel.getTargets();
-
-			final Set<EventListenerDetails> targetEventListenerPorts
-			= new LinkedHashSet<EventListenerDetails>();
-
-			for(final IEventEdge targetEventEdge : eventTargets)
-			{
-				final String targetComponentInstanceID = 
-						targetEventEdge.getComponentInstanceID();
-				final String targetEventPortID = 
-						targetEventEdge.getEventPortID();
-
-				final IRuntimeComponentInstance targetComponentInstance
-				= runtimeComponentInstances.
-				get(targetComponentInstanceID);
-
-				if (targetComponentInstance!=null)
-				{
-					final IRuntimeEventListenerPort eventListenerPort
-					= targetComponentInstance.
-					getEventListenerPort(targetEventPortID);
-					targetEventListenerPorts.add(
-							new EventListenerDetails(targetComponentInstanceID, 
-									targetEventPortID, 
-									eventListenerPort));
-				}
-			}
-			//disconnect event channels
-			for(final IEventEdge sourceEventEdge : eventSources)
-			{
-				final String sourceComponentInstanceID = 
-						sourceEventEdge.getComponentInstanceID();
-				final String sourceEventPortID = sourceEventEdge.
-						getEventPortID();
-
+				final IBindingEdge sourceBindingEdge = channel.getSource();
+				final IBindingEdge targetBindingEdge = channel.getTarget();
+				final String sourceComponentInstanceID = sourceBindingEdge.
+						getComponentInstanceID();
+				final String sourceOutputPortID = sourceBindingEdge.getPortID();
+				final String targetComponentInstanceID = targetBindingEdge.
+						getComponentInstanceID();
+				final String targetInputPortID = targetBindingEdge.getPortID();
 				final IRuntimeComponentInstance sourceComponentInstance
-				= runtimeComponentInstances.
-				get(sourceComponentInstanceID);
+				= runtimeComponentInstances.get(sourceComponentInstanceID);
+
 				if (sourceComponentInstance!=null)
 				{
-					final IRuntimeEventTriggererPort eventTriggererPort
-					= sourceComponentInstance.
-					getEventTriggererPort(sourceEventPortID);
-					eventTriggererPort.setEventChannelID(eventChannelID);
+					final IRuntimeOutputPort sourceRuntimeOutputPort
+					= sourceComponentInstance.getOutputPort(sourceOutputPortID);			
 
+					sourceRuntimeOutputPort.
+					removeInputPortEndpoint(targetComponentInstanceID, 
+							targetInputPortID);
+				}
 
-					for(final EventListenerDetails eventListenerDetails : 
-						targetEventListenerPorts)
+			}
+			for (IEventChannel eventChannel : eventChannels)
+			{
+				final String eventChannelID = eventChannel.getChannelID();
+				final IEventEdge [] eventSources = eventChannel.getSources();
+				final IEventEdge [] eventTargets = eventChannel.getTargets();
+
+				final Set<EventListenerDetails> targetEventListenerPorts
+				= new LinkedHashSet<EventListenerDetails>();
+
+				for(final IEventEdge targetEventEdge : eventTargets)
+				{
+					final String targetComponentInstanceID = 
+							targetEventEdge.getComponentInstanceID();
+					final String targetEventPortID = 
+							targetEventEdge.getEventPortID();
+
+					final IRuntimeComponentInstance targetComponentInstance
+					= runtimeComponentInstances.
+					get(targetComponentInstanceID);
+
+					if (targetComponentInstance!=null)
 					{
-						eventTriggererPort.
-						removeEventListener(eventListenerDetails.componentID,
-								eventListenerDetails.portID);
+						final IRuntimeEventListenerPort eventListenerPort
+						= targetComponentInstance.
+						getEventListenerPort(targetEventPortID);
+						targetEventListenerPorts.add(
+								new EventListenerDetails(targetComponentInstanceID, 
+										targetEventPortID, 
+										eventListenerPort));
+					}
+				}
+				//disconnect event channels
+				for(final IEventEdge sourceEventEdge : eventSources)
+				{
+					final String sourceComponentInstanceID = 
+							sourceEventEdge.getComponentInstanceID();
+					final String sourceEventPortID = sourceEventEdge.
+							getEventPortID();
+
+					final IRuntimeComponentInstance sourceComponentInstance
+					= runtimeComponentInstances.
+					get(sourceComponentInstanceID);
+					if (sourceComponentInstance!=null)
+					{
+						final IRuntimeEventTriggererPort eventTriggererPort
+						= sourceComponentInstance.
+						getEventTriggererPort(sourceEventPortID);
+						eventTriggererPort.setEventChannelID(eventChannelID);
+
+
+						for(final EventListenerDetails eventListenerDetails : 
+							targetEventListenerPorts)
+						{
+							eventTriggererPort.
+							removeEventListener(eventListenerDetails.componentID,
+									eventListenerDetails.portID);
+						}
 					}
 				}
 			}
+
+			runtimeComponentInstances.values().clear();
+			runtimeComponentInstancesStatus.clear();
+			System.gc();
+		}catch(Throwable e) {
+			String reason=e.getCause()!=null && e.getCause().getMessage() != null ? e.getCause().getMessage() : e.getMessage();  
+			logger.warning("Ignoring exception in undeployModel: "+reason);
+			e.printStackTrace();
 		}
-
-		runtimeComponentInstances.values().clear();
-		runtimeComponentInstancesStatus.clear();
-		System.gc();
-
 	}
 
 
@@ -538,7 +555,12 @@ public class DeploymentManager
 				componentTypeIdToRuntimeComponentInstances.remove(set);
 
 				//No instances of this type stop the Bundle possible
-				synchronized(ci) {
+
+				//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+				//We have to synchronize using the target component, because the component can be considered a black box, that must
+				//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
+				//synchronized(ci) 
+				{
 					BundleManager.
 					stopBundleComponent(componentRepository.getComponentType(cType));
 				}
@@ -568,7 +590,11 @@ public class DeploymentManager
 					String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 					
 					String s = getComponentInstanceIDFromComponentInstance(componentInstance);
-					synchronized (componentInstance) {
+					//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+					//We have to synchronize using the target component, because the component can be considered a black box, that must
+					//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
+					//synchronized (componentInstance) 
+					{
 						bundleManager.getBundleFromId(id).start();
 						componentInstance.start();
 						runtimeComponentInstancesStatus.put(s, AREStatus.RUNNING);
@@ -639,7 +665,11 @@ public class DeploymentManager
 			{
 				String compRefName=componentInstance.getClass().getSimpleName();
 				logger.fine("Trying to pause component instance: "+compRefName);
-				synchronized(componentInstance) {
+				//MULTI-THREADING: Remove comments if you want to reenable multi-threaded execution approach.
+				//We have to synchronize using the target component, because the component can be considered a black box, that must
+				//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	 				
+				//synchronized(componentInstance) 
+				{
 					componentInstance.pause();
 					String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
 					runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.PAUSED);
@@ -664,7 +694,11 @@ public class DeploymentManager
 			{
 				String compRefName=componentInstance.getClass().getSimpleName();
 				logger.fine("Trying to resume component instance: "+compRefName);
-				synchronized(componentInstance) {
+				//MULTI-THREADING: Remove comments if you want to reenable multi-threaded execution approach.
+				//We have to synchronize using the target component, because the component can be considered a black box, that must
+				//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	 								
+				//synchronized(componentInstance) 
+				{
 					componentInstance.resume();
 					String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
 					runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.RUNNING);				
@@ -695,7 +729,7 @@ public class DeploymentManager
 					logger.fine("Trying to stop component instance: "+compRefName);
 					String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 	
-//Removed synchronized again due to issue #59					
+//Removed synchronized again due to issue #59								
 //					synchronized(componentInstance) {
 						bundleManager.getBundleFromId(id).stop();
 						componentInstance.stop();
@@ -895,7 +929,11 @@ public class DeploymentManager
 
 					if (propertyName.equals(key))
 					{
-						synchronized(runtimeComponentInstance) {
+						//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+						//We have to synchronize using the target component, because the component can be considered a black box, that must
+						//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
+						//synchronized(runtimeComponentInstance) 
+						{
 							runtimeComponentInstance.setRuntimePropertyValue(key, value);
 						}
 					}
@@ -1147,6 +1185,9 @@ public class DeploymentManager
 		
 
 			Stack<LinkedHashMap<String, byte[]>> stack = bufferedPortsMap.get(targetComponentID);
+			//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+			//We have to synchronize using the target component, because the component can be considered a black box, that must
+			//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
 			synchronized (stack)
 			{
 				if (stack.isEmpty()){
@@ -1154,6 +1195,9 @@ public class DeploymentManager
 					
 					
 					LinkedHashMap<String, byte[]> row = new LinkedHashMap<String, byte[]>();
+					//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+					//We have to synchronize using the target component, because the component can be considered a black box, that must
+					//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
 					synchronized (row)
 					{
 						row.put(portID, data);
@@ -1167,10 +1211,12 @@ public class DeploymentManager
 							
 							IRuntimeComponentInstance rci = this.runtimeComponentInstances.get(targetComponentID);
 							
-							//synchronize using the target component, because the component can be considered a black box, that must
-							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.	
+							//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+							//We have to synchronize using the target component, because the component can be considered a black box, that must
+							//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
 							if(rci != null) {
-								synchronized(rci) {
+								//synchronized(rci) 
+								{
 									rci.syncedValuesReceived(row);
 								}
 							} else {
@@ -1187,6 +1233,10 @@ public class DeploymentManager
 			
 					
 					LinkedHashMap<String, byte[]> row = stack.peek();
+					//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+					//We have to synchronize using the target component, because the component can be considered a black box, that must
+					//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
+					
 					synchronized (row)
 					{
 						//if (row.size()<=100) 
@@ -1195,10 +1245,12 @@ public class DeploymentManager
 						{
 							IRuntimeComponentInstance rci = this.runtimeComponentInstances.get(targetComponentID);
 							
-							//synchronize using the target component, because the component can be considered a black box, that must
-							//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.	
+							//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+							//We have to synchronize using the target component, because the component can be considered a black box, that must
+							//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
 							if(rci != null) {
-								synchronized(rci) {
+								//synchronized(rci) 
+								{
 									rci.syncedValuesReceived(row);
 								}
 							} else {
@@ -1214,6 +1266,10 @@ public class DeploymentManager
 		else //start buffering
 		{
 			Stack<LinkedHashMap<String, byte[]>> stack = new  Stack<LinkedHashMap<String, byte[]>>();
+			//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+			//We have to synchronize using the target component, because the component can be considered a black box, that must
+			//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
+
 			synchronized (stack)
 			{
 				bufferedPortsMap.put(targetComponentID, stack);
@@ -1227,10 +1283,12 @@ public class DeploymentManager
 					
 					IRuntimeComponentInstance rci = runtimeComponentInstances.get(targetComponentID);
 					
-					//synchronize using the target component, because the component can be considered a black box, that must
-					//ensure data integrity. The data propagation of (output to input ports) is also synchronized on the component object.			
+					//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+					//We have to synchronize using the target component, because the component can be considered a black box, that must
+					//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.	
 					if(rci != null) {
-						synchronized(rci) {
+						//synchronized(rci) 
+						{
 							rci.syncedValuesReceived(row);
 						}
 					} else {
