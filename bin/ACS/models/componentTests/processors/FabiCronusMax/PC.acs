@@ -1,0 +1,687 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\Conny\Documents\GitHub\AsTeRICS\bin\ACS\models\componentTests\processors\FabiCronusMax\PC.acs_2015_3_18_15_31" version="20130320">
+  <components>
+    <component id="FabiCronusMax.1" type_id="asterics.FabiCronusMax">
+      <description>Plugin for the combination of the Fabi and the CronusMax</description>
+      <ports>
+        <inputPort portTypeID="InConsole">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="InGame">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="InMode">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="OutConsole">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="OutGame">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="OutMode">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="OutModel">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="ComPort" value="11" />
+        <property name="ModeFilePath" value="C:\Users\User1\Documents\GitHub\AsTeRICS\bin\ACS\models\componentTests\processors\FabiCronusMax\config.csv" />
+      </properties>
+      <layout>
+        <posX>467</posX>
+        <posY>178</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Zurück" />
+        <property name="buttonCaption2" value="Modus" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>253</posX>
+        <posY>490</posY>
+      </layout>
+      <gui>
+        <posX>5438</posX>
+        <posY>3111</posY>
+        <width>750</width>
+        <height>4444</height>
+      </gui>
+    </component>
+    <component id="CellBoard.1" type_id="asterics.CellBoard">
+      <description>Adjustable matrix of button cells with scanning support</description>
+      <ports>
+        <inputPort portTypeID="row">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="column">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="cellNumber">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="xmlFile">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="actCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellText">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="rows" value="2" />
+        <property name="columns" value="0" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="scanColor" value="1" />
+        <property name="scanMode" value="0" />
+        <property name="hoverTime" value="1000" />
+        <property name="enableEdit" value="true" />
+        <property name="enableClickSelection" value="true" />
+        <property name="keyboardFile" value="" />
+        <property name="displayGUI" value="true" />
+        <property name="cellText1" value="Minecraft" />
+        <property name="cellImage1" value="" />
+        <property name="actionText1" value="Minecraft" />
+        <property name="cellText2" value="GTAV" />
+        <property name="cellImage2" value="" />
+        <property name="actionText2" value="GTAV" />
+        <property name="cellText3" value="Sims" />
+        <property name="cellImage3" value="" />
+        <property name="actionText3" value="Sims" />
+        <property name="cellText4" value="" />
+        <property name="cellImage4" value="" />
+        <property name="actionText4" value="" />
+        <property name="cellText5" value="" />
+        <property name="cellImage5" value="" />
+        <property name="actionText5" value="" />
+        <property name="cellText6" value="" />
+        <property name="cellImage6" value="" />
+        <property name="actionText6" value="" />
+        <property name="cellText7" value="" />
+        <property name="cellImage7" value="" />
+        <property name="actionText7" value="" />
+        <property name="cellText8" value="" />
+        <property name="cellImage8" value="" />
+        <property name="actionText8" value="" />
+        <property name="cellText9" value="" />
+        <property name="cellImage9" value="" />
+        <property name="actionText9" value="" />
+        <property name="cellText10" value="" />
+        <property name="cellImage10" value="" />
+        <property name="actionText10" value="" />
+        <property name="cellText11" value="" />
+        <property name="cellImage11" value="" />
+        <property name="actionText11" value="" />
+        <property name="cellText12" value="" />
+        <property name="cellImage12" value="" />
+        <property name="actionText12" value="" />
+        <property name="cellText13" value="" />
+        <property name="cellImage13" value="" />
+        <property name="actionText13" value="" />
+        <property name="cellText14" value="" />
+        <property name="cellImage14" value="" />
+        <property name="actionText14" value="" />
+        <property name="cellText15" value="" />
+        <property name="cellImage15" value="" />
+        <property name="actionText15" value="" />
+        <property name="cellText16" value="" />
+        <property name="cellImage16" value="" />
+        <property name="actionText16" value="" />
+        <property name="cellText17" value="" />
+        <property name="cellImage17" value="" />
+        <property name="actionText17" value="" />
+        <property name="cellText18" value="" />
+        <property name="cellImage18" value="" />
+        <property name="actionText18" value="" />
+        <property name="cellText19" value="" />
+        <property name="cellImage19" value="" />
+        <property name="actionText19" value="" />
+        <property name="cellText20" value="" />
+        <property name="cellImage20" value="" />
+        <property name="actionText20" value="" />
+        <property name="cellText21" value="" />
+        <property name="cellImage21" value="" />
+        <property name="actionText21" value="" />
+        <property name="cellText22" value="" />
+        <property name="cellImage22" value="" />
+        <property name="actionText22" value="" />
+        <property name="cellText23" value="" />
+        <property name="cellImage23" value="" />
+        <property name="actionText23" value="" />
+        <property name="cellText24" value="" />
+        <property name="cellImage24" value="" />
+        <property name="actionText24" value="" />
+        <property name="cellText25" value="" />
+        <property name="cellImage25" value="" />
+        <property name="actionText25" value="" />
+        <property name="cellText26" value="" />
+        <property name="cellImage26" value="" />
+        <property name="actionText26" value="" />
+        <property name="cellText27" value="" />
+        <property name="cellImage27" value="" />
+        <property name="actionText27" value="" />
+        <property name="cellText28" value="" />
+        <property name="cellImage28" value="" />
+        <property name="actionText28" value="" />
+        <property name="cellText29" value="" />
+        <property name="cellImage29" value="" />
+        <property name="actionText29" value="" />
+        <property name="cellText30" value="" />
+        <property name="cellImage30" value="" />
+        <property name="actionText30" value="" />
+        <property name="cellText31" value="" />
+        <property name="cellImage31" value="" />
+        <property name="actionText31" value="" />
+        <property name="cellText32" value="" />
+        <property name="cellImage32" value="" />
+        <property name="actionText32" value="" />
+        <property name="cellText33" value="" />
+        <property name="cellImage33" value="" />
+        <property name="actionText33" value="" />
+        <property name="cellText34" value="" />
+        <property name="cellImage34" value="" />
+        <property name="actionText34" value="" />
+        <property name="cellText35" value="" />
+        <property name="cellImage35" value="" />
+        <property name="actionText35" value="" />
+        <property name="cellText36" value="" />
+        <property name="cellImage36" value="" />
+        <property name="actionText36" value="" />
+      </properties>
+      <layout>
+        <posX>238</posX>
+        <posY>200</posY>
+      </layout>
+      <gui>
+        <posX>6188</posX>
+        <posY>3111</posY>
+        <width>1562</width>
+        <height>4444</height>
+      </gui>
+    </component>
+    <component id="StringExpander.1" type_id="asterics.StringExpander">
+      <description>Adds the preString and postString strings to the incoming string and sends the new string to the output port.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="preString">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="postString">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="preString" value="C:\Users\User1\Documents\GitHub\AsTeRICS\bin\ACS\models\componentTests\processors\FabiCronusMax\" />
+        <property name="postString" value=".jpeg" />
+        <property name="trim" value="True" />
+      </properties>
+      <layout>
+        <posX>705</posX>
+        <posY>55</posY>
+      </layout>
+    </component>
+    <component id="StringExpander.1.1" type_id="asterics.StringExpander">
+      <description>Adds the preString and postString strings to the incoming string and sends the new string to the output port.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="preString">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="postString">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="preString" value="C:\Users\User1\Documents\GitHub\AsTeRICS\bin\ACS\models\componentTests\processors\FabiCronusMax\" />
+        <property name="postString" value=".jpeg" />
+        <property name="trim" value="False" />
+      </properties>
+      <layout>
+        <posX>730</posX>
+        <posY>215</posY>
+      </layout>
+    </component>
+    <component id="TextDisplay.1.2" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>651</posX>
+        <posY>359</posY>
+      </layout>
+      <gui>
+        <posX>7885</posX>
+        <posY>6121</posY>
+        <width>1688</width>
+        <height>1444</height>
+      </gui>
+    </component>
+    <component id="TextSender.1" type_id="asterics.TextSender">
+      <description>Send text when gets event</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="text" value="PC" />
+      </properties>
+      <layout>
+        <posX>353</posX>
+        <posY>33</posY>
+      </layout>
+    </component>
+    <component id="AutostartEvent.1" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="0" />
+      </properties>
+      <layout>
+        <posX>14</posX>
+        <posY>41</posY>
+      </layout>
+    </component>
+    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
+      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+      <ports>
+        <inputPort portTypeID="modelName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="model" value="C:\Users\User1\Documents\GitHub\AsTeRICS\bin\ACS\models\componentTests\processors\FabiCronusMax\FabiCronusMaxMain.acs" />
+      </properties>
+      <layout>
+        <posX>424</posX>
+        <posY>487</posY>
+      </layout>
+    </component>
+    <component id="ImageBox.1" type_id="asterics.ImageBox">
+      <description>GUI component, which displays a picture.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>883</posX>
+        <posY>55</posY>
+      </layout>
+      <gui>
+        <posX>7885</posX>
+        <posY>3121</posY>
+        <width>1688</width>
+        <height>1444</height>
+      </gui>
+    </component>
+    <component id="DialogBox.1" type_id="asterics.DialogBox">
+      <description>creates a dialog box to display information</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="info" />
+        <property name="text" value="Loading..." />
+        <property name="alwaysOnTop" value="true" />
+        <property name="messageType" value="1" />
+        <property name="buttonText1" value="" />
+        <property name="buttonText2" value="" />
+        <property name="buttonText3" value="" />
+        <property name="buttonText4" value="" />
+        <property name="buttonText5" value="" />
+      </properties>
+      <layout>
+        <posX>651</posX>
+        <posY>536</posY>
+      </layout>
+    </component>
+    <component id="ImageBox.1.1" type_id="asterics.ImageBox">
+      <description>GUI component, which displays a picture.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>883</posX>
+        <posY>221</posY>
+      </layout>
+      <gui>
+        <posX>7885</posX>
+        <posY>4565</posY>
+        <width>1688</width>
+        <height>1556</height>
+      </gui>
+    </component>
+    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="40" />
+        <property name="block" value="false" />
+      </properties>
+      <layout>
+        <posX>80</posX>
+        <posY>426</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.2">
+      <source>
+        <component id="CellBoard.1" />
+        <port id="selectedCellText" />
+      </source>
+      <target>
+        <component id="FabiCronusMax.1" />
+        <port id="InGame" />
+      </target>
+    </channel>
+    <channel id="binding.7">
+      <source>
+        <component id="StringExpander.1.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="ImageBox.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.9">
+      <source>
+        <component id="FabiCronusMax.1" />
+        <port id="OutConsole" />
+      </source>
+      <target>
+        <component id="StringExpander.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="FabiCronusMax.1" />
+        <port id="OutMode" />
+      </source>
+      <target>
+        <component id="TextDisplay.1.2" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="TextSender.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="FabiCronusMax.1" />
+        <port id="InConsole" />
+      </target>
+    </channel>
+    <channel id="binding.8">
+      <source>
+        <component id="StringExpander.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="ImageBox.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.10">
+      <source>
+        <component id="FabiCronusMax.1" />
+        <port id="OutGame" />
+      </source>
+      <target>
+        <component id="StringExpander.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="output_sendText">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="TextSender.1" />
+          <eventPort id="sendText" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_switchModel">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="modelSwitcher.1" />
+          <eventPort id="switchModel" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_ModeSwitcher">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="FabiCronusMax.1" />
+          <eventPort id="ModeSwitcher" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="Busy_displayBox">
+      <description />
+      <sources>
+        <source>
+          <component id="FabiCronusMax.1" />
+          <eventPort id="Busy" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DialogBox.1" />
+          <eventPort id="displayBox" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="Ready_hideBox">
+      <description />
+      <sources>
+        <source>
+          <component id="FabiCronusMax.1" />
+          <eventPort id="Ready" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="DialogBox.1" />
+          <eventPort id="hideBox" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="clicked_ModeSwitcher">
+      <description />
+      <sources>
+        <source>
+          <component id="TextDisplay.1.2" />
+          <eventPort id="clicked" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="FabiCronusMax.1" />
+          <eventPort id="ModeSwitcher" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_enable">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="enable" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_ModeSwitcher">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="FabiCronusMax.1" />
+          <eventPort id="ModeSwitcher" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>true</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>5460</posX>
+      <posY>2711</posY>
+      <width>4562</width>
+      <height>4889</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
