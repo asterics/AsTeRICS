@@ -19,20 +19,27 @@ public class SharedCanvasFrame {
 	
 	private Map<String, CanvasFrame> key2canvasFrame=new HashMap<String, CanvasFrame>();
 
-	public CanvasFrame createCanvasFrame(String canvasKey, String title, double gammaOfGrabber) {
+	public void createCanvasFrame(final String canvasKey,final String title,final double gammaOfGrabber) {
 		if(key2canvasFrame.containsKey(canvasKey)) {
 			AstericsErrorHandling.instance.getLogger().fine("Removing existing CanvasFrame with key <"+canvasKey+">");
 			disposeFrame(canvasKey);			
 			key2canvasFrame.remove(canvasKey);
 		}
+
+		//must be invoked non-blocking because obviously the ctor of CanvasFrame performs a SwingUtilities.invokeAndWait and 
+		//if we are called by an ARE-GUI action this would result in a dead lock
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+		        // CanvasFrame is a JFrame containing a Canvas component, which is hardware accelerated.
+		        // It can also switch into full-screen mode when called with a screenNumber.
+		        // We should also specify the relative monitor/camera response for proper gamma correction.
+		        CanvasFrame frame = new CanvasFrame(title, CanvasFrame.getDefaultGamma()/gammaOfGrabber);
+		        
+		        key2canvasFrame.put(canvasKey,frame);		
+			}
+		});
  		
-        // CanvasFrame is a JFrame containing a Canvas component, which is hardware accelerated.
-        // It can also switch into full-screen mode when called with a screenNumber.
-        // We should also specify the relative monitor/camera response for proper gamma correction.
-        CanvasFrame frame = new CanvasFrame(title, CanvasFrame.getDefaultGamma()/gammaOfGrabber);
-        
-        key2canvasFrame.put(canvasKey,frame);
-        return frame;		
 	}
 	public CanvasFrame getCanvasFrame(String canvasKey) {
 		return key2canvasFrame.get(canvasKey);
