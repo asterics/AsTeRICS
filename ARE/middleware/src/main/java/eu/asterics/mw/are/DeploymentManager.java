@@ -413,103 +413,108 @@ public class DeploymentManager
 	 */
 	public void undeployModel()
 	{		
-		modelStartupFinished=false;
-		final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
+		try{
+			modelStartupFinished=false;
+			final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
 
-		final Set<IChannel> channels = runtimeModel.getChannels();
-		final Set <IEventChannel> eventChannels = 
-				runtimeModel.getEventChannels();
+			final Set<IChannel> channels = runtimeModel.getChannels();
+			final Set <IEventChannel> eventChannels = 
+					runtimeModel.getEventChannels();
 
-		//Disconnect channels
-		for (IChannel channel : channels)
-		{
-			final IBindingEdge sourceBindingEdge = channel.getSource();
-			final IBindingEdge targetBindingEdge = channel.getTarget();
-			final String sourceComponentInstanceID = sourceBindingEdge.
-					getComponentInstanceID();
-			final String sourceOutputPortID = sourceBindingEdge.getPortID();
-			final String targetComponentInstanceID = targetBindingEdge.
-					getComponentInstanceID();
-			final String targetInputPortID = targetBindingEdge.getPortID();
-			final IRuntimeComponentInstance sourceComponentInstance
-			= runtimeComponentInstances.get(sourceComponentInstanceID);
-
-			if (sourceComponentInstance!=null)
+			//Disconnect channels
+			for (IChannel channel : channels)
 			{
-				final IRuntimeOutputPort sourceRuntimeOutputPort
-				= sourceComponentInstance.getOutputPort(sourceOutputPortID);			
-
-				sourceRuntimeOutputPort.
-				removeInputPortEndpoint(targetComponentInstanceID, 
-						targetInputPortID);
-			}
-
-		}
-		for (IEventChannel eventChannel : eventChannels)
-		{
-			final String eventChannelID = eventChannel.getChannelID();
-			final IEventEdge [] eventSources = eventChannel.getSources();
-			final IEventEdge [] eventTargets = eventChannel.getTargets();
-
-			final Set<EventListenerDetails> targetEventListenerPorts
-			= new LinkedHashSet<EventListenerDetails>();
-
-			for(final IEventEdge targetEventEdge : eventTargets)
-			{
-				final String targetComponentInstanceID = 
-						targetEventEdge.getComponentInstanceID();
-				final String targetEventPortID = 
-						targetEventEdge.getEventPortID();
-
-				final IRuntimeComponentInstance targetComponentInstance
-				= runtimeComponentInstances.
-				get(targetComponentInstanceID);
-
-				if (targetComponentInstance!=null)
-				{
-					final IRuntimeEventListenerPort eventListenerPort
-					= targetComponentInstance.
-					getEventListenerPort(targetEventPortID);
-					targetEventListenerPorts.add(
-							new EventListenerDetails(targetComponentInstanceID, 
-									targetEventPortID, 
-									eventListenerPort));
-				}
-			}
-			//disconnect event channels
-			for(final IEventEdge sourceEventEdge : eventSources)
-			{
-				final String sourceComponentInstanceID = 
-						sourceEventEdge.getComponentInstanceID();
-				final String sourceEventPortID = sourceEventEdge.
-						getEventPortID();
-
+				final IBindingEdge sourceBindingEdge = channel.getSource();
+				final IBindingEdge targetBindingEdge = channel.getTarget();
+				final String sourceComponentInstanceID = sourceBindingEdge.
+						getComponentInstanceID();
+				final String sourceOutputPortID = sourceBindingEdge.getPortID();
+				final String targetComponentInstanceID = targetBindingEdge.
+						getComponentInstanceID();
+				final String targetInputPortID = targetBindingEdge.getPortID();
 				final IRuntimeComponentInstance sourceComponentInstance
-				= runtimeComponentInstances.
-				get(sourceComponentInstanceID);
+				= runtimeComponentInstances.get(sourceComponentInstanceID);
+
 				if (sourceComponentInstance!=null)
 				{
-					final IRuntimeEventTriggererPort eventTriggererPort
-					= sourceComponentInstance.
-					getEventTriggererPort(sourceEventPortID);
-					eventTriggererPort.setEventChannelID(eventChannelID);
+					final IRuntimeOutputPort sourceRuntimeOutputPort
+					= sourceComponentInstance.getOutputPort(sourceOutputPortID);			
 
+					sourceRuntimeOutputPort.
+					removeInputPortEndpoint(targetComponentInstanceID, 
+							targetInputPortID);
+				}
 
-					for(final EventListenerDetails eventListenerDetails : 
-						targetEventListenerPorts)
+			}
+			for (IEventChannel eventChannel : eventChannels)
+			{
+				final String eventChannelID = eventChannel.getChannelID();
+				final IEventEdge [] eventSources = eventChannel.getSources();
+				final IEventEdge [] eventTargets = eventChannel.getTargets();
+
+				final Set<EventListenerDetails> targetEventListenerPorts
+				= new LinkedHashSet<EventListenerDetails>();
+
+				for(final IEventEdge targetEventEdge : eventTargets)
+				{
+					final String targetComponentInstanceID = 
+							targetEventEdge.getComponentInstanceID();
+					final String targetEventPortID = 
+							targetEventEdge.getEventPortID();
+
+					final IRuntimeComponentInstance targetComponentInstance
+					= runtimeComponentInstances.
+					get(targetComponentInstanceID);
+
+					if (targetComponentInstance!=null)
 					{
-						eventTriggererPort.
-						removeEventListener(eventListenerDetails.componentID,
-								eventListenerDetails.portID);
+						final IRuntimeEventListenerPort eventListenerPort
+						= targetComponentInstance.
+						getEventListenerPort(targetEventPortID);
+						targetEventListenerPorts.add(
+								new EventListenerDetails(targetComponentInstanceID, 
+										targetEventPortID, 
+										eventListenerPort));
+					}
+				}
+				//disconnect event channels
+				for(final IEventEdge sourceEventEdge : eventSources)
+				{
+					final String sourceComponentInstanceID = 
+							sourceEventEdge.getComponentInstanceID();
+					final String sourceEventPortID = sourceEventEdge.
+							getEventPortID();
+
+					final IRuntimeComponentInstance sourceComponentInstance
+					= runtimeComponentInstances.
+					get(sourceComponentInstanceID);
+					if (sourceComponentInstance!=null)
+					{
+						final IRuntimeEventTriggererPort eventTriggererPort
+						= sourceComponentInstance.
+						getEventTriggererPort(sourceEventPortID);
+						eventTriggererPort.setEventChannelID(eventChannelID);
+
+
+						for(final EventListenerDetails eventListenerDetails : 
+							targetEventListenerPorts)
+						{
+							eventTriggererPort.
+							removeEventListener(eventListenerDetails.componentID,
+									eventListenerDetails.portID);
+						}
 					}
 				}
 			}
+
+			runtimeComponentInstances.values().clear();
+			runtimeComponentInstancesStatus.clear();
+			System.gc();
+		}catch(Throwable e) {
+			String reason=e.getCause()!=null && e.getCause().getMessage() != null ? e.getCause().getMessage() : e.getMessage();  
+			logger.warning("Ignoring exception in undeployModel: "+reason);
+			e.printStackTrace();
 		}
-
-		runtimeComponentInstances.values().clear();
-		runtimeComponentInstancesStatus.clear();
-		System.gc();
-
 	}
 
 
