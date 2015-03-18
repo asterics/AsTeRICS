@@ -356,7 +356,7 @@ public class MouseInstance extends AbstractRuntimeComponentInstance
 	    if (mouseXPos>propXMax) mouseXPos=propXMax;
 	    if (mouseYPos<propYMin) mouseYPos=propYMin;
 	    if (mouseYPos>propYMax) mouseYPos=propYMax;
-
+	    
 	    rob.mouseMove((int)mouseXPos, (int)mouseYPos);
 
 		mouseLastXPos = mouseXPos;
@@ -736,6 +736,7 @@ final IRuntimeEventListenerPort  elpNextClickRelease = new IRuntimeEventListener
    @Override
    public void pause()
    {
+       mouseActive=0;
        super.pause();
    }
    
@@ -746,6 +747,7 @@ final IRuntimeEventListenerPort  elpNextClickRelease = new IRuntimeEventListener
    public void resume()
    {
 	   first=true;
+       mouseActive=1;
        super.resume();
    }
 
@@ -755,8 +757,8 @@ final IRuntimeEventListenerPort  elpNextClickRelease = new IRuntimeEventListener
    @Override
     public void stop()
     {
-        super.stop();
-        mouseActive=0;
+       mouseActive=0;       
+       super.stop();
     }
 
 	@Override
