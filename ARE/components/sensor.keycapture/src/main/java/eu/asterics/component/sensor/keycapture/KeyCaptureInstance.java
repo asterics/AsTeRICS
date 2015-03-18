@@ -28,28 +28,23 @@
 package eu.asterics.component.sensor.keycapture; 
 
 
-import java.util.logging.Logger;
+import java.lang.reflect.Field;
+
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeInputEvent;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
+
 import eu.asterics.mw.data.ConversionUtils;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import eu.asterics.mw.jnativehook.NativeHookServices;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import java.util.concurrent.AbstractExecutorService;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
-import org.jnativehook.keyboard.NativeKeyListener;
-import org.jnativehook.keyboard.NativeKeyEvent;
-import org.jnativehook.NativeInputEvent;
-import java.lang.reflect.Field;
 
 /**
  * 
@@ -258,14 +253,17 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
       public void start()
       {
 		  pressed = false;
+		  /*
 		  try 
 		  {
 			GlobalScreen.getInstance().setEventDispatcher(new VoidExecutorService());
 			GlobalScreen.registerNativeHook();
 		  } catch (NativeHookException ne) 
 		  {
-		  }
+		  }*/
+		  NativeHookServices.init();
           GlobalScreen.getInstance().addNativeKeyListener(this);
+          enabled=true;
           super.start();
       }
 
@@ -275,7 +273,8 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
       @Override
       public void pause()
       {
-		  GlobalScreen.unregisterNativeHook();
+		  //GlobalScreen.unregisterNativeHook();
+    	  enabled=false;
           super.pause();
       }
 
@@ -286,12 +285,14 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
       public void resume()
       {
 		  pressed = false;
+		  enabled=true;
+		  /*
 		  try 
 		  {
 			GlobalScreen.registerNativeHook();
 		  } catch (NativeHookException ne) 
 		  { 
-		  }
+		  }*/
           super.resume();
       }
 
@@ -301,7 +302,9 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
       @Override
       public void stop()
       {	  
-		  GlobalScreen.unregisterNativeHook();
+		  //GlobalScreen.unregisterNativeHook();
+    	  enabled=false;
+    	  GlobalScreen.getInstance().removeNativeKeyListener(this);
           super.stop();
       }
 	  
@@ -354,36 +357,6 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
         		
     }
 	
-	private static class VoidExecutorService extends AbstractExecutorService {
-        private boolean isRunning;
-
-        public VoidExecutorService() {
-            isRunning = true;
-        }
-
-        public void shutdown() {
-            isRunning = false;
-        }
-
-        public List<Runnable> shutdownNow() {
-            return new ArrayList<Runnable>(0);
-        }
-
-        public boolean isShutdown() {
-            return !isRunning;
-        }
-
-        public boolean isTerminated() {
-            return !isRunning;
-        }
-
-        public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
-            return true;
-        }
-
-        public void execute(Runnable r) {
-            r.run();
-        }
-    }
+   
     
 }
