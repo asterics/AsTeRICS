@@ -355,7 +355,7 @@ public class ControlPane extends JPanel
 				}finally{
 					//Restore mouse cursor in any case
 					//mainFrame.setCursor(Cursor.getDefaultCursor());
-					mainFrame.validate();
+					//mainFrame.validate();
 					System.out.println ("Run/resume model OK!");										
 				}
 				
@@ -364,13 +364,13 @@ public class ControlPane extends JPanel
 				
 				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				deployLabel.setIcon(deployIcon_ro);
-				iconPanel.revalidate();
+				//iconPanel.revalidate();
 				
 			}
 			public void mouseExited(MouseEvent e) {			
 				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				deployLabel.setIcon(deployIcon);
-				iconPanel.revalidate();
+				//iconPanel.revalidate();
 			}	
 		});
 
@@ -382,20 +382,20 @@ public class ControlPane extends JPanel
 				} catch (AREAsapiException e) {
 				} finally {
 					//mainFrame.setCursor(Cursor.getDefaultCursor());
-					mainFrame.validate();
+					//mainFrame.validate();
 					System.out.println ("Run/resume model OK!");
 				}
 			}
 			public void mouseEntered(MouseEvent e) {				
 				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				startLabel.setIcon(startIcon_ro);
-				iconPanel.revalidate();
+				//iconPanel.revalidate();
 				
 			}
 			public void mouseExited(MouseEvent e) {			
 				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				startLabel.setIcon(startIcon);
-				iconPanel.revalidate();
+				//iconPanel.revalidate();
 			}	
 		});
 
@@ -410,19 +410,19 @@ public class ControlPane extends JPanel
 					}
 				}finally{															
 					//mainFrame.setCursor(Cursor.getDefaultCursor());
-					mainFrame.validate();
+					//mainFrame.validate();
 					System.out.println ("Stop model OK!");										
 				}						
 			}
 			public void mouseEntered(MouseEvent e) {				
 				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				stopLabel.setIcon(stopIcon_ro);
-				iconPanel.revalidate();
+				//iconPanel.revalidate();
 			}
 			public void mouseExited(MouseEvent e) {			
 				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				stopLabel.setIcon(stopIcon);
-				iconPanel.revalidate();
+				//iconPanel.revalidate();
 			}
 		});
 
@@ -437,19 +437,19 @@ public class ControlPane extends JPanel
 					}
 				}finally{															
 					//mainFrame.setCursor(Cursor.getDefaultCursor());
-					mainFrame.validate();
+					//mainFrame.validate();
 					System.out.println ("Pause model OK!");										
 				}
 			}
 			public void mouseEntered(MouseEvent e) {				
 				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				pauseLabel.setIcon(pauseIcon_ro);
-				iconPanel.revalidate();
+				//iconPanel.revalidate();
 			}
 			public void mouseExited(MouseEvent e) {			
 				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				pauseLabel.setIcon(pauseIcon);
-				iconPanel.revalidate();
+				//iconPanel.revalidate();
 			}
 		});
 

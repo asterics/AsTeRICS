@@ -65,6 +65,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
 	final IRuntimeOutputPort opChinY = new DefaultRuntimeOutputPort();
 
 	String propCameraProfile ="";
+	private boolean pluginReady=false;
     
     protected final Bridge bridge = new Bridge(this); 
  
@@ -134,6 +135,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
 	 */
    public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
+	   System.out.println("FacetrackerLK: Setting "+propertyName+"="+newValue);
         if("cameraProfile".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propCameraProfile;
@@ -176,18 +178,19 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
             final int point1_y, final int point2_x, final int point2_y)
         {
 
+    	if(!pluginReady) {System.out.println("bang coord"); return;}
     	//Hand over callback data to model executor thread to ensure that the corresponding coordinate
     	//data is processed together without mixing up the coordinates.
     	AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
 			
 			@Override
 			public void run() {
-					System.out.print("a");
+					//System.out.print("a");
 					opNoseX.sendData(ConversionUtils.intToBytes(point1_x)); 
 					opNoseY.sendData(ConversionUtils.intToBytes(point1_y)); 
 					opChinX.sendData(ConversionUtils.intToBytes(point2_x)); 
 					opChinY.sendData(ConversionUtils.intToBytes(point2_y)); 
-					System.out.print("e");
+					//System.out.print("e");
 				}
 
 			});
@@ -202,6 +205,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     	@Override 
     	public void receiveEvent(String data)
     	 {
+    		if(!pluginReady) {System.out.println("bang init"); return;}
     		bridge.initFace();
     	 }
     };
@@ -214,6 +218,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     	@Override 
     	public void receiveEvent(String data)
     	 {
+    		if(!pluginReady) {System.out.println("bang showCamSettings"); return;}
     		bridge.showCameraSettings();
     	 }
     };
@@ -226,6 +231,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     	@Override 
     	public void receiveEvent(String data)
     	 {
+    		if(!pluginReady) {System.out.println("bang saveProf"); return;}
     		if (propCameraProfile!="")
     		  bridge.saveCameraProfile(propCameraProfile+".yml");
     	 }
@@ -236,6 +242,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     @Override
     public void start()
     {
+    	pluginReady=false;
         if (bridge.activate() == 0)
         {
      	    AstericsErrorHandling.instance.reportError(this, "Could not init Webcam");
@@ -243,6 +250,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
      	else
      	{
      	   AstericsErrorHandling.instance.reportDebugInfo(this, "Webcam Facetracker activated");
+     	   
 		   if (propCameraProfile != "")
 			   bridge.loadCameraProfile(propCameraProfile+".yml");
 
@@ -251,6 +259,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
 		   // System.out.println("LK window position:"+ pos.x +"/"+ pos.y+" Size:"+d.width+"/"+d.height);  
 		   bridge.setDisplayPosition(pos.x,pos.y,d.width,d.height);
      	} 
+        pluginReady=true;
         super.start();
     }
  
@@ -258,6 +267,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     @Override
     public void pause()
     {
+    	pluginReady=false;
         bridge.deactivate();
         super.pause();
     }
@@ -265,16 +275,20 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     @Override
     public void resume()
     {
+    	pluginReady=false;
         if (bridge.activate() == 0)
       	   AstericsErrorHandling.instance.reportError(this, "Could not init Webcam");
       	else
       	   AstericsErrorHandling.instance.reportDebugInfo(this, "Webcam Facetracker activated");
+        
+    	pluginReady=true;
         super.resume();
     }
 
     @Override
     public void stop()
     {
+    	pluginReady=false;
         bridge.deactivate();
         super.stop();
     }

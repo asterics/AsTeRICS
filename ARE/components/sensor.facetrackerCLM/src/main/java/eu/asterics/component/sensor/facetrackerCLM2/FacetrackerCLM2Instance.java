@@ -77,6 +77,7 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
 //			new DefaultRuntimeEventTriggererPort();
 	
 	
+	private boolean pluginReady=false;
 	int propCameraIndex = 0;
 	int propCameraRes =1;
 	String modelName;
@@ -292,6 +293,7 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
     		bridge.setReferencePose();
     	 }
     };
+
     
     public void newValuesCallback(
 			final double roll  
@@ -304,17 +306,27 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
 		,	final int eyeRightState)
     {
     	// TODO Auto-generated method stub
-    	opRoll.sendData(ConversionUtils.doubleToBytes(roll));
-    	opPitch.sendData(ConversionUtils.doubleToBytes(pitch));
-    	opYaw.sendData(ConversionUtils.doubleToBytes(yaw));
+    	if(!pluginReady) {System.out.println("bang coord"); return;}
+    	
+    	AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
 
-    	opPosX.sendData(ConversionUtils.doubleToBytes(posx));
-    	opPosY.sendData(ConversionUtils.doubleToBytes(posy));
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+		    	opRoll.sendData(ConversionUtils.doubleToBytes(roll));
+		    	opPitch.sendData(ConversionUtils.doubleToBytes(pitch));
+		    	opYaw.sendData(ConversionUtils.doubleToBytes(yaw));
 
-    	opScale.sendData(ConversionUtils.doubleToBytes(scale));
+		    	opPosX.sendData(ConversionUtils.doubleToBytes(posx));
+		    	opPosY.sendData(ConversionUtils.doubleToBytes(posy));
 
-    	opEyeLeft.sendData(ConversionUtils.intToBytes(eyeLeftState));
-    	opEyeRight.sendData(ConversionUtils.intToBytes(eyeRightState));
+		    	opScale.sendData(ConversionUtils.doubleToBytes(scale));
+
+		    	opEyeLeft.sendData(ConversionUtils.intToBytes(eyeLeftState));
+		    	opEyeRight.sendData(ConversionUtils.intToBytes(eyeRightState));				
+			}
+    		
+    	});
     }
 // 
 //    /**
@@ -344,6 +356,7 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
+    	  pluginReady=false;
     	  AstericsErrorHandling.instance.reportInfo(this, "CLM Instance::start()");
 			//gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
 			//AREServices.instance.displayPanel(gui, this, true);
@@ -357,6 +370,7 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
 		   // System.out.println("LK window position:"+ pos.x +"/"+ pos.y+" Size:"+d.width+"/"+d.height);  
 		   bridge.setDisplayPosition(pos.x,pos.y,d.width,d.height);
 		}
+  		pluginReady=true;
 
 		super.start();
 		
@@ -368,6 +382,7 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
       @Override
       public void pause()
       {
+    	  pluginReady=false;
     	  bridge.suspend();
           super.pause();
       }
@@ -378,7 +393,9 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
       @Override
       public void resume()
       {
+    	  pluginReady=false;
     	  bridge.resume();
+    	  pluginReady=true;
           super.resume();
       }
 
@@ -388,6 +405,7 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
+    	  pluginReady=false;
     	  bridge.deactivate();
 			//AREServices.instance.displayPanel(gui, this, false);
           super.stop();
