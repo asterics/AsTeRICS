@@ -362,13 +362,13 @@ public class ControlPane extends JPanel
 			}
 			public void mouseEntered(MouseEvent e) {	
 				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				deployLabel.setIcon(deployIcon_ro);
 				iconPanel.revalidate();
 				
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				deployLabel.setIcon(deployIcon);
 				iconPanel.revalidate();
 			}	
@@ -387,13 +387,13 @@ public class ControlPane extends JPanel
 				}
 			}
 			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				startLabel.setIcon(startIcon_ro);
 				iconPanel.revalidate();
 				
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				startLabel.setIcon(startIcon);
 				iconPanel.revalidate();
 			}	
@@ -415,12 +415,12 @@ public class ControlPane extends JPanel
 				}						
 			}
 			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				stopLabel.setIcon(stopIcon_ro);
 				iconPanel.revalidate();
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				stopLabel.setIcon(stopIcon);
 				iconPanel.revalidate();
 			}
@@ -442,12 +442,12 @@ public class ControlPane extends JPanel
 				}
 			}
 			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				pauseLabel.setIcon(pauseIcon_ro);
 				iconPanel.revalidate();
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				pauseLabel.setIcon(pauseIcon);
 				iconPanel.revalidate();
 			}
@@ -460,12 +460,12 @@ public class ControlPane extends JPanel
 				
 			}
 			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				optionsLabel.setIcon(optionsIcon_ro);
 				iconPanel.revalidate();
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				optionsLabel.setIcon(optionsIcon);
 				iconPanel.revalidate();
 			}
@@ -482,12 +482,12 @@ public class ControlPane extends JPanel
                  } 
 			}
 			public void mouseEntered(MouseEvent e) {				
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				exitLabel.setIcon(exitIcon_ro);
 				iconPanel.revalidate();
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				exitLabel.setIcon(exitIcon);
 				iconPanel.revalidate();
 			}
@@ -532,10 +532,10 @@ public class ControlPane extends JPanel
 				}
 			}
 			public void mouseEntered(MouseEvent e) {	
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			}
 			public void mouseExited(MouseEvent e) {			
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				//setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}	
 		});
 		
