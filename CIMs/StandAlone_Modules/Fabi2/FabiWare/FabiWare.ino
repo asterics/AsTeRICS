@@ -423,7 +423,7 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
       case CMD_KEY_PRESS:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.print("key press: "); Serial.println(keystring);
-             strcat(keystring," ");
+             if (keystring[strlen(keystring)-1] != ' ') strcat(keystring," ");
              setKeyValues(keystring);
              break;
       case CMD_KEY_RELEASE:

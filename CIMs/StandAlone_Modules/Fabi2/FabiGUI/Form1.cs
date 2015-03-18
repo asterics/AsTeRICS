@@ -174,7 +174,7 @@ namespace MouseApp2
                 serialPort1.DataBits = 8;
                 serialPort1.Parity = Parity.None;
                 serialPort1.Handshake = Handshake.None;
-
+                serialPort1.DtrEnable = true;
                 serialPort1.ReadTimeout =2500;
                 serialPort1.WriteTimeout =2500;
                 serialPort1.NewLine = "\n";
@@ -300,6 +300,9 @@ namespace MouseApp2
 
         private void saveSettings_Click(object sender, EventArgs e) //button to save options to EEPROM
         {
+            slotNames.Text = slotNames.Text.Replace(" ", "");
+            slotNames.Text = slotNames.Text.Replace("\n", "");
+            slotNames.Text = slotNames.Text.Replace("\r", "");
             addToLog("Saving Slot: "+slotNames.Text);
             if (serialPort1.IsOpen)
             {

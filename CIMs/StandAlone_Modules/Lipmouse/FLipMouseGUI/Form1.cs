@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.IO;
+using System.Text.RegularExpressions;
 
 
 
@@ -158,8 +159,8 @@ namespace MouseApp2
                         if (d == 1) { selectStick.Checked = true; selectAlternative.Checked = false; useAlternativeFunctions = false; }
                         else { selectStick.Checked = false; selectAlternative.Checked = true; useAlternativeFunctions = true; }
                         break;  // cursor / alternative function
-                    case 2: speedBar.Value = Int32.Parse(actToken); break; // accelleration x
-                    case 3: break;  // accelleration y
+                    case 2: speedBar.Value = Int32.Parse(actToken); break; // acceleration x
+                    case 3: break;  // acceleration y
                     case 4: deadzoneBar.Value = Int32.Parse(actToken); break;  // deadzone x
                     case 5: break;  // deadzone y
                     case 6: sipThresholdBar.Value = Int32.Parse(actToken); break;  // threshold sip
@@ -232,7 +233,7 @@ namespace MouseApp2
                 serialPort1.DataBits = 8;
                 serialPort1.Parity = Parity.None;
                 serialPort1.Handshake = Handshake.None;
-
+                serialPort1.DtrEnable = true;
                 serialPort1.ReadTimeout =2500;
                 serialPort1.WriteTimeout =2500;
                 serialPort1.NewLine = "\n";
@@ -271,6 +272,7 @@ namespace MouseApp2
                 if (serialPort1.IsOpen)
                 {
                     addToLog(String.Format("Port '{0}' is already connected.", portComboBox.SelectedItem));
+                    dcButton.Enabled = true;
                 }
                 else
                 {
@@ -286,6 +288,7 @@ namespace MouseApp2
                     ClearButton.Enabled = true;
                     LoadButton.Enabled = true;
                     ApplyButton.Enabled = true;
+                    SelectButton.Enabled = false;
 
                     readDone = false;
                     Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
@@ -307,14 +310,14 @@ namespace MouseApp2
                 {
                     try  {
                         receivedString = serialPort1.ReadLine();
-                        // Console.Write("received:" + receivedString);
+                        //Console.Write("received:" + receivedString);
                         if (receivedString.ToUpper().StartsWith("AT RR "))  // raw report found ?
                         {
                             BeginInvoke(this.rawValuesDelegate, new Object[] { receivedString.Substring(6) });
                         }
                         else if (receivedString.ToUpper().StartsWith("SLOT"))  // raw report found ?
                         {
-                            BeginInvoke(this.slotValuesDelegate, new Object[] { receivedString });
+                            BeginInvoke(this.slotValuesDelegate, new Object[] { receivedString.Substring(6) });
                         }
                         else if (receivedString.ToUpper().StartsWith("LOADING:"))  // slot name found ?
                         {
@@ -351,7 +354,6 @@ namespace MouseApp2
                 portStatus.ForeColor = Color.SlateGray;
                 saveSettings.Enabled = false;
                 calButton.Enabled = false;
-                dcButton.Enabled = false;
                 LoadButton.Enabled = false;
                 ClearButton.Enabled = false;
                 ApplyButton.Enabled = false;
@@ -361,6 +363,8 @@ namespace MouseApp2
                 slotNames.Items.Clear();
 
             }
+            dcButton.Enabled = false;
+            SelectButton.Enabled = true;
         }
 
         private void selectStick_CheckedChanged(object sender, EventArgs e)
@@ -420,7 +424,7 @@ namespace MouseApp2
             addToLog("Apply Settings ...");
             if (serialPort1.IsOpen)
             {
-                // sendLipmouseCmd("AT LMER");
+                sendCmd("AT ER");
 
                 sendCmd("AT AX " + speedLabel.Text);
                 sendCmd("AT AY " + speedLabel.Text);
@@ -446,21 +450,26 @@ namespace MouseApp2
                 updateOneButton(11, LongPuffFunctionMenu.SelectedIndex, LongPuffParameterText.Text, LongPuffNumericParameter.Value.ToString());
 
                 addToLog("The selected settings have been applied.");
-                // sendLipmouseCmd("AT SR");
+                sendCmd("AT SR");
             }
             else addToLog("Please connect a device before applying configuration changes.");
         }
 
         private void saveSettings_Click(object sender, EventArgs e) //button to save options to EEPROM
         {
+            slotNames.Text=slotNames.Text.Replace(" ","");
+            slotNames.Text = slotNames.Text.Replace("\n", "");
+            slotNames.Text = slotNames.Text.Replace("\r", "");
             addToLog("Saving Slot: " + slotNames.Text);
             if (serialPort1.IsOpen)
             {
+                sendCmd("AT ER");
                 ApplyButton_Click(this, null);
                 sendCmd("AT SAVE " + slotNames.Text);
                 addToLog("The settings were saved");
                 slotNames.Items.Clear();
                 sendCmd("AT LIST");
+                sendCmd("AT SR");
             }
             else addToLog("Could not send to device - please connect COM port !");
         }
@@ -482,7 +491,9 @@ namespace MouseApp2
             addToLog("Load Slot: " + slotNames.Text);
             if (serialPort1.IsOpen)
             {
+                sendCmd("AT ER");
                 sendCmd("AT LOAD " + slotNames.Text);
+                sendCmd("AT SR");
             }
 
         }

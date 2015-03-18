@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.FabiCronusMax"
+                   canonical_name="eu.asterics.component.processor.fabicronusmax.FabiCronusMaxInstance">
+        <type subtype="Microcontroller Interface">processor</type>
+        <singleton>false</singleton>
+        <description>Plugin for the combination of the Fabi and the CronusMax</description>
+        <ports>
+			<inputPort id="InConsole">
+				<description>input of the selected Console</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="InGame">
+				<description>input of the selected Game</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="InMode">
+				<description>input of the selected Mode</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+			<outputPort id="OutConsole">
+				<description>output of the selected Console</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="OutGame">
+				<description>output of the selected Game</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="OutMode">
+				<description>output of the selected Mode</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="OutModel">
+				<description>output for the next model to load</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="ModeSwitcher">
+				<description>Switch between the modes</description>
+			</eventListenerPort>
+			<eventListenerPort id="GameSwitcher">
+				<description>Switch between the games</description>
+			</eventListenerPort>
+			<eventListenerPort id="ConsoleSwitcher">
+				<description>Switch between the consoles</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="Busy">
+				<description>Triggered if Fabi is busy</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Ready">
+				<description>Triggered if Fabi is ready</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="loadModel">
+				<description>Triggered to load new model</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="ComPort"
+				type="integer"
+				value="1"
+				description=""/>
+			<property name="ModeFilePath"
+				type="string"
+				value=".\data\file.csv"
+				description="Path to the file with the configuration"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

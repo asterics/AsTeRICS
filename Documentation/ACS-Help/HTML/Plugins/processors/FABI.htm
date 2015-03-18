@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>FABI</Title>
+</HEAD>
+<BODY>
+<H1>FABI</H1>
+<H3>Component Type: Processor (Subcategory: Microcontroller Interface)</H3>
+<p>This component provides an interface for a FABI controller and enables the programming process.
+It is possible to configure the buttons which are connected to the FABI controller and store the set to the built in EEPROM.
+</p>
+
+<div class="image"><img src="img/FABI.png" alt="Screenshot: FABI plugin" title="Screenshot: FABI plugin" /><br>
+FABI plugin</div>
+<H2>Requirements</H2>
+The Plugin requires a FABI2.0 compatible Version as well as the right COM Port. The Baudrate is predefined at 9600 Baud.
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>ButtonMode [integer]:</STRONG> Number of the button</li>
+<li><STRONG>SlotSaveName [string]:</STRONG> Name of the slot to save the set of modes</li>
+<li><STRONG>SlotLoadName [string]:</STRONG> Name of the slot to load the set of modes</li>
+<li><STRONG>MoveMouseX [integer]:</STRONG> Number of pixels to move the mouse in X direction (right)</li>
+<li><STRONG>MoveMouseY [integer]:</STRONG> Number of pixels to move the mouse in Y direction (down)</li>
+<li><STRONG>Text [string]:</STRONG> Text for the KeyWrite command</li>
+<li><STRONG>key [string]:</STRONG> Text for the KeyPress command<br>
+(e.g. AT KP KEY_UP presses the "Cursor-Up" key, AT KP KEY_CTRL KEY_ALT KEY_DELETE presses all three keys)
+<br>supported key identifiers for key press command (AT KP):<br>
+ 
+    KEY_A   KEY_B   KEY_C   KEY_D    KEY_E   KEY_F   KEY_G   KEY_H   KEY_I   KEY_J    KEY_K    KEY_L
+    KEY_M   KEY_N   KEY_O   KEY_P    KEY_Q   KEY_R   KEY_S   KEY_T   KEY_U   KEY_V    KEY_W    KEY_X 
+    KEY_Y   KEY_Z   KEY_1   KEY_2    KEY_3   KEY_4   KEY_5   KEY_6   KEY_7   KEY_8    KEY_9    KEY_0
+    KEY_F1  KEY_F2  KEY_F3  KEY_F4   KEY_F5  KEY_F6  KEY_F7  KEY_F8  KEY_F9  KEY_F10  KEY_F11  KEY_F12	
+    
+    KEY_RIGHT   KEY_LEFT       KEY_DOWN        KEY_UP      KEY_ENTER    KEY_ESC   KEY_BACKSPACE   KEY_TAB	
+    KEY_HOME    KEY_PAGE_UP    KEY_PAGE_DOWN   KEY_DELETE  KEY_INSERT   KEY_END	  KEY_NUM_LOCK    KEY_SCROLL_LOCK
+    KEY_SPACE   KEY_CAPS_LOCK  KEY_PAUSE       KEY_SHIFT   KEY_CTRL     KEY_ALT   KEY_RIGHT_ALT   KEY_GUI 
+    KEY_RIGHT_GUI</li>
+</ul>
+
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>List [string]:</STRONG> Lists the slots stored in the EEPROM of the FABI controller</li>
+<li><STRONG>ID [string]:</STRONG> Shows the ID of the FABI version</li>
+</ul>
+
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>ID :</STRONG> identification string will be returned (e.g. "FABI Version 2.0")<br>Corresponding FABI command is : "AT ID"</li>
+<li><STRONG>ButtonMode :</STRONG> button mode setting for a button (e.g. AT BM 2 -> next command defines the new function for button 2)<br>Corresponding FABI command is : "AT BM num"</li>
+<li><STRONG>ClickLeft :</STRONG> click left mouse button<br>Corresponding FABI command is : "AT CL" </li>
+<li><STRONG>ClickRight :</STRONG> click right mouse button<br>Corresponding FABI command is : "AT CR"</li>
+<li><STRONG>ClickDoubleLeft :</STRONG> click double with left mouse button<br>Corresponding FABI command is : "AT CD" </li>
+<li><STRONG>ClickMiddle :</STRONG> click middle mouse button<br>Corresponding FABI command is : "AT CM" </li>
+<li><STRONG>PressLeft :</STRONG>  press/hold the left mouse button<br>Corresponding FABI command is : "AT PL"  </li>
+<li><STRONG>PressRight :</STRONG>  press/hold the right mouse button<br>Corresponding FABI command is : "AT PR"  </li>
+<li><STRONG>PressMiddle :</STRONG>  press/hold the middle mouse button<br>Corresponding FABI command is : "AT PM"  </li>
+<li><STRONG>ReleaseLeft :</STRONG>  release the left mouse button<br>Corresponding FABI command is : "AT RL"  </li>
+<li><STRONG>ReleaseRight :</STRONG>  release the right mouse button<br>Corresponding FABI command is : "AT RR"  </li>
+<li><STRONG>ReleaseMiddle :</STRONG>  release the middle mouse button<br>Corresponding FABI command is : "AT RM"  </li>
+<li><STRONG>WheelUp :</STRONG> move mouse wheel up<br>Corresponding FABI command is : "AT WU"</li>
+<li><STRONG>WheelDown :</STRONG> move mouse wheel down<br>Corresponding FABI command is : "AT WD"</li>
+<li><STRONG>MoveMouseX :</STRONG>  move mouse in x direction (e.g. AT X 4 moves 4 pixels to the right)<br>Corresponding FABI command is : "AT MX num"</li>
+<li><STRONG>MoveMouseY :</STRONG>  move mouse in y direction (e.g. AT Y -10 moves 10 pixels up)<br>Corresponding FABI command is : "AT MY num"</li>
+<li><STRONG>KeyWrite :</STRONG> keyboard write text (e.g. AT KW Hello! writes "Hello!")<br>Corresponding FABI command is : "AT KW text"</li>
+<li><STRONG>KeyPress :</STRONG> key press: press/hold all keys identified in text 
+                            (e.g. AT KP KEY_UP presses the "Cursor-Up" key, AT KP KEY_CTRL KEY_ALT KEY_DELETE presses all three keys)
+                            The possible KeyPress commands are described in detail at the input port "key"!<br>Corresponding FABI command is : "AT KP text"</li>
+<li><STRONG>KeyRelease :</STRONG> key release: releases all keys identified in text<br>Corresponding FABI command is : "AT KR text"</li>
+<li><STRONG>KeyReleaseAll :</STRONG> release all: releases all currently pressed keys and buttons <br>Corresponding FABI command is : "AT RA"</li>
+<li><STRONG>Save :</STRONG> save settings and current button modes to next free eeprom slot under given name (e.g. AT SAVE mouse1)<br>Corresponding FABI command is : "AT SAVE text"</li>
+<li><STRONG>Load :</STRONG> load button modes from eeprom slot (e.g. AT LOAD mouse1 -> loads profile named "mouse1")<br>Corresponding FABI command is : "AT LOAD text"</li>
+<li><STRONG>List :</STRONG> list all saved mode names <br>Corresponding FABI command is : "AT LIST"</li>
+<li><STRONG>Next :</STRONG> next mode will be loaded (wrap around after last slot)<br>Corresponding FABI command is : "AT NEXT"</li>
+<li><STRONG>Clear :</STRONG> clear EEPROM content (delete all stored slots)<br>Corresponding FABI command is : "AT CLEAR"</li>
+<li><STRONG>Idle :</STRONG> idle command (no operation)<br>Corresponding FABI command is : "AT IDLE"</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>Stepsize [integer]:</STRONG> set mouse wheel stepsize (e.g. AT WS 3 sets the wheel stepsize to 3 rows)<br>The stepsize is set when the plugin is started</li>
+<li><STRONG>COMPort [integer]:</STRONG> COM Port of FABI.</li>
+</ul>
+</BODY>
+</HTML>

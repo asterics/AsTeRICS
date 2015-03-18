@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.FABI"
+                   canonical_name="eu.asterics.component.processor.fabi.FABIInstance">
+        <type subtype="Microcontroller Interface">processor</type>
+        <singleton>false</singleton>
+        <description>Plugin for connection to FABI and setting ButtonModes over AsTeRICS -Models</description>
+        <ports>
+			<inputPort id="ButtonMode">
+				<description>Number of ButtonMode</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="SlotSaveName">
+				<description>Name of slot to save</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="SlotLoadName">
+				<description>Name of slot to load</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="MoveMouseX">
+				<description>x moves of mouse in X direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="MoveMouseY">
+				<description>x moves of mouse in Y direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="Text">
+				<description>keyboard write text</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="key">
+				<description>key for keypress (more keys at the same time are possible  e.g. "KEY_CTRL KEY_ALT KEY_DELETE")</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="List">
+				<description>List of all saved mode names</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="ID">
+				<description>identification (e.g. "FABI Version 2.0")</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="ID">
+				<description>gets the identification and Version of FABI  and sends it to the Output-Port</description>
+			</eventListenerPort>
+			<eventListenerPort id="ButtonMode">
+				<description>calls the  AT BM num (num is the Input-Port "ButtonMode")</description>
+			</eventListenerPort>
+			<eventListenerPort id="ClickLeft">
+				<description>Click left mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ClickRight">
+				<description>Click right mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ClickDoubleLeft">
+				<description>Click double with left mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ClickMiddle">
+				<description>Click middle mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="PressLeft">
+				<description>press/hold the left mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="PressRight">
+				<description>press/hold the right mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="PressMiddle">
+				<description>press/hold the middle mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ReleaseLeft">
+				<description>release the left mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ReleaseRight">
+				<description>release the right mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ReleaseMiddle">
+				<description>release the middle mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="WheelUp">
+				<description>move mouse wheel up</description>
+			</eventListenerPort>
+			<eventListenerPort id="WheelDown">
+				<description>move mouse wheel down</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveMouseX">
+				<description>move mouse in x direction</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveMouseY">
+				<description>move mouse in y direction</description>
+			</eventListenerPort>
+			<eventListenerPort id="KeyWrite">
+				<description>keyboard write text</description>
+			</eventListenerPort>
+			<eventListenerPort id="KeyPress">
+				<description>press/hold one or more keys</description>
+			</eventListenerPort>
+			<eventListenerPort id="KeyRelease">
+				<description>release one or more keys</description>
+			</eventListenerPort>
+			<eventListenerPort id="KeyReleaseAll">
+				<description>release all pressed keys</description>
+			</eventListenerPort>
+			<eventListenerPort id="Save">
+				<description>save settings and current button modes to next free eeprom slot under given name</description>
+			</eventListenerPort>
+			<eventListenerPort id="Load">
+				<description>load button modes from eeprom slot</description>
+			</eventListenerPort>
+			<eventListenerPort id="List">
+				<description>list all saved mode names</description>
+			</eventListenerPort>
+			<eventListenerPort id="Next">
+				<description>next mode will be loaded</description>
+			</eventListenerPort>
+			<eventListenerPort id="Clear">
+				<description>clear eeprom content</description>
+			</eventListenerPort>
+			<eventListenerPort id="Idle">
+				<description>idle command (no operation)</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="Stepsize"
+				type="double"
+				value="3"
+				description="Stepsize of mouse wheel commands"/>
+			<property name="COMPort"
+				type="integer"
+				value="1"
+				description="COM-Port of FABI"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
