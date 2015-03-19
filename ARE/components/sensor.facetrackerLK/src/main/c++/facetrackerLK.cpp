@@ -66,6 +66,8 @@ const char* cascade_name = "data\\sensor.facetrackerLK\\haarcascade_frontalface_
 static CvMemStorage* storage = 0;
 static CvHaarClassifierCascade* cascade = 0;
 
+int callbacksRunning = false;
+
 //----------------------------------------------
 
 	//capture object
@@ -318,6 +320,8 @@ DWORD WINAPI CamProc(LPVOID lpv)
 		   return (0);
 		}
 
+		callbacksRunning=true;
+
 	    if (cameraDisplayUpdate > 0) 
 		{
 			#ifdef DEBUG_OUTPUT
@@ -373,6 +377,7 @@ DWORD WINAPI CamProc(LPVOID lpv)
 					 break;                       
 				default: break;
 		}
+		callbacksRunning=false;
 	}
 
 	#ifdef DEBUG_OUTPUT
@@ -839,7 +844,11 @@ JNIEXPORT void JNICALL Java_eu_asterics_component_sensor_facetrackerLK_jni_Bridg
 JNIEXPORT void JNICALL Java_eu_asterics_component_sensor_facetrackerLK_jni_Bridge_setDisplayPosition
 	(JNIEnv *env, jobject obj, int x, int y, int w, int h)
 {
-	   resize_paintwindow(x,y,w,h);
+	if (callbacksRunning) {
+   	  printf("FacetrackerLK C++ module: skipping setDisplayPosition (callbacks already running !)\n");
+	  return;
+	}
+	resize_paintwindow(x,y,w,h);
 }
 
 
@@ -900,7 +909,12 @@ JNIEXPORT void JNICALL Java_eu_asterics_component_sensor_facetrackerLK_jni_Bridg
 {
 	const char *strFilename;
 	
-    if (filename == NULL) return; /* OutOfMemoryError already thrown*/
+    if (filename == NULL) return; 
+	if (callbacksRunning) {
+   	  printf("FacetrackerLK C++ module: skipping load camera profile (callbacks already running !)\n");
+	  return;
+	}
+
 	strFilename = env->GetStringUTFChars(filename, NULL);
 	printf("FacetrackerLK C++ module: loading camera profile %s !\n",strFilename);
 

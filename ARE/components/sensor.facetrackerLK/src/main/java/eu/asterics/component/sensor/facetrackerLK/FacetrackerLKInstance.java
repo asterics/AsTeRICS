@@ -56,7 +56,7 @@ import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
  * @author Chris Veigl [veigl@technikum-wien.at]
  *         Date: Oct 10, 2010
  *         Time: 2:35:00 PM 
- */
+ */ 
 public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
 {
 	final IRuntimeOutputPort opNoseX = new DefaultRuntimeOutputPort();
