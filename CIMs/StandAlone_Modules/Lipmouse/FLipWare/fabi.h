@@ -13,7 +13,7 @@
 #define NUMBER_OF_LEDS      3         // number of connected leds
 #define MAX_SLOTS          5          // maximum number of EEPROM memory slots
 
-#define MAX_KEYSTRING_LEN 26          // maximum lenght for key identifiers / keyboard text
+#define MAX_KEYSTRING_LEN 30          // maximum lenght for key identifiers / keyboard text
 #define MAX_SLOTNAME_LEN  15          // maximum lenght for a slotname
 #define MAX_CMDLEN MAX_KEYSTRING_LEN+3
 
