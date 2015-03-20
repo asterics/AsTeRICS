@@ -23,93 +23,78 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 
-
-
-
-
-
-
-
-
-
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 import com.sun.jersey.api.core.*;
 
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 public class WebServiceEngine {
-	private static WebServiceEngine instance=null;
+	private static WebServiceEngine instance = null;
 	
-	public static final String PATH_REST = "/rest";
-	private static final int PORT_REST = 8081;
-	private static final URI BASE_URI_REST = URI.create("http://localhost:"+PORT_REST+PATH_REST);
+	private HttpServer restServer = null;
+	private HttpServer wsServer = null;
 	
-	public static final String PATH_WS = "/ws";
-	public static final String PATH_WS_ASTERICS_DATA="/astericsData";
-	private static final int PORT_WS = 8080;
-	private static final URI BASE_URI_WS = URI.create("http://localhost:"+PORT_WS+PATH_WS);
-	private Logger logger=logger = AstericsErrorHandling.instance.getLogger();
-	private HttpServer restServer=null; 
-	private HttpServer wsServer=null;
-	private AstericsDataApplication astericsApplication=null;
+	private Logger logger = AstericsErrorHandling.instance.getLogger();
+	private AstericsDataApplication astericsApplication = null;
 
 
+	/**
+	 * Method that returns the instance of this class, based on the Singleton
+	 * Design pattern.
+	 * 
+	 * @return - The {@link WebServiceEngine} object of this class.
+	 */
 	public static WebServiceEngine getInstance() {
 		if(instance == null) {			
-			instance=new WebServiceEngine();
+			instance = new WebServiceEngine();
 		}
 		return instance;
 	}
 	
+	
 	/**
-	 * Initialize Grizzly Webserver and Websockets
+	 * Initialize Grizzly Webservers (Rest Server and WS Server) and Websockets
+	 * 
 	 * @param bc
 	 * @throws IOException
 	 */
 	public void initGrizzlyHttpService(BundleContext bc) throws IOException {
-		logger.fine("Starting grizzly HTTP-server, "+BASE_URI_REST);
 		
+		logger.fine("Starting grizzly HTTP-server, " + ServerRepository.BASE_URI_REST);
+		
+		//REST SERVER CONFIGURATION
         ClasspathResourceConfig rc = new ClasspathResourceConfig();
         rc.add(new ApplicationConfig());
-        restServer = GrizzlyServerFactory.createHttpServer(BASE_URI_REST, rc);
+        rc.getContainerResponseFilters().add(new ResponseFilter());
+        restServer = GrizzlyServerFactory.createHttpServer(ServerRepository.BASE_URI_REST, rc);
         		
-		wsServer = HttpServer.createSimpleServer("./data/webservice","0.0.0.0", PORT_WS);
-		
-		//NetworkListener listener=new NetworkListener("ext net", "192.168.0.100", PORT);
-		
-				
-		/*//This is just to test how to add a HttpHandler
-		server.getServerConfiguration().addHttpHandler(
-			    new HttpHandler() {
-			        public void service(Request request, Response response) throws Exception {
-			            final SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
-			            final String date = format.format(new Date(System.currentTimeMillis()));
-			            response.setContentType("text/plain");
-			            response.setContentLength(date.length());
-			            response.getWriter().write(date);
-			        }
-			    },
-			    "/time");
-			    */
-		
+        restServer.start();
+        
+        
+        logger.fine("Starting grizzly WS-server, " + ServerRepository.BASE_URI_WS);
+        
+        //WEB SERVICE SERVER CONFIGURATION
+		wsServer = HttpServer.createSimpleServer("./data/webservice","0.0.0.0", ServerRepository.PORT_WS);
 		
 		final WebSocketAddOn addon = new WebSocketAddOn();
 		for (NetworkListener listener : wsServer.getListeners()) {
 			logger.fine("listener: "+listener.getHost()+":"+listener.getPort());			
 		    listener.registerAddOn(addon);
 		}
-		
 		astericsApplication = new AstericsDataApplication();
 
-		logger.fine("Registering Websocket URI: "+BASE_URI_WS+PATH_WS_ASTERICS_DATA);
-		WebSocketEngine.getEngine().register(PATH_WS,PATH_WS_ASTERICS_DATA,astericsApplication);	
-		restServer.start();
+		logger.fine("Registering Websocket URI: "+ServerRepository.BASE_URI_WS+ServerRepository.PATH_WS_ASTERICS_DATA);
+		WebSocketEngine.getEngine().register(ServerRepository.PATH_WS,ServerRepository.PATH_WS_ASTERICS_DATA,astericsApplication);	
+		
 		wsServer.start();
 	}
 	
+	
 	/**
 	 * This is just an example of how to use the OSGI HttpService lookup mechanism to register a URI
+	 * 
 	 * @param bc
 	 * @throws NamespaceException
 	 * @throws ServletException
@@ -144,19 +129,21 @@ public class WebServiceEngine {
 		}	
 	}
 
+	
 	public void stop() {
 		// TODO Auto-generated method stub
-		if(restServer!=null) {
+		if(restServer != null) {
 			restServer.shutdownNow();
 		}
-		if(wsServer!=null) {
+		if(wsServer != null) {
 			wsServer.shutdownNow();
 		}
-
 	}
+	
 	
 	//data handling
 	public IRuntimeInputPort getRuntimeInputPort() {
 		return astericsApplication;
 	}	
+	
 }
