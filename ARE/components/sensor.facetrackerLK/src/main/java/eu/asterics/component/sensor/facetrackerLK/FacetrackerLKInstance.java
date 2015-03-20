@@ -286,7 +286,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     	pluginReady=true;
         super.resume();
     }
-
+ 
     @Override
     public void stop()
     {
