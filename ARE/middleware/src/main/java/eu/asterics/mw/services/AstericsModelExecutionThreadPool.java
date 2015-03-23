@@ -190,6 +190,8 @@ public class AstericsModelExecutionThreadPool {
 	 * @Note: In single threaded approach: the taks is operated off a bounded queue of size DEFAULT_EXECUTOR_QUEUE_SIZE. If the queue is full, the task is rejected to prevent knocking out the ARE.
 	 * @param r
 	 */	
+	//Removed submit method because, the user should either use .execute to asynchronously call a task or execAndWaitOnModelExecutorLifecycleThread synchronously with timeout.
+	/*
 	public <V> V submit(Callable<V> r) throws InterruptedException, ExecutionException, TimeoutException {
 		try{
 			if(Thread.currentThread().getName().startsWith(MODEL_EXECUTOR_LIFECYCLE)) {
@@ -215,7 +217,7 @@ public class AstericsModelExecutionThreadPool {
 		}catch(Exception e) {
 			throw new ExecutionException(e);
 		}
-	}
+	}*/
 
 	/**
 	 * Executes (blocking, waits for termination) the given Runnable by the Thread instance "ModelExecutor".
