@@ -65,6 +65,8 @@ import eu.asterics.mw.model.deployment.IRuntimeModel;
  */
 public class TabbedPane extends JPanel 
 {
+	private static final Color DEFAULT_BACKGROUND_COLOR = new Color (-11435361);
+
 	private AstericsGUI parent;
 	
 	JCheckBox iconifyBox;
@@ -100,6 +102,7 @@ public class TabbedPane extends JPanel
 
 		//The following line enables to use scrolling tabs.
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		storeDefaultProperties();
 	}
 
 	protected JComponent makeDescriptionPanel(String text) 
@@ -154,7 +157,7 @@ public class TabbedPane extends JPanel
 	{
 		JPanel panel = new JPanel(false);
 		showErrorGuiBox = new JCheckBox("Show Error GUI Windows");
-		showErrorGuiBox.setSelected (false);
+		showErrorGuiBox.setSelected (true);
 		
 		panel.setBorder(BorderFactory.createTitledBorder(text));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -164,8 +167,11 @@ public class TabbedPane extends JPanel
 
         if (props.containsKey("showErrorDialogs"))
         {
-        	if (Integer.parseInt(props.getProperty("showErrorDialogs")) == 1)
+        	if (Integer.parseInt(props.getProperty("showErrorDialogs")) == 1) {
         		showErrorGuiBox.setSelected (true);
+        	} else {
+        		showErrorGuiBox.setSelected (false);
+        	}
         }
         	
 		panel.add(showErrorGuiBox);
@@ -186,10 +192,25 @@ public class TabbedPane extends JPanel
 			tcc = new JColorChooser(new Color(Integer
 					.parseInt(props.getProperty("background_color"))));
 		else	
-			tcc = new JColorChooser(new Color (-11435361));  // default background color
+			tcc = new JColorChooser(DEFAULT_BACKGROUND_COLOR);  // default background color
 		colorPanel.add(tcc);
 		panel.add(colorPanel);
 		return panel;
+	}
+	
+	void storeDefaultProperties() {		
+		AREProperties props = AREProperties.instance;
+
+		if(!props.containsKey("background_color")) {
+			props.setProperty("background_color", 
+					Integer.toString(DEFAULT_BACKGROUND_COLOR.getRGB()));
+		}
+
+        if (!props.containsKey("showErrorDialogs")) {
+			props.setProperty("showErrorDialogs","1");
+        }
+		
+		props.storeProperties();
 	}
 	
 	void storeProperties()
