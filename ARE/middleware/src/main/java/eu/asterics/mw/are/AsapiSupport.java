@@ -411,7 +411,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName() + "."
 					+ "deployModel: Failed to deploy model -> \n"
 					+ e3.getMessage());
-			throw (new AREAsapiException("Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program."));
+			throw (new AREAsapiException(e3.getMessage()));
 		} catch (ParseException e4) {
 			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);

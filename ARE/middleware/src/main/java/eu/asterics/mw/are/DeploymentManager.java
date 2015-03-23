@@ -182,228 +182,240 @@ public class DeploymentManager
 			throw new RuntimeException("Illegal null argument");
 		}
 
-		notifyAREEventListeners (AREEvent.PRE_DEPLOY_EVENT);
+		try{
+			notifyAREEventListeners (AREEvent.PRE_DEPLOY_EVENT);
 
 
-		final Set<IComponentInstance> componentInstanceSet =
-				runtimeModel.getComponentInstances();
+			final Set<IComponentInstance> componentInstanceSet =
+					runtimeModel.getComponentInstances();
 
-		// handle instantiation of new component instances and assign property
-		// values as needed
+			// handle instantiation of new component instances and assign property
+			// values as needed
 
-		String conversion="";
-		for (IComponentInstance componentInstance : componentInstanceSet)
-		{
-			final String componentTypeID =
-					componentInstance.getComponentTypeID();
-
-			final IComponentType componentType = 
-					componentRepository.getComponentType(componentTypeID);
-
-			if (componentType == null)
+			String conversion="";
+			for (IComponentInstance componentInstance : componentInstanceSet)
 			{
-				logger.severe("Could not find component " +
-						"type: " + componentTypeID);
-				throw new DeploymentException("Could not find component " +
-						"type: " + componentTypeID);
-			}
+				final String componentTypeID =
+						componentInstance.getComponentTypeID();
 
-			final String canonicalName = componentType.getCanonicalName();
+				final IComponentType componentType = 
+						componentRepository.getComponentType(componentTypeID);
 
-			IRuntimeComponentInstance runtimeComponentInstance=null;
-
-			try{
-				runtimeComponentInstance =
-						componentRepository.getInstance(canonicalName);
-
-			}
-			catch (Exception e){
-				//logger.severe(canonicalName+ " prevents the model from starting: "+e.getMessage());
-				e.printStackTrace();
-				String message="Could not deploy component of type ["+componentTypeID+"]: \n"+e.getMessage();
-				//AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
-				
-				//before give up, try to cleanup and undeploy model again				
-				try{
-					logger.fine("Before giving up, trying to undeploy model again.");
-					undeployModel();
-				}catch(Throwable t) {
-					t.printStackTrace();
-				}			
-				throw new DeploymentException(message);
-				//return;
-			}
-
-			//Set runtime property values to component instances
-			final Set<String> propertyNames = componentType.getPropertyNames();
-			if (propertyNames != null)
-			{
-				for (final String propertyName : propertyNames)
+				if (componentType == null)
 				{
-					final Object propertyValue = 
-							componentInstance.getPropertyValue(propertyName);
-					if (propertyName != null)
+					logger.severe("Could not find component " +
+							"type: " + componentTypeID);
+					throw new DeploymentException("Could not find component " +
+							"type: " + componentTypeID);
+				}
+
+				final String canonicalName = componentType.getCanonicalName();
+
+				IRuntimeComponentInstance runtimeComponentInstance=null;
+
+				try{
+					runtimeComponentInstance =
+							componentRepository.getInstance(canonicalName);
+
+				}catch (Exception e){
+					//logger.severe(canonicalName+ " prevents the model from starting: "+e.getMessage());
+					//e.printStackTrace();
+					String message="Could not deploy component of type ["+componentTypeID+"]: \n"+e.getMessage();
+					//AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
+
+					//before give up, try to cleanup and undeploy model again				
+					//logger.fine("Before giving up, trying to undeploy model again.");
+					//undeployModel();
+					throw new DeploymentException(message);
+					//return;
+				}
+
+				//Set runtime property values to component instances
+				final Set<String> propertyNames = componentType.getPropertyNames();
+				if (propertyNames != null)
+				{
+					for (final String propertyName : propertyNames)
 					{
-						//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
-						//We have to synchronize using the target component, because the component can be considered a black box, that must
-						//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
-						//synchronized(runtimeComponentInstance) 
+						final Object propertyValue = 
+								componentInstance.getPropertyValue(propertyName);
+						if (propertyName != null)
 						{
-							runtimeComponentInstance.
-							setRuntimePropertyValue(propertyName, propertyValue);
+							//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+							//We have to synchronize using the target component, because the component can be considered a black box, that must
+							//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
+							//synchronized(runtimeComponentInstance) 
+							{
+								runtimeComponentInstance.
+								setRuntimePropertyValue(propertyName, propertyValue);
+							}
 						}
+					}
+				}
+
+				runtimeComponentInstances.put(componentInstance.getInstanceID(),
+						runtimeComponentInstance);
+				runtimeInstanceToComponentTypeID.put(runtimeComponentInstance, 
+						componentInstance.getComponentTypeID());
+
+				Set<IRuntimeComponentInstance> set =
+						componentTypeIdToRuntimeComponentInstances.
+						get(componentInstance.getComponentTypeID());
+				if (set == null)
+				{
+					set = new LinkedHashSet<IRuntimeComponentInstance>();
+				}
+				set.add(runtimeComponentInstance);
+
+				componentTypeIdToRuntimeComponentInstances.
+				put(componentInstance.getComponentTypeID(), set);
+
+				//set component status
+				runtimeComponentInstancesStatus.put(componentInstance.getInstanceID(), AREStatus.DEPLOYED);
+
+			}
+
+			// handle channel formation
+			final Set<IChannel> channels = runtimeModel.getChannels();
+
+			for (final IChannel channel : channels)
+			{
+				final IBindingEdge sourceBindingEdge = channel.getSource();
+				final IBindingEdge targetBindingEdge = channel.getTarget();
+
+				final String sourceComponentInstanceID = sourceBindingEdge.
+						getComponentInstanceID();
+				final String sourceOutputPortID = sourceBindingEdge.getPortID();
+
+				final String targetComponentInstanceID = targetBindingEdge.
+						getComponentInstanceID();
+				final String targetInputPortID = targetBindingEdge.getPortID();
+
+
+
+				final IRuntimeComponentInstance sourceComponentInstance
+				= runtimeComponentInstances.get(sourceComponentInstanceID);
+
+				final IRuntimeOutputPort sourceRuntimeOutputPort
+				= sourceComponentInstance.getOutputPort(sourceOutputPortID);
+
+				final IRuntimeComponentInstance targetComponentInstance
+				= runtimeComponentInstances.get(targetComponentInstanceID);
+
+				final IRuntimeInputPort targetRuntimeInputPort
+				= targetComponentInstance.getInputPort(targetInputPortID);
+
+				// form the binding
+				//The targetRuntimeInputPort is the same for averager and targetComponentInstance are the same
+
+				// 1. find out the data types of the source and target ports
+				// 2. if not the same and compatible, then
+				// -- select appropriate wrapper and use that instead
+				final IRuntimeInputPort wrapper;
+
+				final DataType sourceDataType = runtimeModel.
+						getPortDataType(sourceComponentInstanceID, sourceOutputPortID);
+				final DataType targetDataType = runtimeModel.
+						getPortDataType(targetComponentInstanceID, targetInputPortID);
+
+				conversion = "";			
+				if(sourceDataType != targetDataType)
+				{
+					conversion=ConversionUtils.getDataTypeConversionString(sourceDataType, targetDataType);
+				}
+
+
+				wrapper = targetRuntimeInputPort;
+
+				sourceRuntimeOutputPort.addInputPortEndpoint(
+						targetComponentInstanceID, 
+						targetInputPortID, 
+						wrapper,
+						conversion);
+
+				runtimeModel.getComponentInstance(targetComponentInstanceID).
+				setWrapper (targetInputPortID, wrapper);
+
+				//            sourceRuntimeOutputPort.addInputPortEndpoint(targetComponentInstanceID, targetInputPortID, targetRuntimeInputPort);
+			}
+
+			// handle event channels
+			final Set<IEventChannel> eventChannels = runtimeModel.getEventChannels();
+			for (final IEventChannel eventChannel : eventChannels)
+			{
+				final String eventChannelID = eventChannel.getChannelID();
+				final IEventEdge [] eventSources = eventChannel.getSources();
+				final IEventEdge [] eventTargets = eventChannel.getTargets();
+
+				final Set<EventListenerDetails> targetEventListenerPorts
+				= new LinkedHashSet<EventListenerDetails>();
+
+				for(final IEventEdge targetEventEdge : eventTargets)
+				{
+					final String targetComponentInstanceID = 
+							targetEventEdge.getComponentInstanceID();
+					final String targetEventPortID = 
+							targetEventEdge.getEventPortID();
+
+					final IRuntimeComponentInstance targetComponentInstance
+					= runtimeComponentInstances.
+					get(targetComponentInstanceID);
+
+					final IRuntimeEventListenerPort eventListenerPort
+					= targetComponentInstance.
+					getEventListenerPort(targetEventPortID);
+					targetEventListenerPorts.add(
+							new EventListenerDetails(targetComponentInstanceID, 
+									targetEventPortID, 
+									eventListenerPort));
+				}
+
+				for(final IEventEdge sourceEventEdge : eventSources)
+				{
+					final String sourceComponentInstanceID = 
+							sourceEventEdge.getComponentInstanceID();
+					final String sourceEventPortID = sourceEventEdge.
+							getEventPortID();
+					final IRuntimeComponentInstance sourceComponentInstance
+					= runtimeComponentInstances.
+					get(sourceComponentInstanceID);
+					final IRuntimeEventTriggererPort eventTriggererPort
+					= sourceComponentInstance.
+					getEventTriggererPort(sourceEventPortID);
+
+					//eventTriggererPort.setEventChannelID(eventChannelID);
+
+					for(final EventListenerDetails eventListenerDetails : 
+						targetEventListenerPorts)
+					{
+						eventTriggererPort.setEventChannelID(sourceEventPortID+" > "+eventListenerDetails.portID);
+
+						eventTriggererPort.addEventListener(
+								eventListenerDetails.componentID, 
+								eventListenerDetails.portID,
+								eventListenerDetails.runtimeEventListenerPort);
 					}
 				}
 			}
 
-			runtimeComponentInstances.put(componentInstance.getInstanceID(),
-					runtimeComponentInstance);
-			runtimeInstanceToComponentTypeID.put(runtimeComponentInstance, 
-					componentInstance.getComponentTypeID());
+			this.currentRuntimeModel = runtimeModel;
 
-			Set<IRuntimeComponentInstance> set =
-					componentTypeIdToRuntimeComponentInstances.
-					get(componentInstance.getComponentTypeID());
-			if (set == null)
-			{
-				set = new LinkedHashSet<IRuntimeComponentInstance>();
-			}
-			set.add(runtimeComponentInstance);
+			notifyAREEventListeners (AREEvent.POST_DEPLOY_EVENT);
 
-			componentTypeIdToRuntimeComponentInstances.
-			put(componentInstance.getComponentTypeID(), set);
-			
-			//set component status
-			runtimeComponentInstancesStatus.put(componentInstance.getInstanceID(), AREStatus.DEPLOYED);
-			
-		}
+		}catch (Exception e){
+			e.printStackTrace();
 
-		// handle channel formation
-		final Set<IChannel> channels = runtimeModel.getChannels();
+			//before give up, try to cleanup and undeploy model again				
+			logger.severe("Deployment exception: "+e.getMessage());
+			logger.fine("Before giving up, trying to undeploy model again.");
+			undeployModel();
 
-		for (final IChannel channel : channels)
-		{
-			final IBindingEdge sourceBindingEdge = channel.getSource();
-			final IBindingEdge targetBindingEdge = channel.getTarget();
-
-			final String sourceComponentInstanceID = sourceBindingEdge.
-					getComponentInstanceID();
-			final String sourceOutputPortID = sourceBindingEdge.getPortID();
-
-			final String targetComponentInstanceID = targetBindingEdge.
-					getComponentInstanceID();
-			final String targetInputPortID = targetBindingEdge.getPortID();
-
-			
-
-			final IRuntimeComponentInstance sourceComponentInstance
-			= runtimeComponentInstances.get(sourceComponentInstanceID);
-
-			final IRuntimeOutputPort sourceRuntimeOutputPort
-			= sourceComponentInstance.getOutputPort(sourceOutputPortID);
-
-			final IRuntimeComponentInstance targetComponentInstance
-			= runtimeComponentInstances.get(targetComponentInstanceID);
-
-			final IRuntimeInputPort targetRuntimeInputPort
-			= targetComponentInstance.getInputPort(targetInputPortID);
-
-			// form the binding
-			//The targetRuntimeInputPort is the same for averager and targetComponentInstance are the same
-
-			// 1. find out the data types of the source and target ports
-			// 2. if not the same and compatible, then
-			// -- select appropriate wrapper and use that instead
-			final IRuntimeInputPort wrapper;
-
-			final DataType sourceDataType = runtimeModel.
-					getPortDataType(sourceComponentInstanceID, sourceOutputPortID);
-			final DataType targetDataType = runtimeModel.
-					getPortDataType(targetComponentInstanceID, targetInputPortID);
-			
-			conversion = "";			
-			if(sourceDataType != targetDataType)
-			{
-				conversion=ConversionUtils.getDataTypeConversionString(sourceDataType, targetDataType);
-			}
-
-
-			wrapper = targetRuntimeInputPort;
-
-			sourceRuntimeOutputPort.addInputPortEndpoint(
-					targetComponentInstanceID, 
-					targetInputPortID, 
-					wrapper,
-					conversion);
-			
-			runtimeModel.getComponentInstance(targetComponentInstanceID).
-				setWrapper (targetInputPortID, wrapper);
-
-			//            sourceRuntimeOutputPort.addInputPortEndpoint(targetComponentInstanceID, targetInputPortID, targetRuntimeInputPort);
-		}
-
-		// handle event channels
-		final Set<IEventChannel> eventChannels = runtimeModel.getEventChannels();
-		for (final IEventChannel eventChannel : eventChannels)
-		{
-			final String eventChannelID = eventChannel.getChannelID();
-			final IEventEdge [] eventSources = eventChannel.getSources();
-			final IEventEdge [] eventTargets = eventChannel.getTargets();
-
-			final Set<EventListenerDetails> targetEventListenerPorts
-			= new LinkedHashSet<EventListenerDetails>();
-
-			for(final IEventEdge targetEventEdge : eventTargets)
-			{
-				final String targetComponentInstanceID = 
-						targetEventEdge.getComponentInstanceID();
-				final String targetEventPortID = 
-						targetEventEdge.getEventPortID();
-
-				final IRuntimeComponentInstance targetComponentInstance
-				= runtimeComponentInstances.
-				get(targetComponentInstanceID);
-
-				final IRuntimeEventListenerPort eventListenerPort
-				= targetComponentInstance.
-				getEventListenerPort(targetEventPortID);
-				targetEventListenerPorts.add(
-						new EventListenerDetails(targetComponentInstanceID, 
-								targetEventPortID, 
-								eventListenerPort));
-			}
-
-			for(final IEventEdge sourceEventEdge : eventSources)
-			{
-				final String sourceComponentInstanceID = 
-						sourceEventEdge.getComponentInstanceID();
-				final String sourceEventPortID = sourceEventEdge.
-						getEventPortID();
-				final IRuntimeComponentInstance sourceComponentInstance
-				= runtimeComponentInstances.
-				get(sourceComponentInstanceID);
-				final IRuntimeEventTriggererPort eventTriggererPort
-				= sourceComponentInstance.
-				getEventTriggererPort(sourceEventPortID);
-
-				//eventTriggererPort.setEventChannelID(eventChannelID);
-
-				for(final EventListenerDetails eventListenerDetails : 
-					targetEventListenerPorts)
-				{
-					eventTriggererPort.setEventChannelID(sourceEventPortID+" > "+eventListenerDetails.portID);
-
-					eventTriggererPort.addEventListener(
-							eventListenerDetails.componentID, 
-							eventListenerDetails.portID,
-							eventListenerDetails.runtimeEventListenerPort);
-				}
+			if(e instanceof DeploymentException) {
+				throw e;
+			} else {
+				String message="Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program.";
+				throw new DeploymentException(message);
 			}
 		}
-
-		this.currentRuntimeModel = runtimeModel;
-
-		notifyAREEventListeners (AREEvent.POST_DEPLOY_EVENT);
 	}
 
 
@@ -513,7 +525,7 @@ public class DeploymentManager
 		}catch(Throwable e) {
 			String reason=e.getCause()!=null && e.getCause().getMessage() != null ? e.getCause().getMessage() : e.getMessage();  
 			logger.warning("Ignoring exception in undeployModel: "+reason);
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
