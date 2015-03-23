@@ -193,49 +193,7 @@ public class ControlPane extends JPanel
 		mainPanel.setPreferredSize(new Dimension (CONTROLPANEL_WIDTH,astericsGUI.screenSize.height));
 		mainPanel.add(controlPanel);
 		add(mainPanel);
-		addStopMnemnonic();
 	}
-
-	
-
-	private void addStopMnemnonic() {
-		// TODO Auto-generated method stub
-		mainFrame.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				if(KeyEvent.VK_F7==arg0.getKeyCode()) {
-					//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-					
-					try{
-						try {
-							as.stopModel();
-						} catch (AREAsapiException e) {
-						}
-					}finally{															
-						//mainFrame.setCursor(Cursor.getDefaultCursor());
-						mainFrame.validate();
-						System.out.println ("Stop model OK!");										
-					}
-				}
-			}
-		});
-	}
-
-
 
 	protected JComponent makeControlPanel(String text, int axis) 
 	{
