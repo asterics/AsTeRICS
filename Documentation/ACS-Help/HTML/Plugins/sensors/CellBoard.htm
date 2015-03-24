@@ -11,33 +11,53 @@
   <body>
     <h1>CellBoard</h1>
     <h3>Component Type: Sensor (Subcategory: Graphical User Interface)</h3>
-    <p>The CellBoard plugin is a GUI plugin which can display a board
-      with the cells. Each cell can contain text and a picture. The
-      CellBoard plugin provides basic scanning options and can be used
-      as a simple on-screen keyboard.</p>
+    <p>The CellBoard plugin is a GUI plugin which can display a panel
+      with multiple cells. Each cell can contain text and a picture, and it
+	  can provide acoustic feedback on selection. The CellBoard plugin provides 
+	  basic scanning options (to select a cell via a stepwise process). It provides
+	  a small editor for designeing the cells and can be used as a simple on-screen keyboard.</p>
     <div class="image"><img src="img/CellBoard.jpg" alt="Screenshot:
         CellBoard plugin" title="Screenshot: CellBoard plugin"><br>
       CellBoard plugin</div>
+    <h2>Using the cell editor</h2>
+
+    <p>The cell editor allows to define the contect of a cell (caption, action string, 
+	image and sounds for cell-selection and cell-scanning/preview). The resulting keyboard
+    can be saved as .xml file - which can be specified as property "keyboardFile". </p>
+    <div class="image"><img src="img/CellBoardEditor.jpg" alt="Screenshot:
+        CellBoard editor" title="Screenshot: CellBoard editor"><br>
+      CellBoard editor</div>
+
+	
+
     <h2>Input Port Description</h2>
     <ul>
       <li><strong>row [integer]:</strong> This port can be used in
-        directed scanning mode to set the row of the highlighted cell.</li>
+        "directed scanning" mode to set the row of the highlighted cell.</li>
       <li><strong>column [integer]:</strong> This port can be used in
-        directed scanning mode to set the column of the highlighted
+        "directed scanning" mode to set the column of the highlighted
         cell.</li>
       <li><strong>cellNumber [integer]:</strong> This port can be used
-        in directed scanning mode to set the number of the highlighted
+        in "directed scanning" mode to set the number of the highlighted
         cell.</li>
-      <li><strong>xmlFile [string]:</strong> Name of keyboard file (in data/cellBoardKeyboards) which is used when the 'load' event occurs.</li>
+      <li><strong>xmlFile [string]:</strong> Name of a keyboard file 
+	  (default location in data/cellBoardKeyboards) 
+	  which can be loaded or saved.</li>
     </ul>
     <h2>Output Port Description</h2>
     <ul>
+      <li><strong>actCell [integer]:</strong> Sends the number of
+        the currently scanned cell.</li>
+      <li><strong>actCellCaption [string]:</strong> Sends the cell caption
+        of the currently scanned cell.</li>
+      <li><strong>actCellText [string]:</strong> Sends the action
+        string of the currently scanned cell</li>
       <li><strong>selectedCell [integer]:</strong> Sends the number of
         the selected cell.</li>
+      <li><strong>selectedCellCaption [string]:</strong> Sends the cell caption
+        of the selected cell.</li>
       <li><strong>selectedCellText [string]:</strong> Sends the action
-        text of the selected cell.</li>
-      <li><strong>currentCellText [string]:</strong> Sends the action
-        text of the currently active cell (relevant only for the moveUp / moveDown / moveLeft / moveRight events)</li>
+        string of the currently active cell</li>
     </ul>
     <h2>Event Listener Description</h2>
     <ul>
@@ -53,15 +73,15 @@
         left in the directed scanning mode (wrap around is possible).</li>
       <li><strong>moveDown:</strong> Moves the scanning highlight down
         in the directed scanning mode (wrap around is possible).</li>
+      <li><strong>load:</strong> loads a keyboard from the given xml-filename 
+	  (property "keyboardFile").</li>
     </ul>
     <h2>Event Trigger Description</h2>
     <ul>
       <li><strong>cellClicked:</strong> This event is triggered when one
         of the cells is clicked.</li>
-      <li><strong>load:</strong> Loads the xml file with the keyboard
-        definition set by the xmlFile input port</li>
       <li><strong>cell1...cell36:</strong> This event is triggered when
-        a cell is selected.</li>
+        the given cell is selected.</li>
     </ul>
     <h2>Properties</h2>
     <ul>
@@ -102,9 +122,19 @@
         </ul>
       </li>
       <li><strong>hoverTime [integer]:</strong> This parameter is used
-        in the hover selection mode. It defines the time of hovering
+        in the "hover selection" mode. It defines the time of hovering
         needed to select the cell (in milliseconds).</li>
-      <li><strong>keyboardFile [string]:</strong> Name of keyboard file (in data/cellBoardKeyboards) to load at startup.<b>Supports value suggestions from ARE (dynamic property)</b></li>
+      <li><strong>enableEdit [boolean]:</strong> If selected, the cells can be
+	  right-clicked to display the cell editor, which also allows to save the xml-keyboard file.
+	  </li>
+      <li><strong>enableClickSelection [boolean]:</strong>If selected, all cells can be selected
+	  via a left click, regardless of the scanning process</li>
+      <li><strong>keyboardFile [string]:</strong> Name of a keyboard file 
+	  (xml file located in in data/cellBoardKeyboards) to be loaded at startup 
+	  or to be saved from the cell editor.<b>Supports value suggestions 
+	  for existing xml-files from the ARE (dynamic property)</b></li>
+      <li><strong>dispayGUI [boolean]:</strong> If selected, the component
+	  will be displayed in the ARE GUI. Otherwise the componentent will be hidden !</li>
       <li><strong>cellText1...cellText36 [string]:</strong> The text
         displayed on the cell.</li>
       <li><strong>cellImage1...cellImage36 [string]:</strong> The path

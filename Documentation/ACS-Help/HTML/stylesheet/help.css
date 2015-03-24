@@ -28,6 +28,14 @@ img {
 	font-style: italic;
 }
 
+.mini_image {
+	font-size: 0.9em;
+	width: 30%;
+	text-align: center;
+	font-style: italic;
+}
+
+
 .bullet_image {
 	padding: 0.5em;
 	font-size: 0.9em;
