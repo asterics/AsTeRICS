@@ -494,7 +494,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 				else
 					etpPuff.raiseEvent();
 			}
-			
+			oldPressure=pressure;
 		}
 	}
 	static int button1State = 0;
@@ -658,6 +658,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
       @Override
       public void start()
       {
+    	  oldPressure=-1;
     	  if (port==null)
     	  {
   		     port = openCIM (LIPMOUSE_CIM_ID,propUniqueID);
