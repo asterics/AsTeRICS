@@ -131,6 +131,25 @@ public class RestServer {
     	return response;
     }
 	
+	
+	@Path("/runtime/model/state")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getModelState() {
+		String response;
+		String errorMessage = "";
+		
+		try {
+			response = as.getModelState();
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the state of the runtime model";
+			response = "error:" + errorMessage;
+		}
+
+    	return response;
+    }
+	
 
 	@Path("/runtime/model/autorun/{filename}")
     @PUT
