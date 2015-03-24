@@ -64,6 +64,7 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 	final IRuntimeOutputPort opOutConsole = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opOutGame = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opOutMode = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opOutButtons = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opOutModel = new DefaultRuntimeOutputPort();
 	// Usage of an output port e.g.:
 	// opMyOutPort.sendData(ConversionUtils.intToBytes(10));
@@ -143,6 +144,9 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 		}
 		if ("outMode".equalsIgnoreCase(portID)) {
 			return opOutMode;
+		}
+		if ("outButtons".equalsIgnoreCase(portID)) {
+			return opOutButtons;
 		}
 		if ("outModel".equalsIgnoreCase(portID)) {
 			return opOutModel;
@@ -565,8 +569,35 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 			e.printStackTrace();
 		}
 	}
+	
+	public void ShowButtons(int modeToLoad)
+	{
+		String buttons = "";
+		ArrayList<ArrayList<String>> eachMode;
+		Map<String, ArrayList<ArrayList<String>>> gameMode;
 
+		gameMode = modes.get(selectedConsole.toUpperCase());
+		eachMode = gameMode.get(selectedGame.toUpperCase());
+
+		ArrayList<String> mode = eachMode.get(modeToLoad-1);
+		for (String config : mode) {
+			if(config.contains("KEY_CTRL KEY_ESC"))
+			{
+				config = "Modus/Zurueck";
+			}
+			else if(config.contains("KEY_"))
+			{
+				config = config.replace("KEY_", "");
+			}
+			buttons += config +  ",";
+		}
+		System.out.println("Buttons : " + buttons);
+		opOutButtons.sendData(ConversionUtils.stringToBytes(buttons));
+	}
+	
 	private void switchMode(int modeToLoad) {
+		ShowButtons(modeToLoad);
+		ShowButtons(modeToLoad);
 		try {
 			OutputMode(modeToLoad);
 			System.out.println("switch Mode");
@@ -721,7 +752,8 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 			while ((line = br.readLine()) != null) {
 
 				// use comma as separator
-				line = line.replace(" ", "");
+				//line = line.replace(" ", "");
+				
 				String[] gameMode = line.split(cvsSplitBy);
 				String consoleNameUp = gameMode[0].toUpperCase();
 				String gameNameUp = gameMode[1].toUpperCase();

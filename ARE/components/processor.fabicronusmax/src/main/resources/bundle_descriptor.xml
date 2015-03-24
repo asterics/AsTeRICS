@@ -36,6 +36,10 @@
 				<description>output of the selected Mode</description>
 				<dataType>integer</dataType>
 			</outputPort>
+			<outputPort id="OutButtons">
+				<description>output of the configured buttons, seperated through a comma</description>
+				<dataType>string</dataType>
+			</outputPort>
 			<outputPort id="OutModel">
 				<description>output for the next model to load</description>
 				<dataType>string</dataType>
