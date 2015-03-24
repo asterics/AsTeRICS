@@ -13,7 +13,7 @@ SET ARE_OPTIONAL_SERVICES_INI=
 @REM Check commandline parameter
 @IF "%1" == "--webservice" (
 	@    echo "--webservice selected"
-	@    SET AUTOSTART_MODEL=WebSocket_test.acs
+	@    SET AUTOSTART_MODEL=%2
 	@    SET ARE_OPTIONAL_SERVICES_INI="services_websocketdemo.ini"
 
 ) ELSE (
