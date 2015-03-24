@@ -66,6 +66,8 @@ const char* cascade_name = "data\\sensor.facetrackerLK\\haarcascade_frontalface_
 static CvMemStorage* storage = 0;
 static CvHaarClassifierCascade* cascade = 0;
 
+int blockCallbacks = false;
+
 //----------------------------------------------
 
 	//capture object
@@ -340,38 +342,42 @@ DWORD WINAPI CamProc(LPVOID lpv)
 				  printf( "FaceTrackerLK C++ module: CamProc ->calling factracking worker ...\n");
 			#endif
 
-			facetracker_work();   // perform feature tracking
+            if (blockCallbacks==false)
+			{
 
-			// perform JNI callback
-			JNIEnv *env;
-			g_jvm->AttachCurrentThread((void **)&env, NULL);
-			jclass cls = env->GetObjectClass(g_obj);
-			jmethodID mid = env->GetMethodID(cls, "newCoordinates_callback", "(IIII)V");
-			#ifdef DEBUG_OUTPUT
-				printf("FaceTrackerLK C++ module: CamProc -> right before callback %d,%d\n",  (int)x_move , (int)y_move);
-			#endif
-			if ((x_move<ERR_THRESHOLD)&&(x_move>-ERR_THRESHOLD)&&(y_move<ERR_THRESHOLD)&&(y_move>-ERR_THRESHOLD))
-				env->CallVoidMethod(g_obj, mid, (jint) (x_move), (jint) (y_move), (jint) (x_click), (jint) (y_click));
-			else {
-			#ifdef DEBUG_OUTPUT
-				printf("FaceTrackerLK C++ module: CamProc ->dropped out-of-bounds-movement\n");
-			#endif
+				facetracker_work();   // perform feature tracking
+
+				// perform JNI callback
+				JNIEnv *env;
+				g_jvm->AttachCurrentThread((void **)&env, NULL);
+				jclass cls = env->GetObjectClass(g_obj);
+				jmethodID mid = env->GetMethodID(cls, "newCoordinates_callback", "(IIII)V");
+				#ifdef DEBUG_OUTPUT
+					printf("FaceTrackerLK C++ module: CamProc -> right before callback %d,%d\n",  (int)x_move , (int)y_move);
+				#endif
+				if ((x_move<ERR_THRESHOLD)&&(x_move>-ERR_THRESHOLD)&&(y_move<ERR_THRESHOLD)&&(y_move>-ERR_THRESHOLD))
+					env->CallVoidMethod(g_obj, mid, (jint) (x_move), (jint) (y_move), (jint) (x_click), (jint) (y_click));
+				else {
+				#ifdef DEBUG_OUTPUT
+					printf("FaceTrackerLK C++ module: CamProc ->dropped out-of-bounds-movement\n");
+				#endif
+				}
+
+				dwRes = WaitForMultipleObjects(1, hArray, FALSE, 0);
+				switch(dwRes)  {
+					case WAIT_OBJECT_0: 
+						 CamThreadDone = TRUE;
+						 #ifdef DEBUG_OUTPUT
+						 printf("FaceTrackerLK C++ module: CamProc ->camthread exit event received\n");
+		 				 #endif
+						 break;
+					case WAIT_TIMEOUT:
+						 #ifdef DEBUG_OUTPUT
+						 printf("FaceTrackerLK C++ module: CamProc ->camthread timed out\n");
+		 				 #endif
+						 break;                       
+					default: break;
 			}
-
-			dwRes = WaitForMultipleObjects(1, hArray, FALSE, 0);
-			switch(dwRes)  {
-				case WAIT_OBJECT_0: 
-					 CamThreadDone = TRUE;
-					 #ifdef DEBUG_OUTPUT
-					 printf("FaceTrackerLK C++ module: CamProc ->camthread exit event received\n");
-		 			 #endif
-					 break;
-				case WAIT_TIMEOUT:
-					 #ifdef DEBUG_OUTPUT
-					 printf("FaceTrackerLK C++ module: CamProc ->camthread timed out\n");
-		 			 #endif
-					 break;                       
-				default: break;
 		}
 	}
 
@@ -389,6 +395,7 @@ int facetracker_init( void )
 {
 	  int inittimeout=0;
 
+	  blockCallbacks=true;
 	  initstatus=STATUS_IDLE;
 
 	  #ifdef DEBUG_OUTPUT
@@ -408,6 +415,7 @@ int facetracker_init( void )
 		  printf(".");
 	  }
 	  printf("\n");
+ 	  blockCallbacks=false;
 	  if (initstatus==STATUS_THREAD_RUNNING) return (1);
 	  return(0);
 }
@@ -417,6 +425,8 @@ int facetracker_exit(void)
 {
     HANDLE hThreads[1];
     DWORD  dwRes;
+
+    blockCallbacks=true;
 
 	if (CAMTHREAD)	{
 
@@ -446,6 +456,7 @@ int facetracker_exit(void)
       // printf("closing down camthread.\n");
   	  CloseHandle(CamExitEvent);
 	  CloseHandle(CAMTHREAD);
+  	  blockCallbacks=false;
 	  CAMTHREAD=0;
 	}
 
@@ -839,7 +850,9 @@ JNIEXPORT void JNICALL Java_eu_asterics_component_sensor_facetrackerLK_jni_Bridg
 JNIEXPORT void JNICALL Java_eu_asterics_component_sensor_facetrackerLK_jni_Bridge_setDisplayPosition
 	(JNIEnv *env, jobject obj, int x, int y, int w, int h)
 {
-	   resize_paintwindow(x,y,w,h);
+    blockCallbacks=true;
+	resize_paintwindow(x,y,w,h);
+    blockCallbacks=false;
 }
 
 
@@ -850,6 +863,8 @@ JNIEXPORT void JNICALL Java_eu_asterics_component_sensor_facetrackerLK_jni_Bridg
 	const char *strFilename;
 	
     if (filename == NULL) return; /* OutOfMemoryError already thrown*/
+    blockCallbacks=true;
+
 	strFilename = env->GetStringUTFChars(filename, NULL);
 
 	printf("FacetrackerLK C++ module: saving camera profile %s !\n",strFilename);
@@ -891,6 +906,7 @@ JNIEXPORT void JNICALL Java_eu_asterics_component_sensor_facetrackerLK_jni_Bridg
 	catch(const cv::Exception& exp){
 		std::cout << exp.msg << std::endl;
 	}
+    blockCallbacks=false;
 
 }
 
@@ -900,7 +916,9 @@ JNIEXPORT void JNICALL Java_eu_asterics_component_sensor_facetrackerLK_jni_Bridg
 {
 	const char *strFilename;
 	
-    if (filename == NULL) return; /* OutOfMemoryError already thrown*/
+    if (filename == NULL) return; 
+    blockCallbacks=true;
+
 	strFilename = env->GetStringUTFChars(filename, NULL);
 	printf("FacetrackerLK C++ module: loading camera profile %s !\n",strFilename);
 
@@ -942,6 +960,8 @@ JNIEXPORT void JNICALL Java_eu_asterics_component_sensor_facetrackerLK_jni_Bridg
 		 }
 	}
 	profile.release();
+    blockCallbacks=false;
+
 }
 
 

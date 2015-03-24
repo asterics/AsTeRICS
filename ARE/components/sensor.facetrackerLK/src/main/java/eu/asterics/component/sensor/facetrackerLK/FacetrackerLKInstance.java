@@ -56,7 +56,7 @@ import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
  * @author Chris Veigl [veigl@technikum-wien.at]
  *         Date: Oct 10, 2010
  *         Time: 2:35:00 PM 
- */
+ */ 
 public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
 {
 	final IRuntimeOutputPort opNoseX = new DefaultRuntimeOutputPort();
@@ -267,6 +267,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     @Override
     public void pause()
     {
+    	System.out.println("pause");
     	pluginReady=false;
         bridge.deactivate();
         super.pause();
@@ -275,6 +276,7 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     @Override
     public void resume()
     {
+    	System.out.println("resume");
     	pluginReady=false;
         if (bridge.activate() == 0)
       	   AstericsErrorHandling.instance.reportError(this, "Could not init Webcam");
@@ -284,12 +286,15 @@ public class FacetrackerLKInstance extends AbstractRuntimeComponentInstance
     	pluginReady=true;
         super.resume();
     }
-
+ 
     @Override
     public void stop()
     {
-    	pluginReady=false;
-        bridge.deactivate();
+    	if (pluginReady==true)
+    	{
+     	 pluginReady=false;
+         bridge.deactivate();
+    	}
         super.stop();
     }
 
