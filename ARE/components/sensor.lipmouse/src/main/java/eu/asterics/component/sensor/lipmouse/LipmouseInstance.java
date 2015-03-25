@@ -423,7 +423,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 	{
 		public void receiveEvent(final String data)
 		{
-		    ledState&=(~3);
+		    ledState&=(~4);
 			sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_SETLEDS,ledState);  
 		}
 	};
@@ -463,6 +463,8 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		opPressure.sendData(ADCDataToBytes(b[4],b[5]));
 
 		pressure= ConversionUtils.intFromBytes(ADCDataToBytes(b[4],b[5]));
+		// System.out.println("pressure="+pressure);
+
 		if (oldPressure!= -1)
 		{
 			if ((oldPressure > propSipThreshold) && (pressure <= propSipThreshold))
@@ -494,8 +496,8 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 				else
 					etpPuff.raiseEvent();
 			}
-			oldPressure=pressure;
 		}
+		oldPressure=pressure;
 	}
 	static int button1State = 0;
 	static int button2State = 0;
@@ -503,8 +505,11 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 	
 	private void handleLipmouseButtonReport(CIMProtocolPacket packet)
 	{
-		// System.out.println("handleLipmouseAdcPacket");
+		System.out.println("handleLipmouseButtonPacket");
 		byte [] b = packet.getData();
+
+		
+		//System.out.println("buttonstate="+ConversionUtils.intFromBytes(ADCDataToBytes(b[0],(byte)0)));
 
 		if ((button1State==0) && ((b[0]&1)!=0))
 		{

@@ -53,7 +53,7 @@ void setupHardware(void)     // setup GPIO, Timer and ADC
 	  PORTB= (1<<1);         // B1 5V to power up the pressure sensor !
 	#else
 	  PORTC= (1<<3);         // pullup  for internal buttons at C1 
-	  PORTB= (1<<1)|(1<<4);  // pullups for external buttons at B1 and B2 
+	  PORTD= (1<<2)|(1<<3);  // pullups for external buttons at B1 and B2 
 	  DDRE=  (1<<6)|(1<<7);  // indicator leds 
 	  DDRB=  (1<<0);         // indicator leds 
 	#endif

@@ -314,11 +314,11 @@ void generate_ADCFrame()
 
 uint8_t update_Buttonval()
 {
-	static uint8_t actval;
+	uint8_t actval=0;
 
 	if (!(PINC & (1<<3))) actval|=1; 
-	if (!(PINB & (1<<1))) actval|=2; 
-	if (!(PINB & (1<<2))) actval|=4; 
+	if (!(PIND & (1<<2))) actval|=2; 
+	if (!(PIND & (1<<3))) actval|=4; 
 
     if (actval != buttonval)
 	{
