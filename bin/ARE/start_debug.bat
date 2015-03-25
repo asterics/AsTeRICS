@@ -40,7 +40,6 @@ IF ERRORLEVEL 1 GOTO ContARE
 echo NO C++ Redistributable Package found. 
 echo It is highly recommended to download and install the Visual C++ Redistributable Package from Microsoft!
 echo Download link for 32 bit systems: http://www.microsoft.com/en-us/download/details.aspx?id=5555
-echo Download link for 64 bit systems: http://www.microsoft.com/en-us/download/details.aspx?id=14632
 echo Several Plugins will not work without the package!
 rem GOTO QuitError
 Pause
