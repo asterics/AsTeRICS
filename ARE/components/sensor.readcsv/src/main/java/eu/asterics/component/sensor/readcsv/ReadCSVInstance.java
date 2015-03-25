@@ -69,7 +69,7 @@ public class ReadCSVInstance extends AbstractRuntimeComponentInstance
 
 	// declare member variables here
 	
-	String propFilePath = ".\\data\\csv\\";
+	String propFilePath = "./data/csv/";
 	File lastDirectory = null;
 	String dirpath = null;
 	String filepath = null; 
@@ -143,7 +143,7 @@ public class ReadCSVInstance extends AbstractRuntimeComponentInstance
      */
     public Object getRuntimePropertyValue(String propertyName)
     {
-    	if (".\\data\\csv\\".equalsIgnoreCase(propertyName))
+    	if ("FilePath".equalsIgnoreCase(propertyName))
 		{
 			return propFilePath;
 		}
@@ -158,7 +158,7 @@ public class ReadCSVInstance extends AbstractRuntimeComponentInstance
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
-		if (".\\data\\csv\\".equalsIgnoreCase(propertyName))
+		if ("FilePath".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propFilePath;
 			propFilePath = (String)newValue;
@@ -194,7 +194,7 @@ public class ReadCSVInstance extends AbstractRuntimeComponentInstance
       public void start()
       {
 
-    	  propFilePath = propFilePath.replace("\\","\\\\");
+    	  propFilePath = propFilePath.replace("\\","/");
           super.start();
       }
 

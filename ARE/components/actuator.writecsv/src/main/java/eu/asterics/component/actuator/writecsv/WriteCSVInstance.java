@@ -65,11 +65,11 @@ public class WriteCSVInstance extends AbstractRuntimeComponentInstance
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
 	String propFileName = "fileName";
-	String propFilePath = ".\\data";
+	String propFilePath = "./data/csv";
 	private BufferedWriter out = null;
 	private boolean startstop = false;
 	File lastDirectory = null;
-	String dirpath = null;
+	String dirpath = null; 
 	String filepath = null;
 
 	// declare member variables here
@@ -147,11 +147,11 @@ public class WriteCSVInstance extends AbstractRuntimeComponentInstance
      */
     public Object getRuntimePropertyValue(String propertyName)
     {
-		if ("fileName".equalsIgnoreCase(propertyName))
+		if ("FileName".equalsIgnoreCase(propertyName))
 		{
 			return propFileName;
 		}
-		if (".\\data\\".equalsIgnoreCase(propertyName))
+		if ("FilePath".equalsIgnoreCase(propertyName))
 		{
 			return propFilePath;
 		}
@@ -167,13 +167,13 @@ public class WriteCSVInstance extends AbstractRuntimeComponentInstance
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
-		if ("fileName".equalsIgnoreCase(propertyName))
+		if ("FileName".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propFileName;
 			propFileName = (String)newValue;
 			return oldValue;
 		}
-		if (".\\data\\".equalsIgnoreCase(propertyName))
+		if ("FilePath".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propFilePath;
 			propFilePath = (String)newValue;
@@ -236,9 +236,7 @@ public class WriteCSVInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
-    	  startstop = true;
     	  startwrite();
-
           super.start();
       }
 
@@ -266,15 +264,7 @@ public class WriteCSVInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
-    	  if (out != null)
-    		{
-    			try {
-    				out.close();
-    			} catch (IOException e) {
-    				AstericsErrorHandling.instance.reportInfo(this, "Error closing file");
-    			}
-    		}
-
+    	  stopwrite();
           super.stop();
       }
       
@@ -292,11 +282,15 @@ public class WriteCSVInstance extends AbstractRuntimeComponentInstance
     		}
     		Calendar cal = Calendar.getInstance();
     		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-    		try {
+    		try { 
     			startstop = true;
-    			File dir = new File (propFilePath + "\\csv");
-    			dir.mkdir();
-    			out = new BufferedWriter(new FileWriter(propFilePath + "\\csv\\" + propFileName + "_" + sdf.format(cal.getTime()) + ".csv"));
+    			if (propFilePath.length()>0)
+    			{
+    				if ((!(propFilePath.endsWith("/"))) && (!(propFilePath.endsWith("\\")))) propFilePath = propFilePath+"/";
+    				File dir = new File (propFilePath);
+    				dir.mkdir();
+    			}
+    			out = new BufferedWriter(new FileWriter(propFilePath + propFileName + "_" + sdf.format(cal.getTime()) + ".csv"));
     		} catch (IOException e) {
     			AstericsErrorHandling.instance.reportInfo(this, "Error creating file");
     			startstop = false;

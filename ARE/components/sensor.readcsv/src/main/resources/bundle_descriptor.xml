@@ -23,7 +23,7 @@
 
 		</events>			
         <properties>
-        	<property name="FilePath" type="string" value=".\\data\\csv\\" description="path of the file"></property></properties>
+        	<property name="FilePath" type="string" value="./data/csv/" description="path of the file"></property></properties>
 
     </componentType>
 </componentTypes>
