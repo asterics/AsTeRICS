@@ -3152,13 +3152,14 @@ namespace Asterics.ACS {
         /// <summary>
         /// 
         /// </summary>
+        private Action EmptyDelegate = delegate() { };
         private void resetFocus()
         {
             if (dockableEventsTab.Visibility == System.Windows.Visibility.Visible && focusedEventChannel != null)
             {
-                Keyboard.Focus(focusedEventChannel.Line);
+                /*Keyboard.Focus(focusedEventChannel.Line);
                 ResetPropertyDock();
-                SetEventPropertyDock(deploymentComponentList[focusedEventChannel.TriggerComponentId], deploymentComponentList[focusedEventChannel.ListenerComponentId]);
+                SetEventPropertyDock(deploymentComponentList[focusedEventChannel.TriggerComponentId], deploymentComponentList[focusedEventChannel.ListenerComponentId]);*/
             } else if (focusedComponent != null)
             {
                 Keyboard.Focus(focusedComponent.ComponentCanvas);
@@ -9164,6 +9165,8 @@ namespace Asterics.ACS {
 
         String constructEvtChannelDescription(String sourceId, String targetId, EvtChannelDescriptionTextBox evtChnlDescriptionTxtBox)
         {
+            if (evtChnlDescriptionTxtBox == null)
+                return "";
             //String desc = sourceId + "->" + targetId;
             String desc = "";
             if (evtChnlDescriptionTxtBox.Text != null)
@@ -9181,7 +9184,6 @@ namespace Asterics.ACS {
                     return ((EvtChannelDescriptionTextBox)element);
                 }
             }
-
             return null;
         }
 
