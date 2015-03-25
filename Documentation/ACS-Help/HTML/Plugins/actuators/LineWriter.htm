@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=ISO-8859-2">
+    <meta name="GENERATOR" content="Microsoft&#174; HTML Help Workshop 4.1">
+    <link rel="stylesheet" type="text/css"
+      href="../../stylesheet/help.css" media="screen">
+    <title>LineWriter</title>
+  </head>
+  <body>
+    <h1>LineWriter</h1>
+    <h3>Component Type: Actuator (Subcategory: File System)</h3>
+    <p>This component writes lines from an input port to a text file.</p>
+    <div class="image"><img src="img/LineWriter.jpg" alt="Screenshot:
+        LineWriter plugin" title="Screenshot: LineWriter plugin"><br>
+      ButtonGrid plugin</div>
+    <h2>Input port Description</h2>
+    <ul>
+      <li><strong>actLine (string):</strong> an incoming string is stored into the text file.
+	</ul>
+
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>fileName [string]:</strong> The full path and file name of the text file to be written. The path can be given
+	    as absolute path or relative to the ARE executable's directory</li>
+      <li><strong>addTimeToFileName [boolean]:</strong> If selected, a timestamp will be added to the filename, to avoid overwriting files</li>
+      <li><strong>titleCaption [string]:</strong> if not empty, this string parameter will be used as first line in the file (e.g. to create table caption in a csv file)</li>
+      <li><strong>timestamp  [integer, combobox selection]:</strong> The type of timestamp which will be added befor each line (currently either "no timestamp" or "milliseconds" can be chosen).</li>
+      <li><strong>lineEndMark  [integer, combobox selection]:</strong> The type of line end marker which will be added to each line (currently either "systemDefault", "newline" or "carriage-return + newline" can be chosen).</li>
+      <li><strong>append  [boolean]:</strong> if selected, the lines will be appended to an existing file.</li>
+    </ul>
+  </body>
+</html>

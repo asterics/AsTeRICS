@@ -21,6 +21,8 @@
     <h2>Input Port Description</h2>
     <ul>
       <li><strong>input [string]:</strong> String input port.</li>
+      <li><strong>preString [string]:</strong> String which will be placed before the input string (as leading string).</li>
+      <li><strong>postString [string]:</strong> String which will be placed after the input string (as trailing string).</li>
     </ul>
     <h2>Output Port Description</h2>
     <ul>
@@ -28,12 +30,12 @@
     </ul>
     <h2>Properties</h2>
     <ul>
-      <li><strong>preString [string]:</strong> Leading String.<br>
+      <li><strong>preString [string]:</strong> default leading String.<br>
       </li>
-      <li><strong>postString [string]:</strong> Trailing String.<br>
+      <li><strong>postString [string]:</strong> default trailing String.<br>
       </li>
-      <li><strong>hexadecimalOutput [boolean]:</strong> Removes all
-        leading and trailing white-space characters from the input
+      <li><strong>trim [boolean]:</strong> if selected, all
+        leading and trailing white-space characters will be removed from the input
         string.<br>
       </li>
     </ul>

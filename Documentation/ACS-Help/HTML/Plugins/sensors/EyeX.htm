@@ -23,17 +23,25 @@ Tobii EyeX hardware</div>
 
 <H2>Output Port Description</H2>
 <ul>
-<li><STRONG>gazex [integer]:</STRONG> The x-coordinate of the estimated gazepoint on the computer screen (in pixels)</li>
-<li><STRONG>gazey [integer]:</STRONG> The y-coordinate of the estimated gazepoint on the computer screen (in pixels)</li>
-<li><STRONG>posx [integer]:</STRONG> The x-coordinate of the eye pupil(s) - left / right / both pupils can be selected via property</li>
-<li><STRONG>posy [integer]:</STRONG> The y-coordinate of the eye pupil(s) - left / right / both pupils can be selected via property</li>
+<li><STRONG>gazeX [integer]:</STRONG> The x-coordinate of the estimated gazepoint on the computer screen (in pixels)</li>
+<li><STRONG>gazeY [integer]:</STRONG> The y-coordinate of the estimated gazepoint on the computer screen (in pixels)</li>
+<li><STRONG>posX [integer]:</STRONG> The x-coordinate of the eye pupil(s) - left / right / both pupils can be selected via property</li>
+<li><STRONG>posY [integer]:</STRONG> The y-coordinate of the eye pupil(s) - left / right / both pupils can be selected via property</li>
 <li><STRONG>fixationTime [integer]:</STRONG> The time period for fixation of a particular spot on the screen</li>
 <li><STRONG>closeTime [integer]:</STRONG> The time period for closing both eyes (or eye tracking signal lost)</li>
 </ul>
 <H2>Event Listener Description</H2>
 <ul>
-<li><STRONG>offsetCorrection:</STRONG> this event is useful when a drift of the cursor position has occured. When the event is triggered, the plugin stops the output of x/y coordinates for several seconds, where the user has time to fix the exact cursor position with the eyes. (see description below).</li>
-<li><STRONG>removeLastOffsetCorrection</STRONG> when this event is triggered, the last offset correction point will be removed - useful if the offset correction did not work as intended.</li>
+<li><STRONG>offsetCorrection:</STRONG> when offset correction mode "CorrectionSpots" is selecte, an new correction spot can be added via this event. When the event is triggered, the plugin stops the output of x/y coordinates for several seconds, where the user has time to fix the exact cursor position with the eyes, thereby defining the x/y correction offset.</li>
+<li><STRONG>removeLastOffsetCorrection</STRONG> when this event is triggered, the last offset correction spot will be removed - useful if the offset correction did not work as intended.</li>
+<li><STRONG>stopOffsetCorrection</STRONG> when this event is triggered, any offset correction mode is stopped.</li>
+<li><STRONG>createAndCalibrateGuestProfile</STRONG> creates a new guest profiles and initiates calibration.</li>
+<li><STRONG>calibrateCurrentProfile</STRONG> initiates calibration of the currently active profile. </li>
+<li><STRONG>switchToOffsetCorrectionSpots</STRONG> selects uses multiple correction spot which can be added via envet "offsetCorrection". </li>
+<li><STRONG>switchToPermanentOffsetCorrection</STRONG> permanently adds the input port values of xOffset and yOffset to the gazepoint. </li>
+<li><STRONG>switchToCombinedOffsetCorrection</STRONG> uses the xOffset / yOffset input port values to fine-tune the gazePoint (this switches off gaze-updates until a certain gaze offset is detected.) </li>
+<li><STRONG>activate</STRONG> activates the eye tracker. </li>
+<li><STRONG>deactivate</STRONG> deactivates the eye tracker. </li>
 </ul>
 <H2>Event Trigger Description</H2>
 <ul>
@@ -44,31 +52,34 @@ Tobii EyeX hardware</div>
 </ul>
 <H2>Properties</H2>
 <ul>
+<li><STRONG>enabled [boolean]:</STRONG> selects if the eyetracker is enabled on startup of the model.</li>
+<li><STRONG>averaging [integer]:</STRONG> selects the size of an internal averager for the gaze point x/y values.</li>
 <li><STRONG>minBlinkTime [integer]:</STRONG> the minimum time for a short blink to be detected (a short blink is detected if the blink time is bigger than minBlinkTime and lower than midBlinkTime.)</li>
 <li><STRONG>midBlinkTime [integer]:</STRONG> the time for seperating short blinks from long blinks.</li>
 <li><STRONG>maxBlinkTime [integer]:</STRONG> the maximum time for a short blink to be detected (a long blink is detected if the blink time is bigger than midBlinkTime and lower than maxBlinkTime..</li>
 <li><STRONG>fixationTime [integer]:</STRONG> the minimum time for triggereing a fixation event when the user looks at a particular spot on the screen</li>
 <li><STRONG>pupilPositionMode [combobox]:</STRONG> selects the mode for calculation of the eye position output port values. (left eye / right eye or an average of both eyes)</li>
 <li><STRONG>offsetCorrectionRadius [integer]:</STRONG> defines the distance to an offset correction point where this offset correction points starts to influece the eye coordinates (see description below)</li>
-<li><STRONG>offsetCorrectionMode [combobox]:</STRONG> selects the mode for the offset correction measurement. (manual or automatic mode, see above description)</li>
+<li><STRONG>offsetCorrectionMode [combobox]:</STRONG> selects the mode for the offset correction. (correction spots, permanent offset correction or combined correction)</li>
 </ul>
 
 <H3>
 Calibration and Offset Correction
 </H3>
 <ul>
-<li>A sucessful gaze estimation needs prior calibration. This should be done using the application/GUI provided by the Tobii EyeX software. </li>
-<li>The <b>offset correction</b> event listener port allows setting so called "offset correction points" at desired screen locations. This is possible during the normal operation of the eye tracking. This is useful when certain locations on the screen cannot be reached because of a calibration problem but a new calibraiton is either not desired or not successful / precise enough.
-The goal of the offset correction is to reduce the error between the real gaze point and the estimated (weak) gaze point where usually the cursor is positioned, by adding a small offset value. 
-After starting the offset correction (which is indicated by an acoustic signal) look at the intended spot on the screen. After 1 second, another acoustic signal indicates that the coordinates have been saved. Now look at the mouse cursor (the weak gaze point which shall be corrected).
-The next step differs according to the selected offset correction mode (which can be chosen via the <b>offsetCorrectionMode</b> property:
+<li>A sucessful gaze estimation needs prior calibration. This should be done using the application/GUI provided by the Tobii EyeX software, but can also be accomplished by the provided event listeners.</li>
+<li>The <b>offset correction</b> modes allow application of drift correction during normal operation of the eye tracking. This is useful when certain locations on the screen cannot be reached because of a calibration problem but a new calibraiton is either not desired or not successful / precise enough.
+The goal of the offset correction is to reduce the error between the real gaze point and the estimated (weak) gaze point where usually the cursor is positioned, by adding small offset values. 
+<p>
+There are three offset correction modes provided, which can be chosen via the <b>offsetCorrectionMode</b> property or the respective events:
+</p>
 <ul>
-<li>manual offset correction: try to follow the cursor with the eyes. It should move slowly towards the original gaze point, correcting the error. This manual calibration phase takes about 4 seconds.</li>
-<li>automatic offset correction: look at the cursor. After 1 second, the offest is measured.</li>
+<li>offset correction spots</li> when a new spot is set via the provided event listener, eye tracking is stopped for several seconds. Look at the cursor. After 1 second, the offest is measured. When the tracking starts again, the measured offset is applied in the area of the selected offsetCorrectionRadius. Here, linear approximation is used, so that looking at the original (weak) gaze estimation point will add the full offest value, resulting the corrected gaze estimation point. Multiple spots can be added at different screen loactions.</li>
+<li>permanent offset correction:</li> the correction values for x and y which are provided via the input ports xOffset and yOffset are permanenty added to the gazepoint location. A joystick, mouthmouse or similar input device can be used to provide these values.
+<li>combined offset correction:</li> if the correction values for x and y which provided via the input ports xOffset and yOffset are not zero, the eyetracking stops and the correction values are applied to the last gazepoint. Eye-tracking starts again when the measured gazepoint differs from the corrected gazepoint by more than the selected offsetCorrectionRadius.
 </ul>
-
-After the offset correction has been performed, the given offset value is stored into an internal list. As soon as the estimated gaze point enters an area around the offset correction point (the area size is defined via the property offsetCorrectionRadius), an appropriate fraction of the offset value is added to the estimated gaze point coordinates.
-Here, linear approximation is used, so that looking at the original (weak) gaze estimation point will add the full offest value, resulting the corrected gaze estimation point.
+<p>
+</p>
  </li>
 </ul>
 </p>

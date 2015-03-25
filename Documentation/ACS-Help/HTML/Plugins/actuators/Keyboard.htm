@@ -29,6 +29,7 @@ No special hardware or software required.
 <ul>
 <li><STRONG>keyCodeString [string]:</STRONG> A string containing keys and keycodes. Please note that this string will be replaced by an incoming string at the keycodes input port. The keyCodeString can contain alphanumeric characters and special characters. Special characters are written in parentheses, for example {SHIFT}, {CTRL}, {ALT}, {BACKSPACE}, {ENTER} etc. Modifier keys like {SHIFT} or {ALT} are combined as they appear consecutively in the keystring, and are generated with the next printable character. For example, the keystrings "{SHIFT}" or "{CTRL}{ALT}{DEL}" are sent as single key values to the target computer. For a description of the currently supported special key codes please refer to Appendix B of the user manual.</li>
 <li><STRONG>inputMethod [integer]:</STRONG> Declares whether to use sending window messages or system-wide SendInput API function as the way how keyboard input is injected.</li>
+<li><STRONG>waitTime [integer]:</STRONG> Defines a number of milliseconds for a pause which shall occur when {WAIT} appears in the keycode string.</li>
 </ul>
 </BODY>
 </HTML>
