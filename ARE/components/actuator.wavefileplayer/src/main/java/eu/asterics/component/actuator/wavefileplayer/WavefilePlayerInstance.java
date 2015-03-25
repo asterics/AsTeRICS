@@ -169,7 +169,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
 		public void receiveEvent(String data)
 		{
 			    onRunning=false;
-				while (thread.isAlive())
+				//while (thread.isAlive())
 				{	
 					
 				}
@@ -245,7 +245,7 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
 		}
 	}
 
-	private final int EXTERNAL_BUFFER_SIZE = 524288; // 128Kb 
+	private final int EXTERNAL_BUFFER_SIZE = 2048; // 2Kb 
 
 	private IRuntimeInputPort ipWavefileNamePort = new InputPortWavefile(this);
 
@@ -435,8 +435,9 @@ public class WavefilePlayerInstance extends AbstractRuntimeComponentInstance
 				return;
 			} finally 
 			{
-				auline.drain();
+				auline.stop();
 				auline.close();
+				//auline.drain();
 				
 				onRunning = false;
 				// System.out.println("Acaba de sonar: " +getName());

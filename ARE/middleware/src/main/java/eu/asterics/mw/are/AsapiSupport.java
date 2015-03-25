@@ -298,6 +298,19 @@ public class AsapiSupport
 
 	}
 
+
+	/**
+	 * Returns the state of the current runtime model.
+	 * 
+	 * @return - The state of the runtime model. See {@link ModelState} class for the available states.
+	 */
+	public String getModelState() {
+		ModelState modelState = DeploymentManager.instance.getCurrentRuntimeModel().getState();
+
+		return modelState.toString();
+	}
+	
+	
 	/**
 	 * Deploys the model encoded in the specified string into the ARE. An
 	 * exception is thrown if the specified string is either not well-defined
@@ -411,7 +424,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName() + "."
 					+ "deployModel: Failed to deploy model -> \n"
 					+ e3.getMessage());
-			throw (new AREAsapiException("Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program."));
+			throw (new AREAsapiException(e3.getMessage()));
 		} catch (ParseException e4) {
 			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);

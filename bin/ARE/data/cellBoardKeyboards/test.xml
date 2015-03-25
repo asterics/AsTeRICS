@@ -1,57 +1,75 @@
 <?xml version="1.0" ?>
-<keyboard rows="3" columns="3" scanning="2">
+<keyboard rows="0" columns="0">
 	<button>
-		<text>Cell 1</text>
+		<text></text>
 		<icon></icon>
-		<action>action 1</action>
-		<soundfile></soundfile>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>Cell 2</text>
+		<text></text>
 		<icon></icon>
-		<action>action 2</action>
-		<soundfile></soundfile>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>Cell 3</text>
+		<text></text>
 		<icon></icon>
-		<action>action 3</action>
-		<soundfile></soundfile>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>Cell 4</text>
+		<text></text>
 		<icon></icon>
-		<action>Cell 4 action !</action>
-		<soundfile></soundfile>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>middle</text>
+		<text>Right Click</text>
 		<icon></icon>
-		<action>middle Cell  action !</action>
-		<soundfile></soundfile>
+		<action>@MOUSE:nextclick,right</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>Cell 6</text>
+		<text></text>
 		<icon></icon>
-		<action>Cell 6 action !</action>
-		<soundfile></soundfile>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>Cell 7</text>
+		<text></text>
 		<icon></icon>
-		<action>Cell 7 action !</action>
-		<soundfile></soundfile>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>Cell 8</text>
+		<text></text>
 		<icon></icon>
-		<action>Cell 8 action !</action>
-		<soundfile></soundfile>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>Cell 9</text>
+		<text></text>
 		<icon></icon>
-		<action>Cell 9 action !</action>
-		<soundfile></soundfile>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
 	</button>
 </keyboard>

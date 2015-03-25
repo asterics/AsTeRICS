@@ -119,11 +119,6 @@ public class Main implements BundleActivator
 
 						DeploymentManager.instance.start(context);
 
-						Thread asapiServerThread = new Thread(new Activator());
-						asapiServerThread.start();
-
-						Thread udpThread = new Thread(new UDPThread());
-						udpThread.start();
 
 						// Create thread pools and eventually store back
 						// properties
@@ -153,6 +148,11 @@ public class Main implements BundleActivator
 						// System.out.println("***  starting model !");
 						as.autostart(startModel);
 
+						Thread asapiServerThread = new Thread(new Activator());
+						asapiServerThread.start();
+
+						Thread udpThread = new Thread(new UDPThread());
+						udpThread.start();
 					} catch (Throwable e) {
 						String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
 						JOptionPane.showMessageDialog(null,

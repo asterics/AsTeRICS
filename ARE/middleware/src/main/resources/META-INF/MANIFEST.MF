@@ -4,7 +4,8 @@ Bundle-Name: AsTeRICS_Middleware
 Bundle-SymbolicName: org.asterics.middleware
 Bundle-Version: 0.1.0
 DynamicImport-Package: *
-Export-Package: eu.asterics.mw.are.exceptions,
+Export-Package: eu.asterics.mw.are,
+ eu.asterics.mw.are.exceptions,
  eu.asterics.mw.data,
  eu.asterics.mw.model.runtime,
  eu.asterics.mw.model.runtime.impl,

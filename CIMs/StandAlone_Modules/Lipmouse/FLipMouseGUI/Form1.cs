@@ -160,10 +160,11 @@ namespace MouseApp2
                         if (d == 1) { selectStick.Checked = true; selectAlternative.Checked = false; useAlternativeFunctions = false; }
                         else { selectStick.Checked = false; selectAlternative.Checked = true; useAlternativeFunctions = true; }
                         break;  // cursor / alternative function
-                    case 2: speedBar.Value = Int32.Parse(actToken); break; // acceleration x
-                    case 3: break;  // acceleration y
-                    case 4: deadzoneBar.Value = Int32.Parse(actToken); break;  // deadzone x
-                    case 5: break;  // deadzone y
+
+                    case 2: speedXBar.Value = Int32.Parse(actToken); speedXLabel.Text = speedXBar.Value.ToString(); break; // acceleration x
+                    case 3: speedYBar.Value = Int32.Parse(actToken); speedYLabel.Text = speedYBar.Value.ToString(); break;  // acceleration y
+                    case 4: deadzoneXBar.Value = Int32.Parse(actToken); deadzoneXLabel.Text = deadzoneXBar.Value.ToString(); break;  // deadzone x
+                    case 5: deadzoneYBar.Value = Int32.Parse(actToken); deadzoneYLabel.Text = deadzoneYBar.Value.ToString();  break;  // deadzone y
                     case 6: sipThresholdBar.Value = Int32.Parse(actToken); break;  // threshold sip
                     case 7: puffThresholdBar.Value = Int32.Parse(actToken); break;  // threshold puff
                     case 8: break;  // mouse wheel stepsize, currently not used
@@ -427,10 +428,10 @@ namespace MouseApp2
             {
                 sendCmd("AT ER");
 
-                sendCmd("AT AX " + speedLabel.Text);
-                sendCmd("AT AY " + speedLabel.Text);
-                sendCmd("AT DX " + deadzoneLabel.Text);
-                sendCmd("AT DY " + deadzoneLabel.Text);
+                sendCmd("AT AX " + speedXLabel.Text);
+                sendCmd("AT AY " + speedYLabel.Text);
+                sendCmd("AT DX " + deadzoneXLabel.Text);
+                sendCmd("AT DY " + deadzoneYLabel.Text);
                 sendCmd("AT TS " + sipThresholdLabel.Text);
                 sendCmd("AT TP " + puffThresholdLabel.Text);
                 sendCmd("AT TT " + timeThresholdLabel.Text);
@@ -489,6 +490,10 @@ namespace MouseApp2
 
         private void load_Click(object sender, EventArgs e)
         {
+            slotNames.Text = slotNames.Text.Replace(" ", "");
+            slotNames.Text = slotNames.Text.Replace("\n", ""); 
+            slotNames.Text = slotNames.Text.Replace("\r", "");
+
             addToLog("Load Slot: " + slotNames.Text);
             if (serialPort1.IsOpen)
             {
@@ -503,13 +508,37 @@ namespace MouseApp2
 
         private void speedBar_Scroll(object sender, EventArgs e)
         {
-            speedLabel.Text = speedBar.Value.ToString();
+            speedXLabel.Text = speedXBar.Value.ToString();
+            if (splitXYBox.Checked == false)
+            {
+                speedYBar.Value = speedXBar.Value;
+                speedYLabel.Text = speedYBar.Value.ToString();
+            }
         }
 
         private void deadzone_Scroll(object sender, EventArgs e)
         {
-            deadzoneLabel.Text = deadzoneBar.Value.ToString();
+            deadzoneXLabel.Text = deadzoneXBar.Value.ToString();
+            if (splitXYBox.Checked == false)
+            {
+                deadzoneYBar.Value = deadzoneXBar.Value;
+                deadzoneYLabel.Text = deadzoneYBar.Value.ToString();
+            }
         }
+
+        private void speedYBar_Scroll(object sender, EventArgs e)
+        {
+            speedYLabel.Text = speedYBar.Value.ToString();
+        }
+
+        private void deadzoneYBar_Scroll(object sender, EventArgs e)
+        {
+            deadzoneYLabel.Text = deadzoneYBar.Value.ToString();
+
+        }
+
+        
+        
         private void sipThresholdBar_Scroll(object sender, EventArgs e)
         {
             sipThresholdLabel.Text = sipThresholdBar.Value.ToString();
@@ -716,7 +745,32 @@ namespace MouseApp2
             }
         }
 
-       
+        private void splitXYBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (splitXYBox.Checked)
+            {
+                speedXBar.Width = 265; speedXLabel.Left = 340;
+                speedYBar.Enabled = true; speedYBar.Visible = true;
+                speedYLabel.Enabled = true; speedYLabel.Visible = true;
+                deadzoneXBar.Width = 265; deadzoneXLabel.Left = 340;
+                deadzoneYBar.Enabled = true; deadzoneYBar.Visible = true;
+                deadzoneYLabel.Enabled = true; deadzoneYLabel.Visible = true;
+                DeadzoneXNameLabel.Text = "Deadzone-X"; DeadzoneYNameLabel.Visible = true;
+                SpeedXNameLabel.Text = "Speed-X"; SpeedYNameLabel.Visible = true;
+            }
+            else
+            {
+                speedXBar.Width = 550; speedXLabel.Left = 630;
+                speedYBar.Enabled = false; speedYBar.Visible = false;
+                speedYLabel.Enabled = false; speedYLabel.Visible = false;
+                deadzoneXBar.Width = 550; deadzoneXLabel.Left = 630;
+                deadzoneYBar.Enabled = false; deadzoneYBar.Visible = false;
+                deadzoneYLabel.Enabled = false; deadzoneYLabel.Visible = false;
+                DeadzoneXNameLabel.Text = "Deadzone"; DeadzoneYNameLabel.Visible = false;
+                SpeedXNameLabel.Text = "Speed"; SpeedYNameLabel.Visible = false;
+            }
+            
+        }
 
     }
 }
