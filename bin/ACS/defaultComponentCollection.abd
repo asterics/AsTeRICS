@@ -1397,6 +1397,121 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.actuator.emulatefaultyplugin.EmulateFaultyPluginInstance" id="asterics.EmulateFaultyPlugin">
+        <type subtype="Test">actuator</type>
+        <singleton>false</singleton>
+        <description>Emulates a faulty plugin - supports throwing exceptions during method calls or hanging (unresponsive) method calls </description>
+        <ports>
+			<inputPort id="inA">
+				<description>input A</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="inB">
+				<description>input C</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="inC">
+				<description>input C</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="inD">
+				<description>input C</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="eventA">
+				<description>eventA</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventB">
+				<description>eventB</description>
+			</eventListenerPort>
+			<eventListenerPort id="eventC">
+				<description>eventC</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="Produce an exception during start method" name="startException" type="boolean" value="false"/>
+			<property description="Produce an exception during pause method" name="pauseException" type="boolean" value="false"/>
+			<property description="Produce an exception during resume method" name="resumeException" type="boolean" value="false"/>
+			<property description="Produce an exception during stop method" name="stopException" type="boolean" value="false"/>
+				
+				<!-- 
+			<property name="getInputPortException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getOutputPortException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getRuntimePropertyValueException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="setRuntimePropertyValueException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getEventListenerPortException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during method call"/>
+			<property name="getInputPortNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+			<property name="getOutputPortNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+			<property name="getRuntimePropertyNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+			<property name="getEventListenerPortNullValue"
+				type="boolean"
+				value="false"
+				description="Return a null value"/>
+				-->
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="startDuration" type="integer" value="0"/>
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="pauseDuration" type="integer" value="0"/>
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="resumeDuration" type="integer" value="0"/>
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="stopDuration" type="integer" value="0"/>
+				<!-- 
+			<property name="getRuntimePropertyDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+			<property name="setRuntimePropertyDuration"
+				type="integer"
+				value="0"
+				description="Duration of hanging call in ms (-1=hangs forever)"/>
+				-->
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="inADuration" type="integer" value="0"/>
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="inBDuration" type="integer" value="0"/>
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="inCDuration" type="integer" value="0"/>
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="inDDuration" type="integer" value="0"/>
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="eventADuration" type="integer" value="0"/>
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="eventBDuration" type="integer" value="0"/>
+			<property description="Duration of hanging call in ms (-1=hangs forever)" name="eventCDuration" type="integer" value="0"/>
+
+        </properties>
+		<gui>
+			<width>30</width>
+			<height>20</height>
+		</gui>
+
+    </componentType>
+
  <componentType canonical_name="com.starlab.component.actuator.enobiodisplay.EnobioDisplayInstance" id="asterics.EnobioDisplay">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>true</singleton>
@@ -3875,8 +3990,6 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
-
-
         </ports>
 		<events>
 			<eventListenerPort id="StartWriting">
@@ -3885,14 +3998,10 @@
 			<eventListenerPort id="StopWriting">
 				<description>stop to write</description>
 			</eventListenerPort>
-
-
 		</events>			
         <properties>
 			<property description="name of the file" name="FileName" type="string" value="fileName"/>
-
-			<property description="path of the file" name="FilePath" type="string" value=".\\data"/></properties>
-
+			<property description="path of the file" name="FilePath" type="string" value="./data/csv"/></properties>
     </componentType>
 
  <componentType canonical_name="eu.asterics.component.actuator.writeedf.WriteEDFInstance" id="asterics.WriteEDF">
@@ -5697,6 +5806,220 @@
 			<property description="the min/max time before the next state occurs (in milliseconds). Separated with commas. X indicates if timing is irrelevant for the state change." name="stateTiming" type="string" value="0/2000,x,x,1000/3000"/>
 			<property description="reset to first state if incoming event does not match " name="resetOnIncorrectEvent" type="boolean" value="true"/>
 			<property description="if a separation event is used before and after the event patterns, this option allows to remove the initial separation event." name="skipFirstEvent" type="boolean" value="false"/>
+
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.processor.fabi.FABIInstance" id="asterics.FABI">
+        <type subtype="Microcontroller Interface">processor</type>
+        <singleton>false</singleton>
+        <description>Plugin for connection to FABI and setting ButtonModes over AsTeRICS -Models</description>
+        <ports>
+			<inputPort id="ButtonMode">
+				<description>Number of ButtonMode</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="SlotSaveName">
+				<description>Name of slot to save</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="SlotLoadName">
+				<description>Name of slot to load</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="MoveMouseX">
+				<description>x moves of mouse in X direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="MoveMouseY">
+				<description>x moves of mouse in Y direction</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="Text">
+				<description>keyboard write text</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="key">
+				<description>key for keypress (more keys at the same time are possible  e.g. "KEY_CTRL KEY_ALT KEY_DELETE")</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="List">
+				<description>List of all saved mode names</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="ID">
+				<description>identification (e.g. "FABI Version 2.0")</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="ID">
+				<description>gets the identification and Version of FABI  and sends it to the Output-Port</description>
+			</eventListenerPort>
+			<eventListenerPort id="ButtonMode">
+				<description>calls the  AT BM num (num is the Input-Port "ButtonMode")</description>
+			</eventListenerPort>
+			<eventListenerPort id="ClickLeft">
+				<description>Click left mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ClickRight">
+				<description>Click right mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ClickDoubleLeft">
+				<description>Click double with left mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ClickMiddle">
+				<description>Click middle mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="PressLeft">
+				<description>press/hold the left mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="PressRight">
+				<description>press/hold the right mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="PressMiddle">
+				<description>press/hold the middle mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ReleaseLeft">
+				<description>release the left mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ReleaseRight">
+				<description>release the right mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="ReleaseMiddle">
+				<description>release the middle mouse button</description>
+			</eventListenerPort>
+			<eventListenerPort id="WheelUp">
+				<description>move mouse wheel up</description>
+			</eventListenerPort>
+			<eventListenerPort id="WheelDown">
+				<description>move mouse wheel down</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveMouseX">
+				<description>move mouse in x direction</description>
+			</eventListenerPort>
+			<eventListenerPort id="MoveMouseY">
+				<description>move mouse in y direction</description>
+			</eventListenerPort>
+			<eventListenerPort id="KeyWrite">
+				<description>keyboard write text</description>
+			</eventListenerPort>
+			<eventListenerPort id="KeyPress">
+				<description>press/hold one or more keys</description>
+			</eventListenerPort>
+			<eventListenerPort id="KeyRelease">
+				<description>release one or more keys</description>
+			</eventListenerPort>
+			<eventListenerPort id="KeyReleaseAll">
+				<description>release all pressed keys</description>
+			</eventListenerPort>
+			<eventListenerPort id="Save">
+				<description>save settings and current button modes to next free eeprom slot under given name</description>
+			</eventListenerPort>
+			<eventListenerPort id="Load">
+				<description>load button modes from eeprom slot</description>
+			</eventListenerPort>
+			<eventListenerPort id="List">
+				<description>list all saved mode names</description>
+			</eventListenerPort>
+			<eventListenerPort id="Next">
+				<description>next mode will be loaded</description>
+			</eventListenerPort>
+			<eventListenerPort id="Clear">
+				<description>clear eeprom content</description>
+			</eventListenerPort>
+			<eventListenerPort id="Idle">
+				<description>idle command (no operation)</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="Stepsize of mouse wheel commands" name="Stepsize" type="double" value="3"/>
+			<property description="COM-Port of FABI" name="COMPort" type="integer" value="1"/>
+
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.processor.fabicronusmax.FabiCronusMaxInstance" id="asterics.FabiCronusMax">
+        <type subtype="Microcontroller Interface">processor</type>
+        <singleton>false</singleton>
+        <description>Plugin for the combination of the Fabi and the CronusMax</description>
+        <ports>
+			<inputPort id="InConsole">
+				<description>input of the selected Console</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="InGame">
+				<description>input of the selected Game</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="InMode">
+				<description>input of the selected Mode</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+			<outputPort id="OutConsole">
+				<description>output of the selected Console</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="OutGame">
+				<description>output of the selected Game</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="OutMode">
+				<description>output of the selected Mode</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="OutButtons">
+				<description>output of the configured buttons, seperated through a comma</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="OutModel">
+				<description>output for the next model to load</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="ModeSwitcher">
+				<description>Switch between the modes</description>
+			</eventListenerPort>
+			<eventListenerPort id="GameSwitcher">
+				<description>Switch between the games</description>
+			</eventListenerPort>
+			<eventListenerPort id="ConsoleSwitcher">
+				<description>Switch between the consoles</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="Busy">
+				<description>Triggered if Fabi is busy</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Ready">
+				<description>Triggered if Fabi is ready</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="loadModel">
+				<description>Triggered to load new model</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property description="" name="ComPort" type="integer" value="1"/>
+			<property description="Path to the file with the configuration" name="ModeFilePath" type="string" value=".\data\file.csv"/>
 
         </properties>
 
@@ -10517,7 +10840,7 @@
 
 		</events>			
         <properties>
-        	<property description="path of the file" name="FilePath" type="string" value=".\\data\\csv\\"/></properties>
+        	<property description="path of the file" name="FilePath" type="string" value="./data/csv/"/></properties>
 
     </componentType>
 
