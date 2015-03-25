@@ -478,11 +478,11 @@ namespace MouseApp2
 
         private void ClearButton_Click(object sender, EventArgs e)
         {
-            addToLog("Clearing EEPROM settings...");
+            addToLog("Clearing slots from memory...");
             if (serialPort1.IsOpen)
             {
                 sendCmd("AT CLEAR\n");
-                addToLog("The EEPROM settings have been cleared.");
+                addToLog("All memory slots have been cleared.");
                 slotNames.Items.Clear();
             }
             else addToLog("Could not send to device - please connect COM port!");
@@ -749,10 +749,10 @@ namespace MouseApp2
         {
             if (splitXYBox.Checked)
             {
-                speedXBar.Width = 265; speedXLabel.Left = 340;
+                speedXBar.Width = 265; speedXLabel.Left = 270;
                 speedYBar.Enabled = true; speedYBar.Visible = true;
                 speedYLabel.Enabled = true; speedYLabel.Visible = true;
-                deadzoneXBar.Width = 265; deadzoneXLabel.Left = 340;
+                deadzoneXBar.Width = 265; deadzoneXLabel.Left = 270;
                 deadzoneYBar.Enabled = true; deadzoneYBar.Visible = true;
                 deadzoneYLabel.Enabled = true; deadzoneYLabel.Visible = true;
                 DeadzoneXNameLabel.Text = "Deadzone-X"; DeadzoneYNameLabel.Visible = true;
@@ -760,10 +760,10 @@ namespace MouseApp2
             }
             else
             {
-                speedXBar.Width = 550; speedXLabel.Left = 630;
+                speedXBar.Width = 420; speedXLabel.Left = 470;
                 speedYBar.Enabled = false; speedYBar.Visible = false;
                 speedYLabel.Enabled = false; speedYLabel.Visible = false;
-                deadzoneXBar.Width = 550; deadzoneXLabel.Left = 630;
+                deadzoneXBar.Width = 420; deadzoneXLabel.Left = 470;
                 deadzoneYBar.Enabled = false; deadzoneYBar.Visible = false;
                 deadzoneYLabel.Enabled = false; deadzoneYLabel.Visible = false;
                 DeadzoneXNameLabel.Text = "Deadzone"; DeadzoneYNameLabel.Visible = false;
