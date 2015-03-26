@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>FacetrackerLK</Title>
+</HEAD>
+<BODY>
+<H1>XFacetrackerLK</H1> 
+<H3>Component Type: Sensor (Subcategory: Computer Vision)</H3>
+<p>
+This component provides a cross-platform face tracking computer vision algorithm which puts out estimated movement of a users’ nose and chin (not supported yet) in x and y coordinates. 
+The underlying mechanism builds upon the JavaCV (OpenCV) library (in particular a trained cascade of haar-like features is used to track a face and its movement). 
+The x- and y- coordinates can be used in camera-mouse configurations or to enable selection or control tasks. The values are only provided if a face can be tracked by the algorithm and are updated with the achievable frame rate. 
+Note that the x- and y- values represent relative movement in pixels and have to be accumulated (e.g. via the integrate component) to generate e.g. absolute mouse positions.
+<p>
+<STRONG>The plugin is still experimental and should not be used for end user AT solutions at the moment.</STRONG>
+ 
+</p>
+<H2>Requirements</H2>
+A camera has to be available (this can be any webcam or a camera which is available as image acquisition device via the operating system). The picture below shows the Logitech Webcam 9000 Pro.
+<div class="image"><img src="img/webcam.jpg" alt="Logitech Webcam 9000 Pro" title="Logitech Webcam 9000 Pro" /><br>
+Logitech Webcam 9000 Pro</div>
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>noseX [integer]:</STRONG> This value specifies the relative change in the x coordinate of the user's nose with respect to the previous image frame.</li>
+<li><STRONG>noseY [integer]:</STRONG> This value specifies the relative change in the y coordinate of the user's nose with respect to the previous image frame.</li>
+<li><STRONG>chinX [integer]:</STRONG> Not supported yet</li>
+<li><STRONG>chinY [integer]:</STRONG> Not supported yet</li>
+</ul>
+<H2>Event Listener Description</H2>
+No event listeners supported.
+<H2>Properties</H2>
+The property settings are not supported yet.</BODY>
+</HTML>
