@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="javascript/areCommunicator.js"></script> 
+		 
+		<title>Rest Client</title>
+		
+		
+		<script type="text/javascript">
+			/* This is an example of how to use the ARE Javascipt framework for the communication
+				with the ARE Restfull Services.
+				
+				The location of the server should be defined with the 'setBaseURI(<url>)' method.
+				
+				A success-callback and an error-callback should be passed as an argument
+				for every function.
+			*/
+		
+			setBaseURI("http://localhost:8081/rest/server/");
+		
+		
+			//downloadDeployedModel
+			function DDM() {
+				downloadDeployedModel(DDM_successCallback, DDM_errorCallback);
+			}
+			
+			function DDM_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function DDM_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//downloadModelFromFile
+			function DMF() {
+				var filename = document.getElementById("DMFfilename").value;
+				downloadModelFromFile(DMF_successCallback, DMF_errorCallback, filename);
+			}
+			
+			function DMF_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function DMF_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//uploadModel
+			function UM() {
+				var modelInXML = document.getElementById("UMmodel").value;
+				uploadModel(UM_successCallback, UM_errorCallback, modelInXML);
+			}
+						
+			function UM_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function UM_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//autorun
+			function AUTO() {
+				var filename = document.getElementById("AUTOfilename").value;
+				autorun(AUTO_successCallback, AUTO_errorCallback, filename);
+			}
+			
+			function AUTO_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function AUTO_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//getModelState
+			function MODELSTATE() {
+				getModelState(MS_successCallback, MS_errorCallback);
+			}
+			
+			function MS_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function MS_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			//pauseModel
+			function PAUSE() {
+				pauseModel(PAUSE_successCallback, PAUSE_errorCallback);
+			}
+						
+			function PAUSE_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function PAUSE_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+						
+			
+			//startModel
+			function START() {
+				startModel(START_successCallback, START_errorCallback);
+			}
+						
+			function START_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function START_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+						
+			
+			//stopModel
+			function STOP() {
+				stopModel(STOP_successCallback, STOP_errorCallback);
+			}
+						
+			function STOP_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function STOP_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+
+
+			//storeModel
+			function STORE() {
+				var filename = document.getElementById("STOREfilename").value;
+				var modelInXML = document.getElementById("STOREmodel").value;
+				storeModel(STORE_successCallback, STORE_errorCallback, filename, modelInXML);
+			}
+									
+			function STORE_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function STORE_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//deployModelFromFile
+			function DepMF() {
+				var filename = document.getElementById("DepMFfilename").value;
+				deployModelFromFile(DepMF_successCallback, DepMF_errorCallback, filename);
+			}
+									
+			function DepMF_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function DepMF_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+
+			//deleteModelFromFile
+			function DELETE() {
+				var filename = document.getElementById("DELETEfilename").value;
+				deleteModelFromFile(DELETE_successCallback, DELETE_errorCallback, filename);
+			}
+									
+			function DELETE_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function DELETE_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//downloadComponentCollection
+			function DCC() {
+				downloadComponentCollection(DCC_successCallback, DCC_errorCallback);
+			}
+						
+			function DCC_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function DCC_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+
+			//listStoredModels
+			function LSM() {
+				listStoredModels(LSM_successCallback, LSM_errorCallback);
+			}
+						
+			function LSM_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function LSM_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//getComponentPropertyKeys
+			function GCPK() {
+				var componentId = document.getElementById("GCPKid").value;
+				getComponentPropertyKeys(GCPK_successCallback, GCPK_errorCallback, componentId);
+			}
+						
+			function GCPK_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function GCPK_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+
+			//getComponentProperty
+			function GCP() {
+				var componentId = document.getElementById("GCPid").value;
+				var componentKey = document.getElementById("GCPkey").value;
+				getComponentProperty(GCP_successCallback, GCP_errorCallback, componentId, componentKey);
+			}
+						
+			function GCP_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function GCP_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//setComponentProperty
+			function SCP() {
+				var componentId = document.getElementById("SCPid").value;
+				var componentKey = document.getElementById("SCPkey").value;
+				var componentValue = document.getElementById("SCPvalue").value;
+				setComponentProperty(SCP_successCallback, SCP_errorCallback, componentId, componentKey, componentValue);
+			}
+						
+			function SCP_successCallback(data, HTTPstatus) {
+				alert(data);
+			}
+			
+			function SCP_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+				
+			
+			//getRestFunctions
+			function FUNCTIONS() {
+				getRestFunctions(FUNCTIONS_successCallback, FUNCTIONS_errorCallback);
+			}
+						
+			function FUNCTIONS_successCallback(data, HTTPstatus) {
+				alert(data[0].httpRequestType);
+			}
+			
+			function FUNCTIONS_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+		</script>
+		
+	</head>
+	
+	<body>
+		<h1> Rest Client </h1>
+		
+		<button onclick="DDM()"> downloadDeployedModel </button>
+		<br/> <br/>
+		
+		<button onclick="DMF()"> downloadModelFromFile </button>
+		<input placeholder="filename" type="text" id="DMFfilename"/>
+		<br/> <br/>
+		
+		<button onclick="UM()"> uploadModel </button>
+		<input placeholder="modelInXML" type="text" id="UMmodel"/>
+		<br/> <br/>
+		
+		<button onclick="AUTO()"> autorun </button>
+		<input placeholder="filename" type="text" id="AUTOfilename"/>
+		<br/> <br/>
+		
+		<button onclick="PAUSE()"> pauseModel </button>
+		<br/> <br/>
+		
+		<button onclick="START()"> startModel </button>
+		<br/> <br/>
+		
+		<button onclick="STOP()"> stopModel </button>
+		<br/> <br/>
+		
+		<button onclick="MODELSTATE()"> getModelState </button>
+		<br/> <br/>
+				
+		<button onclick="STORE()"> storeModel </button>
+		<input placeholder="filename" type="text" id="STOREfilename"/>
+		<input placeholder="modelInXML" type="text" id="STOREmodel"/>
+		<br/> <br/>
+		
+		<button onclick="DepMF()"> deployModelFromFile </button>
+		<input placeholder="filename" type="text" id="DepMFfilename"/>
+		<br/> <br/>
+		
+		<button onclick="DELETE()"> deleteModel </button>
+		<input placeholder="filename" type="text" id="DELETEfilename"/>
+		<br/> <br/>
+		
+		<button onclick="DCC()"> downloadComponentCollection </button>
+		<br/> <br/>
+		
+		<button onclick="LSM()"> listStoredModels </button>
+		<br/> <br/>
+		
+		<button onclick="GCPK()"> getComponentPropertyKeys </button>
+		<input placeholder="componentId" type="text" id="GCPKid"/>
+		<br/> <br/>
+		
+		<button onclick="GCP()"> getComponentProperty </button>
+		<input placeholder="componentId" type="text" id="GCPid"/>
+		<input placeholder="componentId"type="text" id="GCPkey"/>
+		<br/> <br/>
+		
+		<button onclick="SCP()"> setComponentProperty </button>
+		<input placeholder="componentId" type="text" id="SCPid"/>
+		<input placeholder="componentId" type="text" id="SCPkey"/>
+		<input placeholder="componentKeyValue" type="text" id="SCPvalue"/>
+		<br/> <br/>
+
+		<button onclick="FUNCTIONS()"> getRestFunctions </button>
+		<br/> <br/>
+
+	</body>
+	
+</html>
