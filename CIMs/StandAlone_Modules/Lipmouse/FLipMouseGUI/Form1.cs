@@ -227,7 +227,7 @@ namespace MouseApp2
         }
 
         // serial port / communication handling
-        private void Connect(string portName)
+        private bool Connect(string portName)
         {
             if (!serialPort1.IsOpen)
             {
@@ -243,14 +243,15 @@ namespace MouseApp2
 
                 try{
                   serialPort1.Open();
+                  return (true);
                 }
                 catch (Exception ex)
                 {
                     addToLog("Could not open COM port");
                 }
-
-
             }
+            return (false);
+
         }
 
         private void sendCmd(string command)
@@ -279,26 +280,28 @@ namespace MouseApp2
                 }
                 else
                 {
-                   
-                    Connect(portComboBox.SelectedItem.ToString());
-                    addToLog(String.Format("Port '{0}' is now connected", portComboBox.SelectedItem));
-                    portStatus.Text = "Connected";
-                    portStatus.ForeColor = Color.Green;
-                    saveSettings.Enabled = true;
-                    calButton.Enabled = true;
-                    dcButton.Enabled = true;
-                    ClearButton.Enabled = true;
-                    LoadButton.Enabled = true;
-                    ApplyButton.Enabled = true;
-                    SelectButton.Enabled = false;
 
-                    readDone = false;
-                    Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
-                    thread.Start();
+                    if (Connect(portComboBox.SelectedItem.ToString()))
+                    {
+                        addToLog(String.Format("Port '{0}' is now connected", portComboBox.SelectedItem));
+                        portStatus.Text = "Connected";
+                        portStatus.ForeColor = Color.Green;
+                        saveSettings.Enabled = true;
+                        calButton.Enabled = true;
+                        dcButton.Enabled = true;
+                        ClearButton.Enabled = true;
+                        LoadButton.Enabled = true;
+                        ApplyButton.Enabled = true;
+                        SelectButton.Enabled = false;
 
-                    slotNames.Items.Clear();
-                    sendCmd("AT LIST");
-                    sendCmd("AT SR");   // start reporting raw values !
+                        readDone = false;
+                        Thread thread = new Thread(new ThreadStart(WorkThreadFunction));
+                        thread.Start();
+
+                        slotNames.Items.Clear();
+                        sendCmd("AT LIST");
+                        sendCmd("AT SR");   // start reporting raw values !
+                    }
                 }
             }
             else addToLog("No port has been selected");
@@ -325,7 +328,7 @@ namespace MouseApp2
                         {
                             BeginInvoke(this.loadValuesDelegate, new Object[] { receivedString.Substring(8) });
                         }
-
+                         
                     }
                     catch (Exception ex)
                     {
@@ -340,6 +343,7 @@ namespace MouseApp2
         public void gotSlotValues(String newValues)
         {
             slotNames.Items.Add(newValues);
+            slotNames.Text = "<choose>";
         }
         
         private void dcButton_Click(object sender, EventArgs e) //disconnect button
@@ -360,10 +364,16 @@ namespace MouseApp2
                 ClearButton.Enabled = false;
                 ApplyButton.Enabled = false;
 
-                serialPort1.Close();
-                receivedString = "";
-                slotNames.Items.Clear();
-
+                try
+                {
+                    receivedString = "";
+                    slotNames.Items.Clear();
+                    serialPort1.Close();
+                }
+                catch (Exception ex)
+                {
+                    addToLog("Error disconnecting COM Port");
+                }
             }
             dcButton.Enabled = false;
             SelectButton.Enabled = true;

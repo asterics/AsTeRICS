@@ -123,6 +123,7 @@ namespace MouseApp2
         public void gotSlotValues(String newValues)
         {
             slotNames.Items.Add(newValues);
+            slotNames.Text="<choose>";
         }
 
 
@@ -161,9 +162,13 @@ namespace MouseApp2
                     default: done = true; break;
                 }
                 newValues = newValues.Substring(actToken.Length + 3);
-                if (newValues.ToUpper().StartsWith("END")) done = true;
+                if (newValues.ToUpper().StartsWith("END"))
+                {
+                    done = true;
+                }
                 else i++;
-            }            
+            }      
+            
         }
 
         bool Connect(string portName)
@@ -275,9 +280,16 @@ namespace MouseApp2
                 ApplyButton.Enabled = false;
                 loadButton.Enabled = false;
 
-                serialPort1.Close();
-                receivedString = "";
-                slotNames.Items.Clear();
+                try
+                {
+                    receivedString = "";
+                    slotNames.Items.Clear();
+                    serialPort1.Close();
+                }
+                catch (Exception ex)
+                {
+                    addToLog("Error disconnecting COM Port");
+                }
 
             }
         }
