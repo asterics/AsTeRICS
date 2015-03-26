@@ -91,4 +91,48 @@ OSKA now includes german word prediction
 added plugins for the eyeX and eyetribe low cost eye trackers
 added websocket support to the ARE
 
+v2.6 (2015-03-27)
+added/updated the following plugins
+LipMouse
+CellBoard (incl. CellBoardGUIEditor)
+EyeX
+Fabi
+FabiCronusMax
+EasyHomeControl
+EmulateFaultyPlugin
+XFaceTracker
+update Arduino: uniqueId
+WriteCSV
+ReadCSV
+StringSplitter
+KinectJ4K
+StringExpander plugin
+eShoe
+HRVAnalysis
+ECMAScriptInterpreter
+LineWriter
+Update Slider
+MicGPI
+EditBox
+CellBoard
+ButtonGrid
+EventRouter
+EventFlipFlop
+MediaPlayer
+Keyboard
+TextSender
+StringDispatcher
+LineReader
+StringDelay
+Delay
+RemoteWindow
+AREWindow
 
+ARE now uses single threaded execution approach
+Basic support for Linux OS for ARE
+Introduced x-platform service for computervision (javacv and computervision)
+Introduced x-platform service for native mouse and keyboard hooks
+added global hotkeys for ARE
+Numerous bug fixes
+Numerous usability improvements for the ACS
+added support for RESTful API when started with --webservice
