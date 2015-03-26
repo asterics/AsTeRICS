@@ -136,7 +136,8 @@ void UpdateLeds();
 
 void setup() {
    Serial.begin(9600);
-    //while (!Serial) ;
+    // delay(5000);
+    // while (!Serial) ;
    
    if (DebugOutput==DEBUG_FULLOUTPUT)  
      Serial.println("Flexible Assistive Button Interface started !");
@@ -166,8 +167,8 @@ void setup() {
       buttons[i].keystring[0]=0;
    }
    
-   readFromEEPROM(0);  // read button modes from first EEPROM slot if available !  
 
+   readFromEEPROM(0);  // read button modes from first EEPROM slot if available !  
    BlinkLed();
    if (DebugOutput==DEBUG_FULLOUTPUT)  
      Serial.print("Free RAM:");  Serial.println(freeRam());
@@ -382,10 +383,11 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
              break; 
       case CMD_MOUSE_WHEEL_UP:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
-               Serial.println("wheel up");
+               Serial.println("wheel up ");
              #ifndef ARDUINO_PRO_MICRO
                Mouse.scroll(-settings.ws); 
              #else
+               Serial.println(settings.ws);
                Mouse.move (0,0,-settings.ws); 
              #endif
           break;
@@ -395,6 +397,7 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
              #ifndef ARDUINO_PRO_MICRO
                Mouse.scroll(settings.ws); 
              #else
+               Serial.println(settings.ws);
                Mouse.move (0,0,settings.ws); 
              #endif
           break;
