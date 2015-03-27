@@ -155,7 +155,7 @@ namespace MouseApp2
                 // Console.WriteLine("Found Token " + i + " " + actToken);
                 switch (i)
                 {
-                    case 0: break;  // slotname
+                    case 0: slotNames.Text = actToken; break;  // slotname
                     case 1: int d = Int32.Parse(actToken);
                         if (d == 1) { selectStick.Checked = true; selectAlternative.Checked = false; useAlternativeFunctions = false; }
                         else { selectStick.Checked = false; selectAlternative.Checked = true; useAlternativeFunctions = true; }
@@ -343,7 +343,6 @@ namespace MouseApp2
         public void gotSlotValues(String newValues)
         {
             slotNames.Items.Add(newValues);
-            slotNames.Text = "<choose>";
         }
         
         private void dcButton_Click(object sender, EventArgs e) //disconnect button

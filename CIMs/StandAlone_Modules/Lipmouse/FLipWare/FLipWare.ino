@@ -184,6 +184,7 @@ void handlePress (int buttonIndex);      // a button was pressed
 void handleRelease (int buttonIndex);    // a button was released
 uint32_t handleButton(int i, uint8_t b);  // button debouncing
 void UpdateLeds();
+void initDebouncers();
 
 ////////////////////////////////////////
 // Setup: program execution starts here
@@ -218,12 +219,10 @@ void setup() {
    for (int i=0; i<NUMBER_OF_LEDS; i++)   // initialize physical buttons and bouncers
       pinMode (led_map[i], OUTPUT);   // configure the pins for input mode with pullup resistors
 
+
+   initDebouncers();
    for (int i=0; i<NUMBER_OF_BUTTONS; i++)   // initialize button array
    {
-      buttonDebouncers[i].bounceState=0;
-      buttonDebouncers[i].stableState=0;
-      buttonDebouncers[i].bounceCount=0;
-      buttonDebouncers[i].longPressed=0;
       buttons[i].value=0;
       buttons[i].keystring[0]=0;
    }
@@ -435,6 +434,29 @@ void handleButton(int i, int l, uint8_t state)    // button debouncing and longp
 }   
 
 
+void initDebouncers()
+{
+   for (int i=0; i<NUMBER_OF_BUTTONS; i++)   // initialize button array
+   {
+      buttonDebouncers[i].bounceState=0;
+      buttonDebouncers[i].stableState=0;
+      buttonDebouncers[i].bounceCount=0;
+      buttonDebouncers[i].longPressed=0;
+   }
+}
+
+void release_all()  // releases all previously pressed keys
+{
+    Keyboard.releaseAll();
+    leftMouseButton=0;
+    rightMouseButton=0;
+    middleMouseButton=0;
+    moveX=0;
+    moveY=0;
+}
+
+  
+
 // perform a command  (called from parser.cpp)
 //   cmd: command identifier
 //   par1: optional numeric parameter
@@ -461,6 +483,7 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
              Serial.println("FLipMouse V2.0"); 
           break;
       case CMD_BUTTON_MODE:
+             release_all();
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.print("set mode for button "); Serial.println(par1);
              if ((par1>0) && (par1<=NUMBER_OF_BUTTONS))
@@ -579,27 +602,32 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
       case CMD_SAVE_SLOT:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.print("save slot ");  Serial.println(keystring);
+             release_all();
              saveToEEPROM(keystring); 
           break;
       case CMD_LOAD_SLOT:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.print("load slot: "); Serial.println(keystring);
+             release_all();
              readFromEEPROM(keystring);
           break;
       case CMD_LIST_SLOTS:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("list slots: ");
+             release_all();
              listSlots();
           break;
       case CMD_NEXT_SLOT:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.print("load next slot");
              blinkCount=10;  blinkStartTime=15;  
+             release_all();
              readFromEEPROM(0); 
           break;
       case CMD_DELETE_SLOTS:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.println("delete slots"); 
+             release_all();
              deleteSlots(); 
           break;
 

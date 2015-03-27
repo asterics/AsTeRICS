@@ -61,11 +61,6 @@ void updateKey(int key)
 }
 
 
-void release_all()  // releases all previously pressed keys
-{
-    Keyboard.releaseAll();
-}
-
 void releaseKeys (char * text)
 {
    keyAction=KEY_RELEASE; 

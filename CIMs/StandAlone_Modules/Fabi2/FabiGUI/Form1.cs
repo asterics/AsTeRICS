@@ -123,7 +123,6 @@ namespace MouseApp2
         public void gotSlotValues(String newValues)
         {
             slotNames.Items.Add(newValues);
-            slotNames.Text="<choose>";
         }
 
 
@@ -138,7 +137,7 @@ namespace MouseApp2
                 // Console.WriteLine("Found Token " + i + " " + actToken);
                 switch (i)
                 {
-                    case 0: break;  // slotname
+                    case 0: slotNames.Text = actToken;  break;  // slotname
                     case 1: break;  // mouse wheel stepsize, currently not used
                     case 2: break;  // time threshold for longpress, currently not used
                     case 3: Button1FunctionBox.SelectedIndex = Int32.Parse(actToken); break;
