@@ -87,6 +87,7 @@ void saveToEEPROM(char * slotname);
 void readFromEEPROM(char * slotname);
 void deleteSlots();
 void listSlots();
+void printCurrentSlot();
 
 
 void BlinkLed();

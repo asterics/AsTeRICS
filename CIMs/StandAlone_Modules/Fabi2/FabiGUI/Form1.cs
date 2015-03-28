@@ -57,11 +57,19 @@ namespace MouseApp2
 
         String receivedString = "";
         Boolean readDone=false;
+        Boolean storingToFile = false;
+        static int slotCounter = 0;
+        String firstSlotname = null;
+
+        System.IO.StreamWriter settingsFile = null;
+
 
         public delegate void SlotValuesDelegate(string newValues);
         public SlotValuesDelegate slotValuesDelegate;
         public delegate void LoadValuesDelegate(string newValues);
         public LoadValuesDelegate loadValuesDelegate;
+        public delegate void StoreValuesDelegate(string newValues);
+        public StoreValuesDelegate storeValuesDelegate;
 
 
         public FabiGUI()
@@ -98,7 +106,108 @@ namespace MouseApp2
 
             addToLog("Fabi GUI ready!");
             this.Load += LipmouseGUI_Load;
+            this.FormClosed += MyWindow_Closing;
+
         }
+
+        private void saveToFileMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen)
+            {
+                addToLog("Please connect FABI device to save settings !");
+                return;
+            }
+
+            if (slotNames.Items.Count < 1)
+            {
+                addToLog("No slots are stored in the FABI device !");
+                return;
+            }
+            Stream myStream;
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+            saveFileDialog1.Filter = "settings files (*.fab)|*.fab|All files (*.*)|*.*";
+            saveFileDialog1.RestoreDirectory = true;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = saveFileDialog1.OpenFile()) != null)
+                {
+                    settingsFile = new System.IO.StreamWriter(myStream);
+                    slotCounter = 0;
+                    storingToFile = true;
+                    sendCmd("AT LOAD " + slotNames.Items[0].ToString());   // get first slot
+                    // incoming data will now be handeled in gotStoreValues()
+                    // Code to write the stream goes here.
+                    //myStream.Close();
+                }
+            }
+
+        }
+
+        private void loadFromFileMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen)
+            {
+                addToLog("Please connect FABI device to transfer settings !");
+                return;
+            }
+            Stream myStream = null;
+            OpenFileDialog fd = new OpenFileDialog();
+            fd.DefaultExt = "*.fab";
+            fd.Filter = "settings files (*.fab)|*.fab|All files (*.*)|*.*";
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if ((myStream = fd.OpenFile()) != null)
+                    {
+                        sendCmd("AT CLEAR");
+                        slotNames.Items.Clear();
+
+                        string line;
+                        System.IO.StreamReader file = new System.IO.StreamReader(myStream);
+                        while ((line = file.ReadLine()) != null)
+                        {
+                            Console.WriteLine("load line:" + line);
+
+                            gotLoadValues(line);
+
+                            slotNames.Text = slotNames.Text.Replace(" ", "");
+                            slotNames.Text = slotNames.Text.Replace("\n", "");
+                            slotNames.Text = slotNames.Text.Replace("\r", "");
+                            addToLog("Saving Slot: " + slotNames.Text);
+
+                            ApplyButton_Click(this, null);
+                            sendCmd("AT SAVE " + slotNames.Text);
+                        }
+                        file.Close();
+                        addToLog("The settings were transferred to the FABI device!");
+                        slotNames.Items.Clear();
+                        sendCmd("AT LIST");
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    addToLog("Error: Could not read file from disk. Original error: " + ex.Message);
+                }
+            }
+
+
+        }
+
+        private void exitMenuItem_Click(object sender, EventArgs e)
+        {
+            disconnect();
+            System.Windows.Forms.Application.Exit();
+        }
+
+        void MyWindow_Closing(object sender, FormClosedEventArgs e)
+        {
+            disconnect();
+        }
+
 
         private void updateComPorts()
         {
@@ -118,11 +227,46 @@ namespace MouseApp2
 
             this.slotValuesDelegate = new SlotValuesDelegate(gotSlotValues);
             this.loadValuesDelegate = new LoadValuesDelegate(gotLoadValues);
+            this.storeValuesDelegate = new StoreValuesDelegate(gotStoreValues);
+
+        }
+
+        public void gotStoreValues(String newValues)
+        {
+            Console.WriteLine("got store values (" + slotCounter + "):" + newValues);
+            String actSlotname = newValues.Substring(0, newValues.IndexOf("-,-"));
+            if (settingsFile != null)
+            {
+                if (slotCounter == 0)
+                {
+                    firstSlotname = actSlotname;
+                    Console.WriteLine("first slotname=" + firstSlotname);
+                }
+
+                if ((slotCounter > 0) && (firstSlotname.Equals(actSlotname)))
+                {
+                    Console.WriteLine("Now closing settings file!");
+                    storingToFile = false;
+                    settingsFile.Close();
+                    settingsFile = null;
+                }
+                else
+                {
+                    settingsFile.Write(newValues);
+                    sendCmd("AT NEXT");
+                    slotCounter++;
+                }
+            }
         }
 
         public void gotSlotValues(String newValues)
         {
             slotNames.Items.Add(newValues);
+            if (slotNames.Items.Count == 1)
+            {
+                firstSlotname = newValues;
+            }
+
         }
 
 
@@ -210,7 +354,10 @@ namespace MouseApp2
                         }
                         if (receivedString.ToUpper().StartsWith("LOADING:"))  // slot name found ?
                         {
-                            BeginInvoke(this.loadValuesDelegate, new Object[] { receivedString.Substring(8) });
+                            if (storingToFile)
+                                BeginInvoke(this.storeValuesDelegate, new Object[] { receivedString.Substring(8) });
+                            else
+                                BeginInvoke(this.loadValuesDelegate, new Object[] { receivedString.Substring(8) });
                         }
                     }
                     catch (Exception ex)  {
@@ -255,29 +402,28 @@ namespace MouseApp2
 
                         slotNames.Items.Clear();
                         sendCmd("AT LIST");
+                        sendCmd("AT LOAD");
                     }
                 }
             }
             else addToLog("No port has been selected");
         }
 
-        private void dcButton_Click(object sender, EventArgs e) //disconnect button
+        private void disconnect()
         {
-            addToLog("Disconnecting from COM Port");
+            readDone = true;
             if (serialPort1.IsOpen)
             {
-                readDone = true;
+                sendCmd("AT ER");  // end reporting raw values !
 
                 portStatus.Text = "Disconnected";
-                addToLog("Port "+portComboBox.Text+" is now disconnected");
+                addToLog("Port " + portComboBox.Text + " is now disconnected");
 
                 portStatus.ForeColor = Color.SlateGray;
                 saveSettings.Enabled = false;
-                SelectButton.Enabled = true;
-                dcButton.Enabled = false;
+                loadButton.Enabled = false;
                 ClearButton.Enabled = false;
                 ApplyButton.Enabled = false;
-                loadButton.Enabled = false;
 
                 try
                 {
@@ -289,15 +435,23 @@ namespace MouseApp2
                 {
                     addToLog("Error disconnecting COM Port");
                 }
-
             }
+        }
+
+
+        private void dcButton_Click(object sender, EventArgs e) //disconnect button
+        {
+            addToLog("Disconnecting from COM Port...");
+            disconnect();
+            dcButton.Enabled = false;
+            SelectButton.Enabled = true;
         }
 
         private void sendCmd(string command)
         {
             if (serialPort1.IsOpen)
             {
-                Console.Write("Send:" + command);
+                Console.WriteLine("Send:" + command);
                 try {
                     serialPort1.Write(command + "\r");
                 }

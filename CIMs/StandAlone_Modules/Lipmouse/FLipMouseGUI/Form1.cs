@@ -61,6 +61,11 @@ namespace MouseApp2
         Boolean useAlternativeFunctions = false;
         String receivedString = "";
         Boolean readDone = false;
+        Boolean storingToFile = false;
+        static int slotCounter = 0;
+        String firstSlotname = null;
+
+        System.IO.StreamWriter settingsFile = null;
 
         public delegate void RawValuesDelegate(string newValues);
         public RawValuesDelegate rawValuesDelegate;
@@ -71,8 +76,12 @@ namespace MouseApp2
         public delegate void LoadValuesDelegate(string newValues);
         public LoadValuesDelegate loadValuesDelegate;
 
+        public delegate void StoreValuesDelegate(string newValues);
+        public StoreValuesDelegate storeValuesDelegate;
+
         public FLipMouseGUI()
         {
+
             InitializeComponent();
             foreach (string str in commands)
             {
@@ -120,6 +129,109 @@ namespace MouseApp2
 
             addToLog("FLipMouse GUI ready!");
             this.Load += LipmouseGUI_Load;
+            this.FormClosed += MyWindow_Closing;
+        }
+
+        private void saveToFileMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen)
+            {
+                addToLog("Please connect FlipMouse device to save settings !");
+                return;
+            }
+
+            if (slotNames.Items.Count < 1)
+            {
+                addToLog("No slots are stored in the FLipMouse device !");
+                return;
+            }
+            Stream myStream;
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+            saveFileDialog1.Filter = "settings files (*.set)|*.set|All files (*.*)|*.*";
+            saveFileDialog1.RestoreDirectory = true;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = saveFileDialog1.OpenFile()) != null)
+                {
+                    settingsFile = new System.IO.StreamWriter(myStream);
+                    slotCounter = 0;
+                    storingToFile = true;
+                    sendCmd("AT ER");
+                    sendCmd("AT LOAD " + slotNames.Items[0].ToString());   // get first slot
+                    // incoming data will now be handeled in gotStoreValues()
+                    // Code to write the stream goes here.
+                    //myStream.Close();
+                }
+            }
+        }
+
+
+
+        private void loadFromFileMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen)
+            {
+                addToLog("Please connect FlipMouse device to transfer settings !");
+                return;
+            }
+            Stream myStream = null;
+            OpenFileDialog fd = new OpenFileDialog();
+            fd.DefaultExt = "*.set";
+            fd.Filter = "settings files (*.set)|*.set|All files (*.*)|*.*";
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if ((myStream = fd.OpenFile()) != null)
+                    {
+
+                        sendCmd("AT ER");
+                        sendCmd("AT CLEAR");
+                        slotNames.Items.Clear();
+
+                        string line;
+                        System.IO.StreamReader file = new System.IO.StreamReader(myStream);
+                        while ((line = file.ReadLine()) != null)
+                        {
+                            Console.WriteLine("load line:" + line);
+
+                            gotLoadValues(line);
+
+                            slotNames.Text = slotNames.Text.Replace(" ", "");
+                            slotNames.Text = slotNames.Text.Replace("\n", "");
+                            slotNames.Text = slotNames.Text.Replace("\r", "");
+                            addToLog("Saving Slot: " + slotNames.Text);
+
+                            ApplyButton_Click(this, null);
+                            sendCmd("AT SAVE " + slotNames.Text);
+                        }
+                        file.Close();
+                        addToLog("The settings were transferred to the FLipMouse device!");
+                        slotNames.Items.Clear();
+                        sendCmd("AT LIST");
+                        sendCmd("AT SR");
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    addToLog("Error: Could not read file from disk. Original error: " + ex.Message);
+                }
+            }
+
+        }
+
+        private void exitMenuItem_Click(object sender, EventArgs e)
+        {
+            disconnect();
+            System.Windows.Forms.Application.Exit();
+        }
+
+        void MyWindow_Closing(object sender, FormClosedEventArgs e)
+        {
+            disconnect();
         }
 
         private void updateComPorts()
@@ -133,16 +245,45 @@ namespace MouseApp2
             updateComPorts();
         }
 
-
         private void LipmouseGUI_Load(object sender, EventArgs e)
         {
             this.slotValuesDelegate = new SlotValuesDelegate(gotSlotValues);
             this.rawValuesDelegate = new RawValuesDelegate(gotValues);
             this.loadValuesDelegate = new LoadValuesDelegate(gotLoadValues);
+            this.storeValuesDelegate = new StoreValuesDelegate(gotStoreValues);
 
             BeginInvoke(this.rawValuesDelegate, new Object[] { "512,512,512,512,512" });
         }
 
+
+        public void gotStoreValues(String newValues)
+        {
+            Console.WriteLine("got store values ("+slotCounter+"):"+newValues);
+            String actSlotname = newValues.Substring(0, newValues.IndexOf("-,-"));
+            if (settingsFile != null)
+            {
+                if (slotCounter == 0)
+                {
+                    firstSlotname = actSlotname;
+                    Console.WriteLine("first slotname=" + firstSlotname);
+                }
+                
+                if ((slotCounter > 0) && (firstSlotname.Equals(actSlotname)))
+                {
+                    Console.WriteLine("Now closing settings file!");
+                    sendCmd("AT SR");
+                    storingToFile = false;
+                    settingsFile.Close();
+                    settingsFile = null;
+                }
+                else
+                {
+                    settingsFile.Write(newValues);
+                    sendCmd("AT NEXT");
+                    slotCounter++;
+                }
+            }
+        }
 
         public void gotLoadValues(String newValues)
         {
@@ -258,7 +399,7 @@ namespace MouseApp2
         {
             if (serialPort1.IsOpen)
             {
-                Console.Write("Send:" + command);
+                Console.WriteLine("Send:" + command);
                 try {
                     serialPort1.Write(command + "\r");
                 }
@@ -300,6 +441,7 @@ namespace MouseApp2
 
                         slotNames.Items.Clear();
                         sendCmd("AT LIST");
+                        sendCmd("AT LOAD");
                         sendCmd("AT SR");   // start reporting raw values !
                     }
                 }
@@ -326,7 +468,10 @@ namespace MouseApp2
                         }
                         else if (receivedString.ToUpper().StartsWith("LOADING:"))  // slot name found ?
                         {
-                            BeginInvoke(this.loadValuesDelegate, new Object[] { receivedString.Substring(8) });
+                            if (storingToFile)
+                                BeginInvoke(this.storeValuesDelegate, new Object[] { receivedString.Substring(8) });
+                            else
+                                BeginInvoke(this.loadValuesDelegate, new Object[] { receivedString.Substring(8) });
                         }
                          
                     }
@@ -343,15 +488,18 @@ namespace MouseApp2
         public void gotSlotValues(String newValues)
         {
             slotNames.Items.Add(newValues);
+            if (slotNames.Items.Count == 1)
+            {
+                firstSlotname = newValues;
+            }
         }
-        
-        private void dcButton_Click(object sender, EventArgs e) //disconnect button
+
+        private void disconnect()
         {
-            addToLog("Disconnecting from COM Port...");
+            readDone = true;
             if (serialPort1.IsOpen)
             {
                 sendCmd("AT ER");  // end reporting raw values !
-                readDone = true;
 
                 portStatus.Text = "Disconnected";
                 addToLog("Port " + portComboBox.Text + " is now disconnected");
@@ -374,6 +522,12 @@ namespace MouseApp2
                     addToLog("Error disconnecting COM Port");
                 }
             }
+        }
+
+        private void dcButton_Click(object sender, EventArgs e) //disconnect button
+        {
+            addToLog("Disconnecting from COM Port...");
+            disconnect();
             dcButton.Enabled = false;
             SelectButton.Enabled = true;
         }

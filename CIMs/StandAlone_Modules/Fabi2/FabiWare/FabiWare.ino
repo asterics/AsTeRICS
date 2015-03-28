@@ -472,7 +472,9 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.print("load slot: "); Serial.println(keystring);
              release_all();             
-             readFromEEPROM(keystring);
+            if (keystring)
+                readFromEEPROM(keystring);
+            else printCurrentSlot();
           break;
       case CMD_LIST_SLOTS:
              if (DebugOutput==DEBUG_FULLOUTPUT)  

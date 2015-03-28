@@ -5,6 +5,24 @@
 
 int nextSlotAddress=0;
 
+
+void printCurrentSlot()
+{
+        Serial.print("loading:");
+        
+        Serial.print(settings.slotname); Serial.print(TOKEN_SEPERATOR);
+        Serial.print(settings.ws); Serial.print(TOKEN_SEPERATOR);
+        Serial.print(settings.tt); Serial.print(TOKEN_SEPERATOR);
+        for (int i=0;i<NUMBER_OF_BUTTONS;i++) 
+        {
+           Serial.print(buttons[i].mode); Serial.print(TOKEN_SEPERATOR);
+           Serial.print(buttons[i].value); Serial.print(TOKEN_SEPERATOR);
+           Serial.print(buttons[i].keystring);Serial.print(TOKEN_SEPERATOR);
+        }
+        Serial.println("END");
+}
+
+
 void saveToEEPROM(char * slotname)
 {
    char act_slotname[MAX_SLOTNAME_LEN];
@@ -90,27 +108,16 @@ void readFromEEPROM(char * slotname)
       address=tmpStartAddress;
       if (found)  {
         if (DebugOutput==DEBUG_FULLOUTPUT) 
-           Serial.print("loading:");
            
         p = (uint8_t*) &settings;
         for (int t=0;t<sizeof(settingsType);t++)
             *p++=EEPROM.read(address++);
         
-        Serial.print(settings.slotname); Serial.print(TOKEN_SEPERATOR);
-        Serial.print(settings.ws); Serial.print(TOKEN_SEPERATOR);
-        Serial.print(settings.tt); Serial.print(TOKEN_SEPERATOR);
-        
         p = (uint8_t*) buttons;
         for (int i=0;i<NUMBER_OF_BUTTONS*sizeof(buttonType);i++) 
            *p++=EEPROM.read(address++);
 
-        for (int i=0;i<NUMBER_OF_BUTTONS;i++) 
-        {
-           Serial.print(buttons[i].mode); Serial.print(TOKEN_SEPERATOR);
-           Serial.print(buttons[i].value); Serial.print(TOKEN_SEPERATOR);
-           Serial.print(buttons[i].keystring);Serial.print(TOKEN_SEPERATOR);
-        }
-        Serial.println("END");
+        printCurrentSlot();
 
         actSlot=numSlots+1; 
         tmpSlotAddress=address;
