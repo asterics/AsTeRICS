@@ -11,31 +11,19 @@ namespace ARE_Exe
     {
         static void ExecuteCommand(string command, string args)
         {
-            int exitCode;
             ProcessStartInfo processInfo;
             Process process;
-
+            
             processInfo = new ProcessStartInfo(command);
             processInfo.CreateNoWindow = true;
-            processInfo.UseShellExecute = false;
-            // *** Redirect the output ***
-            processInfo.RedirectStandardError = true;
-            processInfo.RedirectStandardOutput = true;
+            processInfo.UseShellExecute = true;
+            processInfo.CreateNoWindow = false;
             processInfo.WorkingDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            processInfo.WindowStyle = ProcessWindowStyle.Hidden;
             processInfo.Arguments = args;
             process = Process.Start(processInfo);
-            process.WaitForExit();
-
-            // *** Read the streams ***
-            string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-
-            exitCode = process.ExitCode;
-
-            Console.WriteLine("output>>" + (String.IsNullOrEmpty(output) ? "(none)" : output));
-            Console.WriteLine("error>>" + (String.IsNullOrEmpty(error) ? "(none)" : error));
-            Console.WriteLine("ExitCode: " + exitCode.ToString(), "ExecuteCommand");
-            process.Close();
+            /*process.WaitForExit();
+            process.Close();*/
         }
 
         static string StringArrayToString(string[] array)
@@ -51,7 +39,13 @@ namespace ARE_Exe
 
         static void Main(string[] args)
         {
-            ExecuteCommand("start.bat", StringArrayToString(args));
+            try
+            {
+                ExecuteCommand("start.bat", StringArrayToString(args));
+            }
+            catch (Exception e)
+            {
+            }
         }
     }
 }
