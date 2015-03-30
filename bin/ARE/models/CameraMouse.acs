@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ARE\models\CameraMouse.acs_2015_2_23_0_47" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\CameraMouse.acs_2015_3_31_1_16" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 
@@ -175,8 +175,8 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="gain" value="0.01" />
         <property name="autosend" value="true" />
         <property name="caption" value="Mouse Speed" />
-        <property name="majorTickSpacing" value="50" />
-        <property name="minorTickSpacing" value="10" />
+        <property name="majorTickSpacing" value="10" />
+        <property name="minorTickSpacing" value="5" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
