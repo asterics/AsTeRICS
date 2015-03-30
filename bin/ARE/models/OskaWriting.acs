@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ARE\models\OskaWriting.acs_2015_2_23_0_49" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\OskaWriting.acs_2015_3_30_23_49" version="20130320">
   <modelDescription>
     <shortDescription>Camera controlled mouse for writing with OSKA</shortDescription>
     <requirements>Webcam connected to USB port.
@@ -90,7 +90,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="a*(b/30)" />
+        <property name="expression" value="a*(b/50)" />
       </properties>
       <layout>
         <posX>355</posX>
@@ -120,8 +120,8 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <property name="gain" value="0.01" />
         <property name="autosend" value="true" />
         <property name="caption" value="mouse speed" />
-        <property name="majorTickSpacing" value="20" />
-        <property name="minorTickSpacing" value="5" />
+        <property name="majorTickSpacing" value="50" />
+        <property name="minorTickSpacing" value="10" />
         <property name="alignment" value="0" />
         <property name="fontSize" value="14" />
         <property name="storeValue" value="false" />
@@ -468,7 +468,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </outputPort>
       </ports>
       <properties>
-        <property name="expression" value="a*(b/30)" />
+        <property name="expression" value="a*(b/50)" />
       </properties>
       <layout>
         <posX>503</posX>
@@ -554,7 +554,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </outputPort>
       </ports>
       <properties>
-        <property name="bufferSize" value="3" />
+        <property name="bufferSize" value="5" />
         <property name="mode" value="0" />
       </properties>
       <layout>
@@ -573,7 +573,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </outputPort>
       </ports>
       <properties>
-        <property name="bufferSize" value="3" />
+        <property name="bufferSize" value="5" />
         <property name="mode" value="0" />
       </properties>
       <layout>
