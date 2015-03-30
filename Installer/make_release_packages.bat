@@ -61,6 +61,7 @@ rm -r AsTeRICS/CIMs/Lipmouse_CIM
 mv AsTeRICS/CIMs/HID_actuator/Mouse_Keyboard_Joystick/*.hex AsTeRICS/CIMs/HID_actuator
 rm -r AsTeRICS/CIMs/HID_actuator/Mouse_Keyboard_Joystick
 rm -r AsTeRICS/CIMs/HID_actuator/Tools
+rm -r AsTeRICS/Tests
 rm -r AsTeRICS/CIMs/HID_actuator/USB_Specifications
 cd AsTeRICS\CIMs\HID_actuator
 wget http://www.pjrc.com/teensy/teensy.exe
