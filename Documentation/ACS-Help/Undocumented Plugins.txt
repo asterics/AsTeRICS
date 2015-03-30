@@ -1,0 +1,4 @@
+Die folgenden Plugins wurden von FHTW-Studenten erstellt und werden nicht Teil der offiziellen Release und somit gibts auch keine Doku:
+
+- SensorBoard 
+- Proximity
