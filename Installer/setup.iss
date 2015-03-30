@@ -1,7 +1,7 @@
 ; -- AsTeRICS Installer --
 [Setup]
 AppName=AsTeRICS
-AppVersion=2.5
+AppVersion=2.6
 DefaultDirName={pf}\AsTeRICS
 DefaultGroupName=AsTeRICS
 UninstallDisplayIcon=
