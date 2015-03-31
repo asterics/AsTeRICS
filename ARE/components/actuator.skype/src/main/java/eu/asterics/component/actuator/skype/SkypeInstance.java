@@ -72,6 +72,7 @@ public class SkypeInstance extends AbstractRuntimeComponentInstance
 	// declare member variables here
 	private Call actCall = null;
   
+	private CallMonitorListener callMonitorListener;
     
    /**
     * The class constructor.
@@ -345,16 +346,23 @@ public class SkypeInstance extends AbstractRuntimeComponentInstance
 	
 	private void addCallListener() {
 		try {
-			Skype.addCallMonitorListener(new CallMonitorListener() {
-				@Override
-				public void callMonitor(Call call, Call.Status status) throws SkypeException {
-					System.out.println("Status: "+ status + " Type: " + call.getType());
-					if (status == Call.Status.RINGING) {
-						actCall = call;
-						System.out.println("Set actCall to ringing call");
+			callMonitorListener = new CallMonitorListener() {
+					@Override
+					public void callMonitor(Call call, Call.Status status) throws SkypeException {
+						System.out.println("Status: "+ status + " Type: " + call.getType());
+						if (status == Call.Status.RINGING) {
+							if (call.getType() == Call.Type.INCOMING_P2P || call.getType() == Call.Type.INCOMING_PSTN) {
+								etpIncomingCall.raiseEvent();
+							}
+							actCall = call;
+							System.out.println("Set actCall to ringing call");
+						}
+						if (status == Call.Status.CANCELLED || status == Call.Status.FINISHED || status == Call.Status.REFUSED) {
+							etpCallFinished.raiseEvent();
+						}
 					}
-				}
-			});
+			};	
+			Skype.addCallMonitorListener(callMonitorListener);
 		} catch (SkypeException se) {
 		}
 	}
@@ -392,7 +400,7 @@ public class SkypeInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
-
-          super.stop();
+		Skype.removeCallMonitorListener(callMonitorListener);
+        super.stop();
       }
 }
