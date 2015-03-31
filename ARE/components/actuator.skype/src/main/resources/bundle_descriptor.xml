@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Skype"
+                   canonical_name="eu.asterics.component.actuator.skype.SkypeInstance">
+        <type subtype="Communication">actuator</type>
+        <singleton>true</singleton>
+        <description>My Plugin description</description>
+        <ports>
+			<inputPort id="skypeID">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="callerID">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="callUser1">
+				<description></description>
+			</eventListenerPort>
+			<eventListenerPort id="callUser2">
+				<description></description>
+			</eventListenerPort>
+			<eventListenerPort id="callUser3">
+				<description></description>
+			</eventListenerPort>
+			<eventListenerPort id="callUser4">
+				<description></description>
+			</eventListenerPort>
+			<eventListenerPort id="callUser5">
+				<description></description>
+			</eventListenerPort>
+			<eventListenerPort id="call">
+				<description></description>
+			</eventListenerPort>
+			<eventListenerPort id="cancelCall">
+				<description></description>
+			</eventListenerPort>
+			<eventListenerPort id="answerCall">
+				<description></description>
+			</eventListenerPort>
+			<eventTriggererPort id="incomingCall">
+				<description></description>
+			</eventTriggererPort>
+			<eventTriggererPort id="callFinished">
+				<description></description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="user1"
+				type="string"
+				value=" "
+				description="property description"/>
+			<property name="user2"
+				type="string"
+				value=" "
+				description="property description"/>
+			<property name="user3"
+				type="string"
+				value=" "
+				description="property description"/>
+			<property name="user4"
+				type="string"
+				value=" "
+				description="property description"/>
+			<property name="user5"
+				type="string"
+				value=" "
+				description="property description"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

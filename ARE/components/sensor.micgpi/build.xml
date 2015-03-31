@@ -15,6 +15,7 @@
         <pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
         <pathelement location="${middleware}/asterics.ARE.jar"/>
 		<pathelement location="${services}/asterics.mw.cimcommunication.jar"/>
+		<pathelement location="src/main/lib/skype-java-api-1.6.jar"/>
     </path>
     
     <property name="resources" location="src/main/resources"/>
