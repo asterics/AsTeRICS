@@ -186,7 +186,7 @@ function getModelState(successCallback, errorCallback) {
 
 function deployModelFromFile(successCallback, errorCallback, filename) {
 	
-	if ( modelInXML == "") return;
+	if ( filename == "") return;
 	
 	$.ajax({
 		type: "PUT",
