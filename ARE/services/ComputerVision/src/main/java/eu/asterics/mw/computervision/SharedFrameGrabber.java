@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_core.*;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.FrameGrabber.Exception;
@@ -83,6 +84,15 @@ public class SharedFrameGrabber {
 	
 	public List<String> getDeviceStrings() {
 		 return new ArrayList<String>();
+	}
+	
+	public FrameGrabber getFrameGrabber(String deviceKey, int width, int height) throws Exception {
+		if(device2FrameGrabber.containsKey(deviceKey)) {
+			return device2FrameGrabber.get(deviceKey);
+		}
+
+		init(-1,deviceKey,width,height);
+		return device2FrameGrabber.get(deviceKey);		
 	}
 	
 	public FrameGrabber getFrameGrabber(String deviceKey) throws Exception {
@@ -180,6 +190,8 @@ public class SharedFrameGrabber {
 				while(!stopGrabbing) {
 					IplImage image=grabber.grab();
 					notifyGrabbedImageListener(deviceListeners, image);
+					//opencv_core.cvReleaseImage(image);
+					//image=null;
 				}
 				System.out.println("Grabbing stopped");
 			} catch (Exception e) {
