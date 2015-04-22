@@ -68,7 +68,12 @@ public class FaceDetection {
 		int total = faces.total();
 
 		if(total > 0) {
+			
 			CvRect faceRect=new CvRect(cvGetSeqElem(faces, 0));
+			/*
+			opencv_core.cvReleaseImage(grayImage);
+			grayImage=null;
+			 */
 			return faceRect;
 		} 
 		return null;
