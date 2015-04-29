@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.UniversalRemoteControl"
+                   canonical_name="eu.asterics.component.processor.universalremotecontrol.UniversalRemoteControlInstance">
+        <type subtype="Microcontroller Interface">processor</type>
+        <singleton>false</singleton>
+        <description>record ans send IR Codes through Universal Remote Control</description>
+        <ports>
+			<inputPort id="DeviceType">
+				<description>Type of the device to be controlled via IR (e.g.: TV)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="DeviceName">
+				<description>Name of the device to be controlled via IR (e.g.: Sony, Samsung, etc.)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="DeviceFunction">
+				<description>Name of function of the device (e.g.: On, Off, VolumeUp, etc.)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="SendIRCode">
+				<description>Send an IR Code to the Lipmouse</description>
+			</eventListenerPort>
+			<eventListenerPort id="RecordIRCode">
+				<description>Record an IR Code through the Lipmouse</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="StartRecord">
+				<description>Triggered when Lipmouse is recording</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="StopRecord">
+				<description>Triggered when Lipmouse has finished recording</description>
+			</eventTriggererPort>
+
+
+		</events>			
+        <properties>
+				<property name="IRCodeFilePath"
+				type="string"
+				value="IRCodes.csv"
+				description="Filepath to the file, where the IR Codes are stored"/>
+        </properties>
+
+    </componentType>
+</componentTypes>

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>Universal Remote Control</Title>
+</HEAD>
+<BODY>
+<H1>Universal Remote Control</H1> 
+<H3>Component Type: Processor (Subcategory:Microcontroller Interfaces)</H3>
+<p>
+The Universal Remote Control (RC) enables the possibility to control all electronic devices in a household which are controlled remotely through infrared (IR) commands.
+THe necessary IR codes can be recorded with the RC itself and stored on a database on the computer. 
+By choosing the manufacturer, name and function the IR code is deposed in this database and can be selected in order to send the code to the universal RC and therefore control electronic devices.
+The universal RC can also be used as a handheld gadget due to its built in battery and user interface. THe IR code database can be stored on an SD card.
+<div class="image"><img src="img/UniversalRemoteControl.png" alt="Screenshot: UniversalRemoteControl plugin" title="Screenshot: Universal Remote Control plugin" /><br>
+the Universal Remote Control sensor plugin</div>
+
+<H2>Requirements</H2>
+For the use of the universal RC with a computer, it has to be be connected to a USB port. 
+A database will be automatically generated if there is not found one.
+For the usage of the universal RC as a handheld gadget, the SD card has to be formatted as a FAT16 volume and contain a database as well as the configuration file, 
+
+
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>DeviceType [string]:</STRONG> Type of the device to be controlled via IR (e.g.: TV)</li>
+<li><STRONG>DeviceName [string]:</STRONG> Name of the device to be controlled via IR (e.g.: Sony, Samsung, etc.)</li>
+<li><STRONG>DeviceFunction [string]:</STRONG> Name of function of the device (e.g.: On, Off, VolumeUp, etc.)</li>
+</ul>
+
+
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>SendIRCode:</STRONG> Send an IR Code to the Universal Remote Control</li>
+<li><STRONG>RecordIRCode:</STRONG> Record an IR Code through the Universal Remote Control</li>
+</ul>
+
+<H2>Event Triggerer Description</H2>
+<ul>
+<li><STRONG>StartRecord:</STRONG> will be triggered when Universal Remote Control is recording</li>
+<li><STRONG>StopRecord:</STRONG> will be triggered when Universal Remote Control has finished recording</li>
+</ul>
+
+<H2>Properties</H2>
+<ul>
+<li><STRONG>IRCodeFilePath [string]:</STRONG> Filepath to the file, where the IR Codes are stored.</li>
+</ul>
+
+<H2>IR Code Database</H2>
+The database which contains the IR codes as well as the information about the type and name of the device and the specific function is a comma separated value file.
+The first value is the type, the second one is the name and the third one is the function. The following 512 values are the IR code. 
+This database is automatically generated and maintained if new IR codes are recorded with the Universal Remote Control with IR functions.
+</BODY>
+</HTML>

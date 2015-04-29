@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.TuioReactivision"
+                   canonical_name="eu.asterics.component.sensor.tuioreactivision.TuioReactivisionInstance">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>false</singleton>
+        <description>integrates Tuio into asterics</description>
+        <ports>
+
+			<outputPort id="MarkerID">
+				<description>markerID</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="SessionID">
+				<description>sessionID</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Xpos">
+				<description>xpos</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Ypos">
+				<description>ypos</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Angle">
+				<description>angle</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="MotionSpeed">
+				<description>motionSpeed</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="RotationSpeed">
+				<description>rotationSpeed</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="MotionAccel">
+				<description>motionAcceleration</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="RotationAccel">
+				<description>rotationAcceleration</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Text">
+				<description>term for object</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="Listener1">
+				<description>listener1</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="Event1">
+				<description>event1</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Event2">
+				<description>event2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Event3">
+				<description>event3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Event4">
+				<description>event4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Event5">
+				<description>event5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Event6">
+				<description>event6</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="TextOutput"
+				type="boolean"
+				value="false"
+				description="if text output or Marker allocation is necessary --> reads file"/>
+			<property name="MarkerAllocation"
+				type="boolean"
+				value="false"
+				description="if text output or Marker allocation is necessary --> reads file"/>
+			<property name="reactivisionPath"
+				type="string"
+				value="  C:\"
+				description="Path toPath to reactivision.exe"/>
+			<property name="TextFile"
+				type="string"
+				value="C:\"
+				description="if text file necessary for text output or marker  assignment "/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

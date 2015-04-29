@@ -1,0 +1,539 @@
+Archive member included because of file (symbol)
+
+c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+                              c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtusb1286.o (exit)
+c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                              CimProtocol.o (__do_clear_bss)
+
+Allocating common symbols
+Common symbol       size              file
+
+autoreply_num       0x1               CimProtocol.o
+CIM_frame           0x20f             CimProtocol.o
+sendCont            0x2               CimProtocol.o
+set_ir_status       0x1               CimProtocol.o
+ARE_frame           0x20f             CimProtocol.o
+irBufferCounter     0x2               CimProtocol.o
+irBufferOverflow    0x1               CimProtocol.o
+irPointer           0x2               CimProtocol.o
+get_ir_status       0x1               CimProtocol.o
+buttonval           0x1               CimProtocol.o
+irBuffer            0x200             CimProtocol.o
+adcval              0x2               CimProtocol.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtusb1286.o
+LOAD Adc.o
+LOAD CimProtocol.o
+LOAD Timer.o
+LOAD usb_serial.o
+LOAD LipMouseCIM.o
+LOAD IR.o
+LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a
+LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51\libc.a
+LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0x171c
+ *(.vectors)
+ .vectors       0x00000000       0x98 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtusb1286.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ .progmem.gcc_sw_table
+                0x00000098       0x82 usb_serial.o
+ *(.progmem*)
+ .progmem.data  0x0000011a       0xcd usb_serial.o
+                0x000001e8                . = ALIGN (0x2)
+ *fill*         0x000001e7        0x1 00
+                0x000001e8                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x000001e8        0x0 linker stubs
+ *(.trampolines*)
+                0x000001e8                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x000001e8                __ctors_start = .
+ *(.ctors)
+                0x000001e8                __ctors_end = .
+                0x000001e8                __dtors_start = .
+ *(.dtors)
+                0x000001e8                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x000001e8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtusb1286.o
+                0x000001e8                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x000001e8        0xc c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtusb1286.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x000001f4       0x1a c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtusb1286.o
+                0x000001f4                __do_copy_data
+ .init4         0x0000020e       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                0x0000020e                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x0000021e        0x8 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtusb1286.o
+ *(.init9)
+ *(.text)
+ .text          0x00000226        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtusb1286.o
+                0x00000226                __vector_22
+                0x00000226                __vector_28
+                0x00000226                __vector_1
+                0x00000226                __vector_32
+                0x00000226                __vector_34
+                0x00000226                __vector_24
+                0x00000226                __vector_12
+                0x00000226                __bad_interrupt
+                0x00000226                __vector_6
+                0x00000226                __vector_31
+                0x00000226                __vector_3
+                0x00000226                __vector_30
+                0x00000226                __vector_25
+                0x00000226                __vector_13
+                0x00000226                __vector_17
+                0x00000226                __vector_19
+                0x00000226                __vector_7
+                0x00000226                __vector_27
+                0x00000226                __vector_5
+                0x00000226                __vector_33
+                0x00000226                __vector_37
+                0x00000226                __vector_4
+                0x00000226                __vector_9
+                0x00000226                __vector_2
+                0x00000226                __vector_21
+                0x00000226                __vector_36
+                0x00000226                __vector_29
+                0x00000226                __vector_8
+                0x00000226                __vector_26
+                0x00000226                __vector_14
+                0x00000226                __vector_18
+                0x00000226                __vector_20
+ .text          0x0000022a       0x56 Adc.o
+                0x0000025c                ADC_Read
+                0x0000022a                ADC_Init
+ .text          0x00000280      0x5ec CimProtocol.o
+                0x000003de                reply_FeatureList
+                0x000002dc                generate_ADCFrame
+                0x000002c2                generate_ButtonFrame
+                0x0000042a                process_ARE_frame
+                0x0000029a                update_Buttonval
+                0x00000354                reply_DataFrame
+                0x00000280                init_CIM_frame
+                0x0000037c                reply_Acknowledge
+                0x000003b4                reply_UniqueNumber
+                0x0000033e                generate_RecordFrame
+                0x000005e6                parse_CIM_protocol
+ .text          0x0000086c       0x84 Timer.o
+                0x00000882                disable_timer_ISR
+                0x0000088e                __vector_23
+                0x00000876                enable_timer_ISR
+                0x0000086c                Timer_Init
+ .text          0x000008f0      0x7e8 usb_serial.o
+                0x00000972                usb_serial_available
+                0x000008f0                usb_init
+                0x00000d2c                usb_serial_set_control
+                0x00000928                usb_serial_getchar
+                0x00000d20                usb_serial_get_numbits
+                0x00000dfa                __vector_11
+                0x00000d02                usb_serial_get_baud
+                0x000009a8                usb_serial_flush_input
+                0x000009ce                usb_serial_putchar
+                0x00000ce2                usb_serial_flush_output
+                0x00000d26                usb_serial_get_control
+                0x00000a92                usb_serial_write
+                0x00000922                usb_configured
+                0x00000d84                __vector_10
+                0x00000d14                usb_serial_get_stopbits
+                0x00000d1a                usb_serial_get_paritytype
+                0x00000a52                usb_serial_putchar_nowait
+ .text          0x000010d8      0x14a LipMouseCIM.o
+                0x000010d8                setupHardware
+                0x00001208                send_str
+                0x000010f2                main
+ .text          0x00001222      0x4f6 IR.o
+                0x00001312                Init_ICP1
+                0x0000134e                start_record_ir
+                0x000012de                Toggle_IR_LED
+                0x000015bc                Record_IR_Code
+                0x00001478                __vector_35
+                0x000012ce                Set_IR_LED
+                0x00001222                InitTimer3
+                0x00001256                ACTIVATE_PWM
+                0x0000143a                stop_send_ir
+                0x00001288                TOGGLE_PWM
+                0x0000133c                TOGGLE_ICP1
+                0x0000139c                stop_record_ir
+                0x00001318                ACTIVATE_ICP1
+                0x000012a8                Init_IR_LED
+                0x000012b6                Init_IR
+                0x000012e8                __vector_15
+                0x000013e4                start_send_ir
+                0x0000132c                DEACTIVATE_ICP1
+                0x000012d6                Clear_IR_LED
+                0x000016b8                __vector_16
+                0x00001274                DEACTIVATE_PWM
+ .text          0x00001718        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .text          0x00001718        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                0x00001718                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x00001718        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .text.libgcc   0x00001718        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                0x00001718                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x00001718        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+                0x00001718                exit
+                0x00001718                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x00001718        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ *(.fini0)
+                0x0000171c                _etext = .
+
+.data           0x00800100       0x1a load address 0x0000171c
+                0x00800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800100        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtusb1286.o
+ .data          0x00800100        0x0 Adc.o
+ .data          0x00800100       0x13 CimProtocol.o
+                0x00800112                first_packet
+                0x00800100                LIPMOUSE_CIM_UNIQUE_NUMBER
+                0x00800104                LIPMOUSE_CIM_FEATURELIST
+ .data          0x00800113        0x0 Timer.o
+ .data          0x00800113        0x7 usb_serial.o
+ .data          0x0080011a        0x0 LipMouseCIM.o
+ .data          0x0080011a        0x0 IR.o
+ .data          0x0080011a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .data          0x0080011a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x0080011a                . = ALIGN (0x2)
+                0x0080011a                _edata = .
+                0x0080011a                PROVIDE (__data_end, .)
+
+.bss            0x0080011a      0x63a
+                0x0080011a                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x0080011a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtusb1286.o
+ .bss           0x0080011a        0x0 Adc.o
+ .bss           0x0080011a        0x6 CimProtocol.o
+                0x0080011b                datapos
+                0x0080011a                readstate
+ .bss           0x00800120        0x5 Timer.o
+                0x00800122                send_ADCFrame_now
+                0x00800120                ADC_updatetime
+ .bss           0x00800125        0x4 usb_serial.o
+ .bss           0x00800129        0x0 LipMouseCIM.o
+ .bss           0x00800129        0x0 IR.o
+ .bss           0x00800129        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .bss           0x00800129        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x00800129      0x62b CimProtocol.o
+                0x00800129                autoreply_num
+                0x0080012a                CIM_frame
+                0x00800339                sendCont
+                0x0080033b                set_ir_status
+                0x0080033c                ARE_frame
+                0x0080054b                irBufferCounter
+                0x0080054d                irBufferOverflow
+                0x0080054e                irPointer
+                0x00800550                get_ir_status
+                0x00800551                buttonval
+                0x00800552                irBuffer
+                0x00800752                adcval
+                0x00800754                PROVIDE (__bss_end, .)
+                0x0000171c                __data_load_start = LOADADDR (.data)
+                0x00001736                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00800754        0x0
+                0x00800754                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x00800754                PROVIDE (__noinit_end, .)
+                0x00800754                _end = .
+                0x00800754                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0xc0
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 Adc.o
+ .debug_aranges
+                0x00000020       0x20 CimProtocol.o
+ .debug_aranges
+                0x00000040       0x20 Timer.o
+ .debug_aranges
+                0x00000060       0x20 usb_serial.o
+ .debug_aranges
+                0x00000080       0x20 LipMouseCIM.o
+ .debug_aranges
+                0x000000a0       0x20 IR.o
+
+.debug_pubnames
+                0x00000000      0x751
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000       0x2c Adc.o
+ .debug_pubnames
+                0x0000002c      0x229 CimProtocol.o
+ .debug_pubnames
+                0x00000255       0x85 Timer.o
+ .debug_pubnames
+                0x000002da      0x1a6 usb_serial.o
+ .debug_pubnames
+                0x00000480       0xcc LipMouseCIM.o
+ .debug_pubnames
+                0x0000054c      0x205 IR.o
+
+.debug_info     0x00000000     0x16ac
+ *(.debug_info)
+ .debug_info    0x00000000       0xc7 Adc.o
+ .debug_info    0x000000c7      0x4c4 CimProtocol.o
+ .debug_info    0x0000058b      0x106 Timer.o
+ .debug_info    0x00000691      0x8a1 usb_serial.o
+ .debug_info    0x00000f32      0x2d2 LipMouseCIM.o
+ .debug_info    0x00001204      0x4a8 IR.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0x781
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000       0x83 Adc.o
+ .debug_abbrev  0x00000083      0x1b7 CimProtocol.o
+ .debug_abbrev  0x0000023a       0x9d Timer.o
+ .debug_abbrev  0x000002d7      0x1d7 usb_serial.o
+ .debug_abbrev  0x000004ae      0x166 LipMouseCIM.o
+ .debug_abbrev  0x00000614      0x16d IR.o
+
+.debug_line     0x00000000     0x1c86
+ *(.debug_line)
+ .debug_line    0x00000000       0xf3 Adc.o
+ .debug_line    0x000000f3      0x5bd CimProtocol.o
+ .debug_line    0x000006b0      0x115 Timer.o
+ .debug_line    0x000007c5      0xb07 usb_serial.o
+ .debug_line    0x000012cc      0x2cc LipMouseCIM.o
+ .debug_line    0x00001598      0x6ee IR.o
+
+.debug_frame    0x00000000      0x400
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x30 Adc.o
+ .debug_frame   0x00000030       0xc0 CimProtocol.o
+ .debug_frame   0x000000f0       0x50 Timer.o
+ .debug_frame   0x00000140      0x120 usb_serial.o
+ .debug_frame   0x00000260       0x40 LipMouseCIM.o
+ .debug_frame   0x000002a0      0x160 IR.o
+
+.debug_str      0x00000000      0x860
+ *(.debug_str)
+ .debug_str     0x00000000       0xb6 Adc.o
+                                 0xf1 (size before relaxing)
+ .debug_str     0x000000b6      0x290 CimProtocol.o
+                                0x37c (size before relaxing)
+ .debug_str     0x00000346       0x63 Timer.o
+                                0x139 (size before relaxing)
+ .debug_str     0x000003a9      0x350 usb_serial.o
+                                0x44d (size before relaxing)
+ .debug_str     0x000006f9       0x67 LipMouseCIM.o
+                                0x217 (size before relaxing)
+ .debug_str     0x00000760      0x100 IR.o
+                                0x2b4 (size before relaxing)
+
+.debug_loc      0x00000000      0xde2
+ *(.debug_loc)
+ .debug_loc     0x00000000       0x13 Adc.o
+ .debug_loc     0x00000013      0x2ce CimProtocol.o
+ .debug_loc     0x000002e1      0xa8b usb_serial.o
+ .debug_loc     0x00000d6c       0x58 LipMouseCIM.o
+ .debug_loc     0x00000dc4       0x1e IR.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(LipMouseCIM.elf elf32-avr)
+LOAD linker stubs
+
+.debug_ranges   0x00000000       0x18
+ .debug_ranges  0x00000000       0x18 usb_serial.o

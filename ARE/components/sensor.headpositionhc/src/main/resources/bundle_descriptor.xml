@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.HeadPositionHC"
+                   canonical_name="eu.asterics.component.sensor.headpositionhc.HeadPositionHCInstance">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>false</singleton>
+        <description>Picking between choices with moving the head to the right or left</description>
+        <ports>
+
+			<outputPort id="CellNumber">
+				<description>Gives the number of the selected Cell</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="Select">
+				<description>sends an event, when a cell is selected</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="ChoicesEachSide"
+				type="integer"
+				value="3"
+				combobox="1//2//3//4//5//6"
+				description="Sets the number of choices for each side (left and right) "/>
+			<property name="Angle1LeftSide"
+				type="integer"
+				value="160"
+				description="Sets the UpperValue of the angle for the first Choice of the left side "/>
+			<property name="Angle2LeftSide"
+				type="integer"
+				value="120"
+				description="Sets the UpperValue of the angle for the second Choice of the left side "/>
+			<property name="Angle3LeftSide"
+				type="integer"
+				value="100"
+				description="Sets the UpperValue of the angle for the third Choice of the left side "/>
+			<property name="Angle4LeftSide"
+				type="integer"
+				value="65"
+				description="Sets the UpperValue of the angle for the 4. Choice of the left side "/>
+			<property name="Angle5LeftSide"
+				type="integer"
+				value="-100000"
+				description="Sets the UpperValue of the angle for the 5. Choice of the left side "/>
+			<property name="Angle6LeftSide"
+				type="integer"
+				value="100000"
+				description="Sets the UpperValue of the angle for the 6. Choice of the left side "/>
+			<property name="Angle1RightSide"
+				type="integer"
+				value="20"
+				description="Sets the LowerValue of the angle for the first Choice of the right side"/>
+			<property name="Angle2RightSide"
+				type="integer"
+				value="60"
+				description="Sets the LowerValue of the angle for the second Choice of the right side"/>
+			<property name="Angle3RightSide"
+				type="integer"
+				value="80"
+				description="Sets the LowerValue of the angle for the third Choice of the right side"/>
+			<property name="Angle4RightSide"
+				type="integer"
+				value="110"
+				description="Sets the LowerValue of the angle for the 4. Choice of the right side"/>
+			<property name="Angle5RightSide"
+				type="integer"
+				value="100000"
+				description="Sets the LowerValue of the angle for the 5. Choice of the right side"/>
+			<property name="Angle6RightSide"
+				type="integer"
+				value="-100000"
+				description="Sets the LowerValue of the angle for the 6. Choice of the right side"/>
+			<property name="PathForHaarCascade"
+				type="string"
+				value="C:/HaarCascade/"
+				description=" Path to the directory of the HaarCascade files"/>
+			<property name="CameraID"
+				type="integer"
+				value="0"
+				description="The ID of the camera"/>
+			<property name="CounterResettingROI"
+				type="integer"
+				value="10"
+				description="After the number of the value new images without detecting a feature the face will be detected again to set a new ROI"/>
+			<property name="CounterToSendSelectEvent"
+				type="integer"
+				value="4"
+				description="The angle has to be for X images in the same range to send the select Event"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

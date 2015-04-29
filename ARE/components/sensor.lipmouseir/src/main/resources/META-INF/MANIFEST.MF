@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-sensors.lipmouseir
+Bundle-SymbolicName: eu.asterics.component.sensor.lipmouseir
+Bundle-Version: 0.1.0
+DynamicImport-Package: *
