@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\Conny\Desktop\test2a.acs_2015_4_29_10_11" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\Conny\Documents\GitHub\AsTeRICS\bin\ACS\models\componentTests\sensors\HeadPositionHC-Example.acs_2015_5_7_13_7" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -47,7 +47,7 @@
         <property name="enableEdit" value="true" />
         <property name="enableClickSelection" value="true" />
         <property name="keyboardFile" value="dynamicKeyboard1.xml" />
-        <property name="displayGUI" value="true" />
+        <property name="displayGUI" value="True" />
         <property name="cellText1" value="" />
         <property name="cellImage1" value="" />
         <property name="actionText1" value="" />
@@ -275,7 +275,7 @@
         <property name="Angle4RightSide" value="110" />
         <property name="Angle5RightSide" value="100000" />
         <property name="Angle6RightSide" value="-100000" />
-        <property name="PathForHaarCascade" value="C:\Users\Conny\workspace\FaceMoveDetection\haarcascades\" />
+        <property name="PathForHaarCascade" value="./data/service.computervision/" />
         <property name="CameraID" value="0" />
         <property name="CounterResettingROI" value="10" />
         <property name="CounterToSendSelectEvent" value="4" />

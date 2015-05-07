@@ -78,7 +78,7 @@
 				description="Sets the LowerValue of the angle for the 6. Choice of the right side"/>
 			<property name="PathForHaarCascade"
 				type="string"
-				value="C:/HaarCascade/"
+				value="./data/service.computervision/"
 				description=" Path to the directory of the HaarCascade files"/>
 			<property name="CameraID"
 				type="integer"

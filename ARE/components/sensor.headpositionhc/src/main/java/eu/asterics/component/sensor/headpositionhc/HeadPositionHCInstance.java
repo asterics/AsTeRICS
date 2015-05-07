@@ -90,7 +90,7 @@ public class HeadPositionHCInstance extends AbstractRuntimeComponentInstance imp
 	int propAngle4RightSide = 110;
 	int propAngle5RightSide = 100000;
 	int propAngle6RightSide = -100000;
-	String propPathForHaarCascade = "C:/HaarCascade/";
+	String propPathForHaarCascade = "./data/service.computervision/";
 	int propCameraID = 0;
 	int propCounterResettingROI = 10;
 	int propCounterToSendSelectEvent = 4;

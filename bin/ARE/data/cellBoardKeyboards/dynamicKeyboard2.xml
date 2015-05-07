@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="Windows-1250" ?>
+<keyboard rows="3" columns="2" scanning="4">
+	<button>
+		<text>A E I O U</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>N R T S D</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>H L G C M</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>B F Z K W</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>Zurück</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>V P J Y X Q</text>
+		<icon></icon>
+		<action></action>
+	</button>
+</keyboard>
