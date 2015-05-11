@@ -52,9 +52,6 @@
 
         </ports>
 		<events>
-			<eventListenerPort id="Listener1">
-				<description>listener1</description>
-			</eventListenerPort>
 
 			<eventTriggererPort id="Event1">
 				<description>event1</description>
@@ -87,11 +84,11 @@
 				description="if text output or Marker allocation is necessary --> reads file"/>
 			<property name="reactivisionPath"
 				type="string"
-				value="  C:\"
+				value="C:\"
 				description="Path toPath to reactivision.exe"/>
 			<property name="TextFile"
 				type="string"
-				value="C:\"
+				value="./data/sensor.reactivision/listeInt"
 				description="if text file necessary for text output or marker  assignment "/>
 
         </properties>

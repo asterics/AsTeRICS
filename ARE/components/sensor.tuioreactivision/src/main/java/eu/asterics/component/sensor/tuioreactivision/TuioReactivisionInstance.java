@@ -172,21 +172,7 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 		return null;
 	}
 
-    /**
-     * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
-     */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-		if ("listener1".equalsIgnoreCase(eventPortID))
-		{
-			return elpListener1;
-		}
-
-        return null;
-    }
-
+   
     /**
      * returns an Event Triggerer Port.
      * @param eventPortID   the name of the port
@@ -298,23 +284,7 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
-
-
-     /**
-      * Event Listerner Ports.
-      */
-	final IRuntimeEventListenerPort elpListener1 = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-				 // insert event handling here 
-		}
-	};
-
-	
+     
 
      /**
       * called when model is started.
@@ -323,14 +293,10 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
       public void start()
       {
     	  //starts reactivision.exe
-    	 // try {
-        //     p = Runtime.getRuntime().exec(propReactivisionPath);
-          //    Thread.sleep(2000);
-          //} catch (IOException e) {
-            //  e.printStackTrace();
-          //} catch (InterruptedException e) {
-            //  e.printStackTrace();
-          //}
+    	 if(propReactivisionPath!=null){
+    		 this.startReact();
+    		 
+    	 }
     	  
     	  int port = 3333;
 
@@ -361,6 +327,7 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
       @Override
       public void pause()
       {
+    	  p.destroy();
           super.pause();
       }
 
@@ -371,6 +338,21 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
       public void resume()
       {
     	  
+    	//starts reactivision.exe
+     	 if(propReactivisionPath!=null){
+     		 this.startReact();
+     		 
+     	 }
+     	  
+     	  int port = 3333;
+
+     	  	//starts Tuio Client
+     		TuioClient client = new TuioClient(port);
+
+     		
+     		client.addTuioListener(this);
+     		client.connect();
+     		
           super.resume();
       }
 
@@ -380,7 +362,7 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
       @Override
       public void stop()
       {
-    	  //p.destroy();
+    	  p.destroy();
           super.stop();
       }
 
@@ -414,11 +396,16 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 				
 				if(propTextOutput){
 					_text = dictString.get(_markerID);
-					opText.sendData(ConversionUtils.stringToBytes(_text));
+					if (_text != null) {
+						opText.sendData(ConversionUtils.stringToBytes(_text));
+					} else {
+						opText.sendData(ConversionUtils.stringToBytes(" "));
+					}					
 				}
 				
 				
 				if(propMarkerAllocation == true){
+					if(dictInteger.get(_markerID)!=null){
 					_case = dictInteger.get(_markerID);
 					switch(_case){
 					case 1:
@@ -442,6 +429,7 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 					default:
 						break;
 					}
+				}
 				}
 	}			
 
@@ -503,38 +491,38 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 		opMotionAccel.sendData(ConversionUtils.doubleToBytes(_motionAccel));
 		opRotationSpeed.sendData(ConversionUtils.doubleToBytes(_rotationSpeed));
 		opAngle.sendData(ConversionUtils.doubleToBytes(_rotationAccel));
-		
-		if(propTextOutput){
-			_text = dictString.get(_markerID);
-			opText.sendData(ConversionUtils.stringToBytes(_text));
-			}
-		
-		
-		if(propMarkerAllocation == true){
-			_case = dictInteger.get(_markerID);
-			switch(_case){
-			case 1:
-				etpEvent1.raiseEvent();
-				break;
-			case 2:
-				etpEvent2.raiseEvent();
-				break;
-			case 3:
-				etpEvent3.raiseEvent();
-				break;
-			case 4:
-				etpEvent4.raiseEvent();
-				break;
-			case 5:
-				etpEvent5.raiseEvent();
-				break;
-			case 6:
-				etpEvent6.raiseEvent();
-				break;
-			default:
-				break;
-			}
-		}
+//		
+//		if(propTextOutput){
+//			_text = dictString.get(_markerID);
+//			opText.sendData(ConversionUtils.stringToBytes(_text));
+//			}
+//		
+//		
+//		if(propMarkerAllocation == true){
+//			_case = dictInteger.get(_markerID);
+//			switch(_case){
+//			case 1:
+//				etpEvent1.raiseEvent();
+//				break;
+//			case 2:
+//				etpEvent2.raiseEvent();
+//				break;
+//			case 3:
+//				etpEvent3.raiseEvent();
+//				break;
+//			case 4:
+//				etpEvent4.raiseEvent();
+//				break;
+//			case 5:
+//				etpEvent5.raiseEvent();
+//				break;
+//			case 6:
+//				etpEvent6.raiseEvent();
+//				break;
+//			default:
+//				break;
+//			}
+//		}
 		
 		
 	}
@@ -603,5 +591,14 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 		
 	}
 	
-	
+	public void startReact(){
+		try {
+            p = Runtime.getRuntime().exec(propReactivisionPath);
+            Thread.sleep(5000);
+         } catch (IOException e) {
+             e.printStackTrace();
+         } catch (InterruptedException e) {
+            e.printStackTrace();
+         }
+	}
 }
