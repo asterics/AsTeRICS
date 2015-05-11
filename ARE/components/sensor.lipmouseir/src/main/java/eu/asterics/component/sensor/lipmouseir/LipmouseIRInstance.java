@@ -97,7 +97,7 @@ public class LipmouseIRInstance extends AbstractRuntimeComponentInstance impleme
 	
 	
 	public int propPeriodicADCUpdate = 50;
-	String propIRCodeFilePath = "IRCodes.csv";
+	String propIRCodeFilePath = "./data/sensor.LipmouseIR/IRCodes.csv";
 	private String propUniqueID = "not used"; 
 	public int propSipThreshold = 505;
 	public int propSipTime = 700;

@@ -148,7 +148,7 @@
 				description="time to select short/long puff action "/>
 			<property name="IRCodeFilePath"
 				type="string"
-				value="IRCodes.csv"
+				value="./data/sensor.LipmouseIR/IRCodes.csv"
 				description="Filepath to the file, where the IR Codes are stored"/>
 
         </properties>

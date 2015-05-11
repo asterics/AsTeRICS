@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "UniversalInfraredRemoteControl", "UniversalInfraredRemoteControl\UniversalInfraredRemoteControl.cproj", "{BAA59E1D-B27C-4C3C-9CA6-327BA9C3600A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BAA59E1D-B27C-4C3C-9CA6-327BA9C3600A}.Debug|AVR.ActiveCfg = Debug|AVR
+		{BAA59E1D-B27C-4C3C-9CA6-327BA9C3600A}.Debug|AVR.Build.0 = Debug|AVR
+		{BAA59E1D-B27C-4C3C-9CA6-327BA9C3600A}.Release|AVR.ActiveCfg = Release|AVR
+		{BAA59E1D-B27C-4C3C-9CA6-327BA9C3600A}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

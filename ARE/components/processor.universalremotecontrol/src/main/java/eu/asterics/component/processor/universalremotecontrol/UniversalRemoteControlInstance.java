@@ -75,7 +75,7 @@ CIMEventHandler
 	final IRuntimeEventTriggererPort etpStartRecord = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort etpStopRecord = new DefaultRuntimeEventTriggererPort();
 	
-	String propIRCodeFilePath = "IRCodes.csv";
+	String propIRCodeFilePath = "./data/processor.UniversalRemoteControl/IRCodes.csv";
 	
 	String DeviceType = "";
 	String DeviceName = "";

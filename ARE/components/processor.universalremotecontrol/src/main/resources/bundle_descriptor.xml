@@ -27,17 +27,17 @@
         </ports>
 		<events>
 			<eventListenerPort id="SendIRCode">
-				<description>Send an IR Code to the Lipmouse</description>
+				<description>Send an IR Code to the UniversalRemoteControl</description>
 			</eventListenerPort>
 			<eventListenerPort id="RecordIRCode">
-				<description>Record an IR Code through the Lipmouse</description>
+				<description>Record an IR Code through the UniversalRemoteControl</description>
 			</eventListenerPort>
 
 			<eventTriggererPort id="StartRecord">
-				<description>Triggered when Lipmouse is recording</description>
+				<description>Triggered when UniversalRemoteControl is recording</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="StopRecord">
-				<description>Triggered when Lipmouse has finished recording</description>
+				<description>Triggered when UniversalRemoteControl has finished recording</description>
 			</eventTriggererPort>
 
 
@@ -45,7 +45,7 @@
         <properties>
 				<property name="IRCodeFilePath"
 				type="string"
-				value="IRCodes.csv"
+				value="./data/processor.UniversalRemoteControl/IRCodes.csv"
 				description="Filepath to the file, where the IR Codes are stored"/>
         </properties>
 
