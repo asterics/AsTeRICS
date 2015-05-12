@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="Windows-1250" ?>
+<keyboard rows="3" columns="2" scanning="4">
+	<button>
+		<text>N</text>
+		<icon></icon>
+		<action>n</action>
+	</button>
+	<button>
+		<text>R</text>
+		<icon></icon>
+		<action>r</action>
+	</button>
+	<button>
+		<text>T</text>
+		<icon></icon>
+		<action>t</action>
+	</button>
+	<button>
+		<text>S</text>
+		<icon></icon>
+		<action>s</action>
+	</button>
+	<button>
+		<text>Zurück</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>D</text>
+		<icon></icon>
+		<action>d</action>
+	</button>
+</keyboard>

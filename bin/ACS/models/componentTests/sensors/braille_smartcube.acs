@@ -1,0 +1,388 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\Users\AmadeaSofie\Documents\repos\AsTeRICS\bin\ARE\models\braille_smartcube.acs_2015_4_10_15_48" version="20130320">
+  <components>
+    <component id="TuioReactivision.1" type_id="asterics.TuioReactivision">
+      <description>integrates Tuio into asterics</description>
+      <ports>
+        <outputPort portTypeID="MarkerID">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="SessionID">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Xpos">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Ypos">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Angle">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="MotionSpeed">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="RotationSpeed">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="MotionAccel">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="RotationAccel">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="TextOutput" value="false" />
+        <property name="MarkerAllocation" value="True" />
+        <property name="reactivisionPath" value="  C:\" />
+        <property name="TextFile" value="C:\Users\AmadeaSofie\Documents\FH\6. Semester\Praktikum\Programm\listeInt.txt" />
+      </properties>
+      <layout>
+        <posX>26</posX>
+        <posY>134</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="@IRTRANS: snd asterics, rc_operate" />
+        <property name="slot2" value="@IRTRANS: snd asterics, rc_play" />
+        <property name="slot3" value="@IRTRANS: snd asterics, rc_stop" />
+        <property name="slot4" value="@IRTRANS: snd asterics, rc_forward" />
+        <property name="slot5" value="@IRTRANS: snd asterics, rc_volume_up" />
+        <property name="slot6" value="@IRTRANS: snd asterics, rc_volume_down" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="" />
+        <property name="slot9" value="" />
+        <property name="slot10" value="" />
+        <property name="slot11" value="" />
+        <property name="slot12" value="" />
+        <property name="slot13" value="" />
+        <property name="slot14" value="" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>225</posX>
+        <posY>100</posY>
+      </layout>
+    </component>
+    <component id="IrTrans.1" type_id="asterics.IrTrans">
+      <description>Infrared Transmission Module, interfaces to the IrTrans device</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="localhost" />
+        <property name="port" value="21000" />
+        <property name="prestring" value="" />
+        <property name="send1" value="" />
+        <property name="send2" value="" />
+        <property name="send3" value="" />
+        <property name="send4" value="" />
+        <property name="send5" value="" />
+        <property name="send6" value="" />
+        <property name="send7" value="" />
+        <property name="send8" value="" />
+        <property name="send9" value="" />
+        <property name="send10" value="" />
+        <property name="send11" value="" />
+        <property name="send12" value="" />
+        <property name="send13" value="" />
+        <property name="send14" value="" />
+        <property name="send15" value="" />
+        <property name="send16" value="" />
+        <property name="send17" value="" />
+        <property name="send18" value="" />
+        <property name="send19" value="" />
+        <property name="send20" value="" />
+        <property name="send21" value="" />
+        <property name="send22" value="" />
+        <property name="send23" value="" />
+        <property name="send24" value="" />
+      </properties>
+      <layout>
+        <posX>442</posX>
+        <posY>36</posY>
+      </layout>
+    </component>
+    <component id="ImageBox.1" type_id="asterics.ImageBox">
+      <description>GUI component, which displays a picture.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Smart Cube" />
+        <property name="default" value="C:\data\wuerfel.jpg" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>723</posX>
+        <posY>32</posY>
+      </layout>
+      <gui>
+        <posX>1572</posX>
+        <posY>898</posY>
+        <width>5188</width>
+        <height>4778</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>574</posX>
+        <posY>230</posY>
+      </layout>
+      <gui>
+        <posX>1072</posX>
+        <posY>5787</posY>
+        <width>6188</width>
+        <height>778</height>
+      </gui>
+    </component>
+    <component id="ApplicationLauncher.1" type_id="asterics.ApplicationLauncher">
+      <description>starts external software applications via path and  filename (.exe)</description>
+      <ports>
+        <inputPort portTypeID="filename">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="defaultApplication" value="C:\Users\AmadeaSofie\Downloads\reacTIVision-1.5-win32\reacTIVision.exe" />
+        <property name="arguments" value="" />
+        <property name="workingDirectory" value="." />
+        <property name="autoLaunch" value="True" />
+        <property name="autoClose" value="true" />
+        <property name="onlyByEvent" value="false" />
+      </properties>
+      <layout>
+        <posX>722</posX>
+        <posY>194</posY>
+      </layout>
+    </component>
+    <component id="SpeechProcessor.1" type_id="asterics.SpeechProcessor">
+      <description>This plugin allows to genereate and recognize speech via the speech processor server application</description>
+      <ports>
+        <inputPort portTypeID="speak">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="command">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="language" value="0" />
+        <property name="recognitionConfidence" value="0.5" />
+        <property name="speechLoopDelay" value="1500" />
+        <property name="activationCommand" value="computer, listen!" />
+        <property name="deactivationCommand" value="computer, stop!" />
+        <property name="helpCommand" value="computer, help!" />
+        <property name="mode" value="0" />
+        <property name="command1" value="hello" />
+        <property name="command2" value="" />
+        <property name="command3" value="" />
+        <property name="command4" value="" />
+        <property name="command5" value="" />
+        <property name="command6" value="" />
+        <property name="command7" value="" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+        <property name="command11" value="" />
+        <property name="command12" value="" />
+        <property name="command13" value="" />
+        <property name="command14" value="" />
+        <property name="command15" value="" />
+        <property name="command16" value="" />
+        <property name="command17" value="" />
+        <property name="command18" value="" />
+        <property name="command19" value="" />
+        <property name="command20" value="" />
+        <property name="command21" value="" />
+        <property name="command22" value="" />
+        <property name="command23" value="" />
+        <property name="command24" value="" />
+        <property name="command25" value="" />
+      </properties>
+      <layout>
+        <posX>452</posX>
+        <posY>286</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.2">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="IrTrans.1" />
+        <port id="action" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="SpeechProcessor.1" />
+        <port id="speak" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="Event1_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="TuioReactivision.1" />
+          <eventPort id="Event1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="Event2_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="TuioReactivision.1" />
+          <eventPort id="Event2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="Event3_dispatchSlot3">
+      <description />
+      <sources>
+        <source>
+          <component id="TuioReactivision.1" />
+          <eventPort id="Event3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="Event4_dispatchSlot4">
+      <description />
+      <sources>
+        <source>
+          <component id="TuioReactivision.1" />
+          <eventPort id="Event4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="Event5_dispatchSlot5">
+      <description />
+      <sources>
+        <source>
+          <component id="TuioReactivision.1" />
+          <eventPort id="Event5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="Event6_dispatchSlot6">
+      <description />
+      <sources>
+        <source>
+          <component id="TuioReactivision.1" />
+          <eventPort id="Event6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot6" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>8875</width>
+      <height>6889</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="Windows-1250" ?>
+<keyboard rows="3" columns="2" scanning="4">
+	<button>
+		<text>5</text>
+		<icon></icon>
+		<action>5</action>
+	</button>
+	<button>
+		<text>6</text>
+		<icon></icon>
+		<action>6</action>
+	</button>
+	<button>
+		<text>7</text>
+		<icon></icon>
+		<action>7</action>
+	</button>
+	<button>
+		<text>8</text>
+		<icon></icon>
+		<action>8</action>
+	</button>
+	<button>
+		<text>Zurück</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>9</text>
+		<icon></icon>
+		<action>9</action>
+	</button>
+</keyboard>

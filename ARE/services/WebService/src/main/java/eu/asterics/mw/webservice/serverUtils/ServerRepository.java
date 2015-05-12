@@ -6,6 +6,12 @@ import java.util.Arrays;
 
 import javax.ws.rs.PUT;
 
+/**
+ * The repository used by the Grizzly servers, holding static information.
+ * 
+ * @author Marios Komodromos (mkomod05@cs.ucy.ac.cy)
+ *
+ */
 public class ServerRepository {
 	
 	//Rest Server configuration
@@ -14,7 +20,7 @@ public class ServerRepository {
 	public static final URI BASE_URI_REST = URI.create("http://localhost:"+PORT_REST+PATH_REST);
 	
 	
-	//WS Server configuration
+	//Web Service Server configuration
 	public static final String PATH_WS = "/ws";
 	public static final String PATH_WS_ASTERICS_DATA="/astericsData";
 	public static final int PORT_WS = 8082;

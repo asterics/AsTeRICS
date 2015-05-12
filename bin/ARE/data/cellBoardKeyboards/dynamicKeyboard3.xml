@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="Windows-1250" ?>
+<keyboard rows="3" columns="2" scanning="4">
+	<button>
+		<text>A</text>
+		<icon></icon>
+		<action>a</action>
+	</button>
+	<button>
+		<text>E</text>
+		<icon></icon>
+		<action>e</action>
+	</button>
+	<button>
+		<text>I</text>
+		<icon></icon>
+		<action>i</action>
+	</button>
+	<button>
+		<text>O</text>
+		<icon></icon>
+		<action>o</action>
+	</button>
+	<button>
+		<text>Zurück</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>U</text>
+		<icon></icon>
+		<action>u</action>
+	</button>
+</keyboard>

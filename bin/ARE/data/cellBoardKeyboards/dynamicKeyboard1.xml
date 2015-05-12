@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="Windows-1250" ?>
+<keyboard rows="3" columns="2" scanning="4">
+	<button>
+		<text>A-Z</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>0-9 - / =</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>LZ</text>
+		<icon></icon>
+		<action> </action>
+	</button>
+	<button>
+		<text>, ; . \ Enter</text>
+		<icon></icon>
+		<action></action>
+	</button>
+	<button>
+		<text>Shift</text>
+		<icon></icon>
+		<action>{SHIFT}</action>
+	</button>
+	<button>
+		<text>XX</text>
+		<icon></icon>
+		<action>{BACKSPACE}</action>
+	</button>
+</keyboard>

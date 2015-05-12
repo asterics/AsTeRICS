@@ -244,10 +244,6 @@
 	<classpathentry kind="lib" path="services/grizzly-httpservice-bundle-2.3.13.jar"/>
 	<classpathentry kind="lib" path="services/JNativeHook/src/main/resources/lib/native/JNativeHook.jar"/>
 	<classpathentry kind="lib" path="services/org.eclipse.osgi.services_3.2.100.v20100503.jar"/>
-	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jersey-client-1.18.1.jar"/>
-	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jersey-core-1.18.1.jar"/>
-	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jersey-grizzly2-1.18.1.jar"/>
-	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jersey-server-1.18.1.jar"/>
 	<classpathentry kind="lib" path="slf4j/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="slf4j/slf4j-simple-1.6.1.jar"/>
 	<classpathentry kind="lib" path="thrift/libthrift.jar"/>
@@ -256,5 +252,21 @@
 	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jackson-jaxrs-1.8.3.jar"/>
 	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jackson-mapper-asl-1.8.3.jar"/>
 	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jackson-xc-1.8.3.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/hk2-api-2.4.0-b06.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/hk2-locator-2.4.0-b06.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/hk2-utils-2.4.0-b06.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/javax.annotation-api-1.2.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/javax.inject-2.4.0-b06.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/javax.ws.rs-api-2.0.1.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jersey-client-2.8.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jersey-common-2.8.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jersey-container-grizzly2-http-2.8.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jersey-guava-2.8.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jersey-media-sse-2.8.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jersey-server-2.8.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/validation-api-1.1.0.Final.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/aopalliance-repackaged-2.2.0.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/javassist-3.17.0-ga.jar"/>
+	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/osgi-resource-locator-1.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

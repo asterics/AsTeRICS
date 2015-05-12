@@ -1,0 +1,834 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\Conny\Documents\GitHub\AsTeRICS\bin\ACS\models\componentTests\sensors\HeadPositionHC-Example.acs_2015_5_7_13_7" version="20130320">
+  <components>
+    <component id="CellBoard.1" type_id="asterics.CellBoard">
+      <description>Adjustable matrix of button cells with scanning support</description>
+      <ports>
+        <inputPort portTypeID="row">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="column">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="cellNumber">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="xmlFile">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="actCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="actCellText">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCell">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellCaption">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selectedCellText">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Cell Board" />
+        <property name="rows" value="2" />
+        <property name="columns" value="2" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="scanColor" value="10" />
+        <property name="scanMode" value="3" />
+        <property name="hoverTime" value="1000" />
+        <property name="enableEdit" value="true" />
+        <property name="enableClickSelection" value="true" />
+        <property name="keyboardFile" value="dynamicKeyboard1.xml" />
+        <property name="displayGUI" value="True" />
+        <property name="cellText1" value="" />
+        <property name="cellImage1" value="" />
+        <property name="actionText1" value="" />
+        <property name="cellText2" value="" />
+        <property name="cellImage2" value="" />
+        <property name="actionText2" value="" />
+        <property name="cellText3" value="" />
+        <property name="cellImage3" value="" />
+        <property name="actionText3" value="" />
+        <property name="cellText4" value="" />
+        <property name="cellImage4" value="" />
+        <property name="actionText4" value="" />
+        <property name="cellText5" value="" />
+        <property name="cellImage5" value="" />
+        <property name="actionText5" value="" />
+        <property name="cellText6" value="" />
+        <property name="cellImage6" value="" />
+        <property name="actionText6" value="" />
+        <property name="cellText7" value="" />
+        <property name="cellImage7" value="" />
+        <property name="actionText7" value="" />
+        <property name="cellText8" value="" />
+        <property name="cellImage8" value="" />
+        <property name="actionText8" value="" />
+        <property name="cellText9" value="" />
+        <property name="cellImage9" value="" />
+        <property name="actionText9" value="" />
+        <property name="cellText10" value="" />
+        <property name="cellImage10" value="" />
+        <property name="actionText10" value="" />
+        <property name="cellText11" value="" />
+        <property name="cellImage11" value="" />
+        <property name="actionText11" value="" />
+        <property name="cellText12" value="" />
+        <property name="cellImage12" value="" />
+        <property name="actionText12" value="" />
+        <property name="cellText13" value="" />
+        <property name="cellImage13" value="" />
+        <property name="actionText13" value="" />
+        <property name="cellText14" value="" />
+        <property name="cellImage14" value="" />
+        <property name="actionText14" value="" />
+        <property name="cellText15" value="" />
+        <property name="cellImage15" value="" />
+        <property name="actionText15" value="" />
+        <property name="cellText16" value="" />
+        <property name="cellImage16" value="" />
+        <property name="actionText16" value="" />
+        <property name="cellText17" value="" />
+        <property name="cellImage17" value="" />
+        <property name="actionText17" value="" />
+        <property name="cellText18" value="" />
+        <property name="cellImage18" value="" />
+        <property name="actionText18" value="" />
+        <property name="cellText19" value="" />
+        <property name="cellImage19" value="" />
+        <property name="actionText19" value="" />
+        <property name="cellText20" value="" />
+        <property name="cellImage20" value="" />
+        <property name="actionText20" value="" />
+        <property name="cellText21" value="" />
+        <property name="cellImage21" value="" />
+        <property name="actionText21" value="" />
+        <property name="cellText22" value="" />
+        <property name="cellImage22" value="" />
+        <property name="actionText22" value="" />
+        <property name="cellText23" value="" />
+        <property name="cellImage23" value="" />
+        <property name="actionText23" value="" />
+        <property name="cellText24" value="" />
+        <property name="cellImage24" value="" />
+        <property name="actionText24" value="" />
+        <property name="cellText25" value="" />
+        <property name="cellImage25" value="" />
+        <property name="actionText25" value="" />
+        <property name="cellText26" value="" />
+        <property name="cellImage26" value="" />
+        <property name="actionText26" value="" />
+        <property name="cellText27" value="" />
+        <property name="cellImage27" value="" />
+        <property name="actionText27" value="" />
+        <property name="cellText28" value="" />
+        <property name="cellImage28" value="" />
+        <property name="actionText28" value="" />
+        <property name="cellText29" value="" />
+        <property name="cellImage29" value="" />
+        <property name="actionText29" value="" />
+        <property name="cellText30" value="" />
+        <property name="cellImage30" value="" />
+        <property name="actionText30" value="" />
+        <property name="cellText31" value="" />
+        <property name="cellImage31" value="" />
+        <property name="actionText31" value="" />
+        <property name="cellText32" value="" />
+        <property name="cellImage32" value="" />
+        <property name="actionText32" value="" />
+        <property name="cellText33" value="" />
+        <property name="cellImage33" value="" />
+        <property name="actionText33" value="" />
+        <property name="cellText34" value="" />
+        <property name="cellImage34" value="" />
+        <property name="actionText34" value="" />
+        <property name="cellText35" value="" />
+        <property name="cellImage35" value="" />
+        <property name="actionText35" value="" />
+        <property name="cellText36" value="" />
+        <property name="cellImage36" value="" />
+        <property name="actionText36" value="" />
+      </properties>
+      <layout>
+        <posX>211</posX>
+        <posY>35</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>454</posY>
+        <width>3000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="EventDispatcher.1" type_id="asterics.EventDispatcher">
+      <description>Translates incoming command strings into events</description>
+      <ports>
+        <inputPort portTypeID="cmd">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="command1" value="A-Z" />
+        <property name="command2" value="0-9 - / =" />
+        <property name="command3" value=", ; . \ Enter" />
+        <property name="command4" value="Zurück" />
+        <property name="command5" value="X Q" />
+        <property name="command6" value="" />
+        <property name="command7" value="" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+      </properties>
+      <layout>
+        <posX>363</posX>
+        <posY>42</posY>
+      </layout>
+    </component>
+    <component id="EventDispatcher.1.1" type_id="asterics.EventDispatcher">
+      <description>Translates incoming command strings into events</description>
+      <ports>
+        <inputPort portTypeID="cmd">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="command1" value="A E I O U" />
+        <property name="command2" value="N R T S D" />
+        <property name="command3" value="H L G C M" />
+        <property name="command4" value="B F Z K W" />
+        <property name="command5" value="V P J Y X Q" />
+        <property name="command6" value="0-4" />
+        <property name="command7" value="5-9" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+      </properties>
+      <layout>
+        <posX>438</posX>
+        <posY>211</posY>
+      </layout>
+    </component>
+    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
+      <description>Send text from chosen slot</description>
+      <ports>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <inputPort portTypeID="slotDispatch">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="delay" value="300" />
+        <property name="slot1" value="dynamicKeyboard2.xml" />
+        <property name="slot2" value="dynamicKeyboard8.xml" />
+        <property name="slot3" value="dynamicKeyboard11.xml" />
+        <property name="slot4" value="dynamicKeyboard1.xml" />
+        <property name="slot5" value="dynamicKeyboard12.xml" />
+        <property name="slot6" value="" />
+        <property name="slot7" value="" />
+        <property name="slot8" value="dynamicKeyboard3.xml" />
+        <property name="slot9" value="dynamicKeyboard4.xml" />
+        <property name="slot10" value="dynamicKeyboard5.xml" />
+        <property name="slot11" value="dynamicKeyboard6.xml" />
+        <property name="slot12" value="dynamicKeyboard7.xml" />
+        <property name="slot13" value="dynamicKeyboard9.xml" />
+        <property name="slot14" value="dynamicKeyboard10.xml" />
+        <property name="slot15" value="" />
+        <property name="slot16" value="" />
+        <property name="slot17" value="" />
+        <property name="slot18" value="" />
+        <property name="slot19" value="" />
+        <property name="slot20" value="" />
+      </properties>
+      <layout>
+        <posX>67</posX>
+        <posY>250</posY>
+      </layout>
+    </component>
+    <component id="HeadPositionHC.1" type_id="asterics.HeadPositionHC">
+      <description>Picking between choices with moving the head to the right or left</description>
+      <ports>
+        <outputPort portTypeID="CellNumber">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="ChoicesEachSide" value="2" />
+        <property name="Angle1LeftSide" value="160" />
+        <property name="Angle2LeftSide" value="120" />
+        <property name="Angle3LeftSide" value="100" />
+        <property name="Angle4LeftSide" value="65" />
+        <property name="Angle5LeftSide" value="-100000" />
+        <property name="Angle6LeftSide" value="100000" />
+        <property name="Angle1RightSide" value="20" />
+        <property name="Angle2RightSide" value="60" />
+        <property name="Angle3RightSide" value="80" />
+        <property name="Angle4RightSide" value="110" />
+        <property name="Angle5RightSide" value="100000" />
+        <property name="Angle6RightSide" value="-100000" />
+        <property name="PathForHaarCascade" value="./data/service.computervision/" />
+        <property name="CameraID" value="0" />
+        <property name="CounterResettingROI" value="10" />
+        <property name="CounterToSendSelectEvent" value="4" />
+      </properties>
+      <layout>
+        <posX>41</posX>
+        <posY>41</posY>
+      </layout>
+    </component>
+    <component id="EventDelay.1" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="300" />
+      </properties>
+      <layout>
+        <posX>226</posX>
+        <posY>442</posY>
+      </layout>
+    </component>
+    <component id="Keyboard.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>423</posX>
+        <posY>433</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="StringDispatcher.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="CellBoard.1" />
+        <port id="xmlFile" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="CellBoard.1" />
+        <port id="selectedCellCaption" />
+      </source>
+      <target>
+        <component id="EventDispatcher.1" />
+        <port id="cmd" />
+      </target>
+    </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="CellBoard.1" />
+        <port id="selectedCellCaption" />
+      </source>
+      <target>
+        <component id="EventDispatcher.1.1" />
+        <port id="cmd" />
+      </target>
+    </channel>
+    <channel id="binding.6">
+      <source>
+        <component id="CellBoard.1" />
+        <port id="selectedCellText" />
+      </source>
+      <target>
+        <component id="Keyboard.1" />
+        <port id="keyCodes" />
+      </target>
+    </channel>
+    <channel id="binding.5">
+      <source>
+        <component id="HeadPositionHC.1" />
+        <port id="CellNumber" />
+      </source>
+      <target>
+        <component id="CellBoard.1" />
+        <port id="cellNumber" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="recognizedCommand1_dispatchSlot1">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_dispatchSlot8">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot8" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_dispatchSlot9">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot9" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_dispatchSlot10">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot10" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_dispatchSlot11">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot11" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_dispatchSlot12">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot12" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_load">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDelay.1" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CellBoard.1" />
+          <eventPort id="load" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand8_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand3_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand5_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand6_dispatchSlot13">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot13" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_input">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_dispatchSlot14">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1.1" />
+          <eventPort id="recognizedCommand7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot14" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_dispatchSlot2">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand4_dispatchSlot3">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand7_dispatchSlot4">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand8_dispatchSlot5">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="Select_scanSelect">
+      <description />
+      <sources>
+        <source>
+          <component id="HeadPositionHC.1" />
+          <eventPort id="Select" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CellBoard.1" />
+          <eventPort id="scanSelect" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="Select_pressKey">
+      <description />
+      <sources>
+        <source>
+          <component id="HeadPositionHC.1" />
+          <eventPort id="Select" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Keyboard.1" />
+          <eventPort id="pressKey" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>4875</width>
+      <height>3667</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -16,15 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.websockets.WebSocketAddOn;
-import org.glassfish.grizzly.websockets.WebSocketApplication;
 import org.glassfish.grizzly.websockets.WebSocketEngine;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.media.sse.SseFeature;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
-
-import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
-import com.sun.jersey.api.core.*;
 
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
@@ -63,17 +63,19 @@ public class WebServiceEngine {
 	public void initGrizzlyHttpService(BundleContext bc) throws IOException {
 		
 		logger.fine("Starting grizzly HTTP-server, " + ServerRepository.BASE_URI_REST);
-		
+			
+		ResourceConfig rc = new ResourceConfig();
+        
 		//REST SERVER CONFIGURATION
-        ClasspathResourceConfig rc = new ClasspathResourceConfig();
-        rc.add(new ApplicationConfig());
-        rc.getContainerResponseFilters().add(new ResponseFilter());
-        restServer = GrizzlyServerFactory.createHttpServer(ServerRepository.BASE_URI_REST, rc);
+        rc.registerClasses(RestServer.class, SseFeature.class);
+        rc.register(new ResponseFilter());
+        restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.BASE_URI_REST, rc);
         		
         restServer.start();
-        
+
         
         logger.fine("Starting grizzly WS-server, " + ServerRepository.BASE_URI_WS);
+        
         
         //WEB SERVICE SERVER CONFIGURATION
 		wsServer = HttpServer.createSimpleServer("./data/webservice","0.0.0.0", ServerRepository.PORT_WS);
