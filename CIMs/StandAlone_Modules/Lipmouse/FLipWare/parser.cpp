@@ -105,6 +105,10 @@ void parseCommand (char * cmdstr)
 }
 
 
+extern void parse_CIM_protocol(int actbyte);
+extern void init_CIM_frame (void);
+extern uint8_t CimMode;
+
 static char cmdstring[MAX_CMDLEN];
 
 void parseByte (int newByte)  // parse an incoming commandbyte from serial interface, perform command if valid
@@ -115,6 +119,11 @@ void parseByte (int newByte)  // parse an incoming commandbyte from serial inter
   switch (state) {
     case 0: 
             if ((newByte=='A') || (newByte=='a')) state++;
+            else if (newByte=='@') { 
+                CimMode=1; 
+                init_CIM_frame ();
+                parse_CIM_protocol(newByte);
+              }
          break;
     case 1: 
             if ((newByte=='T') || (newByte=='t')) state++; else state=0;
