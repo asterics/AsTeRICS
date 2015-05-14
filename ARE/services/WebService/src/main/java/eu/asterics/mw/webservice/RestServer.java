@@ -21,7 +21,12 @@ import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 
-
+/**
+ * The implementation of the Rest Server class.
+ * 
+ * @author Marios Komodromos (mkomod05@cs.ucy.ac.cy)
+ *
+ */
 @Path("/server")
 public class RestServer {
 	AsapiSupport as = new AsapiSupport();

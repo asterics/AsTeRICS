@@ -14,6 +14,12 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+/**
+ * This is a class capable of serializing/deserializing Java Objects to/from JSON or XML format.
+ * 
+ * @author Marios Komodromos (mkomod05@cs.ucy.ac.cy)
+ *
+ */
 public class ObjectTransformation {
 
 	/**

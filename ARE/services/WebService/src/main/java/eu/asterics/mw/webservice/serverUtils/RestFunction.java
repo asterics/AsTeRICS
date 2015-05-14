@@ -4,6 +4,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * This class is just a container that holds the information describing a restfull function.
+ * 
+ * It contains data like the HTTP Type of a function (GET, POST, PUT...), the resource path (storage/model/...),
+ * the parameters required etc.
+ * 
+ * @author Marios Komodromos (mkomod05@cs.ucy.ac.cy)
+ *
+ */
 @XmlRootElement()
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RestFunction {
