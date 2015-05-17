@@ -105,43 +105,46 @@ void parseCommand (char * cmdstr)
 }
 
 
-extern void parse_CIM_protocol(int actbyte);
 extern void init_CIM_frame (void);
+extern void parse_CIM_protocol(int actbyte);
 extern uint8_t CimMode;
 
 static char cmdstring[MAX_CMDLEN];
 
 void parseByte (int newByte)  // parse an incoming commandbyte from serial interface, perform command if valid
 {
-  static uint8_t state=0;
-  static uint8_t cmdlen=0;
- 
-  switch (state) {
-    case 0: 
-            if ((newByte=='A') || (newByte=='a')) state++;
-            else if (newByte=='@') { 
-                CimMode=1; 
-                init_CIM_frame ();
-                parse_CIM_protocol(newByte);
-              }
-         break;
-    case 1: 
-            if ((newByte=='T') || (newByte=='t')) state++; else state=0;
-        break;
-    case 2: 
-            if ((newByte==13) || (newByte==10))
-            {  Serial.println("OK");  state=0; }
-            else if (newByte==' ') { cmdlen=0; state++; } 
-            else goto err;
-        break;
-    case 3: 
-            if ((newByte==13) || (newByte==10) || (cmdlen>=MAX_CMDLEN-1))
-            {  cmdstring[cmdlen]=0;  parseCommand(cmdstring); 
-              state=0; }
-            else cmdstring[cmdlen++]=newByte;
-        break;   
-    default: err: Serial.println("?");state=0;
-  }
+   static uint8_t state=0;
+   static uint8_t cmdlen=0;
+  
+   if (CimMode==1)
+          parse_CIM_protocol(newByte);   // handle AsTeRICS CIM protocal messages !
+   else
+   {
+      switch (state) {
+        case 0: 
+                if ((newByte=='A') || (newByte=='a')) state++;
+                else if (newByte=='@') { 
+                    init_CIM_frame ();
+                }
+             break;
+        case 1: 
+                if ((newByte=='T') || (newByte=='t')) state++; else state=0;
+            break;
+        case 2: 
+                if ((newByte==13) || (newByte==10))
+                {  Serial.println("OK");  state=0; }
+                else if (newByte==' ') { cmdlen=0; state++; } 
+                else goto err;
+            break;
+        case 3: 
+                if ((newByte==13) || (newByte==10) || (cmdlen>=MAX_CMDLEN-1))
+                {  cmdstring[cmdlen]=0;  parseCommand(cmdstring); 
+                  state=0; }
+                else cmdstring[cmdlen++]=newByte;
+            break;   
+        default: err: Serial.println("?");state=0;
+      }
+   }
 }
 
 

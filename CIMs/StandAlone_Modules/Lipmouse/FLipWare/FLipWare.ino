@@ -112,7 +112,7 @@
 #ifdef TEENSY
   int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={13,2,3};  //  maps physical button pins to button index 0,1,2  
   int8_t  led_map[NUMBER_OF_LEDS]={18,19,20};              //  maps leds pins   
-  uint8_t LED_PIN = 25;                                    //  Led output pin
+  uint8_t LED_PIN = 6;                                     //  Led output pin
 #endif
 
 #ifdef ARDUINO_PRO_MICRO
@@ -189,6 +189,8 @@ void initDebouncers();
 extern void handleCimMode(void);
 extern uint8_t CimMode;
 
+// extern void init_CIM_frame (void);
+
 ////////////////////////////////////////
 // Setup: program execution starts here
 ////////////////////////////////////////
@@ -198,7 +200,7 @@ void setup() {
     //while (!Serial) ;
    
    if (DebugOutput==DEBUG_FULLOUTPUT)  
-     Serial.println("Flexible Assistive Button Interface started !");
+     Serial.println("FLipMouse started, Flexible Assistive Button Interface ready !");
 
    #ifdef ARDUINO_PRO_MICRO   // only needed for Arduino, automatically done for Teensy(duino)
      Mouse.begin();
@@ -206,15 +208,8 @@ void setup() {
      TXLED1;
    #endif  
 
-   #ifdef LIPMOUSE_V0     // only needed for first lipmouse hardware version
-     pinMode(21,OUTPUT);
-     pinMode(22,OUTPUT);  
-     digitalWrite(21,HIGH);  // supply voltage for pressure sensor
-     digitalWrite(22,LOW);
-   #endif
-
-
    pinMode(LED_PIN,OUTPUT);
+   digitalWrite(LED_PIN,LOW);
 
    for (int i=0; i<NUMBER_OF_PHYSICAL_BUTTONS; i++)   // initialize physical buttons and bouncers
       pinMode (input_map[i], INPUT_PULLUP);   // configure the pins for input mode with pullup resistors
@@ -248,6 +243,7 @@ void setup() {
    
    if (DebugOutput==DEBUG_FULLOUTPUT) 
    {   Serial.print("Free RAM:");  Serial.println(freeRam());}
+   
 }
 
 ///////////////////////////////
@@ -262,9 +258,19 @@ void loop() {
         left = analogRead(LEFT_SENSOR_PIN);
         right = analogRead(RIGHT_SENSOR_PIN);
   
-        if (CimMode) handleCimMode();
+        while (Serial.available() > 0) {
+          // get incoming byte:
+          inByte = Serial.read();
+          parseByte (inByte);      // implemented in parser.cpp
+        }
+
+        if (CimMode) {
+          digitalWrite(LED_PIN,HIGH); 
+          handleCimMode();
+        }
         else 
         {
+          digitalWrite(LED_PIN,LOW); 
 
         currentTime = millis();
         timeDifference = currentTime - previousTime;
@@ -279,13 +285,7 @@ void loop() {
             cnt=0;
           }
         }
-        
-        while (Serial.available() > 0) {
-          // get incoming byte:
-          inByte = Serial.read();
-          parseByte (inByte);      // implemented in parser.cpp
-        }
-    
+            
         for (int i=0;i<NUMBER_OF_PHYSICAL_BUTTONS;i++)    // update button press / release events
             handleButton(i, -1, digitalRead(input_map[i]) == LOW ? 1 : 0);
   
@@ -630,9 +630,9 @@ void performCommand (uint8_t cmd, int16_t par1, char * keystring, int8_t periodi
       case CMD_NEXT_SLOT:
              if (DebugOutput==DEBUG_FULLOUTPUT)  
                Serial.print("load next slot");
-             blinkCount=10;  blinkStartTime=15;  
+             // blinkCount=10;  blinkStartTime=15;  
              release_all();
-             readFromEEPROM(0); 
+             readFromEEPROM(0);
           break;
       case CMD_DELETE_SLOTS:
              if (DebugOutput==DEBUG_FULLOUTPUT)  

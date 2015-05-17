@@ -39,6 +39,8 @@ void saveToEEPROM(char * slotname)
    if (!slotname) address=EmptySlotAddress;
    else
    {
+     if (strlen(slotname) >= MAX_SLOTNAME_LEN) slotname[MAX_SLOTNAME_LEN-1]=0;
+     
      while ((EEPROM.read(address)==SLOT_VALID) && (!found) && ((address+1) < EmptySlotAddress))  // indicates valid eeprom content !
      {
        tmpStartAddress=address;

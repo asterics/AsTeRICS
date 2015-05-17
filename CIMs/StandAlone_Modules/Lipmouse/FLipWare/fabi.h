@@ -4,9 +4,7 @@
 
 
 #define TEENSY                 //  if Teensy controller is used
-// #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used
-// #define LIPMOUSE_V0         //  first HW version of lipmouse, powers pressure sensor via GPIO pins !
- 
+// #define ARDUINO_PRO_MICRO   //  if Arduino Leonardo or Arduino Pro Micro is used 
 
 #define NUMBER_OF_BUTTONS 11          // number of connected or virtual switches
 #define NUMBER_OF_PHYSICAL_BUTTONS 3  // number of connected switches
