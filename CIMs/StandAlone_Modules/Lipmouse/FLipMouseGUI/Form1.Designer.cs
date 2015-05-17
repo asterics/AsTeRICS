@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FLipMouseGUI));
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.portComboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -485,6 +486,7 @@
             this.deadzoneXBar.Location = new System.Drawing.Point(134, 262);
             this.deadzoneXBar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.deadzoneXBar.Maximum = 650;
+            this.deadzoneXBar.Minimum = 1;
             this.deadzoneXBar.Name = "deadzoneXBar";
             this.deadzoneXBar.Size = new System.Drawing.Size(630, 69);
             this.deadzoneXBar.TabIndex = 17;
@@ -1807,6 +1809,8 @@
             // 
             // FLipMouseGUI
             // 
+            this.AccessibleDescription = "FlipMouseGUI";
+            this.AccessibleName = "FlipMouseGUI";
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
@@ -1826,11 +1830,12 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.portComboBox);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FLipMouseGUI";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FLipMouse Settings Manager";
+            this.Text = "FLipMouseGUI Settings Manager";
             this.Load += new System.EventHandler(this.LipmouseGUI_Load);
             this.tabControl.ResumeLayout(false);
             this.LipmouseTab.ResumeLayout(false);
