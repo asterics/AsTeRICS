@@ -294,7 +294,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		{
 			final Object oldValue = propPeriodicADCUpdate;
 			propPeriodicADCUpdate = Integer.parseInt(newValue.toString());
-			sendLipmouseWriteFeature(LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD,propPeriodicADCUpdate);
+			if (port!=null) sendLipmouseWriteFeature(LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD,propPeriodicADCUpdate);
 			return oldValue;
 		}
 		if ("sipThreshold".equalsIgnoreCase(propertyName))
@@ -325,24 +325,13 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		{
 			final Object oldValue = propUniqueID;
 			propUniqueID = (String)newValue;
-			CIMPortController tempPort = openCIM (LIPMOUSE_CIM_ID, propUniqueID);
-			if (tempPort != null)
+			if (port!=null)
 			{
-				port=tempPort;
-				if ((!propUniqueID.equals("")) && (!propUniqueID.equals("not used")))
-				{
-					for (int i=0;i<4;i++)
-					{
-					  CIMPortManager.getInstance().sendPacket  (port, null, 
-							  CIMProtocolPacket.FEATURE_UNIQUE_SERIAL_NUMBER, 
-							  CIMProtocolPacket.COMMAND_REQUEST_READ_FEATURE, false);
-					  try { Thread.sleep (100); }  catch (InterruptedException e) {}
-					}
-				}
-			} 
+				//System.out.println("SET UNIQUE NUMBER TO NEW VALUE !!!!");
+				//port= openCIM (LIPMOUSE_CIM_ID, propUniqueID);
+			}
 			return oldValue;
 		}        
-
         return null;
     }
 
@@ -372,7 +361,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 	{
 		public void receiveEvent(final String data)
 		{		    
-			//sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_CALIBRATION,0);   // calib in firmware 
+			//sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_CALIBRATION,0);   // calib in firmware currently not supported 
 			calibNow=true;
 			
 		}
@@ -559,7 +548,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
     	}
     	
     }
-	private void handleLipmouseUniqueNumber(CIMProtocolPacket packet) //The Lipmouse will never calls this function, so it can be deleted
+	private void handleLipmouseUniqueNumber(CIMProtocolPacket packet)
 	{
 		byte []b=packet.getData();
 		// System.out.println(b);
@@ -664,16 +653,21 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
       public void start()
       {
     	  oldPressure=-1;
-    	  if (port==null)
-    	  {
-  		     port = openCIM (LIPMOUSE_CIM_ID,propUniqueID);
-  		     //    port = CIMPortManager.getInstance().getConnection(LIPMOUSE_CIM_ID );
-    	  }
-		  if (port != null )
+    	  
+		  if ( port != null)
+		  {
+			  CIMPortManager.getInstance().sendPacket(port, null, (short)0, CIMProtocolPacket.COMMAND_REQUEST_STOP_CIM, false);
+			  port.removeEventListener(this);
+			  port=null;
+		  }
+
+  		  port = openCIM (LIPMOUSE_CIM_ID,propUniqueID);
+
+  		  if (port != null )
 		  {
 			port.addEventListener(this);
+			CIMPortManager.getInstance().sendPacket(port, null, (short) 0, CIMProtocolPacket.COMMAND_REQUEST_START_CIM, false);
  			sendLipmouseWriteFeature(LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD,propPeriodicADCUpdate);
-			CIMPortManager.getInstance().sendPacket(port, null, (short) 0, CIMProtocolPacket.COMMAND_REPLY_START_CIM, false);
 		  }
 		  else
 		  {
@@ -691,7 +685,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
       {
 		  if ( port != null)
 		  {
-			  CIMPortManager.getInstance().sendPacket(port, null, (short)0, CIMProtocolPacket.COMMAND_REPLY_STOP_CIM, false);
+			  CIMPortManager.getInstance().sendPacket(port, null, (short)0, CIMProtocolPacket.COMMAND_REQUEST_STOP_CIM, false);
 		  }
           super.pause();
       }
@@ -704,7 +698,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
       {
 		  if ( port != null)
 		  {
-			  CIMPortManager.getInstance().sendPacket(port, null, (short) 0, CIMProtocolPacket.COMMAND_REPLY_START_CIM, false);
+			  CIMPortManager.getInstance().sendPacket(port, null, (short) 0, CIMProtocolPacket.COMMAND_REQUEST_START_CIM, false);
 		  }
           super.resume();
       }
@@ -717,7 +711,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
       {
 		  if ( port != null)
 		  {
-			  CIMPortManager.getInstance().sendPacket(port, null, (short)0, CIMProtocolPacket.COMMAND_REPLY_STOP_CIM, false);
+			  CIMPortManager.getInstance().sendPacket(port, null, (short)0, CIMProtocolPacket.COMMAND_REQUEST_STOP_CIM, false);
 			  port.removeEventListener(this);
 			  port=null;
 		  }
