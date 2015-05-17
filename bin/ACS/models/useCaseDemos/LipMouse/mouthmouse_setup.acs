@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\mouthmouse_setup.acs_2015_2_23_0_44" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\mouthmouse_setup.acs_2015_5_17_21_37" version="20130320">
   <components>
     <component id="BarDisplay.1" type_id="asterics.BarDisplay">
       <description>Bar-display</description>
@@ -187,8 +187,8 @@
         <posY>177</posY>
       </layout>
       <gui>
-        <posX>362</posX>
-        <posY>533</posY>
+        <posX>385</posX>
+        <posY>565</posY>
         <width>2250</width>
         <height>4222</height>
       </gui>
@@ -208,8 +208,8 @@
         <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="enable/disable mouse" />
         <property name="buttonCaption2" value="calibrate x/y" />
-        <property name="buttonCaption3" value="" />
-        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption3" value="set led1" />
+        <property name="buttonCaption4" value="clear led1" />
         <property name="buttonCaption5" value="" />
         <property name="buttonCaption6" value="" />
         <property name="buttonCaption7" value="" />
@@ -394,6 +394,23 @@
         <posX>287</posX>
         <posY>312</posY>
       </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>158</posX>
+        <posY>224</posY>
+      </layout>
+      <gui>
+        <posX>510</posX>
+        <posY>6343</posY>
+        <width>4312</width>
+        <height>1444</height>
+      </gui>
     </component>
   </components>
   <channels>
@@ -586,6 +603,246 @@
         <target>
           <component id="Lipmouse.1" />
           <eventPort id="calibration" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_setLed1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Lipmouse.1" />
+          <eventPort id="setLed1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_clearLed1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Lipmouse.1" />
+          <eventPort id="clearLed1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="sip_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="sip" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="longSip_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="longSip" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="sipStart_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="sipStart" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="sipEnd_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="sipEnd" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="puff_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="puff" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="longPuff_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="longPuff" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="puffStart_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="puffStart" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="puffEnd_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="puffEnd" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1Pressed_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button1Pressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1Released_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button1Released" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2Pressed_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button2Pressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2Released_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button2Released" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3Pressed_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button3Pressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3Released_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Lipmouse.1" />
+          <eventPort id="button3Released" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
         </target>
       </targets>
     </eventChannel>
