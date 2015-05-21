@@ -19,7 +19,7 @@
 				for every function.
 			*/
 		
-			setBaseURI("http://10.16.20.150:8081/rest/");
+			setBaseURI("http://localhost:8081/rest/");
 		
 			//downloadDeployedModel
 			function DDM() {
@@ -280,10 +280,14 @@
 			}
 						
 			function SUBSCIBE_EVENTS_successCallback(data, HTTPstatus) {
+				var eventsBox = document.getElementById("eventsBox");
+				eventsBox.innerHTML = "SSE event: " + data; 
 				console.log("SSE event: " + data);
 			}
 			
 			function SUBSCIBE_EVENTS_errorCallback(HTTPstatus, AREerrorMessage) {
+				var eventsBox = document.getElementById("eventsBox");
+				eventsBox.innerHTML = data;
 				console.log(AREerrorMessage);
 			}
 			
@@ -394,6 +398,10 @@
 			<option value="ModelChanged">Model Changed</option>
 			<option value="RepositoryChanged">Repository Changed</option>
 		</select>
+		<br/> <br/>
+		
+				
+		<div id="eventsBox" style="border:1px solid; width:30%; height: auto; padding: 3px;"></div>
 		<br/> <br/>
 		
 		<hr>

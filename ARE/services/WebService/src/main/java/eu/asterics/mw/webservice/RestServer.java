@@ -31,7 +31,7 @@ import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 @Path("/")
 public class RestServer {
 	AsapiSupport as = new AsapiSupport();
-	//private Logger logger = AstericsErrorHandling.instance.getLogger();
+	private Logger logger = AstericsErrorHandling.instance.getLogger();
 	
 	@Path("/restfunctions")
 	@GET
@@ -113,28 +113,43 @@ public class RestServer {
 		String response;
 		String errorMessage = "";
 		
+		String currentState = as.getModelState();
 		try {
 			if (state.equals("start")) {
-				as.runModel();
-				response = "Model started";
-				SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model started");
+				if (currentState.equals("started")) {
+					response = "Model was already started";
+				}
+				else {
+					as.runModel();
+					response = "Model started";
+					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model started");	
+				}
 			} 
 			else if (state.equals("stop")) {
-				as.stopModel();
-				response = "Model stopped";
-				SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model stopped");
+				if (currentState.equals("stopped")) {
+					response = "Model was already stopped";
+				}
+				else {
+					as.stopModel();
+					response = "Model stopped";
+					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model stopped");
+				}
 			}
 			else if (state.equals("pause")) {
-				as.pauseModel();
-				response = "Model paused";
-				SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model paused");
+				if (currentState.equals("paused")) {
+					response = "Model was already paused";
+				}
+				else {
+					as.pauseModel();
+					response = "Model paused";
+					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model paused");
+				}
 			}
 			else {
 				errorMessage = "Unknown state";
 				response = "error:" + errorMessage;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			errorMessage = "Could not " + state + " the model";
 			response = "error:" + errorMessage;
 		}
