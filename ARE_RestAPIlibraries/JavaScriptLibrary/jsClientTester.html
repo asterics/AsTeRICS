@@ -3,7 +3,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script src="javascript/areCommunicator.js"></script> 
+		<script src="javascript/JSmap.js"></script> 
+		<script src="javascript/areCommunicator.js"></script>
 		 
 		<title>Rest Client</title>
 		
@@ -14,12 +15,11 @@
 				
 				The location of the server should be defined with the 'setBaseURI(<url>)' method.
 				
-				A success-callback and an error-callback should be passed as an argument
+				A success-callback function and an error-callback function should be passed as an argument
 				for every function.
 			*/
 		
-			setBaseURI("http://localhost:8081/rest/server/");
-		
+			setBaseURI("http://10.16.20.150:8081/rest/");
 		
 			//downloadDeployedModel
 			function DDM() {
@@ -81,7 +81,7 @@
 			
 			
 			//getModelState
-			function MODELSTATE() {
+			function MS() {
 				getModelState(MS_successCallback, MS_errorCallback);
 			}
 			
@@ -269,6 +269,33 @@
 			function FUNCTIONS_errorCallback(HTTPstatus, AREerrorMessage) {
 				alert(AREerrorMessage);
 			}
+							
+			
+			//subscribe to SSE
+			function SUBSCRIBE_EVENTS() {
+				//var eventType = document.getElementById("subid").value;
+				var selects = document.getElementById("eTypesS");
+				var eventType = selects.options[selects.selectedIndex].value;
+				subscribe(SUBSCIBE_EVENTS_successCallback, SUBSCIBE_EVENTS_errorCallback, eventType);
+			}
+						
+			function SUBSCIBE_EVENTS_successCallback(data, HTTPstatus) {
+				console.log("SSE event: " + data);
+			}
+			
+			function SUBSCIBE_EVENTS_errorCallback(HTTPstatus, AREerrorMessage) {
+				console.log(AREerrorMessage);
+			}
+			
+			
+			//unsubscribe from SSE
+			function UNSUBSCRIBE_EVENTS() {
+				//var eventType = document.getElementById("unsubid").value;
+				var selects = document.getElementById("eTypesS");
+				var eventType = selects.options[selects.selectedIndex].value;
+				unsubscribe(eventType);
+			}
+
 		</script>
 		
 	</head>
@@ -276,70 +303,108 @@
 	<body>
 		<h1> Rest Client </h1>
 		
-		<button onclick="DDM()"> downloadDeployedModel </button>
+		<br/>
+		
+		<hr>
+		
+		<h3> ARE Repository </h3>
+		
+		<button onclick="LSM()"> List stored models </button>
 		<br/> <br/>
 		
-		<button onclick="DMF()"> downloadModelFromFile </button>
+		<button onclick="DMF()"> Download model from file </button>
 		<input placeholder="filename" type="text" id="DMFfilename"/>
 		<br/> <br/>
-		
-		<button onclick="UM()"> uploadModel </button>
-		<input placeholder="modelInXML" type="text" id="UMmodel"/>
-		<br/> <br/>
-		
-		<button onclick="AUTO()"> autorun </button>
-		<input placeholder="filename" type="text" id="AUTOfilename"/>
-		<br/> <br/>
-		
-		<button onclick="PAUSE()"> pauseModel </button>
-		<br/> <br/>
-		
-		<button onclick="START()"> startModel </button>
-		<br/> <br/>
-		
-		<button onclick="STOP()"> stopModel </button>
-		<br/> <br/>
-		
-		<button onclick="MODELSTATE()"> getModelState </button>
-		<br/> <br/>
-				
-		<button onclick="STORE()"> storeModel </button>
+					
+		<button onclick="STORE()"> Store model to file </button>
 		<input placeholder="filename" type="text" id="STOREfilename"/>
 		<input placeholder="modelInXML" type="text" id="STOREmodel"/>
 		<br/> <br/>
-		
-		<button onclick="DepMF()"> deployModelFromFile </button>
-		<input placeholder="filename" type="text" id="DepMFfilename"/>
-		<br/> <br/>
-		
-		<button onclick="DELETE()"> deleteModel </button>
+				
+		<button onclick="DELETE()"> Delete model </button>
 		<input placeholder="filename" type="text" id="DELETEfilename"/>
 		<br/> <br/>
 		
-		<button onclick="DCC()"> downloadComponentCollection </button>
+		<hr>
+		
+		<h3> ARE Runtime Handling </h3>
+		
+		<button onclick="DDM()"> Download deployed model </button>
 		<br/> <br/>
 		
-		<button onclick="LSM()"> listStoredModels </button>
+		<button onclick="UM()"> Upload model </button>
+		<input placeholder="modelInXML" type="text" id="UMmodel"/>
 		<br/> <br/>
 		
-		<button onclick="GCPK()"> getComponentPropertyKeys </button>
+		<button onclick="AUTO()"> Autorun </button>
+		<input placeholder="filename" type="text" id="AUTOfilename"/>
+		<br/> <br/>
+				
+		<button onclick="DepMF()"> Deploy model from file </button>
+		<input placeholder="filename" type="text" id="DepMFfilename"/>
+		<br/> <br/>
+				
+		<button onclick="DCC()"> Download model's components </button>
+		<br/> <br/>
+		
+		<button onclick="GCPK()"> Get component property keys </button>
 		<input placeholder="componentId" type="text" id="GCPKid"/>
 		<br/> <br/>
 		
-		<button onclick="GCP()"> getComponentProperty </button>
+		<button onclick="GCP()"> Get component property </button>
 		<input placeholder="componentId" type="text" id="GCPid"/>
 		<input placeholder="componentId"type="text" id="GCPkey"/>
 		<br/> <br/>
 		
-		<button onclick="SCP()"> setComponentProperty </button>
+		<button onclick="SCP()"> Set component property </button>
 		<input placeholder="componentId" type="text" id="SCPid"/>
 		<input placeholder="componentId" type="text" id="SCPkey"/>
 		<input placeholder="componentKeyValue" type="text" id="SCPvalue"/>
 		<br/> <br/>
-
+		
+		<hr>
+		<h3> Model State </h3>
+		
+		<button onclick="PAUSE()"> Pause model </button>
+		<br/> <br/>
+		
+		<button onclick="START()"> Start model </button>
+		<br/> <br/>
+		
+		<button onclick="STOP()"> Stop model </button>
+		<br/> <br/>
+				
+		<button onclick="MS()"> Get model state </button>
+		<br/> <br/>
+		
+		<hr>
+		
+		<h3> Server Events </h3>
+		
+		<button onclick="SUBSCRIBE_EVENTS()"> SSE subscribe </button>
+		<select id="eTypesS">
+			<option value="ModelStateChanged">Model State Changed</option>
+			<option value="ModelChanged">Model Changed</option>
+		</select>
+		<br/> <br/>
+		
+		<button onclick="UNSUBSCRIBE_EVENTS()"> SSE unsubscribe </button>
+		<select id="eTypesU">
+			<option value="ModelStateChanged">Model State Changed</option>
+			<option value="ModelChanged">Model Changed</option>
+			<option value="RepositoryChanged">Repository Changed</option>
+		</select>
+		<br/> <br/>
+		
+		<hr>
+		
+		<h3> ARE Information </h3>
+		
 		<button onclick="FUNCTIONS()"> getRestFunctions </button>
 		<br/> <br/>
-
+		
+		<hr>
+		
 	</body>
 	
 </html>

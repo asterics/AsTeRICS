@@ -18,6 +18,7 @@ import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
+import eu.asterics.mw.webservice.serverUtils.ServerEvent;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 
@@ -27,7 +28,7 @@ import eu.asterics.mw.webservice.serverUtils.ServerRepository;
  * @author Marios Komodromos (mkomod05@cs.ucy.ac.cy)
  *
  */
-@Path("/server")
+@Path("/")
 public class RestServer {
 	AsapiSupport as = new AsapiSupport();
 	//private Logger logger = AstericsErrorHandling.instance.getLogger();
@@ -72,7 +73,8 @@ public class RestServer {
 		
 		try {
 			as.deployModel(modelInXML);
-			response = "true";
+			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed");
+			response = "Model Deployed";
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "Couldn't deploy the given model";
@@ -92,7 +94,8 @@ public class RestServer {
 		
 		try {
 			as.deployFile(filename);
-			response = "true";
+			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed");
+			response = filename + "model deployed";
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "Couldn't deploy the model from file " + filename;
@@ -113,15 +116,18 @@ public class RestServer {
 		try {
 			if (state.equals("start")) {
 				as.runModel();
-				response = "true";
+				response = "Model started";
+				SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model started");
 			} 
 			else if (state.equals("stop")) {
 				as.stopModel();
-				response = "true";
+				response = "Model stopped";
+				SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model stopped");
 			}
 			else if (state.equals("pause")) {
 				as.pauseModel();
-				response = "true";
+				response = "Model paused";
+				SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model paused");
 			}
 			else {
 				errorMessage = "Unknown state";
@@ -165,7 +171,8 @@ public class RestServer {
 		
 		try {
 			as.autostart(filename);
-			response = "true";
+			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed and started");
+			response = filename + " deployed and started";
 		} catch (AREAsapiException e) {
 			e.printStackTrace();
 			errorMessage = "Could not autostart " + filename;
@@ -295,7 +302,8 @@ public class RestServer {
 		
 		try {
 			as.storeModel(modelInXML, filename);
-			response = "true";
+			SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, "Added model " + filename);
+			response = "Model stored";
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "Could not store the model";
@@ -314,8 +322,14 @@ public class RestServer {
 		String errorMessage;
 		
 		try {
-			boolean b = as.deleteModelFile(filename);
-			response = b + "";
+			boolean isDeleted = as.deleteModelFile(filename);
+			if (isDeleted) {
+				response = "Model deleted";
+				SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, filename + " deleted");
+			} 
+			else {
+				response = "Could not delete the model";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "Could not delete the model";

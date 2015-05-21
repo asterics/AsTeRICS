@@ -52,6 +52,7 @@ public class ResponseFilter implements ContainerResponseFilter {
     	
 		MultivaluedMap<String, Object> headers = response.getHeaders();
 		
+		//add headers to overcome CORS problems
 		headers.add("Access-Control-Allow-Origin", "*");
 		headers.add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
 		headers.add("Access-Control-Allow-Credentials", "true");
