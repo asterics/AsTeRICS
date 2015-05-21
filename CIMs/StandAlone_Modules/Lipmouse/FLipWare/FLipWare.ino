@@ -182,7 +182,8 @@ uint8_t cnt =0,cnt2=0;
 // function declarations 
 void handlePress (int buttonIndex);      // a button was pressed
 void handleRelease (int buttonIndex);    // a button was released
-uint32_t handleButton(int i, uint8_t b);  // button debouncing
+void handleButton(int i, int l, uint8_t state);    // button debouncing and longpress detection  
+// uint32_t handleButton(int i, uint8_t b);  // button debouncing
 void UpdateLeds();
 void initDebouncers();
 
@@ -734,7 +735,8 @@ void UpdateLeds()
 
 int freeRam ()
 {
-    extern int __heap_start, *__brkval;
-    int v;
-    return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+//    extern int __heap_start, *__brkval;
+//    int v;
+//    return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+return(1);
 }

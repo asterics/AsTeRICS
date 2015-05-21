@@ -1,7 +1,7 @@
 
 #include "fabi.h"
 
-uint8_t get_uint(char * str, int * result)
+uint8_t get_uint(char * str, int16_t * result)
 {
     int num=0;
     if ((str==0)||(*str==0)) return (0);
@@ -16,9 +16,9 @@ uint8_t get_uint(char * str, int * result)
     return(1);    
 }
 
-uint8_t get_int(char * str, int * result)
+uint8_t get_int(char * str, int16_t * result)
 {
-    int num,fact;
+    int16_t num,fact;
     if (str==0) return(0);
     if (*str =='-') {fact=-1; str++;} else fact=1;
     if (!get_uint(str,&num)) return(0);
