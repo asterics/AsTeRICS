@@ -21,28 +21,45 @@ public class SharedCanvasFrame {
 
 	public void createCanvasFrame(final String canvasKey,final String title,final double gammaOfGrabber) {
 		if(key2canvasFrame.containsKey(canvasKey)) {
-			AstericsErrorHandling.instance.getLogger().fine("Removing existing CanvasFrame with key <"+canvasKey+">");
-			disposeFrame(canvasKey);			
-			key2canvasFrame.remove(canvasKey);
+			AstericsErrorHandling.instance.getLogger().fine("Returning existing CanvasFrame with key <"+canvasKey+">");
+			return;
 		}
 
-		//must be invoked non-blocking because obviously the ctor of CanvasFrame performs a SwingUtilities.invokeAndWait and 
-		//if we are called by an ARE-GUI action this would result in a dead lock
-		SwingUtilities.invokeLater(new Runnable() {			
+		// must be invoked non-blocking because obviously the ctor of
+		// CanvasFrame performs a SwingUtilities.invokeAndWait and
+		// if we are called by an ARE-GUI action this would result in a
+		// dead lock
+		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-		        // CanvasFrame is a JFrame containing a Canvas component, which is hardware accelerated.
-		        // It can also switch into full-screen mode when called with a screenNumber.
-		        // We should also specify the relative monitor/camera response for proper gamma correction.
-		        CanvasFrame frame = new CanvasFrame(title, CanvasFrame.getDefaultGamma()/gammaOfGrabber);
-		        
-		        key2canvasFrame.put(canvasKey,frame);		
+				// CanvasFrame is a JFrame containing a Canvas
+				// component, which is hardware accelerated.
+				// It can also switch into full-screen mode when called
+				// with a screenNumber.
+				// We should also specify the relative monitor/camera
+				// response for proper gamma correction.
+				
+				CanvasFrame frame = new CanvasFrame(title, CanvasFrame
+						.getDefaultGamma() / gammaOfGrabber);
+
+				key2canvasFrame.put(canvasKey, frame);
 			}
 		});
- 		
+		/*
+		try {
+			while (key2canvasFrame.get(canvasKey) == null) {
+				System.out.println(".");
+				Thread.yield();
+				Thread.sleep(100);
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 	}
 	public CanvasFrame getCanvasFrame(String canvasKey) {
-		return key2canvasFrame.get(canvasKey);
+		CanvasFrame frame=key2canvasFrame.get(canvasKey);		
+		return frame;
 	}
 	
 	public void showImage(String canvasKey,final IplImage image) {
@@ -60,16 +77,26 @@ public class SharedCanvasFrame {
 	
 	public void disposeFrame(final String canvasKey) {
 		//Invoke the disposal in the event dispatch thread to resolve a potential deadlock if the dispose is actually called from an ARE GUI action. 
-		SwingUtilities.invokeLater(new Runnable() {
-			
+		SwingUtilities.invokeLater(new Runnable() {			
 			@Override
 			public void run() {
-				CanvasFrame frame=getCanvasFrame(canvasKey);
+				CanvasFrame frame=key2canvasFrame.get(canvasKey);
 				if(frame!=null) {
-					getCanvasFrame(canvasKey).dispose();
+					frame.dispose();
+					key2canvasFrame.remove(canvasKey);
 				}
 			}
 		});
-
+		/*
+		try {
+			while (key2canvasFrame.get(canvasKey) != null) {
+				System.out.println(".");
+				Thread.yield();
+				Thread.sleep(100);
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 	}
 }
