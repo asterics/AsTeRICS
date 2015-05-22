@@ -1,6 +1,17 @@
 
 
+//Base URI that ARE runs at
 var _baseURI;
+
+//A map holding the opened connection with ARE for SSE
+var _eventSourceMap = new Map();
+
+//enumeration for server event types
+var ServerEvents = {
+		  MODEL_STATE_CHANGED: "ModelStateChanged",
+		  MODEL_CHANGED: "ModelChanged",
+		  REPOSITORY_CHANGED: "RepositoryChanged"
+};
 
 function setBaseURI(uri) {
 	_baseURI = uri;
@@ -347,3 +358,50 @@ function getRestFunctions(successCallback, errorCallback) {
 				}
 	});
 }
+
+
+function subscribe(successCallback, errorCallback, eventsType) {
+	
+	// Browser does not support SSE
+	if((typeof EventSource)==="undefined") { 
+	   alert("SSE not supported by browser");
+	   return;
+	}
+
+	var eventSource = _eventSourceMap.get(eventsType);
+	if (eventSource != null) {
+		eventSource.close();
+	}
+	eventSource = new EventSource(_baseURI + "events/subscribe"); // Connecting to SSE service
+	_eventSourceMap.add(eventsType, eventSource);
+
+	//adding listener for specific events
+	eventSource.addEventListener(eventsType, function(e) {
+		successCallback(e.data, 200);
+	}, false);
+	
+	// After SSE handshake constructed
+	eventSource.onopen = function (e) {
+		console.log("Waiting message...");
+	};
+
+	// Error handler	
+	eventSource.onerror = function (e) {
+		errorCallback(400, e.data);
+		console.log("Error occured");
+	};
+}
+
+
+function unsubscribe(eventsType) {
+	var eventSource = _eventSourceMap.remove(eventsType);
+	
+	if (eventSource == null) {
+		return false;
+	}
+	else {
+		eventSource.close();
+		return true;
+	}
+}
+

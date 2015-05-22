@@ -17,7 +17,7 @@ public class ServerRepository {
 	//Rest Server configuration
 	public static final String PATH_REST = "/rest";
 	public static final int PORT_REST = 8081;
-	public static final URI BASE_URI_REST = URI.create("http://localhost:"+PORT_REST+PATH_REST);
+	public static final URI BASE_URI_REST = URI.create("http://0.0.0.0:"+PORT_REST+PATH_REST);
 	
 	
 	//Web Service Server configuration
