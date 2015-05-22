@@ -41,6 +41,7 @@ public class SharedFrameGrabber {
 			AstericsErrorHandling.instance.getLogger().fine("Removing old FrameGrabber with key <"+deviceKey+">");
 			FrameGrabber _grabber=device2FrameGrabber.get(deviceKey);
 			_grabber.stop();
+			_grabber.release();
 			device2FrameGrabber.remove(deviceKey);
 		}
         // The available FrameGrabber classes include OpenCVFrameGrabber (opencv_highgui),
@@ -79,7 +80,7 @@ public class SharedFrameGrabber {
         
 		AstericsErrorHandling.instance.getLogger().fine("Adding FrameGrabber with key <"+deviceKey+">");
         device2FrameGrabber.put(deviceKey, grabber);
-        grabber.start();		       
+        //grabber.start();		       
 	}
 	
 	public List<String> getDeviceStrings() {
@@ -129,6 +130,7 @@ public class SharedFrameGrabber {
 			FrameGrabber grabber=device2FrameGrabber.get(deviceKey);
 			if(grabber!=null) {
 				try {
+					grabber.stop();
 					grabber.release();
 					device2FrameGrabber.remove(deviceKey);
 				} catch (Exception e) {
@@ -155,7 +157,7 @@ public class SharedFrameGrabber {
 		if(grabberThread!=null) {
 			grabberThread.stopGrabbing();
 			try {
-				System.out.println("Wainting for thread to die...");
+				System.out.println("Waiting for thread to die...");
 				grabberThread.join();				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -187,12 +189,14 @@ public class SharedFrameGrabber {
 			try {
 				System.out.println("Start grabbing for devicekey <"+deviceKey+">");
 				grabber = getFrameGrabber(deviceKey);
+				grabber.start();
 				while(!stopGrabbing) {
 					IplImage image=grabber.grab();
 					notifyGrabbedImageListener(deviceListeners, image);
 					//opencv_core.cvReleaseImage(image);
 					//image=null;
 				}
+				grabber.stop();
 				System.out.println("Grabbing stopped");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
