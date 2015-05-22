@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_core.*;
+import org.bytedeco.javacv.CameraDevice;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.FrameGrabber.Exception;
 import org.bytedeco.javacv.OpenCVFrameGrabber;
@@ -23,18 +24,24 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  *
  */
 public class SharedFrameGrabber {
+	//timeout for grabber thread to die in ms.
+	private static final long GRABBER_STOP_TIMEOUT = 10000;
 	public static SharedFrameGrabber instance=new SharedFrameGrabber();
-	
 	
 	private Map<String,FrameGrabber> device2FrameGrabber=new HashMap<String,FrameGrabber>();
 	private Map<String, List<GrabbedImageListener>> listeners=new HashMap<String, List<GrabbedImageListener>>(); 
 	private Map<String, GrabberThread> grabberThreads=new HashMap<String, GrabberThread>();
-
 	
-	private void init() throws Exception {
-		init(-1,"0",320,240);
+	private List<String> grabberList=new ArrayList<String>();
+	
+	public SharedFrameGrabber() {
+		grabberList.add("VideoInput");
+		grabberList.add("OpenCV");
 	}
-	private void init(int frameGrabberIdx, String deviceKey, int userWidth, int userHeight) throws Exception {
+	private void init() throws Exception {
+		init(null,"0",320,240);
+	}
+	private void init(String grabberName, String deviceKey, int userWidth, int userHeight) throws Exception {
 		FrameGrabber grabber=null;
 		
 		if(device2FrameGrabber.containsKey(deviceKey)) {
@@ -49,13 +56,14 @@ public class SharedFrameGrabber {
         // PS3EyeFrameGrabber, VideoInputFrameGrabber, and FFmpegFrameGrabber.
              
 		int camIdx=Integer.parseInt(deviceKey);
-		if(frameGrabberIdx == -1) {
+		if(grabberName == null) {
 			System.out.println("Creating default FrameGrabber");
 			//grabber=FrameGrabber.createDefault(camIdx);
 			try{
 				//default try to load videoInput
 				VideoInputFrameGrabber.tryLoad();
 				grabber=VideoInputFrameGrabber.createDefault(0);
+				
 				//grabber = FrameGrabber.create(FrameGrabber.list.get(5),0);
 			}catch(Throwable e) {
 				//if videoInput fails, try to load OpenCV
@@ -64,9 +72,11 @@ public class SharedFrameGrabber {
 				grabber=OpenCVFrameGrabber.createDefault(0);
 			}
 		} else {
-	        System.out.println("List of grabbers (indices): "+FrameGrabber.list);
-	        System.out.println("Using grabber: "+FrameGrabber.list.get(frameGrabberIdx)+", and camIdx: "+camIdx);
-	        grabber = FrameGrabber.create(FrameGrabber.list.get(frameGrabberIdx),camIdx);
+	        System.out.println("List of grabbers (indices): "+grabberList);
+	        System.out.println("Using grabber: "+grabberName+", and camIdx: "+camIdx);
+	        grabber = FrameGrabber.create(grabberName,camIdx);
+	        
+	       
 	        //FFmpegFrameGrabber grabber =new FFmpegFrameGrabber("video=Integrated Camera");
 	        //grabber.setFormat("dshow");
 	        //FFmpegFrameGrabber grabber =new FFmpegFrameGrabber("0");
@@ -83,16 +93,25 @@ public class SharedFrameGrabber {
         //grabber.start();		       
 	}
 	
-	public List<String> getDeviceStrings() {
-		 return new ArrayList<String>();
+	public List<String> getFrameGrabberList() {
+		return grabberList;
 	}
-	
+
+	public FrameGrabber getFrameGrabber(String deviceKey, String grabberName, int width, int height) throws Exception {
+		if(device2FrameGrabber.containsKey(deviceKey)) {
+			return device2FrameGrabber.get(deviceKey);
+		}
+
+		init(grabberName,deviceKey,width,height);
+		return device2FrameGrabber.get(deviceKey);		
+	}
+
 	public FrameGrabber getFrameGrabber(String deviceKey, int width, int height) throws Exception {
 		if(device2FrameGrabber.containsKey(deviceKey)) {
 			return device2FrameGrabber.get(deviceKey);
 		}
 
-		init(-1,deviceKey,width,height);
+		init(null,deviceKey,width,height);
 		return device2FrameGrabber.get(deviceKey);		
 	}
 	
@@ -101,7 +120,7 @@ public class SharedFrameGrabber {
 			return device2FrameGrabber.get(deviceKey);
 		}
 
-		init(-1,deviceKey,320,240);
+		init(null,deviceKey,320,240);
 		return device2FrameGrabber.get(deviceKey);
 	}
 	
@@ -147,8 +166,8 @@ public class SharedFrameGrabber {
 		if(grabberThread==null) {
 			grabberThread=new GrabberThread(deviceKey);
 			grabberThreads.put(deviceKey, grabberThread);
+			grabberThread.start();
 		}
-		grabberThread.start();
 	}
 	
 	public void stopGrabbing(String deviceKey) {
@@ -158,10 +177,11 @@ public class SharedFrameGrabber {
 			grabberThread.stopGrabbing();
 			try {
 				System.out.println("Waiting for thread to die...");
-				grabberThread.join();				
+				grabberThread.join(GRABBER_STOP_TIMEOUT);				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				AstericsErrorHandling.instance.getLogger().warning("Could not wait for dying of grabber thread.");
 			}
 			grabberThreads.remove(deviceKey);
 		}
