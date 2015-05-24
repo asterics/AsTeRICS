@@ -37,7 +37,7 @@
           AT MY <num>       move mouse in y direction (e.g. AT Y -10 moves 10 pixels up)  
 
           AT KW <text>      keyboard write text (e.g. AT KW Hello! writes "Hello!")    
-          AT KP <text>      key press: press/hold all keys identified in text 
+          AT KP <text>      key press: press/hold aat listll keys identified in text 
                             (e.g. AT KP KEY_UP presses the "Cursor-Up" key, AT KP KEY_CTRL KEY_ALT KEY_DELETE presses all three keys)
                             for a list of supported key idientifier strings see below ! 
                             
@@ -86,11 +86,6 @@
 
 // Constants and Macro definitions
 
-#define PRESSURE_SENSOR_PIN A0
-#define DOWN_SENSOR_PIN     45
-#define LEFT_SENSOR_PIN     43
-#define UP_SENSOR_PIN       44
-#define RIGHT_SENSOR_PIN    42
 
 #define DEFAULT_WAIT_TIME       5   // wait time for one loop interation in milliseconds
 #define DEFAULT_CLICK_TIME      8    // time for mouse click (loop iterations from press to release)
@@ -110,12 +105,36 @@
 // global variables
 
 #ifdef TEENSY
+  #define PRESSURE_SENSOR_PIN A0
+  #define DOWN_SENSOR_PIN     A7
+  #define LEFT_SENSOR_PIN     A5
+  #define UP_SENSOR_PIN       A6
+  #define RIGHT_SENSOR_PIN    A4
+
   int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={13,2,3};  //  maps physical button pins to button index 0,1,2  
   int8_t  led_map[NUMBER_OF_LEDS]={18,19,20};              //  maps leds pins   
   uint8_t LED_PIN = 6;                                     //  Led output pin
 #endif
 
+#ifdef TEENSY_LC
+  #define PRESSURE_SENSOR_PIN A0
+  #define DOWN_SENSOR_PIN     A5
+  #define LEFT_SENSOR_PIN     A5
+  #define UP_SENSOR_PIN       A5
+  #define RIGHT_SENSOR_PIN    A5
+
+  int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={2,3,4};  //  maps physical button pins to button index 0,1,2  
+  int8_t  led_map[NUMBER_OF_LEDS]={16,17,21};              //  maps leds pins   
+  uint8_t LED_PIN = 13;                                     //  Led output pin
+#endif
+
 #ifdef ARDUINO_PRO_MICRO
+  #define PRESSURE_SENSOR_PIN A10
+  #define DOWN_SENSOR_PIN     A0
+  #define LEFT_SENSOR_PIN     A1
+  #define UP_SENSOR_PIN       A2
+  #define RIGHT_SENSOR_PIN    A3
+
   int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={2,3,4};
   int8_t  led_map[NUMBER_OF_LEDS]={8,9,10};            
   uint8_t LED_PIN = 17;
@@ -238,7 +257,7 @@ void setup() {
    buttons[9].mode=CMD_MOUSE_CLICK_RIGHT;                          
    buttons[10].mode=CMD_CA;                               // calibrate    
    
-   readFromEEPROM(0);  // read button modes from first EEPROM slot if available !  
+  // readFromEEPROM(0);  // read button modes from first EEPROM slot if available !  
 
    blinkCount=10;  blinkStartTime=25;
    

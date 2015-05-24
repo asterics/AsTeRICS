@@ -37,6 +37,14 @@
 
 #define ARE_MINIMAL_VERSION 1
 
+
+extern int pressure;
+extern int down;
+extern int left;
+extern int up;
+extern int right;
+extern  int8_t  led_map[];              //  maps leds pins  
+
 //const uint32_t LIPMOUSE_CIM_UNIQUE_NUMBER = 0x12345678;  
 const uint32_t LIPMOUSE_CIM_UNIQUE_NUMBER = 7;  
 volatile uint16_t ADC_updatetime=0;    
@@ -160,26 +168,24 @@ uint8_t process_ARE_frame(uint8_t status_code)
 
 			        case LIPMOUSE_CIM_FEATURE_SET_ADCPERIOD:
 	  		            if (data_size==2) {    
-					//		cli();
-							ADC_updatetime=  (uint16_t)ARE_frame.data[0];
-							ADC_updatetime+= ((uint16_t)ARE_frame.data[1])<<8;
-					//		sei();
-						}
-				     break;
+  					ADC_updatetime=  (uint16_t)ARE_frame.data[0];
+					ADC_updatetime+= ((uint16_t)ARE_frame.data[1])<<8;
+				    }
+				    break;
 			        case LIPMOUSE_CIM_FEATURE_SET_LEDS:
 	  		            if (data_size==1) {
-							uint8_t actLeds=ARE_frame.data[0];    
-							if (actLeds&1) PORTB&=~(1<<0); else PORTB|=(1<<0);
-							if (actLeds&2) PORTE&=~(1<<7); else PORTE|=(1<<7);
-							if (actLeds&4) PORTE&=~(1<<6); else PORTE|=(1<<6);
-						}
+					uint8_t actLeds=ARE_frame.data[0];    
+					if (actLeds&1) digitalWrite (led_map[0],LOW); else digitalWrite (led_map[0],HIGH);
+					if (actLeds&2) digitalWrite (led_map[1],LOW); else digitalWrite (led_map[1],HIGH);
+					if (actLeds&4) digitalWrite (led_map[2],LOW); else digitalWrite (led_map[2],HIGH);
+				     }
 				     break;
-					default:         // not a valid write  feature;
-		   				status_code |= CIM_ERROR_INVALID_FEATURE;
-				}
+			        default:         // not a valid write  feature;
+		   			status_code |= CIM_ERROR_INVALID_FEATURE;
+			    }
 
-			}
-    }
+		}
+        }
 
 	if (status_code & CIM_ERROR_INVALID_FEATURE)   {  // invalid data size or feature
 	//	LEDs_ToggleLEDs(LED5);  // indicate wrong feature
@@ -222,13 +228,6 @@ void reply_DataFrame(void)
 	Serial.write ((uint8_t *) CIM_frame.data, CIM_frame.data_size);
 }
 
-
-
-extern int pressure;
-extern int down;
-extern int left;
-extern int up;
-extern int right;
 
 void generate_ADCFrame()
 {

@@ -152,7 +152,7 @@ void setKeyValues(char* text)
     if (!strcmp(acttoken,"KEY_9")) updateKey(KEY_9);
     if (!strcmp(acttoken,"KEY_0")) updateKey(KEY_0);
     
-    #ifdef TEENSY     // for Teensy2.0++
+    #ifndef ARDUINO_PRO_MICRO     // for Teensy2.0++  or TeensyLC
       if (!strcmp(acttoken,"KEY_SCROLL_LOCK")) updateKey(KEY_SCROLL_LOCK);
       if (!strcmp(acttoken,"KEY_PAUSE")) updateKey(KEY_PAUSE);
       if (!strcmp(acttoken,"KEY_NUM_LOCK")) updateKey(KEY_NUM_LOCK);
