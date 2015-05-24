@@ -29,14 +29,22 @@
             <eventListenerPort id="init">
                 <description>perform new face detection when head is centered</description>
             </eventListenerPort>
+            <!-- 
             <eventListenerPort id="showCameraSettings">
                 <description>shows Camera Settings Window</description>
             </eventListenerPort> 
             <eventListenerPort id="saveProfile">
                 <description>save camera profile to file</description>
-            </eventListenerPort>                        
+            </eventListenerPort>
+             -->                        
         </events>
         <properties>
+            <property name="frameGrabber"
+              type="string"
+              value="VideoInput"
+              getStringList="true"
+              description="Name of FrameGrabber to use"/>
+        
             <property name="cameraSelection"
                       type="integer"
                       value="0"
@@ -47,15 +55,18 @@
                       value="1"
                       combobox="160x120//320x240//352x288//640x480//800x600//1024x768//1600x1200"
                       description="desired camera resolution"/>
+                      <!-- 
             <property name="cameraDisplayUpdate"
                       type="integer"
                       value="100"
                       description="the update period for the camera display in milliseconds (0=no display window)"/>
+                       -->
+                      <!-- 
             <property name="cameraProfile" 
                       type="string"
                       value=""
                       description="Filename of the camera profile"/>            
-                              
+                            -->   
         </properties>
         <gui IsExternalGUIElement="true">
             <width>2000</width>

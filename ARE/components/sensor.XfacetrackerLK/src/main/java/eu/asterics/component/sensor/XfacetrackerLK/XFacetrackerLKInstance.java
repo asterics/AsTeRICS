@@ -46,7 +46,10 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvFindCornerSubPix;
 import static org.bytedeco.javacpp.opencv_video.CV_LKFLOW_PYR_A_READY;
 import static org.bytedeco.javacpp.opencv_video.cvCalcOpticalFlowPyrLK;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
 
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.FloatPointer;
@@ -88,7 +91,6 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 	final IRuntimeOutputPort opChinX = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opChinY = new DefaultRuntimeOutputPort();
 
-	private String deviceKey="0";
 	FrameGrabber grabber;
 	boolean running=false;
 	
@@ -118,6 +120,11 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     IplImage[] imgGrey=new IplImage[2];
     IplImage[] imgPyr=new IplImage[2];
     CvPoint2D32f[] points=new CvPoint2D32f[2];
+
+	private String propFrameGrabber="VideoInput";
+	private String propCameraSelection="0";
+	private String propCameraResolution="1";
+
      
 	/**
 	 * The class constructor.
@@ -171,8 +178,25 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 	 */
     public Object getRuntimePropertyValue(String propertyName)
     {
+    	if("frameGrabber".equalsIgnoreCase(propertyName)) {
+    		return propFrameGrabber;
+    	} else if("cameraSelection".equalsIgnoreCase(propertyName)) {
+    		return propCameraSelection;
+    	}
+
     	return "";
     }
+    
+	public List<String> getRuntimePropertyList(String key) 
+	{
+		List<String> res = new ArrayList<String>(); 
+		if ("frameGrabber".equalsIgnoreCase(key))
+		{
+			return SharedFrameGrabber.instance.getFrameGrabberList();
+		}
+		return res;
+	} 
+  
  
 	/**
 	 * sets a new value for the given property.
@@ -181,6 +205,17 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 	 */
    public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
+       if("frameGrabber".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propFrameGrabber;
+			propFrameGrabber = (String)newValue;
+			return oldValue;
+		} else if("cameraSelection".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = Integer.parseInt(propCameraSelection);
+			propCameraSelection = String.valueOf(newValue);
+			return oldValue;
+		}
 	   return newValue;
     }
    
@@ -248,13 +283,13 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     	try {
     		resetVariables();
     		//Get default grabber for this platform (VideoInput for Windows, OpenCV for Linux,...) using default camera (device 0)
-			FrameGrabber grabber=SharedFrameGrabber.instance.getFrameGrabber(deviceKey);
+			FrameGrabber grabber=SharedFrameGrabber.instance.getFrameGrabber(propCameraSelection,propFrameGrabber,320,240);
 			//register this as listener for grabbed images 
-			SharedFrameGrabber.instance.registerGrabbedImageListener(deviceKey, this);
-			//start grabbing
-			SharedFrameGrabber.instance.startGrabbing(deviceKey);
+			SharedFrameGrabber.instance.registerGrabbedImageListener(propCameraSelection, this);
 			//Create a Canvas/Frame to draw on (this is platform dependant and does not work on Android)
 			SharedCanvasFrame.instance.createCanvasFrame("CanvasFrame1", "Face", grabber.getGamma());
+			//start grabbing
+			SharedFrameGrabber.instance.startGrabbing(propCameraSelection);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
@@ -282,8 +317,8 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     {
     	//System.out.println("Stopping XFaceTrackerLK, Executed in: "+Thread.currentThread().getName());
     	
-    	SharedFrameGrabber.instance.stopGrabbing(deviceKey);
-    	SharedFrameGrabber.instance.deregisterGrabbedImageListener(deviceKey, this);
+    	SharedFrameGrabber.instance.stopGrabbing(propCameraSelection);
+    	SharedFrameGrabber.instance.deregisterGrabbedImageListener(propCameraSelection, this);
     	SharedCanvasFrame.instance.disposeFrame("CanvasFrame1");
     	resetVariables();
     	super.stop();
