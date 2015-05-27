@@ -6,13 +6,14 @@
 <Title>TuioReactivision</Title>
 </HEAD>
 <BODY>
-<H1>EShoe</H1>
+<H1>TuioReactivision</H1>
 <H3>Component Type: Sensor (Subcategory: Sensor Modules)</H3>
 <p>This component integrates reacTIVision into AsTeRICS</p>
 <div class="image"><img src="img/reactivision.jpg" alt="Screenshot: TuioReactivision plug-in" title="Screenshot: TuioReactivision plug-in" /><br>
 TuioReactivision plug-in</div>
 <H2>Requirements</H2>
-This component requires that the reacTIVision.exe runs --> Download: http://reactivision.sourceforge.net/. 
+This component requires that the reacTIVision.exe is running --> Download: http://reactivision.sourceforge.net/. 
+It can either be started manually, with the ApplicationLauncher plug-in or via a reference in the tuioReactivision plug-in's property "reactivisionPath"
 
 <H2>Output Port Description</H2>
 <ul>
@@ -29,11 +30,24 @@ This component requires that the reacTIVision.exe runs --> Download: http://reac
 </ul>
 <H2>Properties</H2>
 <ul>
-<li><STRONG>Text Output  [Boolean]:</STRONG> Shows if a text output is required</li>
-<li><STRONG>Marker Allocation [Boolean]:</STRONG> Shows if a marker will be assigned to an event port</li> 
+<li><STRONG>Text Output  [Boolean]:</STRONG> If it is true, a string can be assigned to a marker. Therefor, a text file is necessary</li>
+<li><STRONG>Marker Allocation [Boolean]:</STRONG> If it is true, an event port can be assigned to a marker. Therefor, a text file is necessary. Only Text Output or Marker Allocation can be true</li> 
 <li><strong>reactivisionPath [Boolean]:</strong> Contains the path to the reacTIVision.exe</li> 
 <li><STRONG>Text File [String]:</STRONG> Contains the path of the text file in which the marker is either assigned to a text or an event port (e.g. "1-3" marker three is assigned to event trigger one )</li>
     </ul>
+
+    <div class="image">
+        <img src="img/liste.jpg" alt="Screenshot: examplary text file" title="Screenshot: examplary text file" /><br>
+        Examplary text file when a marker should be assigned to a string (Marker number is on the left side)
+
+    </div>
+
+    <div class="image">
+        <img src="img/listeInt.jpg" alt="Screenshot: exemplary text file" title="Screenshot: examplary text file" /><br>
+        Examplary text file ehen a marker should be assigned to an integer (Marker number is on the right side)
+
+    </div>
+
  <H2>Event Trigger</H2>
  <ul>
  <li><strong>Event Trigger</strong> Port 1-6 can only be used when marker allocation is true. </li>
