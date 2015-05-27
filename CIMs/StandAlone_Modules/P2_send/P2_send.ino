@@ -1,4 +1,5 @@
 
+#define START_PIN 3
 #define LED_PIN 13
 
 uint8_t TXBuf[17];            // Buffer for the Packet
@@ -9,7 +10,7 @@ uint16_t adcValue;
 uint32_t timestamp;
 
 void setup() {
-    pinMode(1,INPUT_PULLUP);
+    pinMode(START_PIN,INPUT_PULLUP);
     pinMode(LED_PIN,OUTPUT);       // define Led Pin as output
     digitalWrite(LED_PIN,HIGH);       // define Led Pin as output
 
@@ -23,7 +24,7 @@ void setup() {
 
 void loop() {
 
-  if(digitalRead(1)==LOW)
+  if(digitalRead(START_PIN)==LOW)
   {
       while (micros()-timestamp<3906);
       timestamp=micros();
