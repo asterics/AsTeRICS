@@ -41,20 +41,27 @@
         <properties>
             <property name="frameGrabber"
               type="string"
-              value="VideoInput"
+              value="OpenCV"
               getStringList="true"
               description="Name of FrameGrabber to use"/>
-        
+            <property name="frameGrabberOptions"
+                      type="string"
+                      value=""
+                      description="Options for grabber, e.g. 'dshow' or 'vfwcap' (FFmpeg)"/>              
+            <property name="deviceList"
+              type="string"
+              value=""
+              getStringList="true"
+              description="List of available devices"/>
             <property name="cameraSelection"
-                      type="integer"
+                      type="string"
                       value="0"
-                      combobox="first camera//second camera//third camera//forth camera//fifth camera"
-                      description="the camera device to be used"/>
+                      description="The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV), or camName e.g. 'video=Integrated Camera'"/>
             <property name="cameraResolution"
                       type="integer"
                       value="1"
                       combobox="160x120//320x240//352x288//640x480//800x600//1024x768//1600x1200"
-                      description="desired camera resolution"/>
+                      description="Desired camera resolution"/>
                       <!-- 
             <property name="cameraDisplayUpdate"
                       type="integer"

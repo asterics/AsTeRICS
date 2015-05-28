@@ -119,9 +119,10 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     IplImage[] imgPyr=new IplImage[2];
     CvPoint2D32f[] points=new CvPoint2D32f[2];
 
-	private String propFrameGrabber="VideoInput";
+	private String propFrameGrabber="OpenCV";
 	private String propCameraSelection="0";
-	private String propCameraResolution="1";
+	private Integer propCameraResolution=1;
+	private String propFrameGrabberOptions="dshow";
 
      
 	/**
@@ -178,8 +179,12 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     {
     	if("frameGrabber".equalsIgnoreCase(propertyName)) {
     		return propFrameGrabber;
-    	} else if("cameraSelection".equalsIgnoreCase(propertyName)) {
+    	} else if("frameGrabberOptions".equalsIgnoreCase(propertyName)) {
+    		return propFrameGrabberOptions;
+    	}else if("cameraSelection".equalsIgnoreCase(propertyName)) {
     		return propCameraSelection;
+    	}else if("cameraResolution".equalsIgnoreCase(propertyName)) {
+    		return propCameraResolution;
     	}
 
     	return "";
@@ -191,6 +196,9 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 		if ("frameGrabber".equalsIgnoreCase(key))
 		{
 			return SharedFrameGrabber.instance.getFrameGrabberList();
+		} else if ("deviceList".equalsIgnoreCase(key))
+		{
+			return SharedFrameGrabber.instance.getDeviceList(propFrameGrabber);
 		}
 		return res;
 	} 
@@ -208,10 +216,20 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			final Object oldValue = propFrameGrabber;
 			propFrameGrabber = (String)newValue;
 			return oldValue;
+		} else if("frameGrabberOptions".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propFrameGrabberOptions;
+			propFrameGrabberOptions = (String)newValue;
+			return oldValue;
 		} else if("cameraSelection".equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = Integer.parseInt(propCameraSelection);
-			propCameraSelection = String.valueOf(newValue);
+			final Object oldValue = propCameraSelection;
+			propCameraSelection = (String)newValue;
+			return oldValue;
+		} else if("cameraResolution".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propCameraResolution;
+			propCameraResolution = Integer.parseInt((String)newValue);
 			return oldValue;
 		}
 	   return newValue;
@@ -281,7 +299,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     	try {
     		resetVariables();
     		//Get default grabber for this platform (VideoInput for Windows, OpenCV for Linux,...) using default camera (device 0)
-			FrameGrabber grabber=SharedFrameGrabber.instance.getFrameGrabber(propCameraSelection,propFrameGrabber,320,240);
+			FrameGrabber grabber=SharedFrameGrabber.instance.getFrameGrabber(propCameraSelection,propFrameGrabber,propCameraResolution,propFrameGrabberOptions);
 			//register this as listener for grabbed images 
 			SharedFrameGrabber.instance.registerGrabbedImageListener(propCameraSelection, this);
 			//Create a Canvas/Frame to draw on (this is platform dependant and does not work on Android)
