@@ -2,11 +2,7 @@ package eu.asterics.mw.computervision;
 
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.CameraDevice;
 import org.bytedeco.javacv.FrameGrabber;
@@ -41,11 +37,12 @@ public class SharedFrameGrabber {
 	private Map<String, GrabberThread> grabberThreads=new HashMap<String, GrabberThread>();
 	
 	private List<String> grabberList=null;
-	private String[] defaultGrabberList=new String[]{VIDEOINPUT_GRABBER_KEY,OPENCV_GRABBER_KEY};
+	private String[] defaultGrabberList=new String[]{OPENCV_GRABBER_KEY, VIDEOINPUT_GRABBER_KEY, FFMPEG_GRABBER_KEY};
+	private int[][] RESOLUTIONS=new int[][]{{160,120},{320,240},{352,288},{640,480},{800,600},{1024,768},{1600,1200}};
 	
 	public SharedFrameGrabber() {
 	}
-	private void init(String grabberName, String deviceKey, int userWidth, int userHeight) throws Exception {
+	private void init(String grabberName, String deviceKey, int userWidth, int userHeight, String grabberOptions) throws Exception {
 		FrameGrabber grabber=null;
 
 		System.out.println("Available grabber: "+getFrameGrabberList());
@@ -68,7 +65,6 @@ public class SharedFrameGrabber {
 			grabberName=getDefaultFrameGrabberName();
 			System.out.println("Creating default FrameGrabber: "+grabberName);
 		}
-		
 		doSanityChecks(grabberName, deviceKey);
 
 		//System.out.println("Using grabber: "+grabberName+", and camIdx: "+camIdx);
@@ -92,6 +88,7 @@ public class SharedFrameGrabber {
 		//devSet.setTimeout(20000);
 		devSet.setImageWidth(userWidth);
 		devSet.setImageHeight(userHeight);    
+		devSet.setFormat(grabberOptions);
 		devSet.getDescription();
 		System.out.println(devSet.getDescription());
 
@@ -99,6 +96,7 @@ public class SharedFrameGrabber {
 		System.out.println("CamDevice: "+dev);
 
 		grabber=dev.createFrameGrabber();
+		
 
 		//FFmpegFrameGrabber grabber =new FFmpegFrameGrabber("video=Integrated Camera");
 		//grabber.setFormat("dshow");
@@ -111,7 +109,7 @@ public class SharedFrameGrabber {
 	
 	private void doSanityChecks(String grabberName, String deviceKey) throws Exception {
 		//Some dirty checks to prevent a crash of OpenCV on Linux if the device does not exist.
-		if(grabberName.equalsIgnoreCase("OpenCV") && (OSUtils.isUnix()||OSUtils.isMac())) {
+		if(grabberName.equalsIgnoreCase(OPENCV_GRABBER_KEY) && (OSUtils.isUnix()||OSUtils.isMac())) {
 			try{
 				int camIdx=Integer.parseInt(deviceKey);
 				File vidFile=new File("/dev/video"+deviceKey);
@@ -121,9 +119,27 @@ public class SharedFrameGrabber {
 			}catch(NumberFormatException e) {}
 		}
 	}
+	
+	public List<String> getDeviceList(String grabberName) {
+		String[] s=null;
+        try {
+            Class<? extends FrameGrabber> c = FrameGrabber.get(grabberName);
+            c.getMethod("tryLoad").invoke(null);
+            try {
+                s = (String[])c.getMethod("getDeviceDescriptions").invoke(null);
+                if(s!=null) {
+                	return Arrays.asList(s);
+                }
+            } catch (Throwable t) { 
+            }
+        } catch (Throwable t) { }
+       	return Arrays.asList(new String[]{"Not available"});
+    }
+	
 	public List<String> getFrameGrabberList() {
 		if(grabberList==null) {
 			grabberList=new ArrayList<String>();
+			grabberList.add(DEFAULT_GRABBER_KEY);
 			for(String grabberName : FrameGrabber.list) {
 				try {
 					Class<? extends FrameGrabber> c = FrameGrabber.get(grabberName);
@@ -145,12 +161,21 @@ public class SharedFrameGrabber {
 		return "";
 	}
 
+	public FrameGrabber getFrameGrabber(String deviceKey, String grabberName, int resolutionIdx, String grabberOptions) throws Exception {
+		if(device2FrameGrabber.containsKey(deviceKey)) {
+			return device2FrameGrabber.get(deviceKey);
+		}
+
+		init(grabberName,deviceKey,RESOLUTIONS[resolutionIdx][0],RESOLUTIONS[resolutionIdx][1], grabberOptions);
+		return device2FrameGrabber.get(deviceKey);		
+	}
+
 	public FrameGrabber getFrameGrabber(String deviceKey, String grabberName, int width, int height) throws Exception {
 		if(device2FrameGrabber.containsKey(deviceKey)) {
 			return device2FrameGrabber.get(deviceKey);
 		}
 
-		init(grabberName,deviceKey,width,height);
+		init(grabberName,deviceKey,width,height, "");
 		return device2FrameGrabber.get(deviceKey);		
 	}
 
@@ -159,7 +184,7 @@ public class SharedFrameGrabber {
 			return device2FrameGrabber.get(deviceKey);
 		}
 
-		init(null,deviceKey,width,height);
+		init(null,deviceKey,width,height, "");
 		return device2FrameGrabber.get(deviceKey);		
 	}
 	
@@ -168,7 +193,7 @@ public class SharedFrameGrabber {
 			return device2FrameGrabber.get(deviceKey);
 		}
 
-		init(null,deviceKey,320,240);
+		init(null,deviceKey,320,240, "");
 		return device2FrameGrabber.get(deviceKey);
 	}
 	
