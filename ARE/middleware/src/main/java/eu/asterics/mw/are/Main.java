@@ -8,6 +8,7 @@ import eu.asterics.mw.gui.AstericsGUI;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 import eu.asterics.mw.services.AstericsThreadPool;
+import eu.asterics.mw.utils.OSUtils;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -78,7 +79,7 @@ public class Main implements BundleActivator
 			logger = AstericsErrorHandling.instance.getLogger();
 			// Check if not 32bit
 			String bits = System.getProperty("sun.arch.data.model");
-			if (bits.compareTo("64") == 0) {
+			if (OSUtils.isWindows() && bits.compareTo("64") == 0) {
 				logger.severe("JVM "
 						+ bits
 						+ " bit detected! ARE needs a 32bit JVM \n ARE will shutdown");
