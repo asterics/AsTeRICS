@@ -747,8 +747,11 @@ public class AREServices implements IAREServices{
 			return null;
 		}
 
-		modelName=modelName.replace('/', '.');
-		modelName=modelName.replace('\\', '.');
+		modelName=modelName.replace('\\', '/');
+		if (modelName.lastIndexOf('/')>0)
+		  modelName=modelName.substring(modelName.lastIndexOf('/')+1);
+
+	
 		StringBuffer fullFilePath = new StringBuffer(STORAGE_FOLDER);
 		fullFilePath.append("/");
 		fullFilePath.append(modelName);

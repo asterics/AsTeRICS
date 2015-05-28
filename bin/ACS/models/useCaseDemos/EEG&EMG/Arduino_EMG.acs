@@ -1,58 +1,6 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\Arduino_EMG.acs_2015_2_23_0_41" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ACS\models\useCaseDemos\EEG&amp;EMG\Arduino_EMG.acs_2015_5_26_20_33" version="20130320">
   <components>
-    <component id="Arduino.1" type_id="asterics.Arduino">
-      <description>Arduino Microcontroller CIM</description>
-      <ports>
-        <inputPort portTypeID="pwm3">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="pwm5">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="pwm6">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="A0">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="A1">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="A2">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="A3">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="A4">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="A5">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="uniqueID" value="not used" />
-        <property name="periodicADCUpdate" value="10" />
-        <property name="pin2Mode" value="0" />
-        <property name="pin3Mode" value="0" />
-        <property name="pin4Mode" value="0" />
-        <property name="pin5Mode" value="0" />
-        <property name="pin6Mode" value="0" />
-        <property name="pin7Mode" value="2" />
-        <property name="pin8Mode" value="0" />
-        <property name="pin9Mode" value="0" />
-        <property name="pin10Mode" value="0" />
-        <property name="pin11Mode" value="3" />
-        <property name="pin12Mode" value="0" />
-        <property name="pin13Mode" value="4" />
-      </properties>
-      <layout>
-        <posX>126</posX>
-        <posY>22</posY>
-      </layout>
-    </component>
     <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
       <description>Oscilloscope display for one signal channel</description>
       <ports>
@@ -75,8 +23,8 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>448</posX>
-        <posY>0</posY>
+        <posX>425</posX>
+        <posY>7</posY>
       </layout>
       <gui>
         <posX>225</posX>
@@ -85,87 +33,36 @@
         <height>1700</height>
       </gui>
     </component>
-    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
-      <description>Simple Event Visualizer</description>
-      <ports />
+    <component id="p2_parser.1" type_id="asterics.p2_parser">
+      <description>This plugin receives a P"-packet stream compatible to the OpenEEG ModularEEG / SMT EEG firmware. 6 Channels of bioelectric data can be processed.</description>
+      <ports>
+        <outputPort portTypeID="Channel1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Channel6">
+          <properties />
+        </outputPort>
+      </ports>
       <properties>
-        <property name="displayGUI" value="true" />
+        <property name="ComPort" value="COM83" />
+        <property name="BaudRate" value="115200" />
       </properties>
       <layout>
-        <posX>252</posX>
-        <posY>247</posY>
+        <posX>70</posX>
+        <posY>38</posY>
       </layout>
-      <gui>
-        <posX>6912</posX>
-        <posY>4000</posY>
-        <width>1812</width>
-        <height>2289</height>
-      </gui>
-    </component>
-    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
-      <description>Keyboard which sends event after button press</description>
-      <ports />
-      <properties>
-        <property name="caption" value="Keyboard" />
-        <property name="horizontalOrientation" value="false" />
-        <property name="textColor" value="13" />
-        <property name="backgroundColor" value="13" />
-        <property name="borderColor" value="13" />
-        <property name="borderThickness" value="2" />
-        <property name="selectionFrameColor" value="13" />
-        <property name="selectionFrameThickness" value="4" />
-        <property name="displayGUI" value="true" />
-        <property name="buttonCaption1" value="Internal Led On (Set Pin13)" />
-        <property name="buttonCaption2" value="Clear Pin13" />
-        <property name="buttonCaption3" value="Set Pin11" />
-        <property name="buttonCaption4" value="Clear Pin11" />
-        <property name="buttonCaption5" value="" />
-        <property name="buttonCaption6" value="" />
-        <property name="buttonCaption7" value="" />
-        <property name="buttonCaption8" value="" />
-        <property name="buttonCaption9" value="" />
-        <property name="buttonCaption10" value="" />
-        <property name="buttonCaption11" value="" />
-        <property name="buttonCaption12" value="" />
-        <property name="buttonCaption13" value="" />
-        <property name="buttonCaption14" value="" />
-        <property name="buttonCaption15" value="" />
-        <property name="buttonCaption16" value="" />
-        <property name="buttonCaption17" value="" />
-        <property name="buttonCaption18" value="" />
-        <property name="buttonCaption19" value="" />
-        <property name="buttonCaption20" value="" />
-        <property name="toolTip1" value="" />
-        <property name="toolTip2" value="" />
-        <property name="toolTip3" value="" />
-        <property name="toolTip4" value="" />
-        <property name="toolTip5" value="" />
-        <property name="toolTip6" value="" />
-        <property name="toolTip7" value="" />
-        <property name="toolTip8" value="" />
-        <property name="toolTip9" value="" />
-        <property name="toolTip10" value="" />
-        <property name="toolTip11" value="" />
-        <property name="toolTip12" value="" />
-        <property name="toolTip13" value="" />
-        <property name="toolTip14" value="" />
-        <property name="toolTip15" value="" />
-        <property name="toolTip16" value="" />
-        <property name="toolTip17" value="" />
-        <property name="toolTip18" value="" />
-        <property name="toolTip19" value="" />
-        <property name="toolTip20" value="" />
-      </properties>
-      <layout>
-        <posX>18</posX>
-        <posY>199</posY>
-      </layout>
-      <gui>
-        <posX>6750</posX>
-        <posY>1044</posY>
-        <width>2300</width>
-        <height>2700</height>
-      </gui>
     </component>
     <component id="BarDisplay.1" type_id="asterics.BarDisplay">
       <description>Bar-display</description>
@@ -214,17 +111,17 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="Order" value="20" />
-        <property name="CutoffFreq1" value="20" />
-        <property name="CutoffFreq2" value="30" />
-        <property name="SamplingRate" value="100" />
+        <property name="Order" value="100" />
+        <property name="CutoffFreq1" value="70" />
+        <property name="CutoffFreq2" value="90" />
+        <property name="SamplingRate" value="256" />
         <property name="Type" value="1" />
         <property name="SignalPowerUpdateRate" value="1" />
-        <property name="SignalPowerBufferSize" value="20" />
+        <property name="SignalPowerBufferSize" value="10" />
       </properties>
       <layout>
-        <posX>315</posX>
-        <posY>88</posY>
+        <posX>281</posX>
+        <posY>171</posY>
       </layout>
     </component>
     <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
@@ -272,7 +169,7 @@
         <property name="displayMode" value="0" />
         <property name="drawingInterval" value="100" />
         <property name="min" value="0" />
-        <property name="max" value="1000" />
+        <property name="max" value="100" />
         <property name="gridColor" value="0" />
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
@@ -302,8 +199,8 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="thresholdHigh" value="1500" />
-        <property name="thresholdLow" value="1500" />
+        <property name="thresholdHigh" value="100" />
+        <property name="thresholdLow" value="100" />
         <property name="outputHigh" value="1" />
         <property name="outputLow" value="0" />
         <property name="operationMode" value="binary" />
@@ -381,24 +278,24 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="bufferSize" value="10" />
+        <property name="bufferSize" value="200" />
         <property name="mode" value="0" />
       </properties>
       <layout>
         <posX>581</posX>
-        <posY>5</posY>
+        <posY>4</posY>
       </layout>
     </component>
   </components>
   <channels>
-    <channel id="binding.0">
+    <channel id="binding.11">
       <source>
-        <component id="Arduino.1" />
-        <port id="A0" />
+        <component id="p2_parser.1" />
+        <port id="Channel1" />
       </source>
       <target>
-        <component id="Oscilloscope.1" />
-        <port id="in" />
+        <component id="Filter.1" />
+        <port id="Input" />
       </target>
     </channel>
     <channel id="binding.5">
@@ -411,14 +308,14 @@
         <port id="input" />
       </target>
     </channel>
-    <channel id="binding.2">
+    <channel id="binding.6">
       <source>
-        <component id="Arduino.1" />
-        <port id="A0" />
+        <component id="p2_parser.1" />
+        <port id="Channel1" />
       </source>
       <target>
-        <component id="Filter.1" />
-        <port id="Input" />
+        <component id="Oscilloscope.1" />
+        <port id="in" />
       </target>
     </channel>
     <channel id="binding.3">
@@ -473,174 +370,6 @@
     </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="pin2ChangedLowToHigh_eventDisplay">
-      <sources>
-        <source>
-          <component id="Arduino.1" />
-          <eventPort id="pin2ChangedLowToHigh" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="pin2ChangedHighToLow_eventDisplay">
-      <sources>
-        <source>
-          <component id="Arduino.1" />
-          <eventPort id="pin2ChangedHighToLow" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button1_setPin13">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Arduino.1" />
-          <eventPort id="setPin13" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button2_clearPin13">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Arduino.1" />
-          <eventPort id="clearPin13" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button1_eventDisplay">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button2_eventDisplay">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="pin7ChangedLowToHigh_eventDisplay">
-      <sources>
-        <source>
-          <component id="Arduino.1" />
-          <eventPort id="pin7ChangedLowToHigh" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="pin7ChangedHighToLow_eventDisplay">
-      <sources>
-        <source>
-          <component id="Arduino.1" />
-          <eventPort id="pin7ChangedHighToLow" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button3_clearPin11">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button4" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Arduino.1" />
-          <eventPort id="clearPin11" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button3_setPin11">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button3" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Arduino.1" />
-          <eventPort id="setPin11" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button3_eventDisplay">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button3" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button4_eventDisplay">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1" />
-          <eventPort id="button4" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="eventPosEdge_dispatchSlot1">
       <sources>
         <source>

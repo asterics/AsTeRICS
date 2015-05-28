@@ -2413,6 +2413,88 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.actuator.motionanalysis.MotionAnalysisInstance" id="asterics.MotionAnalysis">
+        <type subtype="Graphical User Interface">actuator</type>
+        
+        <singleton>false</singleton><description>Oscilloscope display for one signal channel</description>
+        <ports>
+            <inputPort id="channel1">
+                <description>Input port 1 of MotionAnalysis</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>  
+            </inputPort>
+            <inputPort id="channel2">
+                <description>Input port 2 of MotionAnalysis</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="channel3">
+                <description>Input port 3 of MotionAnalysis</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="channel4">
+                <description>Input port 4 of MotionAnalysis</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            
+            <outputPort id="result">
+				<description>Gives the result of an exercise as a string</description>
+				<dataType>string</dataType>
+			</outputPort>
+            <outputPort id="percent">
+				<description>Percent of the exercise to show a video simultaneously</description>
+				<dataType>double</dataType>
+			</outputPort>
+        </ports>
+        <events>
+			<eventListenerPort id="Start">
+				<description>Starts the Exercise</description>
+			</eventListenerPort>
+			<eventListenerPort id="Stop">
+				<description>Stops the Exercise</description>
+			</eventListenerPort>
+			<eventListenerPort id="Save">
+				<description>Starts to save the next exercise</description>
+			</eventListenerPort>
+			<eventListenerPort id="Stopsave">
+				<description>Stop to save the exercise</description>
+			</eventListenerPort>
+			<eventListenerPort id="Load">
+				<description>Loads an Exercise</description>
+			</eventListenerPort>
+			
+			<eventTriggererPort id="Inrange">
+                <description>When the exercise is in range of the percentage</description>
+            </eventTriggererPort>
+
+		</events>
+        <properties>
+            <property description="How many values will be buffered before redraw of oscilloscope" name="displayBuffer" type="integer" value="3"/>
+            <property combobox="autoupdate min and max//crop to min and max" description="drawing mode of the oscilloscope" name="drawingMode" type="integer" value="0"/> 
+            <property combobox="redraw on incoming sample//draw periodically" description="display update mode of the oscilloscope" name="displayMode" type="integer" value="0"/> 
+            <property description="draw interval in milliseconds (if periodic drawing is used)" name="drawingInterval" type="integer" value="100"/> 
+            <property description="minimum display value (if crop drawing mode is used)" name="min" type="double" value="-100"/>
+            <property description="maximum display value (if crop drawing mode is used)" name="max" type="double" value="100"/>
+            <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="color of the grid" name="gridColor" type="integer" value="0"/> 
+            <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="color of channel 1 signal" name="loadchannelColor" type="integer" value="1"/> 
+            <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="color of channel 1 signal" name="drawchannelColor" type="integer" value="10"/>
+            <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="background color" name="backgroundColor" type="integer" value="11"/>                 
+            <property description="font size of oscilloscope captions" name="fontSize" type="integer" value="14"/>
+            <property description="caption of the Exercise" name="caption" type="string" value="Exercise"/> 
+            <property description="name of the file" name="filename" type="string" value="Example"/>
+            <property description="path of the file" name="filepath" type="string" value="./data/actuator.motionanalysis/"/>
+            <property description="percent of deviation which is allowed" name="alloweddeviation" type="double" value="20"/>     
+            <property description="percent of allowed values do raise an event" name="deviation" type="double" value="80"/>                                           
+        </properties>
+        <gui>
+            <width>6000</width>
+            <height>3000</height>
+        </gui>
+    </componentType>
+
+
  <componentType canonical_name="eu.asterics.component.actuator.mouse.MouseInstance" id="asterics.Mouse">
         <type subtype="Input Device Emulation">actuator</type>
         <singleton>true</singleton>
@@ -3578,6 +3660,67 @@
 			<property description="slot delay to send data" name="slot13Delay" type="integer" value="0"/>
 			<property description="slot delay to send data" name="slot14Delay" type="integer" value="0"/>
 			<property description="slot delay to send data" name="slot15Delay" type="integer" value="0"/>
+
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.actuator.skype.SkypeInstance" id="asterics.Skype">
+        <type subtype="Communication">actuator</type>
+        <singleton>true</singleton>
+        <description>My Plugin description</description>
+        <ports>
+			<inputPort id="skypeID">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="callerID">
+				<description>output port description</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="callUser1">
+				<description/>
+			</eventListenerPort>
+			<eventListenerPort id="callUser2">
+				<description/>
+			</eventListenerPort>
+			<eventListenerPort id="callUser3">
+				<description/>
+			</eventListenerPort>
+			<eventListenerPort id="callUser4">
+				<description/>
+			</eventListenerPort>
+			<eventListenerPort id="callUser5">
+				<description/>
+			</eventListenerPort>
+			<eventListenerPort id="call">
+				<description/>
+			</eventListenerPort>
+			<eventListenerPort id="cancelCall">
+				<description/>
+			</eventListenerPort>
+			<eventListenerPort id="answerCall">
+				<description/>
+			</eventListenerPort>
+			<eventTriggererPort id="incomingCall">
+				<description/>
+			</eventTriggererPort>
+			<eventTriggererPort id="callFinished">
+				<description/>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property description="property description" name="user1" type="string" value=" "/>
+			<property description="property description" name="user2" type="string" value=" "/>
+			<property description="property description" name="user3" type="string" value=" "/>
+			<property description="property description" name="user4" type="string" value=" "/>
+			<property description="property description" name="user5" type="string" value=" "/>
 
         </properties>
 
@@ -8384,6 +8527,51 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.processor.universalremotecontrol.UniversalRemoteControlInstance" id="asterics.UniversalRemoteControl">
+        <type subtype="Microcontroller Interface">processor</type>
+        <singleton>false</singleton>
+        <description>record ans send IR Codes through Universal Remote Control</description>
+        <ports>
+			<inputPort id="DeviceType">
+				<description>Type of the device to be controlled via IR (e.g.: TV)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="DeviceName">
+				<description>Name of the device to be controlled via IR (e.g.: Sony, Samsung, etc.)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="DeviceFunction">
+				<description>Name of function of the device (e.g.: On, Off, VolumeUp, etc.)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="SendIRCode">
+				<description>Send an IR Code to the UniversalRemoteControl</description>
+			</eventListenerPort>
+			<eventListenerPort id="RecordIRCode">
+				<description>Record an IR Code through the UniversalRemoteControl</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="StartRecord">
+				<description>Triggered when UniversalRemoteControl is recording</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="StopRecord">
+				<description>Triggered when UniversalRemoteControl has finished recording</description>
+			</eventTriggererPort>
+
+
+		</events>			
+        <properties>
+				<property description="Filepath to the file, where the IR Codes are stored" name="IRCodeFilePath" type="string" value="./data/processor.UniversalRemoteControl/IRCodes.csv"/>
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.processor.websocket.WebSocketInstance" id="asterics.WebSocket">
         <type subtype="Web">processor</type>
         <singleton>false</singleton>
@@ -9453,6 +9641,48 @@
         </properties>
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.sensor.headpositionhc.HeadPositionHCInstance" id="asterics.HeadPositionHC">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>false</singleton>
+        <description>Picking between choices with moving the head to the right or left</description>
+        <ports>
+
+			<outputPort id="CellNumber">
+				<description>Gives the number of the selected Cell</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="Select">
+				<description>sends an event, when a cell is selected</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property combobox="1//2//3//4//5//6" description="Sets the number of choices for each side (left and right) " name="ChoicesEachSide" type="integer" value="3"/>
+			<property description="Sets the UpperValue of the angle for the first Choice of the left side " name="Angle1LeftSide" type="integer" value="160"/>
+			<property description="Sets the UpperValue of the angle for the second Choice of the left side " name="Angle2LeftSide" type="integer" value="120"/>
+			<property description="Sets the UpperValue of the angle for the third Choice of the left side " name="Angle3LeftSide" type="integer" value="100"/>
+			<property description="Sets the UpperValue of the angle for the 4. Choice of the left side " name="Angle4LeftSide" type="integer" value="65"/>
+			<property description="Sets the UpperValue of the angle for the 5. Choice of the left side " name="Angle5LeftSide" type="integer" value="-100000"/>
+			<property description="Sets the UpperValue of the angle for the 6. Choice of the left side " name="Angle6LeftSide" type="integer" value="100000"/>
+			<property description="Sets the LowerValue of the angle for the first Choice of the right side" name="Angle1RightSide" type="integer" value="20"/>
+			<property description="Sets the LowerValue of the angle for the second Choice of the right side" name="Angle2RightSide" type="integer" value="60"/>
+			<property description="Sets the LowerValue of the angle for the third Choice of the right side" name="Angle3RightSide" type="integer" value="80"/>
+			<property description="Sets the LowerValue of the angle for the 4. Choice of the right side" name="Angle4RightSide" type="integer" value="110"/>
+			<property description="Sets the LowerValue of the angle for the 5. Choice of the right side" name="Angle5RightSide" type="integer" value="100000"/>
+			<property description="Sets the LowerValue of the angle for the 6. Choice of the right side" name="Angle6RightSide" type="integer" value="-100000"/>
+			<property description=" Path to the directory of the HaarCascade files" name="PathForHaarCascade" type="string" value="./data/service.computervision/"/>
+			<property description="The ID of the camera" name="CameraID" type="integer" value="0"/>
+			<property description="After the number of the value new images without detecting a feature the face will be detected again to set a new ROI" name="CounterResettingROI" type="integer" value="10"/>
+			<property description="The angle has to be for X images in the same range to send the select Event" name="CounterToSendSelectEvent" type="integer" value="4"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.sensor.joystickcapture.JoystickCaptureInstance" id="asterics.JoystickCapture">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>
@@ -10157,6 +10387,136 @@
 			<property description="time to select short/long sip action " name="sipTime" type="integer" value="700"/>
 			<property description="Threshold for a puff action" name="puffThreshold" type="integer" value="520"/>
 			<property description="time to select short/long puff action " name="puffTime" type="integer" value="700"/>
+
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.sensor.lipmouseir.LipmouseIRInstance" id="asterics.LipmouseIR">
+        <type subtype="Sensor Modules">sensor</type>
+        <singleton>false</singleton>
+        <description>LipmouseIR CIM</description>
+        <ports>
+			<inputPort id="DeviceType">
+				<description>Type of the device to be controlled via IR (e.g.: TV)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="DeviceName">
+				<description>Name of the device to be controlled via IR (e.g.: Sony, Samsung, etc.)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="DeviceFunction">
+				<description>Name of function of the device (e.g.: On, Off, VolumeUp, etc.)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			
+			<outputPort id="X">
+				<description>X's value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="Y">
+				<description>Y's value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="Pressure">
+				<description>Presure value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="Calibration">
+				<description>For calibrating the mouse</description>
+			</eventListenerPort>
+			<eventListenerPort id="SendIRCode">
+				<description>Send an IR Code to the Lipmouse</description>
+			</eventListenerPort>
+			<eventListenerPort id="RecordIRCode">
+				<description>Record an IR Code through the Lipmouse</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="StartRecord">
+				<description>Triggered when Lipmouse is recording</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="StopRecord">
+				<description>Triggered when Lipmouse has finished recording</description>
+			</eventTriggererPort>
+			
+			<eventListenerPort id="setLed1">
+				<description>switch on led1</description>
+			</eventListenerPort>
+			<eventListenerPort id="clearLed1">
+				<description>switch off led1</description>
+			</eventListenerPort>
+			<eventListenerPort id="setLed2">
+				<description>switch on led2</description>
+			</eventListenerPort>
+			<eventListenerPort id="clearLed2">
+				<description>switch off led2</description>
+			</eventListenerPort>
+			<eventListenerPort id="setLed3">
+				<description>switch on led3</description>
+			</eventListenerPort>
+			<eventListenerPort id="clearLed3">
+				<description>switch off led3</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="sip">
+				<description>sip action performed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="longSip">
+				<description>long sip action performed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="sipStart">
+				<description>sip action started</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="sipEnd">
+				<description>sip action ended</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="puff">
+				<description>puff action performed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="longPuff">
+				<description>long puff action performed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="puffStart">
+				<description>puff action started</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="puffEnd">
+				<description>puff action ended</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button1Pressed">
+				<description>button1 has been pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button1Released">
+				<description>button1 has been released</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button2Pressed">
+				<description>button2 has been pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button2Released">
+				<description>button2 has been released</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button3Pressed">
+				<description>button3 has been pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="button3Released">
+				<description>button3 has been released</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+        	<property description="ID (if more than one devices of this kind are connected)" getStringList="true" name="uniqueID" type="string" value="not used"/>
+        
+			<property description="Automatic update of ADC values (time in milliseconds, 0=off)" name="periodicADCUpdate" type="integer" value="50"/>
+			<property description="Threshold for a sip action" name="sipThreshold" type="integer" value="505"/>
+			<property description="time to select short/long sip action " name="sipTime" type="integer" value="700"/>
+			<property description="Threshold for a puff action" name="puffThreshold" type="integer" value="520"/>
+			<property description="time to select short/long puff action " name="puffTime" type="integer" value="700"/>
+			<property description="Filepath to the file, where the IR Codes are stored" name="IRCodeFilePath" type="string" value="./data/sensor.LipmouseIR/IRCodes.csv"/>
 
         </properties>
 
@@ -11250,6 +11610,86 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.sensor.tuioreactivision.TuioReactivisionInstance" id="asterics.TuioReactivision">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>false</singleton>
+        <description>integrates Tuio into asterics</description>
+        <ports>
+
+			<outputPort id="MarkerID">
+				<description>markerID</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="SessionID">
+				<description>sessionID</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Xpos">
+				<description>xpos</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Ypos">
+				<description>ypos</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Angle">
+				<description>angle</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="MotionSpeed">
+				<description>motionSpeed</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="RotationSpeed">
+				<description>rotationSpeed</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="MotionAccel">
+				<description>motionAcceleration</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="RotationAccel">
+				<description>rotationAcceleration</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Text">
+				<description>term for object</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="Event1">
+				<description>event1</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Event2">
+				<description>event2</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Event3">
+				<description>event3</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Event4">
+				<description>event4</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Event5">
+				<description>event5</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="Event6">
+				<description>event6</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property description="if text output or Marker allocation is necessary --&gt; reads file" name="TextOutput" type="boolean" value="false"/>
+			<property description="if text output or Marker allocation is necessary --&gt; reads file" name="MarkerAllocation" type="boolean" value="false"/>
+			<property description="Path toPath to reactivision.exe" name="reactivisionPath" type="string" value="C:\"/>
+			<property description="if text file necessary for text output or marker  assignment " name="TextFile" type="string" value="./data/sensor.reactivision/listeInt"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.sensor.wiimote.WiiMoteInstance" id="asterics.WiiMote">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>
@@ -11407,19 +11847,32 @@
             <eventListenerPort id="init">
                 <description>perform new face detection when head is centered</description>
             </eventListenerPort>
+            <!-- 
             <eventListenerPort id="showCameraSettings">
                 <description>shows Camera Settings Window</description>
             </eventListenerPort> 
             <eventListenerPort id="saveProfile">
                 <description>save camera profile to file</description>
-            </eventListenerPort>                        
+            </eventListenerPort>
+             -->                        
         </events>
         <properties>
+            <property description="Name of FrameGrabber to use" getStringList="true" name="frameGrabber" type="string" value="VideoInput"/>
+        
             <property combobox="first camera//second camera//third camera//forth camera//fifth camera" description="the camera device to be used" name="cameraSelection" type="integer" value="0"/>
             <property combobox="160x120//320x240//352x288//640x480//800x600//1024x768//1600x1200" description="desired camera resolution" name="cameraResolution" type="integer" value="1"/>
-            <property description="the update period for the camera display in milliseconds (0=no display window)" name="cameraDisplayUpdate" type="integer" value="100"/>
-            <property description="Filename of the camera profile" name="cameraProfile" type="string" value=""/>            
-                              
+                      <!-- 
+            <property name="cameraDisplayUpdate"
+                      type="integer"
+                      value="100"
+                      description="the update period for the camera display in milliseconds (0=no display window)"/>
+                       -->
+                      <!-- 
+            <property name="cameraProfile" 
+                      type="string"
+                      value=""
+                      description="Filename of the camera profile"/>            
+                            -->   
         </properties>
         <gui IsExternalGUIElement="true">
             <width>2000</width>

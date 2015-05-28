@@ -235,7 +235,7 @@ public class LineWriterInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveData(byte[] data)
 		{
-
+			if (out==null) return; 
             String valueToWrite = ConversionUtils.stringFromBytes(data);
 			try {
 				switch (propTimestamp) {
