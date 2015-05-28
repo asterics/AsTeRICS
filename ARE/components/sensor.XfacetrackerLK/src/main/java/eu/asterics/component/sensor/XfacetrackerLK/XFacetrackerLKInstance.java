@@ -47,22 +47,19 @@ import static org.bytedeco.javacpp.opencv_video.CV_LKFLOW_PYR_A_READY;
 import static org.bytedeco.javacpp.opencv_video.cvCalcOpticalFlowPyrLK;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.FloatPointer;
 import org.bytedeco.javacpp.IntPointer;
-import org.bytedeco.javacpp.helper.opencv_core.CvArr;
 import org.bytedeco.javacpp.opencv_core.CvPoint;
 import org.bytedeco.javacpp.opencv_core.CvPoint2D32f;
 import org.bytedeco.javacpp.opencv_core.CvRect;
 import org.bytedeco.javacpp.opencv_core.CvSize;
 import org.bytedeco.javacpp.opencv_core.IplImage;
+import org.bytedeco.javacpp.helper.opencv_core.CvArr;
 import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.FrameGrabber;
-import org.bytedeco.javacv.FrameGrabber.Exception;
 
 import eu.asterics.mw.computervision.FaceDetection;
 import eu.asterics.mw.computervision.GrabbedImageListener;
@@ -74,6 +71,7 @@ import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
  * Impelements a haardcascade combined with Lukas Kanade flow algorithm to detect face tracking. Based on FacetrackerLK from Chris Veigl.
@@ -292,12 +290,12 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			SharedFrameGrabber.instance.startGrabbing(propCameraSelection);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
+			AstericsErrorHandling.instance.reportError(this, e.getMessage());
 		}
         super.start();
     }
- 
-   
+    
     @Override
     public void pause()
     {
