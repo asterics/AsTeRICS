@@ -73,8 +73,12 @@ public class FaceDetection {
 		cvClearMemStorage(storage);
 		//storage.release();
 
+		/*
 		CvSeq faces = cvHaarDetectObjects(grayImage, classifier, storage,
 				1.1, 1, CV_HAAR_DO_ROUGH_SEARCH | CV_HAAR_FIND_BIGGEST_OBJECT);
+				*/
+		CvSeq faces = cvHaarDetectObjects(grayImage, classifier, storage,1.2, 2, CV_HAAR_DO_CANNY_PRUNING | CV_HAAR_FIND_BIGGEST_OBJECT);
+
 
 		int total = faces.total();
 
