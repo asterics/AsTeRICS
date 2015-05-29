@@ -82,7 +82,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance implements GrabbedImageListener
 {
-	private static final int GAIN = 25;
+	private static final int GAIN = 20;
 
 	final IRuntimeOutputPort opNoseX = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opNoseY = new DefaultRuntimeOutputPort();
@@ -103,7 +103,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 	private int lastX=0;
 	private int lastY=0;
 	
-    private static final int MAX_POINTS = 6;
+    private static final int MAX_POINTS = 4;
 	private CanvasFrame frame;
 	private FaceDetection faceDetection=new FaceDetection();
 	private CvRect roiRect=null;
@@ -114,10 +114,16 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     int flags=0;
     private static final int A=0;
     private static final int B=1;
+    
+    boolean needToInit=true;
 
     IplImage[] imgGrey=new IplImage[2];
     IplImage[] imgPyr=new IplImage[2];
     CvPoint2D32f[] points=new CvPoint2D32f[2];
+    private static int NOSE_TIP = 0;
+    private static int NOSE_ROOT = 1;
+    private static int CHIN_L = 2;
+    private static int CHIN_R = 3;
 
 	private String propFrameGrabber="OpenCV";
 	private String propCameraSelection="0";
@@ -393,11 +399,17 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 		cvCvtColor(img, imgGrey[B], CV_BGR2GRAY);
 		cvSetImageROI(imgGrey[B], roiRect);
 
-		if (points[A] == null || nrPoints.get() == 0) {
+		if (points[A] == null || needToInit) {
 			cvResetImageROI(imgGrey[A]);
 			points[A] = findFeatures(imgGrey[A]);
 			System.out.println("after findFeatures: nrPoints.get(): "
 					+ nrPoints.get());
+			/*
+			if (points[A] != null && nrPoints.get() > 0 && faceRect!=null) {
+
+			drawPoints(img, points[A]);
+			faceDetection.drawFaceRect(faceRect, img);
+			}*/
 		}
 		if (points[A] != null && nrPoints.get() > 0) {
 			cvSetImageROI(imgGrey[A], roiRect);
@@ -407,11 +419,14 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			// cvSetImageROI(img,roiRect);
 
 			points[B] = trackOpticalFlow(imgGrey, imgPyr, points[A]);
-			drawPoints(img, points[B]);
-			sendPortData(points);
-			
-			points[A] = points[B];
-			flags |= CV_LKFLOW_PYR_A_READY;
+			if(!needToInit) {
+				drawPoints(img, points[B]);
+				//faceDetection.drawFaceRect(faceRect, img);
+				sendPortData(points);
+
+				points[A] = points[B];
+				flags |= CV_LKFLOW_PYR_A_READY;
+			}
 		}
 
 		// and a very platform dependant Canvas/Frame!!
@@ -424,6 +439,13 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 	
 	private void sendPortData(CvPoint2D32f[] points) {
 		// send coordinates to output ports
+		if(needToInit) {
+			opNoseX.sendData(ConversionUtils.intToBytes(0));
+			opNoseY.sendData(ConversionUtils.intToBytes(0));	
+			opChinX.sendData(ConversionUtils.intToBytes(0));
+			opChinY.sendData(ConversionUtils.intToBytes(0));
+			return;
+		}
 		
 		int relX = Math.round((points[B].x()- points[A].x()) * GAIN);
 		int relY = Math.round((points[B].y()- points[A].y()) * GAIN);;
@@ -459,32 +481,48 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     }
     
     private CvPoint2D32f rejectBadPoints(CvPoint2D32f pointsA, CvPoint2D32f pointsB, BytePointer features_found, FloatPointer feature_errors) {
-        int newCornerCount=0;
-        CvPoint2D32f newCorners = new CvPoint2D32f(MAX_POINTS);
-                
+        needToInit=false;
         // Make an image of the results
         for (int i = 0; i < nrPoints.get(); i++) {
             if (features_found.get(i) == 0 || feature_errors.get(i) > 550) {
                 System.out.println("Error is " + feature_errors.get(i) + "/n");
-                continue;
+                needToInit=true;
+                return pointsB;
             }
             //System.out.println("Got it/n");
             pointsA.position(i);
-            pointsB.position(i);
-            
-            newCorners.position(newCornerCount);
-            newCorners.put((double)pointsB.x(),(double)pointsB.y());
-            newCornerCount++;
-            
+            pointsB.position(i); 
         }    	
-
-        nrPoints.put(newCornerCount);
         pointsA.position(0);
         pointsB.position(0);
-        newCorners.position(0);
-        System.out.println("new nrPoints: "+nrPoints.get());
+        
+        //Ignore points lying outside ROI, actually we should try to use cvSetImageROI
+     
+        //Reject individual point replacements > tresh
+        
+        //Reject chin dist2nosetip > tresh
+        //Reject chin angle2nosetip > tresh
 
-        return newCorners;
+        //Reject nosetip2noseroot distance
+        
+        //Reject nosetip2noseroot angle != chin2nosetip angle
+        return pointsB;
+    }
+    
+    private double magnitude(CvPoint2D32f p1, CvPoint2D32f p2) {
+    	double dx=p1.x()-p2.x();
+    	double dy=p1.y()-p2.y();
+    	return Math.sqrt(dx*dx+dy*dy);
+    }
+    
+    private double angleVertical(CvPoint2D32f p1, CvPoint2D32f p2) {
+    	double dx=p1.x()-p2.x();
+    	double dy=p1.y()-p2.y();
+    	return Math.atan(dx/dy)*180/Math.PI;
+    }
+    
+    private CvPoint2D32f avgPoint2D32f(CvPoint2D32f p) {
+    	return null;
     }
     
     public void drawPoints(IplImage img, CvPoint2D32f corners) {   	
@@ -510,11 +548,12 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 				//roiRect=faceRect;
 				
 				int x = faceRect.x() + faceRect.width()/2;
-				int y = faceRect.y() + faceRect.height();
+				int y = faceRect.y();
 //				CvPoint initNose[]=new CvPoint[]{cvPoint(x,y-10),cvPoint(x-20,y-10),cvPoint(x+20,y-10),cvPoint(x,y+10)};
 //				CvPoint initChin[]=new CvPoint[]{cvPoint(x,y+65),cvPoint(x,y+55)};
-				CvPoint initNose[]=new CvPoint[]{cvPoint(x,(int)Math.round(y*0.7))};
-				CvPoint initChin[]=new CvPoint[]{cvPoint(x,(int)Math.round(y*0.97))};
+				CvPoint initNose[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.6)),cvPoint(x,y+(int)(faceRect.height()*0.45))};
+//				CvPoint initChin[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.95)),cvPoint(x,y+(int)(faceRect.height()*0.9)),cvPoint(x-7,y+(int)(faceRect.height()*0.95)),cvPoint(x+7,y+(int)(faceRect.height()*0.95))};
+				CvPoint initChin[]=new CvPoint[]{cvPoint(x-7,y+(int)(faceRect.height()*0.95)),cvPoint(x+7,y+(int)(faceRect.height()*0.95))};
 
 				
 				CvPoint2D32f pointsA = new CvPoint2D32f(MAX_POINTS);
@@ -532,6 +571,8 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 				
 				//Uses given points and tries to find better trackable ones in the neighbourhood.
 				//cvTermCriteria is set to 1, 1 because otherwise the new points would be too far away. 
+				
+				
 				cvFindCornerSubPix(
 						imgA,
 						pointsA,
