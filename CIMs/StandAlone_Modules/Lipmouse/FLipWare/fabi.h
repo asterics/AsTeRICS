@@ -1,3 +1,7 @@
+
+#ifndef _FABI_H_
+#define _FABI_H_
+
 #include <Arduino.h>
 #include <string.h>
 #include <stdint.h>
@@ -19,7 +23,7 @@
 #define DEBUG_NOOUTPUT 0
 #define DEBUG_FULLOUTPUT 1
 #define DEBUG_LIVEREPORTS 2
-#define DEFAULT_DEBUGLEVEL DEBUG_NOOUTPUT
+#define DEFAULT_DEBUGLEVEL DEBUG_FULLOUTPUT
 
 #define TOKEN_SEPERATOR "-,-"
 
@@ -121,4 +125,4 @@ void releaseKeys(char* text);  // releases individual keys
 void release_all();            // releases all previously pressed keys and buttons
 
 
-
+#endif

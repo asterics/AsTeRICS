@@ -409,8 +409,6 @@ uint8_t autoreply_num=0x80;   // sequential number for automatic replies, 0x80-0
 
 void handleCimMode(void)
 {
-        int inByte=0;
-                
         if (reports_running==1)
         {        
 	    if ( ADC_updatetime>0)   

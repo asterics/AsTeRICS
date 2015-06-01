@@ -83,6 +83,7 @@
 
 #include "fabi.h"        //  Bounce library used for button debouncing
 #include <EEPROM.h>
+#include <Wire.h>
 
 // Constants and Macro definitions
 
@@ -118,10 +119,10 @@
 
 #ifdef TEENSY_LC
   #define PRESSURE_SENSOR_PIN A0
-  #define DOWN_SENSOR_PIN     A5
-  #define LEFT_SENSOR_PIN     A5
-  #define UP_SENSOR_PIN       A5
-  #define RIGHT_SENSOR_PIN    A5
+  #define DOWN_SENSOR_PIN     A0
+  #define LEFT_SENSOR_PIN     A0
+  #define UP_SENSOR_PIN       A0
+  #define RIGHT_SENSOR_PIN    A0
 
   int8_t  input_map[NUMBER_OF_PHYSICAL_BUTTONS]={2,3,4};  //  maps physical button pins to button index 0,1,2  
   int8_t  led_map[NUMBER_OF_LEDS]={16,17,21};              //  maps leds pins   
@@ -227,6 +228,10 @@ void setup() {
      Keyboard.begin();
      TXLED1;
    #endif  
+   
+   #ifdef TEENSY_LC
+     Wire.begin();
+   #endif
 
    pinMode(LED_PIN,OUTPUT);
    digitalWrite(LED_PIN,LOW);
