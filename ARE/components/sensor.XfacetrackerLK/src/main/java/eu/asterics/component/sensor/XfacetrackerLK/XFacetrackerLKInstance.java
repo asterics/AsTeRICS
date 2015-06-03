@@ -106,6 +106,8 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     private static final int MAX_POINTS = 4;
 	private CanvasFrame frame;
 	private FaceDetection faceDetection=new FaceDetection();
+	private CvRect validRect=null;
+
 	private CvRect roiRect=null;
 	private CvRect faceRect=null;
 	
@@ -120,6 +122,9 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     IplImage[] imgGrey=new IplImage[2];
     IplImage[] imgPyr=new IplImage[2];
     CvPoint2D32f[] points=new CvPoint2D32f[2];
+	private double initDistChin2Nosetip;
+	private double initDistNoseroot2Nosetip;
+    
     private static int NOSE_TIP = 0;
     private static int NOSE_ROOT = 1;
     private static int CHIN_L = 2;
@@ -217,28 +222,35 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 	 */
    public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
+	   //Stop plugin first, because if the camera selection is changed we would not know any more the previous camera to stop which would
+	   //then keep running.
+	   boolean wasRunning=running;
+	   if(wasRunning) {
+		   stop();
+	   }
+	   Object oldValue=newValue;
        if("frameGrabber".equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = propFrameGrabber;
+			oldValue = propFrameGrabber;
 			propFrameGrabber = (String)newValue;
-			return oldValue;
 		} else if("frameGrabberOptions".equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = propFrameGrabberOptions;
+			oldValue = propFrameGrabberOptions;
 			propFrameGrabberOptions = (String)newValue;
-			return oldValue;
 		} else if("cameraSelection".equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = propCameraSelection;
+			oldValue = propCameraSelection;
 			propCameraSelection = (String)newValue;
-			return oldValue;
 		} else if("cameraResolution".equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = propCameraResolution;
+			oldValue = propCameraResolution;
 			propCameraResolution = Integer.parseInt((String)newValue);
-			return oldValue;
 		}
-	   return newValue;
+	   if(wasRunning) {
+		   start();
+	   }
+	   
+	   return oldValue;
     }
    
 	/**
@@ -297,11 +309,10 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     	 }
     };
 
-    
-    
     @Override
     public void start()
     {
+    	running=false;
     	try {
     		resetVariables();
     		//Get default grabber for this platform (VideoInput for Windows, OpenCV for Linux,...) using default camera (device 0)
@@ -312,10 +323,12 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			SharedCanvasFrame.instance.createCanvasFrame("CanvasFrame1", "Face", grabber.getGamma());
 			//start grabbing
 			SharedFrameGrabber.instance.startGrabbing(propCameraSelection);
+			running=true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			AstericsErrorHandling.instance.reportError(this, e.getMessage());
+			stop();
 		}
         super.start();
     }
@@ -344,6 +357,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     	SharedCanvasFrame.instance.disposeFrame("CanvasFrame1");
     	resetVariables();
     	super.stop();
+    	running=false;
     	//System.out.println("Stopped XFaceTrackerLK, Executed in: "+Thread.currentThread().getName());
     }
     
@@ -402,14 +416,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 		if (points[A] == null || needToInit) {
 			cvResetImageROI(imgGrey[A]);
 			points[A] = findFeatures(imgGrey[A]);
-			System.out.println("after findFeatures: nrPoints.get(): "
-					+ nrPoints.get());
-			/*
-			if (points[A] != null && nrPoints.get() > 0 && faceRect!=null) {
-
-			drawPoints(img, points[A]);
 			faceDetection.drawFaceRect(faceRect, img);
-			}*/
 		}
 		if (points[A] != null && nrPoints.get() > 0) {
 			cvSetImageROI(imgGrey[A], roiRect);
@@ -440,16 +447,12 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 	private void sendPortData(CvPoint2D32f[] points) {
 		// send coordinates to output ports
 		if(needToInit) {
-			opNoseX.sendData(ConversionUtils.intToBytes(0));
-			opNoseY.sendData(ConversionUtils.intToBytes(0));	
-			opChinX.sendData(ConversionUtils.intToBytes(0));
-			opChinY.sendData(ConversionUtils.intToBytes(0));
 			return;
 		}
 		
 		int relX = Math.round((points[B].x()- points[A].x()) * GAIN);
 		int relY = Math.round((points[B].y()- points[A].y()) * GAIN);;
-		System.out.println("[" + relX + ", " + relY + "]");
+		//System.out.println("[" + relX + ", " + relY + "]");
 		opNoseX.sendData(ConversionUtils.intToBytes(relX));
 		opNoseY.sendData(ConversionUtils.intToBytes(relY));	
 		
@@ -458,7 +461,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 
 		relX = Math.round((points[B].x()- points[A].x()) * GAIN);
 		relY = Math.round((points[B].y()- points[A].y()) * GAIN);;
-		System.out.println("[" + relX + ", " + relY + "]");
+		//System.out.println("[" + relX + ", " + relY + "]");
 		opChinX.sendData(ConversionUtils.intToBytes(relX));
 		opChinY.sendData(ConversionUtils.intToBytes(relY));			
 		
@@ -490,47 +493,104 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
                 return pointsB;
             }
             //System.out.println("Got it/n");
+            
+            
             pointsA.position(i);
             pointsB.position(i); 
-        }    	
+
+            //Ignore points lying outside ROI, actually we should try to use cvSetImageROI
+            
+            if(!(validRect.x()<=pointsB.x()&&pointsB.x()<=(validRect.x()+validRect.width()))||
+            !(validRect.y()<=pointsB.y()&&pointsB.y()<=(validRect.y()+validRect.height()))) {
+            	System.out.println("out of roi: "+validRect);
+            	needToInit=true;
+            	return pointsB;
+            }
+            
+            //Reject relative individual point displacements > tresh with base faceRect.width for x rel displacements and faceRect.height for y rel displacements
+            double dx=pointsB.x()-pointsA.x();
+            double dy=pointsB.y()-pointsA.y();
+            double relDispTresh=0.2;
+            if(dx/faceRect.width() > relDispTresh || dy/faceRect.height() > relDispTresh) {
+            	System.out.println(dx/faceRect.width() +" || "+dy/faceRect.height()+" > "+relDispTresh);
+            	needToInit=true;
+            	return pointsB;            	
+            }
+            
+        }
+        //Reject distchin2nosetip within range (0.9 < distchin2nosetip < 1.2)??               
+		double relDistChin2Nosetip=magnitude(pointsB,CHIN_L,NOSE_TIP)/initDistChin2Nosetip;
+		double relDistNoseroot2Nosetip=magnitude(pointsB,NOSE_ROOT,NOSE_TIP)/initDistNoseroot2Nosetip;
+		double lowerDistChin2NosetipTresh=0.85;
+		double upperDistChin2NosetipTresh=1.4;
+		if(!(lowerDistChin2NosetipTresh <= relDistChin2Nosetip && relDistChin2Nosetip <= upperDistChin2NosetipTresh)) {
+        	System.out.println("chin y-disp out of range: "+lowerDistChin2NosetipTresh +" <= "+relDistChin2Nosetip+" <= "+upperDistChin2NosetipTresh);
+        	needToInit=true;
+        	return pointsB;            					
+		}
+		/*
+        //Reject nosetip2noseroot distance
+		double lowerDistNoseroot2NosetipTresh=0.75;
+		double upperDistNoseroot2NosetipTresh=1.15;
+		if(!(lowerDistNoseroot2NosetipTresh <= relDistNoseroot2Nosetip && relDistNoseroot2Nosetip <= upperDistNoseroot2NosetipTresh)) {
+        	System.out.println("noseroot y-disp out of range: "+lowerDistNoseroot2NosetipTresh +" <= "+relDistNoseroot2Nosetip+" <= "+upperDistNoseroot2NosetipTresh);
+        	needToInit=true;
+        	return pointsB;            					
+		}
+
+        //Reject nosetip2noseroot angle != chin2nosetip angle
+        double angleNoseroot2Nosetip=angleVertical(pointsB, NOSE_ROOT, NOSE_TIP);
+        //angle of Chin2Nosetip, mutliply by -1 to have same sign as angleNoseroot2Nosetip
+        double angleChin2Nosetip=angleVertical(pointsB, CHIN_L, NOSE_TIP)*-1;
+        double angleTolerance=25;
+    	System.out.println("angle chin2nosetip "+(-1*angleChin2Nosetip)+", angle noseroot2nosetip: "+angleNoseroot2Nosetip);
+        if(!((angleNoseroot2Nosetip-angleTolerance) <= angleChin2Nosetip && angleChin2Nosetip <= (angleNoseroot2Nosetip+angleTolerance))) {
+        	//System.out.println("angle chin2nosetip out of range: "+(angleNoseroot2Nosetip-angleTolerance) +" <= "+angleChin2Nosetip+" <= "+(angleNoseroot2Nosetip+angleTolerance));
+        	needToInit=true;
+        	return pointsB;            					        	
+        }
+        */
+        
         pointsA.position(0);
         pointsB.position(0);
         
-        //Ignore points lying outside ROI, actually we should try to use cvSetImageROI
-     
-        //Reject individual point replacements > tresh
-        
-        //Reject chin dist2nosetip > tresh
-        //Reject chin angle2nosetip > tresh
-
-        //Reject nosetip2noseroot distance
-        
-        //Reject nosetip2noseroot angle != chin2nosetip angle
         return pointsB;
     }
     
-    private double magnitude(CvPoint2D32f p1, CvPoint2D32f p2) {
-    	double dx=p1.x()-p2.x();
-    	double dy=p1.y()-p2.y();
+    private double magnitude(CvPoint2D32f p, int i1, int i2) {
+    	//System.out.println("got: "+p);
+    	double dx=p.position(i1).x()-p.position(i2).x();
+    	double dy=p.position(i1).y()-p.position(i2).y();
     	return Math.sqrt(dx*dx+dy*dy);
     }
     
-    private double angleVertical(CvPoint2D32f p1, CvPoint2D32f p2) {
-    	double dx=p1.x()-p2.x();
-    	double dy=p1.y()-p2.y();
+    private double angleVertical(CvPoint2D32f p, int i1, int i2) {
+    	//System.out.println("got: "+p);
+    	double dx=p.position(i1).x()-p.position(i2).x();
+    	double dy=p.position(i1).y()-p.position(i2).y();
     	return Math.atan(dx/dy)*180/Math.PI;
     }
     
-    private CvPoint2D32f avgPoint2D32f(CvPoint2D32f p) {
-    	return null;
+    private CvPoint2D32f avgPoint2D32f(CvPoint2D32f p, int from, int to) {
+    	double l=to-from+1;
+    	CvPoint2D32f avg=new CvPoint2D32f(1);
+    	double x=0.0;
+    	double y=0.0;
+    	for(int i=0;i<=l;i++) {
+    		x+=p.position(i).x();
+    		y+=p.position(i).y();
+    	}
+    	avg.put((double)x/l, (double)y/l);
+    	return avg;
     }
+
     
     public void drawPoints(IplImage img, CvPoint2D32f corners) {   	
         for (int i = 0; i < nrPoints.get(); i++) {
         	corners.position(i);
 			CvPoint p = cvPoint(Math.round(corners.x()),
 					Math.round(corners.y()));
-			System.out.println("p"+i+": " + p);
+			//System.out.println("p"+i+": " + p);
 			// cvLine(img, p0, p1, CV_RGB(255, 0, 0),
 			// 2, 8, 0);
 			cvCircle(img, p, 4, CV_RGB(255, 0, 0), 2, 5, 0);
@@ -545,15 +605,18 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			if(faceRect!=null) { 
 				System.out.println("Found face at: "+faceRect);
 				
-				//roiRect=faceRect;
+				//roiRect=cvRect(faceRect.x()-faceRect.width()/2,faceRect.y()-faceRect.height()/2,2*faceRect.width(),2*faceRect.height());
+				validRect=cvRect(faceRect.x()-faceRect.width()/2,faceRect.y()-faceRect.height()/2,2*faceRect.width(),2*faceRect.height());
+
 				
 				int x = faceRect.x() + faceRect.width()/2;
 				int y = faceRect.y();
-//				CvPoint initNose[]=new CvPoint[]{cvPoint(x,y-10),cvPoint(x-20,y-10),cvPoint(x+20,y-10),cvPoint(x,y+10)};
-//				CvPoint initChin[]=new CvPoint[]{cvPoint(x,y+65),cvPoint(x,y+55)};
+				//CvPoint initNose[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.6)),cvPoint(x,y+(int)(faceRect.height()*0.45))};
 				CvPoint initNose[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.6)),cvPoint(x,y+(int)(faceRect.height()*0.45))};
+
 //				CvPoint initChin[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.95)),cvPoint(x,y+(int)(faceRect.height()*0.9)),cvPoint(x-7,y+(int)(faceRect.height()*0.95)),cvPoint(x+7,y+(int)(faceRect.height()*0.95))};
-				CvPoint initChin[]=new CvPoint[]{cvPoint(x-7,y+(int)(faceRect.height()*0.95)),cvPoint(x+7,y+(int)(faceRect.height()*0.95))};
+				//CvPoint initChin[]=new CvPoint[]{cvPoint(x-7,y+(int)(faceRect.height()*0.95)),cvPoint(x+7,y+(int)(faceRect.height()*0.95))};
+				CvPoint initChin[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.97))};
 
 				
 				CvPoint2D32f pointsA = new CvPoint2D32f(MAX_POINTS);
@@ -585,6 +648,9 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 				//cvResetImageROI(imgA);
 
 				System.out.println("Found trackable points: pointsA: "+pointsA);
+				initDistChin2Nosetip=magnitude(pointsA, CHIN_L, NOSE_TIP);
+				initDistNoseroot2Nosetip=magnitude(pointsA, NOSE_ROOT, NOSE_TIP);
+				
 				return pointsA;
 			}			
 		} catch (java.lang.Exception e) {
