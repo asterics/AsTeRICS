@@ -49,6 +49,8 @@ public class SharedFrameGrabber {
 		System.out.println("Default FrameGrabber: "+getDefaultFrameGrabberName());
 		System.out.println("FrameGrabber: "+grabberName);
 		System.out.println("DeviceKey: "+deviceKey);
+		System.out.println("Resolution: "+userWidth+"x"+userHeight);
+		System.out.println("grabberOptions: "+grabberOptions);
 
 		if(device2FrameGrabber.containsKey(deviceKey)) {
 			AstericsErrorHandling.instance.getLogger().fine("Removing old FrameGrabber with key <"+deviceKey+">");
@@ -93,8 +95,6 @@ public class SharedFrameGrabber {
 		System.out.println(devSet.getDescription());
 
 		CameraDevice dev=new CameraDevice(devSet);  
-		System.out.println("CamDevice: "+dev);
-
 		grabber=dev.createFrameGrabber();
 		
 
