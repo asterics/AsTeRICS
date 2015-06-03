@@ -73,12 +73,15 @@ public class FaceDetection {
 		cvClearMemStorage(storage);
 		//storage.release();
 
-		/*
+		long sTime=System.currentTimeMillis();
+		
 		CvSeq faces = cvHaarDetectObjects(grayImage, classifier, storage,
 				1.1, 1, CV_HAAR_DO_ROUGH_SEARCH | CV_HAAR_FIND_BIGGEST_OBJECT);
-				*/
-		CvSeq faces = cvHaarDetectObjects(grayImage, classifier, storage,1.2, 2, CV_HAAR_DO_CANNY_PRUNING | CV_HAAR_FIND_BIGGEST_OBJECT);
-
+			
+		
+		//CvSeq faces = cvHaarDetectObjects(grayImage, classifier, storage,1.2, 2, CV_HAAR_DO_CANNY_PRUNING | CV_HAAR_FIND_BIGGEST_OBJECT);
+		long eTime=System.currentTimeMillis();
+		System.out.println("faceDetection took "+(eTime-sTime)+" ms");
 
 		int total = faces.total();
 
