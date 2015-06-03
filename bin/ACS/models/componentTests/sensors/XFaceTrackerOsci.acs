@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\XFaceTrackerOsci.acs_2015_5_23_1_7" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ACS\models\componentTests\sensors\XFaceTrackerOsci.acs_2015_6_1_13_46" version="20130320">
   <components>
     <component id="XFacetrackerLK.1" type_id="asterics.XFacetrackerLK">
       <description>X-platform webcamera-based face tracking sensor</description>
@@ -19,6 +19,8 @@
       </ports>
       <properties>
         <property name="frameGrabber" value="OpenCV" />
+        <property name="frameGrabberOptions" value="" />
+        <property name="deviceList" value="" />
         <property name="cameraSelection" value="0" />
         <property name="cameraResolution" value="1" />
       </properties>
