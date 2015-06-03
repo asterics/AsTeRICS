@@ -1,9 +1,47 @@
 #include "fabi.h"
+#include <Wire.h>
 #include <EEPROM.h>
 
 #define SLOT_VALID 123
+#define deviceaddress 0x50
 
 int nextSlotAddress=0;
+
+
+void writeEEPROM(unsigned int eeaddress, byte data ) 
+{
+  #ifdef TEENSY_LC
+    Wire.beginTransmission(deviceaddress);
+    Wire.send((int)(eeaddress >> 8));   // MSB
+    Wire.send((int)(eeaddress & 0xFF)); // LSB
+    Wire.send(data);
+    Wire.endTransmission();
+    delay(5);
+  #else
+    EEPROM.write(eeaddress, data);
+  #endif
+}
+ 
+byte readEEPROM(unsigned int eeaddress ) 
+{
+
+  #ifdef TEENSY_LC
+    byte rdata = 0xFF;
+    Wire.beginTransmission(deviceaddress);
+    Wire.send((int)(eeaddress >> 8));   // MSB
+    Wire.send((int)(eeaddress & 0xFF)); // LSB
+    Wire.endTransmission();
+ 
+    Wire.requestFrom(deviceaddress,1);
+ 
+    if (Wire.available()) rdata = Wire.receive();
+ 
+    return rdata;
+  #else
+    return(EEPROM.read(eeaddress));
+  #endif
+}
+
 
 
 void printCurrentSlot()
@@ -41,13 +79,13 @@ void saveToEEPROM(char * slotname)
    {
      if (strlen(slotname) >= MAX_SLOTNAME_LEN) slotname[MAX_SLOTNAME_LEN-1]=0;
      
-     while ((EEPROM.read(address)==SLOT_VALID) && (!found) && ((address+1) < EmptySlotAddress))  // indicates valid eeprom content !
+     while ((readEEPROM(address)==SLOT_VALID) && (!found) && ((address+1) < EmptySlotAddress))  // indicates valid eeprom content !
      {
        tmpStartAddress=address;
        address++;
 
        uint8_t i=0;
-       while ((act_slotname[i++]=EEPROM.read(address++)) != 0) ;      
+       while ((act_slotname[i++]=readEEPROM(address++)) != 0) ;      
 
        // Serial.print("peeking slot "); Serial.print(act_slotname); Serial.print(" @ "); Serial.println(tmpStartAddress);
        address=tmpStartAddress;
@@ -62,7 +100,7 @@ void saveToEEPROM(char * slotname)
    }
    
    // start with new slot 
-   EEPROM.write(address++,SLOT_VALID);  
+   writeEEPROM(address++,SLOT_VALID);  
 
    // update slotname
    if (!slotname) settings.slotname[0]=0;
@@ -71,15 +109,15 @@ void saveToEEPROM(char * slotname)
    // write general settings 
    p = (uint8_t*) &settings;
    for (int t=0;t<sizeof(settingsType);t++)
-      EEPROM.write(address++,*p++);
+      writeEEPROM(address++,*p++);
 
    // write all buttons
    p = (uint8_t*) buttons;
    for (int i=0;i<NUMBER_OF_BUTTONS*sizeof(buttonType);i++)
-        EEPROM.write(address++,*p++);
+        writeEEPROM(address++,*p++);
 
    if (EmptySlotAddress<=address) {
-     EEPROM.write(address,0);
+     writeEEPROM(address,0);
      EmptySlotAddress=address;
   
   }
@@ -95,7 +133,7 @@ void readFromEEPROM(char * slotname)
    uint8_t numSlots=0;
    uint8_t* p;
    
-   while (EEPROM.read(address)==SLOT_VALID)  // indicates valid eeprom content !
+   while (readEEPROM(address)==SLOT_VALID)  // indicates valid eeprom content !
    {
       uint8_t found=0;
      
@@ -104,7 +142,7 @@ void readFromEEPROM(char * slotname)
 
       tmpStartAddress=address;
       uint8_t i=0;
-      while ((act_slotname[i++]=EEPROM.read(address++)) != 0) ; 
+      while ((act_slotname[i++]=readEEPROM(address++)) != 0) ; 
  
       if (DebugOutput==DEBUG_FULLOUTPUT)  
         Serial.print("found slotname "); Serial.println(act_slotname);
@@ -118,12 +156,12 @@ void readFromEEPROM(char * slotname)
            
         p = (uint8_t*) &settings;
         for (int t=0;t<sizeof(settingsType);t++)
-            *p++=EEPROM.read(address++);
+            *p++=readEEPROM(address++);
         
         
         p = (uint8_t*) buttons;
         for (int i=0;i<NUMBER_OF_BUTTONS*sizeof(buttonType);i++) 
-           *p++=EEPROM.read(address++);
+           *p++=readEEPROM(address++);
            
         printCurrentSlot();
 
@@ -149,7 +187,7 @@ void deleteSlots()
 {
    EmptySlotAddress=0;
    nextSlotAddress=0;
-   EEPROM.write(0,0);
+   writeEEPROM(0,0);
 }
 
 void listSlots()
@@ -158,17 +196,20 @@ void listSlots()
    uint8_t numSlots=0;
    uint8_t b;
    
-   while (EEPROM.read(address)==SLOT_VALID)  // indicates valid eeprom content !
+   while (readEEPROM(address)==SLOT_VALID)  // indicates valid eeprom content !
    {
      numSlots++;
      address++;
      tmpStartAddress=address;
      Serial.print("Slot"); Serial.print(numSlots); Serial.print(":"); 
-     while ((b=EEPROM.read(address++)) != 0)   // print slot name
+     while ((b=readEEPROM(address++)) != 0)   // print slot name
          Serial.write(b);
      Serial.println();
      
      address=tmpStartAddress+sizeof(settingsType)+NUMBER_OF_BUTTONS*sizeof(buttonType);         
    }
 }
+
+
+
 
