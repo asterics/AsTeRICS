@@ -2,19 +2,24 @@ package eu.asterics.mw.computervision;
 
 
 import java.io.File;
-import java.util.*;
-import org.bytedeco.javacpp.opencv_core.IplImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.bytedeco.javacpp.BytePointer;
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.videoInputLib.*;
 import org.bytedeco.javacv.CameraDevice;
 import org.bytedeco.javacv.FrameGrabber;
-import org.bytedeco.javacv.OpenCVFrameGrabber;
-import org.bytedeco.javacv.VideoInputFrameGrabber;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.utils.OSUtils;
 
 /**
  * Contains code to unify/simplify enumeration/initialization/opening/closing of camera devices and frame grabbing. 
- * Also supports publish/subscribe mechanism for grabbed frames. It is planned to also support shared camera usage over several plugins.
+ * Also supports publish/subscribe mechanism for grabbed frames. It is planned to also support shared camera usage for several plugins.
  * 
  * @author mad
  *
@@ -42,15 +47,19 @@ public class SharedFrameGrabber {
 	
 	public SharedFrameGrabber() {
 	}
-	private void init(String grabberName, String deviceKey, int userWidth, int userHeight, String grabberOptions) throws Exception {
+	private void init(String grabberName, String deviceKey, int userWidth, int userHeight, String grabberFormat) throws Exception {
 		FrameGrabber grabber=null;
 
+		if(grabberFormat==null || "".equals(grabberFormat)) {
+			grabberFormat="dshow";
+		}
+		
 		System.out.println("Available grabber: "+getFrameGrabberList());
 		System.out.println("Default FrameGrabber: "+getDefaultFrameGrabberName());
 		System.out.println("FrameGrabber: "+grabberName);
 		System.out.println("DeviceKey: "+deviceKey);
 		System.out.println("Resolution: "+userWidth+"x"+userHeight);
-		System.out.println("grabberOptions: "+grabberOptions);
+		System.out.println("grabberFormat: "+grabberFormat);
 
 		if(device2FrameGrabber.containsKey(deviceKey)) {
 			AstericsErrorHandling.instance.getLogger().fine("Removing old FrameGrabber with key <"+deviceKey+">");
@@ -90,7 +99,7 @@ public class SharedFrameGrabber {
 		//devSet.setTimeout(20000);
 		devSet.setImageWidth(userWidth);
 		devSet.setImageHeight(userHeight);    
-		devSet.setFormat(grabberOptions);
+		devSet.setFormat(grabberFormat);
 		devSet.getDescription();
 		System.out.println(devSet.getDescription());
 
@@ -161,12 +170,61 @@ public class SharedFrameGrabber {
 		return "";
 	}
 
-	public FrameGrabber getFrameGrabber(String deviceKey, String grabberName, int resolutionIdx, String grabberOptions) throws Exception {
+	/**
+	 * Shows camera settings by using VideoInput showCameraSettings method.
+	 * This method is only available on Windows.
+	 * @param deviceKey
+	 */
+	public void showCameraSettings(String deviceKey) {
+		stopGrabbing(deviceKey);
+		try {
+			int camIdx = Integer.parseInt(deviceKey);
+			// this is very ugly because we open the device twice, hopefully no
+			// crash
+			videoInput vi = new videoInput();
+			int w = 320;
+			int h = 240;
+
+			AstericsErrorHandling.instance.reportDebugInfo(null, "Showing camera settings for device: "+deviceKey);
+			vi.setupDevice(camIdx,w,h);
+			vi.showSettingsWindow(camIdx);
+
+			IplImage bgrImage = null;
+			BytePointer bgrImageData = null;
+			SharedCanvasFrame.instance.createCanvasFrame("showCameraSettings",
+					"Preview Camera Settings", 1);
+
+			AstericsErrorHandling.instance.reportDebugInfo(null, "Showing camera preview for 500 frames");
+			for (int i = 0; i < 500; i++) {
+				if (bgrImage == null || bgrImage.width() != w
+						|| bgrImage.height() != h) {
+					bgrImage = IplImage.create(w, h, IPL_DEPTH_8U, 3);
+					bgrImageData = bgrImage.imageData();
+				}
+
+				if (!vi.getPixels(camIdx, bgrImageData, false, true)) {
+					throw new Exception(
+							"videoInput.getPixels() Error: Could not get pixels.");
+				}
+				SharedCanvasFrame.instance.showImage("showCameraSettings",
+						bgrImage);
+			}
+			vi.stopDevice(camIdx);
+			SharedCanvasFrame.instance.disposeFrame("showCameraSettings");
+			vi = null;
+		} catch (NumberFormatException ne) {
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+
+	}
+	public FrameGrabber getFrameGrabber(String deviceKey, String grabberName, int resolutionIdx, String grabberFormat) throws Exception {
 		if(device2FrameGrabber.containsKey(deviceKey)) {
 			return device2FrameGrabber.get(deviceKey);
 		}
 
-		init(grabberName,deviceKey,RESOLUTIONS[resolutionIdx][0],RESOLUTIONS[resolutionIdx][1], grabberOptions);
+		init(grabberName,deviceKey,RESOLUTIONS[resolutionIdx][0],RESOLUTIONS[resolutionIdx][1], grabberFormat);
 		return device2FrameGrabber.get(deviceKey);		
 	}
 

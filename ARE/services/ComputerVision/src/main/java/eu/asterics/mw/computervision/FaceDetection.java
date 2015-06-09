@@ -81,7 +81,7 @@ public class FaceDetection {
 		
 		//CvSeq faces = cvHaarDetectObjects(grayImage, classifier, storage,1.2, 2, CV_HAAR_DO_CANNY_PRUNING | CV_HAAR_FIND_BIGGEST_OBJECT);
 		long eTime=System.currentTimeMillis();
-		System.out.println("faceDetection took "+(eTime-sTime)+" ms");
+		//System.out.println("faceDetection took "+(eTime-sTime)+" ms");
 
 		int total = faces.total();
 
