@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\XFaceTrackerMouse.acs_2015_5_23_1_6" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\XFaceTrackerMouse.acs_2015_6_9_23_58" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 
@@ -31,8 +31,11 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
       </ports>
       <properties>
         <property name="frameGrabber" value="OpenCV" />
+        <property name="frameGrabberFormat" value="" />
+        <property name="deviceList" value="" />
         <property name="cameraSelection" value="0" />
         <property name="cameraResolution" value="1" />
+        <property name="titleVideoFrameWindow" value="" />
       </properties>
       <layout>
         <posX>12</posX>
