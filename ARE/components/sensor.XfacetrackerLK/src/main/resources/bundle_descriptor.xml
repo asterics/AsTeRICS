@@ -29,10 +29,11 @@
             <eventListenerPort id="init">
                 <description>perform new face detection when head is centered</description>
             </eventListenerPort>
-            <!-- 
+            
             <eventListenerPort id="showCameraSettings">
                 <description>shows Camera Settings Window</description>
             </eventListenerPort> 
+            <!-- 
             <eventListenerPort id="saveProfile">
                 <description>save camera profile to file</description>
             </eventListenerPort>
@@ -43,25 +44,30 @@
               type="string"
               value="OpenCV"
               getStringList="true"
-              description="Name of FrameGrabber to use"/>
-            <property name="frameGrabberOptions"
+              description="Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera)"/>
+            <property name="frameGrabberFormat"
                       type="string"
                       value=""
-                      description="Options for grabber, e.g. 'dshow' or 'vfwcap' (FFmpeg)"/>              
+                      description="Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'"/>              
             <property name="deviceList"
               type="string"
               value=""
               getStringList="true"
-              description="List of available devices"/>
+              description="List of available devices, if supported by grabber"/>
             <property name="cameraSelection"
                       type="string"
                       value="0"
-                      description="The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV), or camName e.g. 'video=Integrated Camera'"/>
+                      description="The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera"/>
             <property name="cameraResolution"
                       type="integer"
                       value="1"
                       combobox="160x120//320x240//352x288//640x480//800x600//1024x768//1600x1200"
                       description="Desired camera resolution"/>
+            <property name="titleVideoFrameWindow"
+                      type="string"
+                      value=""
+                      description="The title of the window showing the video frame."/>
+                      
                       <!-- 
             <property name="cameraDisplayUpdate"
                       type="integer"

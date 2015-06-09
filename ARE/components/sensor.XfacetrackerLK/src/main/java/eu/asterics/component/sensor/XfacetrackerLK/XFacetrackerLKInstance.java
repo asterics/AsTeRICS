@@ -61,6 +61,7 @@ import org.bytedeco.javacpp.helper.opencv_core.CvArr;
 import org.bytedeco.javacv.CanvasFrame;
 import org.bytedeco.javacv.FrameGrabber;
 
+import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.computervision.FaceDetection;
 import eu.asterics.mw.computervision.GrabbedImageListener;
 import eu.asterics.mw.computervision.SharedCanvasFrame;
@@ -103,7 +104,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 	private int lastX=0;
 	private int lastY=0;
 	
-    private static final int MAX_POINTS = 4;
+    private static final int MAX_POINTS = 2;
 	private CanvasFrame frame;
 	private FaceDetection faceDetection=new FaceDetection();
 	private CvRect validRect=null;
@@ -126,16 +127,18 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 	private double initDistNoseroot2Nosetip;
     
     private static int NOSE_TIP = 0;
-    private static int NOSE_ROOT = 1;
-    private static int CHIN_L = 2;
-    private static int CHIN_R = 3;
+    //private static int NOSE_ROOT = 1;
+    private static int CHIN_L = 1;
+    //private static int CHIN_R = 3;
 
 	private String propFrameGrabber="OpenCV";
 	private String propCameraSelection="0";
 	private Integer propCameraResolution=1;
-	private String propFrameGrabberOptions="dshow";
+	private String propFrameGrabberFormat="dshow";
+	private String propTitleVideoFrameWindow="";
 
-     
+	private String instanceId="XFacetrackerLK"; 
+	
 	/**
 	 * The class constructor.
 	 */
@@ -190,12 +193,14 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     {
     	if("frameGrabber".equalsIgnoreCase(propertyName)) {
     		return propFrameGrabber;
-    	} else if("frameGrabberOptions".equalsIgnoreCase(propertyName)) {
-    		return propFrameGrabberOptions;
+    	} else if("frameGrabberFormat".equalsIgnoreCase(propertyName)) {
+    		return propFrameGrabberFormat;
     	}else if("cameraSelection".equalsIgnoreCase(propertyName)) {
     		return propCameraSelection;
     	}else if("cameraResolution".equalsIgnoreCase(propertyName)) {
     		return propCameraResolution;
+    	}else if("titleVideoFrameWindow".equalsIgnoreCase(propertyName)) {
+    		return propTitleVideoFrameWindow;
     	}
 
     	return "";
@@ -233,10 +238,10 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 		{
 			oldValue = propFrameGrabber;
 			propFrameGrabber = (String)newValue;
-		} else if("frameGrabberOptions".equalsIgnoreCase(propertyName))
+		} else if("frameGrabberFormat".equalsIgnoreCase(propertyName))
 		{
-			oldValue = propFrameGrabberOptions;
-			propFrameGrabberOptions = (String)newValue;
+			oldValue = propFrameGrabberFormat;
+			propFrameGrabberFormat = (String)newValue;
 		} else if("cameraSelection".equalsIgnoreCase(propertyName))
 		{
 			oldValue = propCameraSelection;
@@ -245,6 +250,10 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 		{
 			oldValue = propCameraResolution;
 			propCameraResolution = Integer.parseInt((String)newValue);
+		} else if("titleVideoFrameWindow".equalsIgnoreCase(propertyName))
+		{
+			oldValue = propTitleVideoFrameWindow;
+			propTitleVideoFrameWindow = (String)newValue;
 		}
 	   if(wasRunning) {
 		   start();
@@ -284,6 +293,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     	@Override 
     	public void receiveEvent(String data)
     	 {
+    		needToInit=true;
     	 }
     };
  
@@ -294,8 +304,19 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     {
     	@Override 
     	public void receiveEvent(String data)
-    	 {
-    	 }
+    	{		
+    		AstericsErrorHandling.instance.reportDebugInfo(XFacetrackerLKInstance.this, "Opening camera settings");
+    		//Stop plugin first, because if the camera selection is changed we would not know any more the previous camera to stop which would
+    		//then keep running.
+    		boolean wasRunning=running;
+    		if(wasRunning) {
+    			stop();
+    		}
+    		SharedFrameGrabber.instance.showCameraSettings(propCameraSelection);
+    		if(wasRunning) {
+    			start();
+    		}
+    	}
     };
     
 	/**
@@ -309,6 +330,8 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     	 }
     };
 
+
+
     @Override
     public void start()
     {
@@ -316,11 +339,17 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     	try {
     		resetVariables();
     		//Get default grabber for this platform (VideoInput for Windows, OpenCV for Linux,...) using default camera (device 0)
-			FrameGrabber grabber=SharedFrameGrabber.instance.getFrameGrabber(propCameraSelection,propFrameGrabber,propCameraResolution,propFrameGrabberOptions);
+			FrameGrabber grabber=SharedFrameGrabber.instance.getFrameGrabber(propCameraSelection,propFrameGrabber,propCameraResolution,propFrameGrabberFormat);
 			//register this as listener for grabbed images 
 			SharedFrameGrabber.instance.registerGrabbedImageListener(propCameraSelection, this);
 			//Create a Canvas/Frame to draw on (this is platform dependant and does not work on Android)
-			SharedCanvasFrame.instance.createCanvasFrame("CanvasFrame1", "Face", grabber.getGamma());
+			
+			instanceId=DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(this);
+			String title=instanceId;
+			if(propTitleVideoFrameWindow!=null && propTitleVideoFrameWindow!="") {
+				title=propTitleVideoFrameWindow;
+			}
+			SharedCanvasFrame.instance.createCanvasFrame(instanceId, title, grabber.getGamma());
 			//start grabbing
 			SharedFrameGrabber.instance.startGrabbing(propCameraSelection);
 			running=true;
@@ -354,7 +383,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     	
     	SharedFrameGrabber.instance.stopGrabbing(propCameraSelection);
     	SharedFrameGrabber.instance.deregisterGrabbedImageListener(propCameraSelection, this);
-    	SharedCanvasFrame.instance.disposeFrame("CanvasFrame1");
+    	SharedCanvasFrame.instance.disposeFrame(instanceId);
     	resetVariables();
     	super.stop();
     	running=false;
@@ -437,7 +466,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 		}
 
 		// and a very platform dependant Canvas/Frame!!
-		SharedCanvasFrame.instance.showImage("CanvasFrame1", img);
+		SharedCanvasFrame.instance.showImage(instanceId, img);
 
 		imgGrey[A] = imgGrey[B];
 		imgPyr[A] = imgPyr[B];
@@ -510,7 +539,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
             //Reject relative individual point displacements > tresh with base faceRect.width for x rel displacements and faceRect.height for y rel displacements
             double dx=pointsB.x()-pointsA.x();
             double dy=pointsB.y()-pointsA.y();
-            double relDispTresh=0.2;
+            double relDispTresh=0.15;
             if(dx/faceRect.width() > relDispTresh || dy/faceRect.height() > relDispTresh) {
             	System.out.println(dx/faceRect.width() +" || "+dy/faceRect.height()+" > "+relDispTresh);
             	needToInit=true;
@@ -520,7 +549,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         }
         //Reject distchin2nosetip within range (0.9 < distchin2nosetip < 1.2)??               
 		double relDistChin2Nosetip=magnitude(pointsB,CHIN_L,NOSE_TIP)/initDistChin2Nosetip;
-		double relDistNoseroot2Nosetip=magnitude(pointsB,NOSE_ROOT,NOSE_TIP)/initDistNoseroot2Nosetip;
+		//double relDistNoseroot2Nosetip=magnitude(pointsB,NOSE_ROOT,NOSE_TIP)/initDistNoseroot2Nosetip;
 		double lowerDistChin2NosetipTresh=0.85;
 		double upperDistChin2NosetipTresh=1.4;
 		if(!(lowerDistChin2NosetipTresh <= relDistChin2Nosetip && relDistChin2Nosetip <= upperDistChin2NosetipTresh)) {
@@ -528,6 +557,20 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         	needToInit=true;
         	return pointsB;            					
 		}
+		
+        //Reject chin2nosetip angle > 25
+        //double angleNoseroot2Nosetip=angleVertical(pointsB, NOSE_ROOT, NOSE_TIP);
+        //angle of Chin2Nosetip, mutliply by -1 to have same sign as angleNoseroot2Nosetip
+        //double angleChin2Nosetip=angleVertical(pointsB, CHIN_L, NOSE_TIP)*-1;
+        double angleChin2Nosetip=angleVertical(pointsB, CHIN_L, NOSE_TIP);
+        //System.out.println("angle chin2nosetip: "+angleChin2Nosetip);
+        double angleTolerance=25;
+    	if(!((-1*angleTolerance) <= angleChin2Nosetip && angleChin2Nosetip <= angleTolerance)) {
+        	System.out.println("angle chin2nosetip out of range: "+(-1*angleTolerance) +" <= "+angleChin2Nosetip+" <= "+angleTolerance);
+        	needToInit=true;
+        	return pointsB;            					        	
+        }
+		
 		/*
         //Reject nosetip2noseroot distance
 		double lowerDistNoseroot2NosetipTresh=0.75;
@@ -543,7 +586,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         //angle of Chin2Nosetip, mutliply by -1 to have same sign as angleNoseroot2Nosetip
         double angleChin2Nosetip=angleVertical(pointsB, CHIN_L, NOSE_TIP)*-1;
         double angleTolerance=25;
-    	System.out.println("angle chin2nosetip "+(-1*angleChin2Nosetip)+", angle noseroot2nosetip: "+angleNoseroot2Nosetip);
+    	System.out.println("angle chin2nosetip "+(angleChin2Nosetip)+", angle noseroot2nosetip: "+angleNoseroot2Nosetip);
         if(!((angleNoseroot2Nosetip-angleTolerance) <= angleChin2Nosetip && angleChin2Nosetip <= (angleNoseroot2Nosetip+angleTolerance))) {
         	//System.out.println("angle chin2nosetip out of range: "+(angleNoseroot2Nosetip-angleTolerance) +" <= "+angleChin2Nosetip+" <= "+(angleNoseroot2Nosetip+angleTolerance));
         	needToInit=true;
@@ -603,16 +646,18 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 		try {
 			faceRect = faceDetection.detectFace(imgA);
 			if(faceRect!=null) { 
-				System.out.println("Found face at: "+faceRect);
+				System.out.println("\nFound face at: "+faceRect);
 				
 				//roiRect=cvRect(faceRect.x()-faceRect.width()/2,faceRect.y()-faceRect.height()/2,2*faceRect.width(),2*faceRect.height());
-				validRect=cvRect(faceRect.x()-faceRect.width()/2,faceRect.y()-faceRect.height()/2,2*faceRect.width(),2*faceRect.height());
+				int roiFact=4;
+				validRect=cvRect(faceRect.x()-faceRect.width()/roiFact,faceRect.y()-faceRect.height()/roiFact,faceRect.width()+2*faceRect.width()/roiFact,faceRect.height()+2*faceRect.height()/roiFact);
 
 				
 				int x = faceRect.x() + faceRect.width()/2;
 				int y = faceRect.y();
 				//CvPoint initNose[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.6)),cvPoint(x,y+(int)(faceRect.height()*0.45))};
-				CvPoint initNose[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.6)),cvPoint(x,y+(int)(faceRect.height()*0.45))};
+				//CvPoint initNose[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.6)),cvPoint(x,y+(int)(faceRect.height()*0.45))};
+				CvPoint initNose[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.6))};
 
 //				CvPoint initChin[]=new CvPoint[]{cvPoint(x,y+(int)(faceRect.height()*0.95)),cvPoint(x,y+(int)(faceRect.height()*0.9)),cvPoint(x-7,y+(int)(faceRect.height()*0.95)),cvPoint(x+7,y+(int)(faceRect.height()*0.95))};
 				//CvPoint initChin[]=new CvPoint[]{cvPoint(x-7,y+(int)(faceRect.height()*0.95)),cvPoint(x+7,y+(int)(faceRect.height()*0.95))};
@@ -649,7 +694,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 
 				System.out.println("Found trackable points: pointsA: "+pointsA);
 				initDistChin2Nosetip=magnitude(pointsA, CHIN_L, NOSE_TIP);
-				initDistNoseroot2Nosetip=magnitude(pointsA, NOSE_ROOT, NOSE_TIP);
+				//initDistNoseroot2Nosetip=magnitude(pointsA, NOSE_ROOT, NOSE_TIP);
 				
 				return pointsA;
 			}			
