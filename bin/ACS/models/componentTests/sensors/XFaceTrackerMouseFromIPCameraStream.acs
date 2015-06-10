@@ -1,11 +1,18 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\XFaceTrackerMouse.acs_2015_6_9_23_58" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\XFaceTrackerMouseFromIPCameraStream.acs_2015_6_10_22_35" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 
 (Section 4, Step-by-Step Guide to Model Creation)</shortDescription>
-    <requirements>A webcamera has to be connected to the system.</requirements>
-    <description>The x/y position of the user's nose is calculated by the FacetrackerLK plugin.
+    <requirements>Install the following Android app on your smartphone and start streaming the front camera:
+https://play.google.com/store/apps/details?id=com.vinternete.camerastream</requirements>
+    <description>Enter http url displayed at your smartphone and add /video to the url
+e.g.
+http://192.168.1.100:8080/video
+
+Enter this url in the cameraSelection property of the XFacetrackerLK plugin.
+
+The x/y position of the user's nose is calculated by the FacetrackerLK plugin.
 These positions are directly mapped to the X/Y coordinates of the local 
 computer mouse cursor. 
 Mouse clicks are created by dwell time (not moving for a defined time)
@@ -30,10 +37,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </outputPort>
       </ports>
       <properties>
-        <property name="frameGrabber" value="Default" />
+        <property name="frameGrabber" value="IPCamera" />
         <property name="frameGrabberFormat" value="" />
         <property name="deviceList" value="" />
-        <property name="cameraSelection" value="0" />
+        <property name="cameraSelection" value="http://192.168.1.100:8080/video" />
         <property name="cameraResolution" value="1" />
         <property name="titleVideoFrameWindow" value="" />
       </properties>
@@ -321,7 +328,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="slot20" value="" />
       </properties>
       <layout>
-        <posX>678</posX>
+        <posX>730</posX>
         <posY>299</posY>
       </layout>
     </component>
