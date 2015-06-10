@@ -97,8 +97,10 @@ public class SharedFrameGrabber {
 		devSet.setName(deviceKey);
 		devSet.setFrameGrabber(FrameGrabber.get(grabberName));
 		//devSet.setTimeout(20000);
-		devSet.setImageWidth(userWidth);
-		devSet.setImageHeight(userHeight);    
+		if(!grabberFormat.equals("mjpeg")) {
+			devSet.setImageWidth(userWidth);
+			devSet.setImageHeight(userHeight);
+		}
 		devSet.setFormat(grabberFormat);
 		devSet.getDescription();
 		System.out.println(devSet.getDescription());
@@ -132,6 +134,7 @@ public class SharedFrameGrabber {
 	public List<String> getDeviceList(String grabberName) {
 		String[] s=null;
         try {
+        	AstericsErrorHandling.instance.reportDebugInfo(null, "Retrieving device list");
             Class<? extends FrameGrabber> c = FrameGrabber.get(grabberName);
             c.getMethod("tryLoad").invoke(null);
             try {
@@ -147,6 +150,7 @@ public class SharedFrameGrabber {
 	
 	public List<String> getFrameGrabberList() {
 		if(grabberList==null) {
+			AstericsErrorHandling.instance.reportDebugInfo(null, "Creating list of available frame grabbers");
 			grabberList=new ArrayList<String>();
 			grabberList.add(DEFAULT_GRABBER_KEY);
 			for(String grabberName : FrameGrabber.list) {
@@ -282,10 +286,11 @@ public class SharedFrameGrabber {
 				try {
 					grabber.stop();
 					grabber.release();
-					device2FrameGrabber.remove(deviceKey);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} finally {
+					device2FrameGrabber.remove(deviceKey);
 				}
 			}
 		}
