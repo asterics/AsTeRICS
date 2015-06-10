@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-processors.iirfilter
+Bundle-SymbolicName: eu.asterics.component.processor.iirfilter
+Bundle-Version: 0.1.0
+Bundle-ClassPath: . , lib/dsp-collection.jar
+DynamicImport-Package: *
