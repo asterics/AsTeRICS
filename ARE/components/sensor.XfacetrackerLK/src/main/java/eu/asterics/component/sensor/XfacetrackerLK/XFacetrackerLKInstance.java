@@ -349,7 +349,11 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			if(propTitleVideoFrameWindow!=null && propTitleVideoFrameWindow!="") {
 				title=propTitleVideoFrameWindow;
 			}
-			SharedCanvasFrame.instance.createCanvasFrame(instanceId, title, grabber.getGamma());
+			double camGamma=1.0;
+			if(!SharedFrameGrabber.IPCAMERA_GRABBER_KEY.equals(propFrameGrabber)) {
+				camGamma=grabber.getGamma();
+			}
+			SharedCanvasFrame.instance.createCanvasFrame(instanceId, title, camGamma);
 			//start grabbing
 			SharedFrameGrabber.instance.startGrabbing(propCameraSelection);
 			running=true;
