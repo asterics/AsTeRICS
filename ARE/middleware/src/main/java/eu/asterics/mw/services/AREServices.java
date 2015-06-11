@@ -395,8 +395,6 @@ public class AREServices implements IAREServices{
 										"Undefined component ID: "
 												+ componentID);
 							} else {
-								logger.fine(this.getClass().getName() + "."
-										+ "setComponentProperty: OK\n");
 								return result;
 							}
 

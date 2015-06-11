@@ -42,7 +42,7 @@
         <properties>
             <property name="frameGrabber"
               type="string"
-              value="OpenCV"
+              value="Default"
               getStringList="true"
               description="Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera)"/>
             <property name="frameGrabberFormat"

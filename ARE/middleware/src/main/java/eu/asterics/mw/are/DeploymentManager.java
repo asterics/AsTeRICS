@@ -911,6 +911,7 @@ public class DeploymentManager
 	public void setComponentProperty(String componentID, String key,
 			String value) {
 
+		AstericsErrorHandling.instance.reportDebugInfo(null, componentID+".setRuntimePropertyValue("+key+","+value+")");
 		final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
 		final Set<IComponentInstance> componentInstanceSet =
 				runtimeModel.getComponentInstances();

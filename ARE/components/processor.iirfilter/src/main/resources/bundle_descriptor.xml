@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.IIRFilter"
+                   canonical_name="eu.asterics.component.processor.iirfilter.IIRFilterInstance">
+        <type subtype="DSP and Feature Detection">processor</type>
+        <singleton>false</singleton>
+        <description>This plugin provides various filter implementations</description>
+        <ports>
+			<inputPort id="in">
+				<description>incoming signal</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="out">
+				<description>filtered signal</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="magnitude">
+				<description>magnitude of filtered signal</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="passtype"
+				type="integer"
+				value="0"
+				combobox="lowpass//highpass//bandpass//bandstop"
+				description="type of filter"/>
+			<property name="characteristictype"
+				type="integer"
+				value="0"
+				combobox="butterworth//chebyshev//bessel"
+				description="characteristics of filter"/>
+			<property name="order"
+				type="integer"
+				value="4"
+				description="filter order"/>
+			<property name="samplingFrequency"
+				type="double"
+				value="100"
+				description="sampling frequency of signal"/>
+			<property name="fc1"
+				type="double"
+				value="10"
+				description="Filter cutoff frequency in Hz for lowpass/highpass,  lower cutoff frequency in Hz for bandpass/bandstop"/>
+			<property name="fc2"
+				type="double"
+				value="20"
+				description="Upper cutoff frequency in Hz for bandpass/bandstop,  ignored for lowpass/highpass."/>
+			<property name="ripple"
+				type="double"
+				value="0"
+				description="Passband ripple in dB. Must be negative. Only used for Chebyshev filter, ignored for other filters"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

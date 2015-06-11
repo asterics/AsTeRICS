@@ -367,7 +367,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </outputPort>
       </ports>
       <properties>
-        <property name="frameGrabber" value="OpenCV" />
+        <property name="frameGrabber" value="Default" />
         <property name="frameGrabberFormat" value="" />
         <property name="deviceList" value="" />
         <property name="cameraSelection" value="0" />
