@@ -765,63 +765,24 @@
     </componentType>
 
 
- <componentType canonical_name="eu.asterics.component.sensor.XfacetrackerLK.XFacetrackerLKInstance" id="asterics.XFacetrackerLK">
-        <type subtype="Computer Vision">sensor</type>
+ <componentType canonical_name="eu.asterics.component.sensor.signalgenerator.SignalGeneratorInstance" id="asterics.SignalGenerator">
+        <type subtype="Simulation">sensor</type>
         <singleton>false</singleton>
-        <description>X-platform webcamera-based face tracking sensor</description>
+        <description>Signal Generator</description>
         <ports>
-            <outputPort id="noseX">
-                <description>Output port of nose X coordinate</description>
-                <dataType>integer</dataType>
-            </outputPort>
-            <outputPort id="noseY">
-                <description>Output port of nose Y coordinate</description>
-                <dataType>integer</dataType>
-            </outputPort>
-            <outputPort id="chinX">
-                <description>Output port of chin X coordinate</description>
-                <dataType>integer</dataType>
-            </outputPort>
-            <outputPort id="chinY">
-                <description>Output port of chin Y coordinate</description>
-                <dataType>integer</dataType>
+            <outputPort id="out">
+                <description>signal output</description>
+                <dataType>double</dataType>
             </outputPort>
         </ports>
-        <events>
-            <eventListenerPort id="init">
-                <description>perform new face detection when head is centered</description>
-            </eventListenerPort>
-            <!-- 
-            <eventListenerPort id="showCameraSettings">
-                <description>shows Camera Settings Window</description>
-            </eventListenerPort> 
-            <eventListenerPort id="saveProfile">
-                <description>save camera profile to file</description>
-            </eventListenerPort>
-             -->                        
-        </events>
         <properties>
-            <property description="Name of FrameGrabber to use" getStringList="true" name="frameGrabber" type="string" value="VideoInput"/>
-        
-            <property combobox="first camera//second camera//third camera//forth camera//fifth camera" description="the camera device to be used" name="cameraSelection" type="integer" value="0"/>
-            <property combobox="160x120//320x240//352x288//640x480//800x600//1024x768//1600x1200" description="desired camera resolution" name="cameraResolution" type="integer" value="1"/>
-                      <!-- 
-            <property name="cameraDisplayUpdate"
-                      type="integer"
-                      value="100"
-                      description="the update period for the camera display in milliseconds (0=no display window)"/>
-                       -->
-                      <!-- 
-            <property name="cameraProfile" 
-                      type="string"
-                      value=""
-                      description="Filename of the camera profile"/>            
-                            -->   
+            <property description="The interval for sending values (ms)" name="sendInterval" type="integer" value="20"/>
+            <property combobox="random//sine//sawtooth//rectangle" description="0:random 1:sine 2:sawtooth 3:rectangle" name="waveForm" type="integer" value="1"/>
+            <property description="cycles per second" name="frequency" type="double" value="2"/>
+            <property description="signal amplitude" name="amplitude" type="double" value="100"/>
+            <property description="phase offset (in milliseconds)" name="phaseShift" type="double" value="0"/>
+            <property description="signal offset (constant)" name="offset" type="double" value="0"/>
         </properties>
-        <gui IsExternalGUIElement="true">
-            <width>2000</width>
-            <height>1500</height>
-        </gui>
     </componentType>
 
 
@@ -6353,6 +6314,44 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.processor.iirfilter.IIRFilterInstance" id="asterics.IIRFilter">
+        <type subtype="DSP and Feature Detection">processor</type>
+        <singleton>false</singleton>
+        <description>This plugin provides various filter implementations</description>
+        <ports>
+			<inputPort id="in">
+				<description>incoming signal</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+			<outputPort id="out">
+				<description>filtered signal</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="magnitude">
+				<description>magnitude of filtered signal</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property combobox="lowpass//highpass//bandpass//bandstop" description="type of filter" name="passtype" type="integer" value="0"/>
+			<property combobox="butterworth//chebyshev//bessel" description="characteristics of filter" name="characteristictype" type="integer" value="0"/>
+			<property description="filter order" name="order" type="integer" value="4"/>
+			<property description="sampling frequency of signal" name="samplingFrequency" type="double" value="100"/>
+			<property description="Filter cutoff frequency in Hz for lowpass/highpass,  lower cutoff frequency in Hz for bandpass/bandstop" name="fc1" type="double" value="10"/>
+			<property description="Upper cutoff frequency in Hz for bandpass/bandstop,  ignored for lowpass/highpass." name="fc2" type="double" value="20"/>
+			<property description="Passband ripple in dB. Must be negative. Only used for Chebyshev filter, ignored for other filters" name="ripple" type="double" value="0"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.processor.integrate.IntegrateInstance" id="asterics.Integrate">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -11347,27 +11346,6 @@
 
     </componentType>
 
- <componentType canonical_name="eu.asterics.component.sensor.signalgenerator.SignalGeneratorInstance" id="asterics.SignalGenerator">
-        <type subtype="Simulation">sensor</type>
-        <singleton>false</singleton>
-        <description>Signal Generator</description>
-        <ports>
-            <outputPort id="out">
-                <description>signal output</description>
-                <dataType>double</dataType>
-            </outputPort>
-        </ports>
-        <properties>
-            <property description="The interval for sending values (ms)" name="sendInterval" type="integer" value="20"/>
-            <property combobox="random//sine//sawtooth//rectangle" description="0:random 1:sine 2:sawtooth 3:rectangle" name="waveForm" type="integer" value="1"/>
-            <property description="cycles per second" name="frequency" type="double" value="2"/>
-            <property description="signal amplitude" name="amplitude" type="double" value="100"/>
-            <property description="phase offset (in milliseconds)" name="phaseShift" type="double" value="0"/>
-            <property description="signal offset (constant)" name="offset" type="double" value="0"/>
-        </properties>
-    </componentType>
-
-
  <componentType canonical_name="eu.asterics.component.sensor.signalshaper.SignalShaperInstance" id="asterics.SignalShaper">
         <type subtype="Simulation">sensor</type>
         <singleton>false</singleton>
@@ -11798,5 +11776,69 @@
             <property description="the update period for getting new values from the WiiMote device (in milliseconds)" name="updatePeriod" type="integer" value="5"/>	
         </properties>
     </componentType>
+
+ <componentType canonical_name="eu.asterics.component.sensor.XfacetrackerLK.XFacetrackerLKInstance" id="asterics.XFacetrackerLK">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>false</singleton>
+        <description>X-platform webcamera-based face tracking sensor</description>
+        <ports>
+            <outputPort id="noseX">
+                <description>Output port of nose X coordinate</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="noseY">
+                <description>Output port of nose Y coordinate</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="chinX">
+                <description>Output port of chin X coordinate</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="chinY">
+                <description>Output port of chin Y coordinate</description>
+                <dataType>integer</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="init">
+                <description>perform new face detection when head is centered</description>
+            </eventListenerPort>
+            
+            <eventListenerPort id="showCameraSettings">
+                <description>shows Camera Settings Window</description>
+            </eventListenerPort> 
+            <!-- 
+            <eventListenerPort id="saveProfile">
+                <description>save camera profile to file</description>
+            </eventListenerPort>
+             -->                        
+        </events>
+        <properties>
+            <property description="Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera)" getStringList="true" name="frameGrabber" type="string" value="OpenCV"/>
+            <property description="Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'" name="frameGrabberFormat" type="string" value=""/>              
+            <property description="List of available devices, if supported by grabber" getStringList="true" name="deviceList" type="string" value=""/>
+            <property description="The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera" name="cameraSelection" type="string" value="0"/>
+            <property combobox="160x120//320x240//352x288//640x480//800x600//1024x768//1600x1200" description="Desired camera resolution" name="cameraResolution" type="integer" value="1"/>
+            <property description="The title of the window showing the video frame." name="titleVideoFrameWindow" type="string" value=""/>
+                      
+                      <!-- 
+            <property name="cameraDisplayUpdate"
+                      type="integer"
+                      value="100"
+                      description="the update period for the camera display in milliseconds (0=no display window)"/>
+                       -->
+                      <!-- 
+            <property name="cameraProfile" 
+                      type="string"
+                      value=""
+                      description="Filename of the camera profile"/>            
+                            -->   
+        </properties>
+        <gui IsExternalGUIElement="true">
+            <width>2000</width>
+            <height>1500</height>
+        </gui>
+    </componentType>
+
 
 </componentTypes>
