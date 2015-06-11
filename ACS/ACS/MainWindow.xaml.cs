@@ -78,7 +78,7 @@ namespace Asterics.ACS {
         private int copyXOffset = 30;
         private int copyYOffset = 30;
         //private Hashtable model = new Hashtable();
-
+        //whoever changes this name to something else has to fight with eldufdo!!!
         private String copyDummyName = "copydummykiisurrockslolcatkiinyannyannyan";
         private String pasteDummyName = "";
         
