@@ -1,5 +1,7 @@
 package eu.asterics.mw.computervision;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.util.*;
 
 import javax.swing.SwingUtilities;
@@ -23,7 +25,7 @@ public class SharedCanvasFrame {
 	private Map<String, CanvasFrame> key2canvasFrame = new HashMap<String, CanvasFrame>();
 
 	public void createCanvasFrame(final String canvasKey, final String title,
-			final double gammaOfGrabber) {
+			final double gammaOfGrabber, final Point pos, final Dimension d) {
 		synchronized (key2canvasFrame) {
 			if (key2canvasFrame.containsKey(canvasKey)) {
 				AstericsErrorHandling.instance.getLogger().fine(
@@ -49,6 +51,8 @@ public class SharedCanvasFrame {
 
 				CanvasFrame frame = new CanvasFrame(title, CanvasFrame
 						.getDefaultGamma() / gammaOfGrabber);
+				frame.setLocation(pos);
+				frame.setSize(d);
 
 				synchronized (key2canvasFrame) {
 					key2canvasFrame.put(canvasKey, frame);
