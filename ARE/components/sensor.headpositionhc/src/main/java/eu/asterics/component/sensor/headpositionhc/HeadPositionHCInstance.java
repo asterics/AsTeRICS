@@ -28,13 +28,16 @@
 package eu.asterics.component.sensor.headpositionhc;
 
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.logging.Logger;
 
 import org.bytedeco.javacpp.opencv_core.CvRect;
 import org.bytedeco.javacpp.opencv_core.CvScalar;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.FrameGrabber;
+
 import static org.bytedeco.javacpp.opencv_core.CV_AA;
 import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
 import static org.bytedeco.javacpp.opencv_core.cvFlip;
@@ -43,7 +46,7 @@ import static org.bytedeco.javacpp.opencv_core.cvRectangle;
 import static org.bytedeco.javacpp.opencv_imgproc.CV_BGR2GRAY;
 import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 import static org.bytedeco.javacpp.opencv_imgproc.cvEqualizeHist;
-
+import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.computervision.GrabbedImageListener;
 import eu.asterics.mw.computervision.SharedCanvasFrame;
 import eu.asterics.mw.computervision.SharedFrameGrabber;
@@ -111,6 +114,8 @@ public class HeadPositionHCInstance extends AbstractRuntimeComponentInstance imp
 	  private int numChoices;
 	  public int counter;
 	  private HaarCascadeDetection facedetection;
+
+	private String instanceId;
     
    /**
     * The class constructor.
@@ -387,7 +392,12 @@ public class HeadPositionHCInstance extends AbstractRuntimeComponentInstance imp
   			//Integer.toString(this.propCameraID)
   			SharedFrameGrabber.instance.registerGrabbedImageListener(Integer.toString(this.propCameraID), this);
   			SharedFrameGrabber.instance.startGrabbing(Integer.toString(this.propCameraID));
-  			SharedCanvasFrame.instance.createCanvasFrame("CanvasFrame1", "Face", grabber.getGamma());
+
+			instanceId=DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(this);
+  			Point pos = AREServices.instance.getComponentPosition(this);
+  			Dimension d = AREServices.instance.getAvailableSpace(this);
+
+  			SharedCanvasFrame.instance.createCanvasFrame(instanceId, "Face", grabber.getGamma(),pos,d);
     	  }catch (Exception e)
     	  {}
     	  
@@ -429,9 +439,9 @@ public class HeadPositionHCInstance extends AbstractRuntimeComponentInstance imp
       @Override
       public void stop()
       {
-		  SharedFrameGrabber.instance.stopGrabbing("0");
-      	  SharedFrameGrabber.instance.deregisterGrabbedImageListener("0", this);
-      	  SharedCanvasFrame.instance.disposeFrame("CanvasFrame1");
+		  SharedFrameGrabber.instance.stopGrabbing(Integer.toString(this.propCameraID));
+      	  SharedFrameGrabber.instance.deregisterGrabbedImageListener(Integer.toString(this.propCameraID), this);
+      	  SharedCanvasFrame.instance.disposeFrame(instanceId);
 
           super.stop();
       }
@@ -451,7 +461,7 @@ public class HeadPositionHCInstance extends AbstractRuntimeComponentInstance imp
 			    // convert to grey image
 			    IplImage greyImage = convertFrame(snapIm);
 			    
-			    Graphics g = SharedCanvasFrame.instance.getCanvasFrame("CanvasFrame1").getGraphics();
+			    Graphics g = SharedCanvasFrame.instance.getCanvasFrame(instanceId).getGraphics();
 			      
 			   
 			    //detect frontal face	
@@ -677,7 +687,7 @@ public class HeadPositionHCInstance extends AbstractRuntimeComponentInstance imp
 			  if(choice != null)
 				  choice.draw(g, snapIm);
 		  }
-		  SharedCanvasFrame.instance.showImage("CanvasFrame1", snapIm);
+		  SharedCanvasFrame.instance.showImage(instanceId, snapIm);
 		  //SharedCanvasFrame.instance.getCanvasFrame("CanvasFrame1").repaint();
 		  
 	  }

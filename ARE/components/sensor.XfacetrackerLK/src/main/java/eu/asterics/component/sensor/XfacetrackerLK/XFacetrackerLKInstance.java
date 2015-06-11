@@ -46,6 +46,8 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvFindCornerSubPix;
 import static org.bytedeco.javacpp.opencv_video.CV_LKFLOW_PYR_A_READY;
 import static org.bytedeco.javacpp.opencv_video.cvCalcOpticalFlowPyrLK;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +74,7 @@ import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
@@ -353,7 +356,10 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			if(!SharedFrameGrabber.IPCAMERA_GRABBER_KEY.equals(propFrameGrabber)) {
 				camGamma=grabber.getGamma();
 			}
-			SharedCanvasFrame.instance.createCanvasFrame(instanceId, title, camGamma);
+			Point pos = AREServices.instance.getComponentPosition(this);
+			Dimension d = AREServices.instance.getAvailableSpace(this);
+
+			SharedCanvasFrame.instance.createCanvasFrame(instanceId, title, camGamma, pos, d);
 			//start grabbing
 			SharedFrameGrabber.instance.startGrabbing(propCameraSelection);
 			running=true;
