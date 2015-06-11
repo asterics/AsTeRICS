@@ -1,16 +1,20 @@
 package eu.asterics.mw.computervision;
 
 
+import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.awt.Point;
 
 import org.bytedeco.javacpp.BytePointer;
+
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.videoInputLib.*;
+
 import org.bytedeco.javacv.CameraDevice;
 import org.bytedeco.javacv.FrameGrabber;
 
@@ -50,16 +54,16 @@ public class SharedFrameGrabber {
 	private void init(String grabberName, String deviceKey, int userWidth, int userHeight, String grabberFormat) throws Exception {
 		FrameGrabber grabber=null;
 
-		if(grabberFormat==null || "".equals(grabberFormat)) {
+		if(FFMPEG_GRABBER_KEY.equalsIgnoreCase(grabberName) && (grabberFormat==null || "".equals(grabberFormat))) {
 			grabberFormat="dshow";
 		}
 		
-		System.out.println("Available grabber: "+getFrameGrabberList());
-		System.out.println("Default FrameGrabber: "+getDefaultFrameGrabberName());
-		System.out.println("FrameGrabber: "+grabberName);
-		System.out.println("DeviceKey: "+deviceKey);
-		System.out.println("Resolution: "+userWidth+"x"+userHeight);
-		System.out.println("grabberFormat: "+grabberFormat);
+		AstericsErrorHandling.instance.reportInfo(null,"Available grabber: "+getFrameGrabberList());
+		AstericsErrorHandling.instance.reportInfo(null,"Default FrameGrabber: "+getDefaultFrameGrabberName());
+		AstericsErrorHandling.instance.reportInfo(null,"FrameGrabber: "+grabberName);
+		AstericsErrorHandling.instance.reportInfo(null,"DeviceKey: "+deviceKey);
+		AstericsErrorHandling.instance.reportInfo(null,"Resolution: "+userWidth+"x"+userHeight);
+		AstericsErrorHandling.instance.reportInfo(null,"grabberFormat: "+grabberFormat);
 
 		if(device2FrameGrabber.containsKey(deviceKey)) {
 			AstericsErrorHandling.instance.getLogger().fine("Removing old FrameGrabber with key <"+deviceKey+">");
@@ -74,7 +78,7 @@ public class SharedFrameGrabber {
 
 		if(grabberName == null || grabberName.equals(DEFAULT_GRABBER_KEY)) {			
 			grabberName=getDefaultFrameGrabberName();
-			System.out.println("Creating default FrameGrabber: "+grabberName);
+			AstericsErrorHandling.instance.reportInfo(null, "Creating default FrameGrabber: "+grabberName);
 		}
 		doSanityChecks(grabberName, deviceKey);
 
@@ -196,7 +200,7 @@ public class SharedFrameGrabber {
 			IplImage bgrImage = null;
 			BytePointer bgrImageData = null;
 			SharedCanvasFrame.instance.createCanvasFrame("showCameraSettings",
-					"Preview Camera Settings", 1);
+					"Preview Camera Settings", 1,new Point(0,0),new Dimension(200,200));
 
 			AstericsErrorHandling.instance.reportDebugInfo(null, "Showing camera preview for 500 frames");
 			for (int i = 0; i < 500; i++) {
@@ -270,7 +274,7 @@ public class SharedFrameGrabber {
 		}
 		deviceListeners.add(listener);
 		listeners.put(deviceKey, deviceListeners);
-		System.out.println("After registering: Registered grabbing listeners: "+deviceListeners);
+		AstericsErrorHandling.instance.reportDebugInfo(null,"After registering: Registered grabbing listeners: "+deviceListeners);
 	}
 	
 	public void deregisterGrabbedImageListener(String deviceKey, GrabbedImageListener listener) {
@@ -294,7 +298,7 @@ public class SharedFrameGrabber {
 				}
 			}
 		}
-		System.out.println("After deregistering: Registered grabbing listeners: "+deviceListeners);
+		AstericsErrorHandling.instance.reportDebugInfo(null,"After deregistering: Registered grabbing listeners: "+deviceListeners);
 	}
 	
 	public void startGrabbing(final String deviceKey) {
@@ -307,12 +311,12 @@ public class SharedFrameGrabber {
 	}
 	
 	public void stopGrabbing(String deviceKey) {
-		System.out.println("Stop grabbing for devicekey <"+deviceKey+">");
+		AstericsErrorHandling.instance.reportDebugInfo(null,"Stop grabbing for devicekey <"+deviceKey+">");
 		GrabberThread grabberThread=grabberThreads.get(deviceKey);
 		if(grabberThread!=null) {
 			grabberThread.stopGrabbing();
 			try {
-				System.out.println("Waiting for thread to die...");
+				AstericsErrorHandling.instance.reportDebugInfo(null,"Waiting for thread to die...");
 				grabberThread.join(GRABBER_STOP_TIMEOUT);				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -344,7 +348,7 @@ public class SharedFrameGrabber {
 			List<GrabbedImageListener> deviceListeners=listeners.get(deviceKey);
 			try {
 				grabber = getFrameGrabber(deviceKey);
-				System.out.println("Start grabbing for devicekey <"+deviceKey+">, grabber <"+grabber+">");
+				AstericsErrorHandling.instance.reportDebugInfo(null,"Start grabbing for devicekey <"+deviceKey+">, grabber <"+grabber+">");
 				if(grabber!=null) {
 					grabber.start();
 					while(!stopGrabbing) {
@@ -352,7 +356,7 @@ public class SharedFrameGrabber {
 						notifyGrabbedImageListener(deviceListeners, image);
 					}
 					grabber.stop();
-					System.out.println("Grabbing stopped");
+					AstericsErrorHandling.instance.reportDebugInfo(null,"Grabbing stopped");
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
