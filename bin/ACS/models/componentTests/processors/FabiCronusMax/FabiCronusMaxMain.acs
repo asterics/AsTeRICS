@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\Programme\AsTeRICS-master\bin\ACS\models\componentTests\processors\FabiCronusMax\FabiCronusMaxMain.acs_2015_3_23_16_21" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\itobi_000\Documents\AsTeRICS-master\bin\ACS\models\componentTests\processors\FabiCronusMax\FabiCronusMaxMain.acs_2015_5_13_9_38" version="20130320">
   <components>
     <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
       <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
@@ -177,8 +177,8 @@
         <posY>40</posY>
       </layout>
       <gui>
-        <posX>6697</posX>
-        <posY>2343</posY>
+        <posX>6678</posX>
+        <posY>2387</posY>
         <width>1625</width>
         <height>4778</height>
       </gui>
@@ -338,8 +338,8 @@
         <posY>1038</posY>
       </layout>
       <gui>
-        <posX>8322</posX>
-        <posY>3565</posY>
+        <posX>8302</posX>
+        <posY>3609</posY>
         <width>1688</width>
         <height>1889</height>
       </gui>
@@ -400,8 +400,8 @@
         <property name="Delay" value="200" />
       </properties>
       <layout>
-        <posX>577</posX>
-        <posY>1027</posY>
+        <posX>565</posX>
+        <posY>1044</posY>
       </layout>
     </component>
     <component id="AdjustmentCurve.1" type_id="asterics.AdjustmentCurve">
@@ -587,8 +587,8 @@
         <posY>882</posY>
       </layout>
       <gui>
-        <posX>8322</posX>
-        <posY>2343</posY>
+        <posX>8302</posX>
+        <posY>2387</posY>
         <width>1688</width>
         <height>1222</height>
       </gui>
@@ -643,8 +643,8 @@
         <posY>585</posY>
       </layout>
       <gui>
-        <posX>8322</posX>
-        <posY>5454</posY>
+        <posX>8302</posX>
+        <posY>5498</posY>
         <width>1688</width>
         <height>778</height>
       </gui>
@@ -684,8 +684,8 @@
         <posY>788</posY>
       </layout>
       <gui>
-        <posX>8322</posX>
-        <posY>6232</posY>
+        <posX>8302</posX>
+        <posY>6276</posY>
         <width>1688</width>
         <height>889</height>
       </gui>
@@ -719,12 +719,12 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="ComPort" value="24" />
+        <property name="ComPort" value="9" />
         <property name="ModeFilePath" value="..\ACS\models\componentTests\processors\FabiCronusMax\config.csv" />
       </properties>
       <layout>
-        <posX>653</posX>
-        <posY>93</posY>
+        <posX>652</posX>
+        <posY>92</posY>
       </layout>
     </component>
     <component id="TextSender.1.1" type_id="asterics.TextSender">
@@ -857,8 +857,8 @@
         <posY>10</posY>
       </layout>
       <gui>
-        <posX>6697</posX>
-        <posY>7121</posY>
+        <posX>6678</posX>
+        <posY>7165</posY>
         <width>562</width>
         <height>333</height>
       </gui>
@@ -883,8 +883,8 @@
         <posY>607</posY>
       </layout>
       <gui>
-        <posX>8885</posX>
-        <posY>7121</posY>
+        <posX>8866</posX>
+        <posY>7165</posY>
         <width>1125</width>
         <height>333</height>
       </gui>
@@ -909,8 +909,8 @@
         <posY>457</posY>
       </layout>
       <gui>
-        <posX>8385</posX>
-        <posY>7121</posY>
+        <posX>8365</posX>
+        <posY>7165</posY>
         <width>500</width>
         <height>333</height>
       </gui>
@@ -935,8 +935,8 @@
         <posY>304</posY>
       </layout>
       <gui>
-        <posX>7822</posX>
-        <posY>7121</posY>
+        <posX>7801</posX>
+        <posY>7165</posY>
         <width>562</width>
         <height>333</height>
       </gui>
@@ -961,11 +961,22 @@
         <posY>160</posY>
       </layout>
       <gui>
-        <posX>7260</posX>
-        <posY>7121</posY>
+        <posX>7240</posX>
+        <posY>7165</posY>
         <width>562</width>
         <height>333</height>
       </gui>
+    </component>
+    <component id="AutostartEvent.1.2" type_id="asterics.AutostartEvent">
+      <description>Sends the event after model start, with defined delay.</description>
+      <ports />
+      <properties>
+        <property name="Delay" value="250" />
+      </properties>
+      <layout>
+        <posX>277</posX>
+        <posY>1138</posY>
+      </layout>
     </component>
   </components>
   <channels>
@@ -1203,20 +1214,6 @@
     </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="output_calibration">
-      <sources>
-        <source>
-          <component id="AutostartEvent.1" />
-          <eventPort id="output" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="Lipmouse.1" />
-          <eventPort id="calibration" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="eventPosEdge_dragPress">
       <description />
       <sources>
@@ -1577,6 +1574,21 @@
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="output_calibration">
+      <description />
+      <sources>
+        <source>
+          <component id="AutostartEvent.1.2" />
+          <eventPort id="output" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Lipmouse.1" />
+          <eventPort id="calibration" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
     <Decoration>true</Decoration>
@@ -1586,9 +1598,9 @@
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
       <posX>6685</posX>
-      <posY>1956</posY>
+      <posY>2022</posY>
       <width>3312</width>
-      <height>5444</height>
+      <height>5556</height>
     </AREGUIWindow>
   </modelGUI>
 </model>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\Programme\AsTeRICS-master\bin\ACS\models\componentTests\processors\FabiCronusMax\PS3.acs_2015_3_23_14_4" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\itobi_000\Documents\AsTeRICS-master\bin\ACS\models\componentTests\processors\FabiCronusMax\PS3.acs_2015_3_25_16_47" version="20130320">
   <components>
     <component id="FabiCronusMax.1" type_id="asterics.FabiCronusMax">
       <description>Plugin for the combination of the Fabi and the CronusMax</description>
@@ -30,7 +30,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="ComPort" value="24" />
+        <property name="ComPort" value="9" />
         <property name="ModeFilePath" value="..\ACS\models\componentTests\processors\FabiCronusMax\config.csv" />
       </properties>
       <layout>
@@ -389,7 +389,7 @@
       </properties>
       <layout>
         <posX>505</posX>
-        <posY>460</posY>
+        <posY>448</posY>
       </layout>
     </component>
     <component id="ImageBox.1" type_id="asterics.ImageBox">
@@ -472,7 +472,7 @@
       </ports>
       <properties>
         <property name="keyCode" value="29" />
-        <property name="block" value="False" />
+        <property name="block" value="True" />
       </properties>
       <layout>
         <posX>115</posX>
@@ -984,7 +984,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="C:\Program Files (x86)\Gtuner\Gtuner.exe" />
+        <property name="defaultApplication" value="C:\Program Files (x86)\CronusPRO\Cronus.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
         <property name="autoLaunch" value="false" />
@@ -2237,36 +2237,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="conditionTrue_block">
-      <description />
-      <sources>
-        <source>
-          <component id="Comparator.1.2" />
-          <eventPort id="conditionTrue" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="KeyCapture.1.1" />
-          <eventPort id="block" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="conditionTrue_disable">
-      <description />
-      <sources>
-        <source>
-          <component id="Comparator.1.2" />
-          <eventPort id="conditionTrue" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="KeyCapture.1.1" />
-          <eventPort id="disable" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="conditionTrue_unblock">
       <description />
       <sources>
@@ -2324,6 +2294,66 @@
         <target>
           <component id="EventCounter.1" />
           <eventPort id="resetToZero" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_enable">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="enable" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_block">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="block" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_enable">
+      <description />
+      <sources>
+        <source>
+          <component id="Comparator.1.2.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="enable" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_unblock">
+      <description />
+      <sources>
+        <source>
+          <component id="Comparator.1.2.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="unblock" />
         </target>
       </targets>
     </eventChannel>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\Programme\AsTeRICS-master\bin\ACS\models\componentTests\processors\FabiCronusMax\XBOXONE.acs_2015_3_23_13_46" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\itobi_000\Documents\AsTeRICS-master\bin\ACS\models\componentTests\processors\FabiCronusMax\XBOXONE.acs_2015_3_25_16_46" version="20130320">
   <components>
     <component id="FabiCronusMax.1" type_id="asterics.FabiCronusMax">
       <description>Plugin for the combination of the Fabi and the CronusMax</description>
@@ -30,7 +30,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="ComPort" value="24" />
+        <property name="ComPort" value="9" />
         <property name="ModeFilePath" value="..\ACS\models\componentTests\processors\FabiCronusMax\config.csv" />
       </properties>
       <layout>
@@ -498,8 +498,8 @@
         <property name="block" value="True" />
       </properties>
       <layout>
-        <posX>48</posX>
-        <posY>702</posY>
+        <posX>41</posX>
+        <posY>710</posY>
       </layout>
     </component>
     <component id="KeyCapture.1" type_id="asterics.KeyCapture">
@@ -511,11 +511,11 @@
       </ports>
       <properties>
         <property name="keyCode" value="29" />
-        <property name="block" value="False" />
+        <property name="block" value="True" />
       </properties>
       <layout>
-        <posX>148</posX>
-        <posY>699</posY>
+        <posX>160</posX>
+        <posY>712</posY>
       </layout>
     </component>
     <component id="EyeX.1" type_id="asterics.EyeX">
@@ -1007,7 +1007,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="C:\Program Files (x86)\Gtuner\Gtuner.exe" />
+        <property name="defaultApplication" value="C:\Program Files (x86)\CronusPRO\Cronus.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
         <property name="autoLaunch" value="false" />
@@ -1088,7 +1088,7 @@
         <property name="outputMode" value="2" />
         <property name="eventMode" value="1" />
         <property name="threshold" value="1001" />
-        <property name="threshold2" value="3000" />
+        <property name="threshold2" value="5000" />
       </properties>
       <layout>
         <posX>515</posX>
@@ -1115,8 +1115,8 @@
         <property name="autoSend" value="true" />
       </properties>
       <layout>
-        <posX>626</posX>
-        <posY>940</posY>
+        <posX>625</posX>
+        <posY>939</posY>
       </layout>
     </component>
     <component id="Comparator.1.2" type_id="asterics.Comparator">
@@ -1165,8 +1165,8 @@
         <property name="threshold2" value="1000" />
       </properties>
       <layout>
-        <posX>772</posX>
-        <posY>1008</posY>
+        <posX>764</posX>
+        <posY>1012</posY>
       </layout>
     </component>
     <component id="TextDisplay.1.2.5" type_id="asterics.TextDisplay">
@@ -1254,8 +1254,8 @@
         <property name="Seperator" value="," />
       </properties>
       <layout>
-        <posX>885</posX>
-        <posY>417</posY>
+        <posX>914</posX>
+        <posY>438</posY>
       </layout>
     </component>
     <component id="TextDisplay.1.2.1" type_id="asterics.TextDisplay">
@@ -2177,36 +2177,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="conditionTrue_block">
-      <description />
-      <sources>
-        <source>
-          <component id="Comparator.1.2" />
-          <eventPort id="conditionTrue" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="KeyCapture.1.1" />
-          <eventPort id="block" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="conditionTrue_disable">
-      <description />
-      <sources>
-        <source>
-          <component id="Comparator.1.2" />
-          <eventPort id="conditionTrue" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="KeyCapture.1.1" />
-          <eventPort id="disable" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="conditionTrue_unblock">
       <description />
       <sources>
@@ -2297,21 +2267,6 @@
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="conditionTrue_resetToZero">
-      <description />
-      <sources>
-        <source>
-          <component id="Comparator.1" />
-          <eventPort id="conditionTrue" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventCounter.1" />
-          <eventPort id="resetToZero" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="button3_calibration">
       <description />
       <sources>
@@ -2324,6 +2279,36 @@
         <target>
           <component id="Lipmouse.1" />
           <eventPort id="calibration" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="keyPressed_block">
+      <description />
+      <sources>
+        <source>
+          <component id="KeyCapture.1" />
+          <eventPort id="keyPressed" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="block" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="conditionTrue_unblock">
+      <description />
+      <sources>
+        <source>
+          <component id="Comparator.1.2.1" />
+          <eventPort id="conditionTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="KeyCapture.1" />
+          <eventPort id="unblock" />
         </target>
       </targets>
     </eventChannel>
