@@ -167,15 +167,17 @@ public class GUI extends JPanel
 	        	  noteName+= (int)(note / 12);
 	          }
 	     
-	          if (noteName.contains("#"))
-		          g2d.setPaint(Color.GRAY);
-	          else
-	        	  g2d.setPaint(Color.WHITE);
+        	  g2d.setPaint(Color.WHITE);
+	          if ((noteName.contains("#")) && (owner.propDisplayNoteNames))
+	        		  g2d.setPaint(Color.GRAY);
 	          
 	          g2d.fill(new Rectangle2D.Double(xEllipse + ellipseWidth*i+1, yEllipse+1, ellipseWidth-2, ellipseHeight-2));
 
-	          g2d.setPaint(Color.RED);
-		      g2d.drawString(noteName,(int)(xEllipse + ellipseWidth*i), (int)yEllipse);        
+	          if (owner.propDisplayNoteNames)
+	          {
+	        	  g2d.setPaint(Color.RED);
+	        	  g2d.drawString(noteName,(int)(xEllipse + ellipseWidth*i), (int)yEllipse);
+	          }
         }
         
         g2d.setPaint(Color.BLACK);
