@@ -8,37 +8,68 @@
         <singleton>false</singleton>
         <description>This plugin reads data from an edf-file and sends it to its output ports</description>
         <ports>
-
 			<outputPort id="CH1">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH2">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH3">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH4">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH5">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH6">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH7">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH8">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH9">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH10">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH11">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH12">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH13">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH14">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH15">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH16">
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 
@@ -52,7 +83,7 @@
                       type="string"
                       value=""
                       getStringList="true"
-                      description="Wav file to be played."/>
+                      description="EDF file to be opened."/>
         </properties>
 
     </componentType>
