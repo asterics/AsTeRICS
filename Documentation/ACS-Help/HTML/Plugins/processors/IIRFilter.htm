@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=ISO-8859-2">
+    <meta name="GENERATOR" content="Microsoft&#174; HTML Help Workshop 4.1">
+    <link rel="stylesheet" type="text/css"
+      href="../../stylesheet/help.css" media="screen">
+    <title>IIRFilter</title>
+  </head>
+  <body>
+    <h1>IIRFilter</h1>
+    <H3>Component Type: Processor (Subcategory: DSP and Feature Detection)</H3>
+    <p>This plugin provides adjustable Infinite Impulse Response Filters, based on the Java DSP Library: <a href="http://www.source-code.biz/dsp/java/">http://www.source-code.biz/dsp/java</a>
+    <br>
+    </p>
+    <div class="image"><img src="img/IIRFilter.jpg" alt="Screenshot: IIRFilter plugin" title="Screenshot: IIRFilter plugin" /><br>
+    IIRFilter plugin</div>
+    <H2>Input Port Description</H2>
+    <ul>
+    <li><STRONG>in [double]:</STRONG> The signal to be filtered</li>
+	</ul>
+
+    <H2>Input Port Description</H2>
+    <ul>
+	<li><STRONG>out [double]:</STRONG> The filtered signal</li>
+    <li><STRONG>magnitude [double]:</STRONG> the magnitude of the filtered signal in the selected passband (only calculated if the passType = bandpass !)</li>
+    </ul>
+    
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>passType [integer] (combobox selection):</strong> can be lowpass, highpass, bandpass or bandstop<br>
+      </li>
+      <li><strong>characteristicType [integer] (combobox selection):</strong> can be butterworth, bessel or chebyshev<br>
+      </li>
+      <li><strong>order [integer]:</strong> the filter order (values from 1 to 12 recommended)<br>
+      </li>
+      <li><strong>samplingFrequency [integer]:</strong> the sampling rate of the input signal<br>
+      </li>
+      <li><strong>fc1 [double]:</strong> corner frequency (lower corner frequency for bandpass filter)<br>
+      </li>
+      <li><strong>fc2 [double]:</strong> higher corner frequency (ignored in case of highpass or lowpass types)<br>
+      </li>
+      <li><strong>ripple [double]:</strong> the passband ripple supression, must be a negative value (only for chebyshev types, ignored for other types)<br>
+      </li>
+    </ul>
+  </body>
+</html>

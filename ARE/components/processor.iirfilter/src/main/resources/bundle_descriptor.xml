@@ -29,12 +29,12 @@
 
 		</events>			
         <properties>
-			<property name="passtype"
+			<property name="passType"
 				type="integer"
 				value="0"
 				combobox="lowpass//highpass//bandpass//bandstop"
 				description="type of filter"/>
-			<property name="characteristictype"
+			<property name="characteristicType"
 				type="integer"
 				value="0"
 				combobox="butterworth//chebyshev//bessel"
@@ -42,7 +42,7 @@
 			<property name="order"
 				type="integer"
 				value="4"
-				description="filter order"/>
+				description="filter order (use values lower than 12 to prevent excessive swinging)"/>
 			<property name="samplingFrequency"
 				type="double"
 				value="100"
@@ -57,7 +57,7 @@
 				description="Upper cutoff frequency in Hz for bandpass/bandstop,  ignored for lowpass/highpass."/>
 			<property name="ripple"
 				type="double"
-				value="0"
+				value="-1"
 				description="Passband ripple in dB. Must be negative. Only used for Chebyshev filter, ignored for other filters"/>
 
         </properties>

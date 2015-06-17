@@ -53,9 +53,9 @@ import eu.asterics.mw.services.AREServices;
  * 
  * 
  *  
- * @author <your name> [<your email address>]
- *         Date: 
- *         Time: 
+ * @author Chris Veigl [veigl@technikum-wien.at]
+ *         Date: 05/2015
+ *          
  */
 public class IIRFilterInstance extends AbstractRuntimeComponentInstance
 {
@@ -65,21 +65,27 @@ public class IIRFilterInstance extends AbstractRuntimeComponentInstance
 
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	int propPasstype = 0;
-	int propCharacteristictype = 0;
+	int propPassType = 0;
+	int propCharacteristicType = 0;
 	int propOrder = 4;
 	double propSamplingFrequency = 100;
 	double propFc1 = 10;
 	double propFc2 = 20;
-	double propRipple = 0;
+	double propRipple = -1;
 
+	boolean outputMagnitude=false;
+	long packetcounter=0;
 	// declare member variables here
 
 	IirFilterCoefficients coeffs;
 	IirFilter iirFilter;
 
-    String passtypes[]={"lowpass","highpass","bandpass","bandstop"};
-    String characteristictypes[]={"butterworth","bessel","chebyshev"};
+	IirFilterCoefficients coeffsMag;
+	IirFilter iirFilterMag1;
+	IirFilter iirFilterMag2;
+
+    String passTypes[]={"lowpass","highpass","bandpass","bandstop"};
+    String characteristicTypes[]={"butterworth","chebyshev","bessel"};
     
    /**
     * The class constructor.
@@ -154,11 +160,11 @@ public class IIRFilterInstance extends AbstractRuntimeComponentInstance
     {
 		if ("passtype".equalsIgnoreCase(propertyName))
 		{
-			return propPasstype;
+			return propPassType;
 		}
 		if ("characteristictype".equalsIgnoreCase(propertyName))
 		{
-			return propCharacteristictype;
+			return propCharacteristicType;
 		}
 		if ("order".equalsIgnoreCase(propertyName))
 		{
@@ -193,44 +199,54 @@ public class IIRFilterInstance extends AbstractRuntimeComponentInstance
     {
 		if ("passtype".equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = propPasstype;
-			propPasstype = Integer.parseInt(newValue.toString());
+			final Object oldValue = propPassType;
+			propPassType = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
 		if ("characteristictype".equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = propCharacteristictype;
-			propCharacteristictype = Integer.parseInt(newValue.toString());
+			final Object oldValue = propCharacteristicType;
+			propCharacteristicType = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
 		if ("order".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propOrder;
-			propOrder = Integer.parseInt(newValue.toString());
+			int i=0;
+			i=Integer.parseInt(newValue.toString());
+			if (i>0) propOrder=i;
 			return oldValue;
 		}
 		if ("samplingFrequency".equalsIgnoreCase(propertyName))
 		{
+			double d=0;
 			final double oldValue = propSamplingFrequency;
-			propSamplingFrequency = Double.parseDouble((String)newValue);
+			d= Double.parseDouble((String)newValue);
+			if (d>0) propSamplingFrequency=d;
 			return oldValue;
 		}
 		if ("fc1".equalsIgnoreCase(propertyName))
 		{
+			double d=0;
 			final double oldValue = propFc1;
-			propFc1 = Double.parseDouble((String)newValue);
+			d= Double.parseDouble((String)newValue);
+			if (d>0) propFc1=d;
 			return oldValue;
 		}
 		if ("fc2".equalsIgnoreCase(propertyName))
 		{
+			double d =0;
 			final double oldValue = propFc2;
-			propFc2 = Double.parseDouble((String)newValue);
+			d = Double.parseDouble((String)newValue);
+			if (d>0) propFc2=d;
 			return oldValue;
 		}
 		if ("ripple".equalsIgnoreCase(propertyName))
 		{
+			double d=0;
 			final double oldValue = propRipple;
-			propRipple = Double.parseDouble((String)newValue);
+			d= Double.parseDouble((String)newValue);
+			if (d<0) propRipple =d;
 			return oldValue;
 		}
 
@@ -246,6 +262,23 @@ public class IIRFilterInstance extends AbstractRuntimeComponentInstance
 		{
 			double result = iirFilter.step(ConversionUtils.doubleFromBytes(data));
 			opOut.sendData(ConversionUtils.doubleToBytes(result));
+			
+			if (outputMagnitude)
+			{
+
+		        double sig1,sig2;
+		        double center=propFc1+(propFc2-propFc1)/2;
+		        double input =(ConversionUtils.doubleFromBytes(data));
+		        
+				sig1=Math.sin(packetcounter*2*Math.PI/propSamplingFrequency*center)*(input);		        
+				sig2=Math.cos(packetcounter*2*Math.PI/propSamplingFrequency*center)*(input);
+
+		        sig1= iirFilterMag1.step(sig1);
+		        sig2= iirFilterMag2.step(sig2);
+
+				opMagnitude.sendData(ConversionUtils.doubleToBytes(2*Math.sqrt(sig1*sig1+sig2*sig2)));
+				packetcounter++;
+			}
 		}
 	};
 
@@ -261,10 +294,23 @@ public class IIRFilterInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
-    	   coeffs = IirFilterDesignFisher.design(FilterPassType.valueOf(passtypes[propPasstype]), 
-    			   FilterCharacteristicsType.valueOf(characteristictypes[propCharacteristictype]), 
+    	   coeffs = IirFilterDesignFisher.design(FilterPassType.valueOf(passTypes[propPassType]), 
+    			   FilterCharacteristicsType.valueOf(characteristicTypes[propCharacteristicType]), 
     			   propOrder, propRipple, propFc1/propSamplingFrequency, propFc2/propSamplingFrequency);
     	   iirFilter = new IirFilter(coeffs); 
+    	   
+    	   outputMagnitude=false;
+    	   if (passTypes[propPassType].equalsIgnoreCase("bandpass"))
+    	   {
+    		   packetcounter=0;
+        	   coeffsMag = IirFilterDesignFisher.design(FilterPassType.valueOf("lowpass"), 
+        			   FilterCharacteristicsType.valueOf(characteristicTypes[propCharacteristicType]), 
+        			   propOrder, propRipple, (propFc2-propFc1)/2/propSamplingFrequency, 0);
+        	   iirFilterMag1 = new IirFilter(coeffsMag); 
+        	   iirFilterMag2 = new IirFilter(coeffsMag); 
+
+    		   outputMagnitude=true;    		   
+    	   }
            super.start();
       }
 
