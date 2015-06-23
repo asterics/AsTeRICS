@@ -32,7 +32,7 @@ namespace WPG {
         void PropertyGrid_PreviewFocusChanged(object sender, KeyboardFocusChangedEventArgs e)
         {
             var OrginalSource = (e.OriginalSource as FrameworkElement);
-            Console.WriteLine("########## GotFocus: " + ((Property)OrginalSource.DataContext).Name);
+//            Console.WriteLine("########## GotFocus: " + ((Property)OrginalSource.DataContext).Name);
             if (OrginalSource.DataContext != null && OrginalSource.DataContext.GetType() == typeof(Property))
             {
                 SelectedProperty = (Property)OrginalSource.DataContext;
@@ -81,7 +81,7 @@ namespace WPG {
 
         private void PropertyGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e) {
             var OrginalSource = (e.OriginalSource as FrameworkElement);
-            Console.WriteLine("########## Mouse: " + ((Property)OrginalSource.DataContext).Name);
+//            Console.WriteLine("########## Mouse: " + ((Property)OrginalSource.DataContext).Name);
             if (OrginalSource.DataContext != null && OrginalSource.DataContext.GetType() == typeof(Property)) {
                 //var selectedProperty = (Property)OrginalSource.DataContext;
                 SelectedProperty = (Property)OrginalSource.DataContext;
