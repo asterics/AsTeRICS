@@ -726,7 +726,7 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void UploadSchema_Click(object sender, RoutedEventArgs e) {
-            resetFocus();
+//            resetFocus();
             bool isError = false;
             bool doOverride = false;
 
