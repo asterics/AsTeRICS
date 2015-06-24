@@ -94,6 +94,9 @@
 				description="The angle has to be for X images in the same range to send the select Event"/>
 
         </properties>
-
+        <gui IsExternalGUIElement="true">
+            <width>2000</width>
+            <height>2000</height>
+        </gui>
     </componentType>
 </componentTypes>
