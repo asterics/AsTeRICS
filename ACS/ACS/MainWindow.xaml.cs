@@ -726,7 +726,7 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void UploadSchema_Click(object sender, RoutedEventArgs e) {
-            resetFocus();
+//            resetFocus();
             bool isError = false;
             bool doOverride = false;
 
@@ -7653,8 +7653,8 @@ namespace Asterics.ACS {
             CommandObject co = new CommandObject("moveComponent", selectedComponentList.ToArray());
             for (int i = 0; i < selectedComponentList.Count; i++) {
                 componentType mc = selectedComponentList.ElementAt(i);
-                co.Parameter.Add(double.Parse(mc.layout.posX));
-                co.Parameter.Add(double.Parse(mc.layout.posY));
+                co.Parameter.Add(int.Parse(mc.layout.posX));
+                co.Parameter.Add(int.Parse(mc.layout.posY));
             }
             return co;
         }

@@ -765,27 +765,6 @@
     </componentType>
 
 
- <componentType canonical_name="eu.asterics.component.sensor.signalgenerator.SignalGeneratorInstance" id="asterics.SignalGenerator">
-        <type subtype="Simulation">sensor</type>
-        <singleton>false</singleton>
-        <description>Signal Generator</description>
-        <ports>
-            <outputPort id="out">
-                <description>signal output</description>
-                <dataType>double</dataType>
-            </outputPort>
-        </ports>
-        <properties>
-            <property description="The interval for sending values (ms)" name="sendInterval" type="integer" value="20"/>
-            <property combobox="random//sine//sawtooth//rectangle" description="0:random 1:sine 2:sawtooth 3:rectangle" name="waveForm" type="integer" value="1"/>
-            <property description="cycles per second" name="frequency" type="double" value="2"/>
-            <property description="signal amplitude" name="amplitude" type="double" value="100"/>
-            <property description="phase offset (in milliseconds)" name="phaseShift" type="double" value="0"/>
-            <property description="signal offset (constant)" name="offset" type="double" value="0"/>
-        </properties>
-    </componentType>
-
-
  <componentType canonical_name="eu.asterics.component.actuator.analogout.AnalogOutInstance" id="asterics.AnalogOut">
         <type subtype="Generic Control Output">actuator</type>
         <singleton>false</singleton>
@@ -2395,12 +2374,12 @@
 			<inputPort id="trigger">
 				<description>this input port triggers the keystroke of the midi plugin</description>
 				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
+				<dataType>double</dataType>
 			</inputPort>
 			<inputPort id="pitch">
 				<description>this input selects the pitch of the tone played.</description>
 				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
+				<dataType>double</dataType>
 			</inputPort>
 			<inputPort id="instrument">
 				<description>accepts string inputs for instrument names of the active midi device, to select this instrument.</description>
@@ -2419,13 +2398,14 @@
 			<property description="name of the Midi Output device" getStringList="true" name="midiDevice" type="string" value="Gervill"/>
 			<property description="sets the channel for the midi instrument" name="channel" type="integer" value="1"/>
 			<property description="name of the instrument or controller" getStringList="true" name="instrument" type="string" value="Vibraphone"/>
-			<property description="sets the threshold for triggering a note" name="triggerThreshold" type="integer" value="50"/>
-			<property description="sets the value for the trigger input where the tone will have maximum volume" name="triggerMax" type="integer" value="100"/>
-			<property description="sets the minimum input value for computing the tone pitch" name="pitchMin" type="integer" value="0"/>
-			<property description="sets the maximum input value for computing the tone pitch" name="pitchMax" type="integer" value="1000"/>
+			<property description="sets the threshold for triggering a note" name="triggerThreshold" type="double" value="50"/>
+			<property description="sets the value for the trigger input where the tone will have maximum volume" name="triggerMax" type="double" value="100"/>
+			<property description="sets the minimum input value for computing the tone pitch" name="pitchMin" type="double" value="0"/>
+			<property description="sets the maximum input value for computing the tone pitch" name="pitchMax" type="double" value="1000"/>
 			<property description="filename of tone scale file" getStringList="true" name="toneScale" type="string" value="alltones.sc"/>
             <property description="if selected, only note changes will be played" name="playOnlyChangingNotes" type="boolean" value="true"/>
             <property description="if selected, the GUI window with tone parameters will be shown" name="displayGUI" type="boolean" value="true"/>
+            <property description="if selected, the note captions will be displayed" name="displayNoteNames" type="boolean" value="false"/>
         </properties>
 		<gui>
 			<width>5000</width>
@@ -6340,13 +6320,13 @@
 
 		</events>			
         <properties>
-			<property combobox="lowpass//highpass//bandpass//bandstop" description="type of filter" name="passtype" type="integer" value="0"/>
-			<property combobox="butterworth//chebyshev//bessel" description="characteristics of filter" name="characteristictype" type="integer" value="0"/>
-			<property description="filter order" name="order" type="integer" value="4"/>
+			<property combobox="lowpass//highpass//bandpass//bandstop" description="type of filter" name="passType" type="integer" value="0"/>
+			<property combobox="butterworth//chebyshev//bessel" description="characteristics of filter" name="characteristicType" type="integer" value="0"/>
+			<property description="filter order (use values lower than 12 to prevent excessive swinging)" name="order" type="integer" value="4"/>
 			<property description="sampling frequency of signal" name="samplingFrequency" type="double" value="100"/>
 			<property description="Filter cutoff frequency in Hz for lowpass/highpass,  lower cutoff frequency in Hz for bandpass/bandstop" name="fc1" type="double" value="10"/>
 			<property description="Upper cutoff frequency in Hz for bandpass/bandstop,  ignored for lowpass/highpass." name="fc2" type="double" value="20"/>
-			<property description="Passband ripple in dB. Must be negative. Only used for Chebyshev filter, ignored for other filters" name="ripple" type="double" value="0"/>
+			<property description="Passband ripple in dB. Must be negative. Only used for Chebyshev filter, ignored for other filters" name="ripple" type="double" value="-1"/>
 
         </properties>
 
@@ -11186,37 +11166,68 @@
         <singleton>false</singleton>
         <description>This plugin reads data from an edf-file and sends it to its output ports</description>
         <ports>
-
 			<outputPort id="CH1">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH2">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH3">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH4">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH5">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH6">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH7">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 			<outputPort id="CH8">
-				<description>output port description</description>
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH9">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH10">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH11">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH12">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH13">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH14">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH15">
+				<description>output port for sending edf channel data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="CH16">
+				<description>output port for sending edf channel data</description>
 				<dataType>double</dataType>
 			</outputPort>
 
@@ -11226,7 +11237,7 @@
 
 		</events>			
         <properties>
-            <property description="Wav file to be played." getStringList="true" name="filename" type="string" value=""/>
+            <property description="EDF file to be opened." getStringList="true" name="filename" type="string" value=""/>
         </properties>
 
     </componentType>
@@ -11345,6 +11356,27 @@
         </properties>
 
     </componentType>
+
+ <componentType canonical_name="eu.asterics.component.sensor.signalgenerator.SignalGeneratorInstance" id="asterics.SignalGenerator">
+        <type subtype="Simulation">sensor</type>
+        <singleton>false</singleton>
+        <description>Signal Generator</description>
+        <ports>
+            <outputPort id="out">
+                <description>signal output</description>
+                <dataType>double</dataType>
+            </outputPort>
+        </ports>
+        <properties>
+            <property description="The interval for sending values (ms)" name="sendInterval" type="integer" value="20"/>
+            <property combobox="random//sine//sawtooth//rectangle" description="0:random 1:sine 2:sawtooth 3:rectangle" name="waveForm" type="integer" value="1"/>
+            <property description="cycles per second" name="frequency" type="double" value="2"/>
+            <property description="signal amplitude" name="amplitude" type="double" value="100"/>
+            <property description="phase offset (in milliseconds)" name="phaseShift" type="double" value="0"/>
+            <property description="signal offset (constant)" name="offset" type="double" value="0"/>
+        </properties>
+    </componentType>
+
 
  <componentType canonical_name="eu.asterics.component.sensor.signalshaper.SignalShaperInstance" id="asterics.SignalShaper">
         <type subtype="Simulation">sensor</type>
@@ -11814,7 +11846,7 @@
              -->                        
         </events>
         <properties>
-            <property description="Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera)" getStringList="true" name="frameGrabber" type="string" value="OpenCV"/>
+            <property description="Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera)" getStringList="true" name="frameGrabber" type="string" value="Default"/>
             <property description="Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'" name="frameGrabberFormat" type="string" value=""/>              
             <property description="List of available devices, if supported by grabber" getStringList="true" name="deviceList" type="string" value=""/>
             <property description="The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera" name="cameraSelection" type="string" value="0"/>

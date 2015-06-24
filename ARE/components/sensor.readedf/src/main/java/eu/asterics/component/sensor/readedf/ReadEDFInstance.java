@@ -64,6 +64,8 @@ public class ReadEDFInstance extends AbstractRuntimeComponentInstance
 	boolean samplingShouldRun = false;
 	boolean samplingShouldPause = false;
 
+	final int numberOfOutputChannels = 16; 
+
 	int numberOfSignals = 32; // number of recorded signals in the file (number will be replaced after the file has been read)
 	int numberOfDataRecords = 0; 
 	int headerSize = 0;
@@ -118,39 +120,14 @@ public class ReadEDFInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
-		if ("cH1".equalsIgnoreCase(portID))
-		{
-			return opCH[0];
-		}
-		if ("cH2".equalsIgnoreCase(portID))
-		{
-			return opCH[1];
-		}
-		if ("cH3".equalsIgnoreCase(portID))
-		{
-			return opCH[2];
-		}
-		if ("cH4".equalsIgnoreCase(portID))
-		{
-			return opCH[3];
-		}
-		if ("cH5".equalsIgnoreCase(portID))
-		{
-			return opCH[4];
-		}
-		if ("cH6".equalsIgnoreCase(portID))
-		{
-			return opCH[5];
-		}
-		if ("cH7".equalsIgnoreCase(portID))
-		{
-			return opCH[6];
-		}
-		if ("cH8".equalsIgnoreCase(portID))
-		{
-			return opCH[7];
-		}
-
+    	for (int i = 0; i<numberOfOutputChannels;i++)
+    	{
+    		String chnID="cH"+(i+1);
+			if (chnID.equalsIgnoreCase(portID))
+			{
+				return opCH[i];
+			}
+    	}
 		return null;
 	}
 

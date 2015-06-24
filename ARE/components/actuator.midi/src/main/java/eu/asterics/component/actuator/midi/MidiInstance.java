@@ -69,10 +69,10 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
     private int oldVelocity = 127;
     public  int range = 0;
 
-    public int propPitchMin=0;
-    public int propPitchMax=1000;
-    public int propTriggerThreshold=50;
-    public int propTriggerMax = 100;
+    public double propPitchMin=0;
+    public double propPitchMax=1000;
+    public double propTriggerThreshold=50;
+    public double propTriggerMax = 100;
     public int propChannel=1;
     
     public boolean triggerTrue = true;
@@ -80,10 +80,11 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
     String propMidiDevice="Gervill";
     String propInstrument="Vibraphone";
     private boolean propDisplayGUI=true;
+    public boolean propDisplayNoteNames=false;
     boolean propPlayOnlyChangingNotes=true;
 
-    public int pitchInput=500;
-    private int triggerInput=75;
+    public double pitchInput=500;
+    private double triggerInput=75;
     
     boolean stopMidiNoteOn=false;
 
@@ -208,6 +209,10 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
         {
             return propDisplayGUI;
         }
+    	if("displayNoteNames".equalsIgnoreCase(propertyName))
+        {
+            return propDisplayNoteNames;
+        }
         return null;
     }
 
@@ -244,27 +249,27 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
         {
             final Object oldValue = propTriggerThreshold;
 			lastNoteOff();
-            propTriggerThreshold = Integer.parseInt(newValue.toString());
+            propTriggerThreshold = Double.parseDouble(newValue.toString());
             return oldValue;
         }
         if("triggerMax".equalsIgnoreCase(propertyName))
         {
             final Object oldValue = propTriggerMax;
-            propTriggerMax = Integer.parseInt(newValue.toString());
+            propTriggerMax = Double.parseDouble(newValue.toString());
             return oldValue;
         }
         if("pitchMin".equalsIgnoreCase(propertyName))
         {
             final Object oldValue = propPitchMin;
 			lastNoteOff();
-            propPitchMin = Integer.parseInt(newValue.toString());
+            propPitchMin = Double.parseDouble(newValue.toString());
             return oldValue;
         }
         if("pitchMax".equalsIgnoreCase(propertyName))
         {
             final Object oldValue = propPitchMax;
 			lastNoteOff();
-            propPitchMax = Integer.parseInt(newValue.toString());
+            propPitchMax = Double.parseDouble(newValue.toString());
             return oldValue;
         }
         if("toneScale".equalsIgnoreCase(propertyName))
@@ -289,6 +294,20 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
             else if("false".equalsIgnoreCase((String)newValue))
             {
             	propDisplayGUI = false;
+            }
+            return oldValue;
+        }    	
+    	if("displayNoteNames".equalsIgnoreCase(propertyName))
+        {
+            final Object oldValue = propDisplayNoteNames;
+
+            if("true".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayNoteNames = true;
+            }
+            else if("false".equalsIgnoreCase((String)newValue))
+            {
+            	propDisplayNoteNames = false;
             }
             return oldValue;
         }    	
@@ -417,7 +436,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveData(byte[] data)
 		{
-			triggerInput = ConversionUtils.intFromBytes(data);
+			triggerInput = ConversionUtils.doubleFromBytes(data);
 			
 
 				if (triggerInput < propTriggerThreshold)
@@ -448,7 +467,7 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 	{	
 		public void receiveData(byte[] data)
 		{
-    		pitchInput = ConversionUtils.intFromBytes(data);
+    		pitchInput = ConversionUtils.doubleFromBytes(data);
 			if(pitchInput < propPitchMin)
 			{
 				selectedNote = 0;

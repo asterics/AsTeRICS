@@ -11,12 +11,12 @@
 			<inputPort id="trigger">
 				<description>this input port triggers the keystroke of the midi plugin</description>
 				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
+				<dataType>double</dataType>
 			</inputPort>
 			<inputPort id="pitch">
 				<description>this input selects the pitch of the tone played.</description>
 				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
+				<dataType>double</dataType>
 			</inputPort>
 			<inputPort id="instrument">
 				<description>accepts string inputs for instrument names of the active midi device, to select this instrument.</description>
@@ -47,19 +47,19 @@
                       getStringList="true"
                       description="name of the instrument or controller"/>
 			<property name="triggerThreshold"
-                      type="integer"
+                      type="double"
                       value="50"
                       description="sets the threshold for triggering a note"/>
 			<property name="triggerMax"
-                      type="integer"
+                      type="double"
                       value="100"
                       description="sets the value for the trigger input where the tone will have maximum volume"/>
 			<property name="pitchMin"
-                      type="integer"
+                      type="double"
                       value="0"
                       description="sets the minimum input value for computing the tone pitch"/>
 			<property name="pitchMax"
-                      type="integer"
+                      type="double"
                       value="1000"
                       description="sets the maximum input value for computing the tone pitch"/>
 			<property name="toneScale"
@@ -75,6 +75,10 @@
                       type="boolean"
                       value="true"                      
                       description="if selected, the GUI window with tone parameters will be shown"/>
+            <property name="displayNoteNames"
+                      type="boolean"
+                      value="false"                      
+                      description="if selected, the note captions will be displayed"/>
         </properties>
 		<gui>
 			<width>5000</width>
