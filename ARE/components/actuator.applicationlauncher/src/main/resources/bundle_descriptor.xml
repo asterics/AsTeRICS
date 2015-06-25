@@ -39,6 +39,10 @@
 				type="string"
 				value="."
 				description="working directory for application"/>
+			<property name="closeCmd"
+				type="string"
+				value=""
+				description="Optional close cmd, e.g. if started cmd has forked processes (e.g. OSKA) use: taskkill.exe /IM &quot;OSKA Keyboard.exe&quot; /T"/>				
 			<property name="autoLaunch"
 				type="boolean"
 				value="false"

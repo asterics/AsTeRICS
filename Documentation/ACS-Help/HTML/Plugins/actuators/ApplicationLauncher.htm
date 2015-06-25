@@ -28,6 +28,7 @@ ApplicationLauncher plugin</div>
 <li><STRONG>defaultApplication [string]:</STRONG> Full path and filename of the default application</li>
 <li><STRONG>arguments [string]:</STRONG> the commandline arguments for the application</li>
 <li><STRONG>workingDirectory [string]:</STRONG> the working directory for the application (. is used for home directory of the application)</li>
+<li><STRONG>closeCmd [string]:</STRONG>Optional close cmd, e.g. if started cmd has forked processes (e.g. OSKA) use: taskkill.exe /IM &quot;OSKA Keyboard.exe&quot; /T</li>
 <li><STRONG>autoLaunch [boolean]:</STRONG> Defines if the default application is automatically launched at startup</li>
 <li><STRONG>autoClose [boolean]:</STRONG> Defines if the current application is closed when the model is stopped</li>
 <li><STRONG>onlyByEvent [boolean]:</STRONG> If this property is set to true, incoming application files names will not be started immediately (only the launchNow event will start the application)</li>

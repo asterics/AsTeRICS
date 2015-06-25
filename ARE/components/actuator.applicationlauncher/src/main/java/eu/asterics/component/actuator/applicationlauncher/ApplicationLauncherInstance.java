@@ -70,6 +70,8 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
 	String propDefaultApplication = "c:\\windows\\notepad.exe";
 	String propArguments = "";
 	String propWorkingDirectory = ".";
+	
+	String propCloseCmd="";
 	boolean propAutoLaunch = false;
 	boolean propAutoClose = true;
 	boolean propOnlyByEvent = false;
@@ -163,6 +165,11 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
 		{
 			return propWorkingDirectory;
 		}
+		if ("closeCmd".equalsIgnoreCase(propertyName))
+		{
+			return propCloseCmd;
+		}
+		
 		if ("autoLaunch".equalsIgnoreCase(propertyName))
 		{
 			return propAutoLaunch;
@@ -205,6 +212,13 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
 			if (propWorkingDirectory=="") propWorkingDirectory=".";
 			return oldValue;
 		}
+		if ("closeCmd".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propCloseCmd;
+			propCloseCmd = (String)newValue;
+			return oldValue;
+		}
+
 		if ("autoLaunch".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propAutoLaunch;
@@ -336,6 +350,26 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
 
         	process.destroy();
         	process = null;
+        	if(propCloseCmd!=null && !"".equals(propCloseCmd)) {
+        		System.out.println("Close cmd defined: "+propCloseCmd);
+        		
+        		List<String> command=new ArrayList<String>();
+    			StringTokenizer st = new StringTokenizer(propCloseCmd);
+    			while (st.hasMoreTokens()) {
+    				String act=st.nextToken();
+    				command.add(act);
+    	    		System.out.println("adding argument :" + act);
+    			}
+
+    		    System.out.println("commad: "+command);
+    		    ProcessBuilder builder = new ProcessBuilder(command);
+        		try {
+					builder.start();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
         }
     	processStarted=false;
 
