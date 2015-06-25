@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ACS\models\componentTests\actuators\ApplicationLauncher_test_Start_Stop_OSKA.acs_2015_6_26_0_31" version="20130320">
+  <components>
+    <component id="StartOSKA" type_id="asterics.ApplicationLauncher">
+      <description>starts external software applications via path and  filename (.exe)</description>
+      <ports>
+        <inputPort portTypeID="filename">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="defaultApplication" value="../oska/start keyboard.exe" />
+        <property name="arguments" value="" />
+        <property name="workingDirectory" value="." />
+        <property name="closeCmd" value="taskkill.exe /IM &quot;OSKA Keyboard.exe&quot; /T" />
+        <property name="autoLaunch" value="True" />
+        <property name="autoClose" value="True" />
+        <property name="onlyByEvent" value="False" />
+      </properties>
+      <layout>
+        <posX>141</posX>
+        <posY>989</posY>
+      </layout>
+    </component>
+  </components>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>9000</width>
+      <height>5000</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
