@@ -101,6 +101,7 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 	HashMap<Integer,Integer> dictInteger = new HashMap<>();
 	int _case;
 	 Process p;
+	 TuioClient client;
     
    /**
     * The class constructor.
@@ -301,7 +302,7 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
     	  int port = 3333;
 
     	  	//starts Tuio Client
-    		TuioClient client = new TuioClient(port);
+    		client = new TuioClient(port);
 
     		
     		client.addTuioListener(this);
@@ -327,7 +328,8 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
       @Override
       public void pause()
       {
-    	  p.destroy();
+    	  //p.destroy();
+    	  client.disconnect();
           super.pause();
       }
 
@@ -339,7 +341,7 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
       {
     	  
     	//starts reactivision.exe
-     	 if(propReactivisionPath!=null){
+/*     	 if(propReactivisionPath!=null){
      		 this.startReact();
      		 
      	 }
@@ -351,8 +353,9 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 
      		
      		client.addTuioListener(this);
+     		*/
      		client.connect();
-     		
+   		
           super.resume();
       }
 
@@ -362,6 +365,7 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
       @Override
       public void stop()
       {
+    	  client.disconnect();
     	  p.destroy();
           super.stop();
       }
