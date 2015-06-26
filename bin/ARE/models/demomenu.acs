@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ARE\models\demomenu.acs_2015_2_23_0_47" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\demomenu.acs_2015_6_26_22_49" version="20130320">
   <modelDescription>
     <shortDescription>A menu selection for some demo models which do not need special hardware.</shortDescription>
     <requirements>none</requirements>
@@ -42,7 +42,7 @@
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="rows" value="5" />
+        <property name="rows" value="6" />
         <property name="columns" value="0" />
         <property name="textColor" value="3" />
         <property name="backgroundColor" value="11" />
@@ -71,7 +71,7 @@
         <property name="cellText6" value="Ergotherapie" />
         <property name="cellImage6" value="" />
         <property name="actionText6" value="" />
-        <property name="cellText7" value="" />
+        <property name="cellText7" value="XCameraMouse" />
         <property name="cellImage7" value="" />
         <property name="actionText7" value="" />
         <property name="cellText8" value="" />
@@ -217,12 +217,12 @@
     <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
       <description>Send test from chosen slot</description>
       <ports>
-        <outputPort portTypeID="output">
-          <properties />
-        </outputPort>
         <inputPort portTypeID="slotDispatch">
           <properties />
         </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="delay" value="300" />
@@ -232,7 +232,7 @@
         <property name="slot4" value="GamepadMouse.acs" />
         <property name="slot5" value="ImageDemo.acs" />
         <property name="slot6" value="Ergotherapie/ergomenu.acs" />
-        <property name="slot7" value="" />
+        <property name="slot7" value="XFaceTrackerMouse.acs" />
         <property name="slot8" value="" />
         <property name="slot9" value="" />
         <property name="slot10" value="" />
@@ -281,6 +281,7 @@
   </components>
   <channels>
     <channel id="binding.0">
+      <description />
       <source>
         <component id="StringDispatcher.1" />
         <port id="output" />
@@ -293,6 +294,7 @@
   </channels>
   <eventChannels>
     <eventChannel id="cell1_dispatchSlot1">
+      <description />
       <sources>
         <source>
           <component id="CellBoard.1" />
@@ -307,6 +309,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="cell2_dispatchSlot2">
+      <description />
       <sources>
         <source>
           <component id="CellBoard.1" />
@@ -321,6 +324,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="cell3_dispatchSlot3">
+      <description />
       <sources>
         <source>
           <component id="CellBoard.1" />
@@ -335,6 +339,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="cell4_dispatchSlot4">
+      <description />
       <sources>
         <source>
           <component id="CellBoard.1" />
@@ -349,6 +354,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="cell5_dispatchSlot5">
+      <description />
       <sources>
         <source>
           <component id="CellBoard.1" />
@@ -363,6 +369,7 @@
       </targets>
     </eventChannel>
     <eventChannel id="cell6_dispatchSlot6">
+      <description />
       <sources>
         <source>
           <component id="CellBoard.1" />
@@ -373,6 +380,21 @@
         <target>
           <component id="StringDispatcher.1" />
           <eventPort id="dispatchSlot6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell7_dispatchSlot7">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot7" />
         </target>
       </targets>
     </eventChannel>
