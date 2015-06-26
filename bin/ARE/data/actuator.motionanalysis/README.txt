@@ -1,0 +1,1 @@
+data folder for motionanalysis plugin
