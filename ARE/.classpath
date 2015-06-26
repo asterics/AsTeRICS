@@ -174,6 +174,8 @@
 	<classpathentry kind="src" path="services/DisplayGuiManagement/src/main/java"/>
 	<classpathentry kind="src" path="services/SystemStateChange/src/main/java"/>
 	<classpathentry kind="src" path="services/WebService/src/main/java"/>
+	<classpathentry kind="src" path="components/processor.motionanalysis/src/main/java"/>
+	<classpathentry kind="src" path="components/sensor.tuioreactivision/src/main/java"/>
 	<classpathentry kind="lib" path="components/actuator.easyhomecontrol/src/main/lib/hidapi.jar"/>
 	<classpathentry kind="lib" path="components/actuator.enobiodisplay/src/main/lib/starlab.enobiodisplay.jar"/>
 	<classpathentry kind="lib" path="components/actuator.enocean/src/main/resources/lib/log4j-1.2.17.jar"/>
@@ -247,6 +249,7 @@
 	<classpathentry kind="lib" path="slf4j/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="slf4j/slf4j-simple-1.6.1.jar"/>
 	<classpathentry kind="lib" path="thrift/libthrift.jar"/>
+	<classpathentry kind="lib" path="components/sensor.tuioreactivision/src/main/resources/lib/libTUIO.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jackson-core-asl-1.8.3.jar"/>
 	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jackson-jaxrs-1.8.3.jar"/>

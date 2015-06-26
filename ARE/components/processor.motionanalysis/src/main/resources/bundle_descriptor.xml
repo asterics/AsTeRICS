@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.MotionAnalysis"
+                   canonical_name="eu.asterics.component.processor.motionanalysis.MotionAnalysisInstance">
+        <type subtype="DSP and Feature Detection">processor</type>
+        <singleton>false</singleton>
+        <description>Display to visualize and compare data form different sensors</description>
+        <ports>
+        	<inputPort id="channel1">
+                <description>Input port 1 of MotionAnalysis</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>  
+            </inputPort>
+            <inputPort id="channel2">
+                <description>Input port 2 of MotionAnalysis</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="channel3">
+                <description>Input port 3 of MotionAnalysis</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="channel4">
+                <description>Input port 4 of MotionAnalysis</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            
+            <outputPort id="result">
+				<description>Gives the result of an exercise as a string</description>
+				<dataType>string</dataType>
+			</outputPort>
+            <outputPort id="percent">
+				<description>Percent of the exercise to show a video simultaneously</description>
+				<dataType>double</dataType>
+			</outputPort>
+		</ports>
+		<events>
+			<eventListenerPort id="Start">
+				<description>Starts the Exercise</description>
+			</eventListenerPort>
+			<eventListenerPort id="Stop">
+				<description>Stops the Exercise</description>
+			</eventListenerPort>
+			<eventListenerPort id="Save">
+				<description>Starts to save the next exercise</description>
+			</eventListenerPort>
+			<eventListenerPort id="Stopsave">
+				<description>Stop to save the exercise</description>
+			</eventListenerPort>
+			<eventListenerPort id="Load">
+				<description>Loads an Exercise</description>
+			</eventListenerPort>
+			
+			<eventTriggererPort id="Inrange">
+                <description>When the exercise is in range of the percentage</description>
+            </eventTriggererPort>
+		</events>			
+        <properties>
+			<property name="displayBuffer"
+                      type="integer"
+                      value="3"
+                      description="How many values will be buffered before redraw of oscilloscope"/>
+            <property name="drawingMode"
+                      type="integer"
+                      value="0"
+                      combobox="autoupdate min and max//crop to min and max"
+                      description="drawing mode of the oscilloscope"/> 
+            <property name="displayMode"
+                      type="integer"
+                      value="0"
+                      combobox="redraw on incoming sample//draw periodically"
+                      description="display update mode of the oscilloscope"/> 
+            <property name="drawingInterval"
+                      type="integer"
+                      value="100"
+                      description="draw interval in milliseconds (if periodic drawing is used)"/> 
+            <property name="min"
+                      type="double"
+                      value="-100"
+                      description="minimum display value (if crop drawing mode is used)"/>
+            <property name="max"
+                      type="double"
+                      value="100"
+                      description="maximum display value (if crop drawing mode is used)"/>
+            <property name="gridColor"
+                      type="integer"
+                      value="0"
+                      combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                      description="color of the grid"/> 
+            <property name="loadchannelColor"
+                      type="integer"
+                      value="1"
+                      combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                      description="color of channel 1 signal"/> 
+            <property name="drawchannelColor"
+                      type="integer"
+                      value="10"
+                      combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                      description="color of channel 1 signal"/>
+            <property name="backgroundColor"
+                      type="integer"
+                      value="11"
+                      combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+                      description="background color"/>                 
+            <property name="fontSize"
+                      type="integer"
+                      value="14"
+                      description="font size of oscilloscope captions"/>
+            <property name="caption"
+                      type="string"
+                      value="Exercise"
+                      description="caption of the Exercise"/> 
+            <property name="filename"
+                      type="string"
+                      value="Example"
+                      description="name of the file"/>
+            <property name="filepath"
+                      type="string"
+                      value="./data/processor.motionanalysis/"
+                      description="path of the file"/>
+            <property name="diviation"
+                      type="double"
+                      value="20"
+                      description="percent of deviation which is allowed to eleminate noise"/>     
+            <property name="limitation"
+                      type="double"
+                      value="80"
+                      description="percent of allowed values do raise an event"/> 
+        </properties>
+		<gui>
+			<width>6000</width>
+			<height>3000</height>
+		</gui>
+
+    </componentType>
+</componentTypes>
