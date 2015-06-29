@@ -247,6 +247,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Head Position HC">
+					<param name="Local" value="HTML\Plugins\sensors\HeadPositionHC.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Joystick Capture">
 					<param name="Local" value="HTML\Plugins\sensors\JoystickCapture.htm">
 					<param name="ImageNumber" value="11">
@@ -289,6 +294,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Lipmouse">
 					<param name="Local" value="HTML\Plugins\sensors\Lipmouse.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Lipmouse IR">
+					<param name="Local" value="HTML\Plugins\sensors\LipmouseIR.htm">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
@@ -384,6 +394,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Tobi TiC">
 					<param name="Local" value="HTML\Plugins\sensors\TobiTic.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Tuio Reactivision">
+					<param name="Local" value="HTML\Plugins\sensors\TuioReactivision.htm">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
@@ -578,6 +593,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="IIR Filter">
+					<param name="Local" value="HTML\Plugins\processors\IIRFilter.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Int To String">
 					<param name="Local" value="HTML\Plugins\processors\IntToString.htm">
 					<param name="ImageNumber" value="11">
@@ -595,6 +615,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="MinMax">
 					<param name="Local" value="HTML\Plugins\processors\MinMax.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Motion Analysis">
+					<param name="Local" value="HTML\Plugins\processors\MotionAnalysis.htm">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
@@ -757,6 +782,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Threshold">
 					<param name="Local" value="HTML\Plugins\processors\Threshold.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Universal Remote Control">
+					<param name="Local" value="HTML\Plugins\processors\UniversalRemoteControl.htm">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">

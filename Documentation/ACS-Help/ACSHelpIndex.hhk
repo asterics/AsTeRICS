@@ -435,9 +435,19 @@
 		<param name="Local" value="HTML\Plugins\actuators\GSMModem.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.HeadPositionHC">
+		<param name="Name" value="HeadPositionHC">
+		<param name="Local" value="HTML\Plugins\sensors\HeadPositionHC.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.HRVAnalysis">
 		<param name="Name" value="HRVAnalysis">
 		<param name="Local" value="HTML\Plugins\processors\HRVAnalysis.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.IIRFilter">
+		<param name="Name" value="IIRFilter">
+		<param name="Local" value="HTML\Plugins\processors\IIRFilter.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.imagebox">
@@ -525,6 +535,11 @@
 		<param name="Local" value="HTML\Plugins\sensors\Lipmouse.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.LipmouseIR">
+		<param name="Name" value="LipmouseIR">
+		<param name="Local" value="HTML\Plugins\sensors\LipmouseIR.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.mathevaluator">
 		<param name="Name" value="Math Evaluator">
 		<param name="Local" value="HTML\Plugins\processors\MathEvaluator.htm">
@@ -553,6 +568,11 @@
 		<param name="Name" value="asterics.modelswitcher">
 		<param name="Name" value="ModelSwitcher">
 		<param name="Local" value="HTML\Plugins\actuators\ModelSwitcher.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.MotionAnalysis">
+		<param name="Name" value="MotionAnalysis">
+		<param name="Local" value="HTML\Plugins\processors\MotionAnalysis.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.mouse">
@@ -920,6 +940,16 @@
 		<param name="Local" value="HTML\Plugins\actuators\ToneGenerator.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.TuioReactivision">
+		<param name="Name" value="TuioReactivision">
+		<param name="Local" value="HTML\Plugins\sensors\TuioReactivision.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.UniversalRemoteControl">
+		<param name="Name" value="Universal Remote Control">
+		<param name="Local" value="HTML\Plugins\processors\UniversalRemoteControl.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.wavefileplayer">
 		<param name="Name" value="WavefilePlayer">
 		<param name="Local" value="HTML\Plugins\actuators\WavefilePlayer.htm">
@@ -1090,14 +1120,14 @@
 		<param name="Local" value="HTML\ACS-misc\The_Edit_Tab.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Data Type">
-		<param name="Name" value="DataType">
-		<param name="Local" value="HTML\Plugins\processors\DataType.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="data type">
 		<param name="Name" value="Channels">
 		<param name="Local" value="HTML\ACS-misc\Channels.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Data Type">
+		<param name="Name" value="DataType">
+		<param name="Local" value="HTML\Plugins\processors\DataType.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Deadzone">
@@ -1410,9 +1440,19 @@
 		<param name="Local" value="HTML\ACS-misc\GUI_Designer.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Head Position HC">
+		<param name="Name" value="HeadPositionHC">
+		<param name="Local" value="HTML\Plugins\sensors\HeadPositionHC.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="HRVAnalysis">
 		<param name="Name" value="HRVAnalysis">
 		<param name="Local" value="HTML\Plugins\processors\HRVAnalysis.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="IIR Filter">
+		<param name="Name" value="IIRFilter">
+		<param name="Local" value="HTML\Plugins\processors\IIRFilter.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Image Box">
@@ -1515,6 +1555,11 @@
 		<param name="Local" value="HTML\Plugins\sensors\Lipmouse.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Lipmouse IR">
+		<param name="Name" value="LipmouseIR">
+		<param name="Local" value="HTML\Plugins\sensors\LipmouseIR.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Load Model from Storage">
 		<param name="Name" value="Control the ARE">
 		<param name="Local" value="HTML\ACS-misc\Control_the_ARE.htm">
@@ -1587,6 +1632,11 @@
 		<param name="Name" value="Modes">
 		<param name="Name" value="Modes">
 		<param name="Local" value="HTML\ACS-misc\Modes.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Motion Analysis">
+		<param name="Name" value="MotionAnalysis">
+		<param name="Local" value="HTML\Plugins\processors\MotionAnalysis.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Mouse">
@@ -2162,9 +2212,19 @@
 		<param name="Local" value="HTML\ACS-misc\Tooltips.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Tuio Reactivision">
+		<param name="Name" value="TuioReactivision">
+		<param name="Local" value="HTML\Plugins\sensors\TuioReactivision.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Undo">
 		<param name="Name" value="The Edit Tab ">
 		<param name="Local" value="HTML\ACS-misc\The_Edit_Tab.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Universal Remote Control">
+		<param name="Name" value="Universal Remote Control">
+		<param name="Local" value="HTML\Plugins\processors\UniversalRemoteControl.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Upload Model">

@@ -220,6 +220,12 @@ HTML\Plugins\sensors\EShoe.htm
 HTML\Plugins\processors\HRVAnalysis.htm
 HTML\Plugins\processors\ECMAScriptInterpreter.htm
 HTML\Plugins\actuators\LineWriter.htm
+HTML\Plugins\processors\IIRFilter.htm
+HTML\Plugins\processors\MotionAnalysis.htm
+HTML\Plugins\processors\UniversalRemoteControl.htm
+HTML\Plugins\sensors\HeadPositionHC.htm
+HTML\Plugins\sensors\LipmouseIR.htm
+HTML\Plugins\sensors\TuioReactivision.htm
 
 [INFOTYPES]
 
