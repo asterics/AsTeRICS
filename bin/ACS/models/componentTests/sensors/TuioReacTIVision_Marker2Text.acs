@@ -1,0 +1,235 @@
+<?xml version="1.0"?>
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ACS\models\componentTests\sensors\TuioReacTIVision_Marker2Text.acs_2015_6_29_13_23" version="20130320">
+  <components>
+    <component id="TextArea.1.1" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text assigned to marker" />
+        <property name="default" value="" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>257</posX>
+        <posY>533</posY>
+      </layout>
+      <gui>
+        <posX>72</posX>
+        <posY>7121</posY>
+        <width>3000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="y-pos" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>257</posX>
+        <posY>382</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>4676</posY>
+        <width>5875</width>
+        <height>2333</height>
+      </gui>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="x-pos" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>261</posX>
+        <posY>241</posY>
+      </layout>
+      <gui>
+        <posX>10</posX>
+        <posY>2454</posY>
+        <width>5438</width>
+        <height>2111</height>
+      </gui>
+    </component>
+    <component id="TextArea.1" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Text Display" />
+        <property name="default" value="" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>262</posX>
+        <posY>65</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>444</posY>
+        <width>3000</width>
+        <height>2000</height>
+      </gui>
+    </component>
+    <component id="TuioReactivision.1" type_id="asterics.TuioReactivision">
+      <description>integrates Tuio into asterics</description>
+      <ports>
+        <outputPort portTypeID="MarkerID">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="SessionID">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Xpos">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Ypos">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Angle">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="MotionSpeed">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="RotationSpeed">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="MotionAccel">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="RotationAccel">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="Text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="TextOutput" value="True" />
+        <property name="MarkerAllocation" value="False" />
+        <property name="reactivisionPath" value="D:\Progs\reacTIVision-1.5-win32\reacTIVision.exe" />
+        <property name="TextFile" value="data/sensor.tuioreactivion/Marker2Text.txt" />
+      </properties>
+      <layout>
+        <posX>54</posX>
+        <posY>241</posY>
+      </layout>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.2">
+      <source>
+        <component id="TuioReactivision.1" />
+        <port id="Ypos" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="TuioReactivision.1" />
+        <port id="Xpos" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.0">
+      <source>
+        <component id="TuioReactivision.1" />
+        <port id="MarkerID" />
+      </source>
+      <target>
+        <component id="TextArea.1" />
+        <port id="setText" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="TuioReactivision.1" />
+        <port id="Text" />
+      </source>
+      <target>
+        <component id="TextArea.1.1" />
+        <port id="setText" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>8688</width>
+      <height>9556</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
