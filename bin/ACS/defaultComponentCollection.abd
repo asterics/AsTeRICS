@@ -11754,11 +11754,10 @@
 
 		</events>			
         <properties>
-			<property description="if text output or Marker allocation is necessary --&gt; reads file" name="TextOutput" type="boolean" value="false"/>
-			<property description="if text output or Marker allocation is necessary --&gt; reads file" name="MarkerAllocation" type="boolean" value="false"/>
-			<property description="Path toPath to reactivision.exe" name="reactivisionPath" type="string" value="C:\"/>
-			<property description="if text file necessary for text output or marker  assignment " name="TextFile" type="string" value="./data/sensor.reactivision/listeInt"/>
-
+			<property description="If enabled, uses Marker2Text assignments of file 'TextFile' to send text to port 'Text'" name="TextOutput" type="boolean" value="false"/>			
+			<property description="If enabled, uses Marker2Event assignments of file 'TextFile' to trigger events" name="MarkerAllocation" type="boolean" value="false"/>
+			<property description="Path of reacTIVision.exe. If set, automatically starts/stops program. (http://reactivision.sourceforge.net/)" name="reactivisionPath" type="string" value=""/>
+			<property description="Path of Marker2Text or Marker2Event assignment file" name="TextFile" type="string" value="data/sensor.tuioreactivision/Marker2Event.txt"/>
         </properties>
 
     </componentType>
