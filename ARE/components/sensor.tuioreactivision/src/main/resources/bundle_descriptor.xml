@@ -77,20 +77,19 @@
 			<property name="TextOutput"
 				type="boolean"
 				value="false"
-				description="if text output or Marker allocation is necessary --> reads file"/>
+				description="If enabled, uses Marker2Text assignments of file 'TextFile' to send text to port 'Text'"/>			
 			<property name="MarkerAllocation"
 				type="boolean"
 				value="false"
-				description="if text output or Marker allocation is necessary --> reads file"/>
+				description="If enabled, uses Marker2Event assignments of file 'TextFile' to trigger events"/>
 			<property name="reactivisionPath"
 				type="string"
-				value="C:\"
-				description="Path toPath to reactivision.exe"/>
+				value=""
+				description="Path of reacTIVision.exe. If set, automatically starts/stops program. (http://reactivision.sourceforge.net/)"/>
 			<property name="TextFile"
 				type="string"
-				value="./data/sensor.reactivision/listeInt"
-				description="if text file necessary for text output or marker  assignment "/>
-
+				value="data/sensor.tuioreactivision/Marker2Event.txt"
+				description="Path of Marker2Text or Marker2Event assignment file"/>
         </properties>
 
     </componentType>

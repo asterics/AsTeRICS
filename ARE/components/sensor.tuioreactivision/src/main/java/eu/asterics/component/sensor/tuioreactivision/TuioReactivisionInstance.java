@@ -29,11 +29,14 @@ package eu.asterics.component.sensor.tuioreactivision;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.data.ConversionUtils;
@@ -82,8 +85,8 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 
 	boolean propTextOutput = false;
 	boolean propMarkerAllocation = false;
-	String propReactivisionPath = " ";
-	String propTextFile = " ";
+	String propReactivisionPath = "";
+	String propTextFile = "";
 
 
 	// declare member variables here
@@ -293,33 +296,35 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
       @Override
       public void start()
       {
-    	  //starts reactivision.exe
-    	 if(propReactivisionPath!=null){
-    		 this.startReact();
-    		 
-    	 }
-    	  
-    	  int port = 3333;
+    	  try{
+    		  //starts reactivision.exe
+    		  if(propReactivisionPath!=null && !"".equals(propReactivisionPath)){
+    			  this.startReact();    		 
+    		  }
 
-    	  	//starts Tuio Client
-    		client = new TuioClient(port);
+    		  int port = 3333;
 
-    		
-    		client.addTuioListener(this);
-    		client.connect();
-    		
-    		if(propTextOutput){
-    			propMarkerAllocation = false;
-    			this.readText();
-    			
-    		}
-    		else if (propMarkerAllocation){
-    			propTextOutput = false;
-    			this.readInt();
-    		}
-          
-    		super.start();
-          
+    		  //starts Tuio Client
+    		  client = new TuioClient(port);
+
+
+    		  client.addTuioListener(this);
+    		  client.connect();
+
+    		  if(propTextOutput){
+    			  propMarkerAllocation = false;
+    			  this.readText();
+
+    		  }
+    		  else if (propMarkerAllocation){
+    			  propTextOutput = false;
+    			  this.readInt();
+    		  }
+
+    		  super.start();
+    	  }catch(Exception e) {
+    		  throw new RuntimeException(e);
+    	  }          
       }
 
      /**
@@ -365,8 +370,8 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
       @Override
       public void stop()
       {
-    	  client.disconnect();
-    	  p.destroy();
+    	  if(client!=null) {client.disconnect();}
+    	  if(p!=null) {p.destroy();}
           super.stop();
       }
 
@@ -533,15 +538,17 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 	
 	
 	//reads text file including objects
-	public void readText(){
+	public void readText() throws FileNotFoundException {
 		Scanner x = null;
 		List<String> text = new ArrayList<String>();
 		
 		try{
 			x = new Scanner(new File(propTextFile));
 		}
-		catch(Exception e){
-			System.out.println("Could not find file");
+		catch(FileNotFoundException e){
+			//System.out.println("Could not find file");
+			AstericsErrorHandling.instance.reportError(this, "Cannot read file <"+propTextFile+">\nPlease enter a meaningful file path into the 'TextFile' property");
+			throw e;
 		}
 		
 		while(x.hasNext()){
@@ -565,14 +572,16 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 	}
 	
 	// reads file with marker information
-	public void readInt(){
+	public void readInt() throws FileNotFoundException {
 		Scanner x = null;
 		List<String> textInt = new ArrayList<String>();
 		try{
 			x = new Scanner(new File(propTextFile));
 		}
-		catch(Exception e){
-			System.out.println("Could not find file");
+		catch(FileNotFoundException e){
+			//System.out.println("Could not find file");
+			AstericsErrorHandling.instance.reportError(this, "Cannot read file <"+propTextFile+">\nPlease enter a meaningful file path into the 'TextFile' property");
+			throw e;
 		}
 		
 		while(x.hasNext()){
@@ -582,7 +591,7 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 		
 		x.close();
 		
-		for(int j = 0; j < 6; j++){ // six event trigger
+		for(int j = 0; j < textInt.size(); j++){ // six event trigger
 			
 			String string = textInt.get(j);
 			String[] parts = string.split("-");
@@ -597,7 +606,24 @@ public class TuioReactivisionInstance extends AbstractRuntimeComponentInstance i
 	
 	public void startReact(){
 		try {
-            p = Runtime.getRuntime().exec(propReactivisionPath);
+			List<String> command=new ArrayList<String>();
+			StringTokenizer st = new StringTokenizer(propReactivisionPath);
+			while (st.hasMoreTokens()) {
+				String act=st.nextToken();
+				command.add(act);
+	    		System.out.println("adding argument :" + act);
+			}
+
+		    
+		    ProcessBuilder builder = new ProcessBuilder(command);
+		    
+		    Map<String, String> env = builder.environment();
+		    String propWorkingDirectory=new File(propReactivisionPath).getParent();
+		    builder.directory(new File(propWorkingDirectory));
+		    
+		    p = builder.start();    		    
+
+            //p = Runtime.getRuntime().exec(propReactivisionPath);
             Thread.sleep(5000);
          } catch (IOException e) {
              e.printStackTrace();
