@@ -67,7 +67,7 @@ namespace Asterics.ACS {
 
         #region Global variables
 
-        public const String ACS_VERSION="2.6";
+        public const String ACS_VERSION="2.7";
         private double mouseMoveComponentX;
         private double mouseMoveComponentY;
 
