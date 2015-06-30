@@ -9,6 +9,7 @@ import org.osgi.framework.BundleActivator;
 
 import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.are.AsapiSupport;
+import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
@@ -67,6 +68,17 @@ public class NativeHookServices implements NativeKeyListener {
 			if(t == int.class){	
 				try {
 					AstericsErrorHandling.instance.getLogger().fine("Hotkey for "+key+"="+val);
+					switch(key) {
+					case ARE_HOT_KEY_START_MODEL:
+						DeploymentManager.instance.getGUI().setStartKeyName(val);
+						break;
+					case ARE_HOT_KEY_PAUSE_MODEL:
+						DeploymentManager.instance.getGUI().setPauseKeyName(val);
+						break;
+					case ARE_HOT_KEY_STOP_MODEL:
+						DeploymentManager.instance.getGUI().setStopKeyName(val);
+						break;
+					}
 					return f.getInt(null);
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 				}
