@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ARE\models\HeadSound.acs_2015_2_23_0_48" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\HeadSound.acs_2015_6_30_15_43" version="20130320">
   <modelDescription>
     <shortDescription>A head-movement controlled musical instrument</shortDescription>
     <requirements>A midi-capabable soundcard must be installed and a webcamera must be connected to an USB port</requirements>
@@ -100,6 +100,7 @@ left/right movements influence the tone height</description>
         <property name="toneScale" value="harmonic28-112.sc" />
         <property name="playOnlyChangingNotes" value="true" />
         <property name="displayGUI" value="true" />
+        <property name="displayNoteNames" value="True" />
       </properties>
       <layout>
         <posX>450</posX>
