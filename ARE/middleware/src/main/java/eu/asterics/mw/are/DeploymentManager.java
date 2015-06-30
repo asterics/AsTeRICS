@@ -1046,6 +1046,10 @@ public class DeploymentManager
 		this.gui = gui;
 
 	}
+	
+	public AstericsGUI getGUI() {
+		return gui;
+	}
 
 	public void displayPanel(JPanel panel, 
 			IRuntimeComponentInstance componentInstance, boolean display) 

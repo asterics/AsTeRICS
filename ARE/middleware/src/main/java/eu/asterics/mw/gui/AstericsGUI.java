@@ -499,9 +499,10 @@ public class AstericsGUI implements IAREEventListener
 	{	//if (mainFrame.isShowing())
 		//	setDesktopSize("both");
 		//all gui related operations should be executed in EventDispatchThread, but when closing an application it does not matter
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.setVisible(false);
+		AstericsErrorHandling.instance.reportDebugInfo(null, "Exiting ARE...");
 		AREServices.instance.stopModel();
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.setVisible(false);		
 		System.exit(0);
 	}
 
@@ -773,7 +774,17 @@ public class AstericsGUI implements IAREEventListener
 		return this.bundleContext;
 	}
 
+	public void setStartKeyName(String key) {
+		controlPane.setStartKeyName(key);
+	}
 
+	public void setPauseKeyName(String key) {
+		controlPane.setPauseKeyName(key);
+	}
+
+	public void setStopKeyName(String key) {
+		controlPane.setStopKeyName(key);
+	}
 }
 
 

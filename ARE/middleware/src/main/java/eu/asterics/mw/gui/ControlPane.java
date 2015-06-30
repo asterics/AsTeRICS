@@ -252,7 +252,7 @@ public class ControlPane extends JPanel
 			stopIcon	= new ImageIcon(stopIconPath);
 			stopIcon_ro = new ImageIcon(stopIconPath_ro);
 			stopLabel = new JLabel(stopIcon);
-			stopLabel.setToolTipText("Stop model [F7]");
+			stopLabel.setToolTipText("Stop model");
 			stopIconImg = ImageIO.read(stopIconPath);
 			stopIconImg_ro = ImageIO.read(stopIconPath_ro);
 	
@@ -432,7 +432,7 @@ public class ControlPane extends JPanel
 		exitLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				 int n = JOptionPane.showConfirmDialog(
-                         mainFrame, "Are you sure to stop and close the ARE?",
+                         null, "Are you sure to stop and close the ARE?",
                          "ARE Exit",
                          JOptionPane.YES_NO_OPTION);
                  if (n == JOptionPane.YES_OPTION) {
@@ -456,7 +456,7 @@ public class ControlPane extends JPanel
 				//System.out.println ("Display Status!");
 				if ( statusDialogActive==false)
 				{
-					final JDialog dialog = new JDialog(mainFrame, "ARE Status and Error Log");
+					final JDialog dialog = new JDialog((JFrame)null, "ARE Status and Error Log");
 					statusDialogActive=true;
 					dialog.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	                JButton closeButton = new JButton("Close");
@@ -601,5 +601,36 @@ public class ControlPane extends JPanel
 		iconPanel.revalidate();
 		iconPanel.repaint();
 		mainFrame.getContentPane().repaint();
+	}
+
+	public void setStartKeyName(String key) {
+		// TODO Auto-generated method stub
+		if(key!=null && !"".equals("key")) {
+			String[] elems=key.split("_");
+			if(elems.length>=2) {
+				startLabel.setToolTipText("Start Model ["+elems[1]+"]");
+			}
+		}
+	}
+
+	public void setPauseKeyName(String key) {
+		// TODO Auto-generated method stub
+		if(key!=null && !"".equals("key")) {
+			String[] elems=key.split("_");
+			if(elems.length>=2) {
+				pauseLabel.setToolTipText("Pause Model ["+elems[1]+"]");
+			}
+		}
+		
+	}
+
+	public void setStopKeyName(String key) {
+		// TODO Auto-generated method stub
+		if(key!=null && !"".equals("key")) {
+			String[] elems=key.split("_");
+			if(elems.length>=2) {
+				stopLabel.setToolTipText("Stop Model ["+elems[1]+"]");
+			}
+		}		
 	}
 }
