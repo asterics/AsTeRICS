@@ -26,6 +26,9 @@ import static org.bytedeco.javacpp.opencv_objdetect.*;
  */
 
 public class FaceDetection {
+	//min face dimensions are empirical values and only work for a resolution of at least 320x240
+	private static final int MIN_FACE_HEIGHT = 35;
+	private static final int MIN_FACE_WIDTH = 35;
 	String classifierName = "data/service.computervision/haarcascade_frontalface_alt.xml";
 	CvHaarClassifierCascade classifier=null;
 	// Objects allocated with a create*() or clone() factory method are automatically released
@@ -95,7 +98,10 @@ public class FaceDetection {
 			CvRect faceRect=new CvRect(cvGetSeqElem(faces, 0));
 			
 			//storage.release();
-			return faceRect;
+			if(faceRect.width() > MIN_FACE_WIDTH && faceRect.height() > MIN_FACE_HEIGHT) {				
+				return faceRect;
+			}
+			//System.out.println("ignoring face with width: "+faceRect.width());
 		} 
 		//storage.release();
 		return null;
