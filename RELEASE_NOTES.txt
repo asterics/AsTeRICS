@@ -136,3 +136,26 @@ added global hotkeys for ARE
 Numerous bug fixes
 Numerous usability improvements for the ACS
 added support for RESTful API when started with --webservice
+
+v2.7 (2015-07-02)
+added/updated the following plugins
+LipMouse
+XFacetrackerLK
+UniversalRemoteControl
+p2_parser
+FABI
+IIRFilter
+bug fix local storage of slider value
+Server Sent Events for RESTful API
+start.bat, start_debug.bat, start.sh and start_debug.sh now all support autostart of commandline model and --webservice flag
+TuioReactivision
+MotionAnalysis
+ApplicationLauncher
+Skype
+
+Basic ARE with cimcommunication and computer vision (based on JavaCV e.g. XFaceTrackerLK) should now run on Windows, Linux and Mac OSX
+Numerous bug fixes
+Numerous bug fixes/usability improvements for the ACS
+moved CIM/StandAloneModules/Fabi2 and CIM/StandAloneModules/LipMouse to seperate github repositories
+
+
