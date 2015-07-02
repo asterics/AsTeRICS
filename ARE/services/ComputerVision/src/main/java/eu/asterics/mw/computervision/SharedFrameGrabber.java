@@ -124,7 +124,7 @@ public class SharedFrameGrabber {
 	
 	private void doSanityChecks(String grabberName, String deviceKey) throws Exception {
 		//Some dirty checks to prevent a crash of OpenCV on Linux if the device does not exist.
-		if(grabberName.equalsIgnoreCase(OPENCV_GRABBER_KEY) && (OSUtils.isUnix()||OSUtils.isMac())) {
+		if(grabberName.equalsIgnoreCase(OPENCV_GRABBER_KEY) && (OSUtils.isUnix())) {
 			try{
 				int camIdx=Integer.parseInt(deviceKey);
 				File vidFile=new File("/dev/video"+deviceKey);
