@@ -157,5 +157,6 @@ Basic ARE with cimcommunication and computer vision (based on JavaCV e.g. XFaceT
 Numerous bug fixes
 Numerous bug fixes/usability improvements for the ACS
 moved CIM/StandAloneModules/Fabi2 and CIM/StandAloneModules/LipMouse to seperate github repositories
+Fixed issue #85
 
 
