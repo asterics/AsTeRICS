@@ -146,6 +146,8 @@ public class AstericsPong extends Game
 
 	boolean [] keysPressed = new boolean[10];
 
+	private PongGameInstance pongGameInstance;
+
 	@Override
 	public void render() 
 	{
@@ -271,6 +273,18 @@ public class AstericsPong extends Game
 			append = true;
 			highscores.writeString("\n", append);
 		}
+	}
+
+
+	public void sendGameOver() {
+		// TODO Auto-generated method stub
+		pongGameInstance.etpGameOver.raiseEvent();
+	}
+
+
+	public void setPongGameInstane(PongGameInstance pongGameInstance) {
+		// TODO Auto-generated method stub
+		this.pongGameInstance=pongGameInstance;
 	}
 
 }

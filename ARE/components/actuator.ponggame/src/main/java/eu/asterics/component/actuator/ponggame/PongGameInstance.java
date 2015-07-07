@@ -465,7 +465,9 @@ public class PongGameInstance extends AbstractRuntimeComponentInstance
           pnl = new JPanel();
 
           //LwjglApplicationConfiguration.disableAudio = true;
+          
           AstericsPong.reset(dim, opBallX, opBallY);
+          AstericsPong.instance.setPongGameInstane(this);
           lcnv= new LwjglAWTCanvas(AstericsPong.instance, false); 
           Canvas cnvs = lcnv.getCanvas();
           cnvs.setPreferredSize(dim);

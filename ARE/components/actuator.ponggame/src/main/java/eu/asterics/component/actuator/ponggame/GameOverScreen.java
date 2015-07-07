@@ -58,6 +58,7 @@ public class GameOverScreen
         
         p1Calories=(int)(PongGameProperties.eventsToCaloryMultiplier*GameWorld.instance.players[0].inputs);
         p2Calories=(int)(PongGameProperties.eventsToCaloryMultiplier*GameWorld.instance.players[1].inputs);
+        game.sendGameOver();
         
     }
     
