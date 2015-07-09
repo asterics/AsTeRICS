@@ -1,62 +1,73 @@
 <project name="asterics.${component.id}" default="jar" basedir=".">
 
-    <property name="component.id" value="mw.computervision"/>
-    <!-- set global properties for this build -->
-    <property name="build" location="../out/production/${component.id}"/>
-    <property name="src.java" location="src/main/java"/>
-    <property name="dist" location=".."/>
-    <property name="runtime" location="../../../bin/ARE"/>
-    <property name="osgi" location="../../osgi"/>
-    <property name="middleware" location="../../middleware"/>
-    <property name="services" location="../../services"/>
-    <property name="resources" location="src/main/resources"/>
-    <property name="classpath" location=".."/>
-       <path id="asterics.classpath">
-        <pathelement location="bin"/>
-        <pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
-        <pathelement location="${middleware}/asterics.ARE.jar"/>
-       	<pathelement location="${services}/javacv-0.10.0-merged-jars.jar" />
-       	<fileset dir="${resources}" includes="**/*.jar"/>
-    </path>
+	<property name="component.id" value="mw.computervision"/>
+	<!-- set global properties for this build -->
+	<property name="build" location="../out/production/${component.id}"/>
+	<property name="src.java" location="src/main/java"/>
+	<property name="dist" location=".."/>
+	<property name="runtime" location="../../../bin/ARE"/>
+	<property name="osgi" location="../../osgi"/>
+	<property name="middleware" location="../../middleware"/>
+	<property name="services" location="../../services"/>
+	<property name="resources" location="src/main/resources"/>
+	<property name="classpath" location=".."/>
+	<path id="asterics.classpath">
+		<pathelement location="bin"/>
+		<pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
+		<pathelement location="${middleware}/asterics.ARE.jar"/>
+		<pathelement location="${services}/javacv-0.10.0-merged-jars.jar" />
+		<fileset dir="${resources}" includes="**/*.jar"/>
+	</path>
 	<!-- don't forget to also update the MANIFEST file!! -->
 	<property name="javacv.target.file" location="../javacv-0.10.0-merged-jars.jar"/>
-    
-  <target name="init">
-    <!-- Create the time stamp -->
-    <tstamp/>
-    <!-- Create the build directory structure used by compile -->
-    <mkdir dir="${build}"/>
-  </target>
 
-  <target name="compile" depends="init, merge-jars" description="compile the source ">
-    <javac  includeantruntime="false" srcdir="${src.java}" destdir="${build}"  verbose="true" debug="${debug}" 
-           classpath="${classpath}"> <classpath refid="asterics.classpath"/>
-     </javac>
-  </target>
-  <target name="jar" depends="compile" description="generate the OSGi bundle" >
-      <jar jarfile="${dist}/asterics.${component.id}.jar" basedir="${build}"
-      	manifest="${resources}/META-INF/MANIFEST.MF">      	
-    </jar>
-    <copy file="${dist}/asterics.${component.id}.jar" 
-          tofile="${runtime}/asterics.${component.id}.jar"/>
-  	</target>
-	
-	<target name="merge-jars" depends="check-merged-jar, do-merge-jars"></target>
-	<target name="check-merged-jar">
-		<available file="${javacv.target.file}" property="javacv.exists"></available>
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}"/>
 	</target>
-	
-  <target name="do-merge-jars" description="generate the OSGi bundle" unless="javacv.exists">
-      <jar jarfile="${javacv.target.file}"
+
+	<target name="compile" depends="init, merge-jars" description="compile the source ">
+		<javac  includeantruntime="false" srcdir="${src.java}" destdir="${build}"  verbose="true" debug="${debug}" 
+           classpath="${classpath}">
+			<classpath refid="asterics.classpath"/>
+		</javac>
+	</target>
+	<target name="jar" depends="compile" description="generate the OSGi bundle" >
+		<jar jarfile="${dist}/asterics.${component.id}.jar" basedir="${build}"
+      	manifest="${resources}/META-INF/MANIFEST.MF">
+		</jar>
+		<copy file="${dist}/asterics.${component.id}.jar" 
+          tofile="${runtime}/asterics.${component.id}.jar"/>
+	</target>
+
+	<target name="merge-jars" depends="check-merged-jar, do-merge-jars">
+	</target>
+	<target name="check-merged-jar">
+		<available file="${javacv.target.file}" property="javacv.exists">
+		</available>
+	</target>
+
+	<target name="do-merge-jars" description="Generate a merged javacv OSGI-bundle with all jars" unless="javacv.exists">
+		<jar jarfile="${javacv.target.file}"
       	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
-	     <archives>
-	       <zips>
-	         <fileset dir="javacv/src/main/resources" includes="**/*.jar"/>
-	       </zips>
-	     </archives>
-      	
-        <!--<fileset dir="${build}" includes="**/*.class"/>-->
-    </jar>
-  </target>
+			<archives>
+				<zips>
+					<fileset dir="javacv/src/main/resources"/>
+				</zips>
+			</archives>
+		</jar>
+	</target>
+	<target name="do-merge-jars-small" description="Generate a small merged javacv OSGI-bundle (without ffmpeg,...)">
+		<jar jarfile="../javacv-0.10.0-merged-jars-small.jar"
+	      	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
+			<archives>
+				<zips>
+					<fileset dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar" includes="lib/native/*.jar"/>
+				</zips>
+			</archives>
+		</jar>
+	</target>
 
 </project>
