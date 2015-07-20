@@ -48,6 +48,7 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 import static org.bytedeco.javacpp.opencv_imgproc.cvEqualizeHist;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.computervision.GrabbedImageListener;
+import eu.asterics.mw.computervision.HaarCascadeDetection;
 import eu.asterics.mw.computervision.SharedCanvasFrame;
 import eu.asterics.mw.computervision.SharedFrameGrabber;
 import eu.asterics.mw.data.ConversionUtils;
