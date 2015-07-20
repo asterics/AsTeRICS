@@ -54,7 +54,7 @@
       	manifest="javacv/src/main/resources/META-INF/MANIFEST.MF" filesetmanifest="merge">
 			<archives>
 				<zips>
-					<fileset dir="javacv/src/main/resources"/>
+					<fileset dir="javacv/src/main/resources" includes="lib/native/*.jar"/>
 				</zips>
 			</archives>
 		</jar>
