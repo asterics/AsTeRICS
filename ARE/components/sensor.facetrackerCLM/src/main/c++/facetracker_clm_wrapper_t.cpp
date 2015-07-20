@@ -43,6 +43,10 @@
 
 static float const r2d = 57.295779513;
 
+static int counter=0;
+static int showPoint=14;
+
+
 namespace upmc
 {		
 		boost::weak_ptr<facetracker_clm_wrapper_t> facetracker_clm_wrapper_t::_singleton;
@@ -219,9 +223,9 @@ namespace upmc
 			std::cout << "env->GetMethodID(cls, \"raiseGestureSurpriseEvt\", \"()V\");  FAILED" << std::endl;
 		}
 
-		jmethodID midOutputPorts = env->GetMethodID(cls, "newValuesCallback", "(DDDDDDII)V");
+		jmethodID midOutputPorts = env->GetMethodID(cls, "newValuesCallback", "(DDDDDDIIII)V");
 		if (midOutputPorts == 0) {
-			std::cout << "env->GetMethodID(cls, \"newValuesCallback\", \"(DDDDDDII)V\");  FAILED" << std::endl;
+			std::cout << "env->GetMethodID(cls, \"newValuesCallback\", \"(DDDDDDIIII)V\");  FAILED" << std::endl;
 		}
 #endif
 		////
@@ -353,6 +357,17 @@ namespace upmc
 					///////////////////////////////////////////////////////
 					///
 					cv::Point2d nose = _facetracker.getImagePoint(33);
+					//std::cout << "Nose coordinates:" << nose.x << "/" << nose.y << std::endl;
+
+					// cv::Point2d brow = _facetracker.getImagePoint(showPoint);
+					// cv::circle(_frame, brow, 4, cv::Scalar(255,255,255), 2, CV_AA);
+					// std::cout << "Point " << showPoint << " coordinates:" << brow.x << "::" << brow.y << std::endl;
+
+					double gain = 100.0/_facetracker.getScale();
+					int lipDistance= (int)(gain*(_facetracker.getImagePoint(64).y-_facetracker.getImagePoint(61).y));
+					int browLift= (int)(gain*(_facetracker.getImagePoint(38).y-_facetracker.getImagePoint(19).y));
+					//std::cout << "Mount =" << mouth << "    Brow =" << brow << "   scale=" << _facetracker.getScale() <<std::endl;
+									
 
 					///////////////////////////////////////////////////////
 					///TRACK
@@ -434,6 +449,8 @@ namespace upmc
 						 , -_posref.x + trackedPts.points.begin()->x
 						 , -_posref.y + trackedPts.points.begin()->y
 						 , scale
+						 , browLift
+						 , lipDistance
 						 , eyeState.first //CLOSE 1, OPEN 0
 						 , eyeState.second
 						 );

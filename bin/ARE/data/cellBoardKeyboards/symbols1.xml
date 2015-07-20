@@ -1,0 +1,163 @@
+<?xml version="1.0" ?>
+<keyboard rows="0" columns="0">
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/say yes.png</icon>
+		<action>Yes</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/no.png</icon>
+		<action>NO</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/heart.png</icon>
+		<action>I would like to</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/friends_10.png</icon>
+		<action>visit my friends</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/drink_2.png</icon>
+		<action>drink some water</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/eat vegetarian.png</icon>
+		<action>eat vegetarian</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/eat meat_1.png</icon>
+		<action>eat meat</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/great headphones without music notes_1.png</icon>
+		<action>listen to music</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/cellular phone.png</icon>
+		<action>make a phonecall</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/communication device_1.png</icon>
+		<action>get my communication device</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/get out of bed.png</icon>
+		<action>get out of bed</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/go to bed for sleep.png</icon>
+		<action>go to bed</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/I wheelchairs.png</icon>
+		<action>get into my wheelchair</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon>data/pictures/symbols/walk the dog.png</icon>
+		<action>walk the dog</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>ABC</text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text></text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+</keyboard>
