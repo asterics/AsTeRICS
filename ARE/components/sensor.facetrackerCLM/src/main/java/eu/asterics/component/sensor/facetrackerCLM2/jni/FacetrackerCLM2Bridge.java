@@ -113,11 +113,13 @@ public class FacetrackerCLM2Bridge {
     			,	final double posx
     			,	final double posy
     			,	final double scale
+    			,	final int browLift
+    			, 	final int lipDistance
     			,	final int eyeLeftState
     			, 	final int eyeRightState)
     {
     	//System.out.print(".");
-    	owner.newValuesCallback(roll, pitch, yaw, posx, posy, scale, eyeLeftState, eyeRightState);			
+    	owner.newValuesCallback(roll, pitch, yaw, posx, posy, scale, browLift, lipDistance, eyeLeftState, eyeRightState);			
     }
     
     /**

@@ -64,26 +64,26 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
 	final IRuntimeOutputPort opPosY = new DefaultRuntimeOutputPort();
 	//Scale
 	final IRuntimeOutputPort opScale = new DefaultRuntimeOutputPort();
-	
+
+	final IRuntimeOutputPort opBrowLift = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opLipDistance = new DefaultRuntimeOutputPort();
+
 	final IRuntimeOutputPort opEyeLeft = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opEyeRight = new DefaultRuntimeOutputPort();
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
-
+ 
 	public final IRuntimeEventTriggererPort etpEyebrowsRaised = 
 		new DefaultRuntimeEventTriggererPort();
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 	
-//	final IRuntimeEventTriggererPort etpEtpEyebrowsRaised =
-//			new DefaultRuntimeEventTriggererPort();
-	
-	
+	   
 	private boolean pluginReady=false;
-	int propCameraIndex = 0;
+	int propCameraIndex = 0; 
 	int propCameraRes =1;
 	String modelName;
 
 	// declare member variables here
-	//private  GUI gui = null;
+	//private  GUI gui = null;   
  
 	// Native runtime
 	private final FacetrackerCLM2Bridge bridge =
@@ -138,6 +138,14 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
 		if ("Scale".equalsIgnoreCase(portID))
 		{
 			return opScale;
+		}
+		if ("BrowLift".equalsIgnoreCase(portID))
+		{
+			return opBrowLift;
+		}
+		if ("LipDistance".equalsIgnoreCase(portID))
+		{
+			return opLipDistance;
 		}
 		if ("EyeLeft".equalsIgnoreCase(portID))
 		{
@@ -293,7 +301,7 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
     		bridge.setReferencePose();
     	 }
     };
-
+ 
     
     public void newValuesCallback(
 			final double roll  
@@ -302,6 +310,8 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
 		,	final double posx
 		,	final double posy
 		,	final double scale
+		,	final int browLift
+		,	final int lipDistance
 		,	final int eyeLeftState
 		,	final int eyeRightState)
     {
@@ -321,6 +331,9 @@ public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
 		    	opPosY.sendData(ConversionUtils.doubleToBytes(posy));
 
 		    	opScale.sendData(ConversionUtils.doubleToBytes(scale));
+
+		    	opBrowLift.sendData(ConversionUtils.intToBytes(browLift));
+		    	opLipDistance.sendData(ConversionUtils.intToBytes(lipDistance));				
 
 		    	opEyeLeft.sendData(ConversionUtils.intToBytes(eyeLeftState));
 		    	opEyeRight.sendData(ConversionUtils.intToBytes(eyeRightState));				

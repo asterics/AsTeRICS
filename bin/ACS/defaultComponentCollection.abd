@@ -9499,6 +9499,15 @@
 			<outputPort id="Scale">
 				<description>Scale</description>
 				<dataType>double</dataType></outputPort>
+
+			<outputPort id="BrowLift">
+				<description>distance from eye to eyebrow (can be used to detect brow lifting)</description>
+				<dataType>integer</dataType></outputPort>
+
+			<outputPort id="LipDistance">
+				<description>distance from upper to lower lip (can be used to detect mouth open/close)</description>
+				<dataType>integer</dataType></outputPort>
+
 			<outputPort id="EyeLeft">
 				<description>State of the Left Eye (Open 0 /Close 1/Other -1)</description>
 				<dataType>integer</dataType></outputPort>
