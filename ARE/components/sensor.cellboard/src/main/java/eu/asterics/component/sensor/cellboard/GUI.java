@@ -872,6 +872,10 @@ public class GUI extends JPanel
 					{
 						performCellSelection(scanRow,scanColumn);
 					}
+					if(scanType==4)
+					{
+						performCellSelection(actHoverRow,actHoverColumn);
+					}
 				}
 				repaintCells();
 			}
@@ -905,6 +909,9 @@ public class GUI extends JPanel
 		}
 	}
 
+	int actHoverRow=-1;
+	int actHoverColumn=-1;
+
 	public void performActCellUpdate(int row,int column)
 	{
 		owner.getActCellOutputPort().sendData(ConversionUtils.intToBytes(cells[row][column].getCellID()));
@@ -913,6 +920,9 @@ public class GUI extends JPanel
 
 		final int r=row;
 		final int c=column;
+		
+		actHoverRow=row;
+		actHoverColumn=column;
 		
 		if (cells[row][column].getSoundPreviewPath().length()>4)
 		{
