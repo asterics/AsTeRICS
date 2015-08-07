@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft sucks....">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>openHAB</Title>
+</HEAD>
+<BODY>
+<H1>openHAB</H1>
+<H3>Component Type: Processors (Subcategory: Home Control)</H3>
+<p>The openHAB component interfaces to an openHAB instance, which is used to configure and use a home control environment.
+Usually, openHAB is stand-alone. Therefore it has its own GUI, many many possible interfacing solutions (called bindings) and a configuration tool (based on Eclipse).
+More information is available here: <a href=https://github.com/openhab/openhab/wiki>openHAB wiki</a>.</p>
+<p>
+This component uses the provided REST API of openHAB to read and write the state of different nodes (called items) within the openHAB system.
+</p>
+
+<div class="image"><img src="img/openHAB_overview.png" alt="Screenshot: openHAB demo with different options (light, heating, temperature, ...)" title="Screenshot: openHAB demo with different options (light, heating, temperature, ...)" /><br>
+openHAB demo with different options (light, heating, temperature, ...)</div>
+
+<H2>Requirements</H2>
+A functional openHAB installation, which is accessible via the web interface (the plugin connects via HTTP REST API).
+You can run either HTTP or HTTPS, in order to fulfill any security requirements.
+In addition, it is also possible to provide HTTP basic authentication with username/password. Please note, that any saved password in the AsTeRICS model is stored in the model file in PLAINTEXT!<br>
+
+To run openHAB without password authentication, start openHAB with this command:<br>
+<i>bash ./start_debug.sh</i>
+<br>
+To start with password authentication, use following command:<br>
+<i>bash ./start_debug.sh -Djava.security.auth.login.config=./etc/login.conf</i> <br>
+
+The user configuration is handled via this file:<br>
+<i>openHAB_runtime/configurations/users.cfg</i>
+
+Please note, that the first line is necessary, so do not remove it!<br>
+
+Further information on configuration and usage of openHAB is available on the openHAB GitHub page (<a href=https://github.com/openhab/openhab/wiki>openHAB wiki</a>).
+
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>item1in [string]:</STRONG> New state for item1 (the corresponding name is set in the property item1in). For example: set the property item1in to Light_GF_Bed_Ceiling and send "ON" to the input port to switch on the light which is connected to this item.</li>
+<li><STRONG>item2in [string]:</STRONG> New state for item2 (the corresponding name is set in the property item2in). Example: see input port item1in</li>
+<li><STRONG>item3in [string]:</STRONG> New state for item3 (the corresponding name is set in the property item3in). Example: see input port item1in</li>
+<li><STRONG>item4in [string]:</STRONG> New state for item4 (the corresponding name is set in the property item4in). Example: see input port item1in</li>
+<li><STRONG>item5in [string]:</STRONG> New state for item5 (the corresponding name is set in the property item5in). Example: see input port item1in</li>
+<li><STRONG>item6in [string]:</STRONG> New state for item6 (the corresponding name is set in the property item6in). Example: see input port item1in</li>
+<li><STRONG>actionString [string]:</STRONG> NOT IMPLEMENTED YET: more flexible input, where a random item (referenced by the name) can be set.</li>
+</ul>
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>item1 [string] - item6 [string]:</STRONG> The current state of the items1 to items6, corresponding to the item names of properties item1out to item6out</li>
+</ul>
+<H2>Event Trigger Description</H2>
+<ul>
+<li><STRONG>item1change - item6change:</STRONG> This event is triggered if the corresponding item (set by the properties item1event to item6event) changes its state. The initial value is NOT raising an event.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>updaterate [integer]:</STRONG> Time in milliseconds, which will ellapse between each status update. Default: 1s (1000ms)</li>
+<li><STRONG>hostname [string]:</STRONG> Hostname to connect to. It is possible to use a hostname, an IP adress or a FQDN</li>
+<li><STRONG>port [string]:</STRONG> Port of the openHAB installation. Defaults: 8080 for HTTP, 8443 for HTTPS. Please take care of any blocking firewall.</li>
+<li><STRONG>protocol [string]:</STRONG> Protocol to connect to openHAB. Either http or https may be used (recommended: https).</li>
+<li><STRONG>lazyCertificates [boolean]:</STRONG> If this property is set, any SSL related certificate check will be removed for the given hostname. This affects the hole ARE.</li>
+<li><STRONG>username [string]:</STRONG> This property is used, if the HTTP basic authentication of openHAB is used. Provide the username here.</li>
+<li><STRONG>password [string]:</STRONG> This property is used, if the HTTP basic authentication of openHAB is used. Provide the password here.</li>
+<li><STRONG>item1in [string]:</STRONG> Item name, which is used for the input port 1 (set an openHAB item)</li>
+<li><STRONG>item2in [string]:</STRONG> Item name, which is used for the input port 2 (set an openHAB item)</li>
+<li><STRONG>item3in [string]:</STRONG> Item name, which is used for the input port 3 (set an openHAB item)</li>
+<li><STRONG>item4in [string]:</STRONG> Item name, which is used for the input port 4 (set an openHAB item)</li>
+<li><STRONG>item5in [string]:</STRONG> Item name, which is used for the input port 5 (set an openHAB item)</li>
+<li><STRONG>item6in [string]:</STRONG> Item name, which is used for the input port 6 (set an openHAB item)</li>
+<li><STRONG>item1out [string]:</STRONG> Item name, which is used for the output port 1 (fetch an openHAB item with the given updaterate)</li>
+<li><STRONG>item2out [string]:</STRONG> Item name, which is used for the output port 2 (fetch an openHAB item with the given updaterate)</li>
+<li><STRONG>item3out [string]:</STRONG> Item name, which is used for the output port 3 (fetch an openHAB item with the given updaterate)</li>
+<li><STRONG>item4out [string]:</STRONG> Item name, which is used for the output port 4 (fetch an openHAB item with the given updaterate)</li>
+<li><STRONG>item5out [string]:</STRONG> Item name, which is used for the output port 5 (fetch an openHAB item with the given updaterate)</li>
+<li><STRONG>item6out [string]:</STRONG> Item name, which is used for the output port 6 (fetch an openHAB item with the given updaterate)</li>
+<li><STRONG>item1event [string]:</STRONG> Item name, which is used to raise an event if the state is changed (item1change)</li>
+<li><STRONG>item2event [string]:</STRONG> Item name, which is used to raise an event if the state is changed (item2change)</li>
+<li><STRONG>item3event [string]:</STRONG> Item name, which is used to raise an event if the state is changed (item3change)</li>
+<li><STRONG>item4event [string]:</STRONG> Item name, which is used to raise an event if the state is changed (item4change)</li>
+<li><STRONG>item5event [string]:</STRONG> Item name, which is used to raise an event if the state is changed (item5change)</li>
+<li><STRONG>item6event [string]:</STRONG> Item name, which is used to raise an event if the state is changed (item6change)</li>
+</ul>
+
+<h2>Additional hints</h2>
+<ul>
+	<li>The model will stop with an error message, if one of the item names in the properties is not found.</li>
+	<li>There is no feedback for checking a successful state change. E.g.: if your write to a read-only item (temperature sensor), nothing will happen</li>
+	<li>Use the <i>lazyCertificates</i> property with care, it will disable a major part of the SSL handshaking for the whole Java session. It should be limited to the given hostname only, but without warranty.</li>
+	<li>The username/password combination from the properties is saved in PLAINTEXT in the model file, so handle it with care.</li>
+</ul>
+</BODY>
+</HTML>
