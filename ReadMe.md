@@ -7,7 +7,7 @@ It allows the creation of flexible solutions for people with disabilities using 
 
 Possible applications are  
 * Computer input (mouse, keyboard, joystick)
-* Environmental Control (KNX, FS20, IR)
+* Environmental Control (KNX, FS20, IR, EnOcean, openHAB)
 * Toys and Games (Playstation 3, computer games, RC-toys ...)
 * Brain/Neural computer interfaces (Enobio, OpenVIBE, OpenEEG)
 * Android Phone support (SMS, calls)
