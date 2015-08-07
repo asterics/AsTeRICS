@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.openHAB"
+                   canonical_name="eu.asterics.component.processor.openhab.openHABInstance">
+        <type subtype="Home Control">processor</type>
+        <singleton>false</singleton>
+        <description>OpenHAB Binding - Interfacing to the openHAB home automation suite</description>
+        <ports>
+			<inputPort id="item1in">
+				<description>Value for item1 (name is set via property)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="item2in">
+				<description>Value for item2 (name is set via property)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="item3in">
+				<description>Value for item3 (name is set via property)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="item4in">
+				<description>Value for item4 (name is set via property)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="item5in">
+				<description>Value for item5 (name is set via property)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="item6in">
+				<description>Value for item6 (name is set via property)</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="actionString">
+				<description>Action string to set any item's state</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="item1">
+				<description>Output of item1 (name is set via property)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="item2">
+				<description>Output of item2 (name is set via property)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="item3">
+				<description>Output of item3 (name is set via property)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="item4">
+				<description>Output of item4 (name is set via property)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="item5">
+				<description>Output of item5 (name is set via property)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="item6">
+				<description>Output of item6 (name is set via property)</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventTriggererPort id="item1changed">
+				<description>State of item1 (name is set via property) changed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="item2changed">
+				<description>State of item2 (name is set via property) changed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="item3changed">
+				<description>State of item3 (name is set via property) changed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="item4changed">
+				<description>State of item4 (name is set via property) changed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="item5changed">
+				<description>State of item5 (name is set via property) changed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="item6changed">
+				<description>State of item6 (name is set via property) changed</description>
+			</eventTriggererPort>
+		</events>			
+        <properties>
+			<property name="updaterate"
+				type="integer"
+				value="1000"
+				description="update rate of the openHAB items (time in milliseconds)"/>
+			<property name="hostname"
+				type="string"
+				value="localhost"
+				description="Base address of the openHAB installation"/>
+			<property name="port"
+				type="string"
+				value="8443"
+				description="Port for connection (default for openHAB: 8080 for non-HTTPS, 8443 for HTTPS)"/>
+			<!--  <property name="protocol"
+				type="integer"
+				value="0"
+				combobox="https//http"
+				description="Protocol to be used for connection, either http or https"/> -->
+			<property name="lazyCertificates"
+				type="boolean"
+				value="false"
+				description="if true, any SSL certificate validation will be deactivated for the given hostname"/>
+			<property name="username"
+				type="string"
+				value=""
+				description="Username, if required by openHAB configuration"/>
+			<property name="password"
+				type="string"
+				value=""
+				description="Password, if required by openHAB configuration"/>
+				
+				
+			<property name="item1in"
+				type="string"
+				value=""
+				description="Item name 1 for input port (set the state)"/>
+			<property name="item2in"
+				type="string"
+				value=""
+				description="Item name 2 for input port (set the state)"/>
+			<property name="item3in"
+				type="string"
+				value=""
+				description="Item name 3 for input port (set the state)"/>
+			<property name="item4in"
+				type="string"
+				value=""
+				description="Item name 4 for input port (set the state)"/>
+			<property name="item5in"
+				type="string"
+				value=""
+				description="Item name 5 for input port (set the state)"/>
+			<property name="item6in"
+				type="string"
+				value=""
+				description="Item name 6 for input port (set the state)"/>
+			
+			<property name="item1out"
+				type="string"
+				value=""
+				description="Item name 1 for output port (get the state)"/>
+			<property name="item2out"
+				type="string"
+				value=""
+				description="Item name 2 for output port (get the state)"/>
+			<property name="item3out"
+				type="string"
+				value=""
+				description="Item name 3 for output port (get the state)"/>
+			<property name="item4out"
+				type="string"
+				value=""
+				description="Item name 4 for output port (get the state)"/>
+			<property name="item5out"
+				type="string"
+				value=""
+				description="Item name 5 for output port (get the state)"/>
+			<property name="item6out"
+				type="string"
+				value=""
+				description="Item name 6 for output port (get the state)"/>
+				
+			<property name="item1event"
+				type="string"
+				value=""
+				description="Item name 1 for event output port (get a state change)"/>	
+			<property name="item2event"
+				type="string"
+				value=""
+				description="Item name 2 for event output port (get a state change)"/>	
+			<property name="item3event"
+				type="string"
+				value=""
+				description="Item name 3 for event output port (get a state change)"/>	
+			<property name="item4event"
+				type="string"
+				value=""
+				description="Item name 4 for event output port (get a state change)"/>	
+			<property name="item5event"
+				type="string"
+				value=""
+				description="Item name 5 for event output port (get a state change)"/>	
+			<property name="item6event"
+				type="string"
+				value=""
+				description="Item name 6 for event output port (get a state change)"/>
+        </properties>
+
+    </componentType>
+</componentTypes>
