@@ -27,8 +27,8 @@ import static org.bytedeco.javacpp.opencv_objdetect.*;
 
 public class FaceDetection {
 	//min face dimensions are empirical values and only work for a resolution of at least 320x240
-	private static final int MIN_FACE_HEIGHT = 35;
-	private static final int MIN_FACE_WIDTH = 35;
+	private static final int MIN_FACE_HEIGHT = 80;
+	private static final int MIN_FACE_WIDTH = 80;
 	String classifierName = "data/service.computervision/haarcascade_frontalface_alt.xml";
 	CvHaarClassifierCascade classifier=null;
 	// Objects allocated with a create*() or clone() factory method are automatically released
@@ -55,58 +55,57 @@ public class FaceDetection {
 		storage = CvMemStorage.create();
 	}
 
+	/**
+	 * Detect the biggest face in given grayscale image.
+	 * @param grayImage
+	 * @return
+	 * @throws Exception
+	 */
 	public CvRect detectFace(IplImage grayImage) throws Exception {
-		// Let's try to detect some faces! but we need a grayscale image...
-		/*
-		int width  = grabbedImage.width();
-		int height = grabbedImage.height();
-		IplImage grayImage    = IplImage.create(width, height, IPL_DEPTH_8U, 1);        
-		cvCvtColor(grabbedImage, grayImage, CV_BGR2GRAY);
-*/
+		//We already expect getting a grayscale image.
 		
-		// FAQ about IplImage:
-		// - For custom raw processing of data, getByteBuffer() returns an NIO direct
-		//   buffer wrapped around the memory pointed by imageData, and under Android we can
-		//   also use that Buffer with Bitmap.copyPixelsFromBuffer() and copyPixelsToBuffer().
-		// - To get a BufferedImage from an IplImage, we may call getBufferedImage().
-		// - The createFrom() factory method can construct an IplImage from a BufferedImage.
-		// - There are also a few copy*() methods for BufferedImage<->IplImage data transfers.
-		//IplImage grabbedImage = grabber.grab();
-
 		cvClearMemStorage(storage);
-		//storage.release();
-
 		long sTime=System.currentTimeMillis();
 		
-		CvSeq faces = cvHaarDetectObjects(grayImage, classifier, storage,
-				1.1, 1, CV_HAAR_DO_ROUGH_SEARCH | CV_HAAR_FIND_BIGGEST_OBJECT);
-			
+		/*
+		 * Tuning parameters from "Mastering OpenCV with Practical Computer Vision Projects" book  
+		 *  searchScaleFactor: The parameter determines how many different sizes of faces to look for;
+				typically it would be 1.1 for good detection, or 1.2 for faster detection that does not find the
+				face as often.
+			minNeighbors: This parameter determines how sure the detector should be that it has
+				detected a face, typically a value of 3 but you can set it higher if you want more reliable faces,
+				even if many faces are not detected.
+			flags: This parameter allows you to specify whether to look for all faces (default) or only look
+				for the largest face (CASCADE_FIND_BIGGEST_OBJECT). If you only look for the largest face, it
+				should run faster. There are several other parameters you can add to make the detection
+				about one percent or two percent faster, such as CASCADE_DO_ROUGH_SEARCH or
+				CASCADE_SCALE_IMAGE.
+		 */
+		//For any reason the javacv binding does not provide the minFeatureSize method signature of cvHaarDetectObjects.
 		
-		//CvSeq faces = cvHaarDetectObjects(grayImage, classifier, storage,1.2, 2, CV_HAAR_DO_CANNY_PRUNING | CV_HAAR_FIND_BIGGEST_OBJECT);
+		CvSeq faces = cvHaarDetectObjects(grayImage, classifier, storage,
+				1.2, 1, CV_HAAR_DO_ROUGH_SEARCH | CV_HAAR_FIND_BIGGEST_OBJECT);
+			
 		long eTime=System.currentTimeMillis();
 		//System.out.println("faceDetection took "+(eTime-sTime)+" ms");
 
 		int total = faces.total();
-
-		//grabbedImage.release();
-		/*
-		grayImage.release();
-		grayImage=null;
-		*/
 		if(total > 0) {
 			
 			CvRect faceRect=new CvRect(cvGetSeqElem(faces, 0));
-			
-			//storage.release();
 			if(faceRect.width() > MIN_FACE_WIDTH && faceRect.height() > MIN_FACE_HEIGHT) {				
 				return faceRect;
 			}
 			//System.out.println("ignoring face with width: "+faceRect.width());
 		} 
-		//storage.release();
 		return null;
 	}
 	
+	/**
+	 * Converst the given IplImage to a grayscale image.
+	 * @param orig
+	 * @return
+	 */
 	public IplImage convertToGrayScaleIplImage(IplImage orig) {
 		int width  = orig.width();
 		int height = orig.height();
@@ -115,6 +114,11 @@ public class FaceDetection {
 		return grayImage;
 	}
 
+	/**
+	 * Draws the given rectangular onto the given image. 
+	 * @param faceRect
+	 * @param image
+	 */
 	public void drawFaceRect(CvRect faceRect, IplImage image) {
 		if(faceRect != null && image != null) {
 			int x = faceRect.x(), y = faceRect.y(), w = faceRect.width(), h = faceRect.height();
