@@ -51,6 +51,7 @@ import org.xml.sax.SAXException;
 
 
 
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -805,8 +806,10 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 				List<File> files = ComponentUtils.findFiles(new File("data/cellBoardKeyboards"), ".xml", 200);
 				for (File file : files)
 				{
-					res.add(file.getName()); //.getPath().substring(file.getPath().indexOf("set")));
+					//res.add(file.getName()); //.getPath().substring(file.getPath().indexOf("set")));
+					res.add(file.getPath().substring("data/cellBoardKeyboards/".length()));
 				}
+				
 			}
 		} 
 		catch (Exception e)
