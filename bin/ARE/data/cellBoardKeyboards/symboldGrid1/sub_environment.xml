@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<keyboard rows="0" columns="0">
+	<button>
+		<text>Lights</text>
+		<icon>data/pictures/symbols/light on.png</icon>
+		<action>Lighting control</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>TV</text>
+		<icon>data/pictures/symbols/cable tv_1.png</icon>
+		<action>TV control</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Radio</text>
+		<icon>data/pictures/symbols/radio.png</icon>
+		<action>Radio control</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Door</text>
+		<icon>data/pictures/symbols/door.png</icon>
+		<action>Door control</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Heater</text>
+		<icon>data/pictures/symbols/average temperature thermometer.png</icon>
+		<action>Heating system</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/left arrow.png</icon>
+		<action>Back to overview</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+</keyboard>

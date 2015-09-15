@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<keyboard rows="0" columns="0">
+	<button>
+		<text>Temperature up</text>
+		<icon>data/pictures/symbols/thermometer temperature hot_1.png</icon>
+		<action>Rise temperature</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Temperature down</text>
+		<icon>data/pictures/symbols/thermometer temperature cold_1.png</icon>
+		<action>Temperature down</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/left arrow.png</icon>
+		<action>Back to environmental control</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+</keyboard>

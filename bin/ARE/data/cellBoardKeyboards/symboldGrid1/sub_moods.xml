@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<keyboard rows="0" columns="0">
+	<button>
+		<text>Happy</text>
+		<icon>data/pictures/symbols/happy_1.png</icon>
+		<action>I feel happy</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Sad</text>
+		<icon>data/pictures/symbols/unhappy.png</icon>
+		<action>I feel sad</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Angry</text>
+		<icon>data/pictures/symbols/angry_1.png</icon>
+		<action>I feel angry</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Confused</text>
+		<icon>data/pictures/symbols/astonished.png</icon>
+		<action>I feel confused</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Afraid</text>
+		<icon>data/pictures/symbols/afraid.png</icon>
+		<action>I feel afraid</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Enthousiastic</text>
+		<icon>data/pictures/symbols/jump.png</icon>
+		<action>I feel enthousiastic</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Bored</text>
+		<icon>data/pictures/symbols/bore.png</icon>
+		<action>I feel bored</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Worried</text>
+		<icon>data/pictures/symbols/negative attitude_1.png</icon>
+		<action>I feel worried</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/Left arrow.png</icon>
+		<action>Back to main menu</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+</keyboard>

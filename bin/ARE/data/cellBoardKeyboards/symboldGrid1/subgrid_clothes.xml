@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<keyboard rows="0" columns="0">
+	<button>
+		<text>Pants</text>
+		<icon>data/pictures/symbols/pants_1.png</icon>
+		<action>I would like to wear pants</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Shirt</text>
+		<icon>data/pictures/symbols/t-shirt.png</icon>
+		<action>I would like to wear a T-shirt</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Blouse</text>
+		<icon>data/pictures/symbols/blouse.png</icon>
+		<action>I would like to wear a blouse</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Skirt</text>
+		<icon>data/pictures/symbols/skirt.png</icon>
+		<action>I would like to wear a skirt</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Dress</text>
+		<icon>data/pictures/symbols/dress.png</icon>
+		<action>I would like to wear a dress</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Shoes</text>
+		<icon>data/pictures/symbols/shoes.png</icon>
+		<action>I would like to put on shoes</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Too tight</text>
+		<icon>data/pictures/symbols/tights.png</icon>
+		<action>My clothing fits too tight</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Too loose</text>
+		<icon>data/pictures/symbols/put shirt in skirt.png</icon>
+		<action>My clothing fits too loose</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/left arrow.png</icon>
+		<action>Back to overview</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+</keyboard>

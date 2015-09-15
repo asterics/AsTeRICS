@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<keyboard rows="0" columns="0">
+	<button>
+		<text>Open door</text>
+		<icon>data/pictures/symbols/leave the door open_1.png</icon>
+		<action>Open the door</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Close door</text>
+		<icon>data/pictures/symbols/close the door_1.png</icon>
+		<action>Close the door</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/left arrow.png</icon>
+		<action>Back to environmental control</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+</keyboard>

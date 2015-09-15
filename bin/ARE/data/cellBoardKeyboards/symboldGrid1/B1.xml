@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<keyboard rows="0" columns="0">
+	<button>
+		<text>Help</text>
+		<icon>data/pictures/symbols/asking for help.png</icon>
+		<action>Need for help</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Food</text>
+		<icon>data/pictures/symbols/eat with your mouth closed_1.png</icon>
+		<action>Need for food or drink</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Moods</text>
+		<icon>data/pictures/symbols/expression workshop_1.png</icon>
+		<action>Expressing a feeling</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Clothing</text>
+		<icon>data/pictures/symbols/clothing_1.png</icon>
+		<action>What to wear</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Environment</text>
+		<icon>data/pictures/symbols/environmental control.png</icon>
+		<action>Environmental control</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>Keyboard</text>
+		<icon>data/pictures/symbols/keyboard press key.png</icon>
+		<action>Change to keyboard</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+</keyboard>
