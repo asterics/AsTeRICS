@@ -78,6 +78,7 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 	final static int MODE_CORRECTION_SPOTS=0;
 	final static int MODE_PERMANENT_CORRECTION=1;
 	final static int MODE_COMBINED_TRACKING=2;
+	final static int MODE_SEND_COORDINATES_EVENT=3;
 	
 	final static int COMBINED_CORRECTION_IDLE = 0;
 	final static int COMBINED_CORRECTION_ACTIVE = 1;
@@ -228,6 +229,14 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
 		if ("switchToCombinedOffsetCorrection".equalsIgnoreCase(eventPortID))
 		{
 			return elpSwitchToCombinedOffsetCorrection;
+		}
+		if ("switchToSendCoordinatesEvent".equalsIgnoreCase(eventPortID))
+		{
+			return elpSwitchToSendCoordinatesEvent;
+		}
+		if ("sendCoordinatesEvent".equalsIgnoreCase(eventPortID))
+		{
+			return elpSendCoordinatesEvent;
 		}
 		if ("activate".equalsIgnoreCase(eventPortID))
 		{
@@ -523,6 +532,27 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
     		initTrackingVars();
     	}
     };    
+    final IRuntimeEventListenerPort elpSwitchToSendCoordinatesEvent 	= new IRuntimeEventListenerPort()
+    {
+    	@Override 
+    	public synchronized void receiveEvent(String data)
+    	{
+    		propOffsetCorrectionMode= MODE_SEND_COORDINATES_EVENT;
+    		initTrackingVars();
+    	}
+    };    
+    final IRuntimeEventListenerPort elpSendCoordinatesEvent 	= new IRuntimeEventListenerPort()
+    {
+    	@Override 
+    	public synchronized void receiveEvent(String data)
+    	{
+    		if (propOffsetCorrectionMode== MODE_SEND_COORDINATES_EVENT)
+    		{
+	            opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX));
+	            opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY));
+    		}
+    	}
+    };    
 	    
     
     synchronized public void newEyeData(boolean isFixated, int gazeDataX, int gazeDataY, int leftEyeX, int leftEyeY)
@@ -753,8 +783,8 @@ public class EyeXInstance extends AbstractRuntimeComponentInstance // implements
  		    		opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY+(int)offsetY));
 
      		    }
-     		    else
-     		    {
+     		    else if (propOffsetCorrectionMode != MODE_SEND_COORDINATES_EVENT)
+     		    {     		    	
     	            opGazeX.sendData(ConversionUtils.intToBytes(correctedGazeX));
     	            opGazeY.sendData(ConversionUtils.intToBytes(correctedGazeY));
      		    }

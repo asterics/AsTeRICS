@@ -69,6 +69,12 @@
 			<eventListenerPort id="switchToCombinedOffsetCorrection">
 				<description>enables the combined offset correction mode</description>
 			</eventListenerPort>
+			<eventListenerPort id="switchToSendCoordinatesEvent">
+				<description>enables the SendCoordinatesEvent mode</description>
+			</eventListenerPort>
+			<eventListenerPort id="sendCoordinatesEvent">
+				<description>sends current tracking coordinates if SendCoordinatesEvent mode is active</description>
+			</eventListenerPort>
 			<eventListenerPort id="activate">
 				<description>activate eyetracker</description>
 			</eventListenerPort>
@@ -125,8 +131,8 @@
 			<property name="offsetCorrectionMode"
 				type="integer"
 				value="1"
-                description="correction spots: allows to add offset correction spots; permanent: permanently adds incoming offset values; combined: coarse positioning via eye gaze and fine positioning via offset inputs !"
-                combobox="correction spots//permanent offset correction//combined offset correction"/>
+                description="correction spots: allows to add offset correction spots; permanent: permanently adds incoming offset values; combined: coarse positioning via eye gaze and fine positioning via offset inputs; by event: only send coordinates via incoming event"
+                combobox="correction spots//permanent offset correction//combined offset correction//send coordinates by event"/>
         </properties>
 
     </componentType>
