@@ -11,7 +11,7 @@
 	<button>
 		<text>Food</text>
 		<icon>data/pictures/symbols/eat with your mouth closed_1.png</icon>
-		<action>Need for food or drink</action>
+		<action>Need for food and drinks</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>
@@ -27,7 +27,7 @@
 	<button>
 		<text>Clothing</text>
 		<icon>data/pictures/symbols/clothing_1.png</icon>
-		<action>What to wear</action>
+		<action>clothing</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>
