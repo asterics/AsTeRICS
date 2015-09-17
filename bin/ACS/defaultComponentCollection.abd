@@ -9740,6 +9740,60 @@
         </gui>
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.sensor.hoverpanel.HoverPanelInstance" id="asterics.HoverPanel">
+        <type subtype="Graphical User Interface">sensor</type>
+        <singleton>false</singleton>
+        <description>The HoverPanel allows interaction </description>
+        <ports>
+			<inputPort id="x">
+				<description>x coordinate input</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="y">
+				<description>y coordinate input</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="activate">
+				<description>activates the HoverPanel</description>
+			</eventListenerPort>
+			<eventListenerPort id="deactivate">
+				<description>deactivates the HoverPanel</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="selected">
+				<description>this event is raised when the HoverPanel gets selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="enter">
+				<description>this event is raised when the HoverPanel is entered</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="exit">
+				<description>this event is raised when the HoverPanel is left</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property combobox="mouseCursor//coordinateInputs" description="selects the coordinate data source for interaction with the HoverPanel" name="dataSource" type="integer" value="0"/>
+			<property description="caption of the HoverPanel" name="caption" type="string" value="hover"/>
+			<property description="selection dwell time in milliseconds" name="dwellTime" type="integer" value="200"/>
+			<property description="selection idle time in milliseconds" name="idleTime" type="integer" value="50"/>
+			<property description="opacity (0-100%)" name="opacity" type="integer" value="50"/>
+			<property description="remain selected after hovering" name="stayActive" type="boolean" value="false"/>
+
+        </properties>
+        
+        <gui IsExternalGUIElement="true">
+            <width>800</width>
+            <height>1000</height>
+        </gui>
+                
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.sensor.joystickcapture.JoystickCaptureInstance" id="asterics.JoystickCapture">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>

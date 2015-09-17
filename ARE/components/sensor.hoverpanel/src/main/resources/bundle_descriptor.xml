@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.HoverPanel"
+                   canonical_name="eu.asterics.component.sensor.hoverpanel.HoverPanelInstance">
+        <type subtype="Graphical User Interface">sensor</type>
+        <singleton>false</singleton>
+        <description>The HoverPanel allows interaction </description>
+        <ports>
+			<inputPort id="x">
+				<description>x coordinate input</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="y">
+				<description>y coordinate input</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="activate">
+				<description>activates the HoverPanel</description>
+			</eventListenerPort>
+			<eventListenerPort id="deactivate">
+				<description>deactivates the HoverPanel</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="selected">
+				<description>this event is raised when the HoverPanel gets selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="enter">
+				<description>this event is raised when the HoverPanel is entered</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="exit">
+				<description>this event is raised when the HoverPanel is left</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="dataSource"
+				type="integer"
+				value="0"
+				combobox="mouseCursor//coordinateInputs"
+				description="selects the coordinate data source for interaction with the HoverPanel"/>
+			<property name="caption"
+				type="string"
+				value="hover"
+				description="caption of the HoverPanel"/>
+			<property name="dwellTime"
+				type="integer"
+				value="200"
+				description="selection dwell time in milliseconds"/>
+			<property name="idleTime"
+				type="integer"
+				value="50"
+				description="selection idle time in milliseconds"/>
+			<property name="opacity"
+				type="integer"
+				value="50"
+				description="opacity (0-100%)"/>
+			<property name="stayActive"
+				type="boolean"
+				value="false"
+				description="remain selected after hovering"/>
+
+        </properties>
+        
+        <gui IsExternalGUIElement="true">
+            <width>800</width>
+            <height>1000</height>
+        </gui>
+                
+    </componentType>
+</componentTypes>
