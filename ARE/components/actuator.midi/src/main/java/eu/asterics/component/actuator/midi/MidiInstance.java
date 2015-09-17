@@ -368,7 +368,8 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
 				List<File> files = findFiles(new File("data/actuator.midi"), ".sc", 200);
 				for (File file : files)
 				{
-					res.add(file.getName()); //.getPath().substring(file.getPath().indexOf("set")));
+					//res.add(file.getName()); 
+					res.add(file.getPath().substring("data/actuator.midi/".length()));
 				}
 			}
 			if (key.equals("midiDevice"))
