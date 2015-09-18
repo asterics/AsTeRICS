@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.openBCI"
+                   canonical_name="eu.asterics.component.sensor.openBCI.openBCIInstance">
+        <type subtype="Bioelectric Measurement">sensor</type>
+        <singleton>false</singleton>
+        <description>This plugin receives an openBCI data stream.  8 Channels of bioelectric data can be processed.</description>
+        <ports>
+
+			<outputPort id="Channel1">
+				<description>output port for channel1 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel2">
+				<description>output port for channel2 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel3">
+				<description>output port for channel3 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel4">
+				<description>output port for channel4 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel5">
+				<description>output port for channel5 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel6">
+				<description>output port for channel6 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel7">
+				<description>output port for channel7 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="Channel8">
+				<description>output port for channel8 data</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="ComPort"
+				type="string"
+				value="COM4"
+				description="The COM Port which will be opened to receive the openBCI packet stream"/>
+			<property name="BaudRate"
+				type="integer"
+				value="115200"
+				description="The baud rate for the packet stream"/>
+        </properties>
+    </componentType>
+</componentTypes>
