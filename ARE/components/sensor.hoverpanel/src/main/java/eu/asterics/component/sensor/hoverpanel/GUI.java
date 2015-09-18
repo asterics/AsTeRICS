@@ -71,9 +71,10 @@ public class GUI extends JFrame
 	    //setDefaultLookAndFeelDecorated(false);
 	    setUndecorated (true);
 	    setAlwaysOnTop( true );
+	    this.getContentPane().setBackground(Color.BLACK);
 		setSize(space);
 		setLocation(location.x,location.y);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE ); //.DO_NOTHING_ON_CLOSE
+		//setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE ); //.DO_NOTHING_ON_CLOSE
 		
 		add (new JLabel(owner.propCaption));
 		setOpacity(((float)owner.propOpacity)/100.0f);

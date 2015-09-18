@@ -31,8 +31,9 @@ package eu.asterics.component.sensor.hoverpanel;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Color;
-
 import java.util.logging.Logger;
+
+import javax.swing.SwingUtilities;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
@@ -45,6 +46,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
  * 
@@ -268,16 +270,99 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
 		}
 	};
 
+	int hoverState=0;
+	int idleState=0;
+	int selected=0;
+	long hoverTime=0;
+	long idleTime=0;
+	
 	private void checkHoverState()
 	{
-	 if ((currentX > position.x) && (currentX< position.x + dimension.width) 
-			  && (currentY > position.y) && (currentY< position.y + dimension.height))
+		
+	 if (idleState==1) return;
+	 
+	 if ((currentX > position.x) && (currentX < position.x + dimension.width) 
+			  && (currentY > position.y) && (currentY < position.y + dimension.height))
 	 {
-		 System.out.println("In: "+propCaption);
-	     gui.getContentPane().setBackground(Color.CYAN);
+		 
+		 if (hoverState==0)
+		 {
+			 System.out.println("In: "+propCaption);
+			 hoverState=1;
+			 hoverTime=System.currentTimeMillis();
+			 etpEnter.raiseEvent();
+			 
+			 
+			  AstericsThreadPool.instance.execute(new Runnable() {
+				  public void run()
+				  {
+					  while ((System.currentTimeMillis()-hoverTime < propDwellTime) && (hoverState == 1))
+					  {
+		    				try
+		    				{
+								   Thread.sleep(10);
+								   float c= (float)(System.currentTimeMillis()-hoverTime)/(float)propDwellTime;
+								   float b= 255.0f*c;
+								   if (b>255.0f) b=255.0f;
+								   gui.getContentPane().setBackground(new Color((int)b,(int)b,(int)b));
+
+		    				}
+		    				catch (InterruptedException e) {}
+					  }
+					  if (hoverState==1)
+					  {
+						  selected=1;
+						  etpSelected.raiseEvent();
+						  gui.getContentPane().setBackground(Color.CYAN);
+					  }
+					  else
+					  {
+						  gui.getContentPane().setBackground(Color.BLACK);
+					  }
+
+		    	  }
+			  });
+	      } 
+     }
+	 else  // coordinates are not within the hoverpanel
+	 {
+		 if (hoverState==1)
+		 {
+			 System.out.println("out: "+propCaption);
+
+			 etpExit.raiseEvent();
+		     gui.getContentPane().setBackground(Color.BLACK);
+		     hoverState=0;
+		     
+		     if (selected==1)
+		     {
+		     selected=0;
+		     idleState=1;
+			 idleTime=System.currentTimeMillis();
+			  AstericsThreadPool.instance.execute(new Runnable() {
+				  public void run()
+				  {
+					  while (System.currentTimeMillis()-idleTime < propIdleTime)
+					  {
+		    				try
+		    				{
+								   Thread.sleep(10);
+								   float c= (float)(System.currentTimeMillis()-idleTime)/(float)propIdleTime;
+								   float b= 255.0f-255.0f*c;
+								   if (b<0.0f) b=0.0f;
+								   
+								   gui.getContentPane().setBackground(new Color((int)b,(int)b,(int)b));
+
+		    				}
+		    				catch (InterruptedException e) {}
+					  }
+					  gui.getContentPane().setBackground(Color.BLACK);
+					  idleState=0;
+		    	  }
+			  });
+		     }
+		 }
 	 }
-	 else
-		 gui.getContentPane().setBackground(Color.BLACK);
 	}
 	
      /**
@@ -339,8 +424,24 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
-    	  gui.dispose();
+    	   super.stop();
+    	   System.out.println("Stop called !!");
+    	   
+    		SwingUtilities.invokeLater(new Runnable() {
+    			
+    			@Override
+    			public void run() {
+    				if (gui != null)
+    				{
+    					gui.dispose();
+    					gui=null;
+    				}				
+    			}
+    		});
+    	   
+    	  
+		   System.out.println("after dispose !!");
 		 //	AREServices.instance.displayPanel(gui, this, false);
-          super.stop();
+       
       }
 }
