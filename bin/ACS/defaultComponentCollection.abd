@@ -765,6 +765,87 @@
     </componentType>
 
 
+ <componentType canonical_name="eu.asterics.component.processor.serialport.SerialPortInstance" id="asterics.SerialPort">
+        <type subtype="Communication">processor</type>
+        <singleton>false</singleton>
+        <description>This plugin can send and receive data from a serial (COM) port.</description>
+        <ports>
+			<inputPort id="send">
+				<description>data to be sent to COM port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<outputPort id="received">
+				<description>received data from COM port</description>
+				<dataType>string</dataType>
+			</outputPort>
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property description="The COM Port which will be opened" name="ComPort" type="string" value="COM4"/>
+			<property description="The baud rate for the communication" name="BaudRate" type="integer" value="9600"/>
+			<property combobox="not used//cr (13)//lf (10)//cr+lf//zero(0)" description="append a character when sending the string ?" name="sendStringTerminator" type="integer" value="0"/>			
+			<property combobox="not used//cr (13)//lf (10)//cr+lf//zero(0)" description="wait for a termination character when receiving characters (-&gt; receive a string) ?" name="receiveStringTerminator" type="integer" value="0"/>			
+				
+        </properties>
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.actuator.textarea.TextAreaInstance" id="asterics.TextArea">
+        <type subtype="Graphical User Interface">actuator</type>
+        <singleton>false</singleton>
+        <description>GUI component, which displays text.</description>
+        <ports>
+			<inputPort id="setText">
+				<description>Input string to set the text area</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="appendText">
+				<description>Input string to append the text area</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<outputPort id="text">
+				<description>outputs the text area on incoming send event</description>
+				<dataType>string</dataType>
+			</outputPort>
+        </ports>
+		<events>
+		    <eventListenerPort id="delete">
+                <description>deletes one character</description>
+            </eventListenerPort>
+		    <eventListenerPort id="clear">
+                <description>clear the text</description>
+            </eventListenerPort>
+		    <eventListenerPort id="send">
+                <description>sends the text</description>
+            </eventListenerPort>
+		    <eventListenerPort id="sendAndClear">
+                <description>sends and clears the text</description>
+            </eventListenerPort>
+            <eventTriggererPort id="clicked">
+                <description>component clicked</description>
+            </eventTriggererPort>		
+		</events>			
+        <properties>
+        	<property description="Caption of the component" name="caption" type="string" value="Text Display"/>
+			<property description="Default Text" name="default" type="string" value=""/>
+			<property description="is the text area editable by the user ?" name="editable" type="boolean" value="false"/>
+			<property description="the font size" name="fontSize" type="integer" value="14"/>
+			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="color of text" name="textColor" type="integer" value="0"/> 
+            <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="background color" name="backgroundColor" type="integer" value="11"/> 
+            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
+        </properties>
+		<gui>
+			<width>3000</width>
+			<height>2000</height>
+		</gui>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.actuator.analogout.AnalogOutInstance" id="asterics.AnalogOut">
         <type subtype="Generic Control Output">actuator</type>
         <singleton>false</singleton>
@@ -3920,59 +4001,6 @@
         <properties>
 
         </properties>
-
-    </componentType>
-
- <componentType canonical_name="eu.asterics.component.actuator.textarea.TextAreaInstance" id="asterics.TextArea">
-        <type subtype="Graphical User Interface">actuator</type>
-        <singleton>false</singleton>
-        <description>GUI component, which displays text.</description>
-        <ports>
-			<inputPort id="setText">
-				<description>Input string to set the text area</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="appendText">
-				<description>Input string to append the text area</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<outputPort id="text">
-				<description>outputs the text area on incoming send event</description>
-				<dataType>string</dataType>
-			</outputPort>
-        </ports>
-		<events>
-		    <eventListenerPort id="delete">
-                <description>deletes one character</description>
-            </eventListenerPort>
-		    <eventListenerPort id="clear">
-                <description>clear the text</description>
-            </eventListenerPort>
-		    <eventListenerPort id="send">
-                <description>sends the text</description>
-            </eventListenerPort>
-		    <eventListenerPort id="sendAndClear">
-                <description>sends and clears the text</description>
-            </eventListenerPort>
-            <eventTriggererPort id="clicked">
-                <description>component clicked</description>
-            </eventTriggererPort>		
-		</events>			
-        <properties>
-        	<property description="Caption of the component" name="caption" type="string" value="Text Display"/>
-			<property description="Default Text" name="default" type="string" value=""/>
-			<property description="is the text area editable by the user ?" name="editable" type="boolean" value="false"/>
-			<property description="the font size" name="fontSize" type="integer" value="14"/>
-			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="color of text" name="textColor" type="integer" value="0"/> 
-            <property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="background color" name="backgroundColor" type="integer" value="11"/> 
-            <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
-        </properties>
-		<gui>
-			<width>3000</width>
-			<height>2000</height>
-		</gui>
 
     </componentType>
 

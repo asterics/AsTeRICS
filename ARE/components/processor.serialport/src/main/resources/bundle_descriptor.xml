@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.SerialPort"
+                   canonical_name="eu.asterics.component.processor.serialport.SerialPortInstance">
+        <type subtype="Communication">processor</type>
+        <singleton>false</singleton>
+        <description>This plugin can send and receive data from a serial (COM) port.</description>
+        <ports>
+			<inputPort id="send">
+				<description>data to be sent to COM port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<outputPort id="received">
+				<description>received data from COM port</description>
+				<dataType>string</dataType>
+			</outputPort>
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="ComPort"
+				type="string"
+				value="COM4"
+				description="The COM Port which will be opened"/>
+			<property name="BaudRate"
+				type="integer"
+				value="9600"
+				description="The baud rate for the communication"/>
+			<property name="sendStringTerminator"
+                type="integer"
+                value="0"
+                description="append a character when sending the string ?"
+                combobox="not used//cr (13)//lf (10)//cr+lf//zero(0)"/>			
+			<property name="receiveStringTerminator"
+                type="integer"
+                value="0"
+                description="wait for a termination character when receiving characters (-> receive a string) ?"
+                combobox="not used//cr (13)//lf (10)//cr+lf//zero(0)"/>			
+				
+        </properties>
+    </componentType>
+</componentTypes>
