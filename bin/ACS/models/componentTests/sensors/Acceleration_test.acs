@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\Acceleration_test.acs_2015_2_23_0_25" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ACS\models\componentTests\sensors\Acceleration_test.acs_2015_9_21_13_25" version="20130320">
   <components>
     <component id="Acceleration.1" type_id="asterics.Acceleration">
       <description>Acceleration sensor CIM</description>
@@ -20,9 +20,9 @@
       <properties>
         <property name="autoStart" value="true" />
         <property name="descreteSteps" value="0" />
-        <property name="updateFrequency" value="1" />
+        <property name="updateFrequency" value="2" />
         <property name="accelerationRange" value="4" />
-        <property name="uniqueID" value="WIRELESS_ACC-0xa000003" />
+        <property name="uniqueID" value="not used" />
       </properties>
       <layout>
         <posX>16</posX>
