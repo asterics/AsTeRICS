@@ -41,6 +41,18 @@
 				<description>output port for channel8 data</description>
 				<dataType>double</dataType>
 			</outputPort>
+			<outputPort id="AccX">
+				<description>output port for Accelerometer X data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccY">
+				<description>output port for Accelerometer Y data</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="AccZ">
+				<description>output port for Accelerometer Z data</description>
+				<dataType>double</dataType>
+			</outputPort>
 
         </ports>
 		<events>

@@ -70,6 +70,9 @@ public class openBCIInstance extends AbstractRuntimeComponentInstance
 	private final OutputPort opChannel6 = new OutputPort();
 	private final OutputPort opChannel7 = new OutputPort();
 	private final OutputPort opChannel8 = new OutputPort();
+	private final OutputPort opAccX = new OutputPort();
+	private final OutputPort opAccY = new OutputPort();
+	private final OutputPort opAccZ = new OutputPort();
 	
 	
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
@@ -116,38 +119,28 @@ public class openBCIInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
-		if ("channel1".equalsIgnoreCase(portID))
-		{
+		if ("Channel1".equalsIgnoreCase(portID))
 			return opChannel1;
-		}
-		if ("channel2".equalsIgnoreCase(portID))
-		{
+		if ("Channel2".equalsIgnoreCase(portID))
 			return opChannel2;
-		}
-		if ("channel3".equalsIgnoreCase(portID))
-		{
+		if ("Channel3".equalsIgnoreCase(portID))
 			return opChannel3;
-		}
-		if ("channel4".equalsIgnoreCase(portID))
-		{
+		if ("Channel4".equalsIgnoreCase(portID))
 			return opChannel4;
-		}
-		if ("channel5".equalsIgnoreCase(portID))
-		{
+		if ("Channel5".equalsIgnoreCase(portID))
 			return opChannel5;
-		}
-		if ("channel6".equalsIgnoreCase(portID))
-		{
+		if ("Channel6".equalsIgnoreCase(portID))
 			return opChannel6;
-		}
-		if ("channel7".equalsIgnoreCase(portID))
-		{
+		if ("Channel7".equalsIgnoreCase(portID))
 			return opChannel7;
-		}
-		if ("channel8".equalsIgnoreCase(portID))
-		{
+		if ("Channel8".equalsIgnoreCase(portID))
 			return opChannel8;
-		}
+		if ("AccX".equalsIgnoreCase(portID))
+			return opAccX;
+		if ("AccY".equalsIgnoreCase(portID))
+			return opAccY;
+		if ("AccZ".equalsIgnoreCase(portID))
+			return opAccZ;
 
 		return null;
 	}
@@ -325,7 +318,7 @@ public class openBCIInstance extends AbstractRuntimeComponentInstance
 							state = 0;
 						break;
 
-				case 2:	if (actbyte != framenumber) {
+				case 2:	if ((0x000000ff & actbyte) != framenumber) {
 							syncloss++;
 							// but go ahead and parse it anyway, 
 						}
@@ -338,7 +331,7 @@ public class openBCIInstance extends AbstractRuntimeComponentInstance
 						break;
 
 				case 3: // get channel values 
-						tempval |= (((int)actbyte) << (16 - (bytecounter*8)));		// big endian
+						tempval |= ((0x000000ff & actbyte) << (16 - (bytecounter*8)));		// big endian
 						bytecounter++;
 						if (bytecounter==3) {
 							if ((tempval & 0x00800000) > 0) {
@@ -359,7 +352,7 @@ public class openBCIInstance extends AbstractRuntimeComponentInstance
 							}
 							
 							channelcounter++;
-							if (channelcounter==7) {  // all channels arrived !
+							if (channelcounter==8) {  // all channels arrived !
 								state++;
 								bytecounter=0;
 								tempval=0;
@@ -369,7 +362,7 @@ public class openBCIInstance extends AbstractRuntimeComponentInstance
 						break;
 
 				case 4: // get accelerometer XYZ
-						tempval |= (((int)actbyte) << (8 - (bytecounter*8)));		// big endian
+						tempval |= ((0xff & actbyte) << (8 - (bytecounter*8)));		// big endian
 						bytecounter++;
 						if (bytecounter==2) {
 							if ((tempval & 0x00008000) > 0) {
@@ -378,12 +371,12 @@ public class openBCIInstance extends AbstractRuntimeComponentInstance
 								tempval &= 0x0000FFFF;
 							}
 							switch (channelcounter) {
-								//case 7: opAccX.sendData(tempval);break;
-								//case 8: opAccY.sendData(tempval);break;
-								//case 9: opAccZ.sendData(tempval);break;
+								case 8: opAccX.sendData(tempval);break;
+								case 9: opAccY.sendData(tempval);break;
+								case 10: opAccZ.sendData(tempval);break;
 							}
 							channelcounter++;
-							if (channelcounter==(10)) {  // all channels arrived !
+							if (channelcounter==(11)) {  // all channels arrived !
 								state++;
 								bytecounter=0;
 								channelcounter=0;
@@ -393,7 +386,7 @@ public class openBCIInstance extends AbstractRuntimeComponentInstance
 						}
 						break;
 
-				case 5: if (actbyte == 0xC0)     // if correct end delimiter found:
+				case 5: if ((0x000000ff & actbyte) == 0xC0)     // if correct end delimiter found:
 						{
 							state = 1;
 						}
@@ -406,37 +399,6 @@ public class openBCIInstance extends AbstractRuntimeComponentInstance
 
 				default: state=0;  // resync
 			}
-		
-		
-/*		
-		switch (state) {
-			case 0:
-				//System.out.println("Got start of start sequence");
-				if ((0x000000ff & data) == 0xA5)
-					{state = 1;
-				     //System.out.println("Got A5");
-					}
-				break;
-			case 1:
-				if ((0x000000ff & data) == 0x0000005A) { 
-					state = 2;
-				    //System.out.println("Got 5A");
-				}
-				else 
-					state = 0;
-				break;
-			default:
-				//System.out.println("Default"+ state);
-				state++;
-				array[i] = data;
-				i++;
-				if (state == 17) {
-					parsePacket();
-					state = 0;
-					i = 0;
-				}			
-		}
-		*/
 		
 	}	
 
@@ -481,7 +443,9 @@ public class openBCIInstance extends AbstractRuntimeComponentInstance
     		  readerThread.start();
     		  
           	try {
+         		// out.write('f');
         		out.write('b');
+   
         	} catch (Exception e) {};
     	  }
     	  super.start();
