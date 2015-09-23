@@ -1,33 +1,33 @@
 <?xml version="1.0" ?>
 <keyboard rows="0" columns="0">
 	<button>
-		<text>Radio on</text>
+		<text>Turn on/off</text>
 		<icon>data/pictures/symbols/musical notes.png</icon>
-		<action>Turn radio on</action>
+		<action>Turn on or off</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>Radio off</text>
-		<icon>data/pictures/symbols/loudspeaker music.png</icon>
-		<action>Turn radio off</action>
+		<text>Play</text>
+		<icon>data/pictures/symbols/loudspeaker music_2.png</icon>
+		<action>Play CD</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>CD on</text>
+		<text>Change mode</text>
 		<icon>data/pictures/symbols/music and dance.png</icon>
-		<action>Turn CD on</action>
+		<action>Change mode to CD or radio</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>
 	</button>
 	<button>
-		<text>CD off</text>
+		<text>Stop</text>
 		<icon>data/pictures/symbols/loudspeaker music.png</icon>
-		<action>Turn CD off</action>
+		<action>Stop CD</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>
@@ -50,8 +50,8 @@
 	</button>
 	<button>
 		<text>Volume up</text>
-		<icon>data/pictures/symbols/loudspeaker music_2.png</icon>
-		<action>Inscrease volume</action>
+		<icon>data/pictures/symbols/loudspeaker_2.png</icon>
+		<action>Increase volume</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>

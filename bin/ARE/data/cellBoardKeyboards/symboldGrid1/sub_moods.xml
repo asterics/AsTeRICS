@@ -19,7 +19,7 @@
 	<button>
 		<text>Angry</text>
 		<icon>data/pictures/symbols/angry_1.png</icon>
-		<action>I feel angry</action>
+		<action>I am angry</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>

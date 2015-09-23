@@ -3,7 +3,7 @@
 	<button>
 		<text>Lights on</text>
 		<icon>data/pictures/symbols/put on light.png</icon>
-		<action>Turn the lights on</action>
+		<action>lights on</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>
@@ -11,7 +11,7 @@
 	<button>
 		<text>Lights off</text>
 		<icon>data/pictures/symbols/turn off the light_1.png</icon>
-		<action>Turn lights off</action>
+		<action>lights off</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>
@@ -19,7 +19,7 @@
 	<button>
 		<text>Back</text>
 		<icon>data/pictures/symbols/left arrow.png</icon>
-		<action>Back to environmental control</action>
+		<action>Back</action>
 		<sound></sound>
 
 		<soundPreview></soundPreview>

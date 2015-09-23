@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ARE\models\symboldGrid1\sub_environment_lights.acs_2015_9_15_19_48" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ARE\models\symboldGrid1\sub_environment_lights.acs_2015_9_23_13_16" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -197,7 +197,7 @@
       <properties>
         <property name="mode" value="2" />
         <property name="repeatCounter" value="1" />
-        <property name="timePeriod" value="1000" />
+        <property name="timePeriod" value="2000" />
         <property name="resolution" value="50" />
         <property name="waitPeriod" value="0" />
         <property name="autostart" value="True" />
@@ -223,8 +223,8 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>413</posX>
-        <posY>341</posY>
+        <posX>478</posX>
+        <posY>175</posY>
       </layout>
       <gui>
         <posX>2947</posX>
@@ -232,6 +232,71 @@
         <width>4000</width>
         <height>889</height>
       </gui>
+    </component>
+    <component id="EventCascade.1" type_id="asterics.EventCascade">
+      <description>allows to specify a sequence of events with arbitrary delay times and loops</description>
+      <ports />
+      <properties>
+        <property name="activeTriggers" value="2" />
+        <property name="loops" value="0" />
+        <property name="autoStart" value="false" />
+        <property name="delayBeforeTrigger1" value="1" />
+        <property name="delayBeforeTrigger2" value="500" />
+        <property name="delayBeforeTrigger3" value="500" />
+        <property name="delayBeforeTrigger4" value="500" />
+        <property name="delayBeforeTrigger5" value="500" />
+        <property name="delayBeforeTrigger6" value="500" />
+        <property name="delayBeforeTrigger7" value="500" />
+        <property name="delayBeforeTrigger8" value="500" />
+        <property name="delayBeforeTrigger9" value="500" />
+        <property name="delayBeforeTrigger10" value="500" />
+        <property name="delayBeforeTrigger11" value="500" />
+        <property name="delayBeforeTrigger12" value="500" />
+        <property name="delayBeforeTrigger13" value="500" />
+        <property name="delayBeforeTrigger14" value="500" />
+        <property name="delayBeforeTrigger15" value="500" />
+      </properties>
+      <layout>
+        <posX>251</posX>
+        <posY>285</posY>
+      </layout>
+    </component>
+    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
+      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+      <ports>
+        <inputPort portTypeID="modelName">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="model" value="symboldGrid1/subgrid_environment.acs" />
+      </properties>
+      <layout>
+        <posX>116</posX>
+        <posY>307</posY>
+      </layout>
+    </component>
+    <component id="FS20Sender.1" type_id="asterics.FS20Sender">
+      <description>Sends FS20 commands</description>
+      <ports>
+        <inputPort portTypeID="Housecode">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Address">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="Action">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="Housecode" value="11111111" />
+        <property name="Address" value="1111" />
+      </properties>
+      <layout>
+        <posX>580</posX>
+        <posY>347</posY>
+      </layout>
     </component>
     <component id="SyntheticVoice.1" type_id="asterics.SyntheticVoice">
       <description>Uses SAPI technology to generate synthetic voice</description>
@@ -247,23 +312,36 @@
         <property name="xmlTags" value="false" />
       </properties>
       <layout>
-        <posX>295</posX>
-        <posY>339</posY>
+        <posX>486</posX>
+        <posY>28</posY>
       </layout>
     </component>
-    <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
-      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
-      <ports>
-        <inputPort portTypeID="modelName">
-          <properties />
-        </inputPort>
-      </ports>
+    <component id="EventCascade.1.1" type_id="asterics.EventCascade">
+      <description>allows to specify a sequence of events with arbitrary delay times and loops</description>
+      <ports />
       <properties>
-        <property name="model" value="symboldGrid1/subgrid_environment.acs" />
+        <property name="activeTriggers" value="2" />
+        <property name="loops" value="0" />
+        <property name="autoStart" value="false" />
+        <property name="delayBeforeTrigger1" value="1" />
+        <property name="delayBeforeTrigger2" value="500" />
+        <property name="delayBeforeTrigger3" value="500" />
+        <property name="delayBeforeTrigger4" value="500" />
+        <property name="delayBeforeTrigger5" value="500" />
+        <property name="delayBeforeTrigger6" value="500" />
+        <property name="delayBeforeTrigger7" value="500" />
+        <property name="delayBeforeTrigger8" value="500" />
+        <property name="delayBeforeTrigger9" value="500" />
+        <property name="delayBeforeTrigger10" value="500" />
+        <property name="delayBeforeTrigger11" value="500" />
+        <property name="delayBeforeTrigger12" value="500" />
+        <property name="delayBeforeTrigger13" value="500" />
+        <property name="delayBeforeTrigger14" value="500" />
+        <property name="delayBeforeTrigger15" value="500" />
       </properties>
       <layout>
-        <posX>165</posX>
-        <posY>299</posY>
+        <posX>395</posX>
+        <posY>255</posY>
       </layout>
     </component>
   </components>
@@ -281,7 +359,7 @@
     <channel id="binding.1">
       <source>
         <component id="CellBoard.1" />
-        <port id="selectedCellText" />
+        <port id="actCellText" />
       </source>
       <target>
         <component id="SyntheticVoice.1" />
@@ -332,6 +410,111 @@
         <target>
           <component id="CellBoard.1" />
           <eventPort id="scanSelect" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell1_startCascade">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCascade.1" />
+          <eventPort id="startCascade" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger1_onLevel16">
+      <description />
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="FS20Sender.1" />
+          <eventPort id="onLevel16" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger2_switchModel">
+      <description />
+      <sources>
+        <source>
+          <component id="EventCascade.1" />
+          <eventPort id="trigger2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="modelSwitcher.1" />
+          <eventPort id="switchModel" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger1_off">
+      <description />
+      <sources>
+        <source>
+          <component id="EventCascade.1.1" />
+          <eventPort id="trigger1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="FS20Sender.1" />
+          <eventPort id="off" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="trigger2_switchModel">
+      <description />
+      <sources>
+        <source>
+          <component id="EventCascade.1.1" />
+          <eventPort id="trigger2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="modelSwitcher.1" />
+          <eventPort id="switchModel" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cellClicked_stop">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cellClicked" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Timer.1" />
+          <eventPort id="stop" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell2_startCascade">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventCascade.1.1" />
+          <eventPort id="startCascade" />
         </target>
       </targets>
     </eventChannel>

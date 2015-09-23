@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ARE\models\symboldGrid1\sub_environment_radio.acs_2015_9_15_19_48" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ARE\models\symboldGrid1\sub_environment_radio.acs_2015_9_23_13_1" version="20130320">
+  <modelDescription>
+    <shortDescription />
+    <requirements />
+    <description />
+  </modelDescription>
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -227,9 +232,9 @@
         <posY>341</posY>
       </layout>
       <gui>
-        <posX>3010</posX>
-        <posY>343</posY>
-        <width>4000</width>
+        <posX>1447</posX>
+        <posY>232</posY>
+        <width>7250</width>
         <height>889</height>
       </gui>
     </component>
@@ -266,9 +271,54 @@
         <posY>325</posY>
       </layout>
     </component>
+    <component id="IrTrans.1.1" type_id="asterics.IrTrans">
+      <description>Infrared Transmission Module, interfaces to the IrTrans device</description>
+      <ports>
+        <inputPort portTypeID="action">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="hostname" value="localhost" />
+        <property name="port" value="21000" />
+        <property name="prestring" value="snd asterics," />
+        <property name="send1" value="rc_operate" />
+        <property name="send2" value="rc_play" />
+        <property name="send3" value="rc_mode" />
+        <property name="send4" value="rc_stop" />
+        <property name="send5" value="rc_next" />
+        <property name="send6" value="rc_previous" />
+        <property name="send7" value="rc_volume_up" />
+        <property name="send8" value="rc_volume_down" />
+        <property name="send9" value="" />
+        <property name="send10" value="" />
+        <property name="send11" value="" />
+        <property name="send12" value="" />
+        <property name="send13" value="" />
+        <property name="send14" value="" />
+        <property name="send15" value="" />
+        <property name="send16" value="" />
+        <property name="send17" value="" />
+        <property name="send18" value="" />
+        <property name="send19" value="" />
+        <property name="send20" value="" />
+        <property name="send21" value="" />
+        <property name="send22" value="" />
+        <property name="send23" value="" />
+        <property name="send24" value="" />
+      </properties>
+      <layout>
+        <posX>499</posX>
+        <posY>72</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.0">
+      <description />
       <source>
         <component id="CellBoard.1" />
         <port id="selectedCellText" />
@@ -279,6 +329,7 @@
       </target>
     </channel>
     <channel id="binding.1">
+      <description />
       <source>
         <component id="CellBoard.1" />
         <port id="selectedCellText" />
@@ -291,7 +342,6 @@
   </channels>
   <eventChannels>
     <eventChannel id="periodFinished_scanMove">
-      <description />
       <sources>
         <source>
           <component id="Timer.1" />
@@ -306,7 +356,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="cell12_switchModel">
-      <description />
       <sources>
         <source>
           <component id="CellBoard.1" />
@@ -321,7 +370,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="keyPressed_scanSelect">
-      <description />
       <sources>
         <source>
           <component id="KeyCapture.1" />
@@ -332,6 +380,126 @@
         <target>
           <component id="CellBoard.1" />
           <eventPort id="scanSelect" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell1_sendprop1">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1.1" />
+          <eventPort id="sendprop1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell2_sendprop2">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1.1" />
+          <eventPort id="sendprop2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell3_sendprop3">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1.1" />
+          <eventPort id="sendprop3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell4_sendprop4">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1.1" />
+          <eventPort id="sendprop4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell5_sendprop5">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1.1" />
+          <eventPort id="sendprop5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell6_sendprop6">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1.1" />
+          <eventPort id="sendprop6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell7_sendprop7">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1.1" />
+          <eventPort id="sendprop7" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="cell8_sendprop8">
+      <description />
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="IrTrans.1.1" />
+          <eventPort id="sendprop8" />
         </target>
       </targets>
     </eventChannel>
