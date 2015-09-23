@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ARE\models\symboldGrid1\sub_environment_radio.acs_2015_9_23_13_1" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS\bin\ARE\models\symboldGrid1\sub_environment_radio.acs_2015_9_23_15_56" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />
@@ -287,10 +287,10 @@
         <property name="prestring" value="snd asterics," />
         <property name="send1" value="rc_operate" />
         <property name="send2" value="rc_play" />
-        <property name="send3" value="rc_mode" />
+        <property name="send3" value="rc_function" />
         <property name="send4" value="rc_stop" />
-        <property name="send5" value="rc_next" />
-        <property name="send6" value="rc_previous" />
+        <property name="send5" value="rc_forward" />
+        <property name="send6" value="rc_back" />
         <property name="send7" value="rc_volume_up" />
         <property name="send8" value="rc_volume_down" />
         <property name="send9" value="" />
