@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<keyboard rows="0" columns="0">
+	<button>
+		<text>To sub1 menu</text>
+		<icon></icon>
+		<action>CellBoardSubMenu1_test.xml</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+	<button>
+		<text>To sub2 menu</text>
+		<icon></icon>
+		<action>CellBoardSubMenu2_test.xml</action>
+		<sound></sound>
+
+		<soundPreview></soundPreview>
+	</button>
+</keyboard>
