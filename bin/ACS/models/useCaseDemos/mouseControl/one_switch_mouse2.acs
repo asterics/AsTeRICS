@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\mouseControl\one_switch_mouse2.acs_2015_2_23_0_45" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\mouseControl\one_switch_mouse2.acs_2015_10_9_14_10" version="20130320">
   <modelDescription>
     <shortDescription>Local mouse control with 1 switch</shortDescription>
     <requirements>Switch button connected to In1 of the DigitalIn CIM</requirements>
@@ -186,6 +186,7 @@ A button press selects the current action.
         <property name="toneScale" value="harmonic.sc" />
         <property name="playOnlyChangingNotes" value="true" />
         <property name="displayGUI" value="False" />
+        <property name="displayNoteNames" value="false" />
       </properties>
       <layout>
         <posX>1062</posX>
@@ -616,6 +617,7 @@ A button press selects the current action.
         <property name="defaultApplication" value="..\OSKA\start keyboard.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
+        <property name="closeCmd" value="" />
         <property name="autoLaunch" value="false" />
         <property name="autoClose" value="true" />
         <property name="onlyByEvent" value="false" />

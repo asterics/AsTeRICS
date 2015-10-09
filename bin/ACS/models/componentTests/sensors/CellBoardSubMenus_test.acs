@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ACS\models\componentTests\sensors\CellBoardSubMenus_test.acs_2015_9_24_15_45" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\CellBoardSubMenus_test.acs_2015_10_9_10_37" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -34,6 +34,12 @@
         <outputPort portTypeID="selectedCellText">
           <properties />
         </outputPort>
+        <outputPort portTypeID="scanRow">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="scanColumn">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="caption" value="Test Cellboard Submenus" />
@@ -43,10 +49,15 @@
         <property name="backgroundColor" value="11" />
         <property name="scanColor" value="10" />
         <property name="scanMode" value="0" />
+        <property name="scanCycles" value="3" />
         <property name="hoverTime" value="1000" />
+        <property name="hoverIndicator" value="0" />
+        <property name="hoverFrameThickness" value="4" />
         <property name="enableEdit" value="true" />
         <property name="enableClickSelection" value="true" />
+        <property name="commandSeparator" value="" />
         <property name="keyboardFile" value="CellBoardSubMenus_test.xml" />
+        <property name="ignoreKeyboardFileProperties" value="false" />
         <property name="displayGUI" value="true" />
         <property name="cellText1" value="" />
         <property name="cellImage1" value="" />
@@ -158,8 +169,8 @@
         <property name="actionText36" value="" />
       </properties>
       <layout>
-        <posX>204</posX>
-        <posY>180</posY>
+        <posX>228</posX>
+        <posY>74</posY>
       </layout>
       <gui>
         <posX>0</posX>
@@ -167,6 +178,17 @@
         <width>3000</width>
         <height>3000</height>
       </gui>
+    </component>
+    <component id="EventDelay.1" type_id="asterics.EventDelay">
+      <description>Delalys events</description>
+      <ports />
+      <properties>
+        <property name="delay" value="10" />
+      </properties>
+      <layout>
+        <posX>230</posX>
+        <posY>317</posY>
+      </layout>
     </component>
   </components>
   <channels>
@@ -182,12 +204,27 @@
     </channel>
   </channels>
   <eventChannels>
-    <eventChannel id="cell1_load">
+    <eventChannel id="cellClicked_input">
       <description />
       <sources>
         <source>
           <component id="CellBoard.1" />
           <eventPort id="cellClicked" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventDelay.1" />
+          <eventPort id="input" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="output_load">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDelay.1" />
+          <eventPort id="output" />
         </source>
       </sources>
       <targets>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\Users\aschm_000\Desktop\Bakk\MotionAnalysis_Example.acs_2015_6_18_16_36" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\MotionAnalysis_Example.acs_2015_10_9_10_34" version="20130320">
   <components>
     <component id="MotionAnalysis.1" type_id="asterics.MotionAnalysis">
       <description>Display to visualize and compare data form different sensors</description>

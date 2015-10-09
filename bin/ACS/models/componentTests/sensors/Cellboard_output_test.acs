@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\Cellboard_output_test.acs_2015_2_23_0_25" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\Cellboard_output_test.acs_2015_10_9_10_37" version="20130320">
   <components>
     <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
       <description>GUI component, which displays text.</description>
@@ -151,6 +151,12 @@
         <outputPort portTypeID="selectedCellText">
           <properties />
         </outputPort>
+        <outputPort portTypeID="scanRow">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="scanColumn">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="caption" value="Cell Board" />
@@ -160,10 +166,15 @@
         <property name="backgroundColor" value="11" />
         <property name="scanColor" value="10" />
         <property name="scanMode" value="2" />
+        <property name="scanCycles" value="3" />
         <property name="hoverTime" value="1000" />
+        <property name="hoverIndicator" value="0" />
+        <property name="hoverFrameThickness" value="4" />
         <property name="enableEdit" value="True" />
         <property name="enableClickSelection" value="True" />
+        <property name="commandSeparator" value="" />
         <property name="keyboardFile" value="test.xml" />
+        <property name="ignoreKeyboardFileProperties" value="false" />
         <property name="displayGUI" value="true" />
         <property name="cellText1" value="Cell 1" />
         <property name="cellImage1" value="" />

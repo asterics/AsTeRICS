@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\ReadEDF - draw periodically.acs_2015_2_23_0_30" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\ReadEDF - draw periodically.acs_2015_10_9_10_39" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />
@@ -95,6 +95,9 @@
           <properties />
         </outputPort>
         <outputPort portTypeID="CH8">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH9">
           <properties />
         </outputPort>
       </ports>

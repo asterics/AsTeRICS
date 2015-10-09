@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\midi_integrate.acs_2015_2_23_0_43" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\midi_integrate.acs_2015_10_9_14_9" version="20130320">
   <components>
     <component id="Integrate.1" type_id="asterics.Integrate">
       <description>Integration with upper and lower bounds and reset</description>
@@ -49,6 +49,7 @@
         <property name="toneScale" value="entlein.sc" />
         <property name="playOnlyChangingNotes" value="True" />
         <property name="displayGUI" value="true" />
+        <property name="displayNoteNames" value="false" />
       </properties>
       <layout>
         <posX>787</posX>

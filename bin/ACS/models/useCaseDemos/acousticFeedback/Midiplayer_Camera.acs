@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\acousticFeedback\Midiplayer_Camera.acs_2015_2_23_0_41" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\acousticFeedback\Midiplayer_Camera.acs_2015_10_9_14_6" version="20130320">
   <modelDescription>
     <shortDescription>Play Midi Tones via an analogue sensor (e.g. sip / puff sensor)
 and head movements</shortDescription>
@@ -41,6 +41,7 @@ A tone can be played e.g. by the Sip/Puff sensor (by blowing)
         <property name="toneScale" value="0" />
         <property name="playOnlyChangingNotes" value="true" />
         <property name="displayGUI" value="true" />
+        <property name="displayNoteNames" value="false" />
       </properties>
       <layout>
         <posX>621</posX>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\mouseControl\camera_mouse_fish.acs_2015_2_23_0_44" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\mouseControl\camera_mouse_fish.acs_2015_10_9_14_10" version="20130320">
   <modelDescription>
     <shortDescription>Webcam Mouse with click functionality. A short period between opening 
 and closing the mouth triggers a left mouse click, a long period triggers a right 

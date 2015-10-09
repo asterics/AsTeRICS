@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ARE\models\autostart.acs_2015_3_21_17_32" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\eyetracking\eyex_music.acs_2015_10_9_14_8" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />
@@ -395,6 +395,7 @@
         <property name="defaultApplication" value="c:\data\works\launch_all.bat" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="c:\data\works\" />
+        <property name="closeCmd" value="" />
         <property name="autoLaunch" value="False" />
         <property name="autoClose" value="true" />
         <property name="onlyByEvent" value="false" />

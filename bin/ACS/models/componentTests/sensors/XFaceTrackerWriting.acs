@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\XFaceTrackerWriting.acs_2015_6_9_23_58" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\XFaceTrackerWriting.acs_2015_10_9_10_41" version="20130320">
   <modelDescription>
     <shortDescription>Camera controlled mouse for writing with OSKA</shortDescription>
     <requirements>Webcam connected to USB port.
@@ -529,6 +529,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <property name="defaultApplication" value="c:\windows\notepad.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
+        <property name="closeCmd" value="" />
         <property name="autoLaunch" value="True" />
         <property name="autoClose" value="true" />
         <property name="onlyByEvent" value="false" />

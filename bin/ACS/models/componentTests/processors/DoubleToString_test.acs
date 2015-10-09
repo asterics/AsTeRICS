@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\DoubleToString_test.acs_2015_2_23_0_22" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\DoubleToString_test.acs_2015_10_9_10_33" version="20130320">
   <components>
     <component id="EditBox.1" type_id="asterics.EditBox">
       <description>Text edit box</description>

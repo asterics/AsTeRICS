@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\gaming&amp;Toys\pong_live.acs_2015_2_23_0_43" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\gaming&amp;Toys\pong_live.acs_2015_10_9_14_8" version="20130320">
   <components>
     <component id="Arduino.1" type_id="asterics.Arduino">
       <description>Arduino Microcontroller CIM</description>
@@ -370,6 +370,7 @@
         <property name="toneScale" value="alltones.sc" />
         <property name="playOnlyChangingNotes" value="False" />
         <property name="displayGUI" value="False" />
+        <property name="displayNoteNames" value="false" />
       </properties>
       <layout>
         <posX>825</posX>
@@ -532,6 +533,7 @@
         <property name="toneScale" value="alltones.sc" />
         <property name="playOnlyChangingNotes" value="False" />
         <property name="displayGUI" value="False" />
+        <property name="displayNoteNames" value="false" />
       </properties>
       <layout>
         <posX>805</posX>
@@ -787,6 +789,9 @@
           <properties />
         </outputPort>
         <inputPort portTypeID="preString">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="postString">
           <properties />
         </inputPort>
       </ports>

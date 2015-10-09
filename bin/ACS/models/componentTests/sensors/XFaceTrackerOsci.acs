@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\XFaceTrackerOsci.acs_2015_6_9_23_57" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\XFaceTrackerOsci.acs_2015_10_9_10_41" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />

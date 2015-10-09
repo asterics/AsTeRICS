@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS_Git\bin\ACS\models\componentTests\processors\IIRFilter_test.acs_2015_6_17_18_4" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\IIRFilter_test.acs_2015_10_9_10_34" version="20130320">
   <components>
     <component id="IIRFilter.1" type_id="asterics.IIRFilter">
       <description>This plugin provides various filter implementations</description>

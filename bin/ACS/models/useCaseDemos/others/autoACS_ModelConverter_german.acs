@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\others\autoACS_ModelConverter_german.acs_2015_2_23_0_45" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\others\autoACS_ModelConverter_german.acs_2015_10_9_14_11" version="20130320">
   <components>
     <component id="Timer.2" type_id="asterics.Timer">
       <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
@@ -51,6 +51,9 @@
           <properties />
         </outputPort>
         <inputPort portTypeID="preString">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="postString">
           <properties />
         </inputPort>
       </ports>

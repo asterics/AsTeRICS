@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\MicGPI_clicker_test.acs_2015_2_23_0_28" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\MicGPI_clicker_test.acs_2015_10_9_10_39" version="20130320">
   <components>
     <component id="MicGPI.1" type_id="asterics.MicGPI">
       <description>This plugin reads an input signal via the microphone input</description>
