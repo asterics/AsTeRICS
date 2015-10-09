@@ -50,6 +50,26 @@
 				type="string"
 				value="hover"
 				description="caption of the HoverPanel"/>
+			<property name="fontSize"
+				type="integer"
+				value="14"
+				description="caption font size"/>				
+			<property name="textColor"
+				type="integer"
+				value="6"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+				description="Text color"/>
+			<property name="backgroundColor"
+				type="integer"
+				value="0"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+				description="Background color of the panel"/>
+			<property name="activationColor"
+				type="integer"
+				value="2"
+				combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow"
+				description="Color for activation of the panel"/>
+
 			<property name="dwellTime"
 				type="integer"
 				value="200"

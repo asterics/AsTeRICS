@@ -67,17 +67,45 @@ public class GUI extends JFrame
     {
         super("HoverPanel");
     	this.owner=owner;
+    	
+    	Font actFont=new Font ("Arial", 0, owner.propFontSize);
+
 	    setLayout(new GridBagLayout());
 	    //setDefaultLookAndFeelDecorated(false);
 	    setUndecorated (true);
 	    setAlwaysOnTop( true );
-	    this.getContentPane().setBackground(Color.BLACK);
+	    this.getContentPane().setBackground(getColorProperty(owner.propBackgroundColor));
 		setSize(space);
 		setLocation(location.x,location.y);
-		//setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE ); //.DO_NOTHING_ON_CLOSE
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE ); //.DO_NOTHING_ON_CLOSE
 		
-		add (new JLabel(owner.propCaption));
+		JLabel captionLabel =new JLabel(owner.propCaption);
+		captionLabel.setFont(actFont);	
+		captionLabel.setForeground(getColorProperty(owner.propTextColor));
+		add (captionLabel);
+
 		setOpacity(((float)owner.propOpacity)/100.0f);
 		setVisible(true);
     } 
+    
+    Color getColorProperty(int index)
+    {
+    	switch (index) {
+    	case 0: return(Color.BLACK); 
+    	case 1: return(Color.BLUE); 
+    	case 2: return(Color.CYAN); 
+    	case 3: return(Color.DARK_GRAY); 
+    	case 4: return(Color.GRAY); 
+    	case 5: return(Color.GREEN); 
+    	case 6: return(Color.LIGHT_GRAY);
+    	case 7: return(Color.MAGENTA); 
+    	case 8: return(Color.ORANGE); 
+    	case 9: return(Color.PINK); 
+    	case 10: return(Color.RED); 
+    	case 11: return(Color.WHITE);
+    	case 12: return(Color.YELLOW); 
+    	default: return(Color.BLUE);
+    	}
+    }
+
 }

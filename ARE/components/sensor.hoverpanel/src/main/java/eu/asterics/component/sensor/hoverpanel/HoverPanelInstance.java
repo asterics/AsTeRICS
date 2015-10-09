@@ -31,6 +31,7 @@ package eu.asterics.component.sensor.hoverpanel;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Color;
+import java.awt.event.WindowEvent;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
@@ -69,6 +70,10 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
 
 	int propDataSource = 0;
 	String propCaption = "hover";
+	int propFontSize =14;
+	int propTextColor = 6;
+	int propBackgroundColor = 0;
+	int propActivationColor = 2;
 	int propDwellTime = 200;
 	int propIdleTime = 50;
 	int propOpacity = 50;
@@ -79,6 +84,13 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
 
 	// declare member variables here
 	private  GUI gui = null;
+
+	int hoverState=0;
+	int idleState=0;
+	int selected=0;
+	long hoverTime=0;
+	long idleTime=0;
+	boolean active = true;
   
     
    /**
@@ -176,6 +188,22 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
 		{
 			return propCaption;
 		}
+		if ("fontSize".equalsIgnoreCase(propertyName))
+		{
+			return propFontSize;
+		}
+		if ("textColor".equalsIgnoreCase(propertyName))
+		{
+			return propTextColor;
+		}
+		if ("backgroundColor".equalsIgnoreCase(propertyName))
+		{
+			return propBackgroundColor;
+		}
+		if ("activationColor".equalsIgnoreCase(propertyName))
+		{
+			return propActivationColor;
+		}
 		if ("dwellTime".equalsIgnoreCase(propertyName))
 		{
 			return propDwellTime;
@@ -213,6 +241,31 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
 		{
 			final Object oldValue = propCaption;
 			propCaption = (String)newValue;
+			return oldValue;
+		}
+		if ("fontSize".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propFontSize;
+			propFontSize = Integer.parseInt(newValue.toString());
+			if (propFontSize <0) propFontSize=0;
+			return oldValue;
+		}
+		if ("textColor".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propTextColor;
+			propTextColor = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
+		if ("backgroundColor".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propBackgroundColor;
+			propBackgroundColor = Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
+		if ("activationColor".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propActivationColor;
+			propActivationColor = Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
 		if ("dwellTime".equalsIgnoreCase(propertyName))
@@ -270,16 +323,44 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
 		}
 	};
 
-	int hoverState=0;
-	int idleState=0;
-	int selected=0;
-	long hoverTime=0;
-	long idleTime=0;
 	
+	
+    Color getColorProperty(int index)
+    {
+    	switch (index) {
+    	case 0: return(Color.BLACK); 
+    	case 1: return(Color.BLUE); 
+    	case 2: return(Color.CYAN); 
+    	case 3: return(Color.DARK_GRAY); 
+    	case 4: return(Color.GRAY); 
+    	case 5: return(Color.GREEN); 
+    	case 6: return(Color.LIGHT_GRAY);
+    	case 7: return(Color.MAGENTA); 
+    	case 8: return(Color.ORANGE); 
+    	case 9: return(Color.PINK); 
+    	case 10: return(Color.RED); 
+    	case 11: return(Color.WHITE);
+    	case 12: return(Color.YELLOW); 
+    	default: return(Color.BLUE);
+    	}
+    }
+
+	 float dRed = 0,r=0;
+	 float dGreen = 0,g=0;
+	 float dBlue = 0,b=0;
+	 float c=0;
+
+	private void initColorDeltas() 
+	{
+	  dRed = getColorProperty(propActivationColor).getRed()-getColorProperty(propBackgroundColor).getRed();
+	  dGreen = getColorProperty(propActivationColor).getGreen()-getColorProperty(propBackgroundColor).getGreen();
+	  dBlue = getColorProperty(propActivationColor).getBlue()-getColorProperty(propBackgroundColor).getBlue();
+	}
+    
 	private void checkHoverState()
 	{
 		
-	 if (idleState==1) return;
+	 if ((idleState==1) || (active ==false)) return;
 	 
 	 if ((currentX > position.x) && (currentX < position.x + dimension.width) 
 			  && (currentY > position.y) && (currentY < position.y + dimension.height))
@@ -287,37 +368,40 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
 		 
 		 if (hoverState==0)
 		 {
-			 System.out.println("In: "+propCaption);
 			 hoverState=1;
 			 hoverTime=System.currentTimeMillis();
 			 etpEnter.raiseEvent();
-			 
-			 
+			 			 
 			  AstericsThreadPool.instance.execute(new Runnable() {
 				  public void run()
 				  {
-					  while ((System.currentTimeMillis()-hoverTime < propDwellTime) && (hoverState == 1))
+					  while ((System.currentTimeMillis()-hoverTime < propDwellTime) && (hoverState == 1) && (active==true))
 					  {
 		    				try
 		    				{
 								   Thread.sleep(10);
-								   float c= (float)(System.currentTimeMillis()-hoverTime)/(float)propDwellTime;
-								   float b= 255.0f*c;
-								   if (b>255.0f) b=255.0f;
-								   gui.getContentPane().setBackground(new Color((int)b,(int)b,(int)b));
+								   c= (float)(System.currentTimeMillis()-hoverTime)/(float)propDwellTime;
+								   if (c>1.0f) c=1.0f;
+
+								   r= getColorProperty(propBackgroundColor).getRed()+dRed*c;
+								   g= getColorProperty(propBackgroundColor).getGreen()+dGreen*c;
+								   b= getColorProperty(propBackgroundColor).getBlue()+dBlue*c;
+
+								   //float b= 255.0f*c;
+								   setPanelBackground(new Color((int)r,(int)g,(int)b));
 
 		    				}
 		    				catch (InterruptedException e) {}
 					  }
-					  if (hoverState==1)
+					  if ((hoverState==1) && (active == true))
 					  {
 						  selected=1;
 						  etpSelected.raiseEvent();
-						  gui.getContentPane().setBackground(Color.CYAN);
+						  setPanelBackground(Color.CYAN);
 					  }
 					  else
 					  {
-						  gui.getContentPane().setBackground(Color.BLACK);
+						  setPanelBackground(getColorProperty(propBackgroundColor));
 					  }
 
 		    	  }
@@ -328,43 +412,60 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
 	 {
 		 if (hoverState==1)
 		 {
-			 System.out.println("out: "+propCaption);
-
 			 etpExit.raiseEvent();
-		     gui.getContentPane().setBackground(Color.BLACK);
 		     hoverState=0;
 		     
 		     if (selected==1)
 		     {
-		     selected=0;
-		     idleState=1;
-			 idleTime=System.currentTimeMillis();
-			  AstericsThreadPool.instance.execute(new Runnable() {
+		       selected=0;
+		       idleState=1;
+			   idleTime=System.currentTimeMillis();
+			   AstericsThreadPool.instance.execute(new Runnable() {
 				  public void run()
 				  {
-					  while (System.currentTimeMillis()-idleTime < propIdleTime)
+					  while ((System.currentTimeMillis()-idleTime < propIdleTime) && (active==true))
 					  {
 		    				try
 		    				{
 								   Thread.sleep(10);
-								   float c= (float)(System.currentTimeMillis()-idleTime)/(float)propIdleTime;
-								   float b= 255.0f-255.0f*c;
-								   if (b<0.0f) b=0.0f;
-								   
-								   gui.getContentPane().setBackground(new Color((int)b,(int)b,(int)b));
+								   c= (float)(System.currentTimeMillis()-idleTime)/(float)propIdleTime;
+								   if (c>1.0f) c=1.0f;
+								   r= getColorProperty(propActivationColor).getRed()-dRed*c;
+								   g= getColorProperty(propActivationColor).getGreen()-dGreen*c;
+								   b= getColorProperty(propActivationColor).getBlue()-dBlue*c;
+			   
+								   setPanelBackground(new Color((int)r,(int)g,(int)b));
 
 		    				}
 		    				catch (InterruptedException e) {}
 					  }
-					  gui.getContentPane().setBackground(Color.BLACK);
+					  
+					  setPanelBackground(getColorProperty(propBackgroundColor));
 					  idleState=0;
 		    	  }
 			  });
 		     }
+		     else
+				  setPanelBackground(getColorProperty(propBackgroundColor));
+
 		 }
 	 }
 	}
 	
+	
+	void setPanelBackground(Color c)
+	{
+		SwingUtilities.invokeLater(new Runnable() {  			
+			@Override
+			public void run() {
+				if (gui != null)
+				{
+					  gui.getContentPane().setBackground(c);
+				}				
+			}
+		});
+
+	}
      /**
       * Event Listerner Ports.
       */
@@ -372,14 +473,15 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-				 // insert event handling here 
+				active=true; 
 		}
 	};
 	final IRuntimeEventListenerPort elpDeactivate = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-				 // insert event handling here 
+			active=false;
+		    setPanelBackground(getColorProperty(propBackgroundColor));
 		}
 	};
 
@@ -392,8 +494,10 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
+    	    initColorDeltas();
     	    position = AREServices.instance.getComponentPosition(this);
     	    dimension = AREServices.instance.getAvailableSpace(this);
+    	    active=true;
    	  
 		    gui = new GUI(this,position,dimension);
     	  
@@ -425,23 +529,28 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
       public void stop()
       {
     	   super.stop();
-    	   System.out.println("Stop called !!");
     	   
-    		SwingUtilities.invokeLater(new Runnable() {
-    			
+    	   active=false;
+    	   selected=0;
+    	   hoverState=0;
+    	   idleState=0;
+    	   
+    	   System.out.println("HoverPanel "+propCaption+" Stop called !!");
+    	   
+    	   // gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
+    	   // System.out.println("HoverPanel "+propCaption+"after dispatch !!");
+
+    		SwingUtilities.invokeLater(new Runnable() {  			
     			@Override
     			public void run() {
     				if (gui != null)
     				{
+    				    gui.setVisible(false);
     					gui.dispose();
     					gui=null;
+    			        System.out.println("HoverPanel "+propCaption+"after dispatch !!");
     				}				
     			}
     		});
-    	   
-    	  
-		   System.out.println("after dispose !!");
-		 //	AREServices.instance.displayPanel(gui, this, false);
-       
       }
 }
