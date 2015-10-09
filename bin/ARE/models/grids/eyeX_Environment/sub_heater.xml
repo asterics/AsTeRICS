@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<keyboard caption="" rows="1" columns="3" scanning="4" textColor="11" scanColor="8" scanCycles="2" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" commandSeparator=";" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+	<button>
+		<text>Temperature up</text>
+		<icon>data/pictures/symbols/thermometer temperature hot_1.png</icon>
+		<action>@speech:Rise temperature</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Temperature down</text>
+		<icon>data/pictures/symbols/thermometer temperature cold_1.png</icon>
+		<action>@speech:Temperature down</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/left arrow.png</icon>
+		<action>Back to environmental control</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/sub_environment.xml</switchGrid>
+	</button>
+</keyboard>

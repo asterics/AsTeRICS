@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.StringFilter"
+                   canonical_name="eu.asterics.component.processor.stringfilter.StringFilterInstance">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>removes a substring from a string and/or pass the string if the substring is contained</description>
+        <ports>
+			<inputPort id="in">
+				<description>input string</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="out">
+				<description>output string</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="filterText"
+				type="string"
+				value="dummy"
+				description="the substring to be filtered"/>
+			<property name="passOnlyIfContains"
+				type="boolean"
+				value="true"
+				description="if selected, only strings that contain the filter text will be passed to output"/>
+			<property name="cropFilterText"
+				type="boolean"
+				value="true"
+				description="if selected, the filter text will be removed"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
