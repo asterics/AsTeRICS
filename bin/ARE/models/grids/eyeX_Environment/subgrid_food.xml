@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<keyboard rows="3" columns="3" scanning="4" textColor="11" scanColor="8" scanCycles="2" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" enableEdit="true" enableClickSelection="true" displayGUI="true">
+	<button>
+		<text>Hungry</text>
+		<icon>data/pictures/symbols/hungry.png</icon>
+		<action>@speech:I would like something to eat</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Thirsty</text>
+		<icon>data/pictures/symbols/thirsty.png</icon>
+		<action>@speech:I would like something to drink</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Fruit</text>
+		<icon>data/pictures/symbols/fruit.png</icon>
+		<action>@speech:I would like some fruit</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Salty snack</text>
+		<icon>data/pictures/symbols/salty snacks.png</icon>
+		<action>@speech:I would like a salty snack</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Sweet snack</text>
+		<icon>data/pictures/symbols/sweet snacks.png</icon>
+		<action>@speech:I would like a sweet snack</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Water</text>
+		<icon>data/pictures/symbols/fill glass with water.png</icon>
+		<action>@speech:I would like some water</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Soda</text>
+		<icon>data/pictures/symbols/drink_9.png</icon>
+		<action>@speech:I would like some soda</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Straw</text>
+		<icon>data/pictures/symbols/drinking bottle straw.png</icon>
+		<action>@speech:I need a straw</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/left arrow.png</icon>
+		<action>Back to overview</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/main.xml</switchGrid>
+	</button>
+</keyboard>

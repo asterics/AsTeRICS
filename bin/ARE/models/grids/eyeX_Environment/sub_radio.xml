@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<keyboard caption="" rows="3" columns="3" scanning="4" textColor="11" scanColor="8" scanCycles="2" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" commandSeparator=";" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+	<button>
+		<text>Turn on/off</text>
+		<icon>data/pictures/symbols/musical notes.png</icon>
+		<action>@speech:Turn on or off;@IRTRANS:snd asterics, rc_operate</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Play</text>
+		<icon>data/pictures/symbols/loudspeaker music_2.png</icon>
+		<action>@speech:Play CD;@IRTRANS:snd asterics, rc_play</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Change mode</text>
+		<icon>data/pictures/symbols/music and dance.png</icon>
+		<action>@speech:Change mode;@IRTRANS:snd asterics, rc_function</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Stop</text>
+		<icon>data/pictures/symbols/loudspeaker music.png</icon>
+		<action>@speech:Stop CD;@IRTRANS:snd asterics, rc_stop</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Next song</text>
+		<icon>data/pictures/symbols/plus sign.png</icon>
+		<action>@speech:Next song or station;@IRTRANS:snd asterics,rc_forward</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Previous song</text>
+		<icon>data/pictures/symbols/down arrow.png</icon>
+		<action>@speech:Previous song or station;@IRTRANS:snd asterics, rc_back</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Volume up</text>
+		<icon>data/pictures/symbols/loudspeaker_2.png</icon>
+		<action>@speech:Increase volume;@IRTRANS:snd asterics, rc_volume_up</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Volume down</text>
+		<icon>data/pictures/symbols/loudspeaker no sound.png</icon>
+		<action>@speech:Decrease volume;@IRTRANS:snd asterics, rc_volume_down</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/left arrow.png</icon>
+		<action>@speech:Back to environmental control</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/sub_environment.xml</switchGrid>
+	</button>
+</keyboard>

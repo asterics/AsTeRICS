@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<keyboard rows="3" columns="3" scanning="4" textColor="11" scanColor="8" scanCycles="2" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" enableEdit="true" enableClickSelection="true" displayGUI="true">
+	<button>
+		<text>Toilet</text>
+		<icon>data/pictures/symbols/toilet_6.png</icon>
+		<action>@speech:I need to go to the toilet</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Sick</text>
+		<icon>data/pictures/symbols/doctor_4.png</icon>
+		<action>@speech:I am feeling sick</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Uncomfortable</text>
+		<icon>data/pictures/symbols/little pain.png</icon>
+		<action>@speech:I feel uncomfortable</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Hot</text>
+		<icon>data/pictures/symbols/hot.png</icon>
+		<action>@speech:It's too hot</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Cold</text>
+		<icon>data/pictures/symbols/cold.png</icon>
+		<action>@speech:It's too cold</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Rest/sleep</text>
+		<icon>data/pictures/symbols/sleep_2.png</icon>
+		<action>@speech:I need to take some rest or sleep</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Not understood</text>
+		<icon>data/pictures/symbols/language do not understand.png</icon>
+		<action>@speech:I did not understand</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Broken</text>
+		<icon>data/pictures/symbols/broken glass.png</icon>
+		<action>@speech:Something is broken</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/left arrow.png</icon>
+		<action>Back to overview</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/main.xml</switchGrid>
+	</button>
+</keyboard>

@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<keyboard rows="1" columns="3" scanning="4" textColor="11" scanColor="8" scanCycles="2" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" enableEdit="true" enableClickSelection="true" displayGUI="true">
+	<button>
+		<text>Open door</text>
+		<icon>data/pictures/symbols/leave the door open_1.png</icon>
+		<action>@speech:Open the door</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Close door</text>
+		<icon>data/pictures/symbols/close the door_1.png</icon>
+		<action>@speech:Close the door</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/left arrow.png</icon>
+		<action>Back to environmental control</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/main.xml</switchGrid>
+	</button>
+</keyboard>

@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<keyboard rows="3" columns="3" scanning="4" textColor="11" scanColor="8" scanCycles="2" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" enableEdit="true" enableClickSelection="true" displayGUI="true">
+	<button>
+		<text>Happy</text>
+		<icon>data/pictures/symbols/happy_1.png</icon>
+		<action>@speech:I feel happy</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Sad</text>
+		<icon>data/pictures/symbols/unhappy.png</icon>
+		<action>@speech:I feel sad</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Angry</text>
+		<icon>data/pictures/symbols/angry_1.png</icon>
+		<action>@speech:I am angry</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Confused</text>
+		<icon>data/pictures/symbols/astonished.png</icon>
+		<action>@speech:I feel confused</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Afraid</text>
+		<icon>data/pictures/symbols/afraid.png</icon>
+		<action>@speech:I feel afraid</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Enthousiastic</text>
+		<icon>data/pictures/symbols/jump.png</icon>
+		<action>@speech:I feel enthousiastic</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Bored</text>
+		<icon>data/pictures/symbols/bore.png</icon>
+		<action>@speech:I feel bored</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Worried</text>
+		<icon>data/pictures/symbols/negative attitude_1.png</icon>
+		<action>@speech:I feel worried</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/Left arrow.png</icon>
+		<action>Back to main menu</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/main.xml</switchGrid>
+	</button>
+</keyboard>

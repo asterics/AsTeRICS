@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<keyboard caption="" rows="2" columns="3" scanning="4" textColor="11" scanColor="8" scanCycles="2" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" commandSeparator=";" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+	<button>
+		<text>Lights</text>
+		<icon>data/pictures/symbols/light on.png</icon>
+		<action>@speech:Lighting control</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/sub_lights.xml</switchGrid>
+	</button>
+	<button>
+		<text>TV</text>
+		<icon>data/pictures/symbols/cable tv_1.png</icon>
+		<action>@speech:TV control</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/sub_TV.xml</switchGrid>
+	</button>
+	<button>
+		<text>Radio</text>
+		<icon>data/pictures/symbols/radio.png</icon>
+		<action>@speech:Radio control</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/sub_radio.xml</switchGrid>
+	</button>
+	<button>
+		<text>Door</text>
+		<icon>data/pictures/symbols/door.png</icon>
+		<action>@speech:Door control</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/sub_door.xml</switchGrid>
+	</button>
+	<button>
+		<text>Heater</text>
+		<icon>data/pictures/symbols/average temperature thermometer.png</icon>
+		<action>@speech:Heating system</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/sub_heater.xml</switchGrid>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/symbols/left arrow.png</icon>
+		<action>@speech:Back to overview</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/main.xml</switchGrid>
+	</button>
+</keyboard>
