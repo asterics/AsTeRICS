@@ -343,7 +343,14 @@
 				<description>The action text of the selected cell</description>
 				<dataType>string</dataType>
 			</outputPort>
-
+			<outputPort id="scanRow">
+				<description>the number of the current row (when row/column scan is selected)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="scanColumn">
+				<description>the number of the current column (when row/column scan is selected)</description>
+				<dataType>integer</dataType>
+			</outputPort>
 
         </ports>
 		<events>
@@ -365,13 +372,16 @@
 			<eventListenerPort id="moveDown">
 				<description>Move frame down</description>
 			</eventListenerPort>
+			<eventListenerPort id="load">
+				<description>Load keyboard file which is defined by the input port 'xmlFile'</description>
+			</eventListenerPort>
 			
 			<eventTriggererPort id="cellClicked">
 				<description>Cell is clicked</description>
 			</eventTriggererPort>
-			<eventListenerPort id="load">
-				<description>Load keyboard file which is defined by the input port 'xmlFile'</description>
-			</eventListenerPort>
+			<eventTriggererPort id="scanCancel">
+				<description>row or column scanning canceled because max cycles reached</description>
+			</eventTriggererPort>
 			<eventTriggererPort id="cell1">
 				<description>Cell 1 selected</description>
 			</eventTriggererPort>
@@ -490,10 +500,15 @@
 			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="Background color" name="backgroundColor" type="integer" value="11"/>
 			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="Color of the scan frame" name="scanColor" type="integer" value="10"/>
 			<property combobox="none//row-column//column-row//directed//hover selection" description="Scanning mode" name="scanMode" type="integer" value="0"/>
+			<property description="number of cycles in a specific scan mode (row/column) before canceling" name="scanCycles" type="integer" value="3"/>
 			<property description="Time of hovering needed to cell selection [ms]." name="hoverTime" type="integer" value="1000"/>
+			<property combobox="fixed frame//growing frame//background color" description="type of hover indicator" name="hoverIndicator" type="integer" value="0"/>
+			<property description="Size of the hover indicator frame" name="hoverFrameThickness" type="integer" value="4"/>
 			<property description="if selected, Cells can be edited via right-click" name="enableEdit" type="boolean" value="true"/>
 			<property description="if selected, Cells can be selected via left mouse click even if a scanning mode is active" name="enableClickSelection" type="boolean" value="true"/>
+			<property description="Character sequence for separation of multiple command strings" name="commandSeparator" type="string" value=""/>
 			<property description="Name of keyboard file (in data/cellBoardKeyboards) to load at startup." getStringList="true" name="keyboardFile" type="string" value=""/>
+			<property description="if true, the properties of the keyboard file are ignored (only cell contents are loaded)" name="ignoreKeyboardFileProperties" type="boolean" value="false"/>
             <property description="if selected, the GUI window will be shown" name="displayGUI" type="boolean" value="true"/>
 			<property description="Text of cell 1" name="cellText1" type="string" value=""/>
 			<property description="Image of cell 1" name="cellImage1" type="string" value=""/>
@@ -8250,6 +8265,36 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.processor.stringfilter.StringFilterInstance" id="asterics.StringFilter">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>removes a substring from a string and/or pass the string if the substring is contained</description>
+        <ports>
+			<inputPort id="in">
+				<description>input string</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="out">
+				<description>output string</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property description="the substring to be filtered" name="filterText" type="string" value="dummy"/>
+			<property description="if selected, only strings that contain the filter text will be passed to output" name="passOnlyIfContains" type="boolean" value="true"/>
+			<property description="if selected, the filter text will be removed" name="cropFilterText" type="boolean" value="true"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.processor.stringpathmultiplexer.StringPathMultiplexerInstance" id="asterics.StringPathMultiplexer">
         <type subtype="Signal Pathways">processor</type>
         <singleton>false</singleton>
@@ -9808,6 +9853,11 @@
         <properties>
 			<property combobox="mouseCursor//coordinateInputs" description="selects the coordinate data source for interaction with the HoverPanel" name="dataSource" type="integer" value="0"/>
 			<property description="caption of the HoverPanel" name="caption" type="string" value="hover"/>
+			<property description="caption font size" name="fontSize" type="integer" value="14"/>				
+			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="Text color" name="textColor" type="integer" value="6"/>
+			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="Background color of the panel" name="backgroundColor" type="integer" value="0"/>
+			<property combobox="black//blue//cyan//darkgray//gray//green//lightgray//magenta//orange//pink//red//white//yellow" description="Color for activation of the panel" name="activationColor" type="integer" value="2"/>
+
 			<property description="selection dwell time in milliseconds" name="dwellTime" type="integer" value="200"/>
 			<property description="selection idle time in milliseconds" name="idleTime" type="integer" value="50"/>
 			<property description="opacity (0-100%)" name="opacity" type="integer" value="50"/>
