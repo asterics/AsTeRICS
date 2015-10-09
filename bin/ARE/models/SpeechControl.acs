@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ARE\models\SpeechControl.acs_2015_6_30_15_48" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\SpeechControl.acs_2015_10_9_14_14" version="20130320">
   <modelDescription>
     <shortDescription>A demonstration of the speech processing capabilities.</shortDescription>
     <requirements>The Microsoft Speech Server Runtime and the english language packs for speech recognition and speech synthesis must be installed. Please refer to the SpeechProcessor plugin help section in the ACS for details.</requirements>
@@ -273,6 +273,12 @@ Please note that the actuators for environemntal control are not connected in th
         <outputPort portTypeID="selectedCellText">
           <properties />
         </outputPort>
+        <outputPort portTypeID="scanRow">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="scanColumn">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="caption" value="Cell Board" />
@@ -282,10 +288,15 @@ Please note that the actuators for environemntal control are not connected in th
         <property name="backgroundColor" value="11" />
         <property name="scanColor" value="10" />
         <property name="scanMode" value="2" />
+        <property name="scanCycles" value="3" />
         <property name="hoverTime" value="1000" />
+        <property name="hoverIndicator" value="0" />
+        <property name="hoverFrameThickness" value="4" />
         <property name="enableEdit" value="true" />
         <property name="enableClickSelection" value="true" />
+        <property name="commandSeparator" value="" />
         <property name="keyboardFile" value="" />
+        <property name="ignoreKeyboardFileProperties" value="false" />
         <property name="displayGUI" value="true" />
         <property name="cellText1" value="computer, help!" />
         <property name="cellImage1" value="" />
