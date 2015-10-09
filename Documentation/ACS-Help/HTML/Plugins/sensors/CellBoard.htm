@@ -12,18 +12,24 @@
     <h1>CellBoard</h1>
     <h3>Component Type: Sensor (Subcategory: Graphical User Interface)</h3>
     <p>The CellBoard plugin is a GUI plugin which can display a panel
-      with multiple cells. Each cell can contain text and a picture, and it
-	  can provide acoustic feedback on selection. The CellBoard plugin provides 
-	  basic scanning options (to select a cell via a stepwise process). It provides
-	  a small editor for designing the cells and can be used as a simple on-screen keyboard.</p>
+      with multiple cells. It can be used as a simple on-screen keyboard. 
+	  Each cell can contain text and a picture, and it
+	  can provide acoustic feedback on selection. Cells can emit command strings and sounds or switch to other 
+	  cellboards (which can be stored as .xml files). The CellBoard plugin provides 
+	  basic scanning options (to select a cell via a stepwise process). It also provides
+	  a small editor for designing the cells and saving the whole cellboard grid as an .xml file.</p>
     <div class="image"><img src="img/CellBoard.jpg" alt="Screenshot:
         CellBoard plugin" title="Screenshot: CellBoard plugin"><br>
       CellBoard plugin</div>
     <h2>Using the cell editor</h2>
 
-    <p>The cell editor allows to define the content of a cell (caption, action string, 
-	image and sounds for cell-selection, cell-scanning and cell- aucousticPreview). The resulting keyboard
-    can be saved as .xml file - which can be specified as property "keyboardFile". </p>
+    <p>The cell editor can be opened by right-clicking a cell. (This option can be enabled/disabled by using the 
+	property "enableEdit"). The cell editor allows to define the content of a cell (cell caption, action string, 
+	cell image and sounds for cell-selection or acoustic preview during cell scanning). "Switch to Cellboard" allows
+	to specify a cellboard grid which will be loaded when this cell is selected. When "back" is entered here, the
+	previously loded cellboard will be restored. Thus, complex communication/selection grids can be layered. The whole current
+	cellboard is saved as an .xml file when "Save Cellboard" is clicked. Existing .xml files can be selected to be loaded on startup
+    via the "keyboardFile"-property of the cellboard plugin in the ACS property editor. </p>
     <div class="image"><img src="img/CellBoardEditor.jpg" alt="Screenshot:
         CellBoard editor" title="Screenshot: CellBoard editor"><br>
       CellBoard editor</div>
@@ -42,7 +48,7 @@
         cell.</li>
       <li><strong>xmlFile [string]:</strong> Name of a keyboard file 
 	  (default location in data/cellBoardKeyboards) 
-	  which can be loaded or saved.</li>
+	  which can be loaded or saved. A load operating can be triggered via the dedicated event listener port.</li>
     </ul>
     <h2>Output Port Description</h2>
     <ul>
@@ -58,6 +64,10 @@
         of the selected cell.</li>
       <li><strong>selectedCellText [string]:</strong> Sends the action
         string of the currently active cell</li>
+      <li><strong>scanRow [integer]:</strong> Sends the number of the currently
+	    scanned row (in row/column scanning mode)</li>
+      <li><strong>scanColumn [integer]:</strong> Sends the number of the currently
+	    scanned column (in row/column scanning mode)</li>
     </ul>
     <h2>Event Listener Description</h2>
     <ul>
@@ -80,6 +90,9 @@
     <ul>
       <li><strong>cellClicked:</strong> This event is triggered when one
         of the cells is clicked.</li>
+      <li><strong>scanCancel:</strong> This event is triggered when
+        the row/column scanning process is cancelled because the maximum number of 
+		scan cycles has been reached.</li>
       <li><strong>cell1...cell36:</strong> This event is triggered when
         the given cell is selected.</li>
     </ul>
@@ -121,20 +134,52 @@
             cell.</li>
         </ul>
       </li>
+	  
+      <li><strong>scanCycles [integer]:</strong> This parameter is used
+        in "row/column scanning" mode. After the number of scan cycles
+		is reached, the scanning switches back to the highest level.</li>
       <li><strong>hoverTime [integer]:</strong> This parameter is used
-        in the "hover selection" mode. It defines the time of hovering
+        in "hover selection" mode. It defines the time of hovering
         needed to select the cell (in milliseconds).</li>
+      <li><strong>hoverTimeIndicator [integer]:</strong> This parameter 
+	  adjusts the way a hover selection prgress is indicated to the user:
+		        <ul>
+          <li><em>"fixed frame":</em> No graphical indication - the frame of the 
+		    currently active cell is shown but does not change.</li>
+          <li><em>"growing frame":</em> The frame of the active cell is growing
+		    until the value of property "hoverSelectionThickness" is reached - then
+			the cell is selected.</li>
+          <li><em>"backgorund color":</em> The background color of the cell changes slowly
+			from the selected "backgroundColor" to the selected "scanColor" - then the cell
+			is selected.</li>
+        </ul>
+		</li>
+		
+      <li><strong>hoverFrameThickness [integer]:</strong> Maximum thickness of the cell frame
+	  (only valid for the hover selection mode with indicator "growing frame").
+	  </li>
       <li><strong>enableEdit [boolean]:</strong> If selected, the cells can be
 	  right-clicked to display the cell editor, which also allows to save the xml-keyboard file.
 	  </li>
       <li><strong>enableClickSelection [boolean]:</strong>If selected, all cells can be selected
 	  via a left click, regardless of the scanning process</li>
-      <li><strong>keyboardFile [string]:</strong> Name of a keyboard file 
-	  (xml file located in in data/cellBoardKeyboards) to be loaded at startup 
-	  or to be saved from the cell editor.<b>Supports value suggestions 
+      <li><strong>commandSeparator [string]:</strong>If a character (or characters) are specified here,
+	  they will be used to tokenize the cell text which is sent to the "selectedCellText" output port when teh cell is selected.
+	  This can be used to send multiple strings (seperately) to this output port. In the example screenshot above,
+	  a semicolon (";") is used to send two different action string to the output port when the cell is selected.
+	  A "StringFilter" plugin can then be used to route these commands to different plugins.</li>
+      <li><strong>keyboardFile [string]:</strong> Name of a cellboard .xml file 
+	  (the sugeested files are located in folder data/cellBoardKeyboards or in folder "models"). This file will be loaded 
+	  at startup of the model. If no file is specified, only the cell contents defined via the ACS editor
+	  will be available.<b>Supports value suggestions 
 	  for existing xml-files from the ARE (dynamic property)</b></li>
+      <li><strong>ignoreKeyboardFileProperties [boolean]:</strong> If selected, the general cellboard parameters 
+	  (rows/columns/colors/scan mode etc.) will be kept as defined via the ACS editor when a cellboard .xml file is loaded.
+	  If not selected, these parameters will be loaded from the .xml file, thereby overriding the values defined in the ACS editor.</li>
       <li><strong>dispayGUI [boolean]:</strong> If selected, the component
 	  will be displayed in the ARE GUI. Otherwise the componentent will be hidden !</li>
+	  <p>The following properties will be overwritten if cellboard .xml files are loaded:</p>
+
       <li><strong>cellText1...cellText36 [string]:</strong> The text
         displayed on the cell.</li>
       <li><strong>cellImage1...cellImage36 [string]:</strong> The path
