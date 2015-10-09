@@ -52,6 +52,7 @@ import org.xml.sax.SAXException;
 
 
 
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -84,6 +85,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	final IRuntimeOutputPort opActCell = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opActCellCaption = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opActCellText = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opScanRow = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opScanColumn = new DefaultRuntimeOutputPort();
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 
 	//final IRuntimeEventTriggererPort etpSelectedCell = new DefaultRuntimeEventTriggererPort();
@@ -91,11 +94,16 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     final int NUMBER_OF_CELLS = 100;
     final int MAX_ROWS=36;
     final int MAX_COLUMNS=36;
+    final int MAX_GRID_LEVELS=20;
 	private static final int MAX_MATRIX_ROWS_COLS = 9;
-	private static final String FILE_PATH_PREFIX="data/cellBoardKeyboards/";
+	
+	final String FILE_PATH_PREFIX="data/cellBoardKeyboards/";
+	final String FILE_PATH_PREFIX2="models";
     
     private final String ETP_CELL_CLICKED="cellClicked";
+    private final String ETP_SCAN_CANCEL="scanCancel";
     private final String ETP_CELL = "cell";
+    
     private final String ELP_SCAN_MOVE="scanMove";
     private final String ELP_SCAN_SELECT="scanSelect";
     private final String ELP_MOVE_UP="moveUp";
@@ -103,10 +111,11 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     private final String ELP_MOVE_RIGHT="moveRight";
     private final String ELP_MOVE_LEFT="moveLeft";
     private final String ELP_MOVE_DOWN="moveDown";
+    
     private final String PROP_CAPTION="caption";
     private final String PROP_ROWS="rows";
     private final String PROP_COLUMNS="columns";
-    private final String PROP_SCAN_TYPE="scanMode";
+    private final String PROP_SCAN_MODE="scanMode";
     private final String PROP_CELL_TEXT="cellText";
     private final String PROP_CELL_IMAGE="cellImage";
     private final String PROP_CELL_ACTION_TEXT="actionText";
@@ -114,35 +123,50 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
     private final String PROP_SCAN_COLOR="scanColor";
     private final String PROP_TEXT_COLOR="textColor";
     private final String PROP_HOVER_TIME="hoverTime";
+    private final String PROP_HOVER_INDICATOR="hoverIndicator";
+    private final String PROP_HOVER_FRAME_THICKNESS="hoverFrameThickness";
+    private final String PROP_SCAN_CYCLES="scanCycles";
     private final String PROP_ENABLE_EDIT="enableEdit";
     private final String PROP_ENABLE_CLICKSELECTION="enableClickSelection";
     private final String PROP_KEYBOARD_FILE="keyboardFile";
-
+    private final String PROP_COMMAND_SEPARATOR="commandSeparator";
+    private final String PROP_IGNORE_KEYBOARD_FILE_PROPERTIES="ignoreKeyboardFileProperties";
+    
     private final String OP_SELECTED_CELL="selectedCell";
     private final String OP_SELECTED_CELL_CAPTION="selectedCellCaption";
     private final String OP_SELECTED_CELL_TEXT="selectedCellText";
     private final String OP_ACT_CELL="actCell";
     private final String OP_ACT_CELL_CAPTION="actCellCaption";
     private final String OP_ACT_CELL_TEXT="actCellText";
+    private final String OP_SCAN_ROW="scanRow";
+    private final String OP_SCAN_COLUMN="scanColumn";
     private final String IP_ROW="row";
     private final String IP_COLUMN="column";
     private final String IP_CELL_NUMBER="cellNumber";
     private final String IP_XMLFILE="xmlfile";
-    
-    private String xmlFile = null;
+
+        
+    public String xmlFile = null;
     private Dimension space;
 	public float propFontSize = -1;
+	
+    public int currentGridLevel=0;
 	public int propRows = 2;
 	public int propColumns = 2;
-	public int propScanType = 2;
+	public int propScanMode = 0;
 	public int propTextColor=0;
 	public int propBackgroundColor=11;
 	public int propScanColor=10;
 	public int propHoverTime=1000;
+	public int propHoverIndicator=0;
+	public int propHoverFrameThickness=4;
+	public int propScanCycles=3;
 	public boolean propEnableEdit = true;
 	public boolean propEnableClickSelection = true;
 	public String propCaption="Cell Board";
 	public String propKeyboardFile="";
+	public String propCommandSeparator="";
+	public boolean propIgnoreKeyboardFileProperties = false;
     public boolean propDisplayGUI=true;
 
 	final EventPort [] etpCellArray = new EventPort[NUMBER_OF_CELLS];
@@ -151,8 +175,13 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	public String [] propCellImageArray = new String[NUMBER_OF_CELLS];
 	public String [] propCellSoundArray = new String[NUMBER_OF_CELLS];
 	public String [] propCellSoundPreviewArray = new String[NUMBER_OF_CELLS];
+	public String [] propCellSwitchGridArray = new String[NUMBER_OF_CELLS];
 
+	public String [] backGridStack = new String[MAX_GRID_LEVELS];
+
+	
 	final IRuntimeEventTriggererPort etpCellClicked = new DefaultRuntimeEventTriggererPort();
+	final IRuntimeEventTriggererPort etpScanCancel = new DefaultRuntimeEventTriggererPort();
 	
 	// declare member variables here
 	private  GUI gui = null;
@@ -171,6 +200,11 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
         	propCellTextArray[i]="";
         	propCellSoundArray[i]="";
         	propCellSoundPreviewArray[i]="";
+        	propCellSwitchGridArray[i]="";
+        }
+        for(int i=0;i<MAX_GRID_LEVELS;i++)
+        {
+        	backGridStack[i]="";
         }
     }
 
@@ -252,6 +286,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			xmlFile = ConversionUtils.stringFromBytes(data);
+			System.out.println("received xmlFile name:"+xmlFile);
 		}
 		
 	};
@@ -286,6 +321,14 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		if (OP_ACT_CELL_TEXT.equalsIgnoreCase(portID))
 		{
 			return opActCellText;
+		}
+		if (OP_SCAN_ROW.equalsIgnoreCase(portID))
+		{
+			return opScanRow;
+		}
+		if (OP_SCAN_COLUMN.equalsIgnoreCase(portID))
+		{
+			return opScanColumn;
 		}
 
 		return null;
@@ -351,6 +394,10 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		{
 			return etpCellClicked;
 		}
+    	if (ETP_SCAN_CANCEL.equalsIgnoreCase(eventPortID))
+		{
+			return etpScanCancel;
+		}
     	else
     	{
     		int elpCellSize=ETP_CELL.length();
@@ -405,9 +452,13 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		{
 			return propColumns;
 		}
-		else if (PROP_SCAN_TYPE.equalsIgnoreCase(propertyName))
+		else if (PROP_SCAN_MODE.equalsIgnoreCase(propertyName))
 		{
-			return propScanType;
+			return propScanMode;
+		}
+		else if (PROP_SCAN_CYCLES.equalsIgnoreCase(propertyName))
+		{
+			return propScanCycles;
 		}
 		else if (PROP_TEXT_COLOR.equalsIgnoreCase(propertyName))
 		{
@@ -425,6 +476,14 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		{
 			return propHoverTime;
 		}
+		else if (PROP_HOVER_INDICATOR.equalsIgnoreCase(propertyName))
+		{
+			return propHoverIndicator;
+		}
+		else if (PROP_HOVER_FRAME_THICKNESS.equalsIgnoreCase(propertyName))
+		{
+			return propHoverFrameThickness;
+		}
 		else if (PROP_ENABLE_EDIT.equalsIgnoreCase(propertyName))
 		{
 			return propEnableEdit;
@@ -433,10 +492,18 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		{
 			return propEnableClickSelection;
 		}		
+		else if(PROP_COMMAND_SEPARATOR.equalsIgnoreCase(propertyName))
+        {
+            return propCommandSeparator;
+        }
 		else if (PROP_KEYBOARD_FILE.equalsIgnoreCase(propertyName))
 		{
 			return propKeyboardFile;
 		} 
+		else if(PROP_IGNORE_KEYBOARD_FILE_PROPERTIES.equalsIgnoreCase(propertyName))
+        {
+            return propIgnoreKeyboardFileProperties;
+        }
 		else if("displayGUI".equalsIgnoreCase(propertyName))
         {
             return propDisplayGUI;
@@ -557,6 +624,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
+		if (newValue == null) return(null);
+
     	if (PROP_CAPTION.equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propCaption;
@@ -593,17 +662,27 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			checkMatrixSize();
 			return oldValue;
 		}
-		else if (PROP_SCAN_TYPE.equalsIgnoreCase(propertyName))
+		else if (PROP_SCAN_MODE.equalsIgnoreCase(propertyName))
 		{
-			final Object oldValue = propScanType;
-			propScanType = Integer.parseInt(newValue.toString());
-			if(propScanType<0)
+			final Object oldValue = propScanMode;
+			propScanMode = Integer.parseInt(newValue.toString());
+			if(propScanMode<0)
 			{
-				propScanType=0;
+				propScanMode=0;
 			}
-			if(propScanType>4)
+			if(propScanMode>4)
 			{
-				propScanType=4;
+				propScanMode=4;
+			}
+			return oldValue;
+		}
+		else if (PROP_SCAN_CYCLES.equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propScanCycles;
+			propScanCycles = Integer.parseInt(newValue.toString());
+			if(propScanCycles<0)
+			{
+				propScanCycles=0;
 			}
 			return oldValue;
 		}
@@ -643,6 +722,18 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			propHoverTime= Integer.parseInt(newValue.toString());
 			return oldValue;
 		}
+		else if (PROP_HOVER_INDICATOR.equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propHoverIndicator;
+			propHoverIndicator= Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
+		else if (PROP_HOVER_FRAME_THICKNESS.equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propHoverFrameThickness;
+			propHoverFrameThickness= Integer.parseInt(newValue.toString());
+			return oldValue;
+		}
 	    else if(PROP_ENABLE_EDIT.equalsIgnoreCase(propertyName))
 	    {
 	    	final Object oldValue = propEnableEdit;
@@ -669,6 +760,12 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	        }
 	        return oldValue;
 	    }    	
+	    else if (PROP_COMMAND_SEPARATOR.equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propCommandSeparator;
+			propCommandSeparator = (String)newValue;
+			return oldValue;
+		}
 		else if (PROP_KEYBOARD_FILE.equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propKeyboardFile;
@@ -677,6 +774,19 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			xmlFile=propKeyboardFile;
 			return oldValue;
 		}
+	    else if(PROP_IGNORE_KEYBOARD_FILE_PROPERTIES.equalsIgnoreCase(propertyName))
+	    {
+	    	final Object oldValue = propIgnoreKeyboardFileProperties;
+	        if("true".equalsIgnoreCase((String)newValue))
+	        {
+	        	propIgnoreKeyboardFileProperties = true;
+	        }
+	        else if("false".equalsIgnoreCase((String)newValue))
+	        {
+	        	propIgnoreKeyboardFileProperties = false;
+	        }
+	        return oldValue;
+	    }    	
 		else if("displayGUI".equalsIgnoreCase(propertyName))
         {
             final Object oldValue = propDisplayGUI;
@@ -809,6 +919,12 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 					//res.add(file.getName()); //.getPath().substring(file.getPath().indexOf("set")));
 					res.add(file.getPath().substring("data/cellBoardKeyboards/".length()));
 				}
+
+				files = ComponentUtils.findFiles(new File("models"), ".xml", 200);
+				for (File file : files)
+				{
+					res.add(file.getPath());
+				}
 				
 			}
 		} 
@@ -903,24 +1019,34 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
+			System.out.println("load xml file by event:"+xmlFile);
 			loadXmlFile();
 		}
 
 	};
 
-	private void loadXmlFile() {
+	public void loadXmlFile() {
 		if(xmlFile==null || "".equals(xmlFile))
 		{
-			AstericsErrorHandling.instance.getLogger().fine("CellBoard: no xmlFile for keyboard set");
+			// AstericsErrorHandling.instance.getLogger().fine("CellBoard: no xmlFile for keyboard set");
 			return;
-		}
+		}		
 		
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser saxParser;
 		try {
 			saxParser = factory.newSAXParser();
 			XMLCellBoardLoader handler =  new XMLCellBoardLoader(NUMBER_OF_CELLS,this);
-			saxParser.parse( new File(FILE_PATH_PREFIX,xmlFile), handler );
+			if ((xmlFile.startsWith(FILE_PATH_PREFIX)||(xmlFile.startsWith(FILE_PATH_PREFIX2))))
+			{
+				// System.out.println("Trying to parse Cellboard xml:"+xmlFile);
+				saxParser.parse( new File("./",xmlFile), handler );
+			}
+			else
+			{
+				System.out.println("Trying to parse Cellboard xml:"+FILE_PATH_PREFIX+xmlFile);
+				saxParser.parse( new File(FILE_PATH_PREFIX,xmlFile), handler );
+			}
 			
 			
 			checkMatrixSize();
@@ -929,6 +1055,8 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 				reportError("Error parsing rows or cols attribute of CellBoard plugin");
 				return;
 			}
+			propKeyboardFile=xmlFile;
+
 			/*
 			int hheight = handler.getHeight();
 			if (hheight >= 0)
@@ -1091,6 +1219,12 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 		return propCellSoundPreviewArray[index];
 	}
 
+	String getSwitchGrid(int index)
+	{
+		return propCellSwitchGridArray[index];
+	}
+
+	
 	/**
      * Sets the preview sound file path of the cell defined by index.
      * @param index index of the cell
@@ -1100,7 +1234,12 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	{
 		propCellSoundPreviewArray[index]=path;
 	}
-	
+
+	void setSwitchGrid(int index, String path)
+	{
+		propCellSwitchGridArray[index]=path;
+	}
+
 	/**
      * Returns the text of the cell defined by index.
      * @param index index of the cell
@@ -1146,16 +1285,16 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
      * Returns type of the scanning.
      * @return   scanning type
      */
-	int getScanType()
+	int getScanMode()
 	{
-		return propScanType;
+		return propScanMode;
 	}
 	
 	/**
      * Returns the general event port.
      * @return   general event port
      */
-	IRuntimeEventTriggererPort getGeneralEventPort()
+	IRuntimeEventTriggererPort getCellClickedEventPort()
 	 {
 		 return etpCellClicked;
 	 }
@@ -1177,6 +1316,21 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	int getHoverTime()
 	 {
 		 return propHoverTime;
+	 }
+
+	int getScanCycles()
+	 {
+		 return propHoverIndicator;
+	 }
+
+	int getHoverIndicator()
+	 {
+		 return propHoverIndicator;
+	 }
+
+	int getHoverFrameThickness()
+	 {
+		 return propHoverFrameThickness;
 	 }
 
 	
@@ -1212,6 +1366,14 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 	 {
 		 return opActCellText;
 	 }
+	IRuntimeOutputPort getScanRowOutputPort()
+	 {
+		 return opScanRow;
+	 }
+	IRuntimeOutputPort getScanColumnOutputPort()
+	 {
+		 return opScanColumn;
+	 }
 
 
      /**
@@ -1220,6 +1382,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
+    	  currentGridLevel=0;
     	  space = AREServices.instance.getAvailableSpace(this);
     	  gui = new GUI(this,space);
     	  if (propDisplayGUI) AREServices.instance.displayPanel(gui, this, true);
@@ -1229,13 +1392,7 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
 			 paintCells.run();
 		  }
 		  
-		  //AstericsThreadPool.instance.execute(paintCells);
-		  //SwingUtilities.invokeLater(paintCells);
-		  //gui.defineTextFontSize();
-		  //gui.setScanning();
           super.start();
-          //guiReady=true;
-          //gui.repaintCells();
       }
 
      /**
@@ -1262,11 +1419,20 @@ public class CellBoardInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
-
-    	  gui.prepareToClose();
-    	  guiReady=false;
-    	  AREServices.instance.displayPanel(gui, this, false);
-    	  gui=null;
+      	    guiReady=false;    	  
+    	  
+	  		SwingUtilities.invokeLater(new Runnable() {  			
+				@Override
+				public void run() {
+					if (gui != null)
+					{
+			      	     gui.prepareToClose();
+					}				
+				}
+			});
+   	        AREServices.instance.displayPanel(gui, this, false);
+   	        gui=null;
+    	  
           super.stop();
       }
       

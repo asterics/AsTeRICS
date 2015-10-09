@@ -49,24 +49,31 @@ public class XMLCellBoardWriter extends DefaultHandler
 			out.writeCharacters(newline);
 			out.writeStartElement("keyboard");
 			
-			out.writeAttribute("rows", Integer.toString(0));
-			out.writeAttribute("columns", Integer.toString(0));
-			/*
+			//out.writeAttribute("rows", Integer.toString(0));
+			//out.writeAttribute("columns", Integer.toString(0));
+			// /*
+			
+			out.writeAttribute("caption", owner.getCaption());
 			out.writeAttribute("rows", Integer.toString(owner.getRowCount()));
 			out.writeAttribute("columns", Integer.toString(owner.getColumnCount()));
-			out.writeAttribute("scanning", Integer.toString(owner.getScanType()));
+			out.writeAttribute("scanning", Integer.toString(owner.getScanMode()));
 			out.writeAttribute("textColor", Integer.toString(owner.getTextColor()));
 			out.writeAttribute("scanColor", Integer.toString(owner.getScanColor()));
+			out.writeAttribute("scanCycles", Integer.toString(owner.getScanCycles()));
 			out.writeAttribute("backgroundColor", Integer.toString(owner.getBackgroundColor()));
 			out.writeAttribute("hoverTime", Integer.toString(owner.getHoverTime()));
-			out.writeAttribute("caption", owner.getCaption());
+			out.writeAttribute("hoverIndicator", Integer.toString(owner.getHoverIndicator()));
+			out.writeAttribute("hoverFrameThickness", Integer.toString(owner.getHoverFrameThickness()));
+			out.writeAttribute("commandSeparator", owner.propCommandSeparator);
 			if (owner.getEnableEdit()==true)	
 				out.writeAttribute("enableEdit", "true"); else out.writeAttribute("enableEdit", "false");
 			if (owner.getEnableClickSelection()==true)	
 				out.writeAttribute("enableClickSelection", "true"); else out.writeAttribute("enableClickSelection", "false");
+			if (owner.propIgnoreKeyboardFileProperties==true)	
+				out.writeAttribute("ignoreKeyboardFileProperties", "true"); else out.writeAttribute("ignoreKeyboardFileProperties", "false");
 			if (owner.getDisplayGUI()==true)	
 				out.writeAttribute("displayGUI", "true"); else out.writeAttribute("displayGUI", "false");
-			 */
+			 //  */
 
 			for (int i=0;i<owner.getColumnCount()*owner.getRowCount();i++)
 			{
@@ -97,13 +104,19 @@ public class XMLCellBoardWriter extends DefaultHandler
 				out.writeStartElement("sound");
 				out.writeCharacters(owner.getSoundPath(i));
 				out.writeEndElement();
-				out.writeCharacters(newline);
 
 				out.writeCharacters(newline);
 				out.writeCharacters("\t\t");
 				out.writeStartElement("soundPreview");
 				out.writeCharacters(owner.getSoundPreviewPath(i));
 				out.writeEndElement();
+
+				out.writeCharacters(newline);
+				out.writeCharacters("\t\t");
+				out.writeStartElement("switchGrid");
+				out.writeCharacters(owner.getSwitchGrid(i));
+				out.writeEndElement();
+
 				out.writeCharacters(newline);
 
 				out.writeCharacters("\t");

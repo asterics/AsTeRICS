@@ -59,18 +59,30 @@ import eu.asterics.mw.services.AstericsThreadPool;
  *         Time: 12:31:41 AM
  */
 
-public class GUICell extends JPanel implements Runnable
+public class GUICell extends JPanel
 {
 	public final GUI owner;
-	final IRuntimeEventTriggererPort etpGeneralEvent;
+	private GUICell guiCell;
+	private CellBoardInstance instance;
+
 	
+	final int HOVERMODE_FRAME_ONLY = 0;
+	final int HOVERMODE_FRAME_GROWING = 1;
+	final int HOVERMODE_BACKGROUND_FADE = 2;
+
+    private int hoverSleep=30;
+    private int selectFeedbackSleep=200;
+    private boolean hoverExit=false;
+    private boolean hoverFinish=false;
+    private boolean cellhovering=false;
 	private boolean blockSendEvent=true;
+	
 	private int index=-1;
 	private int row=-1;
 	private int column=-1;
 	private float fontSize=-1;
 	
-	BufferedImage  image=null;
+	BufferedImage image=null;
 	BufferedImage scalledImage=null;
 	
 	int scaledImageWidth=-1;
@@ -81,16 +93,17 @@ public class GUICell extends JPanel implements Runnable
 	 String picturePath="";
 	 String soundPath="";
 	 String soundPreviewPath="";
+	 String switchGrid="";
 	
 	private final float fontSizeMax=150;
 	private final float fontIncrementStep=0.5f;
 	
-	private final int frameWidth=1;
-	private final int scanFrameWidth=4;
+	private final int defaultFrameWidth=1;
 	
-	private CellEditFrame editFrame;
+	public CellEditFrame editFrame=null;
 	
 	boolean scanActive=false;
+
 	
 	 /**
      * The class constructor.
@@ -99,13 +112,12 @@ public class GUICell extends JPanel implements Runnable
      * @param cellPort the cell number output port
      * @param cellTextPort the cell text output port
      */
-	public GUICell(final GUI owner,  IRuntimeEventTriggererPort generalEvent) 
+	public GUICell(final GUI owner) 
 	{
 		super();
+		guiCell=this;
 		this.owner=owner;
-		etpGeneralEvent=generalEvent;
-	
-		editFrame = new CellEditFrame (this);
+		instance=owner.owner;
 
 		blockSendEvent=true;
 		hoverFinish=false;
@@ -113,27 +125,33 @@ public class GUICell extends JPanel implements Runnable
 		addMouseListener(new MouseAdapter() { 
 	          public void mousePressed(MouseEvent me) { 
 	        	
-	        	if ((owner.owner.propEnableEdit) &&(SwingUtilities.isRightMouseButton(me)))
+	        	if ((instance.propEnableEdit) && (SwingUtilities.isRightMouseButton(me)))
 	        	{
 	        		// System.out.println("Cell "+index+ " was right-clicked !");
+	        		if (editFrame!=null)
+	        			editFrame.closeDialog();
+
+	        		editFrame = new CellEditFrame (guiCell);
 	        		editFrame.showFrame();
 	        	}
 	        	else
 	        	{
-		        	if((owner.owner.propEnableClickSelection) || (blockSendEvent==false))
-		            {
-		        		owner.performCellSelection(row, column);
-		                AstericsThreadPool.instance.execute(selectFeedback);
+		        	if((instance.propEnableClickSelection) || (blockSendEvent==false))
+		        	{		        		
+		        		if (instance.propScanMode==owner.SCANMODE_HOVER)
+		        			hoverFinish=true;
+		        		else
+		        		{
+			        		 AstericsThreadPool.instance.execute(selectFeedback);
+			 				 owner.performCellSelection(row,column);
+		        		}
 		            }
-		        	
-		        	sendGeneralEvent();
 	        	}
 	          }
 	          public void mouseEntered(MouseEvent e){
 	        	  if(hoverSelection){
 	        		  hoverExit=false;
 	        		  cellhovering=true;
-	        		  hoverSelected=false;
 	        		  owner.performActCellUpdate(row, column);
 	        		  repaintNow(0);
 	        		  AstericsThreadPool.instance.execute(hoverTimer);
@@ -145,7 +163,6 @@ public class GUICell extends JPanel implements Runnable
 	        			  repaintNow();
 	        		  }
 	        	  }
-	        	  //
 	          }
 	          public void mouseExited(MouseEvent e){
 	        	  hoverExit=true;
@@ -169,37 +186,64 @@ public class GUICell extends JPanel implements Runnable
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
+				
+				Color scanBorderColor;
+				final int scanFrameWidth=instance.propHoverFrameThickness;
+				int dRed=getColorProperty(owner.getScanColor()).getRed()-getColorProperty(owner.getBackgroundColor()).getRed();
+				int dGreen=getColorProperty(owner.getScanColor()).getGreen()-getColorProperty(owner.getBackgroundColor()).getGreen();
+				int dBlue=getColorProperty(owner.getScanColor()).getBlue()-getColorProperty(owner.getBackgroundColor()).getBlue();
+				
 				if(scanActive)
 				{
-					Color scanBorderColor=new Color(255-getColorProperty(owner.getScanColor()).getRed(),255-getColorProperty(owner.getScanColor()).getGreen(),255-getColorProperty(owner.getScanColor()).getBlue());
+					scanBorderColor=new Color(255-getColorProperty(owner.getScanColor()).getRed(),255-getColorProperty(owner.getScanColor()).getGreen(),255-getColorProperty(owner.getScanColor()).getBlue());
 					setBorder(BorderFactory.createLineBorder(scanBorderColor,scanFrameWidth));
 				}
 				else
 				{
 					if(cellhovering)
 					{
-						if(hoverSelection){					
-							Color scanBorderColor=new Color((int)(getColorProperty(owner.getScanColor()).getRed() * hoverPercent),(int)(getColorProperty(owner.getScanColor()).getGreen()*hoverPercent),(int)(getColorProperty(owner.getScanColor()).getBlue()*hoverPercent));
-							setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth+scanFrameWidth*hoverPercent)));
-						} else{					
-							Color scanBorderColor=new Color(getColorProperty(owner.getScanColor()).getRed(),getColorProperty(owner.getScanColor()).getGreen(),getColorProperty(owner.getScanColor()).getBlue());
+						double framePercent=hoverPercent;
+						if ((!hoverSelection) || (owner.getHoverIndicator()==HOVERMODE_FRAME_ONLY))
+						{	
+							scanBorderColor=getColorProperty(owner.getScanColor());
+						}
+						else
+						{
+							scanBorderColor=new Color((int)(getColorProperty(owner.getBackgroundColor()).getRed() + (double)dRed * framePercent),
+													  (int)(getColorProperty(owner.getBackgroundColor()).getGreen()+ (double)dGreen * framePercent),
+													  (int)(getColorProperty(owner.getBackgroundColor()).getBlue()+ (double)dBlue * framePercent));
+						}
+
+						if(hoverSelection){			
+							switch (owner.getHoverIndicator()) {
+							    case HOVERMODE_FRAME_ONLY:
+									setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth)));
+									break;
+							    case HOVERMODE_FRAME_GROWING:
+									setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth+scanFrameWidth*hoverPercent)));
+									break;
+							    case HOVERMODE_BACKGROUND_FADE:
+									setBackground(scanBorderColor);
+									break;
+							}
+						} 
+						else {					
 							setBorder(BorderFactory.createLineBorder(scanBorderColor,(int)(scanFrameWidth)));
 						}
+						
 					}
 					else
 					{
-						setBorder(BorderFactory.createLineBorder(getColorProperty(owner.getTextColor()),frameWidth));
+						setBorder(BorderFactory.createLineBorder(getColorProperty(owner.getTextColor()),defaultFrameWidth));
 					}
 				}
 				
 				GUICell.this.repaint();
-				GUICell.this.revalidate();
-
+				//GUICell.this.revalidate();
 			}
-
-			
 		};
+		
+		
 		if(SwingUtilities.isEventDispatchThread()) {
 			performRepaint.run();
 		} else {
@@ -218,32 +262,16 @@ public class GUICell extends JPanel implements Runnable
 	{
 		super.paintComponent(g);
 		
-		
 		if(scanActive)
 		{
 			setBackground(getColorProperty(owner.getScanColor()));
 		}
 		else
 		{
-			if(cellhovering)
-			{
-				
-				if(hoverSelected)
-				{
-					setBackground(getColorProperty(owner.getScanColor()));
-				}
-				else
-				{
-					setBackground(getColorProperty(owner.getBackgroundColor()));
-				}
-			}
-			else
-			{
+			if(!cellhovering)
 				setBackground(getColorProperty(owner.getBackgroundColor()));
-			}
 		}
-		
-		
+				
 		if(image!=null)
 		{
 			
@@ -256,8 +284,7 @@ public class GUICell extends JPanel implements Runnable
 			if(text.length()>0)
 			{
 				panelWidth=this.getWidth();
-				panelHeight=(2*this.getHeight())/3;
-			
+				panelHeight=(2*this.getHeight())/3;			
 			}
 			else
 			{
@@ -420,9 +447,19 @@ public class GUICell extends JPanel implements Runnable
 		return soundPath;
 	}
 
+	String getSwitchGrid()
+	{
+		return switchGrid;
+	}
+
 	void setSoundPreviewPath(String soundPreviewPath)
 	{
 		this.soundPreviewPath=soundPreviewPath;
+	}
+
+	void setSwitchGrid(String switchGrid)
+	{
+		this.switchGrid=switchGrid;
 	}
 
 	String getSoundPreviewPath()
@@ -549,7 +586,7 @@ public class GUICell extends JPanel implements Runnable
     }
     
     /**
-     * Sets hover slection.
+     * Sets hover selection.
      * @param hoverSelection hover selection.
      */
     public void setHoverSelection(boolean hoverSelection)
@@ -580,9 +617,7 @@ public class GUICell extends JPanel implements Runnable
 			//System.out.println("There is an image!");
 			panelHeight=panelHeight/3;
 			//System.out.println("New PanelHeight is "+panelHeight);
-		}
-		
-		
+		}	
 		
 		do
 		{
@@ -692,43 +727,17 @@ public class GUICell extends JPanel implements Runnable
     }
     
 
-    
-    
-    /**
-     * Sends delayed general click event.
-     */
-    private void sendGeneralEvent()
-    {
-    	AstericsThreadPool.instance.execute(this);
-    }
-    
+        
     /**
      * Prepares to close.
      */
     void close()
     {
-    	hoverFinish=true;
+    	hoverExit=true;
+    	if (editFrame!=null) editFrame.closeDialog();
     }
     
-    /**
-     * Thread function to send delayed general cell clicked event.
-     */
-    @Override
-	public void run() {
-    	try{
-			Thread.sleep(100);
-			etpGeneralEvent.raiseEvent();
-		}catch (InterruptedException e) {}
-    	
-    }
-    
-    private int hoverSleep=30;
-    private boolean hoverExit=false;
-    private boolean hoverFinish=false;
-    private boolean cellhovering=false;
-    private boolean hoverSelected=false;
-    //private boolean hoverStarted=false;
-    
+        
     /**
      * Timer user in the hover selection mode.
      */
@@ -741,63 +750,65 @@ public class GUICell extends JPanel implements Runnable
 		public void run() {
 			boolean finish=false;
 			int currentTime=0;
-			do{
+			
+			while(!finish)
+			{
 				try{
 					Thread.sleep(hoverSleep);
 				}catch (InterruptedException e) {}
-				currentTime=currentTime+hoverSleep;
-				if(currentTime>=hoverTime)
-				{
-					hoverSelected=true;
-					owner.performCellSelection(row,column);
-	            	sendGeneralEvent();
-	            	repaintNow();
-	            	try{
-						Thread.sleep(200);
-					}catch (InterruptedException e) {}
-	            	hoverSelected=false;
-	            	cellhovering=false;
-	            	repaintNow();
-					finish=true;
-				} else {
-					repaintNow(currentTime / (double)hoverTime);
-				}
 				
-				if(hoverExit||hoverFinish)
+				if (hoverFinish)
+					currentTime=hoverTime;
+				else currentTime+=hoverSleep;
+				
+				if(hoverExit)
 				{
 					finish=true;
-					cellhovering=false;
-					
+					cellhovering=false;	
 					repaintNow();
 				}
-				
-			}while(!finish);
-			//cellhovering=false;
-			
+				else
+				{
+					if(currentTime>=hoverTime)
+					{
+						owner.performCellSelection(row,column);
+		            	repaintNow();
+		            	try{
+							Thread.sleep(selectFeedbackSleep);
+						}catch (InterruptedException e) {}
+		            	hoverFinish=false;
+		            	cellhovering=false;
+		            	repaintNow();
+						finish=true;
+					} else {
+						repaintNow(currentTime / (double)hoverTime);
+					}
+				}
+			} 			
 		}
-
 	};
 	
-	/**
-     * None scan mode feedback.
-     */
+
+     
 private final Runnable selectFeedback = new Runnable(){
 		
-	/**
-     * Thread function.
-     */	
 	@Override
 	public void run() {
-			hoverSelected=true;
-			repaintNow();
-        	try{
-				Thread.sleep(20);
-			}catch (InterruptedException e) {}
-        	repaintNow();
-        	hoverSelected=false;
-		}
-
-	};
-    
-    
+		// boolean temp=scanActive;
+		scanActive=true;
+		GUICell.this.setBackground(getColorProperty(owner.getScanColor()));
+		GUICell.this.repaint();
+		
+		try{
+			Thread.sleep(selectFeedbackSleep);
+		} catch (InterruptedException e) {}
+       
+		setScanActive(false);
+		GUICell.this.setBackground(getColorProperty(owner.getBackgroundColor()));
+		GUICell.this.repaint();
+		GUICell.this.revalidate();
+		
+		}			
+		
+	};    
 }

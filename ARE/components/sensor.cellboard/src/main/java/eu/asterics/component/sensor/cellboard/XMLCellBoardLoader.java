@@ -37,54 +37,73 @@ public class XMLCellBoardLoader extends DefaultHandler
 					tempcols = Integer.parseInt(atts.getValue("columns"));
 					
 				} catch (Exception e) {
-					System.out.println("Cellboard loader: rows/cols not found!");
+					System.out.println("Cellboard xml parser info: rows/cols not found!");
 				}
 
-				if ((temprows>0) && (tempcols>0))  // load primary properties only if not saved from Cellboard's own editor !!
+				if (owner.propIgnoreKeyboardFileProperties==false)  // load primary cellboard properties only if not ignored !!
 				{
-					owner.propRows=temprows-1;
-					owner.propColumns=tempcols-1;
+					if ((temprows>0) && (tempcols>0))
+					{
+						owner.propRows=temprows-1;
+						owner.propColumns=tempcols-1;
+					}
+					
+					String temp;
 					
 					try 
-					{
-						if (atts.getIndex("fontsize") != -1) 
-							owner.propFontSize = (float) (Integer.parseInt(atts.getValue("fontsize")));
-					}
-					catch (Exception e) {	System.out.println("Cellboard xml parser error: fontsize not found"); }
-					/*
-	    			width = Integer.parseInt(atts.getValue("width"));
-	    			height = Integer.parseInt(atts.getValue("height")); */
-		    		try	 {owner.propScanType = Integer.parseInt(atts.getValue("scanning not found")); }
-					catch (Exception e) {	System.out.println("Cellboard xml parser: scanning not found not found"); } 
-		    		try {	owner.propTextColor = Integer.parseInt(atts.getValue("textColor not found")); }
-					catch (Exception e) {	System.out.println("Cellboard xml parser error: textColor not found");  }
-		    		try {	owner.propScanColor = Integer.parseInt(atts.getValue("scanColor not found"));}
-					catch (Exception e) {	System.out.println("Cellboard xml parser error: scanColor not found");  }
-					try {	owner.propBackgroundColor = Integer.parseInt(atts.getValue("backgroundColor not found")); }
-					catch (Exception e) {	System.out.println("Cellboard xml parser error: backgroundColor not found");  }
+					{ owner.propFontSize = (float) (Integer.parseInt(atts.getValue("fontsize")));}
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: fontsize not found"); }
+
+					temp=atts.getValue("caption");
+					if (temp!=null) owner.propCaption=temp;
+					else System.out.println("Cellboard xml parser info: caption not found");  
+					
+		    		try	 {owner.propScanMode = Integer.parseInt(atts.getValue("scanning")); }
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: scanning not found not found"); } 
+		    		try {	owner.propTextColor = Integer.parseInt(atts.getValue("textColor")); }
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: textColor not found");  }
+		    		try {	owner.propScanColor = Integer.parseInt(atts.getValue("scanColor"));}
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: scanColor not found");  }
+		    		try {	owner.propScanCycles = Integer.parseInt(atts.getValue("scanCycles"));}
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: scanCycles not found");  }
+					try {	owner.propBackgroundColor = Integer.parseInt(atts.getValue("backgroundColor")); }
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: backgroundColor not found");  }
 					try {	owner.propHoverTime = Integer.parseInt(atts.getValue("hoverTime"));}
-					catch (Exception e) {	System.out.println("Cellboard xml parser error: hoverTime not found"); }
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: hoverTime not found"); }
+					try {	owner.propHoverIndicator = Integer.parseInt(atts.getValue("hoverIndicator"));}
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: hoverIndicator not found"); }
+					try {	owner.propHoverFrameThickness = Integer.parseInt(atts.getValue("hoverFrameThickness"));}
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: hoverFrameThickness not found"); }
+
+					temp=atts.getValue("commandSeparator");
+					if (temp!=null) owner.propCommandSeparator=temp;
+					else System.out.println("Cellboard xml parser info: commandSeparator not found");  
+
 					try {	    		
 			    		if (atts.getValue("enableEdit").equalsIgnoreCase("true"))
 			    			owner.propEnableEdit=true;
 			    		else owner.propEnableEdit=false;
 					}
-					catch (Exception e) {	System.out.println("Cellboard xml parser error: enableEdit not found");  }
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: enableEdit not found");  }
 					try {
 			    		if (atts.getValue("enableClickSelection").equalsIgnoreCase("true"))
 			    			owner.propEnableClickSelection=true;
 			    		else owner.propEnableClickSelection=false;
 					}
-					catch (Exception e) {	System.out.println("Cellboard xml parser error: enableClickSelection not found");  }
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: enableClickSelection not found");  }
+					try {
+			    		if (atts.getValue("ignoreKeyboardFileProperties").equalsIgnoreCase("true"))
+			    			owner.propIgnoreKeyboardFileProperties=true;
+			    		else owner.propIgnoreKeyboardFileProperties=false;
+					}
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: ignoreKeyboardFileProperties not found");  }
 		    		
-					try {	owner.propCaption=atts.getValue("caption");}
-					catch (Exception e) {	System.out.println("Cellboard xml parser error: caption not found");  }
 					try {
 						if (atts.getValue("displayGUI").equalsIgnoreCase("true"))
 			    			owner.propDisplayGUI=true;
 			    		else owner.propDisplayGUI=false;
 					}
-					catch (Exception e) {	System.out.println("Cellboard xml parser error: displayGUI not found");  }
+					catch (Exception e) {	System.out.println("Cellboard xml parser info: displayGUI not found");  }
 				}
 
 		    	owner.propCellCaptionArray = new String[size];
@@ -92,12 +111,14 @@ public class XMLCellBoardLoader extends DefaultHandler
 				owner.propCellImageArray = new String[size];
 				owner.propCellSoundArray = new String[size];
 				owner.propCellSoundPreviewArray = new String[size];
+				owner.propCellSwitchGridArray = new String[size];
 	    		for (int i = 0; i < size; i++) {
 	    			owner.propCellCaptionArray[i] = "";
 	    			owner.propCellTextArray[i] = "";
 	    			owner.propCellImageArray[i] = "";
 	    			owner.propCellSoundArray[i] = "";
 	    			owner.propCellSoundPreviewArray[i] = "";
+	    			owner.propCellSwitchGridArray[i] = "";
 	    		}
 	    	} else if (qName.equalsIgnoreCase("text")) {
 	    		sb = new StringBuilder();
@@ -108,6 +129,8 @@ public class XMLCellBoardLoader extends DefaultHandler
 	    	} else if (qName.equalsIgnoreCase("sound")) {
 	    		sb = new StringBuilder();
 	    	} else if (qName.equalsIgnoreCase("soundPreview")) {
+	    		sb = new StringBuilder();
+	    	} else if (qName.equalsIgnoreCase("switchGrid")) {
 	    		sb = new StringBuilder();
 	    	}
 	  }
@@ -140,6 +163,9 @@ public class XMLCellBoardLoader extends DefaultHandler
 			} else if (qName.equalsIgnoreCase("soundPreview")) {
 				String soundPreview = sb.toString(); 
 				owner.propCellSoundPreviewArray[buttons] = soundPreview;
+			} else if (qName.equalsIgnoreCase("switchGrid")) {
+				String switchGrid = sb.toString(); 
+				owner.propCellSwitchGridArray[buttons] = switchGrid;
 			}
 
 		}

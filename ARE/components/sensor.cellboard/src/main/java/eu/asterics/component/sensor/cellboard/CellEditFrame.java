@@ -88,6 +88,7 @@ public class CellEditFrame extends JDialog
 	JTextField imageField=null;
 	JTextField soundField=null;
 	JTextField soundPreviewField=null;
+	JTextField switchGridField=null;
 	JTextField fileNameField=null;
 	
 	GUICell parent;
@@ -190,35 +191,85 @@ public class CellEditFrame extends JDialog
 		});		
 		panel.add(openSoundPreviewButton);
 		
+		JLabel label7 = new JLabel("Switch to Cellboard (use \"back\" to go to previous grid)");
+		panel.add(label7);
 		
-		JLabel label6 = new JLabel("Save .xml File as:");
-		label6.setPreferredSize(new Dimension(FIELDWIDTH, FIELDHEIGHT));
+		switchGridField = new JTextField();
+		switchGridField.setPreferredSize(new Dimension(FIELDWIDTH-20, FIELDHEIGHT));
+		panel.add(switchGridField);
+
+		 JButton openSwitchGridButton = new JButton("...");
+		 	openSwitchGridButton.addActionListener(new ActionListener() {
+		    //openSwitchGridButton.setPreferredSize(new Dimension(25, FIELDHEIGHT));
+				public void actionPerformed(ActionEvent arg0) {
+
+				final String switchGridPreviewFile=relativizePath(fileChooser(instance.FILE_PATH_PREFIX));  // "./data/cellBoardKeyboards"
+				if(switchGridPreviewFile!=null) {
+					switchGridField.setText(switchGridPreviewFile);
+				}
+			}
+		});		
+		panel.add(openSwitchGridButton);
+
+		
+		
+		JLabel label6 = new JLabel("Cellboard filename:");
+		//label6.setPreferredSize(new Dimension(FIELDWIDTH, FIELDHEIGHT));
 		panel.add(label6);
 		
 		
 		fileNameField = new JTextField();
-		fileNameField.setPreferredSize(new Dimension(FIELDWIDTH, FIELDHEIGHT));
-		if (instance.propKeyboardFile!="")			
-			fileNameField.setText("data/cellBoardKeyboards/"+instance.propKeyboardFile);
-		else fileNameField.setText("data/cellBoardKeyboards/test.xml");
+		fileNameField.setPreferredSize(new Dimension(FIELDWIDTH-20, FIELDHEIGHT));
+		if (instance.propKeyboardFile!="")	
+		{
+			if ((instance.propKeyboardFile.startsWith(instance.FILE_PATH_PREFIX))|| (instance.propKeyboardFile.startsWith(instance.FILE_PATH_PREFIX2)))
+				fileNameField.setText(instance.propKeyboardFile);
+			else
+				fileNameField.setText(instance.FILE_PATH_PREFIX+instance.propKeyboardFile);
+		}
+		else fileNameField.setText(instance.FILE_PATH_PREFIX+"dummy.xml");
 		panel.add(fileNameField);
 		
-		 JButton savebutton = new JButton("Save");
-			savebutton.setPreferredSize(new Dimension(100, 25));
+		 JButton openSaveGridButton = new JButton("...");
+		 	openSaveGridButton.addActionListener(new ActionListener() {
+		    //openSoundPreviewButton.setPreferredSize(new Dimension(25, FIELDHEIGHT));
+				public void actionPerformed(ActionEvent arg0) {
+
+				final String saveGridFile=relativizePath(fileChooser(instance.FILE_PATH_PREFIX));  
+				if(saveGridFile!=null) {
+					fileNameField.setText(saveGridFile);
+				}
+			}
+		});		
+		panel.add(openSaveGridButton);
+			
+		
+		 JButton savebutton = new JButton("Save Cellboard");
+			savebutton.setPreferredSize(new Dimension(250, 25));
 	        savebutton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					parent.setCellCaption(captionField.getText());
-					instance.setCellCaption(parent.getIndex(), captionField.getText());
-					parent.setActionText(actionField.getText());
-					instance.setCellText(parent.getIndex(), actionField.getText());
-					instance.setImagePath(parent.getIndex(), relativizePath(imageField.getText()));
-					instance.setSoundPath(parent.getIndex(), relativizePath(soundField.getText()));
-					instance.setSoundPreviewPath(parent.getIndex(), relativizePath(soundPreviewField.getText()));
-					
-					gui.update(AREServices.instance.getAvailableSpace(instance), instance.propFontSize);					
-					parent.repaint();
-					instance.saveXmlFile(fileNameField.getText());
-					thisDialog.dispose();					
+
+					if (fileNameField.getText().length()>0)
+					{
+						parent.setCellCaption(captionField.getText());
+						instance.setCellCaption(parent.getIndex(), captionField.getText());
+						parent.setActionText(actionField.getText());
+						instance.setCellText(parent.getIndex(), actionField.getText());
+						instance.setImagePath(parent.getIndex(), relativizePath(imageField.getText()));
+						instance.setSoundPath(parent.getIndex(), relativizePath(soundField.getText()));
+						instance.setSoundPreviewPath(parent.getIndex(), relativizePath(soundPreviewField.getText()));
+						instance.setSwitchGrid(parent.getIndex(), relativizePath(switchGridField.getText()));
+						
+						gui.update(AREServices.instance.getAvailableSpace(instance), instance.propFontSize);					
+						parent.repaint();
+						instance.saveXmlFile(fileNameField.getText());
+						instance.propKeyboardFile=fileNameField.getText();
+						thisDialog.dispose();			
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Please enter a filename to save the keyboard .xml file !", "Info", JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
 			});
 		    panel.add(savebutton);
@@ -227,7 +278,7 @@ public class CellEditFrame extends JDialog
 			cancelbutton.setPreferredSize(new Dimension(100, 25));
 	        cancelbutton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					thisDialog.dispose();					
+					closeDialog();
 				}
 			});
 	
@@ -236,6 +287,12 @@ public class CellEditFrame extends JDialog
 	    pack();
 	    setLocationRelativeTo(null);
 		add(panel, BorderLayout.CENTER);
+	}
+
+	public void closeDialog()
+	{
+		parent.editFrame=null;
+		thisDialog.dispose();					
 	}
 	
 	private String relativizePath(String absolute) {
@@ -252,6 +309,7 @@ public class CellEditFrame extends JDialog
 		actionField.setText(parent.getCellText());
 		imageField.setText(instance.getImagePath(parent.getIndex()));
 		soundField.setText(instance.getSoundPath(parent.getIndex()));
+		switchGridField.setText(instance.getSwitchGrid(parent.getIndex()));
 		pack();
 		//this.setLocation(parent.getFrame().getLocation());
         //this.setLocationRelativeTo(parent.getFrame());

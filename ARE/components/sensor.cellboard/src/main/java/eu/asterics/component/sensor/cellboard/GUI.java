@@ -40,6 +40,7 @@ import javax.swing.border.TitledBorder;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsThreadPool;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 
@@ -50,6 +51,7 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.StringTokenizer;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -70,6 +72,13 @@ public class GUI extends JPanel
     private JPanel gridPanel;
     // private JLabel myLabel;
     // add more GUI elements here
+
+    final int SCANMODE_NONE=0;
+    final int SCANMODE_ROW_COL=1;
+    final int SCANMODE_COL_ROW=2;
+    final int SCANMODE_DIRECTED=3;
+    final int SCANMODE_HOVER=4;
+
 
     private Lock lock = new ReentrantLock();
 	public CellBoardInstance owner;
@@ -129,7 +138,7 @@ public class GUI extends JPanel
 		{
 			for(int j=0;j<columns;j++)
 			{
-				cells[i][j]=new GUICell(this,owner.getGeneralEventPort());
+				cells[i][j]=new GUICell(this);
 				cells[i][j].setVisible(true);
 				cells[i][j].setIndex(index);
 				cells[i][j].setRow(i);
@@ -139,6 +148,7 @@ public class GUI extends JPanel
 				cells[i][j].setPicturePath(owner.getImagePath(index));
 				cells[i][j].setSoundPath(owner.getSoundPath(index));
 				cells[i][j].setSoundPreviewPath(owner.getSoundPreviewPath(index));
+				cells[i][j].setSwitchGrid(owner.getSwitchGrid(index));
 				cells[i][j].setScanActive(false);
 				cells[i][j].setHoverTime(owner.getHoverTime());
 				index++;
@@ -308,7 +318,12 @@ public class GUI extends JPanel
 	{
 		return owner.getTextColor();
 	}
-	
+
+	int getHoverIndicator()
+	{
+		return owner.getHoverIndicator();
+	}
+
 	/**
      * Returns the background color for the active cell during scanning.
      * @return   color of the active cell background
@@ -321,9 +336,9 @@ public class GUI extends JPanel
 	private int level=0;
 	private int scanRow=0;
 	private int scanColumn=0;
-	private int scanType=0;
+	private int scanMode=0;
 	private int repeatCount=0;
-	private final int maxRepeatCount=3;
+	// private int maxRepeatCount=3; //owner.propScanCycles;
 	
 	public enum ScanSelectionDirection{
 		up,down,left,right
@@ -355,7 +370,7 @@ public class GUI extends JPanel
 			
 			@Override
 			public void run() {
-				scanType=owner.getScanType();
+				scanMode=owner.getScanMode();
 				
 				clearScanState();
 				
@@ -364,29 +379,25 @@ public class GUI extends JPanel
 				{
 					for(int j=0;j<columns;j++)
 					{
-						if((scanType==0)||(scanType==4))
-						{
-							
-							if(scanType==4)
-							{
-								cells[i][j].setEventBlock(true);
-								cells[i][j].setHoverSelection(true);
-							}
-							else
-							{
+						switch (scanMode) {
+						case SCANMODE_NONE:
 								cells[i][j].setEventBlock(false);
 								cells[i][j].setHoverSelection(false);
-							}
-						}
-						else
-						{
+								break;
+
+						case SCANMODE_HOVER:
+								cells[i][j].setEventBlock(true);
+								cells[i][j].setHoverSelection(true);
+								break;
+						default:
 							cells[i][j].setEventBlock(true);
 							cells[i][j].setHoverSelection(false);
+							break;
 						}
 					}
 				}
 				
-				if(scanType==3)
+				if(scanMode==SCANMODE_DIRECTED)
 				{
 					cells[0][0].setScanActive(true);
 					scanRow=0;
@@ -394,7 +405,7 @@ public class GUI extends JPanel
 				}
 				else
 				{
-					if((scanType==1)||(scanType==2))
+					if((scanMode==SCANMODE_ROW_COL)||(scanMode==SCANMODE_COL_ROW))
 					{
 						if((rows==1)||(columns==1))
 						{
@@ -405,7 +416,7 @@ public class GUI extends JPanel
 						}
 						else
 						{
-							if(scanType==1)
+							if(scanMode==SCANMODE_ROW_COL)
 							{
 								for(int j=0;j<columns;j++)
 								{
@@ -427,8 +438,6 @@ public class GUI extends JPanel
 						}
 					}
 				}
-				//This is obviously invoked from within update method.
-				//repaintCells();
 			}
 		});		
 	}
@@ -443,7 +452,7 @@ public class GUI extends JPanel
 			
 			@Override
 			public void run() {
-				if(scanType!=3)
+				if(scanMode!=SCANMODE_DIRECTED)
 				{
 					return;
 				}
@@ -460,7 +469,7 @@ public class GUI extends JPanel
 				cells[scanRow][scanColumn].setScanActive(false);
 				scanRow=row;
 				cells[scanRow][scanColumn].setScanActive(true);
-				AstericsErrorHandling.instance.getLogger().fine("Setting scanRow "+scanRow+", scanColumn: "+scanColumn);
+				// AstericsErrorHandling.instance.getLogger().fine("Setting scanRow "+scanRow+", scanColumn: "+scanColumn);
 				performActCellUpdate(scanRow, scanColumn);
 				repaintCells();
 			}
@@ -477,7 +486,7 @@ public class GUI extends JPanel
 			
 			@Override
 			public void run() {
-				if(scanType!=3)
+				if(scanMode!=SCANMODE_DIRECTED)
 				{
 					return;
 				}
@@ -494,7 +503,7 @@ public class GUI extends JPanel
 				cells[scanRow][scanColumn].setScanActive(false);
 				scanColumn=column;
 				cells[scanRow][scanColumn].setScanActive(true);
-				AstericsErrorHandling.instance.getLogger().fine("Setting scanRow "+scanRow+", scanColumn: "+scanColumn);
+				// AstericsErrorHandling.instance.getLogger().fine("Setting scanRow "+scanRow+", scanColumn: "+scanColumn);
 				performActCellUpdate(scanRow, scanColumn);
 				repaintCells();
 			}
@@ -511,7 +520,7 @@ public class GUI extends JPanel
 			
 			@Override
 			public void run() {
-				if(scanType!=3)
+				if(scanMode!=SCANMODE_DIRECTED)
 				{
 					return;
 				}
@@ -551,7 +560,7 @@ public class GUI extends JPanel
 			
 			@Override
 			public void run() {
-				if(scanType==3)
+				if(scanMode==SCANMODE_DIRECTED)
 				{	
 					switch (direction)
 					{
@@ -635,6 +644,17 @@ public class GUI extends JPanel
 		});		
 	}
 	
+	
+	public void unSelectAll()
+	{
+		for(int j=0;j<columns;j++)
+			for(int i=0;i<rows;i++)
+			  if (cells[i][j].scanActive)
+			  {
+				  cells[i][j].setScanActive(false);
+				  cells[i][j].repaintNow();
+			  }
+	}
 	/**
      * Moves the scanning frame.
      */
@@ -644,13 +664,15 @@ public class GUI extends JPanel
 
 			@Override
 			public void run() {
-				if((scanType==1)||(scanType==2))
+				final int maxRepeatCount=owner.propScanCycles;
+				
+				if((scanMode==SCANMODE_ROW_COL)||(scanMode==SCANMODE_COL_ROW))
 				{
 					if((rows>1)&&(columns>1))
 					{
 						if(level==0)
 						{
-							if(scanType==1)
+							if(scanMode==SCANMODE_ROW_COL)
 							{
 								for(int j=0;j<columns;j++)
 								{
@@ -669,6 +691,7 @@ public class GUI extends JPanel
 								{
 									cells[scanRow][j].setScanActive(true);
 								}
+								owner.getScanRowOutputPort().sendData(ConversionUtils.intToBytes(scanRow+1));
 							}
 							else
 							{
@@ -690,11 +713,12 @@ public class GUI extends JPanel
 								{
 									cells[i][scanColumn].setScanActive(true);
 								}
+								owner.getScanColumnOutputPort().sendData(ConversionUtils.intToBytes(scanColumn+1));
 							}	
 						}
 						else if(level==1)
 						{
-							if(scanType==1)
+							if(scanMode==SCANMODE_ROW_COL)
 							{
 								cells[scanRow][scanColumn].setScanActive(false);
 								if(scanColumn+1<columns)
@@ -707,6 +731,8 @@ public class GUI extends JPanel
 									repeatCount=repeatCount+1;
 								}
 								cells[scanRow][scanColumn].setScanActive(true);
+								owner.getScanColumnOutputPort().sendData(ConversionUtils.intToBytes(scanColumn+1));
+								
 								if(repeatCount<maxRepeatCount) 
 									performActCellUpdate(scanRow, scanColumn);
 
@@ -724,6 +750,8 @@ public class GUI extends JPanel
 									repeatCount=repeatCount+1;
 								}
 								cells[scanRow][scanColumn].setScanActive(true);
+								owner.getScanRowOutputPort().sendData(ConversionUtils.intToBytes(scanRow+1));
+
 								if(repeatCount<maxRepeatCount)
 									performActCellUpdate(scanRow, scanColumn);
 
@@ -736,7 +764,7 @@ public class GUI extends JPanel
 								repeatCount=0;
 								scanRow=0;
 								scanColumn=0;
-								if(scanType==1)
+								if(scanMode==SCANMODE_ROW_COL)
 								{
 									for(int j=0;j<columns;j++)
 									{
@@ -800,14 +828,14 @@ public class GUI extends JPanel
 			
 			@Override
 			public void run() {
-				if((scanType==1)||(scanType==2))
+				if((scanMode==SCANMODE_ROW_COL)||(scanMode==SCANMODE_COL_ROW))
 				{
 					if((rows>1)&&(columns>1))
 					{
 						if(level==0)
 						{
 							level=1;
-							if(scanType==1)
+							if(scanMode==SCANMODE_ROW_COL)
 							{
 								for(int j=0;j<columns;j++)
 								{
@@ -818,6 +846,8 @@ public class GUI extends JPanel
 
 								cells[scanRow][scanColumn].setScanActive(true);
 								performActCellUpdate(scanRow, scanColumn);
+								owner.getScanColumnOutputPort().sendData(ConversionUtils.intToBytes(1));
+
 
 							}
 							else
@@ -830,6 +860,8 @@ public class GUI extends JPanel
 								scanRow=0;
 								cells[scanRow][scanColumn].setScanActive(true);
 								performActCellUpdate(scanRow, scanColumn);
+								owner.getScanRowOutputPort().sendData(ConversionUtils.intToBytes(1));
+
 							}
 						}
 						else if(level==1)
@@ -840,12 +872,14 @@ public class GUI extends JPanel
 							repeatCount=0;
 							scanRow=0;
 							scanColumn=0;
-							if(scanType==1)
+							if(scanMode==SCANMODE_ROW_COL)
 							{
 								for(int j=0;j<columns;j++)
 								{
 									cells[scanRow][j].setScanActive(true);
 								}
+								owner.getScanRowOutputPort().sendData(ConversionUtils.intToBytes(1));
+
 							}
 							else
 							{	
@@ -853,6 +887,8 @@ public class GUI extends JPanel
 								{
 									cells[i][scanColumn].setScanActive(true);
 								}
+								owner.getScanColumnOutputPort().sendData(ConversionUtils.intToBytes(1));
+
 							}	
 						}
 					}
@@ -868,11 +904,11 @@ public class GUI extends JPanel
 				}
 				else
 				{
-					if(scanType==3)
+					if(scanMode==SCANMODE_DIRECTED)
 					{
 						performCellSelection(scanRow,scanColumn);
 					}
-					if(scanType==4)
+					if(scanMode==SCANMODE_HOVER)
 					{
 						performCellSelection(actHoverRow,actHoverColumn);
 					}
@@ -888,15 +924,35 @@ public class GUI extends JPanel
 	public void performCellSelection(int row,int column)
 	{
 		int index=cells[row][column].getIndex();
+
+		System.out.println("Cell selected ");
+
 		owner.getEventPort(index).raiseEvent();
+		owner.getCellClickedEventPort().raiseEvent();
+
 		owner.getSelectedCellOutputPort().sendData(ConversionUtils.intToBytes(index+1));
 		owner.getSelectedCellCaptionOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellCaption()));
-		owner.getSelectedCellTextOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellText()));
 
+		if (owner.propCommandSeparator.length()==0)
+		{
+		   owner.getSelectedCellTextOutputPort().sendData(ConversionUtils.stringToBytes(cells[row][column].getCellText()));
+		}
+		else  // split commands into multiple outputs !
+		{
+			String cmd=cells[row][column].getCellText();
+			StringTokenizer st = new StringTokenizer(cmd,owner.propCommandSeparator);
+			while (st.hasMoreElements())
+			{
+				String act=(String) st.nextElement();
+				System.out.println("send next cmd:"+act);
+				owner.getSelectedCellTextOutputPort().sendData(ConversionUtils.stringToBytes(act));
+			}
+		}
+		
 		final int r=row;
 		final int c=column;
 		
-		if (cells[row][column].getSoundPath().length()>4)
+		if (cells[row][column].getSoundPath().length()>0)
 		{
 			System.out.println("Trying to play sound "+cells[row][column].getSoundPath());
 			SwingUtilities.invokeLater(new Runnable() {
@@ -907,6 +963,33 @@ public class GUI extends JPanel
 				}
 			});
 		}
+		
+		if (cells[row][column].getSwitchGrid().length()>0)
+		{
+			if (!(cells[row][column].getSwitchGrid().equals("back")))
+			{
+				System.out.println("Trying to switch to grid:" + cells[row][column].getSwitchGrid());
+				System.out.println("Storing to stack (" +owner.currentGridLevel+"):"+ owner.propKeyboardFile);
+				System.out.println("Switching to:" + cells[row][column].getSwitchGrid());
+
+				owner.backGridStack[owner.currentGridLevel]=owner.propKeyboardFile;
+				owner.currentGridLevel++;
+				owner.xmlFile=cells[row][column].getSwitchGrid();
+			}
+			else
+			{
+				if (owner.currentGridLevel>0)
+				{
+					owner.currentGridLevel--;
+					System.out.println("Going back to Grid:"+owner.backGridStack[owner.currentGridLevel]);
+					owner.xmlFile=owner.backGridStack[owner.currentGridLevel];					
+				}
+			}
+
+			prepareToClose();
+			owner.loadXmlFile();			
+		}
+		
 	}
 
 	int actHoverRow=-1;
@@ -924,10 +1007,10 @@ public class GUI extends JPanel
 		actHoverRow=row;
 		actHoverColumn=column;
 		
-		if (cells[row][column].getSoundPreviewPath().length()>4)
+		if (cells[row][column].getSoundPreviewPath().length()>0)
 		{
 			System.out.println("Trying to play preview sound "+cells[row][column].getSoundPreviewPath());
-			SwingUtilities.invokeLater(new Runnable() {
+			AstericsThreadPool.instance.execute(new Runnable() {
 				
 				@Override
 				public void run() {
@@ -946,6 +1029,7 @@ public class GUI extends JPanel
 		{
 			for(int j=0;j<columns;j++)
 			{
+				if (cells[i][j]!=null)
 				cells[i][j].close(); 
 			}
 		}
@@ -1005,6 +1089,5 @@ public class GUI extends JPanel
         }
    
     }
-
 	
 }

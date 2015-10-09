@@ -54,7 +54,14 @@
 				<description>The action text of the selected cell</description>
 				<dataType>string</dataType>
 			</outputPort>
-
+			<outputPort id="scanRow">
+				<description>the number of the current row (when row/column scan is selected)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="scanColumn">
+				<description>the number of the current column (when row/column scan is selected)</description>
+				<dataType>integer</dataType>
+			</outputPort>
 
         </ports>
 		<events>
@@ -76,13 +83,16 @@
 			<eventListenerPort id="moveDown">
 				<description>Move frame down</description>
 			</eventListenerPort>
+			<eventListenerPort id="load">
+				<description>Load keyboard file which is defined by the input port 'xmlFile'</description>
+			</eventListenerPort>
 			
 			<eventTriggererPort id="cellClicked">
 				<description>Cell is clicked</description>
 			</eventTriggererPort>
-			<eventListenerPort id="load">
-				<description>Load keyboard file which is defined by the input port 'xmlFile'</description>
-			</eventListenerPort>
+			<eventTriggererPort id="scanCancel">
+				<description>row or column scanning canceled because max cycles reached</description>
+			</eventTriggererPort>
 			<eventTriggererPort id="cell1">
 				<description>Cell 1 selected</description>
 			</eventTriggererPort>
@@ -228,10 +238,23 @@
 				value="0"
 				combobox="none//row-column//column-row//directed//hover selection"
 				description="Scanning mode"/>
+			<property name="scanCycles"
+				type="integer"
+				value="3"
+				description="number of cycles in a specific scan mode (row/column) before canceling"/>
 			<property name="hoverTime"
 				type="integer"
 				value="1000"
 				description="Time of hovering needed to cell selection [ms]."/>
+			<property name="hoverIndicator"
+				type="integer"
+				value="0"
+				combobox="fixed frame//growing frame//background color"
+				description="type of hover indicator"/>
+			<property name="hoverFrameThickness"
+				type="integer"
+				value="4"
+				description="Size of the hover indicator frame"/>
 			<property name="enableEdit"
 				type="boolean"
 				value="true"
@@ -240,11 +263,19 @@
 				type="boolean"
 				value="true"
 				description="if selected, Cells can be selected via left mouse click even if a scanning mode is active"/>
+			<property name="commandSeparator"
+				type="string"
+				value=""
+				description="Character sequence for separation of multiple command strings"/>
 			<property name="keyboardFile"
 				type="string"
 				value=""
 				getStringList="true"
 				description="Name of keyboard file (in data/cellBoardKeyboards) to load at startup."/>
+			<property name="ignoreKeyboardFileProperties"
+				type="boolean"
+				value="false"
+				description="if true, the properties of the keyboard file are ignored (only cell contents are loaded)"/>
             <property name="displayGUI"
                       type="boolean"
                       value="true"                      
