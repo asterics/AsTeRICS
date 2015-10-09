@@ -1,33 +1,51 @@
-<?xml version="1.0" encoding="Windows-1250" ?>
-<keyboard rows="3" columns="2" scanning="4">
+<?xml version="1.0" ?>
+<keyboard caption="Cell Board" rows="3" columns="2" scanning="4" textColor="0" scanColor="10" scanCycles="2" backgroundColor="11" hoverTime="1000" hoverIndicator="2" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
 	<button>
 		<text>A E I O U</text>
 		<icon></icon>
 		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
 		<text>N R T S D</text>
 		<icon></icon>
 		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
 		<text>H L G C M</text>
 		<icon></icon>
 		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
 		<text>B F Z K W</text>
 		<icon></icon>
 		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
-		<text>Zurück</text>
+		<text>ZurĂĽck</text>
 		<icon></icon>
 		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>back</switchGrid>
 	</button>
 	<button>
 		<text>V P J Y X Q</text>
 		<icon></icon>
 		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 </keyboard>

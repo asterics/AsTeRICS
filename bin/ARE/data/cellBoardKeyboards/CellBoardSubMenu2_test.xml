@@ -1,19 +1,19 @@
 <?xml version="1.0" ?>
-<keyboard rows="0" columns="0">
+<keyboard caption="Test Cellboard Submenus" rows="1" columns="2" scanning="0" textColor="0" scanColor="10" scanCycles="0" backgroundColor="11" hoverTime="1000" hoverIndicator="0" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
 	<button>
 		<text>Sub Menu 2</text>
 		<icon></icon>
-		<action>CellBoardSubMenu2_test.xml</action>
+		<action></action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
 		<text>To main menu</text>
 		<icon></icon>
 		<action>CellBoardSubMenus_test.xml</action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 </keyboard>

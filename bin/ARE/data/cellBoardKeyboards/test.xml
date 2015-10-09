@@ -1,75 +1,75 @@
 <?xml version="1.0" ?>
-<keyboard rows="0" columns="0">
+<keyboard caption="Cell Board" rows="3" columns="3" scanning="4" textColor="0" scanColor="10" scanCycles="2" backgroundColor="11" hoverTime="1000" hoverIndicator="2" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
 	<button>
 		<text></text>
 		<icon></icon>
 		<action></action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
 		<text></text>
 		<icon></icon>
 		<action></action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
 		<text></text>
 		<icon></icon>
 		<action></action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
 		<text></text>
 		<icon></icon>
 		<action></action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
-		<text>Right Click</text>
+		<text>test</text>
 		<icon></icon>
-		<action>@MOUSE:nextclick,right</action>
+		<action></action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid>data/cellBoardKeyboards/dynamicKeyboard2.xml</switchGrid>
 	</button>
 	<button>
 		<text></text>
 		<icon></icon>
 		<action></action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
 		<text></text>
 		<icon></icon>
 		<action></action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
 		<text></text>
 		<icon></icon>
 		<action></action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 	<button>
 		<text></text>
 		<icon></icon>
 		<action></action>
 		<sound></sound>
-
 		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
 	</button>
 </keyboard>
