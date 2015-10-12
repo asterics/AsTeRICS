@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<keyboard caption="" rows="2" columns="3" scanning="4" textColor="11" scanColor="8" scanCycles="2" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" commandSeparator=";" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+	<button>
+		<text>Help</text>
+		<icon>data/pictures/symbols/asking for help.png</icon>
+		<action>@speech:Need for help</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/sub_help.xml</switchGrid>
+	</button>
+	<button>
+		<text>Food</text>
+		<icon>data/pictures/symbols/eat with your mouth closed_1.png</icon>
+		<action>@speech:Need for food and drinks</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/subgrid_food.xml</switchGrid>
+	</button>
+	<button>
+		<text>Moods</text>
+		<icon>data/pictures/symbols/expression workshop_1.png</icon>
+		<action>@speech:Expressing a feeling</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/sub_moods.xml</switchGrid>
+	</button>
+	<button>
+		<text>Clothing</text>
+		<icon>data/pictures/symbols/clothing_1.png</icon>
+		<action>@speech:Clothing</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/subgrid_clothes.xml</switchGrid>
+	</button>
+	<button>
+		<text>Environment</text>
+		<icon>data/pictures/symbols/environmental control.png</icon>
+		<action>@speech:Environmental control</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/eyeX_Environment/sub_environment.xml</switchGrid>
+	</button>
+	<button>
+		<text>Keyboard</text>
+		<icon>data/pictures/symbols/keyboard press key.png</icon>
+		<action>@speech:switch to keyboard;@model:grids/eyeX_Environment/keyboard.acs</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+</keyboard>
