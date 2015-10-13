@@ -17,31 +17,16 @@ function setBaseURI(uri) {
 	_baseURI = uri;
 }
 
+
+
+/**********************
+ *	Runtime resources 
+ **********************/
+
 function downloadDeployedModel(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
 		url: _baseURI + "runtime/model",
-		datatype: "text/xml",
-		crossDomain: true,
-		success:
-				function (data, textStatus, jqXHR){
-					successCallback(jqXHR.responseText, textStatus);
-				},
-		error: 
-				function (jqXHR, textStatus, errorThrown) {
-					errorCallback(errorThrown,jqXHR.responseText);
-				}
-	});
-}
-
-
-function downloadModelFromFile(successCallback, errorCallback, filename) {
-	
-	if (filename == "") return;
-	
-	$.ajax({
-		type: "GET",
-		url: _baseURI + "storage/models/" + filename,
 		datatype: "text/xml",
 		crossDomain: true,
 		success:
@@ -154,29 +139,6 @@ function stopModel(successCallback, errorCallback) {
 }
 
 
-function storeModel(successCallback, errorCallback, filename, modelInXML) {
-	
-	if ( (filename == "") || (modelInXML == "")) return;
-	
-	$.ajax({
-		type: "POST",
-		url: _baseURI + "storage/models/" + filename,
-		contentType: "text/xml",									//content-type of the request
-		data: modelInXML,	
-		datatype: "text",
-		crossDomain: true,
-		success:
-				function (data, textStatus, jqXHR){
-					successCallback(jqXHR.responseText, textStatus);
-				},
-		error: 
-				function (jqXHR, textStatus, errorThrown) {
-					errorCallback(errorThrown,jqXHR.responseText);
-				}
-	});
-}
-
-
 function getModelState(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
@@ -216,50 +178,10 @@ function deployModelFromFile(successCallback, errorCallback, filename) {
 }
 
 
-function deleteModelFromFile(successCallback, errorCallback, filename) {
-	
-	if ( filename == "" ) return;
-	
-	$.ajax({
-		type: "DELETE",
-		url: _baseURI + "storage/models/" + filename,
-		datatype: "text",
-		crossDomain: true,
-		success:
-				function (data, textStatus, jqXHR){
-					successCallback(jqXHR.responseText, textStatus);
-				},
-		error: 
-				function (jqXHR, textStatus, errorThrown) {
-					errorCallback(errorThrown,jqXHR.responseText);
-				}
-	});
-}
-
-
 function downloadComponentCollection(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
 		url: _baseURI + "runtime/model/components",
-		datatype: "application/json",
-		crossDomain: true,
-		success:
-				function (data, textStatus, jqXHR){
-					jsonString = jqXHR.responseText;
-					successCallback(JSON.parse(jsonString), textStatus);
-				},
-		error: 
-				function (jqXHR, textStatus, errorThrown) {
-					errorCallback(errorThrown,jqXHR.responseText);
-				}
-	});
-}
-
-
-function listStoredModels(successCallback, errorCallback) {
-	$.ajax({
-		type: "GET",
-		url: _baseURI + "storage/models",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -341,6 +263,156 @@ function setComponentProperty(successCallback, errorCallback, componentId, compo
 }
 
 
+
+
+/*************************************
+ *	Storage/ARE-repository resources
+ *************************************/
+
+function downloadModelFromFile(successCallback, errorCallback, filename) {
+	
+	if (filename == "") return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "storage/models/" + filename,
+		datatype: "text/xml",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(jqXHR.responseText, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function storeModel(successCallback, errorCallback, filename, modelInXML) {
+	
+	if ( (filename == "") || (modelInXML == "")) return;
+	
+	$.ajax({
+		type: "POST",
+		url: _baseURI + "storage/models/" + filename,
+		contentType: "text/xml",									//content-type of the request
+		data: modelInXML,	
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(jqXHR.responseText, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function deleteModelFromFile(successCallback, errorCallback, filename) {
+	
+	if ( filename == "" ) return;
+	
+	$.ajax({
+		type: "DELETE",
+		url: _baseURI + "storage/models/" + filename,
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(jqXHR.responseText, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function listStoredModels(successCallback, errorCallback) {
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "storage/models",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getInstalledComponents(successCallback, errorCallback) {
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "storage/components/installed",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getInstalledComponentsDescriptor(successCallback, errorCallback) {
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "storage/components/installed/descriptors",
+		datatype: "text/xml",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(data, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getCreatedComponentsDescriptor(successCallback, errorCallback) {
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "storage/components/created/descriptors",
+		datatype: "text/xml",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(data, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+
+/**********************
+ *	Other Functions
+ **********************/
+
 function getRestFunctions(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
@@ -359,6 +431,12 @@ function getRestFunctions(successCallback, errorCallback) {
 	});
 }
 
+
+
+
+/**********************************
+ *	Subscription to SSE events
+ **********************************/
 
 function subscribe(successCallback, errorCallback, eventsType) {
 	

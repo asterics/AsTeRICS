@@ -34,9 +34,9 @@ public class ServerRepository {
 					"Retrieves the currently deployed model in XML" ) );
 			
 			add( new RestFunction("PUT", "/runtime/model", "text/xml", "text/plain", "model in xml", 
-					"Deploys the given model") );
+					"Deploys the model given as a parameter") );
 			
-			add( new RestFunction("PUT", "/runtime/model/{filename}", "", "text/plain", "model in xml",
+			add( new RestFunction("PUT", "/runtime/model/{filename}", "", "text/plain", "",
 					"Deploys the model contained in the given filename") );
 			
 			add( new RestFunction("PUT", "/runtime/model/state/start", "", "text/plain", "",
@@ -77,6 +77,18 @@ public class ServerRepository {
 			
 			add( new RestFunction("GET", "/restfunctions", "", "text/plain", "",
 					"Retrieves a list with all the available rest functions") );
+			
+			add( new RestFunction("GET", "/storage/components/installed", "", "application/json", "",
+					"Retrieves the components which are currently installed in the ARE") );
+			
+			add( new RestFunction("GET", "/storage/components/installed/descriptors", "", "text/xml", "",
+					"Returns an xml string containing the descriptors of the installed components") );
+			
+			add( new RestFunction("GET", "/storage/components/created/descriptors", "", "text/xml", "",
+					"Returns an xml string containing the descriptors of the created components") );
+			
+			add( new RestFunction("GET", "/events/subscribe", "", "", "",
+					"Opens a persistent connection with ARE to use it for Server Sent Events") );
 		}
 	};
 	

@@ -21,18 +21,14 @@
 		
 			setBaseURI("http://localhost:8081/rest/");
 		
+		
 			//downloadDeployedModel
 			function DDM() {
 				downloadDeployedModel(DDM_successCallback, DDM_errorCallback);
 			}
 			
-			function DDM_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function DDM_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function DDM_successCallback(data, HTTPstatus) { alert(data); }
+			function DDM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
 			//downloadModelFromFile
@@ -41,13 +37,8 @@
 				downloadModelFromFile(DMF_successCallback, DMF_errorCallback, filename);
 			}
 			
-			function DMF_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function DMF_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function DMF_successCallback(data, HTTPstatus) { alert(data); }
+			function DMF_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
 			//uploadModel
@@ -56,13 +47,8 @@
 				uploadModel(UM_successCallback, UM_errorCallback, modelInXML);
 			}
 						
-			function UM_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function UM_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function UM_successCallback(data, HTTPstatus) { alert(data); }
+			function UM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
 			//autorun
@@ -71,13 +57,8 @@
 				autorun(AUTO_successCallback, AUTO_errorCallback, filename);
 			}
 			
-			function AUTO_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function AUTO_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function AUTO_successCallback(data, HTTPstatus) { alert(data); }
+			function AUTO_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
 			//getModelState
@@ -85,26 +66,17 @@
 				getModelState(MS_successCallback, MS_errorCallback);
 			}
 			
-			function MS_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
+			function MS_successCallback(data, HTTPstatus) { alert(data); }
+			function MS_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
-			function MS_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
 			
 			//pauseModel
 			function PAUSE() {
 				pauseModel(PAUSE_successCallback, PAUSE_errorCallback);
 			}
 						
-			function PAUSE_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function PAUSE_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function PAUSE_successCallback(data, HTTPstatus) { alert(data); }
+			function PAUSE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 						
 			
 			//startModel
@@ -112,27 +84,17 @@
 				startModel(START_successCallback, START_errorCallback);
 			}
 						
-			function START_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function START_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function START_successCallback(data, HTTPstatus) { alert(data); }
+			function START_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 						
 			
 			//stopModel
-			function STOP() {
-				stopModel(STOP_successCallback, STOP_errorCallback);
+			function STOP() { 
+				stopModel(STOP_successCallback, STOP_errorCallback); 
 			}
 						
-			function STOP_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function STOP_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function STOP_successCallback(data, HTTPstatus) { alert(data); }
+			function STOP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 
 
 			//storeModel
@@ -142,13 +104,8 @@
 				storeModel(STORE_successCallback, STORE_errorCallback, filename, modelInXML);
 			}
 									
-			function STORE_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function STORE_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function STORE_successCallback(data, HTTPstatus) { alert(data); }
+			function STORE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
 			//deployModelFromFile
@@ -157,13 +114,8 @@
 				deployModelFromFile(DepMF_successCallback, DepMF_errorCallback, filename);
 			}
 									
-			function DepMF_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function DepMF_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function DepMF_successCallback(data, HTTPstatus) { alert(data); }
+			function DepMF_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 
 			//deleteModelFromFile
@@ -172,13 +124,8 @@
 				deleteModelFromFile(DELETE_successCallback, DELETE_errorCallback, filename);
 			}
 									
-			function DELETE_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function DELETE_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function DELETE_successCallback(data, HTTPstatus) { alert(data); }
+			function DELETE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
 			//downloadComponentCollection
@@ -186,13 +133,8 @@
 				downloadComponentCollection(DCC_successCallback, DCC_errorCallback);
 			}
 						
-			function DCC_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function DCC_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function DCC_successCallback(data, HTTPstatus) { alert(data); }
+			function DCC_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 
 			//listStoredModels
@@ -200,14 +142,48 @@
 				listStoredModels(LSM_successCallback, LSM_errorCallback);
 			}
 						
-			function LSM_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
+			function LSM_successCallback(data, HTTPstatus) { alert(data); }
+			function LSM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
 			
-			function LSM_errorCallback(HTTPstatus, AREerrorMessage) {
+			//getInstalledComponents
+			function INSTALLED_COMPONENTS() {
+				getInstalledComponents(INSTALLED_COMPONENTS_successCallback, INSTALLED_COMPONENTS_errorCallback);
+			}
+									
+			function INSTALLED_COMPONENTS_successCallback(data, HTTPstatus) {
+				console.log(JSON.stringify(data[0]));
+			}
+			function INSTALLED_COMPONENTS_errorCallback(HTTPstatus, AREerrorMessage) {
 				alert(AREerrorMessage);
 			}
 			
+			
+			//getInstalledComponentsDescriptor
+			function INSTALLED_COMPONENTS_DSCR() {
+				getInstalledComponentsDescriptor(INSTALLED_COMPONENTS_DSCR_successCallback, INSTALLED_COMPONENTS_DSCR_errorCallback);
+			}
+									
+			function INSTALLED_COMPONENTS_DSCR_successCallback(data, HTTPstatus) {
+				console.log(data);
+			}
+			function INSTALLED_COMPONENTS_DSCR_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//getCreatedComponentsDescriptor
+			function CREATED_COMPONENTS_DSCR() {
+				getCreatedComponentsDescriptor(CREATED_COMPONENTS_DSCR_successCallback, CREATED_COMPONENTS_DSCR_errorCallback);
+			}
+									
+			function CREATED_COMPONENTS_DSCR_successCallback(data, HTTPstatus) {
+				console.log(data);
+			}
+			function CREATED_COMPONENTS_DSCR_errorCallback(HTTPstatus, AREerrorMessage) {
+				console.log(AREerrorMessage);
+			}
+	
 			
 			//getComponentPropertyKeys
 			function GCPK() {
@@ -215,13 +191,8 @@
 				getComponentPropertyKeys(GCPK_successCallback, GCPK_errorCallback, componentId);
 			}
 						
-			function GCPK_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function GCPK_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function GCPK_successCallback(data, HTTPstatus) { alert(data[0]); }
+			function GCPK_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 
 			//getComponentProperty
@@ -231,13 +202,8 @@
 				getComponentProperty(GCP_successCallback, GCP_errorCallback, componentId, componentKey);
 			}
 						
-			function GCP_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function GCP_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function GCP_successCallback(data, HTTPstatus) { alert(data); }
+			function GCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
 			//setComponentProperty
@@ -248,13 +214,8 @@
 				setComponentProperty(SCP_successCallback, SCP_errorCallback, componentId, componentKey, componentValue);
 			}
 						
-			function SCP_successCallback(data, HTTPstatus) {
-				alert(data);
-			}
-			
-			function SCP_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
+			function SCP_successCallback(data, HTTPstatus) { alert(data); }
+			function SCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 				
 			
 			//getRestFunctions
@@ -263,9 +224,8 @@
 			}
 						
 			function FUNCTIONS_successCallback(data, HTTPstatus) {
-				alert(data[0].httpRequestType);
+				console.log(JSON.stringify(data[0]));
 			}
-			
 			function FUNCTIONS_errorCallback(HTTPstatus, AREerrorMessage) {
 				alert(AREerrorMessage);
 			}
@@ -278,7 +238,7 @@
 				var eventType = selects.options[selects.selectedIndex].value;
 				subscribe(SUBSCIBE_EVENTS_successCallback, SUBSCIBE_EVENTS_errorCallback, eventType);
 			}
-						
+					
 			function SUBSCIBE_EVENTS_successCallback(data, HTTPstatus) {
 				var eventsBox = document.getElementById("eventsBox");
 				eventsBox.innerHTML = "SSE event: " + data; 
@@ -327,6 +287,15 @@
 				
 		<button onclick="DELETE()"> Delete model </button>
 		<input placeholder="filename" type="text" id="DELETEfilename"/>
+		<br/> <br/>
+
+		<button onclick="INSTALLED_COMPONENTS()"> Get installed components </button>
+		<br/> <br/>
+		
+		<button onclick="INSTALLED_COMPONENTS_DSCR()"> Get installed components descriptor </button>
+		<br/> <br/>
+		
+		<button onclick="CREATED_COMPONENTS_DSCR()"> Get created components descriptor </button>
 		<br/> <br/>
 		
 		<hr>

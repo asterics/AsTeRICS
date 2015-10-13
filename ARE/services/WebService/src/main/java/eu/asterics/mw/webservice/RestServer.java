@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
 import eu.asterics.mw.webservice.serverUtils.ServerEvent;
@@ -33,6 +34,7 @@ public class RestServer {
 	AsapiSupport as = new AsapiSupport();
 	private Logger logger = AstericsErrorHandling.instance.getLogger();
 	
+	
 	@Path("/restfunctions")
 	@GET
 	@Produces (MediaType.APPLICATION_JSON)
@@ -42,6 +44,10 @@ public class RestServer {
 		return JSONresponse;
 	}
 	
+	
+	/**********************
+	 *	Runtime resources 
+	 **********************/
 	
 	@Path("/runtime/model")
     @GET
@@ -60,7 +66,6 @@ public class RestServer {
 		
     	return response;
     }
-	
 	
 
 	@Path("/runtime/model")
@@ -278,12 +283,12 @@ public class RestServer {
     }
 	
 	
-
 	
 	
+	/*************************************
+	 *	Storage/ARE-repository resources
+	 *************************************/
 	
-	
-
 	@Path("/storage/models/{filename}")
     @GET
     @Produces(MediaType.TEXT_XML)
@@ -375,4 +380,70 @@ public class RestServer {
 		return response;
     }
 
+	
+	@Path("/storage/components/installed")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getInstalledComponents() {
+		String response = null;
+		String errorMessage;
+		
+		try {
+			IComponentType[] array = as.getInstalledComponents();
+
+			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Couldn't retrieve the installed components";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+		return response;
+	}
+	
+	
+	@Path("/storage/components/installed/descriptors")
+	@GET
+	@Produces(MediaType.TEXT_XML)
+	public String getInstalledComponentsDescriptor() {
+		String response = null;
+		String errorMessage;
+
+		try {
+			response = as.getInstalledComponentsDescriptor();
+			if (response == null) {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Couldn't retrieve the created components descriptors";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+		return response;
+	}
+	
+
+	@Path("/storage/components/created/descriptors")
+	@GET
+	@Produces(MediaType.TEXT_XML)
+	public String getCreatedComponentsDescriptor() {
+		String response = null;
+		String errorMessage;
+
+		try {
+			response = as.getCreatedComponentsDescriptors();
+			if (response == null) {
+				throw new Exception();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Couldn't retrieve the created components descriptors";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+		return response;
+	}
+	
+	
 }
