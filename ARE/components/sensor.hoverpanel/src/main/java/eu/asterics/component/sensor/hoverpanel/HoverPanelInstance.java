@@ -453,7 +453,7 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance
 	}
 	
 	
-	void setPanelBackground(Color c)
+	void setPanelBackground(final Color c)
 	{
 		SwingUtilities.invokeLater(new Runnable() {  			
 			@Override
