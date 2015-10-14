@@ -440,6 +440,11 @@
 		<param name="Local" value="HTML\Plugins\sensors\HeadPositionHC.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.HoverPanel">
+		<param name="Name" value="HoverPanel">
+		<param name="Local" value="HTML\Plugins\sensors\HoverPanel.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.HRVAnalysis">
 		<param name="Name" value="HRVAnalysis">
 		<param name="Local" value="HTML\Plugins\processors\HRVAnalysis.htm">
@@ -613,6 +618,11 @@
 		<param name="Name" value="asterics.oneeventmanyactions">
 		<param name="Name" value="OneEventManyActions">
 		<param name="Local" value="HTML\Plugins\processors\OneEventManyActions.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.OpenHAB">
+		<param name="Name" value="openHAB">
+		<param name="Local" value="HTML\Plugins\processors\OpenHAB.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.openvibe">
@@ -863,6 +873,11 @@
 		<param name="Name" value="asterics.stringexpander">
 		<param name="Name" value="StringExpander">
 		<param name="Local" value="HTML\Plugins\processors\StringExpander.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.StringFilter">
+		<param name="Name" value="StringFilter">
+		<param name="Local" value="HTML\Plugins\processors\StringFilter.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.stringpathmultiplexer">
@@ -1445,6 +1460,11 @@
 		<param name="Local" value="HTML\Plugins\sensors\HeadPositionHC.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Hover Panel">
+		<param name="Name" value="HoverPanel">
+		<param name="Local" value="HTML\Plugins\sensors\HoverPanel.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="HRVAnalysis">
 		<param name="Name" value="HRVAnalysis">
 		<param name="Local" value="HTML\Plugins\processors\HRVAnalysis.htm">
@@ -1707,6 +1727,11 @@
 		<param name="Name" value="Open Vibe">
 		<param name="Name" value="OpenVibe">
 		<param name="Local" value="HTML\Plugins\sensors\OpenVibe.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="OpenHAB">
+		<param name="Name" value="openHAB">
+		<param name="Local" value="HTML\Plugins\processors\OpenHAB.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Options">
@@ -2120,6 +2145,11 @@
 		<param name="Name" value="String Expander">
 		<param name="Name" value="StringExpander">
 		<param name="Local" value="HTML\Plugins\processors\StringExpander.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="String Filter">
+		<param name="Name" value="StringFilter">
+		<param name="Local" value="HTML\Plugins\processors\StringFilter.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="String Path Multiplexer">

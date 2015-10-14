@@ -226,6 +226,9 @@ HTML\Plugins\processors\UniversalRemoteControl.htm
 HTML\Plugins\sensors\HeadPositionHC.htm
 HTML\Plugins\sensors\LipmouseIR.htm
 HTML\Plugins\sensors\TuioReactivision.htm
+HTML\Plugins\processors\OpenHAB.htm
+HTML\Plugins\processors\StringFilter.htm
+HTML\Plugins\sensors\HoverPanel.htm
 
 [INFOTYPES]
 

@@ -252,6 +252,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Hover Panel">
+					<param name="Local" value="HTML\Plugins\sensors\HoverPanel.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Joystick Capture">
 					<param name="Local" value="HTML\Plugins\sensors\JoystickCapture.htm">
 					<param name="ImageNumber" value="11">
@@ -650,6 +655,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="OpenHAB">
+					<param name="Local" value="HTML\Plugins\processors\OpenHAB.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Osc Gesture Follower">
 					<param name="Local" value="HTML\Plugins\processors\OscGestureFollower.htm">
 					<param name="ImageNumber" value="11">
@@ -747,6 +757,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="String Expander">
 					<param name="Local" value="HTML\Plugins\processors\StringExpander.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="String Filter">
+					<param name="Local" value="HTML\Plugins\processors\StringFilter.htm">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
