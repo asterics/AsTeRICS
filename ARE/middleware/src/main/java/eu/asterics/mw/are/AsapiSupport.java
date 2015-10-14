@@ -54,6 +54,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import com.sun.org.apache.xerces.internal.util.URI;
+
 import eu.asterics.mw.are.asapi.StatusObject;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
@@ -77,6 +79,8 @@ import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
+import eu.asterics.mw.services.ResourceRegistry;
+import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
 
 
 /*
@@ -117,9 +121,6 @@ import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
  */
 public class AsapiSupport 
 {
-	// todo replace with ComponentRepository
-	private final String MODELS_FOLDER = "models"; 
-
 	private final ComponentRepository componentRepository
 	= ComponentRepository.instance;
 
@@ -364,11 +365,11 @@ public class AsapiSupport
 			try{
 
 				//this is for getting the text xml and converting it to string
-				String xmlFile = MODELS_FOLDER+"/model.xml";
+				String xmlFile = ResourceRegistry.MODELS_FOLDER+"/model.xml";
 
 				//check if dir exists and if not create it
 				File fileName = new File(xmlFile);
-				File modelsDir = new File(MODELS_FOLDER);
+				File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
 				if (!fileName.exists())
 					modelsDir.mkdir();
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -430,11 +431,11 @@ public class AsapiSupport
 	 */
 	public String getModelFromFile(String filename) throws AREAsapiException
 	{
-		filename = MODELS_FOLDER + "/" + filename;
+		filename = ResourceRegistry.MODELS_FOLDER + "/" + filename;
 
 		//check if dir exists and if not create it
 		File fileName = new File(filename);
-		File modelsDir = new File(MODELS_FOLDER);
+		File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
 		if (!fileName.exists())
 			modelsDir.mkdir();
 		String modelInString = "";
@@ -528,9 +529,9 @@ public class AsapiSupport
 						@Override
 						public Object call() throws Exception {
 
-							File modelFile = new File(MODELS_FOLDER
+							File modelFile = new File(ResourceRegistry.MODELS_FOLDER
 									+ "/model.xml");
-							File modelsDir = new File(MODELS_FOLDER);
+							File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
 							if (!modelFile.exists()) {
 								try {
 									modelsDir.mkdir();
@@ -1920,24 +1921,18 @@ public class AsapiSupport
 
 				@Override
 				public Object call() throws Exception {
-					File file = new File(filename);
-					String absFilename=filename;
-					if (!file.isAbsolute()) {
-						absFilename = MODELS_FOLDER + "/" + filename;
-					}
-					//if (filename=="autostart.acs")
-
+					
 					//try{
 					synchronized (this){
-						//this is for getting the text xml and converting it to string
-						String xmlFile = absFilename;
+						java.net.URI uri=ResourceRegistry.instance.getResource(filename,RES_TYPE.MODEL);
 
 						DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 						DocumentBuilder builder = factory.newDocumentBuilder();
 						synchronized (builder) {
 
 
-							Document doc = builder.parse(new File(xmlFile));
+							//Document doc = builder.parse(new File(xmlFile));
+							Document doc = builder.parse(uri.toURL().openStream());
 							DOMSource domSource = new DOMSource(doc);
 							StringWriter writer = new StringWriter();
 							StreamResult result = new StreamResult(writer);
@@ -1950,7 +1945,7 @@ public class AsapiSupport
 							deployModel(modelInString);
 
 							// logger.fine(this.getClass().getName()+"." + "deployFile: OK\n");
-							System.out.println("Deployed Model "+absFilename+" !");
+							AstericsErrorHandling.instance.getLogger().info("Deployed Model "+uri+" !");
 						}
 					}
 					return null;
@@ -2003,7 +1998,7 @@ public class AsapiSupport
 	 */
 	public boolean deleteModelFile (String filename) throws AREAsapiException
 	{
-		filename = MODELS_FOLDER + "/" + filename;
+		filename = ResourceRegistry.MODELS_FOLDER + "/" + filename;
 		String ex="";
 		StringTokenizer tkz = new StringTokenizer (filename,".");
 		while(tkz.hasMoreElements())
@@ -2094,7 +2089,7 @@ public class AsapiSupport
 		
 		List<String> res = new ArrayList<String>(); 
 			List<String> nextDir = new ArrayList<String>(); //Directories
-			nextDir.add(MODELS_FOLDER);	
+			nextDir.add(ResourceRegistry.MODELS_FOLDER);	
 			//nextDir.add("data/sounds");	
 			
 			try 
@@ -2115,7 +2110,7 @@ public class AsapiSupport
 						else 
 						{
 							if (f.getPath().toLowerCase().endsWith(".acs")) 
-									res.add(f.getPath().substring(MODELS_FOLDER.length()+1));
+									res.add(f.getPath().substring(ResourceRegistry.MODELS_FOLDER.length()+1));
 						}
 					} 
 					nextDir.remove(0); 
@@ -2147,8 +2142,8 @@ public class AsapiSupport
 			throws AREAsapiException {
 		//First check if the model is a valid XML model
 
-		File fileName = new File(MODELS_FOLDER+"/"+filename);
-		File modelsDir = new File(MODELS_FOLDER);
+		File fileName = new File(ResourceRegistry.MODELS_FOLDER+"/"+filename);
+		File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
 		if (!fileName.exists())
 		{
 			try {
@@ -2188,7 +2183,7 @@ public class AsapiSupport
 					"Failed to store model -> \n"+e.getMessage());
 			throw (new AREAsapiException(e.getMessage()));
 		}
-	}
+			}
 
 
 
