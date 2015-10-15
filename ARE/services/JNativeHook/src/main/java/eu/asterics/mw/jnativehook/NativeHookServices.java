@@ -38,6 +38,11 @@ public class NativeHookServices implements NativeKeyListener {
 		try 
 		{
 			GlobalScreen.getInstance().setEventDispatcher(new VoidExecutorService());
+			
+			GlobalScreen.getInstance().removeNativeKeyListener(this);
+			GlobalScreen.unregisterNativeHook();		
+
+			
 			GlobalScreen.registerNativeHook();
 			GlobalScreen.getInstance().addNativeKeyListener(this);
 			
