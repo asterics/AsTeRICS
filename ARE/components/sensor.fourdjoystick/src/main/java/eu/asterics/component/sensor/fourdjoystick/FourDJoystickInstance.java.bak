@@ -49,13 +49,13 @@ import eu.asterics.mw.cimcommunication.CIMPortController;
 
 /**
  * 
- * Plugin to gather data from the 4D-Joystick
+ * <Describe purpose of this module>
  * 
  * 
  *  
- * @author <David Thaller> [dt@ki-i.at]
- *         Date: 14.01.2015
- *         Time: 19:03
+ * @author <your name> [<your email address>]
+ *         Date: 
+ *         Time: 
  */
 public class FourDJoystickInstance extends AbstractRuntimeComponentInstance implements CIMEventHandler
 {
