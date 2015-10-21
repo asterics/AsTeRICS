@@ -85,6 +85,11 @@ public class ModelValidator
 		this(bundleContext.getBundle().getResource(BUNDLE_DESCRIPTOR_SCHEMA_URL),bundleContext.getBundle().getResource(DEPLOYMENT_DESCRIPTOR_SCHEMA_URL));    	
     }
     
+    /**
+     * This constructor can be used for cases where no OSGI BundleContext is available.
+     * @param bundleDescriptorSchemaURL
+     * @param deploymentDescriptorSchemaURL
+     */
     public ModelValidator(URL bundleDescriptorSchemaURL, URL deploymentDescriptorSchemaURL) {
         // Initiate the bundle-descriptor validator
         try
