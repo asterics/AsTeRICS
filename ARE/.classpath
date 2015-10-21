@@ -176,6 +176,8 @@
 	<classpathentry kind="src" path="services/WebService/src/main/java"/>
 	<classpathentry kind="src" path="components/processor.motionanalysis/src/main/java"/>
 	<classpathentry kind="src" path="components/sensor.tuioreactivision/src/main/java"/>
+	<classpathentry kind="src" path="tools/APE/src/main/java"/>
+	<classpathentry kind="src" path="tools/APE/src/test/java"/>
 	<classpathentry kind="lib" path="components/actuator.easyhomecontrol/src/main/lib/hidapi.jar"/>
 	<classpathentry kind="lib" path="components/actuator.enobiodisplay/src/main/lib/starlab.enobiodisplay.jar"/>
 	<classpathentry kind="lib" path="components/actuator.enocean/src/main/resources/lib/log4j-1.2.17.jar"/>
@@ -232,12 +234,9 @@
 	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/libfreenect-windows-x86_64.jar"/>
 	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/libfreenect-windows-x86.jar"/>
 	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/libfreenect.jar"/>
-	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/opencv-android-arm.jar"/>
-	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/opencv-android-x86.jar"/>
 	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/opencv-linux-x86_64.jar"/>
 	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/opencv-linux-x86.jar"/>
 	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/opencv-macosx-x86_64.jar"/>
-	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/opencv-windows-x86_64.jar"/>
 	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/opencv-windows-x86.jar"/>
 	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/opencv.jar"/>
 	<classpathentry kind="lib" path="services/ComputerVision/javacv/src/main/resources/lib/native/videoinput-windows-x86_64.jar"/>
@@ -250,6 +249,7 @@
 	<classpathentry kind="lib" path="slf4j/slf4j-simple-1.6.1.jar"/>
 	<classpathentry kind="lib" path="thrift/libthrift.jar"/>
 	<classpathentry kind="lib" path="components/sensor.tuioreactivision/src/main/resources/lib/libTUIO.jar"/>
+	<classpathentry kind="lib" path="services/asterics.mw.jnativehook.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jackson-core-asl-1.8.3.jar"/>
 	<classpathentry kind="lib" path="services/WebService/src/main/resources/lib/jackson-jaxrs-1.8.3.jar"/>

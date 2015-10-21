@@ -64,7 +64,7 @@ public class ModelValidator
     public static final String DEPLOYMENT_DESCRIPTOR_SCHEMA_URL
             = "/schemas/deployment_model.xsd";
 
-    private static Logger logger = null;
+    private static Logger logger = AstericsErrorHandling.instance.getLogger();
 
     // Lookup a factory for the W3C XML Schema language
     public static final SchemaFactory SCHEMA_FACTORY
@@ -81,16 +81,17 @@ public class ModelValidator
 	 * @param bundleContext the bundle to be parsed
 	 */
     public ModelValidator(final BundleContext bundleContext)
-    {
-    	logger = AstericsErrorHandling.instance.getLogger();
+    { 		
+		this(bundleContext.getBundle().getResource(BUNDLE_DESCRIPTOR_SCHEMA_URL),bundleContext.getBundle().getResource(DEPLOYMENT_DESCRIPTOR_SCHEMA_URL));    	
+    }
+    
+    public ModelValidator(URL bundleDescriptorSchemaURL, URL deploymentDescriptorSchemaURL) {
         // Initiate the bundle-descriptor validator
         try
         {
-            final URL url = bundleContext.getBundle().
-            getResource(BUNDLE_DESCRIPTOR_SCHEMA_URL);
             
             synchronized (SCHEMA_FACTORY) {
-            final Schema bundleDescriptorSchema = SCHEMA_FACTORY.newSchema(url);
+            final Schema bundleDescriptorSchema = SCHEMA_FACTORY.newSchema(bundleDescriptorSchemaURL);
            
             
             	  bundleDescriptorValidator = bundleDescriptorSchema.newValidator();
@@ -110,14 +111,11 @@ public class ModelValidator
         // Initiate the deployment-descriptor validator
         try
         {
-            final URL url = bundleContext.
-            			getBundle().
-            			getResource(DEPLOYMENT_DESCRIPTOR_SCHEMA_URL);
             synchronized (SCHEMA_FACTORY) {
 				
 			
             final Schema deploymentDescriptorSchema = 
-            	SCHEMA_FACTORY.newSchema(url);
+            	SCHEMA_FACTORY.newSchema(deploymentDescriptorSchemaURL);
             deploymentDescriptorValidator = 
             	deploymentDescriptorSchema.newValidator();
             }
@@ -131,9 +129,9 @@ public class ModelValidator
                     "validator (" + saxe.getMessage() + ")");
         }
         instance = this;
+
     }
-    
-    
+       
     /**
 	 * Returns the ModelValidator instance    
 	 * @return the ModelValidator instance
@@ -149,9 +147,8 @@ public class ModelValidator
     	else
     		return instance;
     }
-    
 
-    /**
+	/**
      * Checks if the input XML file is a valid instance of the given input schema
      * @param schemaLocation: The path to the XML schema that defines the
      *          structure of the XML model

@@ -98,12 +98,29 @@ public class DefaultDeploymentModelParser
 		this.modelValidator = ModelValidator.getInstance();
 	}
 
+	/**
+	 * Is used to create {@link DefaultDeploymentModelParser} with custom ModelValidator.
+	 * @param modelValidator
+	 */
+	private DefaultDeploymentModelParser(ModelValidator modelValidator)
+	{
+		logger  = AstericsErrorHandling.instance.getLogger();
+		this.modelValidator = modelValidator;
+	}
+
 	public static final DefaultDeploymentModelParser instance =
 		new DefaultDeploymentModelParser();
 
 	private static final int MAX_INPUT_STRREAM = 1000000000;
 
-
+	/**
+	 * Create {@link DefaultDeploymentModelParser} instance with custom ModelValidator instance.
+	 * @param modelValidator
+	 * @return
+	 */
+	public static DefaultDeploymentModelParser create(ModelValidator modelValidator) {
+		return new DefaultDeploymentModelParser(modelValidator);
+	}
 	
 	/** 
 	 * Creates an InputStream from the input file and calls parseModel
@@ -707,7 +724,7 @@ public class DefaultDeploymentModelParser
 
 			return new DefaultComponentInstance(
 					cID,
-					componentRepository.getComponentType(cTypeID).getID(),
+					cTypeID,
 					cDescription,
 					inputPorts,
 					outputPorts,

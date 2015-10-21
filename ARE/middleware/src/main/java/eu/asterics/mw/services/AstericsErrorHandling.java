@@ -383,10 +383,10 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 		}
 		catch (IOException ioe)
 		{
-			return null;
+			return "";
 
 		}
-		return null;
+		return "";
 	}
 
 	private void notifyAREEventListeners(String methodName, String msg) 
