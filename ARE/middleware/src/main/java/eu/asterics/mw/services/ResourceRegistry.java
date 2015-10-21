@@ -6,7 +6,13 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Paths;
+
+import com.badlogic.gdx.math.Path;
+
+import sun.print.resources.serviceui;
+import sun.security.action.GetBooleanSecurityPropertyAction;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -48,7 +54,11 @@ public class ResourceRegistry {
 	public static ResourceRegistry instance=new ResourceRegistry();
 	// todo replace with ComponentRepository
 	public static final String MODELS_FOLDER = "models";
-	
+	public static final String DATA_FOLDER = "data";
+	public static final String PROFILE_FOLDER = "profile";
+	public static final String STORAGE_FOLDER = "storage";
+	private static URI ARE_BASE_URI = URI.create(System.getProperty("eu.asterics.ARE.baseURI", ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toString())); 
+		
 	public enum RES_TYPE {
 		ANY,
 		MODEL,
@@ -95,6 +105,43 @@ public class ResourceRegistry {
 	 */
 	public InputStream getResourceInputStream(String resourceName, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
 		return getResource(resourceName, type).toURL().openStream();
+	}
+	
+	/**
+	 * Set the base URI of the ARE. This URI will be used as parent path for all resources like models, data, storage,...
+	 * Also the jars of the ARE and the plugins are expected in that path.
+	 * @param areBaseURI
+	 */
+	public static void setAREBaseURI(URI areBaseURI) {
+		ARE_BASE_URI=areBaseURI;
+	}
+	
+	/**
+	 * Get the base URI of the ARE. This URI will be used as parent path for all resources like models, data, storage,...
+	 * Also the jars of the ARE and the plugins are expected in that path.
+	 * The default base URI is the location of the ARE.jar file. It can be changed by the property eu.asterics.ARE.baseURI or by using the method {@link setAREBaseURI}.
+	 * @return
+	 */
+	public static URI getAREBaseURI() {		
+		return ARE_BASE_URI;		
+	}
+
+	/**
+	 * Converts the given absolutePath to a path relative to the ARE base URI {@link getAREBaseURI}.
+	 * @param absolutePath
+	 * @return
+	 */
+	public static URI toRelative(String absolutePath) {
+		return getAREBaseURI().relativize(URI.create(absolutePath)); 
+	}
+
+	/**
+	 * Converts the given relativePath to an absolute path by resolving with the ARE base URI {@link getAREBaseURI}.
+	 * @param relativePath
+	 * @return
+	 */
+	public static URI toAbsolute(String relativePath) {
+		return getAREBaseURI().resolve(relativePath);
 	}
 
 }
