@@ -75,36 +75,24 @@ public class ResourceRegistry {
 		
 		try {
 			URL url=new URL(resourceName);			
-			System.out.println("URL: "+url);
+			AstericsErrorHandling.instance.getLogger().fine("Resource URL: "+url);
 			uri=url.toURI();			
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-						
 			File resourceNameAsFile=new File(resourceName);
+			//In case of model files, prefix the MODELS_FOLDER if the path is relative.
 			if(type==RES_TYPE.MODEL && !resourceNameAsFile.isAbsolute()) {
-				AstericsErrorHandling.instance.getLogger().fine("Prepanding 'models' to URI: "+resourceNameAsFile);
+				AstericsErrorHandling.instance.getLogger().fine("Prepanding "+MODELS_FOLDER+" to URI: "+resourceNameAsFile);
 				uri=new File(MODELS_FOLDER,resourceName).getAbsoluteFile().toURI();
 				//uri=Paths.get(MODELS_FOLDER,resourceName).toAbsolutePath().toUri();
 			} else {
 				uri=resourceNameAsFile.toURI();
 			}
 		}
-/*
-		try{
-			uri=new URI(resourceName);
-		} catch(URISyntaxException ue) {
-			AstericsErrorHandling.instance.getLogger().warning("Resource name seems to be a file: "+uri);
-			uri=Paths.get(resourceName).toAbsolutePath().toUri();
-		}
-	*/	
-		//In case of model files, prefix the MODELS_FOLDER if the path is relative.
-		
 		//System.out.println("file absolute: "+resourceNameAsFile.isAbsolute()+", uri absolute: "+uri.isAbsolute()+", uri opaque: "+uri.isOpaque());
 		//System.out.println("resource File.toURI: "+resourceNameAsFile.toURI());
-		System.out.println("Before normalize: "+uri.normalize());
+		AstericsErrorHandling.instance.getLogger().fine("URI before normalize: "+uri.normalize());
 		uri=uri.normalize();
-		AstericsErrorHandling.instance.getLogger().info("Fetching <"+uri+">");		
+		AstericsErrorHandling.instance.getLogger().info("Final Resource URI <"+uri+">");		
 		return uri;
 	}
 	
