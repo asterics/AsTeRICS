@@ -50,7 +50,12 @@ public class ResourceRegistry {
 	public static final String DATA_FOLDER = "data";
 	public static final String PROFILE_FOLDER = "profile";
 	public static final String STORAGE_FOLDER = "storage";
-	private static URI ARE_BASE_URI = URI.create(System.getProperty("eu.asterics.ARE.baseURI", ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toString())); 
+	private static URI ARE_BASE_URI = null;
+	
+	static {
+		ARE_BASE_URI=URI.create(System.getProperty("eu.asterics.ARE.baseURI", ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toString()));
+		System.out.println("Setting ARE base URI to <"+ARE_BASE_URI+">");		
+	}
 		
 	public enum RES_TYPE {
 		ANY,
