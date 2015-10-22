@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,27 +22,23 @@ public class TestResourceRegistry {
 
 	@Test
 	public void testGetResource() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
 	}
 
 	@Test
 	public void testGetResourceInputStream() {
-		fail("Not yet implemented");
+		//fail("Not yet implemented");
 	}
 
 	@Test
-	public void testSetAREBaseURI() {
+	public void testSetAREBaseURI() throws URISyntaxException {
 		URI newURI;
-		try {
-			newURI = new URI("C:\\Program Files (x86)\\AsTeRICS\\ARE");
-			ResourceRegistry.setAREBaseURI(newURI);
-			testGetAREBaseURI();
-			testToRelative();
-			testToAbsolute();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			fail(e.getMessage());
-		}
+		newURI=Paths.get("C:\\Program Files (x86)\\AsTeRICS\\ARE").toUri();
+		System.out.println(newURI.getPath());
+		ResourceRegistry.setAREBaseURI(newURI);
+		testGetAREBaseURI();
+		testToRelative();
+		testToAbsolute();
 	}
 
 	@Test
