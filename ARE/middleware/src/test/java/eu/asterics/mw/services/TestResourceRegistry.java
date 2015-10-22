@@ -2,6 +2,7 @@ package eu.asterics.mw.services;
 
 import static org.junit.Assert.*;
 
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
@@ -31,21 +32,38 @@ public class TestResourceRegistry {
 	}
 
 	@Test
-	public void testSetAREBaseURI() throws URISyntaxException {
-		URI newURI;
-		newURI=Paths.get("C:\\Program Files (x86)\\AsTeRICS\\ARE").toUri();
-		System.out.println(newURI.getPath());
-		ResourceRegistry.setAREBaseURI(newURI);
-		testGetAREBaseURI();
-		testToRelative();
-		testToAbsolute();
-	}
-
-	@Test
 	public void testGetAREBaseURI() {
 		System.out.println("baseURI: "+ResourceRegistry.getAREBaseURI());		
 	}
 
+	@Test
+	public void testRelativeToAbsoluteToRelative() {
+		URI relative=URI.create(ResourceRegistry.MODELS_FOLDER);
+		URI absolute=ResourceRegistry.toAbsolute(ResourceRegistry.MODELS_FOLDER);
+		URI convertedRelative=ResourceRegistry.toRelative(absolute.toString());
+		if(!relative.equals(convertedRelative)) {
+			fail("Testing URI toAbsolute and back toRelative failed: original <"+relative+">, convertedRelative <"+convertedRelative+">");
+		}
+	}
+	
+	@Test
+	public void testSetAREBaseURI() throws URISyntaxException {
+		//Test getting and relative to absolute
+		testGetAREBaseURI();
+		testRelativeToAbsoluteToRelative();
+		
+		//change base URI
+		URI newURI;
+		newURI=new File("C:\\Program Files (x86)\\AsTeRICS\\ARE").toURI();
+		System.out.println("Setting new AREBaseURI to <"+newURI.getPath()+">");
+		ResourceRegistry.setAREBaseURI(newURI);
+		
+		//Test getting and relative to absolute again
+		testGetAREBaseURI();
+		testRelativeToAbsoluteToRelative();
+	}
+
+	/*
 	@Test
 	public void testToRelative() {
 		URI absolute=ResourceRegistry.getAREBaseURI().resolve(ResourceRegistry.MODELS_FOLDER);
@@ -56,5 +74,5 @@ public class TestResourceRegistry {
 	public void testToAbsolute() {
 		System.out.println("relative: "+ResourceRegistry.MODELS_FOLDER+" absolute: "+ResourceRegistry.toAbsolute(ResourceRegistry.MODELS_FOLDER));
 	}
-
+*/
 }
