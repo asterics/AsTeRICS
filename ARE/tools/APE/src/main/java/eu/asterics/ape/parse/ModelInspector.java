@@ -1,15 +1,17 @@
 package eu.asterics.ape.parse;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Set;
+import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,18 +33,26 @@ import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
 import eu.asterics.mw.are.parsers.ModelValidator;
 import eu.asterics.mw.model.bundle.IComponentType;
+import eu.asterics.mw.model.deployment.IComponentInstance;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.model.deployment.impl.DefaultRuntimeModel;
+import eu.asterics.mw.services.ResourceRegistry;
 
 public class ModelInspector {
 	ModelValidator modelValidator=null;
 	DefaultDeploymentModelParser deploymentModelParser=null;
+	BundleManager bundleManager=null;
 	
-	public ModelInspector() throws MalformedURLException {
+	public ModelInspector() throws IOException, ParseException {
+		ResourceRegistry.setOSGIMode(false);
+		ResourceRegistry.setAREBaseURI(new File("../bin/ARE").toURI());
+		
 		Path bundleDescriptorSchemaURL = Paths.get("middleware/src/main/resources/schemas/bundle_model.xsd");
 		Path deploymentDescriptorSchemaURL = Paths.get("middleware/src/main/resources/schemas/deployment_model.xsd"); 
 		modelValidator=new ModelValidator(bundleDescriptorSchemaURL.toUri().toURL(),deploymentDescriptorSchemaURL.toUri().toURL());
 		deploymentModelParser=DefaultDeploymentModelParser.create(modelValidator);
+		bundleManager=new BundleManager(modelValidator);
+		bundleManager.createComponentListCache();
 	}
 	
 	public IRuntimeModel parseModel(InputStream modelStream) throws ParseException, ParserConfigurationException, SAXException, IOException, TransformerException {
@@ -70,5 +80,18 @@ public class ModelInspector {
 	
 	public InputStream openStream(String modelStringinUTF16) throws UnsupportedEncodingException {
 		return new ByteArrayInputStream(modelStringinUTF16.getBytes("UTF-16"));
+	}
+	
+	public List<URI> getComponentJarURIListOfModel(IRuntimeModel model) {
+		List<URI> modelComponentJarList=new ArrayList<URI>();
+		for(IComponentInstance compInstance : model.getComponentInstances()) {
+			URI absoluteURI=ResourceRegistry.toAbsolute(bundleManager.getJarNameFromComponentTypeId(compInstance.getComponentTypeID()));
+			modelComponentJarList.add(absoluteURI);
+		}
+		return modelComponentJarList;
+	}
+	
+	public void generateComponentListCache(File componentList) throws MalformedURLException, IOException, ParseException {
+		bundleManager.generateComponentListCache(componentList);
 	}
 }
