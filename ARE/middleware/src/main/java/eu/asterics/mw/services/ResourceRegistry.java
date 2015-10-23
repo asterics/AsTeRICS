@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.*;
 import java.nio.file.Paths;
+import java.util.*;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -51,10 +52,13 @@ public class ResourceRegistry {
 	public static final String PROFILE_FOLDER = "profile";
 	public static final String STORAGE_FOLDER = "storage";
 	private static URI ARE_BASE_URI = null;
+	private static boolean OSGI_MODE=true;
 	
 	static {
 		ARE_BASE_URI=URI.create(System.getProperty("eu.asterics.ARE.baseURI", ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toString()));
 		System.out.println("Setting ARE base URI to <"+ARE_BASE_URI+">");		
+		OSGI_MODE=Boolean.parseBoolean(System.getProperty("eu.asterics.ARE.OSGI_MODE","true"));
+		System.out.println("Setting OSGI_MODE to <"+OSGI_MODE+">");		
 	}
 		
 	public enum RES_TYPE {
@@ -149,6 +153,51 @@ public class ResourceRegistry {
 	 */
 	public static URI toAbsolute(String relativePath) {
 		return getAREBaseURI().resolve(relativePath);
+	}
+	
+	/**
+	 * Returns the current value of the flag OSGI_MODE.
+	 * 
+	 * @return false: The ARE and involved classes are not running within an OSGi context. Which can be the case if the ARE is used as a library.
+	 */
+	public static boolean isOSGIMode() {
+		return OSGI_MODE;
+	}
+	
+	/**
+	 * Sets the value for the flag OSGI_MODE to the given value of OSGIMode;
+	 * @param OSGIMode
+	 */
+	public static void setOSGIMode(boolean OSGIMode) {
+		OSGI_MODE=OSGIMode;
+	}
+	
+	/**
+	 * Returns a list of component jarname URIs. The URIs could be a local file but also an HTTP URL.
+	 * @return
+	 */
+	public List<URI> getComponentJarList() {
+		//get asterics bundles
+		File AREBaseFile=getAREBaseURIFile();
+		File [] componentJars = AREBaseFile.listFiles(new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {
+		    	return (name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor")) 
+		    			&& name.endsWith("jar");
+		    }
+		});
+		List<URI> componentJarURIs=new ArrayList<URI>(componentJars.length);
+		for(int i=0;i<componentJars.length;i++) {
+			componentJarURIs.add(componentJars[i].toURI());
+		}
+		return componentJarURIs;
+	}
+	
+	private File getAREBaseURIFile() {
+		if(getAREBaseURI().getScheme().startsWith("file")) {
+			return new File(getAREBaseURI());
+		}
+		return null;
 	}
 
 }

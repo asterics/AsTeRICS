@@ -75,4 +75,11 @@ public class TestResourceRegistry {
 		System.out.println("relative: "+ResourceRegistry.MODELS_FOLDER+" absolute: "+ResourceRegistry.toAbsolute(ResourceRegistry.MODELS_FOLDER));
 	}
 */
+	@Test
+	public void testGetComponentJarList() {
+		ResourceRegistry.setAREBaseURI(new File("../bin/ARE").toURI());
+		for(URI componentJarURI : ResourceRegistry.instance.getComponentJarList()) {
+			System.out.println("JarURI: "+componentJarURI);
+		}
+	}
 }
