@@ -134,7 +134,6 @@ public class ModelValidator
                     "validator (" + saxe.getMessage() + ")");
         }
         instance = this;
-
     }
        
     /**
