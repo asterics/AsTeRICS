@@ -564,13 +564,9 @@ public class DefaultDeploymentModelParser
 			final String cTypeID = componentElement.getAttribute("type_id");
 			final String cID = componentElement.getAttribute("id");
 
+			//call getComponentType here to trigger installing of bundle; Should maybe moved to DeploymentManager.deployModel			
 			IComponentType desiredComponent=
 			componentRepository.getComponentType(cTypeID);
-			if (desiredComponent==null)
-			{
-				// System.out.println("*** Requesting installation of component " +cTypeID);
-				DeploymentManager.instance.getBundleManager().install_single(cTypeID);
-			}
 						
 			//boolean easyConfig = 
 				//Boolean.parseBoolean

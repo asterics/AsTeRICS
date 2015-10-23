@@ -5,6 +5,7 @@ import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -130,6 +131,14 @@ public class ComponentRepository
     public IComponentType getComponentType(final String componentTypeID)
     {
        IComponentType res = repository.get(componentTypeID);
+		if (res==null)
+		{
+			// System.out.println("*** Requesting installation of component " +cTypeID);
+			if(ResourceRegistry.isOSGIMode()) {
+				DeploymentManager.instance.getBundleManager().install_single(componentTypeID);
+			}
+		}
+
        return res;
     }
 
