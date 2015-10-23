@@ -1,19 +1,5 @@
 package eu.asterics.mw.are;
 
-import eu.asterics.mw.are.exceptions.BundleManagementException;
-import eu.asterics.mw.are.exceptions.ParseException;
-import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
-import eu.asterics.mw.are.parsers.ModelValidator;
-import eu.asterics.mw.model.bundle.IComponentType;
-import eu.asterics.mw.services.AREServices;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AstericsThreadPool;
-import eu.asterics.mw.services.IAREEventListener;
-
-import org.osgi.framework.*;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,13 +7,37 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileSystemView;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleEvent;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.BundleListener;
+import org.osgi.framework.FrameworkEvent;
+import org.osgi.framework.FrameworkListener;
+import org.osgi.framework.ServiceRegistration;
+
+import eu.asterics.mw.are.exceptions.BundleManagementException;
+import eu.asterics.mw.are.exceptions.ParseException;
+import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
+import eu.asterics.mw.are.parsers.ModelValidator;
+import eu.asterics.mw.model.bundle.IComponentType;
+import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.IAREEventListener;
+import eu.asterics.mw.services.ResourceRegistry;
 
 
 
@@ -74,11 +84,11 @@ import javax.swing.filechooser.FileSystemView;
 public class BundleManager implements BundleListener, FrameworkListener
 {
 	private static final String SERVICES_FILES_DELIM = ";";
-	static String PROFILE_LOCATION=new File(System.getProperty("osgi.configuration.area","./profile")).getName();
-	static String LOADER_LOCATION = "./"+PROFILE_LOCATION+"/loader.ini";
-	static String LOADER_MINIMAL_LOCATION = "./"+PROFILE_LOCATION+"/loader_mini.ini";
-	static String LOADER_COMPONENTLIST_LOCATION = "./"+PROFILE_LOCATION+"/loader_componentlist.ini";
-	static String SERVICES_LOCATION = "./"+PROFILE_LOCATION;
+	static String PROFILE_LOCATION=new File(System.getProperty("osgi.configuration.area",ResourceRegistry.PROFILE_FOLDER)).getName();
+	static String LOADER_LOCATION = PROFILE_LOCATION+"/loader.ini";
+	static String LOADER_MINIMAL_LOCATION = PROFILE_LOCATION+"/loader_mini.ini";
+	static String LOADER_COMPONENTLIST_LOCATION = PROFILE_LOCATION+"/loader_componentlist.ini";
+	static String SERVICES_LOCATION = PROFILE_LOCATION;
 	static String SERVICES_FILES=System.getProperty("eu.asterics.ARE.ServicesFiles", "services.ini");
 
 	final int MODE_DEFAULT = 0;
@@ -98,19 +108,43 @@ public class BundleManager implements BundleListener, FrameworkListener
 	
 	private static Map<String, Bundle> componentTypeIDToBundle
 	= new HashMap<String, Bundle>();
+	
+	private static Map<String, String> componentTypeIDToJarName=new HashMap<String, String>();
 
 
-
-	BundleManager(final BundleContext bundleContext)
+	/**
+	 * This is the default constructor and is automatically used by the {@link DeploymentManager} in OSGi mode.
+	 * @param bundleContext
+	 */
+	public BundleManager(final BundleContext bundleContext)
 	{
 		super();
 		this.bundleContext = bundleContext;
+		this.modelValidator=new ModelValidator(bundleContext);
 	
+		logger = AstericsErrorHandling.instance.getLogger();
+	}
+	
+	/**
+	 * This contructor is meant for use in none OSGi mode (without BundleContext instance).
+	 * @param modelValidator
+	 */
+	public BundleManager(ModelValidator modelValidator) {
+		super();
+		this.modelValidator=modelValidator;
+		this.bundleContext=null;
 		logger = AstericsErrorHandling.instance.getLogger();
 	}
 
 	void start()
 	{
+		try {
+			createComponentListCache();
+		} catch (IOException | ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		install(MODE_DEFAULT);
 	
 	}
@@ -205,6 +239,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 	}
 
 	public static final String DEFAULT_BUNDLE_DESCRIPTOR_URL = "/bundle_descriptor.xml";
+	private static final String COMPONENTLIST_DELIM = ";";
 
 	/**
 	 * Checks if the specified bundle contains ASTERICS component(s) or not. The
@@ -215,21 +250,24 @@ public class BundleManager implements BundleListener, FrameworkListener
 	 * @return true if the specified bundle contains ASTERICS component(s),
 	 * false otherwise
 	 */
-	private boolean checkForAstericsMetadata(final Bundle bundle)
+	public boolean checkForAstericsMetadata(final Bundle bundle)
 	{
 		final URL url = bundle.getResource(DEFAULT_BUNDLE_DESCRIPTOR_URL);
 
+		return checkForAstericsMetadata(url,bundle.getSymbolicName());
+	}
+
+	public boolean checkForAstericsMetadata(URL bundleDescriptorUrl, String symbolicName) {
 		try
 		{
-            modelValidator= new ModelValidator(bundleContext);
-        	return modelValidator.isValidBundleDescriptor(url.openStream());
+        	return modelValidator.isValidBundleDescriptor(bundleDescriptorUrl.openStream());
 		}
 		catch (IOException ioe)
 		{
 			logger.warning(getClass().getName()+
 					".checkForAstericsMetadata: validation error for file "+ 
 					DEFAULT_BUNDLE_DESCRIPTOR_URL +", bundle "+ 
-					bundle.getSymbolicName()+" -> \n"+
+					symbolicName+" -> \n"+
 					ioe.getMessage());
 		}
 		catch (NullPointerException npe)
@@ -237,19 +275,29 @@ public class BundleManager implements BundleListener, FrameworkListener
 			logger.warning(getClass().getName()+
 					".checkForAstericsMetadata: error in opening URL "+ 
 					DEFAULT_BUNDLE_DESCRIPTOR_URL +", bundle "+ 
-					bundle.getSymbolicName()+" -> \n"+
+					symbolicName+" -> \n"+
 					npe.getMessage());
 		}
 
-		return false;
+		return false;		
 	}
-
+	
 	private Map <IComponentType, ServiceRegistration> serviceRegistrations
 		= new HashMap<IComponentType, ServiceRegistration>();
 
 	public Bundle getBundleFromId(String componentTypeId)
 	{
 		return componentTypeIDToBundle.get(componentTypeId);
+	}
+	
+	/**
+	 * Returns the jar name of that contains the given componentTypeId as it was found in the componentlist cache.
+	 * This is most likely only the relative jar name. To create an absolute use the {@link ResourceRegistry.getResource} method.
+	 * @param componentTypeId
+	 * @return
+	 */
+	public String getJarNameFromComponentTypeId(String componentTypeId) {
+		return componentTypeIDToJarName.get(componentTypeId);
 	}
 	
 	private String registerBundle(final Bundle bundle)
@@ -503,6 +551,59 @@ public class BundleManager implements BundleListener, FrameworkListener
 		}
 	}
 	
+	public void createComponentListCache() throws MalformedURLException, IOException, ParseException {
+		File componentList=new File(ResourceRegistry.toAbsolute(LOADER_COMPONENTLIST_LOCATION));
+		if(componentList.isFile() && componentList.exists()) {
+			readComponentListCache(componentList.toURI().toURL());
+		} else {
+			generateComponentListCache(componentList);
+		}		
+	}
+	
+	public void generateComponentListCache(File componentList) throws MalformedURLException, IOException, ParseException {
+		//The component list does not exist, so we create it.
+		List<URI> componentJarURIs=ResourceRegistry.instance.getComponentJarList();
+
+		try(BufferedWriter writer=new BufferedWriter(new FileWriter(componentList))) {
+			for(URI componentJarURI : componentJarURIs) {
+				String inputFilePath = "jar:file://" + componentJarURI.getPath() + "!/bundle_descriptor.xml" ;
+
+				URL bundleDescriptor=new URL(inputFilePath);
+				URI relativeURI=ResourceRegistry.toRelative(componentJarURI.toString());
+
+				Set<IComponentType> componentTypeSet=DefaultBundleModelParser.instance.parseModel(bundleDescriptor.openStream());
+				if(componentTypeSet.size()>=1) {
+					writer.newLine();
+
+					StringBuffer line=new StringBuffer(relativeURI.getPath());
+					for(IComponentType componentType : componentTypeSet) {
+						line.append(COMPONENTLIST_DELIM);
+						line.append(" ");
+						line.append(componentType.getID());
+					}
+					writer.write(line.toString());
+				}
+			}
+		}
+	}
+	
+	public void readComponentListCache(URL componentListCache) throws IOException {
+		try(BufferedReader in=new BufferedReader(new InputStreamReader(componentListCache.openStream()))) {
+			String actLine="";
+			componentTypeIDToJarName.clear();
+			while ( (actLine = in.readLine()) != null)
+			{
+				StringTokenizer tokenizer=new StringTokenizer(actLine, COMPONENTLIST_DELIM);
+				if(tokenizer.countTokens()>=2) {
+					String jarName=tokenizer.nextToken().trim();
+					while(tokenizer.hasMoreTokens()) {
+						componentTypeIDToJarName.put(tokenizer.nextToken().trim(), jarName);
+					}
+				}
+			}			
+		}
+	}
+
 	public void uninstall() 
 	{
 			Bundle[] bundles = bundleContext.getBundles();
