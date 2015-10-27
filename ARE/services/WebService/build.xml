@@ -55,7 +55,7 @@
   </target>
 
   <target name="compile" depends="init" description="compile the source ">
-    <javac  includeantruntime="false" srcdir="${src.java}" destdir="${build}"  verbose="true" debug="${debug}" 
+    <javac target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build}"  verbose="true" debug="${debug}" 
            classpath="${classpath}"> <classpath refid="asterics.classpath"/>
      </javac>
   </target>
@@ -69,4 +69,6 @@
           tofile="${runtime}/asterics.${component.id}.jar"/>
   </target>
 
+	<import file="../../imported.xml"/>
+    <include file="../../included.xml"/>
 </project>

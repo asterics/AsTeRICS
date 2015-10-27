@@ -47,5 +47,11 @@
           <fileset dir="." includes="*/build.xml"/>
         </subant>
     </target>
+	
+	<target name="copyLicensesAll">
+        <subant target="copyLicenses">
+          <fileset dir="." includes="*/build.xml"/>
+        </subant>
+	</target>
 
 </project>

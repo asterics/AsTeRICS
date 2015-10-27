@@ -21,7 +21,7 @@
     <property name="resources" location="src/main/resources"/>
 	<property name="src.tests" location="src/test/java" />
 	<property name="reports.tests" location="reports-junit"/>
-
+	
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
@@ -30,7 +30,7 @@
   </target>
 
   <target name="compile" depends="init" description="compile the source ">
-    <javac  includeantruntime="false" srcdir="${src.java}" destdir="${build}" verbose="true" debug="${debug}"   
+    <javac target="${javac.target}" includeantruntime="false" srcdir="${src.java}" destdir="${build}" verbose="true" debug="${debug}"   
            classpath="${classpath}"> <classpath refid="asterics.classpath"/>
      </javac>
   </target>
@@ -77,5 +77,6 @@
 		
 	</target>
 	
-	
+	<import file="../imported.xml"/>
+<include file="../included.xml"/>	
 </project>
