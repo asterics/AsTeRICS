@@ -44,8 +44,8 @@ public class ModelInspector {
 	BundleManager bundleManager=null;
 	
 	public ModelInspector() throws IOException, ParseException {
-		ResourceRegistry.setOSGIMode(false);
-		ResourceRegistry.setAREBaseURI(new File("../bin/ARE").toURI());
+		ResourceRegistry.getInstance().setOSGIMode(false);
+		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI());
 		
 		Path bundleDescriptorSchemaURL = Paths.get("middleware/src/main/resources/schemas/bundle_model.xsd");
 		Path deploymentDescriptorSchemaURL = Paths.get("middleware/src/main/resources/schemas/deployment_model.xsd"); 
@@ -85,7 +85,7 @@ public class ModelInspector {
 	public List<URI> getComponentJarURIListOfModel(IRuntimeModel model) {
 		List<URI> modelComponentJarList=new ArrayList<URI>();
 		for(IComponentInstance compInstance : model.getComponentInstances()) {
-			URI absoluteURI=ResourceRegistry.toAbsolute(bundleManager.getJarNameFromComponentTypeId(compInstance.getComponentTypeID()));
+			URI absoluteURI=ResourceRegistry.getInstance().toAbsolute(bundleManager.getJarNameFromComponentTypeId(compInstance.getComponentTypeID()));
 			modelComponentJarList.add(absoluteURI);
 		}
 		return modelComponentJarList;

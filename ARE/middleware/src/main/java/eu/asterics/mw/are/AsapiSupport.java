@@ -1924,7 +1924,7 @@ public class AsapiSupport
 					
 					//try{
 					synchronized (this){
-						java.net.URI uri=ResourceRegistry.instance.getResource(filename,RES_TYPE.MODEL);
+						java.net.URI uri=ResourceRegistry.getInstance().getResource(filename,RES_TYPE.MODEL);
 
 						DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 						DocumentBuilder builder = factory.newDocumentBuilder();

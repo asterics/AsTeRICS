@@ -134,7 +134,7 @@ public class ComponentRepository
 		if (res==null)
 		{
 			// System.out.println("*** Requesting installation of component " +cTypeID);
-			if(ResourceRegistry.isOSGIMode()) {
+			if(ResourceRegistry.getInstance().isOSGIMode()) {
 				DeploymentManager.instance.getBundleManager().install_single(componentTypeID);
 			}
 		}

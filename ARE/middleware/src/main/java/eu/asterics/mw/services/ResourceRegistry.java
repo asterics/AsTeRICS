@@ -45,7 +45,7 @@ import java.util.*;
  */
 
 public class ResourceRegistry {
-	public static ResourceRegistry instance=new ResourceRegistry();
+	private static ResourceRegistry instance=new ResourceRegistry();
 	// todo replace with ComponentRepository
 	public static final String MODELS_FOLDER = "models";
 	public static final String DATA_FOLDER = "data";
@@ -64,10 +64,17 @@ public class ResourceRegistry {
 	public enum RES_TYPE {
 		ANY,
 		MODEL,
-		DATA
+		DATA,
+		JAR,
+		PROFILE,
+		STORAGE		
 	};
 	
-	public ResourceRegistry getInstance() {
+	/**
+	 * Return the instance of the ResourceRegistry.
+	 * @return
+	 */
+	public static ResourceRegistry getInstance() {
 		return instance;
 	}
 	
@@ -123,7 +130,7 @@ public class ResourceRegistry {
 	 * Also the jars of the ARE and the plugins are expected in that path.
 	 * @param areBaseURI
 	 */
-	public static void setAREBaseURI(URI areBaseURI) {
+	public void setAREBaseURI(URI areBaseURI) {
 		ARE_BASE_URI=areBaseURI;
 	}
 	
@@ -133,7 +140,7 @@ public class ResourceRegistry {
 	 * The default base URI is the location of the ARE.jar file. It can be changed by the property eu.asterics.ARE.baseURI or by using the method {@link setAREBaseURI}.
 	 * @return
 	 */
-	public static URI getAREBaseURI() {		
+	public URI getAREBaseURI() {		
 		return ARE_BASE_URI;		
 	}
 
@@ -142,8 +149,17 @@ public class ResourceRegistry {
 	 * @param absolutePath
 	 * @return
 	 */
-	public static URI toRelative(String absolutePath) {
-		return getAREBaseURI().relativize(URI.create(absolutePath)); 
+	public URI toRelative(String absolutePath) {
+		return toRelative(URI.create(absolutePath)); 
+	}
+	
+	/**
+	 * Converts the given absolutePath URI to a path relative to the ARE base URI {@link getAREBaseURI}.
+	 * @param absolutePath
+	 * @return
+	 */
+	public URI toRelative(URI absolutePath) {
+		return getAREBaseURI().relativize(absolutePath);
 	}
 
 	/**
@@ -151,8 +167,27 @@ public class ResourceRegistry {
 	 * @param relativePath
 	 * @return
 	 */
-	public static URI toAbsolute(String relativePath) {
+	public URI toAbsolute(String relativePath) {
 		return getAREBaseURI().resolve(relativePath);
+	}
+	
+	/**
+	 * Converts the given relativePath URI to an absolute one by adding ARE base URI {@link getAREBaseURI}.
+	 * @param relativePath
+	 * @return
+	 */
+	public URI toAbsolute(URI relativePath) {
+		return getAREBaseURI().resolve(relativePath);
+	}
+	
+	/**
+	 * Returns a File object representing the given URI if possible.
+	 * This only works if the given URI is a relative path or is a path with a file scheme (starting with: file://)
+	 * @param uri
+	 * @return
+	 */
+	public File toFile(URI uri) {
+		return Paths.get(uri).toFile();
 	}
 	
 	/**
@@ -160,7 +195,7 @@ public class ResourceRegistry {
 	 * 
 	 * @return false: The ARE and involved classes are not running within an OSGi context. Which can be the case if the ARE is used as a library.
 	 */
-	public static boolean isOSGIMode() {
+	public boolean isOSGIMode() {
 		return OSGI_MODE;
 	}
 	
@@ -168,7 +203,7 @@ public class ResourceRegistry {
 	 * Sets the value for the flag OSGI_MODE to the given value of OSGIMode;
 	 * @param OSGIMode
 	 */
-	public static void setOSGIMode(boolean OSGIMode) {
+	public void setOSGIMode(boolean OSGIMode) {
 		OSGI_MODE=OSGIMode;
 	}
 	
@@ -192,12 +227,18 @@ public class ResourceRegistry {
 		}
 		return componentJarURIs;
 	}
-	
-	private File getAREBaseURIFile() {
+	 
+	/**
+	 * Returns the ARE base URI as a File object, if possible.
+	 * @return
+	 */
+	File getAREBaseURIFile() {
+		/*
 		if(getAREBaseURI().getScheme().startsWith("file")) {
 			return new File(getAREBaseURI());
-		}
-		return null;
+		}*/
+		return toFile(getAREBaseURI());
+		//return null;
 	}
 
 }

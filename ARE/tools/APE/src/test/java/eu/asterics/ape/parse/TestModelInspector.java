@@ -88,7 +88,9 @@ public class TestModelInspector {
 	@Test
 	public void testGenerateComponentListCache() {
 		try {
-			modelInspector.generateComponentListCache(new File("loader_componentlist.ini"));
+			File componentListCache=new File("loader_componentlist.ini");
+			modelInspector.generateComponentListCache(componentListCache);
+			System.out.println("Componentlist cache created: "+componentListCache);
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			fail(e.getMessage());

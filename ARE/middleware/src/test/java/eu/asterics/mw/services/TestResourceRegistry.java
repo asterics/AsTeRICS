@@ -33,14 +33,14 @@ public class TestResourceRegistry {
 
 	@Test
 	public void testGetAREBaseURI() {
-		System.out.println("baseURI: "+ResourceRegistry.getAREBaseURI());		
+		System.out.println("baseURI: "+ResourceRegistry.getInstance().getAREBaseURI());		
 	}
 
 	@Test
 	public void testRelativeToAbsoluteToRelative() {
 		URI relative=URI.create(ResourceRegistry.MODELS_FOLDER);
-		URI absolute=ResourceRegistry.toAbsolute(ResourceRegistry.MODELS_FOLDER);
-		URI convertedRelative=ResourceRegistry.toRelative(absolute.toString());
+		URI absolute=ResourceRegistry.getInstance().toAbsolute(ResourceRegistry.MODELS_FOLDER);
+		URI convertedRelative=ResourceRegistry.getInstance().toRelative(absolute.toString());
 		if(!relative.equals(convertedRelative)) {
 			fail("Testing URI toAbsolute and back toRelative failed: original <"+relative+">, convertedRelative <"+convertedRelative+">");
 		}
@@ -56,7 +56,7 @@ public class TestResourceRegistry {
 		URI newURI;
 		newURI=new File("C:\\Program Files (x86)\\AsTeRICS\\ARE").toURI();
 		System.out.println("Setting new AREBaseURI to <"+newURI.getPath()+">");
-		ResourceRegistry.setAREBaseURI(newURI);
+		ResourceRegistry.getInstance().setAREBaseURI(newURI);
 		
 		//Test getting and relative to absolute again
 		testGetAREBaseURI();
@@ -77,9 +77,14 @@ public class TestResourceRegistry {
 */
 	@Test
 	public void testGetComponentJarList() {
-		ResourceRegistry.setAREBaseURI(new File("../bin/ARE").toURI());
-		for(URI componentJarURI : ResourceRegistry.instance.getComponentJarList()) {
+		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI());
+		for(URI componentJarURI : ResourceRegistry.getInstance().getComponentJarList()) {
 			System.out.println("JarURI: "+componentJarURI);
 		}
+	}
+	
+	@Test
+	public void testGetAREBaseURIFile() {
+		System.out.println("getAREBaseURIFile(): "+ResourceRegistry.getInstance().getAREBaseURIFile());
 	}
 }

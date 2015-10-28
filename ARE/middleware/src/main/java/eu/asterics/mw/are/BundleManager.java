@@ -552,7 +552,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 	}
 	
 	public void createComponentListCache() throws MalformedURLException, IOException, ParseException {
-		File componentList=new File(ResourceRegistry.toAbsolute(LOADER_COMPONENTLIST_LOCATION));
+		File componentList=new File(ResourceRegistry.getInstance().toAbsolute(LOADER_COMPONENTLIST_LOCATION));
 		if(componentList.isFile() && componentList.exists()) {
 			readComponentListCache(componentList.toURI().toURL());
 		} else {
@@ -562,14 +562,14 @@ public class BundleManager implements BundleListener, FrameworkListener
 	
 	public void generateComponentListCache(File componentList) throws MalformedURLException, IOException, ParseException {
 		//The component list does not exist, so we create it.
-		List<URI> componentJarURIs=ResourceRegistry.instance.getComponentJarList();
+		List<URI> componentJarURIs=ResourceRegistry.getInstance().getComponentJarList();
 
 		try(BufferedWriter writer=new BufferedWriter(new FileWriter(componentList))) {
 			for(URI componentJarURI : componentJarURIs) {
 				String inputFilePath = "jar:file://" + componentJarURI.getPath() + "!/bundle_descriptor.xml" ;
 
 				URL bundleDescriptor=new URL(inputFilePath);
-				URI relativeURI=ResourceRegistry.toRelative(componentJarURI.toString());
+				URI relativeURI=ResourceRegistry.getInstance().toRelative(componentJarURI);
 
 				Set<IComponentType> componentTypeSet=DefaultBundleModelParser.instance.parseModel(bundleDescriptor.openStream());
 				if(componentTypeSet.size()>=1) {
