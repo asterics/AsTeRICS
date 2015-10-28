@@ -13,5 +13,4 @@
 			<fileset dir="." includes="*.jar"/>
 		</delete>
     </target>
-	
 </project>

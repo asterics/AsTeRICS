@@ -50,7 +50,10 @@
 	
 	<target name="copyLicensesAll">
         <subant target="copyLicenses">
-          <fileset dir="." includes="*/build.xml"/>
+          <fileset dir="." includes="components/*/build.xml"/>
+          <fileset dir="." includes="middleware/build.xml"/>
+          <fileset dir="." includes="services/*/build.xml"/>
+          <fileset dir="." includes="tools/*/build.xml"/>
         </subant>
 	</target>
 

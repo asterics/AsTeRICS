@@ -4,7 +4,7 @@
 
     <target name="copyLicenses" >
 		<mkdir dir="${runtime}/LICENSE"/>
-		<copy todir="${runtime}/LICENSE">
+		<copy todir="${runtime}/LICENSE" failonerror="false">
 		    <fileset dir="LICENSE" includes="**/*.txt"/>
 		    <globmapper from="*" to="${license.prefix}-*"/>
 		</copy>	
