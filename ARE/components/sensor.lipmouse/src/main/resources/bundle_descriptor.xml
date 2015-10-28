@@ -27,6 +27,12 @@
 			<eventListenerPort id="calibration">
 				<description>for calibrating the mouse</description>
 			</eventListenerPort>
+			<eventListenerPort id="start">
+				<description>start lipmouse</description>
+			</eventListenerPort>
+			<eventListenerPort id="stop">
+				<description>stop lipmouse</description>
+			</eventListenerPort>
 			<eventListenerPort id="setLed1">
 				<description>switch on led1</description>
 			</eventListenerPort>
@@ -42,7 +48,7 @@
 			<eventListenerPort id="setLed3">
 				<description>switch on led3</description>
 			</eventListenerPort>
-			<eventListenerPort id="clearLed3">
+			<eventListenerPort id="clearLed3"> 
 				<description>switch off led3</description>
 			</eventListenerPort>
 
