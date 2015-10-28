@@ -336,6 +336,14 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 		int mcount=0;
 		boolean waitForKey=true;
 	
+		if (mode==MODE_HOLD)
+			System.out.println("holding Key ");
+		else if (mode==MODE_PRESS)
+			System.out.println("press Key ");
+		else if (mode==MODE_RELEASE)
+			System.out.println("release Key ");
+		
+		
 		while ((index<keyCodeArray.size()) && (waitForKey))
 		{
 			actcode= keyCodeArray.get(index);
@@ -504,7 +512,9 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
    @Override
    public void pause()
    {
+      sendKeyCode(actSendPos,MODE_RELEASE);			
       super.pause();
+
    }
   
   /**
@@ -522,6 +532,7 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
   @Override
     public void stop()
     {
+		sendKeyCode(actSendPos,MODE_RELEASE);			
         super.stop();
         AstericsErrorHandling.instance.reportInfo(this, "Keyboard Instance stopped");
     }
