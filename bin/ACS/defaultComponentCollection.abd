@@ -4752,6 +4752,37 @@
     </componentType>
 
 
+ <componentType canonical_name="eu.asterics.component.processor.comport.ComPortInstance" id="asterics.ComPort">
+        <type subtype="Communication">processor</type>
+        <singleton>false</singleton>
+        <description>interfaces a (virtual) COM Port for data send/receive  operations</description>
+        <ports>
+			<inputPort id="send">
+				<description>data to be sent to COM port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="received">
+				<description>data received from COM port</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property description="used COM port name" name="ComPort" type="string" value="COM4"/>
+			<property description="baud rate for the COM port communication" name="BaudRate" type="integer" value="115200"/>
+			<property combobox="string" description="data type for incoming (received) values from COM port" name="ReceivedDataType" type="integer" value="0"/>
+			<property combobox="string//string with added newline character" description="data type for sending values to COM port" name="SendDataType" type="integer" value="1"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="com.starlab.component.processor.computebandpower.ComputeBandPowerInstance" id="asterics.ComputeBandpower">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>true</singleton>
