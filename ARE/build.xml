@@ -1,6 +1,9 @@
 <project name="asterics.runtime" default="buildComponents" basedir=".">
 
   <property name="debug" value="true"/>    
+  <property name="dist" location=".."/>
+  <property name="runtime" location="../bin/ARE"/>
+  <property name="osgi" location="osgi"/>
 
 
 	<target name="cleanProfile">
@@ -48,7 +51,7 @@
         </subant>
     </target>
 	
-	<target name="copyLicensesAll">
+	<target name="copyLicensesAll" depends="cleanLicenses">
         <subant target="copyLicenses">
           <fileset dir="." includes="components/*/build.xml"/>
           <fileset dir="." includes="middleware/build.xml"/>
@@ -57,4 +60,7 @@
         </subant>
 	</target>
 
+	<target name="cleanLicenses">
+		<delete dir="${runtime}/LICENSE"/>
+	</target>
 </project>
