@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -257,10 +258,19 @@ public class BundleManager implements BundleListener, FrameworkListener
 		return checkForAstericsMetadata(url,bundle.getSymbolicName());
 	}
 
+	/**
+	 * Checks if the specified bundle contains ASTERICS component(s) or not. The
+	 * test is based on checking if the {@link #DEFAULT_BUNDLE_DESCRIPTOR_URL}
+	 * file exists or not (in the root of the enclosing JAR). 
+	 * 
+	 * @param bundleDescriptorUrl the whole url to the bundle descriptor within the jar.
+	 * @param symbolicName a symbolic name (e.g.) component name used for verbose logging.
+	 * @return
+	 */
 	public boolean checkForAstericsMetadata(URL bundleDescriptorUrl, String symbolicName) {
-		try
+		try(InputStream bundleDescriptorInputStream=bundleDescriptorUrl.openStream())
 		{
-        	return modelValidator.isValidBundleDescriptor(bundleDescriptorUrl.openStream());
+        	return checkForAstericsMetadata(bundleDescriptorInputStream, symbolicName);
 		}
 		catch (IOException ioe)
 		{
@@ -279,7 +289,24 @@ public class BundleManager implements BundleListener, FrameworkListener
 					npe.getMessage());
 		}
 
-		return false;		
+		return false;						
+	}
+	
+	private boolean checkForAstericsMetadata(InputStream bundleDescriptorInputStream, String symbolicName) {
+		try
+		{
+        	return modelValidator.isValidBundleDescriptor(bundleDescriptorInputStream);
+		}
+		catch (Exception npe)
+		{
+			logger.warning(getClass().getName()+
+					".checkForAstericsMetadata: error in opening URL "+ 
+					DEFAULT_BUNDLE_DESCRIPTOR_URL +", bundle "+ 
+					symbolicName+" -> \n"+
+					npe.getMessage());
+		}
+
+		return false;				
 	}
 	
 	private Map <IComponentType, ServiceRegistration> serviceRegistrations
@@ -562,7 +589,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 	
 	public void generateComponentListCache(File componentList) throws MalformedURLException, IOException, ParseException {
 		//The component list does not exist, so we create it.
-		List<URI> componentJarURIs=ResourceRegistry.getInstance().getComponentJarList();
+		List<URI> componentJarURIs=ResourceRegistry.getInstance().getComponentJarList(true);
 
 		try(BufferedWriter writer=new BufferedWriter(new FileWriter(componentList))) {
 			for(URI componentJarURI : componentJarURIs) {
@@ -602,6 +629,43 @@ public class BundleManager implements BundleListener, FrameworkListener
 				}
 			}			
 		}
+	}
+
+	/**
+	 * Checks if the specified bundle URI contains an OSGi service. The
+	 * test is based on checking if the {@link #DEFAULT_BUNDLE_DESCRIPTOR_URL}
+	 * file does not exist and if a MANIFEST entry 'Bundle-Name' can be found. 
+	 * @param serviceBundleURI The URI to the jar
+	 * @return
+	 */
+	public boolean checkForServiceBundle(URI serviceBundleURI) {
+		try {		
+			String inputFilePath = "jar:file://" + serviceBundleURI.getPath() + "!/bundle_descriptor.xml" ;
+
+			if(checkForAstericsMetadata(new URL(inputFilePath), serviceBundleURI.getPath())) {
+				//if it has a bundle_descirptor it can only be a component (plugin).
+				return false;
+			}
+
+			inputFilePath = "jar:file://" + serviceBundleURI.getPath() + "!/META-INF/MANIFEST.MF" ;
+			URL serviceBundleURL=new URL(inputFilePath);
+			
+		    try(BufferedReader in=new BufferedReader(new InputStreamReader(serviceBundleURL.openStream()))) {
+		    	String actLine="";				
+				while ( (actLine = in.readLine()) != null) {
+					//Bundle-Name is specific for OSGi bundles. But actually we don't know if it as an OSGi service or just a plugin but by check the bundle_descriptor above
+					//we can assume that it is a service.
+					if(actLine.startsWith("Bundle-Name:")) {
+						return true;
+					}
+				}
+		    } catch (IOException e) {		    	
+			}
+		    //If we get here, either an exception was thrown, so the FILE is not contained or we could not find OSGi MANIFEST info.
+			return false;
+		} catch (MalformedURLException e) {
+		}
+		return false;
 	}
 
 	public void uninstall() 
