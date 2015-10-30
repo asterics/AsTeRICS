@@ -8,6 +8,9 @@ import java.net.*;
 import java.nio.file.Paths;
 import java.util.*;
 
+import eu.asterics.mw.are.BundleManager;
+import eu.asterics.mw.are.DeploymentManager;
+
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -35,9 +38,9 @@ import java.util.*;
 
 
 /**
- * This class provides is the central point to find and fetch resources used by the ARE middleware, osgi services and osgi plugins.
- * The idea is to generically implement the fetching of resources to enable the same approach for the whole AsTeRICS. This way all plugins will be able to also support
- * URI schemes (http, jar,...).
+ * This class is the central point to find and fetch resources used by the ARE middleware, osgi services and osgi plugins.
+ * The idea is to generically implement the fetching of resources to enable the same approach for the whole AsTeRICS framework. This way all plugins, services and other classes will be able to also support
+ * URI schemes (e.g. http, jar,...). Furthermore base URIs can be reconfigured depending on platform specific or usecase specific requirements (e.g. readonly jar respository from a website and writable local folder for caching and model creation).
  * 
  *         Author: martin.deinhofer@technikum-wien.at
  *         Date: Oct 11, 2015
@@ -51,12 +54,23 @@ public class ResourceRegistry {
 	public static final String DATA_FOLDER = "data";
 	public static final String PROFILE_FOLDER = "profile";
 	public static final String STORAGE_FOLDER = "storage";
+	public static final String LICENSES_FOLDER = "LICENSE";
+	
 	private static URI ARE_BASE_URI = null;
+	private static URI ARE_WRITABLE_URI=null;
+	
 	private static boolean OSGI_MODE=true;
 	
 	static {
 		ARE_BASE_URI=URI.create(System.getProperty("eu.asterics.ARE.baseURI", ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toString()));
-		System.out.println("Setting ARE base URI to <"+ARE_BASE_URI+">");		
+		System.out.println("Setting ARE base URI to <"+ARE_BASE_URI+">");
+		
+		String areWritableURIString=System.getProperty("eu.asterics.ARE.writableURI");
+		if(areWritableURIString!=null) {
+			ARE_WRITABLE_URI=URI.create(areWritableURIString);
+			System.out.println("Setting ARE writable URI to <"+ARE_WRITABLE_URI+">");
+		}
+		
 		OSGI_MODE=Boolean.parseBoolean(System.getProperty("eu.asterics.ARE.OSGI_MODE","true"));
 		System.out.println("Setting OSGI_MODE to <"+OSGI_MODE+">");		
 	}
@@ -67,7 +81,8 @@ public class ResourceRegistry {
 		DATA,
 		JAR,
 		PROFILE,
-		STORAGE		
+		STORAGE,
+		LICENSE
 	};
 	
 	/**
@@ -131,6 +146,7 @@ public class ResourceRegistry {
 	 * @param areBaseURI
 	 */
 	public void setAREBaseURI(URI areBaseURI) {
+		System.out.println("Setting ARE base URI to: "+areBaseURI);
 		ARE_BASE_URI=areBaseURI;
 	}
 	
@@ -142,6 +158,22 @@ public class ResourceRegistry {
 	 */
 	public URI getAREBaseURI() {		
 		return ARE_BASE_URI;		
+	}
+	
+	/**
+	 * Sets the location for writable (File) access. This is needed for temporary storage like osgi cache and log files but also for models or data files that were deployed.  
+	 * @param writableURI
+	 */
+	public void setAREWritableURI(URI writableURI) {
+		ARE_WRITABLE_URI=writableURI;
+	}
+	
+	/**
+	 * Returns the URI for writable storage.
+	 * @return
+	 */
+	public URI getAREWritableURI() {
+		return ARE_WRITABLE_URI != null ? ARE_WRITABLE_URI : getAREBaseURI();
 	}
 
 	/**
@@ -209,25 +241,141 @@ public class ResourceRegistry {
 	
 	/**
 	 * Returns a list of component jarname URIs. The URIs could be a local file but also an HTTP URL.
+	 * 
+	 * @param relative: true: Only return name without absolute path.
 	 * @return
 	 */
-	public List<URI> getComponentJarList() {
-		//get asterics bundles
-		File AREBaseFile=getAREBaseURIFile();
-		File [] componentJars = AREBaseFile.listFiles(new FilenameFilter() {
+	public List<URI> getComponentJarList(boolean relative) {
+		//get asterics component bundles
+		List<URI> URIs = ComponentUtils.findFiles(getAREBaseURI(), relative, 1, new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {
 		    	return (name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor")) 
-		    			&& name.endsWith("jar");
+		    			&& name.endsWith(".jar");
 		    }
 		});
-		List<URI> componentJarURIs=new ArrayList<URI>(componentJars.length);
-		for(int i=0;i<componentJars.length;i++) {
-			componentJarURIs.add(componentJars[i].toURI());
-		}
-		return componentJarURIs;
+		return URIs;
+	}
+	
+	/**
+	 * Returns a list of license file URIs. The URIs could be a local file but also an HTTP URL.
+	 * 
+	 * @param relative true: Only return name without absolute path. 
+	 * @return
+	 */
+	public List<URI> getLicensesList(boolean relative) {
+		//get asterics involved LICENSES
+		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(LICENSES_FOLDER), relative, 1, new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {
+		    	return name.endsWith(".txt");
+		    }
+		});
+		return URIs;
 	}
 	 
+	/**
+	 * Returns a list of URIs asterics service bundles. The URIs could be a local file but also an HTTP URL.
+	 * 
+	 * @param relative true: Only return name without absolute path. 
+	 * @return
+	 */
+	public List<URI> getServicesJarList(boolean relative) {
+		//get asterics/osgi service bundles
+		List<URI> URIs = ComponentUtils.findFiles(getAREBaseURI(), relative, 1, new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {		    	
+		    	//Should we include the ARE here??
+		    	return !(name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor")) 
+		    			&& name.endsWith(".jar") 
+		    			&& DeploymentManager.instance.getBundleManager().checkForServiceBundle(new File(dir,name).toURI());		    			
+		    }
+		});
+		return URIs;		
+	}
+	
+	/**
+	 * Returns the URI of the ARE jar. The URI could be a local file but also an HTTP URL.
+	 * 
+	 * @param relative true: Only return name without absolute path.
+	 * @return
+	 */
+	public URI getAREJarURI(boolean relative) {
+		return relative ? URI.create("asterics.ARE.jar") : toAbsolute("asterics.ARE.jar");
+	}
+	
+	/**
+	 * Returns a list of URIs jars other than component, service or ARE. The URIs could be a local file but also an HTTP URL.
+	 * 
+	 * @param relative true: Only return name without absolute path. 
+	 * @return
+	 */
+	public List<URI> getOtherJarList(boolean relative) {
+		//get asterics/osgi service bundles
+		List<URI> URIs = ComponentUtils.findFiles(getAREBaseURI(), relative, 1, new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {		    	
+		    	//Should we include the ARE here??
+		    	return !(name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor") || name.startsWith("asterics.mw") || name.startsWith("asterics.ARE") || name.startsWith("asterics.proxy")) 
+		    			&& name.endsWith(".jar") 
+		    			&& !DeploymentManager.instance.getBundleManager().checkForServiceBundle(new File(dir,name).toURI());		    			
+		    }
+		});
+		return URIs;		
+	}
+	
+	/**
+	 * Returns a list of URIs all jars. The URIs could be a local file but also an HTTP URL.
+	 * 
+	 * @param relative true: Only return name without absolute path.  
+	 * @return
+	 */
+	public List<URI> getAllJarList(boolean relative) {
+		List<URI> URIs = ComponentUtils.findFiles(getAREBaseURI(), relative, 1, new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {
+		    	return name.endsWith(".jar");
+		    }
+		});
+		return URIs;
+	}
+	
+	/**
+	 * Returns a list of URIs of all data resources available for plugins. The URIs could be a local file but also an HTTP URL.
+	 * 
+	 * @param relative true: Only return name without absolute path.  
+	 * @return
+	 */
+	public List<URI> getDataList(boolean relative) {
+		//get asterics involved data files
+		//Not sure how deep we should search, but 10 seems to be enough
+		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(DATA_FOLDER), relative,10, new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {
+		    	return true;
+		    }
+		});
+		return URIs;
+	}
+	
+	/**
+	 * Returns a list of URIs of models. The URIs could be a local file but also an HTTP URL.
+	 *   
+	 * @param relative true: Only return name without absolute path.
+	 * @return
+	 */
+	public List<URI> getModelList(boolean relative) {
+		//get asterics involved model files
+		//Not sure how deep we should search, but 10 seems to be enough
+		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(MODELS_FOLDER), relative,10, new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {
+		    	return name.endsWith(".acs");
+		    }
+		});
+		return URIs;
+	}
+	
 	/**
 	 * Returns the ARE base URI as a File object, if possible.
 	 * @return
@@ -240,5 +388,4 @@ public class ResourceRegistry {
 		return toFile(getAREBaseURI());
 		//return null;
 	}
-
 }
