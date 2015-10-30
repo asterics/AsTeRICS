@@ -578,6 +578,15 @@ public class BundleManager implements BundleListener, FrameworkListener
 		}
 	}
 	
+	/**
+	 * Creates the file loader_componentlist.ini, which is actually a cache and maps Asterics components to the associated component jar. 
+	 * This is necessary because, unlike in OSGi normally, there is no 1:1 mapping between a component and the jar name. In Asterics a several components may be bundled
+	 * within one jar file.
+	 * This method is a wrapper for @link {@link BundleManager.generateComponentListCache} and only generates the cache if it does not already exist.
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void createComponentListCache() throws MalformedURLException, IOException, ParseException {
 		File componentList=new File(ResourceRegistry.getInstance().toAbsolute(LOADER_COMPONENTLIST_LOCATION));
 		if(componentList.isFile() && componentList.exists()) {
@@ -587,9 +596,19 @@ public class BundleManager implements BundleListener, FrameworkListener
 		}		
 	}
 	
+	/**
+	 * Actually generates the loader_componentlist.ini file, which is actually a cache and maps Asterics components to the associated component jar. 
+	 * This is necessary because, unlike in OSGi normally, there is no 1:1 mapping between a component and the jar name. In Asterics a several components may be bundled
+	 * within one jar file. 
+	 * 
+	 * @param componentList
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void generateComponentListCache(File componentList) throws MalformedURLException, IOException, ParseException {
 		//The component list does not exist, so we create it.
-		List<URI> componentJarURIs=ResourceRegistry.getInstance().getComponentJarList(true);
+		List<URI> componentJarURIs=ResourceRegistry.getInstance().getComponentJarList(false);
 
 		try(BufferedWriter writer=new BufferedWriter(new FileWriter(componentList))) {
 			for(URI componentJarURI : componentJarURIs) {
@@ -614,6 +633,11 @@ public class BundleManager implements BundleListener, FrameworkListener
 		}
 	}
 	
+	/**
+	 * Reads the loader_componentlist.ini file and initializes an internal Map to quickly find the jarname of a component.
+	 * @param componentListCache
+	 * @throws IOException
+	 */
 	public void readComponentListCache(URL componentListCache) throws IOException {
 		try(BufferedReader in=new BufferedReader(new InputStreamReader(componentListCache.openStream()))) {
 			String actLine="";
