@@ -42,7 +42,7 @@ public class ComponentUtils {
 	 }
 	
 	/**
-	 * Returns a recursive list of File objects starting with the directory path given in start.
+	 * Returns a recursive list of URI objects starting with the directory path given in start.
 	 * 
 	 * start: The directory path to start with.
 	 * relative: true: paths relative to start are returned.
