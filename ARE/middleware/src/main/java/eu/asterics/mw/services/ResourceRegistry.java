@@ -237,6 +237,7 @@ public class ResourceRegistry {
 	 */
 	public void setOSGIMode(boolean OSGIMode) {
 		OSGI_MODE=OSGIMode;
+		System.out.println("Setting OSGI_MODE to <"+OSGI_MODE+">");		
 	}
 	
 	/**
