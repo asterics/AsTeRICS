@@ -41,12 +41,15 @@ import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.model.deployment.IComponentInstance;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 
 public class TestModelInspector {
 	ModelInspector modelInspector;
 
 	@Before
 	public void setUp() throws Exception {
+		ResourceRegistry.getInstance().setOSGIMode(false);
+		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI());	
 		modelInspector=new ModelInspector();
 	}
 
@@ -74,8 +77,8 @@ public class TestModelInspector {
 				System.out.println("]");				
 			}
 			
-			List<URI> modelComponentJarList=modelInspector.getComponentJarURIListOfModel(runtimeModel);
-			for(URI componentJarURI : modelComponentJarList) {
+			Set<URI> modelComponentJars=modelInspector.getComponentJarURIsOfModel(runtimeModel);
+			for(URI componentJarURI : modelComponentJars) {
 				System.out.println(componentJarURI);
 			}
 		} catch (ParseException | IOException | ParserConfigurationException | SAXException | TransformerException e) {
