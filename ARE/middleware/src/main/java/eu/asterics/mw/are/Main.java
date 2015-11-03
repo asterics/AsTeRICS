@@ -17,8 +17,13 @@ import org.osgi.framework.BundleContext;
 import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -72,106 +77,110 @@ public class Main implements BundleActivator
 	public static BundleContext getAREContext (){
 		return areContext;
 	}
+	
 	public void start(final BundleContext context) throws Exception
 	{
-		try {
-
-			logger = AstericsErrorHandling.instance.getLogger();
-			// Check if not 32bit
-			String bits = System.getProperty("sun.arch.data.model");
-			if (OSUtils.isWindows() && bits.compareTo("64") == 0) {
-				logger.severe("JVM "
-						+ bits
-						+ " bit detected! ARE needs a 32bit JVM \n ARE will shutdown");
-				long start = System.currentTimeMillis();
-				long end = start + 5 * 1000; // 60 seconds * 1000 ms/sec
-				while (System.currentTimeMillis() < end) {
-					;
-				}
-				System.exit(0);
+		logger = AstericsErrorHandling.instance.getLogger();
+		// Check if not 32bit
+		String bits = System.getProperty("sun.arch.data.model");
+		if (OSUtils.isWindows() && bits.compareTo("64") == 0) {
+			logger.severe("JVM "
+					+ bits
+					+ " bit detected! ARE needs a 32bit JVM \n ARE will shutdown");
+			long start = System.currentTimeMillis();
+			long end = start + 5 * 1000; // 60 seconds * 1000 ms/sec
+			while (System.currentTimeMillis() < end) {
+				;
 			}
-			logger.info("JVM " + bits + " bit detected");
-			final String startModel = context
-					.getProperty("eu.asterics.ARE.startModel");
-			logger.info("Property eu.asterics.ARE.startModel: " + startModel);
-
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						astericsGUI = new AstericsGUI(context);
-
-						astericsFrame = astericsGUI.getFrame();
-
-						DeploymentManager.instance.setGui(astericsGUI);
-
-						DeploymentManager.instance.setStatus(AREStatus.UNKNOWN);
-						AstericsErrorHandling.instance.setStatusObject(
-								AREStatus.UNKNOWN.toString(), "", "");
-						areContext = context;
-
-
-						bundleManager = new BundleManager(context);
-						context.addBundleListener(bundleManager);
-						context.addFrameworkListener(bundleManager);
-						bundleManager.start();
-						
-						DeploymentManager.instance
-								.setBundleManager(bundleManager);
-
-						DeploymentManager.instance.start(context);
-
-
-						// Create thread pools and eventually store back
-						// properties
-						AstericsThreadPool.getInstance();
-						AstericsModelExecutionThreadPool.getInstance();
-						AREProperties.instance.storeProperties();
-
-						DeploymentManager.instance.setStatus(AREStatus.OK);
-						AstericsErrorHandling.instance.setStatusObject(
-								AREStatus.OK.toString(), "", "");
-
-						/*
-						 * if(AREProperties.instance.checkProperty("iconify",
-						 * "1")) {
-						 * System.out.println("*** Main: set to SystemTray !!");
-						 * 
-						 * astericsGUI.setSystemTray();
-						 * astericsFrame.setVisible(false); } else {
-						 * System.out.println("*** Main: no SystemTray !!");
-						 * astericsFrame.setVisible(true);
-						 * astericsFrame.setState(JFrame.NORMAL); }
-						 */
-
-						astericsFrame.setVisible(true);
-
-						AsapiSupport as = new AsapiSupport();
-						// System.out.println("***  starting model !");
-						as.autostart(startModel);
-
-						Thread asapiServerThread = new Thread(new Activator());
-						asapiServerThread.start();
-
-						Thread udpThread = new Thread(new UDPThread());
-						udpThread.start();
-					} catch (Throwable e) {
-						String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
-						JOptionPane.showMessageDialog(null,
-								"The AsTeRICS Runtime Environment could not be initiated!"+reason
-								, "ARE startup error",
-								JOptionPane.ERROR_MESSAGE);
-						System.exit(0);
-					}
-				}
-			});
-		} catch (Throwable t) {
-			// custom title, error icon
-			JOptionPane.showMessageDialog(null,
-					"The AsTeRICS Runtime Environment could not be initiated!",
-					"ARE startup error", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
+		logger.info("JVM " + bits + " bit detected");
+		final String startModel = context
+				.getProperty("eu.asterics.ARE.startModel");
+		logger.info("Property eu.asterics.ARE.startModel: " + startModel);
 
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					astericsGUI = new AstericsGUI(context);
+
+					astericsFrame = astericsGUI.getFrame();
+
+					DeploymentManager.instance.setGui(astericsGUI);
+
+					DeploymentManager.instance.setStatus(AREStatus.UNKNOWN);
+					AstericsErrorHandling.instance.setStatusObject(
+							AREStatus.UNKNOWN.toString(), "", "");
+					areContext = context;
+
+
+					bundleManager = new BundleManager(context);
+					context.addBundleListener(bundleManager);
+					context.addFrameworkListener(bundleManager);
+					bundleManager.start();
+
+					DeploymentManager.instance
+					.setBundleManager(bundleManager);
+
+					DeploymentManager.instance.start(context);
+
+
+					// Create thread pools and eventually store back
+					// properties
+					AstericsThreadPool.getInstance();
+					AstericsModelExecutionThreadPool.getInstance();
+					AREProperties.instance.storeProperties();
+
+					DeploymentManager.instance.setStatus(AREStatus.OK);
+					AstericsErrorHandling.instance.setStatusObject(
+							AREStatus.OK.toString(), "", "");
+
+					/*
+					 * if(AREProperties.instance.checkProperty("iconify",
+					 * "1")) {
+					 * System.out.println("*** Main: set to SystemTray !!");
+					 * 
+					 * astericsGUI.setSystemTray();
+					 * astericsFrame.setVisible(false); } else {
+					 * System.out.println("*** Main: no SystemTray !!");
+					 * astericsFrame.setVisible(true);
+					 * astericsFrame.setState(JFrame.NORMAL); }
+					 */
+
+					astericsFrame.setVisible(true);
+
+					AsapiSupport as = new AsapiSupport();
+					// System.out.println("***  starting model !");
+					as.autostart(startModel);
+
+					Thread asapiServerThread = new Thread(new Activator());
+					asapiServerThread.start();
+
+					Thread udpThread = new Thread(new UDPThread());
+					udpThread.start();
+				} catch (Throwable e) {
+					String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
+					JOptionPane op = new JOptionPane ("The AsTeRICS Runtime Environment could not be initiated!"+reason,
+							JOptionPane.ERROR_MESSAGE);
+
+					//Show error dialog, but not modal to not risk a dead lock because of other modal error dialogs of components.
+					JDialog dialog = op.createDialog("ARE startup error");
+					dialog.setAlwaysOnTop(true);
+					dialog.setModal(false);
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+
+					//Schedule a shutdown after 10 seconds to prevent hanging ARE processes.
+					Executors.newScheduledThreadPool(1).schedule(new Runnable() {
+						@Override
+						public void run() {
+							System.exit(1);
+						}
+
+					}, 10, TimeUnit.SECONDS);
+				}
+			}
+		});
 	}
 
 
