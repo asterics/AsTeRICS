@@ -160,9 +160,15 @@ public class TestResourceRegistry {
 
 
 	@Test
-	public void testGetAREBaseURIFile() {
+	public void testGetAREBaseURIFile() throws URISyntaxException {
 		System.out.println("getAREBaseURIFile(): "+ResourceRegistry.getInstance().getAREBaseURIFile());
 	}
+	
+	@Test
+	public void testGetToPath() throws URISyntaxException {
+		System.out.println("getAREBaseURIPath(): "+ResourceRegistry.toPath(ResourceRegistry.getInstance().getAREBaseURI()));
+	}
+	
 	
 	/*
 	@Test

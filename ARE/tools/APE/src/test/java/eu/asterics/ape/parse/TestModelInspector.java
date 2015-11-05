@@ -37,6 +37,7 @@ import org.osgi.framework.Version;
 import org.xml.sax.SAXException;
 
 import eu.asterics.mw.are.BundleManager;
+import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.model.deployment.IComponentInstance;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
@@ -58,7 +59,7 @@ public class TestModelInspector {
 	}
 
 	@Test
-	public void testParseModel() {
+	public void testParseModel() throws BundleManagementException {
 		
 		try {
 			Path testModel = Paths.get("tools/APE/src/test/resources/models/test_deployment_model.acs");
