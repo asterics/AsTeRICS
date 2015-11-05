@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.*;
+import java.nio.file.*;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -50,11 +51,12 @@ import eu.asterics.mw.are.DeploymentManager;
 public class ResourceRegistry {
 	private static ResourceRegistry instance=new ResourceRegistry();
 	// todo replace with ComponentRepository
-	public static final String MODELS_FOLDER = "models";
-	public static final String DATA_FOLDER = "data";
-	public static final String PROFILE_FOLDER = "profile";
-	public static final String STORAGE_FOLDER = "storage";
-	public static final String LICENSES_FOLDER = "LICENSE";
+	public static final String MODELS_FOLDER = "models/";
+	public static final String DATA_FOLDER = "data/";
+	public static final String PROFILE_FOLDER = "profile/";
+	public static final String STORAGE_FOLDER = "storage/";
+	public static final String LICENSES_FOLDER = "LICENSE/";
+	public static final String IMAGES_FOLDER = "images/";
 	
 	private static URI ARE_BASE_URI = null;
 	private static URI ARE_WRITABLE_URI=null;
@@ -62,17 +64,24 @@ public class ResourceRegistry {
 	private static boolean OSGI_MODE=true;
 	
 	static {
-		ARE_BASE_URI=URI.create(System.getProperty("eu.asterics.ARE.baseURI", ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toString()));
-		System.out.println("Setting ARE base URI to <"+ARE_BASE_URI+">");
+		URI defaultAREBaseURI=Paths.get(".").toUri();
+		try {
+			defaultAREBaseURI = ResourceRegistry.toPath(ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toUri();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ARE_BASE_URI=URI.create(System.getProperty("eu.asterics.ARE.baseURI", defaultAREBaseURI.toString()));
+		AstericsErrorHandling.instance.getLogger().fine("Setting ARE base URI to <"+ARE_BASE_URI+">");
 		
 		String areWritableURIString=System.getProperty("eu.asterics.ARE.writableURI");
 		if(areWritableURIString!=null) {
 			ARE_WRITABLE_URI=URI.create(areWritableURIString);
-			System.out.println("Setting ARE writable URI to <"+ARE_WRITABLE_URI+">");
+			AstericsErrorHandling.instance.getLogger().fine("Setting ARE writable URI to <"+ARE_WRITABLE_URI+">");
 		}
 		
 		OSGI_MODE=Boolean.parseBoolean(System.getProperty("eu.asterics.ARE.OSGI_MODE","true"));
-		System.out.println("Setting OSGI_MODE to <"+OSGI_MODE+">");		
+		AstericsErrorHandling.instance.getLogger().fine("Setting OSGI_MODE to <"+OSGI_MODE+">");		
 	}
 		
 	public enum RES_TYPE {
@@ -82,7 +91,8 @@ public class ResourceRegistry {
 		JAR,
 		PROFILE,
 		STORAGE,
-		LICENSE
+		LICENSE,
+		IMAGE
 	};
 	
 	/**
@@ -110,18 +120,39 @@ public class ResourceRegistry {
 			uri=url.toURI();			
 		} catch (MalformedURLException e) {
 			File resourceNameAsFile=new File(resourceName);
-			//In case of model files, prefix the MODELS_FOLDER if the path is relative.
-			if(type==RES_TYPE.MODEL && !resourceNameAsFile.isAbsolute()) {
-				AstericsErrorHandling.instance.getLogger().fine("Prepanding "+MODELS_FOLDER+" to URI: "+resourceNameAsFile);
-				uri=new File(MODELS_FOLDER,resourceName).getAbsoluteFile().toURI();
-				//uri=Paths.get(MODELS_FOLDER,resourceName).toAbsolutePath().toUri();
+			
+			if(!resourceNameAsFile.isAbsolute()) {
+				//In case of model files, prefix the MODELS_FOLDER if the path is relative.
+				switch(type) {
+				case MODEL:					
+					uri=toAbsolute(MODELS_FOLDER).resolve(resourceName);
+					break;
+				case PROFILE:
+					uri=toAbsolute(PROFILE_FOLDER).resolve(resourceName);
+					break;
+				case LICENSE:
+					uri=toAbsolute(LICENSES_FOLDER).resolve(resourceName);
+					break;
+				case DATA:
+					uri=toAbsolute(DATA_FOLDER).resolve(resourceName);
+					break;
+				case IMAGE:
+					uri=toAbsolute(IMAGES_FOLDER).resolve(resourceName);
+					break;
+				case STORAGE:
+					uri=toAbsolute(STORAGE_FOLDER).resolve(resourceName);					
+					break;
+				default:
+					uri=resourceNameAsFile.toURI();
+					break;
+				}
 			} else {
 				uri=resourceNameAsFile.toURI();
 			}
 		}
 		//System.out.println("file absolute: "+resourceNameAsFile.isAbsolute()+", uri absolute: "+uri.isAbsolute()+", uri opaque: "+uri.isOpaque());
 		//System.out.println("resource File.toURI: "+resourceNameAsFile.toURI());
-		AstericsErrorHandling.instance.getLogger().fine("URI before normalize: "+uri.normalize());
+		//AstericsErrorHandling.instance.getLogger().fine("URI before normalize: "+uri.normalize());
 		uri=uri.normalize();
 		AstericsErrorHandling.instance.getLogger().info("Final Resource URI <"+uri+">");		
 		return uri;
@@ -146,7 +177,7 @@ public class ResourceRegistry {
 	 * @param areBaseURI
 	 */
 	public void setAREBaseURI(URI areBaseURI) {
-		System.out.println("Setting ARE base URI to: "+areBaseURI);
+		AstericsErrorHandling.instance.getLogger().fine("Setting ARE base URI to: "+areBaseURI);
 		ARE_BASE_URI=areBaseURI;
 	}
 	
@@ -217,11 +248,26 @@ public class ResourceRegistry {
 	 * This only works if the given URI is a relative path or is a path with a file scheme (starting with: file://)
 	 * @param uri
 	 * @return
+	 * @throws URISyntaxException 
 	 */
-	public File toFile(URI uri) {
-		return Paths.get(uri).toFile();
+	public static File toFile(URI uri) throws URISyntaxException {
+		String scheme=uri.getScheme();
+		if(scheme!=null && !scheme.startsWith("file")) {
+			throw new URISyntaxException(uri.toString(),"The uri does not start with the scheme <file:>");
+		}
+		File f=new File(uri.getPath());
+		return f;
 	}
 	
+	public static Path toPath(URI uri) throws URISyntaxException {
+		String scheme=uri.getScheme();
+		if(scheme!=null && !scheme.startsWith("file")) {
+			throw new URISyntaxException(uri.toString(),"The uri does not start with the scheme <file:>");
+		}
+		Path p=toFile(uri).toPath();
+		return p;
+	}
+
 	/**
 	 * Returns the current value of the flag OSGI_MODE.
 	 * 
@@ -237,7 +283,7 @@ public class ResourceRegistry {
 	 */
 	public void setOSGIMode(boolean OSGIMode) {
 		OSGI_MODE=OSGIMode;
-		System.out.println("Setting OSGI_MODE to <"+OSGI_MODE+">");		
+		AstericsErrorHandling.instance.getLogger().fine("Setting OSGI_MODE to <"+OSGI_MODE+">");		
 	}
 	
 	/**
@@ -286,7 +332,7 @@ public class ResourceRegistry {
 		List<URI> URIs = ComponentUtils.findFiles(getAREBaseURI(), relative, 1, new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {		    	
-		    	//Should we include the ARE here??
+		    	//Should we include the ARE here??		    	
 		    	return !(name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor")) 
 		    			&& name.endsWith(".jar") 
 		    			&& DeploymentManager.instance.getBundleManager().checkForServiceBundle(new File(dir,name).toURI());		    			
@@ -324,6 +370,64 @@ public class ResourceRegistry {
 		});
 		return URIs;		
 	}
+	
+	/**
+	 * Returns a list of URIs of other Asterics files like start scripts and areProperties. The URIs could be a local file but also an HTTP URL.
+	 * 
+	 * @param relative true: Only return name without absolute path.  
+	 * @return
+	 */
+	public List<URI> getOtherFilesList(boolean relative) {
+		//get other files like start scripts and config files.
+					
+		final List<String> whiteList=Arrays.asList(new String[]{"are.exe","start.sh","start_debug.sh","start.bat","start_debug.bat","areproperties","jtester.exe"});
+		List<URI> URIs = ComponentUtils.findFiles(getAREBaseURI(), relative, 1, new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {		    	
+		    	//Should we include the ARE here??
+		    	return name != null && whiteList.contains(name.toLowerCase());		    			
+		    }
+		});
+		
+		return URIs;				
+	}
+	
+	/**
+	 * Returns a list of URIs of mandatory (must exist at startup) profile config files. The URIs could be a local file but also an HTTP URL.
+	 * 
+	 * @param relative true: Only return name without absolute path.  
+	 * @return
+	 */
+	public List<URI> getMandatoryProfileConfigFileList(boolean relative) {
+		//get profile files
+		
+		final List<String> whiteList=Arrays.asList(new String[]{"config.ini","services.ini","services_websocketdemo.ini","services-linux.ini","services-windows.ini"});
+		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(PROFILE_FOLDER), relative, 1, new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {		    	
+		    	//Should we include the ARE here??
+		    	return name != null && whiteList.contains(name.toLowerCase());		    			
+		    }
+		});
+		
+		return URIs;				
+	}
+	
+	/**
+	 * Returns a list of URIs all AsTeRICS application images. The URIs could be a local file but also an HTTP URL.
+	 * 
+	 * @param relative true: Only return name without absolute path.  
+	 * @return
+	 */
+	public List<URI> getAppImagesList(boolean relative) {
+		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(IMAGES_FOLDER), relative, 1, new FilenameFilter() {
+		    @Override
+		    public boolean accept(File dir, String name) {
+		    	return true;
+		    }
+		});
+		return URIs;
+	}	
 	
 	/**
 	 * Returns a list of URIs all jars. The URIs could be a local file but also an HTTP URL.
@@ -371,7 +475,7 @@ public class ResourceRegistry {
 		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(MODELS_FOLDER), relative,10, new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {
-		    	return name.endsWith(".acs");
+		    	return name!=null && name.endsWith(".acs");
 		    }
 		});
 		return URIs;
@@ -380,13 +484,23 @@ public class ResourceRegistry {
 	/**
 	 * Returns the ARE base URI as a File object, if possible.
 	 * @return
+	 * @throws URISyntaxException 
 	 */
-	File getAREBaseURIFile() {
+	File getAREBaseURIFile() throws URISyntaxException {
 		/*
 		if(getAREBaseURI().getScheme().startsWith("file")) {
 			return new File(getAREBaseURI());
 		}*/
 		return toFile(getAREBaseURI());
 		//return null;
+	}
+
+	/**
+	 * Return the String representation of the given URI. 
+	 * @param uri
+	 * @return
+	 */
+	public static String toString(URI uri) {
+		return uri.getPath();
 	}
 }
