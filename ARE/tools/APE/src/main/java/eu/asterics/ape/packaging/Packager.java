@@ -3,6 +3,7 @@ package eu.asterics.ape.packaging;
 import java.io.*;
 import java.net.*;
 import java.nio.file.*;
+import static java.nio.file.StandardCopyOption.*;
 import java.util.*;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -11,6 +12,7 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 import eu.asterics.ape.main.APE;
+import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.services.ResourceRegistry;
@@ -53,19 +55,91 @@ public class Packager {
 	public void copyAndExtractTemplate(File targetDir) throws IOException {
 		//JarFile template=new JarFile(APE.getAPEBaseURI().resolve(templateName).getPath());
 		File templateDir=new File(APE.getAPEBaseURI().resolve(templateName));
-		Files.deleteIfExists(targetDir.toPath());
-		Files.copy(templateDir.toPath(),targetDir.toPath());
+		
+		Path targetPath=targetDir.toPath();
+		try{
+			Files.deleteIfExists(targetDir.toPath());
+		}catch(IOException ie) {			
+		}
+		CopyOption[] opt=new CopyOption[] {REPLACE_EXISTING,COPY_ATTRIBUTES};
+		if(Files.notExists(targetPath)) {
+			Files.createDirectories(targetPath);
+		}
+
+		
+		Files.copy(templateDir.toPath(),targetDir.toPath(),opt);
 	}
 	
-	public void copyFiles(File targetDir) throws URISyntaxException, MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException, TransformerException {
-		Path targetSubDir=Paths.get(targetDir.toURI().resolve("bin/ARE"));
+	public void copyFiles(File targetBBDir) throws URISyntaxException, MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
+		Path targetSubDir=Paths.get(targetBBDir.toURI().resolve("bin/ARE/"));
+		//Path targetSubDir=Paths.get(targetDir.toURI());
 		URI testModel = ResourceRegistry.getInstance().getResource("CameraMouse.acs", RES_TYPE.MODEL);
 		InputStream iStr=testModel.toURL().openStream();
 		IRuntimeModel model=APE.getInstance().getModelInspector().parseModel(iStr);
 
 		Set<URI> componentJarURIs = APE.getInstance().getModelInspector().getComponentJarURIsOfModel(model);
-		for(URI uri : componentJarURIs) {
-			Files.copy(uri.toURL().openStream(), targetSubDir.resolve(uri.getPath()));
+		copyURIs(componentJarURIs, targetSubDir);
+		
+		List<URI> uriList = ResourceRegistry.getInstance().getServicesJarList(false);
+		copyURIs(uriList, targetSubDir);
+		
+		uriList = ResourceRegistry.getInstance().getOtherJarList(false);
+		copyURIs(uriList, targetSubDir);	
+
+		uriList = ResourceRegistry.getInstance().getDataList(false);
+		copyURIs(uriList, targetSubDir);
+
+		uriList = ResourceRegistry.getInstance().getLicensesList(false);
+		copyURIs(uriList, targetSubDir);
+
+		uriList = ResourceRegistry.getInstance().getMandatoryProfileConfigFileList(false);
+		copyURIs(uriList, targetSubDir);
+		
+		uriList = ResourceRegistry.getInstance().getAppImagesList(false);
+		copyURIs(uriList, targetSubDir);
+		
+		uriList = ResourceRegistry.getInstance().getOtherFilesList(false);
+		copyURIs(uriList, targetSubDir);		
+
+		copyURI(testModel,targetSubDir);
+	}
+	
+	public void copyURIs(Set<URI> srcURIs, Path targetBaseDir) throws URISyntaxException, IOException {
+		for(URI srcURI : srcURIs) {
+			copyURI(srcURI,targetBaseDir);
+		}		
+	}
+	
+	public void copyURIs(List<URI> srcURIs, Path targetBaseDir) throws URISyntaxException, IOException {
+		for(URI srcURI : srcURIs) {
+			copyURI(srcURI,targetBaseDir);
+		}		
+	}
+	
+	public void copyURI(URI srcURI, Path targetBaseDir) throws URISyntaxException, IOException {
+		CopyOption[] opt=new CopyOption[] {REPLACE_EXISTING,COPY_ATTRIBUTES};
+		try {
+			//first try to copy on filesystem basis. because this is much more convinient and faster for sure.
+			Path relativeSrc=ResourceRegistry.toPath(ResourceRegistry.getInstance().toRelative(srcURI));
+			Path src=ResourceRegistry.toPath(srcURI);
+			
+			//Determine relative src dir which will then be resolved against the base target dir. 
+			Path targetDir=Files.isDirectory(src) ? relativeSrc : relativeSrc.getParent();
+
+			if(targetDir!=null) {
+				targetDir=targetBaseDir.resolve(targetDir);
+			} else {
+				targetDir=targetBaseDir;
+			}
+			//Create target directories recursively, if they don't exist
+			if(Files.notExists(targetDir)) {
+				Files.createDirectories(targetDir);
+			}
+			//Actually copy file
+			Files.copy(src, targetDir.resolve(src.getFileName()),opt);
+		} catch(MalformedURLException e) {
+			//else try if it is a URL that can be fetched from anywhere else.
+			Files.copy(srcURI.toURL().openStream(), targetBaseDir.resolve(srcURI.getPath()));
 		}
 	}
 	
@@ -73,7 +147,7 @@ public class Packager {
 		
 	}
 	
-	public void makeAll(File targetDir) throws IOException, URISyntaxException, ParseException, ParserConfigurationException, SAXException, TransformerException {
+	public void makeAll(File targetDir) throws IOException, URISyntaxException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
 		copyAndExtractTemplate(targetDir);
 		copyFiles(targetDir);
 		generateFileLists(targetDir);
