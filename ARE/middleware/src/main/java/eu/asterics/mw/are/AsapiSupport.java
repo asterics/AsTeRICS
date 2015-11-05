@@ -19,6 +19,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.JarURLConnection;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -54,7 +55,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import com.sun.org.apache.xerces.internal.util.URI;
 
 import eu.asterics.mw.are.asapi.StatusObject;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
@@ -2175,15 +2175,19 @@ public class AsapiSupport
 				}
 			}
 		}  catch (IOException e) {
-			logger.warning(this.getClass().getName()+".storeModel: " +
-					"Failed to store model -> \n"+e.getMessage());
-			throw (new AREAsapiException(e.getMessage()));
+			String errorMsg="Failed to store model -> \n"+e.getMessage();
+			AstericsErrorHandling.instance.reportError(null, errorMsg);
+			throw (new AREAsapiException(errorMsg));
 		} catch (ParseException e) {
-			logger.warning(this.getClass().getName()+".storeModel: " +
-					"Failed to store model -> \n"+e.getMessage());
-			throw (new AREAsapiException(e.getMessage()));
+			String errorMsg="Failed to parse model, maybe model version not in sync with compononent descriptors -> \n"+e.getMessage();
+			AstericsErrorHandling.instance.reportError(null, errorMsg);
+			throw (new AREAsapiException(errorMsg));
+		} catch (BundleManagementException e) {
+			String errorMsg="Failed to install model components -> \n"+e.getMessage();
+			AstericsErrorHandling.instance.reportError(null, errorMsg);
+			throw (new AREAsapiException(errorMsg));
 		}
-			}
+	}
 
 
 
@@ -2234,20 +2238,29 @@ public class AsapiSupport
 	 * @throws AREAsapiException 
 	 */
 	public void autostart(String startModel) throws AREAsapiException {
-		try {
-			if(startModel== null || startModel.equals("")) {
-				startModel=AUTO_START_MODEL;
+
+		if(startModel== null || startModel.equals("")) {
+			try{
+				//try to find autostart model
+				//First look for a model file names autostart.acs
+				File autostartModel=ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(AUTO_START_MODEL, RES_TYPE.MODEL));
+				if(autostartModel.exists()) {
+					startModel=autostartModel.getPath();
+				} else {
+					//If there is no dedicated autostart model try to start first one that is found.
+					List<URI> models=ResourceRegistry.getInstance().getModelList(false);
+					if(!models.isEmpty()) {
+						startModel=ResourceRegistry.toString(models.get(0));
+					} else {
+						throw new AREAsapiException("No model found for autostart -> Check the models subfolder");
+					}
+				}
+			}catch (URISyntaxException e) {
+				throw new AREAsapiException("Error during autostart of model:\n"+e.getMessage());
 			}
-			deployFile (startModel);
-			runModel();
-
-		} catch (AREAsapiException e) {
-
-			logger.fine(this.getClass().getName()+".autostart: Failed -> \n" 
-					+e.getMessage());
-			throw e;
 		}
-
+		deployFile (startModel);
+		runModel();
 	}
 
 
