@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,6 +27,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import eu.asterics.mw.are.BundleManager;
+import eu.asterics.mw.are.DeploymentManager;
+import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
@@ -75,16 +76,17 @@ public class ModelInspector {
 	DefaultDeploymentModelParser deploymentModelParser=null;
 	BundleManager bundleManager=null;
 	
-	public ModelInspector() throws IOException, ParseException {		
+	public ModelInspector() throws IOException, ParseException, URISyntaxException {		
 		Path bundleDescriptorSchemaURL = Paths.get("middleware/src/main/resources/schemas/bundle_model.xsd");
 		Path deploymentDescriptorSchemaURL = Paths.get("middleware/src/main/resources/schemas/deployment_model.xsd"); 
 		modelValidator=new ModelValidator(bundleDescriptorSchemaURL.toUri().toURL(),deploymentDescriptorSchemaURL.toUri().toURL());
 		deploymentModelParser=DefaultDeploymentModelParser.create(modelValidator);
 		bundleManager=new BundleManager(modelValidator);
 		bundleManager.createComponentListCache();
+		DeploymentManager.instance.setBundleManager(bundleManager);
 	}
 	
-	public IRuntimeModel parseModel(InputStream modelStream) throws ParseException, ParserConfigurationException, SAXException, IOException, TransformerException {
+	public IRuntimeModel parseModel(InputStream modelStream) throws ParseException, ParserConfigurationException, SAXException, IOException, TransformerException, BundleManagementException {
 		System.out.println("test parseModel");
 		//Path testModel = Paths.get("tools/APE/src/test/resources/models/test_deployment_model.acs");
 		String utf16String=convertToUTF16String(modelStream);

@@ -18,6 +18,7 @@ import com.sun.org.apache.xalan.internal.utils.XMLSecurityPropertyManager.Proper
 
 import eu.asterics.ape.packaging.Packager;
 import eu.asterics.ape.parse.ModelInspector;
+import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.services.ResourceRegistry;
 
@@ -84,9 +85,10 @@ public class APE {
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
 	 * @throws URISyntaxException 
+	 * @throws BundleManagementException 
 	 * @throws MalformedURLException 
 	 */
-	public static void main(String[] args) throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException {
+	public static void main(String[] args) throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
 		APE.getInstance().start();
 	}
 	
@@ -109,8 +111,9 @@ public class APE {
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
 	 * @throws URISyntaxException 
+	 * @throws BundleManagementException 
 	 */
-	public void start() throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException {
+	public void start() throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
 		ResourceRegistry.getInstance().setOSGIMode(false);
 		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI());
 		setAPEBaseURI(new File("../bin/APE").toURI());
