@@ -75,6 +75,7 @@ import org.xml.sax.SAXException;
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.DeploymentException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
@@ -575,6 +576,13 @@ public class AREServices implements IAREServices{
 					"deployModel: Failed to deploy model -> \n"
 					+e4.getMessage());
 
+		} catch (BundleManagementException e) {
+			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
+			AstericsErrorHandling.instance.setStatusObject
+			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+			logger.warning(this.getClass().getName()+"." +
+					"deployModel: Failed to deploy model -> \n"
+					+e.getMessage());
 		}
 	}
 
