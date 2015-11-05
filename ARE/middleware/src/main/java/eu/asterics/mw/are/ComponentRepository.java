@@ -128,18 +128,17 @@ public class ComponentRepository
         return installedComponentTypes;
     }
 
-    public IComponentType getComponentType(final String componentTypeID)
-    {
-       IComponentType res = repository.get(componentTypeID);
-		if (res==null)
-		{
-			// System.out.println("*** Requesting installation of component " +cTypeID);
-			if(ResourceRegistry.getInstance().isOSGIMode()) {
-				DeploymentManager.instance.getBundleManager().install_single(componentTypeID);
-			}
-		}
-
-       return res;
+    public IComponentType getComponentType(final String componentTypeID) throws BundleManagementException
+    {    	
+    	if (!repository.containsKey(componentTypeID))
+    	{
+    		// System.out.println("*** Requesting installation of component " +cTypeID);
+    		if(ResourceRegistry.getInstance().isOSGIMode()) {
+    			DeploymentManager.instance.getBundleManager().installSingle(componentTypeID);
+    		}
+    	}
+    	IComponentType res = repository.get(componentTypeID);
+    	return res;
     }
 
     // todo remove this debug method

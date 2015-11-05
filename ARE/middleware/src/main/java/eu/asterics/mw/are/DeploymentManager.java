@@ -191,7 +191,6 @@ public class DeploymentManager
 
 			// handle instantiation of new component instances and assign property
 			// values as needed
-
 			String conversion="";
 			for (IComponentInstance componentInstance : componentInstanceSet)
 			{
@@ -320,6 +319,7 @@ public class DeploymentManager
 				conversion = "";			
 				if(sourceDataType != targetDataType)
 				{
+					AstericsErrorHandling.instance.getLogger().fine("Getting conversion string from "+sourceComponentInstanceID+"."+sourceOutputPortID+" --> "+targetComponentInstanceID+"."+targetInputPortID);
 					conversion=ConversionUtils.getDataTypeConversionString(sourceDataType, targetDataType);
 				}
 
@@ -402,19 +402,11 @@ public class DeploymentManager
 			notifyAREEventListeners (AREEvent.POST_DEPLOY_EVENT);
 
 		}catch (Exception e){
-			e.printStackTrace();
-
 			//before give up, try to cleanup and undeploy model again				
 			logger.severe("Deployment exception: "+e.getMessage());
 			logger.fine("Before giving up, trying to undeploy model again.");
 			undeployModel();
-
-			if(e instanceof DeploymentException) {
-				throw e;
-			} else {
-				String message="Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program.";
-				throw new DeploymentException(message);
-			}
+			throw new DeploymentException(e.getMessage());
 		}
 	}
 
@@ -853,8 +845,9 @@ public class DeploymentManager
 	 * specified by the componentID.
 	 * @param componentID the component whose property is to be returned
 	 * @param key the key of the property whose value is to be returned
+	 * @throws BundleManagementException 
 	 */
-	public String getComponentProperty(String componentID, String key) {
+	public String getComponentProperty(String componentID, String key) throws BundleManagementException {
 
 		final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
 		final Set<IComponentInstance> componentInstanceSet =
@@ -907,9 +900,10 @@ public class DeploymentManager
 	 * @param componentID the component whose property is to be set
 	 * @param key the key of the property whose value is to be set
 	 * @param value the new value
+	 * @throws BundleManagementException 
 	 */
 	public void setComponentProperty(String componentID, String key,
-			String value) {
+			String value) throws BundleManagementException {
 
 		AstericsErrorHandling.instance.reportDebugInfo(null, componentID+".setRuntimePropertyValue("+key+","+value+")");
 		final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
