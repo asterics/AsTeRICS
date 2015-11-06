@@ -242,6 +242,20 @@ public class ResourceRegistry {
 	}
 	
 	/**
+	 * Checks whether the given URI is a URL or not.
+	 * @param uriToCheck true: URI is a URL, false: URI is not a URL but probably a file (relative or absolute)
+	 * @return
+	 */
+	public static boolean isURL(URI uriToCheck) {
+		try {
+			uriToCheck.toURL();
+			return true;
+		} catch (MalformedURLException e) {
+			return false;
+		}
+	}
+	
+	/**
 	 * Returns a File object representing the given URI if possible.
 	 * This only works if the given URI is a relative path or is a path with a file scheme (starting with: file://)
 	 * @param uri
@@ -468,15 +482,25 @@ public class ResourceRegistry {
 	 * @return
 	 */
 	public List<URI> getModelList(boolean relative) {
+		return getModelList(toAbsolute(MODELS_FOLDER),relative);
+	}
+	
+	/**
+	 * Returns a list of model URIs in the given model dir URI.
+	 * @param modelDirURI
+	 * @param relative true: Only return name without absolute path.
+	 * @return
+	 */
+	public static List<URI> getModelList(URI modelDirURI, boolean relative) {
 		//get asterics involved model files
 		//Not sure how deep we should search, but 10 seems to be enough
-		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(MODELS_FOLDER), relative,10, new FilenameFilter() {
+		List<URI> URIs = ComponentUtils.findFiles(modelDirURI, relative,10, new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {
 		    	return name!=null && name.endsWith(".acs");
 		    }
 		});
-		return URIs;
+		return URIs;		
 	}
 	
 	/**
