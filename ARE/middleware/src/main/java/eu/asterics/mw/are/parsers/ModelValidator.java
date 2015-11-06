@@ -3,6 +3,7 @@ package eu.asterics.mw.are.parsers;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,7 @@ import org.xml.sax.SAXException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
+import eu.asterics.mw.services.ResourceRegistry;
 
 
 /*
@@ -75,7 +77,11 @@ public class ModelValidator
 
 	private static ModelValidator instance=null;
 
-	
+
+	public ModelValidator() throws MalformedURLException {
+		this(ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getAREJarURI(false), BUNDLE_DESCRIPTOR_SCHEMA_URL).toURL(),
+				ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getAREJarURI(false), DEPLOYMENT_DESCRIPTOR_SCHEMA_URL).toURL());
+	}
 	/**
 	 * Validates the bundleContext's bundle.        
 	 * @param bundleContext the bundle to be parsed
@@ -90,16 +96,13 @@ public class ModelValidator
      * @param bundleDescriptorSchemaURL
      * @param deploymentDescriptorSchemaURL
      */
-    public ModelValidator(URL bundleDescriptorSchemaURL, URL deploymentDescriptorSchemaURL) {
+    ModelValidator(URL bundleDescriptorSchemaURL, URL deploymentDescriptorSchemaURL) {
         // Initiate the bundle-descriptor validator
         try
         {
-            
             synchronized (SCHEMA_FACTORY) {
-            final Schema bundleDescriptorSchema = SCHEMA_FACTORY.newSchema(bundleDescriptorSchemaURL);
-           
-            
-            	  bundleDescriptorValidator = bundleDescriptorSchema.newValidator();
+            	final Schema bundleDescriptorSchema = SCHEMA_FACTORY.newSchema(bundleDescriptorSchemaURL);
+            	bundleDescriptorValidator = bundleDescriptorSchema.newValidator();
 			}
           
            
@@ -117,12 +120,8 @@ public class ModelValidator
         try
         {
             synchronized (SCHEMA_FACTORY) {
-				
-			
-            final Schema deploymentDescriptorSchema = 
-            	SCHEMA_FACTORY.newSchema(deploymentDescriptorSchemaURL);
-            deploymentDescriptorValidator = 
-            	deploymentDescriptorSchema.newValidator();
+            	final Schema deploymentDescriptorSchema = SCHEMA_FACTORY.newSchema(deploymentDescriptorSchemaURL);
+            	deploymentDescriptorValidator = deploymentDescriptorSchema.newValidator();
             }
         }
         catch (SAXException saxe)

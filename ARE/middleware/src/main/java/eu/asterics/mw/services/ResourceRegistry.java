@@ -68,8 +68,6 @@ public class ResourceRegistry {
 		try {
 			defaultAREBaseURI = ResourceRegistry.toPath(ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toUri();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		ARE_BASE_URI=URI.create(System.getProperty("eu.asterics.ARE.baseURI", defaultAREBaseURI.toString()));
 		AstericsErrorHandling.instance.getLogger().fine("Setting ARE base URI to <"+ARE_BASE_URI+">");
@@ -502,5 +500,16 @@ public class ResourceRegistry {
 	 */
 	public static String toString(URI uri) {
 		return uri.getPath();
+	}
+	
+	/**
+	 * Creates an absolute URI defining a resource within a jarFileURI.
+	 * @param jarFileURI The jarFileURI that contains the resource.
+	 * @param relativeInternalURI The relative path to the resource within the jar file. The relative path must have a leading / (e.g. /bundle_descriptor.xml)
+	 * @return
+	 */
+	public static URI toJarInternalURI(URI jarFileURI, String relativeInternalURI) {
+		String jarInternalURI = "jar:"+ jarFileURI + "!"+relativeInternalURI;
+		return URI.create(jarInternalURI);
 	}
 }

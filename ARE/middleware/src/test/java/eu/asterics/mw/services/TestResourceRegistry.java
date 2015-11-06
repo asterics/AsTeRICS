@@ -28,9 +28,7 @@ public class TestResourceRegistry {
 		ResourceRegistry.getInstance().setOSGIMode(false);
 		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI());
 		
-		Path bundleDescriptorSchemaURL = Paths.get("middleware/src/main/resources/schemas/bundle_model.xsd");
-		Path deploymentDescriptorSchemaURL = Paths.get("middleware/src/main/resources/schemas/deployment_model.xsd"); 
-		modelValidator=new ModelValidator(bundleDescriptorSchemaURL.toUri().toURL(),deploymentDescriptorSchemaURL.toUri().toURL());
+		modelValidator=new ModelValidator();
 		deploymentModelParser=DefaultDeploymentModelParser.create(modelValidator);
 		bundleManager=new BundleManager(modelValidator);
 		bundleManager.createComponentListCache();		

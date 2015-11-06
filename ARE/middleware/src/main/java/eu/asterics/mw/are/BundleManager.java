@@ -689,17 +689,18 @@ public class BundleManager implements BundleListener, FrameworkListener
 	 */
 	public boolean checkForServiceBundle(URI serviceBundleURI) {
 		try {		
-			String inputFilePath = "jar:file://" + serviceBundleURI.getPath() + "!/bundle_descriptor.xml" ;
+			//String inputFilePath = "jar:file://" + serviceBundleURI.getPath() + "!/bundle_descriptor.xml" ;
+			URI jarInternalURI=ResourceRegistry.toJarInternalURI(serviceBundleURI, "/bundle_descriptor.xml");
 
-			if(checkForAstericsMetadata(new URL(inputFilePath), serviceBundleURI.getPath())) {
+			if(checkForAstericsMetadata(jarInternalURI.toURL(), jarInternalURI.toString())) {
 				//if it has a bundle_descirptor it can only be a component (plugin).
 				return false;
 			}
 
-			inputFilePath = "jar:file://" + serviceBundleURI.getPath() + "!/META-INF/MANIFEST.MF" ;
-			URL serviceBundleURL=new URL(inputFilePath);
+			//inputFilePath = "jar:file://" + serviceBundleURI.getPath() + "!/META-INF/MANIFEST.MF" ;
+			jarInternalURI=ResourceRegistry.toJarInternalURI(serviceBundleURI, "/META-INF/MANIFEST.MF");
 			
-		    try(BufferedReader in=new BufferedReader(new InputStreamReader(serviceBundleURL.openStream()))) {
+		    try(BufferedReader in=new BufferedReader(new InputStreamReader(jarInternalURI.toURL().openStream()))) {
 		    	String actLine="";				
 				while ( (actLine = in.readLine()) != null) {
 					//Bundle-Name is specific for OSGi bundles. But actually we don't know if it as an OSGi service or just a plugin but by check the bundle_descriptor above
