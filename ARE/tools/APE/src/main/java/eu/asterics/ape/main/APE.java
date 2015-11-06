@@ -3,6 +3,7 @@ package eu.asterics.ape.main;
 import java.awt.EventQueue;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -13,6 +14,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Paths;
 
 import com.sun.org.apache.xalan.internal.utils.XMLSecurityPropertyManager.Property;
 
@@ -20,6 +22,7 @@ import eu.asterics.ape.packaging.Packager;
 import eu.asterics.ape.parse.ModelInspector;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.ResourceRegistry;
 
 /*
@@ -58,23 +61,27 @@ public class APE {
 	/**
 	 * The properties of APE
 	 */
-	public Properties apeProperties=null;
+	private APEProperties apeProperties=null;
 	/**
 	 * Reference to the ModelInspector instance.
 	 */
-	public ModelInspector modelInspector=null;
+	private ModelInspector modelInspector=null;
 	/**
 	 * Reference to the Packager instance.
 	 */
-	public Packager packager=new Packager();
+	private Packager packager=null;
 	
-	private static URI APE_BASE_URI=null;
-	private static String PROP_PREFIX="eu.asterics.APE";
 	private static APE instance=null;
 	
 	static {
-		APE_BASE_URI=URI.create(System.getProperty("eu.asterics.APE.baseURI", APE.class.getProtectionDomain().getCodeSource().getLocation().toString()));
-		System.out.println("Setting APE base URI to <"+APE_BASE_URI+">");
+		URI defaultAPEBaseURI=Paths.get(".").toUri();
+		try {
+			defaultAPEBaseURI = ResourceRegistry.toPath(APE.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toUri();
+		} catch (URISyntaxException e) {
+		}
+		
+		APEProperties.APE_BASE_URI=URI.create(System.getProperty("eu.asterics.APE.baseURI", defaultAPEBaseURI.toString()));
+		System.out.println("Setting APE base URI to <"+APEProperties.APE_BASE_URI+">");
 	}
 	
 	/**
@@ -114,48 +121,51 @@ public class APE {
 	 * @throws BundleManagementException 
 	 */
 	public void start() throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
+		
+		AstericsErrorHandling.instance.getLogger().setLevel(Level.FINE);
 		ResourceRegistry.getInstance().setOSGIMode(false);
 		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI());
 		setAPEBaseURI(new File("../bin/APE").toURI());
+
 		initProperties();
 
-		modelInspector=new ModelInspector();
-		packager.makeAll(new File("D:/P4All/P4AllBuildingBlocks/testBB"));
+		modelInspector=new ModelInspector(apeProperties);
+		packager=new Packager(apeProperties, modelInspector);
+		packager.makeAll();
 	}
 
 	private void initProperties() {
 		Properties defaultProperties=new Properties();
 		try {
-			defaultProperties.load(new BufferedReader(new InputStreamReader(APE_BASE_URI.resolve("APE.properties").toURL().openStream())));
-			apeProperties=new Properties(defaultProperties);
+			defaultProperties.load(new BufferedReader(new InputStreamReader(APEProperties.APE_BASE_URI.resolve("APE.properties").toURL().openStream())));
+			apeProperties=new APEProperties(defaultProperties);
 			for(Entry<Object, Object> entry : System.getProperties().entrySet()) {
-				if(entry.getKey().toString().startsWith(PROP_PREFIX)) {
+				if(entry.getKey().toString().startsWith(APEProperties.APE_PROP_PREFIX)||entry.getKey().toString().startsWith(APEProperties.ARE_PROP_PREFIX)) {
 					apeProperties.setProperty(entry.getKey().toString(), entry.getValue().toString());
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 	public void exit() {
 		
 	}
 
-	public Properties getApeProperties() {
+	public APEProperties getApeProperties() {
 		return apeProperties;
 	}
 
-	public void setApeProperties(Properties apeProperties) {
+	public void setApeProperties(APEProperties apeProperties) {
 		this.apeProperties = apeProperties;
 	}
 
 	public static URI getAPEBaseURI() {
-		return APE_BASE_URI;
+		return APEProperties.APE_BASE_URI;
 	}
 
 	public static void setAPEBaseURI(URI APEBaseURI) {
-		APE_BASE_URI = APEBaseURI;
-		System.out.println("Setting ARE base URI to: "+APEBaseURI);		
+		APEProperties.APE_BASE_URI = APEBaseURI;
+		System.out.println("Setting APE base URI to: "+APEBaseURI);		
 	}
 	
 	public ModelInspector getModelInspector() {

@@ -26,6 +26,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import eu.asterics.ape.main.APE;
+import eu.asterics.ape.main.APEProperties;
+import eu.asterics.component.processor.stringsplitter.StringSplitterInstance;
 import eu.asterics.mw.are.BundleManager;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
@@ -37,7 +40,9 @@ import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.model.deployment.IComponentInstance;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.model.deployment.impl.DefaultRuntimeModel;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.ResourceRegistry;
+import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -72,14 +77,16 @@ import eu.asterics.mw.services.ResourceRegistry;
  */
 
 public class ModelInspector {
+	private static final String MODELS_PROP_SEPERATOR = ";";
 	ModelValidator modelValidator=null;
 	DefaultDeploymentModelParser deploymentModelParser=null;
 	BundleManager bundleManager=null;
+	APEProperties apeProperties=null;
 	
-	public ModelInspector() throws IOException, ParseException, URISyntaxException {		
-		Path bundleDescriptorSchemaURL = Paths.get("middleware/src/main/resources/schemas/bundle_model.xsd");
-		Path deploymentDescriptorSchemaURL = Paths.get("middleware/src/main/resources/schemas/deployment_model.xsd"); 
-		modelValidator=new ModelValidator(bundleDescriptorSchemaURL.toUri().toURL(),deploymentDescriptorSchemaURL.toUri().toURL());
+	public ModelInspector(APEProperties apeProperties) throws IOException, ParseException, URISyntaxException {
+		this.apeProperties=apeProperties;
+		
+		modelValidator=new ModelValidator();
 		deploymentModelParser=DefaultDeploymentModelParser.create(modelValidator);
 		bundleManager=new BundleManager(modelValidator);
 		bundleManager.createComponentListCache();
@@ -87,8 +94,6 @@ public class ModelInspector {
 	}
 	
 	public IRuntimeModel parseModel(InputStream modelStream) throws ParseException, ParserConfigurationException, SAXException, IOException, TransformerException, BundleManagementException {
-		System.out.println("test parseModel");
-		//Path testModel = Paths.get("tools/APE/src/test/resources/models/test_deployment_model.acs");
 		String utf16String=convertToUTF16String(modelStream);
 		IRuntimeModel runtimeModel = deploymentModelParser.parseModel(openStream(utf16String));
 		return runtimeModel;
@@ -113,13 +118,60 @@ public class ModelInspector {
 		return new ByteArrayInputStream(modelStringinUTF16.getBytes("UTF-16"));
 	}
 	
-	public Set<URI> getComponentJarURIsOfModel(IRuntimeModel model) {
-		Set<URI> modelComponentJars=new TreeSet<URI>();
+	public Set<URI> getComponentTypeJarURIsOfModel(IRuntimeModel model) {
+		Set<URI> modelComponentJarURIs=new TreeSet<URI>();
 		for(IComponentInstance compInstance : model.getComponentInstances()) {
 			URI absoluteURI=ResourceRegistry.getInstance().toAbsolute(bundleManager.getJarNameFromComponentTypeId(compInstance.getComponentTypeID()));
-			modelComponentJars.add(absoluteURI);
+			modelComponentJarURIs.add(absoluteURI);
 		}
-		return modelComponentJars;
+		//System.out.println("Model: "+model.getModelName()+", comoponentTypeJarURIs:\n"+modelComponentJarURIs);
+		return modelComponentJarURIs;
+	}
+	
+	public Set<URI> getComponentTypeJarURIsOfModels(Set<URI> modelURIs) throws MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
+		Set<URI> modelComponentJarURIs=new TreeSet<URI>();
+		for(URI modelURI : modelURIs) {
+			InputStream iStr=modelURI.toURL().openStream();
+			IRuntimeModel model=parseModel(iStr);
+			modelComponentJarURIs.addAll(getComponentTypeJarURIsOfModel(model));
+		}
+		return modelComponentJarURIs;
+	}
+	
+	public Set<URI> getModelURIsFromProperty() {
+		Set<URI> modelURIs=new TreeSet<URI>();
+		String modelsPropVals=apeProperties.getProperty(APEProperties.APE_MODELS);
+		for(String modelsPropVal : modelsPropVals.split(MODELS_PROP_SEPERATOR)) {
+			File testFile=new File(modelsPropVal);
+			URI testURI=testFile.toURI();
+			if(!testFile.isAbsolute()) {
+				try {
+					testURI=ResourceRegistry.getInstance().getResource(modelsPropVal, RES_TYPE.MODEL);
+				} catch (URISyntaxException e) {
+					AstericsErrorHandling.instance.getLogger().warning("Could not create model URI for: "+modelsPropVal);
+					continue;
+				}
+			}
+			try {
+				testFile=ResourceRegistry.toFile(testURI);
+			} catch (URISyntaxException e) {
+				AstericsErrorHandling.instance.getLogger().warning("Could not create model URI for: "+testURI);
+				continue;
+			}
+			if(!testFile.exists()) {
+				continue;
+			}
+			
+			List<URI> URIs=new ArrayList();
+			if(testFile.isDirectory()) {
+				URIs=ResourceRegistry.getModelList(testURI, false);
+			} else {
+				URIs.add(testURI);
+			}
+			modelURIs.addAll(URIs);
+		}
+		
+		return modelURIs;
 	}
 	
 	public void generateComponentListCache(File componentList) throws MalformedURLException, IOException, ParseException {

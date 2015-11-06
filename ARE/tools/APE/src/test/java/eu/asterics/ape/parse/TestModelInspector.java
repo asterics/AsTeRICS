@@ -51,7 +51,7 @@ public class TestModelInspector {
 	public void setUp() throws Exception {
 		ResourceRegistry.getInstance().setOSGIMode(false);
 		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI());	
-		modelInspector=new ModelInspector();
+		modelInspector=new ModelInspector(null);
 	}
 
 	@After
@@ -78,7 +78,7 @@ public class TestModelInspector {
 				System.out.println("]");				
 			}
 			
-			Set<URI> modelComponentJars=modelInspector.getComponentJarURIsOfModel(runtimeModel);
+			Set<URI> modelComponentJars=modelInspector.getComponentTypeJarURIsOfModel(runtimeModel);
 			for(URI componentJarURI : modelComponentJars) {
 				System.out.println(componentJarURI);
 			}
