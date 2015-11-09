@@ -175,6 +175,7 @@ public class ResourceRegistry {
 	 * @param areBaseURI
 	 */
 	public void setAREBaseURI(URI areBaseURI) {
+		System.out.println("Setting ARE base URI to: "+areBaseURI);
 		AstericsErrorHandling.instance.getLogger().fine("Setting ARE base URI to: "+areBaseURI);
 		ARE_BASE_URI=areBaseURI;
 	}
