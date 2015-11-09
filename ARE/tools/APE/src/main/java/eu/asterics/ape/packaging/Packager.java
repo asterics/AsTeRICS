@@ -190,9 +190,9 @@ public class Packager {
 	}
 	
 	public void makeAll() throws IOException, URISyntaxException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
-		Path targetBaseDir=Paths.get(apeProperties.getProperty(APEProperties.APE_TARGETBASEDIR));
+		Path targetBaseDir=Paths.get(apeProperties.APE_PROP_FILE_BASE_URI.resolve(apeProperties.getProperty(APEProperties.P_APE_TARGETBASEDIR)));
 		AstericsErrorHandling.instance.getLogger().fine("Using target base dir: "+targetBaseDir);
-		copyAndExtractTemplate(targetBaseDir);
+		//copyAndExtractTemplate(targetBaseDir);
 		copyFiles(targetBaseDir);
 		generateFileLists(targetBaseDir);
 	}

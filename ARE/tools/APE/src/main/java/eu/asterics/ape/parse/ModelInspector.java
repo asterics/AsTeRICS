@@ -140,8 +140,9 @@ public class ModelInspector {
 	
 	public Set<URI> getModelURIsFromProperty() {
 		Set<URI> modelURIs=new TreeSet<URI>();
-		String modelsPropVals=apeProperties.getProperty(APEProperties.APE_MODELS);
+		String modelsPropVals=apeProperties.getProperty(APEProperties.P_APE_MODELS);
 		for(String modelsPropVal : modelsPropVals.split(MODELS_PROP_SEPERATOR)) {
+			/*
 			File testFile=new File(modelsPropVal);
 			URI testURI=testFile.toURI();
 			if(!testFile.isAbsolute()) {
@@ -151,24 +152,30 @@ public class ModelInspector {
 					AstericsErrorHandling.instance.getLogger().warning("Could not create model URI for: "+modelsPropVal);
 					continue;
 				}
-			}
+			}*/
+
 			try {
-				testFile=ResourceRegistry.toFile(testURI);
+				URI testURI=apeProperties.APE_PROP_FILE_BASE_URI.resolve(modelsPropVal);
+				File testFile=ResourceRegistry.toFile(testURI);
+				//testFile=ResourceRegistry.toFile(testURI);
+				
+				if(!testFile.exists()) {
+					continue;
+				}
+				
+				List<URI> URIs=new ArrayList();
+				if(testFile.isDirectory()) {
+					URIs=ResourceRegistry.getModelList(testURI, false);
+				} else {
+					URIs.add(testURI);
+				}
+				modelURIs.addAll(URIs);
+
 			} catch (URISyntaxException e) {
-				AstericsErrorHandling.instance.getLogger().warning("Could not create model URI for: "+testURI);
-				continue;
-			}
-			if(!testFile.exists()) {
+				AstericsErrorHandling.instance.getLogger().warning("Could not create model URI for: "+modelsPropVal);
 				continue;
 			}
 			
-			List<URI> URIs=new ArrayList();
-			if(testFile.isDirectory()) {
-				URIs=ResourceRegistry.getModelList(testURI, false);
-			} else {
-				URIs.add(testURI);
-			}
-			modelURIs.addAll(URIs);
 		}
 		
 		return modelURIs;

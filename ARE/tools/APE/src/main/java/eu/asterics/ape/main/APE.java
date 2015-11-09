@@ -14,6 +14,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.sun.org.apache.xalan.internal.utils.XMLSecurityPropertyManager.Property;
@@ -80,7 +81,7 @@ public class APE {
 		} catch (URISyntaxException e) {
 		}
 		
-		APEProperties.APE_BASE_URI=URI.create(System.getProperty("eu.asterics.APE.baseURI", defaultAPEBaseURI.toString()));
+		APEProperties.APE_BASE_URI=new File(System.getProperty(APEProperties.P_APE_BASEURI, defaultAPEBaseURI.toString())).toURI().normalize();
 		System.out.println("Setting APE base URI to <"+APEProperties.APE_BASE_URI+">");
 	}
 	
@@ -123,11 +124,16 @@ public class APE {
 	public void start() throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
 		
 		AstericsErrorHandling.instance.getLogger().setLevel(Level.FINE);
+		/*String newApeBaseURIString=System.getProperty(APEProperties.P_APE_BASEURI);
+		if(newApeBaseURIString != null) setAPEBaseURI(Paths.get(newApeBaseURIString).toUri());
+		*/
 		ResourceRegistry.getInstance().setOSGIMode(false);
-		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI());
-		setAPEBaseURI(new File("../bin/APE").toURI());
 
 		initProperties();
+		
+		String newAreBaseURIString=apeProperties.getProperty(APEProperties.P_ARE_BASEURI);
+		if(newAreBaseURIString!=null) ResourceRegistry.getInstance().setAREBaseURI(APEProperties.APE_PROP_FILE_BASE_URI.resolve(newAreBaseURIString));
+
 
 		modelInspector=new ModelInspector(apeProperties);
 		packager=new Packager(apeProperties, modelInspector);
@@ -136,8 +142,17 @@ public class APE {
 
 	private void initProperties() {
 		Properties defaultProperties=new Properties();
+		//Init with empty properties
+		apeProperties=new APEProperties();
+		APEProperties.APE_PROP_FILE_BASE_URI=APEProperties.APE_BASE_URI.resolve("APE.properties");
+
 		try {
-			defaultProperties.load(new BufferedReader(new InputStreamReader(APEProperties.APE_BASE_URI.resolve("APE.properties").toURL().openStream())));
+
+			//Currently this can only be a file but later maybe we also support a properties file from a web location, so let's store it as URI.
+			File apePropertiesFile=new File(System.getProperty(APEProperties.P_APE_PROPERTIES_FILE, APEProperties.APE_BASE_URI.resolve("APE.properties").toString()));
+			APEProperties.APE_PROP_FILE_BASE_URI=apePropertiesFile.getParentFile().toURI();
+			
+			defaultProperties.load(new BufferedReader(new InputStreamReader(apePropertiesFile.toURI().toURL().openStream())));
 			apeProperties=new APEProperties(defaultProperties);
 			for(Entry<Object, Object> entry : System.getProperties().entrySet()) {
 				if(entry.getKey().toString().startsWith(APEProperties.APE_PROP_PREFIX)||entry.getKey().toString().startsWith(APEProperties.ARE_PROP_PREFIX)) {
@@ -145,6 +160,7 @@ public class APE {
 				}
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	public void exit() {
