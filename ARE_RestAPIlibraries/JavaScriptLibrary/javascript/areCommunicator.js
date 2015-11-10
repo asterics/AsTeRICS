@@ -452,7 +452,7 @@ function subscribe(successCallback, errorCallback, eventsType) {
 	}
 	eventSource = new EventSource(_baseURI + "events/subscribe"); // Connecting to SSE service
 	_eventSourceMap.add(eventsType, eventSource);
-
+	
 	//adding listener for specific events
 	eventSource.addEventListener(eventsType, function(e) {
 		successCallback(e.data, 200);
@@ -465,8 +465,17 @@ function subscribe(successCallback, errorCallback, eventsType) {
 
 	// Error handler	
 	eventSource.onerror = function (e) {
-		errorCallback(400, e.data);
-		console.log("Error occured");
+		switch(e.target.readyState) {
+			case EventSource.CONNECTING:	
+				errorCallback(400, 'reconnecting');
+				break;
+			case EventSource.CLOSED:		
+				errorCallback(400, 'connectionLost');
+				break;
+			default:
+				errorCallback(400, 'someErrorOccurred');
+				console.log("Error occured");
+		}
 	};
 }
 
