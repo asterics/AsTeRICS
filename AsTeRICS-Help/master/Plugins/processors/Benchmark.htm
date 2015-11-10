@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>Benchmark</Title>
+</HEAD>
+<BODY>
+<H1>Benchmark</H1> 
+<H3>Component Type: Processor (Subcategory: Others)</H3>
+
+<p>This component may be used to perform benchmark of data throughput at a particular location of the model / design. It counts port activity of data and event ports per given time.</p>
+
+<div class="image"><img src="img/Benchmark.jpg" alt="Screenshot: Benchmark plugin" title="Screenshot: Benchmark plugin" /><br>
+Benchmark plugin</div>
+
+ 
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>in [double]:</STRONG> Input port for numeric values. Incoming activity increases the data counter.</li>
+</ul>
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>dataCount [integer]:</STRONG> The current value of the data counter.</li>
+<li><STRONG>eventCount [integer]:</STRONG> The current value of the event counter.</li>
+</ul>
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>eventIncrease:</STRONG> Incoming events increase the event counter.</li>
+<li><STRONG>resetCounter:</STRONG> An incoming event resets data counter and event counter to 0.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>time [integer]:</STRONG> The time period in milliseconds for measuring data activity and events. After the time has passed, the current values of data counter and event counter are provided at the output port, and the counters are reset to zero.</li>
+</ul>
+</BODY>
+</HTML>

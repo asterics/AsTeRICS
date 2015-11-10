@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=ISO-8859-2">
+    <meta name="GENERATOR" content="Microsoft&#174; HTML Help Workshop 4.1">
+    <link rel="stylesheet" type="text/css"
+      href="../../stylesheet/help.css" media="screen">
+    <title>TextArea</title>
+  </head>
+  <body>
+    <h1>TextArea</h1>
+    <h3>Component Type: Actuator (Subcategory: Graphical User Interface)</h3>
+    <p>The TextArea is a GUI component which displays (optionally user-editable) text information. It features multiple rows
+	   and a scrollbar, and event for appending string text, deleting characters or sending the text content</p>
+    <div class="image"><img src="img/TextArea.jpg" alt="Screenshot:
+        TextArea plugin" title="Screenshot: TextArea plugin"><br>
+      TextArea plugin</div>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>setText [string]:</strong> The text which will
+        be displayed. It replaces the prior content of the Text Area.</li>
+      <li><strong>appendText [string]:</strong> This string input will be appended to te current content of the Text Area.</li>
+    </ul>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>text [string]:</strong> The current content of the text area. Sent on incoming events at the "send" or "sendAndClear" event listener ports</li>
+    </ul>
+    <h2>Event Listener Description</h2>
+    <ul>
+      <li><strong>delete:</strong> Removes the last charater from the text area content.</li>
+      <li><strong>clear:</strong> Clears the text area content.</li>
+      <li><strong>send:</strong> Sends the text area content to te output port.</li>
+      <li><strong>sendAndClear:</strong> Sends the text area content to te output port and clears the text area.</li>
+    </ul>
+    <h2>Event Trigger Description</h2>
+    <ul>
+      <li><strong>clicked:</strong> The event is trigger when the user
+        click on the component.<br>
+      </li>
+    </ul>
+    <h2>Properties </h2>
+    <ul>
+      <li><strong>caption [string]:</strong> Caption of the component.</li>
+      <li><strong>default [string]:</strong> Default content of the text area.</li>
+      <li><strong>editable [bolean]:</strong> Defines if the text area can be edited by the user.</li>
+      <li><strong>fontSize [integer]:</strong> The font size in pixels.</li>
+      <li><strong>textColor [integer]:</strong> Defines color of the text.</li>
+      <li><strong>backgroundColor [integer]:</strong> Defines background color.</li>
+	  <li><strong>displayGUI [boolean]:</strong> If selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.</li>	   
+    </ul>
+  </body>
+</html>

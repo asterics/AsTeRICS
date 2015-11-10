@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>ToneGenerator</Title>
+</HEAD>
+<BODY>
+<H1>ToneGenerator</H1> 
+<H3>Component Type: Actuator (Subcategory: Audio and Voice)</H3>
+<p>This plugin generates a stereo sound. The frequency of the tone for the left and right channel can be set individually.</p>
+<div class="image"><img src="img/tonegenerator.png"  alt="Screenshot: ToneGenerator plugin" title="Screenshot: ToneGenerator plugin" /><br>
+ToneGenerator plugin</div>
+
+<H2>Requirements</H2>
+This software component requires an audio output device to percept the sound
+<H2>Input port Description</H2>
+<ul>
+<li><STRONG>frequencyLeft[double]:</STRONG> specifies the frequency of the tone on the left channel</li>
+<li><STRONG>frequencyRight[double]:</STRONG> specifies the frequency of the tone on the right channel</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>sampleRate[integer]:</STRONG> sets the sampleRate of the tonegenerator</li>
+</ul>
+<H2>Eventlistener Description</H2>
+<ul>
+<li><STRONG>start:</STRONG> starts the playback of the tones</li>
+<li><STRONG>stop:</STRONG> stops the playback of the tones</li>
+</ul>
+</BODY>
+</HTML>

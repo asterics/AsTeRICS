@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=ISO-8859-2">
+    <meta name="GENERATOR" content="Microsoft&#174; HTML Help Workshop 4.1">
+    <link rel="stylesheet" type="text/css"
+      href="../../stylesheet/help.css" media="screen">
+    <title>StringFilter</title>
+  </head>
+  <body>
+    <h1>String Filter</h1>
+    <h3>Component Type: Processor (Subcategory: Event and String
+      Processing)</h3>
+    <p>Applies a given filter text to the incoming string.
+      It can be selected if only strings that contain the filter text are passed to the output port,
+	  and/or if the  filter text shall be removed from the incoming string. Please note that the filter text is applied case sensitive.</p>
+    <div class="image"><img src="img/StringFilter.jpg"
+        alt="Screenshot: StringFilter plugin" title="Screenshot:
+        StringFilter plugin"><br>
+      StringFilter plugin</div>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>in [string]:</strong> String input port.</li>
+    </ul>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>out [string]:</strong> String output port for processed/filtered string.</li>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>filterText [string]:</strong> The filter text.<br>
+      </li>
+      <li><strong>passOnlyIfContains [boolean]:</strong> If selected, only strings containing the filter text will be passed.<br>
+      </li>
+      <li><strong>cropFilterText [boolean]:</strong> If selected, the filter will be removed before the input string is passed to the output port.<br>
+      </li>
+    </ul>
+  </body>
+</html>

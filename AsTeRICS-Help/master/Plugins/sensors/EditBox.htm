@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=ISO-8859-2">
+    <meta name="GENERATOR" content="Microsoft&#174; HTML Help Workshop 4.1">
+    <link rel="stylesheet" type="text/css"
+      href="../../stylesheet/help.css" media="screen">
+    <title>EditBox</title>
+  </head>
+  <body>
+    <h1>Edit Box</h1>
+    <h3>Component Type: Sensor (Subcategory: Graphical User Interface)</h3>
+    <p>This component creates a GUI edit field which can send the text to
+      other components. The text will be sent to the output port when enter 
+	  is pressed or when the edit box looses the input focus (when the cursor is removed from the edit field). </p>
+    <div class="image"><img src="img/EditBox.jpg" alt="Screenshot:
+        EditBox plugin" title="Screenshot: EditBox plugin"><br>
+      EditBox plugin</div>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>output [string]:</strong> String output port.</li>
+    </ul>
+    <h2>Event Listener Description</h2>
+    <ul>
+      <li><strong>clear:</strong> Removes the text from the component.</li>
+	  <li><strong>send:</strong> Send the text value to the String output port.</li>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>caption [string]:</strong> Caption of the component.</li>
+      <li><strong>default [string]:</strong> The default text, which is set
+        at startup.<br>
+      </li>
+      <li><strong>textColor [integer]:</strong> Defines color of the
+        text.</li>
+      <li><strong>backgroundColor [integer]:</strong> Defines background
+        color.</li>
+      <li><strong>insertAction [integer]:</strong> Defines behaviour of
+        the component after the text has been sent to the output port. The text in the component
+        can be selected or removed.</li>
+	  <li><strong>sendDefaultValue [boolean]:</strong> When this checkbox is checked the default String value is sent to the String output port when the model gets started.</li>
+	  <li><strong>displayGUI [boolean]:</strong> If selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.</li>
+    </ul>
+  </body>
+</html>

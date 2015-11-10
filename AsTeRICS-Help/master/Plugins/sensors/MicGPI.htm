@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>MicGPI</Title>
+</HEAD>
+<BODY>
+<H1>MicGPI</H1>
+<H3>Component Type: Sensor (Subcategory: Generic Control Input)</H3>
+<p>This component reads the input from the microphone or line-in of a computer's sound device. The averaged amplitude / sound pressure level and the dominant frequency can be calculated and used for control purposes. It is highly recommended to use a headset microphone to avoid unwanted detections from ambient noise. The sampling rate can be set (300-44100 Hz), the other device properties are  mono (1 channel) and 8 bit resoltion.</p> 
+<p>It is possible to attach a momentary switch via standard 3.5mm jack plug to the mic/line input of the soundcard (or a cheap USB soundcard) and use this component for detection of switch presses. </p>
+<b>Disclaimer:</b> Attaching a switch to mic/line input does not work with all sound cards. Although we are not aware of a permanent damage to a sound card, you do this on your own risk !</p>
+<div class="image"><img style="width: 400px;" src="img/micgpi.png" alt="Screenshot: MicGPI plugin" title="Screenshot: MicGPI plugin" />
+</div>
+<H2>Requirements</H2>
+A internal or external sound device with mic or line input is required. If the component is utilized as switch input, a momentary switch must be attached to the line-in or microphone input jack. No additional input circuit is required. Any sort of filtering of the signal like background noise cancelling must be disabled. 
+<div>
+</div>
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>thresholdLow [int]:</STRONG> This input port sets the low threshold below a signal must move that a inLow event gets triggered.</li> 
+<li><STRONG>thresholdHigh [int]:</STRONG> This input port sets the high threshold above a signal must move that a inHigh event gets triggered.</li> 
+</ul>
+
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>pressure [double]:</STRONG> This port outputs the sound amplitude or pressure level of the mic input signal (the values depend on the selected calculation mode).</li>
+<li><STRONG>frequency [integer]:</STRONG> In case frequency calculation is enabled, this port outputs the dominant frequency of the spectrum (in Hz).</li>
+</ul>
+
+<H2>Event Trigger Description</H2>
+<ul>
+<li><STRONG>inLow:</STRONG> This event is fired if the calculated level goes below the low threshold (can be used to detect switch press/release or sound pressure level).</li>
+<li><STRONG>inHigh:</STRONG> This event is fired if the calculated level goes above the high threshold (can be used to detect switch press/release or sound pressure level).</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>samplingRate [int]:</STRONG> Defines the sampling rate in Hz (allowed values are in the rang of 300 - 44100 Hz)</li>
+<li><STRONG>sampleSize [int]:</STRONG> Defines the size of the sample buffer. Must be a power of 2. The values 32/64/128/256/512/1024/2048 can be selected from a combobox. This buffer size determines the calculation-interval on the output ports.</li>
+<li><STRONG>mode [int, combobox selection]:</STRONG> Defines the way how the output signal (which is also compared to the threshold values) is calculated. The calculation is applied on a block of samples of the selected size. Available options are: average sample values, average absolute sample values, min value, max value and max absolute value</li>
+<li><STRONG>thresholdLow [int]:</STRONG> This property sets the low threshold below a signal must move that a inLow event gets triggered.</li> 
+<li><STRONG>thresholdHigh [int]:</STRONG> This property sets the high threshold above a signal must move that a inHigh event gets triggered.</li> 
+<li><STRONG>noiseLevel [double]:</STRONG> This property defines a minimum level fo a valid sound signal. All noise which is below this level will be attenauted to avoid unwanted detections.</li> 
+<li><STRONG>calculateFrequency [boolean]:</STRONG> If true, an FFT will be performed to calculate the frequency spectrum and output the dominant frequency to the associated port.</li> 
+<li><STRONG>printSpectrum [boolean]:</STRONG> If this property is set to true and frequency calculation is enabled, the FFT spectrum will be printed to the console (only reasonable in debug mode).</li> 
+<li><STRONG>captureDevice: [string]:</STRONG> This property defines the sound card from which the audio samples should be analysed. (dynamic property, values are suggested when ARE is in synced state)</li> 
+</ul>
+</BODY>
+</HTML>

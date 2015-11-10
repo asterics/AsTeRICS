@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>EShoe</Title>
+</HEAD>
+<BODY>
+<H1>EShoe</H1>
+<H3>Component Type: Sensor (Subcategory: Sensor Modules)</H3>
+<p>This component provides an interface to the eShoe which is an insole for shoes with sensor inlays, capabale of measuring multiple degrees of freedom (pressure, acceleration and angular velocity) 
+for gait analysis and rehabilitation purposes. See: <a href="http://deutsch.ceit.at/ceit-raltec/projekte/aal---eshoe">eShoe-info (german)</a>.
+The COM Port number for the device must be specified in the plugin properties.</p>
+<div class="image"><img src="img/eShoe.jpg" alt="Screenshot: EShoe plugin" title="Screenshot: EShoe plugin" /><br>
+EShoe plugin</div>
+<H2>Requirements</H2>
+This software component requires an EShoe connected via Bluetooth to a COM Port. 
+<div class="image"><img src="img/eShoe_picture.jpg" alt="EShoe" title="EShoe" /><br>
+Picture of the EShoe</div>
+<div class="image"><img src="img/eShoe_schematic.jpg" alt="Schematic of the EShoe" title="Schematic of the EShoe" /><br>
+Schematic view of the EShoe (left insole), light grey circles mark pressure sensors (big toe (BT), metatarsal head I (M1), metatarsal head V (M5), heel (HE)), the grey box marks the positon of the triaxial acceleration sensor (a) and triaxial gyroscope (&#969;).<br>
+V. David, H. Jagos, S. Litzenberger, and M. Reichel, "Instrumented insole for mobile and long distance motion pattern measurement," Procedia Eng., vol. 34, pp. 760-765, 2012. </div>
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>Channel1 to Channel3 [Short]:</STRONG> Output of the acceleration in X, Y and Z direction. The values range for -1285,81632m/s&#178; to 1285,77708m/s&#178;.</li>
+<li><STRONG>Channel4 to Channel7 [Unsigned Short]:</STRONG> Output of the pressure sensors of heel, metaV, metaI and toe. The unit of the output data is gram.</li>
+<li><STRONG>Channel8 to Channel10 [Short]:</STRONG> Output of the gyroscope in X, Y and Z direction. The values range for -2280,6528&#176;/s to 2280,5832&#176;/s.</li>
+<li><STRONG>Channel11 [Short]:</STRONG> This is the angle between subsurface and insole of the users foot. The values range for -327,68&#176; to 327,67&#176;.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>COMPort [String]:</STRONG> The name of the COM port, for example COM2 or COM17.</li>
+<li><STRONG>SamplingRate [Integer]:</STRONG> The sampling rate of the eShoe. Could be chosen between 50Hz and 200Hz.</li> 
+<li><STRONG>SDMemory [Boolean]:</STRONG> The storage on the SD card in the eShoe can be turned on if checked.</li>
+</ul>
+</BODY>
+</HTML>

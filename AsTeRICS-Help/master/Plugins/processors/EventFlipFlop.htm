@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>Event Flip Flop</Title>
+</HEAD>
+<BODY>
+<H1>Event Flip Flop</H1>
+This component stores the state, driven by an event. When the event-in event is received and the internal status is 1, event-out1 is fired and the internal status set to 2. When the event-in event is received and the internal status is 2, event-out2 is fired and the internal status set to 1. 
+<h3>Component Type: Processor (Subcategory: Event and Signal Processing)</h3>
+<div class="image"><img src="img/EventFlipFlop.png" alt="Screenshot: Event Flip Flop plugin" title="Screenshot: Event Flip Flop plugin" /><br>
+Event Flip Flop plugin</div>
+
+<H2>Event Listener Ports</H2>
+<ul>
+<li><STRONG>event-in:</STRONG> Event input to change the state of the flip-flop and fire an out-event.</li>
+<li><STRONG>selectOut1:</STRONG> selects state 1 (event-out1 trigger port will send the next incoming event)</li>
+<li><STRONG>selectOut2:</STRONG> selects state 2 (event-out2 trigger port will send the next incoming event)</li>
+</ul>
+
+<H2>Event Trigger Description</H2>
+<ul>
+<li><STRONG>event-out1:</STRONG> Event fired, if event-in received and stored state is 1.</li>
+<li><STRONG>event-out2:</STRONG> Event fired, if event-in received and stored state is 2.</li>
+</ul>
+<H2>Properties</H2>
+No Properties.
+</BODY>
+</HTML>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<Title>LipmouseIR</Title>
+</HEAD>
+<BODY>
+<H1>LipmouseIR</H1> 
+<H3>Component Type: Sensor (Subcategory:Sensor Modules)</H3>
+<p>
+This component provides signals from the Lipmouse module, which allows computer control via a mouthpiece. 
+The user can create input signals with 3 degrees of freedom by interacting with the mouthpiece: left/right, up/down and sip/puff.
+The horizontal and vertical movements are measured via force sensors inside the lipmouse module. The sip/puff actions are measured via a pressure sensor.
+The lipmouse can be adjusted to very low force that it can be used by persons with severly reduced motor capabilites (e.g. late stage musculuar dystrophy or quadraplegia up to C1/C2 lesions).
+Additionally the Lipmouse has an infrared interface which enables it to control electronic devices.
+Through a receiver it is possible to record commands from existing remote controls and store the codes to a database.
+When needed, the IR signal is reconstructed and transmitted to the device to be controlled.
+<div class="image"><img src="img/LipmouseIR.png" alt="Screenshot: LipmouseIR plugin" title="Screenshot: LipmouseIR plugin" /><br>
+the LipmouseIR sensor plugin</div>
+
+<H2>Requirements</H2>
+The LipmouseIR module must be connected to a USB port. Firmware for the lipmouseIR sensor can be found in the folder CIMs/Lipmouse_CIM.
+The free "teensy loader" tool can be used to update the firmware of the lipmouseIR module.
+Detailed design documentation will be provided in the future.
+
+
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>DeviceType [string]:</STRONG> Type of the device to be controlled via IR (e.g.: TV)</li>
+<li><STRONG>DeviceName [string]:</STRONG> Name of the device to be controlled via IR (e.g.: Sony, Samsung, etc.)</li>
+<li><STRONG>DeviceFunction [string]:</STRONG> Name of function of the device (e.g.: On, Off, VolumeUp, etc.)</li>
+</ul>
+
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>X [integer]:</STRONG> the force applied to the Lipmouse mouthpiece in x-direction</li>
+<li><STRONG>Y [integer]:</STRONG> the force applied to the Lipmouse mouthpiece in y-direction</li>
+<li><STRONG>pressure [integer]:</STRONG> the pressure value applied to the sip/puff - sensor</li>
+</ul>
+
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>SendIRCode:</STRONG> Send an IR Code to the Lipmouse</li>
+<li><STRONG>RecordIRCode:</STRONG> Record an IR Code through the Lipmouse</li>
+<li><STRONG>calibration:</STRONG> if this event is received, the x/y force value is set to 0 (removing any drift of the sensor values)</li>
+<li><STRONG>setLed1:</STRONG> if this event is received, Led1 will be turned on</li>
+<li><STRONG>clearLed1:</STRONG> if this event is received, Led1 will be turned off</li>
+<li><STRONG>setLed2:</STRONG> if this event is received, Led2 will be turned on</li>
+<li><STRONG>clearLed2:</STRONG> if this event is received, Led2 will be turned off</li>
+<li><STRONG>setLed3:</STRONG> if this event is received, Led3 will be turned on</li>
+<li><STRONG>clearLed3:</STRONG> if this event is received, Led3 will be turned off</li>
+</ul>
+
+<H2>Event Triggerer Description</H2>
+<ul>
+<li><STRONG>StartRecord:</STRONG> will be triggered when Lipmouse is recording</li>
+<li><STRONG>StopRecord:</STRONG> will be triggered when Lipmouse has finished recording</li>
+<li><STRONG>sip:</STRONG> will be triggered when pressure decreases under the selected sip treshold and increses back before the selected sipTime has passed</li>
+<li><STRONG>longSip:</STRONG> will be triggered when pressure decreases under the selected sip treshold and increases back after the selected sipTime has passed</li>
+<li><STRONG>sipStart:</STRONG> will be triggered at the moment when pressure decreases under the selected sip treshold</li>
+<li><STRONG>sipEnd:</STRONG> will be triggered at the moment when pressure increases above the selected sip treshold</li>
+<li><STRONG>puff:</STRONG> will be triggered when pressure increases above the selected puff treshold and decreases back before the selected puffTime has passed</li>
+<li><STRONG>longPuff:</STRONG> will be triggered when pressure increases above the selected puff treshold and decreases back after the selected puffTime has passed</li>
+<li><STRONG>puffStart:</STRONG> will be triggered at the moment when pressure increases above the selected puff treshold</li>
+<li><STRONG>puffEnd:</STRONG> will be triggered at the moment when pressure decreases under the selected puff treshold</li>
+<li><STRONG>button1Pressed:</STRONG> will be triggered when button1 of the lipmouse is pressed</li>
+<li><STRONG>button1Released:</STRONG> will be triggered when button1 of the lipmouse is released</li>
+<li><STRONG>button2Pressed:</STRONG> will be triggered when button2 of the lipmouse is pressed</li>
+<li><STRONG>button2Released:</STRONG> will be triggered when button2 of the lipmouse is released</li>
+<li><STRONG>button3Pressed:</STRONG> will be triggered when button3 of the lipmouse is pressed</li>
+<li><STRONG>button3Released:</STRONG> will be triggered when button3 of the lipmouse is released</li>
+</ul>
+
+<H2>Properties</H2>
+<ul>
+<li><STRONG>uniqueID [integer]:</STRONG> a unique identifier, useful if more then one lipmouse modules are used (dynamic property).</li>
+<li><STRONG>periodicADCUpdate [integer]:</STRONG> the update rate for force and pressure values in milliseconds.</li>
+<li><STRONG>sipThreshold [integer]:</STRONG> threshold value for sip actions.</li>
+<li><STRONG>sipTime [integer]:</STRONG> threshold time for sip/longSip events.</li>
+<li><STRONG>puffThreshold [integer]:</STRONG> threshold value for puff actions.</li>
+<li><STRONG>puffTime [integer]:</STRONG> threshold time for puff/longPuff events.</li>
+<li><STRONG>IRCodeFilePath [string]:</STRONG> Filepath to the file, where the IR Codes are stored.</li>
+</ul>
+
+<H2>IR Code Database</H2>
+The database which contains the IR codes as well as the information about the type and name of the device and the specific function is a comma separated value file.
+The first value is the type, the second one is the name and the third one is the function. The following 512 values are the IR code. 
+This database is automatically generated and maintained if new IR codes are recorded with the Lipmouse with IR functions.
+</BODY>
+</HTML>
