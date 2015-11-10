@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.ComPort"
+                   canonical_name="eu.asterics.component.processor.comport.ComPortInstance">
+        <type subtype="Communication">processor</type>
+        <singleton>false</singleton>
+        <description>interfaces a (virtual) COM Port for data send/receive  operations</description>
+        <ports>
+			<inputPort id="send">
+				<description>data to be sent to COM port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="received">
+				<description>data received from COM port</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="ComPort"
+				type="string"
+				value="COM4"
+				description="used COM port name"/>
+			<property name="BaudRate"
+				type="integer"
+				value="115200"
+				description="baud rate for the COM port communication"/>
+			<property name="ReceivedDataType"
+				type="integer"
+				value="0"
+				combobox="string"
+				description="data type for incoming (received) values from COM port"/>
+			<property name="SendDataType"
+				type="integer"
+				value="1"
+				combobox="string//string with added newline character"
+				description="data type for sending values to COM port"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

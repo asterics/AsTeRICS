@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.FourDJoystick"
+                   canonical_name="eu.asterics.component.sensor.fourdjoystick.FourDJoystickInstance">
+        <type subtype="Others">sensor</type>
+        <singleton>false</singleton>
+        <description>Plugin to interface the 4D Joystick developed by KI-I</description>
+        <ports>
+
+			<outputPort id="joyX">
+				<description>joystick x value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="joyY">
+				<description>joystick y value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="joyZ">
+				<description>joystick z value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="sipPuff">
+				<description>joystick sip/puff value</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="CH5Pressed">
+				<description>channel 5 got pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="CH5Released">
+				<description>channel 5 got released</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="CH6Pressed">
+				<description>channel 6 got pressed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="CH6Released">
+				<description>channel 6 got released</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="comPort"
+				type="string"
+				value="COM0"
+				description="Com Port of the joystick"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

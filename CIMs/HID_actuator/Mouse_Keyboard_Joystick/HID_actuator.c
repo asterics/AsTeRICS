@@ -401,7 +401,9 @@ uint8_t process_KeyboardReport(USB_KeyboardReport_Data_t*  KeyboardReport,
 				} 
 				release_last=1;
 				return(true); 
-			}		
+			} 
+			else 	// clear lost keys from buffer
+			{ read_InBuf(&input_keyboard); read_InBuf(&input_keyboard); return(false);}
 
 		case HID_CIM_FEATURE_KEYHOLD: 
 			if (hold_keys<6) {
@@ -416,38 +418,41 @@ uint8_t process_KeyboardReport(USB_KeyboardReport_Data_t*  KeyboardReport,
 				  KeyboardReport->Modifier |= modifiers[i];
 				} 
 				return(true); 
-			}		
+			} 
+			else 	// clear lost keys from buffer
+			{ read_InBuf(&input_keyboard); read_InBuf(&input_keyboard); return(false);}
 
 		case HID_CIM_FEATURE_KEYRELEASE: 
-			   if (hold_keys) {
 			      act_key=read_InBuf(&input_keyboard);
 				  read_InBuf(&input_keyboard);  // dummy-read modifier
+
  			      for (i=0;i<hold_keys;i++)
 				  {
 				     if (keys[i]==act_key)
 					 {
-					   while (i<hold_keys-1)
+					   int z=i;
+					   while (z<hold_keys-1)
 					   {
-					      keys[i]=keys[i+1];
-						  modifiers[i]=modifiers[i+1];
-						  i++;
+					      keys[z]=keys[z+1];
+						  modifiers[z]=modifiers[z+1];
+						  z++;
 					   }
- 	   			   	   hold_keys--;
+  				   	   hold_keys--;
 			   	       KeyboardReport->KeyCode[hold_keys] = 0;
 				       modifiers[hold_keys]=0;
 					 }
 				  }
 
 				  KeyboardReport->Modifier=0;
- 			      for (i=0;i<hold_keys;i++)
-				  {
-			        KeyboardReport->KeyCode[i] = keys[i];
-				    KeyboardReport->Modifier |= modifiers[i];
-				  } 
+			      for (i=0;i<6;i++)
+					   KeyboardReport->KeyCode[i] = 0;
 
-			      *ReportSize = sizeof(USB_KeyboardReport_Data_t);
-				}		
-			return(true);
+	 			  for (i=0;i<hold_keys;i++)
+				  {
+				      KeyboardReport->KeyCode[i] = keys[i];
+					  KeyboardReport->Modifier |= modifiers[i];
+				  } 
+			      return(true);
 	}
 	return(false);
 }
