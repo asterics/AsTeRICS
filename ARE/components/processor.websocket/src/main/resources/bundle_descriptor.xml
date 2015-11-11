@@ -6,16 +6,17 @@
                    canonical_name="eu.asterics.component.processor.websocket.WebSocketInstance">
         <type subtype="Web">processor</type>
         <singleton>false</singleton>
-        <description>This plugin uses a websocket connection to send and read data</description>
+        <description>This plugin uses a websocket connection to send and read data. The default websocket URI is ws://{hostname}:8082/ws/astericsData. You have to start the ARE with --webservice flag. You can test the connection with http://localhost:8082/
+        </description>
         <ports>
 			<inputPort id="InA">
-				<description>Double Input A</description>
+				<description>Incoming messages are sent to the websocket as string.</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
 
 			<outputPort id="OutA">
-				<description>output port description</description>
+				<description>Incoming messages from the websocket are sent to this output port as string.</description>
 				<dataType>string</dataType>
 			</outputPort>
         </ports>
