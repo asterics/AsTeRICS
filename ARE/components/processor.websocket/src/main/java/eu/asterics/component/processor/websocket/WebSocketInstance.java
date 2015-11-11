@@ -28,50 +28,36 @@
 package eu.asterics.component.processor.websocket;
 
 
-import java.util.logging.Logger;
-
-import eu.asterics.mw.data.ConversionUtils;
+import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
-import eu.asterics.mw.webservice.WebServiceActivator;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.webservice.WebServiceEngine;
 
 /**
- * 
- * Transmit data via a websocket
- * 
- * 
- *  
+ * This plugin connects to the WebServiceEngine and sends data to it or receives data from it.
+ *    
  * @author Martin Deinhofer [martin.deinhofer@technikum-wien.at]
  *         Date: 20140618
  *         
  */
 public class WebSocketInstance extends AbstractRuntimeComponentInstance
 {
+	private static final String OP_OUT_A = "outA";
+	private static final String IP_IN_A = "inA";
+	private static final String IP_FROM_WEB_SOCKET="ipFromWebSocket";
 	final IRuntimeOutputPort opOutA = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opOutB = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opOutC = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opOutD = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opOutE = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opOutF = new DefaultRuntimeOutputPort();
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 
 	final IRuntimeEventTriggererPort etpReconnect = new DefaultRuntimeEventTriggererPort();
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	String propHost = "localhost";
-	int propPort = 8080;
-
 	// declare member variables here
-
   
     
    /**
@@ -79,7 +65,7 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
     */
     public WebSocketInstance()
     {
-        // empty constructor
+        // empty constructor    	
     }
 
    /**
@@ -89,29 +75,9 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
     */
     public IRuntimeInputPort getInputPort(String portID)
     {
-		if ("inA".equalsIgnoreCase(portID))
+		if (IP_IN_A.equalsIgnoreCase(portID))
 		{
 			return ipInA;
-		}
-		if ("inB".equalsIgnoreCase(portID))
-		{
-			return ipInB;
-		}
-		if ("inC".equalsIgnoreCase(portID))
-		{
-			return ipInC;
-		}
-		if ("inD".equalsIgnoreCase(portID))
-		{
-			return ipInD;
-		}
-		if ("inE".equalsIgnoreCase(portID))
-		{
-			return ipInE;
-		}
-		if ("inF".equalsIgnoreCase(portID))
-		{
-			return ipInF;
 		}
 
 		return null;
@@ -124,29 +90,9 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
-		if ("outA".equalsIgnoreCase(portID))
+		if (OP_OUT_A.equalsIgnoreCase(portID))
 		{
 			return opOutA;
-		}
-		if ("outB".equalsIgnoreCase(portID))
-		{
-			return opOutB;
-		}
-		if ("outC".equalsIgnoreCase(portID))
-		{
-			return opOutC;
-		}
-		if ("outD".equalsIgnoreCase(portID))
-		{
-			return opOutD;
-		}
-		if ("outE".equalsIgnoreCase(portID))
-		{
-			return opOutE;
-		}
-		if ("outF".equalsIgnoreCase(portID))
-		{
-			return opOutF;
 		}
 
 		return null;
@@ -193,14 +139,6 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
      */
     public Object getRuntimePropertyValue(String propertyName)
     {
-		if ("host".equalsIgnoreCase(propertyName))
-		{
-			return propHost;
-		}
-		if ("port".equalsIgnoreCase(propertyName))
-		{
-			return propPort;
-		}
 
         return null;
     }
@@ -212,18 +150,6 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
      */
     public Object setRuntimePropertyValue(String propertyName, Object newValue)
     {
-		if ("host".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propHost;
-			propHost = (String)newValue;
-			return oldValue;
-		}
-		if ("port".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propPort;
-			propPort = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
 
         return null;
     }
@@ -235,65 +161,24 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveData(byte[] data)
 		{
-				 // insert data reception handling here, e.g.: 
-				//double myVar = ConversionUtils.doubleFromBytes(data); 
-				 // myVar = ConversionUtils.stringFromBytes(data); 
-				 // myVar = ConversionUtils.intFromBytes(data); 
-			WebServiceEngine.getInstance().getRuntimeInputPort().receiveData(data);
-		}
-	};
-	private final IRuntimeInputPort ipInB  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-				 // insert data reception handling here, e.g.: 
-				 // myVar = ConversionUtils.doubleFromBytes(data); 
-				 // myVar = ConversionUtils.stringFromBytes(data); 
-				 // myVar = ConversionUtils.intFromBytes(data); 
-		}
-	};
-	private final IRuntimeInputPort ipInC  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-				 // insert data reception handling here, e.g.: 
-				 // myVar = ConversionUtils.doubleFromBytes(data); 
-				 // myVar = ConversionUtils.stringFromBytes(data); 
-				 // myVar = ConversionUtils.intFromBytes(data); 
-		}
-	};
-	private final IRuntimeInputPort ipInD  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-				 // insert data reception handling here, e.g.: 
-				 // myVar = ConversionUtils.doubleFromBytes(data); 
-				 // myVar = ConversionUtils.stringFromBytes(data); 
-				 // myVar = ConversionUtils.intFromBytes(data); 
-		}
-	};
-	private final IRuntimeInputPort ipInE  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-				 // insert data reception handling here, e.g.: 
-				 // myVar = ConversionUtils.doubleFromBytes(data); 
-				 // myVar = ConversionUtils.stringFromBytes(data); 
-				 // myVar = ConversionUtils.intFromBytes(data); 
-		}
-	};
-	private final IRuntimeInputPort ipInF  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-				 // insert data reception handling here, e.g.: 
-				 // myVar = ConversionUtils.doubleFromBytes(data); 
-				 // myVar = ConversionUtils.stringFromBytes(data); 
-				 // myVar = ConversionUtils.intFromBytes(data); 
+			//The WebsocketEngine provides the AstericsDataApplication instance which emulates an IRuntimeInputPort
+			WebServiceEngine.getInstance().getAstericsApplication().getInputPort("").receiveData(data);
 		}
 	};
 
+	/**
+	 * Internal input port that receives the data from the websocket which emulates an IRuntimeOutputPort.
+	 */
+	private final IRuntimeInputPort ipFromWebSocket  = new DefaultRuntimeInputPort()
+	{
+		public void receiveData(byte[] data)
+		{
+			//forward the data to the output port.
+			opOutA.sendData(data);
+		}
+	};
 
+	
      /**
       * Event Listerner Ports.
       */
@@ -320,8 +205,8 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
-
           super.start();
+          register();
       }
 
      /**
@@ -331,6 +216,7 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
       public void pause()
       {
           super.pause();
+          deRegister();
       }
 
      /**
@@ -340,6 +226,7 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
       public void resume()
       {
           super.resume();
+          register();
       }
 
      /**
@@ -348,7 +235,23 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
-
           super.stop();
+          deRegister();
+      }
+      
+      /**
+       * Registers this instance as an input port receiving data from the WebSocket
+       */
+      private void register() {
+    	  String componentInstanceId=DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(this);
+    	  WebServiceEngine.getInstance().getAstericsApplication().getOutputPort("").addInputPortEndpoint(componentInstanceId, IP_FROM_WEB_SOCKET, ipFromWebSocket, "");
+      }
+      
+      /**
+       * Deregisters this instance from receiving websocket data.
+       */
+      private void deRegister() {
+    	  String componentInstanceId=DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(this);
+    	  WebServiceEngine.getInstance().getAstericsApplication().getOutputPort("").removeInputPortEndpoint(componentInstanceId, IP_FROM_WEB_SOCKET);
       }
 }
