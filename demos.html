@@ -115,12 +115,16 @@
 			}
 			
 			//deployModelFromFile
-			function DepMF(var filename) {
+			function DepMFAndStart(filename) {
 				//var filename = document.getElementById("DepMFfilename").value;
-				deployModelFromFile(DepMF_successCallback, DepMF_errorCallback, filename);
+				deployModelFromFile(DepMF_StartModel_Callback, DepMF_errorCallback, filename);
+				//stopModel(DepMF_Empty_successCallback, STOP_errorCallback); 
+				
 			}
 			
-									
+			function DepMF_StartModel_Callback(data, HTTPstatus) { startModel(DepMF_Empty_successCallback, START_errorCallback); }
+			
+			function DepMF_Empty_successCallback(data, HTTPstatus) { }
 			function DepMF_successCallback(data, HTTPstatus) { alert(data); }
 			function DepMF_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
@@ -280,8 +284,8 @@
 		
 		<h3> ARE Runtime Handling </h3>
 					
-		<button onclick="DepMF('ImageDemo.acs')"> ImageDemo demo</button>
-		<button onclick="DepMF('demomenu.acs')"> demomenu demo</button>
+		<button onclick="DepMFAndStart('ImageDemo.acs')"> ImageDemo demo</button>
+		<button onclick="DepMFAndStart('demomenu.acs')"> demomenu demo</button>
 		<!--<input placeholder="filename" type="text" id="DepMFfilename"/> -->
 		<br/> <br/>
 		<hr>
