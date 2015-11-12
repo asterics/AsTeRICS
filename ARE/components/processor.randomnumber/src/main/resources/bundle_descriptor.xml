@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.RandomNumber"
+                   canonical_name="eu.asterics.component.processor.randomnumber.RandomNumberInstance">
+        <type subtype="Others">processor</type>
+        <singleton>false</singleton>
+        <description>Generates a random number</description>
+        <ports>
+
+			<outputPort id="Number">
+				<description>Random number</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="NewNumber">
+				<description>Generates a new random number</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="Min"
+				type="integer"
+				value="0"
+				description="Minimum random value"/>
+			<property name="Max"
+				type="integer"
+				value="1"
+				description="Maximum random value"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
