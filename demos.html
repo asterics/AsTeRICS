@@ -1,15 +1,24 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script src="javascript/JSmap.js"></script> 
-		<script src="javascript/areCommunicator.js"></script>
-		 
-		<title>Rest Client</title>
-		
-		
-		<script type="text/javascript">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="javascript/JSmap.js"></script> 
+	<script src="javascript/areCommunicator.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Asterics Demos</title>
+	
+			<script type="text/javascript">
 			/* This is an example of how to use the ARE Javascipt framework for the communication
 				with the ARE Restfull Services.
 				
@@ -272,64 +281,79 @@
 			}
 
 		</script>
-		
-	</head>
-	
-	<body>
-		<h1> Rest Client </h1>
-		
-		<br/>
-		
-		<hr>
-		
-		<h3> ARE Runtime Handling </h3>
-					
-		<button onclick="DepMFAndStart('ImageDemo.acs')"> ImageDemo demo</button>
-		<button onclick="DepMFAndStart('demomenu.acs')"> demomenu demo</button>
-		<!--<input placeholder="filename" type="text" id="DepMFfilename"/> -->
-		<br/> <br/>
-		<hr>
-		<h3> Model State </h3>
-		
-		<button onclick="PAUSE()"> Pause model </button>
-		<br/> <br/>
-		
-		<button onclick="START()"> Start model </button>
-		<br/> <br/>
-		
-		<button onclick="STOP()"> Stop model </button>
-		<br/> <br/>
-				
-		<button onclick="MS()"> Get model state </button>
-		<br/> <br/>
-		
-		<hr>
-		
-		<h3> Server Events </h3>
-		
-		<button onclick="SUBSCRIBE_EVENTS()"> SSE subscribe </button>
-		<select id="eTypesS">
-			<option value="ModelStateChanged">Model State Changed</option>
-			<option value="ModelChanged">Model Changed</option>
-		</select>
-		<br/> <br/>
-		
-		<button onclick="UNSUBSCRIBE_EVENTS()"> SSE unsubscribe </button>
-		<select id="eTypesU">
-			<option value="ModelStateChanged">Model State Changed</option>
-			<option value="ModelChanged">Model Changed</option>
-			<option value="RepositoryChanged">Repository Changed</option>
-		</select>
-		<br/> <br/>
-		
-				
-		<div id="eventsBox" style="border:1px solid; width:30%; height: auto; padding: 3px;"></div>
-		<br/> <br/>
-		
-		<hr>
-		
-		<hr>
-		
-	</body>
-	
+
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Asterics Demos</h1>
+        <h2></h2>
+		<!--
+        <a href="https://github.com/asterics/AsTeRICS" class="button"><small>View project on</small> GitHub</a>
+        <h1>P4AllBuildingBlocks</h1>
+        <h2></h2>
+        <a href="https://github.com/asterics/P4AllBuildingBlocks" class="button"><small>View project on</small> GitHub</a>
+-->
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="welcome-to-asterics-demos" class="anchor" href="#welcome-to-asterics-demos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to the AsTeRICS demos</h1>
+
+<hr>
+
+<p>AsTeRICS is a free and Open-Source graphical construction set for assistive technologies (AT).
+It allows the creation of flexible solutions for people with disabilities using a large set of sensors and actuators.</p>
+
+<p>Possible applications are  </p>
+
+<ul>
+<li>Computer input (mouse, keyboard, joystick)</li>
+<li>Environmental Control (KNX, FS20, IR)</li>
+<li>Toys and Games (Playstation 3, computer games, RC-toys ...)</li>
+<li>Brain/Neural computer interfaces (Enobio, OpenVIBE, OpenEEG)</li>
+<li>Android Phone support (SMS, calls)</li>
+<li>and many more!</li>
+</ul>
+<p>
+On this page you will find practical demos of the <a href="https://github.com/asterics/P4AllBuildingBlocks">Building Blocks</a> provided for the <a href="http://www.prosperity4all.eu/">Prospertiy for All (P4All)</a> project. 
+
+<p>The demos rely on a customized <a href="https://github.com/asterics/P4AllBuildingBlocks/releases/tag/Cammouse-P4alldemo-v1.0">demo release (first test release available)</a> of the AsTeRICS Runtime Environment (ARE) which was created with the <a href="https://github.com/asterics/P4AllBuildingBlocks/wiki/AsTeRICS-Packaging-Environment-(APE)">AsTeRICS Packaging Environment (APE)</a>. The APE let's you select a set of AsTeRICS model files and create a downstripped (minimum size) version of the ARE including plugins, configuration files and data files to execute the models. Optionally, the APE allows the creation of native installers for Windows, Linux and Mac using <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGIBBCI">JavaFX packaging technology</a>.
+<h2>
+<a id="demos" class="anchor" href="#demos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Demos</h2>
+<h3>
+<a id="facetrackerLK" class="anchor" href="#facetrackerLK" aria-hidden="true"><span class="octicon octicon-link"></span></a>Camera Mouse with FacetrackerLK building block</h3>
+Install and start the AsTeRICS demo release, you will see a window with setting parameters for the webcam and mouse speed. 
+<p>
+<div>
+<img src="images/facetrackerLK-videoframe.png" alt="Video frame showing face with tracked nose and chin"/>
+<img src="images/facetrackerLK-settings.png" alt="Settings dialog"/>
+</div>
+
+<p>To try the camera mouse in action click on the button 
+<p>
+<button onclick="DepMFAndStart('FacetrackerMouse-no-osk.acs')" class="button">Start camera mouse</button> or switch back to 
+<button onclick="DepMFAndStart('Webcam_settings_german.acs')" class="button">camera mouse settings</button>
+
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/asterics/P4AllBuildingBlocks/releases/tag/Cammouse-P4alldemo-v1.0" class="button">
+            <small>Install</small>
+			Demo
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/asterics/AsTeRICS"></a> is maintained by <a href="https://github.com/asterics">asterics</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
 </html>
