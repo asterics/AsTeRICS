@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ACS\models\componentTests\sensors\KinectJ4K_test.acs_2015_11_13_10_19" version="20130320">
+  <components>
+    <component id="KinectJ4K.1" type_id="asterics.KinectJ4K">
+      <description>My Plugin description</description>
+      <ports>
+        <outputPort portTypeID="FootLeftX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="FootLeftY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="FootLeftZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="FootRightX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="FootRightY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="FootRightZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="AnkleLeftX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="AnkleLeftY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="AnkleLeftZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="AnkleRightX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="AnkleRightY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="AnkleRightZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="KneeLeftX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="KneeLeftY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="KneeLeftZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="KneeRightX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="KneeRightY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="KneeRightZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HipLeftX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HipLeftY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HipLeftZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HipCenterX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HipCenterY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HipCenterZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HipRightX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HipRightY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HipRightZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="SpineX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="SpineY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="SpineZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ShoulderLeftX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ShoulderLeftY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ShoulderLeftZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ShoulderCenterX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ShoulderCenterY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ShoulderCenterZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ShoulderRightX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ShoulderRightY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ShoulderRightZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ElbowLeftX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ElbowLeftY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ElbowLeftZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ElbowRightX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ElbowRightY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="ElbowRightZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="WristLeftX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="WristLeftY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="WristLeftZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="WristRightX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="WristRightY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="WristRightZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HandLeftX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HandLeftY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HandLeftZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HandRightX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HandRightY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HandRightZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HeadX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HeadY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="HeadZ">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>46</posX>
+        <posY>119</posY>
+      </layout>
+    </component>
+    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
+      <description>Oscilloscope display for one signal channel</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="displayBuffer" value="3" />
+        <property name="drawingMode" value="0" />
+        <property name="displayMode" value="0" />
+        <property name="drawingInterval" value="100" />
+        <property name="min" value="-100" />
+        <property name="max" value="100" />
+        <property name="gridColor" value="0" />
+        <property name="channelColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="Head X" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>329</posX>
+        <posY>145</posY>
+      </layout>
+      <gui>
+        <posX>135</posX>
+        <posY>676</posY>
+        <width>6000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="KinectJ4K.1" />
+        <port id="HeadX" />
+      </source>
+      <target>
+        <component id="Oscilloscope.1" />
+        <port id="in" />
+      </target>
+    </channel>
+  </channels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>0</posX>
+      <posY>0</posY>
+      <width>6625</width>
+      <height>3889</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
