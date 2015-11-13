@@ -16,7 +16,7 @@
         <pathelement location="${middleware}/asterics.ARE.jar"/>
 		<pathelement location="${services}/asterics.mw.cimcommunication.jar"/>
        	<pathelement location="${services}/asterics.mw.webservice.jar"/>
-       	<pathelement location="${services}/grizzly-httpservice-bundle-2.3.13.jar"/>
+       	<pathelement location="${services}/grizzly-httpservice-bundle-2.3.23.jar"/>
     </path>
     
     <property name="resources" location="src/main/resources"/>

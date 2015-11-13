@@ -8,6 +8,7 @@
 
 	<target name="cleanProfile">
 	    <delete dir =  "../bin/ARE/profile/org.eclipse.osgi"/>
+	    <delete file =  "../bin/ARE/profile/loader_componentlist.ini"/>
 	</target>
 
 	<target name="buildARE" depends="cleanProfile">
