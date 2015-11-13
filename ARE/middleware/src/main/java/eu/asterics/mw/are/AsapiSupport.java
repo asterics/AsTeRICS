@@ -637,27 +637,24 @@ public class AsapiSupport
 
 	}
 
-	public ArrayList<String> getBundelDescriptors() throws AREAsapiException {
-
-		ArrayList<String> res = new ArrayList<String> ();
-		URL url= null;
+	public List<String> getBundelDescriptors() throws AREAsapiException {
+		List<String> res=new ArrayList<String>();
 		
-		// System.out.println("*** Get Component Collection -> load all available bundles !");
-		BundleManager bm=DeploymentManager.instance.getBundleManager();
-		bm.install(bm.MODE_GET_ALL_COMPONENTS);
-
-		for (Bundle bundle : Main.getAREContext().getBundles())
+		List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
+		for (Bundle bundle : bundleList)
 		{
-			url = bundle.getResource(BUNDLE_DESCRIPTOR);
+			URL url = bundle.getResource(BUNDLE_DESCRIPTOR);
 			if (url!=null)
 			{
 				try {
 					res.add(convertXMLFileToString(url.openStream()));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					throw (new AREAsapiException(e.getMessage()));
+					//throw (new AREAsapiException(e.getMessage()));
+					//keep it by just logging
+					//because we have to assume that several bundles are not supported for the platform
+					AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRICS bundle descriptor for bundle: "+bundle.getBundleId());
 				}
-
 			}
 		}
 

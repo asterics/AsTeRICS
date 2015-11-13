@@ -297,6 +297,27 @@ public class BundleManager implements BundleListener, FrameworkListener
 	}
 	
 	/**
+	 * Returns a list of bundles that are installable for this platform the ARE is running on.
+	 * This really tries to install the bundle via OSGi and checks if e.g. involved native libs are supported for this platform.
+	 * After invoking the method the bundles are left installed.
+	 * @return
+	 */
+	public List<Bundle> getInstallableBundleList() {
+		List<Bundle> bundleList=new ArrayList<Bundle>();
+		List<URI> componentJarURIs=ResourceRegistry.getInstance().getComponentJarList(false);
+		for(URI componentJarURI : componentJarURIs) {
+			Bundle b;
+			try {
+				b = installSingle(componentJarURI);
+				bundleList.add(b);
+			} catch (BundleException | IOException e) {
+				AstericsErrorHandling.instance.getLogger().warning("Cannot install bundle, skipping it: "+componentJarURI);
+			}
+		}
+		return bundleList;
+	}
+	
+	/**
 	 * Returns the jar name of that contains the given componentTypeId as it was found in the componentlist cache.
 	 * This is most likely only the relative jar name. To create an absolute use the {@link ResourceRegistry.getResource} method.
 	 * @param componentTypeId
@@ -457,7 +478,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 	 */
 	public Bundle installSingle(URI jarURI) throws MalformedURLException, BundleException, IOException {
 		System.out.println("*** installing bundle on-demand: "+jarURI);
-		Bundle bundle = bundleContext.installBundle(jarURI.toString(),jarURI.toURL().openStream());
+		Bundle bundle = bundleContext.installBundle(jarURI.toString(),jarURI.toURL().openStream());	
 		if(checkForAstericsMetadata(bundle)) {
 			registerBundle(bundle);
 		}
