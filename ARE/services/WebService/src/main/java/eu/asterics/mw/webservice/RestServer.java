@@ -60,7 +60,7 @@ public class RestServer {
 			response = as.getModel();
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the model";
+			errorMessage = "Couldn't retrieve the model " +" (" + e.getMessage() + ")";
 			response = "<error>"+errorMessage+"</error>";
 		}
 		
@@ -79,10 +79,10 @@ public class RestServer {
 		try {
 			as.deployModel(modelInXML);
 			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed");
-			response = "Model Deployed";
+			response = "Model deployed";
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't deploy the given model";
+			errorMessage = "Couldn't deploy the given model" + " (" + e.getMessage() + ")";
 			response = "error:" + errorMessage;
 		}
 		
@@ -100,10 +100,10 @@ public class RestServer {
 		try {
 			as.deployFile(filename);
 			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed");
-			response = filename + "model deployed";
+			response = "'" + filename + "'" + " model deployed";
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't deploy the model from file " + filename;
+			errorMessage = "Couldn't deploy the model from file '" + filename + "' (" + e.getMessage() + ")";
 			response = "error:" + errorMessage;
 		}
 		
@@ -151,11 +151,11 @@ public class RestServer {
 				}
 			}
 			else {
-				errorMessage = "Unknown state";
+				errorMessage = "Unknown state passed as a parameter";
 				response = "error:" + errorMessage;
 			}
 		} catch (Exception e) {
-			errorMessage = "Could not " + state + " the model";
+			errorMessage = "Could not " + state + " the model" + " (" + e.getMessage() + ")";
 			response = "error:" + errorMessage;
 		}
 
@@ -174,7 +174,7 @@ public class RestServer {
 			response = as.getModelState();
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Could not retrieve the state of the runtime model";
+			errorMessage = "Could not retrieve the state of the runtime model" + " (" + e.getMessage() + ")";
 			response = "error:" + errorMessage;
 		}
 
@@ -195,7 +195,7 @@ public class RestServer {
 			response = filename + " deployed and started";
 		} catch (AREAsapiException e) {
 			e.printStackTrace();
-			errorMessage = "Could not autostart " + filename;
+			errorMessage = "Could not autostart '" + filename + "' (" + e.getMessage() + ")";
 			response = "error:" + errorMessage;
 		}
 
@@ -207,16 +207,19 @@ public class RestServer {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getComponents() {
-		String response;
+		String response = "";
 		String errorMessage = "";
 		
 		try {
 			String[] array = as.getComponents();
 			
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			errorMessage = "Couldn't retrieve model components";
+			if (response.equals("")) {
+				response = "{'error':'Couldn't retrieve model components'}";
+			}
+		} catch (Exception e) { 
+			e.printStackTrace();
+			errorMessage = "Couldn't retrieve model components" + " (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -235,9 +238,12 @@ public class RestServer {
 			String[] array = as.getComponentPropertyKeys(componentId);
 			
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			errorMessage = "Couldn't retrieve property keys from " + componentId;
+			if (response.equals("")) {
+				response = "{'error':'Couldn't retrieve component property keys (Object serialization failure)'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Couldn't retrieve property keys from '" + componentId + "' (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -254,9 +260,9 @@ public class RestServer {
 		
 		try {
 			response = as.getComponentProperty(componentId, componentKey);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			errorMessage = "Couldn't retrieve "+ componentKey + " property from " + componentId;
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Couldn't retrieve '"+ componentKey + "' property from '" + componentId + "' (" + e.getMessage() + ")";
 			response = "error:"+errorMessage;
 		}
 		
@@ -273,9 +279,9 @@ public class RestServer {
 		String errorMessage = "";
 		try {
 			response = as.setComponentProperty(componentId, componentKey, value);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			errorMessage = "Couldn't set " + value + " value to " + componentKey + " from " + componentId;
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Couldn't set '" + value + "' value to '" + componentKey + "' from '" + componentId + "' (" + e.getMessage() + ")";
 			response = "error:"+errorMessage;
 		}
 		
@@ -299,7 +305,7 @@ public class RestServer {
 		try {
 			response = as.getModelFromFile(filename);
 		} catch (Exception e) {
-			errorMessage = "Couldn't retrieve the model from " + filename;
+			errorMessage = "Couldn't retrieve the model from '" + filename + "' (" + e.getMessage() + ")";
 			response = "<error>"+errorMessage+"</error>";
 		}
 		
@@ -326,7 +332,7 @@ public class RestServer {
 			response = "Model stored";
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Could not store the model";
+			errorMessage = "Could not store the model" + "' (" + e.getMessage() + ")";
 			response = "error:"+errorMessage;
 		}
 		
@@ -348,11 +354,11 @@ public class RestServer {
 				SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, filename + " deleted");
 			} 
 			else {
-				response = "Could not delete the model";
+				response = "Could not delete the model (Please check if the given filename is correct)";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Could not delete the model";
+			errorMessage = "Could not delete the model" + "' (" + e.getMessage() + ")";
 			response = "error:"+errorMessage;
 		}
 		
@@ -371,9 +377,12 @@ public class RestServer {
 			String[] array = as.listAllStoredModels();
 
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
+			if (response.equals("")) {
+				response = "{'error':'Couldn't retrieve the stored models'}";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the stored models";
+			errorMessage = "Couldn't retrieve the stored models" + "' (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -392,9 +401,13 @@ public class RestServer {
 			IComponentType[] array = as.getInstalledComponents();
 
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
+			if (response.equals("")) {
+				errorMessage = "Couldn't retrieve the installed components";
+				response = "{'error':'"+errorMessage+"'}";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the installed components";
+			errorMessage = "Couldn't retrieve the installed components" + "' (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -412,11 +425,12 @@ public class RestServer {
 		try {
 			response = as.getInstalledComponentsDescriptor();
 			if (response == null) {
-				throw new Exception();
+				errorMessage = "Couldn't retrieve the created components descriptors";
+				response = "{'error':'"+errorMessage+"'}";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the created components descriptors";
+			errorMessage = "Couldn't retrieve the created components descriptors" + "' (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -434,11 +448,12 @@ public class RestServer {
 		try {
 			response = as.getCreatedComponentsDescriptors();
 			if (response == null) {
-				throw new Exception();
+				errorMessage = "Couldn't retrieve the created components descriptors";
+				response = "{'error':'"+errorMessage+"'}";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the created components descriptors";
+			errorMessage = "Couldn't retrieve the created components descriptors" + "' (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		

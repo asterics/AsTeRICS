@@ -30,10 +30,10 @@ public class ObjectTransformation {
 	 * 
 	 * @param object - The object to transform to XML formatted string
 	 * 
-	 * @return An XML formatted string
+	 * @return An XML formatted string or an empty string if an error occurred
 	 */
 	public static String objectToXML(Object object, Class objectClass) {
-		String XMLString = null;
+		String XMLString = "";
 		try {
 			JAXBContext jc = JAXBContext.newInstance(objectClass);
 			
@@ -62,7 +62,7 @@ public class ObjectTransformation {
 	 * @param XMLString - The XML formatted string that will be transformed to an object
 	 * @param objectClass - The object class.
 	 * 
-	 * @return An object that corresponds to the XML formatted string
+	 * @return An object that corresponds to the XML formatted string  or an null if an error occurred
 	 */
 	public static Object XMLToObject(String XMLString, Class objectClass) {
 		Object object = null;
@@ -88,22 +88,16 @@ public class ObjectTransformation {
 	 * 
 	 * @param object - The object to transform to a JSON string
 	 * 
-	 * @return A JSON object as string
+	 * @return A JSON object as string or an empty string if an error occurred
 	 */
 	public static String objectToJSON(Object object) {
 		ObjectMapper mapper = new ObjectMapper();
 		String JSONobj = null;
 		try {
 			JSONobj = mapper.writeValueAsString(object);
-		} catch (JsonGenerationException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return "An unexpected error occured";
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-			return "An unexpected error occured";
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "An unexpected error occured";
+			return "";
 		}
 		return JSONobj;
 	}
@@ -118,12 +112,12 @@ public class ObjectTransformation {
 	 * @param JSON - The JSON string that will be transformed to an object
 	 * @param objectClass - The class of the object.
 	 * 
-	 * @return An object that corresponds to the JSON String
+	 * @return An object that corresponds to the JSON String or an null if an error occurred
 	 */
 	public static Object JSONToObject(String JSON, Class objectClass) {
 		ObjectMapper mapper = new ObjectMapper();
 		
-		Object object;
+		Object object = null;
 		try {
 			object = mapper.readValue(JSON, objectClass);
 			return object;
@@ -135,7 +129,7 @@ public class ObjectTransformation {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return object;
 	}
 	
 }
