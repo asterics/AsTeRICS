@@ -1,4 +1,8 @@
-echo Starting AsTeRICS Runtime Environment ...
+SCRIPTDIR="$(dirname "$0")"
+
+echo Starting AsTeRICS Runtime Environment in $SCRIPTDIR...
+cd $SCRIPTDIR
+
 
 ARE_AUTOSTART_MODEL=autostart.acs
 ARE_OPTIONAL_SERVICES_INI=""
