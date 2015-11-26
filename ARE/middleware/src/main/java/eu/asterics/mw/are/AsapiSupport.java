@@ -19,6 +19,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.JarURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -61,6 +62,7 @@ import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.DeploymentException;
 import eu.asterics.mw.are.exceptions.ParseException;
+import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
 import eu.asterics.mw.model.bundle.ComponentType;
 import eu.asterics.mw.model.bundle.IComponentType;
@@ -127,7 +129,6 @@ public class AsapiSupport
 	private Logger logger = null;
 	private DocumentBuilder builder;
 
-	private static final String BUNDLE_DESCRIPTOR="/bundle_descriptor.xml";
 	public static final String DEFAULT_MODEL_URL = "/default_model.xml";
 	public static final String AUTO_START_MODEL = "autostart.acs";
 
@@ -143,8 +144,9 @@ public class AsapiSupport
 	 *
 	 * @return an array containing all available component types
 	 */
-	public String [] getAvailableComponentTypes() {
-
+	public String [] getAvailableComponentTypes() {	
+		//The method name indicates available (all components for the platform) but componentRepository.getInstalledComponentTypes()
+		//returns the currently installed ones.
 		final Set<IComponentType> componentTypeSet
 		= componentRepository.getInstalledComponentTypes();
 
@@ -169,7 +171,6 @@ public class AsapiSupport
 	 * @return an array containing all available component.
 	 */
 	public IComponentType [] getInstalledComponents() {
-
 		final Set<IComponentType> componentSet
 		= componentRepository.getInstalledComponentTypes();
 		
@@ -200,6 +201,8 @@ public class AsapiSupport
 	 */
 	public String getInstalledComponentsDescriptor() {
 		String response = "";
+		
+		/*
 		URL areLocation = this.getClass().getProtectionDomain().getCodeSource().getLocation();
 		
 		//get bin folder
@@ -218,12 +221,13 @@ public class AsapiSupport
 		    			&& name.endsWith("jar");
 		    }
 		});
-
+*/
 		response += "<?xml version=\"1.0\"?>";
 		response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
 		
 		//read all bundle descriptors
-		Set<String> installedComponentJarNames = getInstalledComponentJarNames();
+		/*
+		Set<String> installedComponentJarNames = DeploymentManager.instance.getBundleManager().getInstalledComponentJarNames();
 		for (int i=0;i<componentJars.length;i++) {
 			try {
 				File currentJarFile = new File( componentJars[i].getAbsolutePath() );
@@ -255,26 +259,50 @@ public class AsapiSupport
 			} catch (Exception ex) {
 				System.err.println("ERROR when trying to retrieve the bundle descriptors.");
 			}
+		}*/
+		Set<IComponentType> componentTypeSet= componentRepository.getInstalledComponentTypes();
+
+		for(IComponentType componentType : componentTypeSet) {
+			try {
+				String componentTypeId=componentType.getID();
+				URI bundleDescriptorURI=DeploymentManager.instance.getBundleManager().getBundleDescriptorURIFromComponentTypeId(componentTypeId);
+								
+				response += getFormattedBundleDescriptorStringOfComponentTypeId(bundleDescriptorURI.toURL());
+			} catch (BundleManagementException | IOException e) {
+				//What if it fails?? just skip this entry
+				logger.warning(e.getMessage());
+			}
 		}
+		
 		response += "</componentTypes>";
 		
 		return response;
 	}
 	
-	
-	private Set<String> getInstalledComponentJarNames() {
-
-		final Set<IComponentType> componentTypeSet= componentRepository.getInstalledComponentTypes();
-		HashSet<String> jarNameSet = new HashSet<String>();
-
-		for(final IComponentType componentType : componentTypeSet) {
-			String jarName = componentType.getID();
-			jarName = jarName.replaceFirst("\\.", "."+componentType.getType().toString()+".");
-			jarName += ".jar";
-			jarNameSet.add(jarName);
+	/**
+	 * Returns a formatted XML String of the componentType(s) in the bundle descriptor. 
+	 * @param bundleDescriptorURL
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	private String getFormattedBundleDescriptorStringOfComponentTypeId(URL bundleDescriptorURL) throws MalformedURLException, IOException {
+		//Actually we should ask DefaultBundleModelParser to return just the part that belongs to the requested componentTypeId
+		//e.g. in case of AnalogIn there is also a second component type LegacyAnalogIn in the bundle_descriptor.xml
+		//Skip it for now because result is unformatted and JavaScript showed error callback.
+		//String bundleDescriptorString=DefaultBundleModelParser.instance.getBundleDescriptionOfComponentTypeId(componentTypeId, bundleDescriptorURI.toURL().openStream());
+		
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bundleDescriptorURL.openStream()));
+		String bundle_descriptor = "", line;
+		while ((line = bufferedReader.readLine()) != null) {
+			bundle_descriptor += line + "\n";
 		}
 
-		return jarNameSet;
+		bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
+		bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
+		bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");	
+		
+		return bundle_descriptor; 
 	}
 	
 	
@@ -288,6 +316,8 @@ public class AsapiSupport
 	 */
 	public String getCreatedComponentsDescriptors() {
 		String response = "";
+		
+		/*
 		URL areLocation = this.getClass().getProtectionDomain().getCodeSource().getLocation();
 		
 		//get bin folder
@@ -306,10 +336,11 @@ public class AsapiSupport
 		    			&& name.endsWith("jar");
 		    }
 		});
-		
+		*/
 		response += "<?xml version=\"1.0\"?>";
 		response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
 		
+		/*
 		//read all bundle descriptors
 		for (int i=0;i<componentJars.length;i++) {
 			try {
@@ -337,6 +368,26 @@ public class AsapiSupport
 				
 			} catch (Exception ex) {
 				System.err.println("ERROR when trying to retrieve the bundle descriptors.");
+			}
+		}
+		*/
+		//Should we use list of really installable packages for this platform? BundleManager does a real OSGi install here,
+		//which skips all bundles that don't work for this platform (e.g. SpeechProcessor for Linux)
+		//Otherwise we could simply return the list of all bundle jars asking the ResourceRegistry		
+		//ResourceRegistry.getInstance().getComponentJarList(false);
+		
+		List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
+		for (Bundle bundle : bundleList)
+		{
+			URL bundleDescriptorURL = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+			if (bundleDescriptorURL!=null)
+			{
+				try {
+					response += getFormattedBundleDescriptorStringOfComponentTypeId(bundleDescriptorURL);
+				} catch (IOException e) {
+					//What if it fails?? just skip this entry
+					logger.warning(e.getMessage());
+				}
 			}
 		}
 		response += "</componentTypes>";
@@ -637,13 +688,13 @@ public class AsapiSupport
 
 	}
 
-	public List<String> getBundelDescriptors() throws AREAsapiException {
+	public List<String> getBundelDescriptors() throws AREAsapiException {		
 		List<String> res=new ArrayList<String>();
 		
 		List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
 		for (Bundle bundle : bundleList)
 		{
-			URL url = bundle.getResource(BUNDLE_DESCRIPTOR);
+			URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
 			if (url!=null)
 			{
 				try {
@@ -657,13 +708,6 @@ public class AsapiSupport
 				}
 			}
 		}
-
-		//		for (String s : res)
-		//		{
-		//			System.out.println ("S: "+s);
-		//		}
-
-		//return res.toArray(new String[res.size()]);
 		return res;
 	}
 
@@ -2083,7 +2127,7 @@ public class AsapiSupport
 		return res;
 
 		*/
-		
+		/*
 		List<String> res = new ArrayList<String>(); 
 			List<String> nextDir = new ArrayList<String>(); //Directories
 			nextDir.add(ResourceRegistry.MODELS_FOLDER);	
@@ -2121,9 +2165,12 @@ public class AsapiSupport
 		{
 			res2[i] = res.get(i);
 		}
+		
 		return res2;		
+		*/
 		
-		
+		List<URI> storedModelList=ResourceRegistry.getInstance().getModelList(true);
+		return ResourceRegistry.toStringArray(storedModelList);		
 	}
 
 
@@ -2278,6 +2325,11 @@ public class AsapiSupport
 		return list;
 			}
 
+	/**
+	 * Helper method to convert an InputStream of an XML-file to an XML String object.
+	 * @param inputStream
+	 * @return
+	 */
 	private String convertXMLFileToString(InputStream inputStream) 
 	{ 
 		try{ 

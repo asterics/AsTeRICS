@@ -167,6 +167,66 @@ public class TestResourceRegistry {
 		System.out.println("getAREBaseURIPath(): "+ResourceRegistry.toPath(ResourceRegistry.getInstance().getAREBaseURI()));
 	}
 	
+	@Test
+	public void testToStringArray() throws URISyntaxException {
+		String[] paths={"models/ImageDemo.acs","data/webservice/index.html"};
+		String[] absPaths=new String[paths.length];
+		Collection<URI> uris=new ArrayList<URI>();
+				
+		int i=0;
+		for(String path : paths) {
+			URI uri=new File(path).toURI();
+			absPaths[i]=ResourceRegistry.toString(uri);
+			uris.add(uri);
+			i++;
+		}
+		String[] result=ResourceRegistry.toStringArray(uris);
+		assertArrayEquals(absPaths, result);
+	}
+	
+	@Test
+	public void testToStringSet() throws URISyntaxException {
+		String[] paths={"models/ImageDemo.acs","data/webservice/index.html"};
+		Set<String> absPaths=new TreeSet<String>();
+		Collection<URI> uris=new ArrayList<URI>();
+				
+		for(String path : paths) {
+			URI uri=new File(path).toURI();
+			absPaths.add(ResourceRegistry.toString(uri));
+			uris.add(uri);
+		}
+		Set<String> result=ResourceRegistry.toStringSet(uris);
+		assertEquals(absPaths, result);
+	}
+
+	@Test
+	public void testToStringList() throws URISyntaxException {
+		String[] paths={"models/ImageDemo.acs","data/webservice/index.html"};
+		List<String> absPaths=new ArrayList<String>();
+		Collection<URI> uris=new ArrayList<URI>();
+				
+		for(String path : paths) {
+			URI uri=new File(path).toURI();
+			absPaths.add(ResourceRegistry.toString(uri));
+			uris.add(uri);
+		}
+		List<String> result=ResourceRegistry.toStringList(uris);
+		assertEquals(absPaths, result);
+	}
+	
+	@Test
+	public void testToStringCollections() throws URISyntaxException {
+		Collection<URI> uris=ResourceRegistry.getInstance().getModelList(true);
+		
+		String[] pathsArray=ResourceRegistry.toStringArray(uris);
+		System.out.println("toStringArray: "+Arrays.toString(pathsArray));
+
+		List<String> pathsList=ResourceRegistry.toStringList(uris);
+		System.out.println("toStringList: "+pathsList);
+		
+		Set<String> pathsSet=ResourceRegistry.toStringSet(uris);
+		System.out.println("toStringSet: "+pathsSet);		
+	}	
 	
 	/*
 	@Test

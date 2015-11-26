@@ -59,6 +59,7 @@ public class ResourceRegistry {
 	public static final String IMAGES_FOLDER = "images/";
 	
 	private static URI ARE_BASE_URI = null;
+	//currently not used but the idea is to have a base URI for readonly, read/write and temporary data.
 	private static URI ARE_WRITABLE_URI=null;
 	
 	private static boolean OSGI_MODE=true;
@@ -517,6 +518,48 @@ public class ResourceRegistry {
 		return toFile(getAREBaseURI());
 		//return null;
 	}
+	
+	/**
+	 * Returns an array of Strings representing URI paths.
+	 * @param uris
+	 * @return
+	 */
+	public static String[] toStringArray(Collection<URI> uris) {
+		String[] result=new String[uris.size()];
+		int i=0;
+		for(URI uri : uris) {
+			result[i]=ResourceRegistry.toString(uri);
+			i++;
+		}
+		return result;
+	}
+
+	/**
+	 * Returns a Set of Strings representing URI paths.
+	 * @param uris
+	 * @return
+	 */
+	public static Set<String> toStringSet(Collection<URI> uris) {
+		Set<String> result=new TreeSet<String>();	
+		for(URI uri : uris) {
+			result.add(ResourceRegistry.toString(uri));
+		}
+		return result;
+	}
+	
+	/**
+	 * Returns a List of Strings representing URI paths.
+	 * @param uris
+	 * @return
+	 */
+	public static List<String> toStringList(Collection<URI> uris) {
+		List<String> result=new ArrayList<String>();	
+		for(URI uri : uris) {
+			result.add(ResourceRegistry.toString(uri));
+		}
+		return result;
+	}
+	
 
 	/**
 	 * Return the String representation of the given URI. 

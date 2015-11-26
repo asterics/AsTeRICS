@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +35,7 @@ import org.osgi.framework.ServiceRegistration;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
+import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
 import eu.asterics.mw.are.parsers.ModelValidator;
 import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.services.AREServices;
@@ -237,12 +239,11 @@ public class BundleManager implements BundleListener, FrameworkListener
 		}
 	}
 
-	public static final String DEFAULT_BUNDLE_DESCRIPTOR_URL = "/bundle_descriptor.xml";
 	private static final String COMPONENTLIST_DELIM = ";";
 
 	/**
 	 * Checks if the specified bundle contains ASTERICS component(s) or not. The
-	 * test is based on checking if the {@link #DEFAULT_BUNDLE_DESCRIPTOR_URL}
+	 * test is based on checking if the {@link DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI}
 	 * file exists or not (in the root of the enclosing JAR).
 	 *
 	 * @param bundle the bundle to be tested
@@ -251,14 +252,14 @@ public class BundleManager implements BundleListener, FrameworkListener
 	 */
 	public boolean checkForAstericsMetadata(final Bundle bundle)
 	{
-		final URL url = bundle.getResource(DEFAULT_BUNDLE_DESCRIPTOR_URL);
+		final URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
 
 		return checkForAstericsMetadata(url,bundle.getSymbolicName());
 	}
 
 	/**
 	 * Checks if the specified bundle contains ASTERICS component(s) or not. The
-	 * test is based on checking if the {@link #DEFAULT_BUNDLE_DESCRIPTOR_URL}
+	 * test is based on checking if the {@link DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI}
 	 * file exists or not (in the root of the enclosing JAR). 
 	 * 
 	 * @param bundleDescriptorUrl the whole url to the bundle descriptor within the jar.
@@ -291,6 +292,11 @@ public class BundleManager implements BundleListener, FrameworkListener
 	private Map <IComponentType, ServiceRegistration> serviceRegistrations
 		= new HashMap<IComponentType, ServiceRegistration>();
 
+	/**
+	 * Return the OSGi Bundle object for a given componentTypeId. 
+	 * @param componentTypeId
+	 * @return
+	 */
 	public Bundle getBundleFromId(String componentTypeId)
 	{
 		return componentTypeIDToBundle.get(componentTypeId);
@@ -317,19 +323,79 @@ public class BundleManager implements BundleListener, FrameworkListener
 		return bundleList;
 	}
 	
+	
 	/**
-	 * Returns the jar name of that contains the given componentTypeId as it was found in the componentlist cache.
-	 * This is most likely only the relative jar name. To create an absolute use the {@link ResourceRegistry.getResource} method.
+	 * Returns the jar name of the given componentTypeId as it was found in the componentlist cache.
+	 * This is just the relative jar name, to create an absolute one use the {@link ResourceRegistry.getInstance().getResource()} method.
 	 * @param componentTypeId
 	 * @return
 	 */
-	public String getJarNameFromComponentTypeId(String componentTypeId) {
-		return componentTypeIDToJarName.get(componentTypeId);
+	public String getJarNameFromComponentTypeId(String componentTypeId) throws BundleManagementException {
+		String jarName=componentTypeIDToJarName.get(componentTypeId);
+		if(jarName==null) {
+			throw new BundleManagementException("Could not find bundle jar name for componentTypeId <"+componentTypeId+">");
+		}
+		return jarName;
 	}
 	
+	/**
+	 * Returns the jar name URI for the given componentTypeId.
+	 * @param componentTypeId
+	 * @return
+	 * @throws BundleManagementException
+	 */
+	public URI getJarNameURIFromComponentTypeId(String componentTypeId) throws BundleManagementException {
+		String jarName=getJarNameFromComponentTypeId(componentTypeId);
+		try {
+			URI jarNameURI=ResourceRegistry.getInstance().getResource(jarName, RES_TYPE.JAR);
+			return jarNameURI;
+		} catch (URISyntaxException e) {
+			throw new BundleManagementException(e.getMessage());
+		}				
+	}
+	
+	/**
+	 * Returns the URI of the bundle_descritpor.xml file inside the component jar file.
+	 * @param componentTypeId
+	 * @return
+	 * @throws BundleManagementException
+	 */
+	public URI getBundleDescriptorURIFromComponentTypeId(String componentTypeId) throws BundleManagementException {
+		URI jarNameURI=getJarNameURIFromComponentTypeId(componentTypeId);
+		URI bundleDescriptorURI=ResourceRegistry.toJarInternalURI(jarNameURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+		return bundleDescriptorURI;
+	}	
+	
+	/**
+	 * Returns a Set of component jar names of the currently installed components. 
+	 * @return
+	 */
+	public Set<String> getInstalledComponentJarNames() {		
+		final Set<IComponentType> componentTypeSet= componentRepository.getInstalledComponentTypes();
+		HashSet<String> jarNameSet = new HashSet<String>();
+
+		for(final IComponentType componentType : componentTypeSet) {
+			String jarName;
+			try {
+				jarName = getJarNameFromComponentTypeId(componentType.getID());
+				jarNameSet.add(jarName);
+			} catch (BundleManagementException e) {
+				// TODO Auto-generated catch block
+				logger.warning(e.getMessage());
+			}
+		}
+
+		return jarNameSet;
+	}
+	
+	/**
+	 * Loads the classes of the component and registers the given component in the {@link ComponentRepository}.
+	 * @param bundle
+	 * @return
+	 */
 	private String registerBundle(final Bundle bundle)
 	{
-		final URL url = bundle.getResource(DEFAULT_BUNDLE_DESCRIPTOR_URL);
+		final URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
 		String componentTypeIDs = ""; 
 
 		try
@@ -392,6 +458,10 @@ public class BundleManager implements BundleListener, FrameworkListener
 		return(componentTypeIDs);
 	}
 
+	/**
+	 * Unregisters the given component in the {@link ComponentRepository}.
+	 * @param bundle
+	 */
 	private void unregisterBundle(final Bundle bundle)
 	{
 		try
@@ -519,106 +589,6 @@ public class BundleManager implements BundleListener, FrameworkListener
 			}
 		}
 		notifyAREEventListeners ("postBundlesInstalled");
-
-
-		/*
-		
-		if (mode==MODE_DEFAULT)
-		{
-			for(String servicesFile : SERVICES_FILES.split(SERVICES_FILES_DELIM)) {
-				String curFile=SERVICES_LOCATION+"/"+servicesFile;
-				logger.fine("Loading services from file: "+curFile);
-				try(BufferedReader in = new BufferedReader(new FileReader(curFile));) {
-					while ( (path = in.readLine()) != null)
-					{
-						
-						try 
-						{	
-							File directory = new File (".");				
-							bundle = bundleContext.installBundle("file:///"+directory.getCanonicalPath()+"/"+path);
-							bundle.start();
-						}
-						catch (Throwable t) 
-						{
-							t.printStackTrace();
-							showBundleInstallErrorMessage (bundle,path,t.getMessage());
-							continue;
-						}
-					}
-					in.close();
-				} catch (FileNotFoundException e) {
-					logger.severe(this.getClass().getName()+"." +
-							"The services file is missing!");
-				} catch (IOException e) {
-					logger.severe(this.getClass().getName()+"." +
-							"Error while reading the services file!");
-				}
-			}
-		}
-		
-		BufferedWriter out=null;
-		BufferedReader in=null;
-		try {
-			if ((mode==MODE_DEFAULT) && (new File(LOADER_MINIMAL_LOCATION).exists()))
-			{
-				System.out.println("*** Bundle install mode: minimal");
-				in = new BufferedReader(new FileReader(LOADER_MINIMAL_LOCATION));
-			}
-			else
-			{
-				System.out.println("*** Bundle install mode: all");
-
-				in = new BufferedReader(new FileReader(LOADER_LOCATION));
-				if (mode== MODE_GET_ALL_COMPONENTS)
-				   out = new BufferedWriter(new FileWriter(LOADER_COMPONENTLIST_LOCATION));
-			}
-			
-			while ( (path = in.readLine()) != null)
-			{
-				try 
-				{	
-			
-					File directory = new File (".");
-					System.out.println("*** installing bundle: "+directory.getCanonicalPath()+"/"+path);
-					
-					bundle = bundleContext.installBundle("file:///"+directory.getCanonicalPath()+"/"+path);
-					if(checkForAstericsMetadata(bundle))
-					{
-						String componentTypeIDs =registerBundle(bundle);
-						if (mode== MODE_GET_ALL_COMPONENTS)
-							out.write(path+componentTypeIDs+"\n");
-					}
-				}
-				catch (Throwable t) 
-				{
-					showBundleInstallErrorMessage(bundle,path,t.getMessage());
-					continue;
-				}
-			}
-			in.close();
-			if (mode== MODE_GET_ALL_COMPONENTS)
-				out.close();
-			notifyAREEventListeners ("postBundlesInstalled");				
-		} catch (FileNotFoundException e) {
-			logger.severe(this.getClass().getName()+"." +
-			"The loader file is missing!");
-		} catch (IOException e) {
-			logger.severe(this.getClass().getName()+"." +
-			"Error while reading the loader file!");
-		} finally {
-			if(in!=null) {
-				try {
-					in.close();
-				} catch (IOException e) {
-				}
-			}
-			if(out!=null) {
-				try {
-					out.close();
-				} catch (IOException e) {					
-				}				
-			}
-		}*/
 	}
 	
 	/**
@@ -703,7 +673,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 
 	/**
 	 * Checks if the specified bundle URI contains an OSGi service. The
-	 * test is based on checking if the {@link #DEFAULT_BUNDLE_DESCRIPTOR_URL}
+	 * test is based on checking if the {@link DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI}
 	 * file does not exist and if a MANIFEST entry 'Bundle-Name' can be found. 
 	 * @param serviceBundleURI The URI to the jar
 	 * @return
@@ -711,7 +681,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 	public boolean checkForServiceBundle(URI serviceBundleURI) {
 		try {		
 			//String inputFilePath = "jar:file://" + serviceBundleURI.getPath() + "!/bundle_descriptor.xml" ;
-			URI jarInternalURI=ResourceRegistry.toJarInternalURI(serviceBundleURI, "/bundle_descriptor.xml");
+			URI jarInternalURI=ResourceRegistry.toJarInternalURI(serviceBundleURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
 
 			if(checkForAstericsMetadata(jarInternalURI.toURL(), jarInternalURI.toString())) {
 				//if it has a bundle_descirptor it can only be a component (plugin).
@@ -739,6 +709,9 @@ public class BundleManager implements BundleListener, FrameworkListener
 		return false;
 	}
 
+	/**
+	 * Uninstalls all bundles.
+	 */
 	public void uninstall() 
 	{
 			Bundle[] bundles = bundleContext.getBundles();
