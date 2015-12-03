@@ -48,8 +48,11 @@ public class ServerRepository {
 			add( new RestFunction("PUT", "/runtime/model/state/pause", "", "text/plain", "",
 					"Pauses the model") );
 			
+			add( new RestFunction("GET", "/runtime/model/state", "", "text/plain", "",
+					"Returns the state of the deployed model") );
+			
 			add( new RestFunction("PUT", "/runtime/model/autorun/{filename}", "", "text/plain", "",
-					"Deploys ans starts the model contained in the given filename") );
+					"Deploys and starts the model contained in the given filename") );
 			
 			add( new RestFunction("GET", "/runtime/model/components", "", "application/json", "",
 					"Retrieves all the components in the deployed model") );
@@ -78,14 +81,11 @@ public class ServerRepository {
 			add( new RestFunction("GET", "/restfunctions", "", "text/plain", "",
 					"Retrieves a list with all the available rest functions") );
 			
-			add( new RestFunction("GET", "/storage/components/installed", "", "application/json", "",
-					"Retrieves the components which are currently installed in the ARE") );
-			
-			add( new RestFunction("GET", "/storage/components/installed/descriptors", "", "text/xml", "",
-					"Returns an xml string containing the descriptors of the installed components") );
-			
-			add( new RestFunction("GET", "/storage/components/created/descriptors", "", "text/xml", "",
+			add( new RestFunction("GET", "/storage/components/collection", "", "text/xml", "",
 					"Returns an xml string containing the descriptors of the created components") );
+			
+			add( new RestFunction("GET", "/storage/components", "", "text/xml", "",
+					"Returns a list with all the component descriptors contained in the ARE repository") );
 			
 			add( new RestFunction("GET", "/events/subscribe", "", "", "",
 					"Opens a persistent connection with ARE to use it for Server Sent Events") );
