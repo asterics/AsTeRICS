@@ -128,13 +128,13 @@
 			function DELETE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
-			//downloadComponentCollection
-			function DCC() {
-				downloadComponentCollection(DCC_successCallback, DCC_errorCallback);
+			//getRuntimeComponents
+			function GRC() {
+				getRuntimeComponents(GRC_successCallback, GRC_errorCallback);
 			}
 						
-			function DCC_successCallback(data, HTTPstatus) { alert(data); }
-			function DCC_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			function GRC_successCallback(data, HTTPstatus) { alert(data); }
+			function GRC_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 
 			//listStoredModels
@@ -144,78 +144,66 @@
 						
 			function LSM_successCallback(data, HTTPstatus) { alert(data); }
 			function LSM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-
 			
-			//getInstalledComponents
-			function INSTALLED_COMPONENTS() {
-				getInstalledComponents(INSTALLED_COMPONENTS_successCallback, INSTALLED_COMPONENTS_errorCallback);
+			
+			//getComponentsCollection
+			function COMPONENTS_COLLECTION() {
+				getComponentsCollection(COMPONENTS_COLLECTION_successCallback, COMPONENTS_COLLECTION_errorCallback);
 			}
 									
-			function INSTALLED_COMPONENTS_successCallback(data, HTTPstatus) {
-				console.log(JSON.stringify(data[0]));
-			}
-			function INSTALLED_COMPONENTS_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
-			
-			
-			//getInstalledComponentsDescriptor
-			function INSTALLED_COMPONENTS_DSCR() {
-				getInstalledComponentsDescriptor(INSTALLED_COMPONENTS_DSCR_successCallback, INSTALLED_COMPONENTS_DSCR_errorCallback);
-			}
-									
-			function INSTALLED_COMPONENTS_DSCR_successCallback(data, HTTPstatus) {
+			function COMPONENTS_COLLECTION_successCallback(data, HTTPstatus) {
 				console.log(data);
 			}
-			function INSTALLED_COMPONENTS_DSCR_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
-			
-			
-			//getCreatedComponentsDescriptor
-			function CREATED_COMPONENTS_DSCR() {
-				getCreatedComponentsDescriptor(CREATED_COMPONENTS_DSCR_successCallback, CREATED_COMPONENTS_DSCR_errorCallback);
-			}
-									
-			function CREATED_COMPONENTS_DSCR_successCallback(data, HTTPstatus) {
-				console.log(data);
-			}
-			function CREATED_COMPONENTS_DSCR_errorCallback(HTTPstatus, AREerrorMessage) {
+			function COMPONENTS_COLLECTION_errorCallback(HTTPstatus, AREerrorMessage) {
 				console.log(AREerrorMessage);
 			}
-	
 			
-			//getComponentPropertyKeys
-			function GCPK() {
-				var componentId = document.getElementById("GCPKid").value;
-				getComponentPropertyKeys(GCPK_successCallback, GCPK_errorCallback, componentId);
+					
+			//getComponents
+			function COMPONENTS() {
+				getComponents(COMPONENTS_successCallback, COMPONENTS_errorCallback);
+			}
+									
+			function COMPONENTS_successCallback(data, HTTPstatus) {
+				console.log(data);
+				//console.log(data[0]); //get a single component
+			}
+			function COMPONENTS_errorCallback(HTTPstatus, AREerrorMessage) {
+				console.log(AREerrorMessage);
+			}
+			
+			
+			//getRuntimeComponentPropertyKeys
+			function GRCPK() {
+				var componentId = document.getElementById("GRCPKid").value;
+				getRuntimeComponentPropertyKeys(GRCPK_successCallback, GRCPK_errorCallback, componentId);
 			}
 						
-			function GCPK_successCallback(data, HTTPstatus) { alert(data[0]); }
-			function GCPK_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			function GRCPK_successCallback(data, HTTPstatus) { alert(data); }
+			function GRCPK_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 
-			//getComponentProperty
-			function GCP() {
-				var componentId = document.getElementById("GCPid").value;
-				var componentKey = document.getElementById("GCPkey").value;
-				getComponentProperty(GCP_successCallback, GCP_errorCallback, componentId, componentKey);
+			//getRuntimeComponentProperty
+			function GRCP() {
+				var componentId = document.getElementById("GRCPid").value;
+				var componentKey = document.getElementById("GRCPkey").value;
+				getRuntimeComponentProperty(GRCP_successCallback, GRCP_errorCallback, componentId, componentKey);
 			}
 						
-			function GCP_successCallback(data, HTTPstatus) { alert(data); }
-			function GCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			function GRCP_successCallback(data, HTTPstatus) { alert(data); }
+			function GRCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
-			//setComponentProperty
-			function SCP() {
-				var componentId = document.getElementById("SCPid").value;
-				var componentKey = document.getElementById("SCPkey").value;
-				var componentValue = document.getElementById("SCPvalue").value;
-				setComponentProperty(SCP_successCallback, SCP_errorCallback, componentId, componentKey, componentValue);
+			//setRuntimeComponentProperty
+			function SRCP() {
+				var componentId = document.getElementById("SRCPid").value;
+				var componentKey = document.getElementById("SRCPkey").value;
+				var componentValue = document.getElementById("SRCPvalue").value;
+				setRuntimeComponentProperty(SRCP_successCallback, SRCP_errorCallback, componentId, componentKey, componentValue);
 			}
 						
-			function SCP_successCallback(data, HTTPstatus) { alert(data); }
-			function SCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			function SRCP_successCallback(data, HTTPstatus) { alert(data); }
+			function SRCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 				
 			
 			//getRestFunctions
@@ -224,7 +212,8 @@
 			}
 						
 			function FUNCTIONS_successCallback(data, HTTPstatus) {
-				console.log(JSON.stringify(data[0]));
+				console.log(JSON.stringify(data));
+				//console.log(data[0]); //get single function
 			}
 			function FUNCTIONS_errorCallback(HTTPstatus, AREerrorMessage) {
 				alert(AREerrorMessage);
@@ -236,16 +225,16 @@
 				//var eventType = document.getElementById("subid").value;
 				var selects = document.getElementById("eTypesS");
 				var eventType = selects.options[selects.selectedIndex].value;
-				subscribe(SUBSCIBE_EVENTS_successCallback, SUBSCIBE_EVENTS_errorCallback, eventType);
+				subscribe(SUBSCRIBE_EVENTS_successCallback, SUBSCRIBE_EVENTS_errorCallback, eventType);
 			}
 					
-			function SUBSCIBE_EVENTS_successCallback(data, HTTPstatus) {
+			function SUBSCRIBE_EVENTS_successCallback(data, HTTPstatus) {
 				var eventsBox = document.getElementById("eventsBox");
 				eventsBox.innerHTML = "SSE event: " + data; 
 				console.log("SSE event: " + data);
 			}
 			
-			function SUBSCIBE_EVENTS_errorCallback(HTTPstatus, AREerrorMessage) {
+			function SUBSCRIBE_EVENTS_errorCallback(HTTPstatus, AREerrorMessage) {
 				var eventsBox = document.getElementById("eventsBox");
 				eventsBox.innerHTML = data;
 				console.log(AREerrorMessage);
@@ -288,14 +277,11 @@
 		<button onclick="DELETE()"> Delete model </button>
 		<input placeholder="filename" type="text" id="DELETEfilename"/>
 		<br/> <br/>
-
-		<button onclick="INSTALLED_COMPONENTS()"> Get installed components </button>
+		
+		<button onclick="COMPONENTS_COLLECTION()"> Get components collection </button>
 		<br/> <br/>
 		
-		<button onclick="INSTALLED_COMPONENTS_DSCR()"> Get installed components descriptor </button>
-		<br/> <br/>
-		
-		<button onclick="CREATED_COMPONENTS_DSCR()"> Get created components descriptor </button>
+		<button onclick="COMPONENTS()"> Get components </button>
 		<br/> <br/>
 		
 		<hr>
@@ -317,22 +303,22 @@
 		<input placeholder="filename" type="text" id="DepMFfilename"/>
 		<br/> <br/>
 				
-		<button onclick="DCC()"> Download model's components </button>
+		<button onclick="GRC()"> Get runtime components </button>
 		<br/> <br/>
 		
-		<button onclick="GCPK()"> Get component property keys </button>
-		<input placeholder="componentId" type="text" id="GCPKid"/>
+		<button onclick="GRCPK()"> Get runtime component property keys </button>
+		<input placeholder="componentId" type="text" id="GRCPKid"/>
 		<br/> <br/>
 		
-		<button onclick="GCP()"> Get component property </button>
-		<input placeholder="componentId" type="text" id="GCPid"/>
-		<input placeholder="componentId"type="text" id="GCPkey"/>
+		<button onclick="GRCP()"> Get runtime component property </button>
+		<input placeholder="componentId" type="text" id="GRCPid"/>
+		<input placeholder="componentId"type="text" id="GRCPkey"/>
 		<br/> <br/>
 		
-		<button onclick="SCP()"> Set component property </button>
-		<input placeholder="componentId" type="text" id="SCPid"/>
-		<input placeholder="componentId" type="text" id="SCPkey"/>
-		<input placeholder="componentKeyValue" type="text" id="SCPvalue"/>
+		<button onclick="SRCP()"> Set runtime component property </button>
+		<input placeholder="componentId" type="text" id="SRCPid"/>
+		<input placeholder="componentId" type="text" id="SRCPkey"/>
+		<input placeholder="componentKeyValue" type="text" id="SRCPvalue"/>
 		<br/> <br/>
 		
 		<hr>

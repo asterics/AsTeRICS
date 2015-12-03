@@ -190,94 +190,7 @@ public class AsapiSupport
 
 		return componentTypes;
 	}
-	
 
-	/**
-	 * Returns a String containing the descriptors
-	 * for every installed AsTeRiCS component.
-	 *
-	 * @return a string containing all the descriptors and null if an error has
-	 * occurred
-	 */
-	public String getInstalledComponentsDescriptor() {
-		String response = "";
-		
-		/*
-		URL areLocation = this.getClass().getProtectionDomain().getCodeSource().getLocation();
-		
-		//get bin folder
-		File areJar = new File(areLocation.getFile());
-        File bin = areJar.getParentFile();
-        if (!bin.exists()) {
-        	logger.fine("Cannot find bin folder.");
-        	return null;
-        }
-        
-		//get asterics bundles
-		File [] componentJars = bin.listFiles(new FilenameFilter() {
-		    @Override
-		    public boolean accept(File dir, String name) {
-		    	return (name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor")) 
-		    			&& name.endsWith("jar");
-		    }
-		});
-*/
-		response += "<?xml version=\"1.0\"?>";
-		response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
-		
-		//read all bundle descriptors
-		/*
-		Set<String> installedComponentJarNames = DeploymentManager.instance.getBundleManager().getInstalledComponentJarNames();
-		for (int i=0;i<componentJars.length;i++) {
-			try {
-				File currentJarFile = new File( componentJars[i].getAbsolutePath() );
-				
-				if (!installedComponentJarNames.contains(currentJarFile.getName())) {
-					continue;
-				}
-				
-				String inputFilePath = "jar:file:\\" + currentJarFile.getAbsolutePath() + "!/bundle_descriptor.xml" ;
-				InputStream inputStream = null;
-				URL inputURL = null;
-
-				inputURL = new URL(inputFilePath);
-				JarURLConnection conn = (JarURLConnection)inputURL.openConnection();
-				inputStream = conn.getInputStream();
-				
-				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-				String bundle_descriptor = "", line;
-				while ((line = bufferedReader.readLine()) != null) {
-					bundle_descriptor += line + "\n";
-				}
-
-				bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
-				bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
-				bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");
-				
-				response += bundle_descriptor;
-				
-			} catch (Exception ex) {
-				System.err.println("ERROR when trying to retrieve the bundle descriptors.");
-			}
-		}*/
-		Set<IComponentType> componentTypeSet= componentRepository.getInstalledComponentTypes();
-
-		for(IComponentType componentType : componentTypeSet) {
-			try {
-				String componentTypeId=componentType.getID();
-				URI bundleDescriptorURI=DeploymentManager.instance.getBundleManager().getBundleDescriptorURIFromComponentTypeId(componentTypeId);
-								
-				response += getFormattedBundleDescriptorStringOfComponentTypeId(bundleDescriptorURI.toURL());
-			} catch (BundleManagementException | IOException e) {
-				//What if it fails?? just skip this entry
-				logger.warning(e.getMessage());
-			}
-		}
-		
-		response += "</componentTypes>";
-		
-		return response;
-	}
 	
 	/**
 	 * Returns a formatted XML String of the componentType(s) in the bundle descriptor. 
@@ -307,74 +220,18 @@ public class AsapiSupport
 	
 	
 	/**
-	 * Returns an xml String containing the bundle descriptors
-	 * for every created AsTeRiCS component. This function searches in the bin/ARE folder
+	 * Returns an xml String containing the component collection (bundle descriptors
+	 * of every AsTeRiCS component). This function searches in the bin/ARE folder
 	 * to discover the created components. 
 	 *
-	 * @return an xml string containing all the bundle descriptors and null if an error
-	 * has occured.
+	 * @return an xml string containing all the bundle descriptors (some parts of the descriptor are removed)
+	 * and null if an error has occurred.
 	 */
-	public String getCreatedComponentsDescriptors() {
+	public String getComponentsCollection() {
 		String response = "";
 		
-		/*
-		URL areLocation = this.getClass().getProtectionDomain().getCodeSource().getLocation();
-		
-		//get bin folder
-		File areJar = new File(areLocation.getFile());
-        File bin = areJar.getParentFile();
-        if (!bin.exists()) {
-        	logger.fine("Cannot find bin folder.");
-        	return null;
-        }
-        
-		//get asterics bundles
-		File [] componentJars = bin.listFiles(new FilenameFilter() {
-		    @Override
-		    public boolean accept(File dir, String name) {
-		    	return (name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor")) 
-		    			&& name.endsWith("jar");
-		    }
-		});
-		*/
 		response += "<?xml version=\"1.0\"?>";
 		response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
-		
-		/*
-		//read all bundle descriptors
-		for (int i=0;i<componentJars.length;i++) {
-			try {
-				File currentJarFile = new File( componentJars[i].getAbsolutePath() );
-				
-				String inputFilePath = "jar:file:\\" + currentJarFile.getAbsolutePath() + "!/bundle_descriptor.xml" ;
-				InputStream inputStream = null;
-				URL inputURL = null;
-
-				inputURL = new URL(inputFilePath);
-				JarURLConnection conn = (JarURLConnection)inputURL.openConnection();
-				inputStream = conn.getInputStream();
-				
-				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-				String bundle_descriptor = "", line;
-				while ((line = bufferedReader.readLine()) != null) {
-					bundle_descriptor += line + "\n";
-				}
-
-				bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
-				bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
-				bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");
-				
-				response += bundle_descriptor;
-				
-			} catch (Exception ex) {
-				System.err.println("ERROR when trying to retrieve the bundle descriptors.");
-			}
-		}
-		*/
-		//Should we use list of really installable packages for this platform? BundleManager does a real OSGi install here,
-		//which skips all bundles that don't work for this platform (e.g. SpeechProcessor for Linux)
-		//Otherwise we could simply return the list of all bundle jars asking the ResourceRegistry		
-		//ResourceRegistry.getInstance().getComponentJarList(false);
 		
 		List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
 		for (Bundle bundle : bundleList)
@@ -688,6 +545,13 @@ public class AsapiSupport
 
 	}
 
+	/**
+	 * Retrieves the descriptors of AsTeRiCS bundles.
+	 * 
+	 * @return A {@link List} of {@link String} which contains all the bundle descriptors.
+	 * 
+	 * @throws AREAsapiException
+	 */
 	public List<String> getBundelDescriptors() throws AREAsapiException {		
 		List<String> res=new ArrayList<String>();
 		
@@ -711,6 +575,7 @@ public class AsapiSupport
 		return res;
 	}
 
+	
 	/**
 	 * Deploys a new empty model into the ARE. In essence, this is equivalent
 	 * to creating an empty model and deploying it using

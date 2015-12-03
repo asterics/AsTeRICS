@@ -178,7 +178,7 @@ function deployModelFromFile(successCallback, errorCallback, filename) {
 }
 
 
-function downloadComponentCollection(successCallback, errorCallback) {
+function getRuntimeComponents(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
 		url: _baseURI + "runtime/model/components",
@@ -197,7 +197,7 @@ function downloadComponentCollection(successCallback, errorCallback) {
 }
 
 
-function getComponentPropertyKeys(successCallback, errorCallback, componentId) {
+function getRuntimeComponentPropertyKeys(successCallback, errorCallback, componentId) {
 	
 	if ( componentId == "" ) return;
 	
@@ -219,7 +219,7 @@ function getComponentPropertyKeys(successCallback, errorCallback, componentId) {
 }
 
 
-function getComponentProperty(successCallback, errorCallback, componentId, componentKey) {
+function getRuntimeComponentProperty(successCallback, errorCallback, componentId, componentKey) {
 	
 	if ( (componentId == "") || (componentKey == "")) return;
 	
@@ -240,7 +240,7 @@ function getComponentProperty(successCallback, errorCallback, componentId, compo
 }
 
 
-function setComponentProperty(successCallback, errorCallback, componentId, componentKey, componentValue) {
+function setRuntimeComponentProperty(successCallback, errorCallback, componentId, componentKey, componentValue) {
 	
 	if ( (componentId == "") || (componentKey == "") || (componentValue == "") ) return;
 	
@@ -353,16 +353,34 @@ function listStoredModels(successCallback, errorCallback) {
 }
 
 
-function getInstalledComponents(successCallback, errorCallback) {
+function getComponentsCollection(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "storage/components/installed",
+		url: _baseURI + "storage/components/collection",
+		datatype: "text/xml",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(data, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getComponents(successCallback, errorCallback) {
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "storage/components",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
 				function (data, textStatus, jqXHR){
-					jsonString = jqXHR.responseText;
-					successCallback(JSON.parse(jsonString), textStatus);
+					jsonObject = JSON.parse(jqXHR.responseText);
+					successCallback(jsonObject[0], textStatus);
 				},
 		error: 
 				function (jqXHR, textStatus, errorThrown) {
@@ -370,43 +388,6 @@ function getInstalledComponents(successCallback, errorCallback) {
 				}
 	});
 }
-
-
-function getInstalledComponentsDescriptor(successCallback, errorCallback) {
-	$.ajax({
-		type: "GET",
-		url: _baseURI + "storage/components/installed/descriptors",
-		datatype: "text/xml",
-		crossDomain: true,
-		success:
-				function (data, textStatus, jqXHR){
-					successCallback(data, textStatus);
-				},
-		error: 
-				function (jqXHR, textStatus, errorThrown) {
-					errorCallback(errorThrown,jqXHR.responseText);
-				}
-	});
-}
-
-
-function getCreatedComponentsDescriptor(successCallback, errorCallback) {
-	$.ajax({
-		type: "GET",
-		url: _baseURI + "storage/components/created/descriptors",
-		datatype: "text/xml",
-		crossDomain: true,
-		success:
-				function (data, textStatus, jqXHR){
-					successCallback(data, textStatus);
-				},
-		error: 
-				function (jqXHR, textStatus, errorThrown) {
-					errorCallback(errorThrown,jqXHR.responseText);
-				}
-	});
-}
-
 
 
 /**********************
@@ -452,7 +433,7 @@ function subscribe(successCallback, errorCallback, eventsType) {
 	}
 	eventSource = new EventSource(_baseURI + "events/subscribe"); // Connecting to SSE service
 	_eventSourceMap.add(eventsType, eventSource);
-
+	
 	//adding listener for specific events
 	eventSource.addEventListener(eventsType, function(e) {
 		successCallback(e.data, 200);
@@ -465,8 +446,17 @@ function subscribe(successCallback, errorCallback, eventsType) {
 
 	// Error handler	
 	eventSource.onerror = function (e) {
-		errorCallback(400, e.data);
-		console.log("Error occured");
+		switch(e.target.readyState) {
+			case EventSource.CONNECTING:	
+				errorCallback(400, 'reconnecting');
+				break;
+			case EventSource.CLOSED:		
+				errorCallback(400, 'connectionLost');
+				break;
+			default:
+				errorCallback(400, 'someErrorOccurred');
+				console.log("Error occured");
+		}
 	};
 }
 
