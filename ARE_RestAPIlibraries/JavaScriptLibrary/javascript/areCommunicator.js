@@ -178,7 +178,7 @@ function deployModelFromFile(successCallback, errorCallback, filename) {
 }
 
 
-function getRuntimeComponents(successCallback, errorCallback) {
+function getRuntimeComponentIds(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
 		url: _baseURI + "runtime/model/components",
@@ -353,7 +353,7 @@ function listStoredModels(successCallback, errorCallback) {
 }
 
 
-function getComponentsCollection(successCallback, errorCallback) {
+function getComponentDescriptorsAsXml(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
 		url: _baseURI + "storage/components/collection",
@@ -371,7 +371,7 @@ function getComponentsCollection(successCallback, errorCallback) {
 }
 
 
-function getComponents(successCallback, errorCallback) {
+function getComponentDescriptorsAsJSON(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
 		url: _baseURI + "storage/components",
