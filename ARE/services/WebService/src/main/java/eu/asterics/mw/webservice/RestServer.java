@@ -207,7 +207,7 @@ public class RestServer {
     }
 	
 	
-	@Path("/runtime/model/components")
+	@Path("/runtime/model/components/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getRuntimeComponentIds() {
@@ -370,7 +370,7 @@ public class RestServer {
     }
 	
 	
-	@Path("/storage/models")
+	@Path("/storage/models/names")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String listAllStoredModels() {    	
@@ -394,7 +394,7 @@ public class RestServer {
     }
 	
 
-	@Path("/storage/components/collection")
+	@Path("/storage/components/descriptors/xml")
 	@GET
 	@Produces(MediaType.TEXT_XML)
 	public String getComponentDescriptorsAsXml() {
@@ -417,7 +417,7 @@ public class RestServer {
 	}
 	
 	
-	@Path("/storage/components")
+	@Path("/storage/components/descriptors/json")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getComponentDescriptorsAsJSON() {

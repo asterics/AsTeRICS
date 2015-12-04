@@ -181,7 +181,7 @@ function deployModelFromFile(successCallback, errorCallback, filename) {
 function getRuntimeComponentIds(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/components",
+		url: _baseURI + "runtime/model/components/ids",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -337,7 +337,7 @@ function deleteModelFromFile(successCallback, errorCallback, filename) {
 function listStoredModels(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "storage/models",
+		url: _baseURI + "storage/models/names",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -356,7 +356,7 @@ function listStoredModels(successCallback, errorCallback) {
 function getComponentDescriptorsAsXml(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "storage/components/collection",
+		url: _baseURI + "storage/components/descriptors/xml",
 		datatype: "text/xml",
 		crossDomain: true,
 		success:
@@ -374,7 +374,7 @@ function getComponentDescriptorsAsXml(successCallback, errorCallback) {
 function getComponentDescriptorsAsJSON(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "storage/components",
+		url: _baseURI + "storage/components/descriptors/json",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
