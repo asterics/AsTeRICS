@@ -85,5 +85,6 @@ public class Kinect extends J4KSDK{
         astericskinect.setJointPointWrist(skeleton.get3DJointX(Skeleton.WRIST_LEFT), skeleton.get3DJointY(Skeleton.WRIST_LEFT), skeleton.get3DJointZ(Skeleton.WRIST_LEFT), 
         		skeleton.get3DJointX(Skeleton.WRIST_RIGHT), skeleton.get3DJointY(Skeleton.WRIST_RIGHT), skeleton.get3DJointZ(Skeleton.WRIST_RIGHT));
         astericskinect.setJointPointHead(skeleton.get3DJointX(Skeleton.HEAD), skeleton.get3DJointY(Skeleton.HEAD), skeleton.get3DJointZ(Skeleton.HEAD));
-	}
+	}	
+	
 }

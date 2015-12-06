@@ -37,7 +37,7 @@ public class ResponseFilter implements ContainerResponseFilter {
 	    	}
 	    	else if (bodyContent.startsWith("{'error':")) {
 	    		error = true;
-	    		errorMessage = bodyContent.substring(9, bodyContent.length()-2);
+	    		errorMessage = bodyContent.substring(10, bodyContent.length()-2);
 	    	}
 	    	
 	    	if (error) {

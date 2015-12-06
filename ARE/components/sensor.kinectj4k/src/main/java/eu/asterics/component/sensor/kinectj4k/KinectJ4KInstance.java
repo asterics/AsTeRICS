@@ -26,24 +26,15 @@
  */
 
 package eu.asterics.component.sensor.kinectj4k;
-import java.util.logging.Logger;
-
-
-//import j4k-natives-windows-i586;
-import edu.ufl.digitalworlds.gui.DWApp;
 import edu.ufl.digitalworlds.j4k.J4KSDK;
-
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 
 /**
  * 
@@ -134,16 +125,8 @@ public class KinectJ4KInstance extends AbstractRuntimeComponentInstance
     public KinectJ4KInstance()
     {
     	//setLoadingProgress("Intitializing Kinect...",20);
-		kinect1=new Kinect(this);
-		//kinect1.start(J4KSDK.SKELETON);
-		
-		if(!kinect1.start(J4KSDK.COLOR|J4KSDK.DEPTH|J4KSDK.UV|J4KSDK.XYZ|J4KSDK.SKELETON))
-		{
-			DWApp.showErrorDialog("ERROR", "<html><center><br>ERROR: The Kinect #1 device could not be initialized.<br><br>1. Check if the Microsoft's Kinect SDK was succesfully installed on this computer.<br> 2. Check if the Kinect is plugged into a power outlet.<br>3. Check if the Kinect is connected to a USB port of this computer.</center>");
-			//System.exit(0); 
-		}
-		else{
-		}
+		//kinect1.start(J4KSDK.SKELETON);		
+    	kinect1=new Kinect(this);
     }
 
    /**
@@ -469,8 +452,8 @@ public class KinectJ4KInstance extends AbstractRuntimeComponentInstance
       @Override
       public void start()
       {
-
           super.start();
+          initKinect();
       }
 
      /**
@@ -479,6 +462,7 @@ public class KinectJ4KInstance extends AbstractRuntimeComponentInstance
       @Override
       public void pause()
       {
+    	  releaseKinect();
           super.pause();
       }
 
@@ -489,6 +473,7 @@ public class KinectJ4KInstance extends AbstractRuntimeComponentInstance
       public void resume()
       {
           super.resume();
+          initKinect();
       }
 
      /**
@@ -497,8 +482,22 @@ public class KinectJ4KInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
-    	  kinect1.stop();
-          super.stop();
+    	  releaseKinect();
+    	  super.stop();
+      }
+      
+      private void initKinect() {
+    	  releaseKinect();
+          if(!kinect1.start(J4KSDK.COLOR|J4KSDK.DEPTH|J4KSDK.UV|J4KSDK.XYZ|J4KSDK.SKELETON))
+          {
+        	  AstericsErrorHandling.instance.reportError(this, "<html><center><br>ERROR: The Kinect #1 device could not be initialized.<br><br>1. Check if the Microsoft's Kinect SDK was succesfully installed on this computer.<br> 2. Check if the Kinect is plugged into a power outlet.<br>3. Check if the Kinect is connected to a USB port of this computer.</center>");
+          }
+      }
+      
+      private void releaseKinect() {
+    	  if(kinect1!=null) {
+    		  kinect1.stop();
+    	  }
       }
       
       public void setJointPointsFoot(double FootLeftX, double FootLeftY, double FootLeftZ, double FootRightX, double FootRightY, double FootRightZ)
@@ -588,6 +587,7 @@ public class KinectJ4KInstance extends AbstractRuntimeComponentInstance
       }
       public void setJointPointHead (double HeadX, double HeadY, double HeadZ)
       {
+    	 //System.out.println("x="+HeadX+", y="+HeadY+", z="+HeadZ);
      	 this.opHeadX.sendData(HeadX);
      	 this.opHeadY.sendData(HeadY);
      	 this.opHeadZ.sendData(HeadZ);  
