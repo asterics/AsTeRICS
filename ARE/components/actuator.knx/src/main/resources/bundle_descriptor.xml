@@ -8,7 +8,7 @@
         <singleton>false</singleton>
         <description>Enables the ARE to communicate with a KNX network</description>
         <ports>
-			<inputPort id="command">
+			<inputPort id="actionString">
 				<description>command string to send a KNX command</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
@@ -44,45 +44,91 @@
 				<dataType>double</dataType>
 			</inputPort>
 
-
+			<outputPort id="data1">
+				<description>the output value, from the group address groupAddressOutput1 </description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="data2">
+				<description>the output value, from the group address groupAddressOutput2</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="data3">
+				<description>the output value, from the group address groupAddressOutput3</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="data4">
+				<description>the output value, from the group address groupAddressOutput4</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="data5">
+				<description>the output value, from the group address groupAddressOutput5</description>
+				<dataType>string</dataType>
+			</outputPort>
+			
+			<outputPort id="data6">
+				<description>the output value, from the group address groupAddressOutput6</description>
+				<dataType>string</dataType>
+			</outputPort>
         </ports>
 		<events>
 		
             <eventTriggererPort id="event_out_1">
-                <description>The default event port where the generated events are produced</description>
+                <description>Event port, triggered if any action on the group address is received (property: groupAddressTrigger1)</description>
             </eventTriggererPort>
             <eventTriggererPort id="event_out_2">
-                <description>The default event port where the generated events are produced</description>
+                <description>Event port, triggered if any action on the group address is received (property: groupAddressTrigger2)</description>
             </eventTriggererPort>
             <eventTriggererPort id="event_out_3">
-                <description>The default event port where the generated events are produced</description>
+                <description>Event port, triggered if any action on the group address is received (property: groupAddressTrigger3)</description>
             </eventTriggererPort>
             <eventTriggererPort id="event_out_4">
-                <description>The default event port where the generated events are produced</description>
+                <description>Event port, triggered if any action on the group address is received (property: groupAddressTrigger4)</description>
             </eventTriggererPort>
             <eventTriggererPort id="event_out_5">
-                <description>The default event port where the generated events are produced</description>
+                <description>Event port, triggered if any action on the group address is received (property: groupAddressTrigger5)</description>
             </eventTriggererPort>
             <eventTriggererPort id="event_out_6">
-                <description>The default event port where the generated events are produced</description>
+                <description>Event port, triggered if any action on the group address is received (property: groupAddressTrigger6)</description>
             </eventTriggererPort>                                                            
 			<eventListenerPort id="send1">
-				<description>Sending the value defined in send property sendvalue1 to group address sendaddr1</description>
+				<description>Sending the value to KNX defined by the properties groupAddress1, dataValue1 and DPTEvent1</description>
 			</eventListenerPort>
 			<eventListenerPort id="send2">
-				<description>Sending the value defined in send property sendvalue2 to group address sendaddr2</description>
+				<description>Sending the value to KNX defined by the properties groupAddress2, dataValue2 and DPTEvent2</description>
 			</eventListenerPort>
 			<eventListenerPort id="send3">
-				<description>Sending the value defined in send property sendvalue3 to group address sendaddr3</description>
+				<description>Sending the value to KNX defined by the properties groupAddress3, dataValue3 and DPTEvent3</description>
 			</eventListenerPort>
 			<eventListenerPort id="send4">
-				<description>Sending the value defined in send property sendvalue4 to group address sendaddr4</description>
+				<description>Sending the value to KNX defined by the properties groupAddress4, dataValue4 and DPTEvent4</description>
 			</eventListenerPort>
 			<eventListenerPort id="send5">
-				<description>Sending the value defined in send property sendvalue5 to group address sendaddr5</description>
+				<description>Sending the value to KNX defined by the properties groupAddress5, dataValue5 and DPTEvent5</description>
 			</eventListenerPort>
 			<eventListenerPort id="send6">
-				<description>Sending the value defined in send property sendvalue6 to group address sendaddr6</description>
+				<description>Sending the value to KNX defined by the properties groupAddress6, dataValue6 and DPTEvent6</description>
+			</eventListenerPort>
+			<eventListenerPort id="read1">
+				<description>Trigger a read on the given group address, data is sent to data1. Properties: groupAddressOutput1 and DPTOutput1</description>
+			</eventListenerPort>
+			<eventListenerPort id="read2">
+				<description>Trigger a read on the given group address, data is sent to data2. Properties: groupAddressOutput2 and DPTOutput2</description>
+			</eventListenerPort>
+			<eventListenerPort id="read3">
+				<description>Trigger a read on the given group address, data is sent to data3. Properties: groupAddressOutput3 and DPTOutput3</description>
+			</eventListenerPort>
+			<eventListenerPort id="read4">
+				<description>Trigger a read on the given group address, data is sent to data4. Properties: groupAddressOutput4 and DPTOutput4</description>
+			</eventListenerPort>
+			<eventListenerPort id="read5">
+				<description>Trigger a read on the given group address, data is sent to data5. Properties: groupAddressOutput5 and DPTOutput5</description>
+			</eventListenerPort>
+			<eventListenerPort id="read6">
+				<description>Trigger a read on the given group address, data is sent to data6. Properties: groupAddressOutput6 and DPTOutput6</description>
 			</eventListenerPort>
 
 
@@ -104,122 +150,212 @@
                       type="string"
                       value="1/0/0"
                       description="Destination group address 1"/>
-            <property name="dataType1"
-                      type="string"
-                      value="boolean"
-                      description="DPT 1 (string|boolean|int|float)"/>
             <property name="dataValue1"
                       type="string"
                       value="0"
                       description="Value 1"/>
+			<property name="DPTEvent1"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for event input 1"/>
             <property name="groupAddress2"
                       type="string"
                       value="1/0/0"
                       description="Destination group address 2"/>
-            <property name="dataType2"
-                      type="string"
-                      value="boolean"
-                      description="DPT 2 (string|boolean|int|float)"/>
             <property name="dataValue2"
                       type="string"
                       value="1"
                       description="Value 2"/>
+			<property name="DPTEvent2"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for event input 2"/>
             <property name="groupAddress3"
                       type="string"
                       value="1/1/0"
                       description="Destination group address 3"/>
-            <property name="dataType3"
-                      type="string"
-                      value="boolean"
-                      description="DPT 3 (string|boolean|int|float)"/>
             <property name="dataValue3"
                       type="string"
                       value="0"
                       description="Value 3"/>
+			<property name="DPTEvent3"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for event input 3"/>
             <property name="groupAddress4"
                       type="string"
                       value="1/1/0"
                       description="Destination group address 4"/>
-            <property name="dataType4"
-                      type="string"
-                      value="boolean"
-                      description="DPT 4 (string|boolean|int|float)"/>
             <property name="dataValue4"
                       type="string"
                       value="1"
                       description="Value 4"/>
+			<property name="DPTEvent4"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for event input 4"/>
             <property name="groupAddress5"
                       type="string"
                       value="1/1/1"
                       description="Destination group address 5"/>
-            <property name="dataType5"
-                      type="string"
-                      value="boolean"
-                      description="DPT 5 (string|boolean|int|float)"/>
             <property name="dataValue5"
                       type="string"
                       value="0"
                       description="Value 5"/>
+			<property name="DPTEvent5"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for event input 5"/>
             <property name="groupAddress6"
                       type="string"
                       value="1/1/1"
                       description="Destination group address 6"/>
-            <property name="dataType6"
-                      type="string"
-                      value="boolean"
-                      description="DPT 6 (string|boolean|int|float)"/>
             <property name="dataValue6"
                       type="string"
                       value="1"
                       description="Value 6"/>
+			<property name="DPTEvent6"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for event input 6"/>
             <property name="groupAddressSlider1"
 	                  type="string"
 	                  value="1/1/1"
 	                  description="Destination group address Slider"/>
+	        <property name="DPTSlider1"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for slider1"/>
             <property name="groupAddressSlider2"
 	                  type="string"
 	                  value="1/1/1"
-	                  description="Destination group address Slider"/>	                  
+	                  description="Destination group address Slider"/>
+	        <property name="DPTSlider2"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for slider2"/>                  
             <property name="groupAddressSlider3"
 	                  type="string"
 	                  value="1/1/1"
 	                  description="Destination group address Slider"/>
+	        <property name="DPTSlider3"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for slider3"/>
             <property name="groupAddressSlider4"
 	                  type="string"
 	                  value="1/1/1"
 	                  description="Destination group address Slider"/>
+	        <property name="DPTSlider4"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for slider4"/>
             <property name="groupAddressSlider5"
 	                  type="string"
 	                  value="1/1/1"
 	                  description="Destination group address Slider"/>
+	        <property name="DPTSlider5"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for slider5"/>
             <property name="groupAddressSlider6"
 	                  type="string"
 	                  value="1/1/1"
 	                  description="Destination group address Slider"/>
+	        <property name="DPTSlider6"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for slider6"/>
             <property name="groupAddressTrigger1"
 	                  type="string"
 	                  value="1/1/1"
-	                  description="Destination group address Slider"/>
+	                  description="Destination group address for event trigger 1"/>
             <property name="groupAddressTrigger2"
 	                  type="string"
 	                  value="1/1/1"
-	                  description="Destination group address Slider"/>
+	                  description="Destination group address for event trigger 2"/>
             <property name="groupAddressTrigger3"
 	                  type="string"
 	                  value="1/1/1"
-	                  description="Destination group address Slider"/>
+	                  description="Destination group address for event trigger 3"/>
             <property name="groupAddressTrigger4"
 	                  type="string"
 	                  value="1/1/1"
-	                  description="Destination group address Slider"/>
+	                  description="Destination group address for event trigger 4"/>
             <property name="groupAddressTrigger5"
 	                  type="string"
 	                  value="1/1/1"
-	                  description="Destination group address Slider"/>
+	                  description="Destination group address for event trigger 5"/>
             <property name="groupAddressTrigger6"
 	                  type="string"
 	                  value="1/1/1"
-	                  description="Destination group address Slider"/>
+	                  description="Destination group address for event trigger 6"/>
+	        <property name="groupAddressOutput1"
+	                  type="string"
+	                  value="1/1/1"
+	                  description="Listen group address for output: data1"/>
+	        <property name="DPTOutput1"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for output data1"/>
+	        <property name="groupAddressOutput2"
+	                  type="string"
+	                  value="1/1/1"
+	                  description="Listen group address for output: data2"/>
+	        <property name="DPTOutput2"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for output data2"/>
+	        <property name="groupAddressOutput3"
+	                  type="string"
+	                  value="1/1/1"
+	                  description="Listen group address for output: data3"/>
+			<property name="DPTOutput3"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for output data3"/>
+	        <property name="groupAddressOutput4"
+	                  type="string"
+	                  value="1/1/1"
+	                  description="Listen group address for output: data4"/>
+			<property name="DPTOutput4"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for output data4"/>
+	        <property name="groupAddressOutput5"
+	                  type="string"
+	                  value="1/1/1"
+	                  description="Listen group address for output: data5"/>
+			<property name="DPTOutput5"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for output data5"/>
+	        <property name="groupAddressOutput6"
+	                  type="string"
+	                  value="1/1/1"
+	                  description="Listen group address for output: data6"/>
+	        <property name="DPTOutput6"
+                      type="string"
+                      value=""
+                      getStringList="true"
+                      description="DataPoint for output data6"/>                 	                  	                  	                  	                  
 	                                  	                  	                  	        
         </properties>
     </componentType>
