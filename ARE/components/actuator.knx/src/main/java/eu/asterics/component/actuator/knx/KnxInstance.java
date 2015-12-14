@@ -962,8 +962,11 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput1), "read1");
 				dp.setDPT(0, propertyToDPTid(propDPTOutput1));
 				//Read the data, wait for the response and send it to the output port
-				//opData1.sendData(pc.read(dp).getBytes());
-				pc.read(dp);
+				if(pc != null) {
+					opData1.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
 			} catch (Exception e) {
 				AstericsErrorHandling.instance.getLogger().severe(e.toString());
 			}
@@ -978,7 +981,11 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput2), "read2");
 				dp.setDPT(0, propertyToDPTid(propDPTOutput2));
 				//Read the data, wait for the response and send it to the output port
-				opData2.sendData(pc.read(dp).getBytes());
+				if(pc != null) {
+					opData2.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
 			} catch (Exception e) {
 				AstericsErrorHandling.instance.getLogger().severe(e.toString());
 			}
@@ -993,7 +1000,11 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput3), "read3");
 				dp.setDPT(0, propertyToDPTid(propDPTOutput3));
 				//Read the data, wait for the response and send it to the output port
-				opData3.sendData(pc.read(dp).getBytes());
+				if(pc != null) {
+					opData3.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
 			} catch (Exception e) {
 				AstericsErrorHandling.instance.getLogger().severe(e.toString());
 			}
@@ -1008,7 +1019,11 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput4), "read4");
 				dp.setDPT(0, propertyToDPTid(propDPTOutput4));
 				//Read the data, wait for the response and send it to the output port
-				opData4.sendData(pc.read(dp).getBytes());
+				if(pc != null) {
+					opData4.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
 			} catch (Exception e) {
 				AstericsErrorHandling.instance.getLogger().severe(e.toString());
 			}
@@ -1023,7 +1038,11 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput5), "read5");
 				dp.setDPT(0, propertyToDPTid(propDPTOutput5));
 				//Read the data, wait for the response and send it to the output port
-				opData5.sendData(pc.read(dp).getBytes());
+				if(pc != null) {
+					opData5.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
 			} catch (Exception e) {
 				AstericsErrorHandling.instance.getLogger().severe(e.toString());
 			}
@@ -1038,7 +1057,11 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput6), "read6");
 				dp.setDPT(0, propertyToDPTid(propDPTOutput6));
 				//Read the data, wait for the response and send it to the output port
-				opData6.sendData(pc.read(dp).getBytes());
+				if(pc != null) {
+					opData6.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
 			} catch (Exception e) {
 				AstericsErrorHandling.instance.getLogger().severe(e.toString());
 			}
