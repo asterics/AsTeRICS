@@ -2,16 +2,35 @@
 
 To start APE call
 
-java -jar APE.jar -DAPE.models=<URI to models dirs or files>] [[-Dfx.deploy.nativeBundles=exe|msi|deb|all|none] [-Dfx.application.name=<name of application>] [-Dfx.application.version=<xx.xx.xxx>]]
+```
+java -jar APE.jar [-DAPE.models=<URI to models dirs or files>] [[-Dfx.deploy.nativeBundles=exe|msi|deb|all|none] [-Dfx.application.name=<name of application>] [-Dfx.application.version=<xx.xx.xxx>]]
+```
 
-If you call it with no arguments the properties file at the location of the APE.jar file will be used.
+### Example usages
 
+#### One model file, no installer
+Create a downstripped ARE package of model file _CameraMouse.acs_. Model file names are first looked up in the ARE/models folder of the AsTeRICS installation, which APE belongs to. By default, the result is written to the subfolder _defaultProjectDir/build/merged_.
+
+```
+java -jar APE.jar -DAPE.models=CameraMouse.acs
+```
+
+#### Several model files/folder, no installer
+When specifying a folder all contained model files (recursively) will be used. Several file or folder URIs can be seperated by a _;_. Relative and absolute URIs can be mixed.
+
+```
+java -jar APE.jar -DAPE.models=CameraMouse.acs;ImageDemo.acs;eyetracking;D:/MyModelFiles/
+```
+
+### Changing base URI and properties file
+By default the properties in the property file _APE.properties_ at _APE.baseURI_ will be used. Both properties can be customized and set to another path.
+
+* APE.baseURI: URI where APE looks for template data and config files per default. The default APE.baseURI is the location of the APE.jar file.
+* APE.propertiesFile: Property file to use instead of default one at _APE.baseURI_
+
+```
 [-DAPE.propertiesFile=<URI to APE.properties file>]
-
-General properties that define startup behaviour:
-ARE.baseURI: URI where APE looks for the template folder and config files per default.
-APE.propertiesFile
-
+```
 
 ### Properties for copying/packaging behaviour of APE (file: APE.properties)
 Can be overridden with -Dkey=value command line switch). Relative paths are resolved against the location of the properties file.
@@ -23,16 +42,13 @@ APE.targetBuildDir: Default: APE.targetProjectDir/build: Used for building the a
 APE.clean.targetProjectDir: Cleans the targetProjectDir before copying
 APE.overwrite.targetProjectDir: Overwrites the contents of the targetProjectDir
 
-
 APE.copyDataFiles: [true|false]
 APE.copyServices: [true|false]
-
-
 
 APE.models
 
 ### Properties for deployment (creating installer)
-They represent some of the [javafx packaging ant-tasks](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html)
+Generelly they represent a subset of [javafx packaging ant-tasks](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html)
 
 fx.deploy.nativeBundles
 
