@@ -9,7 +9,7 @@ java -jar APE.jar [-DAPE.models=<URI to models dirs or files>] [[-Dfx.deploy.nat
 ### Example usages
 
 #### One model file, no installer
-Create a downstripped ARE package of model file _CameraMouse.acs_. Model file names are first looked up in the ARE/models folder of the AsTeRICS installation, which APE belongs to. By default, the result is written to the subfolder _defaultProjectDir/build/merged_.
+Create a downstripped ARE package of model file _CameraMouse.acs_. Model file names are first looked up in the ARE/models folder of the AsTeRICS installation, which APE belongs to. By default, the result is written to the subfolder _defaultProjectDir/build/merged_ (The destination directory can be changed with the properties _APE.targetProjectDir_ and _APE.targetBuildDir_).
 
 ```
 java -jar APE.jar -DAPE.models=CameraMouse.acs
@@ -22,10 +22,25 @@ When specifying a folder all contained model files (recursively) will be used. S
 java -jar APE.jar -DAPE.models=CameraMouse.acs;ImageDemo.acs;eyetracking;D:/MyModelFiles/
 ```
 
+#### Model file, windows .msi installer
+After copying the needed AsTeRICS jars and data files to _APE.targetBuildDir_ a windows .msi installer is created and copied to ```_APE.targetBuildDir_/deploy/bundles```. 
+APE uses [JavaFX packaging](http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#A1324980) which also has prerequisites for the installer type chosen.
+
+**Prerequisites**:
+* [Java Development Kit 8] (http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Ant build system >= 1.9.2] (http://ant.apache.org/bindownload.cgi)
+* [WiX >= 3.0 for .msi installer] (http://wixtoolset.org/)
+
+```
+java -jar APE.jar -DAPE.models=CameraMouse.acs -Dfx.deploy.nativeBundles=msi -Dfx.application.name=<name of application> -Dfx.application.version=xx.xx.xxx
+```
+
+
+
 ### Changing base URI and properties file
 By default the properties in the property file _APE.properties_ at _APE.baseURI_ will be used. Both properties can be customized and set to another path.
 
-* APE.baseURI: URI where APE looks for template data and config files per default. The default APE.baseURI is the location of the APE.jar file.
+* APE.baseURI: URI where APE looks for template data and config files per default. The default _APE.baseURI_ is the location of the APE.jar file.
 * APE.propertiesFile: Property file to use instead of default one at _APE.baseURI_
 
 ```
