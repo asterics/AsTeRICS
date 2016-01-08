@@ -9,7 +9,7 @@ java -jar APE.jar [-DAPE.models=<URI to models dirs or files>] [[-Dfx.deploy.nat
 ### Example usages
 
 #### One model file, no installer
-Create a downstripped ARE package of model file _CameraMouse.acs_. Model file names are first looked up in the ARE/models folder of the AsTeRICS installation, which APE belongs to. By default, the result is written to the subfolder _defaultProjectDir/build/merged_ (The destination directory can be changed with the properties _APE.targetProjectDir_ and _APE.targetBuildDir_).
+Create a downstripped ARE package of model file _CameraMouse.acs_. Relative model paths are resolved against the location of the _APE.propertiesFile_ location. By default, the result is written to the subfolder _defaultProjectDir/build/merged_ (The destination directory can be changed with the properties _APE.targetProjectDir_ and _APE.targetBuildDir_).
 
 ```
 java -jar APE.jar -DAPE.models=CameraMouse.acs
@@ -23,7 +23,7 @@ java -jar APE.jar -DAPE.models=CameraMouse.acs;ImageDemo.acs;eyetracking;D:/MyMo
 ```
 
 #### Model file, windows .msi installer
-After copying the needed AsTeRICS jars and data files to _APE.targetBuildDir_ a windows .msi installer is created and copied to ```_APE.targetBuildDir_/deploy/bundles```. 
+After copying the needed AsTeRICS jars and data files to _APE.targetBuildDir_ a windows .msi installer is created and copied to _APE.targetBuildDir/deploy/bundles_. 
 APE uses [JavaFX packaging](http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#A1324980) which also has prerequisites for the installer type chosen.
 
 **Prerequisites**:
