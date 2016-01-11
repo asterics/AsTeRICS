@@ -6,7 +6,7 @@
 	<property name="src.java" location="src/main/java" />
 	<property name="dist" location="." />
 	<property name="middleware" location="../../middleware" />
-	<property name="runtime" location="../../../bin/ARE" />
+	<property name="runtime" location="../../../bin/APE" />
 	<property name="osgi" location="../../osgi" />
 	<property name="classpath" location="../../" />
 	<path id="asterics.classpath">
@@ -34,10 +34,10 @@
 	</target>
 
 	<target name="jar" depends="compile" description="generate the OSGi bundle">
-		<jar jarfile="${dist}/asterics.${component.id}.jar" basedir="${build}" manifest="${resources}/META-INF/MANIFEST.MF">
+		<jar jarfile="${dist}/${component.id}.jar" basedir="${build}" manifest="${resources}/META-INF/MANIFEST.MF">
 			<fileset dir="${resources}" />
 		</jar>
-		<copy file="${dist}/asterics.${component.id}.jar" tofile="${runtime}/asterics.${component.id}.jar" />
+		<copy file="${dist}/${component.id}.jar" tofile="${runtime}/${component.id}.jar" />
 	</target>
 
 	<target name="clean">
