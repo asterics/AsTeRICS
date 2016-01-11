@@ -1,19 +1,25 @@
-The AsTeRICS framework offers a dual-licensing concept using 
+AsTeRICS framework Licensing
+
+The AsTeRICS framework offers a dual-licensing concept, using 
 either the MIT License or the GNU General Public License (GPL) version 3. 
 See both license texts below.
 
 You may use this work under the terms of the MIT License,
-if no source code (plugins, services, libraries, ...) which is contained in your
-desired collection of plugins and services is licensed under the 
-GNU General Public License (GPL).
+if your selection of plugins and services does not contain
+GPL-licensed code (GNU General Public License). 
 
-If your desired collection of plugins and services contains source code 
+If your selection of plugins and services contains source code 
 which is licensed under the GNU General Public License (GPL) 
-the whole work must be licensed under GPL (see GPL v3 license text).
+the whole work must be licensed under GPL.
 
-Please have a look at the individual licenses of the AsTeRICS plugins and services.
-You find the license files in the subfolder /licenses of every plugin or service.
+To define a selection of plugins and services for a deployment, 
+use the AsTeRICS Packaging Environment (APE tool).
 
+Please note the additional permission for Eclipse Equinox / EPL 
+in the GNU GPL version 3 section 7 (see GPL v3 license text below).
+
+Please verify the individual licenses of the utilized AsTeRICS plugins and services.
+You find the license files in the subfolder /LICENSE of every plugin or service.
 
 ---------------------------------------------------------------------------------------------
 
@@ -170,6 +176,10 @@ All other non-permissive additional terms are considered “further restrictions” 
 If you add terms to a covered work in accord with this section, you must place, in the relevant source files, a statement of the additional terms that apply to those files, or a notice indicating where to find the applicable terms.
 
 Additional terms, permissive or non-permissive, may be stated in the form of a separately written license, or stated as exceptions; the above requirements apply either way.
+
+If you modify this Program, or any covered work, by linking or combining it with the Eclipse Equinox framework (or a modified version of that framework), containing parts covered by the terms of the Eclipse Public License (EPL, see http://opensource.org/licenses/EPL-1.0), the licensors of this Program grant you additional permission to convey the resulting work. 
+
+
 8. Termination.
 
 You may not propagate or modify a covered work except as expressly provided under this License. Any attempt otherwise to propagate or modify it is void, and will automatically terminate your rights under this License (including any patent licenses granted under the third paragraph of section 11).

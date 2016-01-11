@@ -227,7 +227,7 @@ public class AsapiSupport
 	 * @return an xml string containing all the bundle descriptors (some parts of the descriptor are removed)
 	 * and null if an error has occurred.
 	 */
-	public String getComponentsCollection() {
+	public String getComponentDescriptorsAsXml() {
 		String response = "";
 		
 		response += "<?xml version=\"1.0\"?>";
@@ -242,8 +242,8 @@ public class AsapiSupport
 				try {
 					response += getFormattedBundleDescriptorStringOfComponentTypeId(bundleDescriptorURL);
 				} catch (IOException e) {
-					//What if it fails?? just skip this entry
-					logger.warning(e.getMessage());
+					//just logging (as 'getBundleDescriptors' function)
+					AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRiCS bundle descriptor for bundle: "+bundle.getBundleId());
 				}
 			}
 		}

@@ -128,9 +128,9 @@
 			function DELETE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
-			//getRuntimeComponents
+			//getRuntimeComponentIds
 			function GRC() {
-				getRuntimeComponents(GRC_successCallback, GRC_errorCallback);
+				getRuntimeComponentIds(GRC_successCallback, GRC_errorCallback);
 			}
 						
 			function GRC_successCallback(data, HTTPstatus) { alert(data); }
@@ -146,29 +146,29 @@
 			function LSM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
-			//getComponentsCollection
-			function COMPONENTS_COLLECTION() {
-				getComponentsCollection(COMPONENTS_COLLECTION_successCallback, COMPONENTS_COLLECTION_errorCallback);
+			//getComponentDescriptorsAsXml
+			function COMPONENT_DESCRIPTORS_XML() {
+				getComponentDescriptorsAsXml(COMPONENT_DESCRIPTORS_XML_successCallback, COMPONENT_DESCRIPTORS_XML_errorCallback);
 			}
 									
-			function COMPONENTS_COLLECTION_successCallback(data, HTTPstatus) {
+			function COMPONENT_DESCRIPTORS_XML_successCallback(data, HTTPstatus) {
 				console.log(data);
 			}
-			function COMPONENTS_COLLECTION_errorCallback(HTTPstatus, AREerrorMessage) {
+			function COMPONENT_DESCRIPTORS_XML_errorCallback(HTTPstatus, AREerrorMessage) {
 				console.log(AREerrorMessage);
 			}
 			
 					
-			//getComponents
-			function COMPONENTS() {
-				getComponents(COMPONENTS_successCallback, COMPONENTS_errorCallback);
+			//getComponentDescriptorsAsJSON
+			function COMPONENT_DESCRIPTORS_JSON() {
+				getComponentDescriptorsAsJSON(COMPONENT_DESCRIPTORS_JSON_successCallback, COMPONENT_DESCRIPTORS_JSON_errorCallback);
 			}
 									
-			function COMPONENTS_successCallback(data, HTTPstatus) {
+			function COMPONENT_DESCRIPTORS_JSON_successCallback(data, HTTPstatus) {
 				console.log(data);
 				//console.log(data[0]); //get a single component
 			}
-			function COMPONENTS_errorCallback(HTTPstatus, AREerrorMessage) {
+			function COMPONENT_DESCRIPTORS_JSON_errorCallback(HTTPstatus, AREerrorMessage) {
 				console.log(AREerrorMessage);
 			}
 			
@@ -278,10 +278,10 @@
 		<input placeholder="filename" type="text" id="DELETEfilename"/>
 		<br/> <br/>
 		
-		<button onclick="COMPONENTS_COLLECTION()"> Get components collection </button>
+		<button onclick="COMPONENT_DESCRIPTORS_XML()"> Get components descriptors as xml </button>
 		<br/> <br/>
 		
-		<button onclick="COMPONENTS()"> Get components </button>
+		<button onclick="COMPONENT_DESCRIPTORS_JSON()"> Get components descriptors as JSON array </button>
 		<br/> <br/>
 		
 		<hr>
@@ -303,7 +303,7 @@
 		<input placeholder="filename" type="text" id="DepMFfilename"/>
 		<br/> <br/>
 				
-		<button onclick="GRC()"> Get runtime components </button>
+		<button onclick="GRC()"> Get runtime component Ids </button>
 		<br/> <br/>
 		
 		<button onclick="GRCPK()"> Get runtime component property keys </button>

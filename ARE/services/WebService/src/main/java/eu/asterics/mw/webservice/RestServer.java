@@ -207,10 +207,10 @@ public class RestServer {
     }
 	
 	
-	@Path("/runtime/model/components")
+	@Path("/runtime/model/components/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getRuntimeComponents() {
+    public String getRuntimeComponentIds() {
 		String response = "";
 		String errorMessage = "";
 		
@@ -370,7 +370,7 @@ public class RestServer {
     }
 	
 	
-	@Path("/storage/models")
+	@Path("/storage/models/names")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String listAllStoredModels() {    	
@@ -394,15 +394,15 @@ public class RestServer {
     }
 	
 
-	@Path("/storage/components/collection")
+	@Path("/storage/components/descriptors/xml")
 	@GET
 	@Produces(MediaType.TEXT_XML)
-	public String getComponentsCollection() {
+	public String getComponentDescriptorsAsXml() {
 		String response = null;
 		String errorMessage;
 
 		try {
-			response = as.getComponentsCollection();
+			response = as.getComponentDescriptorsAsXml();
 			if (response == null) {
 				errorMessage = "Couldn't retrieve the components collection";
 				response = "{'error':'"+errorMessage+"'}";
@@ -417,10 +417,10 @@ public class RestServer {
 	}
 	
 	
-	@Path("/storage/components")
+	@Path("/storage/components/descriptors/json")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getComponents() {
+	public String getComponentDescriptorsAsJSON() {
 		String response = null;
 		String errorMessage;
 

@@ -1,0 +1,5 @@
+JAVA DSP Library,
+http://www.source-code.biz/dsp/java/
+
+(c) Christian d'Heureuse, chdh@source-code.biz
+
