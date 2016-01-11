@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 
 import eu.asterics.ape.main.APE;
 import eu.asterics.ape.main.APEProperties;
+import eu.asterics.ape.main.Notifier;
 import eu.asterics.ape.parse.ModelInspector;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
@@ -47,6 +48,7 @@ import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
  */
 
 /**
+ * This class performs the packaging and copying of the AsTeRICS URIs to a given project / build location.
  * 
  *         Author: martin.deinhofer@technikum-wien.at
  *         Date: Oct 30, 2015
@@ -88,70 +90,98 @@ public class Packager {
 		}
 	}
 	
-	public void copyFiles(Path targetBaseDir) throws URISyntaxException, MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
-		Path targetSubDir=targetBaseDir.resolve("bin/ARE");
-		AstericsErrorHandling.instance.getLogger().fine("Using target dir: "+targetSubDir);
-		//URI testModel = ResourceRegistry.getInstance().getResource("CameraMouse.acs", RES_TYPE.MODEL);
+	/**
+	 * Copy all files/URIs to project and/or build directories.
+	 * @param projectDir
+	 * @param buildDir
+	 * @throws URISyntaxException
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws ParseException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws TransformerException
+	 * @throws BundleManagementException
+	 */
+	public void copyFiles(Path projectDir, Path buildDir) throws URISyntaxException, MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
+		//
+		Path buildMergedAREDir=buildDir.resolve("merged/bin/ARE");
+		Notifier.info("Copying files to "+buildMergedAREDir);
 
 		Set<URI> modelURIs=modelInspector.getModelURIsFromProperty();
-		System.out.println("Found model URIs:\n"+modelURIs); 
+		Notifier.info("Found model URIs:\n"+modelURIs); 
 		Set<URI> componentJarURIs = modelInspector.getComponentTypeJarURIsOfModels(modelURIs);
-		copyURIs(componentJarURIs, targetSubDir);
+		copyURIs(componentJarURIs, buildMergedAREDir);
 		
 		List<URI> uriList = ResourceRegistry.getInstance().getServicesJarList(false);
-		copyURIs(uriList, targetSubDir);
+		copyURIs(uriList, buildMergedAREDir);
 		
 		uriList = ResourceRegistry.getInstance().getOtherJarList(false);
-		copyURIs(uriList, targetSubDir);	
+		copyURIs(uriList, buildMergedAREDir);	
 
 		uriList = ResourceRegistry.getInstance().getDataList(false);
-		copyURIs(uriList, targetSubDir);
+		copyURIs(uriList, buildMergedAREDir);
 
 		uriList = ResourceRegistry.getInstance().getLicensesList(false);
-		copyURIs(uriList, targetSubDir);
+		copyURIs(uriList, buildMergedAREDir);
 
 		uriList = ResourceRegistry.getInstance().getMandatoryProfileConfigFileList(false);
-		copyURIs(uriList, targetSubDir);
+		copyURIs(uriList, buildMergedAREDir);
 		
 		uriList = ResourceRegistry.getInstance().getAppImagesList(false);
-		copyURIs(uriList, targetSubDir);
+		copyURIs(uriList, buildMergedAREDir);
 		
 		uriList = ResourceRegistry.getInstance().getOtherFilesList(false);
-		copyURIs(uriList, targetSubDir);		
+		copyURIs(uriList, buildMergedAREDir);		
 
-		copyModels(modelURIs, targetSubDir);
+		copyModels(modelURIs, buildMergedAREDir);
 	}
 	
-	
+	/**
+	 * Copy the given models to the given directory. Also automatically resolves subdirs of bin/ARE to appropriate subdirs in a target directory.
+	 * @param modelURIs
+	 * @param targetSubDir
+	 */
 	public void copyModels(Set<URI> modelURIs, Path targetSubDir) {
 		for(URI modelURI : modelURIs) {
 			//Check if it is a model URI based on ARE base URI, if not copy file directly
 			try {
 
+				/*
 				if(ResourceRegistry.getInstance().toRelative(modelURI).isAbsolute()) {
 					//if model URI is still absolute it could not be resolved against the ARE base URI.
 					copyURI(modelURI,targetSubDir.resolve(ResourceRegistry.MODELS_FOLDER), false);
 				} else {
-					copyURI(modelURI,targetSubDir, true);
-				}
+				*/
+				copyURI(modelURI,targetSubDir, true);
+				//}
 			} catch (URISyntaxException | IOException e) {
-				AstericsErrorHandling.instance.getLogger().warning("Could not copy model: "+e.getMessage());
+				Notifier.warning("Could not copy model: "+modelURI, e);
 			}
 		}
 	}
 	
-	public void copyURIs(Set<URI> srcURIs, Path targetDir) throws URISyntaxException, IOException {
+	/**
+	 * Copyies all given URIs to the given target directory. Also automatically resolves subdirs of bin/ARE to appropriate subdirs in a target directory.
+	 * @param srcURIs
+	 * @param targetDir
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
+	public void copyURIs(Collection<URI> srcURIs, Path targetDir) throws URISyntaxException, IOException {
 		for(URI srcURI : srcURIs) {
 			copyURI(srcURI,targetDir, true);
 		}		
 	}
-	
-	public void copyURIs(List<URI> srcURIs, Path targetDir) throws URISyntaxException, IOException {
-		for(URI srcURI : srcURIs) {
-			copyURI(srcURI,targetDir, true);
-		}		
-	}
-	
+
+	/**
+	 * Copyies the given srcURI to the given targetDir directory. 
+	 * @param srcURI
+	 * @param targetDir
+	 * @param resolveTargetSubDirs: true: Resolves subdirs of bin/ARE to appropriate subdirs in a target directory.
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 */
 	public void copyURI(URI srcURI, Path targetDir, boolean resolveTargetSubDirs) throws URISyntaxException, IOException {
 		CopyOption[] opt=new CopyOption[] {REPLACE_EXISTING,COPY_ATTRIBUTES};
 		try {
@@ -176,7 +206,7 @@ public class Packager {
 				Files.createDirectories(targetSubDir);
 			}
 			//Actually copy file
-			AstericsErrorHandling.instance.getLogger().fine("Copying "+src.getFileName()+" -> "+targetSubDir);
+			Notifier.info("Copying "+src.getFileName()+" -> "+targetSubDir);
 			Files.copy(src, targetSubDir.resolve(src.getFileName()),opt);
 		} catch(MalformedURLException e) {
 			//else try if it is a URL that can be fetched from anywhere else.
@@ -189,11 +219,27 @@ public class Packager {
 		
 	}
 	
+	/**
+	 * Does all steps of a build/make process. Fetching target dir properties, creating project/build directories, copying all URIs.
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws ParseException
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws TransformerException
+	 * @throws BundleManagementException
+	 */
 	public void makeAll() throws IOException, URISyntaxException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
-		Path targetBaseDir=Paths.get(apeProperties.APE_PROP_FILE_BASE_URI.resolve(apeProperties.getProperty(APEProperties.P_APE_TARGETBASEDIR)));
-		AstericsErrorHandling.instance.getLogger().fine("Using target base dir: "+targetBaseDir);
+		File projectFileObject=new File(apeProperties.APE_PROP_FILE_BASE_URI.resolve(apeProperties.getProperty(APEProperties.P_APE_PROJECT_DIR,APEProperties.DEFAULT_PROJECT_DIR)));
+		Path projectDir=projectFileObject.toPath();
+		Notifier.info("Using ApeProp["+APEProperties.P_APE_PROJECT_DIR+"]="+projectDir);
+		
+		//We always have to resolve against a baseURI object because the Path implementation does not allow file:/// URI syntax, just OS-specific path styles.
+		Path buildDir=Paths.get(projectDir.toUri().resolve(apeProperties.getProperty(APEProperties.P_APE_BUILD_DIR, APEProperties.DEFAULT_BUILD_DIR)));
+		Notifier.info("Using ApeProp["+APEProperties.P_APE_BUILD_DIR+"]="+buildDir);
+
 		//copyAndExtractTemplate(targetBaseDir);
-		copyFiles(targetBaseDir);
-		generateFileLists(targetBaseDir);
+		copyFiles(projectDir, buildDir);
+		generateFileLists(projectDir);
 	}
 }

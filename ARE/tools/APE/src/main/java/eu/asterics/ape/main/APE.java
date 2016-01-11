@@ -52,7 +52,7 @@ import eu.asterics.mw.services.ResourceRegistry;
  */
 
 /**
- * 
+ * This is the main class for the APE tool. Main tasks are configuring the tool with the set properties and starting the copying process.
  *         Author: martin.deinhofer@technikum-wien.at
  *         Date: Oct 30, 2015
  *         Time: 14:30:00 PM
@@ -75,14 +75,7 @@ public class APE {
 	private static APE instance=null;
 	
 	static {
-		URI defaultAPEBaseURI=Paths.get(".").toUri();
-		try {
-			defaultAPEBaseURI = ResourceRegistry.toPath(APE.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toUri();
-		} catch (URISyntaxException e) {
-		}
-		
-		APEProperties.APE_BASE_URI=new File(System.getProperty(APEProperties.P_APE_BASEURI, defaultAPEBaseURI.toString())).toURI().normalize();
-		System.out.println("Setting APE base URI to <"+APEProperties.APE_BASE_URI+">");
+		initAPEBaseURI();
 	}
 	
 	/**
@@ -98,6 +91,34 @@ public class APE {
 	 */
 	public static void main(String[] args) throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
 		APE.getInstance().start();
+	}
+	
+	/**
+	 * Initilizes APE.baseURI with a 3-way fallback mechanism.
+	 * 1) Use current working directory (CWD)
+	 * 2) Use location of APE.jar
+	 * 3) Use value of property APE.baseURI set as system property (-DAPE.baseURI=...) 
+	 * @return
+	 */
+	public static URI initAPEBaseURI() {
+		URI defaultAPEBaseURI=new File(".").toURI();
+		Notifier.debug("Current working dir: "+defaultAPEBaseURI,null);
+		try {
+			defaultAPEBaseURI = ResourceRegistry.toPath(APE.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toUri();
+			Notifier.debug("Location of APE.jar: "+defaultAPEBaseURI,null);
+		} catch (URISyntaxException e) {
+			Notifier.warning("Could not fetch default APE.baseURI", e);
+		}
+		
+		Notifier.debug("SysProp["+APEProperties.P_APE_BASE_URI+"]="+System.getProperty(APEProperties.P_APE_BASE_URI),null);
+		String newApeBaseURIString=System.getProperty(APEProperties.P_APE_BASE_URI);		
+		if(newApeBaseURIString != null) {
+			//Resolve against defaultApeBaseURI because if it is relative it should be resolved, if not it should be used absolutely
+			setAPEBaseURI(defaultAPEBaseURI.resolve(newApeBaseURIString));
+		} else {
+			setAPEBaseURI(defaultAPEBaseURI);
+		}
+		return getAPEBaseURI();
 	}
 	
 	/**
@@ -131,7 +152,8 @@ public class APE {
 
 		initProperties();
 		
-		String newAreBaseURIString=apeProperties.getProperty(APEProperties.P_ARE_BASEURI);
+		String newAreBaseURIString=apeProperties.getProperty(APEProperties.P_ARE_BASE_URI);
+		Notifier.debug("ApeProp["+APEProperties.P_ARE_BASE_URI+"]="+newAreBaseURIString,null);
 		if(newAreBaseURIString!=null) ResourceRegistry.getInstance().setAREBaseURI(APEProperties.APE_PROP_FILE_BASE_URI.resolve(newAreBaseURIString));
 
 
@@ -140,27 +162,39 @@ public class APE {
 		packager.makeAll();
 	}
 
+	/**
+	 * Determins property file location (APE.properties), reads property values and overrides property values given as system property (-Dkey=value).
+	 */
 	private void initProperties() {
 		Properties defaultProperties=new Properties();
 		//Init with empty properties
 		apeProperties=new APEProperties();
-		APEProperties.APE_PROP_FILE_BASE_URI=APEProperties.APE_BASE_URI.resolve("APE.properties");
+		APEProperties.APE_PROP_FILE_BASE_URI=APEProperties.APE_BASE_URI;
 
 		try {
 
 			//Currently this can only be a file but later maybe we also support a properties file from a web location, so let's store it as URI.
-			File apePropertiesFile=new File(System.getProperty(APEProperties.P_APE_PROPERTIES_FILE, APEProperties.APE_BASE_URI.resolve("APE.properties").toString()));
-			APEProperties.APE_PROP_FILE_BASE_URI=apePropertiesFile.getParentFile().toURI();
+			Notifier.debug("ApeProp["+APEProperties.P_APE_PROPERTIES_FILE+"]="+System.getProperty(APEProperties.P_APE_PROPERTIES_FILE),null);
 			
-			defaultProperties.load(new BufferedReader(new InputStreamReader(apePropertiesFile.toURI().toURL().openStream())));
+			//Check if there was a system property switch overriding the APE.properties file location
+			String propFileString=System.getProperty(APEProperties.P_APE_PROPERTIES_FILE, "APE.properties");
+			URI apePropFileURI=APEProperties.APE_BASE_URI.resolve(propFileString);
+			
+			Notifier.info("Using "+APEProperties.P_APE_PROPERTIES_FILE+"="+apePropFileURI);
+			APEProperties.APE_PROP_FILE_BASE_URI=apePropFileURI.resolve("./").normalize();
+			//Notifier.info("Using "+APEProperties.P_APE_PROPERTIES_FILE+"="+apePropFileURI);
+						
+			defaultProperties.load(new BufferedReader(new InputStreamReader(apePropFileURI.toURL().openStream())));
+			Notifier.debug("defaultProperties: "+defaultProperties.toString(), null);
 			apeProperties=new APEProperties(defaultProperties);
 			for(Entry<Object, Object> entry : System.getProperties().entrySet()) {
 				if(entry.getKey().toString().startsWith(APEProperties.APE_PROP_PREFIX)||entry.getKey().toString().startsWith(APEProperties.ARE_PROP_PREFIX)) {
 					apeProperties.setProperty(entry.getKey().toString(), entry.getValue().toString());
 				}
 			}
+			Notifier.debug("apeProperties: "+apeProperties.toString(), null);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Notifier.error("Initialization of APE properties failed", e);
 		}
 	}
 	public void exit() {
@@ -179,11 +213,19 @@ public class APE {
 		return APEProperties.APE_BASE_URI;
 	}
 
+	/**
+	 * Sets APE.baseURI to the given value. APE.baseURI will be used to fetch template data and lookup for the properties file APE.properties by default. 
+	 * @param APEBaseURI
+	 */
 	public static void setAPEBaseURI(URI APEBaseURI) {
 		APEProperties.APE_BASE_URI = APEBaseURI;
-		System.out.println("Setting APE base URI to: "+APEBaseURI);		
+		Notifier.info("Setting APE base URI to <"+APEBaseURI+">");		
 	}
 	
+	/**
+	 * The {@link} ModelInspector} object to analyze an AsTeRICS model.
+	 * @return
+	 */
 	public ModelInspector getModelInspector() {
 		return modelInspector;
 	}
@@ -192,6 +234,10 @@ public class APE {
 		this.modelInspector = modelInspector;
 	}
 
+	/**
+	 * Returns a reference to the Packager that actually does all the copying of resources.
+	 * @return
+	 */
 	public Packager getPackager() {
 		return packager;
 	}

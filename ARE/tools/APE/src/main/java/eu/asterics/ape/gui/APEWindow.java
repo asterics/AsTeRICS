@@ -38,7 +38,7 @@ import javax.swing.JTextField;
  */
 
 /**
- * 
+ * This class will be the starting point for an APE gui later. Currently not used.
  *         Author: martin.deinhofer@technikum-wien.at
  *         Date: Oct 30, 2015
  *         Time: 14:30:00 PM
