@@ -64,4 +64,7 @@
 	<target name="cleanLicenses">
 		<delete dir="${runtime}/LICENSE"/>
 	</target>
+	<import file="imported.xml"/>
+    <include file="included.xml"/>
+	
 </project>
