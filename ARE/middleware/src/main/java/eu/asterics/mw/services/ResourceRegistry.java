@@ -142,7 +142,7 @@ public class ResourceRegistry {
 					uri=toAbsolute(STORAGE_FOLDER).resolve(resourceName);					
 					break;
 				default:
-					uri=resourceNameAsFile.toURI();
+					uri=toAbsolute(resourceName);
 					break;
 				}
 			} else {
@@ -153,7 +153,7 @@ public class ResourceRegistry {
 		//System.out.println("resource File.toURI: "+resourceNameAsFile.toURI());
 		//AstericsErrorHandling.instance.getLogger().fine("URI before normalize: "+uri.normalize());
 		uri=uri.normalize();
-		AstericsErrorHandling.instance.getLogger().info("Final Resource URI <"+uri+">");		
+		AstericsErrorHandling.instance.getLogger().fine("Final Resource URI <"+uri+">");		
 		return uri;
 	}
 	
@@ -325,15 +325,67 @@ public class ResourceRegistry {
 	 * @return
 	 */
 	public List<URI> getLicensesList(boolean relative) {
-		//get asterics involved LICENSES
-		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(LICENSES_FOLDER), relative, 1, new FilenameFilter() {
+		//get asterics involved LICENSES		
+		List<URI> URIs = getLicensesList(new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {
 		    	return name.endsWith(".txt");
 		    }
-		});
-		return URIs;
+		},relative);
+		
+		return URIs;		
 	}
+	
+	/**
+	 * Returns a set of license URIs for the given jar URIs.	 * 
+	 * @param allJarURIs
+	 * @return
+	 */
+	public Set<URI> getLicenseURIsofAsTeRICSJarURIs(Set<URI> allJarURIs) {
+		Set<URI> licenseURIs=new HashSet<URI>();
+		for(URI jarURI : allJarURIs) {			
+			//TODO: Think about using toRelativize. 
+			//otherwise when just resolving to the name we can support different base URIs as well.
+			URI jarNameURI=jarURI.resolve(".").relativize(jarURI);
+			String jarName=jarNameURI.getPath();
+			
+			if(!jarName.startsWith("asterics.")) {
+				AstericsErrorHandling.instance.getLogger().fine("Skipping jar for license copying: "+jarName);
+				continue;
+			}
+			int firstDot=jarName.indexOf(".");
+			int lastDot=jarName.lastIndexOf(".");
+			final String compTypeString=jarName.substring(firstDot+1, lastDot);
+			AstericsErrorHandling.instance.getLogger().fine("Searching license for compTypeString="+compTypeString);
+			
+			List<URI> compLicenseURIs=ResourceRegistry.getInstance().getLicensesList(new FilenameFilter() {
+				@Override
+				public boolean accept(File dir, String name) {
+					String[] compTypePrefix=name.split("-");
+					//Notifier.debug("compTypePrefix: "+compTypePrefix[0]+", compType: "+compTypeString, null);
+					return compTypePrefix[0].equalsIgnoreCase(compTypeString) && name.endsWith(".txt");
+				}
+
+			},false);
+			//Notifier.debug("compType: "+compTypeString+", compLicensURIs: "+compLicenseURIs,null);
+			licenseURIs.addAll(compLicenseURIs);
+
+		}
+		AstericsErrorHandling.instance.getLogger().fine("Found this license URIs: "+licenseURIs);
+		return licenseURIs;
+	}	
+	
+	/**
+	 * Returns a list of license URIs corresponding to the given FilenameFilter instance.
+	 * @param filter
+	 * @param relative
+	 * @return
+	 */
+	public List<URI> getLicensesList(FilenameFilter filter, boolean relative) {
+		//get asterics involved LICENSES
+		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(LICENSES_FOLDER), relative, 1, filter);
+		return URIs;
+	}	
 	 
 	/**
 	 * Returns a list of URIs asterics service bundles. The URIs could be a local file but also an HTTP URL.

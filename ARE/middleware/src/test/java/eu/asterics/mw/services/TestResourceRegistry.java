@@ -109,6 +109,24 @@ public class TestResourceRegistry {
 			System.out.println("License: "+componentJarURI);
 		}
 	}
+	
+	@Test
+	public void testGetLicensesListForRemoteWindow() {
+		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI().normalize());
+		final String compType="actuator.RemoteWindow";
+		System.out.println("Licenses of compType: "+compType);
+		for(URI componentJarURI : ResourceRegistry.getInstance().getLicensesList(new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				String[] compTypePrefix=name.split("-");
+				return compTypePrefix[0].equalsIgnoreCase(compType) && name.endsWith(".txt");
+			}
+
+		},false)) {			
+			System.out.println(componentJarURI);
+		}
+	}	
 
 	@Test
 	public void testGetDataList() {

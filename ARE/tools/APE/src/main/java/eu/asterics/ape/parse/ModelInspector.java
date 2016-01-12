@@ -2,6 +2,7 @@ package eu.asterics.ape.parse;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -10,9 +11,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,11 +31,13 @@ import org.xml.sax.SAXException;
 import eu.asterics.ape.main.APEProperties;
 import eu.asterics.ape.main.Notifier;
 import eu.asterics.mw.are.BundleManager;
+import eu.asterics.mw.are.ComponentRepository;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
 import eu.asterics.mw.are.parsers.ModelValidator;
+import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.model.deployment.IComponentInstance;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.services.AstericsErrorHandling;
@@ -86,8 +89,10 @@ public class ModelInspector {
 		modelValidator=new ModelValidator();
 		deploymentModelParser=DefaultDeploymentModelParser.create(modelValidator);
 		bundleManager=new BundleManager(modelValidator);
-		bundleManager.createComponentListCache();
+
+		//bundleManager.createComponentListCache();
 		DeploymentManager.instance.setBundleManager(bundleManager);
+		bundleManager.start();
 	}
 	
 	/**
@@ -141,24 +146,120 @@ public class ModelInspector {
 	 * @return
 	 */
 	public Set<URI> getComponentTypeJarURIsOfModel(IRuntimeModel model) {
-		Set<URI> modelComponentJarURIs=new TreeSet<URI>();
+		Set<URI> modelComponentJarURIs=new HashSet<URI>();
 		for(IComponentInstance compInstance : model.getComponentInstances()) {
 			URI absoluteURI;
 			try {
 				absoluteURI = ResourceRegistry.getInstance().toAbsolute(bundleManager.getJarNameFromComponentTypeId(compInstance.getComponentTypeID()));
 				modelComponentJarURIs.add(absoluteURI);
 			} catch (BundleManagementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Notifier.warning("Ignoring componentType: "+compInstance.getInstanceID()+" ("+compInstance.getComponentTypeID()+"), model: "+model.getModelName(),e);
 			}
-
 		}
 		//System.out.println("Model: "+model.getModelName()+", comoponentTypeJarURIs:\n"+modelComponentJarURIs);
 		return modelComponentJarURIs;
 	}
 	
 	/**
-	 * Returns a Set of merged .jar URIs corresponding to the existing componentTypes in the given Set of IRuntimeModel models.
+	 * Returns a set of IRuntimeModel instances for the given set of model URIs.
+	 * @param modelURIs
+	 * @return
+	 */
+	public Set<IRuntimeModel> getIRuntimeModelsOfModelURIs(Set<URI> modelURIs) {
+		Set<IRuntimeModel> modelInstances=new HashSet<IRuntimeModel>();
+		for(URI modelURI : modelURIs) {
+			try{
+				InputStream iStr=modelURI.toURL().openStream();
+				IRuntimeModel model=parseModel(iStr);
+				//The default implementation of IRuntimeModel is DefaultRuntimeModel which does not have a correct equals/hashCode-contract, the same for IComponentInstance and others.
+				//This means that the Set can't have unique model instances, which is not a problem because this just means that files are maybe just copied more than once.
+				modelInstances.add(model);
+			}
+			catch(Exception e) {
+				//Catch exceptions and ignore URI, also log the problem.
+				Notifier.warning("Ignoring model URI: "+modelURI, e);
+			}
+		}
+		return modelInstances;		
+	}
+	
+	/**
+	 * Returns a set of IComponentInstances for the given set of model URIs.
+	 * @param modelURIs
+	 * @return
+	 */
+	public Set<IComponentInstance> getIComponentInstancesOfModelURIs(Set<URI> modelURIs) {
+		Set<IComponentInstance> componentInstances=new HashSet<IComponentInstance>();
+		for(URI modelURI : modelURIs) {
+			try{
+				InputStream iStr=modelURI.toURL().openStream();
+				IRuntimeModel model=parseModel(iStr);
+				
+				//The default implementation of IRuntimeModel is DefaultRuntimeModel which does not have a correct equals/hashCode-contract, the same for IComponentInstance and others.
+				//This means that the Set can't have unique model instances, which is not a problem because this just means that files are maybe just copied more than once.
+				componentInstances.addAll(model.getComponentInstances());
+			}
+			catch(Exception e) {
+				//Catch exceptions and ignore URI, also log the problem.
+				Notifier.warning("Ignoring model URI: "+modelURI, e);
+			}
+		}
+		return componentInstances;		
+	}
+	
+	/**
+	 * Returns a set of IComponentInstances for the given set of IRuntimeModel instances. 
+	 * @param modelInstances
+	 * @return
+	 */
+	public Set<IComponentInstance> getIComponentInstancesOfIRuntimeModels(Set<IRuntimeModel> modelInstances) {
+		Set<IComponentInstance> componentInstances=new HashSet<IComponentInstance>();
+		for(IRuntimeModel model : modelInstances) {
+				//The default implementation of IRuntimeModel is DefaultRuntimeModel which does not have a correct equals/hashCode-contract, the same for IComponentInstance and others.
+				//This means that the Set can't have unique model instances, which is not a problem because this just means that files are maybe just copied more than once.
+				componentInstances.addAll(model.getComponentInstances());
+		}
+		return componentInstances;				
+	}
+	
+	/**
+	 * Returns a set of license URIs for the given set of model instances.
+	 * Currently this method only returns license URIs directly for the involved componentTypes not considering services or the middleware. 
+	 * @param modelInstances
+	 * @return
+	 */
+	public Set<URI> getLicenseURIsOfModels(Set<IRuntimeModel> modelInstances) {
+		Set<URI> licenseURIs=new HashSet<URI>();
+		Set<IComponentInstance> componentInstances=getIComponentInstancesOfIRuntimeModels(modelInstances);
+		for(final IComponentInstance componentInstance : componentInstances) {
+			try {
+				IComponentType compTypeInst=ComponentRepository.instance.getComponentType(componentInstance.getComponentTypeID());
+				Notifier.debug("compTypeId: "+compTypeInst.getID()+", subtype: "+compTypeInst.getType(), null);
+				String compTypeId=componentInstance.getComponentTypeID();
+				String[] compTypeElems=compTypeId.split("\\.");
+				final String compTypePrefixForLicense=compTypeInst.getType()+"."+compTypeElems[1];
+				
+				List<URI> compLicenseURIs=ResourceRegistry.getInstance().getLicensesList(new FilenameFilter() {
+					@Override
+					public boolean accept(File dir, String name) {
+						String[] compTypePrefix=name.split("-");
+						Notifier.debug("compTypePrefix: "+compTypePrefix[0]+", compType: "+componentInstance.getComponentTypeID(), null);
+						return compTypePrefix[0].equalsIgnoreCase(compTypePrefixForLicense) && name.endsWith(".txt");
+					}
+
+				},false);
+				Notifier.debug("compType: "+componentInstance.getComponentTypeID()+", compLicensURIs: "+compLicenseURIs,null);
+				licenseURIs.addAll(compLicenseURIs);
+			} catch (BundleManagementException e) {
+				Notifier.warning("Could not determine componentType/SubType of componentInstance with Id: "+componentInstance.getComponentTypeID(), e);
+			}
+		}
+		return licenseURIs; 
+	}
+	
+	
+	/**
+	 * Returns a Set of merged .jar URIs corresponding to the existing componentTypes in the given Set of IRuntimeModel model URIs.
 	 * @param modelURIs
 	 * @return
 	 * @throws MalformedURLException
@@ -169,8 +270,8 @@ public class ModelInspector {
 	 * @throws TransformerException
 	 * @throws BundleManagementException
 	 */
-	public Set<URI> getComponentTypeJarURIsOfModels(Set<URI> modelURIs) throws MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
-		Set<URI> modelComponentJarURIs=new TreeSet<URI>();
+	public Set<URI> getComponentTypeJarURIsOfModelURIs(Set<URI> modelURIs) throws MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
+		Set<URI> modelComponentJarURIs=new HashSet<URI>();
 		for(URI modelURI : modelURIs) {
 			InputStream iStr=modelURI.toURL().openStream();
 			IRuntimeModel model=parseModel(iStr);
@@ -180,11 +281,24 @@ public class ModelInspector {
 	}
 	
 	/**
+	 * Returns a Set of merged .jar URIs corresponding to the existing componentTypes in the given Set of IRuntimeModel models. 
+	 * @param modelInstances
+	 * @return
+	 */
+	public Set<URI> getComponentTypeJarURIsOfModels(Set<IRuntimeModel> modelInstances) {
+		Set<URI> modelComponentJarURIs=new HashSet<URI>();
+		for(IRuntimeModel model : modelInstances) {
+			modelComponentJarURIs.addAll(getComponentTypeJarURIsOfModel(model));
+		}
+		return modelComponentJarURIs;		
+	}
+	
+	/**
 	 * Returns a Set of URIs to model files by analyzing the APE.model property value.
 	 * @return
 	 */
 	public Set<URI> getModelURIsFromProperty() {
-		Set<URI> modelURIs=new TreeSet<URI>();
+		Set<URI> modelURIs=new HashSet<URI>();
 		String modelsPropVals=apeProperties.getProperty(APEProperties.P_APE_MODELS);
 		for(String modelsPropVal : modelsPropVals.split(MODELS_PROP_SEPERATOR)) {
 			//Uncomment this, if you want to resolve the model file against the ARE.baseURI/models folder

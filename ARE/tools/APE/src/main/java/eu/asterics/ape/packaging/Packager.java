@@ -109,20 +109,30 @@ public class Packager {
 		Notifier.info("Copying files to "+buildMergedAREDir);
 
 		Set<URI> modelURIs=modelInspector.getModelURIsFromProperty();
-		Notifier.info("Found model URIs:\n"+modelURIs); 
-		Set<URI> componentJarURIs = modelInspector.getComponentTypeJarURIsOfModels(modelURIs);
+		Notifier.info("Found model URIs:\n"+modelURIs);
+		
+		//get model instances
+		Set<IRuntimeModel> modelInstances=modelInspector.getIRuntimeModelsOfModelURIs(modelURIs);
+		
+		//Remember all jar URIs we copied, we need this for fetching the respective license URIs afterwards.
+		Set<URI> allJarURIs=new HashSet<URI>();
+		Set<URI> componentJarURIs = modelInspector.getComponentTypeJarURIsOfModels(modelInstances);
+		allJarURIs.addAll(componentJarURIs);
 		copyURIs(componentJarURIs, buildMergedAREDir);
 		
-		List<URI> uriList = ResourceRegistry.getInstance().getServicesJarList(false);
+		Collection<URI> uriList = ResourceRegistry.getInstance().getServicesJarList(false);
+		allJarURIs.addAll(uriList);
 		copyURIs(uriList, buildMergedAREDir);
 		
 		uriList = ResourceRegistry.getInstance().getOtherJarList(false);
+		allJarURIs.addAll(uriList);
 		copyURIs(uriList, buildMergedAREDir);	
 
 		uriList = ResourceRegistry.getInstance().getDataList(false);
 		copyURIs(uriList, buildMergedAREDir);
 
-		uriList = ResourceRegistry.getInstance().getLicensesList(false);
+		//uriList = modelInspector.getLicenseURIsOfModels(modelInstances);
+		uriList = ResourceRegistry.getInstance().getLicenseURIsofAsTeRICSJarURIs(allJarURIs);
 		copyURIs(uriList, buildMergedAREDir);
 
 		uriList = ResourceRegistry.getInstance().getMandatoryProfileConfigFileList(false);
@@ -160,7 +170,7 @@ public class Packager {
 			}
 		}
 	}
-	
+		
 	/**
 	 * Copyies all given URIs to the given target directory. Also automatically resolves subdirs of bin/ARE to appropriate subdirs in a target directory.
 	 * @param srcURIs
@@ -237,6 +247,7 @@ public class Packager {
 		//We always have to resolve against a baseURI object because the Path implementation does not allow file:/// URI syntax, just OS-specific path styles.
 		Path buildDir=Paths.get(projectDir.toUri().resolve(apeProperties.getProperty(APEProperties.P_APE_BUILD_DIR, APEProperties.DEFAULT_BUILD_DIR)));
 		Notifier.info("Using ApeProp["+APEProperties.P_APE_BUILD_DIR+"]="+buildDir);
+		//Files.delete(buildDir);
 
 		//copyAndExtractTemplate(targetBaseDir);
 		copyFiles(projectDir, buildDir);
