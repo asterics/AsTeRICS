@@ -138,7 +138,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 		logger = AstericsErrorHandling.instance.getLogger();
 	}
 
-	void start()
+	public void start()
 	{
 		try {
 			createComponentListCache();
@@ -147,10 +147,10 @@ public class BundleManager implements BundleListener, FrameworkListener
 			AstericsErrorHandling.instance.reportError(null, "Could not create cache for Asterics components:\n"+e1.getMessage());
 		}
 
-		install(MODE_DEFAULT);
+		installServices();
 	}
 
-	void stop()
+	public void stop()
 	{
 		uninstall();
 	}
@@ -448,13 +448,6 @@ public class BundleManager implements BundleListener, FrameworkListener
 					bundle + " -> \n" + pe.getMessage());
 			throw new RuntimeException(pe);
 		}
-		catch (BundleManagementException bme)
-		{
-			logger.warning(this.getClass().getName()+".registerBundle: " +
-					"Error while installing component type from bundle " + 
-					bundle + " -> \n" + bme.getMessage());
-			throw new RuntimeException(bme);
-		}
 		return(componentTypeIDs);
 	}
 
@@ -557,10 +550,14 @@ public class BundleManager implements BundleListener, FrameworkListener
 	
 	/**
 	 * Installs services and bundles at startup of the BundleManager.
-	 * @param mode
 	 */
-	public void install(int mode) 
+	public void installServices() 
 	{
+		if(!ResourceRegistry.getInstance().isOSGIMode()) {
+			logger.fine("OSGIMode=false --> Skipping services installation.");
+			return;
+		}
+		
 		String path;	
 		Bundle bundle= null;
 
@@ -604,7 +601,9 @@ public class BundleManager implements BundleListener, FrameworkListener
 	public void createComponentListCache() throws MalformedURLException, IOException, ParseException, URISyntaxException {
 		File componentList=ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION, RES_TYPE.PROFILE));
 		
-		if(!componentList.exists()) {
+		//OSGIMode=true: only generate list if it does not exist.
+		//OSGIMode=false: Always generate cache list. This is also needed to force parsing the bundle_descriptors and installing ComponentType instances in ComponentRepository.
+		if(!componentList.exists()||!ResourceRegistry.getInstance().isOSGIMode()) {
 			generateComponentListCache(componentList);
 		}
 		readComponentListCache(componentList.toURI().toURL());
@@ -634,10 +633,15 @@ public class BundleManager implements BundleListener, FrameworkListener
 				Set<IComponentType> componentTypeSet=DefaultBundleModelParser.instance.parseModel(bundleDescriptor.openStream());
 				if(componentTypeSet.size()>=1) {
 					StringBuffer line=new StringBuffer(relativeURI.getPath());
-					for(IComponentType componentType : componentTypeSet) {						
+					for(IComponentType componentType : componentTypeSet) {											
 						line.append(COMPONENTLIST_DELIM);
 						line.append(" ");
 						line.append(componentType.getID());
+						
+						//Also install ComponentType in ComponentRepository, to support non-osgi mode. 
+						//This is actually not a good location for doing it because the main purpose of this method is to generate the cache, but
+						//here we have all we need.
+						ComponentRepository.instance.install(componentType);
 					}
 					writer.write(line.toString());
 					writer.newLine();

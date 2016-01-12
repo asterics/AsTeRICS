@@ -70,7 +70,7 @@ public class ComponentRepository
     		new HashMap<String, DefaultComponentFactory> ();
 
     public void install(final IComponentType componentType)
-            throws BundleManagementException
+            
     {
         if (componentType == null)
         {
