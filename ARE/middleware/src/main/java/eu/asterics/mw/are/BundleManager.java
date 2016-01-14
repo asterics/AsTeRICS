@@ -638,10 +638,12 @@ public class BundleManager implements BundleListener, FrameworkListener
 						line.append(" ");
 						line.append(componentType.getID());
 						
-						//Also install ComponentType in ComponentRepository, to support non-osgi mode. 
-						//This is actually not a good location for doing it because the main purpose of this method is to generate the cache, but
-						//here we have all we need.
-						ComponentRepository.instance.install(componentType);
+						if(!ResourceRegistry.getInstance().isOSGIMode()) {
+							//Also install ComponentType in ComponentRepository, to support non-osgi mode. 
+							//This is actually not a good location for doing it because the main purpose of this method is to generate the cache, but
+							//here we have all we need.
+							ComponentRepository.instance.install(componentType);
+						}
 					}
 					writer.write(line.toString());
 					writer.newLine();
