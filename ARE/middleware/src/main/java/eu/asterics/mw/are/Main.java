@@ -84,15 +84,20 @@ public class Main implements BundleActivator
 		// Check if not 32bit
 		String bits = System.getProperty("sun.arch.data.model");
 		if (OSUtils.isWindows() && bits.compareTo("64") == 0) {
-			logger.severe("JVM "
-					+ bits
-					+ " bit detected! ARE needs a 32bit JVM \n ARE will shutdown");
+			String message="JVM "+bits+" bit detected! Many plugins of the ARE need a 32bit JVM.";
+			logger.warning(message);
+			startupMessage(message,JOptionPane.WARNING_MESSAGE,false);
+			//Don't shut down, because it is not critical for all plugins, just for some.
+			/*
 			long start = System.currentTimeMillis();
 			long end = start + 5 * 1000; // 60 seconds * 1000 ms/sec
 			while (System.currentTimeMillis() < end) {
 				;
 			}
+			
 			System.exit(0);
+			 * 
+			 */
 		}
 		logger.info("JVM " + bits + " bit detected");
 		final String startModel = context
@@ -160,27 +165,33 @@ public class Main implements BundleActivator
 					udpThread.start();
 				} catch (Throwable e) {
 					String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
-					JOptionPane op = new JOptionPane ("The AsTeRICS Runtime Environment could not be initiated!"+reason,
-							JOptionPane.ERROR_MESSAGE);
-
-					//Show error dialog, but not modal to not risk a dead lock because of other modal error dialogs of components.
-					JDialog dialog = op.createDialog("ARE startup error");
-					dialog.setAlwaysOnTop(true);
-					dialog.setModal(false);
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);
-
-					//Schedule a shutdown after 10 seconds to prevent hanging ARE processes.
-					Executors.newScheduledThreadPool(1).schedule(new Runnable() {
-						@Override
-						public void run() {
-							System.exit(1);
-						}
-
-					}, 10, TimeUnit.SECONDS);
+					String message="The AsTeRICS Runtime Environment started with errors!"+reason;
+					logger.severe(message);
+					startupMessage(message,JOptionPane.ERROR_MESSAGE,true);
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Show non-modal info/warning/error message not disable-able by areProperties.
+	 * @param message
+	 * @param messageType
+	 */
+	private void startupMessage(String message, int messageType, boolean exit) {
+		JOptionPane op = new JOptionPane (message,messageType);
+
+		//Show error dialog, but not modal to not risk a dead lock because of other modal error dialogs of components.
+		JDialog dialog = op.createDialog("ARE message");
+		dialog.setAlwaysOnTop(true);
+		//if exit==true make dialog modal
+		dialog.setModal(exit);
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setVisible(true);
+		
+		if(exit) {
+			System.exit(1);
+		}
 	}
 
 
