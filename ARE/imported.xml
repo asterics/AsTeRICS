@@ -1,5 +1,6 @@
 <project name="asterics.imported" basedir=".">
 	<property name="license.prefix" value="${component.id}"/>
+	<property name="javac.source" value="1.7"/>
 	<property name="javac.target" value="1.7"/>
 
     <target name="copyLicenses" >

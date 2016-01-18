@@ -31,7 +31,7 @@
   </target>
 
   <target name="compile" depends="init" description="compile the source ">
-    <javac target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build}" verbose="true" debug="${debug}" 
+    <javac source="${javac.source}" target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build}" verbose="true" debug="${debug}" 
            classpath="${classpath}"> <classpath refid="asterics.classpath"/>
      </javac>
   </target>
