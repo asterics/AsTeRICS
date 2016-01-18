@@ -1,5 +1,5 @@
 #!/bin/sh
-# postinst script for XFacetrackerLK
+# postinst script
 #
 # see: dh_installdeb(1)
 
@@ -17,17 +17,22 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-APPNAME="XFacetrackerLK"
+#source appname
+#. APE.properties
+APPNAME="$DPKG_MAINTSCRIPT_PACKAGE"
 APPPATH="/opt/$APPNAME/app/"
+APPINSTALLDIR="/opt/$APPNAME"
 WRITEDIR="/var/opt/$APPNAME/"
 
 case "$1" in
     configure)
+    echo "Executing Postinst in dir $PWD"
+    echo $DPKG_MAINTSCRIPT_PACKAGE
         echo Adding shortcut to the menu
 
 		if [ -d "$APPPATH/../runtime" ]; then
-			echo "Creating desktop menu entry"
-        	xdg-desktop-menu install --novendor /opt/XFacetrackerLK/XFacetrackerLK.desktop
+			echo "Creating desktop menu entry $APPNAME"
+        	xdg-desktop-menu install --novendor $APPINSTALLDIR/$APPNAME.desktop
         fi
 
 
@@ -46,25 +51,6 @@ case "$1" in
 		ln -sf $WRITEDIR/areProperties $APPPATH/areProperties
 	
 		chmod +x $APPPATH/start*.sh
-
-
-        if [ "false" = "true" ]; then
-            echo Installing daemon
-            cp /opt/XFacetrackerLK/xfacetrackerlk.init /etc/init.d/xfacetrackerlk
-
-            if [ -x "/etc/init.d/xfacetrackerlk" ]; then
-                update-rc.d xfacetrackerlk defaults
-
-                if [ "false" = "true" ]; then
-                    if which invoke-rc.d >/dev/null 2>&1; then
-                        invoke-rc.d xfacetrackerlk start
-                    else
-                        /etc/init.d/xfacetrackerlk start
-                    fi
-                fi
-	        fi
-
-        fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
