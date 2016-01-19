@@ -32,12 +32,20 @@
           </subant>
     </target>
 
-	<target name="buildAll" depends="clean,buildServices">
+	<target name="buildAll" depends="clean,buildServices, buildTools">
           <subant target="buildAllComponents">
             <property name="debug" value="true"/>
             <fileset dir="." includes="components/build.xml"/>
           </subant>
     </target>
+	
+	<target name="buildTools" depends="buildServices">
+          <subant target="jar">
+            <property name="debug" value="${debug}"/>
+            <fileset dir="tools" includes="APE/build.xml"/>
+          </subant>
+    </target>
+	
 
 	<target name="buildAll-release" depends="clean,buildServices">
          <subant target="buildAllComponents">
