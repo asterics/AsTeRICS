@@ -189,6 +189,9 @@ public class APE {
 					apeProperties.setProperty(entry.getKey().toString(), entry.getValue().toString());
 				}
 			}
+			//Now adding default models search path to APE.models property
+			Notifier.info("Adding bin/ARE/models as search path for model files to "+APEProperties.P_APE_MODELS);
+			apeProperties.setProperty(APEProperties.P_APE_MODELS,apeProperties.getProperty(APEProperties.P_APE_MODELS,"")+";bin/ARE/models");
 			Notifier.debug("apeProperties: "+apeProperties.toString(), null);
 		} catch (IOException e) {
 			Notifier.error("Initialization of APE properties failed", e);

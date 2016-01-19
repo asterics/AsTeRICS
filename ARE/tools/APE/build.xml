@@ -9,16 +9,19 @@
 	<property name="runtime" location="../../../bin/APE" />
 	<property name="osgi" location="../../osgi" />
 	<property name="classpath" location="../../" />
+
+	<property name="resources" location="src/main/resources" />
+	<property name="src.tests" location="src/test/java" />
+	<property name="reports.tests" location="reports-junit"/>
+	
 	<path id="asterics.classpath">
 		<pathelement location="bin" />
 		<pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar" />
 		<pathelement location="${middleware}/asterics.ARE.jar" />
 		<pathelement location="${classpath}/junit/junit-4.8.2.jar" />
+		<pathelement location="src/main/resources/lib/commons-io-2.4.jar"/>
 	</path>
 
-	<property name="resources" location="src/main/resources" />
-	<property name="src.tests" location="src/test/java" />
-	<property name="reports.tests" location="reports-junit"/>
 
 	<target name="init">
 		<!-- Create the time stamp -->
@@ -35,9 +38,13 @@
 
 	<target name="jar" depends="compile" description="generate the OSGi bundle">
 		<jar jarfile="${dist}/${component.id}.jar" basedir="${build}" manifest="${resources}/META-INF/MANIFEST.MF">
-			<fileset dir="${resources}" />
+			<fileset dir="${resources}" excludes="**/lib"/>
 		</jar>
 		<copy file="${dist}/${component.id}.jar" tofile="${runtime}/${component.id}.jar" />
+		
+		<copy todir="${runtime}/lib" >
+			<fileset dir="${resources}/lib"></fileset>
+		</copy>
 	</target>
 
 	<target name="clean">
