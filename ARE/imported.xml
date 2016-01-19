@@ -2,7 +2,11 @@
 	<property name="license.prefix" value="${component.id}"/>
 	<property name="javac.source" value="1.7"/>
 	<property name="javac.target" value="1.7"/>
-
+	<!-- just to be sure also set the default values to the above ones -->	
+	<property name="ant.build.javac.source" value="${javac.source}"/>
+	<property name="ant.build.javac.target" value="${javac.target}"/>
+	
+	
     <target name="copyLicenses" >
 		<mkdir dir="${runtime}/LICENSE"/>
 		<copy todir="${runtime}/LICENSE" failonerror="false">
