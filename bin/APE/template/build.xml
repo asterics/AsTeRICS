@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="XFacetrackerLK" default="do-deploy" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
 
+	<property name="APE.propertiesFile" value="APE.properties"></property>
 	<property name="APE.OptionalServicesFile" value="" />
-	<loadproperties srcFile="../APE.properties" />
-	<property name="build.merged" location="${APE.buildDir}/merged/bin/ARE" />
+	<loadproperties srcFile="${APE.propertiesFile}" />
+	<property name="build.merged" location="${APE.buildDir}/merged" />
+	<property name="build.merged.ARE" location="${build.merged}/bin/ARE" />
 	<property name="build.deploy" location="${APE.buildDir}/deploy" />
 	<!-- the build platform is actually also the target platform, so we can differ the services files configuration -->
 	<condition property="APE.targetOS" value="windows" else="linux">
@@ -39,31 +41,35 @@
 
 	<target name="cleanup">
 		<delete dir="${build.deploy}" failonerror="false" />
+		<delete dir="${build.merged.ARE}" failonerror="false"/>
 	</target>
-	<target name="setup-staging-area" depends="cleanup">
+	<target name="setup-staging-area">
 		<mkdir dir="${build.deploy}" />
 		<!--
 		<delete>
-			<fileset dir="${build.merged}" includes="**/*.exe" />
+			<fileset dir="${build.merged.ARE}" includes="**/*.exe" />
 		</delete>
 		<delete>
-			<fileset dir="${build.merged}" includes="**/*.bat" />
+			<fileset dir="${build.merged.ARE}" includes="**/*.bat" />
 		</delete>
 		-->
-		<delete>
-			<fileset dir="${build.merged}" includes="**/*.log" />
+		<delete failonerror="false">
+			<fileset dir="${build.merged.ARE}" includes="**/*.log" />
 		</delete>
 		<delete failonerror="false">
-			<fileset dir="${build.merged}/profile/org.eclipse.osgi" />
+			<fileset dir="${build.merged.ARE}/profile/org.eclipse.osgi" />
 		</delete>
 	</target>
+	
+	<!-- if you want to compile something on your own -->
 	<target name='do-compile'>
 	</target>
 
-	<target name="do-deploy" depends="setup-staging-area, do-compile, init-fx-tasks">
+	<!-- calls the javafx deployment tasks and creates the requested installers -->
+	<target name="do-deploy" depends="init-fx-tasks, cleanup, setup-staging-area, runAPE, do-compile">
 		<fx:resources id="appRes">
-			<fx:fileset dir="${build.merged}" />
-			<fx:fileset dir="${build.merged}" type="license" includes="LICENSE" />
+			<fx:fileset dir="${build.merged.ARE}" />
+			<fx:fileset dir="${build.merged.ARE}" type="license" includes="LICENSE" />
 		</fx:resources>
 
 		<fx:application id="fxApplication" name="${fx.application.name}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
@@ -87,106 +93,17 @@
 			<fx:resources refid="appRes" />
 			<fx:info title="${fx.info.title}" vendor="${fx.info.vendor}" description="${fx.info.description}" license="${fx.info.license}" category="${fx.info.category}" />
 		</fx:deploy>
-		<!--
+		
+		<!-- TODO: create out-file name dependent on java embedded or not
 		<move file="${build.deploy}/bundles/xfacetrackerlk-1.0.0-AsTeRICS-2.7.deb" tofile="${build.deploy}/bundles/xfacetrackerlk-javaembedded-1.0.0-AsTeRICS-2.7.deb" />
 		-->
 	</target>
 
-
-	<target name="do-deploy-deb" depends="setup-staging-area, do-compile, init-fx-tasks">
-		<fx:resources id="appRes">
-			<fx:fileset dir="${build.merged}" />
-			<fx:fileset dir="${build.merged}" type="license" includes="LICENSE" />
-		</fx:resources>
-
-		<fx:application id="fxApplication" name="XFacetrackerLK" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="1.0.0-AsTeRICS-2.7" toolkit="swing" />
-		<!-- 
-		<fx:jar srcfile="{$build.merged}/org.eclipse.osgi_3.6.0.v20100517.jar" destfile="{$build.merged}/eu.asterics.mw.StartARE.jar">
-			<fx:application refid="fxApplication"/>
-			<fx:resources refid="appRes"/>
-
+	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
+	<target name="runAPE">
+		<java jar="../APE.jar" fork="true">
+			<sysproperty key="APE.propertiesFile" value="defProjectDir/${APE.propertiesFile}"/>	
+		</java>	
 			
-			<manifest>
-				<attribute name="Implementation-Vendor" value="AsTeRICS Consortium"/>
-				<attribute name="Implementation-Title" value="XFacetrackerLK"/>
-				<attribute name="Implementation-Version" value="1.0.0-AsTeRICS-2.7"/>
-				<attribute name="JavaFX-Feature-Proxy" value="None"/>
-			</manifest>
-		</fx:jar>
-	
-	-->
-
-		<fx:deploy verbose="true" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="XFacetrackerLK" nativeBundles="deb" updatemode="background">
-
-
-			<fx:preferences shortcut="false" install="true" menu="true" />
-			<fx:platform basedir="${java.home}">
-				<property name="osgi.configuration.area" value="profile" />
-				<property name="osgi.clean" value="true" />
-				<property name="org.osgi.framework.bootdelegation" value="*" />
-				<property name="org.osgi.framework.system.packages.extra" value="sun.misc" />
-				<property name="Ansi" value="true" />
-				<property name="java.util.logging.config.file" value="logging.properties" />
-				<property name="eu.asterics.ARE.startModel" value="autostart.acs" />
-				<property name="eu.asterics.ARE.ServicesFiles" value="services.ini;services-linux.ini" />
-			</fx:platform>
-
-			<fx:application refId="fxApplication" />
-			<fx:resources refid="appRes" />
-			<fx:info title="XFacetrackerLK - Head controlled mouse" vendor="AsTeRICS consortium - http://www.asterics.eu" description="Head controlled mouse" license="GPLv3 | MIT dual" category="Universal Access" />
-		</fx:deploy>
-		<move file="${build.deploy}/bundles/xfacetrackerlk-1.0.0-AsTeRICS-2.7.deb" tofile="${build.deploy}/bundles/xfacetrackerlk-javaembedded-1.0.0-AsTeRICS-2.7.deb" />
 	</target>
-
-
-	<target name="do-deploy-no-runtime" depends="setup-staging-area, do-compile, init-fx-tasks">
-		<fx:resources id="appRes">
-			<fx:fileset dir="${build.merged}" />
-			<fx:fileset dir="${build.merged}" type="license" includes="LICENSE" />
-		</fx:resources>
-
-		<fx:application id="fxApplication" name="XFacetrackerLK" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="1.0.0-AsTeRICS-2.7" toolkit="swing" />
-		<fx:platform basedir="" id="fxPlatform">
-			<property name="osgi.configuration.area" value="profile" />
-			<property name="osgi.clean" value="true" />
-			<property name="org.osgi.framework.bootdelegation" value="*" />
-			<property name="org.osgi.framework.system.packages.extra" value="sun.misc" />
-			<property name="Ansi" value="true" />
-			<property name="java.util.logging.config.file" value="logging.properties" />
-			<property name="eu.asterics.ARE.startModel" value="autostart.acs" />
-			<property name="eu.asterics.ARE.ServicesFiles" value="services.ini;services-linux.ini" />
-		</fx:platform>
-
-		<!-- 
-		<fx:jar destfile="${build.merged}/eu.asterics.mw.LaunchARE.jar">
-			<fx:application refid="fxApplication"/>
-			<fx:resources refid="appRes"/>
-			<fx:platform refid="fxPlatform"/>
-			<fileset file="${build.merged}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
-			
-			<manifest>
-				<attribute name="Implementation-Vendor" value="AsTeRICS Consortium"/>
-				<attribute name="Implementation-Title" value="XFacetrackerLK"/>
-				<attribute name="Implementation-Version" value="1.0.0-AsTeRICS-2.7"/>
-				<attribute name="JavaFX-Feature-Proxy" value="None"/>
-			</manifest>
-			
-		 
-		</fx:jar>
-	    -->
-
-		<!-- Need to use ${basedir} because somehow the ant task is calculating the directory differently -->
-
-		<fx:deploy verbose="true" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="XFacetrackerLK" nativeBundles="deb" updatemode="background">
-			<fx:platform refid="fxPlatform" />
-
-			<fx:preferences shortcut="false" install="true" menu="false" />
-
-			<fx:application refId="fxApplication" />
-			<fx:resources refid="appRes" />
-			<fx:info id="fxInfo" title="XFacetrackerLK - Head controlled mouse" vendor="AsTeRICS consortium - http://www.asterics.eu" description="Head controlled mouse" license="GPLv3 | MIT dual" category="Universal Access">
-			</fx:info>
-		</fx:deploy>
-	</target>
-
 </project>
