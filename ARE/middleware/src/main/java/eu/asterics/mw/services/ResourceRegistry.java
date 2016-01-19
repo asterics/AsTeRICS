@@ -429,9 +429,9 @@ public class ResourceRegistry {
 		    @Override
 		    public boolean accept(File dir, String name) {		    	
 		    	//Should we include the ARE here??
-		    	return !(name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor") || name.startsWith("asterics.mw") || name.startsWith("asterics.ARE") || name.startsWith("asterics.proxy")) 
-		    			&& name.endsWith(".jar") 
-		    			&& !DeploymentManager.instance.getBundleManager().checkForServiceBundle(new File(dir,name).toURI());		    			
+		    	return (name.startsWith("asterics.ARE") || name.startsWith("org.eclipse.osgi") || 
+		    			(!(name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor") || name.startsWith("asterics.mw") || name.startsWith("asterics.ARE") || name.startsWith("asterics.proxy")) && !DeploymentManager.instance.getBundleManager().checkForServiceBundle(new File(dir,name).toURI())))		    			 
+		    			&& name.endsWith(".jar");		    			
 		    }
 		});
 		return URIs;		
