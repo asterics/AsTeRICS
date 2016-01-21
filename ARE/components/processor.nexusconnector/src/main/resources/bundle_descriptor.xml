@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.NexusConnector"
+                   canonical_name="eu.asterics.component.processor.nexusconnector.NexusConnectorInstance">
+        <type subtype="Others">processor</type>
+        <singleton>false</singleton>
+        <description>NexusConnector description</description>
+        <ports>
+			<inputPort id="myInPort">
+				<description>input port description</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
