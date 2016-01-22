@@ -123,7 +123,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	{
 		if(component!=null) {
 			String componentID = DeploymentManager.instance
-					.getComponentInstanceIDFromComponentInstance(component);
+					.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component);
 			if (componentID != null) {
 				//System.out.println("componentID: "+componentID);
 				logger.warning(componentID + ": " + errorMsg);
@@ -166,7 +166,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	public void reportInfo(IRuntimeComponentInstance component, String info) 
 	{
 		String componentID = DeploymentManager.instance.
-				getComponentInstanceIDFromComponentInstance(component);
+				getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component);
 		logger.fine(componentID+": "+info);	
 
 	}
@@ -178,7 +178,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	public void reportOk(IRuntimeComponentInstance component, String info) 
 	{
 		String componentID = DeploymentManager.instance.
-				getComponentInstanceIDFromComponentInstance(component);
+				getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component);
 		logger.fine(componentID+": "+info);	
 		setStatusObject(AREStatus.OK.toString(), componentID, info);
 
@@ -195,7 +195,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 			String info) 
 	{
 		String componentID = DeploymentManager.instance.
-				getComponentInstanceIDFromComponentInstance(component);
+				getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component);
 		logger.fine(componentID+": "+info);		
 
 	}

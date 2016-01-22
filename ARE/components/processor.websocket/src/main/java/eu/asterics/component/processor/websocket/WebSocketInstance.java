@@ -243,7 +243,7 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
        * Registers this instance as an input port receiving data from the WebSocket
        */
       private void register() {
-    	  String componentInstanceId=DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(this);
+    	  String componentInstanceId=DeploymentManager.instance.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(this);
     	  WebServiceEngine.getInstance().getAstericsApplication().getOutputPort("").addInputPortEndpoint(componentInstanceId, IP_FROM_WEB_SOCKET, ipFromWebSocket, "");
       }
       
@@ -251,7 +251,7 @@ public class WebSocketInstance extends AbstractRuntimeComponentInstance
        * Deregisters this instance from receiving websocket data.
        */
       private void deRegister() {
-    	  String componentInstanceId=DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(this);
+    	  String componentInstanceId=DeploymentManager.instance.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(this);
     	  WebServiceEngine.getInstance().getAstericsApplication().getOutputPort("").removeInputPortEndpoint(componentInstanceId, IP_FROM_WEB_SOCKET);
       }
 }

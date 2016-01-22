@@ -763,7 +763,7 @@ public class AREServices implements IAREServices{
 		fullFilePath.append(modelName);
 		fullFilePath.append("/");
 		fullFilePath.append(DeploymentManager.instance
-				.getComponentInstanceIDFromComponentInstance(component));
+				.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component));
 		fullFilePath.append("/");
 		//System.out.println("Model File Name for Local Storage Service="+fullFilePath);
 

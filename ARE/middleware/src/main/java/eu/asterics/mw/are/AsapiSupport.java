@@ -2180,7 +2180,7 @@ public class AsapiSupport
 		List<String> list = new ArrayList<String>();
 		for (IRuntimeComponentInstance ci : componentInstances)
 		{
-			String id = DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(ci);
+			String id = DeploymentManager.instance.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(ci);
 			if (id.equals(componentID))
 			{
 				list = ci.getRuntimePropertyList(key);
