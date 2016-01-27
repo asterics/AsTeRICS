@@ -1,15 +1,26 @@
 package eu.asterics.mw.services;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.*;
-import java.nio.file.*;
+import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-import eu.asterics.mw.are.BundleManager;
+import org.apache.commons.io.FilenameUtils;
+
 import eu.asterics.mw.are.DeploymentManager;
 
 /*
@@ -42,6 +53,8 @@ import eu.asterics.mw.are.DeploymentManager;
  * This class is the central point to find and fetch resources used by the ARE middleware, osgi services and osgi plugins.
  * The idea is to generically implement the fetching of resources to enable the same approach for the whole AsTeRICS framework. This way all plugins, services and other classes will be able to also support
  * URI schemes (e.g. http, jar,...). Furthermore base URIs can be reconfigured depending on platform specific or usecase specific requirements (e.g. readonly jar respository from a website and writable local folder for caching and model creation).
+ * 
+ * Currently only file based ARE baseURIs are supported. Later maybe the base URI could also be an http-URL and the plugin resources directly fetched from an http-URL.
  * 
  *         Author: martin.deinhofer@technikum-wien.at
  *         Date: Oct 11, 2015
@@ -103,48 +116,144 @@ public class ResourceRegistry {
 	}
 	
 	/**
-	 * Return the URI according to the given resourceName string and the given resource type RES_TYPE.
-	 * RES_TYPE.MODEL: If a relative filename was provided, the 'models' folder is prefixed.
-	 * @param resourceName
-	 * @param type
-	 * @return
+	 * Returns the URI of the requested resource.
+	 * Generally the URI is not tested for existence it just constructs a valid URI for the given parameters.
+	 * The returned URI can be opened with {@link URI#toURL()} and {@link URL#openStream()}, or better use directly {@link ResourceRegistry#getResourceInputStream(String, RES_TYPE)}.
+	 * If you know that it is a file path URI and need to perform file operations, convert it to a file with {@link ResourceRegistry#toFile(URI)}.
+	 * 
+	 * resourcePath can be 
+	 * 	 an absolute URL-conforming string (e.g. file://, http://). In this case the string must be encoded correctly.
+	 *   or an absolute or relative file path (windows or unix-style). In this case {@link File} class and its method {@link File#toURI()} is used. The file path may contain both \\ and / seperators. Relative resourcePaths are resolved against the ARE.baseURI or a subfolder depending on the provided type ({@link RES_TYPE}). 
+
+	 * The type ({@link RES_TYPE}) determines the type of the resource which is used to append the respective subfolder for the resource type (e.g. data, models).
+	 * In case of {@value RES_TYPE#DATA} a 4 step approach is used to guess the correct subfolder (e.g. a sensor.facetrackerLK or pictures):
+	 *   Step 1: If resource ARE.baseURI/data/{resourcePath} exists, return
+	 *   Step 2: If componentTypeId!=null and resource ARE.baseURI/{DATA_FOLDER}/{componentTypeId}/{resourcePath} exists, return
+	 *   Step 3: If componentTypeId!=null and resource ARE.baseURI/{DATA_FOLDER}/{*componentTypeId*}/{resourcePath} exists, return
+	 *   Step 4: If resource ARE.baseURI/{DATA_FOLDER}/{*}/{resourcePath} exists, return
+	 *   Default: If none of the above was successful, ARE.baseURI/data/{resourcePath} is returned.
+	 * In case of {@value RES_TYPE#ANY} no subfolder is appended. 
+	 * 
+	 * @param resourcePath an absolute URL-conforming string or an absolute or relative file path string
+	 * @param type The resource type {@link RES_TYPE} for the requested resource
+	 * @param componentTypeId Hint for a better guessing of a {@value RES_TYPE#DATA} resource.
+	 * @param runtimeComponentInstanceId Hint for a better guessing of a {@value RES_TYPE#DATA} resource.
+	 * @return a valid URI.
 	 * @throws URISyntaxException
 	 */
-	public URI getResource(String resourceName, RES_TYPE type) throws URISyntaxException {
+	public URI getResource(String resourcePath, RES_TYPE type, String componentTypeId, String runtimeComponentInstanceId) throws URISyntaxException {
 		URI uri=null;
+		File resFilePath=null;
 		
 		try {
-			URL url=new URL(resourceName);			
+			URL url=new URL(resourcePath);			
 			AstericsErrorHandling.instance.getLogger().fine("Resource URL: "+url);
 			uri=url.toURI();			
 		} catch (MalformedURLException e) {
-			File resourceNameAsFile=new File(resourceName);
+			//Fix the string first, because it could have \ and / mixed up and stuff and convert it to path with unix-style path seperator (/)
+			//Thanks to apache commons io lib this is very easy!! :-)
+			final String resourcePathSlashified=FilenameUtils.separatorsToUnix(resourcePath);			
+			//AstericsErrorHandling.instance.getLogger().fine("resourceNameArg: "+resourcePath+", resourceName after normalization: "+resourcePathSlashified+", concat: "+FilenameUtils.concat(getAREBaseURI().getPath(), resourcePath));
+			
+			File resourceNameAsFile=new File(resourcePathSlashified);
+			//AstericsErrorHandling.instance.getLogger().fine("resourceName: "+resourcePathSlashified+", resourceNameAsFile: "+resourceNameAsFile+", resourceNameAsFile.toURI: "+resourceNameAsFile.toURI());
 			
 			if(!resourceNameAsFile.isAbsolute()) {
-				//In case of model files, prefix the MODELS_FOLDER if the path is relative.
 				switch(type) {
 				case MODEL:					
-					uri=toAbsolute(MODELS_FOLDER).resolve(resourceName);
+					resFilePath=resolveRelativeFilePath(toAbsolute(MODELS_FOLDER), resourcePathSlashified);
 					break;
 				case PROFILE:
-					uri=toAbsolute(PROFILE_FOLDER).resolve(resourceName);
+					resFilePath=resolveRelativeFilePath(toAbsolute(PROFILE_FOLDER), resourcePathSlashified);
 					break;
 				case LICENSE:
-					uri=toAbsolute(LICENSES_FOLDER).resolve(resourceName);
+					resFilePath=resolveRelativeFilePath(toAbsolute(LICENSES_FOLDER), resourcePathSlashified);
 					break;
 				case DATA:
-					uri=toAbsolute(DATA_FOLDER).resolve(resourceName);
+					/*
+					 * 1) Check resourceName directly, if it exists return
+					 * 2) Check resourceName with exactly matching componentTypeId, if it exists return
+					 * 3) Check resourceName with first subfolder containing componentTypeId, if it exists return
+					 * 4) Check all subfolders (only first level) and resolve against the given resourceName, if it exists return 
+					 */
+					URI dataFolderURI=toAbsolute(DATA_FOLDER);
+					File dataFolderFile=ResourceRegistry.toFile(dataFolderURI);
+					
+					//1) Check resourceName directly, if it exists return
+					resFilePath=resolveRelativeFilePath(dataFolderFile, resourcePathSlashified);
+					if(resFilePath.exists()) {
+						break;
+					}
+					
+					if(componentTypeId!=null) {
+						//2) Check resourceName with exactly matching componentTypeId, if it exists return
+						resFilePath=resolveRelativeFilePath(dataFolderFile, resourcePathSlashified);
+						if(resFilePath.exists()) {
+							break;
+						}
+
+						//3) Check resourceName with first subfolder containing componentTypeId (but only last part of asterics.facetrackerLK or sensor.facetrackerLK)
+						//if it exists return
+						String[] componentTypeIdSplit=componentTypeId.split("\\.");
+						//split returns the given string as element 0 if the regex patterns was not found.
+						final String componentTypeIdLC=componentTypeIdSplit[componentTypeIdSplit.length-1].toLowerCase();
+						
+						File[] dataSubFolderFiles=dataFolderFile.listFiles(new FileFilter() {		
+							@Override
+							public boolean accept(File dirFile) {
+								//AstericsErrorHandling.instance.getLogger().fine("Step3, dirFile: "+dirFile);
+								if(dirFile.isDirectory() && dirFile.exists()) {
+									//lowercase name contains lowercase componentTypeId
+									return (dirFile.getName().toLowerCase().indexOf(componentTypeIdLC)>-1);
+								}
+								return false;
+							}
+						});
+						//AstericsErrorHandling.instance.getLogger().fine("Data, Step3, resourceName="+resourceName+", componentTypeIdLC="+componentTypeIdLC+", runtimeComponentInstanceId="+runtimeComponentInstanceId+", dataSubFolderFiless <"+Arrays.toString(dataSubFolderFiles)+">");
+						if(dataSubFolderFiles.length > 0) {
+							resFilePath=resolveRelativeFilePath(dataSubFolderFiles[0], resourcePathSlashified);
+							if(resFilePath.exists()) {
+								break;
+							}
+						}						
+					}
+					
+					//4) Check all subfolders (only first level) and resolve against the given resourceName, if it exists return
+					File[] dataSubFolderFiles=dataFolderFile.listFiles(new FileFilter() {							
+						@Override
+						public boolean accept(File dirFile) {
+							//AstericsErrorHandling.instance.getLogger().fine("Step3, dirFile: "+dirFile);
+							if(dirFile.isDirectory() && dirFile.exists()) {
+								File resourceFile;
+								//resourceFile = toFile(dirFile.toURI().resolve(resourceName));
+								resourceFile=resolveRelativeFilePath(dirFile, resourcePathSlashified);
+								return resourceFile.exists();
+							}
+							return false;
+						}
+					});
+					//AstericsErrorHandling.instance.getLogger().fine("Data, Step4, resourceName="+resourceName+", componentTypeId="+componentTypeId+", runtimeComponentInstanceId="+runtimeComponentInstanceId+", dataSubFolderFiless <"+Arrays.toString(dataSubFolderFiles)+">");
+					if(dataSubFolderFiles.length > 0) {
+						resFilePath=resolveRelativeFilePath(dataSubFolderFiles[0], resourcePathSlashified);
+						if(resFilePath.exists()) {
+							break;
+						}							
+					}
+
+					
 					break;
 				case IMAGE:
-					uri=toAbsolute(IMAGES_FOLDER).resolve(resourceName);
+					resFilePath=resolveRelativeFilePath(toAbsolute(IMAGES_FOLDER), resourcePathSlashified);
 					break;
 				case STORAGE:
-					uri=toAbsolute(STORAGE_FOLDER).resolve(resourceName);					
+					resFilePath=resolveRelativeFilePath(toAbsolute(STORAGE_FOLDER), resourcePathSlashified);					
 					break;
 				default:
-					uri=toAbsolute(resourceName);
+					resFilePath=resolveRelativeFilePath(getAREBaseURIFile(), resourcePathSlashified);
 					break;
 				}
+				
+				uri=resFilePath.toURI();
 			} else {
 				uri=resourceNameAsFile.toURI();
 			}
@@ -152,24 +261,162 @@ public class ResourceRegistry {
 		//System.out.println("file absolute: "+resourceNameAsFile.isAbsolute()+", uri absolute: "+uri.isAbsolute()+", uri opaque: "+uri.isOpaque());
 		//System.out.println("resource File.toURI: "+resourceNameAsFile.toURI());
 		//AstericsErrorHandling.instance.getLogger().fine("URI before normalize: "+uri.normalize());
-		uri=uri.normalize();
-		AstericsErrorHandling.instance.getLogger().fine("Final Resource URI <"+uri+">");		
-		return uri;
+		if(uri!=null) {
+			uri=uri.normalize();
+		}
+		AstericsErrorHandling.instance.getLogger().fine("resourceName="+resourcePath+", componentTypeId="+componentTypeId+", runtimeComponentInstanceId="+runtimeComponentInstanceId+", Resource URI <"+uri+">");		
+		return uri;		
+	}	
+
+	/**
+	 * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports system dependent seperators.
+	 * @param baseURI
+	 * @param nonURIConformingFilePath
+	 * @return
+	 */
+	public static File resolveRelativeFilePath(URI baseURI, String nonURIConformingFilePath) {
+		return resolveRelativeFilePath(baseURI, nonURIConformingFilePath, false);
+	}
+
+	/**
+	 * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and / as seperators if parameter slashify=true 
+	 * @param baseURI
+	 * @param nonURIConformingFilePath
+	 * @param slashify true: Convert seperators to unix-style / 
+	 * @return
+	 */
+	public static File resolveRelativeFilePath(URI baseURI, String nonURIConformingFilePath, boolean slashify) {
+		if(slashify) {
+			nonURIConformingFilePath=FilenameUtils.separatorsToUnix(nonURIConformingFilePath);
+		}
+		File resolvedFile=new File(new File(baseURI),nonURIConformingFilePath);
+		return resolvedFile;
 	}
 	
 	/**
-	 * Returns an InputStream for the given resourceName and RES_TYPE.
-	 * @param resourceName
+	 * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports system dependent seperators. 
+	 * @param baseURIPath
+	 * @param nonURIConformingFilePath
+	 * @return
+	 */
+	public static File resolveRelativeFilePath(File baseURIPath, String nonURIConformingFilePath) {
+		return resolveRelativeFilePath(baseURIPath, nonURIConformingFilePath, false);		
+	}
+
+	/**
+	 * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and / as seperators if parameter slashify=true 
+	 * @param baseURIPath
+	 * @param nonURIConformingFilePath
+	 * @param slashify true: Convert seperators to unix-style /
+	 * @return
+	 */
+	public static File resolveRelativeFilePath(File baseURIPath, String nonURIConformingFilePath, boolean slashify) {
+		if(slashify) {
+			nonURIConformingFilePath=FilenameUtils.separatorsToUnix(nonURIConformingFilePath);
+		}
+
+		File absFile=new File(baseURIPath,nonURIConformingFilePath);
+		return absFile;
+	}
+
+	/**
+	 * Compares equalness of the given uri to the ARE.baseURI. Before comparison the URIs are normalized.
+	 * @param uri
+	 * @return
+	 */
+	public boolean equalsAREBaseURI(URI uri) {
+		return equalsNormalizedURIs(getAREBaseURI(), uri);
+	}
+	
+	/**
+	 * Checks if the given uri points to a subpath of the ARE.baseURI
+	 * @param uri
+	 * @return
+	 */
+	public boolean isSubURIOfAREBaseURI(URI uri) {
+		return isSubURI(getAREBaseURI(), uri);
+	}
+	
+	/**
+	 * Compares equalness of the given URIs. Before comparison the URIs are normalized.
+	 * @param first
+	 * @param second
+	 * @return
+	 */
+	public static boolean equalsNormalizedURIs(URI first, URI second) {
+		return first.normalize().equals(second.normalize());
+	}
+	
+	/**
+	 * Checks if the given uri points to a subpath of the given baseURI URI. 
+	 * @param baseURI
+	 * @param toTest
+	 * @return
+	 */
+	public static boolean isSubURI(URI baseURI, URI toTest) {
+		URI relativeURI=baseURI.normalize().relativize(toTest.normalize());
+		return !relativeURI.isAbsolute();		
+	}
+	
+	/**
+	 * Tests whether the given URI exists by 
+	 * 1) testing if it is a File and invoking the File.exists method
+	 * 2) trying to open an InputStream
+	 * @param uri
+	 * @return
+	 */
+	public static boolean resourceExists(URI uri) {
+		try {
+			if(ResourceRegistry.toFile(uri).exists()) {
+				return true;
+			}
+		} catch (URISyntaxException e) {
+			InputStream in=null;
+			try{
+				in=uri.toURL().openStream();
+				return true;
+			} catch (IOException e1) {
+			} finally {
+				if(in!=null) {
+					try {
+						in.close();
+					} catch (IOException e1) {
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Return the URI according to the given resourcePath string and the given resource type RES_TYPE.
+	 * For more details see {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)}.
+	 * @param resourcePath
+	 * @param type
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	public URI getResource(String resourcePath, RES_TYPE type) throws URISyntaxException {
+		return getResource(resourcePath, type, null, null);
+	}
+	
+	
+	
+	/**
+	 * Returns an InputStream for the given resourcePath and RES_TYPE.
+	 * For more details about resourcePath, see {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)}.
+	 * @param resourcePath
 	 * @param type
 	 * @return
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 * @throws URISyntaxException
 	 */
-	public InputStream getResourceInputStream(String resourceName, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
-		return getResource(resourceName, type).toURL().openStream();
+	public InputStream getResourceInputStream(String resourcePath, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
+		return getResource(resourcePath, type).toURL().openStream();
 	}
-	
+		
 	/**
 	 * Set the base URI of the ARE. This URI will be used as parent path for all resources like models, data, storage,...
 	 * Also the jars of the ARE and the plugins are expected in that path.
@@ -195,17 +442,19 @@ public class ResourceRegistry {
 	 * Sets the location for writable (File) access. This is needed for temporary storage like osgi cache and log files but also for models or data files that were deployed.  
 	 * @param writableURI
 	 */
+	/*//Not yet supported
 	public void setAREWritableURI(URI writableURI) {
 		ARE_WRITABLE_URI=writableURI;
-	}
+	}*/
 	
 	/**
 	 * Returns the URI for writable storage.
 	 * @return
 	 */
+	/*//Not yet supported
 	public URI getAREWritableURI() {
 		return ARE_WRITABLE_URI != null ? ARE_WRITABLE_URI : getAREBaseURI();
-	}
+	}*/
 
 	/**
 	 * Converts the given absolutePath to a path relative to the ARE base URI {@link getAREBaseURI}.
@@ -259,7 +508,7 @@ public class ResourceRegistry {
 	
 	/**
 	 * Returns a File object representing the given URI if possible.
-	 * This only works if the given URI is a relative path or is a path with a file scheme (starting with: file://)
+	 * This only works if the given URI is a relative path or is a path with a file scheme (starting with: file)
 	 * @param uri
 	 * @return
 	 * @throws URISyntaxException 
@@ -267,7 +516,7 @@ public class ResourceRegistry {
 	public static File toFile(URI uri) throws URISyntaxException {
 		String scheme=uri.getScheme();
 		if(scheme!=null && !scheme.startsWith("file")) {
-			throw new URISyntaxException(uri.toString(),"The uri does not start with the scheme <file:>");
+			throw new URISyntaxException(uri.toString(),"The uri does not start with the scheme <file>");
 		}
 		File f=new File(uri.getPath());
 		return f;
@@ -276,7 +525,7 @@ public class ResourceRegistry {
 	public static Path toPath(URI uri) throws URISyntaxException {
 		String scheme=uri.getScheme();
 		if(scheme!=null && !scheme.startsWith("file")) {
-			throw new URISyntaxException(uri.toString(),"The uri does not start with the scheme <file:>");
+			throw new URISyntaxException(uri.toString(),"The uri does not start with the scheme <file>");
 		}
 		Path p=toFile(uri).toPath();
 		return p;
