@@ -54,7 +54,7 @@ public class ServerRepository {
 			add( new RestFunction("PUT", "/runtime/model/autorun/{filename}", "", "text/plain", "",
 					"Deploys and starts the model contained in the given filename") );
 			
-			add( new RestFunction("GET", "/runtime/model/components", "", "application/json", "",
+			add( new RestFunction("GET", "/runtime/model/components/ids", "", "application/json", "",
 					"Retrieves all the components in the deployed model") );
 			
 			add( new RestFunction("GET", "/runtime/model/components/{componentId}", "", "application/json", "",
@@ -75,17 +75,17 @@ public class ServerRepository {
 			add( new RestFunction("DELETE", "/storage/models/{filename}", "", "text/plain", "",
 					"Deletes the model with the given filename") );
 			
-			add( new RestFunction("GET", "/storage/models", "", "application/json", "",
+			add( new RestFunction("GET", "/storage/models/names", "", "application/json", "",
 					"Retrieves a list with all the model that are saved in the ARE repository") );
 			
 			add( new RestFunction("GET", "/restfunctions", "", "text/plain", "",
 					"Retrieves a list with all the available rest functions") );
 			
-			add( new RestFunction("GET", "/storage/components/collection", "", "text/xml", "",
-					"Returns an xml string containing the descriptors of the created components") );
+			add( new RestFunction("GET", "/storage/components/descriptors/xml", "", "text/xml", "",
+					"Returns an xml string containing the descriptors of the created components with some modifications in order to be used by the webACS") );
 			
-			add( new RestFunction("GET", "/storage/components", "", "text/xml", "",
-					"Returns a list with all the component descriptors contained in the ARE repository") );
+			add( new RestFunction("GET", "/storage/components/descriptors/json", "", "text/xml", "",
+					"Retrieves the exact content of the component descriptors contained in the ARE repository") );
 			
 			add( new RestFunction("GET", "/events/subscribe", "", "", "",
 					"Opens a persistent connection with ARE to use it for Server Sent Events") );
