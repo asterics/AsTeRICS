@@ -161,13 +161,13 @@ public class ResourceRegistry {
 			if(!resourceNameAsFile.isAbsolute()) {
 				switch(type) {
 				case MODEL:					
-					resFilePath=resolveRelativeFilePath(toAbsolute(MODELS_FOLDER), resourcePathSlashified);
+					resFilePath=resolveRelativeFilePath(toAbsolute(MODELS_FOLDER), resourcePathSlashified,false);
 					break;
 				case PROFILE:
-					resFilePath=resolveRelativeFilePath(toAbsolute(PROFILE_FOLDER), resourcePathSlashified);
+					resFilePath=resolveRelativeFilePath(toAbsolute(PROFILE_FOLDER), resourcePathSlashified,false);
 					break;
 				case LICENSE:
-					resFilePath=resolveRelativeFilePath(toAbsolute(LICENSES_FOLDER), resourcePathSlashified);
+					resFilePath=resolveRelativeFilePath(toAbsolute(LICENSES_FOLDER), resourcePathSlashified,false);
 					break;
 				case DATA:
 					/*
@@ -180,14 +180,14 @@ public class ResourceRegistry {
 					File dataFolderFile=ResourceRegistry.toFile(dataFolderURI);
 					
 					//1) Check resourceName directly, if it exists return
-					resFilePath=resolveRelativeFilePath(dataFolderFile, resourcePathSlashified);
+					resFilePath=resolveRelativeFilePath(dataFolderFile, resourcePathSlashified,false);
 					if(resFilePath.exists()) {
 						break;
 					}
 					
 					if(componentTypeId!=null) {
 						//2) Check resourceName with exactly matching componentTypeId, if it exists return
-						resFilePath=resolveRelativeFilePath(dataFolderFile, resourcePathSlashified);
+						resFilePath=resolveRelativeFilePath(dataFolderFile,componentTypeId+"/"+resourcePathSlashified,false);
 						if(resFilePath.exists()) {
 							break;
 						}
@@ -211,7 +211,7 @@ public class ResourceRegistry {
 						});
 						//AstericsErrorHandling.instance.getLogger().fine("Data, Step3, resourceName="+resourceName+", componentTypeIdLC="+componentTypeIdLC+", runtimeComponentInstanceId="+runtimeComponentInstanceId+", dataSubFolderFiless <"+Arrays.toString(dataSubFolderFiles)+">");
 						if(dataSubFolderFiles.length > 0) {
-							resFilePath=resolveRelativeFilePath(dataSubFolderFiles[0], resourcePathSlashified);
+							resFilePath=resolveRelativeFilePath(dataSubFolderFiles[0], resourcePathSlashified,false);
 							if(resFilePath.exists()) {
 								break;
 							}
@@ -226,7 +226,7 @@ public class ResourceRegistry {
 							if(dirFile.isDirectory() && dirFile.exists()) {
 								File resourceFile;
 								//resourceFile = toFile(dirFile.toURI().resolve(resourceName));
-								resourceFile=resolveRelativeFilePath(dirFile, resourcePathSlashified);
+								resourceFile=resolveRelativeFilePath(dirFile, resourcePathSlashified,false);
 								return resourceFile.exists();
 							}
 							return false;
@@ -234,7 +234,7 @@ public class ResourceRegistry {
 					});
 					//AstericsErrorHandling.instance.getLogger().fine("Data, Step4, resourceName="+resourceName+", componentTypeId="+componentTypeId+", runtimeComponentInstanceId="+runtimeComponentInstanceId+", dataSubFolderFiless <"+Arrays.toString(dataSubFolderFiles)+">");
 					if(dataSubFolderFiles.length > 0) {
-						resFilePath=resolveRelativeFilePath(dataSubFolderFiles[0], resourcePathSlashified);
+						resFilePath=resolveRelativeFilePath(dataSubFolderFiles[0], resourcePathSlashified,false);
 						if(resFilePath.exists()) {
 							break;
 						}							
@@ -243,13 +243,13 @@ public class ResourceRegistry {
 					
 					break;
 				case IMAGE:
-					resFilePath=resolveRelativeFilePath(toAbsolute(IMAGES_FOLDER), resourcePathSlashified);
+					resFilePath=resolveRelativeFilePath(toAbsolute(IMAGES_FOLDER), resourcePathSlashified,false);
 					break;
 				case STORAGE:
-					resFilePath=resolveRelativeFilePath(toAbsolute(STORAGE_FOLDER), resourcePathSlashified);					
+					resFilePath=resolveRelativeFilePath(toAbsolute(STORAGE_FOLDER), resourcePathSlashified,false);					
 					break;
 				default:
-					resFilePath=resolveRelativeFilePath(getAREBaseURIFile(), resourcePathSlashified);
+					resFilePath=resolveRelativeFilePath(getAREBaseURIFile(), resourcePathSlashified,false);
 					break;
 				}
 				
@@ -269,13 +269,13 @@ public class ResourceRegistry {
 	}	
 
 	/**
-	 * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports system dependent seperators.
+	 * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and / as seperators.
 	 * @param baseURI
 	 * @param nonURIConformingFilePath
 	 * @return
 	 */
 	public static File resolveRelativeFilePath(URI baseURI, String nonURIConformingFilePath) {
-		return resolveRelativeFilePath(baseURI, nonURIConformingFilePath, false);
+		return resolveRelativeFilePath(baseURI, nonURIConformingFilePath, true);
 	}
 
 	/**
@@ -294,13 +294,13 @@ public class ResourceRegistry {
 	}
 	
 	/**
-	 * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports system dependent seperators. 
+	 * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and / as seperators. 
 	 * @param baseURIPath
 	 * @param nonURIConformingFilePath
 	 * @return
 	 */
 	public static File resolveRelativeFilePath(File baseURIPath, String nonURIConformingFilePath) {
-		return resolveRelativeFilePath(baseURIPath, nonURIConformingFilePath, false);		
+		return resolveRelativeFilePath(baseURIPath, nonURIConformingFilePath, true);		
 	}
 
 	/**
@@ -344,6 +344,8 @@ public class ResourceRegistry {
 	 * @return
 	 */
 	public static boolean equalsNormalizedURIs(URI first, URI second) {
+		URI fnorm=first.normalize();
+		URI fsecond=second.normalize();
 		return first.normalize().equals(second.normalize());
 	}
 	
@@ -417,6 +419,7 @@ public class ResourceRegistry {
 		return getResource(resourcePath, type).toURL().openStream();
 	}
 		
+	//public void setAREBaseURI()
 	/**
 	 * Set the base URI of the ARE. This URI will be used as parent path for all resources like models, data, storage,...
 	 * Also the jars of the ARE and the plugins are expected in that path.

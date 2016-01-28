@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.util.*;
 
+import org.apache.commons.io.FilenameUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
 import eu.asterics.mw.are.parsers.ModelValidator;
 import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
+import eu.asterics.mw.utils.OSUtils;
 import jersey.repackaged.com.google.common.collect.Lists;
 
 public class TestResourceRegistry {
@@ -60,37 +62,51 @@ public class TestResourceRegistry {
 			assertTrue(ResourceRegistry.equalsNormalizedURIs(new URI(testURIString), actual));
 						
 			//Test relative resource, will be treated as a file
-			//Should be found pictures subfolder
-			testURIString="slide7.jpg";
-			actual=ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA);
-			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "pictures/"+testURIString).toURI(), actual)); 
-
-			//Should be found pictures subfolder
+			//Should be found pictures subfolder directly through step1
 			testURIString="pictures/slide7.jpg";
 			actual=ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA);
-			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(dataBaseURI, testURIString).toURI(), actual));
+			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(dataBaseURI, testURIString,true).toURI(), actual));
+			
+			//Should be found in pictures subfolder, through step2
+			testURIString="slide7.jpg";
+			actual=ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA,"pictures",null);
+			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "pictures/"+testURIString,true).toURI(), actual)); 
+			
+			//Should be found in pictures subfolder, through step3
+			testURIString="slide7.jpg";
+			actual=ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA,"Pic",null);
+			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "pictures/"+testURIString,true).toURI(), actual)); 			
+
+			//Should be found in pictures subfolder, through step4
+			testURIString="slide7.jpg";
+			actual=ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA);
+			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "pictures/"+testURIString,true).toURI(), actual)); 
 			
 			//Test spaces and \\ in string (also interesting to test it on Linux)
 			testURIString="symbols\\fill glass with water.png";
 			actual=ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA);
-			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "pictures\\"+testURIString).toURI(), actual));
+			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "pictures\\"+testURIString, true).toURI(), actual));
 			
 			//Test providing componentTypeId of facetrackerLK
 			testURIString="haarcascade_frontalface_alt.xml";
 			actual=ResourceRegistry.getInstance().getResource(testURIString,RES_TYPE.DATA,"asterics.FacetrackerLK",null);
-			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "sensor.facetrackerLK\\"+testURIString).toURI(), actual));
+			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "sensor.facetrackerLK/"+testURIString,true).toURI(), actual));
 
 			//Test models
 			testURIString="CameraMouse.acs";
 			actual=ResourceRegistry.getInstance().getResource(testURIString,RES_TYPE.MODEL,null,null);
-			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(modelBaseURI, testURIString).toURI(), actual));
+			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(modelBaseURI, testURIString, true).toURI(), actual));
 			
 			testURIString="grids\\eyeX_Environment\\eyeX_Environment.acs";
 			actual=ResourceRegistry.getInstance().getResource(testURIString,RES_TYPE.MODEL,null,null);
-			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(modelBaseURI, testURIString).toURI(), actual));						
+			assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry.resolveRelativeFilePath(modelBaseURI, testURIString,true).toURI(), actual));						
 			
 			//Test absolute file path, should be returned as valid absolute URI
-			testURIString="C:\\Program Files (x86)\\eclipse";
+			if(OSUtils.isWindows()) {
+				testURIString="C:\\Program Files (x86)\\eclipse";
+			} else {
+				testURIString="/var/log/messages";
+			}
 			actual=ResourceRegistry.getInstance().getResource(testURIString,RES_TYPE.ANY,null,null);
 			assertTrue(ResourceRegistry.equalsNormalizedURIs(new File(testURIString).toURI(), actual));						
 
@@ -140,6 +156,7 @@ public class TestResourceRegistry {
 		assertFalse(ResourceRegistry.getInstance().isSubURIOfAREBaseURI(absolute.resolve("../../")));
 	}
 	
+	//Don't annotate as test, because it's not easily possible to set a crossplatform absolute path.
 	@Test
 	public void testSetAREBaseURI() throws URISyntaxException {
 		//Test getting and relative to absolute
@@ -147,14 +164,24 @@ public class TestResourceRegistry {
 		testRelativeToAbsoluteToRelative();
 		
 		//change base URI
+		String testURIString="C:\\Program Files (x86)\\eclipse\\";
+		if(!OSUtils.isWindows()) {
+			testURIString="/var/log/";
+		}
+
+		testURIString=FilenameUtils.normalize(testURIString);
 		URI newURI;
-		newURI=new File("C:\\Program Files (x86)\\AsTeRICS\\ARE").toURI();
+		newURI=new File(testURIString).toURI();
 		System.out.println("Setting new AREBaseURI to <"+newURI.getPath()+">");
+		URI oldURI=ResourceRegistry.getInstance().getAREBaseURI();
 		ResourceRegistry.getInstance().setAREBaseURI(newURI);
 		
 		//Test getting and relative to absolute again
 		testGetAREBaseURI();
 		testRelativeToAbsoluteToRelative();
+		
+		//Set old URI again to don't influence other tests.
+		ResourceRegistry.getInstance().setAREBaseURI(oldURI);
 	}
 
 	/*
