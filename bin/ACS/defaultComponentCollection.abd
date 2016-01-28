@@ -6977,6 +6977,21 @@
 
     </componentType>
 
+<componentType canonical_name="eu.asterics.component.processor.nexusconnector.NexusConnectorInstance" id="asterics.NexusConnector">
+        <type subtype="Web">processor</type>
+        <singleton>false</singleton>
+        <description>Nexus Connector</description>
+        <ports>
+                <inputPort id="myInPort">
+                        <description>Input</description>
+                        <mustBeConnected>false</mustBeConnected>
+                        <dataType>double</dataType>
+                </inputPort>
+        </ports>
+        <events></events>
+        <properties></properties>
+</componentType>
+
  <componentType canonical_name="eu.asterics.component.processor.oneeventmanyactions.OneEventManyActionsInstance" id="asterics.OneEventManyActions">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>

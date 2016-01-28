@@ -89,6 +89,7 @@
 	<classpathentry kind="src" path="components/processor.minmax/src/main/java"/>
 	<classpathentry kind="src" path="components/processor.multisource/src/main/java"/>
 	<classpathentry kind="src" path="components/processor.multisourcestring/src/main/java"/>
+	<classpathentry king="src" path="components/processor.nexusconnector/src/main/java"/>
 	<classpathentry kind="src" path="components/processor.neuralnetworkloader/src/main/java"/>
 	<classpathentry kind="src" path="components/processor.oneeventmanyactions/src/main/java"/>
 	<classpathentry kind="src" path="components/processor.oscgesturefollower/src/main/java"/>
