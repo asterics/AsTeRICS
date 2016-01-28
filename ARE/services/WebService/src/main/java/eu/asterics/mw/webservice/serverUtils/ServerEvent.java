@@ -10,7 +10,8 @@ package eu.asterics.mw.webservice.serverUtils;
 public enum ServerEvent {
     MODEL_STATE_CHANGED ("ModelStateChanged"),
     MODEL_CHANGED ("ModelChanged"),
-    REPOSITORY_CHANGED ("RepositoryChanged");
+    REPOSITORY_CHANGED ("RepositoryChanged"),
+    ARE_EVENT ("AreEvent"); //TODO
     
     private final String eventType;       
 
