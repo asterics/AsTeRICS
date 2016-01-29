@@ -280,17 +280,24 @@ public class ResourceRegistry {
 
 	/**
 	 * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and / as seperators if parameter slashify=true 
-	 * @param baseURI
+	 * @param baseURIPath
 	 * @param nonURIConformingFilePath
 	 * @param slashify true: Convert seperators to unix-style / 
 	 * @return
 	 */
-	public static File resolveRelativeFilePath(URI baseURI, String nonURIConformingFilePath, boolean slashify) {
+	public static File resolveRelativeFilePath(URI baseURIPath, String nonURIConformingFilePath, boolean slashify) {
 		if(slashify) {
 			nonURIConformingFilePath=FilenameUtils.separatorsToUnix(nonURIConformingFilePath);
 		}
-		File resolvedFile=new File(new File(baseURI),nonURIConformingFilePath);
-		return resolvedFile;
+		//File resolvedFile=new File(new File(baseURI),nonURIConformingFilePath);
+		//return resolvedFile;
+		
+		File absFile=new File(nonURIConformingFilePath);
+		if(!absFile.isAbsolute()) {
+			absFile=new File(new File(baseURIPath),nonURIConformingFilePath);
+		}
+		return absFile;
+		
 	}
 	
 	/**
@@ -314,8 +321,11 @@ public class ResourceRegistry {
 		if(slashify) {
 			nonURIConformingFilePath=FilenameUtils.separatorsToUnix(nonURIConformingFilePath);
 		}
-
-		File absFile=new File(baseURIPath,nonURIConformingFilePath);
+		
+		File absFile=new File(nonURIConformingFilePath);
+		if(!absFile.isAbsolute()) {
+			absFile=new File(baseURIPath,nonURIConformingFilePath);
+		}
 		return absFile;
 	}
 
