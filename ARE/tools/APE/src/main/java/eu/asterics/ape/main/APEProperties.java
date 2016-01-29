@@ -21,11 +21,12 @@ public class APEProperties extends Properties {
 	public static final String ARE_PROP_PREFIX = "ARE.";
 	public static final String FX_PROP_PREFIX = "fx.";
 	
-	public static String DEFAULT_PROJECT_DIR="defProjectDir";
-	public static String DEFAULT_BUILD_DIR="build";
+	public static String DEFAULT_PROJECT_DIR="defProjectDir/";
+	public static String DEFAULT_BUILD_DIR="build/";
 	
 	public static URI APE_BASE_URI=null;
-	public static URI APE_PROP_FILE_BASE_URI=null;
+	public static URI APE_PROJECT_DIR_URI=null;
+	//public static URI APE_PROP_FILE_BASE_URI=null;
 
 	
 	public APEProperties() {

@@ -26,8 +26,15 @@ public class Notifier {
 	}
 	
 	public static void info(String message) {
+		info(message,null);
+	}
+	
+	public static void info(String message, Exception e) {
 		//System.out.println(message);
 		logger.info(message);
+		if(e!=null) {
+			logger.info(e.getMessage());
+		}
 	}
 	
 	public static void warning(String message, Exception e) {

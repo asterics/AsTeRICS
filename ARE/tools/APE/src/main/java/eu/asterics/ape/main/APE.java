@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.apache.commons.io.FileUtils;
 import org.xml.sax.SAXException;
 
 import eu.asterics.ape.packaging.Packager;
@@ -56,6 +57,7 @@ import eu.asterics.mw.services.ResourceRegistry;
  */
 
 public class APE {
+	private static final String TEMPLATE_DIR = "template";
 	/**
 	 * The properties of APE
 	 */
@@ -68,6 +70,7 @@ public class APE {
 	 * Reference to the Packager instance.
 	 */
 	private Packager packager=null;
+	private File projectDir;
 	
 	private static APE instance=null;
 	
@@ -87,7 +90,11 @@ public class APE {
 	 * @throws MalformedURLException 
 	 */
 	public static void main(String[] args) throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
-		APE.getInstance().start();
+		try {
+			APE.getInstance().start();
+		} catch (APEConfigurationException e) {
+			Notifier.error(e.getMessage(),null);
+		}
 	}
 	
 	/**
@@ -138,21 +145,31 @@ public class APE {
 	 * @throws ParserConfigurationException 
 	 * @throws URISyntaxException 
 	 * @throws BundleManagementException 
+	 * @throws APEConfigurationException 
 	 */
-	public void start() throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
+	public void start() throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException, APEConfigurationException {
 		
 		AstericsErrorHandling.instance.getLogger().setLevel(Level.FINE);
-		/*String newApeBaseURIString=System.getProperty(APEProperties.P_APE_BASEURI);
-		if(newApeBaseURIString != null) setAPEBaseURI(Paths.get(newApeBaseURIString).toUri());
-		*/
 		ResourceRegistry.getInstance().setOSGIMode(false);
+		
+		projectDir=ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.toFile(getAPEBaseURI()), System.getProperty(APEProperties.P_APE_PROJECT_DIR,APEProperties.DEFAULT_PROJECT_DIR),false);
+		APEProperties.APE_PROJECT_DIR_URI=projectDir.toURI();
+		Notifier.info("Using ApeProp["+APEProperties.P_APE_PROJECT_DIR+"]="+APEProperties.APE_PROJECT_DIR_URI);
+		
+		if(!projectDir.exists()) {
+			Notifier.info("Project folder does not exist, copying template to: "+projectDir);
+			//If the projectDir does not exist, we should copy the template dir to the projectDir		
+			FileUtils.copyDirectory(ResourceRegistry.resolveRelativeFilePath(getAPEBaseURI(), TEMPLATE_DIR), projectDir);
+		}
 
 		initProperties();
 		
 		String newAreBaseURIString=apeProperties.getProperty(APEProperties.P_ARE_BASE_URI);
 		Notifier.debug("ApeProp["+APEProperties.P_ARE_BASE_URI+"]="+newAreBaseURIString,null);
-		if(newAreBaseURIString!=null) ResourceRegistry.getInstance().setAREBaseURI(APEProperties.APE_PROP_FILE_BASE_URI.resolve(newAreBaseURIString));
-
+		if(newAreBaseURIString!=null) {
+			URI newAREBaseURI=ResourceRegistry.resolveRelativeFilePath(projectDir, newAreBaseURIString).toURI();
+			ResourceRegistry.getInstance().setAREBaseURI(newAREBaseURI);
+		}
 
 		modelInspector=new ModelInspector(apeProperties);
 		packager=new Packager(apeProperties, modelInspector);
@@ -166,32 +183,24 @@ public class APE {
 		Properties defaultProperties=new Properties();
 		//Init with empty properties
 		apeProperties=new APEProperties();
-		APEProperties.APE_PROP_FILE_BASE_URI=APEProperties.APE_BASE_URI;
 
 		try {
-
-			//Currently this can only be a file but later maybe we also support a properties file from a web location, so let's store it as URI.
-			Notifier.debug("ApeProp["+APEProperties.P_APE_PROPERTIES_FILE+"]="+System.getProperty(APEProperties.P_APE_PROPERTIES_FILE),null);
+			//APE.properties is expected to be in the project directory
+			URI apePropFileURI=ResourceRegistry.resolveRelativeFilePath(projectDir, "APE.properties").toURI();
 			
-			//Check if there was a system property switch overriding the APE.properties file location
-			String propFileString=System.getProperty(APEProperties.P_APE_PROPERTIES_FILE, "APE.properties");
-			URI apePropFileURI=APEProperties.APE_BASE_URI.resolve(propFileString);
-			
-			Notifier.info("Using "+APEProperties.P_APE_PROPERTIES_FILE+"="+apePropFileURI);
-			APEProperties.APE_PROP_FILE_BASE_URI=apePropFileURI.resolve("./").normalize();
-			//Notifier.info("Using "+APEProperties.P_APE_PROPERTIES_FILE+"="+apePropFileURI);
-						
 			defaultProperties.load(new BufferedReader(new InputStreamReader(apePropFileURI.toURL().openStream())));
 			Notifier.debug("defaultProperties: "+defaultProperties.toString(), null);
 			apeProperties=new APEProperties(defaultProperties);
 			for(Entry<Object, Object> entry : System.getProperties().entrySet()) {
 				if(entry.getKey().toString().startsWith(APEProperties.APE_PROP_PREFIX)||entry.getKey().toString().startsWith(APEProperties.ARE_PROP_PREFIX)) {
+					Notifier.info("Overriding ApeProp["+entry.getKey()+"]="+entry.getValue());
 					apeProperties.setProperty(entry.getKey().toString(), entry.getValue().toString());
 				}
 			}
 			//Now adding default models search path to APE.models property
-			Notifier.info("Adding bin/ARE/models as search path for model files to "+APEProperties.P_APE_MODELS);
+			Notifier.debug("Adding bin/ARE/models as search path for model files to "+APEProperties.P_APE_MODELS,null);			
 			apeProperties.setProperty(APEProperties.P_APE_MODELS,apeProperties.getProperty(APEProperties.P_APE_MODELS,"")+";bin/ARE/models");
+			Notifier.info("Using ApeProp["+APEProperties.P_APE_MODELS+"]="+apeProperties.getProperty(APEProperties.P_APE_MODELS),null);
 			Notifier.debug("apeProperties: "+apeProperties.toString(), null);
 		} catch (IOException e) {
 			Notifier.error("Initialization of APE properties failed", e);

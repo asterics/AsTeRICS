@@ -14,6 +14,7 @@ import org.osgi.framework.BundleException;
 import org.xml.sax.SAXException;
 
 import eu.asterics.ape.main.APE;
+import eu.asterics.ape.main.APEConfigurationException;
 import eu.asterics.ape.main.APEProperties;
 import eu.asterics.ape.main.Notifier;
 import eu.asterics.ape.parse.ModelInspector;
@@ -59,49 +60,37 @@ import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
  */
 
 public class Packager {
+	private static final String BIN_FOLDER = "bin";
+	private static final String BIN_ARE_FOLDER = "bin/ARE/";
+	private static final String MERGED_FOLDER = "merged";
 	private String templateName="template";
 	private APEProperties apeProperties=null;
 	private ModelInspector modelInspector=null;
-	private Path projectDir=null;
-	private Path buildDir=null;
-	private Path buildMergedDir=null;
+	private File projectDir=null;
+	private File buildDir=null;
+	private File buildMergedDir=null;
 	
 	/**
 	 * Constructs a Packager and configures it with the given Properties instance.
 	 * @param apeProperties
 	 * @param modelInspector TODO
+	 * @throws URISyntaxException 
 	 */
-	public Packager(APEProperties apeProperties, ModelInspector modelInspector) {
+	public Packager(APEProperties apeProperties, ModelInspector modelInspector) throws URISyntaxException {
 		super();
 		this.apeProperties = apeProperties;
 		this.modelInspector=modelInspector;
-	}
-
-	/* Maybe neede later, if we have to create a project directory
-	public void copyAndExtractTemplate(Path targetBaseDir) throws IOException {
-		File templateDir=new File(APEProperties.APE_BASE_URI.resolve(templateName));
+		this.projectDir=ResourceRegistry.toFile(apeProperties.APE_PROJECT_DIR_URI);
 		
-		try{
-			Files.deleteIfExists(targetBaseDir);
-		}catch(Exception e) {			
-			AstericsErrorHandling.instance.getLogger().warning("Could not delete target base directory: "+e.getMessage());
-		}
-		CopyOption[] opt=new CopyOption[] {REPLACE_EXISTING,COPY_ATTRIBUTES};
-		if(Files.notExists(targetBaseDir)) {
-			Files.createDirectories(targetBaseDir);
-		}
-		try{		
-			Files.copy(templateDir.toPath(),targetBaseDir,opt);
-		}catch(Exception e) {			
-			AstericsErrorHandling.instance.getLogger().warning("Could not copy template to target base directory: "+e.getMessage());
-		}
+		buildDir=ResourceRegistry.resolveRelativeFilePath(projectDir, apeProperties.getProperty(APEProperties.P_APE_BUILD_DIR, APEProperties.DEFAULT_BUILD_DIR));
+		buildMergedDir=ResourceRegistry.resolveRelativeFilePath(buildDir, MERGED_FOLDER);
+		
+		Notifier.info("Using ApeProp["+APEProperties.P_APE_BUILD_DIR+"]="+buildDir);
+		Notifier.info("Deleting APE.buildDir before copying: "+buildDir);
 	}
-	*/
 	
 	/**
 	 * Copy all files/URIs to project and/or build directories.
-	 * @param projectDir
-	 * @param buildDir
 	 * @throws URISyntaxException
 	 * @throws MalformedURLException
 	 * @throws IOException
@@ -110,14 +99,18 @@ public class Packager {
 	 * @throws SAXException
 	 * @throws TransformerException
 	 * @throws BundleManagementException
+	 * @throws APEConfigurationException 
 	 */
-	public void copyFiles(Path projectDir, Path buildDir) throws URISyntaxException, MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
+	public void copyFiles() throws URISyntaxException, MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException, APEConfigurationException {
 		//
-		Path buildMergedAREDir=buildMergedDir.resolve("bin/ARE/");
+		File buildMergedAREDir=ResourceRegistry.resolveRelativeFilePath(buildMergedDir, BIN_ARE_FOLDER);
 		Notifier.info("Copying files to "+buildMergedAREDir);
 
 		Set<URI> modelURIs=modelInspector.getModelURIsFromProperty();
 		Notifier.info("Found model URIs:\n"+modelURIs);
+		if(modelURIs.size()==0) {			
+			throw new APEConfigurationException("STOPPING: No model URIs found. Please check value of property APE.models: "+apeProperties.getProperty(APEProperties.P_APE_MODELS));
+		}
 		
 		//get model instances
 		Set<IRuntimeModel> modelInstances=modelInspector.getIRuntimeModelsOfModelURIs(modelURIs);
@@ -128,8 +121,6 @@ public class Packager {
 		allJarURIs.addAll(componentJarURIs);
 		copyURIs(componentJarURIs, buildMergedAREDir);
 		
-		//Collection<URI> uriList = ResourceRegistry.getInstance().getServicesJarList(false);
-		//copyURIs(uriList, buildMergedAREDir);
 		Collection<URI> uriList = copyServices(buildMergedAREDir);
 		allJarURIs.addAll(uriList);
 		
@@ -140,7 +131,6 @@ public class Packager {
 		uriList = ResourceRegistry.getInstance().getDataList(false);
 		copyURIs(uriList, buildMergedAREDir);
 
-		//uriList = modelInspector.getLicenseURIsOfModels(modelInstances);
 		uriList = ResourceRegistry.getInstance().getLicenseURIsofAsTeRICSJarURIs(allJarURIs);
 		copyURIs(uriList, buildMergedAREDir);
 
@@ -153,7 +143,7 @@ public class Packager {
 		uriList = ResourceRegistry.getInstance().getOtherFilesList(false);
 		copyURIs(uriList, buildMergedAREDir);		
 
-		copyModels(modelURIs, buildMergedAREDir.resolve(ResourceRegistry.MODELS_FOLDER));
+		copyModels(modelURIs, ResourceRegistry.resolveRelativeFilePath(buildMergedAREDir,ResourceRegistry.MODELS_FOLDER));
 		
 		//Finally copy all custom files from APE.projectDir/bin
 		copyCustomFiles(buildDir);
@@ -163,11 +153,11 @@ public class Packager {
 	 * Copies all the custom files of the folder APE.projectDir/bin to APE.buildDir/merged/bin
 	 * @param buildDir
 	 */
-	public void copyCustomFiles(Path buildDir) {
-		Path customBinDir=projectDir.resolve("bin");
-		Path buildMergedBinDir=buildMergedDir.resolve("bin");
+	public void copyCustomFiles(File buildDir) {
+		File customBinDir=ResourceRegistry.resolveRelativeFilePath(projectDir,BIN_FOLDER);
+		File buildMergedBinDir=ResourceRegistry.resolveRelativeFilePath(buildMergedDir,BIN_FOLDER);
 		try {
-			FileUtils.copyDirectory(customBinDir.toFile(), buildMergedBinDir.toFile());
+			FileUtils.copyDirectory(customBinDir, buildMergedBinDir);
 		} catch (IOException e) {
 			Notifier.warning("Could not copy custom files of <"+customBinDir+">, to <"+buildMergedBinDir+">", e);			
 		}
@@ -177,13 +167,13 @@ public class Packager {
 	 * Copies the services jars which are found in either the subfolder APE.projectDir/bin/ARE/profile or in ARE.baseURI/profile 
 	 * @param targetSubDir
 	 */
-	public Collection<URI> copyServices(Path targetSubDir) {
+	public Collection<URI> copyServices(File targetSubDir) {
 		List<URI> servicesJars=new ArrayList<URI>();
 		
 		//Use two-phase approach.
 		//1) search in relative bin/ARE/profile folder for files starting with services (excluding config.ini and other files)
 		//2) if no files were found there, use the services files of the ARE.baseURI
-		Path servicesFileDir=projectDir.resolve("bin/ARE/"+ResourceRegistry.PROFILE_FOLDER);
+		File servicesFileDir=ResourceRegistry.resolveRelativeFilePath(projectDir,BIN_ARE_FOLDER+ResourceRegistry.PROFILE_FOLDER);
 		
 		FilenameFilter servicesFilesFilter=new FilenameFilter() {
 			
@@ -194,10 +184,10 @@ public class Packager {
 			}
 		};
 		
-		Collection<URI> servicesFilesURIs=ComponentUtils.findFiles(servicesFileDir.toUri(),false,1,servicesFilesFilter);
+		Collection<URI> servicesFilesURIs=ComponentUtils.findFiles(servicesFileDir.toURI(),false,1,servicesFilesFilter);
 		
 		if(servicesFilesURIs.size() == 0) {
-			servicesFilesURIs=ComponentUtils.findFiles(ResourceRegistry.getInstance().getAREBaseURI().resolve(ResourceRegistry.PROFILE_FOLDER),false,1,servicesFilesFilter);
+			servicesFilesURIs=ComponentUtils.findFiles(ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.getInstance().getAREBaseURI(), ResourceRegistry.PROFILE_FOLDER).toURI(),false,1,servicesFilesFilter);
 			Notifier.info("Using services files of ARE.baseURI");
 		} else {
 			Notifier.info("Using custom services files in "+servicesFileDir);
@@ -232,20 +222,12 @@ public class Packager {
 	 * @param modelURIs
 	 * @param targetSubDir
 	 */
-	public void copyModels(Set<URI> modelURIs, Path targetSubDir) {
+	public void copyModels(Set<URI> modelURIs, File targetSubDir) {
 		for(URI modelURI : modelURIs) {
 			//Check if it is a model URI based on ARE base URI, if not copy file directly
 			try {
-
-				/*
-				if(ResourceRegistry.getInstance().toRelative(modelURI).isAbsolute()) {
-					//if model URI is still absolute it could not be resolved against the ARE base URI.
-					copyURI(modelURI,targetSubDir.resolve(ResourceRegistry.MODELS_FOLDER), false);
-				} else {
-				*/
 				//Don't resolve against ARE.baseURI because we just wanna copy the model files to the bin/ARE/models dir.
 				copyURI(modelURI,targetSubDir, false);
-				//}
 			} catch (URISyntaxException | IOException e) {
 				Notifier.warning("Could not copy model: "+modelURI, e);
 			}
@@ -259,7 +241,7 @@ public class Packager {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	public void copyURIs(Collection<URI> srcURIs, Path targetDir) throws URISyntaxException, IOException {
+	public void copyURIs(Collection<URI> srcURIs, File targetDir) throws URISyntaxException, IOException {
 		for(URI srcURI : srcURIs) {
 			copyURI(srcURI,targetDir, true);
 		}		
@@ -273,43 +255,36 @@ public class Packager {
 	 * @throws URISyntaxException
 	 * @throws IOException
 	 */
-	public void copyURI(URI srcURI, Path targetDir, boolean resolveAREBaseURISubDirs) throws URISyntaxException, IOException {
+	public void copyURI(URI srcURI, File targetDir, boolean resolveAREBaseURISubDirs) throws URISyntaxException, IOException {
 		CopyOption[] opt=new CopyOption[] {REPLACE_EXISTING,COPY_ATTRIBUTES};
 		try {
-			Path targetSubDir=targetDir;
-			Path src=ResourceRegistry.toPath(srcURI);
+			File targetSubDir=targetDir;
+			File src=ResourceRegistry.toFile(srcURI);
 			
 			//If we should resolve against ARE subfolders
 			if(resolveAREBaseURISubDirs) {
 				//Only works if the URI contains the currently active ARE.baseURI.
-				Path relativeSrc=ResourceRegistry.toPath(ResourceRegistry.getInstance().toRelative(srcURI));
+				//Determine relative src dir which will then be resolved against the base target dir.
+				File relativeSrc=ResourceRegistry.toFile(ResourceRegistry.getInstance().toRelative(srcURI));
 
-				//Determine relative src dir which will then be resolved against the base target dir. 
-				targetSubDir=Files.isDirectory(src) ? relativeSrc : relativeSrc.getParent();
+				//Determine parent folder of relativeSrc File
+				targetSubDir=src.isDirectory() ? relativeSrc : relativeSrc.getParentFile();
 
 				if(targetSubDir!=null) {
-					targetSubDir=targetDir.resolve(targetSubDir);
+					//Resolve targetSubDir against targetDir
+					targetSubDir=ResourceRegistry.resolveRelativeFilePath(targetDir,targetSubDir.getPath());
 				} else {
 					targetSubDir=targetDir;
 				}
 			}
-			//Create target directories recursively, if they don't exist
-			if(Files.notExists(targetSubDir)) {
-				Files.createDirectories(targetSubDir);
-			}
 			//Actually copy file
-			Notifier.info("Copying "+src.getFileName()+" -> "+targetSubDir);
-			//Try to copy on filesystem basis. because this is much more convinient and faster for sure.
-			Files.copy(src, targetSubDir.resolve(src.getFileName()),opt);
+			Notifier.info("Copying "+src+" -> "+targetSubDir);
+			FileUtils.copyFileToDirectory(src, targetSubDir);
 		} catch(MalformedURLException e) {
 			//else try if it is a URL that can be fetched from anywhere else.
 			AstericsErrorHandling.instance.getLogger().warning("URL resources not supported so far: "+e.getMessage());
 			//Files.copy(srcURI.toURL().openStream(), targetBaseDir.resolve(srcURI.getPath()));
 		}
-	}
-	
-	public void generateFileLists(Path targetBaseDir) {
-		
 	}
 	
 	/**
@@ -321,27 +296,16 @@ public class Packager {
 	 * @throws SAXException
 	 * @throws TransformerException
 	 * @throws BundleManagementException
+	 * @throws APEConfigurationException 
 	 */
-	public void makeAll() throws IOException, URISyntaxException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
-		File projectFileObject=new File(apeProperties.APE_PROP_FILE_BASE_URI.resolve(apeProperties.getProperty(APEProperties.P_APE_PROJECT_DIR,APEProperties.DEFAULT_PROJECT_DIR)));
-		projectDir=projectFileObject.toPath();
-		Notifier.info("Using ApeProp["+APEProperties.P_APE_PROJECT_DIR+"]="+projectDir);
-		
-		//We always have to resolve against a baseURI object because the Path implementation does not allow file:/// URI syntax, just OS-specific path styles.
-		buildDir=Paths.get(projectDir.toUri().resolve(apeProperties.getProperty(APEProperties.P_APE_BUILD_DIR, APEProperties.DEFAULT_BUILD_DIR)));
-		buildMergedDir = buildDir.resolve("merged");
-		Notifier.info("Using ApeProp["+APEProperties.P_APE_BUILD_DIR+"]="+buildDir);
-		Notifier.info("Deleting APE.buildDir before copying: "+buildDir);
+	public void makeAll() throws IOException, URISyntaxException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException, APEConfigurationException {
 		try{
-			FileUtils.forceDelete(buildDir.toFile());
+			FileUtils.forceDelete(buildDir);
 		}catch(IOException e) {
 			Notifier.warning("Could not delete APE.buildDir: "+buildDir,e);
 		}
 
-		//copyAndExtractTemplate(targetBaseDir);
-		copyFiles(projectDir, buildDir);
-		//generateFileLists(projectDir);
-		
+		copyFiles();
 		Notifier.info("FINISHED Copying ARE: Go to the following folder and try it out: "+buildMergedDir);
 	}
 }
