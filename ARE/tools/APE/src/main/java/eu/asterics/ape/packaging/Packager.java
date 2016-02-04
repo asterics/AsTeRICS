@@ -62,10 +62,15 @@ import static eu.asterics.ape.main.APEProperties.*;
  */
 
 public class Packager {
-	private static final String BIN_FOLDER = "bin";
-	private static final String BIN_ARE_FOLDER = "bin/ARE/";
-	private static final String MERGED_FOLDER = "merged";
-	private String templateName="template";
+	public static final String BIN_FOLDER = "bin/";
+	public static final String MERGED_FOLDER = "merged/";
+	public static final String TEMPLATE_FOLDER="template/";
+	public static final String CUSTOM_FOLDER="custom/";
+	
+	public static final String BIN_ARE_FOLDER = BIN_FOLDER+"ARE/";	
+	public static final String CUSTOM_BIN_FOLDER = CUSTOM_FOLDER+"bin/";
+	public static final String CUSTOM_BIN_ARE_FOLDER=CUSTOM_BIN_FOLDER+"ARE/";
+	
 	private APEProperties apeProperties=null;
 	private ModelInspector modelInspector=null;
 	private File projectDir=null;
@@ -166,7 +171,7 @@ public class Packager {
 	 * @param buildDir
 	 */
 	public void copyCustomFiles(File buildDir) {
-		File customBinDir=ResourceRegistry.resolveRelativeFilePath(projectDir,BIN_FOLDER);
+		File customBinDir=ResourceRegistry.resolveRelativeFilePath(projectDir,CUSTOM_BIN_FOLDER);
 		File buildMergedBinDir=ResourceRegistry.resolveRelativeFilePath(buildMergedDir,BIN_FOLDER);
 		try {
 			FileUtils.copyDirectory(customBinDir, buildMergedBinDir);
@@ -176,16 +181,16 @@ public class Packager {
 	}
 
 	/**
-	 * Copies the services jars which are found in either the subfolder APE.projectDir/bin/ARE/profile or in ARE.baseURI/profile 
+	 * Copies the services jars which are found in either the subfolder APE.projectDir/custom//bin/ARE/profile or in ARE.baseURI/profile 
 	 * @param targetSubDir
 	 */
 	public Collection<URI> copyServices(File targetSubDir) {
 		List<URI> servicesJars=new ArrayList<URI>();
 		
 		//Use two-phase approach.
-		//1) search in relative bin/ARE/profile folder for files starting with services (excluding config.ini and other files)
+		//1) search in relative custom/bin/ARE/profile folder for files starting with services (excluding config.ini and other files)
 		//2) if no files were found there, use the services files of the ARE.baseURI
-		File servicesFileDir=ResourceRegistry.resolveRelativeFilePath(projectDir,BIN_ARE_FOLDER+ResourceRegistry.PROFILE_FOLDER);
+		File servicesFileDir=ResourceRegistry.resolveRelativeFilePath(projectDir,CUSTOM_BIN_ARE_FOLDER+ResourceRegistry.PROFILE_FOLDER);
 		
 		FilenameFilter servicesFilesFilter=new FilenameFilter() {
 			

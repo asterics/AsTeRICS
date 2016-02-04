@@ -59,7 +59,6 @@ import static eu.asterics.ape.main.APEProperties.*;
  */
 
 public class APE {
-	private static final String TEMPLATE_DIR = "template";
 	/**
 	 * The properties of APE
 	 */
@@ -100,6 +99,7 @@ public class APE {
 			APE.getInstance().start();
 		} catch (APEConfigurationException e) {
 			Notifier.error(e.getMessage(),null);
+			System.exit(1);
 		}
 	}
 	
@@ -163,12 +163,12 @@ public class APE {
 		if(!projectDir.exists()) {
 			Notifier.info("Project folder does not exist, copying template to: "+projectDir);
 			//If the projectDir does not exist, we should copy the template dir to the projectDir		
-			FileUtils.copyDirectory(ResourceRegistry.resolveRelativeFilePath(getAPEBaseURI(), TEMPLATE_DIR), projectDir);
+			FileUtils.copyDirectory(ResourceRegistry.resolveRelativeFilePath(getAPEBaseURI(), Packager.TEMPLATE_FOLDER), projectDir);
 		}
 
 		initProperties();
 
-		String newAreBaseURIString=apeProperties.getProperty(APEProperties.P_ARE_BASE_URI);
+		String newAreBaseURIString=apeProperties.getProperty(APEProperties.P_ARE_BASE_URI,ResourceRegistry.resolveRelativeFilePath(getAPEBaseURI(), "../ARE/").getPath());
 
 		if(newAreBaseURIString!=null) {
 			URI newAREBaseURI=ResourceRegistry.resolveRelativeFilePath(projectDir, newAreBaseURIString).toURI();
@@ -223,8 +223,8 @@ public class APE {
 				}
 			}
 			//Now adding default models search path to APE.models property
-			Notifier.debug("Adding APE.projectDir/bin/ARE/models as search path for model files to "+APEProperties.P_APE_MODELS,null);
-			String projectDirSearchPath=ResourceRegistry.resolveRelativeFilePath(projectDir, "bin/ARE/models").getPath();
+			Notifier.debug("Adding APE.projectDir/"+Packager.CUSTOM_BIN_ARE_FOLDER+" as search path for model files to "+APEProperties.P_APE_MODELS,null);
+			String projectDirSearchPath=ResourceRegistry.resolveRelativeFilePath(projectDir, Packager.CUSTOM_BIN_ARE_FOLDER).getPath();
 			apeProperties.setProperty(APEProperties.P_APE_MODELS,apeProperties.getProperty(APEProperties.P_APE_MODELS,"")+";"+projectDirSearchPath);
 			Notifier.info("ApeProp["+APEProperties.P_APE_MODELS+"]="+apeProperties.getProperty(APEProperties.P_APE_MODELS),null);
 			Notifier.debug("Final apeProperties: "+apeProperties.toString(), null);
