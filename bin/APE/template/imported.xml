@@ -1,7 +1,15 @@
 <project name="asterics.imported" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
 	<property name="APE.propertiesFile" value="APE.properties"></property>
 	<property name="APE.optionalServicesFile" value="" />
+	
 	<loadproperties srcFile="${APE.propertiesFile}" />
+	
+	<condition property="APE.buildDir" value="build/">		
+		<not>
+			<isset property="APE.buildDir" />
+		</not>
+	</condition>
+	
 	<property name="build.merged" location="${APE.buildDir}/merged" />
 	<property name="build.merged.ARE" location="${build.merged}/bin/ARE" />
 	<property name="build.deploy" location="${APE.buildDir}/deploy" />
