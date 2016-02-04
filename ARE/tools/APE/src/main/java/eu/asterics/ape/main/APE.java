@@ -24,6 +24,8 @@ import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.ResourceRegistry;
 
+import static eu.asterics.ape.main.APEProperties.*;
+
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -74,7 +76,11 @@ public class APE {
 	
 	private static APE instance=null;
 	
+	/*
+	 * Do some bootstrap initialization. 
+	 */
 	static {
+		initLogger();
 		initAPEBaseURI();
 	}
 	
@@ -104,7 +110,7 @@ public class APE {
 	 * 3) Use value of property APE.baseURI set as system property (-DAPE.baseURI=...) 
 	 * @return
 	 */
-	public static URI initAPEBaseURI() {
+	private static URI initAPEBaseURI() {
 		URI defaultAPEBaseURI=new File(".").toURI();
 		Notifier.debug("Current working dir: "+defaultAPEBaseURI,null);
 		try {
@@ -148,8 +154,6 @@ public class APE {
 	 * @throws APEConfigurationException 
 	 */
 	public void start() throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException, APEConfigurationException {
-		
-		AstericsErrorHandling.instance.getLogger().setLevel(Level.FINE);
 		ResourceRegistry.getInstance().setOSGIMode(false);
 		
 		projectDir=ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.toFile(getAPEBaseURI()), System.getProperty(APEProperties.P_APE_PROJECT_DIR,APEProperties.DEFAULT_PROJECT_DIR),false);
@@ -163,11 +167,12 @@ public class APE {
 		}
 
 		initProperties();
-		
+
 		String newAreBaseURIString=apeProperties.getProperty(APEProperties.P_ARE_BASE_URI);
-		Notifier.debug("ApeProp["+APEProperties.P_ARE_BASE_URI+"]="+newAreBaseURIString,null);
+
 		if(newAreBaseURIString!=null) {
 			URI newAREBaseURI=ResourceRegistry.resolveRelativeFilePath(projectDir, newAreBaseURIString).toURI();
+			Notifier.debug("ApeProp["+APEProperties.P_ARE_BASE_URI+"]="+newAREBaseURI,null);
 			ResourceRegistry.getInstance().setAREBaseURI(newAREBaseURI);
 		}
 
@@ -177,9 +182,17 @@ public class APE {
 	}
 
 	/**
-	 * Determins property file location (APE.properties), reads property values and overrides property values given as system property (-Dkey=value).
+	 * Initialize logger regarding level and format.
 	 */
-	private void initProperties() {
+	private static void initLogger() {		
+		Notifier.initLogger(System.getProperty(P_APE_LOG_LEVEL,DEFAULT_APE_LOG_LEVEL).toUpperCase());
+	}
+	
+	/**
+	 * Determins property file location (APE.properties), reads property values and overrides property values given as system property (-Dkey=value).
+	 * @throws IOException 
+	 */
+	private void initProperties() throws IOException {
 		Properties defaultProperties=new Properties();
 		//Init with empty properties
 		apeProperties=new APEProperties();
@@ -201,13 +214,11 @@ public class APE {
 			Notifier.debug("Adding bin/ARE/models as search path for model files to "+APEProperties.P_APE_MODELS,null);			
 			apeProperties.setProperty(APEProperties.P_APE_MODELS,apeProperties.getProperty(APEProperties.P_APE_MODELS,"")+";bin/ARE/models");
 			Notifier.info("Using ApeProp["+APEProperties.P_APE_MODELS+"]="+apeProperties.getProperty(APEProperties.P_APE_MODELS),null);
-			Notifier.debug("apeProperties: "+apeProperties.toString(), null);
+			Notifier.debug("Final apeProperties: "+apeProperties.toString(), null);
 		} catch (IOException e) {
-			Notifier.error("Initialization of APE properties failed", e);
+			Notifier.error("STOPPING: Initialization of APE properties failed", e);
+			throw e;
 		}
-	}
-	public void exit() {
-		
 	}
 
 	public APEProperties getApeProperties() {

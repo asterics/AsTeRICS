@@ -26,6 +26,8 @@ import eu.asterics.mw.services.ComponentUtils;
 import eu.asterics.mw.services.ResourceRegistry;
 import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
 
+import static eu.asterics.ape.main.APEProperties.*;
+
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -86,7 +88,6 @@ public class Packager {
 		buildMergedDir=ResourceRegistry.resolveRelativeFilePath(buildDir, MERGED_FOLDER);
 		
 		Notifier.info("Using ApeProp["+APEProperties.P_APE_BUILD_DIR+"]="+buildDir);
-		Notifier.info("Deleting APE.buildDir before copying: "+buildDir);
 	}
 	
 	/**
@@ -107,9 +108,9 @@ public class Packager {
 		Notifier.info("Copying files to "+buildMergedAREDir);
 
 		Set<URI> modelURIs=modelInspector.getModelURIsFromProperty();
-		Notifier.info("Found model URIs:\n"+modelURIs);
+		Notifier.info("Found model URIs: "+modelURIs);
 		if(modelURIs.size()==0) {			
-			throw new APEConfigurationException("STOPPING: No model URIs found. Please check value of property APE.models: "+apeProperties.getProperty(APEProperties.P_APE_MODELS));
+			throw new APEConfigurationException("STOPPING: No model URIs found. Please check value of property "+APEProperties.P_APE_MODELS+": "+apeProperties.getProperty(APEProperties.P_APE_MODELS));
 		}
 		
 		//get model instances
@@ -128,8 +129,19 @@ public class Packager {
 		allJarURIs.addAll(uriList);
 		copyURIs(uriList, buildMergedAREDir);	
 
-		uriList = ResourceRegistry.getInstance().getDataList(false);
-		copyURIs(uriList, buildMergedAREDir);
+		DATA_COPY_MODE dataCopyMode=DATA_COPY_MODE.valueOf(apeProperties.getProperty(P_APE_DATA_COPY_MODE, DATA_COPY_MODE.ALL.toString()).toUpperCase());
+		Notifier.info("ApeProp["+P_APE_DATA_COPY_MODE+"]="+dataCopyMode);
+		if(DATA_COPY_MODE.ALL.equals(dataCopyMode)) {
+			Notifier.info("Copying all data files");
+			uriList = ResourceRegistry.getInstance().getDataList(false);
+			copyURIs(uriList, buildMergedAREDir);			
+		} else if(DATA_COPY_MODE.FOLDER.equals(dataCopyMode) || DATA_COPY_MODE.SINGLE.equals(dataCopyMode)) {
+			uriList=modelInspector.getPropertyReferredURIs(modelInstances);
+			Notifier.info("Copying the following data files: "+uriList);
+			copyURIs(uriList, buildMergedAREDir);
+		} else {
+			Notifier.info("Don't copy any data files");
+		}
 
 		uriList = ResourceRegistry.getInstance().getLicenseURIsofAsTeRICSJarURIs(allJarURIs);
 		copyURIs(uriList, buildMergedAREDir);
@@ -185,14 +197,16 @@ public class Packager {
 		};
 		
 		Collection<URI> servicesFilesURIs=ComponentUtils.findFiles(servicesFileDir.toURI(),false,1,servicesFilesFilter);
-		
+
+		URI areBaseURIProfileFolder=ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.getInstance().getAREBaseURI(), ResourceRegistry.PROFILE_FOLDER).toURI();
+		String message="Using services files of "+areBaseURIProfileFolder;
 		if(servicesFilesURIs.size() == 0) {
-			servicesFilesURIs=ComponentUtils.findFiles(ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.getInstance().getAREBaseURI(), ResourceRegistry.PROFILE_FOLDER).toURI(),false,1,servicesFilesFilter);
-			Notifier.info("Using services files of ARE.baseURI");
+			servicesFilesURIs=ComponentUtils.findFiles(areBaseURIProfileFolder,false,1,servicesFilesFilter);
 		} else {
-			Notifier.info("Using custom services files in "+servicesFileDir);
+			message="Using custom services files in "+servicesFileDir;
 		}
-		Notifier.info("Using services files: "+servicesFilesURIs);
+		Notifier.info(message);
+		Notifier.debug("Found services file URIs: "+servicesFilesURIs, null);
 		for(URI servicesFile : servicesFilesURIs) {
 			try(BufferedReader in=new BufferedReader(new FileReader(new File(servicesFile)));) {
 				String path=null;
@@ -278,12 +292,11 @@ public class Packager {
 				}
 			}
 			//Actually copy file
-			Notifier.info("Copying "+src+" -> "+targetSubDir);
+			Notifier.debug("Copying "+src+" -> "+targetSubDir,null);
 			FileUtils.copyFileToDirectory(src, targetSubDir);
 		} catch(MalformedURLException e) {
 			//else try if it is a URL that can be fetched from anywhere else.
-			AstericsErrorHandling.instance.getLogger().warning("URL resources not supported so far: "+e.getMessage());
-			//Files.copy(srcURI.toURL().openStream(), targetBaseDir.resolve(srcURI.getPath()));
+			Notifier.warning("URL resources not supported so far",e);
 		}
 	}
 	
@@ -300,12 +313,13 @@ public class Packager {
 	 */
 	public void makeAll() throws IOException, URISyntaxException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException, APEConfigurationException {
 		try{
+			Notifier.debug("Deleting APE.buildDir before copying: "+buildDir,null);
 			FileUtils.forceDelete(buildDir);
 		}catch(IOException e) {
 			Notifier.warning("Could not delete APE.buildDir: "+buildDir,e);
 		}
 
 		copyFiles();
-		Notifier.info("FINISHED Copying ARE: Go to the following folder and try it out: "+buildMergedDir);
+		Notifier.info("FINISHED copying ARE: Go to the following folder and try it out: "+buildMergedDir);
 	}
 }
