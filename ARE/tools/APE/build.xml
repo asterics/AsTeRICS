@@ -1,4 +1,4 @@
-<project name="asterics.tools.APE" default="jar" basedir=".">
+<project name="asterics.tools.APE" default="buildAndCopy" basedir=".">
 
 	<property name="component.id" value="APE" />
 	<!-- set global properties for this build -->
@@ -40,11 +40,20 @@
 		<jar jarfile="${dist}/${component.id}.jar" basedir="${build}" manifest="${resources}/META-INF/MANIFEST.MF">
 			<fileset dir="${resources}" excludes="**/lib"/>
 		</jar>
+	</target>
+	
+	<target name="buildAndCopy" depends="jar">
 		<copy file="${dist}/${component.id}.jar" tofile="${runtime}/${component.id}.jar" />
 		
 		<copy todir="${runtime}/lib" >
 			<fileset dir="${resources}/lib"></fileset>
 		</copy>
+		<copy todir="${runtime}">
+			<fileset dir=".">
+				<include name="*.bat"/>
+				<include name="*.sh"/>
+			</fileset>
+		</copy>			
 	</target>
 
 	<target name="clean">

@@ -40,7 +40,7 @@
     </target>
 	
 	<target name="buildTools" depends="buildServices">
-          <subant target="jar">
+          <subant target="buildAndCopy">
             <property name="debug" value="${debug}"/>
             <fileset dir="tools" includes="APE/build.xml"/>
           </subant>
