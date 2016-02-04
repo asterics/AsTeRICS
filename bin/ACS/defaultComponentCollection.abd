@@ -7717,8 +7717,13 @@
         <singleton>false</singleton>
         <description>Nexus Connector</description>
         <ports>
-                <inputPort id="myInPort">
-                        <description>Input</description>
+                <inputPort id="A">
+                        <description>Input A</description>
+                        <mustBeConnected>false</mustBeConnected>
+                        <dataType>double</dataType>
+                </inputPort>
+                <inputPort id="B">
+                        <description>Input B</description>
                         <mustBeConnected>false</mustBeConnected>
                         <dataType>double</dataType>
                 </inputPort>

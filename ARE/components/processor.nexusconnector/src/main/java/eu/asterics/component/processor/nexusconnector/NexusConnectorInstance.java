@@ -85,8 +85,10 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance
      * @return         the input port or null if not found
      */
     public IRuntimeInputPort getInputPort(String portID) {
-        if ("myInPort".equalsIgnoreCase(portID)) {
-            return ipMyInPort;
+        if ("A".equalsIgnoreCase(portID)) {
+            return ipA;
+        } else if ("B".equalsIgnoreCase(portID)) {
+            return ipB;
         }
         return null;
     }
@@ -139,15 +141,17 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance
     /**
      * Input Ports for receiving values.
      */
-    private final IRuntimeInputPort ipMyInPort = new DefaultRuntimeInputPort() {
+    private final IRuntimeInputPort ipA = new DefaultRuntimeInputPort() {
         public void receiveData(byte[] data) {
-            // insert data reception handling here, e.g.:
-            // myVar = ConversionUtils.doubleFromBytes(data);
-            // myVar = ConversionUtils.stringFromBytes(data);
-            // myVar = ConversionUtils.intFromBytes(data);
             double val = ConversionUtils.doubleFromBytes(data);
-            // System.out.println("NexusConnector IN = " + val);
-            nexusWebSocket.sendMessage("{ \"path\": \"\", \"value\": " + val + " }");
+            nexusWebSocket.sendMessage("{ \"path\": \"a\", \"value\": " + val + " }");
+        }
+    };
+
+    private final IRuntimeInputPort ipB = new DefaultRuntimeInputPort() {
+        public void receiveData(byte[] data) {
+            double val = ConversionUtils.doubleFromBytes(data);
+            nexusWebSocket.sendMessage("{ \"path\": \"b\", \"value\": " + val + " }");
         }
     };
 
@@ -165,7 +169,7 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance
         super.start();
         System.out.println("NexusConnector START");
 
-        ListenableFuture<WebSocket> f = nexusClient.prepareGet("ws://localhost:9081/bindModel/example1/a")
+        ListenableFuture<WebSocket> f = nexusClient.prepareGet("ws://localhost:9081/bindModel/asterics/inputs")
             .execute(new WebSocketUpgradeHandler.Builder().addWebSocketListener(new WebSocketTextListener() {
                     @Override
                     public void onMessage(String message) {
@@ -193,7 +197,7 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance
             // TODO: Proper Exception handling
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
-            // TODO: Do something with the Exception
+            // TODO: Do something with the InterruptedException
         }
     }
 
