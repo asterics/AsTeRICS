@@ -87,7 +87,7 @@ public class Packager {
 		buildDir=ResourceRegistry.resolveRelativeFilePath(projectDir, apeProperties.getProperty(APEProperties.P_APE_BUILD_DIR, APEProperties.DEFAULT_BUILD_DIR));
 		buildMergedDir=ResourceRegistry.resolveRelativeFilePath(buildDir, MERGED_FOLDER);
 		
-		Notifier.info("Using ApeProp["+APEProperties.P_APE_BUILD_DIR+"]="+buildDir);
+		Notifier.info("ApeProp["+APEProperties.P_APE_BUILD_DIR+"]="+buildDir);
 	}
 	
 	/**
@@ -199,7 +199,7 @@ public class Packager {
 		Collection<URI> servicesFilesURIs=ComponentUtils.findFiles(servicesFileDir.toURI(),false,1,servicesFilesFilter);
 
 		URI areBaseURIProfileFolder=ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.getInstance().getAREBaseURI(), ResourceRegistry.PROFILE_FOLDER).toURI();
-		String message="Using services files of "+areBaseURIProfileFolder;
+		String message="Using services files in "+areBaseURIProfileFolder;
 		if(servicesFilesURIs.size() == 0) {
 			servicesFilesURIs=ComponentUtils.findFiles(areBaseURIProfileFolder,false,1,servicesFilesFilter);
 		} else {

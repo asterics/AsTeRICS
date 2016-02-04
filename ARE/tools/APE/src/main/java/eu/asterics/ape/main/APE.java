@@ -158,7 +158,7 @@ public class APE {
 		
 		projectDir=ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.toFile(getAPEBaseURI()), System.getProperty(APEProperties.P_APE_PROJECT_DIR,APEProperties.DEFAULT_PROJECT_DIR),false);
 		APEProperties.APE_PROJECT_DIR_URI=projectDir.toURI();
-		Notifier.info("Using ApeProp["+APEProperties.P_APE_PROJECT_DIR+"]="+APEProperties.APE_PROJECT_DIR_URI);
+		Notifier.info("ApeProp["+APEProperties.P_APE_PROJECT_DIR+"]="+APEProperties.APE_PROJECT_DIR_URI);
 		
 		if(!projectDir.exists()) {
 			Notifier.info("Project folder does not exist, copying template to: "+projectDir);
@@ -206,19 +206,50 @@ public class APE {
 			apeProperties=new APEProperties(defaultProperties);
 			for(Entry<Object, Object> entry : System.getProperties().entrySet()) {
 				if(entry.getKey().toString().startsWith(APEProperties.APE_PROP_PREFIX)||entry.getKey().toString().startsWith(APEProperties.ARE_PROP_PREFIX)) {
-					Notifier.info("Overriding ApeProp["+entry.getKey()+"]="+entry.getValue());
-					apeProperties.setProperty(entry.getKey().toString(), entry.getValue().toString());
+					//sanity check
+					if(entry.getValue()==null) {
+						continue;
+					}
+
+					String propValue=entry.getValue().toString();
+					if(entry.getKey().equals(P_APE_MODELS)) {
+						//if the user provided model paths via the system property and not via the properties file, we have to resolve relative paths to the current directory
+						//and not relative to the APE.projectDir location to make it more intuitive.
+						propValue=resolveModelURIsToCWD(entry.getValue().toString());
+					}
+					Notifier.debug("Overriding ApeProp["+entry.getKey()+"]="+propValue,null);
+
+					apeProperties.setProperty(entry.getKey().toString(), propValue);
 				}
 			}
 			//Now adding default models search path to APE.models property
-			Notifier.debug("Adding bin/ARE/models as search path for model files to "+APEProperties.P_APE_MODELS,null);			
-			apeProperties.setProperty(APEProperties.P_APE_MODELS,apeProperties.getProperty(APEProperties.P_APE_MODELS,"")+";bin/ARE/models");
-			Notifier.info("Using ApeProp["+APEProperties.P_APE_MODELS+"]="+apeProperties.getProperty(APEProperties.P_APE_MODELS),null);
+			Notifier.debug("Adding APE.projectDir/bin/ARE/models as search path for model files to "+APEProperties.P_APE_MODELS,null);
+			String projectDirSearchPath=ResourceRegistry.resolveRelativeFilePath(projectDir, "bin/ARE/models").getPath();
+			apeProperties.setProperty(APEProperties.P_APE_MODELS,apeProperties.getProperty(APEProperties.P_APE_MODELS,"")+";"+projectDirSearchPath);
+			Notifier.info("ApeProp["+APEProperties.P_APE_MODELS+"]="+apeProperties.getProperty(APEProperties.P_APE_MODELS),null);
 			Notifier.debug("Final apeProperties: "+apeProperties.toString(), null);
 		} catch (IOException e) {
 			Notifier.error("STOPPING: Initialization of APE properties failed", e);
 			throw e;
 		}
+	}
+	
+	/**
+	 * Resolve the given String with relative model paths to strings with absolute model paths resolved against the CWD.
+	 * @param relativeModelPaths
+	 * @return
+	 */
+	private String resolveModelURIsToCWD(String relativeModelPaths) {
+		StringBuilder resolvedModelPaths=new StringBuilder();
+		String[] modelPaths=relativeModelPaths.split(";");
+		for(int i=0;i<modelPaths.length;i++) {
+			//If the modelPath is relative it will be resolved against the CWD otherwise the absolute path is returned 
+			resolvedModelPaths.append(ResourceRegistry.resolveRelativeFilePath(new File(".").getAbsoluteFile(), modelPaths[i]));
+			if(i<(modelPaths.length-1)) {
+				resolvedModelPaths.append(";");
+			}
+		}
+		return resolvedModelPaths.toString();
 	}
 
 	public APEProperties getApeProperties() {
