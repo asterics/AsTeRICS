@@ -1,109 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="XFacetrackerLK" default="do-deploy" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
-
-	<property name="APE.propertiesFile" value="APE.properties"></property>
-	<property name="APE.OptionalServicesFile" value="" />
-	<loadproperties srcFile="${APE.propertiesFile}" />
-	<property name="build.merged" location="${APE.buildDir}/merged" />
-	<property name="build.merged.ARE" location="${build.merged}/bin/ARE" />
-	<property name="build.deploy" location="${APE.buildDir}/deploy" />
-	<!-- the build platform is actually also the target platform, so we can differ the services files configuration -->
-	<condition property="APE.targetOS" value="windows" else="linux">
-		<os family="windows" />
-	</condition>
-
-	<property name="APE.ServicesFiles" value="services.ini;services-${APE.targetOS}.ini;${APE.OptionalServicesFile}" />
-
-	<condition property="fx.platform.basedir" value="${java.home}">
-		<not>
-			<isset property="fx.platform.basedir" />
-		</not>
-	</condition>
-
-	<!--trying to simplify the embed java flag
-	<condition property="fx.platform.basedir" value="">
-		<isfalse value="${fx.platform.embedjava}"/>
-	</condition>
-	-->
-	<echoproperties>
-	</echoproperties>
-	<target name="init-fx-tasks">
-		<path id="fxant">
-			<filelist>
-				<file name="${java.home}\..\lib\ant-javafx.jar" />
-				<file name="${java.home}\lib\jfxrt.jar" />
-				<file name="${basedir}" />
-			</filelist>
-		</path>
-
-		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpathref="fxant" />
-	</target>
-
-	<target name="cleanup">
-		<delete dir="${build.deploy}" failonerror="false" />
-		<delete dir="${build.merged.ARE}" failonerror="false"/>
-	</target>
-	<target name="setup-staging-area">
-		<mkdir dir="${build.deploy}" />
-		<!--
-		<delete>
-			<fileset dir="${build.merged.ARE}" includes="**/*.exe" />
-		</delete>
-		<delete>
-			<fileset dir="${build.merged.ARE}" includes="**/*.bat" />
-		</delete>
-		-->
-		<delete failonerror="false">
-			<fileset dir="${build.merged.ARE}" includes="**/*.log" />
-		</delete>
-		<delete failonerror="false">
-			<fileset dir="${build.merged.ARE}/profile/org.eclipse.osgi" />
-		</delete>
+<project name="asterics-application" default="deploy" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<import file="imported.xml"/>
+	
+	<!-- if you want to compile and modify something on your own, before the installer is created -->
+	<target name='before-deploy'>
 	</target>
 	
-	<!-- if you want to compile something on your own -->
-	<target name='do-compile'>
-	</target>
-
-	<!-- calls the javafx deployment tasks and creates the requested installers -->
-	<target name="do-deploy" depends="init-fx-tasks, cleanup, setup-staging-area, runAPE, do-compile">
-		<fx:resources id="appRes">
-			<fx:fileset dir="${build.merged.ARE}" />
-			<fx:fileset dir="${build.merged.ARE}" type="license" includes="LICENSE" />
-		</fx:resources>
-
-		<fx:application id="fxApplication" name="${fx.application.name}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
-		<fx:deploy verbose="true" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="${fx.application.name}" nativeBundles="${fx.deploy.nativeBundles}" updatemode="background">
-			<fx:preferences shortcut="${fx.preferences.shortcut}" install="${fx.preferences.install}" menu="${fx.preferences.menu}" />
-
-			<fx:platform basedir="${fx.platform.basedir}">
-				<property name="osgi.configuration.area" value="profile" />
-				<property name="osgi.clean" value="true" />
-				<property name="org.osgi.framework.bootdelegation" value="*" />
-				<property name="org.osgi.framework.system.packages.extra" value="sun.misc" />
-				<property name="Ansi" value="true" />
-				<property name="java.util.logging.config.file" value="logging.properties" />
-				<!--
-				<property name="eu.asterics.ARE.startModel" value="autostart.acs" />
-				-->
-				<property name="eu.asterics.ARE.ServicesFiles" value="${APE.ServicesFiles}" />
-			</fx:platform>
-
-			<fx:application refId="fxApplication" />
-			<fx:resources refid="appRes" />
-			<fx:info title="${fx.info.title}" vendor="${fx.info.vendor}" description="${fx.info.description}" license="${fx.info.license}" category="${fx.info.category}" />
-		</fx:deploy>
-		
-		<!-- TODO: create out-file name dependent on java embedded or not
-		<move file="${build.deploy}/bundles/xfacetrackerlk-1.0.0-AsTeRICS-2.7.deb" tofile="${build.deploy}/bundles/xfacetrackerlk-javaembedded-1.0.0-AsTeRICS-2.7.deb" />
-		-->
-	</target>
-
-	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
-	<target name="runAPE">
-		<java jar="../APE.jar" fork="true">
-			<sysproperty key="APE.propertiesFile" value="defProjectDir/${APE.propertiesFile}"/>	
-		</java>	
-			
+	<target name="deploy" depends="init-fx-tasks, cleanup, setup-staging-area, run-APE, before-deploy, make-installer-only">
 	</target>
 </project>
