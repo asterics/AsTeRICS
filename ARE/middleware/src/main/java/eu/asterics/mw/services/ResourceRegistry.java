@@ -70,6 +70,7 @@ public class ResourceRegistry {
 	public static final String STORAGE_FOLDER = "storage/";
 	public static final String LICENSES_FOLDER = "LICENSE/";
 	public static final String IMAGES_FOLDER = "images/";
+	public static final String TMP_FOLDER = "tmp/";
 	
 	private static URI ARE_BASE_URI = null;
 	//currently not used but the idea is to have a base URI for readonly, read/write and temporary data.
@@ -104,7 +105,8 @@ public class ResourceRegistry {
 		PROFILE,
 		STORAGE,
 		LICENSE,
-		IMAGE
+		IMAGE,
+		TMP
 	};
 	
 	/**
@@ -248,6 +250,9 @@ public class ResourceRegistry {
 				case STORAGE:
 					resFilePath=resolveRelativeFilePath(toAbsolute(STORAGE_FOLDER), resourcePathSlashified,false);					
 					break;
+				case TMP:
+					resFilePath=resolveRelativeFilePath(toAbsolute(TMP_FOLDER), resourcePathSlashified,false);					
+					break;					
 				default:
 					resFilePath=resolveRelativeFilePath(getAREBaseURIFile(), resourcePathSlashified,false);
 					break;
@@ -436,8 +441,8 @@ public class ResourceRegistry {
 	 * @param areBaseURI
 	 */
 	public void setAREBaseURI(URI areBaseURI) {
-		System.out.println("Setting ARE base URI to: "+areBaseURI);
-		AstericsErrorHandling.instance.getLogger().fine("Setting ARE base URI to: "+areBaseURI);
+		//System.out.println("Setting ARE base URI to: "+areBaseURI);
+		AstericsErrorHandling.instance.getLogger().info("Setting ARE base URI to: "+areBaseURI);
 		ARE_BASE_URI=areBaseURI;
 	}
 	
