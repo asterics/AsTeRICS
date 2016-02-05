@@ -306,7 +306,12 @@ public class ModelInspector {
 		String modelsPropVals=apeProperties.getProperty(APEProperties.P_APE_MODELS);
 		String projectDirPath=apeProperties.getProperty(APEProperties.P_APE_PROJECT_DIR);
 		for(String modelsPropVal : modelsPropVals.split(MODELS_PROP_SEPERATOR)) {
-
+			//do sanity check: ignore leading and trailing whitespace and empty strings
+			modelsPropVal=modelsPropVal.trim();
+			if("".equals(modelsPropVal)) {
+				continue;
+			}
+			
 			File testFile=ResourceRegistry.resolveRelativeFilePath(new File(projectDirPath), modelsPropVal);			
 			URI testURI=testFile.toURI();
 
