@@ -70,6 +70,7 @@ public class Packager {
 	public static final String BIN_ARE_FOLDER = BIN_FOLDER+"ARE/";	
 	public static final String CUSTOM_BIN_FOLDER = CUSTOM_FOLDER+"bin/";
 	public static final String CUSTOM_BIN_ARE_FOLDER=CUSTOM_BIN_FOLDER+"ARE/";
+	public static final String CUSTOM_BIN_ARE_MODELS_FOLDER=CUSTOM_BIN_ARE_FOLDER+"models/";
 	
 	private APEProperties apeProperties=null;
 	private ModelInspector modelInspector=null;
