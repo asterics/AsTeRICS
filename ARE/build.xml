@@ -1,4 +1,4 @@
-<project name="asterics.runtime" default="buildComponents" basedir=".">
+<project name="asterics.runtime" default="buildAllNoClean" basedir=".">
 
   <property name="debug" value="true"/>    
   <property name="dist" location=".."/>
@@ -32,7 +32,10 @@
           </subant>
     </target>
 
-	<target name="buildAll" depends="clean,buildServices, buildTools">
+	<target name="buildAllNoClean" depends="buildServices, buildTools, buildComponents, copyLicensesAll">
+	</target>
+	
+	<target name="buildAll" depends="clean,buildServices, buildTools, copyLicensesAll">
           <subant target="buildAllComponents">
             <property name="debug" value="true"/>
             <fileset dir="." includes="components/build.xml"/>
@@ -47,7 +50,7 @@
     </target>
 	
 
-	<target name="buildAll-release" depends="clean,buildServices">
+	<target name="buildAll-release" depends="clean,buildServices, buildTools, copyLicensesAll">
          <subant target="buildAllComponents">
             <property name="debug" value="false"/>
             <fileset dir="." includes="components/build.xml"/>
