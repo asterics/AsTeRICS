@@ -224,7 +224,7 @@ public class APE {
 			}
 			//Now adding default models search path to APE.models property
 			Notifier.debug("Adding APE.projectDir/"+Packager.CUSTOM_BIN_ARE_FOLDER+" as search path for model files to "+APEProperties.P_APE_MODELS,null);
-			String projectDirSearchPath=ResourceRegistry.resolveRelativeFilePath(projectDir, Packager.CUSTOM_BIN_ARE_FOLDER).getPath();
+			String projectDirSearchPath=ResourceRegistry.resolveRelativeFilePath(projectDir, Packager.CUSTOM_BIN_ARE_MODELS_FOLDER).getPath();
 			apeProperties.setProperty(APEProperties.P_APE_MODELS,apeProperties.getProperty(APEProperties.P_APE_MODELS,"")+";"+projectDirSearchPath);
 			Notifier.info("ApeProp["+APEProperties.P_APE_MODELS+"]="+apeProperties.getProperty(APEProperties.P_APE_MODELS),null);
 			Notifier.debug("Final apeProperties: "+apeProperties.toString(), null);
