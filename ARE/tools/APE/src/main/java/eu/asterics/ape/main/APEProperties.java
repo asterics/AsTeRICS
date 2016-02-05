@@ -27,7 +27,7 @@ public class APEProperties extends Properties {
 	public static String DEFAULT_APE_LOG_LEVEL="INFO";
 	
 	public static URI APE_BASE_URI=null;
-	public static URI APE_PROJECT_DIR_URI=null;
+	//public static URI APE_PROJECT_DIR_URI=null;
 	//public static URI APE_PROP_FILE_BASE_URI=null;
 
 	/**

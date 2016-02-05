@@ -114,7 +114,7 @@ public class APE {
 		URI defaultAPEBaseURI=new File(".").toURI();
 		Notifier.debug("Current working dir: "+defaultAPEBaseURI,null);
 		try {
-			defaultAPEBaseURI = ResourceRegistry.toPath(APE.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toUri();
+			defaultAPEBaseURI = ResourceRegistry.toFile(APE.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile().toURI();
 			Notifier.debug("Location of APE.jar: "+defaultAPEBaseURI,null);
 		} catch (URISyntaxException e) {
 			Notifier.warning("Could not fetch default APE.baseURI", e);
@@ -123,8 +123,9 @@ public class APE {
 		Notifier.debug("SysProp["+APEProperties.P_APE_BASE_URI+"]="+System.getProperty(APEProperties.P_APE_BASE_URI),null);
 		String newApeBaseURIString=System.getProperty(APEProperties.P_APE_BASE_URI);		
 		if(newApeBaseURIString != null) {
-			//Resolve against defaultApeBaseURI because if it is relative it should be resolved, if not it should be used absolutely
-			setAPEBaseURI(defaultAPEBaseURI.resolve(newApeBaseURIString));
+			//Resolve it against the CWD because this is the only intuitive approach if the user provides a new APE.baseURI via commandline
+			String resolvedPath=resolveURIsToCWD(newApeBaseURIString);
+			setAPEBaseURI(new File(resolvedPath).toURI());
 		} else {
 			setAPEBaseURI(defaultAPEBaseURI);
 		}
@@ -156,9 +157,14 @@ public class APE {
 	public void start() throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException, APEConfigurationException {
 		ResourceRegistry.getInstance().setOSGIMode(false);
 		
-		projectDir=ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.toFile(getAPEBaseURI()), System.getProperty(APEProperties.P_APE_PROJECT_DIR,APEProperties.DEFAULT_PROJECT_DIR),false);
-		APEProperties.APE_PROJECT_DIR_URI=projectDir.toURI();
-		Notifier.info("ApeProp["+APEProperties.P_APE_PROJECT_DIR+"]="+APEProperties.APE_PROJECT_DIR_URI);
+		projectDir=ResourceRegistry.resolveRelativeFilePath(getAPEBaseURI(), DEFAULT_PROJECT_DIR);
+		
+		String customProjectDir=System.getProperty(P_APE_PROJECT_DIR);
+		if(customProjectDir!=null && !"".equals(customProjectDir)) {
+			projectDir=new File(resolveURIsToCWD(customProjectDir));
+		}
+		//APEProperties.APE_PROJECT_DIR_URI=projectDir.toURI();
+		Notifier.info("ApeProp["+APEProperties.P_APE_PROJECT_DIR+"]="+projectDir);
 		
 		if(!projectDir.exists()) {
 			Notifier.info("Project folder does not exist, copying template to: "+projectDir);
@@ -212,16 +218,20 @@ public class APE {
 					}
 
 					String propValue=entry.getValue().toString();
-					if(entry.getKey().equals(P_APE_MODELS)) {
+					if(entry.getKey().equals(P_APE_MODELS)||entry.getKey().equals(P_APE_BUILD_DIR)||
+							entry.getKey().equals(P_ARE_BASE_URI)) {
 						//if the user provided model paths via the system property and not via the properties file, we have to resolve relative paths to the current directory
 						//and not relative to the APE.projectDir location to make it more intuitive.
-						propValue=resolveModelURIsToCWD(entry.getValue().toString());
+						propValue=resolveURIsToCWD(entry.getValue().toString());
 					}
 					Notifier.debug("Overriding ApeProp["+entry.getKey()+"]="+propValue,null);
 
 					apeProperties.setProperty(entry.getKey().toString(), propValue);
 				}
 			}
+			//Also add the projectDir to the properties to be sure that the values are in sync.
+			apeProperties.setProperty(P_APE_PROJECT_DIR, projectDir.getPath());
+			
 			//Now adding default models search path to APE.models property
 			Notifier.debug("Adding APE.projectDir/"+Packager.CUSTOM_BIN_ARE_FOLDER+" as search path for model files to "+APEProperties.P_APE_MODELS,null);
 			String projectDirSearchPath=ResourceRegistry.resolveRelativeFilePath(projectDir, Packager.CUSTOM_BIN_ARE_MODELS_FOLDER).getPath();
@@ -236,20 +246,20 @@ public class APE {
 	
 	/**
 	 * Resolve the given String with relative model paths to strings with absolute model paths resolved against the CWD.
-	 * @param relativeModelPaths
+	 * @param relativePaths
 	 * @return
 	 */
-	private String resolveModelURIsToCWD(String relativeModelPaths) {
-		StringBuilder resolvedModelPaths=new StringBuilder();
-		String[] modelPaths=relativeModelPaths.split(";");
-		for(int i=0;i<modelPaths.length;i++) {
-			//If the modelPath is relative it will be resolved against the CWD otherwise the absolute path is returned 
-			resolvedModelPaths.append(ResourceRegistry.resolveRelativeFilePath(new File(".").getAbsoluteFile(), modelPaths[i]));
-			if(i<(modelPaths.length-1)) {
-				resolvedModelPaths.append(";");
+	private static String resolveURIsToCWD(String relativePaths) {
+		StringBuilder resolvedPaths=new StringBuilder();
+		String[] splitPaths=relativePaths.split(";");
+		for(int i=0;i<splitPaths.length;i++) {
+			//If the path is relative it will be resolved against the CWD otherwise the absolute path is returned 
+			resolvedPaths.append(ResourceRegistry.resolveRelativeFilePath(new File(".").getAbsoluteFile(), splitPaths[i]));
+			if(i<(splitPaths.length-1)) {
+				resolvedPaths.append(";");
 			}
 		}
-		return resolvedModelPaths.toString();
+		return resolvedPaths.toString();
 	}
 
 	public APEProperties getApeProperties() {

@@ -88,7 +88,7 @@ public class Packager {
 		super();
 		this.apeProperties = apeProperties;
 		this.modelInspector=modelInspector;
-		this.projectDir=ResourceRegistry.toFile(apeProperties.APE_PROJECT_DIR_URI);
+		this.projectDir=new File(apeProperties.getProperty(P_APE_PROJECT_DIR));
 		
 		buildDir=ResourceRegistry.resolveRelativeFilePath(projectDir, apeProperties.getProperty(APEProperties.P_APE_BUILD_DIR, APEProperties.DEFAULT_BUILD_DIR));
 		buildMergedDir=ResourceRegistry.resolveRelativeFilePath(buildDir, MERGED_FOLDER);
@@ -161,7 +161,7 @@ public class Packager {
 		uriList = ResourceRegistry.getInstance().getOtherFilesList(false);
 		copyURIs(uriList, buildMergedAREDir);		
 
-		copyModels(modelURIs, ResourceRegistry.resolveRelativeFilePath(buildMergedAREDir,ResourceRegistry.MODELS_FOLDER));
+		copyModels(modelURIs, buildMergedAREDir);
 		
 		//Finally copy all custom files from APE.projectDir/bin
 		copyCustomFiles(buildDir);
@@ -247,7 +247,7 @@ public class Packager {
 			//Check if it is a model URI based on ARE base URI, if not copy file directly
 			try {
 				//Don't resolve against ARE.baseURI because we just wanna copy the model files to the bin/ARE/models dir.
-				copyURI(modelURI,targetSubDir, false);
+				copyURI(modelURI,targetSubDir, true);
 			} catch (URISyntaxException | IOException e) {
 				Notifier.warning("Could not copy model: "+modelURI, e);
 			}
@@ -276,7 +276,6 @@ public class Packager {
 	 * @throws IOException
 	 */
 	public void copyURI(URI srcURI, File targetDir, boolean resolveAREBaseURISubDirs) throws URISyntaxException, IOException {
-		CopyOption[] opt=new CopyOption[] {REPLACE_EXISTING,COPY_ATTRIBUTES};
 		try {
 			File targetSubDir=targetDir;
 			File src=ResourceRegistry.toFile(srcURI);
