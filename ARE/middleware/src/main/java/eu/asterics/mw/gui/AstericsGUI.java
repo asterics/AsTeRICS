@@ -71,8 +71,8 @@ public class AstericsGUI implements IAREEventListener
 	public final static String ARE_VERSION="2.8-rc.1";
 	static int DEFAULT_SCREEN_X=0;
 	static int DEFAULT_SCREEN_Y=0;
-	static int DEFAULT_SCREEN_W=0;
-	static int DEFAULT_SCREEN_H=0;
+	static int DEFAULT_SCREEN_W=60;
+	static int DEFAULT_SCREEN_H=250;
 
 	static String ICON_PATH = "/images/icon.gif";
 	static String TRAY_ICON_PATH = "/images/tray_icon.gif";
@@ -215,8 +215,12 @@ public class AstericsGUI implements IAREEventListener
 		controlPanel = new JPanel ();
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
 		controlPanel.add(controlPane);
-		pane.add(controlPanel, BorderLayout.LINE_END);	
-
+		pane.add(controlPanel, BorderLayout.LINE_END);
+		
+		Dimension defaultSize=new Dimension(DEFAULT_SCREEN_W, DEFAULT_SCREEN_H);
+		pane.setPreferredSize(defaultSize);
+		mainFrame.setPreferredSize(defaultSize);
+		mainFrame.setSize(defaultSize);
 		// aboutFrame = new AboutFrame (this, mainFrame);
 		
 	}

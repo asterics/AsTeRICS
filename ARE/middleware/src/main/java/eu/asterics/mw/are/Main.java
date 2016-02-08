@@ -165,9 +165,9 @@ public class Main implements BundleActivator
 					udpThread.start();
 				} catch (Throwable e) {
 					String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
-					String message="The AsTeRICS Runtime Environment started with errors!"+reason;
+					String message="The AsTeRICS Runtime Environment started with errors:\n"+reason;
 					logger.severe(message);
-					startupMessage(message,JOptionPane.ERROR_MESSAGE,true);
+					startupMessage(message,JOptionPane.ERROR_MESSAGE,false);
 				}
 			}
 		});

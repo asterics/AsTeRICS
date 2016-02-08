@@ -2156,16 +2156,16 @@ public class AsapiSupport
 				if(autostartModel.exists()) {
 					startModel=autostartModel.getPath();
 				} else {
-					//If there is no dedicated autostart model try to start first one that is found.
+					//If there is no dedicated autostart model either use the only one existing or throw an error message
 					List<URI> models=ResourceRegistry.getInstance().getModelList(false);
-					if(!models.isEmpty()) {
+					if(models.size()==1) {
 						startModel=ResourceRegistry.toString(models.get(0));
 					} else {
-						throw new AREAsapiException("No model found for autostart -> Check the models subfolder");
+						throw new AREAsapiException("No model found for autostart. To define autostart model, either\n\ncreate model "+ResourceRegistry.MODELS_FOLDER+"autostart.acs or\nprovide model name as command line argument or\nopen model manually in the ARE GUI.");
 					}
 				}
 			}catch (URISyntaxException e) {
-				throw new AREAsapiException("Error during autostart of model:\n"+e.getMessage());
+				throw new AREAsapiException("Error during autostart of model:\n"+e.getMessage()+"\nTry to open model manually in the ARE GUI.");
 			}
 		}
 		deployFile (startModel);
