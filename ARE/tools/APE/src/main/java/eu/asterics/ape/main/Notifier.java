@@ -26,7 +26,7 @@ public class Notifier {
 
 					@Override
 					public synchronized String format(LogRecord record) {
-						return String.format("%1$s\n",record.getMessage());
+						return String.format("%1$s: %2$s\n",record.getLevel(),record.getMessage());
 					}
 
 					
