@@ -243,10 +243,15 @@ public class Packager {
 	 * @param targetSubDir
 	 */
 	public void copyModels(Set<URI> modelURIs, File targetSubDir) {
+		URI customURI=ResourceRegistry.resolveRelativeFilePath(projectDir,CUSTOM_BIN_ARE_MODELS_FOLDER).toURI();
 		for(URI modelURI : modelURIs) {
 			//Check if it is a model URI based on ARE base URI, if not copy file directly
 			try {
 				//Don't resolve against ARE.baseURI because we just wanna copy the model files to the bin/ARE/models dir.
+				if(ResourceRegistry.isSubURI(customURI, modelURI)) {
+					Notifier.debug("Don't copy custom model in copyModels, will be copied in copyCustomFiles: "+modelURI, null);
+					continue;
+				}
 				copyURI(modelURI,targetSubDir, true);
 			} catch (URISyntaxException | IOException e) {
 				Notifier.warning("Could not copy model: "+modelURI, e);
@@ -298,7 +303,11 @@ public class Packager {
 			}
 			//Actually copy file
 			Notifier.debug("Copying "+src+" -> "+targetSubDir,null);
-			FileUtils.copyFileToDirectory(src, targetSubDir);
+			if(src.isDirectory()) {
+				FileUtils.copyDirectory(src, targetSubDir);
+			} else {
+				FileUtils.copyFileToDirectory(src, targetSubDir);
+			}
 		} catch(MalformedURLException e) {
 			//else try if it is a URL that can be fetched from anywhere else.
 			Notifier.warning("URL resources not supported so far",e);
