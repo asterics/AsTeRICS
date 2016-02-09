@@ -228,6 +228,8 @@ public class Packager {
 						copyURI(jarURI, targetSubDir, false);
 					} catch (URISyntaxException e) {
 						Notifier.warning("Cannot create servicesJarURI for path: "+path, e);
+					}catch(IOException e) {
+						Notifier.warning("Can not copy service jar: : "+path, e);
 					}
 				}
 			} catch (IOException e) {
