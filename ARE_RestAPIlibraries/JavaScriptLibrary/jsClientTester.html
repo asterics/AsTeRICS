@@ -256,98 +256,109 @@
 	<body>
 		<h1> Rest Client </h1>
 		
+		
+		<h4>(Place your mouse over a button to see additional info)</h4>
+		
 		<br/>
 		
 		<hr>
 		
 		<h3> ARE Repository </h3>
 		
-		<button onclick="LSM()"> List stored models </button>
+		<button onclick="LSM()" title="Description: Retrieves the model names that are saved in the ARE repository (as JSON array) &#013;Ouput: alert"> 
+			List stored models 
+		</button>
 		<br/> <br/>
 		
-		<button onclick="DMF()"> Download model from file </button>
+		<button onclick="DMF()" title="Description: Returns an xml representation of a model in a specific file &#013;Ouput: alert"> 
+			Download model from file 
+		</button>
 		<input placeholder="filename" type="text" id="DMFfilename"/>
 		<br/> <br/>
 					
-		<button onclick="STORE()"> Store model to file </button>
+		<button onclick="STORE()" title="Description: Stores a model in the given filename &#013;Ouput: alert">
+			Store model to file 
+		</button>
 		<input placeholder="filename" type="text" id="STOREfilename"/>
 		<input placeholder="modelInXML" type="text" id="STOREmodel"/>
 		<br/> <br/>
 				
-		<button onclick="DELETE()"> Delete model </button>
+		<button onclick="DELETE()" title="Description: Deletes the model with the given filename &#013;Ouput: alert"> Delete model </button>
 		<input placeholder="filename" type="text" id="DELETEfilename"/>
 		<br/> <br/>
 		
-		<button onclick="COMPONENT_DESCRIPTORS_XML()"> Get components descriptors as xml </button>
+		<button onclick="COMPONENT_DESCRIPTORS_XML()" title="Description: Returns an xml string containing the descriptors of the created components with some modifications in order to be used by the webACS &#013;Ouput: console"> 
+			Get components descriptors as xml 
+		</button>
 		<br/> <br/>
 		
-		<button onclick="COMPONENT_DESCRIPTORS_JSON()"> Get components descriptors as JSON array </button>
+		<button onclick="COMPONENT_DESCRIPTORS_JSON()" title="Description: Retrieves the exact content of the component descriptors contained in the ARE repository (as JSON array) &#013;Ouput: console"> Get components descriptors as JSON array </button>
 		<br/> <br/>
 		
 		<hr>
 		
 		<h3> ARE Runtime Handling </h3>
 		
-		<button onclick="DDM()"> Download deployed model </button>
+		<button onclick="DDM()" title="Description: Retrieves the currently deployed model in XML &#013;Ouput: alert"> Download deployed model </button>
 		<br/> <br/>
 		
-		<button onclick="UM()"> Upload model </button>
+		<button onclick="UM()" title="Description: Deploys the model given as a parameter &#013;Ouput: alert"> Upload model </button>
 		<input placeholder="modelInXML" type="text" id="UMmodel"/>
 		<br/> <br/>
 		
-		<button onclick="AUTO()"> Autorun </button>
+		<button onclick="AUTO()" title="Description: Deploys and starts the model in the given filename &#013;Ouput: alert"> Autorun </button>
 		<input placeholder="filename" type="text" id="AUTOfilename"/>
 		<br/> <br/>
 				
-		<button onclick="DepMF()"> Deploy model from file </button>
+		<button onclick="DepMF()" title="Description: Deploys the model contained in the given filename &#013;Ouput: alert"> Deploy model from file </button>
 		<input placeholder="filename" type="text" id="DepMFfilename"/>
 		<br/> <br/>
 				
-		<button onclick="GRC()"> Get runtime component Ids </button>
+		<button onclick="GRC()" title="Description: Retrieves all the component Ids contained in the currently deployed model (as JSON array) &#013;Ouput: alert"> Get runtime component Ids </button>
 		<br/> <br/>
 		
-		<button onclick="GRCPK()"> Get runtime component property keys </button>
+		<button onclick="GRCPK()" title="Description: Returns all property keys of the component with the given componentId in the currently deployed model (as JSON array) &#013;Ouput: alert"> Get runtime component property keys </button>
 		<input placeholder="componentId" type="text" id="GRCPKid"/>
 		<br/> <br/>
 		
-		<button onclick="GRCP()"> Get runtime component property </button>
+		<button onclick="GRCP()" title="Description: Retrieves property value of a specific component, in the currently deployed model &#013;Ouput: alert"> Get runtime component property </button>
 		<input placeholder="componentId" type="text" id="GRCPid"/>
-		<input placeholder="componentId"type="text" id="GRCPkey"/>
+		<input placeholder="componentKey"type="text" id="GRCPkey"/>
 		<br/> <br/>
 		
-		<button onclick="SRCP()"> Set runtime component property </button>
+		<button onclick="SRCP()" title="Description: Changes a property value of a specific component,  in the currently deployed model &#013;Ouput: alert"> Set runtime component property </button>
 		<input placeholder="componentId" type="text" id="SRCPid"/>
-		<input placeholder="componentId" type="text" id="SRCPkey"/>
+		<input placeholder="componentKey" type="text" id="SRCPkey"/>
 		<input placeholder="componentKeyValue" type="text" id="SRCPvalue"/>
 		<br/> <br/>
 		
 		<hr>
 		<h3> Model State </h3>
 		
-		<button onclick="PAUSE()"> Pause model </button>
+		<button onclick="PAUSE()" title="Description: Changes the state of the deployed model to PAUSED &#013;Ouput: alert"> Pause model </button>
 		<br/> <br/>
 		
-		<button onclick="START()"> Start model </button>
+		<button onclick="START()" title="Description: Changes the state of the deployed model to STARTED &#013;Ouput: alert"> Start model </button>
 		<br/> <br/>
 		
-		<button onclick="STOP()"> Stop model </button>
+		<button onclick="STOP()" title="Description: Changes the state of the deployed model to STOPPED &#013;Ouput: alert"> Stop model </button>
 		<br/> <br/>
 				
-		<button onclick="MS()"> Get model state </button>
+		<button onclick="MS()" title="Description: Returns the state of the deployed model &#013;Ouput: alert"> Get model state </button>
 		<br/> <br/>
 		
 		<hr>
 		
 		<h3> Server Events </h3>
 		
-		<button onclick="SUBSCRIBE_EVENTS()"> SSE subscribe </button>
+		<button onclick="SUBSCRIBE_EVENTS()" title="Description: Opens a persistent connection with ARE and listens for Server Sent Events &#013;Ouput: box below"> SSE subscribe </button>
 		<select id="eTypesS">
 			<option value="ModelStateChanged">Model State Changed</option>
 			<option value="ModelChanged">Model Changed</option>
 		</select>
 		<br/> <br/>
 		
-		<button onclick="UNSUBSCRIBE_EVENTS()"> SSE unsubscribe </button>
+		<button onclick="UNSUBSCRIBE_EVENTS()" title="Description: Closes the connection for Server Sent Events. Returns true if the unsubscription was successful and false otherwise"> SSE unsubscribe </button>
 		<select id="eTypesU">
 			<option value="ModelStateChanged">Model State Changed</option>
 			<option value="ModelChanged">Model Changed</option>
@@ -363,7 +374,7 @@
 		
 		<h3> ARE Information </h3>
 		
-		<button onclick="FUNCTIONS()"> getRestFunctions </button>
+		<button onclick="FUNCTIONS()" title="Description: Retrieves the information for all the available rest functions provided by the Restful API (as JSON array with Function objects) &#013;Ouput: console"> getRestFunctions </button>
 		<br/> <br/>
 		
 		<hr>
