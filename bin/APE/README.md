@@ -28,12 +28,12 @@ You should be able to copy/paste the example commands below as long as you repla
 **Note for Linux**: On Linux you must use ```APE-copy.sh``` and slashify ('/' instead of '\') the paths.
 
 #### One model file
-Create a downstripped ARE package of the model file ```CameraMouse.acs``` located in the ```ARE/models``` folder.
+Create a downstripped ARE package of the model file ```ImageDemo.acs``` located in the ```ARE/models``` folder.
 By default, the result is written to the folder ```<APE.buildDir>/merged```.
 
 ```
 cd <ARE.baseURI>
-..\APE\APE-copy -DAPE.models=models/CameraMouse.acs
+..\APE\APE-copy -DAPE.models=models/ImageDemo.acs
 ```
 
 #### Several model files/folder
@@ -41,7 +41,7 @@ When specifying a folder, all contained model files (recursively) will be used. 
 
 ```
 cd <ARE.baseURI>
-..\APE\APE-copy -DAPE.models=models/CameraMouse.acs;models/ImageDemo.acs;models/eyetracking;D:/MyModelFiles/
+..\APE\APE-copy -DAPE.models=models/ImageDemo.acs;models/eyetracking;D:/MyModelFiles/
 ```
 
 #### One model file, custom build folder
@@ -75,7 +75,7 @@ The build infrastructure has the following prerequisites:
 * [Ant build system >= 1.9.2] (http://ant.apache.org/bindownload.cgi)
 * [InnoSetup >= 5] (http://www.jrsoftware.org/isdl.php)
 
-To create an .exe installer of the model file ```<ARE.baseURI>/models/CameraMouse.acs``` copy the model file to the location ```<APE.projectDir>/custom/bin/ARE/models``` or edit the _APE.models_ property in the file ```<APE.projectDir>/APE.properties```. Then execute the following commands:
+To create an .exe installer of the model file ```<ARE.baseURI>/models/ImageDemo.acs``` copy the model file to the location ```<APE.projectDir>/custom/bin/ARE/models``` or edit the _APE.models_ property in the file ```<APE.projectDir>/APE.properties```. Then execute the following commands:
 
 ```
 cd <APE.projectDir>
@@ -84,7 +84,8 @@ ant
 
 By default all supported installer types for the currently running platform are created and stored at ```<APE.buildDir>/deploy/bundles```
 
-### Properties for copying/packaging behaviour of APE (file: APE.properties)
-Relative paths are resolved against the location of the properties file.
+#### One model file, Linux debian package
 
-<TBD>
+### Properties for copying/packaging behaviour of APE (file: APE.properties)
+
+**TODO**
