@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<keyboard caption="Control DVD" rows="2" columns="3" scanning="2" textColor="0" scanColor="10" scanCycles="3" backgroundColor="11" hoverTime="1000" hoverIndicator="0" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+	<button>
+		<text>On/Off</text>
+		<icon>data/pictures/audio/system-shutdown.png</icon>
+		<action>@IRTRANS:snd asterics,dvd_on</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Previous</text>
+		<icon>data/pictures/audio/media-skip-backward.png</icon>
+		<action>@IRTRANS:snd asterics,dvd_previous</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Next</text>
+		<icon>data/pictures/audio/media-skip-forward.png</icon>
+		<action>@IRTRANS:snd asterics,dvd_next</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/audio/edit-undo.png</icon>
+		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>back</switchGrid>
+	</button>
+	<button>
+		<text>Stop</text>
+		<icon>data/pictures/audio/media-playback-stop.png</icon>
+		<action>@IRTRANS:snd asterics,dvd_stop</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Play/Pause</text>
+		<icon>data/pictures/audio/media-playback-start.png</icon>
+		<action>@IRTRANS:snd asterics,dvd_play</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+</keyboard>
