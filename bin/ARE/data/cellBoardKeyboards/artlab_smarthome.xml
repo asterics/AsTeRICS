@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<keyboard caption="Smart Home" rows="3" columns="6" scanning="2" textColor="0" scanColor="10" scanCycles="0" backgroundColor="11" hoverTime="1000" hoverIndicator="0" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+<keyboard caption="Smart Home" rows="3" columns="6" scanning="2" textColor="0" scanColor="10" scanCycles="3" backgroundColor="11" hoverTime="1000" hoverIndicator="0" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
 	<button>
 		<text>Back</text>
 		<icon>data/pictures/smarthome/edit-undo.png</icon>
