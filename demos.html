@@ -11,14 +11,169 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="javascript/JSmap.js"></script> 
 	<script src="javascript/areCommunicator.js"></script>
+	<script src="http://smoothiecharts.org/smoothie.js"></script>
+
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Asterics Demos</title>
+    <title>Asterics Prospertiy4All Building Blocks Demos</title>
 	
 			<script type="text/javascript">
+			<!-- Here the live chart scripting starts -->
+			
+	window.requestAnimFrame = (function(callback) {
+		return window.requestAnimationFrame
+				|| window.webkitRequestAnimationFrame
+				|| window.mozRequestAnimationFrame
+				|| window.oRequestAnimationFrame
+				|| window.msRequestAnimationFrame ||
+
+				function(callback) {
+					window.setTimeout(callback, 1000 / 30); // 30 frames per second
+				};
+	})();
+
+	var toggleVal1 = 0;
+	var toggleVal2 = 0;
+	var toggleVal3 = 0;
+	var toggleVal4 = 0;
+	var toggleVal5 = 0;
+	var toggleVal6 = 0;
+	var toggleVal7 = 0;
+	var toggleVal8 = 0;
+
+	var tempData = 0;
+	var txData = '';
+
+	var analogData1 = 0;
+	var analogData2 = 0;
+	var analogData3 = 0;
+	var analogData4 = 0;
+	var analogData5 = 0;
+	var analogData6 = 0;
+	var analogData7 = 0;
+	var analogData8 = 0;
+
+	var accDataX = 0;
+	var accDataY = 0;
+	var accDataZ = 0;
+
+	var data1 = 0;
+	var data2 = 0;
+	var data3 = 0;
+	
+	var dataPacketCounter=0;
+
+	var wsUri = "ws://localhost:8082/ws/astericsData";
+	var output;
+	function init() {
+		output = document.getElementById("output");
+		//testWebSocket();
+	}
+
+	function initSocket() {
+		init();
+		websocket = new WebSocket(wsUri);
+		websocket.onopen = function(evt) {
+			onOpen(evt)
+		};
+		websocket.onclose = function(evt) {
+			onClose(evt)
+		};
+		websocket.onmessage = function(evt) {
+			onMessage(evt)
+		};
+		websocket.onerror = function(evt) {
+			onError(evt)
+		};
+
+	}
+	function testWebSocket() {
+		websocket = new WebSocket(wsUri);
+		websocket.onopen = function(evt) {
+			onOpen(evt)
+		};
+		websocket.onclose = function(evt) {
+			onClose(evt)
+		};
+		websocket.onmessage = function(evt) {
+			onMessage(evt)
+		};
+		websocket.onerror = function(evt) {
+			onError(evt)
+		};
+	}
+	function onOpen(evt) {
+		writeToScreen("CONNECTED");
+		doSend("WebSocket rocks");
+	}
+	function onClose(evt) {
+		writeToScreen("DISCONNECTED");
+	}
+	function onMessage(evt) {
+
+		accDataX = document.getElementById("AccX");
+		accDataX.value = evt.data;
+
+		var dataNum=Number(evt.data);
+		/*
+		console.log(dataPacketCounter);
+		console.log(dataNum);
+		
+		if(dataPacketCounter != dataNum) {
+			console.log("packetCounter differs");
+		}
+		*/
+		dataPacketCounter = dataPacketCounter+1;
+		window.data1 = dataNum; //AccX graphData
+	}
+	function onError(evt) {
+		writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+	}
+	function doSend(message) {
+		<!-- writeToScreen("SENT: " + message);-->
+		websocket.send(message);
+	}
+	function writeToScreen(message) {
+		var pre = document.createElement("p");
+		pre.style.wordWrap = "break-word";
+		pre.innerHTML = message;
+		output.appendChild(pre);
+	}
+
+	function initGraph1() //Initialize Graph 1
+	{
+		var smoothie1 = new SmoothieChart();
+		var plot1 = new TimeSeries();
+
+		smoothie1.streamTo(document.getElementById("myGraph1"));
+		smoothie1.addTimeSeries(plot1, {
+			strokeStyle : 'rgb(0, 255, 0)',
+			lineWidth : 2
+		});
+
+		setInterval(function() {
+			plot1.append(new Date().getTime(), data1);
+		}, 100);
+	}
+
+	window.onload = function() {
+		initSocket();
+		initGraph1();
+	};
+	
+	function connectToWebsocket()
+	{
+		initSocket();
+		initGraph1();
+	}
+			
+			
+			
+			
+			<!-- Here AsTERICS part starts -->
 			/* This is an example of how to use the ARE Javascipt framework for the communication
 				with the ARE Restfull Services.
 				
@@ -288,7 +443,7 @@
     <header>
       <div class="inner">
         <h1>Asterics Demos</h1>
-        <h2></h2>
+        <h2>(WP202: Prospertiy4All Building Blocks)</h2>
 		<!--
         <a href="https://github.com/asterics/AsTeRICS" class="button"><small>View project on</small> GitHub</a>
         <h1>P4AllBuildingBlocks</h1>
@@ -302,11 +457,11 @@
       <div class="inner clearfix">
         <section id="main-content">
           <h1>
-<a id="welcome-to-asterics-demos" class="anchor" href="#welcome-to-asterics-demos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to the AsTeRICS demos</h1>
+<a id="welcome" class="anchor" href="#welcome" aria-hidden="true"><span class="octicon octicon-link"></span></a>AsTeRICS</h1>
 
 <hr>
 
-<p>AsTeRICS is a free and Open-Source graphical construction set for assistive technologies (AT).
+<p><a href="https://github.com/asterics/AsTeRICS">AsTeRICS</a> is a free and Open-Source graphical construction set for assistive technologies (AT).
 It allows the creation of flexible solutions for people with disabilities using a large set of sensors and actuators.</p>
 
 <p>Possible applications are  </p>
@@ -322,29 +477,133 @@ It allows the creation of flexible solutions for people with disabilities using 
 <p>
 On this page you will find practical demos of the <a href="https://github.com/asterics/P4AllBuildingBlocks">Building Blocks</a> provided for the <a href="http://www.prosperity4all.eu/">Prospertiy for All (P4All)</a> project. 
 
-<p>The demos rely on a customized <a href="https://github.com/asterics/P4AllBuildingBlocks/releases/tag/Cammouse-P4alldemo-v1.0">demo release (first test release available)</a> of the AsTeRICS Runtime Environment (ARE) which was created with the <a href="https://github.com/asterics/P4AllBuildingBlocks/wiki/AsTeRICS-Packaging-Environment-(APE)">AsTeRICS Packaging Environment (APE)</a>. The APE let's you select a set of AsTeRICS model files and create a downstripped (minimum size) version of the ARE including plugins, configuration files and data files to execute the models. Optionally, the APE allows the creation of native installers for Windows, Linux and Mac using <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGIBBCI">JavaFX packaging technology</a>.
-<h2>
-<a id="demos" class="anchor" href="#demos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Demos</h2>
-<h3>
-<a id="facetrackerLK" class="anchor" href="#facetrackerLK" aria-hidden="true"><span class="octicon octicon-link"></span></a>Camera Mouse with FacetrackerLK building block</h3>
-Install and start the AsTeRICS demo release, you will see a window with setting parameters for the webcam and mouse speed. 
+<p>The demos rely on a customized <a href="https://github.com/asterics/P4AllBuildingBlocks/releases/tag/Cammouse-P4alldemo-v1.0">demo release (asterics-prosperity4all-bb-demos, v0.1)</a> of the AsTeRICS Runtime Environment (ARE) which was created with the <a href="https://github.com/asterics/P4AllBuildingBlocks/wiki/AsTeRICS-Packaging-Environment-(APE)">AsTeRICS Packaging Environment (APE)</a>. The APE let's you select a set of AsTeRICS model files and create a downstripped (minimum size) version of the ARE including plugins, configuration files and data files to execute the models. Optionally, the APE allows the creation of native installers for Windows, Linux and Mac using <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGIBBCI">JavaFX packaging technology</a>.
+<h1>
+<a id="demos" class="anchor" href="#demos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Demos</h1>
+Download and install the demo release for your platform and start it. If you choose the .exe installer the ARE will start automatically. Please ensure to uninstall a previous demo release version. The demos are bundled into one installer file but could also be deployed with a seperate installer each.
 <p>
+<p>You can open the demo files with the <strong>"Choose a new model"</strong> button in the control panel of the ARE GUI. <!-- or you can go to the demo description below and start the demo by clicking on the respective button.--> Some demos require <strong>additional SW or HW</strong>. The letters <strong>W (Windows), L (Linux), M (Mac)</strong> indicate the supported platforms for a demo.
+<p>
+<strong>Note:<strong> 
+<p>
+
+<ul>
+<li>Press F7 to stop a demo model, in case it takes over mouse control.</li>
+<li>Right click on the ARE GUI background to toggle visibility of control panel.</li>
+</ul>
+
+
+<h2><a id="CameraInput" class="anchor" href="#CameraInput" aria-hidden="true"><span class="octicon octicon-link"></span></a>Camera Input</h2>
+
+<h3><a id="facetrackerlk" class="anchor" href="#facetrackerlk" aria-hidden="true"><span class="octicon octicon-link"></span></a>Camera Mouse with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/FacetrackerLK-windows">FacetrackerLK Building Block</a></h3>
+<h4>Objective</h4>Mouse control (moving mouse cursor, clicking and dragging) by head movements.
+<h4>Description</h4>By moving the head up/down or left/right the mouse cursor should move accordingly. A left click is performed by dwelling (stopping movement and waiting for some time). To do a right, double or drag click select the respective button in the ARE GUI and move the cursor to the location where the click should be performed at. The mouse speed can be changed by using the slider. Click on the On/Off button to toggle mouse control. 
+<p>
+
 <div>
-<img src="images/facetrackerLK-videoframe.png" alt="Video frame showing face with tracked nose and chin"/>
-<img src="images/facetrackerLK-settings.png" alt="Settings dialog"/>
+<img src="images/CameraInput/facetrackerLK-videoframe.png" alt="Video frame showing face with tracked nose and chin"/>
+<img src="images/CameraInput/facetrackermouse.PNG" alt="GUI with buttons and slider"/>
 </div>
+<h4>Requirements</h4>Integrated Webcam or USB camera. OS: Windows
+<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/FacetrackerLK.htm">FacetrackerLK</a>
 
-<p>To try the camera mouse in action click on the button 
+<h3><a id="tobiieyex" class="anchor" href="#tobiieyex" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eyetracking UI with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/TobiiEyeX">TobiiEyeX Building Block</a></h3>
+<h4>Objective</h4>Use eye movements and hovering to select user interface buttons.
+<h4>Description</h4>The demo shows a menu with buttons. Select (Click on) a button by looking at it for a certain amount of time. The border of the button indicates the hover time. A successful selection is shown in the "Selected action" field.<p>
+
+<div>
+<img src="images/CameraInput/TobiiEyeX-panel.png" alt="User interface with big buttons for eye control."/>
+</div>
+<h4>Requirements</h4><a href="http://www.tobii.com/xperience/developer/">Tobii EyeX eyetracker</a> and installed SDK. OS: Windows
+<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/EyeX.htm">EyeX</a>
+
+<h3><a id="xfacetrackerlk" class="anchor" href="#xfacetrackerlk" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cross-platform Camera Mouse with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/XFacetrackerLK">XFacetrackerLK Building Block</a></h3>
+<h4>Objective</h4>Mouse control (moving mouse cursor, clicking and dragging) by head movements.
+<h4>Description</h4>By moving the head up/down or left/right the mouse cursor should move accordingly. A left click is performed by dwelling (stopping movement and waiting for some time). To do a right, double or drag click select the respective button in the ARE GUI and move the cursor to the location where the click should be performed at. The mouse speed can be changed by using the slider. Click on the On/Off button to toggle mouse control. 
 <p>
-<button onclick="DepMFAndStart('FacetrackerMouse-no-osk.acs')" class="button">Start camera mouse</button> or switch back to 
-<button onclick="DepMFAndStart('Webcam_settings_german.acs')" class="button">camera mouse settings</button>
 
+<div>
+<img src="images/CameraInput/facetrackerLK-videoframe.png" alt="Video frame showing face with tracked nose and chin"/>
+<img src="images/CameraInput/facetrackermouse.PNG" alt="GUI with buttons and slider"/>
+</div>
+<h4>Requirements</h4>Integrated Webcam or USB camera. OS: Windows, Linux, Mac OSX
+<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/XFacetrackerLK.htm">XFacetrackerLK</a>
+
+<h2><a id="BioelectricSignal" class="anchor" href="#BioelectricSignal" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bioelectric Signal Acquisition and Processing</h2>
+
+
+<h3><a id="iirfilter" class="anchor" href="#iirfilter" aria-hidden="true"><span class="octicon octicon-link"></span></a>IIR filtering with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/BioelectricSignal/IIRFilter">IIRFilter Building Block</a></h3>
+<h4>Objective</h4>Filter a given biosignal (lowpass, bandpass, highpass) with butterworth filter. 
+<h4>Description</h4>The demo IIRFilter-Bandpass(WLM).acs generates a signal (Sine, 20Hz, Amplitudes: +-100) which is filtered with an IIR filter (bandpass, butterworth, order=10, fc1=10Hz, fc2=20Hz). The demo IIRFilter-ReadEDFdata(WLM).acs reads a recorded EEG signal, filters it and triggers midi sounds according to the magnitude of the signal.
+<p>
+
+<div>
+<img src="images/BioelectricSignal/IIRFilter-Bandpass.PNG" alt="Sine signal visualized in oscilloscope widget"/>
+<img src="images/BioelectricSignal/IIRFilter-ReadEDF.PNG" alt="Sine signal visualized in oscilloscope widget"/>
+</div>
+<h4>Requirements</h4>OS: Windows, Linux, Mac OSX
+<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/processors/IIRFilter.htm">IIRFilter</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/MidiPlayer.htm">MidiPlayer</a>
+
+<h2><a id="SmartHomeIntegration" class="anchor" href="#SmartHomeIntegration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Smart Home Integration</h2>
+
+
+<h3><a id="SmartHomeIntegrated" class="anchor" href="#SmartHomeIntegrated" aria-hidden="true"><span class="octicon octicon-link"></span></a>User interface for <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/SmartHomeIntegration">Smart Home</a></h3>
+<h4>Objective</h4>This demo shows a user interface for a Smart Home environment integrating several technologies.
+<h4>Description</h4>The user interface can either be operated by scanning (press space for selection), mouse or camera mouse (head movement). There are submenus demonstrating remote control of TV, HiFi device, DVD player, Lights and Heating. If you select a button the action command sent to the respective device is shown in the "Debug output" window. Additionally the camera mouse (CameraMouse button) can be activated and deactivated and an onscreen keyboard (Keyboard button) can be started.
+<p>
+
+<div>
+<img src="images/SmartHomeIntegration/SmartHomeIntegrated-Home.PNG" alt="User interface for Smart Home environment"/>
+</div>
+<h4>Requirements</h4>Integrated Webcam or USB camera, <a href="http://www.knx.org/knx-en/index.php">KNX HW and configured KNX router</a> and <a href="http://www.irtrans.de">IRTrans</a>. OS: Windows
+<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/FacetrackerLK.htm">FacetrackerLK</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/KNX.htm">KNX</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/IRTrans.htm">IRTrans</a>
+
+<h2><a id="NetworkIO" class="anchor" href="#NetworkIO" aria-hidden="true"><span class="octicon octicon-link"></span></a>Network I/O</h2>
+
+<h3><a id="WebSocket" class="anchor" href="#WebSocket" aria-hidden="true"><span class="octicon octicon-link"></span></a>Live Web Chart of Signal Data with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/NetworkIO/WebSocket">WebSocket Building Block</a></h3>
+<h4>Objective</h4>Visualization of signal data in a web live chart using Javascript. 
+<h4>Description</h4>The demo generates a sine signal and broadcasts the signal data through a websocket (ws://localhost:8082/ws/astericsData). The data is visualized in a Javascript live chart. You can also send data to the model by pressing the "Send test message" button.
+<p>
+
+<div>
+<img src="images/NetworkIO/Websockets-main.PNG" alt="Visualization of sine signal"/>
+</div>
+<div id="gPanel" align="vertical">
+<p>
+<button onclick="connectToWebsocket()">Connect to websocket</button>
+<p>
+<div align="horizontal">
+Websocket: <div id="output"/>
+</div>
+		<h2>Received signal data</h2>
+		<div align="horizontal">
+		Value:
+	&nbsp; &nbsp; <input id="AccX" style="" type="text"> &nbsp;
+	&nbsp;
+	</div>
+	<div align="left">
+
+		<canvas id="myGraph1" width="400" height="100"></canvas>
+	</div>
+	<button onclick="doSend('Test')">Send test message</button>
+</div>
+<h4>Requirements</h4>OS: Windows, Linux, Mac OSX
+<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/processors/WebSocket.htm">WebSocket</a>
+<!--
+<h2><a id="Microcontroller" class="anchor" href="#Microcontroller" aria-hidden="true"><span class="octicon octicon-link"></span></a>Microcontroller</h2>
+
+<h2><a id="Speech" class="anchor" href="#Speech" aria-hidden="true"><span class="octicon octicon-link"></span></a>Speech</h2>
+-->
+<p>
+<!--
+<button onclick="DepMFAndStart('CameraInput/FacetrackerLK/FacetrackerLK-FacetrackerMouse-no-osk(W).acs')" class="button">Start camera mouse</button>
+-->
         </section>
 
         <aside id="sidebar">
-          <a href="https://github.com/asterics/P4AllBuildingBlocks/releases/tag/Cammouse-P4alldemo-v1.0" class="button">
+          <a href="https://github.com/asterics/P4AllBuildingBlocks/releases/tag/asterics-prosperity4all-bb-demos" class="button">
             <small>Install</small>
-			Demo
+			Demo release
           </a>
 
           <p class="repo-owner"><a href="https://github.com/asterics/AsTeRICS"></a> is maintained by <a href="https://github.com/asterics">asterics</a>.</p>
