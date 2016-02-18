@@ -53,7 +53,10 @@
 				<include name="*.bat"/>
 				<include name="*.sh"/>
 			</fileset>
-		</copy>			
+		</copy>
+		<copy  todir="${runtime}/defProjectDir" failonerror="false" includeemptydirs="true" overwrite="false" verbose="true">
+			<fileset dir="${runtime}/template"></fileset>
+		</copy>
 	</target>
 
 	<target name="clean">
