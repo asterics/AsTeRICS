@@ -57,6 +57,14 @@ function Map() {
 		}
 	}
 	
+	this.keySet = function () {
+		var keys = [];
+		i = 0;
+		for (keys[i++] in this.map) {}
+		
+		return keys;
+	}
+	
 }
 
 	

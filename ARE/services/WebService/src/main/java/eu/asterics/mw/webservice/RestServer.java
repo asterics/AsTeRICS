@@ -17,8 +17,8 @@ import javax.ws.rs.core.MediaType;
 
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
-import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.webservice.serverUtils.AstericsAPIEncoding;
 import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
 import eu.asterics.mw.webservice.serverUtils.ServerEvent;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
@@ -34,6 +34,7 @@ import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 public class RestServer {
 	AsapiSupport as = new AsapiSupport();
 	private Logger logger = AstericsErrorHandling.instance.getLogger();
+	AstericsAPIEncoding astericsAPIEncoding = new AstericsAPIEncoding();
 	
 	
 	@Path("/restfunctions")
@@ -82,7 +83,7 @@ public class RestServer {
 		
 		try {
 			as.deployModel(modelInXML);
-			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed");
+			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed"); //TODO ignores events produced by GUI. To be moved
 			response = "Model deployed";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,20 +95,23 @@ public class RestServer {
     }
 	
 
-	@Path("/runtime/model/{filename}")
+	@Path("/runtime/model/{filepath}")
     @PUT
 	@Produces(MediaType.TEXT_PLAIN)
-    public String deployFile(@PathParam("filename") String filename) {  
+    public String deployFile(@PathParam("filepath") String filepath) {  
 		String response;
 		String errorMessage = "";
+		String decodedFilepath = "";
 		
 		try {
-			as.deployFile(filename);
-			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed");
-			response = "'" + filename + "'" + " model deployed";
+			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+			
+			as.deployFile(decodedFilepath);
+			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed"); //TODO ignores events produced by GUI. To be moved
+			response = "'" + decodedFilepath + "'" + " model deployed";
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't deploy the model from file '" + filename + "' (" + e.getMessage() + ")";
+			errorMessage = "Couldn't deploy the model from file '" + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "error:" + errorMessage;
 		}
 		
@@ -131,7 +135,7 @@ public class RestServer {
 				else {
 					as.runModel();
 					response = "Model started";
-					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model started");	
+					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model started"); //TODO ignores events produced by GUI. To be moved	
 				}
 			} 
 			else if (state.equals("stop")) {
@@ -141,7 +145,7 @@ public class RestServer {
 				else {
 					as.stopModel();
 					response = "Model stopped";
-					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model stopped");
+					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model stopped"); //TODO ignores events produced by GUI. To be moved
 				}
 			}
 			else if (state.equals("pause")) {
@@ -151,7 +155,7 @@ public class RestServer {
 				else {
 					as.pauseModel();
 					response = "Model paused";
-					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model paused");
+					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model paused"); //TODO ignores events produced by GUI. To be moved
 				}
 			}
 			else {
@@ -186,20 +190,23 @@ public class RestServer {
     }
 	
 
-	@Path("/runtime/model/autorun/{filename}")
+	@Path("/runtime/model/autorun/{filepath}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
-    public String autorun(@PathParam("filename") String filename) {
+    public String autorun(@PathParam("filepath") String filepath) {
 		String response;
 		String errorMessage = "";
+		String decodedFilepath = "";
 		
 		try {
-			as.autostart(filename);
-			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed and started");
-			response = filename + " deployed and started";
+			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+			
+			as.autostart(decodedFilepath);
+			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed and started"); //TODO ignores events produced by GUI. To be moved
+			response = decodedFilepath + " deployed and started";
 		} catch (AREAsapiException e) {
 			e.printStackTrace();
-			errorMessage = "Could not autostart '" + filename + "' (" + e.getMessage() + ")";
+			errorMessage = "Could not autostart '" + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "error:" + errorMessage;
 		}
 
@@ -237,9 +244,11 @@ public class RestServer {
     public String getRuntimeComponentPropertyKeys(@PathParam("componentId") String componentId) {
 		String response;
 		String errorMessage = "";
+		String decodedId = "";
 		
 		try {
-			String[] array = as.getComponentPropertyKeys(componentId);
+			decodedId = astericsAPIEncoding.decodeString(componentId);
+			String[] array = as.getComponentPropertyKeys(decodedId);
 			
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
 			if (response.equals("")) {
@@ -247,7 +256,7 @@ public class RestServer {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve property keys from '" + componentId + "' (" + e.getMessage() + ")";
+			errorMessage = "Couldn't retrieve property keys from '" + decodedId + "' (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -261,9 +270,12 @@ public class RestServer {
     public String getRuntimeComponentProperty(@PathParam("componentId") String componentId, @PathParam("componentKey") String componentKey) {
 		String response;
 		String errorMessage = "";
+		String decodedId = "", decodedKey = "";
 		
 		try {
-			response = as.getComponentProperty(componentId, componentKey);
+			decodedId = astericsAPIEncoding.decodeString(componentId);
+			decodedKey = astericsAPIEncoding.decodeString(componentKey);
+			response = as.getComponentProperty(decodedId, decodedKey);
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "Couldn't retrieve '"+ componentKey + "' property from '" + componentId + "' (" + e.getMessage() + ")";
@@ -281,11 +293,15 @@ public class RestServer {
     public String setRuntimeComponentProperty(String value, @PathParam("componentId") String componentId, @PathParam("componentKey") String componentKey) {
 		String response;
 		String errorMessage = "";
+		String decodedId = "", decodedKey = "";
+		
 		try {
-			response = as.setComponentProperty(componentId, componentKey, value);
+			decodedId = astericsAPIEncoding.decodeString(componentId);
+			decodedKey = astericsAPIEncoding.decodeString(componentKey);
+			response = as.setComponentProperty(decodedId, decodedKey, value);
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't set '" + value + "' value to '" + componentKey + "' from '" + componentId + "' (" + e.getMessage() + ")";
+			errorMessage = "Couldn't set '" + value + "' value to '" + decodedKey + "' from '" + decodedId + "' (" + e.getMessage() + ")";
 			response = "error:"+errorMessage;
 		}
 		
@@ -299,17 +315,20 @@ public class RestServer {
 	 *	Storage/ARE-repository resources
 	 *************************************/
 	
-	@Path("/storage/models/{filename}")
+	@Path("/storage/models/{filepath}")
     @GET
     @Produces(MediaType.TEXT_XML)
-    public String getModelFromFile(@PathParam("filename") String filename) {
+    public String getModelFromFile(@PathParam("filepath") String filepath) {
 		String response = null;
 		String errorMessage;
+		String decodedFilepath = "";
 		
 		try {
-			response = as.getModelFromFile(filename);
+			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+			
+			response = as.getModelFromFile(decodedFilepath);
 		} catch (Exception e) {
-			errorMessage = "Couldn't retrieve the model from '" + filename + "' (" + e.getMessage() + ")";
+			errorMessage = "Couldn't retrieve the model from '" + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "<error>"+errorMessage+"</error>";
 		}
 		
@@ -317,13 +336,14 @@ public class RestServer {
     }
 	
 	
-	@Path("/storage/models/{filename}")
+	@Path("/storage/models/{filepath}")
     @POST
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
-    public String storeModel(@PathParam("filename") String filename, String modelInXML) {  
+    public String storeModel(@PathParam("filepath") String filepath, String modelInXML) {  
 		String response;
 		String errorMessage;
+		String decodedFilepath = "";
 		
 		if ( (modelInXML == "") || (modelInXML == null) ) {
 			errorMessage = "invalid parameters";
@@ -331,12 +351,14 @@ public class RestServer {
 		}
 		
 		try {
-			as.storeModel(modelInXML, filename);
-			SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, "Added model " + filename);
+			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+			
+			as.storeModel(modelInXML, decodedFilepath);
+			SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, "Added model " + decodedFilepath); //TODO ignores events produced by GUI. To be moved
 			response = "Model stored";
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Could not store the model" + "' (" + e.getMessage() + ")";
+			errorMessage = "Could not store the model" + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "error:"+errorMessage;
 		}
 		
@@ -344,25 +366,28 @@ public class RestServer {
     }
 	
 	
-	@Path("/storage/models/{filename}")
+	@Path("/storage/models/{filepath}")
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
-    public String deleteModelFile(@PathParam("filename") String filename) {  
+    public String deleteModelFile(@PathParam("filepath") String filepath) {  
 		String response;
 		String errorMessage;
+		String decodedFilepath = "";
 		
 		try {
-			boolean isDeleted = as.deleteModelFile(filename);
+			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+			
+			boolean isDeleted = as.deleteModelFile(decodedFilepath);
 			if (isDeleted) {
 				response = "Model deleted";
-				SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, filename + " deleted");
+				SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, decodedFilepath + " deleted"); //TODO ignores events produced by GUI. To be moved
 			} 
 			else {
-				response = "Could not delete the model (Please check if the given filename is correct)";
+				response = "Could not delete the model (Please check if the given filepath is correct)";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Could not delete the model" + "' (" + e.getMessage() + ")";
+			errorMessage = "Could not delete the model " + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "error:"+errorMessage;
 		}
 		

@@ -9,6 +9,7 @@ import org.glassfish.jersey.media.sse.EventListener;
 
 import eu.asterics.rest.javaClient.serialization.ObjectTransformation;
 import eu.asterics.rest.javaClient.serialization.RestFunction;
+import eu.asterics.rest.javaClient.utils.AstericsAPIEncoding;
 import eu.asterics.rest.javaClient.utils.HttpCommunicator;
 import eu.asterics.rest.javaClient.utils.HttpResponse;
 import eu.asterics.rest.javaClient.utils.SseCommunicator;
@@ -22,13 +23,15 @@ import eu.asterics.rest.javaClient.utils.SseCommunicator;
 public class ARECommunicator {
 	private HttpCommunicator httpCommunicator;
 	private SseCommunicator sseCommunicator;
-
+	private AstericsAPIEncoding astericsAPIEncoding;
+	
 	@SuppressWarnings("unused")
 	private ARECommunicator() { }
 	
 	public ARECommunicator(String baseUrl) {
 		httpCommunicator = new HttpCommunicator(baseUrl);
 		sseCommunicator = new SseCommunicator(baseUrl);
+		astericsAPIEncoding = new AstericsAPIEncoding();
 	}
 	
 	/**
@@ -52,14 +55,15 @@ public class ARECommunicator {
 	 * Retrieves an XML representation of a model in a specific file
 	 * given as a parameter
 	 * 
-	 * @param filename - the filename that holds the model
+	 * @param filepath - the filename that holds the model
 	 * 
 	 * @return - The XML representation of the model
 	 * @throws Exception 
 	 */
-	public String downloadModelFromFile(String filename) throws Exception {
+	public String downloadModelFromFile(String filepath) throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.getRequest("/storage/models/" + filename, 
+			String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
+			HttpResponse httpResponse = httpCommunicator.getRequest("/storage/models/" + encodedFilepath, 
 					HttpCommunicator.DATATYPE_TEXT_XML);
 			System.out.println(httpResponse);
 			return httpResponse.getBody();
@@ -91,14 +95,15 @@ public class ARECommunicator {
 	 * Deploys and runs the model contained in the file
 	 * given as a parameter 
 	 * 
-	 * @param filename - the name of the file
+	 * @param filepath - the name of the file
 	 * 
 	 * @return - a string informing if the autorun was successful
 	 * @throws Exception 
 	 */
-	public String autorun(String filename) throws Exception {
+	public String autorun(String filepath) throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/autorun/" + filename, 
+			String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
+			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/autorun/" + encodedFilepath, 
 					HttpCommunicator.DATATYPE_TEXT_PLAIN);
 			return httpResponse.getBody();
 		} catch (Exception e) {
@@ -174,16 +179,17 @@ public class ARECommunicator {
 	/**
 	 * Stores a model in the given filename, to the ARE repository
 	 * 
-	 * @param filename - the filename that will contain the model
+	 * @param filepath - the filename that will contain the model
 	 * 
 	 * @param modelInXML - the XML representation of the model
 	 * 
 	 * @return - a string informing if the store operation was successful
 	 * @throws Exception 
 	 */
-	public String storeModel(String filename, String modelInXML) throws Exception {
+	public String storeModel(String filepath, String modelInXML) throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.postRequest("/storage/models/" + filename, null, null,
+			String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
+			HttpResponse httpResponse = httpCommunicator.postRequest("/storage/models/" + encodedFilepath, null, null,
 					HttpCommunicator.DATATYPE_TEXT_XML, HttpCommunicator.DATATYPE_TEXT_PLAIN, 
 					modelInXML);
 			return httpResponse.getBody();
@@ -195,14 +201,15 @@ public class ARECommunicator {
 	/**
 	 * Deploys a model contained in the given file
 	 * 
-	 * @param filename - the name of the file
+	 * @param filepath - the name of the file
 	 * 
 	 * @return - a string informing if the model was deployed successfully
 	 * @throws Exception 
 	 */
-	public String deployModelFromFile(String filename) throws Exception {
+	public String deployModelFromFile(String filepath) throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/" + filename, 
+			String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
+			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/" + encodedFilepath, 
 					HttpCommunicator.DATATYPE_TEXT_PLAIN);
 			return httpResponse.getBody();
 		} catch (Exception e) {
@@ -213,14 +220,15 @@ public class ARECommunicator {
 	/**
 	 * Deletes the model with the given file name from the ARE repository
 	 * 
-	 * @param filename - the name of the model
+	 * @param filepath - the name of the model
 	 * 
 	 * @return - a string informing if the file was deleted
 	 * @throws Exception 
 	 */
-	public String deleteModelFromFile(String filename) throws Exception {
+	public String deleteModelFromFile(String filepath) throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.deleteRequest("/storage/models/"+filename,
+			String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
+			HttpResponse httpResponse = httpCommunicator.deleteRequest("/storage/models/"+encodedFilepath,
 					HttpCommunicator.DATATYPE_TEXT_PLAIN);
 			return httpResponse.getBody();
 		} catch (Exception e) {
@@ -278,7 +286,9 @@ public class ARECommunicator {
 	 */
 	public String[] getRuntimeComponentPropertyKeys(String componentId) throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.getRequest("/runtime/model/components/"+componentId,
+			String encodedId = astericsAPIEncoding.encodeString(componentId);
+			System.out.println("----------: " + encodedId);
+			HttpResponse httpResponse = httpCommunicator.getRequest("/runtime/model/components/"+encodedId,
 					HttpCommunicator.DATATYPE_APPLICATION_JSON);
 			
 			List<String> list = (List<String>) ObjectTransformation.JSONToObject(httpResponse.getBody(), List.class);
@@ -300,7 +310,9 @@ public class ARECommunicator {
 	 */
 	public String getRuntimeComponentProperty(String componentId, String componentKey) throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.getRequest("/runtime/model/components/"+componentId+"/"+componentKey, 
+			String encodedId = astericsAPIEncoding.encodeString(componentId);
+			String encodedKey = astericsAPIEncoding.encodeString(componentKey);
+			HttpResponse httpResponse = httpCommunicator.getRequest("/runtime/model/components/"+encodedId+"/"+encodedKey, 
 					HttpCommunicator.DATATYPE_TEXT_PLAIN);
 			return httpResponse.getBody();
 		} catch (Exception e) {
@@ -320,7 +332,9 @@ public class ARECommunicator {
 	 */
 	public String setRuntimeComponentProperty(String componentId, String componentKey, String value) throws Exception {
 		try {
-			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/components/"+componentId+"/"+componentKey,
+			String encodedId = astericsAPIEncoding.encodeString(componentId);
+			String encodedKey = astericsAPIEncoding.encodeString(componentKey);
+			HttpResponse httpResponse = httpCommunicator.putRequest("/runtime/model/components/"+encodedId+"/"+encodedKey,
 					HttpCommunicator.DATATYPE_TEXT_PLAIN, HttpCommunicator.DATATYPE_TEXT_PLAIN,
 					value);
 			return httpResponse.getBody();
@@ -352,7 +366,7 @@ public class ARECommunicator {
 	/**
 	 *
 	 * 
-	 * @return - eturns an xml string containing the descriptors of the created components with some modifications in order to be used by the webACS
+	 * @return - Returns an xml string containing the descriptors of the created components with some modifications in order to be used by the webACS
 	 * @throws Exception 
 	 */
 	public String getComponentDescriptorsAsXml() throws Exception {

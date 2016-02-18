@@ -33,8 +33,8 @@
 			
 			//downloadModelFromFile
 			function DMF() {
-				var filename = document.getElementById("DMFfilename").value;
-				downloadModelFromFile(DMF_successCallback, DMF_errorCallback, filename);
+				var filepath = document.getElementById("DMFfilepath").value;
+				downloadModelFromFile(DMF_successCallback, DMF_errorCallback, filepath);
 			}
 			
 			function DMF_successCallback(data, HTTPstatus) { alert(data); }
@@ -53,8 +53,8 @@
 			
 			//autorun
 			function AUTO() {
-				var filename = document.getElementById("AUTOfilename").value;
-				autorun(AUTO_successCallback, AUTO_errorCallback, filename);
+				var filepath = document.getElementById("AUTOfilepath").value;
+				autorun(AUTO_successCallback, AUTO_errorCallback, filepath);
 			}
 			
 			function AUTO_successCallback(data, HTTPstatus) { alert(data); }
@@ -99,9 +99,9 @@
 
 			//storeModel
 			function STORE() {
-				var filename = document.getElementById("STOREfilename").value;
+				var filepath = document.getElementById("STOREfilepath").value;
 				var modelInXML = document.getElementById("STOREmodel").value;
-				storeModel(STORE_successCallback, STORE_errorCallback, filename, modelInXML);
+				storeModel(STORE_successCallback, STORE_errorCallback, filepath, modelInXML);
 			}
 									
 			function STORE_successCallback(data, HTTPstatus) { alert(data); }
@@ -110,8 +110,8 @@
 			
 			//deployModelFromFile
 			function DepMF() {
-				var filename = document.getElementById("DepMFfilename").value;
-				deployModelFromFile(DepMF_successCallback, DepMF_errorCallback, filename);
+				var filepath = document.getElementById("DepMFfilepath").value;
+				deployModelFromFile(DepMF_successCallback, DepMF_errorCallback, filepath);
 			}
 									
 			function DepMF_successCallback(data, HTTPstatus) { alert(data); }
@@ -120,8 +120,8 @@
 
 			//deleteModelFromFile
 			function DELETE() {
-				var filename = document.getElementById("DELETEfilename").value;
-				deleteModelFromFile(DELETE_successCallback, DELETE_errorCallback, filename);
+				var filepath = document.getElementById("DELETEfilepath").value;
+				deleteModelFromFile(DELETE_successCallback, DELETE_errorCallback, filepath);
 			}
 									
 			function DELETE_successCallback(data, HTTPstatus) { alert(data); }
@@ -273,18 +273,18 @@
 		<button onclick="DMF()" title="Description: Returns an xml representation of a model in a specific file &#013;Ouput: alert"> 
 			Download model from file 
 		</button>
-		<input placeholder="filename" type="text" id="DMFfilename"/>
+		<input placeholder="filepath" type="text" id="DMFfilepath"/>
 		<br/> <br/>
 					
-		<button onclick="STORE()" title="Description: Stores a model in the given filename &#013;Ouput: alert">
+		<button onclick="STORE()" title="Description: Stores a model in the given filepath &#013;Ouput: alert">
 			Store model to file 
 		</button>
-		<input placeholder="filename" type="text" id="STOREfilename"/>
+		<input placeholder="filepath" type="text" id="STOREfilepath"/>
 		<input placeholder="modelInXML" type="text" id="STOREmodel"/>
 		<br/> <br/>
 				
-		<button onclick="DELETE()" title="Description: Deletes the model with the given filename &#013;Ouput: alert"> Delete model </button>
-		<input placeholder="filename" type="text" id="DELETEfilename"/>
+		<button onclick="DELETE()" title="Description: Deletes the model with the given filepath &#013;Ouput: alert"> Delete model </button>
+		<input placeholder="filepath" type="text" id="DELETEfilepath"/>
 		<br/> <br/>
 		
 		<button onclick="COMPONENT_DESCRIPTORS_XML()" title="Description: Returns an xml string containing the descriptors of the created components with some modifications in order to be used by the webACS &#013;Ouput: console"> 
@@ -306,12 +306,12 @@
 		<input placeholder="modelInXML" type="text" id="UMmodel"/>
 		<br/> <br/>
 		
-		<button onclick="AUTO()" title="Description: Deploys and starts the model in the given filename &#013;Ouput: alert"> Autorun </button>
-		<input placeholder="filename" type="text" id="AUTOfilename"/>
+		<button onclick="AUTO()" title="Description: Deploys and starts the model in the given filepath &#013;Ouput: alert"> Autorun </button>
+		<input placeholder="filepath" type="text" id="AUTOfilepath"/>
 		<br/> <br/>
 				
-		<button onclick="DepMF()" title="Description: Deploys the model contained in the given filename &#013;Ouput: alert"> Deploy model from file </button>
-		<input placeholder="filename" type="text" id="DepMFfilename"/>
+		<button onclick="DepMF()" title="Description: Deploys the model contained in the given filepath &#013;Ouput: alert"> Deploy model from file </button>
+		<input placeholder="filepath" type="text" id="DepMFfilepath"/>
 		<br/> <br/>
 				
 		<button onclick="GRC()" title="Description: Retrieves all the component Ids contained in the currently deployed model (as JSON array) &#013;Ouput: alert"> Get runtime component Ids </button>
