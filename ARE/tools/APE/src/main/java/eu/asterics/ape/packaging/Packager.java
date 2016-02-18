@@ -175,6 +175,7 @@ public class Packager {
 		File customBinDir=ResourceRegistry.resolveRelativeFilePath(projectDir,CUSTOM_BIN_FOLDER);
 		File buildMergedBinDir=ResourceRegistry.resolveRelativeFilePath(buildMergedDir,BIN_FOLDER);
 		try {
+			Notifier.info("Copying custom files from <"+customBinDir+"> to <"+buildMergedBinDir+">");
 			FileUtils.copyDirectory(customBinDir, buildMergedBinDir);
 		} catch (IOException e) {
 			Notifier.warning("Could not copy custom files of <"+customBinDir+">, to <"+buildMergedBinDir+">", e);			
