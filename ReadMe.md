@@ -13,6 +13,7 @@ Possible applications are
 * Android Phone support (SMS, calls)
 * and many more!
 
+Check out our [**Demos**](http://asterics.github.io/AsTeRICS/demos.html)
 For more information see our website http://www.asterics.eu.
 
 ## Quick Build Instructions for Windows
