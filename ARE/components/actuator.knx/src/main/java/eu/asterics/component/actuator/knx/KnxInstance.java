@@ -66,12 +66,26 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 
 /* 
- * <Describe purpose of this module>
+ * This module provides read and write access to a KNX home automation installation
  * 
+ * Currently, it is necessary to have a KNX to IP gateway, USB gateways don't work
+ * The plugin uses the calimero library (https://github.com/calimero-project/calimero-core)
  * 
+ * Interfacing KNX devices is possible via different ways:
+ * -) using the action string
+ * -) using input ports (write only)
+ * -) using output ports (read only)
+ * -) using event trigger ports (read only)
+ * -) using event listener ports (write only)
+ * 
+ * For all methods, except the action string, you need to define the
+ * DPT (datapoint type), a group adress and its value.
+ * All possible DPTs are fetched from the calimero library. Due
+ * to the dynamic property feature, the list only appears if the ACS is
+ * connected to the ARE and the model is uploaded (it is not necessary to start it)
  *  
- * @author <your name> [<your email address>]
- *         Date: 
+ * @author Benjamin Aigner <aignerb@technikum-wien.at
+ *         Date: 2015-2016
  *         Time: 
  */
 public class KnxInstance extends AbstractRuntimeComponentInstance
