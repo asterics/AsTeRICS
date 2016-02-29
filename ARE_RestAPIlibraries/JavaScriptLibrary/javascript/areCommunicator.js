@@ -1,17 +1,12 @@
 
-
 //The base URI that ARE runs at
 var _baseURI;
 
 //A map holding the opened connection with ARE for SSE
 var _eventSourceMap = new Map();
 
-//A map for Asterics API encoding
-var _encodeMap = new Map();
-
-//initialize encodeMap
-_encodeMap.add("/", "_aae_slash_");
-_encodeMap.add(" ", "_aae_space_");
+//delimiter used for encoding
+var delimiter = "-";
 
 //enumeration for server event types
 var ServerEvents = {
@@ -25,16 +20,16 @@ function setBaseURI(uri) {
 	_baseURI = uri;
 }
 
-//encodes a string according to AsTeRiCS API encoding table
-function encodeString(str) {
-	var keys = _encodeMap.keySet();
-	for (var i in keys) {
-		character = keys[i];
-		code = _encodeMap.get(character);
-		str = replaceAll(str, character, code);
+//encodes PathParametes
+function encodeParam(text) {
+	encoded = "";
+	for (i=0; i<text.length; i++) {
+		encoded += text.charCodeAt(i) + delimiter;
 	}
-	return str;
+	
+	return encoded;
 }
+
 
 //replaces all occurrences of a 'oldString' with 'newString' in 'text'
 function replaceAll(text, oldString, newString) {
@@ -92,7 +87,7 @@ function autorun(successCallback, errorCallback, filepath) {
 	
 	$.ajax({
 		type: "PUT",
-		url: _baseURI + "runtime/model/autorun/" + encodeString(filepath),
+		url: _baseURI + "runtime/model/autorun/" + encodeParam(filepath),
 		datatype: "text",
 		crossDomain: true,
 		success:
@@ -181,11 +176,13 @@ function getModelState(successCallback, errorCallback) {
 
 function deployModelFromFile(successCallback, errorCallback, filepath) {
 	
+	console.log(encodeParam(filepath));
+	
 	if ( filepath == "") return;
 	
 	$.ajax({
 		type: "PUT",
-		url: _baseURI + "runtime/model/" + encodeString(filepath),
+		url: _baseURI + "runtime/model/" + encodeParam(filepath),
 		datatype: "text",
 		crossDomain: true,
 		success:
@@ -225,7 +222,7 @@ function getRuntimeComponentPropertyKeys(successCallback, errorCallback, compone
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/components/"+ encodeString(componentId),
+		url: _baseURI + "runtime/model/components/"+ encodeParam(componentId),
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -247,7 +244,7 @@ function getRuntimeComponentProperty(successCallback, errorCallback, componentId
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/components/"+encodeString(componentId)+"/"+encodeString(componentKey),
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId)+"/"+encodeParam(componentKey),
 		datatype: "text",
 		crossDomain: true,
 		success:
@@ -268,7 +265,7 @@ function setRuntimeComponentProperty(successCallback, errorCallback, componentId
 	
 	$.ajax({
 		type: "PUT",
-		url: _baseURI + "runtime/model/components/"+encodeString(componentId)+"/"+encodeString(componentKey),
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId)+"/"+encodeParam(componentKey),
 		contentType: "text/plain",
 		data: componentValue,
 		datatype: "text",
@@ -297,7 +294,7 @@ function downloadModelFromFile(successCallback, errorCallback, filepath) {
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "storage/models/" + encodeString(filepath),
+		url: _baseURI + "storage/models/" + encodeParam(filepath),
 		datatype: "text/xml",
 		crossDomain: true,
 		success:
@@ -318,7 +315,7 @@ function storeModel(successCallback, errorCallback, filepath, modelInXML) {
 	
 	$.ajax({
 		type: "POST",
-		url: _baseURI + "storage/models/" + encodeString(filepath),
+		url: _baseURI + "storage/models/" + encodeParam(filepath),
 		contentType: "text/xml",									//content-type of the request
 		data: modelInXML,	
 		datatype: "text",
@@ -341,7 +338,7 @@ function deleteModelFromFile(successCallback, errorCallback, filepath) {
 	
 	$.ajax({
 		type: "DELETE",
-		url: _baseURI + "storage/models/" + encodeString(filepath),
+		url: _baseURI + "storage/models/" + encodeParam(filepath),
 		datatype: "text",
 		crossDomain: true,
 		success:

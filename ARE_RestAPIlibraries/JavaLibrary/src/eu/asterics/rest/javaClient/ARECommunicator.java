@@ -65,7 +65,6 @@ public class ARECommunicator {
 			String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
 			HttpResponse httpResponse = httpCommunicator.getRequest("/storage/models/" + encodedFilepath, 
 					HttpCommunicator.DATATYPE_TEXT_XML);
-			System.out.println(httpResponse);
 			return httpResponse.getBody();
 		} catch (Exception e) {
 			throw e;
@@ -287,7 +286,6 @@ public class ARECommunicator {
 	public String[] getRuntimeComponentPropertyKeys(String componentId) throws Exception {
 		try {
 			String encodedId = astericsAPIEncoding.encodeString(componentId);
-			System.out.println("----------: " + encodedId);
 			HttpResponse httpResponse = httpCommunicator.getRequest("/runtime/model/components/"+encodedId,
 					HttpCommunicator.DATATYPE_APPLICATION_JSON);
 			

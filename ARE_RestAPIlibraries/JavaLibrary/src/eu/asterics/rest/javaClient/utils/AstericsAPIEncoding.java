@@ -1,62 +1,43 @@
 package eu.asterics.rest.javaClient.utils;
 
-import java.util.HashMap;
-import java.util.regex.Pattern;
+import java.util.StringTokenizer;
 
 /**
  * Class that provides encoding-decoding capabilities 
  *
- * The character-code pairs are proprietary and are not 
- * based in any known encoding table.
+ * The encoding/decoding functionality is based on the UTF-16 encoding table.
  * 
  * @author Marios Komodromos
  *
  */
 public class AstericsAPIEncoding {
-	private HashMap<String, String> encodeMap;
-	private HashMap<String, String> decodeMap;
+	
+	private static final String delimiter = "-";
 	
 	public AstericsAPIEncoding() {
-		this.encodeMap = new HashMap<String, String>();
-		this.decodeMap = new HashMap<String, String>();
-		
-		addEncodingPair("/", "_aae_slash_");
-		addEncodingPair(" ", "_aae_space_");
-	}
-	
-	private void addEncodingPair(String symbol, String code) {
-		this.encodeMap.put(symbol, code);
-		this.decodeMap.put(code, symbol);
+
 	}
 	
 	/**
-	 * Returns the code for the given character
+	 * Returns the decimal code for the given character
 	 * 
 	 * @param character
 	 * @return
 	 */
-	public String convertCharacterToCode(String character) {
-		if (this.encodeMap.containsKey(character)) {
-			return this.encodeMap.get(character);
-		}
-		else {
-			return character;
-		}
+	public int convertCharacterToCode(char character) {
+		return (int) character;
 	}
 	
 	/**
-	 * Returns the character from the given code
+	 * Returns the character from the given code.
+	 * In most of the cases, the returned character array will contain
+	 * only one character.
 	 * 
 	 * @param code
 	 * @return
 	 */
-	public String convertCodeToCharacter(String code) {
-		if (this.decodeMap.containsKey(code)) {
-			return this.decodeMap.get(code);
-		}
-		else {
-			return code;
-		}
+	public char[] convertCodeToCharacter(int code) {
+		return Character.toChars(code);
 	}
 	
 	/**
@@ -66,10 +47,10 @@ public class AstericsAPIEncoding {
 	 */
 	public String encodeString(String originalString) {
 		
-		String encodedString = originalString;
-		for (String character: this.encodeMap.keySet()) {
-			String code = this.encodeMap.get(character);
-			encodedString = encodedString.replaceAll(Pattern.quote(character), code);
+		String encodedString = "";
+		char[] characterArray = originalString.toCharArray();
+		for (int i=0;i<characterArray.length;i++) {
+			encodedString += convertCharacterToCode(characterArray[i]) + AstericsAPIEncoding.delimiter;
 		}
 		
 		return encodedString;
@@ -82,10 +63,21 @@ public class AstericsAPIEncoding {
 	 */
 	public String decodeString(String originalString) {
 		
-		String decodedString = originalString;
-		for (String code: this.decodeMap.keySet()) {
-			String character = this.decodeMap.get(code);
-			decodedString = decodedString.replaceAll(Pattern.quote(code), character);
+		String decodedString = "";
+		StringTokenizer tokenizer = new StringTokenizer(originalString, AstericsAPIEncoding.delimiter);
+		
+		while (tokenizer.hasMoreTokens()) {
+			
+			String code = tokenizer.nextToken();
+			try {
+				char[] characterArray = convertCodeToCharacter(Integer.parseInt(code));
+				for (int i=0;i<characterArray.length;i++) {
+					decodedString += characterArray[i];
+				}
+			} catch (Exception ex) {
+				return null;
+			}
+			
 		}
 		
 		return decodedString;
