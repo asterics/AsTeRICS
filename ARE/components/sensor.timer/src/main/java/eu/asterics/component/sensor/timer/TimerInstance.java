@@ -270,7 +270,7 @@ public class TimerInstance extends AbstractRuntimeComponentInstance
 	 */   
 	final IRuntimeEventListenerPort elpStart 	= new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void receiveEvent(final String data)
 		{
 			tg.start();
 		}
@@ -281,7 +281,7 @@ public class TimerInstance extends AbstractRuntimeComponentInstance
 	 */   
 	final IRuntimeEventListenerPort elpStop 	= new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void receiveEvent(final String data)
 		{
 			tg.stop();
 		}
@@ -292,7 +292,7 @@ public class TimerInstance extends AbstractRuntimeComponentInstance
 	 */   
 	final IRuntimeEventListenerPort elpReset 	= new IRuntimeEventListenerPort()
 	{
-		public void receiveEvent(final String data)
+		public synchronized void receiveEvent(final String data)
 		{
 			tg.reset();
 		}

@@ -86,6 +86,11 @@ public class TimeGenerator implements Runnable
 		
 		try {
 		
+		startTime=System.currentTimeMillis();
+		timecount=owner.propTimePeriod;
+		active=true;
+
+	    
 		while(active==true)
 		{
 			currentTime=System.currentTimeMillis()-startTime;
@@ -119,10 +124,11 @@ public class TimeGenerator implements Runnable
 						&& (active==true))
 				owner.opTime.sendData(ConversionUtils.intToBytes((int)(currentTime-owner.propWaitPeriod)));
 			}
-		} catch (InterruptedException e) {active =false;}
+		} catch (InterruptedException e) {
+			  active =false; 	    
+		}
 
 		runThread=null;
-		//	System.out.println ("\n\n *** TimeGenThread "+ (tcount) + " stopped.\n");
 	}
 
 
@@ -131,11 +137,13 @@ public class TimeGenerator implements Runnable
 	 */
 	public synchronized void start()	
 	{	
-		if (runThread != null) return;
+		if (runThread != null) 
+			runThread.interrupt();
 		
-		startTime=System.currentTimeMillis();
-		timecount=owner.propTimePeriod;
-		active=true;
+		while (runThread != null) ;
+		
+	    // System.out.println("in startproc !");
+
 		AstericsThreadPool.instance.execute(this);
 	}
 
