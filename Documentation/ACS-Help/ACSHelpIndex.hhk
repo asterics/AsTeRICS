@@ -620,6 +620,11 @@
 		<param name="Local" value="HTML\Plugins\processors\OneEventManyActions.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.OpenBCI">
+		<param name="Name" value="OpenBCI">
+		<param name="Local" value="HTML\Plugins\sensors\OpenBCI.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.OpenHAB">
 		<param name="Name" value="openHAB">
 		<param name="Local" value="HTML\Plugins\processors\OpenHAB.htm">
@@ -1727,6 +1732,11 @@
 		<param name="Name" value="Open Vibe">
 		<param name="Name" value="OpenVibe">
 		<param name="Local" value="HTML\Plugins\sensors\OpenVibe.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="OpenBCI">
+		<param name="Name" value="OpenBCI">
+		<param name="Local" value="HTML\Plugins\sensors\OpenBCI.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="OpenHAB">
