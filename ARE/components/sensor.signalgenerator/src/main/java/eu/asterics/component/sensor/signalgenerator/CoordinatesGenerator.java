@@ -56,8 +56,12 @@ public class CoordinatesGenerator implements Runnable{
 	private int rstep=0;
 	long starttime, resumetime=0;
 
+    final int WAVEFORM_RANDOM = 0;
+    final int WAVEFORM_SINE = 1;
+    final int WAVEFORM_SAWTOOTH = 2;
+    final int WAVEFORM_RECTANGLE = 3;
 
-
+    
 	/**
 	 * The class constructor, get parameters from plugin properties
 	 */
@@ -107,6 +111,8 @@ public class CoordinatesGenerator implements Runnable{
 	public void setWaveForm(int newValue)
 	{
 		this.waveForm=newValue;
+		if (newValue==WAVEFORM_RECTANGLE) 
+			rstep=(int)(count*frequency/500);
 	}
 
 	
@@ -116,6 +122,8 @@ public class CoordinatesGenerator implements Runnable{
 	public void setFrequency (double newValue)
 	{
 		this.frequency=newValue;
+		if (newValue==WAVEFORM_RECTANGLE) 
+			rstep=(int)(count*frequency/500);
 	}
 
 	/**
@@ -201,17 +209,15 @@ public class CoordinatesGenerator implements Runnable{
 				while (System.currentTimeMillis()-starttime>count)
 				{
 					switch (waveForm) {
-					case 0:  out.sendData(offset+r.nextDouble()*amplitude);				 		
-					break;
-					case 1: out.sendData(offset+amplitude*Math.sin(((double)count+phaseShift)/1000*frequency*2*Math.PI));
-					break;
-					case 2: out.sendData(offset+((int)((count+phaseShift)*frequency) % 1000)*amplitude/1000) ;
-					break;
-	
-					case 3:if (count>=(int)(500*rstep/frequency))
-						rstep++; 
-					out.sendData(offset+ (rstep %2 ==0 ? 0:amplitude));
-					break;				
+					case WAVEFORM_RANDOM: out.sendData(offset+r.nextDouble()*amplitude);				 		
+						break;
+					case WAVEFORM_SINE: out.sendData(offset+amplitude*Math.sin(((double)count+phaseShift)/1000*frequency*2*Math.PI));
+						break;
+					case WAVEFORM_SAWTOOTH: out.sendData(offset+((int)((count+phaseShift)*frequency) % 1000)*amplitude/1000) ;
+						break;	
+					case WAVEFORM_RECTANGLE:if (count>=(int)(500*rstep/frequency)) rstep++; 
+							out.sendData(offset+ (rstep %2 ==0 ? 0:amplitude));
+						break;				
 				   }
 				   count+=sendInterval;
 				}
