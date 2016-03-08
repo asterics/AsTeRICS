@@ -1,3 +1,5 @@
+#!/bin/bash
+
 SCRIPTDIR="$(dirname "$0")"
 
 echo Starting AsTeRICS Runtime Environment in $SCRIPTDIR...
