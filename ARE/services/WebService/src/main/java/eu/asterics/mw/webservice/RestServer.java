@@ -17,10 +17,11 @@ import javax.ws.rs.core.MediaType;
 
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.webservice.serverUtils.AstericsAPIEncoding;
 import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
-import eu.asterics.mw.webservice.serverUtils.ServerEvent;
+import eu.asterics.mw.webservice.serverUtils.ServerAREEventListener;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 
@@ -32,9 +33,15 @@ import eu.asterics.mw.webservice.serverUtils.ServerRepository;
  */
 @Path("/")
 public class RestServer {
-	AsapiSupport as = new AsapiSupport();
+	private AsapiSupport asapiSupport = new AsapiSupport();
 	private Logger logger = AstericsErrorHandling.instance.getLogger();
-	AstericsAPIEncoding astericsAPIEncoding = new AstericsAPIEncoding();
+	private AstericsAPIEncoding astericsAPIEncoding = new AstericsAPIEncoding();
+	
+    static {
+    	ServerAREEventListener eventListener = new ServerAREEventListener();
+    	AREServices.instance.registerAREEventListener(eventListener);
+    }
+
 	
 	
 	@Path("/restfunctions")
@@ -62,10 +69,10 @@ public class RestServer {
 		String errorMessage = "";
 		
 		try {
-			response = as.getModel();
+			response = asapiSupport.getModel();
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the model " +" (" + e.getMessage() + ")";
+			errorMessage = "No model available for download";
 			response = "<error>"+errorMessage+"</error>";
 		}
 		
@@ -82,8 +89,7 @@ public class RestServer {
 		String errorMessage = "";
 		
 		try {
-			as.deployModel(modelInXML);
-			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed"); //TODO ignores events produced by GUI. To be moved
+			asapiSupport.deployModel(modelInXML);
 			response = "Model deployed";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,8 +112,7 @@ public class RestServer {
 		try {
 			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
 			
-			as.deployFile(decodedFilepath);
-			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed"); //TODO ignores events produced by GUI. To be moved
+			asapiSupport.deployFile(decodedFilepath);
 			response = "'" + decodedFilepath + "'" + " model deployed";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -126,16 +131,15 @@ public class RestServer {
 		String response;
 		String errorMessage = "";
 		
-		String currentState = as.getModelState();
+		String currentState = asapiSupport.getModelState();
 		try {
 			if (state.equals("start")) {
 				if (currentState.equals("started")) {
 					response = "Model was already started";
 				}
 				else {
-					as.runModel();
+					asapiSupport.runModel();
 					response = "Model started";
-					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model started"); //TODO ignores events produced by GUI. To be moved	
 				}
 			} 
 			else if (state.equals("stop")) {
@@ -143,9 +147,8 @@ public class RestServer {
 					response = "Model was already stopped";
 				}
 				else {
-					as.stopModel();
+					asapiSupport.stopModel();
 					response = "Model stopped";
-					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model stopped"); //TODO ignores events produced by GUI. To be moved
 				}
 			}
 			else if (state.equals("pause")) {
@@ -153,9 +156,8 @@ public class RestServer {
 					response = "Model was already paused";
 				}
 				else {
-					as.pauseModel();
+					asapiSupport.pauseModel();
 					response = "Model paused";
-					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model paused"); //TODO ignores events produced by GUI. To be moved
 				}
 			}
 			else {
@@ -179,7 +181,7 @@ public class RestServer {
 		String errorMessage = "";
 		
 		try {
-			response = as.getModelState();
+			response = asapiSupport.getModelState();
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "Could not retrieve the state of the runtime model" + " (" + e.getMessage() + ")";
@@ -201,8 +203,7 @@ public class RestServer {
 		try {
 			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
 			
-			as.autostart(decodedFilepath);
-			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed and started"); //TODO ignores events produced by GUI. To be moved
+			asapiSupport.autostart(decodedFilepath);
 			response = decodedFilepath + " deployed and started";
 		} catch (AREAsapiException e) {
 			e.printStackTrace();
@@ -222,7 +223,7 @@ public class RestServer {
 		String errorMessage = "";
 		
 		try {
-			String[] array = as.getComponents();
+			String[] array = asapiSupport.getComponents();
 			
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
 			if (response.equals("")) {
@@ -248,7 +249,7 @@ public class RestServer {
 		
 		try {
 			decodedId = astericsAPIEncoding.decodeString(componentId);
-			String[] array = as.getComponentPropertyKeys(decodedId);
+			String[] array = asapiSupport.getComponentPropertyKeys(decodedId);
 			
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
 			if (response.equals("")) {
@@ -275,7 +276,7 @@ public class RestServer {
 		try {
 			decodedId = astericsAPIEncoding.decodeString(componentId);
 			decodedKey = astericsAPIEncoding.decodeString(componentKey);
-			response = as.getComponentProperty(decodedId, decodedKey);
+			response = asapiSupport.getComponentProperty(decodedId, decodedKey);
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "Couldn't retrieve '"+ componentKey + "' property from '" + componentId + "' (" + e.getMessage() + ")";
@@ -298,7 +299,7 @@ public class RestServer {
 		try {
 			decodedId = astericsAPIEncoding.decodeString(componentId);
 			decodedKey = astericsAPIEncoding.decodeString(componentKey);
-			response = as.setComponentProperty(decodedId, decodedKey, value);
+			response = asapiSupport.setComponentProperty(decodedId, decodedKey, value);
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "Couldn't set '" + value + "' value to '" + decodedKey + "' from '" + decodedId + "' (" + e.getMessage() + ")";
@@ -326,7 +327,7 @@ public class RestServer {
 		try {
 			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
 			
-			response = as.getModelFromFile(decodedFilepath);
+			response = asapiSupport.getModelFromFile(decodedFilepath);
 		} catch (Exception e) {
 			errorMessage = "Couldn't retrieve the model from '" + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "<error>"+errorMessage+"</error>";
@@ -353,8 +354,7 @@ public class RestServer {
 		try {
 			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
 			
-			as.storeModel(modelInXML, decodedFilepath);
-			SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, "Added model " + decodedFilepath); //TODO ignores events produced by GUI. To be moved
+			asapiSupport.storeModel(modelInXML, decodedFilepath);
 			response = "Model stored";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -377,10 +377,9 @@ public class RestServer {
 		try {
 			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
 			
-			boolean isDeleted = as.deleteModelFile(decodedFilepath);
+			boolean isDeleted = asapiSupport.deleteModelFile(decodedFilepath);
 			if (isDeleted) {
 				response = "Model deleted";
-				SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, decodedFilepath + " deleted"); //TODO ignores events produced by GUI. To be moved
 			} 
 			else {
 				response = "Could not delete the model (Please check if the given filepath is correct)";
@@ -403,7 +402,7 @@ public class RestServer {
 		String errorMessage;
 		
 		try {
-			String[] array = as.listAllStoredModels();
+			String[] array = asapiSupport.listAllStoredModels();
 
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
 			if (response.equals("")) {
@@ -427,7 +426,7 @@ public class RestServer {
 		String errorMessage;
 
 		try {
-			response = as.getComponentDescriptorsAsXml();
+			response = asapiSupport.getComponentDescriptorsAsXml();
 			if (response == null) {
 				errorMessage = "Couldn't retrieve the components collection";
 				response = "{'error':'"+errorMessage+"'}";
@@ -450,7 +449,7 @@ public class RestServer {
 		String errorMessage;
 
 		try {
-			List<String> array = as.getBundelDescriptors();
+			List<String> array = asapiSupport.getBundelDescriptors();
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
 			if (response.equals("")) {
 				response = "{'error':'Couldn't retrieve the components descriptors (Object serialization failure)'}";

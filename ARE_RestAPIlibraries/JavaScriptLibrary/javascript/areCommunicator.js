@@ -10,9 +10,9 @@ var delimiter = "-";
 
 //enumeration for server event types
 var ServerEvents = {
-		  MODEL_STATE_CHANGED: "ModelStateChanged",
-		  MODEL_CHANGED: "ModelChanged",
-		  REPOSITORY_CHANGED: "RepositoryChanged"
+		MODEL_STATE_CHANGED: "model_state_changed",
+		MODEL_CHANGED: "model_changed",
+		MODEL_EVENT: "model_event"
 };
 
 //set the base uri (usually where ARE runs at)
@@ -175,8 +175,6 @@ function getModelState(successCallback, errorCallback) {
 
 
 function deployModelFromFile(successCallback, errorCallback, filepath) {
-	
-	console.log(encodeParam(filepath));
 	
 	if ( filepath == "") return;
 	

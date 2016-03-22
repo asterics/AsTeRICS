@@ -27,7 +27,7 @@
 				downloadDeployedModel(DDM_successCallback, DDM_errorCallback);
 			}
 			
-			function DDM_successCallback(data, HTTPstatus) { alert(data); }
+			function DDM_successCallback(data, HTTPstatus) { console.log('-'+data+'-'); }
 			function DDM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
@@ -37,7 +37,7 @@
 				downloadModelFromFile(DMF_successCallback, DMF_errorCallback, filepath);
 			}
 			
-			function DMF_successCallback(data, HTTPstatus) { alert(data); }
+			function DMF_successCallback(data, HTTPstatus) { console.log(data); }
 			function DMF_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
@@ -353,16 +353,17 @@
 		
 		<button onclick="SUBSCRIBE_EVENTS()" title="Description: Opens a persistent connection with ARE and listens for Server Sent Events &#013;Ouput: box below"> SSE subscribe </button>
 		<select id="eTypesS">
-			<option value="ModelStateChanged">Model State Changed</option>
-			<option value="ModelChanged">Model Changed</option>
+			<option value="model_state_changed">MODEL_STATE_CHANGED</option>
+			<option value="model_changed">MODEL_CHANGED</option>
+			<option value="model_event">MODEL_EVENT</option>
 		</select>
 		<br/> <br/>
 		
 		<button onclick="UNSUBSCRIBE_EVENTS()" title="Description: Closes the connection for Server Sent Events. Returns true if the unsubscription was successful and false otherwise"> SSE unsubscribe </button>
 		<select id="eTypesU">
-			<option value="ModelStateChanged">Model State Changed</option>
-			<option value="ModelChanged">Model Changed</option>
-			<option value="RepositoryChanged">Repository Changed</option>
+			<option value="model_state_changed">MODEL_STATE_CHANGED</option>
+			<option value="model_changed">MODEL_CHANGED</option>
+			<option value="model_event">MODEL_EVENT</option>
 		</select>
 		<br/> <br/>
 		

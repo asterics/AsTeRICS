@@ -655,6 +655,7 @@ public class DeploymentManager
 					AstericsErrorHandling.instance.reportError(componentInstance, "Could not run component ["+componentInstance+"]: \n"+t.getMessage());
 				}
 			}
+			notifyAREEventListeners (AREEvent.POST_START_EVENT);
 		}finally {
 			modelStartupFinished=true;
 			logger.fine("Setting modelLifecycleTaskPending=false");
@@ -669,6 +670,7 @@ public class DeploymentManager
 	public void pauseModel()
 	{
 		try {
+			notifyAREEventListeners (AREEvent.PRE_PAUSE_EVENT);
 			modelLifecycleTaskPending=true;
 			modelStartupFinished=false;
 			for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
@@ -686,6 +688,7 @@ public class DeploymentManager
 				}
 				logger.fine("Paused component instance: "+compRefName);
 			}
+			notifyAREEventListeners (AREEvent.POST_PAUSE_EVENT);
 		}finally {
 			logger.fine("Setting modelLifecycleTaskPending=false");
 			modelLifecycleTaskPending=false;			
@@ -699,6 +702,7 @@ public class DeploymentManager
 	public void resumeModel()
 	{
 		try{
+			notifyAREEventListeners (AREEvent.PRE_RESUME_EVENT);
 			modelLifecycleTaskPending=true;
 			for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
 			{
@@ -715,6 +719,7 @@ public class DeploymentManager
 				}
 				logger.fine("Resumed component instance: "+compRefName);
 			}
+			notifyAREEventListeners (AREEvent.POST_RESUME_EVENT);
 		}finally{
 			modelStartupFinished=true;
 			logger.fine("Setting modelLifecycleTaskPending=false");
@@ -729,6 +734,7 @@ public class DeploymentManager
 	public void stopModel()
 	{
 		try{
+			notifyAREEventListeners (AREEvent.PRE_STOP_EVENT);
 			modelLifecycleTaskPending=true;
 			modelStartupFinished=false;
 			for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
@@ -1021,8 +1027,20 @@ public class DeploymentManager
 				listener.postDeployModel(); break;
 			case PRE_START_EVENT:
 				listener.preStartModel(); break;
+			case POST_START_EVENT:
+				listener.postStartModel(); break;
+			case PRE_STOP_EVENT:
+				listener.preStopModel(); break;
 			case POST_STOP_EVENT:
 				listener.postStopModel(); break;
+			case PRE_PAUSE_EVENT:
+				listener.prePauseModel(); break;
+			case POST_PAUSE_EVENT:
+				listener.postPauseModel(); break;
+			case PRE_RESUME_EVENT:
+				listener.preResumeModel(); break;
+			case POST_RESUME_EVENT:
+				listener.postResumeModel(); break;
 			default:
 				break;
 			}
@@ -1066,9 +1084,7 @@ public class DeploymentManager
 	}
 
 	public void setGui(AstericsGUI gui) {
-
 		this.gui = gui;
-
 	}
 	
 	public AstericsGUI getGUI() {

@@ -38,6 +38,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Logger;
+
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
@@ -625,7 +626,20 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 		printActiveCimControllers();
 		logger.fine("End preStartModel: usbDevicesRemoved: "+usbDevicesRemoved+", usbDevicesAttached: "+usbDevicesAttached);
 	}
+	
+	@Override
+	public void postStartModel() {
+		// TODO Auto-generated method stub
+		
+	}
 
+
+	@Override
+	public void preStopModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/**
 	 * Performs a CIM rescan if USB devices have been altered. Called after
 	 * stop of model
@@ -671,6 +685,37 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 //			rescan();
 		}
 
+	}
+	
+
+	@Override
+	public void prePauseModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postPauseModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void preResumeModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postResumeModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void preBundlesInstalled() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -728,4 +773,5 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 		uninitialize();
 		instance = null;		
 	}
+
 }
