@@ -288,7 +288,6 @@ public class ControlPane extends JPanel
 		deployLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				final String selectedModelFile=astericsGUI.fileChooser(as);
-				
 				//mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				
 				try{
