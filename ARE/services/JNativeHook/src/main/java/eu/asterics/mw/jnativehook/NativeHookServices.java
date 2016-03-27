@@ -37,14 +37,14 @@ public class NativeHookServices implements NativeKeyListener {
 		AstericsErrorHandling.instance.getLogger().fine("Registering native hooks...");
 		try 
 		{
-			GlobalScreen.getInstance().setEventDispatcher(new VoidExecutorService());
+			GlobalScreen.setEventDispatcher(new VoidExecutorService());
 			
-			GlobalScreen.getInstance().removeNativeKeyListener(this);
+			GlobalScreen.removeNativeKeyListener(this);
 			GlobalScreen.unregisterNativeHook();		
 
 			
 			GlobalScreen.registerNativeHook();
-			GlobalScreen.getInstance().addNativeKeyListener(this);
+			GlobalScreen.addNativeKeyListener(this);
 			
 			as=new AsapiSupport();
 			
@@ -132,7 +132,7 @@ public class NativeHookServices implements NativeKeyListener {
 
 	@Override
 	protected void finalize() throws Throwable {
-		GlobalScreen.getInstance().removeNativeKeyListener(this);
+		GlobalScreen.removeNativeKeyListener(this);
 		GlobalScreen.unregisterNativeHook();		
 		super.finalize();
 	}

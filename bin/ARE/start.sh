@@ -1,4 +1,10 @@
-echo Starting AsTeRICS Runtime Environment ...
+#!/bin/bash
+
+SCRIPTDIR="$(dirname "$0")"
+
+echo Starting AsTeRICS Runtime Environment in $SCRIPTDIR...
+cd $SCRIPTDIR
+
 
 ARE_AUTOSTART_MODEL=autostart.acs
 ARE_OPTIONAL_SERVICES_INI=""
@@ -38,3 +44,12 @@ echo "ARE_OPTIONAL_SERVICES_INI=$ARE_OPTIONAL_SERVICES_INI"
 echo $ARE_LOG_STRING >.logger
 	
 java $ARE_DEBUG_STRING -Dosgi.clean=true  -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=$ARE_AUTOSTART_MODEL -Deu.asterics.ARE.ServicesFiles="services.ini;services-linux.ini;$ARE_OPTIONAL_SERVICES_INI" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration $ARE_PROFILE_PATH -console
+
+
+# workaround for muliple user support
+# delete files with user ownership, because another user would not be allowed to overwrite it
+echo "Deleting osgi cache..."
+rm -Rf $ARE_PROFILE_PATH/org.eclipse.osgi
+
+echo "Deleting JNativeHook temp files..."
+rm -f /tmp/*JNativeHook*

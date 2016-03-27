@@ -262,7 +262,7 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
 		  {
 		  }*/
 		  NativeHookServices.init();
-          GlobalScreen.getInstance().addNativeKeyListener(this);
+          GlobalScreen.addNativeKeyListener(this);
           enabled=true;
           super.start();
       }
@@ -304,7 +304,7 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
       {	  
 		  //GlobalScreen.unregisterNativeHook();
     	  enabled=false;
-    	  GlobalScreen.getInstance().removeNativeKeyListener(this);
+    	  GlobalScreen.removeNativeKeyListener(this);
           super.stop();
       }
 	  
