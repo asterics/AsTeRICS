@@ -585,7 +585,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 				AstericsErrorHandling.instance.reportError(null, errorMsg);
 			}
 		}
-		notifyAREEventListeners ("postBundlesInstalled");
+		notifyAREEventListeners (AREEvent.POST_BUNDLES_EVENT);
 	}
 	
 	/**
@@ -735,49 +735,87 @@ public class BundleManager implements BundleListener, FrameworkListener
 			}
 	}
 	
-	private void notifyAREEventListeners(String methodName) 
+	private void notifyAREEventListeners(AREEvent areEvent) 
 	{
 		ArrayList<IAREEventListener> listeners = 
 				AREServices.instance.getAREEventListners();
 
-		if (methodName.equals("preDeployModel"))
+		switch (areEvent)
 		{
+		case PRE_DEPLOY_EVENT:
 			for (IAREEventListener listener : listeners)
 			{
 				listener.preDeployModel();
 			}
-		}
-		else if (methodName.equals("postDeployModel"))
-		{
+			break;
+		case POST_DEPLOY_EVENT:
 			for (IAREEventListener listener : listeners)
 			{
 				listener.postDeployModel();
 			}
-
-		}
-		else if (methodName.equals("preStartModel"))
-		{
+			break;
+		case PRE_START_EVENT:
 			for (IAREEventListener listener : listeners)
 			{
 				listener.preStartModel();
 			}
-
-		}
-		else if (methodName.equals("postStopModel"))
-		{
+			break;
+		case POST_START_EVENT:
+			for (IAREEventListener listener : listeners)
+			{
+				listener.postStartModel();
+			}
+			break;
+		case PRE_STOP_EVENT:
+			for (IAREEventListener listener : listeners)
+			{
+				listener.preStopModel();
+			}
+			break;
+		case POST_STOP_EVENT:
 			for (IAREEventListener listener : listeners)
 			{
 				listener.postStopModel();
 			}
-
-		}
-		else if (methodName.equals("postBundlesInstalled"))
-		{
+			break;
+		case PRE_PAUSE_EVENT:
+			for (IAREEventListener listener : listeners)
+			{
+				listener.prePauseModel();
+			}
+			break;
+		case POST_PAUSE_EVENT:
+			for (IAREEventListener listener : listeners)
+			{
+				listener.postPauseModel();
+			}
+			break;
+		case PRE_RESUME_EVENT:
+			for (IAREEventListener listener : listeners)
+			{
+				listener.preResumeModel();
+			}
+			break;
+		case POST_RESUME_EVENT:
+			for (IAREEventListener listener : listeners)
+			{
+				listener.postResumeModel();
+			}
+			break;
+		case PRE_BUNDLES_EVENT:
+			for (IAREEventListener listener : listeners)
+			{
+				listener.preBundlesInstalled();
+			}
+			break;
+		case POST_BUNDLES_EVENT:
 			for (IAREEventListener listener : listeners)
 			{
 				listener.postBundlesInstalled();
 			}
-
+			break;
+		default:
+			break;
 		}
 
 	}

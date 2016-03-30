@@ -7,16 +7,15 @@ package eu.asterics.mw.webservice.serverUtils;
  * @author Marios Komodrmos (mkomod05@cs.ucy.ac.cy)
  *
  */
-public enum ServerEvent {
-    MODEL_STATE_CHANGED ("ModelStateChanged"),
-    MODEL_CHANGED ("ModelChanged"),
-    REPOSITORY_CHANGED ("RepositoryChanged"),
-    ARE_EVENT ("AreEvent"); //TODO
+public enum ServerEventType {
+    MODEL_STATE_CHANGED ("model_state_changed"),
+    MODEL_CHANGED ("model_changed"),
+    MODEL_EVENT ("model_event"); //TODO
     
     private final String eventType;       
 
-    private ServerEvent(String s) {
-    	eventType = s;
+    private ServerEventType(String eventType) {
+    	this.eventType = eventType;
     }
 
     public boolean equalsName(String otherType){

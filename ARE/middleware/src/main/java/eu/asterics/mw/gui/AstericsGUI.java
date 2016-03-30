@@ -759,10 +759,53 @@ public class AstericsGUI implements IAREEventListener
 	}
 
 	@Override
+	public void postStartModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void preStopModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void postStopModel() {
 		
 	}
 
+
+	@Override
+	public void prePauseModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postPauseModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void preResumeModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postResumeModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void preBundlesInstalled() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public void postBundlesInstalled() {
 		
@@ -789,6 +832,7 @@ public class AstericsGUI implements IAREEventListener
 	public void setStopKeyName(String key) {
 		controlPane.setStopKeyName(key);
 	}
+	
 }
 
 
