@@ -114,11 +114,10 @@
 	</target>
 
 	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
-	<target name="run-APE">
+	<target name="APE-copy">
 		<java jar="${APE.baseURI}/APE.jar" fork="true">
 			<sysproperty key="APE.projectDir" value="${basedir}"/>	
 		</java>	
 			
 	</target>
-
 </project>
