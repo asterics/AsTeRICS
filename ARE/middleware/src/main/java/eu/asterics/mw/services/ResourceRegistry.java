@@ -491,6 +491,20 @@ public class ResourceRegistry {
 	public URI toRelative(URI absolutePath) {
 		return getAREBaseURI().relativize(absolutePath);
 	}
+	
+	/**
+	 * Returns the file/directory name of a given URI.
+	 * This method simply splits the URI.getPath into elements seperated by a slash (/) and returns the last element.
+	 * @param absolutePath
+	 * @return
+	 */
+	public static String getLastElementOfURI(URI absolutePath) {
+		String[] elems=absolutePath.getPath().split("/");
+		if(elems!=null && elems.length>0) {
+			return elems[elems.length-1];
+		}
+		return "";
+	}
 
 	/**
 	 * Converts the given relativePath to an absolute path by resolving with the ARE base URI {@link getAREBaseURI}.
@@ -610,33 +624,57 @@ public class ResourceRegistry {
 	 */
 	public Set<URI> getLicenseURIsofAsTeRICSJarURIs(Set<URI> allJarURIs) {
 		Set<URI> licenseURIs=new HashSet<URI>();
-		for(URI jarURI : allJarURIs) {			
-			//TODO: Think about using toRelativize. 
-			//otherwise when just resolving to the name we can support different base URIs as well.
-			URI jarNameURI=jarURI.resolve(".").relativize(jarURI);
-			String jarName=jarNameURI.getPath();
-			
-			if(!jarName.startsWith("asterics.")) {
-				AstericsErrorHandling.instance.getLogger().fine("Skipping jar for license copying: "+jarName);
-				continue;
+		for(URI jarURI : allJarURIs) {
+			try{				
+				String jarName=getLastElementOfURI(jarURI);
+
+				//Is it an asterics jar?
+				if(jarName.startsWith("asterics.")) {
+					int firstDot=jarName.indexOf(".");
+					int lastDot=jarName.lastIndexOf(".");
+					final String compTypeString=jarName.substring(firstDot+1, lastDot);
+					AstericsErrorHandling.instance.getLogger().fine("Searching license for compTypeString="+compTypeString);
+
+					List<URI> compLicenseURIs=ResourceRegistry.getInstance().getLicensesList(new FilenameFilter() {
+						@Override
+						public boolean accept(File dir, String name) {
+							String[] compTypePrefix=name.split("-");
+							//Notifier.debug("compTypePrefix: "+compTypePrefix[0]+", compType: "+compTypeString, null);
+							return compTypePrefix[0].equalsIgnoreCase(compTypeString) && name.endsWith(".txt");
+						}
+
+					},false);
+					//Notifier.debug("compType: "+compTypeString+", compLicensURIs: "+compLicenseURIs,null);
+					licenseURIs.addAll(compLicenseURIs);
+				} else {
+					//If it is not an asterics jar, then we simply use the full jarname without extension
+					AstericsErrorHandling.instance.getLogger().fine("No Asterics jar, trying to find license of thirdparty jar: "+jarName);
+					//Extract name without extension
+					int lastDot=jarName.lastIndexOf(".");
+					final String licenseNameString=jarName.substring(0, lastDot);
+					AstericsErrorHandling.instance.getLogger().fine("Searching license file for prefix="+licenseNameString);
+
+
+					List<URI> compLicenseURIs=ResourceRegistry.getInstance().getLicensesList(new FilenameFilter() {
+						@Override
+						public boolean accept(File dir, String name) {
+							String prefixString1=licenseNameString+"-LICENSE";
+							String prefixString2=licenseNameString+"-THIRDPARTY";
+							
+							String lcName=name.toLowerCase();
+							prefixString1=prefixString1.toLowerCase();
+							prefixString2=prefixString2.toLowerCase();
+							//AstericsErrorHandling.instance.getLogger().fine("prefixString1: "+prefixString1+", prefixString2: "+prefixString2+", name: "+lcName);
+							return (lcName.startsWith(prefixString1) || lcName.startsWith(prefixString2)) && name.endsWith(".txt");
+						}
+
+					},false);
+					licenseURIs.addAll(compLicenseURIs);
+
+				} 
+			}catch(Exception e) {
+				AstericsErrorHandling.instance.getLogger().warning("Error finding license files for jar: "+jarURI);
 			}
-			int firstDot=jarName.indexOf(".");
-			int lastDot=jarName.lastIndexOf(".");
-			final String compTypeString=jarName.substring(firstDot+1, lastDot);
-			AstericsErrorHandling.instance.getLogger().fine("Searching license for compTypeString="+compTypeString);
-			
-			List<URI> compLicenseURIs=ResourceRegistry.getInstance().getLicensesList(new FilenameFilter() {
-				@Override
-				public boolean accept(File dir, String name) {
-					String[] compTypePrefix=name.split("-");
-					//Notifier.debug("compTypePrefix: "+compTypePrefix[0]+", compType: "+compTypeString, null);
-					return compTypePrefix[0].equalsIgnoreCase(compTypeString) && name.endsWith(".txt");
-				}
-
-			},false);
-			//Notifier.debug("compType: "+compTypeString+", compLicensURIs: "+compLicenseURIs,null);
-			licenseURIs.addAll(compLicenseURIs);
-
 		}
 		AstericsErrorHandling.instance.getLogger().fine("Found this license URIs: "+licenseURIs);
 		return licenseURIs;

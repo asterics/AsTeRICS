@@ -122,6 +122,8 @@ public class TestResourceRegistry {
 	public void testGetResourceInputStream() {
 		//fail("Not yet implemented");
 	}
+	
+	
 
 	@Test
 	public void testGetAREBaseURI() {
@@ -232,6 +234,32 @@ public class TestResourceRegistry {
 			System.out.println(componentJarURI);
 		}
 	}	
+	
+	@Test
+	public void testGetLicenseURIsofAsTeRICSJarURIs() throws URISyntaxException {
+		System.out.println("testGetLicenseURIsofAsTeRICSJarURIs");
+		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI().normalize());
+		
+		Set<URI> alljarURIs=new HashSet<URI>();
+		alljarURIs.add(ResourceRegistry.getInstance().getResource("javacv-0.10.0-merged-jars.jar", RES_TYPE.JAR));
+		alljarURIs.add(ResourceRegistry.getInstance().getResource("grizzly-httpservice-bundle-2.3.23.jar", RES_TYPE.JAR));
+		alljarURIs.add(ResourceRegistry.getInstance().getResource("org.eclipse.osgi.services_3.2.100.v20100503.jar", RES_TYPE.JAR));
+		alljarURIs.add(ResourceRegistry.getInstance().getResource("org.eclipse.osgi_3.6.0.v20100517.jar", RES_TYPE.JAR));
+		
+		for(URI componentJarURI : ResourceRegistry.getInstance().getLicenseURIsofAsTeRICSJarURIs(alljarURIs)) {
+			System.out.println("javacv licenses: "+componentJarURI);
+		}		
+	}
+	
+	@Test
+	public void testGetLastElementOfURI() throws URISyntaxException {
+		ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI().normalize());
+		System.out.println("last part of AREBaseURI: "+ResourceRegistry.getLastElementOfURI(ResourceRegistry.getInstance().getAREBaseURI()));
+		
+		URI jarURI=ResourceRegistry.getInstance().getResource("javacv-0.10.0-merged-jars.jar", RES_TYPE.JAR);		
+		System.out.println("last part of javacv jarURI: "+ResourceRegistry.getLastElementOfURI(jarURI));
+		System.out.println("last part of relative javacv jarURI: "+ResourceRegistry.getLastElementOfURI(ResourceRegistry.getInstance().toRelative(jarURI)));
+	}
 
 	@Test
 	public void testGetDataList() {
