@@ -108,13 +108,27 @@ public class AstericsThreadPool {
 	}
 	
 	/**
-	 * Executes (non-blocking) the given Runnable in the thread pool.
+	 * Executes (non-blocking) the given Runnable in the thread pool and returns a {@link Future} instance for the task. 
+	 * The Future can be used to get return values, receive Exceptions of the task or cancel the task. 
 	 * @param r
+	 * @return {@link Future}: The Future object of the task.
 	 */
-	public void execute(Runnable r) {
-		pool.execute(r);
+	public Future<?> execute(Runnable r) {
+		//pool.execute(r);
+		return pool.submit(r);
 	}
 	
+	/**
+	 * Executes (non-blocking) the given {@link Callable} in the thread pool and returns a {@link Future} instance for the task. 
+	 * The Future can be used to get return values, receive Exceptions of the task or cancel the task. 
+	 * @param <V>
+	 * @param c
+	 * @return
+	 */
+	public <V> Future<V> execute(Callable<V> c) {
+		return pool.submit(c);
+	}
+		
 	/**
 	 * Executes (blocking) the given Callable in the thread pool.
 	 * @param r

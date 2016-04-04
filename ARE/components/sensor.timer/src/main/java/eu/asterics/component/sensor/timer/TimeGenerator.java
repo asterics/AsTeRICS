@@ -27,6 +27,8 @@
 package eu.asterics.component.sensor.timer;
 
 
+import java.util.concurrent.Future;
+
 import eu.asterics.mw.data.*;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
@@ -53,7 +55,7 @@ public class TimeGenerator implements Runnable
 	int count=0;
 	long timecount;
 	
-	private Thread runThread = null;
+	private Future<?> runningTaskFuture=null;
 
 	final TimerInstance owner;
 
@@ -83,7 +85,6 @@ public class TimeGenerator implements Runnable
 	 */
 	public void run()
 	{
-        runThread = Thread.currentThread();
 		//System.out.println ("\n\n *** TimeGenThread "+ (++tcount) + " started.\n");
 		
 		try {
@@ -127,11 +128,9 @@ public class TimeGenerator implements Runnable
 					owner.opTime.sendData(ConversionUtils.intToBytes((int)(currentTime-owner.propWaitPeriod)));
 			}
 		} catch (InterruptedException e) {
-			AstericsErrorHandling.instance.getLogger().fine("TimeGenerator thread <"+runThread.getName()+"> got interrupted.");
+			AstericsErrorHandling.instance.getLogger().fine("TimeGenerator thread <"+Thread.currentThread().getName()+"> got interrupted.");
 			active =false; 	    
 		}
-
-		runThread=null;
 	}
 
 
@@ -140,14 +139,15 @@ public class TimeGenerator implements Runnable
 	 */
 	public void start()	
 	{	
-		AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, .start called");		
-		if (runThread != null) {
+		AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, .start called");
+
+		if(runningTaskFuture!=null) {
 			stop();
 		}
 		
 	    // System.out.println("in startproc !");
 
-		AstericsThreadPool.instance.execute(this);
+		runningTaskFuture=AstericsThreadPool.instance.execute(this);
 	}
 
 	/**
@@ -156,10 +156,9 @@ public class TimeGenerator implements Runnable
 	public void stop()	
 	{	
 		AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, : .stop called");
-		if (runThread!=null) {
-			AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, : .stop called, runThread active, interrupting...");
-			runThread.interrupt();
-			AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, : .stop called, runThread active, interrupted...");
+
+		if(runningTaskFuture!=null && !runningTaskFuture.isDone()) {
+			runningTaskFuture.cancel(true);
 		}
 
 		active=false;
