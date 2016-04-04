@@ -94,8 +94,11 @@ public class MidiInstance extends AbstractRuntimeComponentInstance
     */
     public MidiInstance() 
     {
+    	System.out.println("trying to load scale");
     	scale.loadScale(propToneScale);
+    	System.out.println("trying to open device");
     	MidiManager.instance.openMidiDevice(propMidiDevice);
+    	System.out.println("init done.");
     }
 
     public int getAmountOfNotes()

@@ -69,9 +69,13 @@ public class ResourceRegistry {
 	 */
 	public URI getResource(String resourceName, RES_TYPE type) throws URISyntaxException {
 		URI uri=null;
+		if (resourceName.startsWith("/")) 
+			resourceName="file://"+resourceName;
+		
 		try{
 			uri=new URI(resourceName);
-		} catch(URISyntaxException ue) {			
+
+		} catch(Exception ue) {			
 			uri=Paths.get(resourceName).toAbsolutePath().toUri();
 		}
 		
@@ -79,7 +83,9 @@ public class ResourceRegistry {
 		if(type==RES_TYPE.MODEL && !uri.isAbsolute()) {
 			uri=Paths.get(MODELS_FOLDER,resourceName).toAbsolutePath().toUri();
 		}
+
 		uri=uri.normalize();
+
 		AstericsErrorHandling.instance.getLogger().info("Fetching <"+uri+">");		
 		return uri;
 	}
