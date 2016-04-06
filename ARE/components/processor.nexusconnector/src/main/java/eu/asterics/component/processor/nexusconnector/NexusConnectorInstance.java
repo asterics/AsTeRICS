@@ -89,6 +89,10 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance
             return ipA;
         } else if ("B".equalsIgnoreCase(portID)) {
             return ipB;
+        } else if ("C".equalsIgnoreCase(portID)) {
+            return ipC;
+        } else if ("D".equalsIgnoreCase(portID)) {
+            return ipD;
         }
         return null;
     }
@@ -155,6 +159,20 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance
         }
     };
 
+    private final IRuntimeInputPort ipC = new DefaultRuntimeInputPort() {
+        public void receiveData(byte[] data) {
+            double val = ConversionUtils.doubleFromBytes(data);
+            nexusWebSocket.sendMessage("{ \"path\": \"c\", \"value\": " + val + " }");
+        }
+    };
+
+    private final IRuntimeInputPort ipD = new DefaultRuntimeInputPort() {
+        public void receiveData(byte[] data) {
+            double val = ConversionUtils.doubleFromBytes(data);
+            nexusWebSocket.sendMessage("{ \"path\": \"d\", \"value\": " + val + " }");
+        }
+    };
+
 
     /**
      * Event Listerner Ports.
@@ -169,7 +187,7 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance
         super.start();
         System.out.println("NexusConnector START");
 
-        ListenableFuture<WebSocket> f = nexusClient.prepareGet("ws://localhost:9081/bindModel/asterics/inputs")
+        ListenableFuture<WebSocket> f = nexusClient.prepareGet("ws://localhost:9081/bindModel/nexus.asterics/inputs")
             .execute(new WebSocketUpgradeHandler.Builder().addWebSocketListener(new WebSocketTextListener() {
                     @Override
                     public void onMessage(String message) {

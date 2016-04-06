@@ -7727,6 +7727,16 @@
                         <mustBeConnected>false</mustBeConnected>
                         <dataType>double</dataType>
                 </inputPort>
+                <inputPort id="C">
+                        <description>Input C</description>
+                        <mustBeConnected>false</mustBeConnected>
+                        <dataType>double</dataType>
+                </inputPort>
+                <inputPort id="D">
+                        <description>Input D</description>
+                        <mustBeConnected>false</mustBeConnected>
+                        <dataType>double</dataType>
+                </inputPort>
         </ports>
         <events></events>
         <properties></properties>
