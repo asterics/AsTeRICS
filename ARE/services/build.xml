@@ -1,4 +1,5 @@
 <project name="asterics.services" default="buildAllServices" basedir=".">
+	<!--<property name="component.id" value=""></property> -->
     <property name="runtime" location="../../bin/ARE"/>
 	<target name="buildSystemChange">
     <subant target="jar">
@@ -24,4 +25,6 @@
 		</delete>
     </target>
 	
+	<import file="../imported.xml"/>
+    <include file="../included.xml"/>	
 </project>

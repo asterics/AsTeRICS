@@ -65,10 +65,7 @@
 	
 	<target name="copyLicensesAll" depends="cleanLicenses">
         <subant target="copyLicenses">
-          <fileset dir="." includes="components/*/build.xml"/>
-          <fileset dir="." includes="middleware/build.xml"/>
-          <fileset dir="." includes="services/*/build.xml"/>
-          <fileset dir="." includes="tools/*/build.xml"/>
+          <fileset dir="." includes="**/build.xml"/>
         </subant>
 	</target>
 

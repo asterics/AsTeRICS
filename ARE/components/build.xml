@@ -13,4 +13,8 @@
 			<fileset dir="." includes="*.jar"/>
 		</delete>
     </target>
+	
+	<import file="../imported.xml"/>
+    <include file="../included.xml"/>
+	
 </project>
