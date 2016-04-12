@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: asterics-processors.nexusconnector
 Bundle-SymbolicName: eu.asterics.component.processor.nexusconnector
 Bundle-Version: 0.1.0
-Bundle-ClassPath: . , lib/async-http-client-1.9.33.jar, lib/slf4j-api-1.7.14.jar, lib/grizzly-framework-2.3.24.jar, lib/grizzly-http-2.3.24.jar, lib/grizzly-websockets-2.3.24.jar, lib/connection-pool-2.3.24.jar
+Bundle-ClassPath: . , lib/async-http-client-1.9.33.jar, lib/slf4j-api-1.7.14.jar, lib/grizzly-framework-2.3.24.jar, lib/grizzly-http-2.3.24.jar, lib/grizzly-websockets-2.3.24.jar, lib/connection-pool-2.3.24.jar, lib/minimal-json-0.9.4.jar
 DynamicImport-Package: *

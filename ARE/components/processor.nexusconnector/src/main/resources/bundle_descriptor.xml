@@ -28,6 +28,10 @@
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>double</dataType>
             </inputPort>
+            <outputPort id="outStrOne">
+                <description>Output string one</description>
+                <dataType>string</dataType>
+            </outputPort>
         </ports>
     </componentType>
 </componentTypes>
