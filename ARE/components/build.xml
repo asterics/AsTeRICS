@@ -1,4 +1,5 @@
 <project name="asterics.components" default="buildAllComponents" basedir=".">
+	<property name="runtime" location="../../bin/ARE"/>
 
 	<target name="buildAllComponents">
           <subant target="jar">
