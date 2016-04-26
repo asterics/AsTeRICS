@@ -1,22 +1,4 @@
-<project name="asterics.imported" basedir=".">
+<project name="asterics.imported.runtime" basedir=".">
 	
-	<condition property="license.prefix" value="${component.id}-" else="">
-		<isset property="component.id" />
-	</condition>
-
-	<!-- <property name="license.prefix" value="${component.id}-"/>-->
-	<property name="javac.source" value="1.7"/>
-	<property name="javac.target" value="1.7"/>
-	<!-- just to be sure also set the default values to the above ones -->	
-	<property name="ant.build.javac.source" value="${javac.source}"/>
-	<property name="ant.build.javac.target" value="${javac.target}"/>
-	
-	
-    <target name="copyLicenses" >
-		<mkdir dir="${runtime}/LICENSE"/>
-		<copy todir="${runtime}/LICENSE" failonerror="false">
-		    <fileset dir="LICENSE" includes="**/*.txt"/>
-		    <globmapper from="*" to="${license.prefix}*"/>
-		</copy>	
-	</target>
+	<import file="../imported.xml"/>
 </project>

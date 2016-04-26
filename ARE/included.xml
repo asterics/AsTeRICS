@@ -1,2 +1,3 @@
-<project name="asterics.included" basedir=".">
+<project name="asterics.included.runtime" basedir=".">
+	<import file="../included.xml"/>
 </project>
