@@ -44,9 +44,16 @@
 		</pathconvert>
 		<echo file="thirdpartylibfiles.txt">${thirdPartyLibFiles}</echo>
 	</target>
-	
+	<!-- helper target to replace contents of license files -->
 	<target name="findAndReplaceAllLicenseFiles">
 		<subant target="findAndReplaceLicenseFile" failonerror="false">
+			<fileset dir="." includes="**/build.xml"></fileset>
+		</subant>
+	</target>
+	
+	<!-- helper target to rename license files, unfortunately it is not a rename but a move -->
+	<target name="renameAllLicenseFiles">
+		<subant target="renameLicenseFile" failonerror="false">
 			<fileset dir="." includes="**/build.xml"></fileset>
 		</subant>
 	</target>

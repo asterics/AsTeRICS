@@ -32,6 +32,12 @@
 		</copy>
 	</target>
 
+	<!-- Rename license file -->
+	<target name="renameLicenseFile">
+		<move file="LICENSE/LICENSE_dual.txt" tofile="LICENSE/LICENSE_MITOrGPLv3WithException.txt" verbose="true">
+		</move>
+	</target>
+
 	
 	
 </project>
