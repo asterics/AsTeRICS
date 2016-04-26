@@ -10,6 +10,8 @@
 	<property name="ant.build.javac.source" value="${javac.source}"/>
 	<property name="ant.build.javac.target" value="${javac.target}"/>
 	
+	<property name="source.license" value="D:\AsTeRICS\AsTeRICS_Licensing_Packaging_Asterics_2_8_Prep\ARE-LICENSE_MITOrGPLv3WithException.txt"/>
+	
 	
     <target name="copyLicenses" >
 		<mkdir dir="${runtime}/LICENSE"/>
@@ -18,6 +20,18 @@
 		    <globmapper from="*" to="${license.prefix}*"/>
 		</copy>	
 	</target>
+	
+	<!-- check existence of license file -->
+	<target name="checkLicenseFile">
+		<available file="LICENSE/LICENSE_dual.txt" property="license.exists"></available>
+	</target>
+	
+	<!-- Replace license file with new one, if a target file already exists -->
+	<target name="findAndReplaceLicenseFile" depends="checkLicenseFile" if="${license.exists}">
+		<copy  file="${source.license}" tofile="LICENSE/LICENSE_dual.txt" verbose="true">			
+		</copy>
+	</target>
+
 	
 	
 </project>

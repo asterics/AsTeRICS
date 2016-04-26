@@ -44,7 +44,13 @@
 		</pathconvert>
 		<echo file="thirdpartylibfiles.txt">${thirdPartyLibFiles}</echo>
 	</target>
-
+	
+	<target name="findAndReplaceAllLicenseFiles">
+		<subant target="findAndReplaceLicenseFile" failonerror="false">
+			<fileset dir="." includes="**/build.xml"></fileset>
+		</subant>
+	</target>
+	
 	<import file="imported.xml"/>
 	<include file="included.xml"/>
 </project>
