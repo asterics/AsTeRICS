@@ -26,7 +26,11 @@
 
 package eu.asterics.component.sensor.timer;
 
+
+import java.util.concurrent.Future;
+
 import eu.asterics.mw.data.*;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 
@@ -51,7 +55,7 @@ public class TimeGenerator implements Runnable
 	int count=0;
 	long timecount;
 	
-	private Thread runThread = null;
+	private Future<?> runningTaskFuture=null;
 
 	final TimerInstance owner;
 
@@ -67,7 +71,7 @@ public class TimeGenerator implements Runnable
 	/**
 	 * resets the time conter value.
 	 */
-	public synchronized void reset()	
+	public void reset()	
 	{	
 		count=0;
 		if (owner.propMode != MEASURE_TIME)
@@ -81,78 +85,96 @@ public class TimeGenerator implements Runnable
 	 */
 	public void run()
 	{
-        runThread = Thread.currentThread();
 		//System.out.println ("\n\n *** TimeGenThread "+ (++tcount) + " started.\n");
 		
 		try {
 		
-		while(active==true)
-		{
-			currentTime=System.currentTimeMillis()-startTime;
-			while ((currentTime>timecount) && (active==true))
+			startTime=System.currentTimeMillis();
+			timecount=owner.propTimePeriod;
+			active=true;
+
+
+			while(active==true)
 			{
+				currentTime=System.currentTimeMillis()-startTime;
+				while ((currentTime>timecount) && (active==true))
+				{
 					owner.etpPeriodFinished.raiseEvent();
 
 					switch (owner.propMode)
 					{
-						case MODE_N_TIMES:
-							count++;
-							if (count>=owner.propRepeatCounter)
-							{ count=0; active=false; }
-							break;
-	
-						case MODE_LOOP:
-							break;
-	
-						case MODE_ONE_SHOT:
-							active=false; 
-							break;
-	
-						case MODE_ONCE_STAY_ACTIVE:
-							owner.opTime.sendData(ConversionUtils.intToBytes(owner.propTimePeriod));
-							break;
+					case MODE_N_TIMES:
+						count++;
+						if (count>=owner.propRepeatCounter)
+						{ count=0; active=false; }
+						break;
+
+					case MODE_LOOP:
+						break;
+
+					case MODE_ONE_SHOT:
+						active=false; 
+						break;
+
+					case MODE_ONCE_STAY_ACTIVE:
+						owner.opTime.sendData(ConversionUtils.intToBytes(owner.propTimePeriod));
+						break;
 					}
 					timecount+=owner.propTimePeriod;
 				}
 				Thread.sleep(owner.propResolution);	
 				if ((timecount>owner.propWaitPeriod) &&  (owner.propMode != MEASURE_TIME)
 						&& (active==true))
-				owner.opTime.sendData(ConversionUtils.intToBytes((int)(currentTime-owner.propWaitPeriod)));
+					owner.opTime.sendData(ConversionUtils.intToBytes((int)(currentTime-owner.propWaitPeriod)));
 			}
-		} catch (InterruptedException e) {active =false;}
-
-		runThread=null;
-		//	System.out.println ("\n\n *** TimeGenThread "+ (tcount) + " stopped.\n");
+		} catch (InterruptedException e) {
+			AstericsErrorHandling.instance.getLogger().fine("TimeGenerator thread <"+Thread.currentThread().getName()+"> got interrupted.");
+			active =false; 	    
+		}
 	}
 
 
 	/**
 	 * called when model is started or resumed.
 	 */
-	public synchronized void start()	
+	public void start()	
 	{	
-		if (runThread != null) return;
+		AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, .start called");
+
+		if(runningTaskFuture!=null) {
+			stop();
+		}
 		
-		startTime=System.currentTimeMillis();
-		timecount=owner.propTimePeriod;
-		active=true;
-		AstericsThreadPool.instance.execute(this);
+	    // System.out.println("in startproc !");
+
+		runningTaskFuture=AstericsThreadPool.instance.execute(this);
 	}
 
 	/**
 	 * called when model is stopped or paused.
 	 */
-	public synchronized void stop()	
+	public void stop()	
 	{	
-		if (runThread!=null)
-			runThread.interrupt();
+		AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, : .stop called");
+
+		if(runningTaskFuture!=null && !runningTaskFuture.isDone()) {
+			runningTaskFuture.cancel(true);
+		}
 
 		active=false;
+		count=0;
+	}
+	
+	/**
+	 * This method stops the runThread and sends the measured time (from start to stop event) in mode MEASURE_TIME to the output port opTime.
+	 * Note: Don't use this method when stopping the plugin, it can lead into an endless loop. 
+	 */
+	void stopAndSendData() {
+		stop();
 		if (owner.propMode == MEASURE_TIME)
 		{
 			owner.opTime.sendData(ConversionUtils.intToBytes((int)(currentTime-owner.propWaitPeriod)));
 		}
-		count=0;
 	}
 
 }

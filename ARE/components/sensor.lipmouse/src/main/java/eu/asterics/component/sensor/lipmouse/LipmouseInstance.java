@@ -154,6 +154,14 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 		{
 			return elpCalibration;
 		}
+		if ("start".equalsIgnoreCase(eventPortID))
+		{
+			return elpStart;
+		}
+		if ("stop".equalsIgnoreCase(eventPortID))
+		{
+			return elpStop;
+		}
 		if ("setLed1".equalsIgnoreCase(eventPortID))
 		{
 			return elpSetLed1;
@@ -364,6 +372,28 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 			//sendLipmouseWriteFeatureByte(LIPMOUSE_CIM_FEATURE_CALIBRATION,0);   // calib in firmware currently not supported 
 			calibNow=true;
 			
+		}
+	};
+
+	final IRuntimeEventListenerPort elpStart = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{   
+			  if ( port != null)
+			  {
+				  CIMPortManager.getInstance().sendPacket(port, null, (short) 0, CIMProtocolPacket.COMMAND_REQUEST_START_CIM, false);
+			  }
+		}
+	};
+
+	final IRuntimeEventListenerPort elpStop = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{   
+			  if ( port != null)
+			  {
+				  CIMPortManager.getInstance().sendPacket(port, null, (short)0, CIMProtocolPacket.COMMAND_REQUEST_STOP_CIM, false);
+			  }			
 		}
 	};
 
@@ -690,6 +720,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
           super.pause();
       }
 
+      
      /**
       * called when model is resumed.
       */

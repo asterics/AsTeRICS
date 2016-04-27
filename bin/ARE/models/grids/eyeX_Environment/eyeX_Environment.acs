@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\grids\eyeX_Environment\eyeX_Environment.acs_2015_10_9_14_15" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\grids\eyeX_Environment\eyeX_Environment.acs_2015_11_19_13_33" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -173,8 +173,8 @@
         <posY>20</posY>
       </layout>
       <gui>
-        <posX>162</posX>
-        <posY>111</posY>
+        <posX>135</posX>
+        <posY>121</posY>
         <width>9750</width>
         <height>7778</height>
       </gui>
@@ -382,8 +382,8 @@
         <property name="cropFilterText" value="true" />
       </properties>
       <layout>
-        <posX>762</posX>
-        <posY>186</posY>
+        <posX>782</posX>
+        <posY>182</posY>
       </layout>
     </component>
     <component id="StringFilter.1.1" type_id="asterics.StringFilter">
@@ -442,8 +442,8 @@
       </ports>
       <properties />
       <layout>
-        <posX>883</posX>
-        <posY>194</posY>
+        <posX>900</posX>
+        <posY>203</posY>
       </layout>
     </component>
     <component id="IrTrans.1" type_id="asterics.IrTrans">
@@ -526,30 +526,8 @@
         <property name="cropFilterText" value="False" />
       </properties>
       <layout>
-        <posX>503</posX>
-        <posY>173</posY>
-      </layout>
-    </component>
-    <component id="FS20Sender.1" type_id="asterics.FS20Sender">
-      <description>Sends FS20 commands</description>
-      <ports>
-        <inputPort portTypeID="Housecode">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="Address">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="Action">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="Housecode" value="11111111" />
-        <property name="Address" value="1111" />
-      </properties>
-      <layout>
-        <posX>609</posX>
-        <posY>190</posY>
+        <posX>462</posX>
+        <posY>182</posY>
       </layout>
     </component>
     <component id="HoverPanel.1" type_id="asterics.HoverPanel">
@@ -780,6 +758,70 @@
         <height>1556</height>
       </gui>
     </component>
+    <component id="EventDispatcher.1" type_id="asterics.EventDispatcher">
+      <description>Translates incoming command strings into events</description>
+      <ports>
+        <inputPort portTypeID="cmd">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="command1" value="@FS20:11111111_1111_16" />
+        <property name="command2" value="@FS20:11111111_1111_0" />
+        <property name="command3" value="" />
+        <property name="command4" value="" />
+        <property name="command5" value="" />
+        <property name="command6" value="" />
+        <property name="command7" value="" />
+        <property name="command8" value="" />
+        <property name="command9" value="" />
+        <property name="command10" value="" />
+      </properties>
+      <layout>
+        <posX>578</posX>
+        <posY>192</posY>
+      </layout>
+    </component>
+    <component id="EasyHomeControl.1" type_id="asterics.EasyHomeControl">
+      <description>EasyHome controller</description>
+      <ports />
+      <properties>
+        <property name="nameDevice1" value="1" />
+        <property name="nameDevice2" value="2" />
+        <property name="nameDevice3" value="3" />
+        <property name="nameDevice4" value="4" />
+        <property name="nameDevice5" value="5" />
+        <property name="nameDevice6" value="6" />
+        <property name="nameDevice7" value="7" />
+        <property name="nameDevice8" value="8" />
+        <property name="nameDevice9" value="9" />
+        <property name="nameDevice10" value="10" />
+        <property name="nameDevice11" value="11" />
+        <property name="nameDevice12" value="12" />
+        <property name="nameDevice13" value="13" />
+        <property name="nameDevice14" value="14" />
+        <property name="nameDevice15" value="15" />
+        <property name="numberDevice1" value="1" />
+        <property name="numberDevice2" value="2" />
+        <property name="numberDevice3" value="3" />
+        <property name="numberDevice4" value="4" />
+        <property name="numberDevice5" value="5" />
+        <property name="numberDevice6" value="6" />
+        <property name="numberDevice7" value="7" />
+        <property name="numberDevice8" value="8" />
+        <property name="numberDevice9" value="9" />
+        <property name="numberDevice10" value="10" />
+        <property name="numberDevice11" value="11" />
+        <property name="numberDevice12" value="12" />
+        <property name="numberDevice13" value="13" />
+        <property name="numberDevice14" value="14" />
+        <property name="numberDevice15" value="15" />
+      </properties>
+      <layout>
+        <posX>673</posX>
+        <posY>179</posY>
+      </layout>
+    </component>
   </components>
   <channels>
     <channel id="binding.5">
@@ -860,16 +902,6 @@
       <target>
         <component id="StringFilter.1.1.1" />
         <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.11">
-      <source>
-        <component id="StringFilter.1.1.1.1" />
-        <port id="out" />
-      </source>
-      <target>
-        <component id="FS20Sender.1" />
-        <port id="Action" />
       </target>
     </channel>
     <channel id="binding.12">
@@ -960,6 +992,16 @@
       <target>
         <component id="SyntheticVoice.1" />
         <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.18">
+      <source>
+        <component id="StringFilter.1.1.1.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="EventDispatcher.1" />
+        <port id="cmd" />
       </target>
     </channel>
   </channels>
@@ -1351,6 +1393,36 @@
         <target>
           <component id="HoverPanel.1.1" />
           <eventPort id="deactivate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand1_onDevice1">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EasyHomeControl.1" />
+          <eventPort id="onDevice1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="recognizedCommand2_offDevice1">
+      <description />
+      <sources>
+        <source>
+          <component id="EventDispatcher.1" />
+          <eventPort id="recognizedCommand2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EasyHomeControl.1" />
+          <eventPort id="offDevice1" />
         </target>
       </targets>
     </eventChannel>

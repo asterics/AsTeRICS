@@ -12,7 +12,7 @@
     <property name="classpath" location=".."/>
        <path id="asterics.classpath">
         <pathelement location="bin"/>
-       	<pathelement location="src/main/resources/lib/calimero-2.0a4.jar"/>
+       	<pathelement location="src/main/resources/lib/calimero-core-2.1.jar"/>
         <pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
         <pathelement location="${middleware}/asterics.ARE.jar"/>
        	<pathelement location="${services}/asterics.mw.cimcommunication.jar"/>

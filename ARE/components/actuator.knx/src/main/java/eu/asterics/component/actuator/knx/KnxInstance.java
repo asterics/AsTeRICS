@@ -29,25 +29,31 @@ package eu.asterics.component.actuator.knx;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
-
-
-import java.net.UnknownHostException;
-import tuwien.auto.calimero.CloseEvent;
-import tuwien.auto.calimero.FrameEvent;
+import java.util.regex.Pattern;
+import tuwien.auto.calimero.DataUnitBuilder;
+import tuwien.auto.calimero.DetachEvent;
 import tuwien.auto.calimero.GroupAddress;
+import tuwien.auto.calimero.Priority;
 import tuwien.auto.calimero.datapoint.CommandDP;
+import tuwien.auto.calimero.datapoint.Datapoint;
+import tuwien.auto.calimero.dptxlator.DPT;
+import tuwien.auto.calimero.dptxlator.DPTXlator;
+import tuwien.auto.calimero.dptxlator.TranslatorTypes;
+import tuwien.auto.calimero.dptxlator.TranslatorTypes.MainType;
 import tuwien.auto.calimero.exception.KNXException;
 import tuwien.auto.calimero.exception.KNXFormatException;
 import tuwien.auto.calimero.knxnetip.KNXnetIPConnection;
-import tuwien.auto.calimero.link.KNXLinkClosedException;
 import tuwien.auto.calimero.link.KNXNetworkLinkIP;
-import tuwien.auto.calimero.link.event.NetworkLinkListener;
 import tuwien.auto.calimero.link.medium.TPSettings;
 import tuwien.auto.calimero.process.ProcessCommunicator;
-import tuwien.auto.calimero.process.ProcessCommunicatorImpl; 
-
+import tuwien.auto.calimero.process.ProcessCommunicatorImpl;
+import tuwien.auto.calimero.process.ProcessEvent;
+import tuwien.auto.calimero.process.ProcessListener;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
@@ -55,15 +61,31 @@ import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 
 /* 
- * <Describe purpose of this module>
+ * This module provides read and write access to a KNX home automation installation
  * 
+ * Currently, it is necessary to have a KNX to IP gateway, USB gateways don't work
+ * The plugin uses the calimero library (https://github.com/calimero-project/calimero-core)
  * 
+ * Interfacing KNX devices is possible via different ways:
+ * -) using the action string
+ * -) using input ports (write only)
+ * -) using output ports (read only)
+ * -) using event trigger ports (read only)
+ * -) using event listener ports (write only)
+ * 
+ * For all methods, except the action string, you need to define the
+ * DPT (datapoint type), a group adress and its value.
+ * All possible DPTs are fetched from the calimero library. Due
+ * to the dynamic property feature, the list only appears if the ACS is
+ * connected to the ARE and the model is uploaded (it is not necessary to start it)
  *  
- * @author <your name> [<your email address>]
- *         Date: 
+ * @author Benjamin Aigner <aignerb@technikum-wien.at
+ *         Date: 2015-2016
  *         Time: 
  */
 public class KnxInstance extends AbstractRuntimeComponentInstance
@@ -73,36 +95,70 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 	private ProcessCommunicator pc = null;
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	// Properties
+	/** PROPERTIES **/
 	private boolean propNAT = true;
 	private String propLocalIP = new String();
 	private String propKnxNetIP = new String();
+	
+	
+	//Output to KNX of given values to the given group addresses
+	//Output is triggered via event input ports
 	private String propGroupAddress1 = new String();
-	private String propDataType1 = new String();
 	private String propDataValue1 = new String();
 	private String propGroupAddress2 = new String();
-	private String propDataType2 = new String();
 	private String propDataValue2 = new String();
 	private String propGroupAddress3 = new String();
-	private String propDataType3 = new String();
 	private String propDataValue3 = new String();
 	private String propGroupAddress4 = new String();
-	private String propDataType4 = new String();
 	private String propDataValue4 = new String();
 	private String propGroupAddress5 = new String();
-	private String propDataType5 = new String();
 	private String propDataValue5 = new String();
 	private String propGroupAddress6 = new String();
-	private String propDataType6 = new String();
 	private String propDataValue6 = new String();
+	private String propDPTEvent1 = new String();
+	private String propDPTEvent2 = new String();
+	private String propDPTEvent3 = new String();
+	private String propDPTEvent4 = new String();
+	private String propDPTEvent5 = new String();
+	private String propDPTEvent6 = new String();
 	
+	//Output to KNX of the slider values (input ports) to the given group addresses
 	private String propGroupAddressSlider1 = new String();
 	private String propGroupAddressSlider2 = new String();
 	private String propGroupAddressSlider3 = new String();
 	private String propGroupAddressSlider4 = new String();
 	private String propGroupAddressSlider5 = new String();
 	private String propGroupAddressSlider6 = new String();
-	// declare member variables here
+	private String propDPTSlider1 = new String();
+	private String propDPTSlider2 = new String();
+	private String propDPTSlider3 = new String();
+	private String propDPTSlider4 = new String();
+	private String propDPTSlider5 = new String();
+	private String propDPTSlider6 = new String();
+
+	//Group addresses for the event triggers (ignoring data & DPT)
+	private String propGroupAddressTrigger1 = new String();
+	private String propGroupAddressTrigger2 = new String();
+	private String propGroupAddressTrigger3 = new String();
+	private String propGroupAddressTrigger4 = new String();
+	private String propGroupAddressTrigger5 = new String();
+	private String propGroupAddressTrigger6 = new String();
+	
+	//Group addresses for the output ports
+	private String propGroupAddressOutput1 = new String();
+	private String propGroupAddressOutput2 = new String();
+	private String propGroupAddressOutput3 = new String();
+	private String propGroupAddressOutput4 = new String();
+	private String propGroupAddressOutput5 = new String();
+	private String propGroupAddressOutput6 = new String();
+	private String propDPTOutput1 = new String();
+	private String propDPTOutput2 = new String();
+	private String propDPTOutput3 = new String();
+	private String propDPTOutput4 = new String();
+	private String propDPTOutput5 = new String();
+	private String propDPTOutput6 = new String();
+	
+	/** PORTS: INPUT, OUTPUT, EVENT IN, EVENT OUT **/
 
 	// Event Listener Ports
 	private final String ELP_SEND1 	= "send1";
@@ -111,14 +167,15 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 	private final String ELP_SEND4 	= "send4";
 	private final String ELP_SEND5 	= "send5";		
 	private final String ELP_SEND6 	= "send6";
-	
-	private String propGroupAddressTrigger1 = new String();
-	private String propGroupAddressTrigger2 = new String();
-	private String propGroupAddressTrigger3 = new String();
-	private String propGroupAddressTrigger4 = new String();
-	private String propGroupAddressTrigger5 = new String();
-	private String propGroupAddressTrigger6 = new String();
-	
+	private final String ELP_READ1 	= "read1";
+	private final String ELP_READ2 	= "read2";
+	private final String ELP_READ3 	= "read3";
+	private final String ELP_READ4 	= "read4";
+	private final String ELP_READ5 	= "read5";		
+	private final String ELP_READ6 	= "read6";
+
+
+	//Event trigger ports (output events)
 	final IRuntimeEventTriggererPort runtimeEventTriggererPort1 = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort runtimeEventTriggererPort2 = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort runtimeEventTriggererPort3 = new DefaultRuntimeEventTriggererPort();
@@ -126,7 +183,13 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 	final IRuntimeEventTriggererPort runtimeEventTriggererPort5 = new DefaultRuntimeEventTriggererPort();
 	final IRuntimeEventTriggererPort runtimeEventTriggererPort6 = new DefaultRuntimeEventTriggererPort();
 	
-    
+	//6 output ports for KNX data received by AsTeRICS
+	private IRuntimeOutputPort opData1 = new DefaultRuntimeOutputPort();
+	private IRuntimeOutputPort opData2 = new DefaultRuntimeOutputPort();
+	private IRuntimeOutputPort opData3 = new DefaultRuntimeOutputPort();
+	private IRuntimeOutputPort opData4 = new DefaultRuntimeOutputPort();
+	private IRuntimeOutputPort opData5 = new DefaultRuntimeOutputPort();
+	private IRuntimeOutputPort opData6 = new DefaultRuntimeOutputPort();
 	
 	private double in1=0,in2=0,in3=0,in4=0,in5=0,in6=0;
    /**
@@ -134,7 +197,7 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
     */
     public KnxInstance()
     {
-        // empty constructor
+    	
     }
 
    /**
@@ -144,7 +207,7 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
     */
     public IRuntimeInputPort getInputPort(String portID)
     {
-		if ("command".equalsIgnoreCase(portID))
+		if ("actionString".equalsIgnoreCase(portID))
 		{
 			return ipCommand;
 		}
@@ -183,40 +246,87 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
      */
     public IRuntimeOutputPort getOutputPort(String portID)
 	{
-
+    	if("data1".equalsIgnoreCase(portID))
+        {
+            return opData1;
+        }
+    	if("data2".equalsIgnoreCase(portID))
+        {
+            return opData2;
+        }
+    	if("data3".equalsIgnoreCase(portID))
+        {
+            return opData3;
+        }
+    	if("data4".equalsIgnoreCase(portID))
+        {
+            return opData4;
+        }
+    	if("data5".equalsIgnoreCase(portID))
+        {
+            return opData5;
+        }
+    	if("data6".equalsIgnoreCase(portID))
+        {
+            return opData6;
+        }
 		return null;
 	}
 
     /**
-     * returns an Event Listener Port.
+     * returns an Event Listener Port. 
      * @param eventPortID   the name of the port
      * @return         the EventListener port or null if not found
      */
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
     {
-		if ("send1".equalsIgnoreCase(eventPortID))
+		if (ELP_SEND1.equalsIgnoreCase(eventPortID))
 		{
 			return elpSend1;
 		}
-		if ("send2".equalsIgnoreCase(eventPortID))
+		if (ELP_SEND2.equalsIgnoreCase(eventPortID))
 		{
 			return elpSend2;
 		}
-		if ("send3".equalsIgnoreCase(eventPortID))
+		if (ELP_SEND3.equalsIgnoreCase(eventPortID))
 		{
 			return elpSend3;
 		}
-		if ("send4".equalsIgnoreCase(eventPortID))
+		if (ELP_SEND4.equalsIgnoreCase(eventPortID))
 		{
 			return elpSend4;
 		}
-		if ("send5".equalsIgnoreCase(eventPortID))
+		if (ELP_SEND5.equalsIgnoreCase(eventPortID))
 		{
 			return elpSend5;
 		}
-		if ("send6".equalsIgnoreCase(eventPortID))
+		if (ELP_SEND6.equalsIgnoreCase(eventPortID))
 		{
 			return elpSend6;
+		}
+		if (ELP_READ1.equalsIgnoreCase(eventPortID))
+		{
+			return elpRead1;
+		}
+		if (ELP_READ2.equalsIgnoreCase(eventPortID))
+		{
+			return elpRead2;
+		}
+		if (ELP_READ3.equalsIgnoreCase(eventPortID))
+		{
+			return elpRead3;
+		}
+		if (ELP_READ4.equalsIgnoreCase(eventPortID))
+		{
+			return elpRead4;
+		}
+		if (ELP_READ5.equalsIgnoreCase(eventPortID))
+		{
+			return elpRead5;
+		}
+		if (ELP_READ6.equalsIgnoreCase(eventPortID))
+		{
+			return elpRead6;
 		}
 
         return null;
@@ -261,6 +371,50 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
         return null;
     }
 	
+    /**
+	 * Returns all possible data point types (DPT) for KNX communication,
+	 * shown in the different lists for each receiving/transmitting part
+	 */
+	public List<String> getRuntimePropertyList(String key) 
+	{
+		//build up the list of all supported datapoint types (given by the calimero library)
+		List<String> res = new ArrayList<String>(); 
+		Map<Integer, MainType> mainTypes = TranslatorTypes.getAllMainTypes();
+    	for (MainType elem : mainTypes.values()) {
+    		try {
+				for (DPT elemSub : (Collection<DPT>) elem.getSubTypes().values()) {
+					res.add(elemSub.getDescription() + "[" + elemSub.getLowerValue() + "," + elemSub.getUpperValue() + "]" + " (" + elemSub.getID() +")");
+				}
+			} catch (KNXException e) {
+				e.printStackTrace();
+			}
+    	}
+    	//return the list, if the correct property is given as key
+    	//return null otherwise
+    	switch(key) {
+    		case "DPTEvent1":
+    		case "DPTEvent2":
+    		case "DPTEvent3":
+    		case "DPTEvent4":
+    		case "DPTEvent5":
+    		case "DPTEvent6":
+    		case "DPTSlider1":
+    		case "DPTSlider2":
+    		case "DPTSlider3":
+    		case "DPTSlider4":
+    		case "DPTSlider5":
+    		case "DPTSlider6":
+    		case "DPTOutput1":
+    		case "DPTOutput2":
+    		case "DPTOutput3":
+    		case "DPTOutput4":
+    		case "DPTOutput5":
+    		case "DPTOutput6":
+    			return res;
+    		default:
+    			return null;
+    	}
+	} 
  
     /**
      * returns the value of the given property.
@@ -285,73 +439,73 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
         {
         	return propGroupAddress1;
         }
-        else if("dataType1".equalsIgnoreCase(propertyName))
-        {
-        	return propDataType1;
-        }
         else if("dataValue1".equalsIgnoreCase(propertyName))
         {
         	return propDataValue1;
+        }
+        else if("DPTEvent1".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTEvent1;
         }
         else if("groupAddress2".equalsIgnoreCase(propertyName))
         {
         	return propGroupAddress2;
         }
-        else if("dataType2".equalsIgnoreCase(propertyName))
-        {
-        	return propDataType2;
-        }
         else if("dataValue2".equalsIgnoreCase(propertyName))
         {
         	return propDataValue2;
+        }
+        else if("DPTEvent2".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTEvent2;
         }
         else if("groupAddress3".equalsIgnoreCase(propertyName))
         {
         	return propGroupAddress3;
         }
-        else if("dataType3".equalsIgnoreCase(propertyName))
-        {
-        	return propDataType3;
-        }
         else if("dataValue3".equalsIgnoreCase(propertyName))
         {
         	return propDataValue3;
+        }
+        else if("DPTEvent3".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTEvent3;
         }
         else if("groupAddress4".equalsIgnoreCase(propertyName))
         {
         	return propGroupAddress4;
         }
-        else if("dataType4".equalsIgnoreCase(propertyName))
-        {
-        	return propDataType4;
-        }
         else if("dataValue4".equalsIgnoreCase(propertyName))
         {
         	return propDataValue4;
+        }
+        else if("DPTEvent4".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTEvent4;
         }
         else if("groupAddress5".equalsIgnoreCase(propertyName))
         {
         	return propGroupAddress5;
         }
-        else if("dataType5".equalsIgnoreCase(propertyName))
-        {
-        	return propDataType5;
-        }
         else if("dataValue5".equalsIgnoreCase(propertyName))
         {
         	return propDataValue5;
+        }
+        else if("DPTEvent5".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTEvent5;
         }
         else if("groupAddress6".equalsIgnoreCase(propertyName))
         {
         	return propGroupAddress6;
         }
-        else if("dataType6".equalsIgnoreCase(propertyName))
-        {
-        	return propDataType6;
-        }
         else if("dataValue6".equalsIgnoreCase(propertyName))
         {
         	return propDataValue6;
+        }
+        else if("DPTEvent6".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTEvent6;
         }
         else if("groupAddressTrigger1".equalsIgnoreCase(propertyName))
         {
@@ -376,6 +530,102 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
         else if("groupAddressTrigger6".equalsIgnoreCase(propertyName))
         {
         	return propGroupAddressTrigger6;
+        }
+        else if("groupAddressSlider1".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressSlider1;
+        }
+        else if("DPTSlider1".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTSlider1;
+        }
+        else if("groupAddressSlider2".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressSlider2;
+        }
+        else if("DPTSlider2".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTSlider2;
+        }
+        else if("groupAddressSlider3".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressSlider3;
+        }
+        else if("DPTSlider3".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTSlider3;
+        }
+        else if("groupAddressSlider4".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressSlider4;
+        }
+        else if("DPTSlider4".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTSlider4;
+        }
+        else if("groupAddressSlider5".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressSlider5;
+        }
+        else if("DPTSlider5".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTSlider5;
+        }
+        else if("groupAddressSlider6".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressSlider6;
+        }
+        else if("DPTSlider6".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTSlider6;
+        }
+        else if("groupAddressOutput1".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressOutput1;
+        }
+        else if("DPTOutput1".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTOutput1;
+        }
+        else if("groupAddressOutput2".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressOutput2;
+        }
+        else if("DPTOutput2".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTOutput2;
+        }
+        else if("groupAddressOutput3".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressOutput3;
+        }
+        else if("DPTOutput3".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTOutput3;
+        }
+        else if("groupAddressOutput4".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressOutput4;
+        }
+        else if("DPTOutput4".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTOutput4;
+        }
+        else if("groupAddressOutput5".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressOutput5;
+        }
+        else if("DPTOutput5".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTOutput5;
+        }
+        else if("groupAddressOutput6".equalsIgnoreCase(propertyName))
+        {
+        	return propGroupAddressOutput6;
+        }
+        else if("DPTOutput6".equalsIgnoreCase(propertyName))
+        {
+        	return propDPTOutput6;
         }
         return null;
     }
@@ -409,97 +659,121 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
         	oldValue = propGroupAddress1;
         	propGroupAddress1 = newValue.toString();
         }
-        else if("dataType1".equalsIgnoreCase(propertyName)) {
-        	oldValue = propDataType1;
-        	propDataType1 = newValue.toString();
-        }
         else if("dataValue1".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataValue1;
         	propDataValue1 = newValue.toString();
+        }
+        else if("DPTEvent1".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTEvent1;
+        	propDPTEvent1 = newValue.toString();
         }
         else if("groupAddress2".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddress2;
         	propGroupAddress2 = newValue.toString();
         }
-        else if("dataType2".equalsIgnoreCase(propertyName)) {
-        	oldValue = propDataType2;
-        	propDataType2 = newValue.toString();
-        }
         else if("dataValue2".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataValue2;
         	propDataValue2 = newValue.toString();
+        }
+        else if("DPTEvent2".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTEvent2;
+        	propDPTEvent2 = newValue.toString();
         }
         else if("groupAddress3".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddress3;
         	propGroupAddress3 = newValue.toString();
         }
-        else if("dataType3".equalsIgnoreCase(propertyName)) {
-        	oldValue = propDataType3;
-        	propDataType3 = newValue.toString();
-        }
         else if("dataValue3".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataValue3;
         	propDataValue3 = newValue.toString();
+        }
+        else if("DPTEvent3".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTEvent3;
+        	propDPTEvent3 = newValue.toString();
         }
         else if("groupAddress4".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddress4;
         	propGroupAddress4 = newValue.toString();
         }
-        else if("dataType4".equalsIgnoreCase(propertyName)) {
-        	oldValue = propDataType4;
-        	propDataType4 = newValue.toString();
-        }
         else if("dataValue4".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataValue4;
         	propDataValue4 = newValue.toString();
+        }
+        else if("DPTEvent4".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTEvent4;
+        	propDPTEvent4 = newValue.toString();
         }
         else if("groupAddress5".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddress5;
         	propGroupAddress5 = newValue.toString();
         }
-        else if("dataType5".equalsIgnoreCase(propertyName)) {
-        	oldValue = propDataType5;
-        	propDataType5 = newValue.toString();
-        }
         else if("dataValue5".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataValue5;
         	propDataValue5 = newValue.toString();
+        }
+        else if("DPTEvent5".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTEvent5;
+        	propDPTEvent5 = newValue.toString();
         }
         else if("groupAddress6".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddress6;
         	propGroupAddress6 = newValue.toString();
         }
-        else if("dataType6".equalsIgnoreCase(propertyName)) {
-        	oldValue = propDataType6;
-        	propDataType6 = newValue.toString();
-        }
         else if("dataValue6".equalsIgnoreCase(propertyName)) {
         	oldValue = propDataValue6;
         	propDataValue6 = newValue.toString();
+        }
+        else if("DPTEvent6".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTEvent6;
+        	propDPTEvent6 = newValue.toString();
         }
         else if("groupAddressSlider1".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddressSlider1;
         	propGroupAddressSlider1 = newValue.toString();
         }
+        else if("DPTSlider1".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTSlider1;
+        	propDPTSlider1 = newValue.toString();
+        }
         else if("groupAddressSlider2".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddressSlider2;
         	propGroupAddressSlider2 = newValue.toString();
+        }
+        else if("DPTSlider2".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTSlider2;
+        	propDPTSlider2 = newValue.toString();
         }
         else if("groupAddressSlider3".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddressSlider3;
         	propGroupAddressSlider3 = newValue.toString();
         }
+        else if("DPTSlider3".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTSlider3;
+        	propDPTSlider3 = newValue.toString();
+        }
         else if("groupAddressSlider4".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddressSlider4;
         	propGroupAddressSlider4 = newValue.toString();
+        }
+        else if("DPTSlider4".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTSlider4;
+        	propDPTSlider4 = newValue.toString();
         }
         else if("groupAddressSlider5".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddressSlider5;
         	propGroupAddressSlider5 = newValue.toString();
         }
+        else if("DPTSlider5".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTSlider5;
+        	propDPTSlider5 = newValue.toString();
+        }
         else if("groupAddressSlider6".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddressSlider6;
         	propGroupAddressSlider6 = newValue.toString();
+        }
+        else if("DPTSlider6".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTSlider6;
+        	propDPTSlider6 = newValue.toString();
         }
         else if("groupAddressTrigger1".equalsIgnoreCase(propertyName)) {
         	oldValue = propGroupAddressTrigger1;
@@ -525,6 +799,54 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
         	oldValue = propGroupAddressTrigger6;
         	propGroupAddressTrigger6 = newValue.toString();
         }
+        else if("groupAddressOutput1".equalsIgnoreCase(propertyName)) {
+        	oldValue = propGroupAddressOutput1;
+        	propGroupAddressOutput1 = newValue.toString();
+        }
+        else if("DPTOutput1".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTOutput1;
+        	propDPTOutput1 = newValue.toString();
+        }
+        else if("groupAddressOutput2".equalsIgnoreCase(propertyName)) {
+        	oldValue = propGroupAddressOutput2;
+        	propGroupAddressOutput2 = newValue.toString();
+        }
+        else if("DPTOutput2".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTOutput2;
+        	propDPTOutput2 = newValue.toString();
+        }
+        else if("groupAddressOutput3".equalsIgnoreCase(propertyName)) {
+        	oldValue = propGroupAddressOutput3;
+        	propGroupAddressOutput3 = newValue.toString();
+        }
+        else if("DPTOutput3".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTOutput3;
+        	propDPTOutput3 = newValue.toString();
+        }
+        else if("groupAddressOutput4".equalsIgnoreCase(propertyName)) {
+        	oldValue = propGroupAddressOutput4;
+        	propGroupAddressOutput4 = newValue.toString();
+        }
+        else if("DPTOutput4".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTOutput4;
+        	propDPTOutput4 = newValue.toString();
+        }
+        else if("groupAddressOutput5".equalsIgnoreCase(propertyName)) {
+        	oldValue = propGroupAddressOutput5;
+        	propGroupAddressOutput5 = newValue.toString();
+        }
+        else if("DPTOutput5".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTOutput5;
+        	propDPTOutput5 = newValue.toString();
+        }
+        else if("groupAddressOutput6".equalsIgnoreCase(propertyName)) {
+        	oldValue = propGroupAddressOutput6;
+        	propGroupAddressOutput6 = newValue.toString();
+        }
+        else if("DPTOutput6".equalsIgnoreCase(propertyName)) {
+        	oldValue = propDPTOutput6;
+        	propDPTOutput6 = newValue.toString();
+        }
         
         return oldValue;
     }
@@ -537,16 +859,14 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			String text = ConversionUtils.stringFromBytes(data);
-	    	// Logger.getAnonymousLogger().info("KNX received: " + text);
+			AstericsErrorHandling.instance.getLogger().info("KNX received: " + text);
 
     		if (text.startsWith("@KNX:")) {  			
 				try {
-					
 					StringTokenizer st = new StringTokenizer(text.substring(5)," ,#");
-			    	// Logger.getAnonymousLogger().info("Tokenizing: " + text.substring(5));
 					sendKNX(st.nextToken(),st.nextToken(),st.nextToken());
 				} catch (Exception e) {
-					Logger.getAnonymousLogger().severe(e.toString());
+					AstericsErrorHandling.instance.getLogger().severe(e.toString());
 				}
     		}
 		}
@@ -556,7 +876,7 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in1=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider1,new String("int"),Integer.toString((int)(in1)));
+            sendKNX(propGroupAddressSlider1,propertyToDPTid(propDPTSlider1),Double.toString(in1));
 		}
 	};
 	private final IRuntimeInputPort ipSlider2  = new DefaultRuntimeInputPort()
@@ -564,7 +884,7 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in2=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider2,new String("int"),Integer.toString((int)(in2)));
+            sendKNX(propGroupAddressSlider2,propertyToDPTid(propDPTSlider2),Double.toString(in2));
 		}
 	};
 	private final IRuntimeInputPort ipSlider3  = new DefaultRuntimeInputPort()
@@ -572,7 +892,7 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in3=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider3,new String("int"),Integer.toString((int)(in3)));
+            sendKNX(propGroupAddressSlider3,propertyToDPTid(propDPTSlider3),Double.toString(in3));
 		}
 	};
 	private final IRuntimeInputPort ipSlider4  = new DefaultRuntimeInputPort()
@@ -580,7 +900,7 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in4=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider4,new String("int"),Integer.toString((int)(in4)));
+            sendKNX(propGroupAddressSlider4,propertyToDPTid(propDPTSlider4),Double.toString(in4));
 		}
 	};
 	private final IRuntimeInputPort ipSlider5  = new DefaultRuntimeInputPort()
@@ -588,7 +908,7 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in5=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider5,new String("int"),Integer.toString((int)(in5)));
+            sendKNX(propGroupAddressSlider5,propertyToDPTid(propDPTSlider5),Double.toString(in5));
 		}
 	};
 	private final IRuntimeInputPort ipSlider6  = new DefaultRuntimeInputPort()
@@ -596,7 +916,7 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 		public void receiveData(byte[] data)
 		{
 			in6=ConversionUtils.doubleFromBytes(data);
-            sendKNX(propGroupAddressSlider6,new String("int"),Integer.toString((int)(in6)));
+            sendKNX(propGroupAddressSlider6,propertyToDPTid(propDPTSlider6),Double.toString(in6));
 		}
 	};
 
@@ -608,47 +928,170 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress1,propDataType1,propDataValue1);
+			sendKNX(propGroupAddress1,propertyToDPTid(propDPTEvent1),propDataValue1);
 		}
 	};
 	final IRuntimeEventListenerPort elpSend2 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress2,propDataType2,propDataValue2);
+			sendKNX(propGroupAddress2,propertyToDPTid(propDPTEvent2),propDataValue2);
 		}
 	};
 	final IRuntimeEventListenerPort elpSend3 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress3,propDataType3,propDataValue3);
+			sendKNX(propGroupAddress3,propertyToDPTid(propDPTEvent3),propDataValue3);
 		}
 	};
 	final IRuntimeEventListenerPort elpSend4 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress4,propDataType4,propDataValue4);
+			sendKNX(propGroupAddress4,propertyToDPTid(propDPTEvent4),propDataValue4);
 		}
 	};
 	final IRuntimeEventListenerPort elpSend5 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress5,propDataType5,propDataValue5);
+			sendKNX(propGroupAddress5,propertyToDPTid(propDPTEvent5),propDataValue5);
 		}
 	};
 	final IRuntimeEventListenerPort elpSend6 = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			sendKNX(propGroupAddress6,propDataType6,propDataValue6);
+			sendKNX(propGroupAddress6,propertyToDPTid(propDPTEvent6),propDataValue6);
+		}
+	};
+	
+	final IRuntimeEventListenerPort elpRead1 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			try {
+				//there is no read for groupaddress/DPT, building a new CommandDP
+				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput1), "read1");
+				dp.setDPT(0, propertyToDPTid(propDPTOutput1));
+				//Read the data, wait for the response and send it to the output port
+				if(pc != null) {
+					opData1.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
+			} catch (Exception e) {
+				AstericsErrorHandling.instance.getLogger().severe(e.toString());
+			}
+		}
+	};
+	final IRuntimeEventListenerPort elpRead2 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			try {
+				//there is no read for groupaddress/DPT, building a new CommandDP
+				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput2), "read2");
+				dp.setDPT(0, propertyToDPTid(propDPTOutput2));
+				//Read the data, wait for the response and send it to the output port
+				if(pc != null) {
+					opData2.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
+			} catch (Exception e) {
+				AstericsErrorHandling.instance.getLogger().severe(e.toString());
+			}
+		}
+	};
+	final IRuntimeEventListenerPort elpRead3 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			try {
+				//there is no read for groupaddress/DPT, building a new CommandDP
+				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput3), "read3");
+				dp.setDPT(0, propertyToDPTid(propDPTOutput3));
+				//Read the data, wait for the response and send it to the output port
+				if(pc != null) {
+					opData3.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
+			} catch (Exception e) {
+				AstericsErrorHandling.instance.getLogger().severe(e.toString());
+			}
+		}
+	};
+	final IRuntimeEventListenerPort elpRead4 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			try {
+				//there is no read for groupaddress/DPT, building a new CommandDP
+				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput4), "read4");
+				dp.setDPT(0, propertyToDPTid(propDPTOutput4));
+				//Read the data, wait for the response and send it to the output port
+				if(pc != null) {
+					opData4.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
+			} catch (Exception e) {
+				AstericsErrorHandling.instance.getLogger().severe(e.toString());
+			}
+		}
+	};
+	final IRuntimeEventListenerPort elpRead5 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			try {
+				//there is no read for groupaddress/DPT, building a new CommandDP
+				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput5), "read5");
+				dp.setDPT(0, propertyToDPTid(propDPTOutput5));
+				//Read the data, wait for the response and send it to the output port
+				if(pc != null) {
+					opData5.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
+			} catch (Exception e) {
+				AstericsErrorHandling.instance.getLogger().severe(e.toString());
+			}
+		}
+	};
+	final IRuntimeEventListenerPort elpRead6 = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			try {
+				//there is no read for groupaddress/DPT, building a new CommandDP
+				CommandDP dp = new CommandDP(new GroupAddress(propGroupAddressOutput6), "read6");
+				dp.setDPT(0, propertyToDPTid(propDPTOutput6));
+				//Read the data, wait for the response and send it to the output port
+				if(pc != null) {
+					opData6.sendData(pc.read(dp).getBytes());
+				} else {
+					AstericsErrorHandling.instance.getLogger().info("KNX == null, not connected");
+				}
+			} catch (Exception e) {
+				AstericsErrorHandling.instance.getLogger().severe(e.toString());
+			}
 		}
 	};
 
-	
-	
+	/**
+	 * Convert a property string to DPT id
+	 * @param s property string
+	 * @return DPT id
+	 */
+	private String propertyToDPTid(String s) {
+		String[] res = s.split(Pattern.quote("("));
+		String ret = res[res.length-1];
+		return ret.substring(0, ret.length()-1);
+	}
 	
 
      /**
@@ -694,68 +1137,85 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
        */
       private void openKNXconnection() {
 	   		try {
-	   			netLinkIp = new KNXNetworkLinkIP(KNXNetworkLinkIP.TUNNEL, 
+	   			AstericsErrorHandling.instance.getLogger().info("Try to open KNX connection");
+	   			netLinkIp = new KNXNetworkLinkIP(KNXNetworkLinkIP.TUNNELING, 
 	   					new InetSocketAddress(InetAddress.getByName(propLocalIP), 0),
-	   					new InetSocketAddress(InetAddress.getByName(propKnxNetIP),KNXnetIPConnection.IP_PORT),
+	   					new InetSocketAddress(InetAddress.getByName(propKnxNetIP),KNXnetIPConnection.DEFAULT_PORT),
 	   					propNAT, new TPSettings(false));
 	   			pc = new ProcessCommunicatorImpl(netLinkIp);
-	   			Logger.getAnonymousLogger().info("KNX connection opened");
+	   			AstericsErrorHandling.instance.getLogger().info("KNX connection opened");
 	   			
-	   			
-	   			netLinkIp.addLinkListener(new NetworkLinkListener() {
+	   			pc.addProcessListener(new ProcessListener() {
+
 					@Override
-					public void confirmation(FrameEvent arg0) {
+					public void detached(DetachEvent e) {
+						System.out.println(e.getSource().toString() + "-DETACH");
 					}
 
 					@Override
-					public void indication(FrameEvent arg0) {
-					//	System.out.println("srcadress " + arg0.getSource());
-					//	System.out.println(arg0.getSource().getClass());
-					//	System.out.println("targetadresse "
-					//			+ ((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination());
-						
-						GroupAddress derandere = new GroupAddress (2821);
-						GroupAddress bewegungsmelder= new GroupAddress (2307);
-						GroupAddress bewegungsmelder2= new GroupAddress (2307);
-					//	if (derandere.equals(bewegungsmelder)){System.out.println("yes ");}
-						try {
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger1))){
-							System.out.println("matching address 1 ");
+					public void groupWrite(ProcessEvent e) {
+						//if something happens on the given groupadresses, raise an event
+						if(e.getDestination().toString().equals(propGroupAddressTrigger1)) {
 							runtimeEventTriggererPort1.raiseEvent();
 						}
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger2))){
-							System.out.println("matching address 2 ");
+						if(e.getDestination().toString().equals(propGroupAddressTrigger2)) {
 							runtimeEventTriggererPort2.raiseEvent();
 						}
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger3))){
-							System.out.println("matching address 3 ");
+						if(e.getDestination().toString().equals(propGroupAddressTrigger3)) {
 							runtimeEventTriggererPort3.raiseEvent();
 						}
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger4))){
-							System.out.println("matching address 4 ");
+						if(e.getDestination().toString().equals(propGroupAddressTrigger4)) {
 							runtimeEventTriggererPort4.raiseEvent();
 						}
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger5))){
-							System.out.println("matching address 5 ");
+						if(e.getDestination().toString().equals(propGroupAddressTrigger5)) {
 							runtimeEventTriggererPort5.raiseEvent();
 						}
-						if(((tuwien.auto.calimero.cemi.CEMILData)arg0.getFrame()).getDestination().equals(new GroupAddress(propGroupAddressTrigger6))){
-							System.out.println("matching address 6 ");
+						if(e.getDestination().toString().equals(propGroupAddressTrigger6)) {
 							runtimeEventTriggererPort6.raiseEvent();
 						}
-						} catch (Exception e) {
-			   				Logger.getAnonymousLogger().severe(e.toString());
-			   			}
+						
+						//check for any output port data (corresponding to the property: propGroupAddressOutputx)
+						try {
+							if(e.getDestination().toString().equals(propGroupAddressOutput1)) {
+								DPTXlator trans = TranslatorTypes.createTranslator(0, propertyToDPTid(propDPTOutput1));
+								trans.setData(e.getASDU());
+								opData1.sendData(trans.getValue().getBytes());
+							}
+							if(e.getDestination().toString().equals(propGroupAddressOutput2)) {
+								DPTXlator trans = TranslatorTypes.createTranslator(0, propertyToDPTid(propDPTOutput2));
+								trans.setData(e.getASDU());
+								opData2.sendData(trans.getValue().getBytes());
+							}
+							if(e.getDestination().toString().equals(propGroupAddressOutput3)) {
+								DPTXlator trans = TranslatorTypes.createTranslator(0, propertyToDPTid(propDPTOutput3));
+								trans.setData(e.getASDU());
+								opData3.sendData(trans.getValue().getBytes());
+							}
+							if(e.getDestination().toString().equals(propGroupAddressOutput4)) {
+								DPTXlator trans = TranslatorTypes.createTranslator(0, propertyToDPTid(propDPTOutput4));
+								trans.setData(e.getASDU());
+								opData4.sendData(trans.getValue().getBytes());
+							}
+							if(e.getDestination().toString().equals(propGroupAddressOutput5)) {
+								DPTXlator trans = TranslatorTypes.createTranslator(0, propertyToDPTid(propDPTOutput5));
+								trans.setData(e.getASDU());
+								opData5.sendData(trans.getValue().getBytes());
+							}
+							if(e.getDestination().toString().equals(propGroupAddressOutput6)) {
+								DPTXlator trans = TranslatorTypes.createTranslator(0, propertyToDPTid(propDPTOutput6));
+								trans.setData(e.getASDU());
+								opData6.sendData(trans.getValue().getBytes());
+							}
+						} catch (KNXException e1) {
+							AstericsErrorHandling.instance.getLogger().severe(e1.toString());
+						}
 					}
-
-					@Override
-					public void linkClosed(CloseEvent arg0) {
-					}
-				});
-
+	   				
+	   				
+	   			});
 	   		} catch (Exception e) {
 	   			netLinkIp = null;
-	   			Logger.getAnonymousLogger().severe(e.toString());
+	   			AstericsErrorHandling.instance.getLogger().severe(e.toString());
 	   		}
        }
       
@@ -763,49 +1223,32 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
        * closes a connection to a KNX/IP router.
        */
        private void closeKNXconnection () {
-   		if (netLinkIp != null) {
-   			netLinkIp.close();
-   			Logger.getAnonymousLogger().info("KNX connection closed");
-   		}
+    	   if(pc != null) {
+    		   pc.detach();
+    	   }
+    	   if (netLinkIp != null) {
+    		   	netLinkIp.close();
+    		   	AstericsErrorHandling.instance.getLogger().info("KNX connection closed");
+   			}
        }
        
        /**
         * sends a group/type/value command  to a KNX/IP router via the Calimero library.
         */
        private void sendKNX(String groupaddress, String type, String value) {
-
    		if (netLinkIp != null) {
    			try {
-   		    	if (type.equalsIgnoreCase("string")) {
-   					pc.write(new GroupAddress(groupaddress), value);	
-   				}
-   				else if (type.equalsIgnoreCase("boolean")) {
-   					if (value.equalsIgnoreCase("1")) {
-   						pc.write(new GroupAddress(groupaddress), true);
-   					}
-   					else if (value.equalsIgnoreCase("0")) {
-   						pc.write(new GroupAddress(groupaddress), false);
-   					}
-   				}
-   				else if (type.equalsIgnoreCase("int")) {
-   					Integer i = new Integer(value);
-   					pc.write(new GroupAddress(groupaddress), i, ProcessCommunicator.UNSCALED);
-   				}
-   				else if (type.equalsIgnoreCase("float")) {
-   					Float f = new Float(value);
-   					pc.write(new GroupAddress(groupaddress), f);
-   				}
-   		
-   		    	Logger.getAnonymousLogger().info("sent value: " + value + " type: " + type + " to " + groupaddress);
-   		    	
+   				DPTXlator trans = TranslatorTypes.createTranslator(0, type);
+   				trans.setValue(value);
+   				pc.write(new GroupAddress(groupaddress), Priority.NORMAL, trans);
+
+   				AstericsErrorHandling.instance.getLogger().info("sent value: " + value + " type: " + type + " to " + groupaddress);
    			} catch (Exception e) {
-   				Logger.getAnonymousLogger().severe(e.toString());
+   				AstericsErrorHandling.instance.getLogger().severe(e.toString());
    			}
    		}
    		else {
-   			Logger.getAnonymousLogger().severe("KNX connection not open");
+   			AstericsErrorHandling.instance.getLogger().severe("KNX connection not open");
    		}   	
        }
-      
-      
 }
