@@ -64,7 +64,7 @@
     </target>
 	
 	<target name="copyLicensesAll" depends="cleanLicenses">
-        <subant target="copyLicenses">
+        <subant target="copyLicenses" failonerror="false">
           <fileset dir="." includes="**/build.xml"/>
         </subant>
 	</target>
