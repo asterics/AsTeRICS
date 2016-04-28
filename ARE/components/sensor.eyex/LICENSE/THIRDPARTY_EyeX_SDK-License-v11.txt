@@ -1,0 +1,335 @@
+TOBII ENGINE SOFTWARE DEVELOPMENT KIT 
+LICENSE AGREEMENT 
+
+
+Document version 1.1 
+
+Please note! This SDK is for interactive and gaming applications only. 
+
+If you want to develop software for analytical purposes, post processing or aggregation of eye tracking data across 
+multiple users, please contact Tobii’s licensing team at SDKlicensing@tobii.com (see section 3.4 below). 
+
+PREAMBLE 
+
+This Tobii Engine Software Development Kit License Agreement (the "Agreement") forms a legally binding contract between 
+Tobii AB (reg. No. 556613-9654), with registered office at Karlsrovägen 2D, SE-182 53, Danderyd, Sweden (“Tobii”), and 
+the party ("Licensee") entered as the licensee in the Licensee Information Box (the “Infobox”) when downloading and 
+installing Tobii’s Engine Software Development Kit (the “SDK”), previously known as the Tobii EyeX Engine Software 
+Development Kit. 
+
+An individual entering the name of a legal person (e.g. his or her employer) in the Infobox confirms the authority to bind such 
+legal person in accordance with the terms and conditions of this Agreement. An individual that does not have the necessary 
+authority, may neither accept the terms and conditions below, nor use the SDK, on behalf of the legal person. 
+
+BY DOWNLOADING AND INSTALLING THE SDK, LICENSEE (i) CONFIRMS THAT IT HAS READ AND UNDERSTOOD 
+THE TERMS AND CONDITIONS BELOW; AND (ii) AGREES TO BE BOUND BY THIS AGREEMENT. 
+
+BY DOWNLOADING AND INSTALLING THE SDK, LICENSEE FURTHER AGREES THAT (i) THIS AGREEMENT IS THE 
+COMPLETE AND EXCLUSIVE STATEMENT OF THE RIGHTS AND LIABILITY BETWEEN LICENSEE AND TOBII IN 
+RELATION TO LICENSEE’S USE OF THE SDK AND DISTRIBUTION OF THE SOFTWARE COMPONENTS (AS DEFINED 
+HEREIN); AND (ii) WITH THE EXCEPTION OF ANY TERMS OF SALE APPLICABLE TO LICENSEE’S ACQUISITION OF 
+THE SDK, THIS AGREEMENT SUPERSEDES ALL PRIOR COMMUNICATIONS (BOTH ORAL AND WRITTEN), 
+STATEMENTS IN MARKETING, ADVERTISING, OR ANY OTHER COMMUNICATION BETWEEN LICENSEE AND TOBII 
+CONCERNING THE SDK (INCLUDING THE SOFTWARE COMPONENTS). 
+
+TERMS AND CONDITIONS 
+
+
+1. Background. 
+1.1 Tobii is a supplier of hardware and software solutions for eye 
+tracking. 
+1.2 Licensee is a software vendor or individual that develops, 
+markets and licenses software solutions or intends to do the same. 
+1.3 Tobii’s SDK is a “toolbox” (including inter alia various building 
+blocks) for developing applications that support human-computer 
+interaction through real time processing of human gaze (“Gaze 
+Interaction”). 
+1.4 This Agreement is intended to provide Licensee with 
+limited rights to develop and, if applicable, distribute 
+applications for Gaze Interaction that process data from Tobii 
+Hardware and Software (as defined below) only; a separate 
+commercial license must be negotiated with Tobii if Licensee 
+desires the right to use the SDK for any other purpose. 
+2. Definitions. 
+In addition to the capitalized words defined in the Preamble and 
+Section 1, the following defined terms are used in this Agreement: 
+
+2.1 “Application” means any software application developed by 
+Licensee (i) using the SDK; and/or (ii) including the Software 
+Components (and any Updates, modifications and/or patches or hot 
+fixes thereto that Tobii may make generally available from time to 
+time). 
+2.2 “Confidential Information” shall mean all information 
+provided by Tobii under this Agreement (except information which 
+becomes publicly available without an act of default by Licensee) 
+which Tobii has declared confidential or which Licensee should have 
+understood to be confidential. 
+2.3 “Effective Date” means the date when the Licensee 
+downloads the SDK. 
+2.4 “End User” means any person or entity that sub-licenses 
+Software Components through Licensee (or Licensee’s appointed 
+resellers or distributors) as part of an Application. 
+-1
+
+
+
+2.5 “Gaze Interaction” means human-computer interaction 
+through real time processing of human gaze. 
+2.6 “Sample Code” means source code marked as "sample" in 
+the SDK. 
+2.7 “Software Components” means files (for example dynamiclink 
+library files, commonly referred to as DLL-files or .SO files), object 
+code or other components of the SDK (and any Updates, 
+modifications and/or patches or hot fixes thereto that Tobii may make 
+generally available from time to time) that are intended to be reused 
+in an Application. 
+2.8 “Tobii Hardware and Software” means eye tracking 
+hardware and software components designed or provided by Tobii 
+AB. These components may be provided directly by Tobii or 
+incorporated within a third party product. 
+2.9 ”Tobii Materials” means the SDK (including the Software 
+Components) and any ideas, know-how, programs, processes, 
+designs, inventions, works and other information, which may be 
+developed or created by Tobii. 
+2.10 “Trademarks” means the registered or unregistered 
+trademarks and service marks related to the SDK or the Software 
+Components that Tobii may adopt from time to time. 
+2.11 “Updates” means (to the extent that such items are not 
+accompanied by a separate license agreement or terms of use) any 
+subsequent releases, software updates, add-on components, 
+stencils, templates, shapes, web services and/or supplements of the 
+SDK (including the Software Components) intended to replace or 
+enhance a prior release of the SDK or a Software Component. 
+3. 
+Grant of License. 
+3.1 License. Subject to the limitations specified in this Agreement, 
+Licensee is granted a limited, worldwide, royalty-free, nonassignable, 
+revocable and nonexclusive license to use the SDK 
+(including the Software Components and Sample Code) solely to 
+develop and distribute Applications for Gaze Interaction that process 
+data from Tobii Hardware and Software for the purpose of Gaze 
+Interaction. 
+3.2 Development. The Licensee may, solely for the purpose of 
+developing Applications as specified in Section 3.1 above: 
+3.2.1 Install and use Software Components on computers owned 
+and controlled by Licensee; and 
+3.2.2 Distribute a reasonable amount of copies of the documentation 
+of the SDK among Licensee’s employees and consultants; and 
+3.2.3 Incorporate the Software Components into the developed 
+Applications; and 
+3.2.4 Modify and copy the source code form or object form of Sample 
+Code. 
+3.3 Distribution. The Licensee may, solely for the purpose of 
+distributing an Application as solely specified in Section 3.1 above, 
+copy and distribute any portion of the Software Components and 
+Sample Code as part of the Application necessary for the Application 
+to function for Gaze Interaction, intended to be sold, licensed or 
+otherwise disposed of by Licensee. 
+3.4 
+Limitations. 
+3.4.1 Not for analytical use. Unless Licensee enters into a separate 
+agreement with Tobii, the SDK may not be used to develop and 
+distribute software for analytical purposes, post processing or 
+aggregation of eye tracking data across multiple users. 
+Specifically, this means that such software may not (i) transfer 
+data about eye movements, behavior, intention or attention 
+generated by or derived from the Software Components to 
+another computing device, network, display or printer; or (ii) 
+store data about eye movements, behavior, intention or 
+attention generated by or derived from the Software 
+Components on any persistent storage media (except for 
+calibration files and data used for accuracy-enhancing filters), 
+i.e. data may only be stored in primary memory and only while 
+it is being processed. 
+3.4.2 Copy, etc. Licensee may not (i) copy (except as provided for in 
+this Agreement or for backup purposes), modify, adapt, 
+decompile, reverse engineer, disassemble, or create derivative 
+works of the SDK or any part thereof (including the Software 
+Components); or (ii) use the SDK to build Applications that may 
+be used as an SDK providing API’s that use functionality from 
+the Software Components. 
+3.4.3 No other distribution. 
+Except for the Software Components 
+incorporated in an Application, Licensee may not under this 
+Agreement distribute, sub-license or combine/bundle any part 
+of the SDK (including the Software Components) with other 
+software, or distribute any software or device incorporating any 
+part of the SDK. 
+3.4.4 Updates. 
+The terms of this Agreement will apply to any 
+Updates, modifications and/or patches or hot fixes that Tobii 
+makes available to Licensee. Licensee agrees that Updates 
+may require Licensee to change or update the Applications. 
+Updates may also affect Licensee’s ability to use, access or 
+interact with the SDK. 
+3.4.5 No high risk use. 
+The Software Components are not fault-
+tolerant. Accordingly, the Software Components are not 
+designed or intended for use in any software where failure or 
+fault of any kind could lead to death or serious bodily injury of 
+any person, or to severe physical or environmental damage 
+(“High Risk Use”). The SDK may only be used to develop 
+Applications that do not (and the Software Components may 
+only be distributed and sub-licensed as permitted herein if the 
+Application does not) involve High Risk Use. High Risk Use 
+(which is strictly prohibited) includes, for example, aircraft 
+navigation and control of other modes of human mass 
+transportation, control of nuclear or chemical facilities. 
+4. Support. Tobii is not obliged to support Licensee regarding the 
+use of the SDK (including the Software Components) unless a 
+separate support agreement between the parties has been entered 
+into. 
+5. Trademarks. Licensee shall not remove or alter any 
+Trademark, copyright, patent or other proprietary notices contained 
+in the SDK (including the Software Components). 
+6. Ownership. Except for the license explicitly granted herein to 
+Licensee, Tobii retains all right, title and interest in and to the Tobii 
+Materials, and all patents, copyrights, Trademarks, trade names, 
+trade secrets and other proprietary rights in or related to the Tobii 
+Materials, whether or not specifically recognized or perfected under 
+the laws of the country in which the Tobii Materials are located. 
+7. Changes. Tobii reserve the right to change in its sole discretion 
+this Agreement or the SDK at any time. Tobii may require that 
+Licensee either accepts and agrees to new or revised terms of this 
+Agreement, or, if Licensee does not agree to the new or revised 
+terms, ceases or terminates the use of the SDK. Licensee’s 
+continued use of the SDK after changes to this Agreement take effect 
+will constitute Licensee’s acceptances of the changed terms. If 
+Licensee does not agree to a change, Licensee must stop using the 
+SDK and terminate this Agreement. For the avoidance of doubt, 
+changed terms do not take retroactive effect with respect to any 
+Application developed before the change or any Application first 
+distributed before the change. 
+8. 
+Term and Termination. 
+8.1 Term. This Agreement shall become effective on the Effective 
+Date and shall continue until terminated. 
+8.2 Termination by Licensee. Licensee may terminate this 
+Agreement at any time by (i) uninstalling and destroying all copies of 
+the SDK that are in the possession, custody or control of Licensee 
+and its organization; and (ii) providing Tobii written notice thereof. 
+-2
+
+
+
+8.3 Termination by Tobii. Tobii may, at any time, terminate this 
+Agreement with Licensee for any reason or for no reason in Tobii’s 
+sole discretion and, in such a case, Licensee must immediately (i) 
+cease using the SDK; and (ii) provide Tobii written notice thereof. 
+8.4 Survival of obligations. The following obligations will survive 
+termination of the Agreement for any reason: (i) all obligations 
+relating to protection of proprietary rights; and (ii) all provisions 
+regarding the limitations of warranty, remedy and liability. 
+8.5 Effects of termination. Upon termination of this Agreement 
+for any reason, all rights and licenses granted hereunder shall 
+terminate and revert to Tobii. Any termination of this Agreement 
+except for termination due to Licensee’s breach of contract will not 
+affect Licensee’s right, subject to Licensee´s continued compliance 
+with Licensee’s obligations under this Agreement, to continue to 
+distribute versions of the Applications created and first distributed 
+before termination, and will not affect the right of the End Users to 
+continue using such versions of the Application, both of which rights 
+will survive termination. 
+9. 
+Indemnification. 
+Licensee shall defend and hold Tobii and its subsidiaries harmless 
+from losses finally arising from any third party claim that an 
+Application infringes any patent, trade secret or copyright of any third 
+party or resulting from Licensee’s breach of this Agreement; provided 
+that, Licensee shall not have any obligation to indemnify Tobii or its 
+subsidiary if such claim is caused by one or several Software 
+Components as provided by Tobii, provided that: (a) Licensee is 
+promptly notified in writing of the claim; (b) Licensee has, subject to 
+the below, sole control in the defense of any claim and any settlement 
+negotiations attendant thereto; and (c) Tobii provides Licensee, at 
+Licensee’s expense, all reasonable assistance, information and 
+cooperation to defend or settle the claim. Licensee shall not enter into 
+any settlement of any claim covered by the above indemnification 
+without the prior approval of Tobii, which approval will not be 
+unreasonably withheld. Tobii shall have the right to retain separate 
+counsel and participate in the defense of the action or claim at its own 
+expense. 
+
+10. 
+Representations and warranties. 
+10.1 Tobii’s Representations. Tobii makes the following 
+representations and warranties to Licensee: 
+10.1.1 Tobii has all rights necessary under Swedish law to grant to 
+Licensee the various rights set forth in this Agreement and 
+Tobii has not previously granted any rights in the SDK 
+(including the Software Components) to any third party which 
+limit the rights granted to Licensee herein. 
+10.2 Licensee's Representations. Licensee makes the following 
+representations and warranties to Tobii: 
+10.2.1 Each of Licensee’s employees, consultants or partners who 
+will have access to any Confidential Information of Tobii, will 
+have signed, before beginning such involvement, Licensee’s 
+standard form agreement with respect to proprietary rights and 
+confidentiality; and 
+** 
+
+10.2.2 Licensee has full corporate power to enter into this Agreement 
+and to carry out its obligations hereunder. 
+10.2.3 
+Licensee will use the SDK only in accordance with all 
+accompanying documentation, in the manner expressly 
+permitted by this Agreement, and Licensee use of the SDK, 
+and the marketing, sales and distribution of the Applications, 
+will be in compliance with all applicable laws and regulations. 
+Licensee will not develop any Application which would commit 
+or facilitate the commission of a crime, or other tortious, 
+unlawful, or illegal act. 
+10.3 Disclaimer. EXCEPT AS SPECIFICALLY PROVIDED 
+HEREIN TOBII MAKES NO WARRANTY, EITHER EXPRESS OR 
+IMPLIED, RELATING TO THE SDK OR THE SOFTWARE 
+COMPONENTS, AND TOBII FURTHER EXPRESSLY DISCLAIMS, 
+TO THE EXTENT PERMITTED BY APPLICABLE LAW, ALL 
+WARRANTIES AND CONDITIONS OF ANY KIND RELATED TO 
+THE SDK OR THE SOFTWARE COMPONENTS, WHETHER 
+EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO ANY 
+IMPLIED WARRANTIES AND CONDITIONS OF 
+MERCHANTABILITY OR FITNESS FOR A PARTICULAR 
+PURPOSE. 
+
+11. 
+Limitation of Liability. 
+EXCEPT FOR GROSS NEGLIGENCE, WILLFUL INTENT, AND 
+EXCEPT AS PROVIDED IN SECTION 9 ABOVE, NEITHER PARTY 
+WILL BE LIABLE TO THE OTHER PARTY FOR INDIRECT OR 
+CONSEQUENTIAL DAMAGES OR THE LOSS OF ANTICIPATED 
+PROFITS ARISING OUT OF OR RELATING TO ANY BREACH OF 
+THIS AGREEMENT BY SUCH PARTY, EVEN IF SUCH PARTY IS 
+NOTIFIED OF THE POSSIBILITY OF SUCH DAMAGES ARISING. 
+
+12. 
+General. 
+12.1 Waiver; severability. Except as may be affirmed in writing by 
+the parties, no failure or delay by either party in exercising any right, 
+power or privilege hereunder will operate as a waiver or preclude 
+further exercise thereof. If any provision of this Agreement shall be 
+held by a court of competent jurisdiction to be contrary to law that 
+provision will be enforced to the maximum extent possible and the 
+remaining provisions of this Agreement will remain in full force and 
+effect. 
+12.2 Governing law. This Agreement shall be construed and 
+enforced in accordance with the laws of Sweden, without giving effect 
+to its conflict of law provisions. 
+12.3 Dispute resolution. Any dispute, controversy or claim arising 
+out of or in connection with this Agreement or the breach, termination 
+or invalidity thereof, shall be finally settled by arbitration administered 
+at the Arbitration Institute of the Stockholm Chamber of Commerce 
+(the “Institute”). The place of arbitration shall be Stockholm and the 
+arbitration shall be conducted in English language. The Rules of the 
+Institute shall apply, and the Institute shall decide whether the tribunal 
+shall be composed of one or three arbitrators. At the option of either 
+party, and if the amount in dispute does not exceed EUR 500,000 the 
+Institute's Rules for Expedited Arbitrations shall apply. The amount in 
+dispute includes the claimant's claims in the Request for Arbitration 
+and any counterclaims in the respondent's reply to the Request for 
+Arbitration. 
+* 
+
+-3
+
+
+

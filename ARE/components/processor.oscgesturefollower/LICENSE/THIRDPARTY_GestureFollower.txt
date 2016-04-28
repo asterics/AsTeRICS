@@ -1,0 +1,7 @@
+The GestureFollower stand-alone application by Frederic Bevilacqua, 
+Riccardo Borghesi, Norbert Schnell and Bruno Zamborlin 
+has been provided by IRCAM / Centre Pomidou for the exclusive use 
+with the AsTeRICS software and cannot be sold or redistributed.
+It uses MuBu et FTM.
+For more information please refer to 
+http://imtr.ircam.fr/imtr/Gesture_Follower
