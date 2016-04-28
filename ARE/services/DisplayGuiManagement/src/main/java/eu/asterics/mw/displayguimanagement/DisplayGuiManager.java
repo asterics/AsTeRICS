@@ -432,8 +432,7 @@ public class DisplayGuiManager implements IAREEventListener, SystemChangeListene
 		}
 	}
 
-
-
+	
 
 	@Override
 	public void preDeployModel() 
@@ -447,12 +446,37 @@ public class DisplayGuiManager implements IAREEventListener, SystemChangeListene
 		//rootCanvas.displayCanvas(mainMenuCanvas);
 	}
 
+
 	@Override
 	public void preStartModel() {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void postStartModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void preStopModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void prePauseModel() {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void postPauseModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public void postStopModel() {
 		if (usbChanged)
@@ -460,6 +484,25 @@ public class DisplayGuiManager implements IAREEventListener, SystemChangeListene
 			debugMessage("DisplayGuiManager.postStopModel() with usbChanged");
 		}
 		debugMessage("DisplayGuiManager.postStopModel()");
+	}
+	
+
+	@Override
+	public void preResumeModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postResumeModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void preBundlesInstalled() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	@Override

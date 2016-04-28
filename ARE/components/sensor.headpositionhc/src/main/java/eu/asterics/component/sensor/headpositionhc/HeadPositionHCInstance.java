@@ -394,7 +394,7 @@ public class HeadPositionHCInstance extends AbstractRuntimeComponentInstance imp
   			SharedFrameGrabber.instance.registerGrabbedImageListener(Integer.toString(this.propCameraID), this);
   			SharedFrameGrabber.instance.startGrabbing(Integer.toString(this.propCameraID));
 
-			instanceId=DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(this);
+			instanceId=DeploymentManager.instance.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(this);
   			Point pos = AREServices.instance.getComponentPosition(this);
   			Dimension d = AREServices.instance.getAvailableSpace(this);
 

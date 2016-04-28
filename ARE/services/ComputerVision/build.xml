@@ -29,7 +29,7 @@
 	</target>
 
 	<target name="compile" depends="init, merge-jars" description="compile the source ">
-		<javac  includeantruntime="false" srcdir="${src.java}" destdir="${build}"  verbose="true" debug="${debug}" 
+		<javac source="${javac.source}" target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build}"  verbose="true" debug="${debug}" 
            classpath="${classpath}">
 			<classpath refid="asterics.classpath"/>
 		</javac>
@@ -70,4 +70,6 @@
 		</jar>
 	</target>
 
+	<import file="../../imported.xml"/>
+    <include file="../../included.xml"/>
 </project>

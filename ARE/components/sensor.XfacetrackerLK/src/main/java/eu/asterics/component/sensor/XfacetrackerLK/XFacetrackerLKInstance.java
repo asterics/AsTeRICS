@@ -347,7 +347,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			SharedFrameGrabber.instance.registerGrabbedImageListener(propCameraSelection, this);
 			//Create a Canvas/Frame to draw on (this is platform dependant and does not work on Android)
 			
-			instanceId=DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(this);
+			instanceId=DeploymentManager.instance.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(this);
 			String title=instanceId;
 			if(propTitleVideoFrameWindow!=null && propTitleVideoFrameWindow!="") {
 				title=propTitleVideoFrameWindow;

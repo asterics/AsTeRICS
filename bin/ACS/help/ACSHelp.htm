@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="styles/help.css">
+		<title>ACS Help</title>
+
+		<!-- external libraries: -->
+		<script type="text/javascript" language="javascript" src="lib/jquery-2.1.4.js"></script>
+		<script type="text/javascript" language="javascript" src="lib/jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+		<link rel="stylesheet" type="text/css" href="lib/jquery-ui-1.11.4.custom/jquery-ui.css">
+  </head>
+
+  <body>
+  	<div id="page_areas">
+		<h6 class="hidden">Page Areas:</h6>
+		<ul>
+			<li><a href="#content" accesskey="0">Content (Accesskey 0)</a></li>
+			<li><a href="#navigation" accesskey="1">Navigation (Accesskey 1)</a></li>
+		</ul>
+	</div>
+	
+	<div id="container">
+
+<!-- ****************************************************** header *********************************************************** -->	
+		<div id="header">
+			<img src="img/asterics_logo.png" alt="Logo: AsTeRICS Project" title="Logo: AsTeRICS Project" class="headerLogo" />
+			<div class="headerText">AsTeRICS Help</div>
+		</div>
+		
+<!-- ****************************************************** menu panel *********************************************************** -->
+		<div id="menuPanel">
+			<h6><a name="navigation" id="navigation"><span class="hidden">Navigation:</span></a></h6>
+			<ul id="menu" class="menuList mainList">
+				<!--Each folder in the filesystem becomes a menu item with a submenu. The components' help files must be in folders accroding to their type (sensor, processor, actuator),
+				followed by an "s", i.e. "sensors", "processors", "actuators". The second level folder names must be identical 
+				with the subtypes of the associated components. If such a subtype contain spaces, underscores "_" 
+				should be used in the folder name and substituted by spaces when generating the menu.-->
+				<li class="menuItem">
+					ACS
+					<ul class="menuList">
+						<!--Each (.htm)file becomes a menu item with a special attribute "data-filename",
+						containing the complete path below "help_files" and the complete filename. The filenames
+						must be identical with the componenttypeId of the component, without the "asterics."-prefix, and end with ".htm".
+						For the text content of each such menu item, the title attribute of the associated .htm file should be used.-->
+						<li class="menuItem" data-filename="acs/acs_basic_functions.htm">ACS Basic Functions</li>
+						<li class="menuItem" data-filename="acs/template.htm">Template</li>
+					</ul>
+				</li>
+				<li class="menuItem">
+					Sensors
+					<ul class="menuList">
+						<li class="menuItem">
+							Graphical User Interface
+							<ul class="menuList">
+								<li class="menuItem" data-filename="sensors/graphical_user_interface/buttongrid.htm">Buttongrid</li>
+								<li class="menuItem" data-filename="sensors/graphical_user_interface/slider.htm">Slider</li>
+								<li class="menuItem" data-filename="sensors/graphical_user_interface/cellboard.htm">Cellboard</li>
+							</ul>
+						</li>
+						<li class="menu-item">
+							Simulation
+							<ul class="menuList">
+								<li class="menuItem" data-filename="sensors/simulation/timer.htm">Timer</li>
+								<li class="menuItem" data-filename="sensors/simulation/keycapture.htm">Key Capture</li>
+							</ul>
+						</li>
+						<li class="menuItem">
+							Inertial Measurement
+							<ul class="menuList">
+							</ul>
+						</li>					
+					</ul>
+				</li>
+				<li class="menuItem">
+					Processors
+					<ul class="menuList">
+					</ul>
+				</li>
+				<li class="menuItem">
+					Actuators
+					<ul class="menuList">
+					</ul>
+				</li>			
+			</ul>
+		</div>
+		
+<!-- ****************************************************** content area ********************************************************* -->
+		<h6><a name="content" id="content"><span class="hidden">Content:</span></a></h6>
+		<iframe src="help_files/ACS-misc/ACS_Basic_Functions.htm" name="contentFrame" id="mainContent" onload="javascript:resizeIframe(this);"></iframe>
+		
+	</div>
+	
+<!-- ****************************************************** main script ********************************************************** -->	
+	<script>
+		$('#menu').menu({
+			select: function(evt, ui) {
+				if (ui.item[0].childElementCount === 0) {
+					var compName = ui.item.attr('data-filename');
+					$('#mainContent').attr('src', 'help_files/' + compName);
+				}
+			}
+		});
+		
+		if (window.location.search != '') {
+			$('#mainContent').attr('src', 'help_files/' + window.location.search.substr(1, window.location.search.length-1));
+		} else {
+			$('#mainContent').attr('src', 'help_files/ACS/ACS_Basic_Functions.htm');
+		}
+		
+		function resizeIframe(obj) {
+			obj.style.width = obj.contentWindow.document.body.scrollWidth + 20 + 'px';
+			obj.style.height = obj.contentWindow.document.body.offsetHeight + 50 + 'px';
+		}
+
+	</script>
+    <noscript>
+      <div>
+        Your web browser must have JavaScript enabled
+        in order for this application to display correctly.
+      </div>
+    </noscript>
+	
+   </body>
+</html>

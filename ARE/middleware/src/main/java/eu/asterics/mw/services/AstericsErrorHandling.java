@@ -50,6 +50,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.io.FileUtils;
+
 import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
@@ -95,7 +97,8 @@ import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 
 
 public class AstericsErrorHandling implements IAstericsErrorHandling{
-
+	public static final String LOG_PATH_PROPERTY="eu.asterics.mw.services.AstericsErrorHandling.logPath";
+	public static final String LOG_CONSOLE_LOGLEVEL_PROPERTY="eu.asterics.mw.services.AstericsErrorHandling.consoleLogLevel";
 	public static final AstericsErrorHandling instance = 
 			new AstericsErrorHandling();
 	private ArrayList <StatusObject> statusObjects = null;
@@ -111,7 +114,6 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 				new ArrayList<StatusObject>(); 
 	}
 
-
 	/**
 	 * This method is used by the components to report an error. It logs the error in "warning" logger
 	 *  and sets the status of the ARE to "ERROR" to denote that an error has occurred 
@@ -123,7 +125,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	{
 		if(component!=null) {
 			String componentID = DeploymentManager.instance
-					.getComponentInstanceIDFromComponentInstance(component);
+					.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component);
 			if (componentID != null) {
 				//System.out.println("componentID: "+componentID);
 				logger.warning(componentID + ": " + errorMsg);
@@ -166,7 +168,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	public void reportInfo(IRuntimeComponentInstance component, String info) 
 	{
 		String componentID = DeploymentManager.instance.
-				getComponentInstanceIDFromComponentInstance(component);
+				getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component);
 		logger.fine(componentID+": "+info);	
 
 	}
@@ -178,7 +180,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	public void reportOk(IRuntimeComponentInstance component, String info) 
 	{
 		String componentID = DeploymentManager.instance.
-				getComponentInstanceIDFromComponentInstance(component);
+				getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component);
 		logger.fine(componentID+": "+info);	
 		setStatusObject(AREStatus.OK.toString(), componentID, info);
 
@@ -195,7 +197,7 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 			String info) 
 	{
 		String componentID = DeploymentManager.instance.
-				getComponentInstanceIDFromComponentInstance(component);
+				getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component);
 		logger.fine(componentID+": "+info);		
 
 	}
@@ -295,13 +297,17 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 				}
 				
 
+				File logFolder=new File(System.getProperty(LOG_PATH_PROPERTY, ResourceRegistry.TMP_FOLDER));
+				if(!logFolder.exists()) {
+					FileUtils.forceMkdir(logFolder);
+				}
 				//Create handlers
 				severeFileHandler =
-						new FileHandler("asterics_logger_severe.log", true);
+						new FileHandler(new File(logFolder,"asterics_logger_severe.log").getPath(), true);
 				warningFileHandler =
-						new FileHandler("asterics_logger_warning.log", true);
-				infoFileHandler = new FileHandler("asterics_logger.log", true);
-				fineFileHandler = new FileHandler("asterics_logger_fine.log", true);
+						new FileHandler(new File(logFolder,"asterics_logger_warning.log").getPath(), true);
+				infoFileHandler = new FileHandler(new File(logFolder,"asterics_logger.log").getPath(), true);
+				fineFileHandler = new FileHandler(new File(logFolder,"asterics_logger_fine.log").getPath(), true);
 				consoleHandler = new ConsoleHandler ();
 
 				//Set report level of handlers
@@ -367,26 +373,27 @@ public class AstericsErrorHandling implements IAstericsErrorHandling{
 	}
 
 
-	private String getLoggerLevel() {
-		BufferedReader in;
+	private String getLoggerLevel() {		
 		String lineInput;
 		StringTokenizer tkz;
-		try {
-			in = new BufferedReader(new FileReader(LOGGER_OPTIONS));
+		String consoleLogLevel="";
+		try (BufferedReader in = new BufferedReader(new FileReader(LOGGER_OPTIONS));) {
+			
 			while ( (lineInput = in.readLine()) != null)
 			{
 				tkz = new StringTokenizer(lineInput, ":");
-				if(tkz.nextToken().compareToIgnoreCase("error_level")==0)
-					return tkz.nextToken();
+				if(tkz.nextToken().compareToIgnoreCase("error_level")==0) {
+					consoleLogLevel=tkz.nextToken();
+					break;
+				}
 			}
 			in.close();
 		}
 		catch (IOException ioe)
 		{
-			return null;
-
 		}
-		return null;
+		consoleLogLevel=System.getProperty(LOG_CONSOLE_LOGLEVEL_PROPERTY, consoleLogLevel);
+		return consoleLogLevel;
 	}
 
 	private void notifyAREEventListeners(String methodName, String msg) 
