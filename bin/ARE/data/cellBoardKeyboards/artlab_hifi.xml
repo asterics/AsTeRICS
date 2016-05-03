@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<keyboard caption="Control HiFi" rows="2" columns="5" scanning="2" textColor="0" scanColor="10" scanCycles="3" backgroundColor="11" hoverTime="1000" hoverIndicator="0" hoverFrameThickness="4" commandSeparator="" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+	<button>
+		<text>On/Off</text>
+		<icon>data/pictures/audio/system-shutdown.png</icon>
+		<action>@IRTRANS:snd asterics,hifi_operate</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Input</text>
+		<icon>data/pictures/audio/audio-input-line.png</icon>
+		<action>@IRTRANS:snd asterics,hifi_function</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Vol. Up</text>
+		<icon>data/pictures/audio/audio-volume-high.png</icon>
+		<action>@IRTRANS:snd asterics,hifi_volume_up</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Previous</text>
+		<icon>data/pictures/audio/media-skip-backward.png</icon>
+		<action>@IRTRANS:snd asterics,hifi_previous</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Next</text>
+		<icon>data/pictures/audio/media-skip-forward.png</icon>
+		<action>@IRTRANS:snd asterics,hifi_next</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Back</text>
+		<icon>data/pictures/audio/edit-undo.png</icon>
+		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>back</switchGrid>
+	</button>
+	<button>
+		<text>Vol. Mute</text>
+		<icon>data/pictures/audio/audio-volume-muted.png</icon>
+		<action>HifiVolumeMute</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Vol. Down</text>
+		<icon>data/pictures/audio/audio-volume-low.png</icon>
+		<action>@IRTRANS:snd asterics,hifi_volume_down</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Stop</text>
+		<icon>data/pictures/audio/media-playback-stop.png</icon>
+		<action>@IRTRANS:snd asterics,hifi_stop</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Play/Pause</text>
+		<icon>data/pictures/audio/media-playback-start.png</icon>
+		<action>@IRTRANS:snd asterics,hifi_play</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+</keyboard>

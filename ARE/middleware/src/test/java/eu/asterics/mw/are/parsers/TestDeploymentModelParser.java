@@ -1,5 +1,6 @@
 package eu.asterics.mw.are.parsers;
 
+import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import junit.framework.TestCase;
 
@@ -15,7 +16,7 @@ import java.io.InputStream;
 public class TestDeploymentModelParser extends TestCase
 {
     public void testParser()
-            throws FileNotFoundException, ParseException
+            throws FileNotFoundException, ParseException, BundleManagementException
     {
         final InputStream inputStream = new FileInputStream("middleware\\src\\test\\resources\\models\\test_deployment_model.xml");
         DefaultDeploymentModelParser.instance.parseModel(inputStream);

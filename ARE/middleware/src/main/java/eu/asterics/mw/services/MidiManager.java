@@ -109,22 +109,28 @@ public class MidiManager {
 				// if (mididevice != null) mididevice.close();
 				// if (synthesizer!=null) synthesizer.close();
 				
+				if (debugOutput) System.out.println("GetMididevice.");
 				midiDevice= MidiSystem.getMidiDevice(deviceInfo);
 				if ( midiDevice instanceof Synthesizer)
 				{
 					synthesizer = (Synthesizer) midiDevice;
 					if (synthesizer.isOpen()==false)
 					{
+						if (debugOutput) System.out.println("Open Synth.");
 						synthesizer.open();
 						if (debugOutput) System.out.println("Midimanager: Synthesizer "+midiDevice.getDeviceInfo().getName()+" opened.");
 					}
 					else if (debugOutput) System.out.println("Midimanager: Synthesizer "+midiDevice.getDeviceInfo().getName()+" reopened.");
 
+					if (debugOutput) System.out.println("Generate MIDI unit.");
 					MidiUnit midiUnit = new MidiUnit();
 					midiUnit.midiDevice=midiDevice;
 					midiUnit.synthesizer = synthesizer;
+					if (debugOutput) System.out.println("Get Channels.");
 					midiUnit.midiChannels =synthesizer.getChannels();
 					midiUnit.receiver= null;
+					if (debugOutput) System.out.println("Get Instruments.");
+
 					Instrument[] instrumentNames = synthesizer.getAvailableInstruments();
 					Vector<String> list = new Vector<String>();		
 					for (int i=0;(i<instrumentNames.length); i++ )
@@ -137,6 +143,8 @@ public class MidiManager {
 					synthesizer=null;
 					if (midiDevice.isOpen()==false)
 					{
+						if (debugOutput) System.out.println("Open Midi Device.");
+
 						midiDevice.open();
 						if (debugOutput) System.out.println("Midimanager: MidiDevice "+midiDevice.getDeviceInfo().getName()+" opened.");
 					}
@@ -145,6 +153,8 @@ public class MidiManager {
 						if (debugOutput) System.out.println("Midimanager: MidiDevice "+midiDevice.getDeviceInfo().getName()+" reopened.");
 					}
 					receiver =  midiDevice.getReceiver(); // MidiSystem.getReceiver();
+
+					if (debugOutput) System.out.println("Open Midi Unit.");
 
 					MidiUnit midiUnit = new MidiUnit();
 					midiUnit.midiDevice=midiDevice;

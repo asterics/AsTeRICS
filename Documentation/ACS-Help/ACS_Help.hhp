@@ -229,6 +229,7 @@ HTML\Plugins\sensors\TuioReactivision.htm
 HTML\Plugins\processors\OpenHAB.htm
 HTML\Plugins\processors\StringFilter.htm
 HTML\Plugins\sensors\HoverPanel.htm
+HTML\Plugins\sensors\OpenBCI.htm
 
 [INFOTYPES]
 

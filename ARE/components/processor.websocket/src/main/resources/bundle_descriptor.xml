@@ -6,66 +6,22 @@
                    canonical_name="eu.asterics.component.processor.websocket.WebSocketInstance">
         <type subtype="Web">processor</type>
         <singleton>false</singleton>
-        <description>This plugin uses a websocket connection to send and read data</description>
+        <description>This plugin uses a websocket connection to send and read data. The default websocket URI is ws://{hostname}:8082/ws/astericsData. You have to start the ARE with --webservice flag. You can test the connection with http://localhost:8082/
+        </description>
         <ports>
 			<inputPort id="InA">
-				<description>Double Input A</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-			<inputPort id="InB">
-				<description>Double Input B</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>double</dataType>
-			</inputPort>
-			<inputPort id="InC">
-				<description>Integer Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-			<inputPort id="InD">
-				<description>Integer Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>integer</dataType>
-			</inputPort>
-			<inputPort id="InE">
-				<description>String Input D</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-			<inputPort id="InF">
-				<description>String Input F</description>
+				<description>Incoming messages are sent to the websocket as string.</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
 
 			<outputPort id="OutA">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="OutB">
-				<description>output port description</description>
-				<dataType>double</dataType>
-			</outputPort>
-			<outputPort id="OutC">
-				<description>output port description</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="OutD">
-				<description>output port description</description>
-				<dataType>integer</dataType>
-			</outputPort>
-			<outputPort id="OutE">
-				<description>output port description</description>
+				<description>Incoming messages from the websocket are sent to this output port as string.</description>
 				<dataType>string</dataType>
 			</outputPort>
-			<outputPort id="OutF">
-				<description>output port description</description>
-				<dataType>string</dataType>
-			</outputPort>
-
         </ports>
 		<events>
+		<!--
 			<eventListenerPort id="event1">
 				<description>elp description</description>
 			</eventListenerPort>
@@ -76,18 +32,10 @@
 			<eventTriggererPort id="reconnect">
 				<description>Reconnect to websockect</description>
 			</eventTriggererPort>
+			-->
 
 		</events>			
         <properties>
-			<property name="host"
-				type="string"
-				value="localhost"
-				description="hostname or ip address to use for URL"/>
-			<property name="port"
-				type="integer"
-				value="8080"
-				description="port number used for websocket"/>
-
         </properties>
 
     </componentType>

@@ -283,7 +283,7 @@ public class TimerInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-			tg.stop();
+			tg.stopAndSendData();
 		}
 	}; 
 

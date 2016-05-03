@@ -26,7 +26,7 @@ int read_file(char * templatefilepath, char* filename)
 		char filepath[1024];
 
 		strcpy(filepath,templatefilepath);
-		strcat(filepath,"templates\\");
+//		strcat(filepath,"templates\\");
 		strcat(filepath,filename);
 
 		rfile= CreateFile(filepath, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
@@ -469,11 +469,25 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 						// here goes the build script
 						// @type: actuator
 						// @name: bardisplay
-						if (!read_file(path,"template_build.xml")) break;
+
+
+						if (!read_file(path,"templates\\template_build.xml")) break;
 						replace_once ("@type",setup.plugintype);
 						replace_once ("@name",setup.pluginname);
 						write_file(actdir,"build.xml");
 
+						strcpy(tmpdir,actdir);
+						strcat(actdir,"\\LICENSE");
+						if (!CreateDirectory(actdir,NULL)) { MessageBox(NULL,actdir,"Problem creating folder", MB_OK); break; }
+
+						if (!read_file(path,"templates\\LICENSE\\LICENSE_dual.txt")) break;
+						write_file(actdir,"LICENSE_dual.txt");
+						if (!read_file(path,"templates\\LICENSE\\README.md")) break;
+						write_file(actdir,"README.md");
+						if (!read_file(path,"templates\\LICENSE\\THIRDPARTY_LibraryName_LicenseNameInclVersionInfo.txt")) break;
+						write_file(actdir,"THIRDPARTY_LibraryName_LicenseNameInclVersionInfo.txt");
+
+						strcpy (actdir,tmpdir);
 						strcat(actdir,"\\src");
 						if (!CreateDirectory(actdir,NULL)) { MessageBox(NULL,actdir,"Problem creating folder", MB_OK); break; }
 						strcat(actdir,"\\main");
@@ -485,7 +499,7 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 						if (!CreateDirectory(actdir,NULL)) { MessageBox(NULL,actdir,"Problem creating folder", MB_OK); break; }
 						// here goes the bundle descriptor
 
-						if (!read_file(path,"template_bundle_descriptor.xml")) break;
+						if (!read_file(path,"templates\\template_bundle_descriptor.xml")) break;
 						// @pluginid: asterics.BarDisplay
 						strcpy(tmpstr,"asterics.");strcat(tmpstr,setup.pluginname);
 						replace_once ("@pluginid",tmpstr);
@@ -626,7 +640,7 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 						// here goes the manifest file
 						// @bundlename: asterics-actuators.bardisplay
 						// @symbolicname: eu.asterics.component.actuator.bardisplay
-						if (!read_file(path,"template_MANIFEST.MF")) break;
+						if (!read_file(path,"templates\\template_MANIFEST.MF")) break;
 						strcpy(tmpstr,"asterics-");strcat(tmpstr,setup.plugintype);strcat(tmpstr,"s.");strcat(tmpstr,setup.pluginname);
 						convert_to_lowercase(tmpstr);
 						replace_once ("@bundlename",tmpstr);
@@ -654,7 +668,7 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 						if (!CreateDirectory(actdir,NULL)) { MessageBox(NULL,actdir,"Problem creating folder", MB_OK); break; }
 						// here go the java source files
 
-						if(!read_file(path,"template_javaInstance.java")) break;
+						if(!read_file(path,"templates\\template_javaInstance.java")) break;
 						// @symbolicname:eu.asterics.component.actuator.bardisplay
 						strcpy(tmpstr,"eu.asterics.component.");strcat(tmpstr,setup.plugintype);strcat(tmpstr,".");strcat(tmpstr,setup.pluginname);
 						convert_to_lowercase(tmpstr);
@@ -928,7 +942,7 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 
 						if (setup.hasgui)
 						{
-							if(!read_file(path,"template_GUI.java")) break;
+							if(!read_file(path,"templates\\template_GUI.java")) break;
 							// @symbolicname:eu.asterics.component.actuator.bardisplay
 							lowercase(setup.pluginname);
 							strcpy(tmpstr,"eu.asterics.component.");strcat(tmpstr,setup.plugintype);strcat(tmpstr,".");strcat(tmpstr,setup.pluginname);

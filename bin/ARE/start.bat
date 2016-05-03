@@ -71,13 +71,16 @@ set SPLASH_SWITCH=
 @IF NOT DEFINED ARE_DEBUG_STRING set SPLASH_SWITCH=-splash:images/asterics_startup.png
 
 %START_CMD% %JAVA_BIN% %ARE_DEBUG_STRING% %SPLASH_SWITCH% -Dosgi.clean=true -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%AUTOSTART_MODEL% -Deu.asterics.ARE.ServicesFiles="services.ini;services-windows.ini;%ARE_OPTIONAL_SERVICES_INI%" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console
-
-set ARE_LOG_STRING= 
+set ARE_LOG_STRING=
 set ARE_DEBUG_STRING=
 
 GOTO Quit
 
 :QuitError
 pause
+set ARE_LOG_STRING=
+set ARE_DEBUG_STRING=
 
 :Quit
+set ARE_LOG_STRING=
+set ARE_DEBUG_STRING=

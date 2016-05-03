@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="../../../main/resources/schemas/bundle_model.xsd">
+
+    <componentType id="asterics.threshold"
+                   canonical_name="eu.asterics.component.processor.threshold.ThresholdInstance">
+        <type>processor</type>
+        <singleton>false</singleton>
+        <description>Threshold Level Processor</description>
+        <ports>
+            <inputPort id="in">
+                <description>Input port A</description>
+                <multiplicity>one-to-one</multiplicity>
+                <mustBeConnected>true</mustBeConnected>
+                <dataType>integer</dataType>
+            </inputPort>
+
+            <outputPort id="out_value">
+                <description>Output of high/low value</description>
+                <dataType>integer</dataType>
+            </outputPort>
+            <outputPort id="out_bool">
+                <description>Output of boolean (true/false)</description>
+                <dataType>boolean</dataType>
+            </outputPort>
+        </ports>
+        <events>
+            <eventListenerPort id="event_in_1">
+                <description>Test 1</description>
+            </eventListenerPort>
+            <eventTriggererPort id="event_out_2">
+                <description>Test 2</description>
+            </eventTriggererPort>
+        </events>
+        <properties>
+            <property name="threshold_value"
+                      type="integer"
+                      value="10"
+                      description="the threshold level"/>
+            <property name="output_high"
+                      type="integer"
+                      value="1"
+                      description="output on value-port if true"/>
+            <property name="output_low"
+                      type="integer"
+                      value="0"
+                      description="output on value-port if false"/>
+            <property name="operation_mode"
+                      type="string"
+                      value="binary"
+                      description="binary/cutoff/deadzone"/>
+        </properties>
+    </componentType>
+
+</componentTypes>

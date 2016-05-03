@@ -1,0 +1,8 @@
+The SpeechProcessor application provides a socket connection to certain 
+functionalities of the Microsoft Speech Platform 11 API. 
+The necessary Microsoft Speech Platform 11 runtime and language packages 
+are provided by Microsoft under the respective licenses, see:
+
+http://www.microsoft.com/en-us/download/details.aspx?id=27225
+
+http://www.microsoft.com/en-us/download/details.aspx?id=27224

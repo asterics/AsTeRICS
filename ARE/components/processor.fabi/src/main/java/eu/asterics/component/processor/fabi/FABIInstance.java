@@ -287,7 +287,7 @@ public class FABIInstance extends AbstractRuntimeComponentInstance
 		{
 			return propStepsize;
 		}
-		if ("cOMPort".equalsIgnoreCase(propertyName))
+		if ("COMPort".equalsIgnoreCase(propertyName))
 		{
 			return propCOMPort;
 		}
@@ -308,7 +308,7 @@ public class FABIInstance extends AbstractRuntimeComponentInstance
 			propStepsize = Double.parseDouble((String)newValue);
 			return oldValue;
 		}
-		if ("cOMPort".equalsIgnoreCase(propertyName))
+		if ("COMPort".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propCOMPort;
 			propCOMPort = Integer.parseInt(newValue.toString());
@@ -543,14 +543,14 @@ public class FABIInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-			SetCommand("AT SAVE " + strSlotSaveName);
+			SetCommand("AT SA " + strSlotSaveName);
 		}
 	};
 	final IRuntimeEventListenerPort elpLoad = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			SetCommand("AT LOAD " + strSlotLoadName);
+			SetCommand("AT LO " + strSlotLoadName);
 		}
 	};
 	final IRuntimeEventListenerPort elpList = new IRuntimeEventListenerPort()
@@ -559,7 +559,7 @@ public class FABIInstance extends AbstractRuntimeComponentInstance
 		{
 			listReceiver = true;
 			messageReceived = false;
-			SetCommand("AT LIST");
+			SetCommand("AT LI");
 			
 			String helper = checkMessageListReceived();
 			String list = "";
@@ -576,21 +576,21 @@ public class FABIInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-			SetCommand("AT NEXT");
+			SetCommand("AT NE");
 		}
 	};
 	final IRuntimeEventListenerPort elpClear = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			SetCommand("AT CLEAR");
+			SetCommand("AT DE");
 		}
 	};
 	final IRuntimeEventListenerPort elpIdle = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			SetCommand("AT IDLE");
+			SetCommand("AT NC");
 		}
 	};
 

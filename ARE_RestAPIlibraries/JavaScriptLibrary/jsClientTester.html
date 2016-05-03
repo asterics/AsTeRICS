@@ -27,17 +27,17 @@
 				downloadDeployedModel(DDM_successCallback, DDM_errorCallback);
 			}
 			
-			function DDM_successCallback(data, HTTPstatus) { alert(data); }
+			function DDM_successCallback(data, HTTPstatus) { console.log('-'+data+'-'); }
 			function DDM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
 			//downloadModelFromFile
 			function DMF() {
-				var filename = document.getElementById("DMFfilename").value;
-				downloadModelFromFile(DMF_successCallback, DMF_errorCallback, filename);
+				var filepath = document.getElementById("DMFfilepath").value;
+				downloadModelFromFile(DMF_successCallback, DMF_errorCallback, filepath);
 			}
 			
-			function DMF_successCallback(data, HTTPstatus) { alert(data); }
+			function DMF_successCallback(data, HTTPstatus) { console.log(data); }
 			function DMF_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
@@ -53,8 +53,8 @@
 			
 			//autorun
 			function AUTO() {
-				var filename = document.getElementById("AUTOfilename").value;
-				autorun(AUTO_successCallback, AUTO_errorCallback, filename);
+				var filepath = document.getElementById("AUTOfilepath").value;
+				autorun(AUTO_successCallback, AUTO_errorCallback, filepath);
 			}
 			
 			function AUTO_successCallback(data, HTTPstatus) { alert(data); }
@@ -99,9 +99,9 @@
 
 			//storeModel
 			function STORE() {
-				var filename = document.getElementById("STOREfilename").value;
+				var filepath = document.getElementById("STOREfilepath").value;
 				var modelInXML = document.getElementById("STOREmodel").value;
-				storeModel(STORE_successCallback, STORE_errorCallback, filename, modelInXML);
+				storeModel(STORE_successCallback, STORE_errorCallback, filepath, modelInXML);
 			}
 									
 			function STORE_successCallback(data, HTTPstatus) { alert(data); }
@@ -110,8 +110,8 @@
 			
 			//deployModelFromFile
 			function DepMF() {
-				var filename = document.getElementById("DepMFfilename").value;
-				deployModelFromFile(DepMF_successCallback, DepMF_errorCallback, filename);
+				var filepath = document.getElementById("DepMFfilepath").value;
+				deployModelFromFile(DepMF_successCallback, DepMF_errorCallback, filepath);
 			}
 									
 			function DepMF_successCallback(data, HTTPstatus) { alert(data); }
@@ -120,21 +120,21 @@
 
 			//deleteModelFromFile
 			function DELETE() {
-				var filename = document.getElementById("DELETEfilename").value;
-				deleteModelFromFile(DELETE_successCallback, DELETE_errorCallback, filename);
+				var filepath = document.getElementById("DELETEfilepath").value;
+				deleteModelFromFile(DELETE_successCallback, DELETE_errorCallback, filepath);
 			}
 									
 			function DELETE_successCallback(data, HTTPstatus) { alert(data); }
 			function DELETE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
-			//downloadComponentCollection
-			function DCC() {
-				downloadComponentCollection(DCC_successCallback, DCC_errorCallback);
+			//getRuntimeComponentIds
+			function GRC() {
+				getRuntimeComponentIds(GRC_successCallback, GRC_errorCallback);
 			}
 						
-			function DCC_successCallback(data, HTTPstatus) { alert(data); }
-			function DCC_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			function GRC_successCallback(data, HTTPstatus) { alert(data); }
+			function GRC_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 
 			//listStoredModels
@@ -144,78 +144,66 @@
 						
 			function LSM_successCallback(data, HTTPstatus) { alert(data); }
 			function LSM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-
 			
-			//getInstalledComponents
-			function INSTALLED_COMPONENTS() {
-				getInstalledComponents(INSTALLED_COMPONENTS_successCallback, INSTALLED_COMPONENTS_errorCallback);
+			
+			//getComponentDescriptorsAsXml
+			function COMPONENT_DESCRIPTORS_XML() {
+				getComponentDescriptorsAsXml(COMPONENT_DESCRIPTORS_XML_successCallback, COMPONENT_DESCRIPTORS_XML_errorCallback);
 			}
 									
-			function INSTALLED_COMPONENTS_successCallback(data, HTTPstatus) {
-				console.log(JSON.stringify(data[0]));
-			}
-			function INSTALLED_COMPONENTS_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
-			
-			
-			//getInstalledComponentsDescriptor
-			function INSTALLED_COMPONENTS_DSCR() {
-				getInstalledComponentsDescriptor(INSTALLED_COMPONENTS_DSCR_successCallback, INSTALLED_COMPONENTS_DSCR_errorCallback);
-			}
-									
-			function INSTALLED_COMPONENTS_DSCR_successCallback(data, HTTPstatus) {
+			function COMPONENT_DESCRIPTORS_XML_successCallback(data, HTTPstatus) {
 				console.log(data);
 			}
-			function INSTALLED_COMPONENTS_DSCR_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
-			
-			
-			//getCreatedComponentsDescriptor
-			function CREATED_COMPONENTS_DSCR() {
-				getCreatedComponentsDescriptor(CREATED_COMPONENTS_DSCR_successCallback, CREATED_COMPONENTS_DSCR_errorCallback);
-			}
-									
-			function CREATED_COMPONENTS_DSCR_successCallback(data, HTTPstatus) {
-				console.log(data);
-			}
-			function CREATED_COMPONENTS_DSCR_errorCallback(HTTPstatus, AREerrorMessage) {
+			function COMPONENT_DESCRIPTORS_XML_errorCallback(HTTPstatus, AREerrorMessage) {
 				console.log(AREerrorMessage);
 			}
-	
 			
-			//getComponentPropertyKeys
-			function GCPK() {
-				var componentId = document.getElementById("GCPKid").value;
-				getComponentPropertyKeys(GCPK_successCallback, GCPK_errorCallback, componentId);
+					
+			//getComponentDescriptorsAsJSON
+			function COMPONENT_DESCRIPTORS_JSON() {
+				getComponentDescriptorsAsJSON(COMPONENT_DESCRIPTORS_JSON_successCallback, COMPONENT_DESCRIPTORS_JSON_errorCallback);
+			}
+									
+			function COMPONENT_DESCRIPTORS_JSON_successCallback(data, HTTPstatus) {
+				console.log(data);
+				//console.log(data[0]); //get a single component
+			}
+			function COMPONENT_DESCRIPTORS_JSON_errorCallback(HTTPstatus, AREerrorMessage) {
+				console.log(AREerrorMessage);
+			}
+			
+			
+			//getRuntimeComponentPropertyKeys
+			function GRCPK() {
+				var componentId = document.getElementById("GRCPKid").value;
+				getRuntimeComponentPropertyKeys(GRCPK_successCallback, GRCPK_errorCallback, componentId);
 			}
 						
-			function GCPK_successCallback(data, HTTPstatus) { alert(data[0]); }
-			function GCPK_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			function GRCPK_successCallback(data, HTTPstatus) { alert(data); }
+			function GRCPK_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 
-			//getComponentProperty
-			function GCP() {
-				var componentId = document.getElementById("GCPid").value;
-				var componentKey = document.getElementById("GCPkey").value;
-				getComponentProperty(GCP_successCallback, GCP_errorCallback, componentId, componentKey);
+			//getRuntimeComponentProperty
+			function GRCP() {
+				var componentId = document.getElementById("GRCPid").value;
+				var componentKey = document.getElementById("GRCPkey").value;
+				getRuntimeComponentProperty(GRCP_successCallback, GRCP_errorCallback, componentId, componentKey);
 			}
 						
-			function GCP_successCallback(data, HTTPstatus) { alert(data); }
-			function GCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			function GRCP_successCallback(data, HTTPstatus) { alert(data); }
+			function GRCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 			
-			//setComponentProperty
-			function SCP() {
-				var componentId = document.getElementById("SCPid").value;
-				var componentKey = document.getElementById("SCPkey").value;
-				var componentValue = document.getElementById("SCPvalue").value;
-				setComponentProperty(SCP_successCallback, SCP_errorCallback, componentId, componentKey, componentValue);
+			//setRuntimeComponentProperty
+			function SRCP() {
+				var componentId = document.getElementById("SRCPid").value;
+				var componentKey = document.getElementById("SRCPkey").value;
+				var componentValue = document.getElementById("SRCPvalue").value;
+				setRuntimeComponentProperty(SRCP_successCallback, SRCP_errorCallback, componentId, componentKey, componentValue);
 			}
 						
-			function SCP_successCallback(data, HTTPstatus) { alert(data); }
-			function SCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			function SRCP_successCallback(data, HTTPstatus) { alert(data); }
+			function SRCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 				
 			
 			//getRestFunctions
@@ -224,7 +212,8 @@
 			}
 						
 			function FUNCTIONS_successCallback(data, HTTPstatus) {
-				console.log(JSON.stringify(data[0]));
+				console.log(JSON.stringify(data));
+				//console.log(data[0]); //get single function
 			}
 			function FUNCTIONS_errorCallback(HTTPstatus, AREerrorMessage) {
 				alert(AREerrorMessage);
@@ -236,16 +225,16 @@
 				//var eventType = document.getElementById("subid").value;
 				var selects = document.getElementById("eTypesS");
 				var eventType = selects.options[selects.selectedIndex].value;
-				subscribe(SUBSCIBE_EVENTS_successCallback, SUBSCIBE_EVENTS_errorCallback, eventType);
+				subscribe(SUBSCRIBE_EVENTS_successCallback, SUBSCRIBE_EVENTS_errorCallback, eventType);
 			}
 					
-			function SUBSCIBE_EVENTS_successCallback(data, HTTPstatus) {
+			function SUBSCRIBE_EVENTS_successCallback(data, HTTPstatus) {
 				var eventsBox = document.getElementById("eventsBox");
 				eventsBox.innerHTML = "SSE event: " + data; 
 				console.log("SSE event: " + data);
 			}
 			
-			function SUBSCIBE_EVENTS_errorCallback(HTTPstatus, AREerrorMessage) {
+			function SUBSCRIBE_EVENTS_errorCallback(HTTPstatus, AREerrorMessage) {
 				var eventsBox = document.getElementById("eventsBox");
 				eventsBox.innerHTML = data;
 				console.log(AREerrorMessage);
@@ -267,105 +256,114 @@
 	<body>
 		<h1> Rest Client </h1>
 		
+		
+		<h4>(Place your mouse over a button to see additional info)</h4>
+		
 		<br/>
 		
 		<hr>
 		
 		<h3> ARE Repository </h3>
 		
-		<button onclick="LSM()"> List stored models </button>
+		<button onclick="LSM()" title="Description: Retrieves the model names that are saved in the ARE repository (as JSON array) &#013;Ouput: alert"> 
+			List stored models 
+		</button>
 		<br/> <br/>
 		
-		<button onclick="DMF()"> Download model from file </button>
-		<input placeholder="filename" type="text" id="DMFfilename"/>
+		<button onclick="DMF()" title="Description: Returns an xml representation of a model in a specific file &#013;Ouput: alert"> 
+			Download model from file 
+		</button>
+		<input placeholder="filepath" type="text" id="DMFfilepath"/>
 		<br/> <br/>
 					
-		<button onclick="STORE()"> Store model to file </button>
-		<input placeholder="filename" type="text" id="STOREfilename"/>
+		<button onclick="STORE()" title="Description: Stores a model in the given filepath &#013;Ouput: alert">
+			Store model to file 
+		</button>
+		<input placeholder="filepath" type="text" id="STOREfilepath"/>
 		<input placeholder="modelInXML" type="text" id="STOREmodel"/>
 		<br/> <br/>
 				
-		<button onclick="DELETE()"> Delete model </button>
-		<input placeholder="filename" type="text" id="DELETEfilename"/>
-		<br/> <br/>
-
-		<button onclick="INSTALLED_COMPONENTS()"> Get installed components </button>
+		<button onclick="DELETE()" title="Description: Deletes the model with the given filepath &#013;Ouput: alert"> Delete model </button>
+		<input placeholder="filepath" type="text" id="DELETEfilepath"/>
 		<br/> <br/>
 		
-		<button onclick="INSTALLED_COMPONENTS_DSCR()"> Get installed components descriptor </button>
+		<button onclick="COMPONENT_DESCRIPTORS_XML()" title="Description: Returns an xml string containing the descriptors of the created components with some modifications in order to be used by the webACS &#013;Ouput: console"> 
+			Get components descriptors as xml 
+		</button>
 		<br/> <br/>
 		
-		<button onclick="CREATED_COMPONENTS_DSCR()"> Get created components descriptor </button>
+		<button onclick="COMPONENT_DESCRIPTORS_JSON()" title="Description: Retrieves the exact content of the component descriptors contained in the ARE repository (as JSON array) &#013;Ouput: console"> Get components descriptors as JSON array </button>
 		<br/> <br/>
 		
 		<hr>
 		
 		<h3> ARE Runtime Handling </h3>
 		
-		<button onclick="DDM()"> Download deployed model </button>
+		<button onclick="DDM()" title="Description: Retrieves the currently deployed model in XML &#013;Ouput: alert"> Download deployed model </button>
 		<br/> <br/>
 		
-		<button onclick="UM()"> Upload model </button>
+		<button onclick="UM()" title="Description: Deploys the model given as a parameter &#013;Ouput: alert"> Upload model </button>
 		<input placeholder="modelInXML" type="text" id="UMmodel"/>
 		<br/> <br/>
 		
-		<button onclick="AUTO()"> Autorun </button>
-		<input placeholder="filename" type="text" id="AUTOfilename"/>
+		<button onclick="AUTO()" title="Description: Deploys and starts the model in the given filepath &#013;Ouput: alert"> Autorun </button>
+		<input placeholder="filepath" type="text" id="AUTOfilepath"/>
 		<br/> <br/>
 				
-		<button onclick="DepMF()"> Deploy model from file </button>
-		<input placeholder="filename" type="text" id="DepMFfilename"/>
+		<button onclick="DepMF()" title="Description: Deploys the model contained in the given filepath &#013;Ouput: alert"> Deploy model from file </button>
+		<input placeholder="filepath" type="text" id="DepMFfilepath"/>
 		<br/> <br/>
 				
-		<button onclick="DCC()"> Download model's components </button>
+		<button onclick="GRC()" title="Description: Retrieves all the component Ids contained in the currently deployed model (as JSON array) &#013;Ouput: alert"> Get runtime component Ids </button>
 		<br/> <br/>
 		
-		<button onclick="GCPK()"> Get component property keys </button>
-		<input placeholder="componentId" type="text" id="GCPKid"/>
+		<button onclick="GRCPK()" title="Description: Returns all property keys of the component with the given componentId in the currently deployed model (as JSON array) &#013;Ouput: alert"> Get runtime component property keys </button>
+		<input placeholder="componentId" type="text" id="GRCPKid"/>
 		<br/> <br/>
 		
-		<button onclick="GCP()"> Get component property </button>
-		<input placeholder="componentId" type="text" id="GCPid"/>
-		<input placeholder="componentId"type="text" id="GCPkey"/>
+		<button onclick="GRCP()" title="Description: Retrieves property value of a specific component, in the currently deployed model &#013;Ouput: alert"> Get runtime component property </button>
+		<input placeholder="componentId" type="text" id="GRCPid"/>
+		<input placeholder="componentKey"type="text" id="GRCPkey"/>
 		<br/> <br/>
 		
-		<button onclick="SCP()"> Set component property </button>
-		<input placeholder="componentId" type="text" id="SCPid"/>
-		<input placeholder="componentId" type="text" id="SCPkey"/>
-		<input placeholder="componentKeyValue" type="text" id="SCPvalue"/>
+		<button onclick="SRCP()" title="Description: Changes a property value of a specific component,  in the currently deployed model &#013;Ouput: alert"> Set runtime component property </button>
+		<input placeholder="componentId" type="text" id="SRCPid"/>
+		<input placeholder="componentKey" type="text" id="SRCPkey"/>
+		<input placeholder="componentKeyValue" type="text" id="SRCPvalue"/>
 		<br/> <br/>
 		
 		<hr>
 		<h3> Model State </h3>
 		
-		<button onclick="PAUSE()"> Pause model </button>
+		<button onclick="PAUSE()" title="Description: Changes the state of the deployed model to PAUSED &#013;Ouput: alert"> Pause model </button>
 		<br/> <br/>
 		
-		<button onclick="START()"> Start model </button>
+		<button onclick="START()" title="Description: Changes the state of the deployed model to STARTED &#013;Ouput: alert"> Start model </button>
 		<br/> <br/>
 		
-		<button onclick="STOP()"> Stop model </button>
+		<button onclick="STOP()" title="Description: Changes the state of the deployed model to STOPPED &#013;Ouput: alert"> Stop model </button>
 		<br/> <br/>
 				
-		<button onclick="MS()"> Get model state </button>
+		<button onclick="MS()" title="Description: Returns the state of the deployed model &#013;Ouput: alert"> Get model state </button>
 		<br/> <br/>
 		
 		<hr>
 		
 		<h3> Server Events </h3>
 		
-		<button onclick="SUBSCRIBE_EVENTS()"> SSE subscribe </button>
+		<button onclick="SUBSCRIBE_EVENTS()" title="Description: Opens a persistent connection with ARE and listens for Server Sent Events &#013;Ouput: box below"> SSE subscribe </button>
 		<select id="eTypesS">
-			<option value="ModelStateChanged">Model State Changed</option>
-			<option value="ModelChanged">Model Changed</option>
+			<option value="model_state_changed">MODEL_STATE_CHANGED</option>
+			<option value="model_changed">MODEL_CHANGED</option>
+			<option value="model_event">MODEL_EVENT</option>
 		</select>
 		<br/> <br/>
 		
-		<button onclick="UNSUBSCRIBE_EVENTS()"> SSE unsubscribe </button>
+		<button onclick="UNSUBSCRIBE_EVENTS()" title="Description: Closes the connection for Server Sent Events. Returns true if the unsubscription was successful and false otherwise"> SSE unsubscribe </button>
 		<select id="eTypesU">
-			<option value="ModelStateChanged">Model State Changed</option>
-			<option value="ModelChanged">Model Changed</option>
-			<option value="RepositoryChanged">Repository Changed</option>
+			<option value="model_state_changed">MODEL_STATE_CHANGED</option>
+			<option value="model_changed">MODEL_CHANGED</option>
+			<option value="model_event">MODEL_EVENT</option>
 		</select>
 		<br/> <br/>
 		
@@ -377,7 +375,7 @@
 		
 		<h3> ARE Information </h3>
 		
-		<button onclick="FUNCTIONS()"> getRestFunctions </button>
+		<button onclick="FUNCTIONS()" title="Description: Retrieves the information for all the available rest functions provided by the Restful API (as JSON array with Function objects) &#013;Ouput: console"> getRestFunctions </button>
 		<br/> <br/>
 		
 		<hr>
