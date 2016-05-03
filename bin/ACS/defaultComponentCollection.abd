@@ -7712,40 +7712,6 @@
 
     </componentType>
 
-<componentType canonical_name="eu.asterics.component.processor.nexusconnector.NexusConnectorInstance" id="asterics.NexusConnector">
-        <type subtype="Web">processor</type>
-        <singleton>false</singleton>
-        <description>Nexus Connector</description>
-        <ports>
-                <inputPort id="A">
-                        <description>Input A</description>
-                        <mustBeConnected>false</mustBeConnected>
-                        <dataType>double</dataType>
-                </inputPort>
-                <inputPort id="B">
-                        <description>Input B</description>
-                        <mustBeConnected>false</mustBeConnected>
-                        <dataType>double</dataType>
-                </inputPort>
-                <inputPort id="C">
-                        <description>Input C</description>
-                        <mustBeConnected>false</mustBeConnected>
-                        <dataType>double</dataType>
-                </inputPort>
-                <inputPort id="D">
-                        <description>Input D</description>
-                        <mustBeConnected>false</mustBeConnected>
-                        <dataType>double</dataType>
-                </inputPort>
-                <outputPort id="outStrOne">
-                        <description>Output string one</description>
-                        <dataType>string</dataType>
-                </outputPort>
-        </ports>
-        <events></events>
-        <properties></properties>
-</componentType>
-
  <componentType canonical_name="eu.asterics.component.processor.oneeventmanyactions.OneEventManyActionsInstance" id="asterics.OneEventManyActions">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
