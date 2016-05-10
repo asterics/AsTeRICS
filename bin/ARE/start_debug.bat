@@ -3,5 +3,5 @@ set ARE_DEBUG_STRING="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,addr
 
 start.bat %*
 
-set ARE_LOG_STRING= 
+set ARE_LOG_STRING=
 set ARE_DEBUG_STRING=

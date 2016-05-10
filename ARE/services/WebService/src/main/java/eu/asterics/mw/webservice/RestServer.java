@@ -1,7 +1,33 @@
+/*
+ *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
+ * 
+ * 
+ *        d8888      88888888888       8888888b.  8888888 .d8888b.   .d8888b. 
+ *       d88888          888           888   Y88b   888  d88P  Y88b d88P  Y88b
+ *      d88P888          888           888    888   888  888    888 Y88b.     
+ *     d88P 888 .d8888b  888   .d88b.  888   d88P   888  888         "Y888b.  
+ *    d88P  888 88K      888  d8P  Y8b 8888888P"    888  888            "Y88b.
+ *   d88P   888 "Y8888b. 888  88888888 888 T88b     888  888    888       "888
+ *  d8888888888      X88 888  Y8b.     888  T88b    888  Y88b  d88P Y88b  d88P
+ * d88P     888  88888P' 888   "Y8888  888   T88b 8888888 "Y8888P"   "Y8888P" 
+ *
+ *
+ *                    homepage: http://www.asterics.org 
+ *
+ *         This project has been funded by the European Commission, 
+ *                      Grant Agreement Number 247730
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
+ * 
+ */
+
 package eu.asterics.mw.webservice;
 
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -16,10 +42,11 @@ import javax.ws.rs.core.MediaType;
 
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
-import eu.asterics.mw.model.bundle.IComponentType;
+import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.webservice.serverUtils.AstericsAPIEncoding;
 import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
-import eu.asterics.mw.webservice.serverUtils.ServerEvent;
+import eu.asterics.mw.webservice.serverUtils.ServerAREEventListener;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 
@@ -31,8 +58,15 @@ import eu.asterics.mw.webservice.serverUtils.ServerRepository;
  */
 @Path("/")
 public class RestServer {
-	AsapiSupport as = new AsapiSupport();
+	private AsapiSupport asapiSupport = new AsapiSupport();
 	private Logger logger = AstericsErrorHandling.instance.getLogger();
+	private AstericsAPIEncoding astericsAPIEncoding = new AstericsAPIEncoding();
+	
+    static {
+    	ServerAREEventListener eventListener = new ServerAREEventListener();
+    	AREServices.instance.registerAREEventListener(eventListener);
+    }
+
 	
 	
 	@Path("/restfunctions")
@@ -40,6 +74,9 @@ public class RestServer {
 	@Produces (MediaType.APPLICATION_JSON)
 	public String getRestFunctions() {
 		String JSONresponse = ObjectTransformation.objectToJSON(ServerRepository.restFunctions);
+		if (JSONresponse.equals("")) {
+			JSONresponse = "{'error':'Couldn't retrieve the rest function signatures (Object serialization failure)'}";
+		}
 		
 		return JSONresponse;
 	}
@@ -57,10 +94,10 @@ public class RestServer {
 		String errorMessage = "";
 		
 		try {
-			response = as.getModel();
+			response = asapiSupport.getModel();
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the model " +" (" + e.getMessage() + ")";
+			errorMessage = "No model available for download";
 			response = "<error>"+errorMessage+"</error>";
 		}
 		
@@ -77,8 +114,7 @@ public class RestServer {
 		String errorMessage = "";
 		
 		try {
-			as.deployModel(modelInXML);
-			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed");
+			asapiSupport.deployModel(modelInXML);
 			response = "Model deployed";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,20 +126,22 @@ public class RestServer {
     }
 	
 
-	@Path("/runtime/model/{filename}")
+	@Path("/runtime/model/{filepath}")
     @PUT
 	@Produces(MediaType.TEXT_PLAIN)
-    public String deployFile(@PathParam("filename") String filename) {  
+    public String deployFile(@PathParam("filepath") String filepath) {  
 		String response;
 		String errorMessage = "";
+		String decodedFilepath = "";
 		
 		try {
-			as.deployFile(filename);
-			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed");
-			response = "'" + filename + "'" + " model deployed";
+			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+			
+			asapiSupport.deployFile(decodedFilepath);
+			response = "'" + decodedFilepath + "'" + " model deployed";
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't deploy the model from file '" + filename + "' (" + e.getMessage() + ")";
+			errorMessage = "Couldn't deploy the model from file '" + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "error:" + errorMessage;
 		}
 		
@@ -118,16 +156,15 @@ public class RestServer {
 		String response;
 		String errorMessage = "";
 		
-		String currentState = as.getModelState();
+		String currentState = asapiSupport.getModelState();
 		try {
 			if (state.equals("start")) {
 				if (currentState.equals("started")) {
 					response = "Model was already started";
 				}
 				else {
-					as.runModel();
+					asapiSupport.runModel();
 					response = "Model started";
-					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model started");	
 				}
 			} 
 			else if (state.equals("stop")) {
@@ -135,9 +172,8 @@ public class RestServer {
 					response = "Model was already stopped";
 				}
 				else {
-					as.stopModel();
+					asapiSupport.stopModel();
 					response = "Model stopped";
-					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model stopped");
 				}
 			}
 			else if (state.equals("pause")) {
@@ -145,9 +181,8 @@ public class RestServer {
 					response = "Model was already paused";
 				}
 				else {
-					as.pauseModel();
+					asapiSupport.pauseModel();
 					response = "Model paused";
-					SseResource.broadcastEvent(ServerEvent.MODEL_STATE_CHANGED, "Model paused");
 				}
 			}
 			else {
@@ -171,7 +206,7 @@ public class RestServer {
 		String errorMessage = "";
 		
 		try {
-			response = as.getModelState();
+			response = asapiSupport.getModelState();
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "Could not retrieve the state of the runtime model" + " (" + e.getMessage() + ")";
@@ -182,20 +217,22 @@ public class RestServer {
     }
 	
 
-	@Path("/runtime/model/autorun/{filename}")
+	@Path("/runtime/model/autorun/{filepath}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
-    public String autorun(@PathParam("filename") String filename) {
+    public String autorun(@PathParam("filepath") String filepath) {
 		String response;
 		String errorMessage = "";
+		String decodedFilepath = "";
 		
 		try {
-			as.autostart(filename);
-			SseResource.broadcastEvent(ServerEvent.MODEL_CHANGED, "New model deployed and started");
-			response = filename + " deployed and started";
+			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+			
+			asapiSupport.autostart(decodedFilepath);
+			response = decodedFilepath + " deployed and started";
 		} catch (AREAsapiException e) {
 			e.printStackTrace();
-			errorMessage = "Could not autostart '" + filename + "' (" + e.getMessage() + ")";
+			errorMessage = "Could not autostart '" + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "error:" + errorMessage;
 		}
 
@@ -203,19 +240,19 @@ public class RestServer {
     }
 	
 	
-	@Path("/runtime/model/components")
+	@Path("/runtime/model/components/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getComponents() {
+    public String getRuntimeComponentIds() {
 		String response = "";
 		String errorMessage = "";
 		
 		try {
-			String[] array = as.getComponents();
+			String[] array = asapiSupport.getComponents();
 			
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
 			if (response.equals("")) {
-				response = "{'error':'Couldn't retrieve model components'}";
+				response = "{'error':'Couldn't retrieve model components (Object serialization failure)'}";
 			}
 		} catch (Exception e) { 
 			e.printStackTrace();
@@ -230,12 +267,14 @@ public class RestServer {
 	@Path("/runtime/model/components/{componentId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getComponentPropertyKeys(@PathParam("componentId") String componentId) {
+    public String getRuntimeComponentPropertyKeys(@PathParam("componentId") String componentId) {
 		String response;
 		String errorMessage = "";
+		String decodedId = "";
 		
 		try {
-			String[] array = as.getComponentPropertyKeys(componentId);
+			decodedId = astericsAPIEncoding.decodeString(componentId);
+			String[] array = asapiSupport.getComponentPropertyKeys(decodedId);
 			
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
 			if (response.equals("")) {
@@ -243,7 +282,7 @@ public class RestServer {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve property keys from '" + componentId + "' (" + e.getMessage() + ")";
+			errorMessage = "Couldn't retrieve property keys from '" + decodedId + "' (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -254,12 +293,15 @@ public class RestServer {
 	@Path("/runtime/model/components/{componentId}/{componentKey}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String getComponentProperty(@PathParam("componentId") String componentId, @PathParam("componentKey") String componentKey) {
+    public String getRuntimeComponentProperty(@PathParam("componentId") String componentId, @PathParam("componentKey") String componentKey) {
 		String response;
 		String errorMessage = "";
+		String decodedId = "", decodedKey = "";
 		
 		try {
-			response = as.getComponentProperty(componentId, componentKey);
+			decodedId = astericsAPIEncoding.decodeString(componentId);
+			decodedKey = astericsAPIEncoding.decodeString(componentKey);
+			response = asapiSupport.getComponentProperty(decodedId, decodedKey);
 		} catch (Exception e) {
 			e.printStackTrace();
 			errorMessage = "Couldn't retrieve '"+ componentKey + "' property from '" + componentId + "' (" + e.getMessage() + ")";
@@ -274,14 +316,18 @@ public class RestServer {
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String setComponentProperty(String value, @PathParam("componentId") String componentId, @PathParam("componentKey") String componentKey) {
+    public String setRuntimeComponentProperty(String value, @PathParam("componentId") String componentId, @PathParam("componentKey") String componentKey) {
 		String response;
 		String errorMessage = "";
+		String decodedId = "", decodedKey = "";
+		
 		try {
-			response = as.setComponentProperty(componentId, componentKey, value);
+			decodedId = astericsAPIEncoding.decodeString(componentId);
+			decodedKey = astericsAPIEncoding.decodeString(componentKey);
+			response = asapiSupport.setComponentProperty(decodedId, decodedKey, value);
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't set '" + value + "' value to '" + componentKey + "' from '" + componentId + "' (" + e.getMessage() + ")";
+			errorMessage = "Couldn't set '" + value + "' value to '" + decodedKey + "' from '" + decodedId + "' (" + e.getMessage() + ")";
 			response = "error:"+errorMessage;
 		}
 		
@@ -295,17 +341,20 @@ public class RestServer {
 	 *	Storage/ARE-repository resources
 	 *************************************/
 	
-	@Path("/storage/models/{filename}")
+	@Path("/storage/models/{filepath}")
     @GET
     @Produces(MediaType.TEXT_XML)
-    public String getModelFromFile(@PathParam("filename") String filename) {
+    public String getModelFromFile(@PathParam("filepath") String filepath) {
 		String response = null;
 		String errorMessage;
+		String decodedFilepath = "";
 		
 		try {
-			response = as.getModelFromFile(filename);
+			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+			
+			response = asapiSupport.getModelFromFile(decodedFilepath);
 		} catch (Exception e) {
-			errorMessage = "Couldn't retrieve the model from '" + filename + "' (" + e.getMessage() + ")";
+			errorMessage = "Couldn't retrieve the model from '" + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "<error>"+errorMessage+"</error>";
 		}
 		
@@ -313,13 +362,14 @@ public class RestServer {
     }
 	
 	
-	@Path("/storage/models/{filename}")
+	@Path("/storage/models/{filepath}")
     @POST
     @Consumes(MediaType.TEXT_XML)
     @Produces(MediaType.TEXT_PLAIN)
-    public String storeModel(@PathParam("filename") String filename, String modelInXML) {  
+    public String storeModel(@PathParam("filepath") String filepath, String modelInXML) {  
 		String response;
 		String errorMessage;
+		String decodedFilepath = "";
 		
 		if ( (modelInXML == "") || (modelInXML == null) ) {
 			errorMessage = "invalid parameters";
@@ -327,12 +377,13 @@ public class RestServer {
 		}
 		
 		try {
-			as.storeModel(modelInXML, filename);
-			SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, "Added model " + filename);
+			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+			
+			asapiSupport.storeModel(modelInXML, decodedFilepath);
 			response = "Model stored";
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Could not store the model" + "' (" + e.getMessage() + ")";
+			errorMessage = "Could not store the model" + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "error:"+errorMessage;
 		}
 		
@@ -340,25 +391,27 @@ public class RestServer {
     }
 	
 	
-	@Path("/storage/models/{filename}")
+	@Path("/storage/models/{filepath}")
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
-    public String deleteModelFile(@PathParam("filename") String filename) {  
+    public String deleteModelFile(@PathParam("filepath") String filepath) {  
 		String response;
 		String errorMessage;
+		String decodedFilepath = "";
 		
 		try {
-			boolean isDeleted = as.deleteModelFile(filename);
+			decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+			
+			boolean isDeleted = asapiSupport.deleteModelFile(decodedFilepath);
 			if (isDeleted) {
 				response = "Model deleted";
-				SseResource.broadcastEvent(ServerEvent.REPOSITORY_CHANGED, filename + " deleted");
 			} 
 			else {
-				response = "Could not delete the model (Please check if the given filename is correct)";
+				response = "Could not delete the model (Please check if the given filepath is correct)";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Could not delete the model" + "' (" + e.getMessage() + ")";
+			errorMessage = "Could not delete the model " + decodedFilepath + "' (" + e.getMessage() + ")";
 			response = "error:"+errorMessage;
 		}
 		
@@ -366,7 +419,7 @@ public class RestServer {
     }
 	
 	
-	@Path("/storage/models")
+	@Path("/storage/models/names")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String listAllStoredModels() {    	
@@ -374,11 +427,11 @@ public class RestServer {
 		String errorMessage;
 		
 		try {
-			String[] array = as.listAllStoredModels();
+			String[] array = asapiSupport.listAllStoredModels();
 
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
 			if (response.equals("")) {
-				response = "{'error':'Couldn't retrieve the stored models'}";
+				response = "{'error':'Couldn't retrieve the stored models (Object serialization failure)'}";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -388,77 +441,52 @@ public class RestServer {
 		
 		return response;
     }
-
 	
-	@Path("/storage/components/installed")
+
+	@Path("/storage/components/descriptors/xml")
+	@GET
+	@Produces(MediaType.TEXT_XML)
+	public String getComponentDescriptorsAsXml() {
+		String response = null;
+		String errorMessage;
+
+		try {
+			response = asapiSupport.getComponentDescriptorsAsXml();
+			if (response == null) {
+				errorMessage = "Couldn't retrieve the components collection";
+				response = "{'error':'"+errorMessage+"'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Couldn't retrieve the components collection" + "' (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+		return response;
+	}
+	
+	
+	@Path("/storage/components/descriptors/json")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getInstalledComponents() {
+	public String getComponentDescriptorsAsJSON() {
 		String response = null;
 		String errorMessage;
-		
-		try {
-			IComponentType[] array = as.getInstalledComponents();
 
+		try {
+			List<String> array = asapiSupport.getBundelDescriptors();
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
 			if (response.equals("")) {
-				errorMessage = "Couldn't retrieve the installed components";
-				response = "{'error':'"+errorMessage+"'}";
+				response = "{'error':'Couldn't retrieve the components descriptors (Object serialization failure)'}";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the installed components" + "' (" + e.getMessage() + ")";
+			errorMessage = "Couldn't retrieve the components descriptors";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
 		return response;
 	}
-	
-	
-	@Path("/storage/components/installed/descriptors")
-	@GET
-	@Produces(MediaType.TEXT_XML)
-	public String getInstalledComponentsDescriptor() {
-		String response = null;
-		String errorMessage;
-
-		try {
-			response = as.getInstalledComponentsDescriptor();
-			if (response == null) {
-				errorMessage = "Couldn't retrieve the created components descriptors";
-				response = "{'error':'"+errorMessage+"'}";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the created components descriptors" + "' (" + e.getMessage() + ")";
-			response = "{'error':'"+errorMessage+"'}";
-		}
-		
-		return response;
-	}
-	
-
-	@Path("/storage/components/created/descriptors")
-	@GET
-	@Produces(MediaType.TEXT_XML)
-	public String getCreatedComponentsDescriptor() {
-		String response = null;
-		String errorMessage;
-
-		try {
-			response = as.getCreatedComponentsDescriptors();
-			if (response == null) {
-				errorMessage = "Couldn't retrieve the created components descriptors";
-				response = "{'error':'"+errorMessage+"'}";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the created components descriptors" + "' (" + e.getMessage() + ")";
-			response = "{'error':'"+errorMessage+"'}";
-		}
-		
-		return response;
-	}
-	
 	
 }
+

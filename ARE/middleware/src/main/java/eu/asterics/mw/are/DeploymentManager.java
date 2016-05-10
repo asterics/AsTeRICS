@@ -67,10 +67,10 @@ import eu.asterics.mw.services.IAREEventListener;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -90,13 +90,6 @@ public class DeploymentManager
 	private ComponentRepository componentRepository = ComponentRepository.instance;
 	public static final DeploymentManager instance = new DeploymentManager();
 	private AstericsGUI gui=null;
-
-	//TODO REPLACE WIDTH A FUNCTION THAT RETRIEVES X, Y, W, H FROM MODEL
-	static int X=10;
-	static int Y=15;
-	static int W = 580;
-	static int H = 700;
-	static int OFFSET = 5;
 
 	private DeploymentManager()
 	{
@@ -144,6 +137,7 @@ public class DeploymentManager
 	= new LinkedHashMap<String, Set<IRuntimeComponentInstance>>();
 	private BundleManager bundleManager;
 	private Map<IRuntimeComponentInstance,String > runtimeInstanceToComponentTypeID = new LinkedHashMap<IRuntimeComponentInstance, String>();
+	
 	private volatile boolean modelStartupFinished=false;
 	private volatile boolean modelLifecycleTaskPending=false;
 	
@@ -155,7 +149,11 @@ public class DeploymentManager
 		// unget components
 		runtimeComponentInstances.clear();
 		componentTypeIdToRuntimeComponentInstances.clear();
-		runtimeComponentInstancesStatus.clear();		
+		runtimeComponentInstancesStatus.clear();
+		runtimeInstanceToComponentTypeID.clear();
+		bufferedPortsMap.clear();
+		currentRuntimeModel=null;
+		
 		modelStartupFinished=false;
 		modelLifecycleTaskPending=false;
 
@@ -172,8 +170,8 @@ public class DeploymentManager
 	 */
 	public void deployModel(final IRuntimeModel runtimeModel)
 			throws DeploymentException
-			{
-		
+	{
+
 		modelStartupFinished=false;
 		if (runtimeModel == null)
 		{
@@ -181,6 +179,13 @@ public class DeploymentManager
 					": install-> Illegal null argument");
 			throw new RuntimeException("Illegal null argument");
 		}
+		
+		//Very important undeploy previous model, just to be sure that no orphaned references exist.
+		if(getCurrentRuntimeModel()!=null) {
+			undeployModel();
+		}
+		//Anyway do init of all maps and internal variables again, just to be sure
+		init();
 
 		try{
 			notifyAREEventListeners (AREEvent.PRE_DEPLOY_EVENT);
@@ -191,7 +196,6 @@ public class DeploymentManager
 
 			// handle instantiation of new component instances and assign property
 			// values as needed
-
 			String conversion="";
 			for (IComponentInstance componentInstance : componentInstanceSet)
 			{
@@ -320,6 +324,7 @@ public class DeploymentManager
 				conversion = "";			
 				if(sourceDataType != targetDataType)
 				{
+					AstericsErrorHandling.instance.getLogger().fine("Getting conversion string from "+sourceComponentInstanceID+"."+sourceOutputPortID+" --> "+targetComponentInstanceID+"."+targetInputPortID);
 					conversion=ConversionUtils.getDataTypeConversionString(sourceDataType, targetDataType);
 				}
 
@@ -402,19 +407,11 @@ public class DeploymentManager
 			notifyAREEventListeners (AREEvent.POST_DEPLOY_EVENT);
 
 		}catch (Exception e){
-			e.printStackTrace();
-
 			//before give up, try to cleanup and undeploy model again				
 			logger.severe("Deployment exception: "+e.getMessage());
 			logger.fine("Before giving up, trying to undeploy model again.");
 			undeployModel();
-
-			if(e instanceof DeploymentException) {
-				throw e;
-			} else {
-				String message="Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program.";
-				throw new DeploymentException(message);
-			}
+			throw new DeploymentException(e.getMessage());
 		}
 	}
 
@@ -519,13 +516,14 @@ public class DeploymentManager
 				}
 			}
 
-			runtimeComponentInstances.values().clear();
-			runtimeComponentInstancesStatus.clear();
-			System.gc();
 		}catch(Throwable e) {
 			String reason=e.getCause()!=null && e.getCause().getMessage() != null ? e.getCause().getMessage() : e.getMessage();  
 			logger.warning("Ignoring exception in undeployModel: "+reason);
 			//e.printStackTrace();
+		} finally {
+			//Cleanup internal variables in any case, also if an exception occurred during undeploy.
+			init();
+			System.gc();			
 		}
 	}
 
@@ -601,7 +599,7 @@ public class DeploymentManager
 					logger.fine("Trying to start component instance: "+compRefName);
 					String id = runtimeInstanceToComponentTypeID.get(componentInstance);
 					
-					String s = getComponentInstanceIDFromComponentInstance(componentInstance);
+					String s = getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);
 					//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
 					//We have to synchronize using the target component, because the component can be considered a black box, that must
 					//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
@@ -657,6 +655,7 @@ public class DeploymentManager
 					AstericsErrorHandling.instance.reportError(componentInstance, "Could not run component ["+componentInstance+"]: \n"+t.getMessage());
 				}
 			}
+			notifyAREEventListeners (AREEvent.POST_START_EVENT);
 		}finally {
 			modelStartupFinished=true;
 			logger.fine("Setting modelLifecycleTaskPending=false");
@@ -671,6 +670,7 @@ public class DeploymentManager
 	public void pauseModel()
 	{
 		try {
+			notifyAREEventListeners (AREEvent.PRE_PAUSE_EVENT);
 			modelLifecycleTaskPending=true;
 			modelStartupFinished=false;
 			for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
@@ -683,11 +683,12 @@ public class DeploymentManager
 				//synchronized(componentInstance) 
 				{
 					componentInstance.pause();
-					String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
+					String componentInstanceId=getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);
 					runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.PAUSED);
 				}
 				logger.fine("Paused component instance: "+compRefName);
 			}
+			notifyAREEventListeners (AREEvent.POST_PAUSE_EVENT);
 		}finally {
 			logger.fine("Setting modelLifecycleTaskPending=false");
 			modelLifecycleTaskPending=false;			
@@ -701,6 +702,7 @@ public class DeploymentManager
 	public void resumeModel()
 	{
 		try{
+			notifyAREEventListeners (AREEvent.PRE_RESUME_EVENT);
 			modelLifecycleTaskPending=true;
 			for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
 			{
@@ -712,11 +714,12 @@ public class DeploymentManager
 				//synchronized(componentInstance) 
 				{
 					componentInstance.resume();
-					String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
+					String componentInstanceId=getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);
 					runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.RUNNING);				
 				}
 				logger.fine("Resumed component instance: "+compRefName);
 			}
+			notifyAREEventListeners (AREEvent.POST_RESUME_EVENT);
 		}finally{
 			modelStartupFinished=true;
 			logger.fine("Setting modelLifecycleTaskPending=false");
@@ -731,6 +734,7 @@ public class DeploymentManager
 	public void stopModel()
 	{
 		try{
+			notifyAREEventListeners (AREEvent.PRE_STOP_EVENT);
 			modelLifecycleTaskPending=true;
 			modelStartupFinished=false;
 			for (final IRuntimeComponentInstance componentInstance : runtimeComponentInstances.values())
@@ -745,7 +749,7 @@ public class DeploymentManager
 //					synchronized(componentInstance) {
 						bundleManager.getBundleFromId(id).stop();
 						componentInstance.stop();
-						String componentInstanceId=getComponentInstanceIDFromComponentInstance(componentInstance);
+						String componentInstanceId=getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);
 						//There is no state for STOP, so use DEPLOYED? or better OK?
 						runtimeComponentInstancesStatus.put(componentInstanceId, AREStatus.DEPLOYED);
 //					}
@@ -853,8 +857,9 @@ public class DeploymentManager
 	 * specified by the componentID.
 	 * @param componentID the component whose property is to be returned
 	 * @param key the key of the property whose value is to be returned
+	 * @throws BundleManagementException 
 	 */
-	public String getComponentProperty(String componentID, String key) {
+	public String getComponentProperty(String componentID, String key) throws BundleManagementException {
 
 		final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
 		final Set<IComponentInstance> componentInstanceSet =
@@ -907,9 +912,10 @@ public class DeploymentManager
 	 * @param componentID the component whose property is to be set
 	 * @param key the key of the property whose value is to be set
 	 * @param value the new value
+	 * @throws BundleManagementException 
 	 */
 	public void setComponentProperty(String componentID, String key,
-			String value) {
+			String value) throws BundleManagementException {
 
 		AstericsErrorHandling.instance.reportDebugInfo(null, componentID+".setRuntimePropertyValue("+key+","+value+")");
 		final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
@@ -956,11 +962,11 @@ public class DeploymentManager
 	}
 
 	/**
-	 * This method returns the component instance id of the specified component 
+	 * This method returns the runtime component instance id of the specified IRuntimeComponentInstance 
 	 * if it exists or empty string otherwise.
 	 * @param component the component whose instance is to be returned
 	 */
-	public String getComponentInstanceIDFromComponentInstance 
+	public String getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance 
 	(IRuntimeComponentInstance component) 
 	{
 
@@ -981,6 +987,30 @@ public class DeploymentManager
 		}
 		return "";
 	}
+	
+	/**
+	 * This method returns the IComponentType instance for the given IRuntimeComponentInstance.
+	 * @param runtimeComponentInstance
+	 * @return
+	 * @throws BundleManagementException
+	 */
+	public IComponentType getIComponentTypeFromIRuntimeComponentInstance(IRuntimeComponentInstance runtimeComponentInstance) throws BundleManagementException {
+		String runtimeComponentInstanceId=getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(runtimeComponentInstance);
+		String componentTypeId = getCurrentRuntimeModel().getComponentInstance(runtimeComponentInstanceId).getComponentTypeID();
+		
+		//String componentTypeId=runtimeInstanceToComponentTypeID.get(runtimeComponentInstance);
+		return ComponentRepository.instance.getComponentType(componentTypeId);
+	}
+	
+	/**
+	 * This method returns the IComponentInstance instance for the given IRuntimeComponentInstance.
+	 * @param runtimeComponentInstance
+	 * @return
+	 */
+	public IComponentInstance getIComponentInstanceFromIRuntimeComponentInstance(IRuntimeComponentInstance runtimeComponentInstance) {
+		String runtimeComponentInstanceId=getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(runtimeComponentInstance);
+		return getCurrentRuntimeModel().getComponentInstance(runtimeComponentInstanceId);		
+	}
 
 	private void notifyAREEventListeners(AREEvent event) 
 	{
@@ -997,8 +1027,20 @@ public class DeploymentManager
 				listener.postDeployModel(); break;
 			case PRE_START_EVENT:
 				listener.preStartModel(); break;
+			case POST_START_EVENT:
+				listener.postStartModel(); break;
+			case PRE_STOP_EVENT:
+				listener.preStopModel(); break;
 			case POST_STOP_EVENT:
 				listener.postStopModel(); break;
+			case PRE_PAUSE_EVENT:
+				listener.prePauseModel(); break;
+			case POST_PAUSE_EVENT:
+				listener.postPauseModel(); break;
+			case PRE_RESUME_EVENT:
+				listener.preResumeModel(); break;
+			case POST_RESUME_EVENT:
+				listener.postResumeModel(); break;
 			default:
 				break;
 			}
@@ -1042,9 +1084,7 @@ public class DeploymentManager
 	}
 
 	public void setGui(AstericsGUI gui) {
-
 		this.gui = gui;
-
 	}
 	
 	public AstericsGUI getGUI() {
@@ -1059,7 +1099,7 @@ public class DeploymentManager
 				getCurrentRuntimeModel().getComponentInstances();
 
 		AREGUIElement ele;
-		String id = getComponentInstanceIDFromComponentInstance(componentInstance);
+		String id = getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);
 		for (IComponentInstance instance : componentInstances)
 		{
 			if (instance.getInstanceID().equals(id))
@@ -1078,7 +1118,7 @@ public class DeploymentManager
 	{
 
 		String componentInstanceID = 
-				getComponentInstanceIDFromComponentInstance (componentInstance);
+				getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance (componentInstance);
 
 		IRuntimeModel model = getCurrentRuntimeModel();
 		IComponentInstance component = 
@@ -1136,7 +1176,7 @@ public class DeploymentManager
 	{
 
 		String componentInstanceID = 
-				getComponentInstanceIDFromComponentInstance (componentInstance);
+				getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance (componentInstance);
 
 		IRuntimeModel model = getCurrentRuntimeModel();
 		IComponentInstance component = 

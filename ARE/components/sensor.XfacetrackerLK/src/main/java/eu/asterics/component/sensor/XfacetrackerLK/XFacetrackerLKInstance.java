@@ -19,8 +19,8 @@
  *                      Grant Agreement Number 247730
  *  
  *  
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  * 
  */
 
@@ -347,7 +347,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
 			SharedFrameGrabber.instance.registerGrabbedImageListener(propCameraSelection, this);
 			//Create a Canvas/Frame to draw on (this is platform dependant and does not work on Android)
 			
-			instanceId=DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(this);
+			instanceId=DeploymentManager.instance.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(this);
 			String title=instanceId;
 			if(propTitleVideoFrameWindow!=null && propTitleVideoFrameWindow!="") {
 				title=propTitleVideoFrameWindow;

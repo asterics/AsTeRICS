@@ -1,0 +1,63 @@
+<!-- This is the bootstrap build file for the whole AsTeRICS framework -->
+<project name="asterics" basedir="." default="buildAllNoClean">
+	<property name="debug" value="true"/>
+	<property name="runtime" location="bin/ARE"/>
+
+	<!-- Build the whole AsTeRICS framework including ACS and help specific tasks  -->
+	<target name="buildAllNoClean">
+		<subant target="buildAllNoClean">
+			<fileset dir="ARE" includes="build.xml"> </fileset>
+		</subant>
+		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
+	</target>
+	
+	<!-- target which helps to find thirdparty libs -->
+	<target name="findThirdpartyLibs">
+		<fileset id="thirdParty" dir="." casesensitive="no">
+			<!--
+			<include name="**/src/main/resources/lib/**/*.jar"/>
+			<include name="**/src/main/resources/lib/**/*COPY*"/>
+			<include name="**/src/main/resources/lib/**/*LICENSE*"/>
+			<include name="**/src/main/resources/lib/**/*.so"/>
+			<include name="**/src/main/resources/lib/**/*.dll"/>
+			-->
+			
+			<include name="ARE/**/*.jar"/>
+			<include name="ARE/**/*COPY*"/>
+			<include name="ARE/**/*LICENSE*"/>
+			<include name="ARE/**/*THIRDPARTY*"/>
+			<include name="ARE/**/*.so"/>
+			<include name="ARE/**/*.dll"/>
+			
+			<exclude name="ARE/**/LICENSE_dual.txt"/>
+			<exclude name="ARE/services/*.jar"/>
+			<exclude name="ARE/components/*.jar"/>
+			<exclude name="**/*Test*"/>
+		</fileset>
+		<pathconvert refid="thirdParty" property="thirdPartyLibFiles" pathsep="${line.separator}">
+
+			<!-- Cut first 3 dirs of path -->
+			<mapper>
+				<cutdirsmapper dirs="3"/>
+			</mapper>
+
+		</pathconvert>
+		<echo file="thirdpartylibfiles.txt">${thirdPartyLibFiles}</echo>
+	</target>
+	<!-- helper target to replace contents of license files -->
+	<target name="findAndReplaceAllLicenseFiles">
+		<subant target="findAndReplaceLicenseFile" failonerror="false">
+			<fileset dir="." includes="**/build.xml"></fileset>
+		</subant>
+	</target>
+	
+	<!-- helper target to rename license files, unfortunately it is not a rename but a move -->
+	<target name="renameAllLicenseFiles">
+		<subant target="renameLicenseFile" failonerror="false">
+			<fileset dir="." includes="**/build.xml"></fileset>
+		</subant>
+	</target>
+	
+	<import file="imported.xml"/>
+	<include file="included.xml"/>
+</project>

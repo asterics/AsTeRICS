@@ -5,6 +5,7 @@ import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,10 +34,10 @@ import java.util.logging.Logger;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -69,7 +70,7 @@ public class ComponentRepository
     		new HashMap<String, DefaultComponentFactory> ();
 
     public void install(final IComponentType componentType)
-            throws BundleManagementException
+            
     {
         if (componentType == null)
         {
@@ -127,10 +128,17 @@ public class ComponentRepository
         return installedComponentTypes;
     }
 
-    public IComponentType getComponentType(final String componentTypeID)
-    {
-       IComponentType res = repository.get(componentTypeID);
-       return res;
+    public IComponentType getComponentType(final String componentTypeID) throws BundleManagementException
+    {    	
+    	if (!repository.containsKey(componentTypeID))
+    	{
+    		// System.out.println("*** Requesting installation of component " +cTypeID);
+    		if(ResourceRegistry.getInstance().isOSGIMode()) {
+    			DeploymentManager.instance.getBundleManager().installSingle(componentTypeID);
+    		}
+    	}
+    	IComponentType res = repository.get(componentTypeID);
+    	return res;
     }
 
     // todo remove this debug method

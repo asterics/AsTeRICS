@@ -29,6 +29,7 @@ import org.xml.sax.SAXException;
 
 import eu.asterics.mw.are.ComponentRepository;
 import eu.asterics.mw.are.DeploymentManager;
+import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IComponentType;
@@ -72,10 +73,10 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -98,12 +99,29 @@ public class DefaultDeploymentModelParser
 		this.modelValidator = ModelValidator.getInstance();
 	}
 
+	/**
+	 * Is used to create {@link DefaultDeploymentModelParser} with custom ModelValidator.
+	 * @param modelValidator
+	 */
+	private DefaultDeploymentModelParser(ModelValidator modelValidator)
+	{
+		logger  = AstericsErrorHandling.instance.getLogger();
+		this.modelValidator = modelValidator;
+	}
+
 	public static final DefaultDeploymentModelParser instance =
 		new DefaultDeploymentModelParser();
 
 	private static final int MAX_INPUT_STRREAM = 1000000000;
 
-
+	/**
+	 * Create {@link DefaultDeploymentModelParser} instance with custom ModelValidator instance.
+	 * @param modelValidator
+	 * @return
+	 */
+	public static DefaultDeploymentModelParser create(ModelValidator modelValidator) {
+		return new DefaultDeploymentModelParser(modelValidator);
+	}
 	
 	/** 
 	 * Creates an InputStream from the input file and calls parseModel
@@ -111,9 +129,10 @@ public class DefaultDeploymentModelParser
 	 * @param modelFile the file to be parsed
 	 * @return a DefaultRuntimeModel
 	 * @throws ParseException, FileNotFoundException
+	 * @throws BundleManagementException 
 	 */
 	public DefaultRuntimeModel parseModel(File modelFile)
-	throws ParseException, FileNotFoundException
+	throws ParseException, FileNotFoundException, BundleManagementException
 	{
 	
 		return this.parseModel(new FileInputStream(modelFile));
@@ -126,9 +145,10 @@ public class DefaultDeploymentModelParser
 	 * @param modelInputStream the InputStream to be parsed
 	 * @return a DefaultRuntimeModel
 	 * @throws ParseException
+	 * @throws BundleManagementException 
 	 */
 	public DefaultRuntimeModel parseModel(final InputStream modelInputStream)
-	throws ParseException
+	throws ParseException, BundleManagementException
 	{
 		modelInputStream.mark(MAX_INPUT_STRREAM);
 		DocumentBuilderFactory builderFactory = 
@@ -177,9 +197,10 @@ public class DefaultDeploymentModelParser
 	 * @param url the url to be parsed
 	 * @return a DefaultRuntimeModel
 	 * @throws ParseException, UnsupportedEncodingException
+	 * @throws BundleManagementException 
 	 */
 	public DefaultRuntimeModel parseModel(String url)
-	throws ParseException, UnsupportedEncodingException
+	throws ParseException, UnsupportedEncodingException, BundleManagementException
 	{
 		DocumentBuilderFactory builderFactory = 
 			DocumentBuilderFactory.newInstance();
@@ -243,7 +264,7 @@ public class DefaultDeploymentModelParser
 
 
 	private DefaultRuntimeModel parse(Document document)
-	throws ParseException
+	throws ParseException, BundleManagementException
 	{
 		// System.out.println("*** IN PARSE !");
 		final Set<IChannel> channelsSet = new LinkedHashSet<IChannel>();
@@ -530,7 +551,7 @@ public class DefaultDeploymentModelParser
 
 
 	private DefaultComponentInstance getComponentInstance
-	(Node componentNode) throws ParseException
+	(Node componentNode) throws ParseException, BundleManagementException
 	{
 
 		if (componentNode instanceof Element)
@@ -547,13 +568,9 @@ public class DefaultDeploymentModelParser
 			final String cTypeID = componentElement.getAttribute("type_id");
 			final String cID = componentElement.getAttribute("id");
 
-			IComponentType desiredComponent=
-			componentRepository.getComponentType(cTypeID);
-			if (desiredComponent==null)
-			{
-				// System.out.println("*** Requesting installation of component " +cTypeID);
-				DeploymentManager.instance.getBundleManager().install_single(cTypeID);
-			}
+			//call getComponentType here to trigger the installation of the bundle
+			//Must be here because the instantiation of a component needs component type metadata 
+			IComponentType desiredComponent=componentRepository.getComponentType(cTypeID);
 						
 			//boolean easyConfig = 
 				//Boolean.parseBoolean
@@ -707,7 +724,7 @@ public class DefaultDeploymentModelParser
 
 			return new DefaultComponentInstance(
 					cID,
-					componentRepository.getComponentType(cTypeID).getID(),
+					cTypeID,
 					cDescription,
 					inputPorts,
 					outputPorts,

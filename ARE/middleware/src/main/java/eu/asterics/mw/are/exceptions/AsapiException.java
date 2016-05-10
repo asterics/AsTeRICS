@@ -20,10 +20,10 @@ package eu.asterics.mw.are.exceptions;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 

@@ -16,33 +16,19 @@
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
 package eu.asterics.mw.webservice;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.logging.Logger;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.service.http.HttpService;
-import org.osgi.service.http.NamespaceException;
-import org.glassfish.grizzly.http.server.*;
-import org.glassfish.grizzly.websockets.*;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 

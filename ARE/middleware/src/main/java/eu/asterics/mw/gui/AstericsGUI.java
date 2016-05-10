@@ -18,10 +18,10 @@ package eu.asterics.mw.gui;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -68,11 +68,11 @@ public class AstericsGUI implements IAREEventListener
 {
 	private static int DEFAULT_FONT_SIZE = 18;
 	private static String DEFAULT_FONT_SIZE_PROPERTY="ARE.gui.font.size";
-	public final static String ARE_VERSION="2.7";
+	public final static String ARE_VERSION="2.8-rc.1";
 	static int DEFAULT_SCREEN_X=0;
 	static int DEFAULT_SCREEN_Y=0;
-	static int DEFAULT_SCREEN_W=0;
-	static int DEFAULT_SCREEN_H=0;
+	static int DEFAULT_SCREEN_W=60;
+	static int DEFAULT_SCREEN_H=250;
 
 	static String ICON_PATH = "/images/icon.gif";
 	static String TRAY_ICON_PATH = "/images/tray_icon.gif";
@@ -215,8 +215,12 @@ public class AstericsGUI implements IAREEventListener
 		controlPanel = new JPanel ();
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
 		controlPanel.add(controlPane);
-		pane.add(controlPanel, BorderLayout.LINE_END);	
-
+		pane.add(controlPanel, BorderLayout.LINE_END);
+		
+		Dimension defaultSize=new Dimension(DEFAULT_SCREEN_W, DEFAULT_SCREEN_H);
+		pane.setPreferredSize(defaultSize);
+		mainFrame.setPreferredSize(defaultSize);
+		mainFrame.setSize(defaultSize);
 		// aboutFrame = new AboutFrame (this, mainFrame);
 		
 	}
@@ -755,10 +759,53 @@ public class AstericsGUI implements IAREEventListener
 	}
 
 	@Override
+	public void postStartModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void preStopModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public void postStopModel() {
 		
 	}
 
+
+	@Override
+	public void prePauseModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postPauseModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void preResumeModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void postResumeModel() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void preBundlesInstalled() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public void postBundlesInstalled() {
 		
@@ -785,6 +832,7 @@ public class AstericsGUI implements IAREEventListener
 	public void setStopKeyName(String key) {
 		controlPane.setStopKeyName(key);
 	}
+	
 }
 
 

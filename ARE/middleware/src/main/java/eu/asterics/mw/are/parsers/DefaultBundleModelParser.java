@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,13 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.model.bundle.*;
@@ -52,10 +60,10 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -70,6 +78,8 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 
 public class DefaultBundleModelParser {
+	public static final String BUNDLE_DESCRIPTOR_RELATIVE_URI="/bundle_descriptor.xml";
+	
 	private Logger logger = null;
 	
 	private DocumentBuilder builder;
@@ -209,6 +219,52 @@ public class DefaultBundleModelParser {
 			}
 		}
 		return componentTypes;
+	}
+
+	/**
+	 * Returns the bundle descriptor xml string for the given componentTypeId.
+	 * 
+	 * @param componentTypeId
+	 * @param inputStream
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public String getBundleDescriptionOfComponentTypeId(String componentTypeId, InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
+		final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+
+		builder = builderFactory.newDocumentBuilder();
+		Document document = builder.parse(inputStream);
+
+		Element root = document.getDocumentElement();
+		NodeList components = root.getChildNodes();
+
+		//iterate through the components
+		for (int i = 0; i < components.getLength(); i++) 
+		{
+			Node node = components.item(i);
+			if (node instanceof Element) 
+			{
+				Element component = (Element) node;
+				String ID = component.getAttribute("id");
+				if(componentTypeId.equals(ID)) {
+					try {
+						StringWriter stw = new StringWriter(); 
+						Transformer serializer;
+
+						serializer = TransformerFactory.newInstance().newTransformer();
+						serializer.transform(new DOMSource(component), new StreamResult(stw));
+						System.out.println(stw.toString());
+						return stw.toString();
+					} catch (TransformerFactoryConfigurationError | TransformerException e) {
+						// TODO Auto-generated catch block
+						logger.warning(e.getMessage());
+					} 
+				}
+			}
+		}
+		return "";
 	}
 
 	/**

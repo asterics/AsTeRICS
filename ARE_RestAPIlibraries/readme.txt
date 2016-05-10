@@ -1,0 +1,1 @@
+Installation instructions for both libraries are located in 'Documentation/REST_API.pdf' in github

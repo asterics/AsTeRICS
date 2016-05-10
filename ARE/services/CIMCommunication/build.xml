@@ -40,14 +40,14 @@
 	<target name="compile" depends="init" description="compile the source ">
 	</target>
 	<target name="compile-RXTXcomm" depends="init" description="compile the source ">
-		<javac  includeantruntime="false" srcdir="${src.java}" destdir="${build.RXTXcomm}"  verbose="true" debug="${debug}" 
+		<javac source="${javac.source}" target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build.RXTXcomm}"  verbose="true" debug="${debug}" 
 	           classpath="${classpath}">
 			<classpath refid="asterics.classpath.RXTXcomm"/>
 		</javac>
 	</target>
 
 	<target name="compile-nrjavaserial" depends="init" description="compile the source ">
-		<javac  includeantruntime="false" srcdir="${src.java}" destdir="${build.nrjavaserial}"  verbose="true" debug="${debug}" 
+		<javac source="${javac.source}" target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build.nrjavaserial}"  verbose="true" debug="${debug}" 
 	           classpath="${classpath}">
 			<classpath refid="asterics.classpath.nrjavaserial"/>
 		</javac>
@@ -73,4 +73,6 @@
           tofile="${runtime}/asterics.${component.id}-windows.jar"/>
 	</target>
 
+	<import file="../../imported.xml"/>
+    <include file="../../included.xml"/>
 </project>

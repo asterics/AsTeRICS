@@ -1,0 +1,26 @@
+TBB and other open-source software available from this site is licensed  under GPLv2 with the (libstdc++) runtime exception.  Specifically, the TBB open-source license is the same license used by the GNU libstdc++ library in gcc 4.2.1 (and earlier).  For a complete description of the license, please visit the official GNU website for GPLv2 and for the runtime exception. 
+
+See the TBB FAQs for more information on TBB open-source (and commercial) licensing.
+
+ 
+
+Runtime Exception
+
+ 
+
+As a special exception, you may use this file as part of a free software
+
+library without restriction.  Specifically, if other files instantiate
+
+templates or use macros or inline functions from this file, or you compile
+
+this file and link it with other files to produce an executable, this
+
+file does not by itself cause the resulting executable to be covered by
+
+the GNU General Public License.  This exception does not however
+
+invalidate any other reasons why the executable file might be covered by
+
+the GNU General Public License.
+- See more at: https://www.threadingbuildingblocks.org/licensing#sthash.2httfw89.dpuf

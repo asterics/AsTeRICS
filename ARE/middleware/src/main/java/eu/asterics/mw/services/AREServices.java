@@ -16,10 +16,10 @@
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -75,6 +75,7 @@ import org.xml.sax.SAXException;
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.DeploymentException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
@@ -101,10 +102,10 @@ import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -575,6 +576,13 @@ public class AREServices implements IAREServices{
 					"deployModel: Failed to deploy model -> \n"
 					+e4.getMessage());
 
+		} catch (BundleManagementException e) {
+			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
+			AstericsErrorHandling.instance.setStatusObject
+			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
+			logger.warning(this.getClass().getName()+"." +
+					"deployModel: Failed to deploy model -> \n"
+					+e.getMessage());
 		}
 	}
 
@@ -755,7 +763,7 @@ public class AREServices implements IAREServices{
 		fullFilePath.append(modelName);
 		fullFilePath.append("/");
 		fullFilePath.append(DeploymentManager.instance
-				.getComponentInstanceIDFromComponentInstance(component));
+				.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(component));
 		fullFilePath.append("/");
 		//System.out.println("Model File Name for Local Storage Service="+fullFilePath);
 

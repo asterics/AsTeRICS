@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="../../../styles/help.css">
+		<title>Timer</title>
+	</head>
+	<body class="innerBody">
+<H1>Timer</H1> 
+<H3>Component Type: Sensor (Subcategory: Simulation)</H3>
+<p>The timer component can measure time in milliseconds, provide current time on an output port and trigger events when a specified time period has passed. It can be used to influence other features (e.g. to provide acceleration) or to enable dwell selection, for example clicking when a certain time has passed.</p>
+<div class="imageContainer"><img class="image" src="img/Timer.jpg" alt="Screenshot: Timer plugin" title="Screenshot: Timer plugin" /><br />
+Timer plugin</div>
+
+
+<H2>Input Port Description</H2>
+<ul>
+<li><STRONG>period [integer]:</STRONG> The number of milliseconds the timer period property is set to.</li>
+</ul>
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>time [integer]:</STRONG> The number of milliseconds which have passed since the timer has been started.</li>
+</ul>
+<H2>Event Listener Description</H2>
+<ul>
+<li><STRONG>start:</STRONG> An incoming event starts the timer.</li>
+<li><STRONG>stop:</STRONG> An incoming event stops the timer (pause, the current time value is not reset to 0).</li>
+<li><STRONG>reset:</STRONG> An incoming event resets the time value to 0 (but does not stop the timer).</li>
+</ul>
+<H2>Event Trigger Description</H2>
+<ul>
+<li><STRONG>periodFinished:</STRONG> This event is triggered when the given time has passed.</li>
+</ul>
+<H2>Properties</H2>
+<ul>
+<li><STRONG>mode [integer]:</STRONG> This property selects one of several possible modes of operation of the timer:
+<ul>
+<li><EM>"one shot":</EM> The timer runs once from 0 to the specified time, and then stops.</li>
+<li><EM>"repeat n times":</EM> The timer completes the time period several times (the number is selected with the repeat counter property).</li>
+<li><EM>"endless loop":</EM> the timer completes the time period until it is stopped by an event at the stop listener port.</li>
+<li><EM>"once and continue time output":</EM> The time period is completed once, the timer is not stopped but continues to send the last time value (this is useful to generate increasing values with persisting maximum value, e.g. for utilization as accelerated speed value).</li>
+<li><EM>"measure time between start and stop":</EM> The timer sends the time passed from start to stop events to the output port (when stop was received).</li>
+</ul></li>
+<li><STRONG>repeatCounter [integer]:</STRONG> The number of periods to finish for the "repeat n times " mode.</li>
+<li><STRONG>timePeriod (ms) [integer]:</STRONG> The time period covered by this counter in milliseconds.</li>
+<li><STRONG>resolution (ms) [integer]:</STRONG> The update rate of the timer in milliseconds. This value defines how often the current time value is updated and sent to the output port. It thereby defines the accuracy for the timer.</li>
+<li><STRONG>waitPeriod (ms) [integer]:</STRONG> This value specifies how long the timer is bypassed before it actually starts (after receiving a start event).</li>
+<li><STRONG>autostart [boolean]:</STRONG> This property defines if the timer will be started automatically together with the model (true) or if it will be started by an event (false).</li>
+</ul>
+</BODY>
+</HTML>

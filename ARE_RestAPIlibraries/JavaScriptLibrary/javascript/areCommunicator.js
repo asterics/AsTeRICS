@@ -1,23 +1,40 @@
 
-
-//Base URI that ARE runs at
+//The base URI that ARE runs at
 var _baseURI;
 
 //A map holding the opened connection with ARE for SSE
 var _eventSourceMap = new Map();
 
+//delimiter used for encoding
+var delimiter = "-";
+
 //enumeration for server event types
 var ServerEvents = {
-		  MODEL_STATE_CHANGED: "ModelStateChanged",
-		  MODEL_CHANGED: "ModelChanged",
-		  REPOSITORY_CHANGED: "RepositoryChanged"
+		MODEL_STATE_CHANGED: "model_state_changed",
+		MODEL_CHANGED: "model_changed",
+		MODEL_EVENT: "model_event"
 };
 
+//set the base uri (usually where ARE runs at)
 function setBaseURI(uri) {
 	_baseURI = uri;
 }
 
+//encodes PathParametes
+function encodeParam(text) {
+	encoded = "";
+	for (i=0; i<text.length; i++) {
+		encoded += text.charCodeAt(i) + delimiter;
+	}
+	
+	return encoded;
+}
 
+
+//replaces all occurrences of a 'oldString' with 'newString' in 'text'
+function replaceAll(text, oldString, newString) {
+	return text.split(oldString).join(newString);
+}
 
 /**********************
  *	Runtime resources 
@@ -64,13 +81,13 @@ function uploadModel(successCallback, errorCallback, modelInXML) {
 }
 
 
-function autorun(successCallback, errorCallback, filename) {
+function autorun(successCallback, errorCallback, filepath) {
 	
-	if (filename == "") return;
+	if (filepath == "") return;
 	
 	$.ajax({
 		type: "PUT",
-		url: _baseURI + "runtime/model/autorun/" + filename,
+		url: _baseURI + "runtime/model/autorun/" + encodeParam(filepath),
 		datatype: "text",
 		crossDomain: true,
 		success:
@@ -157,13 +174,13 @@ function getModelState(successCallback, errorCallback) {
 }
 
 
-function deployModelFromFile(successCallback, errorCallback, filename) {
+function deployModelFromFile(successCallback, errorCallback, filepath) {
 	
-	if ( filename == "") return;
+	if ( filepath == "") return;
 	
 	$.ajax({
 		type: "PUT",
-		url: _baseURI + "runtime/model/" + filename,
+		url: _baseURI + "runtime/model/" + encodeParam(filepath),
 		datatype: "text",
 		crossDomain: true,
 		success:
@@ -178,10 +195,10 @@ function deployModelFromFile(successCallback, errorCallback, filename) {
 }
 
 
-function downloadComponentCollection(successCallback, errorCallback) {
+function getRuntimeComponentIds(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/components",
+		url: _baseURI + "runtime/model/components/ids",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -197,13 +214,13 @@ function downloadComponentCollection(successCallback, errorCallback) {
 }
 
 
-function getComponentPropertyKeys(successCallback, errorCallback, componentId) {
+function getRuntimeComponentPropertyKeys(successCallback, errorCallback, componentId) {
 	
 	if ( componentId == "" ) return;
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/components/"+componentId,
+		url: _baseURI + "runtime/model/components/"+ encodeParam(componentId),
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -219,13 +236,13 @@ function getComponentPropertyKeys(successCallback, errorCallback, componentId) {
 }
 
 
-function getComponentProperty(successCallback, errorCallback, componentId, componentKey) {
+function getRuntimeComponentProperty(successCallback, errorCallback, componentId, componentKey) {
 	
 	if ( (componentId == "") || (componentKey == "")) return;
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/components/"+componentId+"/"+componentKey,
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId)+"/"+encodeParam(componentKey),
 		datatype: "text",
 		crossDomain: true,
 		success:
@@ -240,13 +257,13 @@ function getComponentProperty(successCallback, errorCallback, componentId, compo
 }
 
 
-function setComponentProperty(successCallback, errorCallback, componentId, componentKey, componentValue) {
+function setRuntimeComponentProperty(successCallback, errorCallback, componentId, componentKey, componentValue) {
 	
 	if ( (componentId == "") || (componentKey == "") || (componentValue == "") ) return;
 	
 	$.ajax({
 		type: "PUT",
-		url: _baseURI + "runtime/model/components/"+componentId+"/"+componentKey,
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId)+"/"+encodeParam(componentKey),
 		contentType: "text/plain",
 		data: componentValue,
 		datatype: "text",
@@ -269,13 +286,13 @@ function setComponentProperty(successCallback, errorCallback, componentId, compo
  *	Storage/ARE-repository resources
  *************************************/
 
-function downloadModelFromFile(successCallback, errorCallback, filename) {
+function downloadModelFromFile(successCallback, errorCallback, filepath) {
 	
-	if (filename == "") return;
+	if (filepath == "") return;
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "storage/models/" + filename,
+		url: _baseURI + "storage/models/" + encodeParam(filepath),
 		datatype: "text/xml",
 		crossDomain: true,
 		success:
@@ -290,13 +307,13 @@ function downloadModelFromFile(successCallback, errorCallback, filename) {
 }
 
 
-function storeModel(successCallback, errorCallback, filename, modelInXML) {
+function storeModel(successCallback, errorCallback, filepath, modelInXML) {
 	
-	if ( (filename == "") || (modelInXML == "")) return;
+	if ( (filepath == "") || (modelInXML == "")) return;
 	
 	$.ajax({
 		type: "POST",
-		url: _baseURI + "storage/models/" + filename,
+		url: _baseURI + "storage/models/" + encodeParam(filepath),
 		contentType: "text/xml",									//content-type of the request
 		data: modelInXML,	
 		datatype: "text",
@@ -313,13 +330,13 @@ function storeModel(successCallback, errorCallback, filename, modelInXML) {
 }
 
 
-function deleteModelFromFile(successCallback, errorCallback, filename) {
+function deleteModelFromFile(successCallback, errorCallback, filepath) {
 	
-	if ( filename == "" ) return;
+	if ( filepath == "" ) return;
 	
 	$.ajax({
 		type: "DELETE",
-		url: _baseURI + "storage/models/" + filename,
+		url: _baseURI + "storage/models/" + encodeParam(filepath),
 		datatype: "text",
 		crossDomain: true,
 		success:
@@ -337,7 +354,7 @@ function deleteModelFromFile(successCallback, errorCallback, filename) {
 function listStoredModels(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "storage/models",
+		url: _baseURI + "storage/models/names",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -353,16 +370,34 @@ function listStoredModels(successCallback, errorCallback) {
 }
 
 
-function getInstalledComponents(successCallback, errorCallback) {
+function getComponentDescriptorsAsXml(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "storage/components/installed",
+		url: _baseURI + "storage/components/descriptors/xml",
+		datatype: "text/xml",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(data, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getComponentDescriptorsAsJSON(successCallback, errorCallback) {
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "storage/components/descriptors/json",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
 				function (data, textStatus, jqXHR){
-					jsonString = jqXHR.responseText;
-					successCallback(JSON.parse(jsonString), textStatus);
+					jsonObject = JSON.parse(jqXHR.responseText);
+					successCallback(jsonObject[0], textStatus);
 				},
 		error: 
 				function (jqXHR, textStatus, errorThrown) {
@@ -370,43 +405,6 @@ function getInstalledComponents(successCallback, errorCallback) {
 				}
 	});
 }
-
-
-function getInstalledComponentsDescriptor(successCallback, errorCallback) {
-	$.ajax({
-		type: "GET",
-		url: _baseURI + "storage/components/installed/descriptors",
-		datatype: "text/xml",
-		crossDomain: true,
-		success:
-				function (data, textStatus, jqXHR){
-					successCallback(data, textStatus);
-				},
-		error: 
-				function (jqXHR, textStatus, errorThrown) {
-					errorCallback(errorThrown,jqXHR.responseText);
-				}
-	});
-}
-
-
-function getCreatedComponentsDescriptor(successCallback, errorCallback) {
-	$.ajax({
-		type: "GET",
-		url: _baseURI + "storage/components/created/descriptors",
-		datatype: "text/xml",
-		crossDomain: true,
-		success:
-				function (data, textStatus, jqXHR){
-					successCallback(data, textStatus);
-				},
-		error: 
-				function (jqXHR, textStatus, errorThrown) {
-					errorCallback(errorThrown,jqXHR.responseText);
-				}
-	});
-}
-
 
 
 /**********************

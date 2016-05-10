@@ -18,8 +18,8 @@
  *                      Grant Agreement Number 247730
  *  
  *  
- *    Dual License: MIT or GPL v3.0 (GNU General Public License Version 3.0)
- *                 (please refer to the LICENSE_dual.txt file)
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  * 
  */
 

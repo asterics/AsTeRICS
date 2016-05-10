@@ -19,6 +19,8 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.JarURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -54,13 +56,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import com.sun.org.apache.xerces.internal.util.URI;
 
 import eu.asterics.mw.are.asapi.StatusObject;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.DeploymentException;
 import eu.asterics.mw.are.exceptions.ParseException;
+import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
 import eu.asterics.mw.model.bundle.ComponentType;
 import eu.asterics.mw.model.bundle.IComponentType;
@@ -101,10 +103,10 @@ import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -127,7 +129,6 @@ public class AsapiSupport
 	private Logger logger = null;
 	private DocumentBuilder builder;
 
-	private static final String BUNDLE_DESCRIPTOR="/bundle_descriptor.xml";
 	public static final String DEFAULT_MODEL_URL = "/default_model.xml";
 	public static final String AUTO_START_MODEL = "autostart.acs";
 
@@ -143,8 +144,9 @@ public class AsapiSupport
 	 *
 	 * @return an array containing all available component types
 	 */
-	public String [] getAvailableComponentTypes() {
-
+	public String [] getAvailableComponentTypes() {	
+		//The method name indicates available (all components for the platform) but componentRepository.getInstalledComponentTypes()
+		//returns the currently installed ones.
 		final Set<IComponentType> componentTypeSet
 		= componentRepository.getInstalledComponentTypes();
 
@@ -169,7 +171,6 @@ public class AsapiSupport
 	 * @return an array containing all available component.
 	 */
 	public IComponentType [] getInstalledComponents() {
-
 		final Set<IComponentType> componentSet
 		= componentRepository.getInstalledComponentTypes();
 		
@@ -189,154 +190,61 @@ public class AsapiSupport
 
 		return componentTypes;
 	}
-	
 
+	
 	/**
-	 * Returns a String containing the descriptors
-	 * for every installed AsTeRiCS component.
-	 *
-	 * @return a string containing all the descriptors and null if an error has
-	 * occurred
+	 * Returns a formatted XML String of the componentType(s) in the bundle descriptor. 
+	 * @param bundleDescriptorURL
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
 	 */
-	public String getInstalledComponentsDescriptor() {
-		String response = "";
-		URL areLocation = this.getClass().getProtectionDomain().getCodeSource().getLocation();
+	private String getFormattedBundleDescriptorStringOfComponentTypeId(URL bundleDescriptorURL) throws MalformedURLException, IOException {
+		//Actually we should ask DefaultBundleModelParser to return just the part that belongs to the requested componentTypeId
+		//e.g. in case of AnalogIn there is also a second component type LegacyAnalogIn in the bundle_descriptor.xml
+		//Skip it for now because result is unformatted and JavaScript showed error callback.
+		//String bundleDescriptorString=DefaultBundleModelParser.instance.getBundleDescriptionOfComponentTypeId(componentTypeId, bundleDescriptorURI.toURL().openStream());
 		
-		//get bin folder
-		File areJar = new File(areLocation.getFile());
-        File bin = areJar.getParentFile();
-        if (!bin.exists()) {
-        	logger.fine("Cannot find bin folder.");
-        	return null;
-        }
-        
-		//get asterics bundles
-		File [] componentJars = bin.listFiles(new FilenameFilter() {
-		    @Override
-		    public boolean accept(File dir, String name) {
-		    	return (name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor")) 
-		    			&& name.endsWith("jar");
-		    }
-		});
-
-		response += "<?xml version=\"1.0\"?>";
-		response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
-		
-		//read all bundle descriptors
-		Set<String> installedComponentJarNames = getInstalledComponentJarNames();
-		for (int i=0;i<componentJars.length;i++) {
-			try {
-				File currentJarFile = new File( componentJars[i].getAbsolutePath() );
-				
-				if (!installedComponentJarNames.contains(currentJarFile.getName())) {
-					continue;
-				}
-				
-				String inputFilePath = "jar:file:\\" + currentJarFile.getAbsolutePath() + "!/bundle_descriptor.xml" ;
-				InputStream inputStream = null;
-				URL inputURL = null;
-
-				inputURL = new URL(inputFilePath);
-				JarURLConnection conn = (JarURLConnection)inputURL.openConnection();
-				inputStream = conn.getInputStream();
-				
-				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-				String bundle_descriptor = "", line;
-				while ((line = bufferedReader.readLine()) != null) {
-					bundle_descriptor += line + "\n";
-				}
-
-				bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
-				bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
-				bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");
-				
-				response += bundle_descriptor;
-				
-			} catch (Exception ex) {
-				System.err.println("ERROR when trying to retrieve the bundle descriptors.");
-			}
-		}
-		response += "</componentTypes>";
-		
-		return response;
-	}
-	
-	
-	private Set<String> getInstalledComponentJarNames() {
-
-		final Set<IComponentType> componentTypeSet= componentRepository.getInstalledComponentTypes();
-		HashSet<String> jarNameSet = new HashSet<String>();
-
-		for(final IComponentType componentType : componentTypeSet) {
-			String jarName = componentType.getID();
-			jarName = jarName.replaceFirst("\\.", "."+componentType.getType().toString()+".");
-			jarName += ".jar";
-			jarNameSet.add(jarName);
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bundleDescriptorURL.openStream()));
+		String bundle_descriptor = "", line;
+		while ((line = bufferedReader.readLine()) != null) {
+			bundle_descriptor += line + "\n";
 		}
 
-		return jarNameSet;
+		bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
+		bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
+		bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");	
+		
+		return bundle_descriptor; 
 	}
 	
 	
 	/**
-	 * Returns an xml String containing the bundle descriptors
-	 * for every created AsTeRiCS component. This function searches in the bin/ARE folder
+	 * Returns an xml String containing the component collection (bundle descriptors
+	 * of every AsTeRiCS component). This function searches in the bin/ARE folder
 	 * to discover the created components. 
 	 *
-	 * @return an xml string containing all the bundle descriptors and null if an error
-	 * has occured.
+	 * @return an xml string containing all the bundle descriptors (some parts of the descriptor are removed)
+	 * and null if an error has occurred.
 	 */
-	public String getCreatedComponentsDescriptors() {
+	public String getComponentDescriptorsAsXml() {
 		String response = "";
-		URL areLocation = this.getClass().getProtectionDomain().getCodeSource().getLocation();
-		
-		//get bin folder
-		File areJar = new File(areLocation.getFile());
-        File bin = areJar.getParentFile();
-        if (!bin.exists()) {
-        	logger.fine("Cannot find bin folder.");
-        	return null;
-        }
-        
-		//get asterics bundles
-		File [] componentJars = bin.listFiles(new FilenameFilter() {
-		    @Override
-		    public boolean accept(File dir, String name) {
-		    	return (name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor")) 
-		    			&& name.endsWith("jar");
-		    }
-		});
 		
 		response += "<?xml version=\"1.0\"?>";
 		response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
 		
-		//read all bundle descriptors
-		for (int i=0;i<componentJars.length;i++) {
-			try {
-				File currentJarFile = new File( componentJars[i].getAbsolutePath() );
-				
-				String inputFilePath = "jar:file:\\" + currentJarFile.getAbsolutePath() + "!/bundle_descriptor.xml" ;
-				InputStream inputStream = null;
-				URL inputURL = null;
-
-				inputURL = new URL(inputFilePath);
-				JarURLConnection conn = (JarURLConnection)inputURL.openConnection();
-				inputStream = conn.getInputStream();
-				
-				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-				String bundle_descriptor = "", line;
-				while ((line = bufferedReader.readLine()) != null) {
-					bundle_descriptor += line + "\n";
+		List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
+		for (Bundle bundle : bundleList)
+		{
+			URL bundleDescriptorURL = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+			if (bundleDescriptorURL!=null)
+			{
+				try {
+					response += getFormattedBundleDescriptorStringOfComponentTypeId(bundleDescriptorURL);
+				} catch (IOException e) {
+					//just logging (as 'getBundleDescriptors' function)
+					AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRiCS bundle descriptor for bundle: "+bundle.getBundleId());
 				}
-
-				bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
-				bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
-				bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");
-				
-				response += bundle_descriptor;
-				
-			} catch (Exception ex) {
-				System.err.println("ERROR when trying to retrieve the bundle descriptors.");
 			}
 		}
 		response += "</componentTypes>";
@@ -637,39 +545,37 @@ public class AsapiSupport
 
 	}
 
-	public ArrayList<String> getBundelDescriptors() throws AREAsapiException {
-
-		ArrayList<String> res = new ArrayList<String> ();
-		URL url= null;
+	/**
+	 * Retrieves the descriptors of AsTeRiCS bundles.
+	 * 
+	 * @return A {@link List} of {@link String} which contains all the bundle descriptors.
+	 * 
+	 * @throws AREAsapiException
+	 */
+	public List<String> getBundelDescriptors() throws AREAsapiException {		
+		List<String> res=new ArrayList<String>();
 		
-		// System.out.println("*** Get Component Collection -> load all available bundles !");
-		BundleManager bm=DeploymentManager.instance.getBundleManager();
-		bm.install(bm.MODE_GET_ALL_COMPONENTS);
-
-		for (Bundle bundle : Main.getAREContext().getBundles())
+		List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
+		for (Bundle bundle : bundleList)
 		{
-			url = bundle.getResource(BUNDLE_DESCRIPTOR);
+			URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
 			if (url!=null)
 			{
 				try {
 					res.add(convertXMLFileToString(url.openStream()));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					throw (new AREAsapiException(e.getMessage()));
+					//throw (new AREAsapiException(e.getMessage()));
+					//keep it by just logging
+					//because we have to assume that several bundles are not supported for the platform
+					AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRICS bundle descriptor for bundle: "+bundle.getBundleId());
 				}
-
 			}
 		}
-
-		//		for (String s : res)
-		//		{
-		//			System.out.println ("S: "+s);
-		//		}
-
-		//return res.toArray(new String[res.size()]);
 		return res;
 	}
 
+	
 	/**
 	 * Deploys a new empty model into the ARE. In essence, this is equivalent
 	 * to creating an empty model and deploying it using
@@ -1924,7 +1830,7 @@ public class AsapiSupport
 					
 					//try{
 					synchronized (this){
-						java.net.URI uri=ResourceRegistry.instance.getResource(filename,RES_TYPE.MODEL);
+						java.net.URI uri=ResourceRegistry.getInstance().getResource(filename,RES_TYPE.MODEL);
 
 						DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 						DocumentBuilder builder = factory.newDocumentBuilder();
@@ -2086,7 +1992,7 @@ public class AsapiSupport
 		return res;
 
 		*/
-		
+		/*
 		List<String> res = new ArrayList<String>(); 
 			List<String> nextDir = new ArrayList<String>(); //Directories
 			nextDir.add(ResourceRegistry.MODELS_FOLDER);	
@@ -2124,9 +2030,12 @@ public class AsapiSupport
 		{
 			res2[i] = res.get(i);
 		}
+		
 		return res2;		
+		*/
 		
-		
+		List<URI> storedModelList=ResourceRegistry.getInstance().getModelList(true);
+		return ResourceRegistry.toStringArray(storedModelList);		
 	}
 
 
@@ -2175,15 +2084,19 @@ public class AsapiSupport
 				}
 			}
 		}  catch (IOException e) {
-			logger.warning(this.getClass().getName()+".storeModel: " +
-					"Failed to store model -> \n"+e.getMessage());
-			throw (new AREAsapiException(e.getMessage()));
+			String errorMsg="Failed to store model -> \n"+e.getMessage();
+			AstericsErrorHandling.instance.reportError(null, errorMsg);
+			throw (new AREAsapiException(errorMsg));
 		} catch (ParseException e) {
-			logger.warning(this.getClass().getName()+".storeModel: " +
-					"Failed to store model -> \n"+e.getMessage());
-			throw (new AREAsapiException(e.getMessage()));
+			String errorMsg="Failed to parse model, maybe model version not in sync with compononent descriptors -> \n"+e.getMessage();
+			AstericsErrorHandling.instance.reportError(null, errorMsg);
+			throw (new AREAsapiException(errorMsg));
+		} catch (BundleManagementException e) {
+			String errorMsg="Failed to install model components -> \n"+e.getMessage();
+			AstericsErrorHandling.instance.reportError(null, errorMsg);
+			throw (new AREAsapiException(errorMsg));
 		}
-			}
+	}
 
 
 
@@ -2234,20 +2147,29 @@ public class AsapiSupport
 	 * @throws AREAsapiException 
 	 */
 	public void autostart(String startModel) throws AREAsapiException {
-		try {
-			if(startModel== null || startModel.equals("")) {
-				startModel=AUTO_START_MODEL;
+
+		if(startModel== null || startModel.equals("")) {
+			try{
+				//try to find autostart model
+				//First look for a model file names autostart.acs
+				File autostartModel=ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(AUTO_START_MODEL, RES_TYPE.MODEL));
+				if(autostartModel.exists()) {
+					startModel=autostartModel.getPath();
+				} else {
+					//If there is no dedicated autostart model either use the only one existing or throw an error message
+					List<URI> models=ResourceRegistry.getInstance().getModelList(false);
+					if(models.size()==1) {
+						startModel=ResourceRegistry.toString(models.get(0));
+					} else {
+						throw new AREAsapiException("No model found for autostart. To define autostart model, either\n\ncreate model "+ResourceRegistry.MODELS_FOLDER+"autostart.acs or\nprovide model name as command line argument or\nopen model manually in the ARE GUI.");
+					}
+				}
+			}catch (URISyntaxException e) {
+				throw new AREAsapiException("Error during autostart of model:\n"+e.getMessage()+"\nTry to open model manually in the ARE GUI.");
 			}
-			deployFile (startModel);
-			runModel();
-
-		} catch (AREAsapiException e) {
-
-			logger.fine(this.getClass().getName()+".autostart: Failed -> \n" 
-					+e.getMessage());
-			throw e;
 		}
-
+		deployFile (startModel);
+		runModel();
 	}
 
 
@@ -2258,7 +2180,7 @@ public class AsapiSupport
 		List<String> list = new ArrayList<String>();
 		for (IRuntimeComponentInstance ci : componentInstances)
 		{
-			String id = DeploymentManager.instance.getComponentInstanceIDFromComponentInstance(ci);
+			String id = DeploymentManager.instance.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(ci);
 			if (id.equals(componentID))
 			{
 				list = ci.getRuntimePropertyList(key);
@@ -2268,6 +2190,11 @@ public class AsapiSupport
 		return list;
 			}
 
+	/**
+	 * Helper method to convert an InputStream of an XML-file to an XML String object.
+	 * @param inputStream
+	 * @return
+	 */
 	private String convertXMLFileToString(InputStream inputStream) 
 	{ 
 		try{ 

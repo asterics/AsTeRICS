@@ -58,6 +58,7 @@ using AvalonDock;
 using Microsoft.VisualBasic.Logging;
 using Microsoft.Windows.Controls.Ribbon;
 using NLog;
+using Microsoft.Win32;
 
 namespace Asterics.ACS {
     /// <summary>
@@ -2547,30 +2548,51 @@ namespace Asterics.ACS {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Help_Click(object sender, RoutedEventArgs e) {
-            if (File.Exists(@"ACS_Help.chm"))
-            {
-                logger.Log(LogLevel.Debug, "Help file found!");
-            }
-            else
-            {
-                logger.Log(LogLevel.Debug, "Help file does not exist!");
-            }
-            if (sender is RibbonButton) {
-                System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.TableOfContents);
-            }
-            else {
-                if (focusedComponent != null) {
-                    System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.KeywordIndex, focusedComponent.type_id);
+            if (File.Exists(@"ACS_Help.chm")) {
+                logger.Log(LogLevel.Debug, "Help file (.chm) found!");
+                if (sender is RibbonButton) {
+                    System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.TableOfContents);
+                } else {
+                    if (focusedComponent != null) {
+                        System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.KeywordIndex, focusedComponent.type_id);
+                    } else {
+                        if (selectedComponentList.Count == 0) {
+                            System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.TableOfContents);
+                        } else {
+                            System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.KeywordIndex, selectedComponentList.First.Value.type_id);
+                        }
+                    }
                 }
-                else {
-                    if (selectedComponentList.Count == 0)
-                    {
-                        System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.TableOfContents);
+            } else {
+                logger.Log(LogLevel.Debug, "Help file (.chm) does not exist - searching for ACSHelp.htm.");
+                if (File.Exists(@"help/ACSHelp.htm")) {
+                    logger.Log(LogLevel.Debug, "ACSHelp.htm found!");
+                    String browserPath = GetStandardBrowserPath();
+                    if (string.IsNullOrEmpty(browserPath)) {
+                        logger.Log(LogLevel.Debug, "No standard browser found for launching help!");
+                    } else {
+                        if (sender is RibbonButton) {
+                            Process.Start(browserPath, "help/ACSHelp.htm");
+                        } else {
+                            if (focusedComponent != null) {
+                                ACS2.componentTypesComponentType comp = (ACS2.componentTypesComponentType)componentList[focusedComponent.type_id];
+                                String id = focusedComponent.type_id;
+                                if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length-9); // eleminiate prefix
+                                Process.Start(browserPath, "help/ACSHelp.htm?" + comp.type.Value + "s/" + comp.type.subtype.Replace(" ", "_") + "/" + id + ".htm");
+                            } else {
+                                if (selectedComponentList.Count == 0) {
+                                    Process.Start(browserPath, "help/ACSHelp.htm");
+                                } else {
+                                    ACS2.componentTypesComponentType comp = (ACS2.componentTypesComponentType)componentList[selectedComponentList.First.Value.type_id];
+                                    String id = selectedComponentList.First.Value.type_id;
+                                    if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length-9); // eleminiate prefix
+                                    Process.Start(browserPath, "help/ACSHelp.htm?" + comp.type.Value + "s/" + comp.type.subtype.Replace(" ", "_") + "/" + id + ".htm");
+                                }
+                            }
+                        }
                     }
-                    else
-                    {
-                        System.Windows.Forms.Help.ShowHelp(null, @"ACS_Help.chm", System.Windows.Forms.HelpNavigator.KeywordIndex, selectedComponentList.First.Value.type_id);
-                    }
+                } else {
+                    logger.Log(LogLevel.Debug, "No help files found!");
                 }
             }
         }
@@ -7881,6 +7903,45 @@ namespace Asterics.ACS {
                 name = name.Substring(9);
             }
             return name;
+        }
+
+        /// <summary>
+        /// Finds the path to the systems default webbrowser.
+        /// </summary>
+        /// <returns>String, containing that path.</returns>
+        private static string GetStandardBrowserPath() {
+            string browserPath = string.Empty;
+            RegistryKey browserKey = null;
+
+            try {
+                //Read default browser path from Win XP registry key
+                browserKey = Registry.ClassesRoot.OpenSubKey(@"HTTP\shell\open\command", false);
+ 
+                //If browser path wasn't found, try Win Vista (and newer) registry key
+                if (browserKey == null) {
+                    browserKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http", false); ;
+                }
+ 
+                //If browser path was found, clean it
+                if (browserKey != null) {
+                    //Remove quotation marks
+                    browserPath = (browserKey.GetValue(null) as string).ToLower().Replace("\"", "");
+ 
+                    //Cut off optional parameters
+                    if (!browserPath.EndsWith("exe")) {
+                        browserPath = browserPath.Substring(0, browserPath.LastIndexOf(".exe") + 4);
+                    }
+ 
+                    //Close registry key
+                    browserKey.Close();
+                }
+            }
+            catch {
+                //Return empty string, if no path was found
+                return string.Empty;
+            }
+            //Return default browsers path
+            return browserPath;
         }
 
         #endregion // Internal functions
