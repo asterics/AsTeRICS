@@ -34,6 +34,10 @@ import java.util.logging.Logger;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 public abstract class CIMPortController {
+	//This timeout must be set to avoid a high CPU load on Win10
+	//Use @see RXTXPort#enableReceiveTimeout
+	public static final int RXTX_PORT_ENABLE_RECEIVE_TIMEOUT=500;
+	
 
 	List<CIMEventHandler> eventHandlers = new LinkedList<CIMEventHandler>();
 	protected Logger logger = null;

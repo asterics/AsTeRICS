@@ -90,6 +90,9 @@ class CIMRawPortController extends CIMPortController
 			port.setSerialPortParams(baudRate, SerialPort.DATABITS_8, 
 					SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
+			//bug fix high cpu load on Win10: https://github.com/asterics/AsTeRICS/issues/116
+			port.enableReceiveTimeout(RXTX_PORT_ENABLE_RECEIVE_TIMEOUT);
+			
 			inputStream = port.getInputStream();
 			eventListener = new CIMPortEventListener(inputStream, dataSource);
 			port.addEventListener(eventListener);
