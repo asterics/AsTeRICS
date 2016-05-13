@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
+import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.grizzly.websockets.WebSocketAddOn;
 import org.glassfish.grizzly.websockets.WebSocketEngine;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -97,7 +98,8 @@ public class WebServiceEngine {
         rc.registerClasses(RestServer.class, SseResource.class, SseFeature.class);
         rc.register(new ResponseFilter());
         restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.BASE_URI_REST, rc);
-        		
+        restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler("./data/webservice"), "/");
+        
         restServer.start();
 
         
