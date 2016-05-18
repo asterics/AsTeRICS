@@ -37,6 +37,7 @@ exit /b 0
 
 
 :findjava32
+REM Thanks to stackoverflow: http://stackoverflow.com/questions/28961386/how-to-determine-location-of-32bit-java
 @ECHO OFF
 setlocal
 
