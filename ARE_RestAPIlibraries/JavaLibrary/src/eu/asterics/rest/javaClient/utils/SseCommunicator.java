@@ -14,10 +14,9 @@ import org.glassfish.jersey.media.sse.EventSource;
 import org.glassfish.jersey.media.sse.SseFeature;
 
 public class SseCommunicator {
-	public static final String MODEL_STATE_CHANGED = "ModelStateChanged";
-	public static final String MODEL_CHANGED = "ModelChanged";
-	public static final String REPOSITORY_CHANGE = "RepositoryChanged";
-	public static final String ARE_EVENT = "AreEvent"; //TODO
+	public static final String MODEL_STATE_CHANGED = "model_state_changed";
+	public static final String MODEL_CHANGED = "model_changed";
+	public static final String MODEL_EVENT = "model_event"; //TODO
 	
 	public Set<String> eventNames;
 	private Map<String, EventSource> eventSourceMap;
@@ -28,10 +27,9 @@ public class SseCommunicator {
 	
 	public SseCommunicator(String baseUrl) {
 		this.eventNames = new HashSet<String>();
-		eventNames.add("ModelStateChanged");
-		eventNames.add("ModelChanged");
-		eventNames.add("RepositoryChanged");
-		eventNames.add("AreEvent"); //TODO
+		eventNames.add(SseCommunicator.MODEL_STATE_CHANGED);
+		eventNames.add(SseCommunicator.MODEL_CHANGED);
+		eventNames.add(SseCommunicator.MODEL_EVENT); //NOT IMPLEMENTED BY ARE SERVER
 		
 		this.eventSourceMap = new HashMap<String, EventSource>();
 		
