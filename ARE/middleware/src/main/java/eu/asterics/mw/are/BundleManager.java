@@ -569,6 +569,11 @@ public class BundleManager implements BundleListener, FrameworkListener
 				logger.fine("Loading services from file: "+servicesFile);
 				while ( (path = in.readLine()) != null)
 				{
+					path=path.trim();
+					//Skipping comments
+					if(path.startsWith("#") || path.isEmpty() || !path.endsWith(".jar")) {
+						continue;
+					}
 					try {
 						URI jarURI = ResourceRegistry.getInstance().getResource(path, RES_TYPE.JAR);
 						bundle=installSingle(jarURI);

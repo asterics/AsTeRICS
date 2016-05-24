@@ -220,9 +220,12 @@ public class Packager {
 				while ((path = in.readLine()) != null)
 				{
 					//sanity check, ignore empty lines and .jar entries
-					if(path.equals("")|| !path.endsWith(".jar")) {
+					path=path.trim();
+					//Skipping comments
+					if(path.startsWith("#") || path.isEmpty() || !path.endsWith(".jar")) {
 						continue;
 					}
+
 					try {
 						URI jarURI = ResourceRegistry.getInstance().getResource(path, RES_TYPE.JAR);
 						servicesJars.add(jarURI);
