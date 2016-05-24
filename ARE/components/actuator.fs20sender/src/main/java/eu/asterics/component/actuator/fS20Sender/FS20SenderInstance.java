@@ -38,6 +38,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import com.codeminders.hidapi.ClassPathLibraryLoader;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -69,9 +71,6 @@ import eu.asterics.component.actuator.fS20Sender.FS20Utils;
 public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 {
 	
-	static {
-		System.loadLibrary("hidapi-jni");
-	}
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
@@ -94,7 +93,10 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
     */
     public FS20SenderInstance()
     {
-    	
+    		System.out.println("Trying to load library...");
+    		//System.loadLibrary("hidapi-jni");
+    		boolean successLoading=ClassPathLibraryLoader.loadNativeHIDLibrary();
+    		System.out.println("Success loading native lib: "+successLoading);
     }
 
    /**

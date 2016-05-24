@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\CellBoard_scanMode_row_column_test.acs_2015_10_9_10_37" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\bin\ACS\models\componentTests\sensors\CellBoard_scanMode_row_column_test.acs_2016_4_26_13_58" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -169,8 +169,8 @@
         <property name="actionText36" value="" />
       </properties>
       <layout>
-        <posX>81</posX>
-        <posY>87</posY>
+        <posX>232</posX>
+        <posY>288</posY>
       </layout>
       <gui>
         <posX>12</posX>
@@ -195,8 +195,8 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>239</posX>
-        <posY>118</posY>
+        <posX>493</posX>
+        <posY>180</posY>
       </layout>
       <gui>
         <posX>0</posX>
@@ -270,6 +270,102 @@
         <height>600</height>
       </gui>
     </component>
+    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
+      <description>Webcamera-based face tracking sensor</description>
+      <ports>
+        <outputPort portTypeID="noseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="noseY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="cameraSelection" value="1" />
+        <property name="cameraResolution" value="1" />
+        <property name="cameraDisplayUpdate" value="100" />
+        <property name="cameraProfile" value="" />
+      </properties>
+      <layout>
+        <posX>17</posX>
+        <posY>61</posY>
+      </layout>
+      <gui>
+        <posX>3697</posX>
+        <posY>121</posY>
+        <width>2000</width>
+        <height>1500</height>
+      </gui>
+    </component>
+    <component id="Threshold.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="10" />
+        <property name="thresholdLow" value="10" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="0" />
+      </properties>
+      <layout>
+        <posX>342</posX>
+        <posY>28</posY>
+      </layout>
+    </component>
+    <component id="Threshold.1.1" type_id="asterics.Threshold">
+      <description>Threshold Level Processor</description>
+      <ports>
+        <inputPort portTypeID="in">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="out">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="thresholdHigh" value="0" />
+        <property name="thresholdLow" value="-30" />
+        <property name="outputHigh" value="1" />
+        <property name="outputLow" value="0" />
+        <property name="operationMode" value="binary" />
+        <property name="eventCondition" value="1" />
+      </properties>
+      <layout>
+        <posX>152</posX>
+        <posY>133</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>483</posX>
+        <posY>344</posY>
+      </layout>
+      <gui>
+        <posX>72</posX>
+        <posY>5343</posY>
+        <width>3000</width>
+        <height>1000</height>
+      </gui>
+    </component>
   </components>
   <channels>
     <channel id="binding.0">
@@ -280,6 +376,26 @@
       <target>
         <component id="TextDisplay.1" />
         <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseX" />
+      </source>
+      <target>
+        <component id="Threshold.1" />
+        <port id="in" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="FacetrackerLK.1" />
+        <port id="noseY" />
+      </source>
+      <target>
+        <component id="Threshold.1.1" />
+        <port id="in" />
       </target>
     </channel>
   </channels>
@@ -312,6 +428,51 @@
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="eventPosEdge_scanMove">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1" />
+          <eventPort id="eventPosEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CellBoard.1" />
+          <eventPort id="scanMove" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="eventNegEdge_scanSelect">
+      <description />
+      <sources>
+        <source>
+          <component id="Threshold.1.1" />
+          <eventPort id="eventNegEdge" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CellBoard.1" />
+          <eventPort id="scanSelect" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
     <Decoration>true</Decoration>
@@ -322,8 +483,8 @@
     <AREGUIWindow>
       <posX>0</posX>
       <posY>0</posY>
-      <width>3688</width>
-      <height>5400</height>
+      <width>3625</width>
+      <height>6667</height>
     </AREGUIWindow>
   </modelGUI>
 </model>

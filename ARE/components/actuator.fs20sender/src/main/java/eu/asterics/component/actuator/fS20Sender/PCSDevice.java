@@ -19,8 +19,8 @@ public class PCSDevice {
 	}
 	
 	public boolean open() {
-		try {
-			dev = HIDManager.openById(0x18EF, 0xE015, null);
+		try {			
+			dev = HIDManager.getInstance().openById(0x18EF, 0xE015, null);			
 		}catch (HIDDeviceNotFoundException e) {
 			return false;
 		} catch (IOException ioe) {
