@@ -68,12 +68,12 @@ function Map() {
 }
 
 	
-	/*
-	for (var key in _map) {
-		if (_map.hasOwnProperty(key)) {
-			if (key == newKey) {
-				_map[key] = newValue;
-			}
+/*
+for (var key in _map) {
+	if (_map.hasOwnProperty(key)) {
+		if (key == newKey) {
+			_map[key] = newValue;
 		}
-	}*/
+	}
+}*/
 

@@ -64,10 +64,10 @@ import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -569,6 +569,11 @@ public class BundleManager implements BundleListener, FrameworkListener
 				logger.fine("Loading services from file: "+servicesFile);
 				while ( (path = in.readLine()) != null)
 				{
+					path=path.trim();
+					//Skipping comments
+					if(path.startsWith("#") || path.isEmpty() || !path.endsWith(".jar")) {
+						continue;
+					}
 					try {
 						URI jarURI = ResourceRegistry.getInstance().getResource(path, RES_TYPE.JAR);
 						bundle=installSingle(jarURI);

@@ -16,10 +16,10 @@
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -34,6 +34,10 @@ import java.util.logging.Logger;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 public abstract class CIMPortController {
+	//This timeout must be set to avoid a high CPU load on Win10
+	//Use @see RXTXPort#enableReceiveTimeout
+	public static final int RXTX_PORT_ENABLE_RECEIVE_TIMEOUT=500;
+	
 
 	List<CIMEventHandler> eventHandlers = new LinkedList<CIMEventHandler>();
 	protected Logger logger = null;

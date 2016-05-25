@@ -20,6 +20,40 @@ Please note the "CLASSPATH" EXCEPTION TO THE GPL at the of the document.
 Please verify the individual licenses of the utilized AsTeRICS plugins and services.
 You find the license files in the subfolder LICENSE of every plugin or service.
 
+ADDITIONAL TERMS of Enobio for this plugin:
+
+ENOBIO License Agreement
+Read the following terms and conditions carefully. 
+The use of this software acknowledges that you have read this agreement, 
+understood it and that you agree to be bound by its terms and conditions.
+
+1) Copyright
+All associated title and copyrights of the formerly mentioned plugins accompanying 
+printed materials are owned by Starlab Barcelona S.L. You may not copy the printed 
+materials accompanying ENOBIO without the express written permission of 
+Starlab Barcelona SL
+
+You may not transfer this software to another party without the permission of 
+Starlab Barcelona S.L. You may not rent, lease, or lend this software. 
+This license is effective until terminated. You may terminate it at any time by 
+destroying the software together with all copies. This license also terminates 
+if you fail to comply with the terms and conditions of this agreement.
+
+2) Limited Warranty
+This Enobio accompanying software plugins can be downloaded "as is" and without 
+warranties as to performance or merchantability or any other warranties whether 
+expressed or implied.
+This software is designed to work with a particular hardware configuration: 
+the ENOBIO device, which must be acquired separately, transmitting to a PC via the 
+provided USB receiver, no warranty of fitness for any other configuration is offered.
+The user must assume the entire risk of using the program. Any liability of 
+Starlab Barcelona S.L. will be limited exclusively to product replacement or refund 
+of the purchase price at the discretion of Starlab S.L.
+
+3) Support
+Email support shall be provided free for the lifetime of the product as long as 
+the product has not been discontinued: enobio@starlab.es
+
 ---------------------------------------------------------------------------------------------
 
 The MIT License (MIT)

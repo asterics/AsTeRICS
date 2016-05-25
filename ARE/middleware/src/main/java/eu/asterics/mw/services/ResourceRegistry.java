@@ -41,10 +41,10 @@ import eu.asterics.mw.are.DeploymentManager;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -751,7 +751,7 @@ public class ResourceRegistry {
 	public List<URI> getOtherFilesList(boolean relative) {
 		//get other files like start scripts and config files.
 					
-		final List<String> whiteList=Arrays.asList(new String[]{"are.exe","start.sh","start_debug.sh","start.bat","start_debug.bat","areproperties","jtester.exe"});
+		final List<String> whiteList=Arrays.asList(new String[]{"are.exe","start.sh","start_debug.sh","start.bat","start_debug.bat","findjava.bat","areproperties","jtester.exe"});
 		List<URI> URIs = ComponentUtils.findFiles(getAREBaseURI(), relative, 1, new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {		    	

@@ -46,10 +46,10 @@ import static eu.asterics.ape.main.APEProperties.*;
  *
  *     This project has been partly funded by the European Commission,
  *                      Grant Agreement Number 247730
- * 
- * 
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *  
+ *  
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  *
  */
 
@@ -220,9 +220,12 @@ public class Packager {
 				while ((path = in.readLine()) != null)
 				{
 					//sanity check, ignore empty lines and .jar entries
-					if(path.equals("")|| !path.endsWith(".jar")) {
+					path=path.trim();
+					//Skipping comments
+					if(path.startsWith("#") || path.isEmpty() || !path.endsWith(".jar")) {
 						continue;
 					}
+
 					try {
 						URI jarURI = ResourceRegistry.getInstance().getResource(path, RES_TYPE.JAR);
 						servicesJars.add(jarURI);

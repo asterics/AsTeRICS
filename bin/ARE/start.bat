@@ -1,3 +1,4 @@
+@ECHO OFF
 :Initialization
 
 @REM VERY IMPORTANT: The two lines ensure that the script is executed in the current directy (ARE), also when called
@@ -28,18 +29,18 @@ set AUTOSTART_MODEL=
 @echo "Using autostart model: %AUTOSTART_MODEL%"
 @echo "Using optional services: %ARE_OPTIONAL_SERVICES_INI%"
 
-@set JAVA_BIN=java
-@IF NOT DEFINED ARE_DEBUG_STRING SET JAVA_BIN=javaw
+@set JAVA_EXE=java.exe
+@IF NOT DEFINED ARE_DEBUG_STRING SET JAVA_EXE=javaw.exe
 
-@if exist java\bin\java.exe (
-	@set JAVA_BIN=java\bin\java.exe
-	@IF NOT DEFINED ARE_DEBUG_STRING SET JAVA_BIN=java\bin\javaw
-)
-
-%JAVA_BIN% -version 2>&1  | jtester.exe
-
-@ECHO OFF
+REM searches for a 32-bit java or any java if no 32-bit found. 
+REM JAVA_BIN is the full path including the .exe command
+REM Return ERRORLEVEL 1, if no java was found
+call findjava.bat JAVA_BIN %JAVA_EXE%
+REM if no java could be found, exit
 IF ERRORLEVEL 1 GOTO QuitError
+
+echo Using JAVA_BIN: %JAVA_BIN% 
+%JAVA_BIN% -version
 
 %JAVA_BIN% -jar VCChecker.jar
 IF ERRORLEVEL 1 GOTO ContARE
@@ -67,10 +68,11 @@ REM ECHO error_level:FINE>.logger
 
 set START_CMD=
 set SPLASH_SWITCH=
-@IF NOT DEFINED ARE_DEBUG_STRING set START_CMD=start
+REM The start command must have empty quotes as first parameter, so that a path with spaces that is also encoded with quotes is not mistaken as the first parameter title
+@IF NOT DEFINED ARE_DEBUG_STRING set START_CMD=start ""
 @IF NOT DEFINED ARE_DEBUG_STRING set SPLASH_SWITCH=-splash:images/asterics_startup.png
 
-%START_CMD% %JAVA_BIN% %ARE_DEBUG_STRING% %SPLASH_SWITCH% -Dosgi.clean=true -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%AUTOSTART_MODEL% -Deu.asterics.ARE.ServicesFiles="services.ini;services-windows.ini;%ARE_OPTIONAL_SERVICES_INI%" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console
+%START_CMD% %JAVA_BIN% %ARE_DEBUG_STRING% %SPLASH_SWITCH% -Dorg.osgi.framework.os.name=win32 -Dosgi.clean=true -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%AUTOSTART_MODEL% -Deu.asterics.ARE.ServicesFiles="services.ini;services-windows.ini;%ARE_OPTIONAL_SERVICES_INI%" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console
 set ARE_LOG_STRING=
 set ARE_DEBUG_STRING=
 

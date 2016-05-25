@@ -18,8 +18,8 @@
  *                      Grant Agreement Number 247730
  *  
  *  
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  * 
  */
 
@@ -87,8 +87,6 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 		logger = AstericsErrorHandling.instance.getLogger();
 		// logger.fine("Constructing CIM Port Manager");
 		
-		AREServices.instance.registerAREEventListener(this);
-		SystemChangeNotifier.instance.addListener(this);
 	
 		comPorts = new Hashtable<CIMUniqueIdentifier, CIMPortController>();
 		comRawPorts = new HashMap<String, CIMPortController>();
@@ -96,6 +94,11 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener
 		generateCIMDescriptionMap();
 		
 		rescan(AUTODETECT_WAIT_TIME);
+
+		logger.fine("Scanning of ports successful, so register for ARE events, and systemstate changes");
+		AREServices.instance.registerAREEventListener(this);
+		SystemChangeNotifier.instance.addListener(this);
+
     }
 
 	/**

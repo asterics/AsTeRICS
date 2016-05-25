@@ -11,6 +11,11 @@
 		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
 	
+	<!-- This is the default test target, which calls unit tests -->
+	<!-- Is also used by travis ci service to execute tests -->
+	<target name="test">
+	</target>
+	
 	<!-- target which helps to find thirdparty libs -->
 	<target name="findThirdpartyLibs">
 		<fileset id="thirdParty" dir="." casesensitive="no">
