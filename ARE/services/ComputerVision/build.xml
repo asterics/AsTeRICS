@@ -16,11 +16,11 @@
 	<property name="jar.os.name.linux" value="linux"/>
 	<property name="jar.os.name.macosx" value="macosx"/>
 
-	<property name="javacv.target.file" location="../javacv-0.10.0-full-all.jar"/>
-	<property name="javacv.windows.target.file" location="../javacv-0.10.0-basic-${jar.os.name.windows}.jar"/>
-	<property name="javacv.linux.target.file" location="../javacv-0.10.0-basic-${jar.os.name.linux}.jar"/>
-	<property name="javacv.macosx.target.file" location="../javacv-0.10.0-basic-${jar.os.name.macosx}.jar"/>
-	<property name="javacv.ffmpeg.target.file" location="../javacv-0.10.0-ffmpeg-all.jar"/>
+	<property name="javacv.target.file" location="${services}/javacv-0.10.0-full-all.jar"/>
+	<property name="javacv.windows.target.file" location="${services}/javacv-0.10.0-basic-${jar.os.name.windows}.jar"/>
+	<property name="javacv.linux.target.file" location="${services}/javacv-0.10.0-basic-${jar.os.name.linux}.jar"/>
+	<property name="javacv.macosx.target.file" location="${services}/javacv-0.10.0-basic-${jar.os.name.macosx}.jar"/>
+	<property name="javacv.ffmpeg.target.file" location="${services}/javacv-0.10.0-ffmpeg-all.jar"/>
 
 	<fileset id="javacv-files-windows" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/*-linux-*.jar, **/*-macosx-*.jar" includes="lib/native/*.jar">
 	</fileset>
