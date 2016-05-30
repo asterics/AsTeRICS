@@ -6,7 +6,7 @@ echo Starting AsTeRICS Runtime Environment in $SCRIPTDIR...
 cd $SCRIPTDIR
 
 
-ARE_AUTOSTART_MODEL=autostart.acs
+ARE_AUTOSTART_MODEL=""
 ARE_OPTIONAL_SERVICES_INI=""
 
 echo "Params: $@"
