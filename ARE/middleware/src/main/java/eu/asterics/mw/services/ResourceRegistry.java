@@ -758,7 +758,7 @@ public class ResourceRegistry {
 		    public boolean accept(File dir, String name) {		    	
 		    	//Should we include the ARE here??
 		    	String toLowerName=name.toLowerCase();
-		    	return toLowerName != null && (toLowerName.endsWith(".exe") || toLowerName.endsWith(".bat") || toLowerName.endsWith(".sh") || whiteList.contains(toLowerName));		    			
+		    	return toLowerName != null && (toLowerName.endsWith(".exe") || toLowerName.endsWith(".bat") || toLowerName.endsWith(".sh") || toLowerName.endsWith(".dll") || whiteList.contains(toLowerName));		    			
 		    }
 		});
 		
