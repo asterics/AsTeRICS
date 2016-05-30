@@ -30,12 +30,19 @@
 	</condition>
 	
 	<!-- the build platform is actually also the target platform, so we can differ the services files configuration -->
-	<condition property="APE.targetOS" value="windows" else="linux">
+	<condition property="APE.targetOS" value="windows">
 		<os family="windows" />
 	</condition>
+	<condition property="APE.targetOS" value="linux">
+		<os family="unix" />
+	</condition>
+	<condition property="APE.targetOS" value="macosx">
+		<os family="mac" />
+	</condition>
+
 
 	<!-- create platform dependent property value for services startup when starting the ARE -->
-	<property name="APE.servicesFiles" value="services.ini;services-${APE.targetOS}.ini;${APE.optionalServicesFile}" />
+	<property name="APE.servicesFiles" value="${APE.optionalServicesFile}" />
 
 	<!-- if property is not set, set it to false -->
 	<condition property="APE.embedJava" value="false">

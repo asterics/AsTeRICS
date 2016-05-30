@@ -23,6 +23,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
+import javax.print.attribute.standard.Severity;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -43,6 +45,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.IAREEventListener;
 import eu.asterics.mw.services.ResourceRegistry;
 import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
+import eu.asterics.mw.utils.OSUtils;
 
 
 
@@ -561,6 +564,10 @@ public class BundleManager implements BundleListener, FrameworkListener
 		String path;	
 		Bundle bundle= null;
 
+		//Hard code loading of services defined in services.ini and services-{os.name}.ini
+		SERVICES_FILES="services.ini;services-"+OSUtils.getOsName()+".ini;"+SERVICES_FILES;
+		logger.fine("Using the following .ini files to load services: "+SERVICES_FILES);
+		
 		//First load all services defined in the services-*.ini files
 		for(String servicesFile : SERVICES_FILES.split(SERVICES_FILES_DELIM)) {
 			try(InputStream serviceFileStream=ResourceRegistry.getInstance().getResourceInputStream(servicesFile, RES_TYPE.PROFILE);					
