@@ -21,6 +21,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.io.FilenameUtils;
 
+import eu.asterics.mw.are.BundleManager;
 import eu.asterics.mw.are.DeploymentManager;
 
 /*
@@ -751,12 +752,13 @@ public class ResourceRegistry {
 	public List<URI> getOtherFilesList(boolean relative) {
 		//get other files like start scripts and config files.
 					
-		final List<String> whiteList=Arrays.asList(new String[]{"are.exe","start.sh","start_debug.sh","start.bat","start_debug.bat","findjava.bat","areproperties","jtester.exe"});
+		final List<String> whiteList=Arrays.asList(new String[]{"areproperties"});
 		List<URI> URIs = ComponentUtils.findFiles(getAREBaseURI(), relative, 1, new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {		    	
 		    	//Should we include the ARE here??
-		    	return name != null && whiteList.contains(name.toLowerCase());		    			
+		    	String toLowerName=name.toLowerCase();
+		    	return toLowerName != null && (toLowerName.endsWith(".exe") || toLowerName.endsWith(".bat") || toLowerName.endsWith(".sh") || whiteList.contains(toLowerName));		    			
 		    }
 		});
 		
@@ -772,12 +774,12 @@ public class ResourceRegistry {
 	public List<URI> getMandatoryProfileConfigFileList(boolean relative) {
 		//get profile files
 		
-		final List<String> whiteList=Arrays.asList(new String[]{"config.ini","services.ini","services_websocketdemo.ini","services-linux.ini","services-windows.ini"});
+		//final List<String> whiteList=Arrays.asList(new String[]{"config.ini","services.ini","services_websocketdemo.ini","services-linux.ini","services-windows.ini"});
 		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(PROFILE_FOLDER), relative, 1, new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {		    	
 		    	//Should we include the ARE here??
-		    	return name != null && whiteList.contains(name.toLowerCase());		    			
+		    	return name != null && name.endsWith(".ini")&&!name.toLowerCase().equals(BundleManager.LOADER_COMPONENTLIST_LOCATION);		    			
 		    }
 		});
 		

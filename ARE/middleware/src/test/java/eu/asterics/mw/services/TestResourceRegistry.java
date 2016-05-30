@@ -404,6 +404,21 @@ public class TestResourceRegistry {
 		System.out.println("toStringSet: "+pathsSet);		
 	}	
 	
+	@Test
+	public void testGetMandatoryProfileConfigFileList() {
+		List<URI> iniFiles=ResourceRegistry.getInstance().getMandatoryProfileConfigFileList(false);
+		System.out.println("Found this iniFiles: "+iniFiles);
+		assertEquals(6, iniFiles.size());
+	}
+	
+	@Test
+	public void testGetOtherFilesList() {
+		List<URI> otherFiles=ResourceRegistry.getInstance().getOtherFilesList(false);
+		System.out.println("Found this other files: "+otherFiles);
+		assertEquals(9, otherFiles.size());
+		
+	}
+	
 	/*
 	@Test
 	public void testRecursiveFindFilesExtension() {

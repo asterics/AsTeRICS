@@ -93,7 +93,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 {
 	private static final String SERVICES_FILES_DELIM = ";";
 	static String PROFILE_LOCATION=new File(System.getProperty("osgi.configuration.area",ResourceRegistry.PROFILE_FOLDER)).getName();
-	static String LOADER_COMPONENTLIST_LOCATION = "loader_componentlist.ini";
+	public static String LOADER_COMPONENTLIST_LOCATION = "loader_componentlist.ini";
 	static String SERVICES_FILES=System.getProperty("eu.asterics.ARE.ServicesFiles", "services.ini");
 
 	final int MODE_DEFAULT = 0;
