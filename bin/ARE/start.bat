@@ -42,14 +42,15 @@ IF ERRORLEVEL 1 GOTO QuitError
 echo Using JAVA_BIN: %JAVA_BIN% 
 %JAVA_BIN% -version
 
-%JAVA_BIN% -jar VCChecker.jar
-IF ERRORLEVEL 1 GOTO ContARE
-echo NO C++ Redistributable Package found. 
-echo It is highly recommended to download and install the Visual C++ Redistributable Package from Microsoft!
-echo Download link for 32 bit systems: http://www.microsoft.com/en-us/download/details.aspx?id=5555
-echo Several Plugins will not work without the package!
-rem GOTO QuitError
-Pause
+REM Disable Visual C++ Redistributable check, because the dlls are now contained in the application folder
+REM %JAVA_BIN% -jar VCChecker.jar
+REM IF ERRORLEVEL 1 GOTO ContARE
+REM echo NO C++ Redistributable Package found. 
+REM echo It is highly recommended to download and install the Visual C++ Redistributable Package from Microsoft!
+REM echo Download link for 32 bit systems: http://www.microsoft.com/en-us/download/details.aspx?id=5555
+REM echo Several Plugins will not work without the package!
+REM rem GOTO QuitError
+REM Pause
 
 :ContARE
 
