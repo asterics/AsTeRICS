@@ -5,6 +5,7 @@ import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -109,6 +110,28 @@ public class ResourceRegistry {
 		IMAGE,
 		TMP
 	};
+	
+	/**
+	 * Maps the given RES_TYPE to the corresponding folder name.
+	 * Should be changed to return a URI?
+	 * @param type
+	 * @return
+	 */
+	private String mapResTypeFolderName(RES_TYPE type) {
+		//@TODO: Think about using a Map.
+		switch(type) {
+		case ANY: return ".";
+		case MODEL: return MODELS_FOLDER;
+		case DATA: return DATA_FOLDER;
+		case JAR: return ".";
+		case PROFILE: return PROFILE_FOLDER;
+		case STORAGE: return STORAGE_FOLDER;
+		case LICENSE: return LICENSES_FOLDER;
+		case IMAGE:return IMAGES_FOLDER;
+		case TMP: return TMP_FOLDER;
+		}
+		return ".";
+	}
 	
 	/**
 	 * Return the instance of the ResourceRegistry.
@@ -434,7 +457,21 @@ public class ResourceRegistry {
 	public InputStream getResourceInputStream(String resourcePath, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
 		return getResource(resourcePath, type).toURL().openStream();
 	}
-		
+	
+	/**
+	 * Returns an OutputStream for the given resourcePath and RES_TYPE.
+ 	 * For more details about resourcePath, see {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)}.
+	 * @param resourcePath
+	 * @param type
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	public OutputStream getResourceOutputStream(String resourcePath, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
+		return getResource(resourcePath, type).toURL().openConnection().getOutputStream();
+	}
+			
 	//public void setAREBaseURI()
 	/**
 	 * Set the base URI of the ARE. This URI will be used as parent path for all resources like models, data, storage,...
@@ -483,6 +520,16 @@ public class ResourceRegistry {
 	public URI toRelative(String absolutePath) {
 		return toRelative(URI.create(absolutePath)); 
 	}
+
+	/**
+	 * Converts the given absolutePath to a path relative to the folder of the given RES_TYPE {@link getAREBaseURI}.
+	 * @param absolutePath
+	 * @param type
+	 * @return
+	 */
+	public URI toRelative(String absolutePath, RES_TYPE type) {
+		return toRelative(URI.create(absolutePath),type);
+	}
 	
 	/**
 	 * Converts the given absolutePath URI to a path relative to the ARE base URI {@link getAREBaseURI}.
@@ -491,6 +538,16 @@ public class ResourceRegistry {
 	 */
 	public URI toRelative(URI absolutePath) {
 		return getAREBaseURI().relativize(absolutePath);
+	}
+	
+	/**
+	 * Converts the given absolutePath to a path relative to the folder of the given RES_TYPE {@link getAREBaseURI}.
+	 * @param absolutePath
+	 * @param type
+	 * @return
+	 */
+	public URI toRelative(URI absolutePath, RES_TYPE type) {
+		return getAREBaseURI().resolve(mapResTypeFolderName(type)).relativize(absolutePath);
 	}
 	
 	/**
@@ -758,7 +815,7 @@ public class ResourceRegistry {
 		    public boolean accept(File dir, String name) {		    	
 		    	//Should we include the ARE here??
 		    	String toLowerName=name.toLowerCase();
-		    	return toLowerName != null && (toLowerName.endsWith(".exe") || toLowerName.endsWith(".bat") || toLowerName.endsWith(".sh") || toLowerName.endsWith(".dll") || whiteList.contains(toLowerName));		    			
+		    	return toLowerName != null && (toLowerName.endsWith(".exe") || toLowerName.endsWith(".bat") || toLowerName.endsWith(".sh") || toLowerName.endsWith(".dll") || toLowerName.endsWith(".txt") || toLowerName.endsWith(".properties") || whiteList.contains(toLowerName));		    			
 		    }
 		});
 		
