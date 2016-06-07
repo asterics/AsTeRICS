@@ -107,11 +107,6 @@ public class AstericsGUI implements IAREEventListener
 
 	SystemTray tray=null;
 	
-	ModelGUIInfo modelGuiInfo = new ModelGUIInfo(	DEFAULT_SCREEN_X, 
-													DEFAULT_SCREEN_Y,
-													DEFAULT_SCREEN_W,
-													DEFAULT_SCREEN_H);
-
 	public  AstericsGUI(BundleContext bundleContext) 
 	{
 		super();
@@ -383,7 +378,22 @@ public class AstericsGUI implements IAREEventListener
 		allowModification=state;
     }
 	
-	private void setSystemTray() {
+	/**
+	 * Unsets the the system tray set and displays the ARE gui.
+	 */
+	public void unsetSystemTray() {
+		if(mainFrame!=null) {
+			mainFrame.setState(JFrame.NORMAL);
+			mainFrame.setVisible(true);
+		}
+		if (tray!=null)
+			tray.remove(trayIcon);		
+	}
+	
+	/**
+	 * Makes the ARE gui invisible and adds it to the system try.
+	 */
+	public void setSystemTray() {
 
 
 		if (SystemTray.isSupported()) {
@@ -438,7 +448,13 @@ public class AstericsGUI implements IAREEventListener
 			} catch (AWTException e) {
 				System.err.println(e);
 			}
-		} 
+			
+			//This is a workaround, otherwise the splash screen would not disappear, when the ARE starts directly to system tray.
+			setAREWindowState(JFrame.NORMAL);
+			mainFrame.setVisible(true);
+			setAREWindowState(JFrame.ICONIFIED);
+			mainFrame.setVisible(false);
+		}
 	}
 
 	public JPanel getDesktop ()
@@ -465,7 +481,10 @@ public class AstericsGUI implements IAREEventListener
 				int nposY = (int) (realY*posY/10000f);
 				int nwidth = (int) (realX*width/10000f);
 				int nheight = (int) (realY*height/10000f);
-				if (props.checkProperty("undecorated", "0")) 
+				
+				//this is a layout hack. it would be better to automatically pad depending on decorations and showcontrolpanel
+				if (DeploymentManager.instance
+						.getCurrentRuntimeModel().getModelGuiInfo().isDecoration()) 
 				{
 					nposY -= 41;
 				}
@@ -620,14 +639,22 @@ public class AstericsGUI implements IAREEventListener
 	}
 	
 
-	private void applyChanges ()
+	private void applyChanges (ModelGUIInfo modelGUIInfo)
 	{
 
 		mainFrame.setVisible(false);
 		AREProperties props = AREProperties.instance;
+		//mad: this is experimental, and currently not activated. we could automatically add padding, but then we would have
+		//to manually change all model files.
+		int decorationPadding=0;
+		int controlPanelPaddingW=0;
+		int controlPanelPaddingH=0;
+
 		
-		if (props.checkProperty("undecorated", "1"))
+		if (!modelGUIInfo.isDecoration())
 		{
+			//decorationPadding=0;
+
 			if (mainFrame.isUndecorated() == false)
 			{
 				mainFrame.dispose();
@@ -637,6 +664,8 @@ public class AstericsGUI implements IAREEventListener
 		}
 		else
 		{
+			//decorationPadding=50;
+
 			if (mainFrame.isUndecorated() == true) 
 			{
 				mainFrame.dispose();
@@ -645,7 +674,20 @@ public class AstericsGUI implements IAREEventListener
 				
 			}
 		}
-		if (props.checkProperty("fullscreen", "1"))
+		
+		if (modelGUIInfo.isShopControlPanel()) {
+			//controlPanelPaddingW=100;
+			//controlPanelPaddingH=0;
+			this.controlPanel.setVisible(true);
+		}
+		else {
+			//controlPanelPaddingW=0;
+			//controlPanelPaddingH=0;
+			this.controlPanel.setVisible(false);
+		}
+		
+		//System.out.println("controlpanelpaddingW: "+controlPanelPaddingW+", controlpanelpaddingH: "+controlPanelPaddingH+", decorationPadding: "+decorationPadding);
+		if (modelGUIInfo.isFullscreen())
 		{
 			mainFrame.setPreferredSize(
 					new Dimension(screenSize.width+10, 
@@ -658,21 +700,18 @@ public class AstericsGUI implements IAREEventListener
 		else
 		{	
 			size = new Dimension(
-					(int)(screenSize.width * modelGuiInfo.getDimension().width / 10000f),
-					(int)(screenSize.height * modelGuiInfo.getDimension().height / 10000f)); 
+					(int)(screenSize.width * modelGUIInfo.getDimension().width / 10000f)+controlPanelPaddingW+decorationPadding,
+					(int)(screenSize.height * modelGUIInfo.getDimension().height / 10000f)+controlPanelPaddingH+decorationPadding); 
 
 			position = new Point(
-					(int)(screenSize.width * modelGuiInfo.getPosition().x / 10000f),
-					(int)(screenSize.height * modelGuiInfo.getPosition().y / 10000f)); 
+					(int)(screenSize.width * modelGUIInfo.getPosition().x / 10000f),
+					(int)(screenSize.height * modelGUIInfo.getPosition().y / 10000f)); 
 					
 			mainFrame.setLocation(position);
 			mainFrame.setPreferredSize(size);
+			mainFrame.setSize(size.width, size.height);
 		}
 		
-		if (props.checkProperty("show_side_bar", "1"))
-			this.controlPanel.setVisible(true);
-		else
-			this.controlPanel.setVisible(false);
 		
 		if (props.containsKey("background_color"))
 		{
@@ -688,19 +727,15 @@ public class AstericsGUI implements IAREEventListener
 			desktop.validate();
 		}	
 		
-		mainFrame.setAlwaysOnTop(props.getProperty("always_on_top").equals("1"));
+		mainFrame.setAlwaysOnTop(modelGUIInfo.isValwaysOnTop());
 
-		if (props.checkProperty("iconify", "1"))
+		if (modelGUIInfo.isToSysTray())
 		{
 			setSystemTray();
 		}
 		else 
 		{
-			mainFrame.setVisible(true);
-			mainFrame.setState(JFrame.NORMAL);
-
-			if (tray!=null)
-				tray.remove(trayIcon);
+			unsetSystemTray();
 		}
 		mainFrame.pack();
 		mainFrame.revalidate();
@@ -725,10 +760,6 @@ public class AstericsGUI implements IAREEventListener
 		return this.mainFrame;
 	}
 	
-	public void setModelGuiInfo(ModelGUIInfo modelGuiInfo) {
-		this.modelGuiInfo = modelGuiInfo;
-	}
-
 	@Override
 	public void preDeployModel() {
 	}
@@ -745,10 +776,7 @@ public class AstericsGUI implements IAREEventListener
 				
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
-					modelGuiInfo = info;
-					modelGuiInfo.updateProperties();			
-					applyChanges();					
+					applyChanges(info);					
 				}
 			});
 		}

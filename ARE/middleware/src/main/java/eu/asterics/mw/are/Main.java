@@ -142,20 +142,6 @@ public class Main implements BundleActivator
 					AstericsErrorHandling.instance.setStatusObject(
 							AREStatus.OK.toString(), "", "");
 
-					/*
-					 * if(AREProperties.instance.checkProperty("iconify",
-					 * "1")) {
-					 * System.out.println("*** Main: set to SystemTray !!");
-					 * 
-					 * astericsGUI.setSystemTray();
-					 * astericsFrame.setVisible(false); } else {
-					 * System.out.println("*** Main: no SystemTray !!");
-					 * astericsFrame.setVisible(true);
-					 * astericsFrame.setState(JFrame.NORMAL); }
-					 */
-
-					astericsFrame.setVisible(true);
-
 					AsapiSupport as = new AsapiSupport();
 					// System.out.println("***  starting model !");
 					as.autostart(startModel);
@@ -188,6 +174,11 @@ public class Main implements BundleActivator
 					AREProperties.instance.storeProperties();
 
 				} catch (Throwable e) {
+					//In case of a startup error show the ARE gui panel, so that the user is able to select a model manually.
+					if(astericsFrame!=null&&astericsGUI!=null) {
+						astericsGUI.unsetSystemTray();
+					}
+					
 					String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
 					String message="The AsTeRICS Runtime Environment started with errors:\n"+reason;
 					logger.severe(message);
