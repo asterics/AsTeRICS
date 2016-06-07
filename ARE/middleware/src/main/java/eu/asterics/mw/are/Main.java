@@ -64,6 +64,9 @@ import javax.swing.JOptionPane;
  */
 public class Main implements BundleActivator
 {
+	public static final String ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY = "ASAPI.enableAREAutoDetection";
+	public static final String ASAPI_ENABLE_ACS_PORT_CONNECTION="ASAPI.enableACSPortConnection";
+
 	private static Logger logger = null;
 
 	private BundleManager bundleManager = null;
@@ -134,7 +137,6 @@ public class Main implements BundleActivator
 					// properties
 					AstericsThreadPool.getInstance();
 					AstericsModelExecutionThreadPool.getInstance();
-					AREProperties.instance.storeProperties();
 
 					DeploymentManager.instance.setStatus(AREStatus.OK);
 					AstericsErrorHandling.instance.setStatusObject(
@@ -158,11 +160,33 @@ public class Main implements BundleActivator
 					// System.out.println("***  starting model !");
 					as.autostart(startModel);
 
-					Thread asapiServerThread = new Thread(new Activator());
-					asapiServerThread.start();
+					if(!AREProperties.instance.containsKey(ASAPI_ENABLE_ACS_PORT_CONNECTION) || AREProperties.instance.checkProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1")) {
+						//set default value, if property was not in file.
+						AREProperties.instance.setProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1");
+						logger.info("ASAPI: Enabling ACS port connection");
+						Thread asapiServerThread = new Thread(new Activator());
+						asapiServerThread.start();
+					} else {
+						logger.info("ASAPI: ACS port connection disabled");
+					}
 
-					Thread udpThread = new Thread(new UDPThread());
-					udpThread.start();
+					if(!AREProperties.instance.containsKey(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY) || AREProperties.instance.checkProperty(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY, "1")) {
+						//set default value, if property was not in file.
+						AREProperties.instance.setProperty(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY, "1");
+
+						logger.info("ASAPI: Enabling ARE auto detection");
+						Thread udpThread = new Thread(new UDPThread());
+						udpThread.start();
+					} else {
+						logger.info("ASAPI: ARE auto detection disabled");
+					}
+
+					//This is very ugly, we have to store back properties, if any of the other initialization code
+					//sets a property key. This is to generate a default areProperties file if it does not exist.
+					//@TODO: Collect all property keys and move them to AREProperties class and provide mechanism to generate default
+					//file including comments
+					AREProperties.instance.storeProperties();
+
 				} catch (Throwable e) {
 					String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
 					String message="The AsTeRICS Runtime Environment started with errors:\n"+reason;
