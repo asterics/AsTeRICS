@@ -113,6 +113,7 @@ public class DeploymentManager
 
 
 
+	private IRuntimeModel deploymentPendingRuntimeModel=null;
 	private IRuntimeModel currentRuntimeModel = null;
 
 	void start(final BundleContext bundleContext)
@@ -153,6 +154,7 @@ public class DeploymentManager
 		runtimeInstanceToComponentTypeID.clear();
 		bufferedPortsMap.clear();
 		currentRuntimeModel=null;
+		deploymentPendingRuntimeModel=null;
 		
 		modelStartupFinished=false;
 		modelLifecycleTaskPending=false;
@@ -188,6 +190,9 @@ public class DeploymentManager
 		init();
 
 		try{
+			//Set pending runtimeModel, because some plugin/gui methods need model info during initialization.
+			deploymentPendingRuntimeModel=runtimeModel;
+			
 			notifyAREEventListeners (AREEvent.PRE_DEPLOY_EVENT);
 
 
@@ -405,7 +410,6 @@ public class DeploymentManager
 			this.currentRuntimeModel = runtimeModel;
 
 			notifyAREEventListeners (AREEvent.POST_DEPLOY_EVENT);
-
 		}catch (Exception e){
 			//before give up, try to cleanup and undeploy model again				
 			logger.severe("Deployment exception: "+e.getMessage());
@@ -424,6 +428,7 @@ public class DeploymentManager
 	{		
 		try{
 			modelStartupFinished=false;
+			deploymentPendingRuntimeModel=null;
 			final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
 
 			final Set<IChannel> channels = runtimeModel.getChannels();
@@ -527,6 +532,15 @@ public class DeploymentManager
 		}
 	}
 
+
+	/**
+	 * Returns the IRuntimeModel instance which is currently under deployment (pending and not finished).
+	 * This is for plugins or GUI code that needs model information for initialization during deployment.
+	 * @return the deploymentPendingRuntimeModel
+	 */
+	public IRuntimeModel getDeploymentPendingRuntimeModel() {
+		return deploymentPendingRuntimeModel;
+	}
 
 	/**
 	 * This method removes the specified component from the runtime environment.
@@ -822,7 +836,7 @@ public class DeploymentManager
 	}
 
 	/**
-	 * This method returns the model that is currently at runtime
+	 * This method returns the model that is currently deployed
 	 * 
 	 */
 	public IRuntimeModel getCurrentRuntimeModel()
