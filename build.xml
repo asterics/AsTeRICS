@@ -3,6 +3,12 @@
 	<property name="debug" value="true"/>
 	<property name="runtime" location="bin/ARE"/>
 
+	<target name="clean">
+		<subant target="clean">
+			<fileset dir="ARE" includes="build.xml"> </fileset>
+		</subant>
+	</target>
+
 	<!-- Build the whole AsTeRICS framework including ACS and help specific tasks  -->
 	<target name="buildAllNoClean">
 		<subant target="buildAllNoClean">
