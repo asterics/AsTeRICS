@@ -66,6 +66,7 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
 
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
+	boolean propInstantiationException=false;
 	boolean propStartException = false;
 	boolean propPauseException = false;
 	boolean propResumeException = false;
@@ -213,6 +214,10 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
 			return null;
 		}*/
 
+    	if("instantiationException".equalsIgnoreCase(propertyName))
+		{
+			return propInstantiationException;
+		}
 		if ("startException".equalsIgnoreCase(propertyName))
 		{
 			return propStartException;
@@ -334,6 +339,20 @@ public class EmulateFaultyPluginInstance extends AbstractRuntimeComponentInstanc
 			handleCall(propSetRuntimePropertyDuration,propSetRuntimePropertyValueException,"Exception in setRuntimePropertyValue");
 		}*/
     	
+		if ("instantiationException".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propInstantiationException;
+			if("true".equalsIgnoreCase((String)newValue))
+			{
+				propInstantiationException = true;
+				throw new RuntimeException("Exception during instantiation/setRuntimePropertyValue");
+			}
+			else if("false".equalsIgnoreCase((String)newValue))
+			{
+				propInstantiationException = false;
+			}			
+			return oldValue;
+		}    	
 		if ("startException".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propStartException;

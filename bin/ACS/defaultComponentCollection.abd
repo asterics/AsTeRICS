@@ -673,6 +673,7 @@
 
 		</events>			
         <properties>
+			<property description="Produce an exception during instantion/setRuntimePropertyValue" name="instantiationException" type="boolean" value="false"/>        
 			<property description="Produce an exception during start method" name="startException" type="boolean" value="false"/>
 			<property description="Produce an exception during pause method" name="pauseException" type="boolean" value="false"/>
 			<property description="Produce an exception during resume method" name="resumeException" type="boolean" value="false"/>
@@ -7108,6 +7109,90 @@
 			<property description="minimum percentage of average peaks for valid tops (0=disable)" name="validTopPercentage" type="integer" value="0"/>
 			<property description="maximum percentage of average peaks for valid bottoms (0=disable)" name="validBottomPercentage" type="integer" value="0"/>
 			<property combobox="milliseconds//BPM" description="mode for time output (milliseconds or beats per minute)" name="timeMode" type="integer" value="0"/>
+
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.processor.pifacecad.PiFaceCADInstance" id="asterics.PiFaceCAD">
+        <type subtype="RaspberryPi">processor</type>
+        <singleton>true</singleton>
+        <description>A plugin for the PiFace Control and Display  2 add-on board for the Raspberry Pi.</description>
+        <ports>
+			<inputPort id="setLCDText">
+				<description>Sets the text of the 2x16 character display.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+			<eventListenerPort id="displayOn">
+				<description>Turn display on</description>
+			</eventListenerPort>
+			<eventListenerPort id="displayOff">
+				<description>Turn display off</description>
+			</eventListenerPort>
+			<eventListenerPort id="backlightOn">
+				<description>Turn backlight on</description>
+			</eventListenerPort>
+			<eventListenerPort id="backlightOff">
+				<description>Turn backlight off</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="S1LowToHigh">
+				<description>Switch 1 changed from low to high</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S1HighToLow">
+				<description>Switch 1 changed from high to low</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S2HighToLow">
+				<description>Switch 2 changed from high to low</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S3HighToLow">
+				<description>Switch 3 changed from high to low</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S4HighToLow">
+				<description>Switch 4 changed from high to low</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S5HighToLow">
+				<description>Switch 5 changed from high to low</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S6HighToLow">
+				<description>Switch 6 changed from high to low</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S7HighToLow">
+				<description>Switch 7 changed from high to low</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S8HighToLow">
+				<description>Switch 8 changed from high to low</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S2LowToHigh">
+				<description>Switch 2 changed from low to  high</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S3LowToHigh">
+				<description>Switch 3 changed from low to  high</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S4LowToHigh">
+				<description>Switch 4 changed from low to  high</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S5LowToHigh">
+				<description>Switch 5 changed from low to  high</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S6LowToHigh">
+				<description>Switch 6 changed from low to  high</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S7LowToHigh">
+				<description>Switch 7 changed from low to  high</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="S8LowToHigh">
+				<description>Switch 8 changed from low to  high</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property description="The initial text to show on the 2x16 character LCD display." name="initialText" type="string" value=" "/>
 
         </properties>
 
