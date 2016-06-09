@@ -741,6 +741,10 @@ public class AstericsGUI implements IAREEventListener
 		mainFrame.pack();
 		mainFrame.revalidate();
 		mainFrame.repaint();
+		
+		if (!modelGUIInfo.isToSysTray()) {
+			setAREWindowToFront();
+		}
 	}
 	
 	
