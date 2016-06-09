@@ -45,9 +45,11 @@ import tuwien.auto.calimero.dptxlator.DPT;
 import tuwien.auto.calimero.dptxlator.DPTXlator;
 import tuwien.auto.calimero.dptxlator.TranslatorTypes;
 import tuwien.auto.calimero.dptxlator.TranslatorTypes.MainType;
+import tuwien.auto.calimero.exception.KNXAckTimeoutException;
 import tuwien.auto.calimero.exception.KNXException;
 import tuwien.auto.calimero.exception.KNXFormatException;
 import tuwien.auto.calimero.knxnetip.KNXnetIPConnection;
+import tuwien.auto.calimero.link.KNXLinkClosedException;
 import tuwien.auto.calimero.link.KNXNetworkLinkIP;
 import tuwien.auto.calimero.link.medium.TPSettings;
 import tuwien.auto.calimero.process.ProcessCommunicator;
@@ -1243,6 +1245,14 @@ public class KnxInstance extends AbstractRuntimeComponentInstance
    				pc.write(new GroupAddress(groupaddress), Priority.NORMAL, trans);
 
    				AstericsErrorHandling.instance.getLogger().info("sent value: " + value + " type: " + type + " to " + groupaddress);
+   			} catch (KNXAckTimeoutException kae) {
+   				AstericsErrorHandling.instance.getLogger().severe("KNXAckTimeoutException, reconnecting!");
+   				this.closeKNXconnection();
+   				this.openKNXconnection();
+   			} catch (KNXLinkClosedException kle) {
+   				AstericsErrorHandling.instance.getLogger().severe("KNXLinkClosedException, reconnecting!");
+   				this.closeKNXconnection();
+   				this.openKNXconnection();
    			} catch (Exception e) {
    				AstericsErrorHandling.instance.getLogger().severe(e.toString());
    			}

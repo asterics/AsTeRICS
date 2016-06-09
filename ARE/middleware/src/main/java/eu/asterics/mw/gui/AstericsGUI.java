@@ -51,6 +51,7 @@ import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
@@ -483,8 +484,8 @@ public class AstericsGUI implements IAREEventListener
 				int nheight = (int) (realY*height/10000f);
 				
 				//this is a layout hack. it would be better to automatically pad depending on decorations and showcontrolpanel
-				if (DeploymentManager.instance
-						.getCurrentRuntimeModel().getModelGuiInfo().isDecoration()) 
+				IRuntimeModel pendingModel=DeploymentManager.instance.getDeploymentPendingRuntimeModel();
+				if (pendingModel!=null && pendingModel.getModelGuiInfo().isDecoration()) 
 				{
 					nposY -= 41;
 				}
@@ -740,6 +741,10 @@ public class AstericsGUI implements IAREEventListener
 		mainFrame.pack();
 		mainFrame.revalidate();
 		mainFrame.repaint();
+		
+		if (!modelGUIInfo.isToSysTray()) {
+			setAREWindowToFront();
+		}
 	}
 	
 	
