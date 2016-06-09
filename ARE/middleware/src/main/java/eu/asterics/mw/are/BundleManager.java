@@ -278,7 +278,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 		{
 			return modelValidator.isValidBundleDescriptor(bundleDescriptorInputStream);
 		}
-		catch (IOException ioe)
+		catch (IOException | ParseException ioe)
 		{
 			//Don't log because if it does not exist we don't expect a component
 			/*
