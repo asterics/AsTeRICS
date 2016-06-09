@@ -436,93 +436,10 @@ public class AsapiSupport
 
 						@Override
 						public Object call() throws Exception {
-
-							File modelFile = new File(ResourceRegistry.MODELS_FOLDER
-									+ "/model.xml");
-							File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
-							if (!modelFile.exists()) {
-								try {
-									modelsDir.mkdir();
-									modelFile.createNewFile();
-								} catch (IOException e1) {
-									DeploymentManager.instance
-											.setStatus(AREStatus.FATAL_ERROR);
-									AstericsErrorHandling.instance
-											.setStatusObject(
-													AREStatus.FATAL_ERROR
-															.toString(), "",
-													"Deployment Error");
-									logger.warning(this.getClass().getName()
-											+ "."
-											+ "deployModel: Failed to create file model.xml -> \n"
-											+ e1.getMessage());
-									throw (new AREAsapiException(e1
-											.getMessage()));
-								}
-							}
-
-							// Convert the string to a byte array.
-							String s = modelInXML;
-							byte data[] = s.getBytes();
-							// try {
-
-							BufferedWriter c = new BufferedWriter(
-									new OutputStreamWriter(
-											new FileOutputStream(modelFile),
-											"UTF-16"));
-
-							// out = new BufferedOutputStream(new
-							// FileOutputStream(modelFile));
-							for (int i = 0; i < data.length; i++)
-								c.write(data[i]);
-
-							if (c != null) {
-								c.flush();
-								c.close();
-							}
-
-							InputStream is = new ByteArrayInputStream(
-									modelInXML.getBytes("UTF-16"));
-
-							synchronized (DefaultDeploymentModelParser.instance) {
-
-								IRuntimeModel runtimeModel = DefaultDeploymentModelParser.instance
-										.parseModel(is);
-
-								/*
-								 * if (runtimeModel==null) {
-								 * logger.fine("Failed to create model"); }
-								 */
-
-								DeploymentManager.instance
-										.deployModel(runtimeModel);
-								DeploymentManager.instance
-										.setStatus(AREStatus.DEPLOYED);
-								AstericsErrorHandling.instance.setStatusObject(
-										AREStatus.DEPLOYED.toString(), "", "");
-							}							
+							AREServices.instance.deployModelInternal(modelInXML);
 							return null;
 						}
-
 					});
-		} catch (IOException e2) {
-			DeploymentManager.instance.undeployModel();
-			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject(
-					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName() + "."
-					+ "deployModel: Failed to deploy model -> \n"
-					+ e2.getMessage());
-			throw (new AREAsapiException(e2.getMessage()));
-		} catch (DeploymentException e3) {
-			DeploymentManager.instance.undeployModel();
-			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject(
-					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName() + "."
-					+ "deployModel: Failed to deploy model -> \n"
-					+ e3.getMessage());
-			throw (new AREAsapiException(e3.getMessage()));
 		} catch (ParseException e4) {
 			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
@@ -531,7 +448,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName() + "."
 					+ "deployModel: Failed to deploy model -> \n"
 					+ e4.getMessage());
-			throw (new AREAsapiException("Parsing of the model failed: "+e4.getMessage()));
+			throw (new AREAsapiException("Model could not be parsed or is not compatible with installed components. Try to convert the model file by opening and resaving it with the AsTeRICS Configuration Suite (ACS)"));
 		} catch (Throwable t) {
 			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
@@ -540,7 +457,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName() + "."
 					+ "deployModel: Failed to deploy model -> \n"
 					+ t.getMessage());
-			throw (new AREAsapiException("Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program."));
+			throw (new AREAsapiException("Model could not be deployed."));
 		}
 
 	}

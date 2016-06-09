@@ -3,6 +3,8 @@ package eu.asterics.mw.are;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -224,8 +226,10 @@ public class DeploymentManager
 				}catch (Exception e){
 					//logger.severe(canonicalName+ " prevents the model from starting: "+e.getMessage());
 					//e.printStackTrace();
-					String message="Could not deploy component of type ["+componentTypeID+"]: \n"+e.getMessage();
-					//AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
+					String optMsg=e.getMessage()!=null ? "\nReason: "+e.getMessage() : "";
+					String message="Plugin could not be instantiated: "+componentTypeID+optMsg;
+					
+					AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
 
 					//before give up, try to cleanup and undeploy model again				
 					//logger.fine("Before giving up, trying to undeploy model again.");
@@ -242,7 +246,7 @@ public class DeploymentManager
 					{
 						final Object propertyValue = 
 								componentInstance.getPropertyValue(propertyName);
-						if (propertyName != null)
+						if (propertyName != null && propertyValue!=null)
 						{
 							//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
 							//We have to synchronize using the target component, because the component can be considered a black box, that must
@@ -251,6 +255,10 @@ public class DeploymentManager
 							{
 								runtimeComponentInstance.
 								setRuntimePropertyValue(propertyName, propertyValue);
+							}
+						} else {							
+							if(propertyName!=null) {
+								logger.warning("While initializing runtime property values of plugin instance <"+componentInstance.getInstanceID()+">: Ignoring propertyName <"+propertyName+">, propertyValue <"+propertyValue+">");
 							}
 						}
 					}
@@ -407,11 +415,15 @@ public class DeploymentManager
 			notifyAREEventListeners (AREEvent.POST_DEPLOY_EVENT);
 
 		}catch (Exception e){
-			//before give up, try to cleanup and undeploy model again				
-			logger.severe("Deployment exception: "+e.getMessage());
+			//before give up, try to cleanup and undeploy model again
+			String errMessage="Deployment of model failed.";
+			StringWriter stackTraceWriter=new StringWriter();
+			e.printStackTrace(new PrintWriter(stackTraceWriter));
+			logger.severe(stackTraceWriter.toString());
+			
 			logger.fine("Before giving up, trying to undeploy model again.");
 			undeployModel();
-			throw new DeploymentException(e.getMessage());
+			throw new DeploymentException(errMessage);
 		}
 	}
 
@@ -651,8 +663,14 @@ public class DeploymentManager
 				catch (Throwable t) 
 				{
 					//custom title, error icon
-					t.printStackTrace();
-					AstericsErrorHandling.instance.reportError(componentInstance, "Could not run component ["+componentInstance+"]: \n"+t.getMessage());
+					StringWriter stackTraceWriter=new StringWriter();
+					t.printStackTrace(new PrintWriter(stackTraceWriter));
+					logger.severe(stackTraceWriter.toString());
+
+					String optMsg=t.getMessage()!=null ? "\nReason: "+t.getMessage() : "";
+					String message="Plugin could not be started: "+componentInstance+optMsg;
+					logger.warning(message);
+					AstericsErrorHandling.instance.reportError(componentInstance, message);
 				}
 			}
 			notifyAREEventListeners (AREEvent.POST_START_EVENT);
@@ -759,8 +777,15 @@ public class DeploymentManager
 				catch (Throwable t) 
 				{
 					//custom title, error icon
-					t.printStackTrace();
-					AstericsErrorHandling.instance.reportError(componentInstance, "Could not stop component ["+componentInstance+"]: \n"+t.getMessage());
+					StringWriter stackTraceWriter=new StringWriter();
+					t.printStackTrace(new PrintWriter(stackTraceWriter));
+					logger.severe(stackTraceWriter.toString());
+
+					String optMsg=t.getMessage()!=null ? "\nReason: "+t.getMessage() : "";
+					String message="Plugin could not be stopped: "+componentInstance+optMsg;
+
+					logger.warning(message);
+					AstericsErrorHandling.instance.reportError(componentInstance, message);
 				}
 	
 	
