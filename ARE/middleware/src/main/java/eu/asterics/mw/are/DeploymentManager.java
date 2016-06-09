@@ -229,43 +229,44 @@ public class DeploymentManager
 							componentRepository.getInstance(canonicalName);
 
 				}catch (Exception e){
-					//logger.severe(canonicalName+ " prevents the model from starting: "+e.getMessage());
-					//e.printStackTrace();
 					String optMsg=e.getMessage()!=null ? "\nReason: "+e.getMessage() : "";
 					String message="Plugin could not be instantiated: "+componentTypeID+optMsg;
 					
 					AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
-
-					//before give up, try to cleanup and undeploy model again				
-					//logger.fine("Before giving up, trying to undeploy model again.");
-					//undeployModel();
 					throw new DeploymentException(message);
-					//return;
 				}
 
 				//Set runtime property values to component instances
 				final Set<String> propertyNames = componentType.getPropertyNames();
 				if (propertyNames != null)
 				{
-					for (final String propertyName : propertyNames)
-					{
-						final Object propertyValue = 
-								componentInstance.getPropertyValue(propertyName);
-						if (propertyName != null && propertyValue!=null)
+					try{
+						for (final String propertyName : propertyNames)
 						{
-							//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
-							//We have to synchronize using the target component, because the component can be considered a black box, that must
-							//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
-							//synchronized(runtimeComponentInstance) 
+							final Object propertyValue = 
+									componentInstance.getPropertyValue(propertyName);
+							if (propertyName != null && propertyValue!=null)
 							{
-								runtimeComponentInstance.
-								setRuntimePropertyValue(propertyName, propertyValue);
-							}
-						} else {							
-							if(propertyName!=null) {
-								logger.warning("While initializing runtime property values of plugin instance <"+componentInstance.getInstanceID()+">: Ignoring propertyName <"+propertyName+">, propertyValue <"+propertyValue+">");
+								//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+								//We have to synchronize using the target component, because the component can be considered a black box, that must
+								//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
+								//synchronized(runtimeComponentInstance) 
+								{
+									runtimeComponentInstance.
+									setRuntimePropertyValue(propertyName, propertyValue);
+								}
+							} else {							
+								if(propertyName!=null) {
+									logger.warning("While initializing runtime property values of plugin instance <"+componentInstance.getInstanceID()+">: Ignoring propertyName <"+propertyName+">, propertyValue <"+propertyValue+">");
+								}
 							}
 						}
+					}catch(Exception e) {
+						String optMsg=e.getMessage()!=null ? "\nReason: "+e.getMessage() : "";
+						String message="Plugin could not be initialized: "+componentTypeID+optMsg;
+						
+						AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
+						throw new DeploymentException(message);						
 					}
 				}
 
@@ -682,7 +683,8 @@ public class DeploymentManager
 					logger.severe(stackTraceWriter.toString());
 
 					String optMsg=t.getMessage()!=null ? "\nReason: "+t.getMessage() : "";
-					String message="Plugin could not be started: "+componentInstance+optMsg;
+					String runtimeInstanceId=getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);
+					String message="Plugin could not be started: "+runtimeInstanceId+optMsg;
 					logger.warning(message);
 					AstericsErrorHandling.instance.reportError(componentInstance, message);
 				}
@@ -796,7 +798,8 @@ public class DeploymentManager
 					logger.severe(stackTraceWriter.toString());
 
 					String optMsg=t.getMessage()!=null ? "\nReason: "+t.getMessage() : "";
-					String message="Plugin could not be stopped: "+componentInstance+optMsg;
+					String runtimeInstanceId=getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);
+					String message="Plugin could not be stopped: "+runtimeInstanceId+optMsg;
 
 					logger.warning(message);
 					AstericsErrorHandling.instance.reportError(componentInstance, message);
