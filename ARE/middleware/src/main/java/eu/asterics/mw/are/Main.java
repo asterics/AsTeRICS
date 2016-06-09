@@ -87,20 +87,9 @@ public class Main implements BundleActivator
 		// Check if not 32bit
 		String bits = System.getProperty("sun.arch.data.model");
 		if (OSUtils.isWindows() && bits.compareTo("64") == 0) {
-			String message="JVM "+bits+" bit detected! Many plugins of the ARE need a 32bit JVM.";
+			String message=bits+"bit Java Runtime detected! Many plugins of the ARE need a 32bit Java Runtime.\nJava Download: http://www.java.com/de/download/manual.jsp";
 			logger.warning(message);
 			startupMessage(message,JOptionPane.WARNING_MESSAGE,false);
-			//Don't shut down, because it is not critical for all plugins, just for some.
-			/*
-			long start = System.currentTimeMillis();
-			long end = start + 5 * 1000; // 60 seconds * 1000 ms/sec
-			while (System.currentTimeMillis() < end) {
-				;
-			}
-			
-			System.exit(0);
-			 * 
-			 */
 		}
 		logger.info("JVM " + bits + " bit detected");
 		final String startModel = context
@@ -179,8 +168,8 @@ public class Main implements BundleActivator
 						astericsGUI.unsetSystemTray();
 					}
 					
-					String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
-					String message="The AsTeRICS Runtime Environment started with errors:\n"+reason;
+					String reason=e.getMessage()!=null ? ":\n\n"+e.getMessage() : "";
+					String message="The AsTeRICS Runtime Environment started with errors"+reason;
 					logger.severe(message);
 					startupMessage(message,JOptionPane.ERROR_MESSAGE,false);
 				}
