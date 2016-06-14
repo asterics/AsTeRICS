@@ -79,7 +79,14 @@
 	<echoproperties>
 	</echoproperties>
 	-->
-	
+
+	<target name="clean">
+		<delete includeemptydirs="true" dir="${APE.buildDir}/">
+		</delete>
+		<delete includeemptydirs="true" dir="tmp/">
+		</delete>
+	</target>
+
 	<target name="init-fx-tasks">
 		<path id="fxant">
 			<filelist>
