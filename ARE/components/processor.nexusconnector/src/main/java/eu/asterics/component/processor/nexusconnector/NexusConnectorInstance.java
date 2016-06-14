@@ -6,226 +6,192 @@ Licensed under the New BSD license.
 
 package eu.asterics.component.processor.nexusconnector;
 
-
 import java.util.logging.Logger;
-import eu.asterics.mw.data.ConversionUtils;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.io.IOException;
+import eu.asterics.component.processor.nexusconnector.NexusConnectorInputPort;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.AsyncHttpClientConfig;
-import com.ning.http.client.ws.WebSocket;
-import com.ning.http.client.ws.WebSocketUpgradeHandler;
-import com.ning.http.client.ws.WebSocketTextListener;
-import com.ning.http.client.ListenableFuture;
-import com.ning.http.client.providers.grizzly.GrizzlyAsyncHttpProvider;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
+import javax.websocket.ClientEndpointConfig;
+import javax.websocket.DeploymentException;
+import javax.websocket.Endpoint;
+import javax.websocket.EndpointConfig;
+import javax.websocket.RemoteEndpoint;
+import javax.websocket.Session;
+import org.glassfish.tyrus.client.ClientManager;
 import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 /**
- * 
- * <Describe purpose of this module>
- * 
- * 
- *  
- * @author <your name> [<your email address>]
- *         Date: 
- *         Time: 
+ * This plugin provides a bidirectional connection to an instance of
+ * the GPII Nexus.
+ *
+ * @author Simon Bates [sbates@ocadu.ca]
  */
-public class NexusConnectorInstance extends AbstractRuntimeComponentInstance
-{
-    // Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
-    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    private ClientEndpointConfig nexusClientConfig = ClientEndpointConfig.Builder.create().build();
+    private ClientManager nexusClient = ClientManager.createClient();
+    private RemoteEndpoint.Basic nexusEndpoint;
 
-
-    // declare member variables here
-    AsyncHttpClientConfig nexusClientConfig = new AsyncHttpClientConfig.Builder().build();
-    AsyncHttpClient nexusClient = new AsyncHttpClient(new GrizzlyAsyncHttpProvider(nexusClientConfig), nexusClientConfig);
-    WebSocket nexusWebSocket;
-
-    /**
-     * The class constructor.
-     */
     public NexusConnectorInstance() {
-        // empty constructor
+        // Empty constructor
     }
 
     /**
-     * returns an Input Port.
-     * @param portID   the name of the port
-     * @return         the input port or null if not found
+     * Returns an Input Port.
+     * @param portID    The name of the port
+     * @return          The input port or null if not found
      */
+    @Override
     public IRuntimeInputPort getInputPort(String portID) {
-        if ("A".equalsIgnoreCase(portID)) {
-            return ipA;
-        } else if ("B".equalsIgnoreCase(portID)) {
-            return ipB;
-        } else if ("C".equalsIgnoreCase(portID)) {
-            return ipC;
-        } else if ("D".equalsIgnoreCase(portID)) {
-            return ipD;
+        if ("in1d".equalsIgnoreCase(portID)) {
+            return ipIn1d;
+        } else if ("in2d".equalsIgnoreCase(portID)) {
+            return ipIn2d;
+        } else if ("in3d".equalsIgnoreCase(portID)) {
+            return ipIn3d;
+        } else if ("in4d".equalsIgnoreCase(portID)) {
+            return ipIn4d;
+        } else if ("in5s".equalsIgnoreCase(portID)) {
+            return ipIn5s;
+        } else if ("in6s".equalsIgnoreCase(portID)) {
+            return ipIn6s;
+        } else if ("in7s".equalsIgnoreCase(portID)) {
+            return ipIn7s;
+        } else if ("in8s".equalsIgnoreCase(portID)) {
+            return ipIn8s;
         }
         return null;
     }
 
     /**
-     * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * Returns an Output Port.
+     * @param portID    The name of the port
+     * @return          The output port or null if not found
      */
+    @Override
     public IRuntimeOutputPort getOutputPort(String portID) {
-        if ("outStrOne".equalsIgnoreCase(portID)) {
-            return opStrOne;
+        if ("out1d".equalsIgnoreCase(portID)) {
+            return opOut1d.getPort();
+        } else if ("out2d".equalsIgnoreCase(portID)) {
+            return opOut2d.getPort();
+        } else if ("out3d".equalsIgnoreCase(portID)) {
+            return opOut3d.getPort();
+        } else if ("out4d".equalsIgnoreCase(portID)) {
+            return opOut4d.getPort();
+        } else if ("out5s".equalsIgnoreCase(portID)) {
+            return opOut5s.getPort();
+        } else if ("out6s".equalsIgnoreCase(portID)) {
+            return opOut6s.getPort();
+        } else if ("out7s".equalsIgnoreCase(portID)) {
+            return opOut7s.getPort();
+        } else if ("out8s".equalsIgnoreCase(portID)) {
+            return opOut8s.getPort();
         }
         return null;
     }
 
     /**
-     * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * Returns an Event Listener Port.
+     * @param eventPortID   The name of the port
+     * @return              The EventListener port or null if not found
      */
+    @Override
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
         return null;
     }
 
     /**
-     * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * Returns an Event Triggerer Port.
+     * @param eventPortID   The name of the port
+     * @return              The EventTriggerer port or null if not found
      */
+    @Override
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
         return null;
     }
 
     /**
-     * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * Returns the value of the requested property.
+     * @param propertyName  The name of the property
+     * @return              The property value or null if not found
      */
+    @Override
     public Object getRuntimePropertyValue(String propertyName) {
         return null;
     }
 
     /**
-     * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * Sets a new value for the specified property.
+     * @param propertyName  The name of the property
+     * @param newValue      The new value for the property
      */
+    @Override
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         return null;
     }
 
-    /**
-     * Input Ports
-     */
-    private final IRuntimeInputPort ipA = new DefaultRuntimeInputPort() {
-        public void receiveData(byte[] data) {
-            double val = ConversionUtils.doubleFromBytes(data);
-            nexusWebSocket.sendMessage("{ \"path\": \"inputs.a\", \"value\": " + val + " }");
-        }
-    };
+    // Input Ports
 
-    private final IRuntimeInputPort ipB = new DefaultRuntimeInputPort() {
-        public void receiveData(byte[] data) {
-            double val = ConversionUtils.doubleFromBytes(data);
-            nexusWebSocket.sendMessage("{ \"path\": \"inputs.b\", \"value\": " + val + " }");
-        }
-    };
+    private final IRuntimeInputPort ipIn1d = new NexusConnectorInputPort(this, "inputs.in1d", NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn2d = new NexusConnectorInputPort(this, "inputs.in2d", NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn3d = new NexusConnectorInputPort(this, "inputs.in3d", NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn4d = new NexusConnectorInputPort(this, "inputs.in4d", NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn5s = new NexusConnectorInputPort(this, "inputs.in5s", NexusConnectorInputPort.InputType.STRING);
+    private final IRuntimeInputPort ipIn6s = new NexusConnectorInputPort(this, "inputs.in6s", NexusConnectorInputPort.InputType.STRING);
+    private final IRuntimeInputPort ipIn7s = new NexusConnectorInputPort(this, "inputs.in7s", NexusConnectorInputPort.InputType.STRING);
+    private final IRuntimeInputPort ipIn8s = new NexusConnectorInputPort(this, "inputs.in8s", NexusConnectorInputPort.InputType.STRING);
 
-    private final IRuntimeInputPort ipC = new DefaultRuntimeInputPort() {
-        public void receiveData(byte[] data) {
-            double val = ConversionUtils.doubleFromBytes(data);
-            nexusWebSocket.sendMessage("{ \"path\": \"inputs.c\", \"value\": " + val + " }");
-        }
-    };
+    // Output Ports
 
-    private final IRuntimeInputPort ipD = new DefaultRuntimeInputPort() {
-        public void receiveData(byte[] data) {
-            double val = ConversionUtils.doubleFromBytes(data);
-            nexusWebSocket.sendMessage("{ \"path\": \"inputs.d\", \"value\": " + val + " }");
-        }
-    };
+    private final StatefulDoubleOutputPort opOut1d = new StatefulDoubleOutputPort();
+    private final StatefulDoubleOutputPort opOut2d = new StatefulDoubleOutputPort();
+    private final StatefulDoubleOutputPort opOut3d = new StatefulDoubleOutputPort();
+    private final StatefulDoubleOutputPort opOut4d = new StatefulDoubleOutputPort();
+    private final StatefulStringOutputPort opOut5s = new StatefulStringOutputPort();
+    private final StatefulStringOutputPort opOut6s = new StatefulStringOutputPort();
+    private final StatefulStringOutputPort opOut7s = new StatefulStringOutputPort();
+    private final StatefulStringOutputPort opOut8s = new StatefulStringOutputPort();
 
     /**
-     * Output Ports
-     */
-    private String opStrOneValue = null;
-    private final IRuntimeOutputPort opStrOne = new DefaultRuntimeOutputPort();
-
-
-    /**
-     * Event Listerner Ports.
-     */
-
-
-    /**
-     * called when model is started.
+     * Called when the model is started.
      */
     @Override
     public void start() {
         super.start();
         System.out.println("NexusConnector START");
 
-        ListenableFuture<WebSocket> f = nexusClient.prepareGet("ws://localhost:9081/bindModel/nexus.asterics/connector")
-            .execute(new WebSocketUpgradeHandler.Builder().addWebSocketListener(new WebSocketTextListener() {
-                    @Override
-                    public void onMessage(String message) {
-                        JsonValue changeMessage = Json.parse(message);
-                        if (changeMessage.isObject()) {
-                            JsonValue outputs = changeMessage.asObject().get("outputs");
-                            if (outputs.isObject()) {
-                                JsonValue outStrOneChangeValue = outputs.asObject().get("outStrOne");
-                                if (outStrOneChangeValue.isString()) {
-                                    String outStrOneChangeValueString  = outStrOneChangeValue.asString();
-                                    if (opStrOneValue == null || !opStrOneValue.equals(outStrOneChangeValueString)) {
-                                        System.out.println("NexusConnector OUT STR ONE VALUE CHANGE");
-                                        opStrOneValue = outStrOneChangeValueString;
-                                        opStrOne.sendData(ConversionUtils.stringToBytes(opStrOneValue));
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onOpen(WebSocket websocket) {
-                    }
-
-                    @Override
-                    public void onClose(WebSocket websocket) {
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                    }
-            }).build());
-
         try {
-            nexusWebSocket = f.get();
-        } catch (CancellationException e) {
+            nexusClient.connectToServer(new Endpoint() {
+                    @Override
+                    public void onOpen(Session session, EndpointConfig config) {
+                        session.addMessageHandler(new NexusConnectorMessageHandler(NexusConnectorInstance.this));
+                        nexusEndpoint = session.getBasicRemote();
+                    }
+                }, nexusClientConfig, new URI("ws://localhost:9081/bindModel/nexus.asterics/connector"));
+        } catch (URISyntaxException e) {
             // TODO: Proper Exception handling
             throw new RuntimeException(e);
-        } catch (ExecutionException e) {
+        } catch (DeploymentException e) {
             // TODO: Proper Exception handling
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            // TODO: Do something with the InterruptedException
+        } catch (IOException e) {
+            // TODO: Proper Exception handling
+            throw new RuntimeException(e);
         }
     }
 
     /**
-     * called when model is paused.
+     * Called when the model is paused.
      */
     @Override
     public void pause() {
@@ -233,7 +199,7 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance
     }
 
     /**
-     * called when model is resumed.
+     * Called when the model is resumed.
      */
     @Override
     public void resume() {
@@ -241,11 +207,64 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance
     }
 
     /**
-     * called when model is stopped.
+     * Called when the model is stopped.
      */
     @Override
     public void stop() {
         super.stop();
         System.out.println("NexusConnector STOP");
     }
+
+    // Package visibility -- no explicit access modifier
+    void sendNexusChangeMessage(String path, double value) {
+        sendNexusChangeMessage(path, JsonValue.valueOf(value));
+    }
+
+    // Package visibility -- no explicit access modifier
+    void sendNexusChangeMessage(String path, String value) {
+        sendNexusChangeMessage(path, JsonValue.valueOf(value));
+    }
+
+    // Package visibility -- no explicit access modifier
+    void onNexusMessage(String message) {
+        JsonValue changeMessage = Json.parse(message);
+        if (changeMessage.isObject()) {
+            JsonValue outputs = changeMessage.asObject().get("outputs");
+            if (outputs.isObject()) {
+                updateDoubleOutputPort("out1d", outputs, opOut1d);
+                updateDoubleOutputPort("out2d", outputs, opOut2d);
+                updateDoubleOutputPort("out3d", outputs, opOut3d);
+                updateDoubleOutputPort("out4d", outputs, opOut4d);
+                updateStringOutputPort("out5s", outputs, opOut5s);
+                updateStringOutputPort("out6s", outputs, opOut6s);
+                updateStringOutputPort("out7s", outputs, opOut7s);
+                updateStringOutputPort("out8s", outputs, opOut8s);
+            }
+        }
+    }
+
+    private void sendNexusChangeMessage(String path, JsonValue value) {
+        JsonObject message = Json.object().add("path", path).add("value", value);
+        try {
+            nexusEndpoint.sendText(message.toString());
+        } catch (IOException e) {
+            // TODO: Proper Exception handling
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void updateDoubleOutputPort(String path, JsonValue outputs, StatefulDoubleOutputPort port) {
+        JsonValue newValue = outputs.asObject().get(path);
+        if (newValue.isNumber()) {
+            port.update(newValue.asDouble());
+        }
+    }
+
+    private void updateStringOutputPort(String path, JsonValue outputs, StatefulStringOutputPort port) {
+        JsonValue newValue = outputs.asObject().get(path);
+        if (newValue.isString()) {
+            port.update(newValue.asString());
+        }
+    }
+
 }

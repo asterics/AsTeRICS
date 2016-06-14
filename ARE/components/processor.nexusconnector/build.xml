@@ -16,7 +16,9 @@
     <pathelement location="${middleware}/asterics.ARE.jar"/>
     <pathelement location="${services}/asterics.mw.systemstatechange.jar"/>
     <pathelement location="${services}/asterics.mw.cimcommunication.jar"/>
-    <pathelement location="src/main/resources/lib/async-http-client-1.9.33.jar"/>
+    <pathelement location="src/main/resources/lib/javax.websocket-api-1.1.jar"/>
+    <pathelement location="src/main/resources/lib/tyrus-client-1.12.jar"/>
+    <pathelement location="src/main/resources/lib/tyrus-core-1.12.jar"/>
     <pathelement location="src/main/resources/lib/minimal-json-0.9.4.jar"/>
   </path>
 

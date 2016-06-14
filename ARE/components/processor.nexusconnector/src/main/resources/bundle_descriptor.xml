@@ -8,28 +8,76 @@
         <singleton>false</singleton>
         <description>Nexus Connector</description>
         <ports>
-            <inputPort id="A">
-                <description>Input A</description>
+            <inputPort id="in1d">
+                <description>Input 1 sends data to the Nexus</description>
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>double</dataType>
             </inputPort>
-            <inputPort id="B">
-                <description>Input B</description>
+            <inputPort id="in2d">
+                <description>Input 2 sends data to the Nexus</description>
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>double</dataType>
             </inputPort>
-            <inputPort id="C">
-                <description>Input C</description>
+            <inputPort id="in3d">
+                <description>Input 3 sends data to the Nexus</description>
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>double</dataType>
             </inputPort>
-            <inputPort id="D">
-                <description>Input D</description>
+            <inputPort id="in4d">
+                <description>Input 4 sends data to the Nexus</description>
                 <mustBeConnected>false</mustBeConnected>
                 <dataType>double</dataType>
             </inputPort>
-            <outputPort id="outStrOne">
-                <description>Output string one</description>
+            <inputPort id="in5s">
+                <description>Input 5 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="in6s">
+                <description>Input 6 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="in7s">
+                <description>Input 7 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="in8s">
+                <description>Input 8 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <outputPort id="out1d">
+                <description>Output 1 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out2d">
+                <description>Output 2 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out3d">
+                <description>Output 3 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out4d">
+                <description>Output 4 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out5s">
+                <description>Output 5 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out6s">
+                <description>Output 6 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out7s">
+                <description>Output 7 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out8s">
+                <description>Output 8 receives data from the Nexus</description>
                 <dataType>string</dataType>
             </outputPort>
         </ports>
