@@ -4,6 +4,8 @@
 	
 	<!-- if you want to compile and modify something on your own, before the installer is created -->
 	<target name='before-deploy'>
+		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
+		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx"/>
 	</target>
 	
 	<target name="deploy" depends="init-fx-tasks, cleanup, setup-staging-area, APE-copy, before-deploy, make-installer-only">

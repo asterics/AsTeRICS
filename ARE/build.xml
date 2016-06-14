@@ -32,10 +32,14 @@
           </subant>
     </target>
 
-	<target name="buildAllNoClean" depends="buildServices, buildTools, buildComponents, copyLicensesAll">
+	<target name="fix-shell-scripts">
+                <fixcrlf srcdir="${runtime}" includes="*.sh"/>
+                <chmod dir="${runtime}" includes="*.sh" perm="ugo+rx"/>
+	</target>
+	<target name="buildAllNoClean" depends="buildServices, buildTools, buildComponents, copyLicensesAll, fix-shell-scripts">
 	</target>
 	
-	<target name="buildAll" depends="clean,buildServices, buildTools, copyLicensesAll">
+	<target name="buildAll" depends="clean,buildServices, buildTools, copyLicensesAll, fix-shell-scripts">
           <subant target="buildAllComponents">
             <property name="debug" value="true"/>
             <fileset dir="." includes="components/build.xml"/>
@@ -50,7 +54,7 @@
     </target>
 	
 
-	<target name="buildAll-release" depends="clean,buildServices, buildTools, copyLicensesAll">
+	<target name="buildAll-release" depends="clean,buildServices, buildTools, copyLicensesAll, fix-shell-scripts">
          <subant target="buildAllComponents">
             <property name="debug" value="false"/>
             <fileset dir="." includes="components/build.xml"/>
