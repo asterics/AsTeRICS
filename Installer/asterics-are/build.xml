@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="asterics-application" default="APE-copy" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<import file="imported.xml"/>
+	
+	<!-- if you want to compile and modify something on your own, before the installer is created -->
+	<target name='before-deploy'>
+		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
+		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx"/>
+	</target>
+	
+	<target name="deploy" depends="init-fx-tasks, cleanup, setup-staging-area, APE-copy, before-deploy, make-installer-only">
+	</target>
+</project>
