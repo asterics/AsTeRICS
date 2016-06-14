@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\WebSocket_test.acs_2015_10_9_14_14" version="20130320">
+<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_master\bin\ARE\models\WebSocket_test.acs_2016_6_14_11_34" version="20130320">
   <components>
     <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
       <description>Signal Generator</description>
@@ -54,49 +54,17 @@
       </gui>
     </component>
     <component id="WebSocket.1" type_id="asterics.WebSocket">
-      <description>This plugin uses a websocket connection to send and read data</description>
+      <description>This plugin uses a websocket connection to send and read data. The default websocket URI is ws://{hostname}:8082/ws/astericsData. You have to start the ARE with --webservice flag. You can test the connection with http://localhost:8082/
+        </description>
       <ports>
         <inputPort portTypeID="InA">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InB">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InC">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InD">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InE">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InF">
           <properties />
         </inputPort>
         <outputPort portTypeID="OutA">
           <properties />
         </outputPort>
-        <outputPort portTypeID="OutB">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutC">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutD">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutE">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutF">
-          <properties />
-        </outputPort>
       </ports>
-      <properties>
-        <property name="host" value="localhost" />
-        <property name="port" value="8080" />
-      </properties>
+      <properties />
       <layout>
         <posX>353</posX>
         <posY>135</posY>
