@@ -448,7 +448,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName() + "."
 					+ "deployModel: Failed to deploy model -> \n"
 					+ e4.getMessage());
-			throw (new AREAsapiException("Model could not be parsed or is not compatible with installed components. Try to convert the model file by opening and resaving it with the AsTeRICS Configuration Suite (ACS)"));
+			throw (new AREAsapiException("Model could not be parsed or is not compatible with installed components.\nTry to convert the model file by opening and resaving it with the AsTeRICS Configuration Suite (ACS)"));
 		} catch (Throwable t) {
 			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
