@@ -81,5 +81,19 @@
                 <dataType>string</dataType>
             </outputPort>
         </ports>
+        <properties>
+            <property name="nexusHostname"
+                      type="string"
+                      value="localhost"
+                      description="Hostname of Nexus"/>
+            <property name="nexusPort"
+                      type="integer"
+                      value="9081"
+                      description="Port number of Nexus"/>
+            <property name="nexusComponentPath"
+                      type="string"
+                      value="nexus.asterics"
+                      description="Nexus component to bind to"/>
+        </properties>
     </componentType>
 </componentTypes>

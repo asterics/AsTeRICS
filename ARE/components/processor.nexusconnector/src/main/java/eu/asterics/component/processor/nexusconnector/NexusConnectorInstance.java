@@ -42,6 +42,38 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
     private ClientManager nexusClient = ClientManager.createClient(JdkClientContainer.class.getName());
     private RemoteEndpoint.Basic nexusEndpoint;
 
+    // Properties
+
+    private final String PROP_NEXUS_HOSTNAME = "nexushostname";
+    private final String PROP_NEXUS_PORT = "nexusport";
+    private final String PROP_NEXUS_COMPONENT_PATH = "nexuscomponentpath";
+
+    private String propNexusHostname = "localhost";
+    private int propNexusPort = 9081;
+    private String propNexusComponentPath = "nexus.asterics";
+
+    // Input Ports
+
+    private final IRuntimeInputPort ipIn1d = new NexusConnectorInputPort(this, "inputs.in1d", NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn2d = new NexusConnectorInputPort(this, "inputs.in2d", NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn3d = new NexusConnectorInputPort(this, "inputs.in3d", NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn4d = new NexusConnectorInputPort(this, "inputs.in4d", NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn5s = new NexusConnectorInputPort(this, "inputs.in5s", NexusConnectorInputPort.InputType.STRING);
+    private final IRuntimeInputPort ipIn6s = new NexusConnectorInputPort(this, "inputs.in6s", NexusConnectorInputPort.InputType.STRING);
+    private final IRuntimeInputPort ipIn7s = new NexusConnectorInputPort(this, "inputs.in7s", NexusConnectorInputPort.InputType.STRING);
+    private final IRuntimeInputPort ipIn8s = new NexusConnectorInputPort(this, "inputs.in8s", NexusConnectorInputPort.InputType.STRING);
+
+    // Output Ports
+
+    private final StatefulDoubleOutputPort opOut1d = new StatefulDoubleOutputPort();
+    private final StatefulDoubleOutputPort opOut2d = new StatefulDoubleOutputPort();
+    private final StatefulDoubleOutputPort opOut3d = new StatefulDoubleOutputPort();
+    private final StatefulDoubleOutputPort opOut4d = new StatefulDoubleOutputPort();
+    private final StatefulStringOutputPort opOut5s = new StatefulStringOutputPort();
+    private final StatefulStringOutputPort opOut6s = new StatefulStringOutputPort();
+    private final StatefulStringOutputPort opOut7s = new StatefulStringOutputPort();
+    private final StatefulStringOutputPort opOut8s = new StatefulStringOutputPort();
+
     public NexusConnectorInstance() {
         // Empty constructor
     }
@@ -127,6 +159,13 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public Object getRuntimePropertyValue(String propertyName) {
+        if (PROP_NEXUS_HOSTNAME.equalsIgnoreCase(propertyName)) {
+            return propNexusHostname;
+        } else if (PROP_NEXUS_PORT.equalsIgnoreCase(propertyName)) {
+            return propNexusPort;
+        } else if (PROP_NEXUS_COMPONENT_PATH.equalsIgnoreCase(propertyName)) {
+            return propNexusComponentPath;
+        }
         return null;
     }
 
@@ -137,30 +176,21 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if (PROP_NEXUS_HOSTNAME.equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propNexusHostname;
+            propNexusHostname = newValue.toString();
+            return oldValue;
+        } else if (PROP_NEXUS_PORT.equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propNexusPort;
+            propNexusPort = Integer.parseInt(newValue.toString());
+            return oldValue;
+        } else if (PROP_NEXUS_COMPONENT_PATH.equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propNexusComponentPath;
+            propNexusComponentPath = newValue.toString();
+            return oldValue;
+        }
         return null;
     }
-
-    // Input Ports
-
-    private final IRuntimeInputPort ipIn1d = new NexusConnectorInputPort(this, "inputs.in1d", NexusConnectorInputPort.InputType.DOUBLE);
-    private final IRuntimeInputPort ipIn2d = new NexusConnectorInputPort(this, "inputs.in2d", NexusConnectorInputPort.InputType.DOUBLE);
-    private final IRuntimeInputPort ipIn3d = new NexusConnectorInputPort(this, "inputs.in3d", NexusConnectorInputPort.InputType.DOUBLE);
-    private final IRuntimeInputPort ipIn4d = new NexusConnectorInputPort(this, "inputs.in4d", NexusConnectorInputPort.InputType.DOUBLE);
-    private final IRuntimeInputPort ipIn5s = new NexusConnectorInputPort(this, "inputs.in5s", NexusConnectorInputPort.InputType.STRING);
-    private final IRuntimeInputPort ipIn6s = new NexusConnectorInputPort(this, "inputs.in6s", NexusConnectorInputPort.InputType.STRING);
-    private final IRuntimeInputPort ipIn7s = new NexusConnectorInputPort(this, "inputs.in7s", NexusConnectorInputPort.InputType.STRING);
-    private final IRuntimeInputPort ipIn8s = new NexusConnectorInputPort(this, "inputs.in8s", NexusConnectorInputPort.InputType.STRING);
-
-    // Output Ports
-
-    private final StatefulDoubleOutputPort opOut1d = new StatefulDoubleOutputPort();
-    private final StatefulDoubleOutputPort opOut2d = new StatefulDoubleOutputPort();
-    private final StatefulDoubleOutputPort opOut3d = new StatefulDoubleOutputPort();
-    private final StatefulDoubleOutputPort opOut4d = new StatefulDoubleOutputPort();
-    private final StatefulStringOutputPort opOut5s = new StatefulStringOutputPort();
-    private final StatefulStringOutputPort opOut6s = new StatefulStringOutputPort();
-    private final StatefulStringOutputPort opOut7s = new StatefulStringOutputPort();
-    private final StatefulStringOutputPort opOut8s = new StatefulStringOutputPort();
 
     /**
      * Called when the model is started.
@@ -171,13 +201,15 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
         System.out.println("NexusConnector START");
 
         try {
+            String nexusUriPath = "/bindModel/" + propNexusComponentPath + "/connector";
+            URI nexusUri = new URI("ws", null, propNexusHostname, propNexusPort, nexusUriPath, null, null);
             nexusClient.connectToServer(new Endpoint() {
                     @Override
                     public void onOpen(Session session, EndpointConfig config) {
                         session.addMessageHandler(new NexusConnectorMessageHandler(NexusConnectorInstance.this));
                         nexusEndpoint = session.getBasicRemote();
                     }
-                }, nexusClientConfig, new URI("ws://localhost:9081/bindModel/nexus.asterics/connector"));
+                }, nexusClientConfig, nexusUri);
         } catch (URISyntaxException e) {
             // TODO: Proper Exception handling
             throw new RuntimeException(e);
@@ -215,18 +247,15 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
         System.out.println("NexusConnector STOP");
     }
 
-    // Package visibility -- no explicit access modifier
-    void sendNexusChangeMessage(String path, double value) {
+    public void sendNexusChangeMessage(String path, double value) {
         sendNexusChangeMessage(path, JsonValue.valueOf(value));
     }
 
-    // Package visibility -- no explicit access modifier
-    void sendNexusChangeMessage(String path, String value) {
+    public void sendNexusChangeMessage(String path, String value) {
         sendNexusChangeMessage(path, JsonValue.valueOf(value));
     }
 
-    // Package visibility -- no explicit access modifier
-    void onNexusMessage(String message) {
+    public void onNexusMessage(String message) {
         JsonValue changeMessage = Json.parse(message);
         if (changeMessage.isObject()) {
             JsonValue outputs = changeMessage.asObject().get("outputs");
