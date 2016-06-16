@@ -16,7 +16,6 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
 import javax.websocket.ClientEndpointConfig;
@@ -26,6 +25,7 @@ import javax.websocket.EndpointConfig;
 import javax.websocket.RemoteEndpoint;
 import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
+import org.glassfish.tyrus.container.jdk.client.JdkClientContainer;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
@@ -39,7 +39,7 @@ import com.eclipsesource.json.JsonValue;
 public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
     private ClientEndpointConfig nexusClientConfig = ClientEndpointConfig.Builder.create().build();
-    private ClientManager nexusClient = ClientManager.createClient();
+    private ClientManager nexusClient = ClientManager.createClient(JdkClientContainer.class.getName());
     private RemoteEndpoint.Basic nexusEndpoint;
 
     public NexusConnectorInstance() {

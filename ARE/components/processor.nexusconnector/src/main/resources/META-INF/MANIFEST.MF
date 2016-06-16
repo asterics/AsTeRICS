@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: asterics-processors.nexusconnector
 Bundle-SymbolicName: eu.asterics.component.processor.nexusconnector
 Bundle-Version: 0.1.0
-Bundle-ClassPath: . , lib/tyrus-client-1.12.jar, lib/tyrus-core-1.12.jar, lib/tyrus-spi-1.12.jar, lib/tyrus-websocket-core-1.2.1.jar, lib/javax.servlet-api-3.1.0.jar, lib/javax.websocket-api-1.1.jar, lib/tyrus-container-grizzly-client-1.12.jar, lib/grizzly-framework-2.3.24.jar, lib/grizzly-http-2.3.24.jar, lib/grizzly-websockets-2.3.24.jar, lib/minimal-json-0.9.4.jar
+Bundle-ClassPath: . , lib/javax.websocket-api-1.1.jar, lib/minimal-json-0.9.4.jar, lib/tyrus-client-1.12.jar, lib/tyrus-container-jdk-client-1.12.jar, lib/tyrus-core-1.12.jar, lib/tyrus-spi-1.12.jar, lib/tyrus-websocket-core-1.2.1.jar
 DynamicImport-Package: *
