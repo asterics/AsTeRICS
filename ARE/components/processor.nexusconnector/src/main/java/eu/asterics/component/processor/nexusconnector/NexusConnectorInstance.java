@@ -38,19 +38,9 @@ import com.eclipsesource.json.JsonValue;
  */
 public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
-    private ClientEndpointConfig nexusClientConfig = ClientEndpointConfig.Builder.create().build();
-    private ClientManager nexusClient = ClientManager.createClient(JdkClientContainer.class.getName());
-    private RemoteEndpoint.Basic nexusEndpoint;
-
-    // Properties
-
-    private final String PROP_NEXUS_HOSTNAME = "nexushostname";
-    private final String PROP_NEXUS_PORT = "nexusport";
-    private final String PROP_NEXUS_COMPONENT_PATH = "nexuscomponentpath";
-
-    private String propNexusHostname = "localhost";
-    private int propNexusPort = 9081;
-    private String propNexusComponentPath = "nexus.asterics";
+    private final String PROP_NEXUS_HOSTNAME = "nexusHostname";
+    private final String PROP_NEXUS_PORT = "nexusPort";
+    private final String PROP_NEXUS_COMPONENT_PATH = "nexusComponentPath";
 
     // Input Ports
 
@@ -73,6 +63,18 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
     private final StatefulStringOutputPort opOut6s = new StatefulStringOutputPort();
     private final StatefulStringOutputPort opOut7s = new StatefulStringOutputPort();
     private final StatefulStringOutputPort opOut8s = new StatefulStringOutputPort();
+
+    // Properties
+
+    private String propNexusHostname = "localhost";
+    private int propNexusPort = 9081;
+    private String propNexusComponentPath = "nexus.asterics";
+
+    // WebSocket connection
+
+    private ClientEndpointConfig nexusClientConfig = ClientEndpointConfig.Builder.create().build();
+    private ClientManager nexusClient = ClientManager.createClient(JdkClientContainer.class.getName());
+    private RemoteEndpoint.Basic nexusEndpoint;
 
     public NexusConnectorInstance() {
         // Empty constructor
