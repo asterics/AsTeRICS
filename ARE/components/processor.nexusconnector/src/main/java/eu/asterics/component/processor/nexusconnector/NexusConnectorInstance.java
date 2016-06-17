@@ -74,6 +74,7 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
     private ClientEndpointConfig nexusClientConfig = ClientEndpointConfig.Builder.create().build();
     private ClientManager nexusClient = ClientManager.createClient(JdkClientContainer.class.getName());
+    private Session nexusSession;
     private RemoteEndpoint.Basic nexusEndpoint;
 
     public NexusConnectorInstance() {
@@ -200,12 +201,11 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void start() {
         super.start();
-        System.out.println("NexusConnector START");
 
         try {
             String nexusUriPath = "/bindModel/" + propNexusComponentPath + "/connector";
             URI nexusUri = new URI("ws", null, propNexusHostname, propNexusPort, nexusUriPath, null, null);
-            nexusClient.connectToServer(new Endpoint() {
+            nexusSession = nexusClient.connectToServer(new Endpoint() {
                     @Override
                     public void onOpen(Session session, EndpointConfig config) {
                         session.addMessageHandler(new NexusConnectorMessageHandler(NexusConnectorInstance.this));
@@ -246,7 +246,13 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void stop() {
         super.stop();
-        System.out.println("NexusConnector STOP");
+
+        try {
+            nexusSession.close();
+        } catch (IOException e) {
+            // TODO: Proper Exception handling
+            throw new RuntimeException(e);
+        }
     }
 
     public void sendNexusChangeMessage(String path, double value) {
