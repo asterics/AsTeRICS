@@ -120,8 +120,8 @@
 			<fx:fileset dir="${build.merged.ARE}" type="license" includes="LICENSE" />
 		</fx:resources>
 
-		<fx:application id="fxApplication" name="${APE.fx.deploy.outfile}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
-		<fx:deploy verbose="true" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="${APE.fx.deploy.outfile}" nativeBundles="${fx.deploy.nativeBundles}" updatemode="background">
+		<fx:application id="fxApplication" name="${fx.application.name}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
+		<fx:deploy verbose="true" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="${fx.application.name}" nativeBundles="${fx.deploy.nativeBundles}" updatemode="background">
 			<fx:preferences shortcut="${fx.preferences.shortcut}" install="${fx.preferences.install}" menu="${fx.preferences.menu}" />
 
 			<fx:platform basedir="${APE.embedJava.fx.platform.basedir}">				
@@ -142,6 +142,16 @@
 			<fx:resources refid="appRes" />
 			<fx:info title="${fx.info.title}" vendor="${fx.info.vendor}" description="${fx.info.description}" license="${fx.info.license}" category="${fx.info.category}" />
 		</fx:deploy>
+		
+		<!-- Finally, rename the outfile in the case of APE.embedJava=true.
+		This is a dirty solution but it is needed because the fx:deploy.outfile attribute does not work as expected
+		-->
+		<move failonerror="false" quiet="true" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.exe" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.exe"/>
+		<move failonerror="false" quiet="true" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.msi" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.msi"/>
+		<move failonerror="false" quiet="true" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.deb" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.deb"/>
+		<move failonerror="false" quiet="true" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.rpm" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.rpm"/>
+		<move failonerror="false" quiet="true" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.dmg" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.dmg"/>
+		<move failonerror="false" quiet="true" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.pkg" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.pkg"/>		
 	</target>
 
 	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
