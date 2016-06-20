@@ -1,7 +1,7 @@
 ; -- AsTeRICS Installer --
 [Setup]
 AppName=AsTeRICS
-AppVersion=2.7
+AppVersion=2.8RC1
 DefaultDirName={pf}\AsTeRICS
 DefaultGroupName=AsTeRICS
 UninstallDisplayIcon=
@@ -29,6 +29,7 @@ Source: "vcredist_x86.exe"; DestDir: {tmp}; Flags: deleteafterinstall; Check: VC
 [DIRS]
 Name: "{app}\ACS"; Permissions: users-full;
 Name: "{app}\ARE"; Permissions: users-full;
+Name: "{app}\APE"; Permissions: users-full;
 Name: "{app}\OSKA"; Permissions: users-full;
 Name: "{app}\CIMs"; Permissions: users-full;
 
@@ -44,6 +45,7 @@ Filename: {tmp}\vcredist_x86.exe; Parameters: "/q:a /c:""install /l /q"""; Check
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\ACS"
 Type: filesandordirs; Name: "{app}\ARE"
+Type: filesandordirs; Name: "{app}\APE"
 Type: filesandordirs; Name: "{app}\OSKA"
 
 [Code]           

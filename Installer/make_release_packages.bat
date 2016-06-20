@@ -13,6 +13,7 @@ ECHO *) File called: "dotNetFx40_setup.exe"  (.Net Framework 4.0)
 ECHO.
 ECHO Press any key to start !
 pause
+REM git clone -b v2.8RC1 https://github.com/asterics/AsTeRICS
 git clone https://github.com/asterics/AsTeRICS
 rm -r AsTeRICS/NativeASAPIlibraries
 rm -r AsTeRICS/BNCIevaluationSuite
@@ -26,15 +27,19 @@ rm -r AsTeRICS/ACS
 rm -r AsTeRICS/ARE
 mv AsTeRICS/bin/ACS AsTeRICS/ACS
 mv AsTeRICS/bin/ARE AsTeRICS/ARE
+mv AsTeRICS/bin/APE AsTeRICS/APE
 mv AsTeRICS/bin/OSKA AsTeRICS/OSKA
 rm -rf AsTeRICS/bin
 rm -rf AsTeRICS/.git
 cp AsTeRICS/Documentation/ACS-Help/HTML/ACS_Help.chm AsTeRICS/ACS/
 rm -rf AsTeRICS/Documentation/ACS-Help
 rm -rf AsTeRICS/bin
+rm AsTeRICS/*.xml
+rm AsTeRICS/*.yml
 rm AsTeRICS/Documentation/ModelGuides/*.doc
 rm AsTeRICS/Documentation/DIYGuides/*.doc
 rm AsTeRICS/Documentation/*.doc
+rm AsTeRICS/Documentation/*.docx
 rm AsTeRICS/CIMs/Arduino/*.c
 rm AsTeRICS/CIMs/Arduino/*.h
 rm AsTeRICS/CIMs/Arduino/*.aps
@@ -82,9 +87,9 @@ rm -r AsTeRICS/CIMs/Sensorboard/WiiCamPCB
 
 cp -r AsTeRICS/Installer Installer
 rm -r AsTeRICS/Installer
-cp vcredist_x86.exe Installer/vcredist_x86.exe
-cp -r  java Installer/java 
-cp dotNetFx40_setup.exe Installer/dotNetFx40_setup.exe
+cp ../../asterics_make_release/vcredist_x86.exe Installer/vcredist_x86.exe
+cp -r  ../../asterics_make_release/java Installer/java 
+cp ../../asterics_make_release/dotNetFx40_setup.exe Installer/dotNetFx40_setup.exe
 cd Installer
 call iscc setup.iss
 cd ..
