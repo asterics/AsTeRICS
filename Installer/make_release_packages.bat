@@ -13,7 +13,8 @@ ECHO *) File called: "dotNetFx40_setup.exe"  (.Net Framework 4.0)
 ECHO.
 ECHO Press any key to start !
 pause
-git clone -b v2.8RC1 https://github.com/asterics/AsTeRICS
+REM git clone -b v2.8RC1 https://github.com/asterics/AsTeRICS
+git clone https://github.com/asterics/AsTeRICS
 rm -r AsTeRICS/NativeASAPIlibraries
 rm -r AsTeRICS/BNCIevaluationSuite
 rm -r AsTeRICS/Android/AsTeRICSPhoneServer
