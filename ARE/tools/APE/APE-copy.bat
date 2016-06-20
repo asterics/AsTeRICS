@@ -1,3 +1,4 @@
+@ECHO OFF
 @REM VERY IMPORTANT: The two lines ensure that the script is executed in the current directy (ARE), also when called
 @REM as administrator
 @setlocal enableextensions
