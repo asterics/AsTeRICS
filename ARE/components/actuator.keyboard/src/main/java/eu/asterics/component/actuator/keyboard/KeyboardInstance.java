@@ -28,6 +28,12 @@ package eu.asterics.component.actuator.keyboard;
 import java.util.*;
 import java.io.*;
 import javax.swing.KeyStroke;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeInputEvent;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
+
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -325,6 +331,55 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 		actSendPos=0;
 	}
 
+	
+	public void sendKeyPress(int actcode)
+	{
+		
+		switch (propInputMethod) {
+				case 1:
+			keyPressSi(actcode); break;
+				case 0: keyPress(actcode); break;
+				case 2:
+
+					  NativeKeyEvent keyEvent = new NativeKeyEvent( 
+							    NativeKeyEvent.NATIVE_KEY_PRESSED, 
+							    System.currentTimeMillis(), 
+							    0x00,  // Modifiers 
+							    0x00,  // Raw Code 
+							    NativeKeyEvent.VC_A, 
+							    NativeKeyEvent.CHAR_UNDEFINED, 
+							    NativeKeyEvent.KEY_LOCATION_STANDARD); 
+					  
+			        GlobalScreen.postNativeEvent(keyEvent);
+			        break;
+		}	
+	}
+
+	public void sendKeyRelease(int actcode)
+	{
+		
+		switch (propInputMethod) {
+				case 1:	keyReleaseSi(actcode);
+						break;
+				case 0: keyRelease(actcode);
+						break;
+				case 2:  // TDB
+
+					  NativeKeyEvent keyEvent = new NativeKeyEvent( 
+							    NativeKeyEvent.NATIVE_KEY_RELEASED, 
+							    System.currentTimeMillis(), 
+							    0x00,  // Modifiers 
+							    0x00,  // Raw Code 
+							    NativeKeyEvent.VC_A, 
+							    NativeKeyEvent.CHAR_UNDEFINED, 
+							    NativeKeyEvent.KEY_LOCATION_STANDARD); 
+					  
+			        GlobalScreen.postNativeEvent(keyEvent);
+			        break;
+		}			
+	}
+	
+	
    /**
     * sends a keycode of given index (in the keycode vector) and mode
     */
@@ -371,9 +426,7 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 				if (actcode !=1)
 				{
 					System.out.println("press "+actcode);
-					if (propInputMethod==1)
-						keyPressSi(actcode);
-					else keyPress(actcode);
+					sendKeyPress(actcode);
 				}
 			}
 			
@@ -386,18 +439,13 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 			if (actcode!=-1)
 			{
 				System.out.println("release "+actcode);
-				if (propInputMethod==1)
-					keyReleaseSi(actcode);
-				else keyRelease(actcode);
+				sendKeyRelease(actcode);
 			}
 
 			while (mcount>0)
 			{
 				System.out.println("release modifier "+modifier[mcount-1]);
-
-				if (propInputMethod==1)
-					keyReleaseSi(modifier[--mcount]);
-				else keyRelease(modifier[--mcount]);
+				sendKeyRelease(modifier[--mcount]);
 			}
 		}
         return(i);
@@ -444,7 +492,8 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
     {
     	 public void receiveEvent(final String data)
     	 {
-    		//  Logger.getAnonymousLogger().info("received SendKeys event ");           
+    	
+    		// Logger.getAnonymousLogger().info("received SendKeys event ");           
             sendAllCodes();
     	 }
     };    
@@ -503,7 +552,10 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
    {
    	//	port = CIMPortManager.getInstance().getConnection(key_ACTUATOR_CIM_ID);
        super.start();
+		 // NativeHookServices.init();
        AstericsErrorHandling.instance.reportInfo(this, "KeyboardInstance started");
+
+       
    }
   
    /**
