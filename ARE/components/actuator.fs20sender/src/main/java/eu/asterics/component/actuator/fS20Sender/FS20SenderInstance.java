@@ -82,14 +82,12 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
     */
     public FS20SenderInstance()
     {
-    		logger.fine("Trying to load library for FS20SenderInstance...");
-    		//System.loadLibrary("hidapi-jni");
-    		
+    		logger.fine("Trying to load library for FS20...");    		
     		boolean successLoading = ClassPathLibraryLoader.loadNativeHIDLibrary();
     		if(successLoading==false) {
     			throw new RuntimeException("Could not load native lib for FS20 device.");
     		}
-    		System.out.println("Success loading native lib for FS20: "+successLoading);
+    		logger.fine("Success loading native lib for FS20: "+successLoading);
     }
 
    /**
