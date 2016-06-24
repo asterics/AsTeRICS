@@ -68,7 +68,7 @@ public class FS20Reader extends AbstractRuntimeComponentInstance implements Runn
 		
 		threadDone = false;
 		try {
-			pce = HIDManager.openById(0x18EF, 0xE014, null);
+			pce = HIDManager.getInstance().openById(0x18EF, 0xE014, null);
 			AstericsErrorHandling.instance.reportInfo(FS20Reader.this, "FS20 PCE Receiver device successfully opened");
 			pce.disableBlocking();			
 			byte[] rcvBuffer = new byte[14];		
