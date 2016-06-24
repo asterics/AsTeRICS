@@ -15,10 +15,17 @@ will be fired.</p>
 FS20 Receiver Plugin</div>
 
 <H2>Requirements</H2>
-This component requires the FS20 PCE (see <a href="http://www.elv.de/FS20-PC-Empfauml;nger-FS20-PCE/x.aspx/cid_74/detail_10/detail2_31219">
-http://www.elv.de/FS20-PC-Empfauml;nger-FS20-PCE/x.aspx/cid_74/detail_10/detail2_31219</a>) connected to an USB port. 
+This component requires the <a href="http://www.elv.de/empfaenger-fs20-funkschaltsystem.html">FS20 PCE Receiver
+</a> connected to a USB port. 
 <div class="image"><img src="img/fs20pce.jpg" alt="FS20 PCE Receiver" title="FS20 PCE Receiver" /><br>
 FS20 PCE Receiver</div>
+
+<H2>Supported OSes</H2>
+Windows (x86,x64), Linux (x86, x64, arm(Raspberry Pi)), Mac OSX(x86, x64)
+
+<H2>Udev rules Linux</H2>
+You must run the ARE as root for being able to access the device. Alternatively you can define a <a href="https://github.com/signal11/hidapi/blob/master/udev/99-hid.rules">udev rule</a>
+
 <H2>Output Port Description</H2>
 <ul>
 <li><STRONG>fs20command [string]:</STRONG> The received FS20 command will be send out of the plugin. The data has the following format: 
