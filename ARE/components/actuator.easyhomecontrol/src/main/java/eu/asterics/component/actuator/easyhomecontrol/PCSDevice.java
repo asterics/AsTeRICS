@@ -45,9 +45,7 @@ public class PCSDevice {
 	
 	public boolean open() {
 		try {
-			System.out.println("try vid pid");
-			dev = HIDManager.openById(vid, pid, null);
-			System.out.println("vid pid");
+			dev = HIDManager.getInstance().openById(vid, pid, null);
 		}catch (HIDDeviceNotFoundException e) {
 			return false;
 		} catch (IOException ioe) {
