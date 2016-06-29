@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.GMailShortcuts"
+                   canonical_name="eu.asterics.component.actuator.gmailshortcuts.GMailShortcutsInstance">
+        <type subtype="Others">actuator</type>
+        <singleton>false</singleton>
+        <description>This plugin emulates shortcuts for the GMail web client. It can be used to map any gestures to GMail shortcuts.</description>
+        <ports>
+			<inputPort id="KeyCode">
+				<description>Character [a-z], digit [0-9] or one of predefined commands to send. See help file for command descriptions.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
