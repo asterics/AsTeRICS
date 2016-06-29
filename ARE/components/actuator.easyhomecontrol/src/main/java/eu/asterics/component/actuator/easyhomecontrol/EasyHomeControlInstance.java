@@ -38,6 +38,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import com.codeminders.hidapi.ClassPathLibraryLoader;
+
 import java.util.logging.Logger;
 
 import eu.asterics.mw.data.ConversionUtils;
@@ -67,9 +69,6 @@ import eu.asterics.component.actuator.easyhomecontrol.PCSDevice;
  */
 public class EasyHomeControlInstance extends AbstractRuntimeComponentInstance
 {
-	static {
-		System.loadLibrary("hidapi-jni");
-	}
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
@@ -117,7 +116,12 @@ public class EasyHomeControlInstance extends AbstractRuntimeComponentInstance
     */
     public EasyHomeControlInstance()
     {
-        // empty constructor
+		logger.fine("Trying to load library for EasyHome...");    		
+		boolean successLoading = ClassPathLibraryLoader.loadNativeHIDLibrary();
+		if(successLoading==false) {
+			throw new RuntimeException("Could not load native lib for EasyHome device.");
+		}
+		logger.fine("Success loading native lib for EasyHome: "+successLoading);
     }
 
    /**
@@ -913,11 +917,11 @@ public class EasyHomeControlInstance extends AbstractRuntimeComponentInstance
   				pcs = new PCSDevice();
   				if (!pcs.open()) {
   					logger.warning("["+ curThread+ "]"
-  								   + "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
+  								   + "Could not open/find EasyHome PCS Device. Please verify that the EasyHome Transceiver is connected to a USB port.");
   					AstericsErrorHandling.instance
   							.reportError(
   									EasyHomeControlInstance.this,
-  									"Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
+  									"Could not open/find EasyHome PCS Device. Please verify that the EasyHome Transceiver is connected to a USB port.");
   					pcs = null;
   					return;
   				}

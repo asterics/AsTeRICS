@@ -28,31 +28,22 @@
 package eu.asterics.component.actuator.fS20Sender;
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import com.codeminders.hidapi.ClassPathLibraryLoader;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.*;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
-import eu.asterics.mw.services.AstericsThreadPool;
-import eu.asterics.component.actuator.fS20Sender.PCSDevice;
-import eu.asterics.component.actuator.fS20Sender.FS20Utils;
-//import eu.asterics.component.actuator.fS20Sender.PCSDevice;
-//import eu.asterics.component.actuator.fS20Sender.FS20Utils;
 
 /**
  * 
@@ -69,9 +60,6 @@ import eu.asterics.component.actuator.fS20Sender.FS20Utils;
 public class FS20SenderInstance extends AbstractRuntimeComponentInstance
 {
 	
-	static {
-		System.loadLibrary("hidapi-jni");
-	}
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
@@ -94,7 +82,12 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
     */
     public FS20SenderInstance()
     {
-    	
+    		logger.fine("Trying to load library for FS20...");    		
+    		boolean successLoading = ClassPathLibraryLoader.loadNativeHIDLibrary();
+    		if(successLoading==false) {
+    			throw new RuntimeException("Could not load native lib for FS20 device.");
+    		}
+    		logger.fine("Success loading native lib for FS20: "+successLoading);
     }
 
    /**
