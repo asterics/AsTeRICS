@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\Ergotherapie\Ergo-Kopf-Musik.acs_2015_10_9_14_15" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ARE\models\Ergotherapie\Ergo-Kopf-Musik.acs_2016_1_27_14_25" version="20130320">
   <modelDescription>
     <shortDescription>A head-movement controlled musical instrument</shortDescription>
     <requirements>A midi-capabable soundcard must be installed and a webcamera must be connected to an USB port</requirements>
@@ -60,7 +60,7 @@ left/right movements influence the tone height</description>
       <properties>
         <property name="midiDevice" value="Gervill" />
         <property name="channel" value="1" />
-        <property name="instrument" value="Bottle Blow " />
+        <property name="instrument" value="Glockenspiel" />
         <property name="triggerThreshold" value="10" />
         <property name="triggerMax" value="100" />
         <property name="pitchMin" value="0" />
@@ -1156,7 +1156,7 @@ left/right movements influence the tone height</description>
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="Ergotherapie/ergomenu.acs" />
+        <property name="model" value="autostart.acs" />
       </properties>
       <layout>
         <posX>341</posX>

@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<keyboard rows="3" columns="3" scanning="4" textColor="11" scanColor="8" scanCycles="2" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" enableEdit="true" enableClickSelection="true" displayGUI="true">
+<keyboard caption="" rows="3" columns="3" scanning="4" textColor="11" scanColor="8" scanCycles="2" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" commandSeparator=";" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
 	<button>
-		<text>Hungry</text>
+		<text>essen</text>
 		<icon>data/pictures/symbols/hungry.png</icon>
-		<action>@speech:I would like something to eat</action>
+		<action>@speech:Ich brauche etwas zu essen</action>
 		<sound></sound>
 		<soundPreview></soundPreview>
 		<switchGrid></switchGrid>

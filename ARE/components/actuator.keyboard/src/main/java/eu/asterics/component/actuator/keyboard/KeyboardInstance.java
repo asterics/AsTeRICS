@@ -27,13 +27,18 @@
 package eu.asterics.component.actuator.keyboard;
 import java.util.*;
 import java.io.*;
+import java.lang.reflect.Field;
+
 import javax.swing.KeyStroke;
+
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeInputEvent;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
 
+
+import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -60,8 +65,13 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
      */  
     static      
     {   
-        System.loadLibrary("kbdevent");
-    	AstericsErrorHandling.instance.getLogger().fine("Loading \"kbdevent.dll\" for Keystrike generation... ok!");  
+        try {
+        	System.loadLibrary("kbdevent");
+        	AstericsErrorHandling.instance.getLogger().fine("Loading \"kbdevent.dll\" for Keystrike generation... ok!");  
+        } 
+        catch (UnsatisfiedLinkError e) {
+        	AstericsErrorHandling.instance.getLogger().fine("could not load kbdevent.dll (only applies for Windows)");  
+        }
     }
       
 	private final String ELP_SENDKEYS_NAME 	= "sendKeys";
@@ -334,6 +344,20 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 	
 	public void sendKeyPress(int actcode)
 	{
+		
+		Field f;
+		try {
+			String val="VC_C";
+			f = NativeKeyEvent.class.getField(val);
+			Class<?> t = f.getType();
+			if(t == int.class){	
+				try {
+					AstericsErrorHandling.instance.getLogger().fine("virtual keycode for VC_C="+f.getInt(null));
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+				}
+			}
+		} catch (NoSuchFieldException | SecurityException e1) {
+		}
 		
 		switch (propInputMethod) {
 				case 1:

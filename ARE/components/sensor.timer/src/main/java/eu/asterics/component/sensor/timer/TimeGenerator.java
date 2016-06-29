@@ -141,13 +141,14 @@ public class TimeGenerator implements Runnable
 	{	
 		AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, .start called");
 
-		if(runningTaskFuture!=null) {
-			stop();
-		}
+		//if(runningTaskFuture!=null) {
+		//	stop();
+		//}
 		
 	    // System.out.println("in startproc !");
 
-		runningTaskFuture=AstericsThreadPool.instance.execute(this);
+		if (runningTaskFuture == null) runningTaskFuture=AstericsThreadPool.instance.execute(this);
+		else timecount=System.currentTimeMillis()-startTime+owner.propTimePeriod;
 	}
 
 	/**
