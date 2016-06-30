@@ -257,6 +257,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Intel Real Sense">
+					<param name="Local" value="HTML\Plugins\sensors\IntelRealSense.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Joystick Capture">
 					<param name="Local" value="HTML\Plugins\sensors\JoystickCapture.htm">
 					<param name="ImageNumber" value="11">
@@ -354,6 +359,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Razor IMU">
 					<param name="Local" value="HTML\Plugins\sensors\RazorIMU.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Random Number">
+					<param name="Local" value="HTML\Plugins\sensors\RandomNumber.htm">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
@@ -475,6 +485,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Blink Detector Trainer">
 					<param name="Local" value="HTML\Plugins\processors\BlinkDetectorTrainer.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="COM Port">
+					<param name="Local" value="HTML\Plugins\processors\ComPort.htm">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
@@ -730,6 +745,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Serial Port">
+					<param name="Local" value="HTML\Plugins\processors\SerialPort.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Signal Translation">
 					<param name="Local" value="HTML\Plugins\processors\SignalTranslation.htm">
 					<param name="ImageNumber" value="11">
@@ -831,11 +851,6 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
-					<param name="Name" value="Application Launcher">
-					<param name="Local" value="HTML\Plugins\actuators\ApplicationLauncher.htm">
-					<param name="ImageNumber" value="11">
-					</OBJECT>
-				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Android Connection">
 					<param name="Local" value="HTML\Plugins\actuators\Android_connection.htm">
 					<param name="ImageNumber" value="11">
@@ -846,6 +861,11 @@
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Application Launcher">
+					<param name="Local" value="HTML\Plugins\actuators\ApplicationLauncher.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="ARE Window">
 					<param name="Local" value="HTML\Plugins\actuators\AREWindow.htm">
 					<param name="ImageNumber" value="11">
@@ -853,6 +873,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="Bar Display">
 					<param name="Local" value="HTML\Plugins\actuators\BarDisplay.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Dialog Box">
+					<param name="Local" value="HTML\Plugins\actuators\DialogBox.htm">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
@@ -908,6 +933,11 @@
 				<LI> <OBJECT type="text/sitemap">
 					<param name="Name" value="FS20 Sender">
 					<param name="Local" value="HTML\Plugins\actuators\FS20Sender.htm">
+					<param name="ImageNumber" value="11">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="GMail Shortcuts">
+					<param name="Local" value="HTML\Plugins\actuators\GMailShortcuts.htm">
 					<param name="ImageNumber" value="11">
 					</OBJECT>
 				<LI> <OBJECT type="text/sitemap">
