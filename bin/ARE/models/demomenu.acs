@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ARE\models\demomenu.acs_2016_1_27_18_41" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\autostart_sav.acs_2015_10_9_14_13" version="20130320">
   <modelDescription>
     <shortDescription>A menu selection for some demo models which do not need special hardware.</shortDescription>
     <requirements>none</requirements>
@@ -48,15 +48,15 @@
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="rows" value="5" />
+        <property name="rows" value="6" />
         <property name="columns" value="0" />
         <property name="textColor" value="3" />
         <property name="backgroundColor" value="11" />
         <property name="scanColor" value="10" />
-        <property name="scanMode" value="4" />
+        <property name="scanMode" value="0" />
         <property name="scanCycles" value="3" />
         <property name="hoverTime" value="1000" />
-        <property name="hoverIndicator" value="2" />
+        <property name="hoverIndicator" value="0" />
         <property name="hoverFrameThickness" value="4" />
         <property name="enableEdit" value="true" />
         <property name="enableClickSelection" value="true" />
@@ -64,25 +64,25 @@
         <property name="keyboardFile" value="" />
         <property name="ignoreKeyboardFileProperties" value="false" />
         <property name="displayGUI" value="true" />
-        <property name="cellText1" value="CamMouse" />
+        <property name="cellText1" value="CameraMouse (W)" />
         <property name="cellImage1" value="" />
         <property name="actionText1" value="" />
-        <property name="cellText2" value="CamMouse Writing" />
+        <property name="cellText2" value="OskaWriting (W)" />
         <property name="cellImage2" value="" />
         <property name="actionText2" value="" />
-        <property name="cellText3" value="CamMouse Music" />
+        <property name="cellText3" value="SpeechControl (W)" />
         <property name="cellImage3" value="" />
         <property name="actionText3" value="" />
-        <property name="cellText4" value="EyeTracker Home" />
+        <property name="cellText4" value="GamepadMouse (W)" />
         <property name="cellImage4" value="" />
         <property name="actionText4" value="" />
-        <property name="cellText5" value="EyeTracker Music" />
+        <property name="cellText5" value="ImageDemo (W, L, M)" />
         <property name="cellImage5" value="" />
         <property name="actionText5" value="" />
-        <property name="cellText6" value="calibrate EyeTracker" />
+        <property name="cellText6" value="Ergotherapie" />
         <property name="cellImage6" value="" />
         <property name="actionText6" value="" />
-        <property name="cellText7" value="" />
+        <property name="cellText7" value="XCameraMouse (W, L, M)" />
         <property name="cellImage7" value="" />
         <property name="actionText7" value="" />
         <property name="cellText8" value="" />
@@ -178,10 +178,10 @@
         <posY>133</posY>
       </layout>
       <gui>
-        <posX>8305</posX>
-        <posY>644</posY>
-        <width>1562</width>
-        <height>5556</height>
+        <posX>7712</posX>
+        <posY>1622</posY>
+        <width>1663</width>
+        <height>5689</height>
       </gui>
     </component>
     <component id="TextDisplay.1" type_id="asterics.TextDisplay">
@@ -204,8 +204,8 @@
         <posY>184</posY>
       </layout>
       <gui>
-        <posX>8240</posX>
-        <posY>232</posY>
+        <posX>7697</posX>
+        <posY>1232</posY>
         <width>1750</width>
         <height>333</height>
       </gui>
@@ -239,11 +239,11 @@
         <property name="delay" value="300" />
         <property name="slot1" value="CameraMouse.acs" />
         <property name="slot2" value="OskaWriting.acs" />
-        <property name="slot3" value="Ergotherapie/Ergo-Kopf-Musik.acs" />
-        <property name="slot4" value="grids/eyeX_Environment/eyeX_Environment.acs" />
-        <property name="slot5" value="eyex_music.acs" />
-        <property name="slot6" value="eyex_calibrate.acs" />
-        <property name="slot7" value="" />
+        <property name="slot3" value="SpeechControl.acs" />
+        <property name="slot4" value="GamepadMouse.acs" />
+        <property name="slot5" value="ImageDemo.acs" />
+        <property name="slot6" value="Ergotherapie/ergomenu.acs" />
+        <property name="slot7" value="XFaceTrackerMouse.acs" />
         <property name="slot8" value="" />
         <property name="slot9" value="" />
         <property name="slot10" value="" />
@@ -262,6 +262,58 @@
         <posX>491</posX>
         <posY>127</posY>
       </layout>
+    </component>
+    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="Choose or deploy a model" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>304</posX>
+        <posY>334</posY>
+      </layout>
+      <gui>
+        <posX>7697</posX>
+        <posY>7454</posY>
+        <width>1750</width>
+        <height>333</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1.1.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="W=Win, L=Linux, M=Mac" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>425</posX>
+        <posY>343</posY>
+      </layout>
+      <gui>
+        <posX>7697</posX>
+        <posY>7787</posY>
+        <width>1750</width>
+        <height>333</height>
+      </gui>
     </component>
   </components>
   <channels>
@@ -348,7 +400,6 @@
       </targets>
     </eventChannel>
     <eventChannel id="cell6_dispatchSlot6">
-      <description />
       <sources>
         <source>
           <component id="CellBoard.1" />
@@ -362,18 +413,32 @@
         </target>
       </targets>
     </eventChannel>
+    <eventChannel id="cell7_dispatchSlot7">
+      <sources>
+        <source>
+          <component id="CellBoard.1" />
+          <eventPort id="cell7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="StringDispatcher.1" />
+          <eventPort id="dispatchSlot7" />
+        </target>
+      </targets>
+    </eventChannel>
   </eventChannels>
   <modelGUI>
-    <Decoration>false</Decoration>
+    <Decoration>true</Decoration>
     <Fullscreen>false</Fullscreen>
-    <AlwaysOnTop>true</AlwaysOnTop>
+    <AlwaysOnTop>false</AlwaysOnTop>
     <ToSystemTray>false</ToSystemTray>
-    <ShopControlPanel>false</ShopControlPanel>
+    <ShopControlPanel>true</ShopControlPanel>
     <AREGUIWindow>
-      <posX>8235</posX>
-      <posY>67</posY>
-      <width>1812</width>
-      <height>6333</height>
+      <posX>7612</posX>
+      <posY>578</posY>
+      <width>2312</width>
+      <height>7667</height>
     </AREGUIWindow>
   </modelGUI>
 </model>
