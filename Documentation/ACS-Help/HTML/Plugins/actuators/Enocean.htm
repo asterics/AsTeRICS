@@ -39,6 +39,11 @@ The event ports are triggered each time, an event with the defined type and devi
 <li><STRONG>command [string]:</STRONG> This port receives string commands for the EnOcean devices. The commands have to be in the format "@ENOCEAN:device_id#type#value". An example for a valid command is"@ENOCEAN:25#binary#true". As a valid command is received by the input port, the value and data type is broadcasted to the devices with the given device ID offset (range: 0-127)</li>
 <li><STRONG>slider[1-6] [double]:</STRONG> Input port for a double value which is converted to an integer (or another type, depends on the datatype) and broadcasted to all EnOcean devices in range</li>
 </ul>
+
+<H2>Output Port Description</H2>
+<ul>
+<li><STRONG>output[1-6]:</STRONG> The output value, from device with IDTrigger[1-6]</li>
+</ul>
 <H2>Properties</H2>
 <ul>
 <li><STRONG>localIP [string]:</STRONG> The local IP address of the interface which can reach the IP gateway.</li>
