@@ -230,6 +230,12 @@ HTML\Plugins\processors\OpenHAB.htm
 HTML\Plugins\processors\StringFilter.htm
 HTML\Plugins\sensors\HoverPanel.htm
 HTML\Plugins\sensors\OpenBCI.htm
+HTML\Plugins\actuators\GMailShortcuts.htm
+HTML\Plugins\actuators\DialogBox.htm
+HTML\Plugins\processors\ComPort.htm
+HTML\Plugins\processors\SerialPort.htm
+HTML\Plugins\sensors\IntelRealSense.htm
+HTML\Plugins\sensors\RandomNumber.htm
 
 [INFOTYPES]
 
