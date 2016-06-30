@@ -145,7 +145,7 @@ public class TimeGenerator implements Runnable
 		
 	    // System.out.println("in startproc !");
 
-		runningTaskFuture=AstericsThreadPool.instance.execute(this);
+		// runningTaskFuture=AstericsThreadPool.instance.execute(this);
 		if (runningTaskFuture == null) runningTaskFuture=AstericsThreadPool.instance.execute(this);
 		else timecount=System.currentTimeMillis()-startTime+owner.propTimePeriod;
 		
