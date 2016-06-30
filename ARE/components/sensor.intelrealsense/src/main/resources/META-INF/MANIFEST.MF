@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-sensors.intelrealsense
+Bundle-SymbolicName: eu.asterics.component.sensor.intelrealsense
+Bundle-Version: 0.1.0
+Bundle-NativeCode: lib/native/IntelRealSense.dll;
+ osname=win32;processor=x86-64
+DynamicImport-Package: *

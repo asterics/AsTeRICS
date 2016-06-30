@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.IntelRealSense"
+                   canonical_name="eu.asterics.component.sensor.intelrealsense.IntelRealSenseInstance">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>false</singleton>
+        <description>Plugin for Intel Real Sense 3D cameras.</description>
+        <ports>
+
+			<outputPort id="h">
+				<description>The face rectangle height in pixels</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="w">
+				<description>The face rectangle width in pixels.</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="x">
+				<description>The x coordinate of the top left corner of the face rectangle.</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="y">
+				<description>The y coordinate of the top left corner of the face rectangle.</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="roll">
+				<description>Degree of head roll</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="yaw">
+				<description>Degree of head yaw (left - right)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pitch">
+				<description>Degree of head pitch (up - down)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="browRaiserLeft">
+				<description>browRaiserLeft expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="browRaiserRight">
+				<description>browRaiserRight expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="browLowererLeft">
+				<description>browLowererLeft expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="browLowererRight">
+				<description>browLowererRight expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="smile">
+				<description>smile expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="kiss">
+				<description>kiss expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="mouthOpen">
+				<description>mouthOpen expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="tongueOut">
+				<description>tongueOut expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eyesClosedLeft">
+				<description>eyesClosedLeft expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eyesClosedRight">
+				<description>eyesClosedRight expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eyesTurnLeft">
+				<description>eyesTurnLeft expression happened</description></eventTriggererPort>
+			<eventTriggererPort id="eyesTurnRight">
+				<description>eyesTurnRight expression happened</description></eventTriggererPort>
+			<eventTriggererPort id="eyesUp">
+				<description>eyesUp expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eyesDown">
+				<description>eyesDown expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="puffLeft">
+				<description>puffLeft expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="puffRight">
+				<description>puffRight expression happened</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+            <property name="deviceModel"
+                      type="integer"
+                      value="0"
+                      combobox="F200//R200//R200_Enhanced//SR300"
+                      description="Camera model, one of: F200, R200, R200_Enhanced, SR300"/>				
+			<property name="enableExpressions"
+				type="boolean"
+				value="true"
+				description="Enable,Disable facial expressions"/>
+			<property name="displayGUI"
+				type="boolean"
+				value="true"
+				description="Enable, Disable camera gui."/>
+			<property name="scoreBrowRaiserLeft"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreBrowRaiserRight"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreBrowLowererLeft"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreBrowLowererRight"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreSmile"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreKiss"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreMouthOpen"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreThongueOut"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreEyesClosedLeft"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreEyesClosedRight"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreEyesTurnLeft"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreEyesTurnRight"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreEyesUp"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scoreEyesDown"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scorePuffLeft"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+			<property name="scorePuffRight"
+				type="integer"
+				value="50"
+				description="Set score threshold value of expression to trigger event."/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
