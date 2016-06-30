@@ -50,11 +50,11 @@
 			<property name="text"
 				type="string"
 				value="this is an information"
-				description="the caption of the dialog box"/>
+				description="the text message of the dialog box"/>
 			<property name="alwaysOnTop"
 				type="boolean"
 				value="true"
-				description="the caption of the dialog box"/>
+				description="if true, dialog stays on top, no matter if other windows are put to front."/>
             <property name="messageType"
                 type="integer"
                 value="0"
