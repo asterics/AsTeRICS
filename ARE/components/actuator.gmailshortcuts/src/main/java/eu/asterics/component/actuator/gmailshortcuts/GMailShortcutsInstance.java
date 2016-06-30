@@ -20,8 +20,8 @@
  *                      Grant Agreement Number 247730
  *  
  *  
- *    License: GPL v3.0 (GNU General Public License Version 3.0)
- *                 http://www.gnu.org/licenses/gpl.html
+ *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
+ *         (please refer to the folder LICENSE)
  * 
  */
 
@@ -47,13 +47,12 @@ import eu.asterics.mw.services.AREServices;
 
 /**
  * 
- * <Describe purpose of this module>
+ * This plugin can be used to operate a GMail Webclient. It provides several shortcut emulations that can be triggered by input port commands.
  * 
  * 
  *  
- * @author <your name> [<your email address>]
- *         Date: 
- *         Time: 
+ * @author Fabien Kolinsky [fkolinsky@gmx.at]
+ *         Date: 30/06/2016 
  */
 public class GMailShortcutsInstance extends AbstractRuntimeComponentInstance
 {
