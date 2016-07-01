@@ -51,6 +51,14 @@ case "$1" in
 		ln -sf $WRITEDIR/areProperties $APPPATH/areProperties
 	
 		chmod +x $APPPATH/start*.sh
+
+		echo ""
+		echo ""
+		echo "You need a Java Runtime, oracle java 8 is recommended, but openjdk should work as well:"
+		echo sudo apt-get install oracle-java8-installer
+		echo ""
+		echo "For xfacetrackerlk (XCameraMouse) to work, please install libgstreamer0.10:"
+		echo "sudo apt-get install libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-tools gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-dev gstreamer0.10-plugins-good"
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
