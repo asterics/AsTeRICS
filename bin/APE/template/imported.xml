@@ -4,6 +4,9 @@
 	
 	<loadproperties srcFile="${APE.propertiesFile}" />
 	
+	<!-- set default value of prop -->
+	<property name="fx.deploy.verbose" value="false"/>
+	
 	<condition property="APE.buildDir" value="build/">		
 		<not>
 			<isset property="APE.buildDir" />
@@ -121,7 +124,7 @@
 		</fx:resources>
 
 		<fx:application id="fxApplication" name="${fx.application.name}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
-		<fx:deploy verbose="true" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="${fx.application.name}" nativeBundles="${fx.deploy.nativeBundles}" updatemode="background">
+		<fx:deploy verbose="${fx.deploy.verbose}" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="${fx.application.name}" nativeBundles="${fx.deploy.nativeBundles}" updatemode="background">
 			<fx:preferences shortcut="${fx.preferences.shortcut}" install="${fx.preferences.install}" menu="${fx.preferences.menu}" />
 
 			<fx:platform basedir="${APE.embedJava.fx.platform.basedir}">				
