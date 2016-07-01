@@ -42,7 +42,7 @@ case "$1" in
 		mv $APPPATH/models  $WRITEDIR
 		mv $APPPATH/profile $WRITEDIR 
 		mv $APPPATH/data $WRITEDIR
-		mv $APPPATH/areProperties $WRITEDIR
+		[ -e $APPPATH/areProperties ] && mv $APPPATH/areProperties $WRITEDIR || touch $APPPATH/areProperties
 	
 		chmod -R o+w $WRITEDIR
 		ln -sf $WRITEDIR/models $APPPATH/models
