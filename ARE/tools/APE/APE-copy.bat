@@ -17,6 +17,6 @@ IF ERRORLEVEL 1 GOTO QuitError
 echo Using JAVA_BIN: %JAVA_BIN% 
 %JAVA_BIN% -version
 
-%JAVA_BIN% %* -jar "%APE_DIR%\APE.jar"
-
+%JAVA_BIN% -jar "%APE_DIR%\APE.jar" %*
+ 
 :QuitError

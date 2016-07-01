@@ -11,7 +11,7 @@ APE consists of two major elements
 To start APE-copy, call
 
 ```
-APE-copy{.bat|.sh} -DAPE.models=<Paths to model files or folder> [[-DAPE.buildDir=<Path to output folder>] [-DARE.baseURI=<Path to ARE installation>]
+APE-copy[.bat|.sh] -DAPE.models=<; seperated paths to model files or folder> [[-DAPE.buildDir=<Path to output folder>] [-DARE.baseURI=<Path to ARE installation>] [-DAPE.projectDir=<Path of project folder to use] [-DAPE.logLevel=[FINE|INFO|WARNING|SEVERE]]
 ```
 Relative paths are resolved against the current working directoy (CWD).
 * **APE.models**: Provide a semicolon (;) seperated list of model files or folder. Relative and absolute paths can be mixed where relative paths are resolved against the CWD.

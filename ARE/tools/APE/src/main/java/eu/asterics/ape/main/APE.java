@@ -74,15 +74,7 @@ public class APE {
 	private File projectDir;
 	
 	private static APE instance=null;
-	
-	/*
-	 * Do some bootstrap initialization. 
-	 */
-	static {
-		initLogger();
-		initAPEBaseURI();
-	}
-	
+		
 	/**
 	 * Launch the application.
 	 * @throws ParseException 
@@ -95,6 +87,27 @@ public class APE {
 	 * @throws MalformedURLException 
 	 */
 	public static void main(String[] args) throws IOException, ParseException, URISyntaxException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
+		//Parse the arguments, check if --help is requested or otherwise -Darguments are given that must be treated as property settings 
+		for(String arg : args) {
+			if("--help".equalsIgnoreCase(arg)) {
+				System.out.println("\nHelp for APE-copy\n\nAPE-copy[.bat|.sh] -DAPE.models=<; seperated paths to model files or folder> [[-DAPE.buildDir=<Path to output folder>] [-DARE.baseURI=<Path to ARE installation>] [-DAPE.projectDir=<Path of project folder to use] [-DAPE.logLevel=[FINE|INFO|WARNING|SEVERE]]\n\nFor more details, see README.md.");
+				System.exit(0);
+			} else if(arg.startsWith("-D")) {
+				String elems[]=arg.split("=",2);
+				if(elems.length!=2) {
+					System.out.println("\nIgnoring property: "+arg+", check the syntax -Dkey=value\n");
+					continue;
+				}
+				String key=elems[0].substring(2);
+				System.setProperty(key,elems[1]);
+			} else {
+				//System.out.println("Ignoring parameter: "+arg);
+			}
+		}
+	
+		initLogger();
+		initAPEBaseURI();
+			
 		try {
 			APE.getInstance().start();
 		} catch (APEConfigurationException e) {
