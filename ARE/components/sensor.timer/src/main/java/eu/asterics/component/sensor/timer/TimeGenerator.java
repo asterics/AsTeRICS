@@ -49,11 +49,10 @@ public class TimeGenerator implements Runnable
 	final int MODE_ONCE_STAY_ACTIVE=3;
 	final int MEASURE_TIME=4;
 
-	Thread t;	
-	long startTime,currentTime; 
-	boolean active=false;
-	int count=0;
-	long timecount;
+	volatile long startTime,currentTime; 
+	volatile boolean active=false;
+	volatile int count=0;
+	volatile long timecount;
 	
 	private Future<?> runningTaskFuture=null;
 
@@ -73,7 +72,7 @@ public class TimeGenerator implements Runnable
 	 */
 	public void reset()	
 	{	
-		count=0;
+		count=0;		
 		if (owner.propMode != MEASURE_TIME)
 		   owner.opTime.sendData(ConversionUtils.intToBytes(0));
 	}
@@ -87,12 +86,10 @@ public class TimeGenerator implements Runnable
 	{
 		//System.out.println ("\n\n *** TimeGenThread "+ (++tcount) + " started.\n");
 		
-		try {
-		
+		try {		
 			startTime=System.currentTimeMillis();
 			timecount=owner.propTimePeriod;
 			active=true;
-
 
 			while(active==true)
 			{
@@ -161,9 +158,10 @@ public class TimeGenerator implements Runnable
 		if(runningTaskFuture!=null && !runningTaskFuture.isDone()) {
 			runningTaskFuture.cancel(true);
 		}
-
+		
 		active=false;
 		count=0;
+		runningTaskFuture=null;
 	}
 	
 	/**
