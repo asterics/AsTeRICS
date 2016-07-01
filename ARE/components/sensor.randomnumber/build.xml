@@ -1,6 +1,6 @@
 <project name="asterics.${component.id}" default="jar" basedir=".">
 
-    <property name="component.id" value="processor.RandomNumber"/>
+    <property name="component.id" value="sensor.RandomNumber"/>
     <!-- set global properties for this build -->
     <property name="build" location="../out/production/${component.id}"/>
     <property name="src.java" location="src/main/java"/>

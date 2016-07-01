@@ -25,7 +25,7 @@
  * 
  */
 
-package eu.asterics.component.processor.randomnumber;
+package eu.asterics.component.sensor.randomnumber;
 
 
 import java.util.Random;
