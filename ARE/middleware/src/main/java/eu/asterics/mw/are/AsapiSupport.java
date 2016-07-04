@@ -162,35 +162,7 @@ public class AsapiSupport
 		}
 
 		return componentTypes;
-	}
-	
-
-	/**
-	 * Returns an array containing all the available (i.e., installed) components.
-	 *
-	 * @return an array containing all available component.
-	 */
-	public IComponentType [] getInstalledComponents() {
-		final Set<IComponentType> componentSet
-		= componentRepository.getInstalledComponentTypes();
-		
-		
-		if (componentSet.size()==0) {
-			logger.fine(this.getClass().getName()+".getInstalledComponents:" 
-					+" No installed component types found!");
-		}
-			
-		final IComponentType [] componentTypes = new IComponentType[componentSet.size()];
-		
-		int counter = 0;
-		for(final IComponentType componentType : componentSet)
-		{
-			componentTypes[counter++] = componentType;
-		}
-
-		return componentTypes;
-	}
-
+	}	
 	
 	/**
 	 * Returns a formatted XML String of the componentType(s) in the bundle descriptor. 
