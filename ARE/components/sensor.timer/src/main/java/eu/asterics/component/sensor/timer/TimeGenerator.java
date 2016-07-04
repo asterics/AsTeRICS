@@ -52,7 +52,6 @@ public class TimeGenerator implements Runnable
 	volatile long startTime,currentTime; 
 	volatile boolean active=false;
 	volatile int count=0;
-	volatile long timecount;
 	
 	Future<?> runningTaskFuture=null;
 
@@ -73,6 +72,7 @@ public class TimeGenerator implements Runnable
 	public void reset()	
 	{	
 		count=0;		
+		startTime=System.currentTimeMillis();
 		if (owner.propMode != MEASURE_TIME)
 		   owner.opTime.sendData(ConversionUtils.intToBytes(0));
 	}
@@ -84,17 +84,16 @@ public class TimeGenerator implements Runnable
 	 */
 	public void run()
 	{
-		//System.out.println ("\n\n *** TimeGenThread started.\n");
+		//System.out.println ("\n\n *** TimeGenThread "+ (++tcount) + " started.\n");
 		
 		try {		
 			startTime=System.currentTimeMillis();
-			timecount=owner.propTimePeriod;
 			active=true;
 
 			while(active==true)
 			{
 				currentTime=System.currentTimeMillis()-startTime;
-				while ((currentTime>timecount) && (active==true))
+				while ((currentTime>owner.propTimePeriod) && (active==true))
 				{
 					owner.etpPeriodFinished.raiseEvent();
 
@@ -102,11 +101,17 @@ public class TimeGenerator implements Runnable
 					{
 					case MODE_N_TIMES:
 						count++;
+						startTime=System.currentTimeMillis();
+						currentTime=0;
+
 						if (count>=owner.propRepeatCounter)
 						{ count=0; active=false; }
 						break;
 
 					case MODE_LOOP:
+						startTime=System.currentTimeMillis();
+						currentTime=0;
+
 						break;
 
 					case MODE_ONE_SHOT:
@@ -117,10 +122,9 @@ public class TimeGenerator implements Runnable
 						owner.opTime.sendData(ConversionUtils.intToBytes(owner.propTimePeriod));
 						break;
 					}
-					timecount+=owner.propTimePeriod;
 				}
 				Thread.sleep(owner.propResolution);	
-				if ((timecount>owner.propWaitPeriod) &&  (owner.propMode != MEASURE_TIME)
+				if ((currentTime>owner.propWaitPeriod) &&  (owner.propMode != MEASURE_TIME)
 						&& (active==true))
 					owner.opTime.sendData(ConversionUtils.intToBytes((int)(currentTime-owner.propWaitPeriod)));
 			}
@@ -136,15 +140,9 @@ public class TimeGenerator implements Runnable
 	 */
 	public void start()	
 	{	
-		AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, .start called");
-
-		// if(runningTaskFuture!=null) stop();
-		
-	    // System.out.println("in startproc !");
-
-		// runningTaskFuture=AstericsThreadPool.instance.execute(this);
+		// AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, .start called");
 		if (runningTaskFuture == null || (runningTaskFuture!=null && runningTaskFuture.isDone())) runningTaskFuture=AstericsThreadPool.instance.execute(this);
-		else timecount=System.currentTimeMillis()-startTime+owner.propTimePeriod;
+		else reset();
 		
 	}
 
@@ -153,7 +151,7 @@ public class TimeGenerator implements Runnable
 	 */
 	public void stop()	
 	{	
-		AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, : .stop called");
+		// AstericsErrorHandling.instance.getLogger().fine("Invoking thread <"+Thread.currentThread().getName()+">, : .stop called");
 
 		if(runningTaskFuture!=null && !runningTaskFuture.isDone()) {
 			runningTaskFuture.cancel(true);
