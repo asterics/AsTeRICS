@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -278,16 +279,17 @@ public class BundleManager implements BundleListener, FrameworkListener
 		{
 			return modelValidator.isValidBundleDescriptor(bundleDescriptorInputStream);
 		}
-		catch (IOException | ParseException ioe)
+		catch (IOException  ioe) {
+			//Don't log because if it does not exist we don't expect a component. This indicates that it is a jar file without an Asterics plugin.			
+		}catch(ParseException ioe)
 		{
-			//Don't log because if it does not exist we don't expect a component
-			/*
+			//If there is a ParseException then we should log it, because there should be a valid plugin
 			logger.warning(getClass().getName()+
 					".checkForAstericsMetadata: validation error for file "+ 
-					DEFAULT_BUNDLE_DESCRIPTOR_URL +", bundle "+ 
+					bundleDescriptorUrl +", bundle "+ 
 					symbolicName+" -> \n"+
 					ioe.getMessage());
-					*/
+					
 		}
 		return false;						
 	}
@@ -319,8 +321,11 @@ public class BundleManager implements BundleListener, FrameworkListener
 			try {
 				b = installSingle(componentJarURI);
 				bundleList.add(b);
-			} catch (BundleException | IOException e) {
-				AstericsErrorHandling.instance.getLogger().warning("Cannot install bundle, skipping it: "+componentJarURI);
+			} catch (BundleException | IOException | ParseException | BundleManagementException e) {
+				//If the installation of the bundle
+				Throwable cause=e.getCause();
+				String reason=(cause!=null && cause.getMessage() != null) ? ", Reason: "+cause.getMessage() : "";
+				AstericsErrorHandling.instance.getLogger().warning("Cannot install bundle ("+e.getClass().getName()+"), skipping it: "+componentJarURI+reason);
 			}
 		}
 		return bundleList;
@@ -394,12 +399,12 @@ public class BundleManager implements BundleListener, FrameworkListener
 	/**
 	 * Loads the classes of the component and registers the given component in the {@link ComponentRepository}.
 	 * @param bundle
-	 * @return
+	 * @throws IOException 
+	 * @throws ParseException 
 	 */
-	private String registerBundle(final Bundle bundle)
+	private void registerBundle(final Bundle bundle) throws IOException, ParseException
 	{
-		final URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-		String componentTypeIDs = ""; 
+		final URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI); 
 
 		try
 		{
@@ -410,31 +415,33 @@ public class BundleManager implements BundleListener, FrameworkListener
 					= DefaultBundleModelParser.instance
 						.parseModel(url.openStream());
 			
+				Set<IComponentType> successfullyLoadedComponentTypeSet=new LinkedHashSet<IComponentType>();
 				for(final IComponentType componentType : componentTypeSet)
 				{
-					componentTypeIDs+=("; "+componentType.getID());
-					componentTypeIDToBundle.put(componentType.getID(), bundle);
-					// install in global component repository
-					ComponentRepository.instance.install(componentType);
-	
 					// register component's factory as a service
 					final String componentCanonicalName = componentType.getCanonicalName();
+
 					try
 					{
 						final Class clazz = bundle.loadClass(componentCanonicalName);
 						final boolean isSingleton = componentType.isSingleton();
 						componentRepository.setComponentFactory(componentCanonicalName,
 								new DefaultComponentFactory(clazz, isSingleton));
+						
+						componentTypeIDToBundle.put(componentType.getID(), bundle);
+						// install in global component repository
+						ComponentRepository.instance.install(componentType);
+						successfullyLoadedComponentTypeSet.add(componentType);
 					}
 					catch (ClassNotFoundException cnfe)
 					{
 						logger.warning(getClass().getName()+
 								".registerBundle: Could not instantiate class " +
-								"with name "+componentCanonicalName+" -> \n"+ 
+								"with name "+componentCanonicalName+", ignoring this component! -> \n"+ 
 								cnfe.getMessage());
 					}
 				}
-				bundlesToComponentTypesMap.put(bundle, componentTypeSet);
+				bundlesToComponentTypesMap.put(bundle, successfullyLoadedComponentTypeSet);
 			}
 		}
 		catch (IOException ioe)
@@ -442,16 +449,15 @@ public class BundleManager implements BundleListener, FrameworkListener
 			logger.warning(this.getClass().getName()+".registerBundle: " +
 					"Error while reading deployment metadata from " + 
 					bundle + " -> \n" + ioe.getMessage());
-			throw new RuntimeException(ioe);
+			throw ioe;
 		}
 		catch (ParseException pe)
 		{
 			logger.warning(this.getClass().getName()+".registerBundle: " +
 					"Parse error while reading deployment metadata from " + 
 					bundle + " -> \n" + pe.getMessage());
-			throw new RuntimeException(pe);
+			throw pe;
 		}
-		return(componentTypeIDs);
 	}
 
 	/**
@@ -509,7 +515,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 		if (bundle!=null)
 		{
 			// Log the exception and continue
-			errorMsg="Deployment Error: Couldn't start " + bundle.getBundleId()+ "from location\n"+bundle.getLocation()+optReason;
+			errorMsg="Deployment Error: Couldn't start " + bundle.getBundleId()+ " from location\n"+bundle.getLocation()+optReason;
 		}
 		return errorMsg;
 	}
@@ -541,15 +547,21 @@ public class BundleManager implements BundleListener, FrameworkListener
 	 * @throws MalformedURLException
 	 * @throws BundleException
 	 * @throws IOException
+	 * @throws ParseException 
+	 * @throws BundleManagementException 
 	 */
-	public Bundle installSingle(URI jarURI) throws MalformedURLException, BundleException, IOException {
-		System.out.println("*** installing bundle on-demand: "+jarURI);
+	public Bundle installSingle(URI jarURI) throws MalformedURLException, BundleException, IOException, ParseException, BundleManagementException {
+		logger.info("*** Installing bundle on-demand: "+jarURI);
 		Bundle bundle = bundleContext.installBundle(jarURI.toString(),jarURI.toURL().openStream());	
 		if(checkForAstericsMetadata(bundle)) {
 			registerBundle(bundle);
+		} else {
+			throw new BundleManagementException("Could not find valid bundle descriptor in jarURI: "+jarURI);
 		}
 		return bundle;
 	}
+	
+	
 	
 	/**
 	 * Installs services and bundles at startup of the BundleManager.
@@ -583,9 +595,12 @@ public class BundleManager implements BundleListener, FrameworkListener
 					}
 					try {
 						URI jarURI = ResourceRegistry.getInstance().getResource(path, RES_TYPE.JAR);
-						bundle=installSingle(jarURI);
+						//bundle=installSingle(jarURI);
+						logger.info("Installing service: "+jarURI);
+						bundle = bundleContext.installBundle(jarURI.toString(),jarURI.toURL().openStream());							
 						bundle.start();
-					} catch (URISyntaxException | BundleException e) {
+						bundle=null;
+					} catch (URISyntaxException | BundleException | IOException e) {
 						showBundleInstallErrorMessage(bundle, path, e.getMessage());
 					}
 				}
