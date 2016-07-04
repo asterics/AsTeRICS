@@ -43,18 +43,18 @@ import eu.asterics.mw.services.AstericsThreadPool;
  */
 public class TimeGenerator implements Runnable
 {
-	final int MODE_ONE_SHOT=0;
-	final int MODE_N_TIMES=1;
-	final int MODE_LOOP=2;
-	final int MODE_ONCE_STAY_ACTIVE=3;
-	final int MEASURE_TIME=4;
+	static final int MODE_ONE_SHOT=0;
+	static final int MODE_N_TIMES=1;
+	static final int MODE_LOOP=2;
+	static final int MODE_ONCE_STAY_ACTIVE=3;
+	static final int MEASURE_TIME=4;
 
 	volatile long startTime,currentTime; 
 	volatile boolean active=false;
 	volatile int count=0;
 	volatile long timecount;
 	
-	private Future<?> runningTaskFuture=null;
+	Future<?> runningTaskFuture=null;
 
 	final TimerInstance owner;
 
@@ -84,7 +84,7 @@ public class TimeGenerator implements Runnable
 	 */
 	public void run()
 	{
-		//System.out.println ("\n\n *** TimeGenThread "+ (++tcount) + " started.\n");
+		//System.out.println ("\n\n *** TimeGenThread started.\n");
 		
 		try {		
 			startTime=System.currentTimeMillis();
@@ -143,7 +143,7 @@ public class TimeGenerator implements Runnable
 	    // System.out.println("in startproc !");
 
 		// runningTaskFuture=AstericsThreadPool.instance.execute(this);
-		if (runningTaskFuture == null) runningTaskFuture=AstericsThreadPool.instance.execute(this);
+		if (runningTaskFuture == null || (runningTaskFuture!=null && runningTaskFuture.isDone())) runningTaskFuture=AstericsThreadPool.instance.execute(this);
 		else timecount=System.currentTimeMillis()-startTime+owner.propTimePeriod;
 		
 	}

@@ -65,8 +65,8 @@ public class TimerInstance extends AbstractRuntimeComponentInstance
 	final private String REPEAT_PROPERTY_KEY = "repeatCounter";
 	final private String AUTOSTART_PROPERTY_KEY = "autostart";
 
-	final IRuntimeOutputPort opTime = new DefaultRuntimeOutputPort();    
-	final IRuntimeEventTriggererPort etpPeriodFinished = new DefaultRuntimeEventTriggererPort();    
+	IRuntimeOutputPort opTime = new DefaultRuntimeOutputPort();    
+	IRuntimeEventTriggererPort etpPeriodFinished = new DefaultRuntimeEventTriggererPort();    
 
 	private final TimeGenerator tg = new TimeGenerator(this);
 
