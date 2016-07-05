@@ -5,7 +5,6 @@
   <property name="runtime" location="../bin/ARE"/>
   <property name="osgi" location="osgi"/>
 
-
 	<target name="cleanProfile">
 	    <delete dir =  "../bin/ARE/profile/org.eclipse.osgi"/>
 	    <delete file =  "../bin/ARE/profile/loader_componentlist.ini"/>
@@ -32,20 +31,6 @@
           </subant>
     </target>
 
-	<target name="fix-shell-scripts">
-                <fixcrlf srcdir="${runtime}" includes="*.sh"/>
-                <chmod dir="${runtime}" includes="*.sh" perm="ugo+rx"/>
-	</target>
-	<target name="buildAllNoClean" depends="buildServices, buildTools, buildComponents, copyLicensesAll, fix-shell-scripts">
-	</target>
-	
-	<target name="buildAll" depends="clean,buildServices, buildTools, copyLicensesAll, fix-shell-scripts">
-          <subant target="buildAllComponents">
-            <property name="debug" value="true"/>
-            <fileset dir="." includes="components/build.xml"/>
-          </subant>
-    </target>
-	
 	<target name="buildTools" depends="buildServices">
           <subant target="buildAndCopy">
             <property name="debug" value="${debug}"/>
@@ -53,8 +38,24 @@
           </subant>
     </target>
 	
-
-	<target name="buildAll-release" depends="clean,buildServices, buildTools, copyLicensesAll, fix-shell-scripts">
+	<target name="fix-shell-scripts">
+                <fixcrlf srcdir="${runtime}" includes="*.sh"/>
+                <chmod dir="${runtime}" includes="*.sh" perm="ugo+rx"/>
+	</target>
+	<target name="buildAllNoClean" depends="buildServices, buildTools, buildComponents, copyLicensesAll, fix-shell-scripts" description="Build all but don't clean">
+	</target>
+	
+	<target name="buildAllNoCleanNoCopyLicenses" depends="buildServices, buildTools, buildComponents, fix-shell-scripts" description="Build all but don't call clean and don't copy the license files. This is ONLY for plugin developers to shorten build time during development, don't use it otherwise!!">
+	</target>
+	
+	<target name="buildAll" depends="clean,buildServices, buildTools, buildComponents, copyLicensesAll, fix-shell-scripts">
+          <subant target="buildAllComponents">
+            <property name="debug" value="true"/>
+            <fileset dir="." includes="components/build.xml"/>
+          </subant>
+    </target>
+	
+	<target name="buildAll-release" depends="clean,buildServices, buildTools, buildComponents, copyLicensesAll, fix-shell-scripts">
          <subant target="buildAllComponents">
             <property name="debug" value="false"/>
             <fileset dir="." includes="components/build.xml"/>
@@ -65,6 +66,9 @@
         <subant target="clean">
           <fileset dir="." includes="*/build.xml"/>
         </subant>
+		<delete verbose="true" includeemptydirs="true">
+			<fileset dir="." includes="bin/**"/>
+		</delete>
     </target>
 	
 	<target name="copyLicensesAll" depends="cleanLicenses">
@@ -75,6 +79,9 @@
 
 	<target name="cleanLicenses">
 		<delete dir="${runtime}/LICENSE"/>
+	</target>
+	
+	<target name="test"  description="Calls unit tests">
 	</target>
 	<import file="imported.xml"/>
     <include file="included.xml"/>

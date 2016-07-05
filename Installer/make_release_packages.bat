@@ -18,8 +18,8 @@ git clone https://github.com/asterics/AsTeRICS
 rm -r AsTeRICS/NativeASAPIlibraries
 rm -r AsTeRICS/BNCIevaluationSuite
 rm -r AsTeRICS/Android/AsTeRICSPhoneServer
-cd AsTeRICS/ARE
-call ant
+cd AsTeRICS
+call ant buildAll
 cd ..
 cd ..
 rm AsTeRICS/ReadMe.md

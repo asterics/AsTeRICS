@@ -1,0 +1,34 @@
+<!-- This is the bootstrap build file for the whole AsTeRICS framework -->
+<project name="ARE_REST_API" basedir="." default="buildAllNoClean">
+	<property name="runtime" location="../bin/ARE"/>
+
+	<target name="clean">
+		<delete includeemptydirs="true">
+		    <fileset dir="${runtime}/data/webservice">
+				<include name="AsTeRICS_rest_API.html"/>
+			</fileset>
+			<fileset dir="${runtime}/data/webservice/clientExample"/>
+		</delete>
+	</target>
+
+	<target name="buildAll" depends="buildAllNoClean"/>
+	<target name="buildAll-release" depends="buildAllNoClean"/>
+	<target name="buildAllNoClean">
+		<copy todir="${runtime}/data/webservice">
+		    <fileset dir=".">
+				<include name="AsTeRICS_rest_API.html"/>
+			</fileset>			
+		</copy>
+		<copy todir="${runtime}/data/webservice/clientExample">
+			<fileset dir="clientExample"/>
+		</copy>
+	</target>
+	
+	<!-- This is the default test target, which calls unit tests -->
+	<!-- Is also used by travis ci service to execute tests -->
+	<target name="test">
+	</target>
+	
+	<import file="../imported.xml"/>
+	<include file="../included.xml"/>
+</project>
