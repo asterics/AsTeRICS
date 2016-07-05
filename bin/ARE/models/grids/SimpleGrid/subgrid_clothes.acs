@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\symboldGrid1\sub_environment_TV.acs_2015_10_9_14_16" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\symboldGrid1\subgrid_clothes.acs_2015_10_9_14_15" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -54,9 +54,9 @@
         <property name="hoverIndicator" value="0" />
         <property name="hoverFrameThickness" value="4" />
         <property name="enableEdit" value="true" />
-        <property name="enableClickSelection" value="True" />
+        <property name="enableClickSelection" value="true" />
         <property name="commandSeparator" value="" />
-        <property name="keyboardFile" value="symboldGrid1/sub_TV.xml" />
+        <property name="keyboardFile" value="grids/SimpleGrid/subgrid_clothes.xml" />
         <property name="ignoreKeyboardFileProperties" value="false" />
         <property name="displayGUI" value="true" />
         <property name="cellText1" value="" />
@@ -174,9 +174,9 @@
       </layout>
       <gui>
         <posX>1260</posX>
-        <posY>1343</posY>
-        <width>7562</width>
-        <height>7444</height>
+        <posY>1565</posY>
+        <width>7500</width>
+        <height>7333</height>
       </gui>
     </component>
     <component id="KeyCapture.1" type_id="asterics.KeyCapture">
@@ -191,8 +191,8 @@
         <property name="block" value="True" />
       </properties>
       <layout>
-        <posX>214</posX>
-        <posY>65</posY>
+        <posX>210</posX>
+        <posY>61</posY>
       </layout>
     </component>
     <component id="Timer.1" type_id="asterics.Timer">
@@ -208,7 +208,7 @@
       <properties>
         <property name="mode" value="2" />
         <property name="repeatCounter" value="1" />
-        <property name="timePeriod" value="2500" />
+        <property name="timePeriod" value="1000" />
         <property name="resolution" value="50" />
         <property name="waitPeriod" value="0" />
         <property name="autostart" value="True" />
@@ -238,9 +238,9 @@
         <posY>341</posY>
       </layout>
       <gui>
-        <posX>3010</posX>
-        <posY>232</posY>
-        <width>4000</width>
+        <posX>2197</posX>
+        <posY>454</posY>
+        <width>5562</width>
         <height>889</height>
       </gui>
     </component>
@@ -270,36 +270,11 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="symboldGrid1/subgrid_environment.acs" />
+        <property name="model" value="grids/SimpleGrid/whole.acs" />
       </properties>
       <layout>
-        <posX>161</posX>
-        <posY>325</posY>
-      </layout>
-    </component>
-    <component id="MultiSourceString.1" type_id="asterics.MultiSourceString">
-      <description>Passes strings from input ports to the one output port</description>
-      <ports>
-        <inputPort portTypeID="input1">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="input2">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="input3">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="input4">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="output">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties />
-      <layout>
-        <posX>481</posX>
-        <posY>69</posY>
+        <posX>165</posX>
+        <posY>299</posY>
       </layout>
     </component>
   </components>
@@ -314,34 +289,14 @@
         <port id="input" />
       </target>
     </channel>
-    <channel id="binding.4">
-      <source>
-        <component id="MultiSourceString.1" />
-        <port id="output" />
-      </source>
-      <target>
-        <component id="SyntheticVoice.1" />
-        <port id="input" />
-      </target>
-    </channel>
-    <channel id="binding.2">
-      <source>
-        <component id="CellBoard.1" />
-        <port id="actCellText" />
-      </source>
-      <target>
-        <component id="MultiSourceString.1" />
-        <port id="input1" />
-      </target>
-    </channel>
-    <channel id="binding.3">
+    <channel id="binding.1">
       <source>
         <component id="CellBoard.1" />
         <port id="selectedCellText" />
       </source>
       <target>
-        <component id="MultiSourceString.1" />
-        <port id="input2" />
+        <component id="SyntheticVoice.1" />
+        <port id="input" />
       </target>
     </channel>
   </channels>
@@ -399,8 +354,8 @@
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
-      <posX>10</posX>
-      <posY>-22</posY>
+      <posX>25</posX>
+      <posY>-89</posY>
       <width>10000</width>
       <height>10000</height>
     </AREGUIWindow>

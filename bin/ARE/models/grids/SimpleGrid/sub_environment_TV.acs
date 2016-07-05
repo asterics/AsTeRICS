@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\symboldGrid1\subgrid_environment.acs_2015_10_9_14_15" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\symboldGrid1\sub_environment_TV.acs_2015_10_9_14_16" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -43,20 +43,20 @@
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="rows" value="0" />
-        <property name="columns" value="5" />
+        <property name="rows" value="2" />
+        <property name="columns" value="2" />
         <property name="textColor" value="11" />
         <property name="backgroundColor" value="0" />
         <property name="scanColor" value="10" />
         <property name="scanMode" value="1" />
         <property name="scanCycles" value="3" />
-        <property name="hoverTime" value="2500" />
+        <property name="hoverTime" value="1000" />
         <property name="hoverIndicator" value="0" />
         <property name="hoverFrameThickness" value="4" />
         <property name="enableEdit" value="true" />
-        <property name="enableClickSelection" value="true" />
+        <property name="enableClickSelection" value="True" />
         <property name="commandSeparator" value="" />
-        <property name="keyboardFile" value="symboldGrid1/sub_environment.xml" />
+        <property name="keyboardFile" value="grids/SimpleGrid/sub_TV.xml" />
         <property name="ignoreKeyboardFileProperties" value="false" />
         <property name="displayGUI" value="true" />
         <property name="cellText1" value="" />
@@ -173,10 +173,10 @@
         <posY>41</posY>
       </layout>
       <gui>
-        <posX>197</posX>
+        <posX>1260</posX>
         <posY>1343</posY>
-        <width>9500</width>
-        <height>3444</height>
+        <width>7562</width>
+        <height>7444</height>
       </gui>
     </component>
     <component id="KeyCapture.1" type_id="asterics.KeyCapture">
@@ -191,8 +191,8 @@
         <property name="block" value="True" />
       </properties>
       <layout>
-        <posX>207</posX>
-        <posY>80</posY>
+        <posX>214</posX>
+        <posY>65</posY>
       </layout>
     </component>
     <component id="Timer.1" type_id="asterics.Timer">
@@ -208,7 +208,7 @@
       <properties>
         <property name="mode" value="2" />
         <property name="repeatCounter" value="1" />
-        <property name="timePeriod" value="2000" />
+        <property name="timePeriod" value="2500" />
         <property name="resolution" value="50" />
         <property name="waitPeriod" value="0" />
         <property name="autostart" value="True" />
@@ -234,11 +234,11 @@
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>773</posX>
-        <posY>335</posY>
+        <posX>413</posX>
+        <posY>341</posY>
       </layout>
       <gui>
-        <posX>2885</posX>
+        <posX>3010</posX>
         <posY>232</posY>
         <width>4000</width>
         <height>889</height>
@@ -258,8 +258,8 @@
         <property name="xmlTags" value="false" />
       </properties>
       <layout>
-        <posX>674</posX>
-        <posY>334</posY>
+        <posX>295</posX>
+        <posY>339</posY>
       </layout>
     </component>
     <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
@@ -270,211 +270,78 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="symboldGrid1/sub_environment_lights.acs" />
+        <property name="model" value="grids/SimpleGrid/subgrid_environment.acs" />
       </properties>
       <layout>
-        <posX>104</posX>
-        <posY>350</posY>
+        <posX>161</posX>
+        <posY>325</posY>
       </layout>
     </component>
-    <component id="modelSwitcher.1.1" type_id="asterics.modelSwitcher">
-      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
+    <component id="MultiSourceString.1" type_id="asterics.MultiSourceString">
+      <description>Passes strings from input ports to the one output port</description>
       <ports>
-        <inputPort portTypeID="modelName">
+        <inputPort portTypeID="input1">
           <properties />
         </inputPort>
-      </ports>
-      <properties>
-        <property name="model" value="symboldGrid1/sub_environment_TV.acs" />
-      </properties>
-      <layout>
-        <posX>192</posX>
-        <posY>352</posY>
-      </layout>
-    </component>
-    <component id="modelSwitcher.1.2" type_id="asterics.modelSwitcher">
-      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
-      <ports>
-        <inputPort portTypeID="modelName">
+        <inputPort portTypeID="input2">
           <properties />
         </inputPort>
-      </ports>
-      <properties>
-        <property name="model" value="symboldGrid1/sub_environment_radio.acs" />
-      </properties>
-      <layout>
-        <posX>277</posX>
-        <posY>354</posY>
-      </layout>
-    </component>
-    <component id="modelSwitcher.1.3" type_id="asterics.modelSwitcher">
-      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
-      <ports>
-        <inputPort portTypeID="modelName">
+        <inputPort portTypeID="input3">
           <properties />
         </inputPort>
-      </ports>
-      <properties>
-        <property name="model" value="symboldGrid1/sub_environment_door.acs" />
-      </properties>
-      <layout>
-        <posX>363</posX>
-        <posY>353</posY>
-      </layout>
-    </component>
-    <component id="modelSwitcher.1.4" type_id="asterics.modelSwitcher">
-      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
-      <ports>
-        <inputPort portTypeID="modelName">
+        <inputPort portTypeID="input4">
           <properties />
         </inputPort>
-      </ports>
-      <properties>
-        <property name="model" value="symboldGrid1/sub_environment_heater.acs" />
-      </properties>
-      <layout>
-        <posX>454</posX>
-        <posY>354</posY>
-      </layout>
-    </component>
-    <component id="modelSwitcher.1.1.1" type_id="asterics.modelSwitcher">
-      <description>The ModelSwitcher plugin can be used to deploy and start a model via incoming event or model name</description>
-      <ports>
-        <inputPort portTypeID="modelName">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="model" value="symboldGrid1/whole.acs" />
-      </properties>
-      <layout>
-        <posX>541</posX>
-        <posY>351</posY>
-      </layout>
-    </component>
-    <component id="ImageBox.1" type_id="asterics.ImageBox">
-      <description>GUI component, which displays a picture.</description>
-      <ports>
-        <inputPort portTypeID="input">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="caption" value="Preview:" />
-        <property name="default" value="" />
-        <property name="backgroundColor" value="0" />
-        <property name="displayGUI" value="true" />
-      </properties>
-      <layout>
-        <posX>684</posX>
-        <posY>52</posY>
-      </layout>
-      <gui>
-        <posX>2947</posX>
-        <posY>5010</posY>
-        <width>4250</width>
-        <height>4333</height>
-      </gui>
-    </component>
-    <component id="StringDispatcher.1" type_id="asterics.StringDispatcher">
-      <description>Send text from chosen slot</description>
-      <ports>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
-        <inputPort portTypeID="slotDispatch">
-          <properties />
-        </inputPort>
       </ports>
-      <properties>
-        <property name="delay" value="300" />
-        <property name="slot1" value="data/pictures/symbols/sub_lights.png" />
-        <property name="slot2" value="data/pictures/symbols/sub_TV.png" />
-        <property name="slot3" value="data/pictures/symbols/sub_radio.png" />
-        <property name="slot4" value="data/pictures/symbols/sub_door.png" />
-        <property name="slot5" value="data/pictures/symbols/sub_heater.png" />
-        <property name="slot6" value="" />
-        <property name="slot7" value="" />
-        <property name="slot8" value="" />
-        <property name="slot9" value="" />
-        <property name="slot10" value="" />
-        <property name="slot11" value="" />
-        <property name="slot12" value="" />
-        <property name="slot13" value="" />
-        <property name="slot14" value="" />
-        <property name="slot15" value="" />
-        <property name="slot16" value="" />
-        <property name="slot17" value="" />
-        <property name="slot18" value="" />
-        <property name="slot19" value="" />
-        <property name="slot20" value="" />
-      </properties>
+      <properties />
       <layout>
-        <posX>501</posX>
-        <posY>49</posY>
-      </layout>
-    </component>
-    <component id="ApplicationLauncher.1" type_id="asterics.ApplicationLauncher">
-      <description>starts external software applications via path and  filename (.exe)</description>
-      <ports>
-        <inputPort portTypeID="filename">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="defaultApplication" value="c:\windows\notepad.exe" />
-        <property name="arguments" value="" />
-        <property name="workingDirectory" value="." />
-        <property name="closeCmd" value="" />
-        <property name="autoLaunch" value="false" />
-        <property name="autoClose" value="true" />
-        <property name="onlyByEvent" value="false" />
-      </properties>
-      <layout>
-        <posX>712</posX>
-        <posY>512</posY>
+        <posX>481</posX>
+        <posY>69</posY>
       </layout>
     </component>
   </components>
   <channels>
-    <channel id="binding.5">
+    <channel id="binding.0">
       <source>
         <component id="CellBoard.1" />
-        <port id="actCellCaption" />
-      </source>
-      <target>
-        <component id="SyntheticVoice.1" />
-        <port id="input" />
-      </target>
-    </channel>
-    <channel id="binding.4">
-      <source>
-        <component id="CellBoard.1" />
-        <port id="actCellCaption" />
+        <port id="selectedCellText" />
       </source>
       <target>
         <component id="TextDisplay.1" />
         <port id="input" />
       </target>
     </channel>
+    <channel id="binding.4">
+      <source>
+        <component id="MultiSourceString.1" />
+        <port id="output" />
+      </source>
+      <target>
+        <component id="SyntheticVoice.1" />
+        <port id="input" />
+      </target>
+    </channel>
     <channel id="binding.2">
       <source>
         <component id="CellBoard.1" />
-        <port id="actCell" />
+        <port id="actCellText" />
       </source>
       <target>
-        <component id="StringDispatcher.1" />
-        <port id="slotDispatch" />
+        <component id="MultiSourceString.1" />
+        <port id="input1" />
       </target>
     </channel>
     <channel id="binding.3">
       <source>
-        <component id="StringDispatcher.1" />
-        <port id="output" />
+        <component id="CellBoard.1" />
+        <port id="selectedCellText" />
       </source>
       <target>
-        <component id="ImageBox.1" />
-        <port id="input" />
+        <component id="MultiSourceString.1" />
+        <port id="input2" />
       </target>
     </channel>
   </channels>
@@ -499,87 +366,12 @@
       <sources>
         <source>
           <component id="CellBoard.1" />
-          <eventPort id="cell1" />
+          <eventPort id="cell9" />
         </source>
       </sources>
       <targets>
         <target>
           <component id="modelSwitcher.1" />
-          <eventPort id="switchModel" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell2_switchModel">
-      <description />
-      <sources>
-        <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="modelSwitcher.1.1" />
-          <eventPort id="switchModel" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell3_switchModel">
-      <description />
-      <sources>
-        <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell3" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="modelSwitcher.1.2" />
-          <eventPort id="switchModel" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell4_switchModel">
-      <description />
-      <sources>
-        <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell4" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="modelSwitcher.1.3" />
-          <eventPort id="switchModel" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell5_switchModel">
-      <description />
-      <sources>
-        <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell5" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="modelSwitcher.1.4" />
-          <eventPort id="switchModel" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="cell6_switchModel">
-      <description />
-      <sources>
-        <source>
-          <component id="CellBoard.1" />
-          <eventPort id="cell6" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="modelSwitcher.1.1.1" />
           <eventPort id="switchModel" />
         </target>
       </targets>
@@ -607,8 +399,8 @@
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
-      <posX>-25</posX>
-      <posY>44</posY>
+      <posX>10</posX>
+      <posY>-22</posY>
       <width>10000</width>
       <height>10000</height>
     </AREGUIWindow>

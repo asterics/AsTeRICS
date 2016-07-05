@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\symboldGrid1\subgrid_moods.acs_2015_10_9_14_16" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\symboldGrid1\sub_heater.acs_2015_10_9_14_16" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -43,7 +43,7 @@
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="rows" value="2" />
+        <property name="rows" value="0" />
         <property name="columns" value="2" />
         <property name="textColor" value="11" />
         <property name="backgroundColor" value="0" />
@@ -54,9 +54,9 @@
         <property name="hoverIndicator" value="0" />
         <property name="hoverFrameThickness" value="4" />
         <property name="enableEdit" value="true" />
-        <property name="enableClickSelection" value="true" />
+        <property name="enableClickSelection" value="True" />
         <property name="commandSeparator" value="" />
-        <property name="keyboardFile" value="symboldGrid1/sub_moods.xml" />
+        <property name="keyboardFile" value="grids/SimpleGrid/sub_heater.xml" />
         <property name="ignoreKeyboardFileProperties" value="false" />
         <property name="displayGUI" value="true" />
         <property name="cellText1" value="" />
@@ -170,14 +170,30 @@
       </properties>
       <layout>
         <posX>320</posX>
-        <posY>41</posY>
+        <posY>40</posY>
       </layout>
       <gui>
-        <posX>1072</posX>
-        <posY>1343</posY>
-        <width>7875</width>
-        <height>7667</height>
+        <posX>1385</posX>
+        <posY>1565</posY>
+        <width>7312</width>
+        <height>7111</height>
       </gui>
+    </component>
+    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>210</posX>
+        <posY>65</posY>
+      </layout>
     </component>
     <component id="Timer.1" type_id="asterics.Timer">
       <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
@@ -222,9 +238,9 @@
         <posY>341</posY>
       </layout>
       <gui>
-        <posX>2447</posX>
-        <posY>343</posY>
-        <width>5125</width>
+        <posX>2947</posX>
+        <posY>454</posY>
+        <width>4000</width>
         <height>889</height>
       </gui>
     </component>
@@ -254,27 +270,11 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="symboldGrid1/whole.acs" />
+        <property name="model" value="grids/SimpleGrid/subgrid_environment.acs" />
       </properties>
       <layout>
-        <posX>164</posX>
+        <posX>165</posX>
         <posY>299</posY>
-      </layout>
-    </component>
-    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
-      <description>captures key presses and releases for a single keyboard key</description>
-      <ports>
-        <inputPort portTypeID="keyCode">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="keyCode" value="57" />
-        <property name="block" value="True" />
-      </properties>
-      <layout>
-        <posX>464</posX>
-        <posY>67</posY>
       </layout>
     </component>
   </components>
@@ -321,7 +321,7 @@
       <sources>
         <source>
           <component id="CellBoard.1" />
-          <eventPort id="cell9" />
+          <eventPort id="cell3" />
         </source>
       </sources>
       <targets>
@@ -354,7 +354,7 @@
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
-      <posX>25</posX>
+      <posX>0</posX>
       <posY>67</posY>
       <width>10000</width>
       <height>10000</height>

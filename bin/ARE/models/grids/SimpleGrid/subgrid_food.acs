@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\symboldGrid1\sub_environment_heater.acs_2015_10_9_14_16" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\symboldGrid1\subgrid_food.acs_2015_10_9_14_16" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -43,7 +43,7 @@
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="rows" value="0" />
+        <property name="rows" value="2" />
         <property name="columns" value="2" />
         <property name="textColor" value="11" />
         <property name="backgroundColor" value="0" />
@@ -54,9 +54,9 @@
         <property name="hoverIndicator" value="0" />
         <property name="hoverFrameThickness" value="4" />
         <property name="enableEdit" value="true" />
-        <property name="enableClickSelection" value="True" />
+        <property name="enableClickSelection" value="true" />
         <property name="commandSeparator" value="" />
-        <property name="keyboardFile" value="symboldGrid1/sub_heater.xml" />
+        <property name="keyboardFile" value="grids/SimpleGrid/subgrid_food.xml" />
         <property name="ignoreKeyboardFileProperties" value="false" />
         <property name="displayGUI" value="true" />
         <property name="cellText1" value="" />
@@ -173,27 +173,76 @@
         <posY>41</posY>
       </layout>
       <gui>
-        <posX>1447</posX>
-        <posY>1565</posY>
-        <width>7250</width>
-        <height>6667</height>
+        <posX>947</posX>
+        <posY>1343</posY>
+        <width>7625</width>
+        <height>7222</height>
       </gui>
     </component>
-    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
-      <description>captures key presses and releases for a single keyboard key</description>
-      <ports>
-        <inputPort portTypeID="keyCode">
-          <properties />
-        </inputPort>
-      </ports>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
       <properties>
-        <property name="keyCode" value="57" />
-        <property name="block" value="True" />
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="False" />
+        <property name="buttonCaption1" value="select" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>208</posX>
-        <posY>57</posY>
+        <posX>213</posX>
+        <posY>80</posY>
       </layout>
+      <gui>
+        <posX>4197</posX>
+        <posY>8676</posY>
+        <width>1375</width>
+        <height>1000</height>
+      </gui>
     </component>
     <component id="Timer.1" type_id="asterics.Timer">
       <description>measures and outputs time in milliseconds and fires events (periodically or once)</description>
@@ -214,7 +263,7 @@
         <property name="autostart" value="True" />
       </properties>
       <layout>
-        <posX>106</posX>
+        <posX>105</posX>
         <posY>146</posY>
       </layout>
     </component>
@@ -238,9 +287,9 @@
         <posY>341</posY>
       </layout>
       <gui>
-        <posX>3135</posX>
-        <posY>454</posY>
-        <width>4000</width>
+        <posX>1447</posX>
+        <posY>232</posY>
+        <width>6750</width>
         <height>889</height>
       </gui>
     </component>
@@ -270,11 +319,27 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="symboldGrid1/subgrid_environment.acs" />
+        <property name="model" value="grids/SimpleGrid/whole.acs" />
       </properties>
       <layout>
-        <posX>164</posX>
+        <posX>165</posX>
         <posY>299</posY>
+      </layout>
+    </component>
+    <component id="KeyCapture.1" type_id="asterics.KeyCapture">
+      <description>captures key presses and releases for a single keyboard key</description>
+      <ports>
+        <inputPort portTypeID="keyCode">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCode" value="57" />
+        <property name="block" value="True" />
+      </properties>
+      <layout>
+        <posX>457</posX>
+        <posY>73</posY>
       </layout>
     </component>
   </components>
@@ -301,6 +366,21 @@
     </channel>
   </channels>
   <eventChannels>
+    <eventChannel id="button2_scanSelect">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="CellBoard.1" />
+          <eventPort id="scanSelect" />
+        </target>
+      </targets>
+    </eventChannel>
     <eventChannel id="periodFinished_scanMove">
       <description />
       <sources>
@@ -321,7 +401,7 @@
       <sources>
         <source>
           <component id="CellBoard.1" />
-          <eventPort id="cell3" />
+          <eventPort id="cell9" />
         </source>
       </sources>
       <targets>
@@ -355,7 +435,7 @@
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
       <posX>35</posX>
-      <posY>-67</posY>
+      <posY>22</posY>
       <width>10000</width>
       <height>10000</height>
     </AREGUIWindow>
