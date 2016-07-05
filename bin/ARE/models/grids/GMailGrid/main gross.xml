@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<keyboard caption="" rows="2" columns="3" scanning="4" textColor="1" scanColor="10" scanCycles="0" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" commandSeparator=";" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+	<button>
+		<text>A B C D E</text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/GMailGrid/A B C D E.xml</switchGrid>
+	</button>
+	<button>
+		<text>F G H I J</text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/GMailGrid/F G H I J.xml</switchGrid>
+	</button>
+	<button>
+		<text>K L M N O</text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/GMailGrid/K L M N O.xml</switchGrid>
+	</button>
+	<button>
+		<text>P Q R S T </text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/GMailGrid/P Q R S T.xml</switchGrid>
+	</button>
+	<button>
+		<text>U V W X Y</text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/GMailGrid/U V W X Y.xml</switchGrid>
+	</button>
+	<button>
+		<text>Z , @ . ?</text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid>models/grids/GMailGrid/Z.xml</switchGrid>
+	</button>
+</keyboard>

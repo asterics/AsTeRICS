@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<keyboard caption="" rows="4" columns="1" scanning="4" textColor="1" scanColor="10" scanCycles="5" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" commandSeparator=";" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+	<button>
+		<text>Search</text>
+		<icon></icon>
+		<action>@Keyboard:Search</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>New Mail</text>
+		<icon></icon>
+		<action>@Keyboard:NEW</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Inbox</text>
+		<icon></icon>
+		<action>@Keyboard:INBOX</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+	<button>
+		<text>Reply</text>
+		<icon></icon>
+		<action>@Keyboard:REPLY</action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+</keyboard>
