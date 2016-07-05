@@ -25,6 +25,10 @@ cd ..
 rm AsTeRICS/ReadMe.md
 rm -r AsTeRICS/ACS
 rm -r AsTeRICS/ARE
+
+rm -rf AsTeRICS/bin/ARE/javacv-*-linux.jar
+rm -rf AsTeRICS/bin/ARE/javacv-*-macosx.jar
+
 mv AsTeRICS/bin/ACS AsTeRICS/ACS
 mv AsTeRICS/bin/ARE AsTeRICS/ARE
 mv AsTeRICS/bin/APE AsTeRICS/APE
