@@ -8,7 +8,10 @@
 <BODY>
 <H1>Keyboard</H1> 
 <H3>Component Type: Actuator (Subcategory: Input Device Emulation)</H3>
-<p>The Keyboard component generates local keyboard input on the computer that the ARE is running on (per software emulation). The component supports key press/release actions and sending key sequences and special keycodes. Multiple instances of the Keyboard component can be used to provide different key actions.</p>
+<p>The Keyboard component generates local keyboard input on the computer that the ARE is running on (per software emulation). 
+The component supports key press/hold/release actions and sending key sequences and special keycodes. special or non-printable
+characters can be sent using notations like {UP} {ENTER} {ALT} {DELETE} etc. - see description of the property keyCodeString.
+Multiple instances of the Keyboard component can be used to provide different key actions.</p>
 <div class="image"><img src="img/Keyboard.jpg" alt="Screenshot: Keyboard plugin" title="Screenshot: Keyboard plugin" /><br>
 Keyboard plugin</div>
 
@@ -21,14 +24,14 @@ No special hardware or software required.
 <H2>Event Listener Description</H2>
 <ul>
 <li><STRONG>sendKeys:</STRONG> An incoming event at this port generates all keycodes of the keycode string (sequentially).</li>
-<li><STRONG>pressKey:</STRONG> An incoming event at this port generates a press (hold and release) event on the next keycode of the keycode string. After the last character, the send position will be reset to the first character.</li>
-<li><STRONG>holdKey:</STRONG> An incoming event at this port generates a hold event on the next key of the keycode string (the key is pressed but not released). The holdKey listener can be used together with the releaseKey feature to create long key presses of single keys (e.g. of the cursor keys) to allow game control etc.</li>
-<li><STRONG>releaseKey:</STRONG> An incoming event at this port releases the current key of the keycode string.</li> 
+<li><STRONG>pressKey:</STRONG> An incoming event at this port pressed (and releases) the key (first key + modifiers if there are multiple keys).</li>
+<li><STRONG>holdKey:</STRONG> An incoming event at this port holds the key (first key + modifiers if there are multiple keys). The key is pressed but not released. The holdKey listener can be used together with the releaseKey feature to create long key presses of single keys (e.g. of the cursor keys) to allow game control etc.</li>
+<li><STRONG>releaseKey:</STRONG> An incoming event at this port releases the key which was pressed using the hold event.</li> 
 </ul>
 <H2>Properties</H2>
 <ul>
 <li><STRONG>keyCodeString [string]:</STRONG> A string containing keys and keycodes. Please note that this string will be replaced by an incoming string at the keycodes input port. The keyCodeString can contain alphanumeric characters and special characters. Special characters are written in parentheses, for example {SHIFT}, {CTRL}, {ALT}, {BACKSPACE}, {ENTER} etc. Modifier keys like {SHIFT} or {ALT} are combined as they appear consecutively in the keystring, and are generated with the next printable character. For example, the keystrings "{SHIFT}" or "{CTRL}{ALT}{DEL}" are sent as single key values to the target computer. For a description of the currently supported special key codes please refer to Appendix B of the user manual.</li>
-<li><STRONG>inputMethod [integer]:</STRONG> Declares whether to use sending window messages or system-wide SendInput API function as the way how keyboard input is injected.</li>
+<li><STRONG>inputMethod [integer]:</STRONG> Declares whether to use sending window messages (Windows), system-wide SendInput API function (Windows) or JNativehook (cross-platform) as key injection method. (Please note that there are still problems with locales and special key translation...)</li>
 <li><STRONG>waitTime [integer]:</STRONG> Defines a number of milliseconds for a pause which shall occur when {WAIT} appears in the keycode string.</li>
 </ul>
 </BODY>

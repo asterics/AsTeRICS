@@ -272,8 +272,8 @@
 		</events>			
         <properties>
 			<property description="the caption of the dialog box" name="caption" type="string" value="info"/>
-			<property description="the caption of the dialog box" name="text" type="string" value="this is an information"/>
-			<property description="the caption of the dialog box" name="alwaysOnTop" type="boolean" value="true"/>
+			<property description="the text message of the dialog box" name="text" type="string" value="this is an information"/>
+			<property description="if true, dialog stays on top, no matter if other windows are put to front." name="alwaysOnTop" type="boolean" value="true"/>
             <property combobox="plain//information//question//warning//error" description="the message type of the dialog box" name="messageType" type="integer" value="0"/>
             <property name="buttonText1" type="string" value="OK"/>
             <property name="buttonText2" type="string" value=""/>
@@ -1170,6 +1170,29 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.actuator.gmailshortcuts.GMailShortcutsInstance" id="asterics.GMailShortcuts">
+        <type subtype="Others">actuator</type>
+        <singleton>false</singleton>
+        <description>This plugin emulates shortcuts for the GMail web client. It can be used to map any gestures to GMail shortcuts.</description>
+        <ports>
+			<inputPort id="KeyCode">
+				<description>Character [a-z], digit [0-9] or one of predefined commands to send. See help file for command descriptions.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.actuator.gsmmodem.GSMModemInstance" id="asterics.GSMModem">
         <type subtype="Communication">actuator</type>
         <singleton>true</singleton>
@@ -1436,7 +1459,7 @@
         </events>        
         <properties>
             <property description="Keycodes to send" name="keyCodeString" type="string" value="a"/>
-            <property combobox="sending window messages//using system-wide SendInput API function" description="defines the way how keyboard input is injected" name="inputMethod" type="integer" value="1"/>
+            <property combobox="sending window messages//using system-wide SendInput API function//using JNativehook" description="defines the way how keyboard input is injected" name="inputMethod" type="integer" value="1"/>
             <property description="defines the wait period which is done whenever the special sequence {WAIT} is found in the input keycode string (in milliseconds)" name="waitTime" type="integer" value="1000"/>
                       
         </properties>
@@ -7114,90 +7137,6 @@
 
     </componentType>
 
- <componentType canonical_name="eu.asterics.component.processor.pifacecad.PiFaceCADInstance" id="asterics.PiFaceCAD">
-        <type subtype="RaspberryPi">processor</type>
-        <singleton>true</singleton>
-        <description>A plugin for the PiFace Control and Display  2 add-on board for the Raspberry Pi.</description>
-        <ports>
-			<inputPort id="setLCDText">
-				<description>Sets the text of the 2x16 character display.</description>
-				<mustBeConnected>false</mustBeConnected>
-				<dataType>string</dataType>
-			</inputPort>
-
-
-        </ports>
-		<events>
-			<eventListenerPort id="displayOn">
-				<description>Turn display on</description>
-			</eventListenerPort>
-			<eventListenerPort id="displayOff">
-				<description>Turn display off</description>
-			</eventListenerPort>
-			<eventListenerPort id="backlightOn">
-				<description>Turn backlight on</description>
-			</eventListenerPort>
-			<eventListenerPort id="backlightOff">
-				<description>Turn backlight off</description>
-			</eventListenerPort>
-
-			<eventTriggererPort id="S1LowToHigh">
-				<description>Switch 1 changed from low to high</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S1HighToLow">
-				<description>Switch 1 changed from high to low</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S2HighToLow">
-				<description>Switch 2 changed from high to low</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S3HighToLow">
-				<description>Switch 3 changed from high to low</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S4HighToLow">
-				<description>Switch 4 changed from high to low</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S5HighToLow">
-				<description>Switch 5 changed from high to low</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S6HighToLow">
-				<description>Switch 6 changed from high to low</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S7HighToLow">
-				<description>Switch 7 changed from high to low</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S8HighToLow">
-				<description>Switch 8 changed from high to low</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S2LowToHigh">
-				<description>Switch 2 changed from low to  high</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S3LowToHigh">
-				<description>Switch 3 changed from low to  high</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S4LowToHigh">
-				<description>Switch 4 changed from low to  high</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S5LowToHigh">
-				<description>Switch 5 changed from low to  high</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S6LowToHigh">
-				<description>Switch 6 changed from low to  high</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S7LowToHigh">
-				<description>Switch 7 changed from low to  high</description>
-			</eventTriggererPort>
-			<eventTriggererPort id="S8LowToHigh">
-				<description>Switch 8 changed from low to  high</description>
-			</eventTriggererPort>
-
-		</events>			
-        <properties>
-			<property description="The initial text to show on the 2x16 character LCD display." name="initialText" type="string" value=" "/>
-
-        </properties>
-
-    </componentType>
-
  <componentType canonical_name="com.starlab.component.processor.protocolssveptrain.ProtocolSSVEPTrainInstance" id="asterics.ProtocolSSVEPTrain">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>true</singleton>
@@ -7306,33 +7245,6 @@
 		</events>			
         <properties>
 			<property description="Quantization step" name="quantizationStep" type="double" value="1"/>
-
-        </properties>
-
-    </componentType>
-
- <componentType canonical_name="eu.asterics.component.processor.randomnumber.RandomNumberInstance" id="asterics.RandomNumber">
-        <type subtype="Others">processor</type>
-        <singleton>false</singleton>
-        <description>Generates a random number</description>
-        <ports>
-
-			<outputPort id="Number">
-				<description>Random number</description>
-				<dataType>integer</dataType>
-			</outputPort>
-
-        </ports>
-		<events>
-			<eventListenerPort id="NewNumber">
-				<description>Generates a new random number</description>
-			</eventListenerPort>
-
-
-		</events>			
-        <properties>
-			<property description="Minimum random value" name="Min" type="integer" value="0"/>
-			<property description="Maximum random value" name="Max" type="integer" value="1"/>
 
         </properties>
 
@@ -10140,6 +10052,117 @@
                 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.sensor.intelrealsense.IntelRealSenseInstance" id="asterics.IntelRealSense">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>false</singleton>
+        <description>Plugin for Intel Real Sense 3D cameras.</description>
+        <ports>
+
+			<outputPort id="h">
+				<description>The face rectangle height in pixels</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="w">
+				<description>The face rectangle width in pixels.</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="x">
+				<description>The x coordinate of the top left corner of the face rectangle.</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="y">
+				<description>The y coordinate of the top left corner of the face rectangle.</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="roll">
+				<description>Degree of head roll</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="yaw">
+				<description>Degree of head yaw (left - right)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+			<outputPort id="pitch">
+				<description>Degree of head pitch (up - down)</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+
+			<eventTriggererPort id="browRaiserLeft">
+				<description>browRaiserLeft expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="browRaiserRight">
+				<description>browRaiserRight expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="browLowererLeft">
+				<description>browLowererLeft expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="browLowererRight">
+				<description>browLowererRight expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="smile">
+				<description>smile expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="kiss">
+				<description>kiss expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="mouthOpen">
+				<description>mouthOpen expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="tongueOut">
+				<description>tongueOut expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eyesClosedLeft">
+				<description>eyesClosedLeft expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eyesClosedRight">
+				<description>eyesClosedRight expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eyesTurnLeft">
+				<description>eyesTurnLeft expression happened</description></eventTriggererPort>
+			<eventTriggererPort id="eyesTurnRight">
+				<description>eyesTurnRight expression happened</description></eventTriggererPort>
+			<eventTriggererPort id="eyesUp">
+				<description>eyesUp expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="eyesDown">
+				<description>eyesDown expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="puffLeft">
+				<description>puffLeft expression happened</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="puffRight">
+				<description>puffRight expression happened</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+            <property combobox="F200//R200//R200_Enhanced//SR300" description="Camera model, one of: F200, R200, R200_Enhanced, SR300" name="deviceModel" type="integer" value="0"/>				
+			<property description="Enable,Disable facial expressions" name="enableExpressions" type="boolean" value="true"/>
+			<property description="Enable, Disable camera gui." name="displayGUI" type="boolean" value="true"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreBrowRaiserLeft" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreBrowRaiserRight" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreBrowLowererLeft" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreBrowLowererRight" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreSmile" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreKiss" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreMouthOpen" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreThongueOut" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreEyesClosedLeft" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreEyesClosedRight" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreEyesTurnLeft" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreEyesTurnRight" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreEyesUp" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scoreEyesDown" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scorePuffLeft" type="integer" value="50"/>
+			<property description="Set score threshold value of expression to trigger event." name="scorePuffRight" type="integer" value="50"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.sensor.joystickcapture.JoystickCaptureInstance" id="asterics.JoystickCapture">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>
@@ -11675,6 +11698,33 @@
         <properties>
 			<property description="Value to produce events" name="threshold" type="integer" value="0"/>
 			<property combobox="Continous data//Events: below-&gt;above//Events: above-&gt;below//Events: both" description="sending mode of the proximity sensor" name="sendingMode" type="integer" value="0"/> 
+
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.sensor.randomnumber.RandomNumberInstance" id="asterics.RandomNumber">
+        <type subtype="Simulation">sensor</type>
+        <singleton>false</singleton>
+        <description>Generates a random number</description>
+        <ports>
+
+			<outputPort id="Number">
+				<description>Random number</description>
+				<dataType>integer</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="NewNumber">
+				<description>Generates a new random number</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="Minimum random value" name="Min" type="integer" value="0"/>
+			<property description="Maximum random value" name="Max" type="integer" value="1"/>
 
         </properties>
 
