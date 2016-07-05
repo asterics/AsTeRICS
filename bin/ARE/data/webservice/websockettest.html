@@ -1,13 +1,94 @@
 <!DOCTYPE html>
-<meta charset="utf-8" />
-<title>WebSocket Test</title>
-<script language="javascript" type="text/javascript">
-	//var wsUri = "ws://localhost:8080/grizzly-websockets-chat/chat";
-	var wsUri = "ws://localhost:8080/ws/ws";
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="http://asterics.github.io/AsTeRICS/stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="http://asterics.github.io/AsTeRICS/stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="http://asterics.github.io/AsTeRICS/stylesheets/print.css" media="print">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="clientExample/javascript/JSmap.js"></script> 
+		<script src="clientExample/javascript/areCommunicator.js"></script>
+	<script src="http://smoothiecharts.org/smoothie.js"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Asterics Prospertiy4All Building Blocks Demos</title>
+	
+			<script type="text/javascript">
+			<!-- Here the live chart scripting starts -->
+			
+	window.requestAnimFrame = (function(callback) {
+		return window.requestAnimationFrame
+				|| window.webkitRequestAnimationFrame
+				|| window.mozRequestAnimationFrame
+				|| window.oRequestAnimationFrame
+				|| window.msRequestAnimationFrame ||
+
+				function(callback) {
+					window.setTimeout(callback, 1000 / 30); // 30 frames per second
+				};
+	})();
+
+	var toggleVal1 = 0;
+	var toggleVal2 = 0;
+	var toggleVal3 = 0;
+	var toggleVal4 = 0;
+	var toggleVal5 = 0;
+	var toggleVal6 = 0;
+	var toggleVal7 = 0;
+	var toggleVal8 = 0;
+
+	var tempData = 0;
+	var txData = '';
+
+	var analogData1 = 0;
+	var analogData2 = 0;
+	var analogData3 = 0;
+	var analogData4 = 0;
+	var analogData5 = 0;
+	var analogData6 = 0;
+	var analogData7 = 0;
+	var analogData8 = 0;
+
+	var accDataX = 0;
+	var accDataY = 0;
+	var accDataZ = 0;
+
+	var data1 = 0;
+	var data2 = 0;
+	var data3 = 0;
+	
+	var dataPacketCounter=0;
+
+	var wsUri = "ws://localhost:8082/ws/astericsData";
 	var output;
 	function init() {
 		output = document.getElementById("output");
-		testWebSocket();
+		//testWebSocket();
+	}
+
+	function initSocket() {
+		init();
+		websocket = new WebSocket(wsUri);
+		websocket.onopen = function(evt) {
+			onOpen(evt)
+		};
+		websocket.onclose = function(evt) {
+			onClose(evt)
+		};
+		websocket.onmessage = function(evt) {
+			onMessage(evt)
+		};
+		websocket.onerror = function(evt) {
+			onError(evt)
+		};
+
 	}
 	function testWebSocket() {
 		websocket = new WebSocket(wsUri);
@@ -32,15 +113,27 @@
 		writeToScreen("DISCONNECTED");
 	}
 	function onMessage(evt) {
-		writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data
-				+ '</span>');
-		websocket.close();
+
+		accDataX = document.getElementById("AccX");
+		accDataX.value = evt.data;
+
+		var dataNum=Number(evt.data);
+		/*
+		console.log(dataPacketCounter);
+		console.log(dataNum);
+		
+		if(dataPacketCounter != dataNum) {
+			console.log("packetCounter differs");
+		}
+		*/
+		dataPacketCounter = dataPacketCounter+1;
+		window.data1 = dataNum; //AccX graphData
 	}
 	function onError(evt) {
 		writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
 	}
 	function doSend(message) {
-		writeToScreen("SENT: " + message);
+		<!-- writeToScreen("SENT: " + message);-->
 		websocket.send(message);
 	}
 	function writeToScreen(message) {
@@ -49,7 +142,356 @@
 		pre.innerHTML = message;
 		output.appendChild(pre);
 	}
-	window.addEventListener("load", init, false);
-</script>
-<h2>WebSocket Test</h2>
-<div id="output"></div>
+
+	function initGraph1() //Initialize Graph 1
+	{
+		var smoothie1 = new SmoothieChart();
+		var plot1 = new TimeSeries();
+
+		smoothie1.streamTo(document.getElementById("myGraph1"));
+		smoothie1.addTimeSeries(plot1, {
+			strokeStyle : 'rgb(0, 255, 0)',
+			lineWidth : 2
+		});
+
+		setInterval(function() {
+			plot1.append(new Date().getTime(), data1);
+		}, 100);
+	}
+
+	window.onload = function() {
+		initSocket();
+		initGraph1();
+	};
+	
+	function connectToWebsocket()
+	{
+		initSocket();
+		initGraph1();
+	}
+			
+			
+			
+			
+			<!-- Here AsTERICS part starts -->
+			/* This is an example of how to use the ARE Javascipt framework for the communication
+				with the ARE Restfull Services.
+				
+				The location of the server should be defined with the 'setBaseURI(<url>)' method.
+				
+				A success-callback function and an error-callback function should be passed as an argument
+				for every function.
+			*/
+		
+			setBaseURI("http://localhost:8081/rest/");
+		
+		
+			//downloadDeployedModel
+			function DDM() {
+				downloadDeployedModel(DDM_successCallback, DDM_errorCallback);
+			}
+			
+			function DDM_successCallback(data, HTTPstatus) { alert(data); }
+			function DDM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+			
+			//downloadModelFromFile
+			function DMF() {
+				var filename = document.getElementById("DMFfilename").value;
+				downloadModelFromFile(DMF_successCallback, DMF_errorCallback, filename);
+			}
+			
+			function DMF_successCallback(data, HTTPstatus) { alert(data); }
+			function DMF_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+			
+			//uploadModel
+			function UM() {
+				var modelInXML = document.getElementById("UMmodel").value;
+				uploadModel(UM_successCallback, UM_errorCallback, modelInXML);
+			}
+						
+			function UM_successCallback(data, HTTPstatus) { alert(data); }
+			function UM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+			
+			//autorun
+			function AUTO() {
+				var filename = document.getElementById("AUTOfilename").value;
+				autorun(AUTO_successCallback, AUTO_errorCallback, filename);
+			}
+			
+			function AUTO_successCallback(data, HTTPstatus) { alert(data); }
+			function AUTO_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+			
+			//getModelState
+			function MS() {
+				getModelState(MS_successCallback, MS_errorCallback);
+			}
+			
+			function MS_successCallback(data, HTTPstatus) { alert(data); }
+			function MS_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+			
+			//pauseModel
+			function PAUSE() {
+				pauseModel(PAUSE_successCallback, PAUSE_errorCallback);
+			}
+						
+			function PAUSE_successCallback(data, HTTPstatus) { alert(data); }
+			function PAUSE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+						
+			
+			//startModel
+			function START() {
+				startModel(START_successCallback, START_errorCallback);
+			}
+						
+			function START_successCallback(data, HTTPstatus) { alert(data); }
+			function START_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+						
+			
+			//stopModel
+			function STOP() { 
+				stopModel(STOP_successCallback, STOP_errorCallback); 
+			}
+						
+			function STOP_successCallback(data, HTTPstatus) { alert(data); }
+			function STOP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+
+			//storeModel
+			function STORE() {
+				var filename = document.getElementById("STOREfilename").value;
+				var modelInXML = document.getElementById("STOREmodel").value;
+				storeModel(STORE_successCallback, STORE_errorCallback, filename, modelInXML);
+			}
+									
+			function STORE_successCallback(data, HTTPstatus) { alert(data); }
+			function STORE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+			
+			//deployModelFromFile
+			function DepMF() {
+				var filename = document.getElementById("DepMFfilename").value;
+				deployModelFromFile(DepMF_successCallback, DepMF_errorCallback, filename);
+			}
+			
+			//deployModelFromFile
+			function DepMFAndStart(filename) {
+				//var filename = document.getElementById("DepMFfilename").value;
+				deployModelFromFile(DepMF_StartModel_Callback, DepMF_errorCallback, filename);
+				//stopModel(DepMF_Empty_successCallback, STOP_errorCallback); 
+				
+			}
+			
+			function DepMF_StartModel_Callback(data, HTTPstatus) { startModel(DepMF_Empty_successCallback, START_errorCallback); }
+			
+			function DepMF_Empty_successCallback(data, HTTPstatus) { }
+			function DepMF_successCallback(data, HTTPstatus) { alert(data); }
+			function DepMF_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+
+			//deleteModelFromFile
+			function DELETE() {
+				var filename = document.getElementById("DELETEfilename").value;
+				deleteModelFromFile(DELETE_successCallback, DELETE_errorCallback, filename);
+			}
+									
+			function DELETE_successCallback(data, HTTPstatus) { alert(data); }
+			function DELETE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+			
+			//downloadComponentCollection
+			function DCC() {
+				downloadComponentCollection(DCC_successCallback, DCC_errorCallback);
+			}
+						
+			function DCC_successCallback(data, HTTPstatus) { alert(data); }
+			function DCC_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+
+			//listStoredModels
+			function LSM() {
+				listStoredModels(LSM_successCallback, LSM_errorCallback);
+			}
+						
+			function LSM_successCallback(data, HTTPstatus) { alert(data); }
+			function LSM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+			
+			//getInstalledComponents
+			function INSTALLED_COMPONENTS() {
+				getInstalledComponents(INSTALLED_COMPONENTS_successCallback, INSTALLED_COMPONENTS_errorCallback);
+			}
+									
+			function INSTALLED_COMPONENTS_successCallback(data, HTTPstatus) {
+				console.log(JSON.stringify(data[0]));
+			}
+			function INSTALLED_COMPONENTS_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//getInstalledComponentsDescriptor
+			function INSTALLED_COMPONENTS_DSCR() {
+				getInstalledComponentsDescriptor(INSTALLED_COMPONENTS_DSCR_successCallback, INSTALLED_COMPONENTS_DSCR_errorCallback);
+			}
+									
+			function INSTALLED_COMPONENTS_DSCR_successCallback(data, HTTPstatus) {
+				console.log(data);
+			}
+			function INSTALLED_COMPONENTS_DSCR_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+			
+			
+			//getCreatedComponentsDescriptor
+			function CREATED_COMPONENTS_DSCR() {
+				getCreatedComponentsDescriptor(CREATED_COMPONENTS_DSCR_successCallback, CREATED_COMPONENTS_DSCR_errorCallback);
+			}
+									
+			function CREATED_COMPONENTS_DSCR_successCallback(data, HTTPstatus) {
+				console.log(data);
+			}
+			function CREATED_COMPONENTS_DSCR_errorCallback(HTTPstatus, AREerrorMessage) {
+				console.log(AREerrorMessage);
+			}
+	
+			
+			//getComponentPropertyKeys
+			function GCPK() {
+				var componentId = document.getElementById("GCPKid").value;
+				getComponentPropertyKeys(GCPK_successCallback, GCPK_errorCallback, componentId);
+			}
+						
+			function GCPK_successCallback(data, HTTPstatus) { alert(data[0]); }
+			function GCPK_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+
+			//getComponentProperty
+			function GCP() {
+				var componentId = document.getElementById("GCPid").value;
+				var componentKey = document.getElementById("GCPkey").value;
+				getComponentProperty(GCP_successCallback, GCP_errorCallback, componentId, componentKey);
+			}
+						
+			function GCP_successCallback(data, HTTPstatus) { alert(data); }
+			function GCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
+			
+			//setComponentProperty
+			function SCP() {
+				var componentId = document.getElementById("SCPid").value;
+				var componentKey = document.getElementById("SCPkey").value;
+				var componentValue = document.getElementById("SCPvalue").value;
+				setComponentProperty(SCP_successCallback, SCP_errorCallback, componentId, componentKey, componentValue);
+			}
+						
+			function SCP_successCallback(data, HTTPstatus) { alert(data); }
+			function SCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+				
+			
+			//getRestFunctions
+			function FUNCTIONS() {
+				getRestFunctions(FUNCTIONS_successCallback, FUNCTIONS_errorCallback);
+			}
+						
+			function FUNCTIONS_successCallback(data, HTTPstatus) {
+				console.log(JSON.stringify(data[0]));
+			}
+			function FUNCTIONS_errorCallback(HTTPstatus, AREerrorMessage) {
+				alert(AREerrorMessage);
+			}
+							
+			
+			//subscribe to SSE
+			function SUBSCRIBE_EVENTS() {
+				//var eventType = document.getElementById("subid").value;
+				var selects = document.getElementById("eTypesS");
+				var eventType = selects.options[selects.selectedIndex].value;
+				subscribe(SUBSCIBE_EVENTS_successCallback, SUBSCIBE_EVENTS_errorCallback, eventType);
+			}
+					
+			function SUBSCIBE_EVENTS_successCallback(data, HTTPstatus) {
+				var eventsBox = document.getElementById("eventsBox");
+				eventsBox.innerHTML = "SSE event: " + data; 
+				console.log("SSE event: " + data);
+			}
+			
+			function SUBSCIBE_EVENTS_errorCallback(HTTPstatus, AREerrorMessage) {
+				var eventsBox = document.getElementById("eventsBox");
+				eventsBox.innerHTML = data;
+				console.log(AREerrorMessage);
+			}
+			
+			
+			//unsubscribe from SSE
+			function UNSUBSCRIBE_EVENTS() {
+				//var eventType = document.getElementById("unsubid").value;
+				var selects = document.getElementById("eTypesS");
+				var eventType = selects.options[selects.selectedIndex].value;
+				unsubscribe(eventType);
+			}
+
+		</script>
+
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Asterics Websocket Demo</h1>
+		<!--
+        <a href="https://github.com/asterics/AsTeRICS" class="button"><small>View project on</small> GitHub</a>
+        <h1>P4AllBuildingBlocks</h1>
+        <h2></h2>
+        <a href="https://github.com/asterics/P4AllBuildingBlocks" class="button"><small>View project on</small> GitHub</a>
+-->
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+<!--          <h1>
+<a id="welcome" class="anchor" href="#welcome" aria-hidden="true"><span class="octicon octicon-link"></span></a>AsTeRICS</h1>-->
+
+
+<h3><a id="WebSocket" class="anchor" href="#WebSocket" aria-hidden="true"><span class="octicon octicon-link"></span></a>Live Web Chart of Signal Data</h3>
+<h4>Objective</h4>Visualization of signal data in a web live chart using Javascript. 
+<h4>Description</h4>The demo generates a sine signal and broadcasts the signal data through a websocket <strong>(ws://localhost:8082/ws/astericsData)</strong>. The data is visualized in a Javascript live chart. You can also send data to the model by pressing the "Send test message" button.
+<p>
+
+<div>
+<img src="images/Websockets-main.PNG" alt="Visualization of sine signal"/>
+</div>
+<div id="gPanel" align="vertical">
+<div align="horizontal">
+<p>
+<button onclick="DepMFAndStart('WebSocket_test.acs');connectToWebsocket();" class="button">Start demo</button>
+<p>
+Websocket: <div id="output"/>
+</div>
+		<h2>Received signal data</h2>
+		<div align="horizontal">
+		Value:
+	&nbsp; &nbsp; <input id="AccX" style="" type="text"> &nbsp;
+	&nbsp;
+	</div>
+	<div align="left">
+
+		<canvas id="myGraph1" width="400" height="100"></canvas>
+	</div>
+	<button onclick="doSend('Test')">Send test message</button>
+</div>
+<h4>Requirements</h4>OS: Windows, Linux, Mac OSX
+<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/processors/WebSocket.htm">WebSocket</a>
+        </section>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
