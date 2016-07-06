@@ -100,21 +100,22 @@ public class ComponentRepository
         	throw new NullPointerException("Illegal null argument");
         }
 
-        uninstall(componentType.getID());
+        uninstall(componentType.getID(),componentType.getCanonicalName());
     }
 
-    void uninstall(final String componentTypeID)
+    void uninstall(final String componentTypeID, String componentCanonicalName)
             throws BundleManagementException
     {
         if (!repository.containsKey(componentTypeID))
         {
         	logger.severe(": uninstall-> The specified componentTypeID"
-                    + " is already installed in the repository.");
+                    + " is not installed in the repository, can't uninstall it.");
             throw new BundleManagementException("The specified componentTypeID"
                     + " is not found in the repository.");
         }
 
         
+        componentFactories.remove(componentCanonicalName);
         repository.remove(componentTypeID);
     }
 

@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 
 import javax.print.attribute.standard.Severity;
 
+import org.apache.commons.io.FilenameUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -36,11 +37,13 @@ import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.ServiceRegistration;
 
 import eu.asterics.mw.are.exceptions.BundleManagementException;
+import eu.asterics.mw.are.exceptions.DeploymentException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
 import eu.asterics.mw.are.parsers.ModelValidator;
 import eu.asterics.mw.model.bundle.IComponentType;
+import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.IAREEventListener;
@@ -308,25 +311,75 @@ public class BundleManager implements BundleListener, FrameworkListener
 	}
 	
 	/**
+	 * Returns a list of bundle descriptor URIs. The URIs are the jar internal URIs that point to the bundle descriptor within the plugin jar.
+	 * @return
+	 */
+	public List<URI> getComponentTypeBundleDescriptorURIList() {
+		List<URI> bundleDescriptorURIs=new ArrayList<URI>();
+		List<URI> componentJarURIs=ResourceRegistry.getInstance().getComponentJarList(false);
+		for(URI componentJarURI : componentJarURIs) {
+			URI jarInternalURI=ResourceRegistry.toJarInternalURI(componentJarURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+
+			try {
+				if(checkForAstericsMetadata(jarInternalURI.toURL(), jarInternalURI.toString())) {
+					//if it has a bundle_descirptor it can only be a component (plugin).
+					bundleDescriptorURIs.add(jarInternalURI);
+				}
+			} catch (MalformedURLException e) {
+				logger.warning("Ignoring jarInternalURI, is malformed URL: "+jarInternalURI);
+			}
+		}
+		return bundleDescriptorURIs;
+	}
+	
+	/**
+	 * Before installing the bundles an uninstall of all bundles is done.
 	 * Returns a list of bundles that are installable for this platform the ARE is running on.
 	 * This really tries to install the bundle via OSGi and checks if e.g. involved native libs are supported for this platform.
 	 * After invoking the method the bundles are left installed.
+	 * 
+	 * NOTE: This method is not thread-safe, the caller must ensure the thread-safety.
 	 * @return
 	 */
 	public List<Bundle> getInstallableBundleList() {
 		List<Bundle> bundleList=new ArrayList<Bundle>();
 		List<URI> componentJarURIs=ResourceRegistry.getInstance().getComponentJarList(false);
-		for(URI componentJarURI : componentJarURIs) {
-			Bundle b;
+		
+		//Remember current runtime model state, because afterwards we have to restore the current state.
+		IRuntimeModel currentRuntimeModel=DeploymentManager.instance.getCurrentRuntimeModel();
+		AREStatus currentModelStatus=DeploymentManager.instance.getStatus();
+		//Stop and undeploy model so that we can uninstall all componentType bundles afterwards.
+		AREServices.instance.stopModelInternal();
+		DeploymentManager.instance.undeployModel();
+		uninstallComponentTypeBundles();
+				
+		for(URI componentJarURI : componentJarURIs) {			
 			try {
-				b = installSingle(componentJarURI);
-				bundleList.add(b);
+				Bundle b=null;
+				b = installSingle(componentJarURI);					
+				if(b!=null) {
+					bundleList.add(b);
+				}
 			} catch (BundleException | IOException | ParseException | BundleManagementException e) {
-				//If the installation of the bundle
+				//If the installation of the bundle fails
 				Throwable cause=e.getCause();
 				String reason=(cause!=null && cause.getMessage() != null) ? ", Reason: "+cause.getMessage() : "";
 				AstericsErrorHandling.instance.getLogger().warning("Cannot install bundle ("+e.getClass().getName()+"), skipping it: "+componentJarURI+reason);
 			}
+		}
+		
+		//Now try to restore previous state!
+		try {
+			DeploymentManager.instance.deployModel(currentRuntimeModel);
+			if(currentModelStatus==AREStatus.RUNNING || currentModelStatus==AREStatus.PAUSED) {
+				AREServices.instance.runModelInternal();
+			}
+			if(currentModelStatus==AREStatus.PAUSED) {
+				AREServices.instance.pausModelInternal();
+			}
+			//Now it should be in the same state as before - puh!!
+		} catch (DeploymentException e) {
+			logger.severe("in BundleManager.getInstallableComponentList: Could not redeploy current runtimeModel");
 		}
 		return bundleList;
 	}
@@ -395,7 +448,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 
 		return jarNameSet;
 	}
-	
+		
 	/**
 	 * Loads the classes of the component and registers the given component in the {@link ComponentRepository}.
 	 * @param bundle
@@ -472,9 +525,11 @@ public class BundleManager implements BundleListener, FrameworkListener
 			= bundlesToComponentTypesMap.get(bundle);
 			for(final IComponentType componentType : componentTypeSet)
 			{
+				componentTypeIDToBundle.remove(componentType.getID());
 				ComponentRepository.instance.uninstall(componentType);
 
 			}
+			bundlesToComponentTypesMap.remove(bundle);
 		}
 		catch (BundleManagementException bme)
 		{
@@ -552,6 +607,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 	 */
 	public Bundle installSingle(URI jarURI) throws MalformedURLException, BundleException, IOException, ParseException, BundleManagementException {
 		logger.info("*** Installing bundle on-demand: "+jarURI);
+		
 		Bundle bundle = bundleContext.installBundle(jarURI.toString(),jarURI.toURL().openStream());	
 		if(checkForAstericsMetadata(bundle)) {
 			registerBundle(bundle);
@@ -744,6 +800,7 @@ public class BundleManager implements BundleListener, FrameworkListener
 
 	/**
 	 * Uninstalls all bundles.
+	 * Be careful, this also uninstalls the ARE bundle!!!!
 	 */
 	public void uninstall() 
 	{
@@ -751,16 +808,37 @@ public class BundleManager implements BundleListener, FrameworkListener
 			for (Bundle b : bundles)
 			{
 				try {
-					//uninstall OSGI stuff
-					b.uninstall();
 					//and unregister it from internal maps
 					unregisterBundle(b);
+					//uninstall OSGI stuff
+					b.uninstall();					
 				} catch (BundleException e) {
 					logger.warning(this.getClass().getName()+"." +
 							"Error while uninstalling bundle!"+b.getSymbolicName());
 				}
 			}
 	}
+	
+	public void uninstallComponentTypeBundles() 
+	{
+			Bundle[] bundles = bundleContext.getBundles();
+			for (Bundle b : bundles)
+			{
+				if(bundlesToComponentTypesMap.containsKey(b)) {
+					try {
+						logger.info("Uninstalling bundle Id: "+b.getBundleId()+", symbolicName: "+b.getSymbolicName());
+						//and unregister it from internal maps
+						unregisterBundle(b);
+						//uninstall OSGI stuff
+						b.uninstall();
+					} catch (BundleException e) {
+						logger.warning(this.getClass().getName()+"." +
+								"Error while uninstalling bundle!"+b.getSymbolicName());
+					}
+				}
+			}
+	}
+	
 	
 	private void notifyAREEventListeners(AREEvent areEvent) 
 	{

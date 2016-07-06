@@ -144,24 +144,37 @@ public class AsapiSupport
 	 *
 	 * @return an array containing all available component types
 	 */
-	public String [] getAvailableComponentTypes() {	
-		//The method name indicates available (all components for the platform) but componentRepository.getInstalledComponentTypes()
-		//returns the currently installed ones.
-		final Set<IComponentType> componentTypeSet
-		= componentRepository.getInstalledComponentTypes();
+	public String [] getAvailableComponentTypes() {
+		try {
+			return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String[]>() {
 
-		if (componentTypeSet.size()==0)
-			logger.fine(this.getClass().getName()+".getAvailableComponentTypes:" 
-					+" No installed component types found!");
-		final String [] componentTypes = new String[componentTypeSet.size()];
+				@Override
+				public String[] call() throws Exception {		
 
-		int counter = 0;
-		for(final IComponentType componentType : componentTypeSet)
-		{
-			componentTypes[counter++] = componentType.getID();
-		}
+					//The method name indicates available (all components for the platform) but componentRepository.getInstalledComponentTypes()
+					//returns the currently installed ones, maybe should remove this method.
+					final Set<IComponentType> componentTypeSet
+					= componentRepository.getInstalledComponentTypes();
 
-		return componentTypes;
+					if (componentTypeSet.size()==0)
+						logger.fine(this.getClass().getName()+".getAvailableComponentTypes:" 
+								+" No installed component types found!");
+					final String [] componentTypes = new String[componentTypeSet.size()];
+
+					int counter = 0;
+					for(final IComponentType componentType : componentTypeSet)
+					{
+						componentTypes[counter++] = componentType.getID();
+					}
+
+					return componentTypes;
+				}
+			});
+
+		} catch (Exception e) {
+			logger.severe("Error in fetching installed componentType of ComponentRepository: "+e.getMessage());				
+		}		
+		return new String[0];
 	}	
 	
 	/**
@@ -198,30 +211,43 @@ public class AsapiSupport
 	 *
 	 * @return an xml string containing all the bundle descriptors (some parts of the descriptor are removed)
 	 * and null if an error has occurred.
+	 * @throws AREAsapiException 
 	 */
-	public String getComponentDescriptorsAsXml() {
-		String response = "";
-		
-		response += "<?xml version=\"1.0\"?>";
-		response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
-		
-		List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
-		for (Bundle bundle : bundleList)
-		{
-			URL bundleDescriptorURL = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-			if (bundleDescriptorURL!=null)
-			{
-				try {
-					response += getFormattedBundleDescriptorStringOfComponentTypeId(bundleDescriptorURL);
-				} catch (IOException e) {
-					//just logging (as 'getBundleDescriptors' function)
-					AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRiCS bundle descriptor for bundle: "+bundle.getBundleId());
+	public String getComponentDescriptorsAsXml() throws AREAsapiException {
+		try {
+			return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+
+				@Override
+				public String call() throws Exception {
+
+					String response = "";
+
+					response += "<?xml version=\"1.0\"?>";
+					response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
+
+					List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
+					for (Bundle bundle : bundleList)
+					{
+						URL bundleDescriptorURL = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+						if (bundleDescriptorURL!=null)
+						{
+							try {
+								response += getFormattedBundleDescriptorStringOfComponentTypeId(bundleDescriptorURL);
+							} catch (IOException e) {
+								//just logging (as 'getBundleDescriptors' function)
+								AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRiCS bundle descriptor for bundle: "+bundle.getBundleId());
+							}
+						}
+					}
+					response += "</componentTypes>";
+
+					return response;
 				}
-			}
-		}
-		response += "</componentTypes>";
-		
-		return response;
+			});
+		} catch (Exception e) {
+			logger.severe("Error in fetching installable bundle list: "+e.getMessage());
+			throw new AREAsapiException(e.getMessage());
+		}		
 	}
 	
 	
@@ -441,27 +467,39 @@ public class AsapiSupport
 	 * 
 	 * @throws AREAsapiException
 	 */
-	public List<String> getBundelDescriptors() throws AREAsapiException {		
-		List<String> res=new ArrayList<String>();
-		
-		List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
-		for (Bundle bundle : bundleList)
-		{
-			URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-			if (url!=null)
-			{
-				try {
-					res.add(convertXMLFileToString(url.openStream()));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					//throw (new AREAsapiException(e.getMessage()));
-					//keep it by just logging
-					//because we have to assume that several bundles are not supported for the platform
-					AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRICS bundle descriptor for bundle: "+bundle.getBundleId());
+	public List<String> getBundelDescriptors() throws AREAsapiException {	
+		try {
+			return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<List<String>>() {
+
+			@Override
+			public List<String> call() throws Exception {
+				List<String> res=new ArrayList<String>();
+								
+				List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
+				for (Bundle bundle : bundleList)
+				{				
+					URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+					if (url!=null)
+					{
+						try {
+							res.add(convertXMLFileToString(url.openStream()));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							//throw (new AREAsapiException(e.getMessage()));
+							//keep it by just logging
+							//because we have to assume that several bundles are not supported for the platform
+							AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRICS bundle descriptor for url: "+url);
+						}
+					}
 				}
+
+				return res;
 			}
+			});
+		} catch (Exception e) {
+			logger.severe("Error in fetching installable bundle list: "+e.getMessage());
+			throw new AREAsapiException(e.getMessage());
 		}
-		return res;
 	}
 
 	
