@@ -38,7 +38,7 @@ cp AsTeRICS/Documentation/ACS-Help/HTML/ACS_Help.chm AsTeRICS/ACS/
 rm -rf AsTeRICS/Documentation/ACS-Help
 rm -rf AsTeRICS/bin
 rm AsTeRICS/*.xml
-rm AsTeRICS/*.yml
+rm AsTeRICS/.*.yml
 rm AsTeRICS/Documentation/ModelGuides/*.doc
 rm AsTeRICS/Documentation/DIYGuides/*.doc
 rm AsTeRICS/Documentation/*.doc
