@@ -3,8 +3,6 @@ package eu.asterics.mw.are;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,9 +22,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
-import javax.print.attribute.standard.Severity;
-
-import org.apache.commons.io.FilenameUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -40,7 +35,6 @@ import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.DeploymentException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
-import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
 import eu.asterics.mw.are.parsers.ModelValidator;
 import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
@@ -523,13 +517,15 @@ public class BundleManager implements BundleListener, FrameworkListener
 		{
 			final Set<IComponentType> componentTypeSet
 			= bundlesToComponentTypesMap.get(bundle);
-			for(final IComponentType componentType : componentTypeSet)
-			{
-				componentTypeIDToBundle.remove(componentType.getID());
-				ComponentRepository.instance.uninstall(componentType);
+			if(componentTypeSet!=null) {
+				for(final IComponentType componentType : componentTypeSet)
+				{
+					componentTypeIDToBundle.remove(componentType.getID());
+					ComponentRepository.instance.uninstall(componentType);
 
-			}
+				}
 			bundlesToComponentTypesMap.remove(bundle);
+			}
 		}
 		catch (BundleManagementException bme)
 		{
