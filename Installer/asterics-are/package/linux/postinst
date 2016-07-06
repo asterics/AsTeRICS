@@ -30,10 +30,12 @@ case "$1" in
     echo $DPKG_MAINTSCRIPT_PACKAGE
         echo Adding shortcut to the menu
 
-		if [ -d "$APPPATH/../runtime" ]; then
+#In case of the asterics-are installer, we have a customized .desktop file.
+#If java is not embedded the start.sh file is used to start the program
+#		if [ -d "$APPPATH/../runtime" ]; then
 			echo "Creating desktop menu entry $APPNAME"
-        	xdg-desktop-menu install --novendor $APPINSTALLDIR/$APPNAME.desktop
-        fi
+        		xdg-desktop-menu install --novendor $APPINSTALLDIR/$APPNAME.desktop
+#	        fi
 
 
 		echo creating symlinks for models, profile and data folders to tmp folder
