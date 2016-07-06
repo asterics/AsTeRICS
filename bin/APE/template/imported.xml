@@ -33,6 +33,16 @@
 	</condition>
 	
 	<!-- the build platform is actually also the target platform, so we can differ the services files configuration -->
+	<condition property="APE.isWindows">
+		<os family="windows" />
+	</condition>
+	<condition property="APE.isLinux">
+		<os family="unix" />
+	</condition>
+	<condition property="APE.isMacOSX">
+		<os family="mac" />
+	</condition>
+		
 	<condition property="APE.targetOS" value="windows">
 		<os family="windows" />
 	</condition>
