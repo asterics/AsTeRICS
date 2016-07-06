@@ -21,7 +21,6 @@ rm -r AsTeRICS/Android/AsTeRICSPhoneServer
 cd AsTeRICS
 call ant buildAll
 cd ..
-cd ..
 rm AsTeRICS/ReadMe.md
 rm -r AsTeRICS/ACS
 rm -r AsTeRICS/ARE
