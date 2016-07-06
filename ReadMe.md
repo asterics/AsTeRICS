@@ -13,9 +13,10 @@ Possible applications are
 * Android Phone support (SMS, calls)
 * and many more!
 
-Check out our [**Demos**](http://asterics.github.io/AsTeRICS/demos.html)
-
 For more information see our website http://www.asterics.eu.
+
+## Demos
+Check out our demos [here](http://asterics.github.io/AsTeRICS/demos.html)
 
 ## Quick Build Instructions for Windows
 If you just want to use the current snapshot.
@@ -56,17 +57,23 @@ If you want to contribute to the AsTeRICS project, have questions or just need h
 This project has been partly funded by the European Commission,  Grant Agreement Number 247730 in the years 2010-2012.
 Since 2013, further development of AsTeRICS software and hardware components is hosted at:  https://github.com/asterics/AsTeRICS
 
-If not otherwise mentioned, the AsTeRICS source code is released under the following licenses:
+#### ACS and NativeASAPI libraries
+Licensed under LGPL (http://www.gnu.org/licenses/lgpl.html)
 
-  * ACS and NativeASAPI libraries under LGPL (http://www.gnu.org/licenses/lgpl.html)
-  * ARE-middleware, ARE-plugins and BNCI Suite under GPL (http://www.gnu.org/licenses/gpl.html)
+#### ARE-middleware, ARE-plugins, services and BNCI Suite
+Licensed under a dual license [MIT or GPL with CLASSPATH exception](ARE-LICENSE_MITOrGPLv3WithException.txt)
 
-For a detailed description of the utilized 3rd party libraries and the implications of use,
-please refer to the file "Licenses.pdf" in the folder "Documentation".
+##### How to apply the dual licensing
+
+You may use these components under the terms of the MIT License, if no source code (plugins, services, libraries, ...) which is contained in your desired collection of ARE plugins and services is licensed under the GNU General Public License (GPL).
+In order for that, you can remove unneeded plugins or services.
+
+Please have a look at the individual licenses of the AsTeRICS plugins and services. You find the license files in the subfolder LICENSE of every plugin.
+
+## Disclaimer
 
 This software is provided 'as-is', without any express or implied warranty. 
 In no event will the authors be held liable for any damages arising from the use of this software. See [DISCLAIMER] (DISCLAIMER.TXT)
 
 ##Releases
-See [Release Notes] (RELEASE_NOTES.txt) 
-
+See [Release Notes] (RELEASE_NOTES.txt) and the published [releases](https://github.com/asterics/AsTeRICS/releases)
