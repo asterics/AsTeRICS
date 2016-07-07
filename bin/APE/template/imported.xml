@@ -159,10 +159,23 @@
 		<!-- Finally, rename the outfile in the case of APE.embedJava=true.
 		This is a dirty solution but it is needed because the fx:deploy.outfile attribute does not work as expected
 		-->
+
+		<subant target="make-installer-only-windows" buildpath="." antfile="build.xml"/>
+		<subant target="make-installer-only-linux" buildpath="." antfile="build.xml"/>
+		<subant target="make-installer-only-macosx" buildpath="." antfile="build.xml"/>
+
+	</target>
+
+	<target name="make-installer-only-windows" if="APE.isWindows">
 		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.exe" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.exe"/>
 		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.msi" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.msi"/>
+	</target>
+
+	<target name="make-installer-only-linux" if="APE.isLinux">
 		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.deb" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.deb"/>
 		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}-1.i386.rpm" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}-1.i386.rpm"/>
+	</target>
+	<target name="make-installer-only-macosx" if="APE.isMacOSX">
 		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.dmg" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.dmg"/>
 		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.pkg" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.pkg"/>		
 	</target>
@@ -172,6 +185,8 @@
 		<java jar="${APE.baseURI}/APE.jar" fork="true">
 			<sysproperty key="APE.projectDir" value="${basedir}"/>	
 		</java>	
-			
+		<!-- fix cr and lf and set execution permissions -->
+		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
+		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx"/>			
 	</target>
 </project>
