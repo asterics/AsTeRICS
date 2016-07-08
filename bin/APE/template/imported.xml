@@ -37,7 +37,12 @@
 		<os family="windows" />
 	</condition>
 	<condition property="APE.isLinux">
-		<os family="unix" />
+		<and>
+			<os family="unix" />
+			<not>
+				<os family="mac"/>
+			</not>
+		</and>
 	</condition>
 	<condition property="APE.isMacOSX">
 		<os family="mac" />
@@ -47,7 +52,12 @@
 		<os family="windows" />
 	</condition>
 	<condition property="APE.targetOS" value="linux">
-		<os family="unix" />
+		<and>
+			<os family="unix" />
+			<not>
+				<os family="mac"/>
+			</not>
+		</and>
 	</condition>
 	<condition property="APE.targetOS" value="macosx">
 		<os family="mac" />
