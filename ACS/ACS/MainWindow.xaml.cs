@@ -1367,9 +1367,8 @@ namespace Asterics.ACS {
                 storageDialog.Title = Properties.Resources.LoadModelFromStorageButton;
                 storageDialog.Owner = this;
                 storageDialog.filenameTextbox.IsEnabled = false;
-                storageDialog.ShowDialog();
 
-                if (storageDialog.filenameTextbox.Text != null && storageDialog.filenameTextbox.Text != "") {
+                if (storageDialog.ShowDialog() == true) {
                     try {
                         string storedModel = asapiClient.getModelFromFile(storageDialog.filenameTextbox.Text);
 

@@ -40,7 +40,7 @@
         <ListBox Height="159" HorizontalAlignment="Left" Margin="37,46,0,0" Name="filenameListbox" VerticalAlignment="Top" Width="316" AutomationProperties.Name="{x:Static properties:Resources.StorageDialogHeading}" />
         <Label Content="{x:Static properties:Resources.StorageDialogFilename}" Height="28" HorizontalAlignment="Left" Margin="37,227,0,0" Name="modelNameLabel" VerticalAlignment="Top" Width="171" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="37,251,0,0" Name="filenameTextbox" VerticalAlignment="Top" Width="234" KeyDown="filenameTextbox_KeyDown" AutomationProperties.Name="{x:Static properties:Resources.StorageDialogFilename}"/>
-        <Button Content="{x:Static properties:Resources.OkButton}" Height="23" HorizontalAlignment="Left" Margin="188,301,0,0" Name="okButton" VerticalAlignment="Top" Width="75" Click="okButton_Click" />
+        <Button Content="{x:Static properties:Resources.OkButton}" Height="23" HorizontalAlignment="Left" Margin="188,301,0,0" Name="okButton" VerticalAlignment="Top" Width="75" Click="okButton_Click" IsDefault="True" />
         <Button Content="{x:Static properties:Resources.CancelButton}" Height="23" HorizontalAlignment="Left" Margin="278,0,0,31" Name="cancelButton" VerticalAlignment="Bottom" Width="75" IsCancel="True" Click="cancelButton_Click" />
     </Grid>
 </Window>
