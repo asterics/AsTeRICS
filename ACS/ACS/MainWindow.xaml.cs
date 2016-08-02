@@ -3637,8 +3637,8 @@ namespace Asterics.ACS {
             // if the ACS is connected to the ARE, th status of the component will be requested
             // otherwise, the status from earlier requests will be shown
             try {
-                if ((areStatus.Status == AREStatus.ConnectionStatus.Connected) || (areStatus.Status == AREStatus.ConnectionStatus.Synchronised)) {
-                    List<StatusObject> newStatus = asapiClient.QueryStatus(false);
+                if ((areStatus.Status == AREStatus.ConnectionStatus.Connected) || (areStatus.Status == AREStatus.ConnectionStatus.Synchronised) || (areStatus.Status == AREStatus.ConnectionStatus.Running)) {
+                    List<StatusObject> newStatus = asapiClient.QueryStatus(true);
                     if (newStatus.Count > 0) {
                         foreach (StatusObject so in newStatus) {
                             statusList.Add(so);
