@@ -249,7 +249,7 @@
 			}
 						
 			function START_successCallback(data, HTTPstatus) { alert(data); }
-			function START_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			function START_errorCallback(HTTPstatus, AREerrorMessage) { alert('Model could not be started\n'+AREerrorMessage); }
 						
 			
 			//stopModel
@@ -290,7 +290,7 @@
 			
 			function DepMF_Empty_successCallback(data, HTTPstatus) { }
 			function DepMF_successCallback(data, HTTPstatus) { alert(data); }
-			function DepMF_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			function DepMF_errorCallback(HTTPstatus, AREerrorMessage) { alert('Model could not be deployed\n'+AREerrorMessage); }
 			
 
 			//deleteModelFromFile
@@ -484,11 +484,11 @@ Download and install the demo release for your platform and start it. If you cho
 <p>
 <p>You can open the demo files with the <strong>"Choose a new model"</strong> button in the control panel of the ARE GUI. <!-- or you can go to the demo description below and start the demo by clicking on the respective button.--> Some demos require <strong>additional SW or HW</strong>. The letters <strong>W (Windows), L (Linux), M (Mac)</strong> indicate the supported platforms for a demo.
 <p>
-<strong>Note:<strong> 
+<strong>Note:</strong> 
 <p>
 
 <ul>
-<li>Press F7 to stop a demo model, in case it takes over mouse control.</li>
+<li><strong>Press F7 to stop</strong> a demo model, in case it takes over mouse control.</li>
 <li>Right click on the ARE GUI background to toggle visibility of control panel.</li>
 </ul>
 
@@ -504,6 +504,9 @@ Download and install the demo release for your platform and start it. If you cho
 <img src="images/CameraInput/facetrackerLK-videoframe.png" alt="Video frame showing face with tracked nose and chin"/>
 <img src="images/CameraInput/facetrackermouse.PNG" alt="GUI with buttons and slider"/>
 </div>
+<p>
+<button onclick="DepMFAndStart('CameraInput/FacetrackerLK/FacetrackerLK-FacetrackerMouse-no-osk(W).acs')" class="button">Deploy and Start demo</button>
+<p>
 <h4>Requirements</h4>Integrated Webcam or USB camera. OS: Windows
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/FacetrackerLK.htm">FacetrackerLK</a>
 
@@ -514,6 +517,9 @@ Download and install the demo release for your platform and start it. If you cho
 <div>
 <img src="images/CameraInput/TobiiEyeX-panel.png" alt="User interface with big buttons for eye control."/>
 </div>
+<p>
+<button onclick="DepMFAndStart('CameraInput/TobiiEyeX/TobiiEyeX-homecontrol_simulated(W).acs')" class="button">Deploy and Start demo</button>
+<p>
 <h4>Requirements</h4><a href="http://www.tobii.com/xperience/developer/">Tobii EyeX eyetracker</a> and installed SDK. OS: Windows
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/EyeX.htm">EyeX</a>
 
@@ -526,6 +532,9 @@ Download and install the demo release for your platform and start it. If you cho
 <img src="images/CameraInput/facetrackerLK-videoframe.png" alt="Video frame showing face with tracked nose and chin"/>
 <img src="images/CameraInput/facetrackermouse.PNG" alt="GUI with buttons and slider"/>
 </div>
+<p>
+<button onclick="DepMFAndStart('CameraInput/XFacetrackerLK/XFaceTrackerMouse-no-osk(WLM).acs')" class="button">Deploy and Start demo</button>
+<p>
 <h4>Requirements</h4>Integrated Webcam or USB camera. OS: Windows, Linux, Mac OSX
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/XFacetrackerLK.htm">XFacetrackerLK</a>
 
@@ -541,6 +550,12 @@ Download and install the demo release for your platform and start it. If you cho
 <img src="images/BioelectricSignal/IIRFilter-Bandpass.PNG" alt="Sine signal visualized in oscilloscope widget"/>
 <img src="images/BioelectricSignal/IIRFilter-ReadEDF.PNG" alt="Sine signal visualized in oscilloscope widget"/>
 </div>
+<p>
+<button onclick="DepMFAndStart('BioelectricSignal/IIRFilter/IIRFilter-Bandpass(WLM).acs')" class="button">Deploy and Start IIRFilter-Bandpass</button>
+<p>
+<p>
+<button onclick="DepMFAndStart('BioelectricSignal/IIRFilter/IIRFilter-ReadEDFdata(WLM).acs')" class="button">Deploy and Start IIRFilter-ReadEDFdata</button>
+<p>
 <h4>Requirements</h4>OS: Windows, Linux, Mac OSX
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/processors/IIRFilter.htm">IIRFilter</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/MidiPlayer.htm">MidiPlayer</a>
 
@@ -549,12 +564,14 @@ Download and install the demo release for your platform and start it. If you cho
 
 <h3><a id="SmartHomeIntegrated" class="anchor" href="#SmartHomeIntegrated" aria-hidden="true"><span class="octicon octicon-link"></span></a>User interface for <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/SmartHomeIntegration">Smart Home</a></h3>
 <h4>Objective</h4>This demo shows a user interface for a Smart Home environment integrating several technologies.
-<h4>Description</h4>The user interface can either be operated by scanning (press space for selection), mouse or camera mouse (head movement). There are submenus demonstrating remote control of TV, HiFi device, DVD player, Lights and Heating. If you select a button the action command sent to the respective device is shown in the "Debug output" window. Additionally the camera mouse (CameraMouse button) can be activated and deactivated and an onscreen keyboard (Keyboard button) can be started.
+<h4>Description</h4>The user interface can either be operated by scanning (press space for selection), mouse or camera mouse (head movement). There are submenus demonstrating remote control of TV, HiFi device, DVD player, Lights and Heating. If you select a button the action command sent to the respective device is shown in the "Debug output" window. Additionally the camera mouse (CameraMouse button) can be activated and deactivated and an onscreen keyboard (Keyboard button) can be started. There are some more demos in the subfolders for enOcean, KNX and FS20 environmental control technologies.
 <p>
-
 <div>
 <img src="images/SmartHomeIntegration/SmartHomeIntegrated-Home.PNG" alt="User interface for Smart Home environment"/>
 </div>
+<p>
+<button onclick="DepMFAndStart('SmartHomeIntegration/SmartHome-Integrated(W).acs')" class="button">Deploy and Start Demo</button>
+<p>
 <h4>Requirements</h4>Integrated Webcam or USB camera, <a href="http://www.knx.org/knx-en/index.php">KNX HW and configured KNX router</a> and <a href="http://www.irtrans.de">IRTrans</a>. OS: Windows
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/FacetrackerLK.htm">FacetrackerLK</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/KNX.htm">KNX</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/IRTrans.htm">IRTrans</a>
 
@@ -570,7 +587,7 @@ Download and install the demo release for your platform and start it. If you cho
 </div>
 <div id="gPanel" align="vertical">
 <p>
-<button onclick="connectToWebsocket()">Connect to websocket</button>
+<button onclick="DepMFAndStart('NetworkIO/WebSocket/WebSocket-SignalGeneratorDemo(WLM).acs');connectToWebsocket();" class="button">Deploy and Start demo</button>
 <p>
 <div align="horizontal">
 Websocket: <div id="output"/>

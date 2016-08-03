@@ -57,15 +57,23 @@ function Map() {
 		}
 	}
 	
+	this.keySet = function () {
+		var keys = [];
+		i = 0;
+		for (keys[i++] in this.map) {}
+		
+		return keys;
+	}
+	
 }
 
 	
-	/*
-	for (var key in _map) {
-		if (_map.hasOwnProperty(key)) {
-			if (key == newKey) {
-				_map[key] = newValue;
-			}
+/*
+for (var key in _map) {
+	if (_map.hasOwnProperty(key)) {
+		if (key == newKey) {
+			_map[key] = newValue;
 		}
-	}*/
+	}
+}*/
 
