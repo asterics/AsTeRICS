@@ -3,8 +3,8 @@
 The APE let's you select a set of AsTeRICS model files and create a downstripped (minimum size) version of the ARE including plugins, configuration files and data files to execute the models. Optionally, the APE allows the creation of native installers for Windows, Linux incl. Raspberry Pi and Mac OSX using [JavaFX packaging technology](http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGIBBCI).
 
 ## APE consists of two major elements
-* **APE-copy command line tool**: a commandine tool to create a downstripped version of the ARE based on provided model files
-* **Build infrastructure**: a [template](template) project directory including an [ant](https://ant.apache.org/) build file and a property file [```APE.properties```](template/APE.properties). The build file contains the target ```ant APE-copy``` which provides the functionality of the APE-copy commandline tool and the target ```APE deploy``` to trigger the creation of **native installer** and  **native launcher** for a dedicated target platform.
+* [**APE-copy command line tool**](#ape-copy-commandline-tool): a commandine tool to create a downstripped version of the ARE based on provided model files
+* [**Build infrastructure**](#build-infrastructure-and-native-installer-creation): a [template](template) project directory including an [ant](https://ant.apache.org/) build file and a property file [```APE.properties```](template/APE.properties). The build file contains the target ```ant APE-copy``` which provides the functionality of the APE-copy commandline tool and the target ```APE deploy``` to trigger the creation of **native installer** and  **native launcher** for a dedicated target platform.
 
 ## Important Terms
 The term ```APE.baseURI``` refers to the location of ```APE.jar``` and the ```APE-copy``` command, which is in the folder ```APE``` parallel to the ```ARE``` folder of an AsTeRICS installation. The ```APE.baseURI``` folder also contains the build infrastructure to create the native installers and contains the default project directory (```APE.projectDir=<APE.baseURI>/defProjectDir```) and the default build directory (```APE.buildDir=<APE.baseURI>/defProjectDir/build```). ```APE.models``` refers to file and directory paths containing model files to use. Finally, ```ARE.baseURI``` refers to the location of the ARE that is used as the source for the extracted ARE versions.
@@ -17,11 +17,11 @@ To start APE-copy, call
 APE-copy[.bat|.sh] -DAPE.models=<paths to model files or folder (seperated by ;)> [[-DAPE.buildDir=<Path to build folder>] [-DARE.baseURI=<Path to ARE installation>] [-DAPE.projectDir=<Path of project folder to use] [-DAPE.logLevel=[FINE|INFO|WARNING|SEVERE]]
 ```
 Relative paths are resolved against the current working directoy (CWD).
-* **APE.models**: Provide a semicolon (;) seperated list of model files or folder. Relative and absolute paths can be mixed where relative paths are resolved against the CWD. By default, the directroy ```APE.projectDir/custom/bin/ARE/models``` is automatically added to the parameter.
+* **APE.models**: Provide a semicolon (;) seperated list of model files or folder. Relative and absolute paths can be mixed where relative paths are resolved against the CWD. By default, the directroy ```<APE.projectDir>/custom/bin/ARE/models``` is automatically added to the parameter.
 * **APE.buildDir**: The path to the build (output) folder. The downsized ARE is copied to that folder. The path can be relative or absolute where a relative path is resolved against the CWD. By default, the ```build``` subfolder of the project directory (```APE.projectDir```) is used.
 * **ARE.baseURI**: The path to the ARE installation. This can be the path to the ```bin/ARE``` folder of a development version (cloned git repository) or the ```ARE``` path of an installed AsTeRICS release (>= 2.8). The path can be relative or absolute where a relative path is resolved against the CWD. By default, the parallel ```ARE`` folder is used.
 * **APE.projectDir**: The path of the project directory to use. If the directory does not exist it is automatically created by copying the ```template``` directory to the project directory. The given project directory must contain the ```APE.properties``` file, which contains default project-specific property values that can be overridden by the commandline switches of APE-copy. Additionally, the files and resources in the subfolder ```custom``` are finally copied to the target build directory (```APE.buildDir```). Read more about [customization of the ARE] here. By default, the project directory ```APE.projectDir=<APE.baseURI>/defProjectDir``` is used.
-* **APE.logLevel**: You can specify the verbosity of the console output of the APE-copy command. Additionally, the log messages of the command execution are logged to the ```APE.projectDir/tmp```
+* **APE.logLevel**: You can specify the verbosity of the console output of the APE-copy command. Additionally, the log messages of the command execution are logged to the ```<APE.projectDir>/tmp```
 
 ### Example usages of the APE-copy commandline tool
 
@@ -47,7 +47,7 @@ cd <ARE.baseURI>
 ```
 
 #### One model file, custom build folder
-You can specify a custom build folder with the property _APE.buildDir_
+You can specify a custom build folder with the property ```APE.buildDir```
 
 ```
 cd <ARE.baseURI>
@@ -60,7 +60,7 @@ The tool APE-copy is only used to copy the required resources for a given model 
 
 * configure the properties for APE-copy and the creation of native installers in a single file (```<APE.projectDir>/APE.properties```)
 * replace single files/resources (images, model files, component and services jars and the respective configurations,...) of the ARE installation with custom files of the folder ```<APE.projectDir>/custom```
-* customize the installer creation by providing drop-in resources and installer-specific files in the folder ```<APE.projectDir>/package/linux``` and ```<APE.projectDir>/package/windows```
+* customize the installer creation by providing drop-in resources and installer-specific files in the folder ```<APE.projectDir>/package/linux```, ```<APE.projectDir>/package/windows``` or ```<APE.projectDir>/package/macosx```
 * trigger the creation of a native installer by using the provided ant build file at ```<APE.projectDir>/build.xml```
 
 ### Example usages of the build infrastructure
@@ -88,7 +88,7 @@ By default all supported installer types for the currently running platform are 
 
 #### One model file, Linux debian package
 
-### Properties for copying/packaging behaviour of APE (file: APE.properties)
+### Properties for copying/packaging behaviour of APE
 
 **TODO**
 
