@@ -131,7 +131,7 @@ ant deploy
 By default, all supported installer types for the currently running platform are created and stored at ```<APE.buildDir>/deploy/bundles```
 This can be changed by setting the property ```fx.deploy.nativeBundles``` to another value like ```deb```. On Linux, although also a .rpm package could be created by JavaFX packaging technology, APE only supports debian packages because the ARE needs some postinstall and prerm operations in order to run on Linux. 
 
-### One model file, Mac OSX dmg installer
+#### One model file, Mac OSX dmg installer
 Run one of the above examples on Mac OSX to create a .dmg installer. The .dmg packaging dependencies should already be contained in your Mac OSX version.
 
 ### Properties for copying/extraction behaviour of APE
@@ -155,7 +155,7 @@ To change the behaviour of the installer creation, consider the following proper
 The ARE can be customized by replacing single files/resources (images, model files, component and services jars and the respective configurations,...) of the ARE installation with custom files of the folder ```<APE.projectDir>/custom/bin/ARE```. You only must ensure to use the same relative file paths.
 
 #### Skipping non-used ARE services
-If you want to exclude some of the ARE services (e.g. javacv*.jar or cimcommunication*.jar), simply copy the services configuration files of ```<ARE.baseURI>/profile/*.ini``` to the ```<APE.projectDir>/custom/bin/ARE/profile``` folder and edit them. You can exclude a service by commenting it out (prepending #) in the respective .ini file.
+If you want to exclude some of the ARE services (e.g. ```javacv-*.jar``` or ```cimcommunication*```.jar), simply copy the services configuration files of ```<ARE.baseURI>/profile/*.ini``` to the ```<APE.projectDir>/custom/bin/ARE/profile``` folder and edit them. You can exclude a service by commenting it out (prepending #) in the respective .ini file.
 
 ### Installer customization
 If you want to customize installer-specific configuration files (.e.g .iss for .exe installer) or add your own application icon. Use the respective platform-specific subfolder in the [package](template/package) folder. There you can place replacement files for the default ones. To find out the supported files, that can be replaced, enable verbosity by setting ```fx.deploy.verbose=true``` in the [```APE.properties```](template/APE.properties) file.
