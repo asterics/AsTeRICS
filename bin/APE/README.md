@@ -9,7 +9,17 @@ The APE let's you select a set of AsTeRICS model files and create a downstripped
 ## Important Terms
 The term ```APE.baseURI``` refers to the location of ```APE.jar``` and the ```APE-copy``` command, which is in the folder ```APE``` parallel to the ```ARE``` folder of an AsTeRICS installation. The ```APE.baseURI``` folder also contains the build infrastructure to create the native installers and contains the default project directory (```APE.projectDir=<APE.baseURI>/defProjectDir```) and the default build directory (```APE.buildDir=<APE.baseURI>/defProjectDir/build```). ```APE.models``` refers to file and directory paths containing model files to use. Finally, ```ARE.baseURI``` refers to the location of the ARE that is used as the source for the extracted ARE versions.
 
+## Dependencies
+The commandline tool APE-copy only needs a Java Runtime Environment. In order to use the ant build targets and create native installers you also need **ant** and a **Java Development Kit 8**.
+
+* Install the [**Java Development Kit 8 (32-bit)**] (http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+  * Verify the java installation by opening a command shell and entering ```javac -version```. In case of trouble, ensure to set “JAVA_HOME” to the folder where you installed the Java JDK and add the JDK bin path to the Environment Variable “Path”
+* Install the [**apache ant build framework (version >= 1.9.1)**] (http://ant.apache.org/bindownload.cgi)
+  * Ensure to set “ANT_HOME” to the folder where you installed ant and add the ant bin path to the Environment Variable “Path”
+* __Only for native installer creation__: Install installer-specific toolkits like [InnoSetup >= 5] (http://www.jrsoftware.org/isdl.php) (.exe), [WiX toolset >= 3.0](http://wixtoolset.org/) (.msi) or [debian packaging tools] (https://wiki.debian.org/PackageManagement) (.deb) depending on the required target platform. You must run the installer build process on the target platform of the installer. For more details, read the [JavaFX packaging tutorial] (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#A1324980) 
+
 ## APE-copy commandline tool
+Check the [dependencies](#Dependencies) before you start.
 
 To start APE-copy, call
 
@@ -63,21 +73,28 @@ The tool APE-copy is only used to copy the required resources for a given model 
 * customize the installer creation by providing drop-in resources and installer-specific files in the folder ```<APE.projectDir>/package/linux```, ```<APE.projectDir>/package/windows``` or ```<APE.projectDir>/package/macosx```
 * trigger the creation of a native installer by using the provided ant build file at ```<APE.projectDir>/build.xml```
 
+### General workflow for using the build infrastructure
+
+If you want to start a new project based on AsTeRICS functionality, you would normally
+
+1. Use the subfolder ```defProjectDir``` directly or copy the [template](template) project directory to your project repository location.
+2. Edit [```APE.properties```](template/APE.properties) and set the location of the AsTeRICS ARE (```ARE.baseURI```) to use for APE-copy. You only have to set ```ARE.baseURI``` if you use a project directory not within the AsTeRICS APE directory.
+3. Create your AsTeRICS solution and save all needed resources (model files, images, configuration files,...) to the ```custom/bin/ARE``` folder.
+4. Call ```ant APE-copy``` to create the extracted ARE solution or ```ant deploy``` to create a native installer for a certain target platform
+
+Many Integrated Development Environments (IDE) like Eclipse support the ant build system. So you can use your favourite IDE to edit and build the project.
+
 ### Example usages of the build infrastructure
 
-The build infrastructure has the following prerequisites:
-* [Java Development Kit 8] (http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-* [Ant build system >= 1.9.2] (http://ant.apache.org/bindownload.cgi)
-* Installer specific toolkits like Inno Setup, WiX toolset or debian packaging tools
+Check the [dependencies](#Dependencies) before you start.
+
+#### One model file, ant APE-copy
 
 #### One model file, windows .exe installer
 
-**Prerequisites**:
-* [Java Development Kit 8] (http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-* [Ant build system >= 1.9.2] (http://ant.apache.org/bindownload.cgi)
-* [InnoSetup >= 5] (http://www.jrsoftware.org/isdl.php)
+* To create a native .exe installer [InnoSetup >= 5] (http://www.jrsoftware.org/isdl.php) must be installed and the build process must be run on a Windows system.
 
-To create an .exe installer of the model file ```<ARE.baseURI>/models/ImageDemo.acs``` copy the model file to the location ```<APE.projectDir>/custom/bin/ARE/models``` or edit the _APE.models_ property in the file ```<APE.projectDir>/APE.properties```. Then execute the following commands:
+To create an .exe installer of the model file ```<ARE.baseURI>/models/ImageDemo.acs``` **copy the model file** to the location ```<APE.projectDir>/custom/bin/ARE/models``` or edit the _APE.models_ property in the file ```<APE.projectDir>/APE.properties```. Then execute the following commands:
 
 ```
 cd <APE.projectDir>
