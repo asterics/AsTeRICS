@@ -134,22 +134,30 @@ This can be changed by setting the property ```fx.deploy.nativeBundles``` to ano
 ### One model file, Mac OSX dmg installer
 Run one of the above examples on Mac OSX to create a .dmg installer. The .dmg packaging dependencies should already be contained in your Mac OSX version.
 
-### Properties for copying/packaging behaviour of APE
+### Properties for copying/extraction behaviour of APE
 
 To change the behaviour of the ARE extraction with APE-copy, edit the following properties of [APE.properties](template/APE.properties)
 
-* APE.models: Defines model files and folder containing model files to use
-* APE.dataCopyMode: Define if all the data files of the ```<ARE.baseURI>/data``` folder should be copied or just some.
-* APE.servicesFiles: Define if optional service configuration files should be used.
+* ``APE.models```: Defines model files and folder containing model files to use
+* ```APE.dataCopyMode```: Define if all the data files of the ```<ARE.baseURI>/data``` folder should be copied or just some.
+* ```APE.servicesFiles```: Define if optional service configuration files should be used.
 
 ### Properties for installer creation
 
+The provided build files only support a subset of the whole functionality of [JavaFX packaging](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/javafx_ant_task_reference.html).
 To change the behaviour of the installer creation, consider the following properties in [APE.properties](template/APE.properties)
-* fx.deploy.nativeBundles: To define installer type to create
-* fx.application.* and fx.info.*: To describe meta information of your application
-* fx.preferences.*: To define the desktop integration of the application
-* APE.embedJava and fx.platform.basedir: To embed a Java Runtime Environment into your native installer. The embedded java is linked to the native application launcher. If it is not embedded the default system java is used.
+* ```fx.deploy.nativeBundles```: To define installer type to create
+* ```fx.application.*``` and ```fx.info.*```: To describe meta information of your application
+* ```fx.preferences.*```: To define the desktop integration of the application
+* ```APE.embedJava``` and ```fx.platform.basedir```: To embed a Java Runtime Environment into your native installer. The embedded java is linked to the native application launcher. If it is not embedded the default system java is used (only on Windows and Mac OSX).
 
-## ARE customization
+### ARE customization
+The ARE can be customized by replacing single files/resources (images, model files, component and services jars and the respective configurations,...) of the ARE installation with custom files of the folder ```<APE.projectDir>/custom/bin/ARE```. You only must ensure to use the same relative file paths.
 
-## Installer customization
+#### Skipping non-used ARE services
+If you want to exclude some of the ARE services (e.g. javacv*.jar or cimcommunication*.jar), simply copy the services configuration files of ```<ARE.baseURI>/profile/*.ini``` to the ```<APE.projectDir>/custom/bin/ARE/profile``` folder and edit them. You can exclude a service by commenting it out (prepending #) in the respective .ini file.
+
+### Installer customization
+If you want to customize installer-specific configuration files (.e.g .iss for .exe installer) or add your own application icon. Use the respective platform-specific subfolder in the [package](template/package) folder. There you can place replacement files for the default ones. To find out the supported files, that can be replaced, enable verbosity by setting ```fx.deploy.verbose=true``` in the [```APE.properties```](template/APE.properties) file.
+
+If you want to know more, read [Customizing the Package Using Drop-In Resources](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB).
