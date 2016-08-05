@@ -105,7 +105,7 @@ start.bat
 
 #### One model file, windows .exe installer
 
-* To create a native .exe installer [InnoSetup >= 5] (http://www.jrsoftware.org/isdl.php) must be installed and the build process must be run on a Windows system.
+To create a native .exe installer [InnoSetup >= 5] (http://www.jrsoftware.org/isdl.php) must be installed and the build process must be run on a Windows system.
 
 Copy the model file ```<ARE.baseURI>/models/ImageDemo.acs``` to the location ```<APE.projectDir>/custom/bin/ARE/models``` or edit the ```APE.models``` property in the file ```<APE.projectDir>/APE.properties```. Then execute the following commands:
 
@@ -119,7 +119,7 @@ This can be changed by setting the property ```fx.deploy.nativeBundles``` to ano
 
 #### One model file, Linux debian package
 
-* To create a debian installer the [debian packaging tools] (https://wiki.debian.org/PackageManagement) must be installed and the build process must be run on a debian-based Linux.
+To create a debian installer the [debian packaging tools] (https://wiki.debian.org/PackageManagement) must be installed and the build process must be run on a debian-based Linux.
 
 Copy the model file ```<ARE.baseURI>/models/ImageDemo.acs``` to the location ```<APE.projectDir>/custom/bin/ARE/models``` or edit the ```APE.models``` property in the file ```<APE.projectDir>/APE.properties```. Then execute the following commands:
 
@@ -131,11 +131,24 @@ ant deploy
 By default, all supported installer types for the currently running platform are created and stored at ```<APE.buildDir>/deploy/bundles```
 This can be changed by setting the property ```fx.deploy.nativeBundles``` to another value like ```deb```. On Linux, although also a .rpm package could be created by JavaFX packaging technology, APE only supports debian packages because the ARE needs some postinstall and prerm operations in order to run on Linux. 
 
+### One model file, Mac OSX dmg installer
+Run one of the above examples on Mac OSX to create a .dmg installer. The .dmg packaging dependencies should already be contained in your Mac OSX version.
+
 ### Properties for copying/packaging behaviour of APE
 
+To change the behaviour of the ARE extraction with APE-copy, edit the following properties of [APE.properties](template/APE.properties)
 
+* APE.models: Defines model files and folder containing model files to use
+* APE.dataCopyMode: Define if all the data files of the ```<ARE.baseURI>/data``` folder should be copied or just some.
+* APE.servicesFiles: Define if optional service configuration files should be used.
 
 ### Properties for installer creation
+
+To change the behaviour of the installer creation, consider the following properties in [APE.properties](template/APE.properties)
+* fx.deploy.nativeBundles: To define installer type to create
+* fx.application.* and fx.info.*: To describe meta information of your application
+* fx.preferences.*: To define the desktop integration of the application
+* APE.embedJava and fx.platform.basedir: To embed a Java Runtime Environment into your native installer. The embedded java is linked to the native application launcher. If it is not embedded the default system java is used.
 
 ## ARE customization
 
