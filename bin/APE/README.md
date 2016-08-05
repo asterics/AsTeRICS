@@ -19,7 +19,7 @@ The commandline tool APE-copy only needs a Java Runtime Environment. In order to
 * __Only for native installer creation__: Install installer-specific toolkits like [InnoSetup >= 5] (http://www.jrsoftware.org/isdl.php) (.exe), [WiX toolset >= 3.0](http://wixtoolset.org/) (.msi) or [debian packaging tools] (https://wiki.debian.org/PackageManagement) (.deb) depending on the required target platform. You must run the installer build process on the target platform of the installer. For more details, read the [JavaFX packaging tutorial] (https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#A1324980) 
 
 ## APE-copy commandline tool
-Check the [dependencies](#Dependencies) before you start.
+Check the [dependencies](#dependencies) before you start.
 
 To start APE-copy, call
 
@@ -86,28 +86,54 @@ Many Integrated Development Environments (IDE) like Eclipse support the ant buil
 
 ### Example usages of the build infrastructure
 
-Check the [dependencies](#Dependencies) before you start.
+Check the [dependencies](#dependencies) before you start.
 
 #### One model file, ant APE-copy
+
+Copy the model file ```<ARE.baseURI>/models/ImageDemo.acs``` to the location ```<APE.projectDir>/custom/bin/ARE/models``` or edit the ```APE.models``` property in the file ```<APE.projectDir>/APE.properties```. Then execute the following commands:
+
+```
+cd <APE.projectDir>
+ant APE-copy
+```
+
+The extracted ARE version can be found at ```<APE.buildDir>/build/merged/```, to test it, execute
+```
+cd build/merged/bin/ARE
+start.bat
+```
 
 #### One model file, windows .exe installer
 
 * To create a native .exe installer [InnoSetup >= 5] (http://www.jrsoftware.org/isdl.php) must be installed and the build process must be run on a Windows system.
 
-To create an .exe installer of the model file ```<ARE.baseURI>/models/ImageDemo.acs``` **copy the model file** to the location ```<APE.projectDir>/custom/bin/ARE/models``` or edit the _APE.models_ property in the file ```<APE.projectDir>/APE.properties```. Then execute the following commands:
+Copy the model file ```<ARE.baseURI>/models/ImageDemo.acs``` to the location ```<APE.projectDir>/custom/bin/ARE/models``` or edit the ```APE.models``` property in the file ```<APE.projectDir>/APE.properties```. Then execute the following commands:
 
 ```
 cd <APE.projectDir>
-ant
+ant deploy
 ```
 
-By default all supported installer types for the currently running platform are created and stored at ```<APE.buildDir>/deploy/bundles```
+By default, all supported installer types for the currently running platform are created and stored at ```<APE.buildDir>/deploy/bundles```
+This can be changed by setting the property ```fx.deploy.nativeBundles``` to another value like ```msi```
 
 #### One model file, Linux debian package
 
+* To create a debian installer the [debian packaging tools] (https://wiki.debian.org/PackageManagement) must be installed and the build process must be run on a debian-based Linux.
+
+Copy the model file ```<ARE.baseURI>/models/ImageDemo.acs``` to the location ```<APE.projectDir>/custom/bin/ARE/models``` or edit the ```APE.models``` property in the file ```<APE.projectDir>/APE.properties```. Then execute the following commands:
+
+```
+cd <APE.projectDir>
+ant deploy
+```
+
+By default, all supported installer types for the currently running platform are created and stored at ```<APE.buildDir>/deploy/bundles```
+This can be changed by setting the property ```fx.deploy.nativeBundles``` to another value like ```deb```. On Linux, although also a .rpm package could be created by JavaFX packaging technology, APE only supports debian packages because the ARE needs some postinstall and prerm operations in order to run on Linux. 
+
 ### Properties for copying/packaging behaviour of APE
 
-**TODO**
+
 
 ### Properties for installer creation
 
