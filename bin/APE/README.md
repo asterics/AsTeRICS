@@ -1,31 +1,33 @@
 # AsTeRICS Packaging Environment (APE)
 
-The APE let's you select a set of AsTeRICS model files and create a downstripped (minimum size) version of the ARE including plugins, configuration files and data files to execute the models. Optionally, the APE allows the creation of native installers for Windows and Linux using [JavaFX packaging technology](http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGIBBCI).
+The APE let's you select a set of AsTeRICS model files and create a downstripped (minimum size) version of the ARE including plugins, configuration files and data files to execute the models. Optionally, the APE allows the creation of native installers for Windows, Linux incl. Raspberry Pi and Mac OSX using [JavaFX packaging technology](http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGIBBCI).
 
 APE consists of two major elements
-* **APE-copy**: a commandine tool to create a downstripped version of the ARE based on provided model files
+* **APE-copy command line tool**: a commandine tool to create a downstripped version of the ARE based on provided model files
 * **Build infrastructure for native installers**: a template project directory including an [ant](https://ant.apache.org/) build file and a property file (```APE.properties```) to easily configure the installer creation with JavaFX.
 
-## APE-copy
+## APE-copy commandline tool
 
 To start APE-copy, call
 
 ```
-APE-copy[.bat|.sh] -DAPE.models=<; seperated paths to model files or folder> [[-DAPE.buildDir=<Path to output folder>] [-DARE.baseURI=<Path to ARE installation>] [-DAPE.projectDir=<Path of project folder to use] [-DAPE.logLevel=[FINE|INFO|WARNING|SEVERE]]
+APE-copy[.bat|.sh] -DAPE.models=<paths to model files or folder (seperated by ;)> [[-DAPE.buildDir=<Path to build folder>] [-DARE.baseURI=<Path to ARE installation>] [-DAPE.projectDir=<Path of project folder to use] [-DAPE.logLevel=[FINE|INFO|WARNING|SEVERE]]
 ```
 Relative paths are resolved against the current working directoy (CWD).
-* **APE.models**: Provide a semicolon (;) seperated list of model files or folder. Relative and absolute paths can be mixed where relative paths are resolved against the CWD.
-* **APE.buildDir**: The path to the build (output) folder. The downsized ARE is copied to that folder. The path can be relative or absolute where a relative path is resolved against the CWD.
-* **ARE.baseURI**: The path to the ARE installation. This can be the path to the ```bin/ARE``` folder of a development version (cloned git repository) or the ```ARE``` path of an installed AsTeRICS release (>= 2.8). The path can be relative or absolute where a relative path is resolved against the CWD.
+* **APE.models**: Provide a semicolon (;) seperated list of model files or folder. Relative and absolute paths can be mixed where relative paths are resolved against the CWD. By default, the directroy ```APE.projectDir/custom/bin/ARE/models``` is automatically added to the parameter.
+* **APE.buildDir**: The path to the build (output) folder. The downsized ARE is copied to that folder. The path can be relative or absolute where a relative path is resolved against the CWD. By default, the ```build``` subfolder of the project directory (```APE.projectDir```) is used.
+* **ARE.baseURI**: The path to the ARE installation. This can be the path to the ```bin/ARE``` folder of a development version (cloned git repository) or the ```ARE``` path of an installed AsTeRICS release (>= 2.8). The path can be relative or absolute where a relative path is resolved against the CWD. By default, the parallel ```ARE`` folder is used.
+* **APE.projectDir**: The path of the project directory to use. If the directory does not exist it is automatically created by copying the ```template``` directory to the project directory. The given project directory must contain the ```APE.properties``` file, which contains default project-specific property values that can be overridden by the commandline switches of APE-copy. Additionally, the files and resources in the subfolder ```custom``` are finally copied to the target build directory (```APE.buildDir```). Read more about [customization of the ARE] here. By default, the project directory ```APE.projectDir=<APE.baseURI>/defProjectDir``` is used.
+* **APE.logLevel**: You can specify the verbosity of the console output of the APE-copy command. Additionally, the log messages of the command execution are logged to the ```APE.projectDir/tmp```
 
 ##### APE.baseURI, APE.projectDir and APE.buildDir
 The term _APE.baseURI_ refers to the location of the APE-copy command, which is in the folder ```APE``` parallel to the ```ARE``` folder of an AsTeRICS installation. The _APE.baseURI_ folder also contains the build infrastructure to create the native installers and contains the default project directory (```APE.projectDir=<APE.baseURI>/defProjectDir```) and the default build directory (```APE.buildDir=<APE.baseURI>/defProjectDir/build```).
 
-### Example usages of APE-copy
+### Example usages of the APE-copy commandline tool
 
 You should be able to copy/paste the example commands below as long as you replace the placeholder with real values. The examples use windows path notations. 
 
-**Note for Linux**: On Linux you must use ```APE-copy.sh``` and slashify ('/' instead of '\') the paths.
+**Note for Linux, Mac OSX**: On Linux and Mac OSX you must use ```APE-copy.sh``` and slashify ('/' instead of '\') the paths.
 
 #### One model file
 Create a downstripped ARE package of the model file ```ImageDemo.acs``` located in the ```ARE/models``` folder.
