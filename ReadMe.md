@@ -68,6 +68,8 @@ Licensed under a dual license [MIT or GPL with CLASSPATH exception](ARE-LICENSE_
 You may use these components under the terms of the MIT License, if no source code (plugins, services, libraries, ...) which is contained in your desired collection of ARE plugins and services is licensed under the GNU General Public License (GPL).
 In order for that, you can remove unneeded plugins or services.
 
+**Please note:** There are also some plugins (e.g. MathEvaluator, VLC) which are **GPL without CLASSPATH** exception, so in this case your license would have to be **GPL** as well.
+
 Please have a look at the individual licenses of the AsTeRICS plugins and services. You find the license files in the subfolder LICENSE of every plugin.
 
 ## Disclaimer
