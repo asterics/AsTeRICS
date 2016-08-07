@@ -161,3 +161,7 @@ If you want to exclude some of the ARE services (e.g. ```javacv-*.jar``` or ```c
 If you want to customize installer-specific configuration files (.e.g .iss for .exe installer) or add your own application icon. Use the respective platform-specific subfolder in the [package](template/package) folder. There you can place replacement files for the default ones. To find out the supported files, that can be replaced, enable verbosity by setting ```fx.deploy.verbose=true``` in the [```APE.properties```](template/APE.properties) file.
 
 If you want to know more, read [Customizing the Package Using Drop-In Resources](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB).
+
+### ant build files
+The ```template``` directory contains two ant build files: [build.xml](template/build.xml) and [imported.xml](template/imported.xml). The file ```build.xml``` contains some targets left for customization of the deployment build process. The targets ```before-deploy, before-deploy-windows, before-deploy-linux and before-deploy-macosx``` are called after the ```APE-copy``` target and before the ```deploy``` target. This way generic and platform-specific task can be added before the installer creation is triggered. You can use it to delete files which are not needed for a certain target platform (e.g. ARE.exe on Linux or javacv-*-macosx on Windows).
+The second build-file ```imported.xml``` contains the internal targets and should not be modified except you really know, what you do.
