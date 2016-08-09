@@ -3,6 +3,8 @@ package eu.asterics.mw.are;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -113,6 +115,7 @@ public class DeploymentManager
 
 
 
+	private IRuntimeModel deploymentPendingRuntimeModel=null;
 	private IRuntimeModel currentRuntimeModel = null;
 
 	void start(final BundleContext bundleContext)
@@ -153,6 +156,7 @@ public class DeploymentManager
 		runtimeInstanceToComponentTypeID.clear();
 		bufferedPortsMap.clear();
 		currentRuntimeModel=null;
+		deploymentPendingRuntimeModel=null;
 		
 		modelStartupFinished=false;
 		modelLifecycleTaskPending=false;
@@ -188,6 +192,9 @@ public class DeploymentManager
 		init();
 
 		try{
+			//Set pending runtimeModel, because some plugin/gui methods need model info during initialization.
+			deploymentPendingRuntimeModel=runtimeModel;
+			
 			notifyAREEventListeners (AREEvent.PRE_DEPLOY_EVENT);
 
 
@@ -222,37 +229,44 @@ public class DeploymentManager
 							componentRepository.getInstance(canonicalName);
 
 				}catch (Exception e){
-					//logger.severe(canonicalName+ " prevents the model from starting: "+e.getMessage());
-					//e.printStackTrace();
-					String message="Could not deploy component of type ["+componentTypeID+"]: \n"+e.getMessage();
-					//AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
-
-					//before give up, try to cleanup and undeploy model again				
-					//logger.fine("Before giving up, trying to undeploy model again.");
-					//undeployModel();
+					String optMsg=e.getMessage()!=null ? "\nReason: "+e.getMessage() : "";
+					String message="Plugin could not be instantiated: "+componentTypeID+optMsg;
+					
+					AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
 					throw new DeploymentException(message);
-					//return;
 				}
 
 				//Set runtime property values to component instances
 				final Set<String> propertyNames = componentType.getPropertyNames();
 				if (propertyNames != null)
 				{
-					for (final String propertyName : propertyNames)
-					{
-						final Object propertyValue = 
-								componentInstance.getPropertyValue(propertyName);
-						if (propertyName != null)
+					try{
+						for (final String propertyName : propertyNames)
 						{
-							//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
-							//We have to synchronize using the target component, because the component can be considered a black box, that must
-							//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
-							//synchronized(runtimeComponentInstance) 
+							final Object propertyValue = 
+									componentInstance.getPropertyValue(propertyName);
+							if (propertyName != null && propertyValue!=null)
 							{
-								runtimeComponentInstance.
-								setRuntimePropertyValue(propertyName, propertyValue);
+								//MULTI-THREADED: Remove comments if you want to reenable multi-threaded execution approach.
+								//We have to synchronize using the target component, because the component can be considered a black box, that must
+								//ensure data integrity. The data propagation, event notification, start, (stop), set Property should all synchronize on targetComponent.							
+								//synchronized(runtimeComponentInstance) 
+								{
+									runtimeComponentInstance.
+									setRuntimePropertyValue(propertyName, propertyValue);
+								}
+							} else {							
+								if(propertyName!=null) {
+									logger.warning("While initializing runtime property values of plugin instance <"+componentInstance.getInstanceID()+">: Ignoring propertyName <"+propertyName+">, propertyValue <"+propertyValue+">");
+								}
 							}
 						}
+					}catch(Exception e) {
+						String optMsg=e.getMessage()!=null ? "\nReason: "+e.getMessage() : "";
+						String message="Plugin could not be initialized: "+componentTypeID+optMsg;
+						
+						AstericsErrorHandling.instance.reportError(runtimeComponentInstance, message);
+						throw new DeploymentException(message);						
 					}
 				}
 
@@ -405,13 +419,16 @@ public class DeploymentManager
 			this.currentRuntimeModel = runtimeModel;
 
 			notifyAREEventListeners (AREEvent.POST_DEPLOY_EVENT);
-
 		}catch (Exception e){
-			//before give up, try to cleanup and undeploy model again				
-			logger.severe("Deployment exception: "+e.getMessage());
+			//before give up, try to cleanup and undeploy model again
+			String errMessage="Deployment of model failed.";
+			StringWriter stackTraceWriter=new StringWriter();
+			e.printStackTrace(new PrintWriter(stackTraceWriter));
+			logger.severe(stackTraceWriter.toString());
+			
 			logger.fine("Before giving up, trying to undeploy model again.");
 			undeployModel();
-			throw new DeploymentException(e.getMessage());
+			throw new DeploymentException(errMessage);
 		}
 	}
 
@@ -424,6 +441,7 @@ public class DeploymentManager
 	{		
 		try{
 			modelStartupFinished=false;
+			deploymentPendingRuntimeModel=null;
 			final IRuntimeModel runtimeModel = this.getCurrentRuntimeModel();
 
 			final Set<IChannel> channels = runtimeModel.getChannels();
@@ -527,6 +545,15 @@ public class DeploymentManager
 		}
 	}
 
+
+	/**
+	 * Returns the IRuntimeModel instance which is currently under deployment (pending and not finished).
+	 * This is for plugins or GUI code that needs model information for initialization during deployment.
+	 * @return the deploymentPendingRuntimeModel
+	 */
+	public IRuntimeModel getDeploymentPendingRuntimeModel() {
+		return deploymentPendingRuntimeModel;
+	}
 
 	/**
 	 * This method removes the specified component from the runtime environment.
@@ -651,8 +678,15 @@ public class DeploymentManager
 				catch (Throwable t) 
 				{
 					//custom title, error icon
-					t.printStackTrace();
-					AstericsErrorHandling.instance.reportError(componentInstance, "Could not run component ["+componentInstance+"]: \n"+t.getMessage());
+					StringWriter stackTraceWriter=new StringWriter();
+					t.printStackTrace(new PrintWriter(stackTraceWriter));
+					logger.severe(stackTraceWriter.toString());
+
+					String optMsg=t.getMessage()!=null ? "\nReason: "+t.getMessage() : "";
+					String runtimeInstanceId=getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);
+					String message="Plugin could not be started: "+runtimeInstanceId+optMsg;
+					logger.warning(message);
+					AstericsErrorHandling.instance.reportError(componentInstance, message);
 				}
 			}
 			notifyAREEventListeners (AREEvent.POST_START_EVENT);
@@ -759,8 +793,16 @@ public class DeploymentManager
 				catch (Throwable t) 
 				{
 					//custom title, error icon
-					t.printStackTrace();
-					AstericsErrorHandling.instance.reportError(componentInstance, "Could not stop component ["+componentInstance+"]: \n"+t.getMessage());
+					StringWriter stackTraceWriter=new StringWriter();
+					t.printStackTrace(new PrintWriter(stackTraceWriter));
+					logger.severe(stackTraceWriter.toString());
+
+					String optMsg=t.getMessage()!=null ? "\nReason: "+t.getMessage() : "";
+					String runtimeInstanceId=getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);
+					String message="Plugin could not be stopped: "+runtimeInstanceId+optMsg;
+
+					logger.warning(message);
+					AstericsErrorHandling.instance.reportError(componentInstance, message);
 				}
 	
 	
@@ -822,7 +864,7 @@ public class DeploymentManager
 	}
 
 	/**
-	 * This method returns the model that is currently at runtime
+	 * This method returns the model that is currently deployed
 	 * 
 	 */
 	public IRuntimeModel getCurrentRuntimeModel()

@@ -9,16 +9,15 @@
     <property name="osgi" location="../../osgi"/>
     <property name="middleware" location="../../middleware"/>
     <property name="services" location="../../services"/>
+	<property name="resources" location="src/main/resources"/>
     <property name="classpath" location=".."/>
        <path id="asterics.classpath">
         <pathelement location="bin"/>
         <pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
         <pathelement location="${middleware}/asterics.ARE.jar"/>
 		<pathelement location="${services}/asterics.mw.cimcommunication.jar"/>
-		<pathelement location="src/main/lib/hidapi.jar"/>
-    </path>
-    
-    <property name="resources" location="src/main/resources"/>
+       	<pathelement location="${resources}/lib/hidapi-1.1libLoaderPatch.jar"/>
+    </path>        
 
   <target name="init">
     <!-- Create the time stamp -->

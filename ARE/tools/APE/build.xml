@@ -48,12 +48,17 @@
 		<copy todir="${runtime}/lib" >
 			<fileset dir="${resources}/lib"></fileset>
 		</copy>
+
 		<copy todir="${runtime}">
 			<fileset dir=".">
 				<include name="*.bat"/>
 				<include name="*.sh"/>
 			</fileset>
 		</copy>
+                <fixcrlf srcdir="${runtime}" includes="*.sh"/>
+                <chmod dir="${runtime}" includes="*.sh" perm="ugo+rx"/>
+
+
 		<copy  todir="${runtime}/defProjectDir" failonerror="false" includeemptydirs="true" overwrite="false" verbose="true">
 			<fileset dir="${runtime}/template"></fileset>
 		</copy>

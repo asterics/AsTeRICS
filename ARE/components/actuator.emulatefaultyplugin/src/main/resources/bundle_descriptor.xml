@@ -45,6 +45,10 @@
 
 		</events>			
         <properties>
+			<property name="instantiationException"
+				type="boolean"
+				value="false"
+				description="Produce an exception during instantion/setRuntimePropertyValue"/>        
 			<property name="startException"
 				type="boolean"
 				value="false"

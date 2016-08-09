@@ -211,13 +211,41 @@ public class TestResourceRegistry {
 		ResourceRegistry.getInstance().setAREBaseURI(oldURI);
 	}
 
-	/*
+	
 	@Test
-	public void testToRelative() {
-		URI absolute=ResourceRegistry.getAREBaseURI().resolve(ResourceRegistry.MODELS_FOLDER);
-		System.out.println("absolute: "+absolute+" relative: "+ResourceRegistry.toRelative(absolute.toString()));
-	}
+	public void testToRelative() throws URISyntaxException {
+		String expected="autostart.acs";
+		URI autostartModelURI=ResourceRegistry.getInstance().getResource(expected, RES_TYPE.MODEL);
+		URI actual=ResourceRegistry.getInstance().toRelative(autostartModelURI, RES_TYPE.MODEL);
+		assertEquals(expected, actual.getPath());
+		
+		expected="sensor.facetrackerLK/haarcascade_frontalface_alt.xml";
+		autostartModelURI=ResourceRegistry.getInstance().getResource(expected, RES_TYPE.DATA);
+		actual=ResourceRegistry.getInstance().toRelative(autostartModelURI, RES_TYPE.DATA);
+		assertEquals(expected, actual.getPath());
 
+		expected="neural networks/Example.eg";
+		autostartModelURI=ResourceRegistry.getInstance().getResource(expected, RES_TYPE.DATA);
+		actual=ResourceRegistry.getInstance().toRelative(autostartModelURI, RES_TYPE.DATA);
+		assertEquals(expected, actual.getPath());
+		
+		expected="ARE.exe";
+		autostartModelURI=ResourceRegistry.getInstance().getResource(expected, RES_TYPE.ANY);
+		actual=ResourceRegistry.getInstance().toRelative(autostartModelURI, RES_TYPE.ANY);
+		assertEquals(expected, actual.getPath());
+		
+		expected="ARE-LICENSE_MITOrGPLv3WithException.txt";
+		autostartModelURI=ResourceRegistry.getInstance().getResource(expected, RES_TYPE.LICENSE);
+		actual=ResourceRegistry.getInstance().toRelative(autostartModelURI, RES_TYPE.LICENSE);
+		assertEquals(expected, actual.getPath());
+
+		expected="services.ini";
+		autostartModelURI=ResourceRegistry.getInstance().getResource(expected, RES_TYPE.PROFILE);
+		actual=ResourceRegistry.getInstance().toRelative(autostartModelURI, RES_TYPE.PROFILE);
+		assertEquals(expected, actual.getPath());
+
+	}
+/*
 	@Test
 	public void testToAbsolute() {
 		System.out.println("relative: "+ResourceRegistry.MODELS_FOLDER+" absolute: "+ResourceRegistry.toAbsolute(ResourceRegistry.MODELS_FOLDER));
@@ -403,6 +431,21 @@ public class TestResourceRegistry {
 		Set<String> pathsSet=ResourceRegistry.toStringSet(uris);
 		System.out.println("toStringSet: "+pathsSet);		
 	}	
+	
+	@Test
+	public void testGetMandatoryProfileConfigFileList() {
+		List<URI> iniFiles=ResourceRegistry.getInstance().getMandatoryProfileConfigFileList(false);
+		System.out.println("Found this iniFiles: "+iniFiles);
+		assertEquals(6, iniFiles.size());
+	}
+	
+	@Test
+	public void testGetOtherFilesList() {
+		List<URI> otherFiles=ResourceRegistry.getInstance().getOtherFilesList(false);
+		System.out.println("Found this other files: "+otherFiles);
+		assertEquals(13, otherFiles.size());
+		
+	}
 	
 	/*
 	@Test

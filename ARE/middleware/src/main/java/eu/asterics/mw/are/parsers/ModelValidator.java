@@ -243,8 +243,10 @@ public class ModelValidator
      * @param inputStream
      * @return true if the file encoded in the inputStream is valid with 
      * respect to the bundle format XSD, false otherwise
+     * @throws ParseException 
+     * @throws IOException 
      */
-    public boolean isValidBundleDescriptor(final InputStream inputStream)
+    public boolean isValidBundleDescriptor(final InputStream inputStream) throws ParseException, IOException
     {
         try
         {
@@ -260,13 +262,13 @@ public class ModelValidator
         	logger.warning(this.getClass().getName()+"." +
         			"isValidBundleDescriptor: input stream not a valid " +
         			"bundle descriptor -> \n" + ex.getMessage());
-        	return false;
+        	throw new ParseException("Bundle descriptor could not be parsed: "+ex.getMessage());
         }
         catch (IOException e)
         {
         	logger.warning(this.getClass().getName()+".isValidBundleDescriptor: " +
         			"Could not read from source input stream \n");
-        	return false;
+        	throw e;
         }
     }
 
@@ -277,8 +279,10 @@ public class ModelValidator
      * @param inputStream
      * @return true if the file encoded in the inputStream is valid with 
      * respect to the deployment format XSD, false otherwise
+     * @throws IOException 
+     * @throws ParseException 
      */
-    public boolean isValidDeploymentDescriptor(final InputStream inputStream)
+    public boolean isValidDeploymentDescriptor(final InputStream inputStream) throws IOException, ParseException
     {
         try
         {
@@ -293,13 +297,13 @@ public class ModelValidator
         	logger.warning(this.getClass().getName()+"." +
         			"isValidDeploymentDescriptor: input stream not a valid " +
         			"deployment descriptor -> \n" + ex.getMessage());
-        	return false;
+        	throw new ParseException("Deployment descriptor could not be parsed: "+ex.getMessage());        	
         }
         catch (IOException e)
         {
         	logger.warning(this.getClass().getName()+".isValidBundleDescriptor: " +
 					"Could not read from source input stream \n");
-            return false;
+            throw e;
         }
     }
 }

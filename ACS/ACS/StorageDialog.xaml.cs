@@ -52,6 +52,7 @@ namespace Asterics.ACS {
         
         private void okButton_Click(object sender, RoutedEventArgs e) {
             if (filenameTextbox.Text != "") {
+                this.DialogResult = true;
                 this.Close();
             }
         }

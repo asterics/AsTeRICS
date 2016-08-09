@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<keyboard caption="" rows="1" columns="1" scanning="4" textColor="1" scanColor="10" scanCycles="0" backgroundColor="0" hoverTime="2000" hoverIndicator="2" hoverFrameThickness="4" commandSeparator=";" enableEdit="true" enableClickSelection="true" ignoreKeyboardFileProperties="false" displayGUI="true">
+	<button>
+		<text>AUSSPRECHEN</text>
+		<icon></icon>
+		<action></action>
+		<sound></sound>
+		<soundPreview></soundPreview>
+		<switchGrid></switchGrid>
+	</button>
+</keyboard>

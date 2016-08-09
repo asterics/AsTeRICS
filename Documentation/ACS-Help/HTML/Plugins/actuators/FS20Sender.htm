@@ -18,6 +18,9 @@ The PCS sender must be attached to the system!
 Picture of the PCS FS20 sender
 </div>
 
+<H2>Supported OSes</H2>
+Windows (x86,x64), Linux (x86, x64, arm(Raspberry Pi)), Mac OSX(x86, x64)
+
 <H2>Troubleshooting problems under Win8/Win8.1</H2>
 
 Under Windows 8 and Windows 8.1, there can be problems concering the
@@ -41,6 +44,9 @@ settings on Win8/8.1 switch the device off per default - this can be changed by 
 <li>Restart you PC - now hopefully the FS20 PCS works as intended.</li>
 </li>
 </ul>
+
+<H2>Udev rules Linux</H2>
+You must run the ARE as root for being able to access the device. Alternatively you can define a <a href="https://github.com/signal11/hidapi/blob/master/udev/99-hid.rules">udev rule</a>
 
 
 <H2>Input Port Description</H2>

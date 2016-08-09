@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="asterics-application" default="before-deploy" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<import file="../../bin/APE/template/imported.xml"/>
+	
+	<property name="asterics.root" location="../../"/>
+	<property name="runtime" location="${asterics.root}/bin/ARE"/>
+	
+	<target name="before-deploy-windows" if="APE.isWindows">
+	    <delete verbose="true">
+	        <fileset dir="${build.merged.ARE}" includes="javacv-*-linux.jar, javacv-*-macosx.jar"/>
+	    </delete>	    
+	</target>
+	<target name="before-deploy-linux" if="APE.isLinux">
+	    <delete verbose="true">
+	        <fileset dir="${build.merged.ARE}" includes="javacv-*-windows.jar, javacv-*-macosx.jar"/>
+	    </delete>
+	</target>
+	<target name="before-deploy-macosx" if="APE.isMacOSX">
+	    <delete verbose="true">
+	        <fileset dir="${build.merged.ARE}" includes="javacv-*-windows.jar, javacv-*-linux.jar"/>
+	    </delete>	    
+	</target>
+	<!-- if you want to compile and modify something on your own, before the installer is created -->
+	<target name='before-deploy'>
+
+		<subant target="buildAll" verbose="true" inheritall="false" buildpath="${asterics.root}" antfile="build.xml">
+			<!--  <fileset dir="${asterics.root}" includes="build.xml"> </fileset>-->
+		</subant>	    
+
+		<copy todir="${build.merged.ARE}">
+			<fileset dir="${runtime}"/>
+		</copy> 
+		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
+		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx"/>		
+	</target>
+	
+	<target name="deploy" depends="init-fx-tasks, cleanup, setup-staging-area, before-deploy, before-deploy-windows, before-deploy-linux, before-deploy-macosx, make-installer-only">
+	</target>
+</project>

@@ -68,7 +68,7 @@ namespace Asterics.ACS {
 
         #region Global variables
 
-        public const String ACS_VERSION="2.7";
+        public const String ACS_VERSION="2.8";
         private double mouseMoveComponentX;
         private double mouseMoveComponentY;
 
@@ -1367,9 +1367,8 @@ namespace Asterics.ACS {
                 storageDialog.Title = Properties.Resources.LoadModelFromStorageButton;
                 storageDialog.Owner = this;
                 storageDialog.filenameTextbox.IsEnabled = false;
-                storageDialog.ShowDialog();
 
-                if (storageDialog.filenameTextbox.Text != null && storageDialog.filenameTextbox.Text != "") {
+                if (storageDialog.ShowDialog() == true) {
                     try {
                         string storedModel = asapiClient.getModelFromFile(storageDialog.filenameTextbox.Text);
 
@@ -3637,8 +3636,8 @@ namespace Asterics.ACS {
             // if the ACS is connected to the ARE, th status of the component will be requested
             // otherwise, the status from earlier requests will be shown
             try {
-                if ((areStatus.Status == AREStatus.ConnectionStatus.Connected) || (areStatus.Status == AREStatus.ConnectionStatus.Synchronised)) {
-                    List<StatusObject> newStatus = asapiClient.QueryStatus(false);
+                if ((areStatus.Status == AREStatus.ConnectionStatus.Connected) || (areStatus.Status == AREStatus.ConnectionStatus.Synchronised) || (areStatus.Status == AREStatus.ConnectionStatus.Running)) {
+                    List<StatusObject> newStatus = asapiClient.QueryStatus(true);
                     if (newStatus.Count > 0) {
                         foreach (StatusObject so in newStatus) {
                             statusList.Add(so);

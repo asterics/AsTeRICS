@@ -154,12 +154,9 @@ public class DefaultDeploymentModelParser
 		DocumentBuilderFactory builderFactory = 
 			DocumentBuilderFactory.newInstance();
 
-		if (!modelValidator.isValidDeploymentDescriptor(modelInputStream))
-		{
-			throw new ParseException ("Invalid deployment model");
-		}
 		try
 		{
+			modelValidator.isValidDeploymentDescriptor(modelInputStream);
 			modelInputStream.reset();
 			builder = builderFactory.newDocumentBuilder();
 			synchronized(builder){
@@ -205,13 +202,12 @@ public class DefaultDeploymentModelParser
 		DocumentBuilderFactory builderFactory = 
 			DocumentBuilderFactory.newInstance();
 		
-		if (!modelValidator.isValidDeploymentDescriptor(
-				new ByteArrayInputStream(url.getBytes("UTF-16"))))
-		{
-			throw new ParseException ("Invalid deployment model");
-		}
 		try
 		{
+			//throws exception if invalid
+			modelValidator.isValidDeploymentDescriptor(
+					new ByteArrayInputStream(url.getBytes("UTF-16")));
+			
 			builder = builderFactory.newDocumentBuilder();
 			synchronized(builder){
 
@@ -224,18 +220,23 @@ public class DefaultDeploymentModelParser
 		{
 			logger.warning(this.getClass().getName()+".parseModel: " +
 					"parse error -> /n"+ e.getMessage());
+			throw new ParseException (" parse error: ParserConfigurationException " 
+					+ e.getMessage());			
 		} 
 		catch (SAXException e)
 		{
 			logger.warning(this.getClass().getName()+".parseModel: " +
 					"parse error -> /n"+ e.getMessage());
+			throw new ParseException (" parse error: SAXException " 
+					+ e.getMessage());			
 		} 
 		catch (IOException e)
 		{
 			logger.warning(this.getClass().getName()+".parseModel: " +
 					"parse error -> /n"+ e.getMessage());
+			throw new ParseException (" parse error: IOException " 
+					+ e.getMessage());			
 		}
-		return null;
 	}
 
 	public static final String COMPONENTS_TAG = "components";

@@ -1,0 +1,9 @@
+Package: asterics-are
+Version: 2.8
+Section: unknown
+Maintainer: Asterics consortium
+Priority: optional
+Architecture: all
+Provides: asterics-are
+Description: AsTeRICS Runtime Environment (ARE) - http://www.asterics.org
+Recommends: oracle-java8-installer, libgstreamer0.10-0, libgstreamer0.10-dev, gstreamer0.10-tools, gstreamer0.10-plugins-base, libgstreamer-plugins-base0.10-dev, gstreamer0.10-plugins-good

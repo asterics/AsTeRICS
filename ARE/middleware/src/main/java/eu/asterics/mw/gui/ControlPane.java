@@ -298,8 +298,9 @@ public class ControlPane extends JPanel
 						}
 					} catch (AREAsapiException e) {	
 						//do a catch only for deployFile here because runModel automatically shows error dialog.
-						String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
-						AstericsErrorHandling.instance.reportError(null, "Could not deploy model!"+ reason);
+						//Don't show the reason, because sometimes it's saying nothing informativ. Better to simply log stacktrace, which should alrady be done on another location.
+						//String reason=e.getMessage()!=null ? "\n"+e.getMessage() : "";
+						AstericsErrorHandling.instance.reportError(null, "Could not deploy model!");
 						//Give up, if deployment fails.
 						return;
 					}

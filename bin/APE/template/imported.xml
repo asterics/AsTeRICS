@@ -4,6 +4,9 @@
 	
 	<loadproperties srcFile="${APE.propertiesFile}" />
 	
+	<!-- set default value of prop -->
+	<property name="fx.deploy.verbose" value="false"/>
+	
 	<condition property="APE.buildDir" value="build/">		
 		<not>
 			<isset property="APE.buildDir" />
@@ -30,12 +33,39 @@
 	</condition>
 	
 	<!-- the build platform is actually also the target platform, so we can differ the services files configuration -->
-	<condition property="APE.targetOS" value="windows" else="linux">
+	<condition property="APE.isWindows">
 		<os family="windows" />
 	</condition>
+	<condition property="APE.isLinux">
+		<and>
+			<os family="unix" />
+			<not>
+				<os family="mac"/>
+			</not>
+		</and>
+	</condition>
+	<condition property="APE.isMacOSX">
+		<os family="mac" />
+	</condition>
+		
+	<condition property="APE.targetOS" value="windows">
+		<os family="windows" />
+	</condition>
+	<condition property="APE.targetOS" value="linux">
+		<and>
+			<os family="unix" />
+			<not>
+				<os family="mac"/>
+			</not>
+		</and>
+	</condition>
+	<condition property="APE.targetOS" value="macosx">
+		<os family="mac" />
+	</condition>
+
 
 	<!-- create platform dependent property value for services startup when starting the ARE -->
-	<property name="APE.servicesFiles" value="services.ini;services-${APE.targetOS}.ini;${APE.optionalServicesFile}" />
+	<property name="APE.servicesFiles" value="${APE.optionalServicesFile}" />
 
 	<!-- if property is not set, set it to false -->
 	<condition property="APE.embedJava" value="false">
@@ -72,7 +102,14 @@
 	<echoproperties>
 	</echoproperties>
 	-->
-	
+
+	<target name="clean">
+		<delete includeemptydirs="true" dir="${APE.buildDir}/">
+		</delete>
+		<delete includeemptydirs="true" dir="tmp/">
+		</delete>
+	</target>
+
 	<target name="init-fx-tasks">
 		<path id="fxant">
 			<filelist>
@@ -106,8 +143,8 @@
 			<fx:fileset dir="${build.merged.ARE}" type="license" includes="LICENSE" />
 		</fx:resources>
 
-		<fx:application id="fxApplication" name="${APE.fx.deploy.outfile}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
-		<fx:deploy verbose="true" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="${APE.fx.deploy.outfile}" nativeBundles="${fx.deploy.nativeBundles}" updatemode="background">
+		<fx:application id="fxApplication" name="${fx.application.name}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
+		<fx:deploy verbose="${fx.deploy.verbose}" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="${fx.application.name}" nativeBundles="${fx.deploy.nativeBundles}" updatemode="background">
 			<fx:preferences shortcut="${fx.preferences.shortcut}" install="${fx.preferences.install}" menu="${fx.preferences.menu}" />
 
 			<fx:platform basedir="${APE.embedJava.fx.platform.basedir}">				
@@ -128,6 +165,29 @@
 			<fx:resources refid="appRes" />
 			<fx:info title="${fx.info.title}" vendor="${fx.info.vendor}" description="${fx.info.description}" license="${fx.info.license}" category="${fx.info.category}" />
 		</fx:deploy>
+		
+		<!-- Finally, rename the outfile in the case of APE.embedJava=true.
+		This is a dirty solution but it is needed because the fx:deploy.outfile attribute does not work as expected
+		-->
+
+		<subant target="make-installer-only-windows" buildpath="." antfile="build.xml"/>
+		<subant target="make-installer-only-linux" buildpath="." antfile="build.xml"/>
+		<subant target="make-installer-only-macosx" buildpath="." antfile="build.xml"/>
+
+	</target>
+
+	<target name="make-installer-only-windows" if="APE.isWindows">
+		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.exe" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.exe"/>
+		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.msi" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.msi"/>
+	</target>
+
+	<target name="make-installer-only-linux" if="APE.isLinux">
+		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.deb" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.deb"/>
+		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}-1.i386.rpm" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}-1.i386.rpm"/>
+	</target>
+	<target name="make-installer-only-macosx" if="APE.isMacOSX">
+		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.dmg" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.dmg"/>
+		<move verbose="true" failonerror="false" file="${build.deploy}/bundles/${fx.application.name}-${fx.application.version}.pkg" tofile="${build.deploy}/bundles/${APE.fx.deploy.outfile}-${fx.application.version}.pkg"/>		
 	</target>
 
 	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
@@ -135,6 +195,8 @@
 		<java jar="${APE.baseURI}/APE.jar" fork="true">
 			<sysproperty key="APE.projectDir" value="${basedir}"/>	
 		</java>	
-			
+		<!-- fix cr and lf and set execution permissions -->
+		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
+		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx"/>			
 	</target>
 </project>

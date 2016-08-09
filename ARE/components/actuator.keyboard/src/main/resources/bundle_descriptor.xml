@@ -37,7 +37,7 @@
                       type="integer"
                       value="1"
                       description="defines the way how keyboard input is injected"
-                      combobox="sending window messages//using system-wide SendInput API function"/>
+                      combobox="sending window messages//using system-wide SendInput API function//using JNativehook"/>
             <property name="waitTime"
                       type="integer"
                       value="1000"

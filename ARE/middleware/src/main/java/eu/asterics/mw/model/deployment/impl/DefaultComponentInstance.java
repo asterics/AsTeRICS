@@ -270,34 +270,22 @@ extends DefaultPropertyful implements IComponentInstance
 		{
 			Element guiElement = doc.createElement("gui");
 			component.appendChild(guiElement);
-			if (this.guiElement.posX>=0)
-			{
-				Element posXElement = doc.createElement("posX");
-				posXElement.setTextContent(Integer.
-						toString(this.guiElement.posX));
-				guiElement.appendChild(posXElement);
-			}
-			if (this.guiElement.posY>=0)
-			{
-				Element posYElement = doc.createElement("posY");
-				posYElement.setTextContent(Integer.
-						toString(this.guiElement.posY));
-				guiElement.appendChild(posYElement);
-			}
-			if (this.guiElement.width>=0)
-			{
-				Element widthElement = doc.createElement("width");
-				widthElement.setTextContent(Integer.
-						toString(this.guiElement.width));
-				guiElement.appendChild(widthElement);
-			}
-			if (this.guiElement.height>=0)
-			{
-				Element heightElement = doc.createElement("height");
-				heightElement.setTextContent(Integer.
-						toString(this.guiElement.height));
-				guiElement.appendChild(heightElement);
-			}
+			Element posXElement = doc.createElement("posX");
+			posXElement.setTextContent(Integer.
+					toString(this.guiElement.posX));
+			guiElement.appendChild(posXElement);
+			Element posYElement = doc.createElement("posY");
+			posYElement.setTextContent(Integer.
+					toString(this.guiElement.posY));
+			guiElement.appendChild(posYElement);
+			Element widthElement = doc.createElement("width");
+			widthElement.setTextContent(Integer.
+					toString(this.guiElement.width >= 0 ? this.guiElement.width : 0));
+			guiElement.appendChild(widthElement);
+			Element heightElement = doc.createElement("height");
+			heightElement.setTextContent(Integer.
+					toString(this.guiElement.height >= 0 ? this.guiElement.height : 0));
+			guiElement.appendChild(heightElement);
 
 		}
 	}

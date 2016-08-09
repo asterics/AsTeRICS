@@ -17,7 +17,7 @@
         <pathelement location="${services}/asterics.mw.systemstatechange.jar"/>
         <pathelement location="${services}/asterics.mw.cimcommunication.jar"/>
         <pathelement location="${services}/asterics.mw.computervision.jar"/>
-       	<pathelement location="${services}/javacv-0.10.0-merged-jars.jar" /> 
+       	<pathelement location="${services}/javacv-0.10.0-basic-windows.jar" /> 
     </path>
     
     <property name="resources" location="src/main/resources"/>

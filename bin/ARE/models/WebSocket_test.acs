@@ -1,6 +1,22 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\WebSocket_test.acs_2015_10_9_14_14" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_Licensing_Packaging_Asterics_2_8_Prep\bin\ARE\models\merged\bin\ARE\models\NetworkIO\WebSocket\WebSocket-SignalGeneratorDemo(WLM).acs_2016_2_11_16_7" version="20130320">
   <components>
+    <component id="WebSocket.1" type_id="asterics.WebSocket">
+      <description>This plugin uses a websocket connection to send and read data</description>
+      <ports>
+        <inputPort portTypeID="InA">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="OutA">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties />
+      <layout>
+        <posX>234</posX>
+        <posY>130</posY>
+      </layout>
+    </component>
     <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
       <description>Signal Generator</description>
       <ports>
@@ -9,16 +25,16 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="sendInterval" value="20" />
+        <property name="sendInterval" value="100" />
         <property name="waveForm" value="1" />
-        <property name="frequency" value="2" />
+        <property name="frequency" value="1" />
         <property name="amplitude" value="100" />
         <property name="phaseShift" value="0" />
         <property name="offset" value="0" />
       </properties>
       <layout>
         <posX>49</posX>
-        <posY>141</posY>
+        <posY>140</posY>
       </layout>
     </component>
     <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
@@ -39,71 +55,98 @@
         <property name="channelColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="fontSize" value="14" />
-        <property name="caption" value="oscilloscope" />
+        <property name="caption" value="Sent Signal to Websocket" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>237</posX>
-        <posY>347</posY>
+        <posX>236</posX>
+        <posY>289</posY>
       </layout>
       <gui>
-        <posX>0</posX>
-        <posY>444</posY>
-        <width>6000</width>
-        <height>3000</height>
+        <posX>135</posX>
+        <posY>1565</posY>
+        <width>3062</width>
+        <height>2111</height>
       </gui>
     </component>
-    <component id="WebSocket.1" type_id="asterics.WebSocket">
-      <description>This plugin uses a websocket connection to send and read data</description>
+    <component id="TextArea.1" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
       <ports>
-        <inputPort portTypeID="InA">
+        <inputPort portTypeID="setText">
           <properties />
         </inputPort>
-        <inputPort portTypeID="InB">
+        <inputPort portTypeID="appendText">
           <properties />
         </inputPort>
-        <inputPort portTypeID="InC">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InD">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InE">
-          <properties />
-        </inputPort>
-        <inputPort portTypeID="InF">
-          <properties />
-        </inputPort>
-        <outputPort portTypeID="OutA">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutB">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutC">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutD">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutE">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="OutF">
+        <outputPort portTypeID="text">
           <properties />
         </outputPort>
       </ports>
       <properties>
-        <property name="host" value="localhost" />
-        <property name="port" value="8080" />
+        <property name="caption" value="Received Text from Websocket" />
+        <property name="default" value="" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>353</posX>
-        <posY>135</posY>
+        <posX>394</posX>
+        <posY>122</posY>
       </layout>
+      <gui>
+        <posX>135</posX>
+        <posY>3787</posY>
+        <width>3062</width>
+        <height>1444</height>
+      </gui>
+    </component>
+    <component id="InfoBox (TextArea)" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Info" />
+        <property name="default" value="The websocket plugin forwards the signal data to a websocket (http://localhost:8082/ws/astericsData). A demo webpage that connects to the websocket and visualizes the data can be accessed at http://localhost:8082/. Requirements: Start the ARE with --webservice" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>92</posX>
+        <posY>304</posY>
+      </layout>
+      <gui>
+        <posX>135</posX>
+        <posY>454</posY>
+        <width>3062</width>
+        <height>1000</height>
+      </gui>
     </component>
   </components>
   <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="SignalGenerator.1" />
+        <port id="out" />
+      </source>
+      <target>
+        <component id="WebSocket.1" />
+        <port id="InA" />
+      </target>
+    </channel>
     <channel id="binding.1">
       <source>
         <component id="SignalGenerator.1" />
@@ -116,12 +159,12 @@
     </channel>
     <channel id="binding.2">
       <source>
-        <component id="SignalGenerator.1" />
-        <port id="out" />
+        <component id="WebSocket.1" />
+        <port id="OutA" />
       </source>
       <target>
-        <component id="WebSocket.1" />
-        <port id="InA" />
+        <component id="TextArea.1" />
+        <port id="appendText" />
       </target>
     </channel>
   </channels>
@@ -134,8 +177,8 @@
     <AREGUIWindow>
       <posX>0</posX>
       <posY>0</posY>
-      <width>9000</width>
-      <height>5000</height>
+      <width>3750</width>
+      <height>5444</height>
     </AREGUIWindow>
   </modelGUI>
 </model>

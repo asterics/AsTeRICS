@@ -1,0 +1,1 @@
+Check the verbose output of an installer build (set APE.verbose=true in APE.properies file) and copy the template files of the used temporary directory to this folder. In a subsequent build the customized files will be used.

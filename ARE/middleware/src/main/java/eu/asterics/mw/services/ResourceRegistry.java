@@ -5,6 +5,7 @@ import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,6 +22,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.io.FilenameUtils;
 
+import eu.asterics.mw.are.BundleManager;
 import eu.asterics.mw.are.DeploymentManager;
 
 /*
@@ -108,6 +110,28 @@ public class ResourceRegistry {
 		IMAGE,
 		TMP
 	};
+	
+	/**
+	 * Maps the given RES_TYPE to the corresponding folder name.
+	 * Should be changed to return a URI?
+	 * @param type
+	 * @return
+	 */
+	private String mapResTypeFolderName(RES_TYPE type) {
+		//@TODO: Think about using a Map.
+		switch(type) {
+		case ANY: return ".";
+		case MODEL: return MODELS_FOLDER;
+		case DATA: return DATA_FOLDER;
+		case JAR: return ".";
+		case PROFILE: return PROFILE_FOLDER;
+		case STORAGE: return STORAGE_FOLDER;
+		case LICENSE: return LICENSES_FOLDER;
+		case IMAGE:return IMAGES_FOLDER;
+		case TMP: return TMP_FOLDER;
+		}
+		return ".";
+	}
 	
 	/**
 	 * Return the instance of the ResourceRegistry.
@@ -433,7 +457,21 @@ public class ResourceRegistry {
 	public InputStream getResourceInputStream(String resourcePath, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
 		return getResource(resourcePath, type).toURL().openStream();
 	}
-		
+	
+	/**
+	 * Returns an OutputStream for the given resourcePath and RES_TYPE.
+ 	 * For more details about resourcePath, see {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)}.
+	 * @param resourcePath
+	 * @param type
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	public OutputStream getResourceOutputStream(String resourcePath, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
+		return getResource(resourcePath, type).toURL().openConnection().getOutputStream();
+	}
+			
 	//public void setAREBaseURI()
 	/**
 	 * Set the base URI of the ARE. This URI will be used as parent path for all resources like models, data, storage,...
@@ -482,6 +520,16 @@ public class ResourceRegistry {
 	public URI toRelative(String absolutePath) {
 		return toRelative(URI.create(absolutePath)); 
 	}
+
+	/**
+	 * Converts the given absolutePath to a path relative to the folder of the given RES_TYPE {@link getAREBaseURI}.
+	 * @param absolutePath
+	 * @param type
+	 * @return
+	 */
+	public URI toRelative(String absolutePath, RES_TYPE type) {
+		return toRelative(URI.create(absolutePath),type);
+	}
 	
 	/**
 	 * Converts the given absolutePath URI to a path relative to the ARE base URI {@link getAREBaseURI}.
@@ -490,6 +538,16 @@ public class ResourceRegistry {
 	 */
 	public URI toRelative(URI absolutePath) {
 		return getAREBaseURI().relativize(absolutePath);
+	}
+	
+	/**
+	 * Converts the given absolutePath to a path relative to the folder of the given RES_TYPE {@link getAREBaseURI}.
+	 * @param absolutePath
+	 * @param type
+	 * @return
+	 */
+	public URI toRelative(URI absolutePath, RES_TYPE type) {
+		return getAREBaseURI().resolve(mapResTypeFolderName(type)).relativize(absolutePath);
 	}
 	
 	/**
@@ -751,12 +809,13 @@ public class ResourceRegistry {
 	public List<URI> getOtherFilesList(boolean relative) {
 		//get other files like start scripts and config files.
 					
-		final List<String> whiteList=Arrays.asList(new String[]{"are.exe","start.sh","start_debug.sh","start.bat","start_debug.bat","findjava.bat","areproperties","jtester.exe"});
+		final List<String> whiteList=Arrays.asList(new String[]{"areproperties"});
 		List<URI> URIs = ComponentUtils.findFiles(getAREBaseURI(), relative, 1, new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {		    	
 		    	//Should we include the ARE here??
-		    	return name != null && whiteList.contains(name.toLowerCase());		    			
+		    	String toLowerName=name.toLowerCase();
+		    	return toLowerName != null && (toLowerName.endsWith(".exe") || toLowerName.endsWith(".bat") || toLowerName.endsWith(".sh") || toLowerName.endsWith(".dll") || toLowerName.endsWith(".txt") || toLowerName.endsWith(".properties") || whiteList.contains(toLowerName));		    			
 		    }
 		});
 		
@@ -772,12 +831,12 @@ public class ResourceRegistry {
 	public List<URI> getMandatoryProfileConfigFileList(boolean relative) {
 		//get profile files
 		
-		final List<String> whiteList=Arrays.asList(new String[]{"config.ini","services.ini","services_websocketdemo.ini","services-linux.ini","services-windows.ini"});
+		//final List<String> whiteList=Arrays.asList(new String[]{"config.ini","services.ini","services_websocketdemo.ini","services-linux.ini","services-windows.ini"});
 		List<URI> URIs = ComponentUtils.findFiles(toAbsolute(PROFILE_FOLDER), relative, 1, new FilenameFilter() {
 		    @Override
 		    public boolean accept(File dir, String name) {		    	
 		    	//Should we include the ARE here??
-		    	return name != null && whiteList.contains(name.toLowerCase());		    			
+		    	return name != null && name.endsWith(".ini")&&!name.toLowerCase().equals(BundleManager.LOADER_COMPONENTLIST_LOCATION);		    			
 		    }
 		});
 		

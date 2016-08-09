@@ -37,15 +37,15 @@ import eu.asterics.mw.model.deployment.IEventEdge;
 
 public class ModelGUIInfo 
 {
-	public boolean  decoration = true;
-	public boolean  fullscreen = false;
-	public boolean  valwaysOnTop = false;
-	public boolean  toSysTray = false; 
-	public boolean  shopControlPanel = true;
-	public int posX;
-	public int posY;
-	public int width;
-	public int height;
+	private boolean  decoration = true;
+	private boolean  fullscreen = false;
+	private boolean  valwaysOnTop = false;
+	private boolean  toSysTray = false; 
+	private boolean  shopControlPanel = true;
+	private int posX;
+	private int posY;
+	private int width;
+	private int height;
 	
 	public ModelGUIInfo(boolean decoration, boolean fullscreen,
 			boolean valwaysOnTop, boolean toSysTray, boolean shopControlPanel,
@@ -79,19 +79,6 @@ public class ModelGUIInfo
 			.append("\nheight: ").append(height);
 		return buf.toString();
 	}
-
-	public void updateProperties()
-	{
-		AREProperties props = AREProperties.instance;
-		
-		props.setProperty("show_side_bar", shopControlPanel ? "1" : "0");
-		props.setProperty("iconify", toSysTray ? "1" : "0");
-		props.setProperty("always_on_top", valwaysOnTop ? "1" : "0");
-		props.setProperty("undecorated", decoration ? "0" : "1");
-		props.setProperty("fullscreen", fullscreen ? "1" : "0");
-		props.storeProperties();
-	}
-
 	
 	public ModelGUIInfo(int posX, int posY, int width, int height) 
 	{
@@ -155,5 +142,86 @@ public class ModelGUIInfo
 		Element height = doc.createElement("height");
 		areGUIWindow.appendChild(height);
 		height.setTextContent(Integer.toString(this.height));
+	}
+
+
+
+	/**
+	 * @return the decoration
+	 */
+	public boolean isDecoration() {
+		return decoration;
+	}
+
+
+
+	/**
+	 * @return the fullscreen
+	 */
+	public boolean isFullscreen() {
+		return fullscreen;
+	}
+
+
+
+	/**
+	 * @return the valwaysOnTop
+	 */
+	public boolean isValwaysOnTop() {
+		return valwaysOnTop;
+	}
+
+
+
+	/**
+	 * @return the toSysTray
+	 */
+	public boolean isToSysTray() {
+		return toSysTray;
+	}
+
+
+
+	/**
+	 * @return the shopControlPanel
+	 */
+	public boolean isShopControlPanel() {
+		return shopControlPanel;
+	}
+
+
+
+	/**
+	 * @return the posX
+	 */
+	public int getPosX() {
+		return posX;
+	}
+
+
+
+	/**
+	 * @return the posY
+	 */
+	public int getPosY() {
+		return posY;
+	}
+
+
+
+	/**
+	 * @return the width
+	 */
+	public int getWidth() {
+		return width;
+	}
+
+
+
+	/**
+	 * @return the height
+	 */
+	public int getHeight() {
+		return height;
 	}	
 }

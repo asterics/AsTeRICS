@@ -200,6 +200,11 @@
 		<param name="Local" value="HTML\Plugins\processors\Comparator.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.COMPort">
+		<param name="Name" value="ComPort">
+		<param name="Local" value="HTML\Plugins\processors\ComPort.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.computebandpower">
 		<param name="Name" value="Compute Bandpower">
 		<param name="Local" value="HTML\Plugins\processors\ComputeBandpower.htm">
@@ -233,6 +238,11 @@
 		<param name="Name" value="asterics.derivative">
 		<param name="Name" value="Derivative">
 		<param name="Local" value="HTML\Plugins\processors\Derivative.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.DialogBox">
+		<param name="Name" value="DialogBox">
+		<param name="Local" value="HTML\Plugins\actuators\DialogBox.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.differentiate">
@@ -430,6 +440,11 @@
 		<param name="Local" value="HTML\Plugins\actuators\FS20Sender.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.GMailShortcuts">
+		<param name="Name" value="GMailShortcuts">
+		<param name="Local" value="HTML\Plugins\actuators\GMailShortcuts.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.gsmmodem">
 		<param name="Name" value="GSMModem">
 		<param name="Local" value="HTML\Plugins\actuators\GSMModem.htm">
@@ -463,6 +478,11 @@
 		<param name="Name" value="asterics.integrate">
 		<param name="Name" value="Integrate">
 		<param name="Local" value="HTML\Plugins\processors\Integrate.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.IntelRealSense">
+		<param name="Name" value="IntelRealSense">
+		<param name="Local" value="HTML\Plugins\sensors\IntelRealSense.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.inttostring">
@@ -735,6 +755,11 @@
 		<param name="Local" value="HTML\Plugins\processors\Quantizer.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.RandomNumber">
+		<param name="Name" value="RandomNumber">
+		<param name="Local" value="HTML\Plugins\sensors\RandomNumber.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.razorimu">
 		<param name="Name" value="IMU">
 		<param name="Local" value="HTML\Plugins\sensors\RazorIMU.htm">
@@ -803,6 +828,11 @@
 		<param name="Name" value="asterics.Sensorboard">
 		<param name="Name" value="Sensorboard">
 		<param name="Local" value="HTML\Plugins\sensors\Sensorboard.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="asterics.SerialPort">
+		<param name="Name" value="SerialPort">
+		<param name="Local" value="HTML\Plugins\processors\SerialPort.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="asterics.serialsender">
@@ -1075,6 +1105,11 @@
 		<param name="Local" value="HTML\ACS-misc\Colours_settings.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="COM Port">
+		<param name="Name" value="ComPort">
+		<param name="Local" value="HTML\Plugins\processors\ComPort.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Comparator">
 		<param name="Name" value="Comparator">
 		<param name="Local" value="HTML\Plugins\processors\Comparator.htm">
@@ -1188,6 +1223,11 @@
 		<param name="Name" value="Derivative">
 		<param name="Name" value="Derivative">
 		<param name="Local" value="HTML\Plugins\processors\Derivative.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Dialog Box">
+		<param name="Name" value="DialogBox">
+		<param name="Local" value="HTML\Plugins\actuators\DialogBox.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Dialogs Settings">
@@ -1445,6 +1485,11 @@
 		<param name="Local" value="HTML\ACS-misc\Status_Reporting_and_Error_Logging.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Gmail Shortcuts">
+		<param name="Name" value="GMailShortcuts">
+		<param name="Local" value="HTML\Plugins\actuators\GMailShortcuts.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="GSM Modem">
 		<param name="Name" value="GSMModem">
 		<param name="Local" value="HTML\Plugins\actuators\GSMModem.htm">
@@ -1493,6 +1538,11 @@
 		<param name="Name" value="Integrate">
 		<param name="Name" value="Integrate">
 		<param name="Local" value="HTML\Plugins\processors\Integrate.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Intel Real Sense">
+		<param name="Name" value="IntelRealSense">
+		<param name="Local" value="HTML\Plugins\sensors\IntelRealSense.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="IR Trans">
@@ -1918,6 +1968,11 @@
 		<param name="Local" value="HTML\Plugins\processors\Quantizer.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Random Number">
+		<param name="Name" value="RandomNumber">
+		<param name="Local" value="HTML\Plugins\sensors\RandomNumber.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Razor IMU">
 		<param name="Name" value="IMU">
 		<param name="Local" value="HTML\Plugins\sensors\RazorIMU.htm">
@@ -2020,6 +2075,11 @@
 		<param name="Local" value="HTML\ACS-misc\Plugins.htm">
 		<param name="Name" value="Create and Edit a Model">
 		<param name="Local" value="HTML\ACS-misc\Create_and_Edit_a_Model.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Serial Port">
+		<param name="Name" value="SerialPort">
+		<param name="Local" value="HTML\Plugins\processors\SerialPort.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Serial Sender">

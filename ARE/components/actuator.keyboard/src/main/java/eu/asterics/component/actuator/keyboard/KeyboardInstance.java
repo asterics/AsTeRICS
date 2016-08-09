@@ -27,7 +27,11 @@
 package eu.asterics.component.actuator.keyboard;
 import java.util.*;
 import java.io.*;
+import java.lang.reflect.Field;
 import javax.swing.KeyStroke;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.keyboard.NativeKeyEvent;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -35,6 +39,8 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
+
+
 
 
 /**
@@ -54,8 +60,13 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
      */  
     static      
     {   
-        System.loadLibrary("kbdevent");
-    	AstericsErrorHandling.instance.getLogger().fine("Loading \"kbdevent.dll\" for Keystrike generation... ok!");  
+    	try {
+    	      	System.loadLibrary("kbdevent");
+    	      	AstericsErrorHandling.instance.getLogger().fine("Loading \"kbdevent.dll\" for Keystrike generation... ok!");  
+    	    } 
+    	   catch (UnsatisfiedLinkError e) {
+    	      	AstericsErrorHandling.instance.getLogger().fine("could not load kbdevent.dll (only applies for Windows)");  
+    	   }
     }
       
 	private final String ELP_SENDKEYS_NAME 	= "sendKeys";
@@ -75,11 +86,14 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
     private Vector<Integer> keyCodeArray; 
 	private long lastUpdate = 0;
 	private Hashtable<String, Integer> keyCodeMap;	
+	private Hashtable<Integer, String> vKeyCodeMap;	
 
 	native public int keyPress(int keycode);
 	native public int keyRelease(int keycode);
 	native public int keyPressSi(int keycode);     // using SendInput
 	native public int keyReleaseSi (int keycode);  // using SendInput
+	
+	
 	
     /**
      * The class constructor, loads the keycode map
@@ -92,8 +106,10 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 			FileReader fin = new FileReader("data/actuator.keyboard/keycodes.txt");
 			LineNumberReader in = new LineNumberReader(fin);
 			keyCodeMap = new Hashtable<String, Integer>();
+			vKeyCodeMap = new Hashtable<Integer, String>();
 			String actLine = null;
 			String actKey = null;
+			String actVKey = null;
 			String actCode = null;		
 			Integer code=0;
 			Integer count=0;
@@ -105,6 +121,7 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 				    StringTokenizer st = new StringTokenizer(actLine," ,;\r\n");
 				    if (st.hasMoreTokens()) actCode=st.nextToken(); else actCode=null;
 				    if (st.hasMoreTokens()) actKey=st.nextToken(); else actKey=null;
+				    if (st.hasMoreTokens()) actVKey=st.nextToken(); else actVKey=null;
 				    if ((actKey != null) && (actCode!=null)) 
 				    {
 				    	try 
@@ -116,6 +133,18 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 				        catch (NumberFormatException e) 
 				        {
 				        	AstericsErrorHandling.instance.reportInfo(this, "Wrong key Code " +  actCode);
+				        }		
+				    }
+				    if ((actVKey != null) && (actCode!=null)) 
+				    {
+				    	try 
+				    	{ 
+				    		code = Integer.parseInt(actCode);
+					    	vKeyCodeMap.put(code, actVKey);
+				    	}
+				        catch (NumberFormatException e) 
+				        {
+				        	AstericsErrorHandling.instance.reportInfo(this, "Wrong virtual key Code " +  actCode);
 				        }		
 				    }
 				}
@@ -243,7 +272,8 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
     * the keycode string is expected in property variable propKeyCodeString,
     * the Keycodes are returned in vector keyCodeArray 
     */
-	public void keyCodeTranslate()
+	public void keyCodeTranslate()   // TBD: Improve ! special characters might 
+									 //  not work for non-german keyboard layouts
 	{
 		Integer keyCode=0;
 		String actToken;
@@ -325,6 +355,145 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 		actSendPos=0;
 	}
 
+    public String getVirtualKeycode (int actcode)   // TBD: improve! 
+          											//  jNativehook virtual keycodes do not fit german keyboard layout !
+    {
+      	 String val = vKeyCodeMap.get(actcode);
+		 if (val != null) {
+			 // System.out.println("Vitual Keycode for "+actcode+" found, value = " +  val);
+		 }
+		 else
+		 {
+			 switch (actcode) {
+				   case 189: val="VC_MINUS"; break;
+				   case 187: val="VC_PLUS"; break;
+				   case 190: val="VC_PERIOD";break;
+				   case 188: val="VC_COMMA";break;
+				   case 106: val="VC_MULTIPLY";break;
+				   // case '<': keyCode=226; val="VC_LESSER";break;
+				   // case '#': keyCode=191; val="VC_NUMBER";break;
+				   // case ':': keyCodeArray.add(16);keyCode=190; val="VC_";break;
+				    // case 189: val="VC_UNDERSCORE";break;
+				   case 56: val="VC_OPEN_BRACKET";break;
+				   case 57: val="VC_CLOSE_BRACKET";break;
+				   // case '[': keyCodeArray.add(18);keyCode=56; val="VC_";break;
+				   // case ']': keyCodeArray.add(18);keyCode=57; val="VC_";break;
+				   // case '{': keyCodeArray.add(18);keyCode=55; val="VC_";break;
+				   // case '}': keyCodeArray.add(18);keyCode=58; val="VC_";break;
+				   // case 188: val="VC_SEMICOLON";break;
+				   case 55: val="VC_SLASH";break;
+				   // case '>': keyCodeArray.add(16);keyCode=226; val="VC_GREATER";break;
+				   // case '?': keyCodeArray.add(16);keyCode=219; val="VC_";break;
+				   // case '!': keyCodeArray.add(16);keyCode=49; val="VC_";break;
+				   // case '&': keyCodeArray.add(16);keyCode=54; val="VC_";break;
+				   // case '$': keyCodeArray.add(16);keyCode=52; val="VC_";break;
+				   // case '\"': keyCodeArray.add(16);keyCode=50; val="VC_QUOTE";break;
+				   case 191: val="VC_QUOTE";break;
+				   case 219: val="VC_BACK_SLASH";break;
+				   //case '@':  keyCodeArray.add(18);keyCode=81; val="VC_";break;
+		
+				   default:
+		    		   	char character=(char) actcode; 		
+					    val="VC_"+Character.toUpperCase(character);
+						// System.out.println("assuming Vitual Keycode for "+actcode+" = " +  val);
+			 }
+		 }
+		 return val;
+    }
+	
+	public void sendKeyPress(int actcode)
+	{
+		switch (propInputMethod) {
+				case 0: keyPress(actcode); 
+						break;
+				case 1:
+						keyPressSi(actcode); break;
+				case 2:
+
+					int virtualKeycode =0;
+					Field f;
+					try {
+						
+						String val = getVirtualKeycode(actcode);
+						f = NativeKeyEvent.class.getField(val);
+						Class<?> t = f.getType();
+						if(t == int.class){	
+							try {
+								virtualKeycode=f.getInt(null);
+								// AstericsErrorHandling.instance.getLogger().fine("press virtual keycode="+virtualKeycode);
+								
+								NativeKeyEvent keyEvent = new NativeKeyEvent( 
+									    NativeKeyEvent.NATIVE_KEY_PRESSED, 
+									    System.currentTimeMillis(), 
+									    0x00,  // Modifiers 
+									    0x00,  // Raw Code 
+									    virtualKeycode, //NativeKeyEvent.VC_UNDEFINED,  
+									    NativeKeyEvent.CHAR_UNDEFINED, 
+									    NativeKeyEvent.KEY_LOCATION_STANDARD); 
+
+								GlobalScreen.postNativeEvent(keyEvent);
+							} catch (IllegalArgumentException | IllegalAccessException e) {
+								AstericsErrorHandling.instance.getLogger().fine("JnativeHook key press Exception: "+e.getMessage());
+							}
+						}
+					} 
+					catch (NoSuchFieldException | SecurityException e1) {
+						AstericsErrorHandling.instance.getLogger().fine("JnativeHook Reflection Exception: "+e1.getMessage());
+					}
+
+			        break;
+		}	
+	}
+
+	public void sendKeyRelease(int actcode)
+	{
+		
+		switch (propInputMethod) {
+				case 0: keyRelease(actcode);
+						break;
+				case 1:	keyReleaseSi(actcode);
+						break;
+				case 2:  // TDB
+
+					int virtualKeycode =0;
+					Field f;
+					try {
+						
+						String val = getVirtualKeycode(actcode);
+						f = NativeKeyEvent.class.getField(val);
+						Class<?> t = f.getType();
+						if(t == int.class){	
+							try {
+								virtualKeycode=f.getInt(null);
+								// AstericsErrorHandling.instance.getLogger().fine("release virtual keycode="+virtualKeycode);
+								
+								NativeKeyEvent keyEvent = new NativeKeyEvent( 
+									    NativeKeyEvent.NATIVE_KEY_RELEASED, 
+									    System.currentTimeMillis(), 
+									    0x00,  // Modifiers 
+									    0x00,  // Raw Code 
+									    virtualKeycode,  // NativeKeyEvent.VC_UNDEFINED 
+									    NativeKeyEvent.CHAR_UNDEFINED, 
+									    NativeKeyEvent.KEY_LOCATION_UNKNOWN); 
+
+								GlobalScreen.postNativeEvent(keyEvent);
+
+							} catch (IllegalArgumentException | IllegalAccessException e) {
+								AstericsErrorHandling.instance.getLogger().fine("JnativeHook key release Exception: "+e.getMessage());
+
+							}
+						}
+					} 
+					catch (NoSuchFieldException | SecurityException e1) {
+						AstericsErrorHandling.instance.getLogger().fine("JnativeHook Reflection Exception: "+e1.getMessage());
+
+					}
+
+			        break;
+		}			
+	}
+	
+	
    /**
     * sends a keycode of given index (in the keycode vector) and mode
     */
@@ -336,23 +505,25 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 		int mcount=0;
 		boolean waitForKey=true;
 	
+		/*
 		if (mode==MODE_HOLD)
 			System.out.println("holding Key ");
 		else if (mode==MODE_PRESS)
 			System.out.println("press Key ");
 		else if (mode==MODE_RELEASE)
 			System.out.println("release Key ");
+		*/
 		
 		
-		while ((index<keyCodeArray.size()) && (waitForKey))
+		while ((index<keyCodeArray.size()) && (waitForKey))   // iterate until regular key (accumulate modifiers)
 		{
 			actcode= keyCodeArray.get(index);
 			if ((mode == MODE_PRESS) || (mode == MODE_HOLD))
 			{
 				switch (actcode) {
-					case 1: 	System.out.println("waiting: "+propWaitTime);
+					case 1: 	// System.out.println("waiting: "+propWaitTime);
 								try {Thread.sleep(propWaitTime);} catch (Exception e) {}; break;
-					case 11:
+					case 11:    // handle modifier keys !
 					case 16:
 					case 17: 
 					case 18:
@@ -362,18 +533,16 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 					case 164:
 						    if (mcount<20) 
 							{
-								System.out.println("modifier: "+actcode);
-								modifier[mcount++]=actcode;
+								// System.out.println("modifier: "+actcode);
+								modifier[mcount++]=actcode;   // add the modifiers 
 							}
 						break;
-					default: waitForKey=false;
+					default: waitForKey=false;  // if a regular key appears !
 				}
 				if (actcode !=1)
 				{
-					System.out.println("press "+actcode);
-					if (propInputMethod==1)
-						keyPressSi(actcode);
-					else keyPress(actcode);
+					// System.out.println("press "+actcode);
+					sendKeyPress(actcode);    // press modifiers or regular keys
 				}
 			}
 			
@@ -381,23 +550,18 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 			i++;
 		}
 		
-		if (mode != MODE_HOLD)
+		if (mode != MODE_HOLD)   //  release immediately 
 		{  
 			if (actcode!=-1)
 			{
-				System.out.println("release "+actcode);
-				if (propInputMethod==1)
-					keyReleaseSi(actcode);
-				else keyRelease(actcode);
+				// System.out.println("release "+actcode);
+				sendKeyRelease(actcode);
 			}
 
 			while (mcount>0)
 			{
-				System.out.println("release modifier "+modifier[mcount-1]);
-
-				if (propInputMethod==1)
-					keyReleaseSi(modifier[--mcount]);
-				else keyRelease(modifier[--mcount]);
+				// System.out.println("release modifier "+modifier[mcount-1]);
+				sendKeyRelease(modifier[--mcount]);
 			}
 		}
         return(i);
@@ -411,7 +575,7 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
 		int code=0;
 		int i=0;
 		
-		while(i<keyCodeArray.size())
+		while(i<keyCodeArray.size())   // type (press and release) all keys sequentially
 		{
 			// 	Logger.getAnonymousLogger().fine("sending keycode");
 			i+=sendKeyCode(i,MODE_PRESS);			
@@ -444,7 +608,8 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
     {
     	 public void receiveEvent(final String data)
     	 {
-    		//  Logger.getAnonymousLogger().info("received SendKeys event ");           
+    	
+    		// Logger.getAnonymousLogger().info("received SendKeys event ");           
             sendAllCodes();
     	 }
     };    
@@ -457,11 +622,10 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
     {
    	 public void receiveEvent(final String data)
    	 {
-			int code=0;
 			// AstericsErrorHandling.instance.getLogger().fine(String.format("received keypress event, sending: %04x",keyCodeArray.get(actSendPos)));            
-			sendKeyCode(actSendPos,MODE_PRESS);			
-			if (++actSendPos>=keyCodeArray.size()) 
-				actSendPos=0;
+			int index=sendKeyCode(actSendPos,MODE_PRESS);			
+			// actSendPos+=index;
+			// if (actSendPos>=keyCodeArray.size()) actSendPos=0;
   	 }
     }; 
 
@@ -472,11 +636,8 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
     {
    	 public void receiveEvent(final String data)
    	 {
-			int code=0;
 			//AstericsErrorHandling.instance.getLogger().fine(String.format("received keyhold event, sending: %04x",keyCodeArray.get(actSendPos)));            
-			sendKeyCode(actSendPos,MODE_HOLD);			
-			//if (++actSendPos>=keyCodeArray.size()) 
-				//actSendPos=0;
+			sendKeyCode(actSendPos,MODE_HOLD);	
    	 }
    };  
 
@@ -487,7 +648,6 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
     {
    	 public void receiveEvent(final String data)
    	 {
-			int code=0;
 			//AstericsErrorHandling.instance.getLogger().fine("received keyrelease event, sending.");
 			sendKeyCode(actSendPos,MODE_RELEASE);			
    	 }
@@ -501,9 +661,11 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance
   @Override
    public void start()
    {
-   	//	port = CIMPortManager.getInstance().getConnection(key_ACTUATOR_CIM_ID);
        super.start();
+	   // NativeHookServices.init();
        AstericsErrorHandling.instance.reportInfo(this, "KeyboardInstance started");
+
+             
    }
   
    /**

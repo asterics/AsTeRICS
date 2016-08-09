@@ -42,14 +42,15 @@ IF ERRORLEVEL 1 GOTO QuitError
 echo Using JAVA_BIN: %JAVA_BIN% 
 %JAVA_BIN% -version
 
-%JAVA_BIN% -jar VCChecker.jar
-IF ERRORLEVEL 1 GOTO ContARE
-echo NO C++ Redistributable Package found. 
-echo It is highly recommended to download and install the Visual C++ Redistributable Package from Microsoft!
-echo Download link for 32 bit systems: http://www.microsoft.com/en-us/download/details.aspx?id=5555
-echo Several Plugins will not work without the package!
-rem GOTO QuitError
-Pause
+REM Disable Visual C++ Redistributable check, because the dlls are now contained in the application folder
+REM %JAVA_BIN% -jar VCChecker.jar
+REM IF ERRORLEVEL 1 GOTO ContARE
+REM echo NO C++ Redistributable Package found. 
+REM echo It is highly recommended to download and install the Visual C++ Redistributable Package from Microsoft!
+REM echo Download link for 32 bit systems: http://www.microsoft.com/en-us/download/details.aspx?id=5555
+REM echo Several Plugins will not work without the package!
+REM rem GOTO QuitError
+REM Pause
 
 :ContARE
 
@@ -72,7 +73,7 @@ REM The start command must have empty quotes as first parameter, so that a path 
 @IF NOT DEFINED ARE_DEBUG_STRING set START_CMD=start ""
 @IF NOT DEFINED ARE_DEBUG_STRING set SPLASH_SWITCH=-splash:images/asterics_startup.png
 
-%START_CMD% %JAVA_BIN% %ARE_DEBUG_STRING% %SPLASH_SWITCH% -Dorg.osgi.framework.os.name=win32 -Dosgi.clean=true -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%AUTOSTART_MODEL% -Deu.asterics.ARE.ServicesFiles="services.ini;services-windows.ini;%ARE_OPTIONAL_SERVICES_INI%" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console
+%START_CMD% %JAVA_BIN% %ARE_DEBUG_STRING% %SPLASH_SWITCH% -Dorg.osgi.framework.os.name=win32 -Dosgi.clean=true -Dorg.osgi.framework.bootdelegation=* -Dorg.osgi.framework.system.packages.extra=sun.misc -DAnsi=true -Djava.util.logging.config.file=logging.properties -Deu.asterics.ARE.startModel=%AUTOSTART_MODEL% -Deu.asterics.ARE.ServicesFiles="%ARE_OPTIONAL_SERVICES_INI%" -jar org.eclipse.osgi_3.6.0.v20100517.jar -configuration %PROFILE_PATH% -console
 set ARE_LOG_STRING=
 set ARE_DEBUG_STRING=
 

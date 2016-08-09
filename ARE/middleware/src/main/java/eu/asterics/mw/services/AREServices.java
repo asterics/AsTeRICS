@@ -36,6 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -149,13 +150,14 @@ public class AREServices implements IAREServices{
 		//ideally this should also be executed in the same thread as the others, but unfortunately AsapiSupport does not even use this.
 		
 		try {
-			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable() {
 						@Override
-						public void run() {
+						public Object call() throws Exception {
 							deployFileInternal(filename);
+							return null;
 						}
 					});
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {			
+		} catch (Exception e) {			
 			String message=createErrorMsg("Could not deploy model", e);
 			logger.warning(message);
 			DeploymentManager.instance.reseToCleanState();					
@@ -165,13 +167,22 @@ public class AREServices implements IAREServices{
 	/**
 	 * Deploys the model associated to the specified filename. The file 
 	 * should be already available on the ARE file system.
+	 * 
+	 * This method is not thread-safe, only use it in combination with {@link AstericsModelExecutionThreadPool#execAndWaitOnModelExecutorLifecycleThread(Callable)}
 	 * @param filename the filename of the model to be deployed
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws TransformerException 
+	 * @throws BundleManagementException 
+	 * @throws ParseException 
+	 * @throws DeploymentException 
 	 */
 
-	private void deployFileInternal(String filename) {		
+	public void deployFileInternal(String filename) throws ParserConfigurationException, SAXException, IOException, TransformerException, DeploymentException, ParseException, BundleManagementException {		
 		filename = MODELS_FOLDER + "/" + filename;
 		logger.fine("deployFile <"+filename+">");
-		
+
 		final IRuntimeModel currentRuntimeModel
 		= DeploymentManager.instance.getCurrentRuntimeModel();
 
@@ -181,56 +192,26 @@ public class AREServices implements IAREServices{
 			DeploymentManager.instance.undeployModel();
 		}
 
-		try{
+		//this is for getting the text xml and converting it to string
+		String xmlFile = filename;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		synchronized (builder) {
 
-
-			//this is for getting the text xml and converting it to string
-			String xmlFile = filename;
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			synchronized (builder) {
-
-				Document doc = builder.parse(new File(xmlFile));
-				DOMSource domSource = new DOMSource(doc);
-				StringWriter writer = new StringWriter();
-				StreamResult result = new StreamResult(writer);
-				TransformerFactory tf = TransformerFactory.newInstance();
-				Transformer transformer = tf.newTransformer();
-				transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-				transformer.transform(domSource, result);
-				String modelInString = writer.toString();
-				//calling the asapi function with a string representation of the model
-				deployModelInternal(modelInString);
-				logger.fine(this.getClass().getName()+"." +
-						"deployFile: OK\n");
-			}
-
-		}catch (SAXException e3) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployFile: Failed to deploy file -> \n"
-					+e3.getMessage());
-
-		} catch (IOException e4) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployFile: Failed to deploy file -> \n"
-					+e4.getMessage());
-
-		} catch (ParserConfigurationException e5) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployFile: Failed to deploy file -> \n"
-					+e5.getMessage());
-
-		} catch (TransformerConfigurationException e6) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployFile: Failed to deploy file -> \n"
-					+e6.getMessage());
-
-		} catch (TransformerException e7) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployFile: Failed to deploy file -> \n"
-					+e7.getMessage());
-		}
-		
+			Document doc = builder.parse(new File(xmlFile));
+			DOMSource domSource = new DOMSource(doc);
+			StringWriter writer = new StringWriter();
+			StreamResult result = new StreamResult(writer);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
+			transformer.transform(domSource, result);
+			String modelInString = writer.toString();
+			//calling the asapi function with a string representation of the model
+			deployModelInternal(modelInString);
+			logger.fine(this.getClass().getName()+"." +
+					"deployFile: OK\n");
+		}		
 	}
 
 	/**
@@ -244,21 +225,20 @@ public class AREServices implements IAREServices{
 		//ideally this should also be executed in the same thread as the others, but unfortunately AsapiSupport does not even use this.
 		
 		try {
-			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable() {
 						@Override
-						public void run() {
+						public Object call() throws Exception {
 							deployAndStartFileInternal(filename);
+							return null;
 						}
 					});
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+		} catch (Exception e) {
 			String message=createErrorMsg("Could not deploy and start model", e);
 			logger.warning(message);
 			DeploymentManager.instance.reseToCleanState();
 			
 			logger.warning(message);			
 			AstericsErrorHandling.instance.reportError(null, message);
-			//AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
-			//throw new AREAsapiException(message);
 		}		
 	}
 
@@ -266,78 +246,54 @@ public class AREServices implements IAREServices{
 	 * Deploys the model associated to the specified filename. The file 
 	 * should be already available on the ARE file system. 
 	 * This method will also start the model as soon as it is deployed.
+	 * 
+	 * This method is not thread-safe, only use it in combination with {@link AstericsModelExecutionThreadPool#execAndWaitOnModelExecutorLifecycleThread(Callable)} 
 	 * @param filename the filename of the model to be deployed
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws TransformerException 
+	 * @throws BundleManagementException 
+	 * @throws ParseException 
+	 * @throws DeploymentException 
 	 */
 
-	private void deployAndStartFileInternal(String filename) {
+	public void deployAndStartFileInternal(String filename) throws ParserConfigurationException, SAXException, IOException, TransformerException, DeploymentException, ParseException, BundleManagementException {
 		filename = MODELS_FOLDER + "/" + filename;
-		
+
 		logger.fine("Deploying file <"+filename+">");
 		final IRuntimeModel currentRuntimeModel
 		= DeploymentManager.instance.getCurrentRuntimeModel();
 
+		//this is for getting the text xml and converting it to string
+		String xmlFile = filename;
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		synchronized (builder) {
+			Document doc = builder.parse(new File(xmlFile));
+			DOMSource domSource = new DOMSource(doc);
+			StringWriter writer = new StringWriter();
+			StreamResult result = new StreamResult(writer);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
+			transformer.transform(domSource, result);
 
-		try{
+			String modelInString = writer.toString();
 
-
-			//this is for getting the text xml and converting it to string
-			String xmlFile = filename;
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			synchronized (builder) {
-				Document doc = builder.parse(new File(xmlFile));
-				DOMSource domSource = new DOMSource(doc);
-				StringWriter writer = new StringWriter();
-				StreamResult result = new StreamResult(writer);
-				TransformerFactory tf = TransformerFactory.newInstance();
-				Transformer transformer = tf.newTransformer();
-				transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-				transformer.transform(domSource, result);
-
-				String modelInString = writer.toString();
-
-				if(currentRuntimeModel != null)
-				{
-					this.stopModelInternal();
-					DeploymentManager.instance.undeployModel();
-				}
-				//calling the asapi function with a string 
-				//representation of the model
-				deployModelInternal(modelInString);
-				logger.fine(this.getClass().getName()+"." +
-						"deployAndStartFile: OK\n");
-				runModelInternal();
-
+			if(currentRuntimeModel != null)
+			{
+				this.stopModelInternal();
+				DeploymentManager.instance.undeployModel();
 			}
-		}catch (SAXException e3) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployAndStartFile: Failed to deploy file -> \n"
-					+e3.getMessage());
+			//calling the asapi function with a string 
+			//representation of the model
+			deployModelInternal(modelInString);
+			logger.fine(this.getClass().getName()+"." +
+					"deployAndStartFile: OK\n");
+			runModelInternal();
 
-		} catch (IOException e4) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployAndStartFile: Failed to deploy file -> \n"
-					+e4.getMessage());
-
-		} catch (ParserConfigurationException e5) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployAndStartFile: Failed to deploy file -> \n"
-					+e5.getMessage());
-
-		} catch (TransformerConfigurationException e6) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployAndStartFile: Failed to deploy file -> \n"
-					+e6.getMessage());
-
-		} catch (TransformerException e7) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployAndStartFile: Failed to deploy file -> \n"
-					+e7.getMessage());
-		}/* catch (AREAsapiException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"deployAndStartFile: Failed to start file -> \n"
-					+e.getMessage());
-		}*/
+		}
 	}
 
 	/**
@@ -417,14 +373,16 @@ public class AREServices implements IAREServices{
 	//NOTE: Don't use synchronized here, because in some cases it leads to a dead lock.
 	public void stopModel() {
 		try {
-			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable() {
 				@Override
-						public void run() {
+						public Object call() throws Exception {
 							stopModelInternal();
+							return null;
 						}
 					});
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+		} catch (Exception e) {
 			//String message="Could not execute stopModel, exception occurred: "+e.getMessage()!=null ? e.getMessage() : e.toString();
+			
 			String message=createErrorMsg("Could not stop model", e);
 			logger.warning(message);
 			DeploymentManager.instance.reseToCleanState();
@@ -432,14 +390,16 @@ public class AREServices implements IAREServices{
 			
 			//Try stopping again with fallback thread
 			try {
-				AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+				AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable() {
 					@Override
-							public void run() {
+							public Object call() throws Exception {
 								stopModelInternal();
+								return null;
 							}
 						});
-			} catch (InterruptedException | ExecutionException | TimeoutException se) {
+			} catch (Exception se) {
 				//String message2="Could not execute second try of stopModel, exception occurred: "+se.getMessage()!=null ? se.getMessage() : se.toString();
+				//setStatusObject ARE_ERROR is set in reportError
 				message=createErrorMsg("Could not stop model", e);
 				logger.warning("Second Try: "+message);
 				AstericsErrorHandling.instance.reportError(null, message);
@@ -449,7 +409,12 @@ public class AREServices implements IAREServices{
 		}
 	}
 	
-	private void stopModelInternal() {
+	/**
+	 * Stops the currently running model.
+
+	 * This method is not thread-safe, only use it in combination with {@link AstericsModelExecutionThreadPool#execAndWaitOnModelExecutorLifecycleThread(Callable)} 
+	 */
+	public void stopModelInternal() {
 		logger.fine("stopModelInternal");
 		if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING
 				|| DeploymentManager.instance.getStatus() == AREStatus.PAUSED
@@ -477,24 +442,36 @@ public class AREServices implements IAREServices{
 	 */	
 
 	public void deployModel(final String modelInXML) {
-		deployModelInternal(modelInXML);
-		/*
+		//deployModelInternal(modelInXML);
+		
 		try {
-			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable() {
 				@Override
-						public void run() {
+						public Object call() throws Exception {
 							deployModelInternal(modelInXML);
+							return null;
 						}
 					});
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			String message="Could not execute deployModel: "+e.getMessage()!=null ? e.getMessage() : e.toString();
+		} catch (Exception e) {
+			String message=createErrorMsg("Could not deploy model", e);
 			logger.warning(message);
-			//AstericsErrorHandling.instance.reportError(null, message);
+			AstericsErrorHandling.instance.reportError(null, message);
+			DeploymentManager.instance.reseToCleanState();
 			AstericsModelExecutionThreadPool.getInstance().switchToFallbackPool();
-		}*/		
+		}		
 	}
 	
-	private void deployModelInternal(String modelInXML)
+	/**
+	 * Deploys the given model as XML string and feeds back exceptions.
+	 * 
+	 * This method is not thread-safe, only use it in combination with {@link AstericsModelExecutionThreadPool#execAndWaitOnModelExecutorLifecycleThread(Callable)} 
+	 * @param modelInXML
+	 * @throws IOException
+	 * @throws DeploymentException
+	 * @throws ParseException
+	 * @throws BundleManagementException
+	 */
+	public void deployModelInternal(String modelInXML) throws IOException, DeploymentException, ParseException, BundleManagementException
 	{
 		//Stop running model first if there is one
 		if (DeploymentManager.instance.getStatus()==AREStatus.RUNNING)
@@ -509,81 +486,37 @@ public class AREServices implements IAREServices{
 		File modelsDir = new File(MODELS_FOLDER);
 		if (!modelFile.exists())
 		{
-			try {
-				modelsDir.mkdir();
-				modelFile.createNewFile();
-			} catch (IOException e1) {
-				DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-				AstericsErrorHandling.instance.setStatusObject
-				(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-				logger.warning(this.getClass().getName()+"." +
-						"deployModel: Failed to create file model.xml -> \n"
-						+e1.getMessage());
-
-			}
+			modelsDir.mkdir();
+			modelFile.createNewFile();
 		}
 
 		//Convert the string to a byte array.
 		String s = modelInXML;
 		byte data[] = s.getBytes();
-		try {
+		BufferedWriter c = new BufferedWriter(new OutputStreamWriter
+				(new FileOutputStream(modelFile),"UTF-16"));
 
-			BufferedWriter c = new BufferedWriter(new OutputStreamWriter
-					(new FileOutputStream(modelFile),"UTF-16"));
+		//out = new BufferedOutputStream(new FileOutputStream(modelFile));
+		for (int i=0; i<data.length; i++)
+			c.write(data[i]);
 
-			//out = new BufferedOutputStream(new FileOutputStream(modelFile));
-			for (int i=0; i<data.length; i++)
-				c.write(data[i]);
+		if (c != null) {
+			c.flush();
+			c.close();
+		}
+		InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
+		IRuntimeModel runtimeModel = 
+				defaultDeploymentModelParser.parseModel(is);
 
-			if (c != null) {
-				c.flush();
-				c.close();
-			}
-			InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
-			IRuntimeModel runtimeModel = 
-					defaultDeploymentModelParser.parseModel(is);
-
-			/*if (runtimeModel==null)
+		/*if (runtimeModel==null)
 			{
 				logger.fine("Failed to create model");
 			}*/
 
-			DeploymentManager.instance.deployModel(runtimeModel);
-			DeploymentManager.instance.setStatus(AREStatus.DEPLOYED);
-			AstericsErrorHandling.instance.setStatusObject(AREStatus.DEPLOYED.toString(), 
-					"", "");
-		}  catch (IOException e2) {
-			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject
-			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName()+"." +
-					"deployModel: Failed to deploy model -> \n"
-					+e2.getMessage());
-
-		} catch (DeploymentException e3) {
-			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject
-			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName()+"." +
-					"deployModel: Failed to deploy model -> \n"
-					+e3.getMessage());
-
-		} catch (ParseException e4) {
-			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject
-			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName()+"." +
-					"deployModel: Failed to deploy model -> \n"
-					+e4.getMessage());
-
-		} catch (BundleManagementException e) {
-			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject
-			(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName()+"." +
-					"deployModel: Failed to deploy model -> \n"
-					+e.getMessage());
-		}
+		DeploymentManager.instance.deployModel(runtimeModel);
+		DeploymentManager.instance.setStatus(AREStatus.DEPLOYED);
+		AstericsErrorHandling.instance.setStatusObject(AREStatus.DEPLOYED.toString(), 
+				"", "");
 	}
 
 	/**
@@ -592,14 +525,16 @@ public class AREServices implements IAREServices{
 	//NOTE: Don't use synchronized here, because in some cases it leads to a dead lock.
 	public void runModel() throws AREAsapiException {
 		try {
-			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable() {
 						@Override
-						public void run() {
+						public Object call() throws Exception {
 							runModelInternal();
+							return null;
 						}
 					});
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+		} catch (Exception e) {
 			//String message="Could not execute runModel, exception occurred: "+(e.getMessage()!=null ? e.getMessage() : e.getClass());
+			//setStatusObject is set in reportError
 			String message=createErrorMsg("Could not start model", e);
 			logger.warning(message);			
 			AstericsErrorHandling.instance.reportError(null, message);
@@ -611,7 +546,12 @@ public class AREServices implements IAREServices{
 		} 		
 	}
 	
-	private void runModelInternal() {
+	/**
+	 * Starts the currently deployed model.
+	 * 
+	 * This method is not thread-safe, only use it in combination with {@link AstericsModelExecutionThreadPool#execAndWaitOnModelExecutorLifecycleThread(Callable)} 
+	 */
+	public void runModelInternal() {
 		// TODO Auto-generated method stub
 		ModelState modelState = DeploymentManager.instance
 				.getCurrentRuntimeModel().getState();
@@ -651,13 +591,14 @@ public class AREServices implements IAREServices{
 	//NOTE: Don't use synchronized here, because in some cases it leads to a dead lock.
 	public void pauseModel() {
 		try {
-			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Runnable() {
+			AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable() {
 						@Override
-						public void run() {
+						public Object call() throws Exception {
 							AREServices.instance.pausModelInternal();
+							return null;
 						}
 					});
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+		} catch (Exception e) {
 			//String message="Could not execute pauseModel, execption occurred: "+e.getMessage()!=null ? e.getMessage() : e.toString();
 			String message=createErrorMsg("Could not pause model",e);			
 			logger.warning(message);			
@@ -667,18 +608,34 @@ public class AREServices implements IAREServices{
 		}
 	}
 	
+	/**
+	 * Creates an error message for an error dialog and internally logs the stacktrace of the exception.
+	 * @param baseMsg
+	 * @param e
+	 * @return
+	 */
 	private String createErrorMsg(String baseMsg, Exception e) {		
 		if(e instanceof TimeoutException) {
 			return baseMsg+", execution timeouted!";
-		} else if(e instanceof ExecutionException) {
+		} 
+		/*else if(e instanceof ExecutionException) {
+			
 			if(e.getCause()!=null && e.getCause().getMessage()!=null) {
 				return baseMsg+", "+e.getCause().getMessage();
 			}
-		}
+		}*/
+		StringWriter stackTraceWriter=new StringWriter();
+		e.printStackTrace(new PrintWriter(stackTraceWriter));
+		logger.warning(stackTraceWriter.toString());
 		return baseMsg;
 	}
 	
-	private void pausModelInternal() {
+	/**
+	 * Pauses the currently running model.
+	 * 
+	 * This method is not thread-safe, only use it in combination with {@link AstericsModelExecutionThreadPool#execAndWaitOnModelExecutorLifecycleThread(Callable)} 
+	 */
+	public void pausModelInternal() {
 		if (DeploymentManager.instance.getStatus() == AREStatus.RUNNING) {
 			DeploymentManager.instance.pauseModel();
 			DeploymentManager.instance

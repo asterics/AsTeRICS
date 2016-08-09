@@ -480,8 +480,8 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 						strcat(actdir,"\\LICENSE");
 						if (!CreateDirectory(actdir,NULL)) { MessageBox(NULL,actdir,"Problem creating folder", MB_OK); break; }
 
-						if (!read_file(path,"templates\\LICENSE\\LICENSE_dual.txt")) break;
-						write_file(actdir,"LICENSE_dual.txt");
+						if (!read_file(path,"templates\\LICENSE\\LICENSE_MITOrGPLv3WithException.txt")) break;
+						write_file(actdir,"LICENSE_MITOrGPLv3WithException.txt");
 						if (!read_file(path,"templates\\LICENSE\\README.md")) break;
 						write_file(actdir,"README.md");
 						if (!read_file(path,"templates\\LICENSE\\THIRDPARTY_LibraryName_LicenseNameInclVersionInfo.txt")) break;

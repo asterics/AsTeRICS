@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=ISO-8859-2">
+    <meta name="GENERATOR" content="Microsoft&#174; HTML Help Workshop 4.1">
+    <link rel="stylesheet" type="text/css"
+      href="../../stylesheet/help.css" media="screen">
+    <title>ComPort</title>
+  </head>
+  <body>
+    <h1>ComPort</h1>
+    <h3>Component Type: Processor (Subcategory: Communication)</h3>
+    <p>The ComPort plugin can be used to send and receive data from serial devices (e.g. microcontrollers/embedded devices/wireless links etc.) via a COM port or virtual COM port. The plugin provides support for different data formats of serial communication, e.g. string or binary</p>
+    <div class="image"><img src="img/COMPort.jpg"
+        alt="Screenshot: COMPort plugin" title="Screenshot:
+        COMPort plugin"><br>
+      COMPort plugin</div>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>send [string]:</strong> string which will be sent to the microcontroller / embedded module</li>
+    </ul>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>received [string]:</strong> string which has been received (was sent from the microcontroller / embedded module)</li>
+    </ul>
+    <h2>Properties </h2>
+    <ul>
+      <li><strong>ComPort [string]:</strong> Defines the COM Port of the target serial device. e.g. COM0</li>
+      <li><strong>BaudRate [integer]:</strong> Defines the Baudrate for the communication. It must match the baudrate of the target device</li>
+	  <li><strong>ReceivedDataType [combobox selection]:</strong>can be used to indicate other data type like binary integer type etc. (currently, only string is supported)</li>
+	  <li><strong>SendDataType [combobox selection]:</strong>can be used to indicate data type for sending (currently, string is supported and a selectable termination character can be added)</li>
+    </ul>
+  </body>
+</html>

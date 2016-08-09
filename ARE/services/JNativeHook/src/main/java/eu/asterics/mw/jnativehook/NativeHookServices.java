@@ -25,12 +25,14 @@
 
 package eu.asterics.mw.jnativehook;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.lang.reflect.Field;
 
-import org.jnativehook.*;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
-import org.osgi.framework.BundleActivator;
 
 import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.are.AsapiSupport;
@@ -62,6 +64,7 @@ public class NativeHookServices implements NativeKeyListener {
 		AstericsErrorHandling.instance.getLogger().fine("Registering native hooks...");
 		try 
 		{
+			cleanupDLL();
 			GlobalScreen.setEventDispatcher(new VoidExecutorService());
 			
 			GlobalScreen.removeNativeKeyListener(this);
@@ -75,10 +78,35 @@ public class NativeHookServices implements NativeKeyListener {
 			
 			storeDefaultProperties();
 			initHotKeys();
+			cleanupDLL();
 			AstericsErrorHandling.instance.getLogger().fine("Registered native hooks");
 		} catch (NativeHookException ne){
 			AstericsErrorHandling.instance.getLogger().warning("Could not register native hooks: "+ne.getMessage());
 			ne.printStackTrace();
+		}
+	}
+	
+	/**
+	 * A private helper method that cleans up the temporarily created dlls which where extracted from the jar.
+	 */
+	private void cleanupDLL() {
+		//System.out.println(System.getProperty("java.io.tmpdir"));
+		
+		File tempDir=new File(System.getProperty("java.io.tmpdir"));
+		File[] tempDLLs=tempDir.listFiles(new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				if(name.toLowerCase().startsWith("jnativehook") && name.endsWith(".dll")) {
+					return true;
+				}
+					
+				return false;
+			}
+		});
+		for(File tempDLL : tempDLLs) {
+			AstericsErrorHandling.instance.getLogger().fine("Deleting JNativeHook-DLL: "+tempDLL);
+			tempDLL.delete();
 		}
 	}
 	

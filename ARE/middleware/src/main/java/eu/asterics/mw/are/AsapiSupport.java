@@ -144,53 +144,38 @@ public class AsapiSupport
 	 *
 	 * @return an array containing all available component types
 	 */
-	public String [] getAvailableComponentTypes() {	
-		//The method name indicates available (all components for the platform) but componentRepository.getInstalledComponentTypes()
-		//returns the currently installed ones.
-		final Set<IComponentType> componentTypeSet
-		= componentRepository.getInstalledComponentTypes();
+	public String [] getAvailableComponentTypes() {
+		try {
+			return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String[]>() {
 
-		if (componentTypeSet.size()==0)
-			logger.fine(this.getClass().getName()+".getAvailableComponentTypes:" 
-					+" No installed component types found!");
-		final String [] componentTypes = new String[componentTypeSet.size()];
+				@Override
+				public String[] call() throws Exception {		
 
-		int counter = 0;
-		for(final IComponentType componentType : componentTypeSet)
-		{
-			componentTypes[counter++] = componentType.getID();
-		}
+					//The method name indicates available (all components for the platform) but componentRepository.getInstalledComponentTypes()
+					//returns the currently installed ones, maybe should remove this method.
+					final Set<IComponentType> componentTypeSet
+					= componentRepository.getInstalledComponentTypes();
 
-		return componentTypes;
-	}
-	
+					if (componentTypeSet.size()==0)
+						logger.fine(this.getClass().getName()+".getAvailableComponentTypes:" 
+								+" No installed component types found!");
+					final String [] componentTypes = new String[componentTypeSet.size()];
 
-	/**
-	 * Returns an array containing all the available (i.e., installed) components.
-	 *
-	 * @return an array containing all available component.
-	 */
-	public IComponentType [] getInstalledComponents() {
-		final Set<IComponentType> componentSet
-		= componentRepository.getInstalledComponentTypes();
-		
-		
-		if (componentSet.size()==0) {
-			logger.fine(this.getClass().getName()+".getInstalledComponents:" 
-					+" No installed component types found!");
-		}
-			
-		final IComponentType [] componentTypes = new IComponentType[componentSet.size()];
-		
-		int counter = 0;
-		for(final IComponentType componentType : componentSet)
-		{
-			componentTypes[counter++] = componentType;
-		}
+					int counter = 0;
+					for(final IComponentType componentType : componentTypeSet)
+					{
+						componentTypes[counter++] = componentType.getID();
+					}
 
-		return componentTypes;
-	}
+					return componentTypes;
+				}
+			});
 
+		} catch (Exception e) {
+			logger.severe("Error in fetching installed componentType of ComponentRepository: "+e.getMessage());				
+		}		
+		return new String[0];
+	}	
 	
 	/**
 	 * Returns a formatted XML String of the componentType(s) in the bundle descriptor. 
@@ -226,30 +211,43 @@ public class AsapiSupport
 	 *
 	 * @return an xml string containing all the bundle descriptors (some parts of the descriptor are removed)
 	 * and null if an error has occurred.
+	 * @throws AREAsapiException 
 	 */
-	public String getComponentDescriptorsAsXml() {
-		String response = "";
-		
-		response += "<?xml version=\"1.0\"?>";
-		response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
-		
-		List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
-		for (Bundle bundle : bundleList)
-		{
-			URL bundleDescriptorURL = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-			if (bundleDescriptorURL!=null)
-			{
-				try {
-					response += getFormattedBundleDescriptorStringOfComponentTypeId(bundleDescriptorURL);
-				} catch (IOException e) {
-					//just logging (as 'getBundleDescriptors' function)
-					AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRiCS bundle descriptor for bundle: "+bundle.getBundleId());
+	public String getComponentDescriptorsAsXml() throws AREAsapiException {
+		try {
+			return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+
+				@Override
+				public String call() throws Exception {
+
+					String response = "";
+
+					response += "<?xml version=\"1.0\"?>";
+					response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
+
+					List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
+					for (Bundle bundle : bundleList)
+					{
+						URL bundleDescriptorURL = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+						if (bundleDescriptorURL!=null)
+						{
+							try {
+								response += getFormattedBundleDescriptorStringOfComponentTypeId(bundleDescriptorURL);
+							} catch (IOException e) {
+								//just logging (as 'getBundleDescriptors' function)
+								AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRiCS bundle descriptor for bundle: "+bundle.getBundleId());
+							}
+						}
+					}
+					response += "</componentTypes>";
+
+					return response;
 				}
-			}
-		}
-		response += "</componentTypes>";
-		
-		return response;
+			});
+		} catch (Exception e) {
+			logger.severe("Error in fetching installable bundle list: "+e.getMessage());
+			throw new AREAsapiException(e.getMessage());
+		}		
 	}
 	
 	
@@ -436,93 +434,10 @@ public class AsapiSupport
 
 						@Override
 						public Object call() throws Exception {
-
-							File modelFile = new File(ResourceRegistry.MODELS_FOLDER
-									+ "/model.xml");
-							File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
-							if (!modelFile.exists()) {
-								try {
-									modelsDir.mkdir();
-									modelFile.createNewFile();
-								} catch (IOException e1) {
-									DeploymentManager.instance
-											.setStatus(AREStatus.FATAL_ERROR);
-									AstericsErrorHandling.instance
-											.setStatusObject(
-													AREStatus.FATAL_ERROR
-															.toString(), "",
-													"Deployment Error");
-									logger.warning(this.getClass().getName()
-											+ "."
-											+ "deployModel: Failed to create file model.xml -> \n"
-											+ e1.getMessage());
-									throw (new AREAsapiException(e1
-											.getMessage()));
-								}
-							}
-
-							// Convert the string to a byte array.
-							String s = modelInXML;
-							byte data[] = s.getBytes();
-							// try {
-
-							BufferedWriter c = new BufferedWriter(
-									new OutputStreamWriter(
-											new FileOutputStream(modelFile),
-											"UTF-16"));
-
-							// out = new BufferedOutputStream(new
-							// FileOutputStream(modelFile));
-							for (int i = 0; i < data.length; i++)
-								c.write(data[i]);
-
-							if (c != null) {
-								c.flush();
-								c.close();
-							}
-
-							InputStream is = new ByteArrayInputStream(
-									modelInXML.getBytes("UTF-16"));
-
-							synchronized (DefaultDeploymentModelParser.instance) {
-
-								IRuntimeModel runtimeModel = DefaultDeploymentModelParser.instance
-										.parseModel(is);
-
-								/*
-								 * if (runtimeModel==null) {
-								 * logger.fine("Failed to create model"); }
-								 */
-
-								DeploymentManager.instance
-										.deployModel(runtimeModel);
-								DeploymentManager.instance
-										.setStatus(AREStatus.DEPLOYED);
-								AstericsErrorHandling.instance.setStatusObject(
-										AREStatus.DEPLOYED.toString(), "", "");
-							}							
+							AREServices.instance.deployModelInternal(modelInXML);
 							return null;
 						}
-
 					});
-		} catch (IOException e2) {
-			DeploymentManager.instance.undeployModel();
-			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject(
-					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName() + "."
-					+ "deployModel: Failed to deploy model -> \n"
-					+ e2.getMessage());
-			throw (new AREAsapiException(e2.getMessage()));
-		} catch (DeploymentException e3) {
-			DeploymentManager.instance.undeployModel();
-			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-			AstericsErrorHandling.instance.setStatusObject(
-					AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-			logger.warning(this.getClass().getName() + "."
-					+ "deployModel: Failed to deploy model -> \n"
-					+ e3.getMessage());
-			throw (new AREAsapiException(e3.getMessage()));
 		} catch (ParseException e4) {
 			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
@@ -531,7 +446,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName() + "."
 					+ "deployModel: Failed to deploy model -> \n"
 					+ e4.getMessage());
-			throw (new AREAsapiException("Parsing of the model failed: "+e4.getMessage()));
+			throw (new AREAsapiException("Model could not be parsed or is not compatible with installed components.\nTry to convert the model file by opening and resaving it with the AsTeRICS Configuration Suite (ACS)"));
 		} catch (Throwable t) {
 			DeploymentManager.instance.undeployModel();
 			DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
@@ -540,7 +455,7 @@ public class AsapiSupport
 			logger.warning(this.getClass().getName() + "."
 					+ "deployModel: Failed to deploy model -> \n"
 					+ t.getMessage());
-			throw (new AREAsapiException("Probably model version not up2date with plugin bundle descriptors.\nTry to convert model with the ACS program."));
+			throw (new AREAsapiException("Model could not be deployed."));
 		}
 
 	}
@@ -552,27 +467,39 @@ public class AsapiSupport
 	 * 
 	 * @throws AREAsapiException
 	 */
-	public List<String> getBundelDescriptors() throws AREAsapiException {		
-		List<String> res=new ArrayList<String>();
-		
-		List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
-		for (Bundle bundle : bundleList)
-		{
-			URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-			if (url!=null)
-			{
-				try {
-					res.add(convertXMLFileToString(url.openStream()));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					//throw (new AREAsapiException(e.getMessage()));
-					//keep it by just logging
-					//because we have to assume that several bundles are not supported for the platform
-					AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRICS bundle descriptor for bundle: "+bundle.getBundleId());
+	public List<String> getBundelDescriptors() throws AREAsapiException {	
+		try {
+			return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<List<String>>() {
+
+			@Override
+			public List<String> call() throws Exception {
+				List<String> res=new ArrayList<String>();
+								
+				List<Bundle> bundleList=DeploymentManager.instance.getBundleManager().getInstallableBundleList();
+				for (Bundle bundle : bundleList)
+				{				
+					URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+					if (url!=null)
+					{
+						try {
+							res.add(convertXMLFileToString(url.openStream()));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							//throw (new AREAsapiException(e.getMessage()));
+							//keep it by just logging
+							//because we have to assume that several bundles are not supported for the platform
+							AstericsErrorHandling.instance.getLogger().warning("Could not get AsTeRICS bundle descriptor for url: "+url);
+						}
+					}
 				}
+
+				return res;
 			}
+			});
+		} catch (Exception e) {
+			logger.severe("Error in fetching installable bundle list: "+e.getMessage());
+			throw new AREAsapiException(e.getMessage());
 		}
-		return res;
 	}
 
 	

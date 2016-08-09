@@ -36,6 +36,11 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
+
+import java.util.logging.Logger;
+
+import com.codeminders.hidapi.ClassPathLibraryLoader;
+
 import eu.asterics.component.sensor.fs20receiver.*;
 //import eu.asterics.mw.services.AstericsErrorHandling;
 
@@ -52,10 +57,6 @@ import eu.asterics.component.sensor.fs20receiver.*;
  *         Time: 11:13
  */
 public class FS20ReceiverInstance extends AbstractRuntimeComponentInstance {
-
-	static {
-		System.loadLibrary("hidapi-jni");
-	}
 
 	private IRuntimeOutputPort opFs20command = new DefaultRuntimeOutputPort();
 	
@@ -100,6 +101,7 @@ public class FS20ReceiverInstance extends AbstractRuntimeComponentInstance {
 	
 	FS20Reader runnable;
     Thread readerThread;
+    private Logger logger =	AstericsErrorHandling.instance.getLogger();
   
     
    /**
@@ -107,7 +109,12 @@ public class FS20ReceiverInstance extends AbstractRuntimeComponentInstance {
     */
     public FS20ReceiverInstance()
     {
-    	
+		logger.fine("Trying to load library for FS20...");    		
+		boolean successLoading = ClassPathLibraryLoader.loadNativeHIDLibrary();
+		if(successLoading==false) {
+			throw new RuntimeException("Could not load native lib for FS20 device.");
+		}
+		logger.fine("Success loading native lib for FS20: "+successLoading);
     }
 
    /**
