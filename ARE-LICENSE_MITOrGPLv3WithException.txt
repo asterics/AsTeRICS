@@ -15,7 +15,7 @@ the whole work must be licensed under GPL.
 To define a selection of plugins and services for a deployment, 
 use the AsTeRICS Packaging Environment (APE tool).
 
-Please note the "CLASSPATH" EXCEPTION TO THE GPL at the of the document.
+Please note the "CLASSPATH" EXCEPTION TO THE GPL at the end of the document.
 
 Please verify the individual licenses of the utilized AsTeRICS plugins and services.
 You find the license files in the subfolder LICENSE of every plugin or service.
