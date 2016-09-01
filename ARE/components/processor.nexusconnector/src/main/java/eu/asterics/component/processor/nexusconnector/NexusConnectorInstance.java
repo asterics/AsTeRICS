@@ -213,13 +213,10 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
                     }
                 }, nexusClientConfig, nexusUri);
         } catch (URISyntaxException e) {
-            // TODO: Proper Exception handling
             throw new RuntimeException(e);
         } catch (DeploymentException e) {
-            // TODO: Proper Exception handling
             throw new RuntimeException(e);
         } catch (IOException e) {
-            // TODO: Proper Exception handling
             throw new RuntimeException(e);
         }
     }
@@ -250,7 +247,6 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
         try {
             nexusSession.close();
         } catch (IOException e) {
-            // TODO: Proper Exception handling
             throw new RuntimeException(e);
         }
     }
@@ -285,7 +281,6 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
         try {
             nexusEndpoint.sendText(message.toString());
         } catch (IOException e) {
-            // TODO: Proper Exception handling
             throw new RuntimeException(e);
         }
     }
