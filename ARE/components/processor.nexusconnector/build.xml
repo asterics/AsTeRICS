@@ -48,4 +48,7 @@
           tofile="${runtime}/asterics.${component.id}.jar"/>
   </target>
 
+  <import file="../../imported.xml"/>
+  <include file="../../included.xml"/>
+
 </project>
