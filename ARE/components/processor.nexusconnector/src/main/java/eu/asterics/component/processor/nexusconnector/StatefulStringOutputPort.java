@@ -1,7 +1,7 @@
 /*
 Copyright 2016 OCAD University
 
-Licensed under the New BSD license.
+Licensed under the MIT license.
 */
 
 package eu.asterics.component.processor.nexusconnector;
