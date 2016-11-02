@@ -40,6 +40,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.accessibility.Accessible;
+import javax.accessibility.AccessibleAction;
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -59,8 +63,9 @@ import eu.asterics.mw.services.AstericsThreadPool;
  *         Time: 12:31:41 AM
  */
 
-public class GUICell extends JPanel
+public class GUICell extends JPanel implements Accessible
 {
+	private AccessibleContext accessibleContext=null;
 	public final GUI owner;
 	private GUICell guiCell;
 	private CellBoardInstance instance;
@@ -512,6 +517,8 @@ public class GUICell extends JPanel
     public void setCellCaption(String text)
     {
     	this.text=text;
+    	//Set tooltip text to provide descriptive information for Java Access Bridge --> A screen reader can read the text.
+    	this.setToolTipText("Cell "+(column+1)+"/"+(row+1)+" "+text);
     }
 
     
@@ -810,5 +817,83 @@ private final Runnable selectFeedback = new Runnable(){
 		
 		}			
 		
-	};    
+	};
+	
+	
+/*
+ * Start of support for Accessiblity API.
+ */
+	
+ /* (non-Javadoc)
+ * @see javax.swing.JPanel#getAccessibleContext()
+ */
+@Override
+public AccessibleContext getAccessibleContext() {
+	//We override the default accessible context
+	if(accessibleContext==null) {
+		//and return a custom AccessibleGUICell object.
+		accessibleContext=new AccessibleGUICell();
+	}
+	return accessibleContext;
 }
+
+/**
+ * The class extends AccessibleJPanel and overrides only the AccessibleAction method to return our customized object.
+ */
+class AccessibleGUICell extends AccessibleJPanel {
+
+	/* (non-Javadoc)
+	 * @see javax.accessibility.AccessibleContext#getAccessibleAction()
+	 */
+	@Override
+	public AccessibleAction getAccessibleAction() {
+		return new AccessibleActionGUICell();
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.swing.JPanel.AccessibleJPanel#getAccessibleRole()
+	 */
+	@Override
+	public AccessibleRole getAccessibleRole() {
+		// TODO Auto-generated method stub
+		return AccessibleRole.PUSH_BUTTON;
+	}
+
+	
+}
+
+/**
+ * The class provides AccessibleActions for the GUICell.
+ * @author mad
+ *
+ */
+class AccessibleActionGUICell implements AccessibleAction {
+		@Override
+		public int getAccessibleActionCount() {
+			//System.out.println("action count: "+1);
+			// TODO Auto-generated method stub
+			return 1;
+		}
+
+		@Override
+		public String getAccessibleActionDescription(int i) {
+			//System.out.println("accessible action descr: "+i);
+			// TODO Auto-generated method stub
+			if (i == 0) {
+				return AccessibleAction.CLICK;
+			}
+			return "No Action";
+		}
+
+		@Override
+		public boolean doAccessibleAction(int i) {
+			//System.out.println("Do accessible action: "+i);
+			if (i == 0) {
+				owner.performCellSelection(row, column);
+				return true;
+			}
+			return false;
+		}
+	}
+
+} 
