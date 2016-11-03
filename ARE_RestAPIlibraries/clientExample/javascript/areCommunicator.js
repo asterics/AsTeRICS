@@ -280,6 +280,176 @@ function setRuntimeComponentProperty(successCallback, errorCallback, componentId
 }
 
 
+function getEventChannelsIds(successCallback, errorCallback) {
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/eventChannels/ids",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getEventChannelSource(successCallback, errorCallback, channelId) {
+	
+	if ( channelId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/eventChannels/"+encodeParam(channelId) + "/source",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getEventChannelTarget(successCallback, errorCallback, channelId) {
+	
+	if ( channelId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/eventChannels/"+encodeParam(channelId) + "/target",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getComponentEventChannelsIds(successCallback, errorCallback, componentId) {
+	
+	if ( componentId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/eventChannels/ids",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getDataChannelsIds(successCallback, errorCallback) {
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/dataChannels/ids",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getDataChannelSource(successCallback, errorCallback, channelId) {
+	
+	if ( channelId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/dataChannels/"+encodeParam(channelId) + "/source",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getDataChannelTarget(successCallback, errorCallback, channelId) {
+	
+	if ( channelId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/dataChannels/"+encodeParam(channelId) + "/target",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getComponentDataChannelsIds(successCallback, errorCallback, componentId) {
+	
+	if ( componentId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/dataChannels/ids",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
 
 
 /*************************************

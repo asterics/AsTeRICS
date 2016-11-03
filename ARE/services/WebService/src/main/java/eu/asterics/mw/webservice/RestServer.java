@@ -26,8 +26,12 @@
 package eu.asterics.mw.webservice;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -40,8 +44,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+
+
+
 import eu.asterics.mw.are.AsapiSupport;
+import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.model.deployment.IChannel;
+import eu.asterics.mw.model.deployment.IComponentInstance;
+import eu.asterics.mw.model.deployment.IEventChannel;
+import eu.asterics.mw.model.deployment.IRuntimeModel;
+import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.webservice.serverUtils.AstericsAPIEncoding;
@@ -66,7 +79,6 @@ public class RestServer {
     	ServerAREEventListener eventListener = new ServerAREEventListener();
     	AREServices.instance.registerAREEventListener(eventListener);
     }
-
 	
 	
 	@Path("/restfunctions")
@@ -75,7 +87,7 @@ public class RestServer {
 	public String getRestFunctions() {
 		String JSONresponse = ObjectTransformation.objectToJSON(ServerRepository.restFunctions);
 		if (JSONresponse.equals("")) {
-			JSONresponse = "{'error':'Couldn't retrieve the rest function signatures (Object serialization failure)'}";
+			JSONresponse = "{'error':'Could not retrieve the rest function signatures (Object serialization failure)'}";
 		}
 		
 		return JSONresponse;
@@ -256,7 +268,7 @@ public class RestServer {
 			}
 		} catch (Exception e) { 
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve model components" + " (" + e.getMessage() + ")";
+			errorMessage = "Could not retrieve model components" + " (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -282,7 +294,7 @@ public class RestServer {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve property keys from '" + decodedId + "' (" + e.getMessage() + ")";
+			errorMessage = "Could not retrieve property keys from " + decodedId + " (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -334,6 +346,289 @@ public class RestServer {
     	return response;
     }
 	
+	
+	@Path("/runtime/model/components/{componentId}/eventChannels/ids")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getComponentEventChannelsIds(@PathParam("componentId") String componentId) {
+		String response = "";
+		String errorMessage = "";
+		String decodedId = "";
+		
+		try {
+			componentId = astericsAPIEncoding.decodeString(componentId);
+			
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			List<String> eventChannelIds = new ArrayList<String>();
+			
+			Set<IEventChannel> eventChannels = currentRuntimeModel.getEventChannels();
+			for (IEventChannel eventChannel : eventChannels)
+			{
+				if ( (eventChannel.getSources()[0].getComponentInstanceID().equals(componentId) )
+						|| (eventChannel.getTargets()[0].getComponentInstanceID().equals(componentId)) ) {
+					eventChannelIds.add(eventChannel.getChannelID());
+				}
+			}
+
+			response = ObjectTransformation.objectToJSON(eventChannelIds);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the event channel ids'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the event channel ids (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
+	
+	@Path("/runtime/model/eventChannels/{channelId}/source")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getEventChannelSource(@PathParam("channelId") String channelId) {
+		String response = "";
+		String errorMessage = "";
+		
+		try {
+			channelId = astericsAPIEncoding.decodeString(channelId);
+			
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			Map<String, String> sourceInfo = new HashMap<String, String>();
+			
+			Set<IEventChannel> eventChannels = currentRuntimeModel.getEventChannels();
+			for (IEventChannel eventChannel : eventChannels)
+			{
+				if ( eventChannel.getChannelID().equals(channelId) ) {
+					sourceInfo.put("component", eventChannel.getSources()[0].getComponentInstanceID());
+					sourceInfo.put("eventPort", eventChannel.getSources()[0].getEventPortID());
+				}
+			}
+
+			response = ObjectTransformation.objectToJSON(sourceInfo);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the source of the event channel "+channelId+"'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the source of the event channel "+channelId+" (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
+	
+	@Path("/runtime/model/eventChannels/{channelId}/target")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getEventChannelTarget(@PathParam("channelId") String channelId) {
+		String response = "";
+		String errorMessage = "";
+		
+		try {
+			channelId = astericsAPIEncoding.decodeString(channelId);
+			
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			Map<String, String> sourceInfo = new HashMap<String, String>();
+			
+			Set<IEventChannel> eventChannels = currentRuntimeModel.getEventChannels();
+			for (IEventChannel eventChannel : eventChannels)
+			{
+				if ( eventChannel.getChannelID().equals(channelId) ) {
+					sourceInfo.put("component", eventChannel.getTargets()[0].getComponentInstanceID());
+					sourceInfo.put("eventPort", eventChannel.getTargets()[0].getEventPortID());
+				}
+			}
+
+			response = ObjectTransformation.objectToJSON(sourceInfo);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the target of the event channel "+channelId+"'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the target of the event channel "+channelId+" (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
+	
+	@Path("/runtime/model/eventChannels/ids")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getEventChannelsIds() {
+		String response = "";
+		String errorMessage = "";
+		
+		try {
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			List<String> eventChannelIds = new ArrayList<String>();
+			
+			Set<IEventChannel> eventChannels = currentRuntimeModel.getEventChannels();
+			for (IEventChannel eventChannel : eventChannels)
+			{
+				eventChannelIds.add(eventChannel.getChannelID());
+			}
+
+			response = ObjectTransformation.objectToJSON(eventChannelIds);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the event channel ids'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the event channel ids (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
+	
+	
+	@Path("/runtime/model/components/{componentId}/dataChannels/ids")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getComponentDataChannelsIds(@PathParam("componentId") String componentId) {
+		String response = "";
+		String errorMessage = "";
+		String decodedId = "";
+		
+		try {
+			componentId = astericsAPIEncoding.decodeString(componentId);
+			
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			List<String> dataChannelIds = new ArrayList<String>();
+			
+			Set<IChannel> dataChannels = currentRuntimeModel.getChannels();
+			for (IChannel dataChannel : dataChannels)
+			{
+				if ( (dataChannel.getSource().getComponentInstanceID().equals(componentId) )
+						|| (dataChannel.getTarget().getComponentInstanceID().equals(componentId)) ) {
+					dataChannelIds.add(dataChannel.getChannelID());
+				}
+			}
+
+			response = ObjectTransformation.objectToJSON(dataChannelIds);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the data channel ids'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the data channel ids (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
+	
+	@Path("/runtime/model/dataChannels/{channelId}/source")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getDataChannelSource(@PathParam("channelId") String channelId) {
+		String response = "";
+		String errorMessage = "";
+		
+		try {
+			channelId = astericsAPIEncoding.decodeString(channelId);
+			
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			Map<String, String> sourceInfo = new HashMap<String, String>();
+			
+			Set<IChannel> dataChannels = currentRuntimeModel.getChannels();
+			for (IChannel dataChannel : dataChannels)
+			{
+				if ( dataChannel.getChannelID().equals(channelId) ) {
+					sourceInfo.put("component", dataChannel.getSource().getComponentInstanceID());
+					sourceInfo.put("eventPort", dataChannel.getSource().getPortID());
+				}
+			}
+
+			response = ObjectTransformation.objectToJSON(sourceInfo);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the source of the data channel "+channelId+"'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the source of the data channel "+channelId+" (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
+	
+	@Path("/runtime/model/dataChannels/{channelId}/target")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getDataChannelTarget(@PathParam("channelId") String channelId) {
+		String response = "";
+		String errorMessage = "";
+		
+		try {
+			channelId = astericsAPIEncoding.decodeString(channelId);
+			
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			Map<String, String> sourceInfo = new HashMap<String, String>();
+			
+			Set<IChannel> dataChannels = currentRuntimeModel.getChannels();
+			for (IChannel dataChannel : dataChannels)
+			{
+				if ( dataChannel.getChannelID().equals(channelId) ) {
+					sourceInfo.put("component", dataChannel.getTarget().getComponentInstanceID());
+					sourceInfo.put("eventPort", dataChannel.getTarget().getPortID());
+				}
+			}
+
+			response = ObjectTransformation.objectToJSON(sourceInfo);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the target of the data channel "+channelId+"'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the target of the data channel "+channelId+" (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
+	
+	
+	@Path("/runtime/model/dataChannels/ids")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getDataChannelsIds() {
+		String response = "";
+		String errorMessage = "";
+		
+		try {
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			List<String> dataChannelIds = new ArrayList<String>();
+			
+			Set<IChannel> dataChannels = currentRuntimeModel.getChannels();
+			for (IChannel dataChannel : dataChannels)
+			{
+				dataChannelIds.add(dataChannel.getChannelID());
+			}
+
+			response = ObjectTransformation.objectToJSON(dataChannelIds);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the data channel ids'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the data channel ids (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
+
 	
 	
 	
@@ -429,13 +724,13 @@ public class RestServer {
 		try {
 			String[] array = asapiSupport.listAllStoredModels();
 
-			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
+			response = ObjectTransformation.objectToJSON(array);
 			if (response.equals("")) {
-				response = "{'error':'Couldn't retrieve the stored models (Object serialization failure)'}";
+				response = "{'error':'Could not retrieve the stored models (Object serialization failure)'}";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the stored models" + "' (" + e.getMessage() + ")";
+			errorMessage = "Could not retrieve the stored models" + " (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -477,11 +772,11 @@ public class RestServer {
 			List<String> array = asapiSupport.getBundelDescriptors();
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
 			if (response.equals("")) {
-				response = "{'error':'Couldn't retrieve the components descriptors (Object serialization failure)'}";
+				response = "{'error':'Could not retrieve the components descriptors (Object serialization failure)'}";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Couldn't retrieve the components descriptors";
+			errorMessage = "Could not retrieve the components descriptors (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		

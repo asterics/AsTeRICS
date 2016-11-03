@@ -205,7 +205,86 @@
 			function SRCP_successCallback(data, HTTPstatus) { alert(data); }
 			function SRCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 				
-			
+		
+
+			//getEventChannelsIds
+			function GECI() {
+				getEventChannelsIds(GECI_successCallback, GECI_errorCallback);
+			}
+
+			function GECI_successCallback(data, HTTPstatus) { alert(data); }
+			function GECI_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+
+			//getEventChannelSource
+			function GECS() {
+				var channelId = document.getElementById("GECSid").value;
+				getEventChannelSource(GECS_successCallback, GECS_errorCallback, channelId);
+			}
+
+			function GECS_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
+			function GECS_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+				
+
+			//getEventChannelTarget
+			function GECT() {
+				var channelId = document.getElementById("GECTid").value;
+				getEventChannelTarget(GECT_successCallback, GECT_errorCallback, channelId);
+			}
+
+			function GECT_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
+			function GECT_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+
+			//getComponentEventChannelsIds
+			function GCECI() {
+				var componentId = document.getElementById("GCECIid").value;
+				getComponentEventChannelsIds(GCECI_successCallback, GCECI_errorCallback, componentId);
+			}
+
+			function GCECI_successCallback(data, HTTPstatus) { alert(data); }
+			function GCECI_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+				
+
+			//getDataChannelsIds
+			function GDCI() {
+				getDataChannelsIds(GDCI_successCallback, GDCI_errorCallback);
+			}
+
+			function GDCI_successCallback(data, HTTPstatus) { alert(data); }
+			function GDCI_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+
+			//getDataChannelSource
+			function GDCS() {
+				var channelId = document.getElementById("GDCSid").value;
+				getDataChannelSource(GDCS_successCallback, GDCS_errorCallback, channelId);
+			}
+
+			function GDCS_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
+			function GDCS_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+				
+
+			//getDataChannelTarget
+			function GDCT() {
+				var channelId = document.getElementById("GDCTid").value;
+				getDataChannelTarget(GDCT_successCallback, GDCT_errorCallback, channelId);
+			}
+
+			function GDCT_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
+			function GDCT_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+		
+
+			//getComponentDataChannelsIds
+			function GCDCI() {
+				var componentId = document.getElementById("GCDCIid").value;
+				getComponentDataChannelsIds(GCDCI_successCallback, GCDCI_errorCallback, componentId);
+			}
+
+			function GCDCI_successCallback(data, HTTPstatus) { alert(data); }
+			function GCDCI_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+				
+
 			//getRestFunctions
 			function FUNCTIONS() {
 				getRestFunctions(FUNCTIONS_successCallback, FUNCTIONS_errorCallback);
@@ -314,7 +393,9 @@
 				
 		<button onclick="DepMF()" title="Description: Deploys the model contained in the given filepath &#013;Ouput: alert"> Deploy model from file </button>
 		<input placeholder="filepath" type="text" id="DepMFfilepath"/>
-		<br/> <br/>
+		<br/>
+
+		<h5> Component Properties </h5>
 				
 		<button onclick="GRC()" title="Description: Retrieves all the component Ids contained in the currently deployed model (as JSON array) &#013;Ouput: alert"> Get runtime component Ids </button>
 		<br/> <br/>
@@ -332,8 +413,42 @@
 		<input placeholder="componentId" type="text" id="SRCPid"/>
 		<input placeholder="componentKey" type="text" id="SRCPkey"/>
 		<input placeholder="componentKeyValue" type="text" id="SRCPvalue"/>
+		<br/>
+
+
+		<h5> Channels </h5>
+
+		<button onclick="GECI()" title="Description: returns all the event channel ids of the current model (as JSON array) &#013;Ouput: alert"> Get event channels ids </button>
+		<br/> <br/>
+
+		<button onclick="GECS()" title="Description: returns the source (component id and port) a of a specific event channel &#013;Ouput: alert"> Get event channel source </button>
+		<input placeholder="channelId" type="text" id="GECSid"/>
 		<br/> <br/>
 		
+		<button onclick="GECT()" title="Description: returns the target (component id and port) a of a specific event channel &#013;Ouput: alert"> Get event channel target </button>
+		<input placeholder="channelId" type="text" id="GECTid"/>
+		<br/> <br/>
+
+		<button onclick="GCECI()" title="Description: returns all the event channel ids of the given component (as JSON array) &#013;Ouput: alert"> Get component event channel ids </button>
+		<input placeholder="componentId" type="text" id="GCECIid"/>
+		<br/> <br/>
+
+		<button onclick="GDCI()" title="Description: returns all the data channel ids of the current model (as JSON array) &#013;Ouput: alert"> Get data channels ids </button>
+		<br/> <br/>
+
+		<button onclick="GDCS()" title="Description: returns the source (component id and port) a of a specific data channel &#013;Ouput: alert"> Get data channel source </button>
+		<input placeholder="channelId" type="text" id="GDCSid"/>
+		<br/> <br/>
+		
+		<button onclick="GDCT()" title="Description: returns the target (component id and port) a of a specific data channel &#013;Ouput: alert"> Get data channel target </button>
+		<input placeholder="channelId" type="text" id="GDCTid"/>
+		<br/> <br/>
+
+		<button onclick="GCDCI()" title="Description: returns all the data channel ids of the given component (as JSON array) &#013;Ouput: alert"> Get component data channel ids </button>
+		<input placeholder="componentId" type="text" id="GCDCIid"/>
+		<br/> <br/>
+
+
 		<hr>
 		<h3> Model State </h3>
 		

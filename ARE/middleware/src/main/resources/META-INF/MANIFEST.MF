@@ -12,7 +12,8 @@ Export-Package: eu.asterics.mw.are,
  eu.asterics.mw.logger,
  eu.asterics.mw.services,
  eu.asterics.mw.gui,
- eu.asterics.mw.utils
+ eu.asterics.mw.utils,
+ eu.asterics.mw.model.deployment
 Bundle-Activator: eu.asterics.mw.are.Main
 Bundle-ClassPath: .,
  lib/libthrift.jar,
