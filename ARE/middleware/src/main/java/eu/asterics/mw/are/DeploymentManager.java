@@ -49,6 +49,7 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.IAREEventListener;
+import eu.asterics.mw.services.RuntimeDataEvent;
 
 
 /*
@@ -406,7 +407,7 @@ public class DeploymentManager
 					for(final EventListenerDetails eventListenerDetails : 
 						targetEventListenerPorts)
 					{
-						eventTriggererPort.setEventChannelID(sourceEventPortID+" > "+eventListenerDetails.portID);
+						eventTriggererPort.setEventChannelID(sourceEventPortID+"_"+eventListenerDetails.portID);
 
 						eventTriggererPort.addEventListener(
 								eventListenerDetails.componentID, 
@@ -996,6 +997,9 @@ public class DeploymentManager
 						//synchronized(runtimeComponentInstance) 
 						{
 							runtimeComponentInstance.setRuntimePropertyValue(key, value);
+							
+							RuntimeDataEvent event = RuntimeDataEvent.newComponentPropertyChange(componentID, key, value);
+							AREServices.instance.notifyRuntimeDataListeners(event);
 						}
 					}
 				}

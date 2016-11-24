@@ -73,6 +73,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import eu.asterics.mw.are.AREEvent;
 import eu.asterics.mw.are.AREStatus;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
@@ -125,8 +126,9 @@ public class AREServices implements IAREServices{
 	private Logger logger = null;
 
 	private ArrayList<IAREEventListener> areEventListenerObjects;
-	public static final AREServices instance = 
-			new AREServices();
+	private ArrayList<RuntimeDataListener> runtimeDataListenerObjects;
+
+	public static final AREServices instance = new AREServices();
 	
 
 
@@ -136,7 +138,7 @@ public class AREServices implements IAREServices{
 		super();
 		logger = AstericsErrorHandling.instance.getLogger();
 		areEventListenerObjects = new ArrayList <IAREEventListener>();
-
+		runtimeDataListenerObjects = new ArrayList<RuntimeDataListener>();
 	}
 
 
@@ -744,6 +746,11 @@ public class AREServices implements IAREServices{
 		return localFile;
 	}
 
+	
+	
+	/***************************************
+	 *         LISTENERS - start
+	 ***************************************/
 
 	public synchronized void registerAREEventListener(IAREEventListener clazz) {
 
@@ -778,13 +785,94 @@ public class AREServices implements IAREServices{
 			return new ArrayList<IAREEventListener>();	
 	}
 
+
+	/**
+	 * Registers a new {@link RuntimeDataListener} object to the {@link AREServices#runtimeDataListenerObjects} list
+	 * 
+	 * @param runtimeDataListener - The class used to notify the external consumers
+	 */
+	public synchronized void registerRuntimeDataListener(RuntimeDataListener runtimeDataListener) {
+
+		if (!this.runtimeDataListenerObjects.contains(runtimeDataListener) && runtimeDataListener!=null)
+		{
+			this.runtimeDataListenerObjects.add(runtimeDataListener);
+		}	
+
+	}
+
+	/**
+	 * Unregisters a {@link RuntimeDataListener} object from the {@link AREServices#runtimeDataListenerObjects} list
+	 * 
+	 * @param runtimeDataListener - The class used to notify the external consumers
+	 */
+	public synchronized void unregisterRuntimeDataListener(RuntimeDataListener runtimeDataListener) {
+
+		Iterator<RuntimeDataListener> iterator = this.runtimeDataListenerObjects.iterator();
+		RuntimeDataListener listener;
+		while (iterator.hasNext())
+		{
+			listener=(RuntimeDataListener) iterator.next();
+			if (listener.equals(runtimeDataListener))
+			{
+				iterator.remove();
+				return;
+			}
+		}
+		
+	}
+	
+	/**
+	 * Iterates trough the listeners and closes their opened data channels
+	 */
+	public void closeDataChannels() {
+		for (RuntimeDataListener listener: this.runtimeDataListenerObjects) {
+			listener.clearDataChannelList();
+		}
+	}
+	
+	
+	/**
+	 * Notifies the {@link RuntimeDataListener} objects that a new {@link RuntimeDataEvent}
+	 * was occurred.
+	 * 
+	 * @param event - the object holding the event information
+	 */
+	public void notifyRuntimeDataListeners(RuntimeDataEvent event) {
+
+		switch (event.getType()) {
+			case RuntimeDataEvent.TYPE_EVENT_CHANNEL:
+				for (RuntimeDataListener listener: this.runtimeDataListenerObjects) {
+					listener.eventChannelTransmission(event.getChannelId(), event.getComponentId());
+				}
+			break;
+			case RuntimeDataEvent.TYPE_DATA_CHANNEL:
+				for (RuntimeDataListener listener: this.runtimeDataListenerObjects) {
+					if ( listener.getOpenedDataChannels().contains(event.getChannelId()) ) {
+						listener.dataChannelTransmission(event.getChannelId(), event.getData());
+					}
+				}
+			break;
+			case RuntimeDataEvent.TYPE_COMPONENT_PROPERTY_CHANGE:
+				for (RuntimeDataListener listener: this.runtimeDataListenerObjects) {
+					listener.componentPropertyChanged(event.getComponentId(), event.getComponentKey(), event.getData());
+				}
+			break;
+		}
+	}
+	
+	
+	/***************************************
+	 *         LISTENERS - finish
+	 ***************************************/
+	
+	
 	public void displayPanel(JPanel panel, 
 			IRuntimeComponentInstance componentInstance, boolean display) {
 		DeploymentManager.instance.displayPanel (panel, componentInstance, 
 				display);
 
 	}
-
+	
 
 	public Dimension getAvailableSpace(IRuntimeComponentInstance componentInstance)
 	{
