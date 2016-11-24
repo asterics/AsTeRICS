@@ -47,6 +47,8 @@ import javax.ws.rs.core.MediaType;
 
 
 
+
+
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
@@ -59,7 +61,8 @@ import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.webservice.serverUtils.AstericsAPIEncoding;
 import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
-import eu.asterics.mw.webservice.serverUtils.ServerAREEventListener;
+import eu.asterics.mw.webservice.serverUtils.RuntimeListener;
+import eu.asterics.mw.webservice.serverUtils.AREEventListener;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 
@@ -74,11 +77,6 @@ public class RestServer {
 	private AsapiSupport asapiSupport = new AsapiSupport();
 	private Logger logger = AstericsErrorHandling.instance.getLogger();
 	private AstericsAPIEncoding astericsAPIEncoding = new AstericsAPIEncoding();
-	
-    static {
-    	ServerAREEventListener eventListener = new ServerAREEventListener();
-    	AREServices.instance.registerAREEventListener(eventListener);
-    }
 	
 	
 	@Path("/restfunctions")
@@ -345,6 +343,65 @@ public class RestServer {
 		
     	return response;
     }
+	
+	
+	@Path("/runtime/model/components/{componentId}/inputPorts")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getComponentInputPorts(@PathParam("componentId") String componentId) {
+		String response;
+		String errorMessage = "";
+		String decodedId = "";
+		
+		try {
+			decodedId = astericsAPIEncoding.decodeString(componentId);
+
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			
+			String[] inputPorts = currentRuntimeModel.getComponentInputPorts(decodedId);
+			
+			response = ObjectTransformation.objectToJSON(inputPorts);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the component input ports'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the component input ports (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
+	
+	@Path("/runtime/model/components/{componentId}/outputPorts")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getComponentOutputPorts(@PathParam("componentId") String componentId) {
+		String response;
+		String errorMessage = "";
+		String decodedId = "";
+		
+		try {
+			decodedId = astericsAPIEncoding.decodeString(componentId);
+
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			
+			String[] inputPorts = currentRuntimeModel.getComponentOutputPorts(decodedId);
+			
+			response = ObjectTransformation.objectToJSON(inputPorts);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the component output ports'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the component output ports (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
 	
 	
 	@Path("/runtime/model/components/{componentId}/eventChannels/ids")

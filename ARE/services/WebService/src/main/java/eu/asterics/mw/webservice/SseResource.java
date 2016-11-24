@@ -26,9 +26,16 @@
 package eu.asterics.mw.webservice;
 
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -37,74 +44,317 @@ import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.glassfish.jersey.media.sse.SseBroadcaster;
 import org.glassfish.jersey.media.sse.SseFeature;
 
-import eu.asterics.mw.are.AREEvent;
-import eu.asterics.mw.webservice.serverUtils.ServerEventType;
+import eu.asterics.mw.are.DeploymentManager;
+import eu.asterics.mw.model.deployment.IChannel;
+import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.webservice.serverUtils.AstericsAPIEncoding;
+import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
+import eu.asterics.mw.webservice.serverUtils.RuntimeListener;
+import eu.asterics.mw.webservice.serverUtils.AREEventListener;
 
 @Singleton
-@Path("events")
+@Path("/")
 public class SseResource {
+	private static Logger logger = AstericsErrorHandling.instance.getLogger();
+	private AstericsAPIEncoding astericsAPIEncoding = new AstericsAPIEncoding();
 	
-	private static SseBroadcaster broadcaster = new SseBroadcaster();
+	//Client broadcasters
+	private static SseBroadcaster deploymentBroadcaster = new SseBroadcaster();
+	private static SseBroadcaster modelStateBroadcaster = new SseBroadcaster();
+	private static SseBroadcaster eventChannelBroadcaster = new SseBroadcaster();
+	private static SseBroadcaster propertyChangeBroadcaster = new SseBroadcaster();
+	private static Map<String, HashSet<EventOutput>> dataChannelBroadcaster = new HashMap<String, HashSet<EventOutput>>();
 	
-	/**
-	 * Static method that broadcast an event to clients who were subscribed to the
-	 * SSE mechanism. This method will send events to a specific cluster of
-	 * clients, specified by the eventName parameter.
-	 * 
-	 * @param eventTitle - the name of the event
-	 * @param eventMessage - the message of the event
-	 * 
-	 * @return
-	 */
-	public static String broadcastEvent(ServerEventType eventType, String eventMessage) {
-		
-        OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+	//System listeners
+	private static AREEventListener eventListener;
+	private static RuntimeListener runtimeListener;
+	
 
-        eventBuilder.name(eventType.toString());
-        eventBuilder.mediaType(MediaType.TEXT_PLAIN_TYPE);
-        eventBuilder.data(String.class, eventMessage);
-        OutboundEvent event = eventBuilder.build();
- 
-        broadcaster.broadcast(event);
- 
-        return eventMessage;
-	}
+    public SseResource() {
+    	//create and register listeners
+    	SseResource.eventListener = new AREEventListener();
+    	SseResource.runtimeListener = new RuntimeListener();
+    	
+    	AREServices.instance.registerAREEventListener(eventListener);
+    	AREServices.instance.registerRuntimeDataListener(runtimeListener);
+    	
+    	initializeDataChannelListeners();
+    }
+    
+    
+    public static void initializeDataChannelListeners() {
+    	
+    	//close EventOutput objects
+    	try {
+    		for (HashSet<EventOutput> eventOutputs: dataChannelBroadcaster.values()) {
+    			for (EventOutput eventOutput: eventOutputs) {
+    				eventOutput.close();
+    			}
+    		} 
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    	}
+    	
+    	//remove the client broadcaster entries
+    	dataChannelBroadcaster.clear();
+    	
+    	//remove the old data channel requests from the listener
+    	runtimeListener.clearDataChannelList();
+    	
+    	//initialize accordint to the new model
+    	for (IChannel channel: DeploymentManager.instance.getCurrentRuntimeModel().getChannels()) {
+    		dataChannelBroadcaster.put(channel.getChannelID(), new HashSet<EventOutput>());
+    	}
+    	
+    }
+    
+    
+	/***********************************
+	 *   SUBSCRIBERS - start
+	 **********************************/
 	
 	
-	/**
-	 * Static method that broadcast an event to everyone who was subscribed to the
-	 * SSE mechanism. This method does not specifies a specific cluster of clients
-	 * so the generic cluster is used.
-	 * 
-	 * NOTE: A message sent to the generic cluster will not be received from clients
-	 * who are subscribed to specific clusters.
-	 * 
-	 * @param eventMessage
-	 * @return
-	 */
-	public static String broadcastEvent(String eventMessage) {
-		
-        OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
-
-        eventBuilder.mediaType(MediaType.TEXT_PLAIN_TYPE);
-        eventBuilder.data(String.class, eventMessage);
-        OutboundEvent event = eventBuilder.build();
- 
-        broadcaster.broadcast(event);
- 
-        return eventMessage;
-	}
-	
-	
-	@Path("subscribe")
+	@Path("/runtime/deployment/listener")
     @GET
     @Produces(SseFeature.SERVER_SENT_EVENTS)
-    public EventOutput subscribe() {
+    public EventOutput subscribe_AREDeploymentEvents() {
         final EventOutput eventOutput = new EventOutput();
         
-        SseResource.broadcaster.add(eventOutput);
+        SseResource.deploymentBroadcaster.add(eventOutput);
+        
+        return eventOutput;
+    }
+	
+	
+	@Path("/runtime/model/state/listener")
+	@GET
+    @Produces(SseFeature.SERVER_SENT_EVENTS)
+    public EventOutput subscribe_modelStateEvents() {
+        final EventOutput eventOutput = new EventOutput();
+        
+        SseResource.modelStateBroadcaster.add(eventOutput);
+        
+        return eventOutput;
+    }
+	
+	
+	@Path("/runtime/model/eventChannels/listener")
+	@GET
+    @Produces(SseFeature.SERVER_SENT_EVENTS)
+    public EventOutput subscribe_eventChannelsEvents() {
+        final EventOutput eventOutput = new EventOutput();
+        
+        SseResource.eventChannelBroadcaster.add(eventOutput);
+        
+        return eventOutput;
+    }
+	
+	
+	@Path("/runtime/model/dataChannels/{channelId}/listener")
+	@GET
+    @Produces(SseFeature.SERVER_SENT_EVENTS)
+    public EventOutput subscribe_dataChannelsEvents(@PathParam("channelId") String channelId) {
+        final EventOutput eventOutput = new EventOutput();
+        
+        try {
+	        String decodedId = astericsAPIEncoding.decodeString(channelId);
+	        runtimeListener.openDataChannel(decodedId);
+	        
+	        HashSet<EventOutput> eventOutputs = SseResource.dataChannelBroadcaster.get(decodedId);
+	        if (eventOutputs != null) {
+	        	eventOutputs.add(eventOutput);
+	        }
+        }
+        catch (Exception ex) {
+        	ex.printStackTrace();
+        }
+        
+        return eventOutput;
+    }
+	
+	
+	@Path("/runtime/model/components/properties/listener")
+	@GET
+    @Produces(SseFeature.SERVER_SENT_EVENTS)
+    public EventOutput subscribe_propertyChangeEvents() {
+        final EventOutput eventOutput = new EventOutput();
+        
+        SseResource.propertyChangeBroadcaster.add(eventOutput);
         
         return eventOutput;
     }
 
+	
+	/***********************************
+	 *   SUBSCRIBERS - end
+	 **********************************/
+    
+	
+	
+    
+	
+	
+	/***********************************
+	 *   BROADCASTER METHODS - start
+	 **********************************/
+	
+	/**
+	 * Static method that broadcasts an event to clients who were subscribed 
+	 * to deployment events.
+	 * 
+	 * @param eventMessage - the message of the event
+	 * 
+	 * @return
+	 */
+	public static String broadcastDeploymentEvent(String eventMessage) {
+		
+        OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+
+        eventBuilder.name("event");
+        eventBuilder.mediaType(MediaType.TEXT_PLAIN_TYPE);
+        eventBuilder.data(String.class, eventMessage);
+        OutboundEvent event = eventBuilder.build();
+ 
+        deploymentBroadcaster.broadcast(event);
+ 
+        return eventMessage;
+	}
+	
+	/**
+	 * Static method that broadcasts an event to clients who were subscribed 
+	 * to model state events.
+	 * 
+	 * @param eventMessage - the message of the event
+	 * 
+	 * @return
+	 */
+	public static String broadcastModelStateEvent(String eventMessage) {
+
+        OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+
+        eventBuilder.name("event");
+        eventBuilder.mediaType(MediaType.TEXT_PLAIN_TYPE);
+        eventBuilder.data(String.class, eventMessage);
+        OutboundEvent event = eventBuilder.build();
+ 
+        SseResource.modelStateBroadcaster.broadcast(event);
+ 
+        return eventMessage;
+	}
+	
+	
+	/**
+	 * Static method that broadcasts an event to clients who were subscribed 
+	 * to eventChannel events.
+	 * 
+	 * @param channelId - the id of the channel
+	 * @param targetComponentId - the component that received the event
+	 * @return
+	 */
+	public static String broadcastEventChannelEvent(String channelId, String targetComponentId) {
+
+        OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+
+        Map<String, String> eventMap = new HashMap<String, String>();
+        eventMap.put("channelId", channelId);
+        eventMap.put("targetComponentId", targetComponentId);
+        
+        String eventMessage = ObjectTransformation.objectToJSON(eventMap);
+        
+        eventBuilder.name("event");
+        eventBuilder.mediaType(MediaType.TEXT_PLAIN_TYPE);
+        eventBuilder.data(String.class, eventMessage);
+        OutboundEvent event = eventBuilder.build();
+ 
+        SseResource.eventChannelBroadcaster.broadcast(event);
+ 
+        return eventMessage;
+	}
+	
+	
+	/**
+	 * Static method that broadcasts an event to clients who were subscribed 
+	 * to dataChannel events.
+	 * 
+	 * @param channelId - the id of the channel
+	 * @param data - the data transmitted through the channel
+	 * @return
+	 */
+	public static String broadcastDataChannelEvent(String channelId, String data) {
+
+        OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+
+        Map<String, String> eventMap = new HashMap<String, String>();
+        eventMap.put("channelId", channelId);
+        eventMap.put("data", data);
+        
+        String eventMessage = ObjectTransformation.objectToJSON(eventMap);
+        
+        eventBuilder.name("event");
+        eventBuilder.mediaType(MediaType.TEXT_PLAIN_TYPE);
+        eventBuilder.data(String.class, eventMessage);
+        OutboundEvent event = eventBuilder.build();
+ 
+        Iterator<EventOutput> iterator = dataChannelBroadcaster.get(channelId).iterator();
+        while (iterator.hasNext()) {
+        	EventOutput eventOutput = iterator.next();
+        	
+	        try {
+    			if (eventOutput.isClosed()) {
+    				
+    				iterator.remove();
+    		        if ( SseResource.dataChannelBroadcaster.get(channelId).isEmpty() ) {
+    		        	SseResource.runtimeListener.closeDataChannel(channelId);
+    		        }
+    			}
+    			else {
+    				eventOutput.write(event);
+    			}
+			} catch (Exception e) {
+				//Exception may be thrown if the 'isClosed()' library method is not yet updated but the
+				//SSE connection was closed by the client.
+				//The connection will close in the next data transmission.
+			}
+        }
+ 
+        return "";
+	}
+	
+	
+	/**
+	 * Static method that broadcasts an event to clients who were subscribed 
+	 * to property changes events
+	 * 
+	 * @param componentId - the id of the component that changed it's property
+	 * @param componentKey - the key of the property
+	 * @param newValue - the new value of the property
+	 * @return
+	 */
+	public static String broadcastPropertyChangedEvent(String componentId, String componentKey, String newValue) {
+
+        OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+
+        Map<String, String> eventMap = new HashMap<String, String>();
+        eventMap.put("componentId", componentId);
+        eventMap.put("componentKey", componentKey);
+        eventMap.put("newValue", newValue);
+        
+        String eventMessage = ObjectTransformation.objectToJSON(eventMap);
+        
+        eventBuilder.name("event");
+        eventBuilder.mediaType(MediaType.TEXT_PLAIN_TYPE);
+        eventBuilder.data(String.class, eventMessage);
+        OutboundEvent event = eventBuilder.build();
+ 
+        SseResource.propertyChangeBroadcaster.broadcast(event);
+ 
+        return eventMessage;
+	}
+	
+
+	/***********************************
+	 *   BROADCASTER METHODS - end
+	 **********************************/
+	
 }

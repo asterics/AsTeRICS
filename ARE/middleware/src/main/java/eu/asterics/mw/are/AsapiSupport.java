@@ -1101,8 +1101,14 @@ public class AsapiSupport
 	public String getComponentProperty(
 			final String componentID, final String key) throws AREAsapiException
 			{
-		String result = DeploymentManager.instance.getCurrentRuntimeModel().
-				getComponentProperty(componentID, key);
+		String result;
+		try {
+			result = DeploymentManager.instance.getComponentProperty(componentID, key);
+		} catch (BundleManagementException e) {
+			result = null;
+			e.printStackTrace();
+		}
+		
 		if (result == null)
 		{
 			logger.warning(this.getClass().getName()+"." +

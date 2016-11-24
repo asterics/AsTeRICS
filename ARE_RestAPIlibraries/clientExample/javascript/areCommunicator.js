@@ -9,10 +9,12 @@ var _eventSourceMap = new Map();
 var delimiter = "-";
 
 //enumeration for server event types
-var ServerEvents = {
-		MODEL_STATE_CHANGED: "model_state_changed",
+var ServerEventTypes = {
 		MODEL_CHANGED: "model_changed",
-		MODEL_EVENT: "model_event"
+		MODEL_STATE_CHANGED: "model_state_changed",
+		EVENT_CHANNEL_TRANSMISSION: "event_channel_transmission",
+		DATA_CHANNEL_TRANSMISSION: "data_channel_transmission",
+		PROPERTY_CHANGED: "property_changed"
 };
 
 //set the base uri (usually where ARE runs at)
@@ -606,23 +608,45 @@ function getRestFunctions(successCallback, errorCallback) {
  *	Subscription to SSE events
  **********************************/
 
-function subscribe(successCallback, errorCallback, eventsType) {
+function subscribe(successCallback, errorCallback, eventType, channelId) {
 	
 	// Browser does not support SSE
-	if((typeof EventSource)==="undefined") { 
+	if( (typeof EventSource)==="undefined" ) { 
 	   alert("SSE not supported by browser");
 	   return;
 	}
 
-	var eventSource = _eventSourceMap.get(eventsType);
+	var eventSource = _eventSourceMap.get(eventType);
 	if (eventSource != null) {
 		eventSource.close();
 	}
-	eventSource = new EventSource(_baseURI + "events/subscribe"); // Connecting to SSE service
-	_eventSourceMap.add(eventsType, eventSource);
+
+	switch (eventType) {
+	    case ServerEventTypes.MODEL_CHANGED:
+	        resource = "runtime/deployment/listener";
+	        break;
+	    case ServerEventTypes.MODEL_STATE_CHANGED:
+	        resource = "runtime/model/state/listener";
+	        break;
+	    case ServerEventTypes.EVENT_CHANNEL_TRANSMISSION:
+	        resource = "runtime/model/eventChannels/listener";
+	        break;
+	    case ServerEventTypes.DATA_CHANNEL_TRANSMISSION:
+	        resource = "runtime/model/dataChannels/" + encodeParam(channelId) + "/listener";
+	        break;
+	    case ServerEventTypes.PROPERTY_CHANGED:
+	        resource = "runtime/model/components/properties/listener";
+	        break;
+        default:
+        	console.error("ERROR: Unknown event type given as a parameter '" + eventType + "'");
+			return;
+	}
+
+	eventSource = new EventSource(_baseURI + resource); // Connecting to SSE service
+	_eventSourceMap.add(eventType, eventSource);
 	
 	//adding listener for specific events
-	eventSource.addEventListener(eventsType, function(e) {
+	eventSource.addEventListener("event", function(e) {
 		successCallback(e.data, 200);
 	}, false);
 	
@@ -635,10 +659,10 @@ function subscribe(successCallback, errorCallback, eventsType) {
 	eventSource.onerror = function (e) {
 		switch(e.target.readyState) {
 			case EventSource.CONNECTING:	
-				errorCallback(400, 'reconnecting');
+				console.log(400, 'reconnecting');
 				break;
 			case EventSource.CLOSED:		
-				errorCallback(400, 'connectionLost');
+				console.log(400, 'connectionLost');
 				break;
 			default:
 				errorCallback(400, 'someErrorOccurred');
@@ -648,9 +672,14 @@ function subscribe(successCallback, errorCallback, eventsType) {
 }
 
 
-function unsubscribe(eventsType) {
-	var eventSource = _eventSourceMap.remove(eventsType);
-	
+function unsubscribe(eventType, channelId) {
+	closeEventSource(eventType);
+}
+
+
+function closeEventSource(eventType) {
+	var eventSource = _eventSourceMap.remove(eventType);
+
 	if (eventSource == null) {
 		return false;
 	}
