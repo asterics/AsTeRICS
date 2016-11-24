@@ -99,7 +99,10 @@ public class WebServiceEngine {
         rc.register(new ResponseFilter());
         restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.BASE_URI_REST, rc);
         restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler("./data/webservice"), "/");
-        
+        for (NetworkListener l : restServer.getListeners()) {
+            l.getFileCache().setEnabled(false);
+        }
+
         restServer.start();
 
         
