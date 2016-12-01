@@ -49,7 +49,7 @@ public class ResponseFilter implements ContainerResponseFilter {
     	String errorMessage = "";
     	boolean error = false;
     	
-    	try {//identify that an error occured in the RestServer class
+    	try {//identify that an error occurred in the RestServer class
 
 	    	bodyContent = response.getEntity().toString();
 	    	if (bodyContent.startsWith("error:")) {
