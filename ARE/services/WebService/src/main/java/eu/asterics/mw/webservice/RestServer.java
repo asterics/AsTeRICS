@@ -49,12 +49,18 @@ import javax.ws.rs.core.MediaType;
 
 
 
+
+
+
 import eu.asterics.mw.are.AsapiSupport;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.deployment.IChannel;
 import eu.asterics.mw.model.deployment.IComponentInstance;
 import eu.asterics.mw.model.deployment.IEventChannel;
+import eu.asterics.mw.model.deployment.IOutputPort;
+import eu.asterics.mw.model.deployment.IPort;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.services.AREServices;
@@ -287,6 +293,7 @@ public class RestServer {
 			String[] array = asapiSupport.getComponentPropertyKeys(decodedId);
 			
 			response = ObjectTransformation.objectToJSON(Arrays.asList(array));
+			logger.fine(response + "\n\n\n");
 			if (response.equals("")) {
 				response = "{'error':'Couldn't retrieve component property keys (Object serialization failure)'}";
 			}
@@ -345,28 +352,26 @@ public class RestServer {
     }
 	
 	
-	@Path("/runtime/model/components/{componentId}/inputPorts")
+	@Path("/runtime/model/components/{componentId}/ports/input/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getComponentInputPorts(@PathParam("componentId") String componentId) {
+    public String getComponentInputPortIds(@PathParam("componentId") String componentId) {
 		String response;
 		String errorMessage = "";
-		String decodedId = "";
 		
 		try {
-			decodedId = astericsAPIEncoding.decodeString(componentId);
+			componentId = astericsAPIEncoding.decodeString(componentId);
 
 			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
-			
-			String[] inputPorts = currentRuntimeModel.getComponentInputPorts(decodedId);
+			String[] inputPorts = currentRuntimeModel.getComponentInputPorts(componentId);
 			
 			response = ObjectTransformation.objectToJSON(inputPorts);
 			if (response.equals("")) {
-				response = "{'error':'Could not retrieve the component input ports'}";
+				response = "{'error':'Could not retrieve the component input port ids'}";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Could not retrieve the component input ports (" + e.getMessage() + ")";
+			errorMessage = "Could not retrieve the component input port ids (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -374,28 +379,26 @@ public class RestServer {
     }
 	
 	
-	@Path("/runtime/model/components/{componentId}/outputPorts")
+	@Path("/runtime/model/components/{componentId}/ports/output/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getComponentOutputPorts(@PathParam("componentId") String componentId) {
 		String response;
 		String errorMessage = "";
-		String decodedId = "";
 		
 		try {
-			decodedId = astericsAPIEncoding.decodeString(componentId);
+			componentId = astericsAPIEncoding.decodeString(componentId);
 
 			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
-			
-			String[] inputPorts = currentRuntimeModel.getComponentOutputPorts(decodedId);
+			String[] inputPorts = currentRuntimeModel.getComponentOutputPorts(componentId);
 			
 			response = ObjectTransformation.objectToJSON(inputPorts);
 			if (response.equals("")) {
-				response = "{'error':'Could not retrieve the component output ports'}";
+				response = "{'error':'Could not retrieve the component output port ids'}";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorMessage = "Could not retrieve the component output ports (" + e.getMessage() + ")";
+			errorMessage = "Could not retrieve the component output port ids (" + e.getMessage() + ")";
 			response = "{'error':'"+errorMessage+"'}";
 		}
 		
@@ -404,13 +407,38 @@ public class RestServer {
 	
 	
 	
-	@Path("/runtime/model/components/{componentId}/eventChannels/ids")
+	@Path("/runtime/model/components/{componentId}/ports/{portId}/datatype")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getPortDatatype(@PathParam("componentId") String componentId, @PathParam("portId") String portId) {
+		String response;
+		String errorMessage = "";
+		
+		try {
+			componentId = astericsAPIEncoding.decodeString(componentId);
+			portId = astericsAPIEncoding.decodeString(portId);
+			
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			IPort port = currentRuntimeModel.getPort(componentId, portId);
+			DataType dataType = port.getPortDataType();
+
+			response = dataType + "";
+		} catch (Exception e) {
+			errorMessage = "Could not retrieve the component output port datatype (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+		
+    	return response;
+    }
+	
+	
+	@Path("/runtime/model/components/{componentId}/channels/event/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getComponentEventChannelsIds(@PathParam("componentId") String componentId) {
 		String response = "";
 		String errorMessage = "";
-		String decodedId = "";
 		
 		try {
 			componentId = astericsAPIEncoding.decodeString(componentId);
@@ -441,7 +469,45 @@ public class RestServer {
     }
 	
 	
-	@Path("/runtime/model/eventChannels/{channelId}/source")
+	
+	@Path("/runtime/model/components/{componentId}/channels/data/ids")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getComponentDataChannelsIds(@PathParam("componentId") String componentId) {
+		String response = "";
+		String errorMessage = "";
+		
+		try {
+			componentId = astericsAPIEncoding.decodeString(componentId);
+			
+			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+			List<String> dataChannelIds = new ArrayList<String>();
+			
+			Set<IChannel> dataChannels = currentRuntimeModel.getChannels();
+			for (IChannel dataChannel : dataChannels)
+			{
+				if ( (dataChannel.getSource().getComponentInstanceID().equals(componentId) )
+						|| (dataChannel.getTarget().getComponentInstanceID().equals(componentId)) ) {
+					dataChannelIds.add(dataChannel.getChannelID());
+				}
+			}
+
+			response = ObjectTransformation.objectToJSON(dataChannelIds);
+			if (response.equals("")) {
+				response = "{'error':'Could not retrieve the data channel ids'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			errorMessage = "Could not retrieve the data channel ids (" + e.getMessage() + ")";
+			response = "{'error':'"+errorMessage+"'}";
+		}
+		
+    	return response;
+    }
+	
+	
+	
+	@Path("/runtime/model/channels/event/{channelId}/source")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getEventChannelSource(@PathParam("channelId") String channelId) {
@@ -477,7 +543,7 @@ public class RestServer {
     }
 	
 	
-	@Path("/runtime/model/eventChannels/{channelId}/target")
+	@Path("/runtime/model/channels/event/{channelId}/target")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getEventChannelTarget(@PathParam("channelId") String channelId) {
@@ -513,7 +579,7 @@ public class RestServer {
     }
 	
 	
-	@Path("/runtime/model/eventChannels/ids")
+	@Path("/runtime/model/channels/event/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getEventChannelsIds() {
@@ -542,47 +608,10 @@ public class RestServer {
 		
     	return response;
     }
-	
-	
-	
-	@Path("/runtime/model/components/{componentId}/dataChannels/ids")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getComponentDataChannelsIds(@PathParam("componentId") String componentId) {
-		String response = "";
-		String errorMessage = "";
-		String decodedId = "";
-		
-		try {
-			componentId = astericsAPIEncoding.decodeString(componentId);
-			
-			final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
-			List<String> dataChannelIds = new ArrayList<String>();
-			
-			Set<IChannel> dataChannels = currentRuntimeModel.getChannels();
-			for (IChannel dataChannel : dataChannels)
-			{
-				if ( (dataChannel.getSource().getComponentInstanceID().equals(componentId) )
-						|| (dataChannel.getTarget().getComponentInstanceID().equals(componentId)) ) {
-					dataChannelIds.add(dataChannel.getChannelID());
-				}
-			}
 
-			response = ObjectTransformation.objectToJSON(dataChannelIds);
-			if (response.equals("")) {
-				response = "{'error':'Could not retrieve the data channel ids'}";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			errorMessage = "Could not retrieve the data channel ids (" + e.getMessage() + ")";
-			response = "{'error':'"+errorMessage+"'}";
-		}
-		
-    	return response;
-    }
 	
 	
-	@Path("/runtime/model/dataChannels/{channelId}/source")
+	@Path("/runtime/model/channels/data/{channelId}/source")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getDataChannelSource(@PathParam("channelId") String channelId) {
@@ -618,7 +647,7 @@ public class RestServer {
     }
 	
 	
-	@Path("/runtime/model/dataChannels/{channelId}/target")
+	@Path("/runtime/model/channels/data/{channelId}/target")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getDataChannelTarget(@PathParam("channelId") String channelId) {
@@ -655,7 +684,7 @@ public class RestServer {
 	
 	
 	
-	@Path("/runtime/model/dataChannels/ids")
+	@Path("/runtime/model/channels/data/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getDataChannelsIds() {
