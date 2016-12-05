@@ -33,8 +33,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
-import com.codeminders.hidapi.ClassPathLibraryLoader;
-
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
@@ -80,14 +78,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance
    /**
     * The class constructor.
     */
-    public FS20SenderInstance()
-    {
-    		logger.fine("Trying to load library for FS20...");    		
-    		boolean successLoading = ClassPathLibraryLoader.loadNativeHIDLibrary();
-    		if(successLoading==false) {
-    			throw new RuntimeException("Could not load native lib for FS20 device.");
-    		}
-    		logger.fine("Success loading native lib for FS20: "+successLoading);
+    public FS20SenderInstance() {
     }
 
    /**

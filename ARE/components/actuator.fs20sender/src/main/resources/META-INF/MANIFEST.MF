@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: asterics-actuators.FS20Sender
 Bundle-SymbolicName: eu.asterics.component.actuator.fS20Sender
 Bundle-Version: 0.1.0
-Bundle-Classpath: ., lib/hidapi-1.1libLoaderPatch.jar
+Bundle-Classpath: ., lib/jna-4.2.2.jar, lib/hid4java-0.4.0.jar
 DynamicImport-Package: *
