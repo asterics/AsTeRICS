@@ -17,6 +17,7 @@
         <pathelement location="${middleware}/asterics.ARE.jar"/>
 		<pathelement location="${services}/asterics.mw.cimcommunication.jar"/>
 		<pathelement location="${resources}/lib/jna-4.2.2.jar"/>
+		<pathelement location="${resources}/lib/jna-platform-4.2.2.jar"/>
 		<pathelement location="${resources}/lib/hid4java-0.4.0.jar"/>
     </path>
     
