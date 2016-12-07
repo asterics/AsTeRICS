@@ -139,7 +139,7 @@ public class SseResource {
     }
 	
 	
-	@Path("/runtime/model/eventChannels/listener")
+	@Path("/runtime/model/channels/event/listener")
 	@GET
     @Produces(SseFeature.SERVER_SENT_EVENTS)
     public EventOutput subscribe_eventChannelsEvents() {
@@ -151,7 +151,7 @@ public class SseResource {
     }
 	
 	
-	@Path("/runtime/model/dataChannels/{channelId}/listener")
+	@Path("/runtime/model/channels/data/{channelId}/listener")
 	@GET
     @Produces(SseFeature.SERVER_SENT_EVENTS)
     public EventOutput subscribe_dataChannelsEvents(@PathParam("channelId") String channelId) {

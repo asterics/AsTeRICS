@@ -1,0 +1,48 @@
+body {
+	width: 100%;
+	margin: auto;
+}
+
+#header {
+	width: 100%; text-align: center; 
+	border-bottom: 2px solid gray; 
+	padding-top: 10px; 
+	box-shadow: 0px 5px 10px gray;
+	margin-bottom: 50px;
+}
+
+#content {
+	padding: 15px;
+}
+
+button {
+	background-color: green;
+	padding: 10px;
+	border-radius: 10px;
+	color: white;
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 20px;
+	margin-right: 5px;
+}
+
+input {
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.inlineText {
+	display: inline-block; 
+	margin-bottom: 8px;
+	font-size: 18px;
+	margin-right: 10px;
+}
+
+.eventDisplay {
+	overflow: auto; 
+	border:1px solid gray; 
+	width:50%; 
+	height: 150px; 
+	padding: 3px;
+	box-shadow: 0px 0px 10px grey;
+}

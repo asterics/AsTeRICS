@@ -17,6 +17,17 @@ var ServerEventTypes = {
 		PROPERTY_CHANGED: "property_changed"
 };
 
+//Port datatypes
+var PortDatatype = {
+		UNKNOWN: "unknown",
+		BOOLEAN: "boolean",
+		BYTE: "byte",
+		CHAR: "char",
+		INTEGER: "integer",
+		DOUBLE: "double",
+		STRING: "string"
+};
+
 //set the base uri (usually where ARE runs at)
 function setBaseURI(uri) {
 	_baseURI = uri;
@@ -285,7 +296,7 @@ function setRuntimeComponentProperty(successCallback, errorCallback, componentId
 function getEventChannelsIds(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/eventChannels/ids",
+		url: _baseURI + "runtime/model/channels/event/ids",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -307,7 +318,7 @@ function getEventChannelSource(successCallback, errorCallback, channelId) {
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/eventChannels/"+encodeParam(channelId) + "/source",
+		url: _baseURI + "runtime/model/channels/event/"+encodeParam(channelId) + "/source",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -329,7 +340,7 @@ function getEventChannelTarget(successCallback, errorCallback, channelId) {
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/eventChannels/"+encodeParam(channelId) + "/target",
+		url: _baseURI + "runtime/model/channels/event/"+encodeParam(channelId) + "/target",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -351,7 +362,7 @@ function getComponentEventChannelsIds(successCallback, errorCallback, componentI
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/eventChannels/ids",
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/channels/event/ids",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -370,7 +381,7 @@ function getComponentEventChannelsIds(successCallback, errorCallback, componentI
 function getDataChannelsIds(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/dataChannels/ids",
+		url: _baseURI + "runtime/model/channels/data/ids",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -392,7 +403,7 @@ function getDataChannelSource(successCallback, errorCallback, channelId) {
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/dataChannels/"+encodeParam(channelId) + "/source",
+		url: _baseURI + "runtime/model/channels/data/"+encodeParam(channelId) + "/source",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -414,7 +425,7 @@ function getDataChannelTarget(successCallback, errorCallback, channelId) {
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/dataChannels/"+encodeParam(channelId) + "/target",
+		url: _baseURI + "runtime/model/channels/data/"+encodeParam(channelId) + "/target",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -436,7 +447,7 @@ function getComponentDataChannelsIds(successCallback, errorCallback, componentId
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/dataChannels/ids",
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/channels/data/ids",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -452,6 +463,70 @@ function getComponentDataChannelsIds(successCallback, errorCallback, componentId
 }
 
 
+function getComponentInputPortIds(successCallback, errorCallback, componentId) {
+	
+	if ( componentId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/ports/input/ids",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getComponentOutputPortIds(successCallback, errorCallback, componentId) {
+	
+	if ( componentId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/components/" + encodeParam(componentId) + "/ports/output/ids",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(jsonString, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getPortDatatype(successCallback, errorCallback, componentId, portId) {
+	
+	if ( componentId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/components/" + encodeParam(componentId) + "/ports/" + encodeParam(portId) + "/datatype",
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(jsonString, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
 
 
 /*************************************
@@ -629,10 +704,10 @@ function subscribe(successCallback, errorCallback, eventType, channelId) {
 	        resource = "runtime/model/state/listener";
 	        break;
 	    case ServerEventTypes.EVENT_CHANNEL_TRANSMISSION:
-	        resource = "runtime/model/eventChannels/listener";
+	        resource = "runtime/model/channels/event/listener";
 	        break;
 	    case ServerEventTypes.DATA_CHANNEL_TRANSMISSION:
-	        resource = "runtime/model/dataChannels/" + encodeParam(channelId) + "/listener";
+	        resource = "runtime/model/channels/data/" + encodeParam(channelId) + "/listener";
 	        break;
 	    case ServerEventTypes.PROPERTY_CHANGED:
 	        resource = "runtime/model/components/properties/listener";
