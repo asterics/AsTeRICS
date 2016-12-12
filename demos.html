@@ -511,7 +511,7 @@ It allows the creation of flexible solutions for people with disabilities using 
 <p>
 On this page you will find practical demos of the <a href="https://github.com/asterics/P4AllBuildingBlocks">Building Blocks</a> provided for the <a href="http://www.prosperity4all.eu/">Prospertiy for All (P4All)</a> project. 
 
-<p>The demos rely on a customized <a href="https://github.com/asterics/P4AllBuildingBlocks/releases/tag/asterics-prosperity4all-bb-demos-0.2">demo release (asterics-prosperity4all-bb-demos, v0.2)</a> of the AsTeRICS Runtime Environment (ARE) which was created with the <a href="https://github.com/asterics/P4AllBuildingBlocks/wiki/AsTeRICS-Packaging-Environment-(APE)">AsTeRICS Packaging Environment (APE)</a>. The APE let's you select a set of AsTeRICS model files and create a downstripped (minimum size) version of the ARE including plugins, configuration files and data files to execute the models. Optionally, the APE allows the creation of native installers for Windows, Linux and Mac using <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGIBBCI">JavaFX packaging technology</a>. If you want to know how to build the demos on your own, read the <a href="https://github.com/asterics/P4AllBuildingBlocks#building-the-project">build instructions</a> of the building blocks repository.
+<p>The demos rely on a customized <a href="https://github.com/asterics/P4AllBuildingBlocks/releases/tag/asterics-prosperity4all-bb-demos-0.2">demo release (asterics-prosperity4all-bb-demos, v0.2)</a> of the AsTeRICS Runtime Environment (ARE) which was created with the <a href="https://github.com/asterics/P4AllBuildingBlocks/wiki/AsTeRICS-Packaging-Environment-(APE)">AsTeRICS Packaging Environment (APE)</a>. If you want to know how to build the demos on your own, read the <a href="https://github.com/asterics/P4AllBuildingBlocks#building-the-project">build instructions</a> of the building blocks repository.
 <h1>
 <a id="demos" class="anchor" href="#demos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Demos</h1>
 Download and install the demo release for your platform and start it. If you choose the .exe installer the ARE will start automatically. Please ensure to uninstall a previous demo release version. The demos are bundled into one installer file but could also be deployed with a seperate installer each.
@@ -543,20 +543,8 @@ Download and install the demo release for your platform and start it. If you cho
 <p>
 <h4>Requirements</h4>Integrated Webcam or USB camera. OS: Windows
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/FacetrackerLK.htm">FacetrackerLK</a>
-
-<h3><a id="tobiieyex" class="anchor" href="#tobiieyex" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eyetracking UI with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/TobiiEyeX">TobiiEyeX Building Block</a></h3>
-<h4>Objective</h4>Use eye movements and hovering to select user interface buttons.
-<h4>Description</h4>The demo shows a menu with buttons. Select (Click on) a button by looking at it for a certain amount of time. The border of the button indicates the hover time. A successful selection is shown in the "Selected action" field.<p>
-
-<div>
-<img src="images/CameraInput/TobiiEyeX-panel.png" alt="User interface with big buttons for eye control."/>
-</div>
-<p>
-<button onclick="DepMFAndStart('CameraInput/TobiiEyeX/TobiiEyeX-homecontrol_simulated(W).acs')" class="button">Deploy and Start demo</button>
-<p>
-<h4>Requirements</h4><a href="http://www.tobii.com/xperience/developer/">Tobii EyeX eyetracker</a> and installed SDK. OS: Windows
-<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/EyeX.htm">EyeX</a>
 -->
+
 <h3><a id="xfacetrackerlk" class="anchor" href="#xfacetrackerlk" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cross-platform Camera Mouse with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/XFacetrackerLK">XFacetrackerLK Building Block</a></h3>
 <h4>Objective</h4>Mouse control (moving mouse cursor, clicking and dragging) by head movements.
 <h4>Description</h4>By moving the head up/down or left/right the mouse cursor should move accordingly. A left click is performed by dwelling (stopping movement and waiting for some time). To do a right, double or drag click select the respective button in the ARE GUI and move the cursor to the location where the click should be performed at. The mouse speed can be changed by using the slider. Click on the On/Off button to toggle mouse control. 
@@ -583,26 +571,18 @@ Download and install the demo release for your platform and start it. If you cho
 <h4>Requirements</h4>Integrated Webcam or USB camera. OS: Windows, Linux, Mac OSX
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/XFacetrackerLK.htm">XFacetrackerLK</a>
 
-<h2><a id="BioelectricSignal" class="anchor" href="#BioelectricSignal" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bioelectric Signal Acquisition and Processing</h2>
-
-
-<h3><a id="iirfilter" class="anchor" href="#iirfilter" aria-hidden="true"><span class="octicon octicon-link"></span></a>IIR filtering with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/BioelectricSignal/IIRFilter">IIRFilter Building Block</a></h3>
-<h4>Objective</h4>Filter a given biosignal (lowpass, bandpass, highpass) with butterworth filter. 
-<h4>Description</h4>The demo IIRFilter-Bandpass(WLM).acs generates a signal (Sine, 20Hz, Amplitudes: +-100) which is filtered with an IIR filter (bandpass, butterworth, order=10, fc1=10Hz, fc2=20Hz). The demo IIRFilter-ReadEDFdata(WLM).acs reads a recorded EEG signal, filters it and triggers midi sounds according to the magnitude of the signal.
-<p>
+<h3><a id="tobiieyex" class="anchor" href="#tobiieyex" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eyetracking UI with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/TobiiEyeX">TobiiEyeX Building Block</a></h3>
+<h4>Objective</h4>Use eye movements and hovering to select user interface buttons.
+<h4>Description</h4>The demo shows a menu with buttons. Select (Click on) a button by looking at it for a certain amount of time. The border of the button indicates the hover time. A successful selection is shown in the "Selected action" field.<p>
 
 <div>
-<img src="images/BioelectricSignal/IIRFilter-Bandpass.PNG" alt="Sine signal visualized in oscilloscope widget"/>
-<img src="images/BioelectricSignal/IIRFilter-ReadEDF.PNG" alt="Sine signal visualized in oscilloscope widget"/>
+<img src="images/CameraInput/TobiiEyeX-panel.png" alt="User interface with big buttons for eye control."/>
 </div>
 <p>
-<button onclick="DepMFAndStart('BioelectricSignal/IIRFilter/IIRFilter-Bandpass(WLM).acs')" class="button">Deploy and Start IIRFilter-Bandpass</button>
+<button onclick="DepMFAndStart('CameraInput/TobiiEyeX/TobiiEyeX-homecontrol_simulated(W).acs')" class="button">Deploy and Start demo</button>
 <p>
-<p>
-<button onclick="DepMFAndStart('BioelectricSignal/IIRFilter/IIRFilter-ReadEDFdata(WLM).acs')" class="button">Deploy and Start IIRFilter-ReadEDFdata</button>
-<p>
-<h4>Requirements</h4>OS: Windows, Linux, Mac OSX
-<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/processors/IIRFilter.htm">IIRFilter</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/MidiPlayer.htm">MidiPlayer</a>
+<h4>Requirements</h4><a href="http://www.tobii.com/xperience/developer/">Tobii EyeX eyetracker</a> and installed SDK. OS: Windows
+<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/EyeX.htm">EyeX</a>
 
 <h2><a id="SmartHomeIntegration" class="anchor" href="#SmartHomeIntegration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Smart Home Integration</h2>
 
@@ -650,6 +630,29 @@ Websocket: <div id="output"/>
 </div>
 <h4>Requirements</h4>OS: Windows, Linux, Mac OSX
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/processors/WebSocket.htm">WebSocket</a>
+
+<h2><a id="BioelectricSignal" class="anchor" href="#BioelectricSignal" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bioelectric Signal Acquisition and Processing</h2>
+
+
+<h3><a id="iirfilter" class="anchor" href="#iirfilter" aria-hidden="true"><span class="octicon octicon-link"></span></a>IIR filtering with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/BioelectricSignal/IIRFilter">IIRFilter Building Block</a></h3>
+<h4>Objective</h4>Filter a given biosignal (lowpass, bandpass, highpass) with butterworth filter. 
+<h4>Description</h4>The demo IIRFilter-Bandpass(WLM).acs generates a signal (Sine, 20Hz, Amplitudes: +-100) which is filtered with an IIR filter (bandpass, butterworth, order=10, fc1=10Hz, fc2=20Hz). The demo IIRFilter-ReadEDFdata(WLM).acs reads a recorded EEG signal, filters it and triggers midi sounds according to the magnitude of the signal.
+<p>
+
+<div>
+<img src="images/BioelectricSignal/IIRFilter-Bandpass.PNG" alt="Sine signal visualized in oscilloscope widget"/>
+<img src="images/BioelectricSignal/IIRFilter-ReadEDF.PNG" alt="Sine signal visualized in oscilloscope widget"/>
+</div>
+<p>
+<button onclick="DepMFAndStart('BioelectricSignal/IIRFilter/IIRFilter-Bandpass(WLM).acs')" class="button">Deploy and Start IIRFilter-Bandpass</button>
+<p>
+<p>
+<button onclick="DepMFAndStart('BioelectricSignal/IIRFilter/IIRFilter-ReadEDFdata(WLM).acs')" class="button">Deploy and Start IIRFilter-ReadEDFdata</button>
+<p>
+<h4>Requirements</h4>OS: Windows, Linux, Mac OSX
+<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/processors/IIRFilter.htm">IIRFilter</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/MidiPlayer.htm">MidiPlayer</a>
+
+
 <!--
 <h2><a id="Microcontroller" class="anchor" href="#Microcontroller" aria-hidden="true"><span class="octicon octicon-link"></span></a>Microcontroller</h2>
 
