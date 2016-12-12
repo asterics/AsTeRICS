@@ -288,6 +288,14 @@
 			
 			function DepMF_StartModel_Callback(data, HTTPstatus) { startModel(DepMF_Empty_successCallback, START_errorCallback); }
 			
+			function DepMFAndStartXFaceTrackerLK(filename) {
+				deployModelFromFile(SelectCamera_Callback, DepMF_errorCallback, filename);
+			}
+			function SelectCamera_Callback(data, HTTPstatus) {
+				var cameraIdx = document.getElementById("cameraIdx").value;
+				setRuntimeComponentProperty(DepMF_StartModel_Callback, SCP_errorCallback, 'XFacetrackerLK.1', 'cameraSelection', cameraIdx);
+			}
+			
 			function DepMF_Empty_successCallback(data, HTTPstatus) { }
 			function DepMF_successCallback(data, HTTPstatus) { alert(data); }
 			function DepMF_errorCallback(HTTPstatus, AREerrorMessage) { alert('Model could not be deployed\nHave you installed and started the asterics-prosperity4all-bb-demos package?\n'+AREerrorMessage); }
@@ -434,6 +442,42 @@
 				var eventType = selects.options[selects.selectedIndex].value;
 				unsubscribe(eventType);
 			}
+			
+			/*
+			Camera mouse parametrization
+			*/
+			
+			function applySettingsToModel() {
+				var cameraSource = document.getElementById("cameraSource");
+				var cameraSourceIdx = cameraSource.options[cameraSource.selectedIndex].value;
+				setRuntimeComponentProperty(apply1_successCallback, errorCallback, 'XFacetrackerLK.1', 'cameraSelection', cameraSourceIdx);
+			}
+			
+			function apply1_successCallback(data, HTTPstatus) {
+				var speed = document.getElementById("speed").value;
+				setRuntimeComponentProperty(apply4_successCallback, errorCallback, 'Slider.1', 'default', speed);				
+			}
+
+			function apply4_successCallback(data, HTTPstatus) {
+				//left click: don't know how to set it by now
+			
+			
+				//Finally start model! - Yippie!!
+				startModel(Empty_successCallback, START_errorCallback);
+			}			
+
+			//-------------------------------------
+			function applyAndStart() {
+				deployModelFromFile(DepMF_XFacetrackerLK_successCallback, DepMF_errorCallback, 'CameraInput/XFacetrackerLK/XFaceTrackerMouse-no-osk(WLM).acs');
+			}
+			
+			function DepMF_XFacetrackerLK_successCallback(data, HTTPstatus) {
+				applySettingsToModel();
+			}
+
+			function Empty_successCallback(data, HTTPstatus) {}
+			function errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+			
 
 		</script>
 
@@ -464,16 +508,6 @@
 <p><a href="https://github.com/asterics/AsTeRICS">AsTeRICS</a> is a free and Open-Source graphical construction set for assistive technologies (AT).
 It allows the creation of flexible solutions for people with disabilities using a large set of sensors and actuators.</p>
 
-<p>Possible applications are  </p>
-
-<ul>
-<li>Computer input (mouse, keyboard, joystick)</li>
-<li>Environmental Control (KNX, FS20, IR)</li>
-<li>Toys and Games (Playstation 3, computer games, RC-toys ...)</li>
-<li>Brain/Neural computer interfaces (Enobio, OpenVIBE, OpenEEG)</li>
-<li>Android Phone support (SMS, calls)</li>
-<li>and many more!</li>
-</ul>
 <p>
 On this page you will find practical demos of the <a href="https://github.com/asterics/P4AllBuildingBlocks">Building Blocks</a> provided for the <a href="http://www.prosperity4all.eu/">Prospertiy for All (P4All)</a> project. 
 
@@ -494,7 +528,7 @@ Download and install the demo release for your platform and start it. If you cho
 
 
 <h2><a id="CameraInput" class="anchor" href="#CameraInput" aria-hidden="true"><span class="octicon octicon-link"></span></a>Camera Input</h2>
-
+<!--
 <h3><a id="facetrackerlk" class="anchor" href="#facetrackerlk" aria-hidden="true"><span class="octicon octicon-link"></span></a>Camera Mouse with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/FacetrackerLK-windows">FacetrackerLK Building Block</a></h3>
 <h4>Objective</h4>Mouse control (moving mouse cursor, clicking and dragging) by head movements.
 <h4>Description</h4>By moving the head up/down or left/right the mouse cursor should move accordingly. A left click is performed by dwelling (stopping movement and waiting for some time). To do a right, double or drag click select the respective button in the ARE GUI and move the cursor to the location where the click should be performed at. The mouse speed can be changed by using the slider. Click on the On/Off button to toggle mouse control. 
@@ -522,7 +556,7 @@ Download and install the demo release for your platform and start it. If you cho
 <p>
 <h4>Requirements</h4><a href="http://www.tobii.com/xperience/developer/">Tobii EyeX eyetracker</a> and installed SDK. OS: Windows
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/EyeX.htm">EyeX</a>
-
+-->
 <h3><a id="xfacetrackerlk" class="anchor" href="#xfacetrackerlk" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cross-platform Camera Mouse with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/XFacetrackerLK">XFacetrackerLK Building Block</a></h3>
 <h4>Objective</h4>Mouse control (moving mouse cursor, clicking and dragging) by head movements.
 <h4>Description</h4>By moving the head up/down or left/right the mouse cursor should move accordingly. A left click is performed by dwelling (stopping movement and waiting for some time). To do a right, double or drag click select the respective button in the ARE GUI and move the cursor to the location where the click should be performed at. The mouse speed can be changed by using the slider. Click on the On/Off button to toggle mouse control. 
@@ -533,7 +567,18 @@ Download and install the demo release for your platform and start it. If you cho
 <img src="images/CameraInput/facetrackermouse.PNG" alt="GUI with buttons and slider"/>
 </div>
 <p>
-<button onclick="DepMFAndStart('CameraInput/XFacetrackerLK/XFaceTrackerMouse-no-osk(WLM).acs')" class="button">Deploy and Start demo</button>
+		<label for="cameraSource">Choose Camera: </label>
+		<select id="cameraSource">
+		  <option value="0">First camera</option>
+		  <option value="1">Second camera</option>
+		  <option value="2">Third camera</option>
+		  <option value="3">Fourth camera</option>
+		</select>			
+		<label for="speed">Mouse Speed: </label>
+		<input title="Mouse speed" type="range" id="speed" value="50">
+<!-- <button onclick="DepMFAndStartXFaceTrackerLK('CameraInput/XFacetrackerLK/XFaceTrackerMouse-no-osk(WLM).acs')" class="button">Deploy and Start demo</button> -->
+<br>
+<button onclick="applyAndStart()" title="Description: Applies all settings and starts the model" class="button"> Apply and Start Model </button>
 <p>
 <h4>Requirements</h4>Integrated Webcam or USB camera. OS: Windows, Linux, Mac OSX
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/XFacetrackerLK.htm">XFacetrackerLK</a>
@@ -594,10 +639,9 @@ Websocket: <div id="output"/>
 </div>
 		<h2>Received signal data</h2>
 		<div align="horizontal">
-		Value:
-	&nbsp; &nbsp; <input id="AccX" style="" type="text"> &nbsp;
-	&nbsp;
-	</div>
+			<label for="AccX">Received Value: </label>
+			<input id="AccX" style="" type="text" readonly="true">
+		</div>
 	<div align="left">
 
 		<canvas id="myGraph1" width="400" height="100"></canvas>
