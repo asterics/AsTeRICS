@@ -545,7 +545,7 @@ Download and install the demo release for your platform and start it. If you cho
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/FacetrackerLK.htm">FacetrackerLK</a>
 -->
 
-<h3><a id="xfacetrackerlk" class="anchor" href="#xfacetrackerlk" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cross-platform Camera Mouse with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/XFacetrackerLK">XFacetrackerLK Building Block</a></h3>
+<h3><a id="xfacetrackerlk" class="anchor" href="#xfacetrackerlk" aria-hidden="true"><span class="octicon octicon-link"></span>Cross-platform Camera Mouse</a></h3>
 <h4>Objective</h4>Mouse control (moving mouse cursor, clicking and dragging) by head movements.
 <h4>Description</h4>By moving the head up/down or left/right the mouse cursor should move accordingly. A left click is performed by dwelling (stopping movement and waiting for some time). To do a right, double or drag click select the respective button in the ARE GUI and move the cursor to the location where the click should be performed at. The mouse speed can be changed by using the slider. Click on the On/Off button to toggle mouse control. 
 <p>
@@ -569,9 +569,11 @@ Download and install the demo release for your platform and start it. If you cho
 <button onclick="applyAndStart()" title="Description: Applies all settings and starts the model" class="button"> Apply and Start Model </button>
 <p>
 <h4>Requirements</h4>Integrated Webcam or USB camera. OS: Windows, Linux, Mac OSX
+<h4>Building Block</h4>
+<a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/XFacetrackerLK">XFacetrackerLK</a>
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/XFacetrackerLK.htm">XFacetrackerLK</a>
 
-<h3><a id="tobiieyex" class="anchor" href="#tobiieyex" aria-hidden="true"><span class="octicon octicon-link"></span></a>Eyetracking UI with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/TobiiEyeX">TobiiEyeX Building Block</a></h3>
+<h3><a id="tobiieyex" class="anchor" href="#tobiieyex" aria-hidden="true"><span class="octicon octicon-link"></span>Eyetracking UI</a></h3>
 <h4>Objective</h4>Use eye movements and hovering to select user interface buttons.
 <h4>Description</h4>The demo shows a menu with buttons. Select (Click on) a button by looking at it for a certain amount of time. The border of the button indicates the hover time. A successful selection is shown in the "Selected action" field.<p>
 
@@ -582,12 +584,13 @@ Download and install the demo release for your platform and start it. If you cho
 <button onclick="DepMFAndStart('CameraInput/TobiiEyeX/TobiiEyeX-homecontrol_simulated(W).acs')" class="button">Deploy and Start demo</button>
 <p>
 <h4>Requirements</h4><a href="http://www.tobii.com/xperience/developer/">Tobii EyeX eyetracker</a> and installed SDK. OS: Windows
+<h4>Building Block</h4><a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/CameraInput/TobiiEyeX">TobiiEyeX</a>
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/EyeX.htm">EyeX</a>
 
 <h2><a id="SmartHomeIntegration" class="anchor" href="#SmartHomeIntegration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Smart Home Integration</h2>
 
 
-<h3><a id="SmartHomeIntegrated" class="anchor" href="#SmartHomeIntegrated" aria-hidden="true"><span class="octicon octicon-link"></span></a>User interface for <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/SmartHomeIntegration">Smart Home</a></h3>
+<h3><a id="SmartHomeIntegrated" class="anchor" href="#SmartHomeIntegrated" aria-hidden="true"><span class="octicon octicon-link"></span>Smart Home UI with Scanning</a></h3>
 <h4>Objective</h4>This demo shows a user interface for a Smart Home environment integrating several technologies.
 <h4>Description</h4>The user interface can either be operated by scanning (press space for selection), mouse or camera mouse (head movement). There are submenus demonstrating remote control of TV, HiFi device, DVD player, Lights and Heating. If you select a button the action command sent to the respective device is shown in the "Debug output" window. Additionally the camera mouse (CameraMouse button) can be activated and deactivated and an onscreen keyboard (Keyboard button) can be started. There are some more demos in the subfolders for enOcean, KNX and FS20 environmental control technologies.
 <p>
@@ -598,11 +601,12 @@ Download and install the demo release for your platform and start it. If you cho
 <button onclick="DepMFAndStart('SmartHomeIntegration/SmartHome-Integrated(W).acs')" class="button">Deploy and Start Demo</button>
 <p>
 <h4>Requirements</h4>Integrated Webcam or USB camera, <a href="http://www.knx.org/knx-en/index.php">KNX HW and configured KNX router</a> and <a href="http://www.irtrans.de">IRTrans</a>. OS: Windows
+<h4>Building Block</h4><a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/SmartHomeIntegration">SmartHomeIntegration</a>
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/sensors/FacetrackerLK.htm">FacetrackerLK</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/KNX.htm">KNX</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/IRTrans.htm">IRTrans</a>
 
 <h2><a id="NetworkIO" class="anchor" href="#NetworkIO" aria-hidden="true"><span class="octicon octicon-link"></span></a>Network I/O</h2>
 
-<h3><a id="WebSocket" class="anchor" href="#WebSocket" aria-hidden="true"><span class="octicon octicon-link"></span></a>Live Web Chart of Signal Data with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/NetworkIO/WebSocket">WebSocket Building Block</a></h3>
+<h3><a id="WebSocket" class="anchor" href="#WebSocket" aria-hidden="true"><span class="octicon octicon-link"></span>Websocket with Live Signal Data</a></h3>
 <h4>Objective</h4>Visualization of signal data in a web live chart using Javascript. 
 <h4>Description</h4>The demo generates a sine signal and broadcasts the signal data through a websocket (ws://localhost:8082/ws/astericsData). The data is visualized in a Javascript live chart. You can also send data to the model by pressing the "Send test message" button.
 <p>
@@ -629,12 +633,14 @@ Websocket: <div id="output"/>
 	<button onclick="doSend('Test')">Send test message</button>
 </div>
 <h4>Requirements</h4>OS: Windows, Linux, Mac OSX
+<h4>Building Block</h4>
+<a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/NetworkIO/WebSocket">WebSocket</a>
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/processors/WebSocket.htm">WebSocket</a>
 
 <h2><a id="BioelectricSignal" class="anchor" href="#BioelectricSignal" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bioelectric Signal Acquisition and Processing</h2>
 
 
-<h3><a id="iirfilter" class="anchor" href="#iirfilter" aria-hidden="true"><span class="octicon octicon-link"></span></a>IIR filtering with <a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/BioelectricSignal/IIRFilter">IIRFilter Building Block</a></h3>
+<h3><a id="iirfilter" class="anchor" href="#iirfilter" aria-hidden="true"><span class="octicon octicon-link"></span>IIR filtering of EEG data</a></h3>
 <h4>Objective</h4>Filter a given biosignal (lowpass, bandpass, highpass) with butterworth filter. 
 <h4>Description</h4>The demo IIRFilter-Bandpass(WLM).acs generates a signal (Sine, 20Hz, Amplitudes: +-100) which is filtered with an IIR filter (bandpass, butterworth, order=10, fc1=10Hz, fc2=20Hz). The demo IIRFilter-ReadEDFdata(WLM).acs reads a recorded EEG signal, filters it and triggers midi sounds according to the magnitude of the signal.
 <p>
@@ -650,6 +656,8 @@ Websocket: <div id="output"/>
 <button onclick="DepMFAndStart('BioelectricSignal/IIRFilter/IIRFilter-ReadEDFdata(WLM).acs')" class="button">Deploy and Start IIRFilter-ReadEDFdata</button>
 <p>
 <h4>Requirements</h4>OS: Windows, Linux, Mac OSX
+<h4>Building Block</h4>
+<a href="https://github.com/asterics/P4AllBuildingBlocks/tree/master/BioelectricSignal/IIRFilter">IIRFilter</a>
 <h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/processors/IIRFilter.htm">IIRFilter</a>, <a href="AsTeRICS-Help/master/Plugins/actuators/MidiPlayer.htm">MidiPlayer</a>
 
 
