@@ -63,11 +63,16 @@ import javax.swing.SwingUtilities;
 
 import com.sun.jna.NativeLibrary;
 
+import uk.co.caprica.vlcj.medialist.MediaList;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
+import uk.co.caprica.vlcj.player.list.MediaListPlayer;
+import uk.co.caprica.vlcj.player.list.MediaListPlayerEventAdapter;
+import uk.co.caprica.vlcj.player.list.MediaListPlayerMode;
 import uk.co.caprica.vlcj.runtime.windows.WindowsCanvas;
 import uk.co.caprica.vlcj.binding.internal.libvlc_state_t;
+import uk.co.caprica.vlcj.binding.internal.libvlc_media_t;
 
 
 /**
@@ -103,8 +108,9 @@ public class GUI extends JPanel
     private EmbeddedMediaPlayer mediaPlayer;
 
     private WindowsCanvas canvas;
-	
-	
+
+    private MediaListPlayer mediaListPlayer=null;
+        
 
     /**
      * The class constructor, initialises the GUI
@@ -211,10 +217,37 @@ public class GUI extends JPanel
 	        if (owner.propDisplayGui == true)
 	          mediaPlayer.setVideoSurface(videoSurface);
 	        playerCreated=true;
-	        owner.playerActive=true;	        
+	        owner.playerActive=true;	     
+	        
+	        
+	    	mediaListPlayer = mediaPlayerFactory.newMediaListPlayer();
+	    	mediaListPlayer.addMediaListPlayerEventListener(new MediaListPlayerEventAdapter() {
+	            @Override
+	            public void nextItem(MediaListPlayer mediaListPlayer, libvlc_media_t item, String itemMrl) {
+	                System.out.println("nextItem():"+itemMrl);
+	            }
+	        });
+
+	    	mediaListPlayer.setMediaPlayer(mediaPlayer); // <--- Important, associate the media player with the media list player
+	    	
 	 }
 	 
-	 
+	 public void playNext()
+	 {
+		if (mediaListPlayer!=null) {
+			 System.out.println("Play next medialist item !");
+				mediaListPlayer.playNext();
+		}
+	 }
+
+	 public void playPrevious()
+	 {
+		if (mediaListPlayer!=null) {
+			 System.out.println("Play previous medialist item !");
+				mediaListPlayer.playPrevious();
+		}
+	 }
+
 	 public void play(String mediafile)
 	 {
 		 System.out.println("Play method called !!");
@@ -232,8 +265,39 @@ public class GUI extends JPanel
 			if (!actMediaFile.equals(mediafile))
 	        {
 		        //System.out.println("Trying to open and play file:"+ mediafile);
-	        	mediaPlayer.playMedia(mediafile);
-	        	actMediaFile=mediafile;
+
+				File pathName = new File(mediafile); 
+				String[] fileNames = pathName.list();  // lists all files in the directory
+				if (fileNames==null) {
+			        System.out.println("file "+ mediafile + " is not a directory - trying to play file !");
+					mediaPlayer.playMedia(mediafile);
+		        	actMediaFile=mediafile;
+				}
+				else {
+					System.out.println("directory "+ mediafile + " found - creating media list !");
+
+					MediaList mediaList = mediaPlayerFactory.newMediaList();
+					String[] options = {};
+			        
+					for(int i = 0; i < fileNames.length; i++) 
+					{ 
+						File f = new File(pathName.getPath(), fileNames[i]); // getPath converts abstract path to path in String, 
+						// constructor creates new File object with fileName name   
+						if (f.isDirectory()) 
+						{  
+							System.out.println("skipping subfolder  "+ fileNames[i]);
+							// nextDir.add(f.getPath()); 
+						} 
+						else 
+						{
+							System.out.println("adding file"+ f.getPath());
+						    mediaList.addMedia(f.getPath(), options);						
+						}
+					}
+					mediaListPlayer.setMediaList(mediaList);
+					mediaListPlayer.setMode(MediaListPlayerMode.LOOP);
+					mediaListPlayer.play();
+				}	
 	        }
 	        else
 	        {

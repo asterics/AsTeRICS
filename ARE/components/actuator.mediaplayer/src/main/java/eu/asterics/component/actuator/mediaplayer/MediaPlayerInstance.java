@@ -138,6 +138,14 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 		{
 			return elpReset;
 		}
+		if ("next".equalsIgnoreCase(eventPortID))
+		{
+			return elpNext;
+		}
+		if ("previous".equalsIgnoreCase(eventPortID))
+		{
+			return elpPrevious;
+		}
 
         return null;
     }
@@ -294,6 +302,20 @@ public class MediaPlayerInstance extends AbstractRuntimeComponentInstance
 		public void receiveEvent(final String data)
 		{
 			if (playerActive) gui.setPosition(0);    
+		}
+	};
+	final IRuntimeEventListenerPort elpNext = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			if (playerActive) gui.playNext();    
+		}
+	};
+	final IRuntimeEventListenerPort elpPrevious = new IRuntimeEventListenerPort()
+	{
+		public void receiveEvent(final String data)
+		{
+			if (playerActive) gui.playPrevious();    
 		}
 	};
 
