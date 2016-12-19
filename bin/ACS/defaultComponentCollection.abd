@@ -1719,9 +1719,15 @@
 			<eventListenerPort id="reset">
 				<description>resets the mediafile to initial position</description>
 			</eventListenerPort>
+			<eventListenerPort id="next">
+				<description>plays the next media item (in case a directory was specified as filename)</description>
+			</eventListenerPort>
+			<eventListenerPort id="previous">
+				<description>plays the previous media item (in case a directory was specified as filename)</description>
+			</eventListenerPort>
 		</events>			
         <properties>
-			<property description="path and filename of a valid media file" getStringList="true" name="filename" type="string" value=""/>
+			<property description="path and filename of a valid media file, or path to a directory containing multiple media files" getStringList="true" name="filename" type="string" value=""/>
 			<property description="automatically play the media file at startup or when a filename is received" name="autoplay" type="boolean" value="true"/>
 			<property description="shall a window be displayed (e.g for movies) or not ?" name="displayGui" type="boolean" value="true"/>
 			<property description="default path to the VLC media player installation (libvlc.dll)" name="pathToVLC" type="string" value="C:\Program Files (x86)\VideoLAN\VLC"/>
