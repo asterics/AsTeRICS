@@ -71,8 +71,10 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 
 	// declare member variables here
 
-	List<String> folderList = null; 
-	int currentIndex=0;
+	String currentFolder = "none";
+	List<String> actFiles = null; 
+	List<String> actFolders = null; 
+	int currentIndex=-1;
 
     
    /**
@@ -276,11 +278,26 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
 
+    String stripFolderPath(String inputPath) {
+    	if (propIncludeFolderPath == false) {
+	    	if (inputPath.lastIndexOf("\\") >=0)
+	    		return (inputPath.substring(inputPath.lastIndexOf("\\")+1));
+	    	else  if (inputPath.lastIndexOf("/") >=0)
+	    		return (inputPath.substring(inputPath.lastIndexOf("/")+1));
+    	}
+    	return (inputPath);
+    }
 
+    String stripFilePath(String inputPath) {
+    	if (propIncludeFilePath == false) {
+	    	if (inputPath.lastIndexOf("\\") >=0)
+	    		return (inputPath.substring(inputPath.lastIndexOf("\\")+1));
+	    	else  if (inputPath.lastIndexOf("/") >=0)
+	    		return (inputPath.substring(inputPath.lastIndexOf("/")+1));
+    	}
+    	return (inputPath);
+    }
      /**
       * Event Listerner Ports.
       */
@@ -288,54 +305,143 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveEvent(final String data)
 		{
-				 // insert event handling here 
-			System.out.println("act element="+folderList.get(currentIndex));
-			if (currentIndex < folderList.size()) currentIndex++;
-			else if (propWrapAround == true ) currentIndex=0;
-
+			if (actFolders==null) return;
+			if (actFolders.size()==0)  {			
+				System.out.println("no subfolder");
+				return;
+			}
+			currentIndex++;
+			if (currentIndex >= actFolders.size())
+				if (propWrapAround == true) currentIndex=0;
+				else currentIndex = actFolders.size()-1;
+			System.out.println("act element ("+currentIndex+"/"+actFolders.size()+") :"+actFolders.get(currentIndex));
+			opFolderName.sendData(ConversionUtils.stringToBytes(stripFolderPath(actFolders.get(currentIndex))));
 		}
 	};
 	final IRuntimeEventListenerPort elpPrevious = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-				 // insert event handling here 
+			if (actFolders==null) return;
+			if (actFolders.size()==0)  {			
+				System.out.println("no subfolder");
+				return;
+			}
+			currentIndex--;
+			if (currentIndex < 0)
+				if (propWrapAround == true) currentIndex = actFolders.size()-1;
+				else currentIndex = 0;
+			System.out.println("act element ("+currentIndex+"/"+actFolders.size()+") :"+actFolders.get(currentIndex));
+			opFolderName.sendData(ConversionUtils.stringToBytes(stripFolderPath(actFolders.get(currentIndex))));
 		}
 	};
 	final IRuntimeEventListenerPort elpEnter = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-				 // insert event handling here 
+			if (actFolders==null) return;
+			if (actFolders.size()==0)  {			
+				System.out.println("no subfolder");
+				opFolderName.sendData(ConversionUtils.stringToBytes("no subfolder"));
+				return;
+			}
+			if (currentIndex >=0) {
+				System.out.println("enter folder: "+actFolders.get(currentIndex));
+				getFolderList(actFolders.get(currentIndex));
+				opFolderName.sendData(ConversionUtils.stringToBytes(stripFolderPath(currentFolder)));
+			} else System.out.println("no subfolder");
+
 		}
 	};
 	final IRuntimeEventListenerPort elpExit = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-				 // insert event handling here 
+			if ((propExitInitialFolder == false) && (currentFolder.equals(propInitialFolder))) return;
+			String targetFolder;
+			System.out.println("exit folder: "+currentFolder);
+			if (currentFolder.lastIndexOf("\\") >= 0)    // windows directory format
+				targetFolder=currentFolder.substring(0,currentFolder.lastIndexOf("\\"));
+			else if (currentFolder.lastIndexOf("/") >= 0)  // linux directory format
+				targetFolder=currentFolder.substring(0,currentFolder.lastIndexOf("/"));
+			else {
+				System.out.println("could not exit folder"+currentFolder);
+				return;
+			}
+			System.out.println("change to folder: "+targetFolder);
+			getFolderList(targetFolder);
+			opFolderName.sendData(ConversionUtils.stringToBytes(stripFolderPath(targetFolder)));
 		}
 	};
 	final IRuntimeEventListenerPort elpCurrent = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-				 // insert event handling here 
+				System.out.println("current folder: "+currentFolder);
+				opFolderName.sendData(ConversionUtils.stringToBytes(stripFolderPath(currentFolder)));
 		}
 	};
 	final IRuntimeEventListenerPort elpListFiles = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-				 // insert event handling here 
+			if ((actFolders==null) || (actFiles==null)) return;
+			System.out.println("list files in current folder: "+currentFolder);
+			for (int i=0;i<actFiles.size();i++) {
+				System.out.println("file: "+actFiles.get(i));
+				opFileNames.sendData(ConversionUtils.stringToBytes(stripFilePath(actFiles.get(i))));
+			}
 		}
 	};
 
 	
 	
-	public List<String> getFolderList(String root) 
+	public void getFolderList(String root) 
 	{
+		System.out.println("folderBrowser: root folder=" + root);
+			
+		try 
+		{
+				File pathName = new File(root); 
+				
+				if (!pathName.isDirectory()) {
+					System.out.println("folderBrowser: "+root+" is not a folder - cancelling");
+					return;  // cancel if root is not a directory 
+				}
+				
+				currentFolder=root; 
+				currentIndex=-1;
+				actFolders = new ArrayList<String>(); 
+				actFiles = new ArrayList<String>(); 
+				
+				String[] fileNames = pathName.list();  // lists all files in the directory
 
+				for(int i = 0; i < fileNames.length; i++) 
+				{ 
+					File f = new File(pathName.getPath(), fileNames[i]); // getPath converts abstract path to path in String, 
+					// constructor creates new File object with fileName name   
+					if (f.isDirectory()) 
+					{  
+						currentIndex=0;
+						actFolders.add(f.getPath()); 
+						// System.out.println("adding sub folder: " + f.getPath());
+					} 
+					else 
+					{
+						actFiles.add(f.getPath());
+						// System.out.println("adding file: " + f.getPath());
+						if (propAutoListFiles == true)
+							opFileNames.sendData(ConversionUtils.stringToBytes(stripFilePath(f.getPath())));
+					}
+				} 
+		}
+		catch (Exception e) {System.out.println ("could not find directories !");}
+	} 
+
+
+	
+	/*
+	 
 		List<String> res = new ArrayList<String>(); 
 
 		List<String> nextDir = new ArrayList<String>(); //Directories
@@ -370,8 +476,9 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 		}
 		catch (Exception e) {System.out.println ("could not find directories !");}
 		return res;
-	} 
-
+	 
+	 
+	 */
 	
 
      /**
@@ -381,7 +488,7 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
       public void start()
       {
           super.start();
-          folderList=getFolderList(propInitialFolder);
+          getFolderList(propInitialFolder);
       }
 
      /**

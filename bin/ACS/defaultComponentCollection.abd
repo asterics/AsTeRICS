@@ -9799,6 +9799,56 @@
     </componentType>
 
 
+ <componentType canonical_name="eu.asterics.component.sensor.folderbrowser.FolderBrowserInstance" id="asterics.FolderBrowser">
+        <type subtype="File System">sensor</type>
+        <singleton>false</singleton>
+        <description>browse folders and files in filesystem</description>
+        <ports>
+
+			<outputPort id="folderName">
+				<description>name of the current folder (without path)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="fileNames">
+				<description>names of the files in current folder</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="next">
+				<description>next folder in current directory</description>
+			</eventListenerPort>
+			<eventListenerPort id="previous">
+				<description>previous folder in current directory</description>
+			</eventListenerPort>
+			<eventListenerPort id="enter">
+				<description>enter current folder</description>
+			</eventListenerPort>
+			<eventListenerPort id="exit">
+				<description>exit current folder</description>
+			</eventListenerPort>
+			<eventListenerPort id="current">
+				<description>output current folder</description>
+			</eventListenerPort>
+			<eventListenerPort id="listFiles">
+				<description>lists files in current folder</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="initial folder where browsing starts" name="initialFolder" type="string" value="."/>
+			<property description="wrap around after last entry" name="wrapAround" type="boolean" value="true"/>
+			<property description="include absolute path in folder names" name="includeFolderPath" type="boolean" value="true"/>
+			<property description="include absolute path in file names" name="includeFilePath" type="boolean" value="true"/>
+			<property description="allow to exit the initial folder" name="exitInitialFolder" type="boolean" value="false"/>
+			<property description="automatically output files on folder entry " name="autoListFiles" type="boolean" value="false"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.sensor.fourdjoystick.FourDJoystickInstance" id="asterics.FourDJoystick">
         <type subtype="Others">sensor</type>
         <singleton>false</singleton>
