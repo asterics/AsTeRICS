@@ -31,6 +31,7 @@ package eu.asterics.component.sensor.folderbrowser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.data.ConversionUtils;
@@ -57,17 +58,19 @@ import eu.asterics.mw.services.AREServices;
 public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 {
 	final IRuntimeOutputPort opFolderName = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opFolderPath = new DefaultRuntimeOutputPort();
 	final IRuntimeOutputPort opFileNames = new DefaultRuntimeOutputPort();
+	final IRuntimeOutputPort opFilePaths = new DefaultRuntimeOutputPort();
 	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
 
 	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
 	String propInitialFolder = ".";
 	boolean propWrapAround = true;
-	boolean propIncludeFolderPath = true;
-	boolean propIncludeFilePath = true;
 	boolean propExitInitialFolder = false;
 	boolean propAutoListFiles = false;
+	String propNoFolderMessage = "no subfolder available";
+	String propNoFileMessage = "no file available";
 
 	// declare member variables here
 
@@ -75,7 +78,8 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 	List<String> actFiles = null; 
 	List<String> actFolders = null; 
 	int currentIndex=-1;
-
+	private Stack<Integer> folderpos = new Stack<Integer>();
+	
     
    /**
     * The class constructor.
@@ -107,9 +111,17 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 		{
 			return opFolderName;
 		}
+		if ("folderPath".equalsIgnoreCase(portID))
+		{
+			return opFolderPath;
+		}
 		if ("fileNames".equalsIgnoreCase(portID))
 		{
 			return opFileNames;
+		}
+		if ("filePaths".equalsIgnoreCase(portID))
+		{
+			return opFilePaths;
 		}
 
 		return null;
@@ -176,14 +188,6 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 		{
 			return propWrapAround;
 		}
-		if ("includeFolderPath".equalsIgnoreCase(propertyName))
-		{
-			return propIncludeFolderPath;
-		}
-		if ("includeFilePath".equalsIgnoreCase(propertyName))
-		{
-			return propIncludeFilePath;
-		}
 		if ("exitInitialFolder".equalsIgnoreCase(propertyName))
 		{
 			return propExitInitialFolder;
@@ -191,6 +195,14 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 		if ("autoListFiles".equalsIgnoreCase(propertyName))
 		{
 			return propAutoListFiles;
+		}
+		if ("noFolderMessage".equalsIgnoreCase(propertyName))
+		{
+			return propNoFolderMessage;
+		}
+		if ("noFileMessage".equalsIgnoreCase(propertyName))
+		{
+			return propNoFileMessage;
 		}
 
         return null;
@@ -222,32 +234,6 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 			}
 			return oldValue;
 		}
-		if ("includeFolderPath".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propIncludeFolderPath;
-			if("true".equalsIgnoreCase((String)newValue))
-			{
-				propIncludeFolderPath = true;
-			}
-			else if("false".equalsIgnoreCase((String)newValue))
-			{
-				propIncludeFolderPath = false;
-			}
-			return oldValue;
-		}
-		if ("includeFilePath".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propIncludeFilePath;
-			if("true".equalsIgnoreCase((String)newValue))
-			{
-				propIncludeFilePath = true;
-			}
-			else if("false".equalsIgnoreCase((String)newValue))
-			{
-				propIncludeFilePath = false;
-			}
-			return oldValue;
-		}
 		if ("exitInitialFolder".equalsIgnoreCase(propertyName))
 		{
 			final Object oldValue = propExitInitialFolder;
@@ -274,28 +260,36 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 			}
 			return oldValue;
 		}
-
+		if ("noFolderMessage".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propNoFolderMessage;
+			propNoFolderMessage = (String)newValue;
+			return oldValue;
+		}
+		if ("noFileMessage".equalsIgnoreCase(propertyName))
+		{
+			final Object oldValue = propNoFileMessage;
+			propNoFileMessage = (String)newValue;
+			return oldValue;
+		} 
+ 
         return null;
     }
 
 
     String stripFolderPath(String inputPath) {
-    	if (propIncludeFolderPath == false) {
-	    	if (inputPath.lastIndexOf("\\") >=0)
-	    		return (inputPath.substring(inputPath.lastIndexOf("\\")+1));
-	    	else  if (inputPath.lastIndexOf("/") >=0)
-	    		return (inputPath.substring(inputPath.lastIndexOf("/")+1));
-    	}
+    	if (inputPath.lastIndexOf("\\") >=0)
+    		return (inputPath.substring(inputPath.lastIndexOf("\\")+1));
+    	else  if (inputPath.lastIndexOf("/") >=0)
+    		return (inputPath.substring(inputPath.lastIndexOf("/")+1));
     	return (inputPath);
     }
 
     String stripFilePath(String inputPath) {
-    	if (propIncludeFilePath == false) {
-	    	if (inputPath.lastIndexOf("\\") >=0)
-	    		return (inputPath.substring(inputPath.lastIndexOf("\\")+1));
-	    	else  if (inputPath.lastIndexOf("/") >=0)
-	    		return (inputPath.substring(inputPath.lastIndexOf("/")+1));
-    	}
+    	if (inputPath.lastIndexOf("\\") >=0)
+    		return (inputPath.substring(inputPath.lastIndexOf("\\")+1));
+    	else  if (inputPath.lastIndexOf("/") >=0)
+    		return (inputPath.substring(inputPath.lastIndexOf("/")+1));
     	return (inputPath);
     }
      /**
@@ -308,6 +302,7 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 			if (actFolders==null) return;
 			if (actFolders.size()==0)  {			
 				System.out.println("no subfolder");
+				opFolderName.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
 				return;
 			}
 			currentIndex++;
@@ -316,6 +311,7 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 				else currentIndex = actFolders.size()-1;
 			System.out.println("act element ("+currentIndex+"/"+actFolders.size()+") :"+actFolders.get(currentIndex));
 			opFolderName.sendData(ConversionUtils.stringToBytes(stripFolderPath(actFolders.get(currentIndex))));
+			opFolderPath.sendData(ConversionUtils.stringToBytes(actFolders.get(currentIndex)));
 		}
 	};
 	final IRuntimeEventListenerPort elpPrevious = new IRuntimeEventListenerPort()
@@ -325,6 +321,8 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 			if (actFolders==null) return;
 			if (actFolders.size()==0)  {			
 				System.out.println("no subfolder");
+				opFolderName.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
+				opFolderPath.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
 				return;
 			}
 			currentIndex--;
@@ -333,6 +331,7 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 				else currentIndex = 0;
 			System.out.println("act element ("+currentIndex+"/"+actFolders.size()+") :"+actFolders.get(currentIndex));
 			opFolderName.sendData(ConversionUtils.stringToBytes(stripFolderPath(actFolders.get(currentIndex))));
+			opFolderPath.sendData(ConversionUtils.stringToBytes(actFolders.get(currentIndex)));
 		}
 	};
 	final IRuntimeEventListenerPort elpEnter = new IRuntimeEventListenerPort()
@@ -340,16 +339,19 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 		public void receiveEvent(final String data)
 		{
 			if (actFolders==null) return;
-			if (actFolders.size()==0)  {			
+			if ((actFolders.size()==0) || (currentIndex < 0))  {			
 				System.out.println("no subfolder");
-				opFolderName.sendData(ConversionUtils.stringToBytes("no subfolder"));
+				opFolderName.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
+				opFolderPath.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
 				return;
 			}
 			if (currentIndex >=0) {
 				System.out.println("enter folder: "+actFolders.get(currentIndex));
+				folderpos.push(currentIndex);
 				getFolderList(actFolders.get(currentIndex));
 				opFolderName.sendData(ConversionUtils.stringToBytes(stripFolderPath(currentFolder)));
-			} else System.out.println("no subfolder");
+				opFolderPath.sendData(ConversionUtils.stringToBytes(currentFolder));
+			}
 
 		}
 	};
@@ -366,11 +368,15 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 				targetFolder=currentFolder.substring(0,currentFolder.lastIndexOf("/"));
 			else {
 				System.out.println("could not exit folder"+currentFolder);
+				opFolderName.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
+				opFolderPath.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
 				return;
 			}
 			System.out.println("change to folder: "+targetFolder);
 			getFolderList(targetFolder);
+			currentIndex=folderpos.pop();
 			opFolderName.sendData(ConversionUtils.stringToBytes(stripFolderPath(targetFolder)));
+			opFolderPath.sendData(ConversionUtils.stringToBytes(targetFolder));
 		}
 	};
 	final IRuntimeEventListenerPort elpCurrent = new IRuntimeEventListenerPort()
@@ -379,17 +385,23 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 		{
 				System.out.println("current folder: "+currentFolder);
 				opFolderName.sendData(ConversionUtils.stringToBytes(stripFolderPath(currentFolder)));
+				opFolderPath.sendData(ConversionUtils.stringToBytes(currentFolder));
 		}
 	};
 	final IRuntimeEventListenerPort elpListFiles = new IRuntimeEventListenerPort()
 	{
 		public void receiveEvent(final String data)
 		{
-			if ((actFolders==null) || (actFiles==null)) return;
+			if ((actFolders==null) || (actFiles==null)) {
+				opFileNames.sendData(ConversionUtils.stringToBytes(propNoFileMessage));
+				opFilePaths.sendData(ConversionUtils.stringToBytes(propNoFileMessage));
+				return;
+			}
 			System.out.println("list files in current folder: "+currentFolder);
 			for (int i=0;i<actFiles.size();i++) {
 				System.out.println("file: "+actFiles.get(i));
 				opFileNames.sendData(ConversionUtils.stringToBytes(stripFilePath(actFiles.get(i))));
+				opFilePaths.sendData(ConversionUtils.stringToBytes(actFiles.get(i)));
 			}
 		}
 	};
@@ -432,6 +444,7 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 						// System.out.println("adding file: " + f.getPath());
 						if (propAutoListFiles == true)
 							opFileNames.sendData(ConversionUtils.stringToBytes(stripFilePath(f.getPath())));
+							opFileNames.sendData(ConversionUtils.stringToBytes(f.getPath()));
 					}
 				} 
 		}

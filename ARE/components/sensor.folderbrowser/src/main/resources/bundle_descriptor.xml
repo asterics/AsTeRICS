@@ -13,8 +13,16 @@
 				<description>name of the current folder (without path)</description>
 				<dataType>string</dataType>
 			</outputPort>
+			<outputPort id="folderPath">
+				<description>name of the current folder (including path)</description>
+				<dataType>string</dataType>
+			</outputPort>
 			<outputPort id="fileNames">
 				<description>names of the files in current folder</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="filePaths">
+				<description>names of the files in current folder (including path)</description>
 				<dataType>string</dataType>
 			</outputPort>
 
@@ -50,14 +58,6 @@
 				type="boolean"
 				value="true"
 				description="wrap around after last entry"/>
-			<property name="includeFolderPath"
-				type="boolean"
-				value="true"
-				description="include absolute path in folder names"/>
-			<property name="includeFilePath"
-				type="boolean"
-				value="true"
-				description="include absolute path in file names"/>
 			<property name="exitInitialFolder"
 				type="boolean"
 				value="false"
@@ -66,7 +66,14 @@
 				type="boolean"
 				value="false"
 				description="automatically output files on folder entry "/>
-
+			<property name="noFolderMessage"
+				type="string"
+				value="no subfolder available"
+				description="message to be sent to folderName port if no subfolder is available"/>
+			<property name="noFileMessage"
+				type="string"
+				value="no file available"
+				description="message to be sent to fileNames port if no file is available"/>
         </properties>
 
     </componentType>

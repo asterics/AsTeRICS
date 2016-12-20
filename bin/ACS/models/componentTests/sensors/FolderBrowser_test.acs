@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\folderbrowser_test.acs_2016_12_20_0_16" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS_Git\bin\ACS\models\componentTests\sensors\FolderBrowser_test.acs_2016_12_20_16_42" version="20130320">
   <components>
     <component id="FolderBrowser.1" type_id="asterics.FolderBrowser">
       <description>browse folders and files in filesystem</description>
@@ -12,12 +12,14 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="initialFolder" value="C:\Users\chris\Desktop\private\Music" />
+        <property name="initialFolder" value="C:\data\private\music" />
         <property name="wrapAround" value="true" />
         <property name="includeFolderPath" value="False" />
         <property name="includeFilePath" value="False" />
         <property name="exitInitialFolder" value="false" />
-        <property name="autoListFiles" value="false" />
+        <property name="autoListFiles" value="True" />
+        <property name="noFolderMessage" value="no subfolder available" />
+        <property name="noFileMessage" value="no file available" />
       </properties>
       <layout>
         <posX>170</posX>

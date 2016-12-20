@@ -9809,8 +9809,16 @@
 				<description>name of the current folder (without path)</description>
 				<dataType>string</dataType>
 			</outputPort>
+			<outputPort id="folderPath">
+				<description>name of the current folder (including path)</description>
+				<dataType>string</dataType>
+			</outputPort>
 			<outputPort id="fileNames">
 				<description>names of the files in current folder</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="filePaths">
+				<description>names of the files in current folder (including path)</description>
 				<dataType>string</dataType>
 			</outputPort>
 
@@ -9840,11 +9848,10 @@
         <properties>
 			<property description="initial folder where browsing starts" name="initialFolder" type="string" value="."/>
 			<property description="wrap around after last entry" name="wrapAround" type="boolean" value="true"/>
-			<property description="include absolute path in folder names" name="includeFolderPath" type="boolean" value="true"/>
-			<property description="include absolute path in file names" name="includeFilePath" type="boolean" value="true"/>
 			<property description="allow to exit the initial folder" name="exitInitialFolder" type="boolean" value="false"/>
 			<property description="automatically output files on folder entry " name="autoListFiles" type="boolean" value="false"/>
-
+			<property description="message to be sent to folderName port if no subfolder is available" name="noFolderMessage" type="string" value="no subfolder available"/>
+			<property description="message to be sent to fileNames port if no file is available" name="noFileMessage" type="string" value="no file available"/>
         </properties>
 
     </componentType>
