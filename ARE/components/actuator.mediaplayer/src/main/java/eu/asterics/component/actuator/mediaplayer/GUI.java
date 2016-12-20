@@ -250,7 +250,7 @@ public class GUI extends JPanel
 
 	 public void play(String mediafile)
 	 {
-		 System.out.println("Play method called !!");
+		 System.out.println("Play method called: play "+mediafile);
 		 
 		 positionOutputRunning=false;
 		 if (!actMediaFile.equals(mediafile)) stop();
@@ -264,13 +264,22 @@ public class GUI extends JPanel
 			 
 			if (!actMediaFile.equals(mediafile))
 	        {
-		        //System.out.println("Trying to open and play file:"+ mediafile);
+		        System.out.println("Trying to open and play file:"+ mediafile);
 
 				File pathName = new File(mediafile); 
 				String[] fileNames = pathName.list();  // lists all files in the directory
 				if (fileNames==null) {
 			        System.out.println("file "+ mediafile + " is not a directory - trying to play file !");
-					mediaPlayer.playMedia(mediafile);
+			        /*
+					MediaList mediaList = mediaPlayerFactory.newMediaList();
+					String[] options = {};
+
+				    mediaList.addMedia(mediafile, options);						
+					mediaListPlayer.setMediaList(mediaList);
+					mediaListPlayer.setMode(MediaListPlayerMode.LOOP);
+					mediaListPlayer.play();
+			        */
+			        mediaPlayer.playMedia(mediafile);
 		        	actMediaFile=mediafile;
 				}
 				else {
@@ -296,12 +305,14 @@ public class GUI extends JPanel
 					}
 					mediaListPlayer.setMediaList(mediaList);
 					mediaListPlayer.setMode(MediaListPlayerMode.LOOP);
-					mediaListPlayer.play();
+					if (mediaList.size()>0)
+						mediaListPlayer.playItem(0);
+					//	mediaListPlayer.play();
 				}	
 	        }
 	        else
 	        {
-		        //System.out.println("Trying to play mediafile");
+		        System.out.println("Trying to play legacy mediafile");
 	        	mediaPlayer.play();
 
 	        }
