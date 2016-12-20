@@ -434,7 +434,7 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 					// constructor creates new File object with fileName name   
 					if (f.isDirectory()) 
 					{  
-						currentIndex=0;
+						// currentIndex=0;
 						actFolders.add(f.getPath()); 
 						// System.out.println("adding sub folder: " + f.getPath());
 					} 
@@ -442,56 +442,16 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance
 					{
 						actFiles.add(f.getPath());
 						// System.out.println("adding file: " + f.getPath());
-						if (propAutoListFiles == true)
+						if (propAutoListFiles == true) {
 							opFileNames.sendData(ConversionUtils.stringToBytes(stripFilePath(f.getPath())));
-							opFileNames.sendData(ConversionUtils.stringToBytes(f.getPath()));
+							opFilePaths.sendData(ConversionUtils.stringToBytes(f.getPath()));
+						}
 					}
 				} 
 		}
 		catch (Exception e) {System.out.println ("could not find directories !");}
 	} 
 
-
-	
-	/*
-	 
-		List<String> res = new ArrayList<String>(); 
-
-		List<String> nextDir = new ArrayList<String>(); //Directories
-		nextDir.add(root);	
-		System.out.println("folderBrowser: root folder=" + root);
-			
-		try 
-		{
-			while(nextDir.size() > 0) 
-			{
-				File pathName = new File(nextDir.get(0)); 
-				String[] fileNames = pathName.list();  // lists all files in the directory
-
-				for(int i = 0; i < fileNames.length; i++) 
-				{ 
-					File f = new File(pathName.getPath(), fileNames[i]); // getPath converts abstract path to path in String, 
-					// constructor creates new File object with fileName name   
-					if (f.isDirectory()) 
-					{  
-						nextDir.add(f.getPath()); 
-						System.out.println("adding sub folder: " + f.getPath());
-
-					} 
-					else 
-					{
-						res.add(f.getPath());
-						System.out.println("adding file: " + f.getPath());
-					}
-				} 
-				nextDir.remove(0); 
-			} 
-		}
-		catch (Exception e) {System.out.println ("could not find directories !");}
-		return res;
-	 
-	 
-	 */
 	
 
      /**
