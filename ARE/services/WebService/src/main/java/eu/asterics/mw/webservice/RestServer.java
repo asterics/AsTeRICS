@@ -888,6 +888,29 @@ public class RestServer {
 		
 		return response;
 	}
-	
+
+	@Path("/runtime/model/components/input/{componentId}/{componentKey}")
+	@PUT
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String sendDataToInputPort(String value, @PathParam("componentId") String componentId, @PathParam("componentKey") String componentKey) {
+		String response;
+		String errorMessage = "";
+		String decodedId = "", decodedKey = "";
+
+		try {
+			decodedId = astericsAPIEncoding.decodeString(componentId);
+			decodedKey = astericsAPIEncoding.decodeString(componentKey);
+			logger.info(MessageFormat.format("sending data <{0}> to {1}-{2}", value, decodedId, decodedKey));
+			asapiSupport.sendData(decodedId, decodedKey, value.getBytes());
+			response = "success";
+		} catch (Exception e) {
+			logger.log(Level.WARNING,"could not send data!", e);
+			errorMessage = "Couldn't set '" + value + "' value to '" + decodedKey + "' from '" + decodedId + "' (" + e.getMessage() + ")";
+			response = "error:"+errorMessage;
+		}
+
+		return response;
+	}
 }
 
