@@ -871,11 +871,11 @@ public class RestServer {
 		return response;
 	}
 
-	@Path("/runtime/model/components/input/{componentId}/{componentKey}")
+	@Path("/runtime/model/components/input/{componentId}/{inputKey}")
 	@PUT
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
-	public String sendDataToInputPort(String value, @PathParam("componentId") String componentId, @PathParam("componentKey") String componentKey) {
+	public String sendDataToInputPort(String value, @PathParam("componentId") String componentId, @PathParam("inputKey") String componentKey) {
 		String response;
 		String errorMessage = "";
 		String decodedId = "", decodedKey = "";
