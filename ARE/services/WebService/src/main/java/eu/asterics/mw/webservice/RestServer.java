@@ -26,12 +26,14 @@
 package eu.asterics.mw.webservice;
 
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -231,6 +233,24 @@ public class RestServer {
 
     	return response;
     }
+
+	@Path("/runtime/model/name")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getCurrentModelName() {
+		String response;
+		String errorMessage = "";
+
+		try {
+			response = asapiSupport.getCurrentModelName();
+		} catch (Exception e) {
+			errorMessage = MessageFormat.format("Couldn't get model name! error: {0}", e.getMessage());
+			logger.log(Level.WARNING,errorMessage, e);
+			response = "error:" + errorMessage;
+		}
+
+		return response;
+	}
 	
 
 	@Path("/runtime/model/autorun/{filepath}")

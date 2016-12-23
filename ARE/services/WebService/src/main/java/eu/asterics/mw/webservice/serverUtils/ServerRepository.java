@@ -114,6 +114,9 @@ public class ServerRepository {
 			
 			add( new RestFunction("GET", "/events/subscribe", "", "", "",
 					"Opens a persistent connection with ARE to use it for Server Sent Events") );
+
+			add( new RestFunction("GET", "/runtime/model/name", "", "text/plain", "",
+							"Returns the name of the currently deployed model") );
 		}
 	};
 	
