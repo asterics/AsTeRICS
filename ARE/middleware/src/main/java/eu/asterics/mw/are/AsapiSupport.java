@@ -327,6 +327,19 @@ public class AsapiSupport
 		return modelToXML();
 	}
 
+  /**
+   * Returns the name of the currently deployed model
+   *
+   * @return the name of the currently deployed model or an empty string, if no model is deployed
+   */
+  public String getCurrentModelName() {
+    IRuntimeModel currentRuntimeModel  = DeploymentManager.instance.getCurrentRuntimeModel();
+    if(currentRuntimeModel == null) {
+      return "";
+    }
+    return currentRuntimeModel.getModelName();
+  }
+
 	/**
 	 * Returns a string encoding of the model defined in the filename given
 	 * as argument. If there is no model, an empty string is returned.
