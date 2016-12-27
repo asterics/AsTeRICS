@@ -38,6 +38,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,6 +54,7 @@ public class PCSDevice {
   private static final String PATH_SEPARATOR = "\\";
 
   private Logger logger = AstericsErrorHandling.instance.getLogger();
+  private ScheduledExecutorService timerExecutor = Executors.newSingleThreadScheduledExecutor();
   private int vid = 0x18EF;
   private int pid = 0xE015;
 
@@ -83,6 +87,7 @@ public class PCSDevice {
 
   public boolean close() {
     HidManager.getHidServices().shutdown();
+    timerExecutor.shutdownNow();
     dev.close();
     return true;
   }
@@ -119,7 +124,18 @@ public class PCSDevice {
           Process process = builder.start();
           patched = process.waitFor() == 0;
           deleteBatchFile(FILENAME_REGPATCH);
-          deleteBatchFile(FILENAME_REGPATCH2);
+          //second patch-script cannot be removed immediately, because maybe it is still executing, so wait 500ms
+          Runnable cleanupTask = new Runnable() {
+            @Override
+            public void run() {
+              try{
+                deleteBatchFile(FILENAME_REGPATCH2);
+              } catch(IOException e) {
+                logger.log(Level.INFO, "could not remove patch-script after patching registry for FS20.", e);
+              }
+            }
+          };
+          timerExecutor.schedule(cleanupTask, 500, TimeUnit.MILLISECONDS);
         }
       }
     } catch (Exception e) {
