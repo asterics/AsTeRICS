@@ -80,6 +80,9 @@ public class PCSDevice {
         dev = device;
       }
     }
+    if(dev == null) {
+      return false;
+    }
     dev.open();
     return dev.isOpen();
   }
@@ -88,7 +91,9 @@ public class PCSDevice {
   public boolean close() {
     HidManager.getHidServices().shutdown();
     timerExecutor.shutdownNow();
-    dev.close();
+    if(dev != null) {
+      dev.close();
+    }
     return true;
   }
 
