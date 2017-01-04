@@ -245,7 +245,9 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
         super.stop();
 
         try {
-            nexusSession.close();
+            if(nexusSession!=null) {
+                nexusSession.close();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
