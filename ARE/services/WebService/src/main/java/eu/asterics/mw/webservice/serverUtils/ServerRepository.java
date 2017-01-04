@@ -114,6 +114,9 @@ public class ServerRepository {
 			
 			add( new RestFunction("GET", "/events/subscribe", "", "", "",
 					"Opens a persistent connection with ARE to use it for Server Sent Events") );
+
+			add( new RestFunction("PUT", "/runtime/model/components/input/{componentId}/{inputKey}", "text/plain", "text/plain", "input value",
+							"Sets an input port of a component to a given value") );
 		}
 	};
 	

@@ -26,6 +26,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -49,6 +50,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.w3c.dom.DOMImplementation;
@@ -1505,13 +1507,36 @@ public class AsapiSupport
 	 * @throws AREAsapiException if the specified component ID or port ID are not
 	 * available
 	 */
-	public void sendData(final String targetComponentID,
-			final String targetInputPortID,
+	public void sendData(final String targetComponentID, final String targetInputPortID,
 			final byte [] data)
 					throws AREAsapiException
-					{
-		// todo
-					}
+						{
+							try {
+								AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<Void>() {
+									@Override
+									public Void call() throws Exception {
+										IRuntimeModel model = DeploymentManager.instance.getCurrentRuntimeModel();
+										IComponentInstance instance = null;
+										IRuntimeInputPort inputPort = null;
+										if(model != null) {
+											instance = model.getComponentInstance(targetComponentID);
+											if(instance != null) {
+												inputPort = instance.getWrapper(targetInputPortID);
+											}
+										}
+										if(model == null || instance == null || inputPort == null) {
+											throw new AREAsapiException(MessageFormat.format("send data failed! model: {0}, instance: {1}, inputPort: {2}", model, instance, inputPort));
+										}
+										inputPort.receiveData(data);
+										return null;
+									}
+								});
+							} catch (AREAsapiException e) {
+									throw e;
+							} catch (Exception e) {
+								throw (new AREAsapiException(e.getMessage()));
+							}
+						}
 
 	/**
 	 * Queries the status of the ARE system (i.e., OK, FAIL, etc)
