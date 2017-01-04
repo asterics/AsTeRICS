@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -28,11 +27,13 @@
 package eu.asterics.mw.systemstatechange;
 
 public interface SystemChangeListener {
-	public void usbDevicesAttached();
-	public void usbDevicesRemoved();
-	
-	public void systemSleepRequested();
-	public void systemSleep();
-	public void systemResume();
+    public void usbDevicesAttached();
+
+    public void usbDevicesRemoved();
+
+    public void systemSleepRequested();
+
+    public void systemSleep();
+
+    public void systemResume();
 }
-  

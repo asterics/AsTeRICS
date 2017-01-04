@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,24 +26,16 @@
 
 package eu.asterics.component.actuator.arewindow;
 
-
-import java.util.logging.Logger;
+import java.awt.Frame;
 import java.awt.Point;
 
-import javax.swing.JFrame;
-
-import eu.asterics.mw.are.DeploymentManager;
-import eu.asterics.mw.are.Main;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AREServices;
 
 /**
@@ -52,374 +43,341 @@ import eu.asterics.mw.services.AREServices;
  * Provides basic manipulation of ARE Windows (set position / state)
  * 
  * 
- *  
- * @author Chris Veigl
- *         29 12 2014 
- 
+ * 
+ * @author Chris Veigl 29 12 2014
+ * 
  */
-public class AREWindowInstance extends AbstractRuntimeComponentInstance
-{
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class AREWindowInstance extends AbstractRuntimeComponentInstance {
+    // Usage of an output port e.g.:
+    // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	int propXPos = 0;
-	int propYPos = 0;
-	boolean propAutoSetPosition = false;
-	boolean propAllowWindowModification = true;
+    int propXPos = 0;
+    int propYPos = 0;
+    boolean propAutoSetPosition = false;
+    boolean propAllowWindowModification = true;
 
-	// declare member variables here
+    // declare member variables here
 
-  
-    
-   /**
-    * The class constructor.
-    */
-    public AREWindowInstance()
-    {
+    /**
+     * The class constructor.
+     */
+    public AREWindowInstance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-		if ("xPos".equalsIgnoreCase(portID))
-		{
-			return ipXPos;
-		}
-		if ("yPos".equalsIgnoreCase(portID))
-		{
-			return ipYPos;
-		}
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("xPos".equalsIgnoreCase(portID)) {
+            return ipXPos;
+        }
+        if ("yPos".equalsIgnoreCase(portID)) {
+            return ipYPos;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-		if ("moveToTop".equalsIgnoreCase(eventPortID))
-		{
-			return elpMoveToTop;
-		}
-		if ("moveToBottom".equalsIgnoreCase(eventPortID))
-		{
-			return elpMoveToBottom;
-		}
-		if ("moveToLeft".equalsIgnoreCase(eventPortID))
-		{
-			return elpMoveToLeft;
-		}
-		if ("moveToRight".equalsIgnoreCase(eventPortID))
-		{
-			return elpMoveToRight;
-		}
-		if ("moveToCenter".equalsIgnoreCase(eventPortID))
-		{
-			return elpMoveToCenter;
-		}
-		if ("minimize".equalsIgnoreCase(eventPortID))
-		{
-			return elpMinimize;
-		}
-		if ("restore".equalsIgnoreCase(eventPortID))
-		{
-			return elpRestore;
-		}
-		if ("bringToFront".equalsIgnoreCase(eventPortID))
-		{
-			return elpBringToFront;
-		}
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if ("moveToTop".equalsIgnoreCase(eventPortID)) {
+            return elpMoveToTop;
+        }
+        if ("moveToBottom".equalsIgnoreCase(eventPortID)) {
+            return elpMoveToBottom;
+        }
+        if ("moveToLeft".equalsIgnoreCase(eventPortID)) {
+            return elpMoveToLeft;
+        }
+        if ("moveToRight".equalsIgnoreCase(eventPortID)) {
+            return elpMoveToRight;
+        }
+        if ("moveToCenter".equalsIgnoreCase(eventPortID)) {
+            return elpMoveToCenter;
+        }
+        if ("minimize".equalsIgnoreCase(eventPortID)) {
+            return elpMinimize;
+        }
+        if ("restore".equalsIgnoreCase(eventPortID)) {
+            return elpRestore;
+        }
+        if ("bringToFront".equalsIgnoreCase(eventPortID)) {
+            return elpBringToFront;
+        }
 
-		if ("setWindowFocusalbe".equalsIgnoreCase(eventPortID)){
-			return elpSetWindowFocusable;
-		}
-		if ("setWindowNotFocusalbe".equalsIgnoreCase(eventPortID)){
-			return elpSetWindowNotFocusable;
-		}
+        if ("setWindowFocusalbe".equalsIgnoreCase(eventPortID)) {
+            return elpSetWindowFocusable;
+        }
+        if ("setWindowNotFocusalbe".equalsIgnoreCase(eventPortID)) {
+            return elpSetWindowNotFocusable;
+        }
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("xPos".equalsIgnoreCase(propertyName))
-		{
-			return propXPos;
-		}
-		if ("yPos".equalsIgnoreCase(propertyName))
-		{
-			return propYPos;
-		}
-		if ("setAutoSetPosition".equalsIgnoreCase(propertyName))
-		{
-			return propAutoSetPosition;
-		}
-		if ("allowWindowModification".equalsIgnoreCase(propertyName))
-		{
-			return propAllowWindowModification;
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("xPos".equalsIgnoreCase(propertyName)) {
+            return propXPos;
+        }
+        if ("yPos".equalsIgnoreCase(propertyName)) {
+            return propYPos;
+        }
+        if ("setAutoSetPosition".equalsIgnoreCase(propertyName)) {
+            return propAutoSetPosition;
+        }
+        if ("allowWindowModification".equalsIgnoreCase(propertyName)) {
+            return propAllowWindowModification;
+        }
 
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("xPos".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propXPos;
-			propXPos = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
-		if ("yPos".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propYPos;
-			propYPos = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
-		if ("autoSetPosition".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propAutoSetPosition;
-			if("true".equalsIgnoreCase((String)newValue))
-			{
-				propAutoSetPosition = true;
-			}
-			else if("false".equalsIgnoreCase((String)newValue))
-			{
-				propAutoSetPosition = false;
-			}
-			return oldValue;
-		}
-		if ("allowWindowModification".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propAllowWindowModification;
-			if("true".equalsIgnoreCase((String)newValue))
-			{
-				propAllowWindowModification = true;
-			}
-			else if("false".equalsIgnoreCase((String)newValue))
-			{
-				propAllowWindowModification = false;
-			}
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("xPos".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propXPos;
+            propXPos = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
+        if ("yPos".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propYPos;
+            propYPos = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
+        if ("autoSetPosition".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propAutoSetPosition;
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propAutoSetPosition = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propAutoSetPosition = false;
+            }
+            return oldValue;
+        }
+        if ("allowWindowModification".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propAllowWindowModification;
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propAllowWindowModification = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propAllowWindowModification = false;
+            }
+            return oldValue;
+        }
 
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
-	private final IRuntimeInputPort ipXPos  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-			propXPos=ConversionUtils.intFromBytes(data);
-			if (propAutoSetPosition==true)
-			{
-				Point p = AREServices.instance.getAREWindowPosition();
-				p.x=propXPos;
-				AREServices.instance.setAREWindowPosition(p.x, p.y);
-			}
-		}
-	};
-	private final IRuntimeInputPort ipYPos  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-			propYPos=ConversionUtils.intFromBytes(data);
-			if (propAutoSetPosition==true)
-			{
-				Point p = AREServices.instance.getAREWindowPosition();
-				p.y=propYPos;
-				AREServices.instance.setAREWindowPosition(p.x, p.y);
-			}
-		}
-	};
+    /**
+     * Input Ports for receiving values.
+     */
+    private final IRuntimeInputPort ipXPos = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            propXPos = ConversionUtils.intFromBytes(data);
+            if (propAutoSetPosition == true) {
+                Point p = AREServices.instance.getAREWindowPosition();
+                p.x = propXPos;
+                AREServices.instance.setAREWindowPosition(p.x, p.y);
+            }
+        }
+    };
+    private final IRuntimeInputPort ipYPos = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            propYPos = ConversionUtils.intFromBytes(data);
+            if (propAutoSetPosition == true) {
+                Point p = AREServices.instance.getAREWindowPosition();
+                p.y = propYPos;
+                AREServices.instance.setAREWindowPosition(p.x, p.y);
+            }
+        }
+    };
 
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpMoveToTop = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            // System.out.println("X found !!");
+            Point p = AREServices.instance.getAREWindowPosition();
+            p.y = propYPos;
+            AREServices.instance.setAREWindowPosition(p.x + propXPos, p.y);
+        }
+    };
+    final IRuntimeEventListenerPort elpMoveToBottom = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            Point pos = AREServices.instance.getAREWindowPosition();
+            Point dim = AREServices.instance.getAREWindowDimension();
+            Point screen = AREServices.instance.getScreenDimension();
 
-     /**
-      * Event Listerner Ports.
-      */
-	final IRuntimeEventListenerPort elpMoveToTop = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			//System.out.println("X found !!");
-			Point p = AREServices.instance.getAREWindowPosition();
-			p.y=propYPos;
-			AREServices.instance.setAREWindowPosition(p.x+propXPos, p.y);
-		}
-	};
-	final IRuntimeEventListenerPort elpMoveToBottom = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			Point pos = AREServices.instance.getAREWindowPosition();
-			Point dim = AREServices.instance.getAREWindowDimension();
-			Point screen = AREServices.instance.getScreenDimension();
-			
-			pos.y=screen.y-dim.y+propYPos;			
-			AREServices.instance.setAREWindowPosition(pos.x+propXPos, pos.y);
-		}
-	};
-	final IRuntimeEventListenerPort elpMoveToLeft = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			Point p = AREServices.instance.getAREWindowPosition();
-			p.x=propXPos;
-			AREServices.instance.setAREWindowPosition(p.x, p.y+propYPos);
-		}
-	};
-	final IRuntimeEventListenerPort elpMoveToRight = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			Point pos = AREServices.instance.getAREWindowPosition();
-			Point dim = AREServices.instance.getAREWindowDimension();
-			Point screen = AREServices.instance.getScreenDimension();
-			
-			pos.x=screen.x-dim.x+propXPos;			
-			AREServices.instance.setAREWindowPosition(pos.x, pos.y+propYPos);
-		}
-	};
-	final IRuntimeEventListenerPort elpMoveToCenter = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			Point pos = AREServices.instance.getAREWindowPosition();
-			Point dim = AREServices.instance.getAREWindowDimension();
-			Point screen = AREServices.instance.getScreenDimension();
-			
-			pos.x=screen.x/2-dim.x/2+propXPos;			
-			pos.y=screen.y/2-dim.y/2+propYPos;			
-			AREServices.instance.setAREWindowPosition(pos.x, pos.y);
-		}
-	};
+            pos.y = screen.y - dim.y + propYPos;
+            AREServices.instance.setAREWindowPosition(pos.x + propXPos, pos.y);
+        }
+    };
+    final IRuntimeEventListenerPort elpMoveToLeft = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            Point p = AREServices.instance.getAREWindowPosition();
+            p.x = propXPos;
+            AREServices.instance.setAREWindowPosition(p.x, p.y + propYPos);
+        }
+    };
+    final IRuntimeEventListenerPort elpMoveToRight = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            Point pos = AREServices.instance.getAREWindowPosition();
+            Point dim = AREServices.instance.getAREWindowDimension();
+            Point screen = AREServices.instance.getScreenDimension();
 
-	final IRuntimeEventListenerPort elpMinimize = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-				 AREServices.instance.setAREWindowState(JFrame.ICONIFIED);
-		}
-	};
-	final IRuntimeEventListenerPort elpRestore = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			 AREServices.instance.setAREWindowState(JFrame.NORMAL);
-		}
-	};
-	final IRuntimeEventListenerPort elpBringToFront = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			 AREServices.instance.setAREWindowState(JFrame.ICONIFIED);
-			 AREServices.instance.setAREWindowState(JFrame.NORMAL);
+            pos.x = screen.x - dim.x + propXPos;
+            AREServices.instance.setAREWindowPosition(pos.x, pos.y + propYPos);
+        }
+    };
+    final IRuntimeEventListenerPort elpMoveToCenter = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            Point pos = AREServices.instance.getAREWindowPosition();
+            Point dim = AREServices.instance.getAREWindowDimension();
+            Point screen = AREServices.instance.getScreenDimension();
 
-		//	 AREServices.instance.setAREWindowToFront();
-		}
-	};
-	
-	final IRuntimeEventListenerPort elpSetWindowFocusable = new IRuntimeEventListenerPort() {
-		
-		@Override
-		public void receiveEvent(String data) {
-			AREServices.instance.setFocusableWindowState(true);
-		}
-	};
+            pos.x = screen.x / 2 - dim.x / 2 + propXPos;
+            pos.y = screen.y / 2 - dim.y / 2 + propYPos;
+            AREServices.instance.setAREWindowPosition(pos.x, pos.y);
+        }
+    };
 
-	final IRuntimeEventListenerPort elpSetWindowNotFocusable = new IRuntimeEventListenerPort() {
-		
-		@Override
-		public void receiveEvent(String data) {
-			AREServices.instance.setFocusableWindowState(false);
-		}
-	};
+    final IRuntimeEventListenerPort elpMinimize = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            AREServices.instance.setAREWindowState(Frame.ICONIFIED);
+        }
+    };
+    final IRuntimeEventListenerPort elpRestore = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            AREServices.instance.setAREWindowState(Frame.NORMAL);
+        }
+    };
+    final IRuntimeEventListenerPort elpBringToFront = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            AREServices.instance.setAREWindowState(Frame.ICONIFIED);
+            AREServices.instance.setAREWindowState(Frame.NORMAL);
 
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
-          super.start();
-          if (propAutoSetPosition==true)
-          {
-  			Point p = AREServices.instance.getAREWindowPosition();
-	  		p.x=propXPos;
-	  		p.y=propYPos;
-			AREServices.instance.setAREWindowPosition(p.x, p.y);
-          }          
-          AREServices.instance.allowAREWindowModification(propAllowWindowModification);
-      }
+            // AREServices.instance.setAREWindowToFront();
+        }
+    };
 
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-          super.pause();
-      }
+    final IRuntimeEventListenerPort elpSetWindowFocusable = new IRuntimeEventListenerPort() {
 
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-          super.resume();
-      }
+        @Override
+        public void receiveEvent(String data) {
+            AREServices.instance.setFocusableWindowState(true);
+        }
+    };
 
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
+    final IRuntimeEventListenerPort elpSetWindowNotFocusable = new IRuntimeEventListenerPort() {
 
-          super.stop();
-      }
+        @Override
+        public void receiveEvent(String data) {
+            AREServices.instance.setFocusableWindowState(false);
+        }
+    };
+
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        super.start();
+        if (propAutoSetPosition == true) {
+            Point p = AREServices.instance.getAREWindowPosition();
+            p.x = propXPos;
+            p.y = propYPos;
+            AREServices.instance.setAREWindowPosition(p.x, p.y);
+        }
+        AREServices.instance.allowAREWindowModification(propAllowWindowModification);
+    }
+
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
+
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
+
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+
+        super.stop();
+    }
 }

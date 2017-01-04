@@ -26,11 +26,9 @@
 package eu.asterics.mw.model.bundle;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Aug 25, 2010
- *         Time: 3:50:41 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 25, 2010 Time:
+ *         3:50:41 PM
  */
-public interface IEventListenerPortType extends IEventPortType
-{
+public interface IEventListenerPortType extends IEventPortType {
     // empty
 }

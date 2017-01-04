@@ -24,38 +24,34 @@
  */
 package eu.asterics.component.processor.oska;
 
-import eu.asterics.mw.services.AREServices;
-
 /**
  * OskaCommandAtAreHandler handles the @ARE commands that can be transferred by
  * the OSKA. Currently only handles the 'startmodel' argument.
+ * 
  * @author Christoph Weiss [weissch@technikum-wien.at]
  *
  */
 class OskaCommandAtOskaHandler implements IOskaActionStringHandler {
 
-	/**
-	 * Checks whether the command directed at ARE is a start model command and
-	 * if so executes it
-	 * @param arguments the arguments of the command
-	 * @return true if the command could be handled, false otherwise
-	 */
-	@Override
-	public void handleActionString(String arguments) 
-	{
-		int idx = arguments.toLowerCase().indexOf("event,");  
-		if ( idx >= 0) 
-		{
-			String numberString = arguments.substring(idx + 6);
-			try
-			{
-				int eventNo = Integer.parseInt(numberString) - 1;
-				OskaInstance.instance.outputs.etpEventOut[eventNo].raiseEvent();
-			}
-			catch (NumberFormatException e)
-			{
-				System.out.println("Error in OSKA plugin command:" + arguments);
-			}
-		}
-	}
+    /**
+     * Checks whether the command directed at ARE is a start model command and
+     * if so executes it
+     * 
+     * @param arguments
+     *            the arguments of the command
+     * @return true if the command could be handled, false otherwise
+     */
+    @Override
+    public void handleActionString(String arguments) {
+        int idx = arguments.toLowerCase().indexOf("event,");
+        if (idx >= 0) {
+            String numberString = arguments.substring(idx + 6);
+            try {
+                int eventNo = Integer.parseInt(numberString) - 1;
+                OskaInstance.instance.outputs.etpEventOut[eventNo].raiseEvent();
+            } catch (NumberFormatException e) {
+                System.out.println("Error in OSKA plugin command:" + arguments);
+            }
+        }
+    }
 }

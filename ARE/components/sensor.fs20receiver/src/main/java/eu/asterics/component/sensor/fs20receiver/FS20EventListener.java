@@ -23,15 +23,9 @@
  * 
  */
 
-
 package eu.asterics.component.sensor.fs20receiver;
-
-import java.util.EventListener;
-
-
 
 // Abstract class to define the new FS20EventListener
 public abstract class FS20EventListener {
-	abstract public void fs20EventOccurred(FS20ReaderEvent evt); 
+    abstract public void fs20EventOccurred(FS20ReaderEvent evt);
 }
-

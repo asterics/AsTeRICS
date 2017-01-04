@@ -30,14 +30,11 @@ import org.osgi.framework.BundleContext;
 
 public class DisplayBundleActivator implements BundleActivator {
 
-	@Override
-	public void start(BundleContext arg0) throws Exception 
-	{
-		DisplayGuiManager instance = DisplayGuiManager.instance;
-	}
+    @Override
+    public void start(BundleContext arg0) throws Exception {
+    }
 
-	@Override
-	public void stop(BundleContext arg0) throws Exception 
-	{
-	}
+    @Override
+    public void stop(BundleContext arg0) throws Exception {
+    }
 }

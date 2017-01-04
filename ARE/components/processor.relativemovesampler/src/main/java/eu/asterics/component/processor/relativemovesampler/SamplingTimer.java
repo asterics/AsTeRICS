@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,95 +26,73 @@
 
 package eu.asterics.component.processor.relativemovesampler;
 
-import java.util.logging.Logger;
-import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsThreadPool;
-
 
 /**
  * 
  * Implements the timer for the Relative Move Sampler component.
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Feb 10, 2012
- *         Time: 11:54:11 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Feb 10, 2012 Time: 11:54:11
+ *         AM
  */
 
+public class SamplingTimer implements Runnable {
+    private boolean active = false;
+    private long sampingTime = -1;
+    private final RelativeMoveSamplerInstance owner;
 
-public class SamplingTimer implements Runnable
-{
-	private Thread t;
-	private boolean active=false;
-	private long sampingTime=-1;
-	private final RelativeMoveSamplerInstance owner;
-	
-	/**
-	 * The class constructor.
-	 * @param owner the SamplerInstance
-	 * @param opOutput the component output port
-	 */	
-	public SamplingTimer(RelativeMoveSamplerInstance owner)
-	{
-		this.owner=owner;
-	}
-	
-	
-	/**
-	 * Sets the sampling time.
-	 * @param samplingTime the sampling time
-	 */
-	public void setSamplingTime(long samplingTime)
-	{
-		this.sampingTime=samplingTime;
-	}
-	
-	/**
-	 * Starts the sampling
-	 */
-	public void startSampling()
-	{
-		if(active==false)
-		{
-			active=true;
-			AstericsThreadPool.instance.execute(this);
-		}
-	}
-	
-	/**
-	 * Stops the sampling
-	 */
-	public void stopSampling()
-	{
-		active=false;
-	}
-	
-	
-	/**
-	 * The timer function.
-	 */
-	public void run()
-	{
-		while(active)
-		{
-			owner.sendValues();
-			
-			try
-			{
-				Thread.sleep(sampingTime);
-			}
-			catch(InterruptedException e)
-			{
-				
-			}
-		}
-	}
+    /**
+     * The class constructor.
+     * 
+     * @param owner
+     *            the SamplerInstance
+     * @param opOutput
+     *            the component output port
+     */
+    public SamplingTimer(RelativeMoveSamplerInstance owner) {
+        this.owner = owner;
+    }
+
+    /**
+     * Sets the sampling time.
+     * 
+     * @param samplingTime
+     *            the sampling time
+     */
+    public void setSamplingTime(long samplingTime) {
+        this.sampingTime = samplingTime;
+    }
+
+    /**
+     * Starts the sampling
+     */
+    public void startSampling() {
+        if (active == false) {
+            active = true;
+            AstericsThreadPool.instance.execute(this);
+        }
+    }
+
+    /**
+     * Stops the sampling
+     */
+    public void stopSampling() {
+        active = false;
+    }
+
+    /**
+     * The timer function.
+     */
+    @Override
+    public void run() {
+        while (active) {
+            owner.sendValues();
+
+            try {
+                Thread.sleep(sampingTime);
+            } catch (InterruptedException e) {
+
+            }
+        }
+    }
 }

@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,72 +26,67 @@
 
 package eu.asterics.component.actuator.event_visualizer;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
-import eu.asterics.component.actuator.event_visualizer.EventVisualizerInstance;
-import java.awt.*;
-import java.util.Date;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  * The GUI for the Event Visualizer instance
  * 
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * Date: 1/9/11
- * Time: 11:37 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: 1/9/11 Time: 11:37
+ *         AM
  */
-public class VisualizerGUI extends JPanel
-{
-    private JPanel visualizerPanel; 
+public class VisualizerGUI extends JPanel {
+    private JPanel visualizerPanel;
     private Dimension visualizerPanelSize;
 
-	
     private final StringBuilder stringBuilder = new StringBuilder("");
     private final JTextArea textArea = new JTextArea(stringBuilder.toString());
 
     public static final Dimension PREFERRED_SIZE = new Dimension(320, 240);
     public JScrollPane scroll;
-    
-    public long startTime=0;
-    
-    VisualizerGUI(final EventVisualizerInstance owner, final Dimension space)
-    {
+
+    public long startTime = 0;
+
+    VisualizerGUI(final EventVisualizerInstance owner, final Dimension space) {
         super();
-        startTime=System.currentTimeMillis();
-		this.setPreferredSize(new Dimension (space.width, space.height));
-		design (space.width, space.height);    
+        startTime = System.currentTimeMillis();
+        this.setPreferredSize(new Dimension(space.width, space.height));
+        design(space.width, space.height);
     }
 
-	private void design (int width, int height)
-	{
-		//Create Panels
-		visualizerPanel = new JPanel ();
-		visualizerPanelSize = new Dimension (width, height);
+    private void design(int width, int height) {
+        // Create Panels
+        visualizerPanel = new JPanel();
+        visualizerPanelSize = new Dimension(width, height);
 
-		visualizerPanel.setMaximumSize(visualizerPanelSize);
-		visualizerPanel.setPreferredSize(visualizerPanelSize);
-		
-		visualizerPanel.setVisible(true);
+        visualizerPanel.setMaximumSize(visualizerPanelSize);
+        visualizerPanel.setPreferredSize(visualizerPanelSize);
+
+        visualizerPanel.setVisible(true);
 
         setLayout(new BorderLayout());
         add(new JLabel("Events"), BorderLayout.NORTH);
         scroll = new JScrollPane(textArea);
         add(scroll);
-	}
-	
-		
-    
-    public void addEvent(final String payload)
-    {
-			//    stringBuilder.append(new Date()).append(": ").append(payload).append("\n");
-			//    textArea.setText(stringBuilder.toString());
-    	
-			long millis= System.currentTimeMillis()-startTime;
-			long second = (millis / 1000) % 60;
-			long minute = (millis / (1000 * 60)) % 60;
-			long hour = (millis / (1000 * 60 * 60)) % 24;
-			
-			String time = String.format("%02d:%02d:%02d:%03d", hour, minute, second, millis%1000);
-			textArea.append(time+": "+payload+"\n");
-			scroll.getVerticalScrollBar().setValue(scroll.getVerticalScrollBar().getMaximum());
+    }
+
+    public void addEvent(final String payload) {
+        // stringBuilder.append(new Date()).append(":
+        // ").append(payload).append("\n");
+        // textArea.setText(stringBuilder.toString());
+
+        long millis = System.currentTimeMillis() - startTime;
+        long second = (millis / 1000) % 60;
+        long minute = (millis / (1000 * 60)) % 60;
+        long hour = (millis / (1000 * 60 * 60)) % 24;
+
+        String time = String.format("%02d:%02d:%02d:%03d", hour, minute, second, millis % 1000);
+        textArea.append(time + ": " + payload + "\n");
+        scroll.getVerticalScrollBar().setValue(scroll.getVerticalScrollBar().getMaximum());
     }
 }

@@ -27,13 +27,10 @@ import eu.asterics.mw.model.DataType;
  */
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * 		   Kakousis Konstantinos
- *         Date: Jul 15, 2010
- *         Time: 4:51:39 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Kakousis Konstantinos
+ *         Date: Jul 15, 2010 Time: 4:51:39 PM
  */
-public class PropertyType
-{
+public class PropertyType {
     private final String name;
     private final DataType dataType;
     private final String description;
@@ -41,47 +38,38 @@ public class PropertyType
     private final String combobox;
     private final boolean getStringList;
 
-    public PropertyType(final String name, 
-    		final DataType dataType, 
-    		final String description, 
-    		final String value, 
-    		final String combobox, 
-    		final boolean getStringList)
-    {
+    public PropertyType(final String name, final DataType dataType, final String description, final String value,
+            final String combobox, final boolean getStringList) {
         this.name = name;
         this.dataType = dataType;
         this.description = description;
-        this.value=value;
+        this.value = value;
         this.combobox = combobox;
         this.getStringList = getStringList;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
-    public String getValue()
-    {
+
+    public String getValue() {
         return value;
     }
 
-    public DataType getDataType()
-    {
+    public DataType getDataType() {
         return dataType;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
-    
-    public String getCombobox()
-    {
+
+    public String getCombobox() {
         return combobox;
     }
-    public boolean isGetStringList ()
-    {
-    	return getStringList;
+
+    public boolean isGetStringList() {
+        return getStringList;
     }
-    
+
 }

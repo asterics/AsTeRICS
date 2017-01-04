@@ -25,93 +25,92 @@
 
 package eu.asterics.component.actuator.platformlcd;
 
-
-
 /**
  * A basic menu item on the display of the core CIM
  * 
- * @author Chris Weiss [weissch@technikum-wien.at]
- *         Date: Mar 7, 2011
- *         Time: 10:55:05 AM
+ * @author Chris Weiss [weissch@technikum-wien.at] Date: Mar 7, 2011 Time:
+ *         10:55:05 AM
  */
-public class MenuItem
-{
-	MenuItem left;
-	MenuItem right;
-	MenuItem up;
-	MenuItem down;
-	MenuItem ok;
-	String caption;
-	
-	PlatformLCDInstance owner; 
-	
-	/**
-	 * Base constructor for a menu item
-	 * @param c the text to 
-	 * @param owner
-	 */
-	public MenuItem(String c, PlatformLCDInstance owner)
-	{
-		this.owner = owner;
-		caption = c;
-		left = null;
-		right = null;
-		up = null;
-		down = null;
-	}
-	
-	/**
-	 * Sets the item left of this item in the menu tree
-	 * @param item the item to be placed
-	 */
-	public void setLeft(MenuItem item)
-	{
-		left = item;
-	}
+public class MenuItem {
+    MenuItem left;
+    MenuItem right;
+    MenuItem up;
+    MenuItem down;
+    MenuItem ok;
+    String caption;
 
-	/**
-	 * Sets the item right of this item in the menu tree
-	 * @param item the item to be placed
-	 */
-	public void setRight(MenuItem item)
-	{
-		right = item;
-	}
+    PlatformLCDInstance owner;
 
-	/**
-	 * Sets the item up of this item in the menu tree
-	 * @param item the item to be placed
-	 */
-	public void setUp(MenuItem item)
-	{
-		up = item;
-	}
-	
-	/**
-	 * Sets the item down of this item in the menu tree
-	 * @param item the item to be placed
-	 */
-	public void setDown(MenuItem item)
-	{
-		down = item;
-	}
-	
-	/**
-	 * Sets the item on the ok action of this item in the menu tree
-	 * @param item the item to be placed
-	 */
-	public void setOk(MenuItem item)
-	{
-		ok = item;
-	}
+    /**
+     * Base constructor for a menu item
+     * 
+     * @param c
+     *            the text to
+     * @param owner
+     */
+    public MenuItem(String c, PlatformLCDInstance owner) {
+        this.owner = owner;
+        caption = c;
+        left = null;
+        right = null;
+        up = null;
+        down = null;
+    }
 
-	/**
-	 * Writes the stored caption of the menu item to the display
-	 */
-	public void display()
-	{
-		owner.writeToDisplay(caption, false);
-	}
+    /**
+     * Sets the item left of this item in the menu tree
+     * 
+     * @param item
+     *            the item to be placed
+     */
+    public void setLeft(MenuItem item) {
+        left = item;
+    }
+
+    /**
+     * Sets the item right of this item in the menu tree
+     * 
+     * @param item
+     *            the item to be placed
+     */
+    public void setRight(MenuItem item) {
+        right = item;
+    }
+
+    /**
+     * Sets the item up of this item in the menu tree
+     * 
+     * @param item
+     *            the item to be placed
+     */
+    public void setUp(MenuItem item) {
+        up = item;
+    }
+
+    /**
+     * Sets the item down of this item in the menu tree
+     * 
+     * @param item
+     *            the item to be placed
+     */
+    public void setDown(MenuItem item) {
+        down = item;
+    }
+
+    /**
+     * Sets the item on the ok action of this item in the menu tree
+     * 
+     * @param item
+     *            the item to be placed
+     */
+    public void setOk(MenuItem item) {
+        ok = item;
+    }
+
+    /**
+     * Writes the stored caption of the menu item to the display
+     */
+    public void display() {
+        owner.writeToDisplay(caption, false);
+    }
 }
-
-

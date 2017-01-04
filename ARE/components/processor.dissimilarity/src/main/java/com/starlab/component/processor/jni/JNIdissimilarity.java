@@ -27,36 +27,35 @@
 package com.starlab.component.processor.jni;
 
 /**
- *   Implements the access to the native functions for computing the
- *   dissimilarity
+ * Implements the access to the native functions for computing the dissimilarity
  * 
- * @author Javier Acedo [javier.acedo@starlab.es]
- *         Date: May 1, 2011
- *         Time 08:28:57 PM
+ * @author Javier Acedo [javier.acedo@starlab.es] Date: May 1, 2011 Time
+ *         08:28:57 PM
  */
 public class JNIdissimilarity {
 
-	public native double nativeDissimilarity (double [] samples1, double [] samples2);
+    public native double nativeDissimilarity(double[] samples1, double[] samples2);
 
     static {
-    	System.loadLibrary("dissimilarity");
+        System.loadLibrary("dissimilarity");
     }
 
     /**
      * The class constructor.
      */
-	public JNIdissimilarity ()
-	{
-	}
-	
-	/**
-	 * Dissimilarity calculation
-	 * @param samples1         First vector of samples
-	 * @param samples2         Second vector of samples
-	 * @return                 Dissimilarity between the two input vectors
-	 */
-	public double Dissimilarity(double[] samples1, double[] samples2)
-	{
-		return nativeDissimilarity(samples1, samples2);
-	}
+    public JNIdissimilarity() {
+    }
+
+    /**
+     * Dissimilarity calculation
+     * 
+     * @param samples1
+     *            First vector of samples
+     * @param samples2
+     *            Second vector of samples
+     * @return Dissimilarity between the two input vectors
+     */
+    public double Dissimilarity(double[] samples1, double[] samples2) {
+        return nativeDissimilarity(samples1, samples2);
+    }
 }

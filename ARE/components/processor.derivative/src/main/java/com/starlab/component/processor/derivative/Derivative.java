@@ -29,68 +29,66 @@ package com.starlab.component.processor.derivative;
 import com.starlab.component.processor.jni.JNIderivative;
 
 /**
- *   Implements the derivative of the input signal
+ * Implements the derivative of the input signal
  * 
- * @author Javier Acedo [javier.acedo@starlab.es]
- *         Date: May 1, 2011
- *         Time 08:28:57 PM
+ * @author Javier Acedo [javier.acedo@starlab.es] Date: May 1, 2011 Time
+ *         08:28:57 PM
  */
 public class Derivative {
 
     private JNIderivative jni = new JNIderivative();
-	private int id;
+    private int id;
 
-	/**
+    /**
      * The class constructor.
      */
-    public Derivative()
-    {
-		id = jni.DerivativeNew();
+    public Derivative() {
+        id = jni.DerivativeNew();
         reset();
     }
-    
+
     /**
      * It performs the operations for cleaning up the plugin
      */
-	protected void finalize()
-	{
-		jni.DerivativeDelete(id);
-	}
+    @Override
+    protected void finalize() {
+        jni.DerivativeDelete(id);
+    }
 
-	/**
-	 * It resets derivative algorithm for starting a calculation of a new
-	 * signal
-	 */
-    public void reset ()
-    {
+    /**
+     * It resets derivative algorithm for starting a calculation of a new signal
+     */
+    public void reset() {
         jni.DerivativeReset(id);
     }
 
     /**
      * It performs the derivative calculation
-     * @param in         Input sample
-     * @return           derivative result
+     * 
+     * @param in
+     *            Input sample
+     * @return derivative result
      */
-    public double doDerivative (double in)
-    {
+    public double doDerivative(double in) {
         return jni.Derivative(id, in);
     }
 
     /**
-	 * Gets the configured sample frequency of the signal
-	 * @return           Configured sample frequency of the signal
-	 */
-    public int getSampleFrequency ()
-    {
+     * Gets the configured sample frequency of the signal
+     * 
+     * @return Configured sample frequency of the signal
+     */
+    public int getSampleFrequency() {
         return jni.getSampleFrequency(id);
     }
 
     /**
-	 * Sets the sample frequency of the input signal
-	 * @param samplefrequency  Sample frequency of the input signal
-	 */
-    public void setSampleFrequency (int sampleFrequency)
-    {
-        jni.setSampleFrequency (id, sampleFrequency);
+     * Sets the sample frequency of the input signal
+     * 
+     * @param samplefrequency
+     *            Sample frequency of the input signal
+     */
+    public void setSampleFrequency(int sampleFrequency) {
+        jni.setSampleFrequency(id, sampleFrequency);
     }
 }

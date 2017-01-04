@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,203 +26,194 @@
 
 package eu.asterics.component.processor.quantizer;
 
-
-import java.util.logging.Logger;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 
 /**
  * 
  * This components performs the quantization of the input signal.
- *  
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Feb 08, 2012
- *         Time: 12:45:55 AM
+ * 
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Feb 08, 2012 Time: 12:45:55
+ *         AM
  */
-public class QuantizerInstance extends AbstractRuntimeComponentInstance
-{
-	final IRuntimeOutputPort opOutput = new DefaultRuntimeOutputPort();
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class QuantizerInstance extends AbstractRuntimeComponentInstance {
+    final IRuntimeOutputPort opOutput = new DefaultRuntimeOutputPort();
+    // Usage of an output port e.g.:
+    // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	public double propQuantizationStep = 1;
+    public double propQuantizationStep = 1;
 
-	// declare member variables here
+    // declare member variables here
 
-  
-    
-   /**
-    * The class constructor.
-    */
-    public QuantizerInstance()
-    {
+    /**
+     * The class constructor.
+     */
+    public QuantizerInstance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-		if ("input".equalsIgnoreCase(portID))
-		{
-			return ipInput;
-		}
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("input".equalsIgnoreCase(portID)) {
+            return ipInput;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
-		if ("output".equalsIgnoreCase(portID))
-		{
-			return opOutput;
-		}
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("output".equalsIgnoreCase(portID)) {
+            return opOutput;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
 
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("quantizationStep".equalsIgnoreCase(propertyName))
-		{
-			return propQuantizationStep;
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("quantizationStep".equalsIgnoreCase(propertyName)) {
+            return propQuantizationStep;
+        }
 
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param[in] propertyName   the name of the property
-     * @param[in] newValue       the desired property value or null if not found
+     * 
+     * @param[in] propertyName the name of the property
+     * @param[in] newValue the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("quantizationStep".equalsIgnoreCase(propertyName))
-		{
-			final double oldValue = propQuantizationStep;
-			propQuantizationStep = Double.parseDouble((String)newValue);
-			
-			if(propQuantizationStep==0)
-			{
-				propQuantizationStep=1.0;
-				AstericsErrorHandling.instance.getLogger().warning("Quantization step can not equal 0. Quantization step is set to 1");
-			}
-			else
-			{
-				if(propQuantizationStep<0)
-				{
-					propQuantizationStep=propQuantizationStep*(-1);
-					AstericsErrorHandling.instance.getLogger().warning("Quantization step can not be negative. Quantization step is set to " + Double.toString(propQuantizationStep));
-				}
-			}
-			
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("quantizationStep".equalsIgnoreCase(propertyName)) {
+            final double oldValue = propQuantizationStep;
+            propQuantizationStep = Double.parseDouble((String) newValue);
+
+            if (propQuantizationStep == 0) {
+                propQuantizationStep = 1.0;
+                AstericsErrorHandling.instance.getLogger()
+                        .warning("Quantization step can not equal 0. Quantization step is set to 1");
+            } else {
+                if (propQuantizationStep < 0) {
+                    propQuantizationStep = propQuantizationStep * (-1);
+                    AstericsErrorHandling.instance.getLogger()
+                            .warning("Quantization step can not be negative. Quantization step is set to "
+                                    + Double.toString(propQuantizationStep));
+                }
+            }
+
+            return oldValue;
+        }
 
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
-	private final IRuntimeInputPort ipInput  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-			double value = ConversionUtils.doubleFromBytes(data);
-			
-			double result = Math.signum(value)*propQuantizationStep*Math.floor(0.5 + (Math.abs(value)/propQuantizationStep));
-			
-			opOutput.sendData(ConversionUtils.doubleToBytes(result));
-			
-		}
-		
-	};
+    /**
+     * Input Ports for receiving values.
+     */
+    private final IRuntimeInputPort ipInput = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            double value = ConversionUtils.doubleFromBytes(data);
 
-	
+            double result = Math.signum(value) * propQuantizationStep
+                    * Math.floor(0.5 + (Math.abs(value) / propQuantizationStep));
 
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
+            opOutput.sendData(ConversionUtils.doubleToBytes(result));
 
-          super.start();
-      }
+        }
 
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-          super.pause();
-      }
+    };
 
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-          super.resume();
-      }
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
 
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
+        super.start();
+    }
 
-          super.stop();
-      }
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
+
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
+
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+
+        super.stop();
+    }
 }

@@ -6,33 +6,33 @@ Licensed under the MIT license.
 
 package eu.asterics.component.processor.nexusconnector;
 
-import java.util.logging.Logger;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.io.IOException;
-import eu.asterics.component.processor.nexusconnector.NexusConnectorInputPort;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
+
 import javax.websocket.ClientEndpointConfig;
 import javax.websocket.DeploymentException;
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;
 import javax.websocket.RemoteEndpoint;
 import javax.websocket.Session;
+
 import org.glassfish.tyrus.client.ClientManager;
 import org.glassfish.tyrus.container.jdk.client.JdkClientContainer;
+
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
+import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
+import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
+import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+
 /**
- * This plugin provides a bidirectional connection to an instance of
- * the GPII Nexus.
+ * This plugin provides a bidirectional connection to an instance of the GPII
+ * Nexus.
  *
  * @author Simon Bates [sbates@ocadu.ca]
  */
@@ -44,14 +44,22 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
     // Input Ports
 
-    private final IRuntimeInputPort ipIn1d = new NexusConnectorInputPort(this, "inputs.in1d", NexusConnectorInputPort.InputType.DOUBLE);
-    private final IRuntimeInputPort ipIn2d = new NexusConnectorInputPort(this, "inputs.in2d", NexusConnectorInputPort.InputType.DOUBLE);
-    private final IRuntimeInputPort ipIn3d = new NexusConnectorInputPort(this, "inputs.in3d", NexusConnectorInputPort.InputType.DOUBLE);
-    private final IRuntimeInputPort ipIn4d = new NexusConnectorInputPort(this, "inputs.in4d", NexusConnectorInputPort.InputType.DOUBLE);
-    private final IRuntimeInputPort ipIn5s = new NexusConnectorInputPort(this, "inputs.in5s", NexusConnectorInputPort.InputType.STRING);
-    private final IRuntimeInputPort ipIn6s = new NexusConnectorInputPort(this, "inputs.in6s", NexusConnectorInputPort.InputType.STRING);
-    private final IRuntimeInputPort ipIn7s = new NexusConnectorInputPort(this, "inputs.in7s", NexusConnectorInputPort.InputType.STRING);
-    private final IRuntimeInputPort ipIn8s = new NexusConnectorInputPort(this, "inputs.in8s", NexusConnectorInputPort.InputType.STRING);
+    private final IRuntimeInputPort ipIn1d = new NexusConnectorInputPort(this, "inputs.in1d",
+            NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn2d = new NexusConnectorInputPort(this, "inputs.in2d",
+            NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn3d = new NexusConnectorInputPort(this, "inputs.in3d",
+            NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn4d = new NexusConnectorInputPort(this, "inputs.in4d",
+            NexusConnectorInputPort.InputType.DOUBLE);
+    private final IRuntimeInputPort ipIn5s = new NexusConnectorInputPort(this, "inputs.in5s",
+            NexusConnectorInputPort.InputType.STRING);
+    private final IRuntimeInputPort ipIn6s = new NexusConnectorInputPort(this, "inputs.in6s",
+            NexusConnectorInputPort.InputType.STRING);
+    private final IRuntimeInputPort ipIn7s = new NexusConnectorInputPort(this, "inputs.in7s",
+            NexusConnectorInputPort.InputType.STRING);
+    private final IRuntimeInputPort ipIn8s = new NexusConnectorInputPort(this, "inputs.in8s",
+            NexusConnectorInputPort.InputType.STRING);
 
     // Output Ports
 
@@ -83,8 +91,10 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * Returns an Input Port.
-     * @param portID    The name of the port
-     * @return          The input port or null if not found
+     * 
+     * @param portID
+     *            The name of the port
+     * @return The input port or null if not found
      */
     @Override
     public IRuntimeInputPort getInputPort(String portID) {
@@ -110,8 +120,10 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * Returns an Output Port.
-     * @param portID    The name of the port
-     * @return          The output port or null if not found
+     * 
+     * @param portID
+     *            The name of the port
+     * @return The output port or null if not found
      */
     @Override
     public IRuntimeOutputPort getOutputPort(String portID) {
@@ -137,8 +149,10 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * Returns an Event Listener Port.
-     * @param eventPortID   The name of the port
-     * @return              The EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            The name of the port
+     * @return The EventListener port or null if not found
      */
     @Override
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
@@ -147,8 +161,10 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * Returns an Event Triggerer Port.
-     * @param eventPortID   The name of the port
-     * @return              The EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            The name of the port
+     * @return The EventTriggerer port or null if not found
      */
     @Override
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
@@ -157,8 +173,10 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * Returns the value of the requested property.
-     * @param propertyName  The name of the property
-     * @return              The property value or null if not found
+     * 
+     * @param propertyName
+     *            The name of the property
+     * @return The property value or null if not found
      */
     @Override
     public Object getRuntimePropertyValue(String propertyName) {
@@ -174,8 +192,11 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * Sets a new value for the specified property.
-     * @param propertyName  The name of the property
-     * @param newValue      The new value for the property
+     * 
+     * @param propertyName
+     *            The name of the property
+     * @param newValue
+     *            The new value for the property
      */
     @Override
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
@@ -206,12 +227,12 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
             String nexusUriPath = "/bindModel/" + propNexusComponentPath + "/connector";
             URI nexusUri = new URI("ws", null, propNexusHostname, propNexusPort, nexusUriPath, null, null);
             nexusSession = nexusClient.connectToServer(new Endpoint() {
-                    @Override
-                    public void onOpen(Session session, EndpointConfig config) {
-                        session.addMessageHandler(new NexusConnectorMessageHandler(NexusConnectorInstance.this));
-                        nexusEndpoint = session.getBasicRemote();
-                    }
-                }, nexusClientConfig, nexusUri);
+                @Override
+                public void onOpen(Session session, EndpointConfig config) {
+                    session.addMessageHandler(new NexusConnectorMessageHandler(NexusConnectorInstance.this));
+                    nexusEndpoint = session.getBasicRemote();
+                }
+            }, nexusClientConfig, nexusUri);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         } catch (DeploymentException e) {
@@ -245,7 +266,7 @@ public class NexusConnectorInstance extends AbstractRuntimeComponentInstance {
         super.stop();
 
         try {
-            if(nexusSession!=null) {
+            if (nexusSession != null) {
                 nexusSession.close();
             }
         } catch (IOException e) {

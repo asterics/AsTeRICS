@@ -25,30 +25,22 @@
 
 package eu.asterics.mw.model.runtime;
 
-
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Aug 20, 2010
- *         Time: 11:26:34 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 20, 2010 Time:
+ *         11:26:34 AM
  */
-public enum RuntimeState
-{
-    
-    READY("ready"),
-    ACTIVE("active"),
-    SUSPENDED("suspended"),
-    STOPPED("stopped");
+public enum RuntimeState {
+
+    READY("ready"), ACTIVE("active"), SUSPENDED("suspended"), STOPPED("stopped");
 
     private final String state;
 
-    private RuntimeState(final String state)
-    {
+    private RuntimeState(final String state) {
         this.state = state;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return state;
     }
 }

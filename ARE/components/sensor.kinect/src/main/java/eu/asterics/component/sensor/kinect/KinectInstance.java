@@ -25,12 +25,9 @@
 
 package eu.asterics.component.sensor.kinect;
 
-
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.FileHandler;
 
-import javax.naming.spi.DirectoryManager;
 import javax.swing.JFrame;
 
 import org.OpenNI.Context;
@@ -43,341 +40,346 @@ import org.OpenNI.UserGenerator;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
  * 
- * The Kinect plugin tracks the skeleton of one user with the 
- * openni framework and the kinect camera.
- * In this version the coordinates of the following joints can be accessed:
- *  - head
- *  - left hand
- *  - right hand
- *  - left foot
- *  - right foot
+ * The Kinect plugin tracks the skeleton of one user with the openni framework
+ * and the kinect camera. In this version the coordinates of the following
+ * joints can be accessed: - head - left hand - right hand - left foot - right
+ * foot
  * 
  * @author David Thaller dt@ki-i.at Date: 20.01.2012 Time: 10:22
  */
 
 public class KinectInstance extends AbstractRuntimeComponentInstance {
-	final OutputPort opHeadX = new OutputPort();
-	final OutputPort opHeadY = new OutputPort();
-	final OutputPort opHeadZ = new OutputPort();
+    final OutputPort opHeadX = new OutputPort();
+    final OutputPort opHeadY = new OutputPort();
+    final OutputPort opHeadZ = new OutputPort();
 
-	final OutputPort opLeftHandX = new OutputPort();
-	final OutputPort opLeftHandY = new OutputPort();
-	final OutputPort opLeftHandZ = new OutputPort();
+    final OutputPort opLeftHandX = new OutputPort();
+    final OutputPort opLeftHandY = new OutputPort();
+    final OutputPort opLeftHandZ = new OutputPort();
 
-	final OutputPort opRightHandX = new OutputPort();
-	final OutputPort opRightHandY = new OutputPort();
-	final OutputPort opRightHandZ = new OutputPort();
+    final OutputPort opRightHandX = new OutputPort();
+    final OutputPort opRightHandY = new OutputPort();
+    final OutputPort opRightHandZ = new OutputPort();
 
-	final OutputPort opRightFootX = new OutputPort();
-	final OutputPort opRightFootY = new OutputPort();
-	final OutputPort opRightFootZ = new OutputPort();
+    final OutputPort opRightFootX = new OutputPort();
+    final OutputPort opRightFootY = new OutputPort();
+    final OutputPort opRightFootZ = new OutputPort();
 
-	final OutputPort opLeftFootX = new OutputPort();
-	final OutputPort opLeftFootY = new OutputPort();
-	final OutputPort opLeftFootZ = new OutputPort();
+    final OutputPort opLeftFootX = new OutputPort();
+    final OutputPort opLeftFootY = new OutputPort();
+    final OutputPort opLeftFootZ = new OutputPort();
 
+    boolean propVisualize = true;
+    boolean propCenterZeroPoint = false;
 
-	boolean propVisualize = true;
-	boolean propCenterZeroPoint = false;
-	
-	// declare member variables here
-	private SkeletonTracker st;
+    // declare member variables here
+    private SkeletonTracker st;
 
-	private JFrame f;
+    private JFrame f;
 
-	private OutArg<ScriptNode> scriptNode;
-	private Context context;
-	private DepthGenerator depthGen;
-	private UserGenerator userGen;
-	private SkeletonCapability skelCap;
+    private OutArg<ScriptNode> scriptNode;
+    private Context context;
+    private DepthGenerator depthGen;
+    private UserGenerator userGen;
+    private SkeletonCapability skelCap;
 
-	private SkeletonPanel sp;
-	
-	private SkeletonListener sendListener;
-	
-	private final String SAMPLE_XML_FILE = "data/sensor.kinect/SamplesConfig.xml";
+    private SkeletonPanel sp;
 
-	private int xOffset,yOffset;
-	
-	/**
-	 * The class constructor.
-	 */
-	public KinectInstance() {
-		if (propCenterZeroPoint) {
-			xOffset = 320;
-			yOffset = 240;
-		} else {
-			xOffset = 0;
-			yOffset = 0;
-		}
-		sendListener = new SkeletonListener() {
+    private SkeletonListener sendListener;
 
-			@Override
-			public void skeletonUpdate(Skeleton skel) {
-				Point3D head = skel.head;
-				opHeadX.sendData(head.getX()-xOffset);
-				opHeadY.sendData(head.getY()-yOffset);
-				opHeadZ.sendData(head.getZ());
+    private final String SAMPLE_XML_FILE = "data/sensor.kinect/SamplesConfig.xml";
 
-				Point3D lhand = skel.leftHand;
-				opLeftHandX.sendData(lhand.getX()-xOffset);
-				opLeftHandY.sendData(lhand.getY()-yOffset);
-				opLeftHandZ.sendData(lhand.getZ());
+    private int xOffset, yOffset;
 
-				Point3D rhand = skel.rightHand;
-				opRightHandX.sendData(rhand.getX()-xOffset);
-				opRightHandY.sendData(rhand.getY()-yOffset);
-				opRightHandZ.sendData(rhand.getZ());
+    /**
+     * The class constructor.
+     */
+    public KinectInstance() {
+        if (propCenterZeroPoint) {
+            xOffset = 320;
+            yOffset = 240;
+        } else {
+            xOffset = 0;
+            yOffset = 0;
+        }
+        sendListener = new SkeletonListener() {
 
-				Point3D lfoot = skel.leftFoot;
-				opLeftFootX.sendData(lfoot.getX()-xOffset);
-				opLeftFootY.sendData(lfoot.getY()-yOffset);
-				opLeftFootZ.sendData(lfoot.getZ());
+            @Override
+            public void skeletonUpdate(Skeleton skel) {
+                Point3D head = skel.head;
+                opHeadX.sendData(head.getX() - xOffset);
+                opHeadY.sendData(head.getY() - yOffset);
+                opHeadZ.sendData(head.getZ());
 
-				Point3D rfoot = skel.rightFoot;
-				opRightFootX.sendData(rfoot.getX()-xOffset);
-				opRightFootY.sendData(rfoot.getY()-yOffset);
-				opRightFootZ.sendData(rfoot.getZ());
-			}
-		};
-	}
+                Point3D lhand = skel.leftHand;
+                opLeftHandX.sendData(lhand.getX() - xOffset);
+                opLeftHandY.sendData(lhand.getY() - yOffset);
+                opLeftHandZ.sendData(lhand.getZ());
 
-	/**
-	 * returns an Input Port.
-	 * 
-	 * @param portID
-	 *            the name of the port
-	 * @return the input port or null if not found
-	 */
-	public IRuntimeInputPort getInputPort(String portID) {
-		return null;
-	}
+                Point3D rhand = skel.rightHand;
+                opRightHandX.sendData(rhand.getX() - xOffset);
+                opRightHandY.sendData(rhand.getY() - yOffset);
+                opRightHandZ.sendData(rhand.getZ());
 
-	/**
-	 * returns an Output Port.
-	 * 
-	 * @param portID
-	 *            the name of the port
-	 * @return the output port or null if not found
-	 */
-	public IRuntimeOutputPort getOutputPort(String portID) {
-		if ("headX".equalsIgnoreCase(portID)) {
-			return opHeadX;
-		}
-		if ("headY".equalsIgnoreCase(portID)) {
-			return opHeadY;
-		}
-		if ("headZ".equalsIgnoreCase(portID)) {
-			return opHeadZ;
-		}
-		if ("leftHandX".equalsIgnoreCase(portID)) {
-			return opLeftHandX;
-		}
-		if ("leftHandY".equalsIgnoreCase(portID)) {
-			return opLeftHandY;
-		}
-		if ("leftHandZ".equalsIgnoreCase(portID)) {
-			return opLeftHandZ;
-		}
-		if ("rightHandX".equalsIgnoreCase(portID)) {
-			return opRightHandX;
-		}
-		if ("rightHandY".equalsIgnoreCase(portID)) {
-			return opRightHandY;
-		}
-		if ("rightHandZ".equalsIgnoreCase(portID)) {
-			return opRightHandZ;
-		}
-		if ("rightFootX".equalsIgnoreCase(portID)) {
-			return opRightFootX;
-		}
-		if ("rightFootX".equalsIgnoreCase(portID)) {
-			return opRightFootX;
-		}
-		if ("rightFootY".equalsIgnoreCase(portID)) {
-			return opRightFootY;
-		}
-		if ("rightFootZ".equalsIgnoreCase(portID)) {
-			return opRightFootZ;
-		}
-		if ("leftFootX".equalsIgnoreCase(portID)) {
-			return opRightFootX;
-		}
-		if ("leftFootY".equalsIgnoreCase(portID)) {
-			return opRightFootY;
-		}
-		if ("leftFootZ".equalsIgnoreCase(portID)) {
-			return opRightFootZ;
-		}
-		return null;
-	}
+                Point3D lfoot = skel.leftFoot;
+                opLeftFootX.sendData(lfoot.getX() - xOffset);
+                opLeftFootY.sendData(lfoot.getY() - yOffset);
+                opLeftFootZ.sendData(lfoot.getZ());
 
-	/**
-	 * returns an Event Listener Port.
-	 * 
-	 * @param eventPortID
-	 *            the name of the port
-	 * @return the EventListener port or null if not found
-	 */
-	public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+                Point3D rfoot = skel.rightFoot;
+                opRightFootX.sendData(rfoot.getX() - xOffset);
+                opRightFootY.sendData(rfoot.getY() - yOffset);
+                opRightFootZ.sendData(rfoot.getZ());
+            }
+        };
+    }
 
-		return null;
-	}
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        return null;
+    }
 
-	/**
-	 * returns an Event Triggerer Port.
-	 * 
-	 * @param eventPortID
-	 *            the name of the port
-	 * @return the EventTriggerer port or null if not found
-	 */
-	public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+    /**
+     * returns an Output Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
+     */
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("headX".equalsIgnoreCase(portID)) {
+            return opHeadX;
+        }
+        if ("headY".equalsIgnoreCase(portID)) {
+            return opHeadY;
+        }
+        if ("headZ".equalsIgnoreCase(portID)) {
+            return opHeadZ;
+        }
+        if ("leftHandX".equalsIgnoreCase(portID)) {
+            return opLeftHandX;
+        }
+        if ("leftHandY".equalsIgnoreCase(portID)) {
+            return opLeftHandY;
+        }
+        if ("leftHandZ".equalsIgnoreCase(portID)) {
+            return opLeftHandZ;
+        }
+        if ("rightHandX".equalsIgnoreCase(portID)) {
+            return opRightHandX;
+        }
+        if ("rightHandY".equalsIgnoreCase(portID)) {
+            return opRightHandY;
+        }
+        if ("rightHandZ".equalsIgnoreCase(portID)) {
+            return opRightHandZ;
+        }
+        if ("rightFootX".equalsIgnoreCase(portID)) {
+            return opRightFootX;
+        }
+        if ("rightFootX".equalsIgnoreCase(portID)) {
+            return opRightFootX;
+        }
+        if ("rightFootY".equalsIgnoreCase(portID)) {
+            return opRightFootY;
+        }
+        if ("rightFootZ".equalsIgnoreCase(portID)) {
+            return opRightFootZ;
+        }
+        if ("leftFootX".equalsIgnoreCase(portID)) {
+            return opRightFootX;
+        }
+        if ("leftFootY".equalsIgnoreCase(portID)) {
+            return opRightFootY;
+        }
+        if ("leftFootZ".equalsIgnoreCase(portID)) {
+            return opRightFootZ;
+        }
+        return null;
+    }
 
-		return null;
-	}
+    /**
+     * returns an Event Listener Port.
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
+     */
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
 
-	/**
-	 * returns the value of the given property.
-	 * 
-	 * @param propertyName
-	 *            the name of the property
-	 * @return the property value or null if not found
-	 */
-	public Object getRuntimePropertyValue(String propertyName) {
-		if ("visualize".equalsIgnoreCase(propertyName)) {
-			return propVisualize;
-		}
+        return null;
+    }
 
-		return null;
-	}
+    /**
+     * returns an Event Triggerer Port.
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
+     */
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
 
-	/**
-	 * sets a new value for the given property.
-	 * 
-	 * @param propertyName
-	 *            the name of the property
-	 * @param newValue
-	 *            the desired property value or null if not found
-	 */
-	public Object setRuntimePropertyValue(String propertyName, Object newValue) {
-		if ("visualize".equalsIgnoreCase(propertyName)) {
-			final Object oldValue = propVisualize;
-			if ("true".equalsIgnoreCase((String) newValue)) {
-				propVisualize = true;
-			} else if ("false".equalsIgnoreCase((String) newValue)) {
-				propVisualize = false;
-			}
-			return oldValue;
-		}
+        return null;
+    }
 
-		return null;
-	}
+    /**
+     * returns the value of the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
+     */
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("visualize".equalsIgnoreCase(propertyName)) {
+            return propVisualize;
+        }
 
-	/**
-	 * Input Ports for receiving values.
-	 */
+        return null;
+    }
 
-	/**
-	 * Event Listerner Ports.
-	 */
+    /**
+     * sets a new value for the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
+     */
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("visualize".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propVisualize;
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propVisualize = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propVisualize = false;
+            }
+            return oldValue;
+        }
 
-	/**
-	 * called when model is started.
-	 */
-	@Override
-	public void start() {
-		java.lang.Runtime runtime = Runtime.getRuntime();
-		try {
-			// dirty workaround to circumvent random freezes of the openni driver and pointserver
-			runtime.exec("taskkill /F /IM XnSensorServer.exe");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			scriptNode = new OutArg<ScriptNode>();
-			File f = new File("data/sur");
-			if (!f.exists()) {
-				f.mkdir();
-			}
-			context = Context.createFromXmlFile(SAMPLE_XML_FILE, scriptNode);
-			depthGen = DepthGenerator.create(context);
-			userGen = UserGenerator.create(context);
-			skelCap = userGen.getSkeletonCapability();
-		} catch (GeneralException e) {
-			AstericsErrorHandling.instance.reportError(this, String.format("Error initializing the openni Framework. Reason: " + e.getMessage()));
-		}
-		super.start();
-		st = new SkeletonTracker(context, depthGen, userGen, skelCap);
-		st.start();
-		if (propVisualize) {
-			sp = new SkeletonPanel();
-			st.addSkeletonListener(sp);
-			f = new JFrame();
-			f.setSize(640, 480);
-			f.add(sp);
-			f.setVisible(true);
-		}
-		st.addSkeletonListener(sendListener);
-		AstericsErrorHandling.instance.getLogger().fine("Kinect initialized successfully! Waiting for user.");
-	}
+        return null;
+    }
 
-	/**
-	 * called when model is paused. Stops the Thread 
-	 */
-	@Override
-	public void pause() {
-		super.pause();
-		if (st != null)
-			st.pauseTracking();
-	}
+    /**
+     * Input Ports for receiving values.
+     */
 
-	/**
-	 * called when model is resumed.
-	 */
-	@Override
-	public void resume() {
-		super.resume();
-		st.resumeTracking();
-	}
+    /**
+     * Event Listerner Ports.
+     */
 
-	/**
-	 * called when model is stopped.
-	 */
-	@Override
-	public void stop() {
-		super.stop();
-		if (propVisualize)
-			f.setVisible(false);
-		if (st != null) {
-			st.stopTracking();
-			try {
-				st.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        java.lang.Runtime runtime = Runtime.getRuntime();
+        try {
+            // dirty workaround to circumvent random freezes of the openni
+            // driver and pointserver
+            runtime.exec("taskkill /F /IM XnSensorServer.exe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+        try {
+            scriptNode = new OutArg<ScriptNode>();
+            File f = new File("data/sur");
+            if (!f.exists()) {
+                f.mkdir();
+            }
+            context = Context.createFromXmlFile(SAMPLE_XML_FILE, scriptNode);
+            depthGen = DepthGenerator.create(context);
+            userGen = UserGenerator.create(context);
+            skelCap = userGen.getSkeletonCapability();
+        } catch (GeneralException e) {
+            AstericsErrorHandling.instance.reportError(this,
+                    String.format("Error initializing the openni Framework. Reason: " + e.getMessage()));
+        }
+        super.start();
+        st = new SkeletonTracker(context, depthGen, userGen, skelCap);
+        st.start();
+        if (propVisualize) {
+            sp = new SkeletonPanel();
+            st.addSkeletonListener(sp);
+            f = new JFrame();
+            f.setSize(640, 480);
+            f.add(sp);
+            f.setVisible(true);
+        }
+        st.addSkeletonListener(sendListener);
+        AstericsErrorHandling.instance.getLogger().fine("Kinect initialized successfully! Waiting for user.");
+    }
 
-	/**
-	 * implementation of the default output port for sending double
-	 */
-	public class OutputPort extends DefaultRuntimeOutputPort {
-		public void sendData(double data) {
-			super.sendData(ConversionUtils.doubleToBytes(data));
-		}
-	}
+    /**
+     * called when model is paused. Stops the Thread
+     */
+    @Override
+    public void pause() {
+        super.pause();
+        if (st != null) {
+            st.pauseTracking();
+        }
+    }
+
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+        st.resumeTracking();
+    }
+
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        super.stop();
+        if (propVisualize) {
+            f.setVisible(false);
+        }
+        if (st != null) {
+            st.stopTracking();
+            try {
+                st.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * implementation of the default output port for sending double
+     */
+    public class OutputPort extends DefaultRuntimeOutputPort {
+        public void sendData(double data) {
+            super.sendData(ConversionUtils.doubleToBytes(data));
+        }
+    }
 }

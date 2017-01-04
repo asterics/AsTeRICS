@@ -1,4 +1,5 @@
 package eu.asterics.component.sensor.kinectj4k;
+
 import edu.ufl.digitalworlds.j4k.J4KSDK;
 import edu.ufl.digitalworlds.j4k.Skeleton;
 
@@ -27,55 +28,75 @@ import edu.ufl.digitalworlds.j4k.Skeleton;
  * 
  */
 
-public class Kinect extends J4KSDK{
-	
-	KinectJ4KInstance astericskinect;
-	
-	public Kinect (KinectJ4KInstance kinectinstance)
-	{
-		super();
-		astericskinect=kinectinstance;		
-	}
-	
-	@Override
-	public void onColorFrameEvent(byte[] color_frame) {}
+public class Kinect extends J4KSDK {
 
-	@Override
-	public void onDepthFrameEvent(short[] depth_frame, byte[] body_index, float[] xyz, float[] uv) {}
+    KinectJ4KInstance astericskinect;
 
-	@Override
-	public void onSkeletonFrameEvent(boolean[] skeleton_tracked, float[] positions,float[] orientations, byte[] joint_status) {
-		Skeleton skeletons[]=new Skeleton[getMaxNumberOfSkeletons()];
-		int id=0;
-        for(int i=0;i<getMaxNumberOfSkeletons();i++)
-        {
-          skeletons[i]=Skeleton.getSkeleton(i, skeleton_tracked, positions, orientations, joint_status, this);
-          if(skeletons[i].isTracked())
-        	  id=i;
+    public Kinect(KinectJ4KInstance kinectinstance) {
+        super();
+        astericskinect = kinectinstance;
+    }
+
+    @Override
+    public void onColorFrameEvent(byte[] color_frame) {
+    }
+
+    @Override
+    public void onDepthFrameEvent(short[] depth_frame, byte[] body_index, float[] xyz, float[] uv) {
+    }
+
+    @Override
+    public void onSkeletonFrameEvent(boolean[] skeleton_tracked, float[] positions, float[] orientations,
+            byte[] joint_status) {
+        Skeleton skeletons[] = new Skeleton[getMaxNumberOfSkeletons()];
+        int id = 0;
+        for (int i = 0; i < getMaxNumberOfSkeletons(); i++) {
+            skeletons[i] = Skeleton.getSkeleton(i, skeleton_tracked, positions, orientations, joint_status, this);
+            if (skeletons[i].isTracked()) {
+                id = i;
+            }
         }
-        
+
         Skeleton skeleton = skeletons[id];
-        
-        astericskinect.setJointPointsFoot(skeleton.get3DJointX(Skeleton.FOOT_LEFT), skeleton.get3DJointY(Skeleton.FOOT_LEFT), skeleton.get3DJointZ(Skeleton.FOOT_LEFT), 
-        		skeleton.get3DJointX(Skeleton.FOOT_RIGHT), skeleton.get3DJointY(Skeleton.FOOT_RIGHT), skeleton.get3DJointZ(Skeleton.FOOT_RIGHT));
-        astericskinect.setJointPointsAnkle(skeleton.get3DJointX(Skeleton.ANKLE_LEFT), skeleton.get3DJointY(Skeleton.ANKLE_LEFT), skeleton.get3DJointZ(Skeleton.ANKLE_LEFT), 
-        		skeleton.get3DJointX(Skeleton.ANKLE_RIGHT), skeleton.get3DJointY(Skeleton.ANKLE_RIGHT), skeleton.get3DJointZ(Skeleton.ANKLE_RIGHT));
-        astericskinect.setJointPointShoulder(skeleton.get3DJointX(Skeleton.SHOULDER_LEFT), skeleton.get3DJointY(Skeleton.SHOULDER_LEFT), skeleton.get3DJointZ(Skeleton.SHOULDER_LEFT),
-        		skeleton.get3DJointX(Skeleton.SPINE_SHOULDER), skeleton.get3DJointY(Skeleton.SPINE_SHOULDER), skeleton.get3DJointZ(Skeleton.SPINE_SHOULDER),
-        		skeleton.get3DJointX(Skeleton.SHOULDER_RIGHT), skeleton.get3DJointY(Skeleton.SHOULDER_RIGHT), skeleton.get3DJointZ(Skeleton.SHOULDER_RIGHT));
-        astericskinect.setJointPointsKnee(skeleton.get3DJointX(Skeleton.KNEE_LEFT), skeleton.get3DJointY(Skeleton.KNEE_LEFT), skeleton.get3DJointZ(Skeleton.KNEE_LEFT), 
-        		skeleton.get3DJointX(Skeleton.KNEE_RIGHT), skeleton.get3DJointY(Skeleton.KNEE_RIGHT), skeleton.get3DJointZ(Skeleton.KNEE_RIGHT));
-        astericskinect.setJointPointHip(skeleton.get3DJointX(Skeleton.HIP_LEFT), skeleton.get3DJointY(Skeleton.HIP_LEFT), skeleton.get3DJointZ(Skeleton.HIP_LEFT), 
-        		skeleton.get3DJointX(Skeleton.SPINE_BASE), skeleton.get3DJointY(Skeleton.SPINE_BASE), skeleton.get3DJointZ(Skeleton.SPINE_BASE), 
-        		skeleton.get3DJointX(Skeleton.HIP_RIGHT), skeleton.get3DJointY(Skeleton.HIP_RIGHT), skeleton.get3DJointZ(Skeleton.HIP_RIGHT));
-        astericskinect.setJointPointSpine(skeleton.get3DJointX(Skeleton.SPINE_MID), skeleton.get3DJointY(Skeleton.SPINE_MID), skeleton.get3DJointZ(Skeleton.SPINE_MID));
-        astericskinect.setJointPointElbow(skeleton.get3DJointX(Skeleton.ELBOW_LEFT), skeleton.get3DJointY(Skeleton.ELBOW_LEFT), skeleton.get3DJointZ(Skeleton.ELBOW_LEFT), 
-        		skeleton.get3DJointX(Skeleton.ELBOW_RIGHT), skeleton.get3DJointY(Skeleton.ELBOW_RIGHT), skeleton.get3DJointZ(Skeleton.ELBOW_RIGHT));
-        astericskinect.setJointPointHand(skeleton.get3DJointX(Skeleton.HAND_LEFT), skeleton.get3DJointY(Skeleton.HAND_LEFT), skeleton.get3DJointZ(Skeleton.HAND_LEFT), 
-        		skeleton.get3DJointX(Skeleton.HAND_RIGHT), skeleton.get3DJointY(Skeleton.HAND_RIGHT), skeleton.get3DJointZ(Skeleton.HAND_RIGHT));
-        astericskinect.setJointPointWrist(skeleton.get3DJointX(Skeleton.WRIST_LEFT), skeleton.get3DJointY(Skeleton.WRIST_LEFT), skeleton.get3DJointZ(Skeleton.WRIST_LEFT), 
-        		skeleton.get3DJointX(Skeleton.WRIST_RIGHT), skeleton.get3DJointY(Skeleton.WRIST_RIGHT), skeleton.get3DJointZ(Skeleton.WRIST_RIGHT));
-        astericskinect.setJointPointHead(skeleton.get3DJointX(Skeleton.HEAD), skeleton.get3DJointY(Skeleton.HEAD), skeleton.get3DJointZ(Skeleton.HEAD));
-	}	
-	
+
+        astericskinect.setJointPointsFoot(skeleton.get3DJointX(Skeleton.FOOT_LEFT),
+                skeleton.get3DJointY(Skeleton.FOOT_LEFT), skeleton.get3DJointZ(Skeleton.FOOT_LEFT),
+                skeleton.get3DJointX(Skeleton.FOOT_RIGHT), skeleton.get3DJointY(Skeleton.FOOT_RIGHT),
+                skeleton.get3DJointZ(Skeleton.FOOT_RIGHT));
+        astericskinect.setJointPointsAnkle(skeleton.get3DJointX(Skeleton.ANKLE_LEFT),
+                skeleton.get3DJointY(Skeleton.ANKLE_LEFT), skeleton.get3DJointZ(Skeleton.ANKLE_LEFT),
+                skeleton.get3DJointX(Skeleton.ANKLE_RIGHT), skeleton.get3DJointY(Skeleton.ANKLE_RIGHT),
+                skeleton.get3DJointZ(Skeleton.ANKLE_RIGHT));
+        astericskinect.setJointPointShoulder(skeleton.get3DJointX(Skeleton.SHOULDER_LEFT),
+                skeleton.get3DJointY(Skeleton.SHOULDER_LEFT), skeleton.get3DJointZ(Skeleton.SHOULDER_LEFT),
+                skeleton.get3DJointX(Skeleton.SPINE_SHOULDER), skeleton.get3DJointY(Skeleton.SPINE_SHOULDER),
+                skeleton.get3DJointZ(Skeleton.SPINE_SHOULDER), skeleton.get3DJointX(Skeleton.SHOULDER_RIGHT),
+                skeleton.get3DJointY(Skeleton.SHOULDER_RIGHT), skeleton.get3DJointZ(Skeleton.SHOULDER_RIGHT));
+        astericskinect.setJointPointsKnee(skeleton.get3DJointX(Skeleton.KNEE_LEFT),
+                skeleton.get3DJointY(Skeleton.KNEE_LEFT), skeleton.get3DJointZ(Skeleton.KNEE_LEFT),
+                skeleton.get3DJointX(Skeleton.KNEE_RIGHT), skeleton.get3DJointY(Skeleton.KNEE_RIGHT),
+                skeleton.get3DJointZ(Skeleton.KNEE_RIGHT));
+        astericskinect.setJointPointHip(skeleton.get3DJointX(Skeleton.HIP_LEFT),
+                skeleton.get3DJointY(Skeleton.HIP_LEFT), skeleton.get3DJointZ(Skeleton.HIP_LEFT),
+                skeleton.get3DJointX(Skeleton.SPINE_BASE), skeleton.get3DJointY(Skeleton.SPINE_BASE),
+                skeleton.get3DJointZ(Skeleton.SPINE_BASE), skeleton.get3DJointX(Skeleton.HIP_RIGHT),
+                skeleton.get3DJointY(Skeleton.HIP_RIGHT), skeleton.get3DJointZ(Skeleton.HIP_RIGHT));
+        astericskinect.setJointPointSpine(skeleton.get3DJointX(Skeleton.SPINE_MID),
+                skeleton.get3DJointY(Skeleton.SPINE_MID), skeleton.get3DJointZ(Skeleton.SPINE_MID));
+        astericskinect.setJointPointElbow(skeleton.get3DJointX(Skeleton.ELBOW_LEFT),
+                skeleton.get3DJointY(Skeleton.ELBOW_LEFT), skeleton.get3DJointZ(Skeleton.ELBOW_LEFT),
+                skeleton.get3DJointX(Skeleton.ELBOW_RIGHT), skeleton.get3DJointY(Skeleton.ELBOW_RIGHT),
+                skeleton.get3DJointZ(Skeleton.ELBOW_RIGHT));
+        astericskinect.setJointPointHand(skeleton.get3DJointX(Skeleton.HAND_LEFT),
+                skeleton.get3DJointY(Skeleton.HAND_LEFT), skeleton.get3DJointZ(Skeleton.HAND_LEFT),
+                skeleton.get3DJointX(Skeleton.HAND_RIGHT), skeleton.get3DJointY(Skeleton.HAND_RIGHT),
+                skeleton.get3DJointZ(Skeleton.HAND_RIGHT));
+        astericskinect.setJointPointWrist(skeleton.get3DJointX(Skeleton.WRIST_LEFT),
+                skeleton.get3DJointY(Skeleton.WRIST_LEFT), skeleton.get3DJointZ(Skeleton.WRIST_LEFT),
+                skeleton.get3DJointX(Skeleton.WRIST_RIGHT), skeleton.get3DJointY(Skeleton.WRIST_RIGHT),
+                skeleton.get3DJointZ(Skeleton.WRIST_RIGHT));
+        astericskinect.setJointPointHead(skeleton.get3DJointX(Skeleton.HEAD), skeleton.get3DJointY(Skeleton.HEAD),
+                skeleton.get3DJointZ(Skeleton.HEAD));
+    }
+
 }

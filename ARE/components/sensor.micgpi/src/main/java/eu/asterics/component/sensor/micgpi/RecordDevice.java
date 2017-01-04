@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -26,17 +25,17 @@
  */
 package eu.asterics.component.sensor.micgpi;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.Line.Info;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.TargetDataLine;
 
 /**
  *
@@ -52,34 +51,34 @@ public class RecordDevice {
                 if (info.getDescription().contains("Capture") == false || info.getName().startsWith(name) == false) {
                     continue;
                 }
-                AudioFormat format = new AudioFormat(sampleRate,8,1,true,true);
-                line = AudioSystem.getTargetDataLine(format,info);
+                AudioFormat format = new AudioFormat(sampleRate, 8, 1, true, true);
+                line = AudioSystem.getTargetDataLine(format, info);
             } catch (LineUnavailableException ex) {
                 Logger.getLogger(RecordDevice.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return line;
     }
-	
-	public TargetDataLine getDefaultTargetDataLine(int sampleRate) {
-		TargetDataLine line = null;
-		AudioFormat format = new AudioFormat(sampleRate,8,1,true,true);
-		DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
-		try {
-			line = (TargetDataLine) AudioSystem.getLine(info);
-		} catch (LineUnavailableException ex) {
-			
-		}
-		return line;
-	}
-    
+
+    public TargetDataLine getDefaultTargetDataLine(int sampleRate) {
+        TargetDataLine line = null;
+        AudioFormat format = new AudioFormat(sampleRate, 8, 1, true, true);
+        DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
+        try {
+            line = (TargetDataLine) AudioSystem.getLine(info);
+        } catch (LineUnavailableException ex) {
+
+        }
+        return line;
+    }
+
     public List<String> getCaptureDeviceNames() {
         ArrayList<String> devNames = new ArrayList<>();
         Mixer.Info[] mixerInfos = AudioSystem.getMixerInfo();
         for (Mixer.Info info : mixerInfos) {
-                if (info.getDescription().contains("Capture") == true) {
-                    devNames.add(info.getName());
-                }
+            if (info.getDescription().contains("Capture") == true) {
+                devNames.add(info.getName());
+            }
         }
         return devNames;
     }

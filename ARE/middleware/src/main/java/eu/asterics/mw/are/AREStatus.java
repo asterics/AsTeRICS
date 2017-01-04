@@ -1,6 +1,5 @@
 package eu.asterics.mw.are;
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -26,43 +25,32 @@ package eu.asterics.mw.are;
  *
  */
 
-
 /**
- * @author 
- * This class depicts the status of the ARE. The status can be one of the following:
- * unknown, ok, deployed, running, paused, error or fatal error.
+ * @author This class depicts the status of the ARE. The status can be one of
+ *         the following: unknown, ok, deployed, running, paused, error or fatal
+ *         error.
  * 
- * ARE Status Definition:
- * UNKNOWN		-	Initial state
- * OK			-	ARE is running, ready to deploy a model
- * DEPLOYED		-	A model has been deployed, ready to run the model
- * RUNNING		-	A model is running on the ARE
- * PAUSED		-	A model has been deployed, the model is in pause mode
- * ERROR		-	An error occurred
- * FATAL_ERROR	-	A fatal error occurred, model or deployment aborted.
- * Date: 
+ *         ARE Status Definition: UNKNOWN - Initial state OK - ARE is running,
+ *         ready to deploy a model DEPLOYED - A model has been deployed, ready
+ *         to run the model RUNNING - A model is running on the ARE PAUSED - A
+ *         model has been deployed, the model is in pause mode ERROR - An error
+ *         occurred FATAL_ERROR - A fatal error occurred, model or deployment
+ *         aborted. Date:
  */
 
 public enum AREStatus {
 
-	UNKNOWN("unknown"),
-    OK("ok"),
-    DEPLOYED("deployed"),
-	RUNNING("running"),
-	PAUSED("paused"),
-	ERROR("error"),
-	FATAL_ERROR("fatal error");
+    UNKNOWN("unknown"), OK("ok"), DEPLOYED("deployed"), RUNNING("running"), PAUSED("paused"), ERROR(
+            "error"), FATAL_ERROR("fatal error");
 
     private final String status;
 
-    private AREStatus(final String status)
-    {
+    private AREStatus(final String status) {
         this.status = status;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return status;
     }
 }

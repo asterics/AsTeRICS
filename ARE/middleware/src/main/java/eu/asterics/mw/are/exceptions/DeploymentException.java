@@ -25,16 +25,12 @@ package eu.asterics.mw.are.exceptions;
  *
  */
 
-
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * Date: Aug 23, 2010
- * Time: 3:40:15 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 23, 2010 Time:
+ *         3:40:15 PM
  */
-public class DeploymentException extends Exception
-{
-    public DeploymentException(final String message)
-    {
+public class DeploymentException extends Exception {
+    public DeploymentException(final String message) {
         super(message);
     }
 }

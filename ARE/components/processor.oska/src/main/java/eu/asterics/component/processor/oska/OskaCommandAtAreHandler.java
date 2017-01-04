@@ -29,25 +29,26 @@ import eu.asterics.mw.services.AREServices;
 /**
  * OskaCommandAtAreHandler handles the @ARE commands that can be transferred by
  * the OSKA. Currently only handles the 'startmodel' argument.
+ * 
  * @author Christoph Weiss [weissch@technikum-wien.at]
  *
  */
 class OskaCommandAtAreHandler implements IOskaActionStringHandler {
 
-	/**
-	 * Checks whether the command directed at ARE is a start model command and
-	 * if so executes it
-	 * @param arguments the arguments of the command
-	 * @return true if the command could be handled, false otherwise
-	 */
-	@Override
-	public void handleActionString(String arguments) {
-		int idx = arguments.indexOf("startmodel ");  
-		if ( idx >= 0)
-		{
-			AREServices.instance.deployFile(
-					arguments.substring(idx + "startmodel ".length()));
-		}
-	}
+    /**
+     * Checks whether the command directed at ARE is a start model command and
+     * if so executes it
+     * 
+     * @param arguments
+     *            the arguments of the command
+     * @return true if the command could be handled, false otherwise
+     */
+    @Override
+    public void handleActionString(String arguments) {
+        int idx = arguments.indexOf("startmodel ");
+        if (idx >= 0) {
+            AREServices.instance.deployFile(arguments.substring(idx + "startmodel ".length()));
+        }
+    }
 
 }

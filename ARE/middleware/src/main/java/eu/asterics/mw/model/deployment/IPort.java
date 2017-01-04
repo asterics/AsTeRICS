@@ -28,12 +28,10 @@ package eu.asterics.mw.model.deployment;
 import eu.asterics.mw.model.DataType;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:22:33 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:22:33 PM
  */
-public interface IPort extends IPropertyful
-{
+public interface IPort extends IPropertyful {
     public String getPortType();
 
     public DataType getPortDataType();

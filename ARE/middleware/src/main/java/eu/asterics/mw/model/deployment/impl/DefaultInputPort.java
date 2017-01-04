@@ -33,37 +33,30 @@ import eu.asterics.mw.model.deployment.IInputPort;
 
 /**
  * @author Costas Kakpusis [kakousis@cs.ucy.ac.cy]
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:03:23 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:03:23 PM
  */
-public class DefaultInputPort extends DefaultPort implements IInputPort
-{
+public class DefaultInputPort extends DefaultPort implements IInputPort {
     private final String multiplicityID;
 
-    
-    public DefaultInputPort(final String portType,
-                            final DataType portDataType,
-                            final String multiplicityID,
-                            final Map<String, Object> propertyValues, 
-                            GroupReferences groupReferences)
-    {
+    public DefaultInputPort(final String portType, final DataType portDataType, final String multiplicityID,
+            final Map<String, Object> propertyValues, GroupReferences groupReferences) {
         super(portType, portDataType, propertyValues);
         this.multiplicityID = multiplicityID;
-       
+
     }
 
-    public String getMultiplicityID()
-    {
+    @Override
+    public String getMultiplicityID() {
         return multiplicityID;
     }
-    
-    public Object getPropertyValue(String propertyName)
-    {
+
+    @Override
+    public Object getPropertyValue(String propertyName) {
         return super.getPropertyValue(propertyName);
     }
-    
-    public String getPortID(){
-    	return this.portType;
+
+    public String getPortID() {
+        return this.portType;
     }
 }

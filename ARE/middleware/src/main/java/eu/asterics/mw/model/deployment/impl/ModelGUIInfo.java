@@ -27,201 +27,165 @@ package eu.asterics.mw.model.deployment.impl;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.Iterator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import eu.asterics.mw.are.AREProperties;
-import eu.asterics.mw.model.deployment.IEventEdge;
+public class ModelGUIInfo {
+    private boolean decoration = true;
+    private boolean fullscreen = false;
+    private boolean valwaysOnTop = false;
+    private boolean toSysTray = false;
+    private boolean shopControlPanel = true;
+    private int posX;
+    private int posY;
+    private int width;
+    private int height;
 
-public class ModelGUIInfo 
-{
-	private boolean  decoration = true;
-	private boolean  fullscreen = false;
-	private boolean  valwaysOnTop = false;
-	private boolean  toSysTray = false; 
-	private boolean  shopControlPanel = true;
-	private int posX;
-	private int posY;
-	private int width;
-	private int height;
-	
-	public ModelGUIInfo(boolean decoration, boolean fullscreen,
-			boolean valwaysOnTop, boolean toSysTray, boolean shopControlPanel,
-			int posX, int posY, int width, int height) {
-		super();
-		this.decoration = decoration;
-		this.fullscreen = fullscreen;
-		this.valwaysOnTop = valwaysOnTop;
-		this.toSysTray = toSysTray;
-		this.shopControlPanel = shopControlPanel;
-		this.posX = posX;
-		this.posY = posY;
-		this.width = width;
-		this.height = height;
-	}
-	
-	
-	
-	@Override
-	public String toString() 
-	{
-		StringBuffer buf = new StringBuffer();
-		buf.append("decoration: ").append(decoration)
-			.append("\nfullscreen:").append(fullscreen)
-			.append("\nshopControlPanel: ").append(shopControlPanel)
-			.append("\ntoSysTray: ").append(toSysTray)
-			.append("\nvalwaysOnTop: ").append(valwaysOnTop)
-			.append("\nposX: ").append(posX)
-			.append("\nposY: ").append(posY)
-			.append("\nwidth: ").append(width)
-			.append("\nheight: ").append(height);
-		return buf.toString();
-	}
-	
-	public ModelGUIInfo(int posX, int posY, int width, int height) 
-	{
-		super();
-		this.posX = posX;
-		this.posY = posY;
-		this.width = width;
-		this.height = height;
-	}
-	
-	public Point getPosition()
-	{
-		return new Point(posX, posY);
-	}
-	
-	public Dimension getDimension()
-	{
-		return new Dimension(width, height);
-	}
+    public ModelGUIInfo(boolean decoration, boolean fullscreen, boolean valwaysOnTop, boolean toSysTray,
+            boolean shopControlPanel, int posX, int posY, int width, int height) {
+        super();
+        this.decoration = decoration;
+        this.fullscreen = fullscreen;
+        this.valwaysOnTop = valwaysOnTop;
+        this.toSysTray = toSysTray;
+        this.shopControlPanel = shopControlPanel;
+        this.posX = posX;
+        this.posY = posY;
+        this.width = width;
+        this.height = height;
+    }
 
+    @Override
+    public String toString() {
+        StringBuffer buf = new StringBuffer();
+        buf.append("decoration: ").append(decoration).append("\nfullscreen:").append(fullscreen)
+                .append("\nshopControlPanel: ").append(shopControlPanel).append("\ntoSysTray: ").append(toSysTray)
+                .append("\nvalwaysOnTop: ").append(valwaysOnTop).append("\nposX: ").append(posX).append("\nposY: ")
+                .append(posY).append("\nwidth: ").append(width).append("\nheight: ").append(height);
+        return buf.toString();
+    }
+
+    public ModelGUIInfo(int posX, int posY, int width, int height) {
+        super();
+        this.posX = posX;
+        this.posY = posY;
+        this.width = width;
+        this.height = height;
+    }
+
+    public Point getPosition() {
+        return new Point(posX, posY);
+    }
+
+    public Dimension getDimension() {
+        return new Dimension(width, height);
+    }
 
     public void appendXMLElements(Document doc) {
 
-		Element modelGUI = (Element) doc.getElementsByTagName("modelGUI").item(0);
+        Element modelGUI = (Element) doc.getElementsByTagName("modelGUI").item(0);
 
-		Element decoration = doc.createElement("Decoration");
-		modelGUI.appendChild(decoration);
-		decoration.setTextContent(Boolean.toString(this.decoration));
+        Element decoration = doc.createElement("Decoration");
+        modelGUI.appendChild(decoration);
+        decoration.setTextContent(Boolean.toString(this.decoration));
 
-		Element fullscreen = doc.createElement("Fullscreen");
-		modelGUI.appendChild(fullscreen);
-		fullscreen.setTextContent(Boolean.toString(this.fullscreen));
+        Element fullscreen = doc.createElement("Fullscreen");
+        modelGUI.appendChild(fullscreen);
+        fullscreen.setTextContent(Boolean.toString(this.fullscreen));
 
-		Element alwaysOnTop = doc.createElement("AlwaysOnTop");
-		modelGUI.appendChild(alwaysOnTop);
-		alwaysOnTop.setTextContent(Boolean.toString(this.valwaysOnTop));
+        Element alwaysOnTop = doc.createElement("AlwaysOnTop");
+        modelGUI.appendChild(alwaysOnTop);
+        alwaysOnTop.setTextContent(Boolean.toString(this.valwaysOnTop));
 
-		Element toSystemTray = doc.createElement("ToSystemTray");
-		modelGUI.appendChild(toSystemTray);
-		toSystemTray.setTextContent(Boolean.toString(this.toSysTray));
+        Element toSystemTray = doc.createElement("ToSystemTray");
+        modelGUI.appendChild(toSystemTray);
+        toSystemTray.setTextContent(Boolean.toString(this.toSysTray));
 
-		Element shopControlPanel = doc.createElement("ShopControlPanel");
-		modelGUI.appendChild(shopControlPanel);
-		shopControlPanel.setTextContent(Boolean.toString(this.shopControlPanel));
+        Element shopControlPanel = doc.createElement("ShopControlPanel");
+        modelGUI.appendChild(shopControlPanel);
+        shopControlPanel.setTextContent(Boolean.toString(this.shopControlPanel));
 
-		Element areGUIWindow = doc.createElement("AREGUIWindow");
-		modelGUI.appendChild(areGUIWindow);
-	
-		Element posX = doc.createElement("posX");
-		areGUIWindow.appendChild(posX);
-		posX.setTextContent(Integer.toString(this.posX));
+        Element areGUIWindow = doc.createElement("AREGUIWindow");
+        modelGUI.appendChild(areGUIWindow);
 
-		Element posY = doc.createElement("posY");
-		areGUIWindow.appendChild(posY);
-		posY.setTextContent(Integer.toString(this.posY));
+        Element posX = doc.createElement("posX");
+        areGUIWindow.appendChild(posX);
+        posX.setTextContent(Integer.toString(this.posX));
 
-		Element width = doc.createElement("width");
-		areGUIWindow.appendChild(width);
-		width.setTextContent(Integer.toString(this.width));
+        Element posY = doc.createElement("posY");
+        areGUIWindow.appendChild(posY);
+        posY.setTextContent(Integer.toString(this.posY));
 
-		Element height = doc.createElement("height");
-		areGUIWindow.appendChild(height);
-		height.setTextContent(Integer.toString(this.height));
-	}
+        Element width = doc.createElement("width");
+        areGUIWindow.appendChild(width);
+        width.setTextContent(Integer.toString(this.width));
 
+        Element height = doc.createElement("height");
+        areGUIWindow.appendChild(height);
+        height.setTextContent(Integer.toString(this.height));
+    }
 
+    /**
+     * @return the decoration
+     */
+    public boolean isDecoration() {
+        return decoration;
+    }
 
-	/**
-	 * @return the decoration
-	 */
-	public boolean isDecoration() {
-		return decoration;
-	}
+    /**
+     * @return the fullscreen
+     */
+    public boolean isFullscreen() {
+        return fullscreen;
+    }
 
+    /**
+     * @return the valwaysOnTop
+     */
+    public boolean isValwaysOnTop() {
+        return valwaysOnTop;
+    }
 
+    /**
+     * @return the toSysTray
+     */
+    public boolean isToSysTray() {
+        return toSysTray;
+    }
 
-	/**
-	 * @return the fullscreen
-	 */
-	public boolean isFullscreen() {
-		return fullscreen;
-	}
+    /**
+     * @return the shopControlPanel
+     */
+    public boolean isShopControlPanel() {
+        return shopControlPanel;
+    }
 
+    /**
+     * @return the posX
+     */
+    public int getPosX() {
+        return posX;
+    }
 
+    /**
+     * @return the posY
+     */
+    public int getPosY() {
+        return posY;
+    }
 
-	/**
-	 * @return the valwaysOnTop
-	 */
-	public boolean isValwaysOnTop() {
-		return valwaysOnTop;
-	}
+    /**
+     * @return the width
+     */
+    public int getWidth() {
+        return width;
+    }
 
-
-
-	/**
-	 * @return the toSysTray
-	 */
-	public boolean isToSysTray() {
-		return toSysTray;
-	}
-
-
-
-	/**
-	 * @return the shopControlPanel
-	 */
-	public boolean isShopControlPanel() {
-		return shopControlPanel;
-	}
-
-
-
-	/**
-	 * @return the posX
-	 */
-	public int getPosX() {
-		return posX;
-	}
-
-
-
-	/**
-	 * @return the posY
-	 */
-	public int getPosY() {
-		return posY;
-	}
-
-
-
-	/**
-	 * @return the width
-	 */
-	public int getWidth() {
-		return width;
-	}
-
-
-
-	/**
-	 * @return the height
-	 */
-	public int getHeight() {
-		return height;
-	}	
+    /**
+     * @return the height
+     */
+    public int getHeight() {
+        return height;
+    }
 }

@@ -35,83 +35,75 @@ import java.util.logging.Logger;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- * This class implements the UDPServer. The UDPServer is listening to an
- * UDP broadcast. If a broadcast with the right message will be received, the 
- * Server sends its name and IP-address back to the sender.
+ * This class implements the UDPServer. The UDPServer is listening to an UDP
+ * broadcast. If a broadcast with the right message will be received, the Server
+ * sends its name and IP-address back to the sender.
  * 
- * @author Roland Ossmann [ro@ki-i.at]
- *         Date: Sept 15, 2011
- *         Time: 11:08:01 AM
+ * @author Roland Ossmann [ro@ki-i.at] Date: Sept 15, 2011 Time: 11:08:01 AM
  *
  */
 public class UDPServer {
-	
-	private static Logger logger = null;
-	
-	public UDPServer ()
-	{
-		logger = AstericsErrorHandling.instance.getLogger();
-		
-	}
 
-	/**
-	 * @param args
-	 */
-	public void start() {
-		DatagramSocket udpServer = null;
-		int listenerPort = 9091; // UPD Listener port
-		int callbackPort = 9092; // UDP Message return port
-		byte[] receiveUdp = new byte[32]; // Size of incoming datagrmm, formerly 256
-		byte[] sendUdp = new byte[128];  //Size of outgoing datagramm, formerly 256
+    private static Logger logger = null;
 
-		try {
-			udpServer = new DatagramSocket(listenerPort);
-			logger.fine("UDPServer is ready to receive data...");
-			
-			while (true) {
-				DatagramPacket receivedPacket = new DatagramPacket(receiveUdp,
-						receiveUdp.length);
-				udpServer.receive(receivedPacket);
+    public UDPServer() {
+        logger = AstericsErrorHandling.instance.getLogger();
 
-				String receivedStr = new String(receivedPacket.getData());
-				logger.fine("Received UPD data:" + receivedStr);
-				
-				// If the right string being received, the thread waits to give the sender enough time
-				// to close the sending port socket and open the receiving port socket.
-				if (receivedStr.contains("AsTeRICS Broadcast")) {
-					Thread.sleep(200);
-					InetAddress IPSender = receivedPacket.getAddress();
+    }
 
-					String hostname = InetAddress.getLocalHost().getHostName();
-					String ip = InetAddress.getLocalHost().getHostAddress();
+    /**
+     * @param args
+     */
+    public void start() {
+        DatagramSocket udpServer = null;
+        int listenerPort = 9091; // UPD Listener port
+        int callbackPort = 9092; // UDP Message return port
+        byte[] receiveUdp = new byte[32]; // Size of incoming datagrmm, formerly
+                                          // 256
+        byte[] sendUdp = new byte[128]; // Size of outgoing datagramm, formerly
+                                        // 256
 
-					// sending the hostname and the host IP
-					sendUdp = ("AsTeRICS Broadcast Ret, Hostname:" + hostname
-							+ " IP:" + ip).getBytes();
-					DatagramPacket sendPacket = new DatagramPacket(sendUdp,
-							sendUdp.length, IPSender, callbackPort);
-					udpServer.send(sendPacket);
-					logger.fine("Sended UPD data to ACS:" + new String(sendUdp));
-				}
-			}
-		} catch (SocketException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"SocketException in UDPServer-> \n"+e.getMessage());			
-		} catch (UnknownHostException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"UnknownHostException in UDPServer-> \n"+e.getMessage());
-		} catch (IOException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"IOException in UDPServer-> \n"+e.getMessage());
-		} catch (InterruptedException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"InterruptedException in UDPServer-> \n"+e.getMessage());
-		} finally {
-			udpServer.close();
-		}
-	      
+        try {
+            udpServer = new DatagramSocket(listenerPort);
+            logger.fine("UDPServer is ready to receive data...");
 
-	}
+            while (true) {
+                DatagramPacket receivedPacket = new DatagramPacket(receiveUdp, receiveUdp.length);
+                udpServer.receive(receivedPacket);
+
+                String receivedStr = new String(receivedPacket.getData());
+                logger.fine("Received UPD data:" + receivedStr);
+
+                // If the right string being received, the thread waits to give
+                // the sender enough time
+                // to close the sending port socket and open the receiving port
+                // socket.
+                if (receivedStr.contains("AsTeRICS Broadcast")) {
+                    Thread.sleep(200);
+                    InetAddress IPSender = receivedPacket.getAddress();
+
+                    String hostname = InetAddress.getLocalHost().getHostName();
+                    String ip = InetAddress.getLocalHost().getHostAddress();
+
+                    // sending the hostname and the host IP
+                    sendUdp = ("AsTeRICS Broadcast Ret, Hostname:" + hostname + " IP:" + ip).getBytes();
+                    DatagramPacket sendPacket = new DatagramPacket(sendUdp, sendUdp.length, IPSender, callbackPort);
+                    udpServer.send(sendPacket);
+                    logger.fine("Sended UPD data to ACS:" + new String(sendUdp));
+                }
+            }
+        } catch (SocketException e) {
+            logger.warning(this.getClass().getName() + "." + "SocketException in UDPServer-> \n" + e.getMessage());
+        } catch (UnknownHostException e) {
+            logger.warning(this.getClass().getName() + "." + "UnknownHostException in UDPServer-> \n" + e.getMessage());
+        } catch (IOException e) {
+            logger.warning(this.getClass().getName() + "." + "IOException in UDPServer-> \n" + e.getMessage());
+        } catch (InterruptedException e) {
+            logger.warning(this.getClass().getName() + "." + "InterruptedException in UDPServer-> \n" + e.getMessage());
+        } finally {
+            udpServer.close();
+        }
+
+    }
 
 }
-

@@ -25,29 +25,28 @@
 
 package eu.asterics.component.actuator.platformlcd;
 
-
 /**
- * ActionMenuItem is a MenuItem in the core CIM display's menu which can 
- * perform some action other than switching to another menu item.
+ * ActionMenuItem is a MenuItem in the core CIM display's menu which can perform
+ * some action other than switching to another menu item.
  * 
- * @author Christoph Weiss [weissch@technikum-wien.at]
- *         Date: Mar 7, 2011
- *         Time: 10:55:05 AM
+ * @author Christoph Weiss [weissch@technikum-wien.at] Date: Mar 7, 2011 Time:
+ *         10:55:05 AM
  */
-public abstract class ActionMenuItem extends MenuItem
-{
-	/**
-	 * Constructor for ActionMenuItem 
-	 * @param caption the text to be displayed on the display
-	 * @param owner the link to the display instance
-	 */
-	public ActionMenuItem(String caption, PlatformLCDInstance owner)
-	{
-		super(caption, owner);
-	}
-	
-	/**
-	 * The action to be performed by the menu item
-	 */
-	abstract public void action();
+public abstract class ActionMenuItem extends MenuItem {
+    /**
+     * Constructor for ActionMenuItem
+     * 
+     * @param caption
+     *            the text to be displayed on the display
+     * @param owner
+     *            the link to the display instance
+     */
+    public ActionMenuItem(String caption, PlatformLCDInstance owner) {
+        super(caption, owner);
+    }
+
+    /**
+     * The action to be performed by the menu item
+     */
+    abstract public void action();
 }

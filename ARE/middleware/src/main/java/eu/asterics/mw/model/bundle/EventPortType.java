@@ -26,24 +26,19 @@
 package eu.asterics.mw.model.bundle;
 
 /**
- * Date: 1/5/11
- * Time: 3:26 PM
+ * Date: 1/5/11 Time: 3:26 PM
  */
-public enum EventPortType
-{
-    EVENT_LISTENER("event_listener"),
-    EVENT_TRIGGERER("event_triggerer");
+public enum EventPortType {
+    EVENT_LISTENER("event_listener"), EVENT_TRIGGERER("event_triggerer");
 
     private final String eventPortType;
 
-    private EventPortType(final String eventPortType)
-    {
+    private EventPortType(final String eventPortType) {
         this.eventPortType = eventPortType;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return eventPortType;
     }
 }

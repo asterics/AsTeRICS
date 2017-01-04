@@ -23,88 +23,84 @@
  * 
  */
 
- /* @author David Thaller [dt@ki-i.at]
- *         Date: 10.09.2013
- *         Time:  
- */
+/* @author David Thaller [dt@ki-i.at]
+*         Date: 10.09.2013
+*         Time:  
+*/
 package eu.asterics.component.actuator.tonegenerator;
 
 import com.jsyn.JSyn;
 import com.jsyn.Synthesizer;
 import com.jsyn.unitgen.LineOut;
-import com.jsyn.unitgen.LinearRamp;
 import com.jsyn.unitgen.SawtoothOscillator;
-import com.jsyn.unitgen.SquareOscillator;
 import com.jsyn.unitgen.SineOscillatorPhaseModulated;
+import com.jsyn.unitgen.SquareOscillator;
 import com.jsyn.unitgen.UnitOscillator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class FrequencyPlayer
-{
-	private Synthesizer synth;
-	private UnitOscillator osc,osc1;
-	private LineOut lineOut;
-	
-	public void init()
-	{
-		synth = JSyn.createSynthesizer();
-		setOscillator(1, true);
-	}
-        
-  public void setFrequency(int channel, int f) 
-	{
-		switch (channel) {
-			case 0:
-				if (osc != null)
-					osc.frequency.setup( 50.0, f, 10000.0 );
-				break;
-			case 1:
-				if (osc1 != null)
-					osc1.frequency.setup( 50.0, f, 10000.0 );
-				break;
-		}
-  }
-  
-  public void setOscillator(int actOsc, boolean separateChannels)
-  {
-  	synth.remove( osc );
-		synth.remove( osc1 );
-  	switch(actOsc) {
-  		case 1:
-				synth.add( osc = new SineOscillatorPhaseModulated() );
-				synth.add( osc1 = new SineOscillatorPhaseModulated() );  		
-				break;
-			case 2:
-				synth.add( osc = new SquareOscillator() );
-				synth.add( osc1 = new SquareOscillator() );		
-				break;
-			case 3:
-				synth.add( osc = new SawtoothOscillator() );
-				synth.add( osc1 = new SawtoothOscillator() );		
-				break;
-  	}
-  	synth.add( lineOut = new LineOut() );
-  	
-		osc.output.connect( 0, lineOut.input, 0 );
-		osc1.output.connect( 0, lineOut.input, 1 );
-		if (!separateChannels) {
-			osc.output.connect( 0, lineOut.input, 1 );
-			osc1.output.connect( 0, lineOut.input, 0 );			
-		}
-  }
+public class FrequencyPlayer {
+    private Synthesizer synth;
+    private UnitOscillator osc, osc1;
+    private LineOut lineOut;
 
-	public void start()
-	{
-		if (synth != null)
-			synth.start();
-		if (lineOut != null) 
-			lineOut.start();
-	}
+    public void init() {
+        synth = JSyn.createSynthesizer();
+        setOscillator(1, true);
+    }
 
-	public void stop()
-	{
-		if (synth != null)
-			synth.stop();
-	}
+    public void setFrequency(int channel, int f) {
+        switch (channel) {
+        case 0:
+            if (osc != null) {
+                osc.frequency.setup(50.0, f, 10000.0);
+            }
+            break;
+        case 1:
+            if (osc1 != null) {
+                osc1.frequency.setup(50.0, f, 10000.0);
+            }
+            break;
+        }
+    }
+
+    public void setOscillator(int actOsc, boolean separateChannels) {
+        synth.remove(osc);
+        synth.remove(osc1);
+        switch (actOsc) {
+        case 1:
+            synth.add(osc = new SineOscillatorPhaseModulated());
+            synth.add(osc1 = new SineOscillatorPhaseModulated());
+            break;
+        case 2:
+            synth.add(osc = new SquareOscillator());
+            synth.add(osc1 = new SquareOscillator());
+            break;
+        case 3:
+            synth.add(osc = new SawtoothOscillator());
+            synth.add(osc1 = new SawtoothOscillator());
+            break;
+        }
+        synth.add(lineOut = new LineOut());
+
+        osc.output.connect(0, lineOut.input, 0);
+        osc1.output.connect(0, lineOut.input, 1);
+        if (!separateChannels) {
+            osc.output.connect(0, lineOut.input, 1);
+            osc1.output.connect(0, lineOut.input, 0);
+        }
+    }
+
+    public void start() {
+        if (synth != null) {
+            synth.start();
+        }
+        if (lineOut != null) {
+            lineOut.start();
+        }
+    }
+
+    public void stop() {
+        if (synth != null) {
+            synth.stop();
+        }
+    }
 }

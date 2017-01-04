@@ -1,13 +1,7 @@
 package eu.asterics.mw.model.deployment;
 
-
 import java.awt.Point;
-import java.util.List;
 import java.util.Set;
-
-import eu.asterics.mw.model.DataType;
-import eu.asterics.mw.model.deployment.impl.AREGUIElement;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 
 import org.w3c.dom.Document;
 /*
@@ -35,13 +29,14 @@ import org.w3c.dom.Document;
  *
  */
 
+import eu.asterics.mw.model.deployment.impl.AREGUIElement;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 3:00:57 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         3:00:57 PM
  */
-public interface IComponentInstance extends IPropertyful
-{
+public interface IComponentInstance extends IPropertyful {
     public String getInstanceID();
 
     public String getComponentTypeID();
@@ -56,15 +51,14 @@ public interface IComponentInstance extends IPropertyful
 
     public void appendXMLElements(Document doc);
 
-    public Point getComponentLayout ();
-    
-    public AREGUIElement getAREGUIElement ();
-    
+    public Point getComponentLayout();
+
+    public AREGUIElement getAREGUIElement();
+
     public Set<IInputPort> getBufferedInputPorts();
 
+    public void setWrapper(String targetInputPortID, IRuntimeInputPort wrapper);
 
-	public void setWrapper(String targetInputPortID, IRuntimeInputPort wrapper);
-
-	public IRuntimeInputPort getWrapper(String targetInputPortID);
+    public IRuntimeInputPort getWrapper(String targetInputPortID);
 
 }

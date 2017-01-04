@@ -71,381 +71,455 @@ import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
  */
 
 /**
- * This class is responsible for inspecting a model file and returning a list of used componentTypes and componentTypeJarURIs. 
+ * This class is responsible for inspecting a model file and returning a list of
+ * used componentTypes and componentTypeJarURIs.
  * 
- *         Author: martin.deinhofer@technikum-wien.at
- *         Date: Oct 30, 2015
- *         Time: 14:30:00 PM
+ * Author: martin.deinhofer@technikum-wien.at Date: Oct 30, 2015 Time: 14:30:00
+ * PM
  */
 
 public class ModelInspector {
-	private static final String MODELS_PROP_SEPERATOR = ";";
-	ModelValidator modelValidator=null;
-	DefaultDeploymentModelParser deploymentModelParser=null;
-	BundleManager bundleManager=null;
-	APEProperties apeProperties=null;
+    private static final String MODELS_PROP_SEPERATOR = ";";
+    ModelValidator modelValidator = null;
+    DefaultDeploymentModelParser deploymentModelParser = null;
+    BundleManager bundleManager = null;
+    APEProperties apeProperties = null;
 
-	private static final RES_TYPE[] CHECK_RES_TYPE_ORDER={RES_TYPE.DATA,RES_TYPE.ANY,RES_TYPE.MODEL,RES_TYPE.STORAGE,RES_TYPE.IMAGE}; 
+    private static final RES_TYPE[] CHECK_RES_TYPE_ORDER = { RES_TYPE.DATA, RES_TYPE.ANY, RES_TYPE.MODEL,
+            RES_TYPE.STORAGE, RES_TYPE.IMAGE };
 
-	public ModelInspector(APEProperties apeProperties) throws IOException, ParseException, URISyntaxException {
-		this.apeProperties=apeProperties;
+    public ModelInspector(APEProperties apeProperties) throws IOException, ParseException, URISyntaxException {
+        this.apeProperties = apeProperties;
 
-		modelValidator=new ModelValidator();
-		deploymentModelParser=DefaultDeploymentModelParser.create(modelValidator);
-		bundleManager=new BundleManager(modelValidator);
+        modelValidator = new ModelValidator();
+        deploymentModelParser = DefaultDeploymentModelParser.create(modelValidator);
+        bundleManager = new BundleManager(modelValidator);
 
-		//bundleManager.createComponentListCache();
-		DeploymentManager.instance.setBundleManager(bundleManager);
-		bundleManager.start();
-	}
+        // bundleManager.createComponentListCache();
+        DeploymentManager.instance.setBundleManager(bundleManager);
+        bundleManager.start();
+    }
 
-	/**
-	 * Parse the given InputStream object expecting model xml data as content.
-	 * @param modelStream
-	 * @return
-	 * @throws ParseException
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws TransformerException
-	 * @throws BundleManagementException
-	 */
-	public IRuntimeModel parseModel(InputStream modelStream) throws ParseException, ParserConfigurationException, SAXException, IOException, TransformerException, BundleManagementException {
-		String utf16String=convertToUTF16String(modelStream);
-		IRuntimeModel runtimeModel = deploymentModelParser.parseModel(openUTF16StringAsInputStream(utf16String));
-		return runtimeModel;
-	}
+    /**
+     * Parse the given InputStream object expecting model xml data as content.
+     * 
+     * @param modelStream
+     * @return
+     * @throws ParseException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws TransformerException
+     * @throws BundleManagementException
+     */
+    public IRuntimeModel parseModel(InputStream modelStream) throws ParseException, ParserConfigurationException,
+            SAXException, IOException, TransformerException, BundleManagementException {
+        String utf16String = convertToUTF16String(modelStream);
+        IRuntimeModel runtimeModel = deploymentModelParser.parseModel(openUTF16StringAsInputStream(utf16String));
+        return runtimeModel;
+    }
 
-	/**
-	 * Converts the given InputStream content into UTF-16 characters and returns them as a String.
-	 */
-	private String convertToUTF16String(InputStream modelStream) throws ParserConfigurationException, SAXException, IOException, TransformerException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		Document doc = builder.parse(modelStream);
-		DOMSource domSource = new DOMSource(doc);
-		StringWriter writer = new StringWriter();
-		StreamResult result = new StreamResult(writer);
-		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer transformer = tf.newTransformer();
-		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-		transformer.transform(domSource, result);
-		String modelInString = writer.toString();
-		return modelInString;
-	}
+    /**
+     * Converts the given InputStream content into UTF-16 characters and returns
+     * them as a String.
+     */
+    private String convertToUTF16String(InputStream modelStream)
+            throws ParserConfigurationException, SAXException, IOException, TransformerException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(modelStream);
+        DOMSource domSource = new DOMSource(doc);
+        StringWriter writer = new StringWriter();
+        StreamResult result = new StreamResult(writer);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
+        transformer.transform(domSource, result);
+        String modelInString = writer.toString();
+        return modelInString;
+    }
 
-	/**
-	 * Returns the given UTF16 encoded String as an InputStream object.
-	 * @param modelStringinUTF16
-	 * @return
-	 * @throws UnsupportedEncodingException
-	 */
-	public InputStream openUTF16StringAsInputStream(String modelStringinUTF16) throws UnsupportedEncodingException {
-		return new ByteArrayInputStream(modelStringinUTF16.getBytes("UTF-16"));
-	}
+    /**
+     * Returns the given UTF16 encoded String as an InputStream object.
+     * 
+     * @param modelStringinUTF16
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    public InputStream openUTF16StringAsInputStream(String modelStringinUTF16) throws UnsupportedEncodingException {
+        return new ByteArrayInputStream(modelStringinUTF16.getBytes("UTF-16"));
+    }
 
-	/**
-	 * Returns a Set of .jar URIs corresponding to the existing componentTypes in the given IRuntimeModel model.
-	 * @param model
-	 * @return
-	 */
-	public Set<URI> getComponentTypeJarURIsOfModel(IRuntimeModel model) {
-		Set<URI> modelComponentJarURIs=new HashSet<URI>();
-		for(IComponentInstance compInstance : model.getComponentInstances()) {
-			URI absoluteURI;
-			try {
-				absoluteURI = ResourceRegistry.getInstance().toAbsolute(bundleManager.getJarNameFromComponentTypeId(compInstance.getComponentTypeID()));
-				modelComponentJarURIs.add(absoluteURI);
-			} catch (BundleManagementException e) {
-				Notifier.warning("Ignoring componentType: "+compInstance.getInstanceID()+" ("+compInstance.getComponentTypeID()+"), model: "+model.getModelName(),e);
-			}
-		}
-		//System.out.println("Model: "+model.getModelName()+", comoponentTypeJarURIs:\n"+modelComponentJarURIs);
-		return modelComponentJarURIs;
-	}
+    /**
+     * Returns a Set of .jar URIs corresponding to the existing componentTypes
+     * in the given IRuntimeModel model.
+     * 
+     * @param model
+     * @return
+     */
+    public Set<URI> getComponentTypeJarURIsOfModel(IRuntimeModel model) {
+        Set<URI> modelComponentJarURIs = new HashSet<URI>();
+        for (IComponentInstance compInstance : model.getComponentInstances()) {
+            URI absoluteURI;
+            try {
+                absoluteURI = ResourceRegistry.getInstance()
+                        .toAbsolute(bundleManager.getJarNameFromComponentTypeId(compInstance.getComponentTypeID()));
+                modelComponentJarURIs.add(absoluteURI);
+            } catch (BundleManagementException e) {
+                Notifier.warning("Ignoring componentType: " + compInstance.getInstanceID() + " ("
+                        + compInstance.getComponentTypeID() + "), model: " + model.getModelName(), e);
+            }
+        }
+        // System.out.println("Model: "+model.getModelName()+",
+        // comoponentTypeJarURIs:\n"+modelComponentJarURIs);
+        return modelComponentJarURIs;
+    }
 
-	/**
-	 * Returns a set of IRuntimeModel instances for the given set of model URIs.
-	 * @param modelURIs
-	 * @return
-	 */
-	public Set<IRuntimeModel> getIRuntimeModelsOfModelURIs(Set<URI> modelURIs) {
-		Set<IRuntimeModel> modelInstances=new HashSet<IRuntimeModel>();
-		for(URI modelURI : modelURIs) {
-			try{
-				InputStream iStr=modelURI.toURL().openStream();
-				IRuntimeModel model=parseModel(iStr);
-				//The default implementation of IRuntimeModel is DefaultRuntimeModel which does not have a correct equals/hashCode-contract, the same for IComponentInstance and others.
-				//This means that the Set can't have unique model instances, which is not a problem because this just means that files are maybe just copied more than once.
-				modelInstances.add(model);
-			}
-			catch(Exception e) {
-				//Catch exceptions and ignore URI, also log the problem.
-				Notifier.warning("Ignoring model URI: "+modelURI, e);
-			}
-		}
-		return modelInstances;		
-	}
+    /**
+     * Returns a set of IRuntimeModel instances for the given set of model URIs.
+     * 
+     * @param modelURIs
+     * @return
+     */
+    public Set<IRuntimeModel> getIRuntimeModelsOfModelURIs(Set<URI> modelURIs) {
+        Set<IRuntimeModel> modelInstances = new HashSet<IRuntimeModel>();
+        for (URI modelURI : modelURIs) {
+            try {
+                InputStream iStr = modelURI.toURL().openStream();
+                IRuntimeModel model = parseModel(iStr);
+                // The default implementation of IRuntimeModel is
+                // DefaultRuntimeModel which does not have a correct
+                // equals/hashCode-contract, the same for IComponentInstance and
+                // others.
+                // This means that the Set can't have unique model instances,
+                // which is not a problem because this just means that files are
+                // maybe just copied more than once.
+                modelInstances.add(model);
+            } catch (Exception e) {
+                // Catch exceptions and ignore URI, also log the problem.
+                Notifier.warning("Ignoring model URI: " + modelURI, e);
+            }
+        }
+        return modelInstances;
+    }
 
-	/**
-	 * Returns a set of IComponentInstances for the given set of model URIs.
-	 * @param modelURIs
-	 * @return
-	 */
-	public Set<IComponentInstance> getIComponentInstancesOfModelURIs(Set<URI> modelURIs) {
-		Set<IComponentInstance> componentInstances=new HashSet<IComponentInstance>();
-		for(URI modelURI : modelURIs) {
-			try{
-				InputStream iStr=modelURI.toURL().openStream();
-				IRuntimeModel model=parseModel(iStr);
+    /**
+     * Returns a set of IComponentInstances for the given set of model URIs.
+     * 
+     * @param modelURIs
+     * @return
+     */
+    public Set<IComponentInstance> getIComponentInstancesOfModelURIs(Set<URI> modelURIs) {
+        Set<IComponentInstance> componentInstances = new HashSet<IComponentInstance>();
+        for (URI modelURI : modelURIs) {
+            try {
+                InputStream iStr = modelURI.toURL().openStream();
+                IRuntimeModel model = parseModel(iStr);
 
-				//The default implementation of IRuntimeModel is DefaultRuntimeModel which does not have a correct equals/hashCode-contract, the same for IComponentInstance and others.
-				//This means that the Set can't have unique model instances, which is not a problem because this just means that files are maybe just copied more than once.
-				componentInstances.addAll(model.getComponentInstances());
-			}
-			catch(Exception e) {
-				//Catch exceptions and ignore URI, also log the problem.
-				Notifier.warning("Ignoring model URI: "+modelURI, e);
-			}
-		}
-		return componentInstances;		
-	}
+                // The default implementation of IRuntimeModel is
+                // DefaultRuntimeModel which does not have a correct
+                // equals/hashCode-contract, the same for IComponentInstance and
+                // others.
+                // This means that the Set can't have unique model instances,
+                // which is not a problem because this just means that files are
+                // maybe just copied more than once.
+                componentInstances.addAll(model.getComponentInstances());
+            } catch (Exception e) {
+                // Catch exceptions and ignore URI, also log the problem.
+                Notifier.warning("Ignoring model URI: " + modelURI, e);
+            }
+        }
+        return componentInstances;
+    }
 
-	/**
-	 * Returns a set of IComponentInstances for the given set of IRuntimeModel instances. 
-	 * @param modelInstances
-	 * @return
-	 */
-	public Set<IComponentInstance> getIComponentInstancesOfIRuntimeModels(Set<IRuntimeModel> modelInstances) {
-		Set<IComponentInstance> componentInstances=new HashSet<IComponentInstance>();
-		for(IRuntimeModel model : modelInstances) {
-			//The default implementation of IRuntimeModel is DefaultRuntimeModel which does not have a correct equals/hashCode-contract, the same for IComponentInstance and others.
-			//This means that the Set can't have unique model instances, which is not a problem because this just means that files are maybe just copied more than once.
-			componentInstances.addAll(model.getComponentInstances());
-		}
-		return componentInstances;				
-	}
+    /**
+     * Returns a set of IComponentInstances for the given set of IRuntimeModel
+     * instances.
+     * 
+     * @param modelInstances
+     * @return
+     */
+    public Set<IComponentInstance> getIComponentInstancesOfIRuntimeModels(Set<IRuntimeModel> modelInstances) {
+        Set<IComponentInstance> componentInstances = new HashSet<IComponentInstance>();
+        for (IRuntimeModel model : modelInstances) {
+            // The default implementation of IRuntimeModel is
+            // DefaultRuntimeModel which does not have a correct
+            // equals/hashCode-contract, the same for IComponentInstance and
+            // others.
+            // This means that the Set can't have unique model instances, which
+            // is not a problem because this just means that files are maybe
+            // just copied more than once.
+            componentInstances.addAll(model.getComponentInstances());
+        }
+        return componentInstances;
+    }
 
-	/**
-	 * Returns a set of license URIs for the given set of model instances.
-	 * Currently this method only returns license URIs directly for the involved componentTypes not considering services or the middleware. 
-	 * @param modelInstances
-	 * @return
-	 */
-	public Set<URI> getLicenseURIsOfModels(Set<IRuntimeModel> modelInstances) {
-		Set<URI> licenseURIs=new HashSet<URI>();
-		Set<IComponentInstance> componentInstances=getIComponentInstancesOfIRuntimeModels(modelInstances);
-		for(final IComponentInstance componentInstance : componentInstances) {
-			try {
-				IComponentType compTypeInst=ComponentRepository.instance.getComponentType(componentInstance.getComponentTypeID());
-				Notifier.debug("compTypeId: "+compTypeInst.getID()+", subtype: "+compTypeInst.getType(), null);
-				String compTypeId=componentInstance.getComponentTypeID();
-				String[] compTypeElems=compTypeId.split("\\.");
-				final String compTypePrefixForLicense=compTypeInst.getType()+"."+compTypeElems[1];
+    /**
+     * Returns a set of license URIs for the given set of model instances.
+     * Currently this method only returns license URIs directly for the involved
+     * componentTypes not considering services or the middleware.
+     * 
+     * @param modelInstances
+     * @return
+     */
+    public Set<URI> getLicenseURIsOfModels(Set<IRuntimeModel> modelInstances) {
+        Set<URI> licenseURIs = new HashSet<URI>();
+        Set<IComponentInstance> componentInstances = getIComponentInstancesOfIRuntimeModels(modelInstances);
+        for (final IComponentInstance componentInstance : componentInstances) {
+            try {
+                IComponentType compTypeInst = ComponentRepository.instance
+                        .getComponentType(componentInstance.getComponentTypeID());
+                Notifier.debug("compTypeId: " + compTypeInst.getID() + ", subtype: " + compTypeInst.getType(), null);
+                String compTypeId = componentInstance.getComponentTypeID();
+                String[] compTypeElems = compTypeId.split("\\.");
+                final String compTypePrefixForLicense = compTypeInst.getType() + "." + compTypeElems[1];
 
-				List<URI> compLicenseURIs=ResourceRegistry.getInstance().getLicensesList(new FilenameFilter() {
-					@Override
-					public boolean accept(File dir, String name) {
-						String[] compTypePrefix=name.split("-");
-						Notifier.debug("compTypePrefix: "+compTypePrefix[0]+", compType: "+componentInstance.getComponentTypeID(), null);
-						return compTypePrefix[0].equalsIgnoreCase(compTypePrefixForLicense) && name.endsWith(".txt");
-					}
+                List<URI> compLicenseURIs = ResourceRegistry.getInstance().getLicensesList(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        String[] compTypePrefix = name.split("-");
+                        Notifier.debug("compTypePrefix: " + compTypePrefix[0] + ", compType: "
+                                + componentInstance.getComponentTypeID(), null);
+                        return compTypePrefix[0].equalsIgnoreCase(compTypePrefixForLicense) && name.endsWith(".txt");
+                    }
 
-				},false);
-				Notifier.debug("compType: "+componentInstance.getComponentTypeID()+", compLicensURIs: "+compLicenseURIs,null);
-				licenseURIs.addAll(compLicenseURIs);
-			} catch (BundleManagementException e) {
-				Notifier.warning("Could not determine componentType/SubType of componentInstance with Id: "+componentInstance.getComponentTypeID(), e);
-			}
-		}
-		return licenseURIs; 
-	}
+                }, false);
+                Notifier.debug(
+                        "compType: " + componentInstance.getComponentTypeID() + ", compLicensURIs: " + compLicenseURIs,
+                        null);
+                licenseURIs.addAll(compLicenseURIs);
+            } catch (BundleManagementException e) {
+                Notifier.warning("Could not determine componentType/SubType of componentInstance with Id: "
+                        + componentInstance.getComponentTypeID(), e);
+            }
+        }
+        return licenseURIs;
+    }
 
+    /**
+     * Returns a Set of merged .jar URIs corresponding to the existing
+     * componentTypes in the given Set of IRuntimeModel model URIs.
+     * 
+     * @param modelURIs
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException
+     * @throws ParseException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws TransformerException
+     * @throws BundleManagementException
+     */
+    public Set<URI> getComponentTypeJarURIsOfModelURIs(Set<URI> modelURIs)
+            throws MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException,
+            TransformerException, BundleManagementException {
+        Set<URI> modelComponentJarURIs = new HashSet<URI>();
+        for (URI modelURI : modelURIs) {
+            InputStream iStr = modelURI.toURL().openStream();
+            IRuntimeModel model = parseModel(iStr);
+            modelComponentJarURIs.addAll(getComponentTypeJarURIsOfModel(model));
+        }
+        return modelComponentJarURIs;
+    }
 
-	/**
-	 * Returns a Set of merged .jar URIs corresponding to the existing componentTypes in the given Set of IRuntimeModel model URIs.
-	 * @param modelURIs
-	 * @return
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 * @throws ParseException
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws TransformerException
-	 * @throws BundleManagementException
-	 */
-	public Set<URI> getComponentTypeJarURIsOfModelURIs(Set<URI> modelURIs) throws MalformedURLException, IOException, ParseException, ParserConfigurationException, SAXException, TransformerException, BundleManagementException {
-		Set<URI> modelComponentJarURIs=new HashSet<URI>();
-		for(URI modelURI : modelURIs) {
-			InputStream iStr=modelURI.toURL().openStream();
-			IRuntimeModel model=parseModel(iStr);
-			modelComponentJarURIs.addAll(getComponentTypeJarURIsOfModel(model));
-		}
-		return modelComponentJarURIs;
-	}
+    /**
+     * Returns a Set of merged .jar URIs corresponding to the existing
+     * componentTypes in the given Set of IRuntimeModel models.
+     * 
+     * @param modelInstances
+     * @return
+     */
+    public Set<URI> getComponentTypeJarURIsOfModels(Set<IRuntimeModel> modelInstances) {
+        Set<URI> modelComponentJarURIs = new HashSet<URI>();
+        for (IRuntimeModel model : modelInstances) {
+            modelComponentJarURIs.addAll(getComponentTypeJarURIsOfModel(model));
+        }
+        return modelComponentJarURIs;
+    }
 
-	/**
-	 * Returns a Set of merged .jar URIs corresponding to the existing componentTypes in the given Set of IRuntimeModel models. 
-	 * @param modelInstances
-	 * @return
-	 */
-	public Set<URI> getComponentTypeJarURIsOfModels(Set<IRuntimeModel> modelInstances) {
-		Set<URI> modelComponentJarURIs=new HashSet<URI>();
-		for(IRuntimeModel model : modelInstances) {
-			modelComponentJarURIs.addAll(getComponentTypeJarURIsOfModel(model));
-		}
-		return modelComponentJarURIs;		
-	}
+    /**
+     * Returns a Set of URIs to model files by analyzing the APE.model property
+     * value.
+     * 
+     * @return
+     */
+    public Set<URI> getModelURIsFromProperty() {
+        Set<URI> modelURIs = new HashSet<URI>();
+        String modelsPropVals = apeProperties.getProperty(APEProperties.P_APE_MODELS);
+        String projectDirPath = apeProperties.getProperty(APEProperties.P_APE_PROJECT_DIR);
+        for (String modelsPropVal : modelsPropVals.split(MODELS_PROP_SEPERATOR)) {
+            // do sanity check: ignore leading and trailing whitespace and empty
+            // strings
+            modelsPropVal = modelsPropVal.trim();
+            if ("".equals(modelsPropVal)) {
+                continue;
+            }
 
-	/**
-	 * Returns a Set of URIs to model files by analyzing the APE.model property value.
-	 * @return
-	 */
-	public Set<URI> getModelURIsFromProperty() {
-		Set<URI> modelURIs=new HashSet<URI>();
-		String modelsPropVals=apeProperties.getProperty(APEProperties.P_APE_MODELS);
-		String projectDirPath=apeProperties.getProperty(APEProperties.P_APE_PROJECT_DIR);
-		for(String modelsPropVal : modelsPropVals.split(MODELS_PROP_SEPERATOR)) {
-			//do sanity check: ignore leading and trailing whitespace and empty strings
-			modelsPropVal=modelsPropVal.trim();
-			if("".equals(modelsPropVal)) {
-				continue;
-			}
-			
-			File testFile=ResourceRegistry.resolveRelativeFilePath(new File(projectDirPath), modelsPropVal);			
-			URI testURI=testFile.toURI();
+            File testFile = ResourceRegistry.resolveRelativeFilePath(new File(projectDirPath), modelsPropVal);
+            URI testURI = testFile.toURI();
 
-			if(!testFile.exists()) {
-				Notifier.warning("Ignoring URI: "+testFile,null);
-				continue;
-			}
+            if (!testFile.exists()) {
+                Notifier.warning("Ignoring URI: " + testFile, null);
+                continue;
+            }
 
-			List<URI> URIs=new ArrayList();
-			if(testFile.isDirectory()) {
-				URIs=ResourceRegistry.getModelList(testURI, false);
-			} else {
-				URIs.add(testURI);
-			}
-			modelURIs.addAll(URIs);	
-		}
+            List<URI> URIs = new ArrayList();
+            if (testFile.isDirectory()) {
+                URIs = ResourceRegistry.getModelList(testURI, false);
+            } else {
+                URIs.add(testURI);
+            }
+            modelURIs.addAll(URIs);
+        }
 
-		return modelURIs;
-	}
+        return modelURIs;
+    }
 
-	/**
-	 * Delegates the generation of the componentList cache in the BundleManager. 
-	 * @param componentList
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 * @throws ParseException
-	 */
-	public void generateComponentListCache(File componentList) throws MalformedURLException, IOException, ParseException {
-		bundleManager.generateComponentListCache(componentList);
-	}
+    /**
+     * Delegates the generation of the componentList cache in the BundleManager.
+     * 
+     * @param componentList
+     * @throws MalformedURLException
+     * @throws IOException
+     * @throws ParseException
+     */
+    public void generateComponentListCache(File componentList)
+            throws MalformedURLException, IOException, ParseException {
+        bundleManager.generateComponentListCache(componentList);
+    }
 
-	/**
-	 * This method checks the values of all component properties found in the given set IRuntimeModel instances.
-	 * Ths values are tested as resource keys for {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)} and tested for existence.
-	 * If a value exists it is added to the list of URIs returned.
-	 * @param modelInstances
-	 * @return
-	 */
-	public Collection<URI> getPropertyReferredURIs(Set<IRuntimeModel> modelInstances) {
-		//only collect unique URIs
-		Collection<URI> dataURIs=new HashSet<URI>();
+    /**
+     * This method checks the values of all component properties found in the
+     * given set IRuntimeModel instances. Ths values are tested as resource keys
+     * for
+     * {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)}
+     * and tested for existence. If a value exists it is added to the list of
+     * URIs returned.
+     * 
+     * @param modelInstances
+     * @return
+     */
+    public Collection<URI> getPropertyReferredURIs(Set<IRuntimeModel> modelInstances) {
+        // only collect unique URIs
+        Collection<URI> dataURIs = new HashSet<URI>();
 
-		for(IRuntimeModel model : modelInstances) {
-			//The default implementation of IRuntimeModel is DefaultRuntimeModel which does not have a correct equals/hashCode-contract, the same for IComponentInstance and others.
-			//This means that the Set can't have unique model instances, which is not a problem because this just means that files are maybe just copied more than once.
-			for(IComponentInstance componentInstance : model.getComponentInstances()) {
-				for(Map.Entry<String, Object> property : componentInstance.getPropertyValues().entrySet()) {
-					Notifier.debug("Evaluating property: "+property.getKey()+"="+property.getValue(), null);
-					URI propValURI=null;
+        for (IRuntimeModel model : modelInstances) {
+            // The default implementation of IRuntimeModel is
+            // DefaultRuntimeModel which does not have a correct
+            // equals/hashCode-contract, the same for IComponentInstance and
+            // others.
+            // This means that the Set can't have unique model instances, which
+            // is not a problem because this just means that files are maybe
+            // just copied more than once.
+            for (IComponentInstance componentInstance : model.getComponentInstances()) {
+                for (Map.Entry<String, Object> property : componentInstance.getPropertyValues().entrySet()) {
+                    Notifier.debug("Evaluating property: " + property.getKey() + "=" + property.getValue(), null);
+                    URI propValURI = null;
 
-					try {
-						String propVal=excludeNonURIValues(property);
+                    try {
+                        String propVal = excludeNonURIValues(property);
 
-						for(RES_TYPE resType : CHECK_RES_TYPE_ORDER) {
-							try{
-								
-								propValURI=ResourceRegistry.getInstance().getResource(propVal, resType, componentInstance.getComponentTypeID(),null);
+                        for (RES_TYPE resType : CHECK_RES_TYPE_ORDER) {
+                            try {
 
-								//Skip URI if it equals AREBaseURI or is not a sub URI of ARE base URI								
-								if(ResourceRegistry.getInstance().equalsAREBaseURI(propValURI)) {
-									Notifier.warning("Skipping property URI, because equals to ARE.baseURI. URI: "+propValURI,null);
-									break;
-								}
-								
-								if(!ResourceRegistry.getInstance().isSubURIOfAREBaseURI((propValURI))) {
-									Notifier.warning("Skipping property URI, because not contained in ARE.baseURI. Please copy URI manually if needed. URI: "+propValURI,null);
-									break;
-								}
-								
-								//if URI is not a file or does not exist
-								//We could also consider trying to open an InputStream, then it would work generically for all types of URIs,
-								//also URLs, but actually we only wanna copy local files.
-								File propValFile=ResourceRegistry.toFile(propValURI);
-																
-								if(propValFile.exists()) {
-									//Ok, got it, File exists so we can copy it
-									Notifier.debug("Selecting resource of property for copying: "+property.getKey()+", URI: "+propValURI,null);
-									if(resType.equals(RES_TYPE.MODEL) && propValFile.getName().endsWith(".acs")) {
-										Notifier.warning("The model <"+model.getModelName()+"> refers to another model at "+componentInstance.getInstanceID()+"."+property.getKey()+" - Consider adding the model path to "+APEProperties.P_APE_MODELS+", URI: "+propValURI,null);
-									}
-									dataURIs.add(propValURI);
-									break;
-								}
-							} catch (Exception e) {								
-								Notifier.debug("Ignoring value of property "+property.getKey()+", message: "+e.getMessage(),e);
-							}
+                                propValURI = ResourceRegistry.getInstance().getResource(propVal, resType,
+                                        componentInstance.getComponentTypeID(), null);
 
-						}
-					} catch (URISyntaxException e) {
-						Notifier.debug("Ignoring value of property "+property.getKey()+", message: "+e.getMessage(),null);
-					}
-				}
-			}
-		}
+                                // Skip URI if it equals AREBaseURI or is not a
+                                // sub URI of ARE base URI
+                                if (ResourceRegistry.getInstance().equalsAREBaseURI(propValURI)) {
+                                    Notifier.warning(
+                                            "Skipping property URI, because equals to ARE.baseURI. URI: " + propValURI,
+                                            null);
+                                    break;
+                                }
 
-		return dataURIs;
-	}
+                                if (!ResourceRegistry.getInstance().isSubURIOfAREBaseURI((propValURI))) {
+                                    Notifier.warning(
+                                            "Skipping property URI, because not contained in ARE.baseURI. Please copy URI manually if needed. URI: "
+                                                    + propValURI,
+                                            null);
+                                    break;
+                                }
 
-	/**
-	 * Internal method to do sanity checks with component property values.
-	 * @param property
-	 * @return
-	 * @throws URISyntaxException
-	 */
-	private String excludeNonURIValues(Map.Entry<String, Object> property) throws URISyntaxException {
-		Object propValObj=property.getValue();
-		if(propValObj==null) {
-			throw new URISyntaxException(property.toString(),"Value of property is null");
-		}
-		String propVal=propValObj.toString();
-		if(propVal.equals("")) {
-			throw new URISyntaxException(property.toString(),"Value of property is empty");
-		}
-		if(propVal.startsWith("@")&&propVal.indexOf(":")>-1) {
-			throw new URISyntaxException(property.toString(),"Value of property most likely an AsTeRICS action command");
-		}
-		if(isNumber(propVal)) {
-			throw new URISyntaxException(property.toString(),"Value of property most likely a numeric property value");
-		}
+                                // if URI is not a file or does not exist
+                                // We could also consider trying to open an
+                                // InputStream, then it would work generically
+                                // for all types of URIs,
+                                // also URLs, but actually we only wanna copy
+                                // local files.
+                                File propValFile = ResourceRegistry.toFile(propValURI);
 
-		return propVal;
-	}
+                                if (propValFile.exists()) {
+                                    // Ok, got it, File exists so we can copy it
+                                    Notifier.debug("Selecting resource of property for copying: " + property.getKey()
+                                            + ", URI: " + propValURI, null);
+                                    if (resType.equals(RES_TYPE.MODEL) && propValFile.getName().endsWith(".acs")) {
+                                        Notifier.warning("The model <" + model.getModelName()
+                                                + "> refers to another model at " + componentInstance.getInstanceID()
+                                                + "." + property.getKey() + " - Consider adding the model path to "
+                                                + APEProperties.P_APE_MODELS + ", URI: " + propValURI, null);
+                                    }
+                                    dataURIs.add(propValURI);
+                                    break;
+                                }
+                            } catch (Exception e) {
+                                Notifier.debug("Ignoring value of property " + property.getKey() + ", message: "
+                                        + e.getMessage(), e);
+                            }
 
-	/**
-	 * Checks whether the given String contains a number.
-	 * @param propVal
-	 * @return
-	 */
-	private boolean isNumber(String propVal) {
-		try{
-			Long.parseLong(propVal);
-			return true;
-		}catch(NumberFormatException e) {		
-		}
-		return false;
-	}
+                        }
+                    } catch (URISyntaxException e) {
+                        Notifier.debug(
+                                "Ignoring value of property " + property.getKey() + ", message: " + e.getMessage(),
+                                null);
+                    }
+                }
+            }
+        }
+
+        return dataURIs;
+    }
+
+    /**
+     * Internal method to do sanity checks with component property values.
+     * 
+     * @param property
+     * @return
+     * @throws URISyntaxException
+     */
+    private String excludeNonURIValues(Map.Entry<String, Object> property) throws URISyntaxException {
+        Object propValObj = property.getValue();
+        if (propValObj == null) {
+            throw new URISyntaxException(property.toString(), "Value of property is null");
+        }
+        String propVal = propValObj.toString();
+        if (propVal.equals("")) {
+            throw new URISyntaxException(property.toString(), "Value of property is empty");
+        }
+        if (propVal.startsWith("@") && propVal.indexOf(":") > -1) {
+            throw new URISyntaxException(property.toString(),
+                    "Value of property most likely an AsTeRICS action command");
+        }
+        if (isNumber(propVal)) {
+            throw new URISyntaxException(property.toString(), "Value of property most likely a numeric property value");
+        }
+
+        return propVal;
+    }
+
+    /**
+     * Checks whether the given String contains a number.
+     * 
+     * @param propVal
+     * @return
+     */
+    private boolean isNumber(String propVal) {
+        try {
+            Long.parseLong(propVal);
+            return true;
+        } catch (NumberFormatException e) {
+        }
+        return false;
+    }
 }

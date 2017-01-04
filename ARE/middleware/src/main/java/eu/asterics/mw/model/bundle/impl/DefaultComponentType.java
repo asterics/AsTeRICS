@@ -25,7 +25,6 @@
 
 package eu.asterics.mw.model.bundle.impl;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -44,18 +43,14 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
  * @author Costas Kakpusis [kakousis@cs.ucy.ac.cy]
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:03:23 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:03:23 PM
  */
-public class DefaultComponentType
-        extends DefaultPropertyfulType implements IComponentType
-{
+public class DefaultComponentType extends DefaultPropertyfulType implements IComponentType {
     private final String ID;
     private final String canonicalName;
     private final ComponentType componentType;
     private final boolean isSingleton;
-    private final boolean isExternalGUIElement;
     private final String description;
     private final Set<IInputPortType> inputPortTypes;
     private final Set<IOutputPortType> outputPortTypes;
@@ -63,19 +58,11 @@ public class DefaultComponentType
     private final Set<IEventTriggererPortType> eventTriggererPortTypes;
     private Logger logger = null;
 
-    public DefaultComponentType(
-            final String ID,
-            final String canonicalName,
-            final ComponentType componentType,
-            final boolean isSingleton,
-            final String description,
-            final Set<IInputPortType> inputPortTypes,
-            final Set<IOutputPortType> outputPortTypes,
-            final Map<String, PropertyType> propertyTypes,
+    public DefaultComponentType(final String ID, final String canonicalName, final ComponentType componentType,
+            final boolean isSingleton, final String description, final Set<IInputPortType> inputPortTypes,
+            final Set<IOutputPortType> outputPortTypes, final Map<String, PropertyType> propertyTypes,
             final Set<IEventListenerPortType> eventListenerPortTypes,
-            final Set<IEventTriggererPortType> eventTriggererPortTypes, 
-            final boolean IsExternalGUIElement)
-    {
+            final Set<IEventTriggererPortType> eventTriggererPortTypes, final boolean IsExternalGUIElement) {
         super(propertyTypes);
 
         this.ID = ID;
@@ -88,55 +75,45 @@ public class DefaultComponentType
         this.outputPortTypes = outputPortTypes;
         this.eventListenerPortTypes = eventListenerPortTypes;
         this.eventTriggererPortTypes = eventTriggererPortTypes;
-        this.isExternalGUIElement = IsExternalGUIElement;
         logger = AstericsErrorHandling.instance.getLogger();
     }
-    
-    public DefaultComponentType(
-            final String ID,
-            final String canonicalName,
-            final ComponentType componentType,
-            final boolean isSingleton,
-            final String description,
-            final Set<IInputPortType> inputPortTypes,
-            final Set<IOutputPortType> outputPortTypes,
-            final Map<String, PropertyType> propertyTypes,
-            final Set<IEventListenerPortType> eventListenerPortTypes,
-            final Set<IEventTriggererPortType> eventTriggererPortTypes)
-    {
-    	this(ID, canonicalName, componentType, isSingleton, description,
-    			inputPortTypes, outputPortTypes, propertyTypes, 
-    			eventListenerPortTypes, eventTriggererPortTypes, false);
-    }
-    
 
-    public String getID()
-    {
+    public DefaultComponentType(final String ID, final String canonicalName, final ComponentType componentType,
+            final boolean isSingleton, final String description, final Set<IInputPortType> inputPortTypes,
+            final Set<IOutputPortType> outputPortTypes, final Map<String, PropertyType> propertyTypes,
+            final Set<IEventListenerPortType> eventListenerPortTypes,
+            final Set<IEventTriggererPortType> eventTriggererPortTypes) {
+        this(ID, canonicalName, componentType, isSingleton, description, inputPortTypes, outputPortTypes, propertyTypes,
+                eventListenerPortTypes, eventTriggererPortTypes, false);
+    }
+
+    @Override
+    public String getID() {
         return ID;
     }
 
-    public String getCanonicalName()
-    {
+    @Override
+    public String getCanonicalName() {
         return canonicalName;
     }
 
-    public ComponentType getType()
-    {
+    @Override
+    public ComponentType getType() {
         return componentType;
     }
 
-    public boolean isSingleton()
-    {
+    @Override
+    public boolean isSingleton() {
         return isSingleton;
     }
 
-    public String getDescription()
-    {
+    @Override
+    public String getDescription() {
         return description;
     }
 
-    public Set<IPortType> getPorts()
-    {
+    @Override
+    public Set<IPortType> getPorts() {
         final Set<IPortType> allPortTypes = new LinkedHashSet<IPortType>();
         allPortTypes.addAll(inputPortTypes);
         allPortTypes.addAll(outputPortTypes);
@@ -145,8 +122,7 @@ public class DefaultComponentType
     }
 
     @Override
-    public Set<IEventPortType> getEventPorts()
-    {
+    public Set<IEventPortType> getEventPorts() {
         final Set<IEventPortType> allEventPortTypes = new LinkedHashSet<IEventPortType>();
         allEventPortTypes.addAll(eventListenerPortTypes);
         allEventPortTypes.addAll(eventTriggererPortTypes);
@@ -154,64 +130,54 @@ public class DefaultComponentType
         return allEventPortTypes;
     }
 
-    public Set<IInputPortType> getInputPorts()
-    {
+    @Override
+    public Set<IInputPortType> getInputPorts() {
         return new LinkedHashSet<IInputPortType>(inputPortTypes);
     }
 
-    public Set<IOutputPortType> getOutputPorts()
-    {
+    @Override
+    public Set<IOutputPortType> getOutputPorts() {
         return new LinkedHashSet<IOutputPortType>(outputPortTypes);
     }
 
     @Override
-    public DataType getPortDataType(String portID)
-    {
+    public DataType getPortDataType(String portID) {
         final IPortType port = getPort(portID);
 
         return port == null ? null : port.getDataType();
     }
 
-    private IPortType getPort(final String portID)
-    {
-        for(IInputPortType inputPortType : inputPortTypes)
-        {
-            if(inputPortType.getPortID().equals(portID))
-            {
+    private IPortType getPort(final String portID) {
+        for (IInputPortType inputPortType : inputPortTypes) {
+            if (inputPortType.getPortID().equals(portID)) {
                 return inputPortType;
             }
         }
 
-        for(IOutputPortType outputPortType : outputPortTypes)
-        {
-            if(outputPortType.getPortID().equals(portID))
-            {
+        for (IOutputPortType outputPortType : outputPortTypes) {
+            if (outputPortType.getPortID().equals(portID)) {
                 return outputPortType;
             }
         }
 
-        logger.severe(this.getClass().getName()+": getPort-> " +
-        		"Could not find specified portType:"
-        		+ portID );
-        throw new IndexOutOfBoundsException("Could not find specified portType:"
-        		+ portID);
+        logger.severe(this.getClass().getName() + ": getPort-> " + "Could not find specified portType:" + portID);
+        throw new IndexOutOfBoundsException("Could not find specified portType:" + portID);
     }
 
-    public Set<IEventListenerPortType> getEventListenerPorts()
-    {
+    @Override
+    public Set<IEventListenerPortType> getEventListenerPorts() {
         return new LinkedHashSet<IEventListenerPortType>(eventListenerPortTypes);
     }
 
-    public Set<IEventTriggererPortType> getEventTriggererPorts()
-    {
+    @Override
+    public Set<IEventTriggererPortType> getEventTriggererPorts() {
         return new LinkedHashSet<IEventTriggererPortType>(eventTriggererPortTypes);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("ID: " ).append(ID).append(", \n");
+        stringBuffer.append("ID: ").append(ID).append(", \n");
         stringBuffer.append("component type: ").append(componentType).append(", \n");
         stringBuffer.append("isSingleton: ").append(isSingleton).append(", \n");
         stringBuffer.append("inputPortTypes: ").append(inputPortTypes).append(", \n");

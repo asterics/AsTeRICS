@@ -25,63 +25,62 @@
  */
 
 package eu.asterics.component.processor.benchmark;
-import eu.asterics.mw.data.*;
+
+import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.services.AstericsThreadPool;
 
-
 /**
- *   Implements the timing thread for the Benchmark plugin
- *   
- *   @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Apr 06, 2011
- *         Time: 12:48:18 AM
- *         
+ * Implements the timing thread for the Benchmark plugin
+ * 
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Apr 06, 2011 Time: 12:48:18
+ *         AM
+ * 
  *         extended by Chris Veigl Apr 23, 2011
  */
-public class TimeGenerator implements Runnable
-{
+public class TimeGenerator implements Runnable {
 
-	boolean active=false;	
-	private Thread runThread = null;
-	
-	final BenchmarkInstance owner;
+    boolean active = false;
+    private Thread runThread = null;
 
-	public TimeGenerator(final BenchmarkInstance owner)
-	{
-		    this.owner = owner;
-	}
-	public synchronized void start()	
-	{	
-		if (runThread != null) return;
-		active=true;
-		AstericsThreadPool.instance.execute(this);
-	}
-	public void stop()	
-	{	
-		if (runThread!=null)
-			runThread.interrupt();
-		active=false;
-	}
-	
-	
-	public void run()
-	{
+    final BenchmarkInstance owner;
+
+    public TimeGenerator(final BenchmarkInstance owner) {
+        this.owner = owner;
+    }
+
+    public synchronized void start() {
+        if (runThread != null) {
+            return;
+        }
+        active = true;
+        AstericsThreadPool.instance.execute(this);
+    }
+
+    public void stop() {
+        if (runThread != null) {
+            runThread.interrupt();
+        }
+        active = false;
+    }
+
+    @Override
+    public void run() {
         runThread = Thread.currentThread();
 
-		while(active)
-		{
-				try {
-				  Thread.sleep(owner.propTime);
-				} catch (InterruptedException e) { active=false;}
-				
-				if (active ==true)
-				{
-		    		owner.opDataCountPort.sendData(ConversionUtils.intToByteArray(owner.dataCounter));
-		    		owner.opEventCountPort.sendData(ConversionUtils.intToByteArray(owner.eventCounter));
-		    		owner.dataCounter=0;
-		    		owner.eventCounter=0;
-				}
-		}
-		runThread=null;
-	}
+        while (active) {
+            try {
+                Thread.sleep(owner.propTime);
+            } catch (InterruptedException e) {
+                active = false;
+            }
+
+            if (active == true) {
+                owner.opDataCountPort.sendData(ConversionUtils.intToByteArray(owner.dataCounter));
+                owner.opEventCountPort.sendData(ConversionUtils.intToByteArray(owner.eventCounter));
+                owner.dataCounter = 0;
+                owner.eventCounter = 0;
+            }
+        }
+        runThread = null;
+    }
 }

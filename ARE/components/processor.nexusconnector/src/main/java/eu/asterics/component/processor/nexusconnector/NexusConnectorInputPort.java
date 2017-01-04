@@ -28,14 +28,14 @@ public class NexusConnectorInputPort extends DefaultRuntimeInputPort {
     @Override
     public void receiveData(byte[] data) {
         switch (type) {
-            case DOUBLE:
-                double doubleVal = ConversionUtils.doubleFromBytes(data);
-                connectorInstance.sendNexusChangeMessage(path, doubleVal);
-                break;
-            case STRING:
-                String stringVal = ConversionUtils.stringFromBytes(data);
-                connectorInstance.sendNexusChangeMessage(path, stringVal);
-                break;
+        case DOUBLE:
+            double doubleVal = ConversionUtils.doubleFromBytes(data);
+            connectorInstance.sendNexusChangeMessage(path, doubleVal);
+            break;
+        case STRING:
+            String stringVal = ConversionUtils.stringFromBytes(data);
+            connectorInstance.sendNexusChangeMessage(path, stringVal);
+            break;
         }
     }
 

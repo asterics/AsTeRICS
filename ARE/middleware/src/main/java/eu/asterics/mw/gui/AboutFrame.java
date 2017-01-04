@@ -26,12 +26,10 @@
 package eu.asterics.mw.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -45,88 +43,74 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.osgi.framework.BundleContext;
-
-
 /**
- * @author Konstantinos Kakousis
- * This class generates a JFrame for setting ARE options
+ * @author Konstantinos Kakousis This class generates a JFrame for setting ARE
+ *         options
  * 
- * Date: Oct 10, 2011
+ *         Date: Oct 10, 2011
  */
-public class AboutFrame extends JDialog 
-{
-	private static final int OPTIONS_PRAME_WIDTH = 400;
-	private static final int OPTIONS_PRAME_HEIGHT = 450;
-	static String ICON_PATH = "/images/icon.gif";
-	JDialog thisDialog;
-	AstericsGUI parent;
-	public AboutFrame (AstericsGUI parent, JFrame mainFrame)
-	{
-		super(mainFrame);
-		thisDialog=this;
-		this.parent = parent;
-		final URL iconPath = parent.getBundleContext().getBundle().
-			getResource(ICON_PATH);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
-		setTitle ("About AsTeRICS");
-		//setPreferredSize(new Dimension(OPTIONS_PRAME_WIDTH,OPTIONS_PRAME_HEIGHT));
-		 this.setLocationRelativeTo(mainFrame);
-		try {
-			BufferedImage myPicture;
+public class AboutFrame extends JDialog {
+    static String ICON_PATH = "/images/icon.gif";
+    JDialog thisDialog;
+    AstericsGUI parent;
 
-			final URL astericsImage = parent.getBundleContext().
-					getBundle().getResource("/images/asterics.png");
-		        
-			myPicture = ImageIO.read(astericsImage);
-			JLabel picLabel = new JLabel(new ImageIcon( myPicture ));
-			JLabel version = new JLabel ("AsTeRICS ARE Version 2.2");
-			JPanel panel = new JPanel();
-			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-			panel.add(picLabel);
-			panel.add(version);
-			add(panel, BorderLayout.CENTER);
-			add(makeButtonsPanel(), BorderLayout.SOUTH);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-      
-	}
-	
-	public void showFrame()
-	{
-		pack();
-		this.setLocation(parent.getFrame().getLocation());
-	    setVisible(true);
-	}
-	public void hideFrame()
-	{ 
-	    setVisible(false);
-	}
+    public AboutFrame(AstericsGUI parent, JFrame mainFrame) {
+        super(mainFrame);
+        thisDialog = this;
+        this.parent = parent;
+        final URL iconPath = parent.getBundleContext().getBundle().getResource(ICON_PATH);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
+        setTitle("About AsTeRICS");
+        // setPreferredSize(new
+        // Dimension(OPTIONS_PRAME_WIDTH,OPTIONS_PRAME_HEIGHT));
+        this.setLocationRelativeTo(mainFrame);
+        try {
+            BufferedImage myPicture;
 
+            final URL astericsImage = parent.getBundleContext().getBundle().getResource("/images/asterics.png");
 
-	private JComponent makeButtonsPanel ()
-	{
-		 JPanel panel = new JPanel(false);
+            myPicture = ImageIO.read(astericsImage);
+            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+            JLabel version = new JLabel("AsTeRICS ARE Version 2.2");
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.add(picLabel);
+            panel.add(version);
+            add(panel, BorderLayout.CENTER);
+            add(makeButtonsPanel(), BorderLayout.SOUTH);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-	        JButton cancelBbutton = new JButton("Close");
-	        cancelBbutton.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					thisDialog.dispose();
-					
-				}
-			});
-	        
-	        panel.add(cancelBbutton);
-	        return panel;
-		
-	}
-	
-	
+    }
+
+    public void showFrame() {
+        pack();
+        this.setLocation(parent.getFrame().getLocation());
+        setVisible(true);
+    }
+
+    public void hideFrame() {
+        setVisible(false);
+    }
+
+    private JComponent makeButtonsPanel() {
+        JPanel panel = new JPanel(false);
+
+        JButton cancelBbutton = new JButton("Close");
+        cancelBbutton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                thisDialog.dispose();
+
+            }
+        });
+
+        panel.add(cancelBbutton);
+        return panel;
+
+    }
 
 }

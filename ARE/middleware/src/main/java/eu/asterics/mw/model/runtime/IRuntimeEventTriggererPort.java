@@ -26,20 +26,15 @@
 package eu.asterics.mw.model.runtime;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * Date: 1/7/11
- * Time: 1:28 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: 1/7/11 Time: 1:28 PM
  */
-public interface IRuntimeEventTriggererPort
-{
+public interface IRuntimeEventTriggererPort {
     public void setEventChannelID(final String eventChannelID);
 
     public void raiseEvent();
 
-    public void addEventListener(final String targetComponentID,
-            final String eventPortID,
+    public void addEventListener(final String targetComponentID, final String eventPortID,
             final IRuntimeEventListenerPort eventListenerPort);
 
-    public void removeEventListener(final String targetComponentID,
-            final String eventPortID);
+    public void removeEventListener(final String targetComponentID, final String eventPortID);
 }

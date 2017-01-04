@@ -1,10 +1,7 @@
 package eu.asterics.component.actuator.midi;
 
-
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Vector;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 
@@ -34,71 +31,72 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 
 /**
- * Scales.java
- * Purpose of this module:
- * deliveres the scales for the class MidiInstance
+ * Scales.java Purpose of this module: deliveres the scales for the class
+ * MidiInstance
  * 
  * @Author Dominik Koller [dominik.koller@gmx.at]
  */
 
+public class Scales {
+    final static boolean debugOutput = false;
 
-public class Scales 
-{
-	final static boolean debugOutput = false;
+    int[] noteNumberArray;
+    int size;
 
-	int[] noteNumberArray;
-	int size;
-	
-	public Scales()
-	{
-		 noteNumberArray= new int[256];
-		 size=0;
-	}
-	
-	/**RETURNS AN ARRAY OF THE MIDI NUMBERS CORRESPONDING TO THE SELECTED SCALE
-    * @param index 	index is the value corresponding to the selected scale
-    * @return		returns an array with the MIDI numbers corresponding to the scale
-    */  
-	public boolean loadScale (String scaleName)
-	{
-        FileInputStream fIn=null;
-        byte[] fileInput= new byte[1128];
-		
-		int readBytes,len;
-         
-		if (!(scaleName.endsWith(".sc"))) scaleName+=".sc";
-        try{
-            fIn= new FileInputStream("data/actuator.midi/"+scaleName);
+    public Scales() {
+        noteNumberArray = new int[256];
+        size = 0;
+    }
 
-            //System.out.println(fIn.available()+ " bytes are available.");
-            readBytes=fIn.read(fileInput);
-            //System.out.println(readBytes+ " bytes have been read.");
+    /**
+     * RETURNS AN ARRAY OF THE MIDI NUMBERS CORRESPONDING TO THE SELECTED SCALE
+     * 
+     * @param index
+     *            index is the value corresponding to the selected scale
+     * @return returns an array with the MIDI numbers corresponding to the scale
+     */
+    public boolean loadScale(String scaleName) {
+        FileInputStream fIn = null;
+        byte[] fileInput = new byte[1128];
+
+        int len;
+
+        if (!(scaleName.endsWith(".sc"))) {
+            scaleName += ".sc";
+        }
+        try {
+            fIn = new FileInputStream("data/actuator.midi/" + scaleName);
+
+            fIn.read(fileInput);
+            // System.out.println(readBytes+ " bytes have been read.");
             fIn.close();
-            len=fromByteArray(fileInput,0);
-            if (debugOutput) System.out.println("loading "+len+ " tones from midi tonescale "+ scaleName+".");
-            
-            for (int i=0;i<len;i++)
-            {
-            	noteNumberArray[i]=fromByteArray(fileInput,104+i*4);
+            len = fromByteArray(fileInput, 0);
+            if (debugOutput) {
+                System.out.println("loading " + len + " tones from midi tonescale " + scaleName + ".");
+            }
+
+            for (int i = 0; i < len; i++) {
+                noteNumberArray[i] = fromByteArray(fileInput, 104 + i * 4);
                 // System.out.println("Note "+noteNumberArray[i]+ " read.");
             }
-            noteNumberArray[len]=0;
-            size=len;
+            noteNumberArray[len] = 0;
+            size = len;
+        } catch (IOException e) {
+
+            AstericsErrorHandling.instance.getLogger()
+                    .fine("Could not load tonescale file data/actuator/midi/" + scaleName + ".sc");
+            noteNumberArray[0] = 0;
+            size = 0;
+            return (false);
+
         }
-        catch(IOException e){
-        	
-        	AstericsErrorHandling.instance.getLogger().fine("Could not load tonescale file data/actuator/midi/"+scaleName+".sc");
-        	noteNumberArray[0]=0;
-        	size=0;
-        	return(false);
-        	
-        }
-        return(true);
-	
-	}
-	
-	int fromByteArray(byte[] bytes,int index) {
-	     return bytes[index+3] << 24 | (bytes[index+2] & 0xFF) << 16 | (bytes[index+1] & 0xFF) << 8 | (bytes[index+0] & 0xFF);
-	}
-	     
+        return (true);
+
+    }
+
+    int fromByteArray(byte[] bytes, int index) {
+        return bytes[index + 3] << 24 | (bytes[index + 2] & 0xFF) << 16 | (bytes[index + 1] & 0xFF) << 8
+                | (bytes[index + 0] & 0xFF);
+    }
+
 }

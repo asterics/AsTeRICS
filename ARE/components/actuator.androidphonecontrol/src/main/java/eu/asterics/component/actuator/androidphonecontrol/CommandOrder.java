@@ -23,72 +23,66 @@
  * 
  */
 
-
 package eu.asterics.component.actuator.androidphonecontrol;
 
 /**
  * 
  * This class keeps commands for the command queue.
- *  
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Jun 04, 2012
- *         Time: 13:24:48 AM
+ * 
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Jun 04, 2012 Time: 13:24:48
+ *         AM
  */
-public class CommandOrder
-{
-		/*
-		public CommandOrder(ProtocolService.Command command)
-		{
-			this.command=command;
-		}
-		public CommandOrder(ProtocolService.Command command,String phoneID)
-		{
-			this.command=command;
-			this.phoneID=phoneID;
-		}*/
-		
-	   
-  	/**
-	 * The class constructor.
-	 * @param command command type.
-	 * @param phoneID the number of the remote phone
-	 * @param message SMS message.
-	 */
-		public CommandOrder(ProtocolService.Command command,String phoneID,String message)
-		{
-			this.command=command;
-			this.phoneID=phoneID;
-			this.message=message;
-		}
-		
-		/**
-		 * Returns command type.
-		 * @return command type
-		 */
-		public ProtocolService.Command getCommand()
-		{
-			return command;
-		}
-		
-		/**
-		 * Returns phone ID.
-		 * @return phone ID
-		 */
-		public String getPhoneID()
-		{
-			return phoneID;
-		}
-		
-		/**
-		 * Returns message content.
-		 * @return message content.
-		 */
-		public String getMessage()
-		{
-			return message;
-		}
-		
-		private ProtocolService.Command command=ProtocolService.Command.None;
-		private String phoneID="";
-		private String message="";
+public class CommandOrder {
+    /*
+     * public CommandOrder(ProtocolService.Command command) {
+     * this.command=command; } public CommandOrder(ProtocolService.Command
+     * command,String phoneID) { this.command=command; this.phoneID=phoneID; }
+     */
+
+    /**
+     * The class constructor.
+     * 
+     * @param command
+     *            command type.
+     * @param phoneID
+     *            the number of the remote phone
+     * @param message
+     *            SMS message.
+     */
+    public CommandOrder(ProtocolService.Command command, String phoneID, String message) {
+        this.command = command;
+        this.phoneID = phoneID;
+        this.message = message;
+    }
+
+    /**
+     * Returns command type.
+     * 
+     * @return command type
+     */
+    public ProtocolService.Command getCommand() {
+        return command;
+    }
+
+    /**
+     * Returns phone ID.
+     * 
+     * @return phone ID
+     */
+    public String getPhoneID() {
+        return phoneID;
+    }
+
+    /**
+     * Returns message content.
+     * 
+     * @return message content.
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    private ProtocolService.Command command = ProtocolService.Command.None;
+    private String phoneID = "";
+    private String message = "";
 }

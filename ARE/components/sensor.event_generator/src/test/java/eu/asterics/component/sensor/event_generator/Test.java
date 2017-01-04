@@ -29,20 +29,15 @@ import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import junit.framework.TestCase;
 
 /**
- * Date: 1/10/11
- * Time: 10:11 AM
+ * Date: 1/10/11 Time: 10:11 AM
  */
-public class Test extends TestCase
-{
-    public void test()
-    {
+public class Test extends TestCase {
+    public void test() {
         final EventGeneratorInstance eventGeneratorInstance = new EventGeneratorInstance();
         eventGeneratorInstance.runtimeEventTriggererPort.addEventListener("me", "here",
-                new IRuntimeEventListenerPort()
-                {
+                new IRuntimeEventListenerPort() {
                     @Override
-                    public void receiveEvent(String data)
-                    {
+                    public void receiveEvent(String data) {
                         System.out.println("Event received - \"" + data + "\"");
                     }
                 });
@@ -51,9 +46,7 @@ public class Test extends TestCase
         try {
             Thread.currentThread();
             Thread.sleep(2000);
-        }
-        catch(InterruptedException ie)
-        {
+        } catch (InterruptedException ie) {
             // empty
         }
 
@@ -61,9 +54,7 @@ public class Test extends TestCase
         try {
             Thread.currentThread();
             Thread.sleep(2000);
-        }
-        catch(InterruptedException ie)
-        {
+        } catch (InterruptedException ie) {
             // empty
         }
 
@@ -71,9 +62,7 @@ public class Test extends TestCase
         try {
             Thread.currentThread();
             Thread.sleep(1000);
-        }
-        catch(InterruptedException ie)
-        {
+        } catch (InterruptedException ie) {
             // empty
         }
 
@@ -81,9 +70,7 @@ public class Test extends TestCase
         try {
             Thread.currentThread();
             Thread.sleep(3000);
-        }
-        catch(InterruptedException ie)
-        {
+        } catch (InterruptedException ie) {
             // empty
         }
 
@@ -91,9 +78,7 @@ public class Test extends TestCase
         try {
             Thread.currentThread();
             Thread.sleep(2000);
-        }
-        catch(InterruptedException ie)
-        {
+        } catch (InterruptedException ie) {
             // empty
         }
     }

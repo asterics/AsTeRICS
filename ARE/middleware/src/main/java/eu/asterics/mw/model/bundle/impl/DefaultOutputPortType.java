@@ -1,10 +1,11 @@
 package eu.asterics.mw.model.bundle.impl;
 
+import java.util.Map;
+
 import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IOutputPortType;
 import eu.asterics.mw.model.bundle.PortType;
 
-import java.util.Map;
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -30,25 +31,18 @@ import java.util.Map;
  *
  */
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:56:58 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:56:58 PM
  */
-public class DefaultOutputPortType extends DefaultPortType 
-	implements IOutputPortType
-{
+public class DefaultOutputPortType extends DefaultPortType implements IOutputPortType {
 
-    public DefaultOutputPortType(final PortType portType, 
-    		final String description, 
-    		final DataType dataType, 
-    		final Map<String, PropertyType> propertyTypes,
-    		final String id)
-    {
+    public DefaultOutputPortType(final PortType portType, final String description, final DataType dataType,
+            final Map<String, PropertyType> propertyTypes, final String id) {
         super(portType, description, dataType, propertyTypes, id);
     }
 
-    final public PortType getType()
-    {
+    @Override
+    final public PortType getType() {
         return PortType.OUTPUT;
     }
 }

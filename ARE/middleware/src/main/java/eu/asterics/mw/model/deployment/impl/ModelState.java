@@ -26,26 +26,20 @@
 package eu.asterics.mw.model.deployment.impl;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Aug 20, 2010
- *         Time: 11:26:34 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 20, 2010 Time:
+ *         11:26:34 AM
  */
-public enum ModelState
-{
-	STARTED("started"),
-    PAUSED("paused"),
-    STOPPED("stopped");
+public enum ModelState {
+    STARTED("started"), PAUSED("paused"), STOPPED("stopped");
 
     private final String state;
 
-    private ModelState(final String state)
-    {
+    private ModelState(final String state) {
         this.state = state;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return state;
     }
 }

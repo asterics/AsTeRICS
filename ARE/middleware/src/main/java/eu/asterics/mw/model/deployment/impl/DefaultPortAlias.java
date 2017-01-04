@@ -26,24 +26,21 @@
 package eu.asterics.mw.model.deployment.impl;
 
 public class DefaultPortAlias {
-	
-	private String portId;
-	private String portAlias;
 
-	public DefaultPortAlias (String portId, String portAlias)
-	{
-		this.portId = portId;
-		this.portAlias = portAlias;
-	}
-	
-	public String getPortId ()
-	{
-		return this.portId;
-	}
-	
-	public String getPortAlias ()
-	{
-		return this.portAlias;
-	}
+    private String portId;
+    private String portAlias;
+
+    public DefaultPortAlias(String portId, String portAlias) {
+        this.portId = portId;
+        this.portAlias = portAlias;
+    }
+
+    public String getPortId() {
+        return this.portId;
+    }
+
+    public String getPortAlias() {
+        return this.portAlias;
+    }
 
 }

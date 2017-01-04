@@ -25,18 +25,14 @@
 
 package com.starlab.component.processor.filter;
 
-import java.util.logging.Logger;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 
 /**
  * 
@@ -48,281 +44,288 @@ import eu.asterics.mw.services.AREServices;
  */
 public class FilterInstance extends AbstractRuntimeComponentInstance {
 
-	public native long nativeCreateFilter(int order, int type,
-			double sampleRate, double cutoffFreq1, double cutoffFreq2, int lengthFilteredSignal);
+    public native long nativeCreateFilter(int order, int type, double sampleRate, double cutoffFreq1,
+            double cutoffFreq2, int lengthFilteredSignal);
 
-	public native boolean nativeRemoveFilter(long handle);
+    public native boolean nativeRemoveFilter(long handle);
 
-	public native double nativeComputeSample(long handle, double sample);
+    public native double nativeComputeSample(long handle, double sample);
 
-	public native double nativeGetSignalPower(long handle);
+    public native double nativeGetSignalPower(long handle);
 
-	static {
-		System.loadLibrary("filter");
-	}
+    static {
+        System.loadLibrary("filter");
+    }
 
-	final IRuntimeOutputPort opOutput = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opPassBandMagnitude = new DefaultRuntimeOutputPort();
-	final Object lock = new Object();
+    final IRuntimeOutputPort opOutput = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opPassBandMagnitude = new DefaultRuntimeOutputPort();
+    final Object lock = new Object();
 
-	int propOrder = 2;
-	double propCutoffFreq1 = 0;
-	double propCutoffFreq2 = 0;
-	int propSignalPowerUpdateRate = 1;
-	int propSignalPowerBufferSize = 125;
-	int counterUpdateRate = 0;
-	int propSamplingRate = 500;
-	int propType = 0;
-	long filterHandle = 0;
+    int propOrder = 2;
+    double propCutoffFreq1 = 0;
+    double propCutoffFreq2 = 0;
+    int propSignalPowerUpdateRate = 1;
+    int propSignalPowerBufferSize = 125;
+    int counterUpdateRate = 0;
+    int propSamplingRate = 500;
+    int propType = 0;
+    long filterHandle = 0;
 
-	// declare member variables here
+    // declare member variables here
 
-	/**
-	 * The class constructor.
-	 */
-	public FilterInstance() {
-	}
+    /**
+     * The class constructor.
+     */
+    public FilterInstance() {
+    }
 
-	/**
-	 * returns an Input Port.
-	 * 
-	 * @param portID
-	 *            the name of the port
-	 * @return the input port or null if not found
-	 */
-	public IRuntimeInputPort getInputPort(String portID) {
-		if ("input".equalsIgnoreCase(portID)) {
-			return ipInput;
-		}
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("input".equalsIgnoreCase(portID)) {
+            return ipInput;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * returns an Output Port.
-	 * 
-	 * @param portID
-	 *            the name of the port
-	 * @return the output port or null if not found
-	 */
-	public IRuntimeOutputPort getOutputPort(String portID) {
-		if ("output".equalsIgnoreCase(portID)) {
-			return opOutput;
-		}
-		if ("signalpower".equalsIgnoreCase(portID)) {
-			return opPassBandMagnitude;
-		}
+    /**
+     * returns an Output Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
+     */
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("output".equalsIgnoreCase(portID)) {
+            return opOutput;
+        }
+        if ("signalpower".equalsIgnoreCase(portID)) {
+            return opPassBandMagnitude;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * returns an Event Listener Port.
-	 * 
-	 * @param eventPortID
-	 *            the name of the port
-	 * @return the EventListener port or null if not found
-	 */
-	public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+    /**
+     * returns an Event Listener Port.
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
+     */
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * returns an Event Triggerer Port.
-	 * 
-	 * @param eventPortID
-	 *            the name of the port
-	 * @return the EventTriggerer port or null if not found
-	 */
-	public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+    /**
+     * returns an Event Triggerer Port.
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
+     */
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * returns the value of the given property.
-	 * 
-	 * @param propertyName
-	 *            the name of the property
-	 * @return the property value or null if not found
-	 */
-	public Object getRuntimePropertyValue(String propertyName) {
-		if ("order".equalsIgnoreCase(propertyName)) {
-			return propOrder;
-		}
-		if ("cutoffFreq1".equalsIgnoreCase(propertyName)) {
-			return propCutoffFreq1;
-		}
-		if ("cutoffFreq2".equalsIgnoreCase(propertyName)) {
-			return propCutoffFreq2;
-		}
-		if ("signalPowerUpdateRate".equalsIgnoreCase(propertyName)) {
-			return propSignalPowerUpdateRate;
-		}
-		if ("signalPowerBufferSize".equalsIgnoreCase(propertyName)) {
-			return propSignalPowerBufferSize;
-		}
-		if ("samplingRate".equalsIgnoreCase(propertyName)) {
-			return propSamplingRate;
-		}
-		if ("type".equalsIgnoreCase(propertyName)) {
-			return propType;
-		}
+    /**
+     * returns the value of the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
+     */
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("order".equalsIgnoreCase(propertyName)) {
+            return propOrder;
+        }
+        if ("cutoffFreq1".equalsIgnoreCase(propertyName)) {
+            return propCutoffFreq1;
+        }
+        if ("cutoffFreq2".equalsIgnoreCase(propertyName)) {
+            return propCutoffFreq2;
+        }
+        if ("signalPowerUpdateRate".equalsIgnoreCase(propertyName)) {
+            return propSignalPowerUpdateRate;
+        }
+        if ("signalPowerBufferSize".equalsIgnoreCase(propertyName)) {
+            return propSignalPowerBufferSize;
+        }
+        if ("samplingRate".equalsIgnoreCase(propertyName)) {
+            return propSamplingRate;
+        }
+        if ("type".equalsIgnoreCase(propertyName)) {
+            return propType;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * sets a new value for the given property.
-	 * 
-	 * @param propertyName
-	 *            the name of the property
-	 * @param newValue
-	 *            the desired property value or null if not found
-	 */
-	public Object setRuntimePropertyValue(String propertyName, Object newValue) {
-		if ("order".equalsIgnoreCase(propertyName)) {
-			final Object oldValue = propOrder;
-			int oldPropOrder = propOrder;
-			propOrder = Integer.parseInt(newValue.toString());
-			if (propOrder != oldPropOrder) {
-				reconfigureFilter();
-			}
-			return oldValue;
-		}
-		if ("cutoffFreq1".equalsIgnoreCase(propertyName)) {
-			final double oldValue = propCutoffFreq1;
-			double oldPropCutoffFreq1 = propCutoffFreq1;
-			propCutoffFreq1 = Double.parseDouble((String) newValue);
-			if (propCutoffFreq1 != oldPropCutoffFreq1) {
-				reconfigureFilter();
-			}
-			return oldValue;
-		}
-		if ("cutoffFreq2".equalsIgnoreCase(propertyName)) {
-			final double oldValue = propCutoffFreq2;
-			double oldPropCutoffFreq2 = propCutoffFreq2;
-			propCutoffFreq2 = Double.parseDouble((String) newValue);
-			if (propCutoffFreq2 != oldPropCutoffFreq2) {
-				reconfigureFilter();
-			}
-			return oldValue;
-		}
-		if ("samplingRate".equalsIgnoreCase(propertyName)) {
-			final Object oldValue = propSamplingRate;
-			int oldPropSamplingRate = propSamplingRate;
-			propSamplingRate = Integer.parseInt(newValue.toString());
-			if (propSamplingRate != oldPropSamplingRate) {
-				reconfigureFilter();
-			}
-			return oldValue;
-		}
-		if ("type".equalsIgnoreCase(propertyName)) {
-			final Object oldValue = propType;
-			int oldPropType = propType;
-			propType = Integer.parseInt(newValue.toString());
-			if (propType != oldPropType) {
-				reconfigureFilter();
-			}
-			return oldValue;
-		}
-		if ("signalPowerUpdateRate".equalsIgnoreCase(propertyName)) {
-			final Object oldValue = propSignalPowerUpdateRate;
-			int oldPropSignalPowerUpdateRate = propSignalPowerUpdateRate;
-			propSignalPowerUpdateRate = Integer.parseInt(newValue.toString());
-			if (propSignalPowerUpdateRate != oldPropSignalPowerUpdateRate) {
-				reconfigureFilter();
-			}
-			return oldValue;
-		}
-		if ("signalPowerBufferSize".equalsIgnoreCase(propertyName)) {
-			final Object oldValue = propSignalPowerBufferSize;
-			int oldPropSignalPowerBufferSize = propSignalPowerBufferSize;
-			propSignalPowerBufferSize = Integer.parseInt(newValue.toString());
-			if (propSignalPowerBufferSize != oldPropSignalPowerBufferSize) {
-				reconfigureFilter();
-			}
-			return oldValue;
-		}
+    /**
+     * sets a new value for the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
+     */
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("order".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propOrder;
+            int oldPropOrder = propOrder;
+            propOrder = Integer.parseInt(newValue.toString());
+            if (propOrder != oldPropOrder) {
+                reconfigureFilter();
+            }
+            return oldValue;
+        }
+        if ("cutoffFreq1".equalsIgnoreCase(propertyName)) {
+            final double oldValue = propCutoffFreq1;
+            double oldPropCutoffFreq1 = propCutoffFreq1;
+            propCutoffFreq1 = Double.parseDouble((String) newValue);
+            if (propCutoffFreq1 != oldPropCutoffFreq1) {
+                reconfigureFilter();
+            }
+            return oldValue;
+        }
+        if ("cutoffFreq2".equalsIgnoreCase(propertyName)) {
+            final double oldValue = propCutoffFreq2;
+            double oldPropCutoffFreq2 = propCutoffFreq2;
+            propCutoffFreq2 = Double.parseDouble((String) newValue);
+            if (propCutoffFreq2 != oldPropCutoffFreq2) {
+                reconfigureFilter();
+            }
+            return oldValue;
+        }
+        if ("samplingRate".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propSamplingRate;
+            int oldPropSamplingRate = propSamplingRate;
+            propSamplingRate = Integer.parseInt(newValue.toString());
+            if (propSamplingRate != oldPropSamplingRate) {
+                reconfigureFilter();
+            }
+            return oldValue;
+        }
+        if ("type".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propType;
+            int oldPropType = propType;
+            propType = Integer.parseInt(newValue.toString());
+            if (propType != oldPropType) {
+                reconfigureFilter();
+            }
+            return oldValue;
+        }
+        if ("signalPowerUpdateRate".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propSignalPowerUpdateRate;
+            int oldPropSignalPowerUpdateRate = propSignalPowerUpdateRate;
+            propSignalPowerUpdateRate = Integer.parseInt(newValue.toString());
+            if (propSignalPowerUpdateRate != oldPropSignalPowerUpdateRate) {
+                reconfigureFilter();
+            }
+            return oldValue;
+        }
+        if ("signalPowerBufferSize".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propSignalPowerBufferSize;
+            int oldPropSignalPowerBufferSize = propSignalPowerBufferSize;
+            propSignalPowerBufferSize = Integer.parseInt(newValue.toString());
+            if (propSignalPowerBufferSize != oldPropSignalPowerBufferSize) {
+                reconfigureFilter();
+            }
+            return oldValue;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Input Ports for receiving values.
-	 */
-	private final DefaultRuntimeInputPort ipInput = new DefaultRuntimeInputPort() {
-		public void receiveData(byte[] data) {
-			double sample = ConversionUtils.doubleFromBytes(data);
-			double output;
-			synchronized (lock) {
-				output = nativeComputeSample(filterHandle, sample);
-			}
-			opOutput.sendData(ConversionUtils.doubleToBytes(output));
-			if (++counterUpdateRate >= propSignalPowerUpdateRate) {
-				counterUpdateRate = 0;
-				synchronized (lock) {
-					output = nativeGetSignalPower(filterHandle);
-				}
-				opPassBandMagnitude.sendData(ConversionUtils
-						.doubleToBytes(output));
-			}
-		}
-	};
+    /**
+     * Input Ports for receiving values.
+     */
+    private final DefaultRuntimeInputPort ipInput = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            double sample = ConversionUtils.doubleFromBytes(data);
+            double output;
+            synchronized (lock) {
+                output = nativeComputeSample(filterHandle, sample);
+            }
+            opOutput.sendData(ConversionUtils.doubleToBytes(output));
+            if (++counterUpdateRate >= propSignalPowerUpdateRate) {
+                counterUpdateRate = 0;
+                synchronized (lock) {
+                    output = nativeGetSignalPower(filterHandle);
+                }
+                opPassBandMagnitude.sendData(ConversionUtils.doubleToBytes(output));
+            }
+        }
+    };
 
-	/**
-	 * Event Listerner Ports.
-	 */
+    /**
+     * Event Listerner Ports.
+     */
 
-	/**
-	 * called when model is started.
-	 */
-	@Override
-	public void start() {
-		reconfigureFilter();
-		super.start();
-	}
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        reconfigureFilter();
+        super.start();
+    }
 
-	/**
-	 * called when model is paused.
-	 */
-	@Override
-	public void pause() {
-		super.pause();
-	}
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
-	/**
-	 * called when model is resumed.
-	 */
-	@Override
-	public void resume() {
-		super.resume();
-	}
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
 
-	/**
-	 * called when model is stopped.
-	 */
-	@Override
-	public void stop() {
-		super.stop();
-	}
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        super.stop();
+    }
 
-	private void reconfigureFilter() {
-		synchronized (lock) {
-			if (filterHandle != 0) {
-				nativeRemoveFilter(filterHandle);
-			}
-			counterUpdateRate = 0;
-			filterHandle = nativeCreateFilter(propOrder, propType,
-					propSamplingRate, propCutoffFreq1, propCutoffFreq2, propSignalPowerBufferSize);
-		}
-	}
+    private void reconfigureFilter() {
+        synchronized (lock) {
+            if (filterHandle != 0) {
+                nativeRemoveFilter(filterHandle);
+            }
+            counterUpdateRate = 0;
+            filterHandle = nativeCreateFilter(propOrder, propType, propSamplingRate, propCutoffFreq1, propCutoffFreq2,
+                    propSignalPowerBufferSize);
+        }
+    }
 
-	protected void finalize() throws Throwable {
-		if (filterHandle != 0) {
-			nativeRemoveFilter(filterHandle);
-		}
-		super.finalize();
-	}
+    @Override
+    protected void finalize() throws Throwable {
+        if (filterHandle != 0) {
+            nativeRemoveFilter(filterHandle);
+        }
+        super.finalize();
+    }
 }
