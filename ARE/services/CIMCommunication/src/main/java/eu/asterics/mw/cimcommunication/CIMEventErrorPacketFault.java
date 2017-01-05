@@ -28,22 +28,23 @@ package eu.asterics.mw.cimcommunication;
 /**
  * A CIM event sent on faulty packet errors
  * 
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at]
- *         Date: Nov 3, 2010
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
 public class CIMEventErrorPacketFault extends CIMEvent {
-	
-	CIMProtocolPacket packet;
-	
-	/**
-	 * Constructor
-	 * @param port origin of event
-	 * @param packet instance of erroneous packet
-	 */
-	public CIMEventErrorPacketFault(CIMPortController port, CIMProtocolPacket packet) 
-	{
-		super(port);
-		this.packet = packet;
-	}
+
+    CIMProtocolPacket packet;
+
+    /**
+     * Constructor
+     * 
+     * @param port
+     *            origin of event
+     * @param packet
+     *            instance of erroneous packet
+     */
+    public CIMEventErrorPacketFault(CIMPortController port, CIMProtocolPacket packet) {
+        super(port);
+        this.packet = packet;
+    }
 }

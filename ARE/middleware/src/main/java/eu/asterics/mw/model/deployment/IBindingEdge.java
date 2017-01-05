@@ -26,12 +26,10 @@
 package eu.asterics.mw.model.deployment;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Sep 2, 2010
- *         Time: 5:04:37 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Sep 2, 2010 Time:
+ *         5:04:37 PM
  */
-public interface IBindingEdge
-{
+public interface IBindingEdge {
     public String getComponentInstanceID();
 
     public String getPortID();

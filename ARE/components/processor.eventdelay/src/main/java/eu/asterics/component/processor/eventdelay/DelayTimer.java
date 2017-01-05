@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,103 +26,81 @@
 
 package eu.asterics.component.processor.eventdelay;
 
-import java.util.logging.Logger;
-import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsThreadPool;
-
 
 /**
  * 
  * Implements the timer for the Event Delay component.
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Feb 10, 2012
- *         Time: 11:54:11 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Feb 10, 2012 Time: 11:54:11
+ *         AM
  */
 
+public class DelayTimer implements Runnable {
+    private boolean active = false;
+    private long delayTime = -1;
+    private final EventDelayInstance owner;
 
-public class DelayTimer implements Runnable
-{
-	private Thread t;
-	private boolean active=false;
-	private long delayTime=-1;
-	private final EventDelayInstance owner;
-	
-	/**
-	 * The class constructor.
-	 * @param owner the EventDelay instance
-	 */	
-	public DelayTimer(EventDelayInstance owner)
-	{
-		this.owner=owner;
-	}
-	
-	
-	/**
-	 * Sets the delay time.
-	 * @param delayTime delay time
-	 */
-	public void setDelayTime(long delayTime)
-	{
-		this.delayTime=delayTime;
-	}
-	
-	/**
-	 * Starts the timer
-	 */
-	public void startDelay()
-	{
-		if(active==false)
-		{
-			active=true;
-			AstericsThreadPool.instance.execute(this);
-		}
-	}
-	
-	/**
-	 * Returns the timer state.
-	 * @return timer state
-	 */
-	public boolean timerState()
-	{
-		return active;
-	}
-	
-	/**
-	 * The timer function.
-	 */
-	public void run()
-	{
-		boolean finish=true;
-		do
-		{
-			finish=true;
-			try
-			{
-				Thread.sleep(delayTime);
-				long nextDelay=owner.sendEvent();
-				if(nextDelay>0)
-				{
-					finish=false;
-					delayTime=nextDelay;
-				}
-			}
-			catch(InterruptedException e)
-			{
-				
-			}
-			
-		}while(finish==false);
-		
-		active=false;
-	}
+    /**
+     * The class constructor.
+     * 
+     * @param owner
+     *            the EventDelay instance
+     */
+    public DelayTimer(EventDelayInstance owner) {
+        this.owner = owner;
+    }
+
+    /**
+     * Sets the delay time.
+     * 
+     * @param delayTime
+     *            delay time
+     */
+    public void setDelayTime(long delayTime) {
+        this.delayTime = delayTime;
+    }
+
+    /**
+     * Starts the timer
+     */
+    public void startDelay() {
+        if (active == false) {
+            active = true;
+            AstericsThreadPool.instance.execute(this);
+        }
+    }
+
+    /**
+     * Returns the timer state.
+     * 
+     * @return timer state
+     */
+    public boolean timerState() {
+        return active;
+    }
+
+    /**
+     * The timer function.
+     */
+    @Override
+    public void run() {
+        boolean finish = true;
+        do {
+            finish = true;
+            try {
+                Thread.sleep(delayTime);
+                long nextDelay = owner.sendEvent();
+                if (nextDelay > 0) {
+                    finish = false;
+                    delayTime = nextDelay;
+                }
+            } catch (InterruptedException e) {
+
+            }
+
+        } while (finish == false);
+
+        active = false;
+    }
 }

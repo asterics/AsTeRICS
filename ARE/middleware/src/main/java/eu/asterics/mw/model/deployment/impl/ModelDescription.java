@@ -1,4 +1,5 @@
 package eu.asterics.mw.model.deployment.impl;
+
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -25,21 +26,23 @@ package eu.asterics.mw.model.deployment.impl;
  */
 public class ModelDescription {
 
-	String description="", shortDescription="", requirements="";
-	public ModelDescription (String description, String shortDescription, 
-			String requirements){
-		this.description = description;
-		this.requirements = requirements;
-		this.shortDescription = shortDescription;
-	}
-	
-	public String getDescription (){
-		return this.description;
-	}
-	public String getShortDescription (){
-		return this.shortDescription;
-	}
-	public String getRequirements (){
-		return this.requirements;
-	}
+    String description = "", shortDescription = "", requirements = "";
+
+    public ModelDescription(String description, String shortDescription, String requirements) {
+        this.description = description;
+        this.requirements = requirements;
+        this.shortDescription = shortDescription;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public String getShortDescription() {
+        return this.shortDescription;
+    }
+
+    public String getRequirements() {
+        return this.requirements;
+    }
 }

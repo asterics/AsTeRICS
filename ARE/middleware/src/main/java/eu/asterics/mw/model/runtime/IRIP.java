@@ -28,11 +28,9 @@ package eu.asterics.mw.model.runtime;
 import java.io.Serializable;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Sep 16, 2010
- *         Time: 3:08:06 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Sep 16, 2010 Time:
+ *         3:08:06 PM
  */
-public interface IRIP<T extends Serializable>
-{
+public interface IRIP<T extends Serializable> {
     public void receiveData(final T data);
 }

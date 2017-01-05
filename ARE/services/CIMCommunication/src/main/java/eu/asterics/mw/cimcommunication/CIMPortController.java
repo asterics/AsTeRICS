@@ -34,89 +34,86 @@ import java.util.logging.Logger;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 public abstract class CIMPortController {
-	//This timeout must be set to avoid a high CPU load on Win10
-	//Use @see RXTXPort#enableReceiveTimeout
-	public static final int RXTX_PORT_ENABLE_RECEIVE_TIMEOUT=500;
-	
+    // This timeout must be set to avoid a high CPU load on Win10
+    // Use @see RXTXPort#enableReceiveTimeout
+    public static final int RXTX_PORT_ENABLE_RECEIVE_TIMEOUT = 500;
 
-	List<CIMEventHandler> eventHandlers = new LinkedList<CIMEventHandler>();
-	protected Logger logger = null;
-	String comPortName;
-	CIMUniqueIdentifier cuid = null;
-	
-	final short areVersion = 0x1; //TODO replace with utility function
-	
-	byte serialNumber = 0;
-	byte nextExpectedIncomingSerialNumber = 0;
-	byte nextExpectedCIMIssuedSerialNumber = 0;
-	
+    List<CIMEventHandler> eventHandlers = new LinkedList<CIMEventHandler>();
+    protected Logger logger = null;
+    String comPortName;
+    CIMUniqueIdentifier cuid = null;
 
-	public CIMPortController(String comPortName)
-	{
-		logger = AstericsErrorHandling.instance.getLogger();
-		this.comPortName = comPortName;
-	}
-	
-	/**
-	 * Adds a CIM event handler to the list of event handlers
-	 * @param handler the implementation of the event handler interface
-	 */
-	public void addEventListener(CIMEventHandler handler)
-	{
-		synchronized (eventHandlers)
-		{
-			if (!eventHandlers.contains(handler))
-			{
-				logger.fine(this.getClass().getName()+".addEventListener: adding listener:" + handler + "on port " + comPortName);
-				eventHandlers.add(handler);
-			}
-		}
-	}
-	
-	/**
-	 * Removes a specified CIM event handler from the list of handlers 
-	 * @param handler the handler implementation to be removed
-	 * 
-	 */
-	public void removeEventListener(CIMEventHandler handler)
-	{
-		synchronized (eventHandlers)
-		{
-			if (eventHandlers.contains(handler))
-			{
-				logger.fine(this.getClass().getName()+
-						".removeEventListener: removing listener:" + handler + 
-						"on port " + comPortName);
-				eventHandlers.remove(handler);
-			}
-		}
-	}
-	
-	public InputStream getInputStream()
-	{
-		return null;
-	}
+    final short areVersion = 0x1; // TODO replace with utility function
 
-	public OutputStream getOutputStream()
-	{
-		return null;
-	}
+    byte serialNumber = 0;
+    byte nextExpectedIncomingSerialNumber = 0;
+    byte nextExpectedCIMIssuedSerialNumber = 0;
 
-	/**
-	 * Closes the port. Tells the thread to run out and returns only after the
-	 * thread has ended.
-	 */
-	abstract void closePort();
+    public CIMPortController(String comPortName) {
+        logger = AstericsErrorHandling.instance.getLogger();
+        this.comPortName = comPortName;
+    }
 
-	/**
-	 * Sends a packet to the connected device.
-	 * @param data a byte array of data to be transferred 
-	 * @param featureAddress the feature address to send the data to
-	 * @param requestCode the request code for the transfer
-	 * @param crc true if crc should be attached to packet
-	 * @return the serial number of the packet or -1 on error
-	 */
-	abstract byte sendPacket(byte[] data, short featureAddress,
-			short requestCode, boolean crc);
+    /**
+     * Adds a CIM event handler to the list of event handlers
+     * 
+     * @param handler
+     *            the implementation of the event handler interface
+     */
+    public void addEventListener(CIMEventHandler handler) {
+        synchronized (eventHandlers) {
+            if (!eventHandlers.contains(handler)) {
+                logger.fine(this.getClass().getName() + ".addEventListener: adding listener:" + handler + "on port "
+                        + comPortName);
+                eventHandlers.add(handler);
+            }
+        }
+    }
+
+    /**
+     * Removes a specified CIM event handler from the list of handlers
+     * 
+     * @param handler
+     *            the handler implementation to be removed
+     * 
+     */
+    public void removeEventListener(CIMEventHandler handler) {
+        synchronized (eventHandlers) {
+            if (eventHandlers.contains(handler)) {
+                logger.fine(this.getClass().getName() + ".removeEventListener: removing listener:" + handler
+                        + "on port " + comPortName);
+                eventHandlers.remove(handler);
+            }
+        }
+    }
+
+    public InputStream getInputStream() {
+        return null;
+    }
+
+    public OutputStream getOutputStream() {
+        return null;
+    }
+
+    /**
+     * Closes the port. Tells the thread to run out and returns only after the
+     * thread has ended.
+     */
+    abstract void closePort();
+
+    /**
+     * Sends a packet to the connected device.
+     * 
+     * @param data
+     *            a byte array of data to be transferred
+     * @param featureAddress
+     *            the feature address to send the data to
+     * @param requestCode
+     *            the request code for the transfer
+     * @param crc
+     *            true if crc should be attached to packet
+     * @return the serial number of the packet or -1 on error
+     */
+    abstract byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc);
 
 }

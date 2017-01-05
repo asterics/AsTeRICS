@@ -26,11 +26,9 @@
 package eu.asterics.mw.model.bundle;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 12:54:42 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         12:54:42 PM
  */
-public interface IOutputPortType extends IPortType
-{
+public interface IOutputPortType extends IPortType {
     // empty
 }

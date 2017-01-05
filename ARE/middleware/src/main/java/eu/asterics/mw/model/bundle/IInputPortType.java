@@ -25,24 +25,22 @@
 
 package eu.asterics.mw.model.bundle;
 
-import java.util.ArrayList;
-
 import eu.asterics.mw.model.Multiplicity;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 12:54:33 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         12:54:33 PM
  */
-public interface IInputPortType extends IPortType
-{
+public interface IInputPortType extends IPortType {
     public Multiplicity getMultiplicity();
 
     public boolean mustBeConnected();
-    
+
     /**
-     * Sync: 
-     * @return a list of other port IDs of the same component to buffer the input
+     * Sync:
+     * 
+     * @return a list of other port IDs of the same component to buffer the
+     *         input
      */
-    //public ArrayList<String> getBufferedPortIds ();
+    // public ArrayList<String> getBufferedPortIds ();
 }

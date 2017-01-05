@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{46F7036F-A16F-4B81-8D29-3B1D6B79CC51}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>IntelF200</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>IntelRealSense</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;INTELF200_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\Java\jdk1.8.0_74\include;C:\Program Files\Java\jdk1.8.0_74\include\win32;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera\include;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera\service;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera\utilities;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;INTELF200_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\Java\jdk1.8.0_74\include;C:\Program Files\Java\jdk1.8.0_74\include\win32;C:\Users\Christoph\workspace\IntelRealSense\IntelF200\include;C:\Users\Christoph\workspace\IntelRealSense\IntelF200\include\camera;C:\Users\Christoph\workspace\IntelRealSense\IntelF200\include\camera\include;C:\Users\Christoph\workspace\IntelRealSense\IntelF200\include\camera\service;C:\Users\Christoph\workspace\IntelRealSense\IntelF200\include\camera\utilities;C:\Users\Christoph\workspace64bit\IntelRealSense\IntelF200\include\camera\common_include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\Christoph\workspace\IntelRealSense\IntelF200\include;C:\Users\Christoph\workspace\IntelRealSense\IntelF200\include\camera;C:\Users\Christoph\workspace\IntelRealSense\IntelF200\include\camera\include;C:\Users\Christoph\workspace\IntelRealSense\IntelF200\include\camera\service;C:\Users\Christoph\workspace\IntelRealSense\IntelF200\include\camera\utilities;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;INTELF200_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\Java\jdk1.8.0_74\include;C:\Program Files\Java\jdk1.8.0_74\include\win32;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\includeC:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera\include;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera\service;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera\utilitie;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;INTELF200_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <AdditionalIncludeDirectories>C:\Program Files\Java\jdk1.8.0_74\include;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera;C:\Program Files\Java\jdk1.8.0_74\include\win32;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera\include;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera\service;C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\include\camera\utilitie;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\AsTeRICS_PREP\ARE\components\sensor.realsense\src\main\c++\IntelF200\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="IntelRealSense.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\Intel\RSSDK\lib\x64\libpxc.lib" />
+    <Library Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\Intel\RSSDK\lib\x64\libpxcmd.lib" />
+    <Library Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\Intel\RSSDK\sample\common\lib\x64\v140\libpxcutils.lib" />
+    <Library Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\Intel\RSSDK\sample\common\lib\x64\v140\libpxcutilsmd.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\eu_asterics_component_sensor_intelrealsense_BridgeIntelRealSense.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

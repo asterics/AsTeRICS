@@ -25,14 +25,13 @@
 
 package eu.asterics.mw.cimcommunication;
 
-import eu.asterics.mw.services.AstericsErrorHandling;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.BlockingQueue;
 
+import eu.asterics.mw.services.AstericsErrorHandling;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
 
 /**
  * Implementation of RXTX listener interface to transfer data from the serial
@@ -40,58 +39,55 @@ import java.util.concurrent.BlockingQueue;
  * and writes them to a blocking queue to allow serial port controller to read
  * the data.
  * 
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at]
- *         Date: Nov 3, 2010
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
 class CIMPortEventListener implements SerialPortEventListener {
-	
-	BlockingQueue<Byte> dataSink;
-	InputStream in;
 
-	/**
-	 * Constructs the listener
-	 * @param controller the controller that data should be sent to
-	 * @param in the input stream from the RXTX serial port 
-	 * @param dataSink the blocking queue the serial port controller reads from
-	 */
-	public CIMPortEventListener(InputStream in, BlockingQueue<Byte> dataSink) 
-	{
-		this.in = in;
-		this.dataSink = dataSink;
-	}
+    BlockingQueue<Byte> dataSink;
+    InputStream in;
 
-	/**
-	 * Implementation of the handling of events on the serial port. Only handles
-	 * DATA_AVAILABLE and puts the received bytes into the queue.
-	 */
-	@Override
-	public void serialEvent(SerialPortEvent ev) {
-		
-		int data;		
-		
-		switch (ev.getEventType())
-		{
-		case SerialPortEvent.DATA_AVAILABLE:
-            try
-            {
-                while ( ( data = in.read()) > -1 )
-                {
-//
-//                	System.out.println(String.format("Recv: 0x%2x ('%c')", data, data));
-//
-                   	dataSink.add((byte) data);
-                 }
-            }
-            catch ( IOException e )
-            {
-            	AstericsErrorHandling.instance.getLogger()
-            		.warning("Exception on serial monitor thread");
+    /**
+     * Constructs the listener
+     * 
+     * @param controller
+     *            the controller that data should be sent to
+     * @param in
+     *            the input stream from the RXTX serial port
+     * @param dataSink
+     *            the blocking queue the serial port controller reads from
+     */
+    public CIMPortEventListener(InputStream in, BlockingQueue<Byte> dataSink) {
+        this.in = in;
+        this.dataSink = dataSink;
+    }
+
+    /**
+     * Implementation of the handling of events on the serial port. Only handles
+     * DATA_AVAILABLE and puts the received bytes into the queue.
+     */
+    @Override
+    public void serialEvent(SerialPortEvent ev) {
+
+        int data;
+
+        switch (ev.getEventType()) {
+        case SerialPortEvent.DATA_AVAILABLE:
+            try {
+                while ((data = in.read()) > -1) {
+                    //
+                    // System.out.println(String.format("Recv: 0x%2x ('%c')",
+                    // data, data));
+                    //
+                    dataSink.add((byte) data);
+                }
+            } catch (IOException e) {
+                AstericsErrorHandling.instance.getLogger().warning("Exception on serial monitor thread");
                 e.printStackTrace();
             }
-			
-			break;
-		}
-	}
+
+            break;
+        }
+    }
 
 }

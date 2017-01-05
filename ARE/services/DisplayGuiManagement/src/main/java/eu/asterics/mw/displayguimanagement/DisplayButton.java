@@ -25,55 +25,43 @@
 
 package eu.asterics.mw.displayguimanagement;
 
-import eu.asterics.mw.cimcommunication.CIMPortManager;
-import eu.asterics.mw.cimcommunication.CIMProtocolPacket;
-import eu.asterics.mw.services.AREServices;
-import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
 
-public class DisplayButton extends DisplayLabel 
-{
-	IDisplayEventListener eventListener;	
-	
-	public DisplayButton(String caption, int x, int y, int w, int h)
-	{
-		super(caption, x, y, w, h); 
-	}
-	
-	public void addEventListener(IDisplayEventListener eventListener)
-	{
-		this.eventListener = eventListener;
-	}
+public class DisplayButton extends DisplayLabel {
+    IDisplayEventListener eventListener;
 
-	@Override
-	public void press(int x, int y) 
-	{
-		if (pressOnCanvas(x, y))
-		{
-			DisplayGuiManager.debugMessage("Button " + canvasName + " pressed: " + caption);
+    public DisplayButton(String caption, int x, int y, int w, int h) {
+        super(caption, x, y, w, h);
+    }
 
-			drawInverted();	
+    public void addEventListener(IDisplayEventListener eventListener) {
+        this.eventListener = eventListener;
+    }
 
-			if (eventListener != null)
-			{
-				
-				AstericsThreadPool.instance.execute(new Runnable()
-				{
-					@Override
-					public void run() 
-					{
-						eventListener.action();
-					}
-				});
-			}
+    @Override
+    public void press(int x, int y) {
+        if (pressOnCanvas(x, y)) {
+            DisplayGuiManager.debugMessage("Button " + canvasName + " pressed: " + caption);
 
-			try 
-			{
-				Thread.sleep(200);
-			} catch (InterruptedException e) {}
-			
-			draw();
-						
-		}
-	}
+            drawInverted();
+
+            if (eventListener != null) {
+
+                AstericsThreadPool.instance.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        eventListener.action();
+                    }
+                });
+            }
+
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+            }
+
+            draw();
+
+        }
+    }
 }

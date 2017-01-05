@@ -25,15 +25,11 @@
 
 package eu.asterics.mw.model.deployment;
 
-import java.util.ArrayList;
-
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:27:57 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:27:57 PM
  */
-public interface IInputPort extends IPort
-{
+public interface IInputPort extends IPort {
     /**
      * Returns the multiplicity ID of the specified {@link IInputPort} or
      * <i>null</i> if no such property is defined.
@@ -42,6 +38,5 @@ public interface IInputPort extends IPort
      *         <i>null</i> if no such property is defined.
      */
     public String getMultiplicityID();
-    
-   
+
 }

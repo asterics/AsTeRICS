@@ -25,206 +25,189 @@
  */
 
 package eu.asterics.component.processor.benchmark;
-import eu.asterics.mw.data.*;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import java.util.logging.Logger;
-import eu.asterics.mw.services.AstericsErrorHandling;
 
+import eu.asterics.mw.data.ConversionUtils;
+import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
+import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 
 /**
- *   Implements the Benchmark plugin, which measures activity on
- *   input and events ports and outputs values per time
- *  
+ * Implements the Benchmark plugin, which measures activity on input and events
+ * ports and outputs values per time
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Apr 06, 2011
- *         Time: 12:48:18 AM
- *         
+ * 
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Apr 06, 2011 Time: 12:48:18
+ *         AM
+ * 
  *         extended by Chris Veigl Apr 23, 2011
  */
-public class BenchmarkInstance extends AbstractRuntimeComponentInstance
-{
-	public final OutputPort opDataCountPort = new OutputPort();
-	public final OutputPort opEventCountPort = new OutputPort();
+public class BenchmarkInstance extends AbstractRuntimeComponentInstance {
+    public final OutputPort opDataCountPort = new OutputPort();
+    public final OutputPort opEventCountPort = new OutputPort();
     private IRuntimeInputPort ipInputPort = new InputPort1();
 
-	public int propTime=1000;
+    public int propTime = 1000;
 
-	private final TimeGenerator tg = new TimeGenerator(this);
-	public int eventCounter=0;
-	public int dataCounter=0;
-	private long lastUpdate=0;
+    private final TimeGenerator tg = new TimeGenerator(this);
+    public int eventCounter = 0;
+    public int dataCounter = 0;
+    private long lastUpdate = 0;
 
-	
     /**
      * The class constructor.
      */
-    public BenchmarkInstance()
-    {
+    public BenchmarkInstance() {
         // empty constructor - needed for OSGi service factory operations
     }
 
     /**
      * returns an Input Port.
-     * @param portID   the name of the port
-     * @return         the input port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
      */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-    	 if("in".equalsIgnoreCase(portID))
-         {
-             return ipInputPort;
-         }
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("in".equalsIgnoreCase(portID)) {
+            return ipInputPort;
+        }
         return null;
     }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-    {
-    	if("dataCount".equalsIgnoreCase(portID))
-        {
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("dataCount".equalsIgnoreCase(portID)) {
             return opDataCountPort;
-        }
-    	else if("eventCount".equalsIgnoreCase(portID))
-        {
+        } else if ("eventCount".equalsIgnoreCase(portID)) {
             return opEventCountPort;
         }
-    	return null;
-    }
-    
-    /**
-     * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the event listener port or null if not found
-     */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-
-        if("eventIncrease".equalsIgnoreCase(eventPortID))
-        {
-            return elpIncreaseEventCounter;
-        }
-        else if("resetCounter".equalsIgnoreCase(eventPortID))
-        {
-            return elpResetCounter;
-        }
-        
         return null;
     }
 
+    /**
+     * returns an Event Listener Port.
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the event listener port or null if not found
+     */
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+
+        if ("eventIncrease".equalsIgnoreCase(eventPortID)) {
+            return elpIncreaseEventCounter;
+        } else if ("resetCounter".equalsIgnoreCase(eventPortID)) {
+            return elpResetCounter;
+        }
+
+        return null;
+    }
 
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-     public Object getRuntimePropertyValue(String propertyName)
-    {
-        if("time".equalsIgnoreCase(propertyName))
-        {
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("time".equalsIgnoreCase(propertyName)) {
             return propTime;
         }
         return null;
     }
 
-     /**
-      * sets a new value for the given property.
-      * @param propertyName   the name of the property
-      * @param newValue       the desired property value or null if not found
-      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-         if("time".equalsIgnoreCase(propertyName))
-         {
-             final Object oldValue = propTime;
+    /**
+     * sets a new value for the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
+     */
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("time".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propTime;
 
-             if(newValue != null)
-             {
-                 try
-                 {
-                     propTime = Integer.parseInt(newValue.toString());
-                     if (propTime<1) propTime=1;
-                 }
-                 catch (NumberFormatException nfe)
-                 {
-                     throw new RuntimeException("Invalid property value for " + propertyName + ": " + newValue);
-                 }
-             }
-             return oldValue;
-         }
-         return null;
+            if (newValue != null) {
+                try {
+                    propTime = Integer.parseInt(newValue.toString());
+                    if (propTime < 1) {
+                        propTime = 1;
+                    }
+                } catch (NumberFormatException nfe) {
+                    throw new RuntimeException("Invalid property value for " + propertyName + ": " + newValue);
+                }
+            }
+            return oldValue;
+        }
+        return null;
     }
-    
 
     /**
      * Input Port for receiving signal.
-     */    
-    private class InputPort1 extends DefaultRuntimeInputPort
-    {
-        public synchronized void receiveData(byte[] data)
-        {
-            dataCounter=dataCounter+1;
+     */
+    private class InputPort1 extends DefaultRuntimeInputPort {
+        @Override
+        public synchronized void receiveData(byte[] data) {
+            dataCounter = dataCounter + 1;
         }
 
     }
- 
+
     /**
      * Output Port for sending benchmark data.
      */
-    public class OutputPort extends DefaultRuntimeOutputPort
-    {
-        public synchronized void sendData(int data)
-        {
+    public class OutputPort extends DefaultRuntimeOutputPort {
+        public synchronized void sendData(int data) {
             super.sendData(ConversionUtils.intToByteArray(data));
         }
     }
-    
+
     /**
      * Event Listener Port for increasing the event counter
      */
-    final IRuntimeEventListenerPort elpIncreaseEventCounter 	= new IRuntimeEventListenerPort()
-    {
-    	@Override 
-    	public synchronized void receiveEvent(String data)
-    	 {
-    		eventCounter=eventCounter+1;
-    	 }
+    final IRuntimeEventListenerPort elpIncreaseEventCounter = new IRuntimeEventListenerPort() {
+        @Override
+        public synchronized void receiveEvent(String data) {
+            eventCounter = eventCounter + 1;
+        }
     };
-        
+
     /**
      * Event Listener Port for resetting the event counter
      */
-    final IRuntimeEventListenerPort elpResetCounter 	= new IRuntimeEventListenerPort()
-    {
-    	@Override 
-    	public synchronized void receiveEvent(String data)
-    	 {
-    		eventCounter=0;
-    		dataCounter=0;
-  		    lastUpdate=System.currentTimeMillis();
-    	 }
+    final IRuntimeEventListenerPort elpResetCounter = new IRuntimeEventListenerPort() {
+        @Override
+        public synchronized void receiveEvent(String data) {
+            eventCounter = 0;
+            dataCounter = 0;
+            lastUpdate = System.currentTimeMillis();
+        }
     };
-   
+
     /**
      * called when model is started.
      */
     @Override
-    public void start()
-    {
+    public void start() {
         super.start();
-    	lastUpdate=System.currentTimeMillis();
-    	eventCounter=0;
-    	dataCounter=0;
+        lastUpdate = System.currentTimeMillis();
+        eventCounter = 0;
+        dataCounter = 0;
         tg.start();
 
     }
@@ -233,8 +216,7 @@ public class BenchmarkInstance extends AbstractRuntimeComponentInstance
      * called when model is paused.
      */
     @Override
-    public void pause()
-    {
+    public void pause() {
         super.pause();
         tg.stop();
     }
@@ -243,20 +225,18 @@ public class BenchmarkInstance extends AbstractRuntimeComponentInstance
      * called when model is resumed.
      */
     @Override
-    public void resume()
-    {
-    	lastUpdate=System.currentTimeMillis();
+    public void resume() {
+        lastUpdate = System.currentTimeMillis();
         super.resume();
         tg.start();
 
     }
-  
+
     /**
      * called when model is stopped.
      */
     @Override
-    public void stop()
-    {
+    public void stop() {
         super.stop();
         tg.stop();
     }

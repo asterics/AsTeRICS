@@ -27,11 +27,11 @@ package eu.asterics.mw.cimcommunication;
 
 public class CIMEventRawPacket extends CIMEvent {
 
-	public Byte b;
-	
-	public CIMEventRawPacket(CIMRawPortController port, Byte b) {
-		super(port);
-		this.b = b;
-	}
+    public Byte b;
+
+    public CIMEventRawPacket(CIMRawPortController port, Byte b) {
+        super(port);
+        this.b = b;
+    }
 
 }

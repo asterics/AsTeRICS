@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,213 +26,198 @@
 
 package eu.asterics.component.processor.stringtoint;
 
-
-import java.util.logging.Logger;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 
 /**
  * 
  * Convererts string values to double values.
  * 
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Jan 18, 2012
- *         Time: 13:01:40 PM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Jan 18, 2012 Time: 13:01:40
+ *         PM
  */
-public class StringToIntInstance extends AbstractRuntimeComponentInstance
-{
-	final IRuntimeOutputPort opOutput = new DefaultRuntimeOutputPort();
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class StringToIntInstance extends AbstractRuntimeComponentInstance {
+    final IRuntimeOutputPort opOutput = new DefaultRuntimeOutputPort();
+    // Usage of an output port e.g.:
+    // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	boolean propHexadecimalInput = false;
+    boolean propHexadecimalInput = false;
 
-	// declare member variables here
+    // declare member variables here
 
-  
-    
-   /**
-    * The class constructor.
-    */
-    public StringToIntInstance()
-    {
+    /**
+     * The class constructor.
+     */
+    public StringToIntInstance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-		if ("input".equalsIgnoreCase(portID))
-		{
-			return ipInput;
-		}
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("input".equalsIgnoreCase(portID)) {
+            return ipInput;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
-		if ("output".equalsIgnoreCase(portID))
-		{
-			return opOutput;
-		}
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("output".equalsIgnoreCase(portID)) {
+            return opOutput;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
 
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("hexadecimalInput".equalsIgnoreCase(propertyName))
-		{
-			return propHexadecimalInput;
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("hexadecimalInput".equalsIgnoreCase(propertyName)) {
+            return propHexadecimalInput;
+        }
 
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("hexadecimalInput".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propHexadecimalInput;
-			if("true".equalsIgnoreCase((String)newValue))
-			{
-				propHexadecimalInput = true;
-			}
-			else if("false".equalsIgnoreCase((String)newValue))
-			{
-				propHexadecimalInput = false;
-			}
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("hexadecimalInput".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propHexadecimalInput;
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propHexadecimalInput = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propHexadecimalInput = false;
+            }
+            return oldValue;
+        }
 
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
-	private final IRuntimeInputPort ipInput  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-			 String value = ConversionUtils.stringFromBytes(data);
-			 int intValue;
-			 try
-			 {
-				 int radix=10;
-				 if(propHexadecimalInput)
-				 {
-					 radix=16;
-				 }
-				 
-				 intValue=Integer.parseInt(value, radix);
-				 opOutput.sendData(ConversionUtils.intToBytes(intValue));
-			 }
-			 catch(NumberFormatException ex)
-			 {
-				 AstericsErrorHandling.instance.getLogger().warning("String: "+value + " can not be converted to int");
-			 }
-				 
-		}
-		
-	};
+    /**
+     * Input Ports for receiving values.
+     */
+    private final IRuntimeInputPort ipInput = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            String value = ConversionUtils.stringFromBytes(data);
+            int intValue;
+            try {
+                int radix = 10;
+                if (propHexadecimalInput) {
+                    radix = 16;
+                }
 
+                intValue = Integer.parseInt(value, radix);
+                opOutput.sendData(ConversionUtils.intToBytes(intValue));
+            } catch (NumberFormatException ex) {
+                AstericsErrorHandling.instance.getLogger().warning("String: " + value + " can not be converted to int");
+            }
 
-     /**
-      * Event Listerner Ports.
-      */
+        }
 
-	
+    };
 
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
+    /**
+     * Event Listerner Ports.
+     */
 
-          super.start();
-      }
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
 
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-          super.pause();
-      }
+        super.start();
+    }
 
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-          super.resume();
-      }
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
 
-          super.stop();
-      }
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+
+        super.stop();
+    }
 }

@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,194 +26,187 @@
 
 package eu.asterics.component.sensor.autostartevent;
 
-
-import java.util.logging.Logger;
-import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
  * 
- * This component sends the event when the model is started after delay defined by the Delay property.
+ * This component sends the event when the model is started after delay defined
+ * by the Delay property.
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: May 30, 2012
- *         Time: 12:51:34 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: May 30, 2012 Time: 12:51:34
+ *         AM
  */
 
-public class AutostartEventInstance extends AbstractRuntimeComponentInstance
-{
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class AutostartEventInstance extends AbstractRuntimeComponentInstance {
+    // Usage of an output port e.g.:
+    // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
-	final IRuntimeEventTriggererPort etpOutput = new DefaultRuntimeEventTriggererPort();
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    final IRuntimeEventTriggererPort etpOutput = new DefaultRuntimeEventTriggererPort();
+    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	int propDelay = 1000;
+    int propDelay = 1000;
 
-	// declare member variables here
+    // declare member variables here
 
-  
-    
-   /**
-    * The class constructor.
-    */
-    public AutostartEventInstance()
-    {
+    /**
+     * The class constructor.
+     */
+    public AutostartEventInstance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
 
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
-		if ("output".equalsIgnoreCase(eventPortID))
-		{
-			return etpOutput;
-		}
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+        if ("output".equalsIgnoreCase(eventPortID)) {
+            return etpOutput;
+        }
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("delay".equalsIgnoreCase(propertyName))
-		{
-			return propDelay;
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("delay".equalsIgnoreCase(propertyName)) {
+            return propDelay;
+        }
 
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("delay".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propDelay;
-			propDelay = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("delay".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propDelay;
+            propDelay = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
 
         return null;
     }
 
-     
-
     /**
-     * The component timer used for delay generation. 
+     * The component timer used for delay generation.
      */
-private final Runnable timer = new Runnable(){
-  		
+    private final Runnable timer = new Runnable() {
+
+        /**
+         * The timer method.
+         */
+        @Override
+        public void run() {
+
+            try {
+                Thread.sleep(propDelay);
+            } catch (InterruptedException e) {
+            }
+            etpOutput.raiseEvent();
+        }
+    };
+
+    private void startEvent() {
+        AstericsThreadPool.instance.execute(timer);
+    }
 
     /**
-     * The timer method. 
-     */	
-	@Override
-  		public void run() {
-  			
-  			try{
-					Thread.sleep(propDelay);
-				}catch (InterruptedException e) {}
-  			etpOutput.raiseEvent();
-  		}
-  	};
-  
-  	private void startEvent()
-  	{
-  		AstericsThreadPool.instance.execute(timer);
-  	}
+     * called when model is started.
+     */
+    @Override
+    public void start() {
 
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
+        super.start();
+        startEvent();
+    }
 
-          super.start();
-          startEvent();
-      }
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-          super.pause();
-      }
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+        startEvent();
+    }
 
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-          super.resume();
-          startEvent();
-      }
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
 
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
-
-          super.stop();
-      }
+        super.stop();
+    }
 }

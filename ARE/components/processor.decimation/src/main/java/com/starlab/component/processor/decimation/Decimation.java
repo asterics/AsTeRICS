@@ -29,11 +29,10 @@ package com.starlab.component.processor.decimation;
 import com.starlab.component.processor.jni.JNIdecimation;
 
 /**
- *   Implements the decimation of an input signal
+ * Implements the decimation of an input signal
  * 
- * @author Javier Acedo [javier.acedo@starlab.es]
- *         Date: Apr 29, 2011
- *         Time 04:51:02 PM
+ * @author Javier Acedo [javier.acedo@starlab.es] Date: Apr 29, 2011 Time
+ *         04:51:02 PM
  */
 public class Decimation {
 
@@ -41,40 +40,41 @@ public class Decimation {
 
     private int downSamplingRatio = 2;
     private double[] outValue = new double[1];
-	
+
     /**
      * The class constructor
      */
-    public Decimation () {
+    public Decimation() {
         outValue[0] = 0;
     }
 
     /**
      * Set the down sampling ratio
-     * @param downSamplingRatio  The new down sampling ratio
+     * 
+     * @param downSamplingRatio
+     *            The new down sampling ratio
      */
-    public void setDownSampling (int downSamplingRatio)
-    {
+    public void setDownSampling(int downSamplingRatio) {
         this.downSamplingRatio = downSamplingRatio;
     }
 
     /**
      * It perform the decimation algorithm
-     * @param in                 New incoming sample to be decimated
-     * @return                   True if the incoming sample produces a new
-     *                           decimated value   
+     * 
+     * @param in
+     *            New incoming sample to be decimated
+     * @return True if the incoming sample produces a new decimated value
      */
-    public boolean decimate (double in)
-    {
+    public boolean decimate(double in) {
         return jni.Decimation(in, downSamplingRatio, outValue);
     }
 
     /**
      * Gets the last decimated value
-     * @return                   Last decimated value
+     * 
+     * @return Last decimated value
      */
-    public double getLastDecimated ()
-    {
+    public double getLastDecimated() {
         return outValue[0];
     }
 }

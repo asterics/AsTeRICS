@@ -1,6 +1,7 @@
 package eu.asterics.mw.model.bundle.impl;
 
 import eu.asterics.mw.model.bundle.IEventListenerPortType;
+
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -25,18 +26,13 @@ import eu.asterics.mw.model.bundle.IEventListenerPortType;
  *         (please refer to the folder LICENSE)
  *
  */
-public class DefaultEventListenerPortType extends DefaultEventPortType 
-	implements IEventListenerPortType
-{
-    public DefaultEventListenerPortType(final String id, 
-    		final String description)
-    {
+public class DefaultEventListenerPortType extends DefaultEventPortType implements IEventListenerPortType {
+    public DefaultEventListenerPortType(final String id, final String description) {
         super(id, description);
     }
 
     @Override
     public String toString() {
-        return "DefaultEventListenerPortType(" + super.getID() + ", " +
-        	super.getDescription() + ")";
+        return "DefaultEventListenerPortType(" + super.getID() + ", " + super.getDescription() + ")";
     }
 }

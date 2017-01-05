@@ -26,20 +26,17 @@ import eu.asterics.mw.model.bundle.IEventPortType;
  *         (please refer to the folder LICENSE)
  *
  */
-public class DefaultEventPortType implements IEventPortType
-{
+public class DefaultEventPortType implements IEventPortType {
     private final String id;
     private final String description;
 
-    public DefaultEventPortType(final String id, final String description)
-    {
+    public DefaultEventPortType(final String id, final String description) {
         this.id = id;
         this.description = description;
     }
 
     @Override
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 

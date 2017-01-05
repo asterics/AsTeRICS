@@ -25,31 +25,26 @@
 package eu.asterics.mw.are;
 
 public enum AREEvent {
-	PRE_DEPLOY_EVENT ("pre_deploy_event"),
-	POST_DEPLOY_EVENT ("post_deploy_event"),
-	PRE_START_EVENT ("pre_start_event"),
-	POST_START_EVENT ("post_start_event"),
-	PRE_STOP_EVENT ("pre_stop_event"),
-	POST_STOP_EVENT ("post_stop_event"),
-	PRE_PAUSE_EVENT ("pre_pause_event"),
-	POST_PAUSE_EVENT ("post_pause_event"),
-	PRE_RESUME_EVENT ("pre_resume_event"),
-	POST_RESUME_EVENT ("post_resume_event"),
-	PRE_BUNDLES_EVENT ("pre_bundles_event"),
-	POST_BUNDLES_EVENT ("post_bundles_event");
-	
-	private final String eventType;
-	
+    PRE_DEPLOY_EVENT("pre_deploy_event"), POST_DEPLOY_EVENT("post_deploy_event"), PRE_START_EVENT(
+            "pre_start_event"), POST_START_EVENT("post_start_event"), PRE_STOP_EVENT("pre_stop_event"), POST_STOP_EVENT(
+                    "post_stop_event"), PRE_PAUSE_EVENT("pre_pause_event"), POST_PAUSE_EVENT(
+                            "post_pause_event"), PRE_RESUME_EVENT("pre_resume_event"), POST_RESUME_EVENT(
+                                    "post_resume_event"), PRE_BUNDLES_EVENT("pre_bundles_event"), POST_BUNDLES_EVENT(
+                                            "post_bundles_event");
+
+    private final String eventType;
+
     private AREEvent(String eventType) {
-    	this.eventType = eventType;
-    }
-    
-    public boolean equalsName(String otherType){
-        return (otherType == null)? false:eventType.equals(otherType);
+        this.eventType = eventType;
     }
 
-    public String toString(){
-       return eventType;
+    public boolean equalsName(String otherType) {
+        return (otherType == null) ? false : eventType.equals(otherType);
     }
-    
+
+    @Override
+    public String toString() {
+        return eventType;
+    }
+
 }

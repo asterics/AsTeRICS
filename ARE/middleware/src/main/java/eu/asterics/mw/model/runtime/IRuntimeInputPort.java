@@ -25,17 +25,16 @@
 
 package eu.asterics.mw.model.runtime;
 
-import java.util.HashMap;
-
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Aug 20, 2010
- *         Time: 10:51:12 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 20, 2010 Time:
+ *         10:51:12 AM
  */
-public interface IRuntimeInputPort
-{
-    public void receiveData(final byte [] data);
-    public void startBuffering (AbstractRuntimeComponentInstance c, String portID);
-	public void stopBuffering (AbstractRuntimeComponentInstance c, String portID);
-	public boolean isBuffered ();  
+public interface IRuntimeInputPort {
+    public void receiveData(final byte[] data);
+
+    public void startBuffering(AbstractRuntimeComponentInstance c, String portID);
+
+    public void stopBuffering(AbstractRuntimeComponentInstance c, String portID);
+
+    public boolean isBuffered();
 }

@@ -64,128 +64,115 @@ package com.starlab.component.actuator.enobiodisplay;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.services.AREServices;
 
 /**
- *   Implements the Enobiodisplay actuator plugin, which can show the Enobio 
- *   signals in different colors depending on their calibration status:
- *   RED: channel not being calibrated,
- *   YELLOW: channel being calibrated,
- *   GREEN: channel calibrated 
+ * Implements the Enobiodisplay actuator plugin, which can show the Enobio
+ * signals in different colors depending on their calibration status: RED:
+ * channel not being calibrated, YELLOW: channel being calibrated, GREEN:
+ * channel calibrated
  * 
- * @author Javier Acedo [javier.acedo@starlab.es]
- *         Date: Apr 29, 2011
- *         Time 04:51:02 PM
+ * @author Javier Acedo [javier.acedo@starlab.es] Date: Apr 29, 2011 Time
+ *         04:51:02 PM
  */
-public class EnobioDisplayInstance extends AbstractRuntimeComponentInstance
-{
-	private int dataCh1 = 0;
+public class EnobioDisplayInstance extends AbstractRuntimeComponentInstance {
+    private int dataCh1 = 0;
     private int dataCh2 = 0;
     private int dataCh3 = 0;
     private int dataCh4 = 0;
     private int dataStatus = 0;
     private final PlotPanel gui = new PlotPanel(2000);
-    
-	/**
-     * The class constructor.
-     * initializes the GUI
+
+    /**
+     * The class constructor. initializes the GUI
      */
-    public EnobioDisplayInstance()
-    {
+    public EnobioDisplayInstance() {
         // empty constructor - needed for OSGi service factory operations
     }
 
     /**
      * returns an Input Port.
-     * @param portID   the name of the port
-     * @return         the input port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
      */
     @Override
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-        if("Channel1".equalsIgnoreCase(portID))
-        {
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("Channel1".equalsIgnoreCase(portID)) {
             return ipEnobioChannel1;
-        }
-        else if("Channel2".equalsIgnoreCase(portID))
-        {
+        } else if ("Channel2".equalsIgnoreCase(portID)) {
             return ipEnobioChannel2;
-        }
-        else if("Channel3".equalsIgnoreCase(portID))
-        {
+        } else if ("Channel3".equalsIgnoreCase(portID)) {
             return ipEnobioChannel3;
-        }
-        else if("Channel4".equalsIgnoreCase(portID))
-        {
+        } else if ("Channel4".equalsIgnoreCase(portID)) {
             return ipEnobioChannel4;
-        }
-        else if("Status".equalsIgnoreCase(portID))
-        {
+        } else if ("Status".equalsIgnoreCase(portID)) {
             return ipEnobioStatus;
         }
-        
+
         return null;
     }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
     @Override
-    public IRuntimeOutputPort getOutputPort(String portID)
-    {
+    public IRuntimeOutputPort getOutputPort(String portID) {
         return null;
     }
-    
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         return null;
     }
 
     /**
      * Input Port for receiving Enobio channel 1 values.
      */
-    private final IRuntimeInputPort ipEnobioChannel1
-            = new DefaultRuntimeInputPort()
-    {
-        public void receiveData(byte[] data)
-        {
-        	dataCh1 = ConversionUtils.intFromBytes(data);
+    private final IRuntimeInputPort ipEnobioChannel1 = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            dataCh1 = ConversionUtils.intFromBytes(data);
 
             gui.addValue(0, dataCh1);
         }
 
-	
     };
 
     /**
      * Input Port for receiving Enobio channel 2 values.
      */
-    private final IRuntimeInputPort ipEnobioChannel2
-            = new DefaultRuntimeInputPort()
-    {
-        public void receiveData(byte[] data)
-        {
-        	dataCh2 = ConversionUtils.intFromBytes(data);
+    private final IRuntimeInputPort ipEnobioChannel2 = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            dataCh2 = ConversionUtils.intFromBytes(data);
 
             gui.addValue(1, dataCh2);
         }
@@ -195,60 +182,50 @@ public class EnobioDisplayInstance extends AbstractRuntimeComponentInstance
     /**
      * Input Port for receiving Enobio channel 3 values.
      */
-    private final IRuntimeInputPort ipEnobioChannel3
-            = new DefaultRuntimeInputPort()
-    {
-        public void receiveData(byte[] data)
-        {
-        	dataCh3 = ConversionUtils.intFromBytes(data);
+    private final IRuntimeInputPort ipEnobioChannel3 = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            dataCh3 = ConversionUtils.intFromBytes(data);
 
             gui.addValue(2, dataCh3);
         }
 
-		
     };
 
     /**
      * Input Port for receiving Enobio channel 4 values.
      */
-    private final IRuntimeInputPort ipEnobioChannel4
-            = new DefaultRuntimeInputPort()
-    {
-        public void receiveData(byte[] data)
-        {
-        	dataCh4 = ConversionUtils.intFromBytes(data);
+    private final IRuntimeInputPort ipEnobioChannel4 = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            dataCh4 = ConversionUtils.intFromBytes(data);
 
             gui.addValue(3, dataCh4);
         }
 
-		
     };
 
     /**
      * Input Port for receiving Enobio status values.
      */
-    private final IRuntimeInputPort ipEnobioStatus
-            = new DefaultRuntimeInputPort()
-    {
-        public void receiveData(byte[] data)
-        {
-        	dataStatus = ConversionUtils.intFromBytes(data);
+    private final IRuntimeInputPort ipEnobioStatus = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            dataStatus = ConversionUtils.intFromBytes(data);
 
             gui.updateStatus(dataStatus);
-            //gui.updateCoordinates(0, status);
+            // gui.updateCoordinates(0, status);
         }
 
-	
     };
 
     /**
      * called when model is started.
      */
     @Override
-    public void start()
-    {
-        //gui.setVisible(true);
-    	AREServices.instance.displayPanel(gui, this, true);
+    public void start() {
+        // gui.setVisible(true);
+        AREServices.instance.displayPanel(gui, this, true);
 
         super.start();
     }
@@ -257,28 +234,25 @@ public class EnobioDisplayInstance extends AbstractRuntimeComponentInstance
      * called when model is paused.
      */
     @Override
-    public void pause()
-    {
-       super.pause();
+    public void pause() {
+        super.pause();
     }
-   
-   /**
-    * called when model is resumed.
-    */
+
+    /**
+     * called when model is resumed.
+     */
     @Override
-    public void resume()
-    {
-       super.resume();
+    public void resume() {
+        super.resume();
     }
-    
+
     /**
      * called when model is stopped.
      */
     @Override
-    public void stop()
-    {
-        //gui.setVisible(false);
-    	AREServices.instance.displayPanel(gui, this, false);
+    public void stop() {
+        // gui.setVisible(false);
+        AREServices.instance.displayPanel(gui, this, false);
         dataCh1 = 0;
         dataCh2 = 0;
         dataCh3 = 0;

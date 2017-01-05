@@ -28,31 +28,32 @@ package eu.asterics.mw.cimcommunication;
 /**
  * A subclass of the CIM event sent if a packet loss has been discovered
  * 
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at]
- *         Date: Nov 3, 2010
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
-public class CIMEventErrorPacketLost  extends CIMEvent {
-	
-	int missingSerialNumber;
-	
-	/**
-	 * A constructor storing the origin and the lost packet serial number
-	 * @param port the origin of the event
-	 * @param missingSerialNumber the serial number of the packet that was lost
-	 */
-	public CIMEventErrorPacketLost(CIMPortController port, int missingSerialNumber) 
-	{
-		super(port);
-		this.missingSerialNumber = missingSerialNumber;
-	}
-	
-	/**
-	 * Getter method
-	 * @return the serial number
-	 */
-	public int getMissingSerialNumber()
-	{
-		return missingSerialNumber;
-	}
+public class CIMEventErrorPacketLost extends CIMEvent {
+
+    int missingSerialNumber;
+
+    /**
+     * A constructor storing the origin and the lost packet serial number
+     * 
+     * @param port
+     *            the origin of the event
+     * @param missingSerialNumber
+     *            the serial number of the packet that was lost
+     */
+    public CIMEventErrorPacketLost(CIMPortController port, int missingSerialNumber) {
+        super(port);
+        this.missingSerialNumber = missingSerialNumber;
+    }
+
+    /**
+     * Getter method
+     * 
+     * @return the serial number
+     */
+    public int getMissingSerialNumber() {
+        return missingSerialNumber;
+    }
 }

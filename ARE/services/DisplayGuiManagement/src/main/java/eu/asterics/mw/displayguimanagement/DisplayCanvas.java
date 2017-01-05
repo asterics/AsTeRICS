@@ -25,180 +25,153 @@
 
 package eu.asterics.mw.displayguimanagement;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.asterics.mw.cimcommunication.CIMPortController;
-import eu.asterics.mw.cimcommunication.CIMPortManager;
-import eu.asterics.mw.cimcommunication.CIMProtocolPacket;
-import eu.asterics.mw.displayguimanagement.IDisplayItem.NavigationDirection;
-
-
-
 /**
  * A canvas can be drawn, pressed and react to navigation input
+ * 
  * @author weissch
  *
  */
-public class DisplayCanvas implements IDisplayItem
-{
-	String canvasName;
-	
-	Rectangle relPosition = new Rectangle(); // position in parent canvas
-	Rectangle absPosition = new Rectangle(); // position on display
-	
-	boolean positionSet = false;
-	boolean dimensionSet = false;
-	
-	DisplayCanvas parent = null;
-	List<DisplayCanvas> children = new ArrayList<DisplayCanvas>();
-	
-	private boolean visible = false;
-	
-	public void setInvisible() {
-		this.visible = false;
-		for (DisplayCanvas c : children)
-		{
-			c.setInvisible();
-		}
-	}
-	
-	public void setVisible()
-	{
-		this.visible = true;
-	}
+public class DisplayCanvas implements IDisplayItem {
+    String canvasName;
 
-	public DisplayCanvas()
-	{
-	}
-	
-	public DisplayCanvas(int x, int y, int w, int h)
-	{
-		this();
-		relPosition.setBounds(x, y, w, h);
-		absPosition.setSize(w, h);
-		updateAbsolutePosition();
-	}
-	
-	public void addChild(DisplayCanvas canvas)
-	{
-		DisplayGuiManager.debugMessage("DisplayCanvas.addChild(), " + canvasName + ", adding:" + canvas.canvasName);
-		canvas.parent = this;
-		canvas.updateAbsolutePosition();
-		children.add(canvas);
-	}
-	
-	void updateAbsolutePosition()
-	{
-		absPosition.setLocation(getAbsolutePosition());
-		for (DisplayCanvas c : children)
-		{
-			c.updateAbsolutePosition();
-		}
-	}
-	
-	public void draw()
-	{
-		DisplayGuiManager.debugMessage("DisplayCanvas.draw(), " + canvasName + "at ("+ 
-				absPosition.x + "," + absPosition.y + "), children.size=" + children.size());
-		
-		DisplayGuiManager.instance.writeToDisplay((short) 0x71, locationToBytes());
-		setVisible();
-		Object [] array = children.toArray();
-		for (Object c : array)
-		{
-			DisplayCanvas dc = (DisplayCanvas) c;
-			DisplayGuiManager.debugMessage("Drawing:" + dc.canvasName);
-			dc.draw();
-		}
-	}
-	
-	public void press(int x, int y)
-	{
-		DisplayGuiManager.debugMessage("DisplayCanvas.press() on " + canvasName + " children=" + children.size() );
-		if (pressOnCanvas(x,y))
-		{
-			Object [] canvas = children.toArray();
-			for (Object c : canvas)
-			{
-				((DisplayCanvas) c).press(x, y);
-			}
-		}
-	}
+    Rectangle relPosition = new Rectangle(); // position in parent canvas
+    Rectangle absPosition = new Rectangle(); // position on display
 
-	protected boolean pressOnCanvas(int x, int y)
-	{
-		if (visible)
-		{
-			return absPosition.contains(new Point(x, y));
-		}
-		DisplayGuiManager.debugMessage("DisplayCanvas.pressOnCanvas(): " + canvasName + "is not visible");
-		return false;
-	}
+    boolean positionSet = false;
+    boolean dimensionSet = false;
 
-	
-	public void navigate(NavigationDirection nav)
-	{
-		// no navigation in basic canvas
-	}
-	
-	void setPosition(int x, int y)
-	{
-		relPosition.setLocation(x, y);	
-		updateAbsolutePosition();
-	}
-	
-	void setSize(int width, int height)
-	{
-		relPosition.setSize(width, height);
-		updateAbsolutePosition();
-	}
-	
-	void setName(String name)
-	{
-		this.canvasName = name;
-	}
-	
-	Point getAbsolutePosition()
-	{
-		DisplayGuiManager.debugMessage("DisplayCanvas.getAbsolutePosition() on " 
-				+ canvasName );
+    DisplayCanvas parent = null;
+    List<DisplayCanvas> children = new ArrayList<DisplayCanvas>();
 
-		if (parent == null)
-			return (new Point(relPosition.x, relPosition.y));
-		
-		int x = relPosition.x; 
-		int y = relPosition.y;
-		
-		DisplayCanvas c = parent;
-		
-		while(c != null)
-		{
-			x += c.relPosition.x;
-			y += c.relPosition.y;
-			c = c.parent;
-		}
-		return (new Point(x,y));
-	}
-	
-	byte [] locationToBytes()
-	{
-		DisplayGuiManager.debugMessage("DisplayCanvas.locationToBytes() on " + canvasName );
-//		Point p = getAbsolutePosition();
-		
-		byte [] data = new byte[8];
-		data[0] = (byte) ( absPosition.x & 0xff);
-		data[1] = (byte) ((absPosition.x >> 8) & 0xff);
-		data[2] = (byte) ( absPosition.y & 0xff);
-		data[3] = (byte) ((absPosition.y >> 8) & 0xff);
-		data[4] = (byte) ( relPosition.width & 0xff);
-		data[5] = (byte) ((relPosition.width >> 8) & 0xff);
-		data[6] = (byte) ( relPosition.height & 0xff);
-		data[7] = (byte) ((relPosition.height >> 8) & 0xff);
+    private boolean visible = false;
 
-		return data;
-	}
+    public void setInvisible() {
+        this.visible = false;
+        for (DisplayCanvas c : children) {
+            c.setInvisible();
+        }
+    }
+
+    public void setVisible() {
+        this.visible = true;
+    }
+
+    public DisplayCanvas() {
+    }
+
+    public DisplayCanvas(int x, int y, int w, int h) {
+        this();
+        relPosition.setBounds(x, y, w, h);
+        absPosition.setSize(w, h);
+        updateAbsolutePosition();
+    }
+
+    public void addChild(DisplayCanvas canvas) {
+        DisplayGuiManager.debugMessage("DisplayCanvas.addChild(), " + canvasName + ", adding:" + canvas.canvasName);
+        canvas.parent = this;
+        canvas.updateAbsolutePosition();
+        children.add(canvas);
+    }
+
+    void updateAbsolutePosition() {
+        absPosition.setLocation(getAbsolutePosition());
+        for (DisplayCanvas c : children) {
+            c.updateAbsolutePosition();
+        }
+    }
+
+    @Override
+    public void draw() {
+        DisplayGuiManager.debugMessage("DisplayCanvas.draw(), " + canvasName + "at (" + absPosition.x + ","
+                + absPosition.y + "), children.size=" + children.size());
+
+        DisplayGuiManager.instance.writeToDisplay((short) 0x71, locationToBytes());
+        setVisible();
+        Object[] array = children.toArray();
+        for (Object c : array) {
+            DisplayCanvas dc = (DisplayCanvas) c;
+            DisplayGuiManager.debugMessage("Drawing:" + dc.canvasName);
+            dc.draw();
+        }
+    }
+
+    @Override
+    public void press(int x, int y) {
+        DisplayGuiManager.debugMessage("DisplayCanvas.press() on " + canvasName + " children=" + children.size());
+        if (pressOnCanvas(x, y)) {
+            Object[] canvas = children.toArray();
+            for (Object c : canvas) {
+                ((DisplayCanvas) c).press(x, y);
+            }
+        }
+    }
+
+    protected boolean pressOnCanvas(int x, int y) {
+        if (visible) {
+            return absPosition.contains(new Point(x, y));
+        }
+        DisplayGuiManager.debugMessage("DisplayCanvas.pressOnCanvas(): " + canvasName + "is not visible");
+        return false;
+    }
+
+    @Override
+    public void navigate(NavigationDirection nav) {
+        // no navigation in basic canvas
+    }
+
+    void setPosition(int x, int y) {
+        relPosition.setLocation(x, y);
+        updateAbsolutePosition();
+    }
+
+    void setSize(int width, int height) {
+        relPosition.setSize(width, height);
+        updateAbsolutePosition();
+    }
+
+    void setName(String name) {
+        this.canvasName = name;
+    }
+
+    Point getAbsolutePosition() {
+        DisplayGuiManager.debugMessage("DisplayCanvas.getAbsolutePosition() on " + canvasName);
+
+        if (parent == null) {
+            return (new Point(relPosition.x, relPosition.y));
+        }
+
+        int x = relPosition.x;
+        int y = relPosition.y;
+
+        DisplayCanvas c = parent;
+
+        while (c != null) {
+            x += c.relPosition.x;
+            y += c.relPosition.y;
+            c = c.parent;
+        }
+        return (new Point(x, y));
+    }
+
+    byte[] locationToBytes() {
+        DisplayGuiManager.debugMessage("DisplayCanvas.locationToBytes() on " + canvasName);
+        // Point p = getAbsolutePosition();
+
+        byte[] data = new byte[8];
+        data[0] = (byte) (absPosition.x & 0xff);
+        data[1] = (byte) ((absPosition.x >> 8) & 0xff);
+        data[2] = (byte) (absPosition.y & 0xff);
+        data[3] = (byte) ((absPosition.y >> 8) & 0xff);
+        data[4] = (byte) (relPosition.width & 0xff);
+        data[5] = (byte) ((relPosition.width >> 8) & 0xff);
+        data[6] = (byte) (relPosition.height & 0xff);
+        data[7] = (byte) ((relPosition.height >> 8) & 0xff);
+
+        return data;
+    }
 }

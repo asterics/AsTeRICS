@@ -29,38 +29,30 @@ import eu.asterics.mw.model.bundle.impl.GroupReferences;
 import eu.asterics.mw.model.deployment.IEventEdge;
 
 /**
- * Date: 1/5/11
- * Time: 4:17 PM
+ * Date: 1/5/11 Time: 4:17 PM
  */
-public class DefaultEventEdge implements IEventEdge
-{
+public class DefaultEventEdge implements IEventEdge {
     private final String componentInstanceID;
     private final String eventPortID;
-    private final GroupReferences groupReferences;
 
-    public DefaultEventEdge(final String componentInstanceID, 
-    		final String eventPortID, GroupReferences groupReferences)
-    {
+    public DefaultEventEdge(final String componentInstanceID, final String eventPortID,
+            GroupReferences groupReferences) {
         this.componentInstanceID = componentInstanceID;
         this.eventPortID = eventPortID;
-        this.groupReferences = groupReferences;
     }
 
     @Override
-    public String getComponentInstanceID()
-    {
+    public String getComponentInstanceID() {
         return componentInstanceID;
     }
 
     @Override
-    public String getEventPortID()
-    {
+    public String getEventPortID() {
         return eventPortID;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "DefaultEventEdge(" + componentInstanceID + ":" + eventPortID + ")";
     }
 }

@@ -26,24 +26,26 @@
 package eu.asterics.mw.cimcommunication;
 
 /**
- * The event to be transferred on successful packet reception. It contains 
+ * The event to be transferred on successful packet reception. It contains
  * information on the packet and on the origin of the packet
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at]
- *         Date: Nov 3, 2010
+ * 
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
-public class CIMEventPacketReceived  extends CIMEvent {
-	
-	public CIMProtocolPacket packet;
-	
-	/**
-	 * Constructs the event
-	 * @param port the origin of the event
-	 * @param packet the packet that has  been received
-	 */
-	public CIMEventPacketReceived(CIMPortController port, CIMProtocolPacket packet) 
-	{
-		super(port);
-		this.packet = packet;
-	}
+public class CIMEventPacketReceived extends CIMEvent {
+
+    public CIMProtocolPacket packet;
+
+    /**
+     * Constructs the event
+     * 
+     * @param port
+     *            the origin of the event
+     * @param packet
+     *            the packet that has been received
+     */
+    public CIMEventPacketReceived(CIMPortController port, CIMProtocolPacket packet) {
+        super(port);
+        this.packet = packet;
+    }
 }

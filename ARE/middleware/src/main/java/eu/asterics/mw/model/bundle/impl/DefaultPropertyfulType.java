@@ -25,45 +25,42 @@
 
 package eu.asterics.mw.model.bundle.impl;
 
-import eu.asterics.mw.model.DataType;
-import eu.asterics.mw.model.bundle.IPropertyfulType;
-
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import eu.asterics.mw.model.DataType;
+import eu.asterics.mw.model.bundle.IPropertyfulType;
+
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:46:06 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:46:06 PM
  */
-public class DefaultPropertyfulType implements IPropertyfulType
-{
+public class DefaultPropertyfulType implements IPropertyfulType {
     private final Map<String, PropertyType> propertyTypes;
 
-    protected DefaultPropertyfulType(final Map<String, PropertyType> propertyTypes)
-    {
+    protected DefaultPropertyfulType(final Map<String, PropertyType> propertyTypes) {
         this.propertyTypes = propertyTypes;
     }
 
-    public Set<String> getPropertyNames()
-    {
-    	if ( this.propertyTypes == null)
-    		return null;
-    	else
-        return new LinkedHashSet<String>(propertyTypes.keySet());
+    @Override
+    public Set<String> getPropertyNames() {
+        if (this.propertyTypes == null) {
+            return null;
+        } else {
+            return new LinkedHashSet<String>(propertyTypes.keySet());
+        }
     }
 
-    public DataType getDataType(String propertyName)
-    {
+    @Override
+    public DataType getDataType(String propertyName) {
         final PropertyType propertyType = propertyTypes.get(propertyName);
 
         return propertyType == null ? null : propertyType.getDataType();
     }
 
-    public String getDescription(String propertyName)
-    {
+    @Override
+    public String getDescription(String propertyName) {
         final PropertyType propertyType = propertyTypes.get(propertyName);
 
         return propertyType == null ? null : propertyType.getDescription();

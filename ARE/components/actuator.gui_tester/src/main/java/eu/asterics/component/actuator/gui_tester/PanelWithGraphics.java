@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+
 import javax.swing.JPanel;
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -33,96 +34,83 @@ import javax.swing.JPanel;
  */
 
 /**
- * @author Konstantinos Kakousis
- * This class is part of the gui_tester plugin and demonstrates how Java 
- * Graphics can be created and diplayed on the AsTeRICS Desktop.
+ * @author Konstantinos Kakousis This class is part of the gui_tester plugin and
+ *         demonstrates how Java Graphics can be created and diplayed on the
+ *         AsTeRICS Desktop.
  * 
- * Date: Sep 16, 2011
+ *         Date: Sep 16, 2011
  */
-public class PanelWithGraphics extends JPanel
-{
-	private int X_MARGIN, Y_MARGIN, W_OFFSET, H_OFFSET, CHARS;
-	private int x, y, w, h;
-	public PanelWithGraphics() 
-	{
-		setLayout (new FlowLayout(FlowLayout.LEFT));
-		//setBorder(BorderFactory.createTitledBorder("Graphics"));		
-	}
-	
-	//Each time the position changes we reset the coordinates so that our 
-	//graphics are always painted inside the parent container.
-	public void repaint (int x, int y, int w, int h)
-	{
-		X_MARGIN = (int) (0.05 * w);
-		Y_MARGIN = (int) (0.1 * w);
-		W_OFFSET = (int) (0.1 * w);
-		H_OFFSET = (int) (0.17 * h);
-		this.x =x+X_MARGIN;
-		this.y =y+Y_MARGIN;
-		this.w = w-W_OFFSET;
-		this.h = h-H_OFFSET;
-		super.repaint();
-	}
-	
-	/**
-	 * Overrides the paintComponent method of JPanel.
-	 * It is called every time a repaint is called.
-	 * For this example we paint a rectangle as a frame, a string as title
-	 * and random circles 
-	 */
-	public void paintComponent(Graphics g) 
-	{
+public class PanelWithGraphics extends JPanel {
+    private int X_MARGIN, Y_MARGIN, W_OFFSET, H_OFFSET, CHARS;
+    private int x, y, w, h;
+
+    public PanelWithGraphics() {
+        setLayout(new FlowLayout(FlowLayout.LEFT));
+        // setBorder(BorderFactory.createTitledBorder("Graphics"));
+    }
+
+    // Each time the position changes we reset the coordinates so that our
+    // graphics are always painted inside the parent container.
+    @Override
+    public void repaint(int x, int y, int w, int h) {
+        X_MARGIN = (int) (0.05 * w);
+        Y_MARGIN = (int) (0.1 * w);
+        W_OFFSET = (int) (0.1 * w);
+        H_OFFSET = (int) (0.17 * h);
+        this.x = x + X_MARGIN;
+        this.y = y + Y_MARGIN;
+        this.w = w - W_OFFSET;
+        this.h = h - H_OFFSET;
+        super.repaint();
+    }
+
+    /**
+     * Overrides the paintComponent method of JPanel. It is called every time a
+     * repaint is called. For this example we paint a rectangle as a frame, a
+     * string as title and random circles
+     */
+    @Override
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-   
+
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(
-           RenderingHints.KEY_ANTIALIASING,                
-           RenderingHints.VALUE_ANTIALIAS_ON);
-        //set color to black
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // set color to black
         g.setColor(Color.BLACK);
-        
-        //draw a rectangle
+
+        // draw a rectangle
         g.drawRect(x, y, w, h);
-  
-        for (int i = 0; i < 20; i++) 
-        {
-          //set random color
-          g.setColor(new Color((int) (Math.random() * 255),
-        		  (int) (Math.random() * 255),
-        		  (int) (Math.random() * 255)));
-          
-          g.fillOval(randomNumber(x, w+x-X_MARGIN, 1), 
-        		  randomNumber(y, h+y-Y_MARGIN, 1),
-        		  W_OFFSET, W_OFFSET);
+
+        for (int i = 0; i < 20; i++) {
+            // set random color
+            g.setColor(
+                    new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255)));
+
+            g.fillOval(randomNumber(x, w + x - X_MARGIN, 1), randomNumber(y, h + y - Y_MARGIN, 1), W_OFFSET, W_OFFSET);
         }
-        //set color to black
+        // set color to black
         g.setColor(Color.RED);
-        
-        //draw a string: the font size must be defined in terms of the 
-        //characters we wish to paint and the available space.
+
+        // draw a string: the font size must be defined in terms of the
+        // characters we wish to paint and the available space.
         CHARS = 25;
-        int fontSize = y-x/CHARS;
-        g2d.setFont(new Font ("Arial", 0, fontSize));
+        int fontSize = y - x / CHARS;
+        g2d.setFont(new Font("Arial", 0, fontSize));
         g.drawString("AsTeRICS Painting", x, y);
     }
-	
-	/**
-	 * Helper method that generates random numbers in the given range
-	 * @param min
-	 * @param max
-	 * @param offset
-	 * @return
-	 */
-	private int randomNumber (int min, int max, int offset)
-	{
-		int num =  min + (int)(Math.random() * ((max - min) + offset));
-		
-		return num;
-	}
 
-	
+    /**
+     * Helper method that generates random numbers in the given range
+     * 
+     * @param min
+     * @param max
+     * @param offset
+     * @return
+     */
+    private int randomNumber(int min, int max, int offset) {
+        int num = min + (int) (Math.random() * ((max - min) + offset));
 
-	
+        return num;
+    }
+
 }
-
-

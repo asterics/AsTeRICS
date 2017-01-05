@@ -27,27 +27,20 @@ package eu.asterics.mw.displayguimanagement;
 
 public class DisplayNavigationButton extends DisplayButton {
 
-	NavigationDirection nav;
-	
-	public DisplayNavigationButton(String caption, int x, int y, 
-			int w, int h, NavigationDirection n) 
-	{
-		super(caption, x, y, w, h);
-		this.nav = n;
-		addEventListener(
-				new IDisplayEventListener()
-				{
+    NavigationDirection nav;
 
-					@Override
-					public void action() 
-					{
-						DisplayGuiManager.debugMessage("NavButton " + canvasName + " eventListener called");
-						DisplayGuiManager.instance.navigate(nav);						
-					}
-				}
-		);
-		
-	}
-	
-	
+    public DisplayNavigationButton(String caption, int x, int y, int w, int h, NavigationDirection n) {
+        super(caption, x, y, w, h);
+        this.nav = n;
+        addEventListener(new IDisplayEventListener() {
+
+            @Override
+            public void action() {
+                DisplayGuiManager.debugMessage("NavButton " + canvasName + " eventListener called");
+                DisplayGuiManager.instance.navigate(nav);
+            }
+        });
+
+    }
+
 }

@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -26,8 +25,6 @@
  */
 package eu.asterics.component.sensor.micgpi;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
@@ -42,7 +39,7 @@ public class AudioGrabberThread extends Thread {
     public AudioGrabberThread(TargetDataLine line) {
         this.line = line;
     }
-    
+
     private boolean buttonPressed = false;
 
     @Override
@@ -53,16 +50,16 @@ public class AudioGrabberThread extends Thread {
             }
             this.line.open();
             this.line.start();
-            byte [] data = new byte[1];
+            byte[] data = new byte[1];
             while (this.isInterrupted() == false) {
                 int readBytes = line.read(data, 0, 1);
-                if (readBytes == 0)
+                if (readBytes == 0) {
                     continue;
+                }
                 if (data[0] > 30 && buttonPressed == true) {
                     System.out.println("Button released");
                     buttonPressed = false;
-                }
-                else if (data[0] < -30 && buttonPressed == false) {
+                } else if (data[0] < -30 && buttonPressed == false) {
                     System.out.println("Button pressed");
                     buttonPressed = true;
                 }
@@ -70,7 +67,7 @@ public class AudioGrabberThread extends Thread {
             this.line.stop();
             this.line.close();
         } catch (LineUnavailableException ex) {
-            
+
         }
     }
 

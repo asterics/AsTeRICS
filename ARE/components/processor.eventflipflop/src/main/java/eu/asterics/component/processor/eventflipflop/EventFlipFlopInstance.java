@@ -25,163 +25,149 @@
 
 package eu.asterics.component.processor.eventflipflop;
 
-import eu.asterics.mw.data.*;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
+import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import java.awt.event.InputEvent;
-import java.io.*;
-import java.net.*;
 //import java.util.logging.Logger;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
-
 /**
- * This plugin implements a simple event flip-flop. An event on the event listener
- * triggers the event trigger one, the next received event triggers event trigger two, 
- * the next triggers one once again, etc.
+ * This plugin implements a simple event flip-flop. An event on the event
+ * listener triggers the event trigger one, the next received event triggers
+ * event trigger two, the next triggers one once again, etc.
  * 
  * 
- * @author Roland Ossmann [ro@ki-i.at]
- *         Date: Mar 30, 2011
- *         Time: 11:08:01 AM
+ * @author Roland Ossmann [ro@ki-i.at] Date: Mar 30, 2011 Time: 11:08:01 AM
  */
-public class EventFlipFlopInstance extends AbstractRuntimeComponentInstance
-{
-    private final DefaultRuntimeEventTriggererPort etpOut1  = new DefaultRuntimeEventTriggererPort();    
-    private final DefaultRuntimeEventTriggererPort etpOut2  = new DefaultRuntimeEventTriggererPort(); 
-    private boolean status = false;    
-		
-	
-    public EventFlipFlopInstance()
-    {
+public class EventFlipFlopInstance extends AbstractRuntimeComponentInstance {
+    private final DefaultRuntimeEventTriggererPort etpOut1 = new DefaultRuntimeEventTriggererPort();
+    private final DefaultRuntimeEventTriggererPort etpOut2 = new DefaultRuntimeEventTriggererPort();
+    private boolean status = false;
+
+    public EventFlipFlopInstance() {
         // empty constructor - needed for OSGi service factory operations
     }
 
     /**
      * Standard method from framework
+     * 
      * @param portID
      * @return
      */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
         return null;
     }
 
     /**
      * Standard method from framework
+     * 
      * @param portID
      * @return
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-    {
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
         return null;
     }
-    
+
     /**
      * Standard method from framework
+     * 
      * @param eventPortID
      * @return
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
 
-        if("event-in".equalsIgnoreCase(eventPortID))
-        {
+        if ("event-in".equalsIgnoreCase(eventPortID)) {
             return elpTriggerEvent;
         }
-        if("selectOut1".equalsIgnoreCase(eventPortID))
-        {
+        if ("selectOut1".equalsIgnoreCase(eventPortID)) {
             return elpSelectOut1;
         }
-        if("selectOut2".equalsIgnoreCase(eventPortID))
-        {
+        if ("selectOut2".equalsIgnoreCase(eventPortID)) {
             return elpSelectOut2;
         }
         return null;
     }
 
-	/**
-	 * Standard method from framework
-	 * @param propertyName
-	 * @return
-	 */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
+    /**
+     * Standard method from framework
+     * 
+     * @param propertyName
+     * @return
+     */
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
         return null;
     }
 
     /**
      * Standard method from framework
+     * 
      * @param propertyName
      * @param newValue
      * @return
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         return null;
     }
- 
 
     /**
      * Standard method from framework
      */
-    final IRuntimeEventListenerPort elpTriggerEvent = new IRuntimeEventListenerPort()
-    {
-    	 public void receiveEvent(final String data)
-    	 {
-			if (status) {
-				etpOut2.raiseEvent();
-			} else {
-				etpOut1.raiseEvent();
-			}
-			status = !status; 
-    	 }
-    };    
+    final IRuntimeEventListenerPort elpTriggerEvent = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            if (status) {
+                etpOut2.raiseEvent();
+            } else {
+                etpOut1.raiseEvent();
+            }
+            status = !status;
+        }
+    };
 
-    final IRuntimeEventListenerPort elpSelectOut1 = new IRuntimeEventListenerPort()
-    {
-    	 public void receiveEvent(final String data)
-    	 {
-    		 status=false; 
-    	 }
-    };    
+    final IRuntimeEventListenerPort elpSelectOut1 = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            status = false;
+        }
+    };
 
-    final IRuntimeEventListenerPort elpSelectOut2 = new IRuntimeEventListenerPort()
-    {
-    	 public void receiveEvent(final String data)
-    	 {
-    		 status=true; 
-    	 }
-    };    
+    final IRuntimeEventListenerPort elpSelectOut2 = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            status = true;
+        }
+    };
+
     /**
      * Standard method from framework
+     * 
      * @param eventPortID
      * @return
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
-        if("event-out1".equalsIgnoreCase(eventPortID))
-        {
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+        if ("event-out1".equalsIgnoreCase(eventPortID)) {
             return etpOut1;
-        }
-        else if("event-out2".equalsIgnoreCase(eventPortID))
-        {
+        } else if ("event-out2".equalsIgnoreCase(eventPortID)) {
             return etpOut2;
         }
         return null;
     }
-    
+
     /**
      * Standard method from framework
      */
     @Override
-    public void start()
-    {
-    	status=false;
+    public void start() {
+        status = false;
         super.start();
         AstericsErrorHandling.instance.reportInfo(this, "EventFlipFlop Instance started");
     }
@@ -190,8 +176,7 @@ public class EventFlipFlopInstance extends AbstractRuntimeComponentInstance
      * Standard method from framework
      */
     @Override
-    public void stop()
-    {
+    public void stop() {
         super.stop();
         AstericsErrorHandling.instance.reportInfo(this, "EventFlipFlop Instance stopped");
     }

@@ -28,14 +28,10 @@ package eu.asterics.mw.are.parsers;
 import junit.framework.TestCase;
 
 /**
- * User: Nearchos Paspallis
- * Date: 1/13/11
- * Time: 2:18 PM
+ * User: Nearchos Paspallis Date: 1/13/11 Time: 2:18 PM
  */
-public class TestConversions extends TestCase
-{
-    public void test()
-    {
+public class TestConversions extends TestCase {
+    public void test() {
         byte b = 0x000a;
         char c = 'a';
         int i = b;

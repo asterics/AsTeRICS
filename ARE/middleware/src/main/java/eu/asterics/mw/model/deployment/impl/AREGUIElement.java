@@ -25,20 +25,15 @@
 
 package eu.asterics.mw.model.deployment.impl;
 
-
-
 public class AREGUIElement {
-	
-	public int posX, posY, width, height;
-	
-	public AREGUIElement (final int posX, final int posY, 
-			final int width, final int height)
-	{
-		this.posX = posX;
-		this.posY = posY;
-		this.width = width;
-		this.height = height;
-	}
 
+    public int posX, posY, width, height;
+
+    public AREGUIElement(final int posX, final int posY, final int width, final int height) {
+        this.posX = posX;
+        this.posY = posY;
+        this.width = width;
+        this.height = height;
+    }
 
 }

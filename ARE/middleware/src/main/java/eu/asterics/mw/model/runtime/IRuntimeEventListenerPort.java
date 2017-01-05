@@ -26,11 +26,8 @@
 package eu.asterics.mw.model.runtime;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * Date: 1/7/11
- * Time: 1:27 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: 1/7/11 Time: 1:27 PM
  */
-public interface IRuntimeEventListenerPort
-{
+public interface IRuntimeEventListenerPort {
     public void receiveEvent(final String data);
 }

@@ -1,18 +1,16 @@
 package eu.asterics.mw.are;
 
-import eu.asterics.mw.are.exceptions.BundleManagementException;
-import eu.asterics.mw.model.DataType;
-import eu.asterics.mw.model.bundle.IComponentType;
-import eu.asterics.mw.model.bundle.IOutputPortType;
-import eu.asterics.mw.services.AstericsErrorHandling;
-
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import eu.asterics.mw.are.exceptions.BundleManagementException;
+import eu.asterics.mw.model.DataType;
+import eu.asterics.mw.model.bundle.IComponentType;
+import eu.asterics.mw.model.bundle.IOutputPortType;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -39,100 +37,75 @@ import java.util.logging.Logger;
  *
  */
 
-
-/** 
+/**
  * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * @author Costas Kakousis [kakousis@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 4:11:34 PM
- * TODO delete this class (replaced by ComponentRepository)
+ * @author Costas Kakousis [kakousis@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         4:11:34 PM TODO delete this class (replaced by ComponentRepository)
  */
-public class BundleRepository
-{
+public class BundleRepository {
     public static final BundleRepository instance = new BundleRepository();
     private Logger logger = null;
-    
-    private BundleRepository()
-    {
+
+    private BundleRepository() {
         super();
         logger = AstericsErrorHandling.instance.getLogger();
     }
 
-    private final Map<String, IComponentType> repository
-            = new HashMap<String, IComponentType>();
+    private final Map<String, IComponentType> repository = new HashMap<String, IComponentType>();
 
-    public void install(final IComponentType componentType)
-            throws BundleManagementException
-    {
-        if (componentType == null)
-        {
-            logger.severe(this.getClass().getName()+
-            		": install-> Illegal null argument");
-        	throw new NullPointerException("Illegal null argument");
+    public void install(final IComponentType componentType) throws BundleManagementException {
+        if (componentType == null) {
+            logger.severe(this.getClass().getName() + ": install-> Illegal null argument");
+            throw new NullPointerException("Illegal null argument");
         }
 
         final String componentTypeID = componentType.getID();
 
-        if (repository.containsKey(componentTypeID))
-        {
-        	logger.severe("The specified componentTypeID"
-                    + " is already installed in the repository.");
-            throw new BundleManagementException("The specified componentTypeID"
-                    + " is already installed in the repository.");
+        if (repository.containsKey(componentTypeID)) {
+            logger.severe("The specified componentTypeID" + " is already installed in the repository.");
+            throw new BundleManagementException(
+                    "The specified componentTypeID" + " is already installed in the repository.");
         }
 
         repository.put(componentTypeID, componentType);
     }
 
-    void uninstall(final IComponentType componentType)
-            throws BundleManagementException
-    {
-        if (componentType == null)
-        {
+    void uninstall(final IComponentType componentType) throws BundleManagementException {
+        if (componentType == null) {
 
-            logger.severe(this.getClass().getName()+
-            		": install-> Illegal null argument");
-        	throw new NullPointerException("Illegal null argument");
+            logger.severe(this.getClass().getName() + ": install-> Illegal null argument");
+            throw new NullPointerException("Illegal null argument");
         }
 
         uninstall(componentType.getID());
     }
 
-    void uninstall(final String componentTypeID)
-            throws BundleManagementException
-    {
-        if (!repository.containsKey(componentTypeID))
-        {
-        	logger.severe("The specified componentTypeID"
-                    + " is already installed in the repository.");
-            throw new BundleManagementException("The specified componentTypeID: "
-                    +componentTypeID+ " is not found in the repository.");
+    void uninstall(final String componentTypeID) throws BundleManagementException {
+        if (!repository.containsKey(componentTypeID)) {
+            logger.severe("The specified componentTypeID" + " is already installed in the repository.");
+            throw new BundleManagementException(
+                    "The specified componentTypeID: " + componentTypeID + " is not found in the repository.");
         }
 
         repository.remove(componentTypeID);
     }
 
-    public Set<IComponentType> getInstalledComponentTypes()
-    {
-        final Set<IComponentType> installedComponentTypes
-                = new LinkedHashSet<IComponentType>();
+    public Set<IComponentType> getInstalledComponentTypes() {
+        final Set<IComponentType> installedComponentTypes = new LinkedHashSet<IComponentType>();
 
         installedComponentTypes.addAll(repository.values());
-    
+
         return installedComponentTypes;
     }
 
-    public IComponentType getComponentType(final String componentTypeID)
-    {
+    public IComponentType getComponentType(final String componentTypeID) {
         return repository.get(componentTypeID);
     }
 
     // todo remove this debug method
-    public void printAll()
-    {
+    public void printAll() {
         System.out.println("  Bundle repository:");
-        for(final String key : repository.keySet())
-        {
+        for (final String key : repository.keySet()) {
             System.out.println("    " + key + "\t --> " + repository.get(key));
         }
     }
@@ -143,27 +116,24 @@ public class BundleRepository
      * @param sourcePortID
      * @return
      */
-	public String getPortType(String sourceComponentTypeID, String sourcePortID) {
-		Set<String> x = repository.keySet();
-		Set<IOutputPortType> outPorts;
-		IComponentType componentType;
-		for (String ct : x)
-		{
-			if (ct.equals(sourceComponentTypeID))
-			{
-				componentType = repository.get(ct);
-				outPorts = componentType.getOutputPorts();
-				for (IOutputPortType opt: outPorts)
-				{
-					return opt.getDataType().toString();
-				}
-			}
-		}
-		return null;
-	}
+    @Deprecated
+    public String getPortType(String sourceComponentTypeID, String sourcePortID) {
+        Set<String> x = repository.keySet();
+        Set<IOutputPortType> outPorts;
+        IComponentType componentType;
+        for (String ct : x) {
+            if (ct.equals(sourceComponentTypeID)) {
+                componentType = repository.get(ct);
+                outPorts = componentType.getOutputPorts();
+                for (IOutputPortType opt : outPorts) {
+                    return opt.getDataType().toString();
+                }
+            }
+        }
+        return null;
+    }
 
-    public DataType getPortDataType(final String componentTypeID, final String portID)
-    {
+    public DataType getPortDataType(final String componentTypeID, final String portID) {
         final IComponentType componentType = repository.get(componentTypeID);
         return componentType == null ? DataType.UNKNOWN : componentType.getDataType(portID);
     }

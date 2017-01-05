@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.transform.Source;
@@ -19,9 +18,7 @@ import org.xml.sax.SAXException;
 
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AstericsThreadPool;
 import eu.asterics.mw.services.ResourceRegistry;
-
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -50,122 +47,112 @@ import eu.asterics.mw.services.ResourceRegistry;
 
 /**
  * @author Costas Kakousis [kakousis@cs.ucy.ac.cy]
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * This class validates the models
- *         Date: Jul 16, 2010
- *         Time: 4:03:23 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] This class validates the
+ *         models Date: Jul 16, 2010 Time: 4:03:23 PM
  */
-public class ModelValidator
-{
-    public static final String XML_SCHEMA_URL
-            = "http://www.w3.org/2001/XMLSchema";
+public class ModelValidator {
+    public static final String XML_SCHEMA_URL = "http://www.w3.org/2001/XMLSchema";
 
-    public static final String BUNDLE_DESCRIPTOR_SCHEMA_URL
-            = "/schemas/bundle_model.xsd";
+    public static final String BUNDLE_DESCRIPTOR_SCHEMA_URL = "/schemas/bundle_model.xsd";
 
-    public static final String DEPLOYMENT_DESCRIPTOR_SCHEMA_URL
-            = "/schemas/deployment_model.xsd";
+    public static final String DEPLOYMENT_DESCRIPTOR_SCHEMA_URL = "/schemas/deployment_model.xsd";
 
     private static Logger logger = AstericsErrorHandling.instance.getLogger();
 
     // Lookup a factory for the W3C XML Schema language
-    public static final SchemaFactory SCHEMA_FACTORY
-            = SchemaFactory.newInstance(XML_SCHEMA_URL);
+    public static final SchemaFactory SCHEMA_FACTORY = SchemaFactory.newInstance(XML_SCHEMA_URL);
 
     private Validator bundleDescriptorValidator;
     private Validator deploymentDescriptorValidator;
 
-	private static ModelValidator instance=null;
+    private static ModelValidator instance = null;
 
-
-	public ModelValidator() throws MalformedURLException {
-		this(ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getAREJarURI(false), BUNDLE_DESCRIPTOR_SCHEMA_URL).toURL(),
-				ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getAREJarURI(false), DEPLOYMENT_DESCRIPTOR_SCHEMA_URL).toURL());
-	}
-	/**
-	 * Validates the bundleContext's bundle.        
-	 * @param bundleContext the bundle to be parsed
-	 */
-    public ModelValidator(final BundleContext bundleContext)
-    { 		
-		this(bundleContext.getBundle().getResource(BUNDLE_DESCRIPTOR_SCHEMA_URL),bundleContext.getBundle().getResource(DEPLOYMENT_DESCRIPTOR_SCHEMA_URL));    	
+    public ModelValidator() throws MalformedURLException {
+        this(ResourceRegistry
+                .toJarInternalURI(ResourceRegistry.getInstance().getAREJarURI(false), BUNDLE_DESCRIPTOR_SCHEMA_URL)
+                .toURL(),
+                ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getAREJarURI(false),
+                        DEPLOYMENT_DESCRIPTOR_SCHEMA_URL).toURL());
     }
-    
+
     /**
-     * This constructor can be used for cases where no OSGI BundleContext is available.
+     * Validates the bundleContext's bundle.
+     * 
+     * @param bundleContext
+     *            the bundle to be parsed
+     */
+    public ModelValidator(final BundleContext bundleContext) {
+        this(bundleContext.getBundle().getResource(BUNDLE_DESCRIPTOR_SCHEMA_URL),
+                bundleContext.getBundle().getResource(DEPLOYMENT_DESCRIPTOR_SCHEMA_URL));
+    }
+
+    /**
+     * This constructor can be used for cases where no OSGI BundleContext is
+     * available.
+     * 
      * @param bundleDescriptorSchemaURL
      * @param deploymentDescriptorSchemaURL
      */
     ModelValidator(URL bundleDescriptorSchemaURL, URL deploymentDescriptorSchemaURL) {
         // Initiate the bundle-descriptor validator
-        try
-        {
+        try {
             synchronized (SCHEMA_FACTORY) {
-            	final Schema bundleDescriptorSchema = SCHEMA_FACTORY.newSchema(bundleDescriptorSchemaURL);
-            	bundleDescriptorValidator = bundleDescriptorSchema.newValidator();
-			}
-          
-           
-        }
-        catch (SAXException saxe)
-        {
-        	logger.warning(this.getClass().getName()+"." +
-					"ModelValidator: Could not instantiate bundle model -> \n"+
-					saxe.getMessage());
-            throw new RuntimeException("Could not instantiate bundle model " +
-                    "validator (" + saxe.getMessage() + ")");
+                final Schema bundleDescriptorSchema = SCHEMA_FACTORY.newSchema(bundleDescriptorSchemaURL);
+                bundleDescriptorValidator = bundleDescriptorSchema.newValidator();
+            }
+
+        } catch (SAXException saxe) {
+            logger.warning(this.getClass().getName() + "." + "ModelValidator: Could not instantiate bundle model -> \n"
+                    + saxe.getMessage());
+            throw new RuntimeException("Could not instantiate bundle model " + "validator (" + saxe.getMessage() + ")");
         }
 
         // Initiate the deployment-descriptor validator
-        try
-        {
+        try {
             synchronized (SCHEMA_FACTORY) {
-            	final Schema deploymentDescriptorSchema = SCHEMA_FACTORY.newSchema(deploymentDescriptorSchemaURL);
-            	deploymentDescriptorValidator = deploymentDescriptorSchema.newValidator();
+                final Schema deploymentDescriptorSchema = SCHEMA_FACTORY.newSchema(deploymentDescriptorSchemaURL);
+                deploymentDescriptorValidator = deploymentDescriptorSchema.newValidator();
             }
-        }
-        catch (SAXException saxe)
-        {
-        	logger.warning(this.getClass().getName()+"." +
-					"ModelValidator: Could not instantiate deployment model" +
-					" -> \n"+saxe.getMessage());
-            throw new RuntimeException("Could not instantiate deployment model "+
-                    "validator (" + saxe.getMessage() + ")");
+        } catch (SAXException saxe) {
+            logger.warning(this.getClass().getName() + "." + "ModelValidator: Could not instantiate deployment model"
+                    + " -> \n" + saxe.getMessage());
+            throw new RuntimeException(
+                    "Could not instantiate deployment model " + "validator (" + saxe.getMessage() + ")");
         }
         instance = this;
     }
-       
+
     /**
-	 * Returns the ModelValidator instance    
-	 * @return the ModelValidator instance
-	 */
-    public static ModelValidator getInstance ()
-    {
-    	if (instance==null)
-    	{
-    		logger.warning(ModelValidator.class.getName()+"." +
-					"getInstance: Empty model validator -> \n");
-    		throw new RuntimeException("Empty model validator");
-    	}
-    	else
-    		return instance;
+     * Returns the ModelValidator instance
+     * 
+     * @return the ModelValidator instance
+     */
+    public static ModelValidator getInstance() {
+        if (instance == null) {
+            logger.warning(ModelValidator.class.getName() + "." + "getInstance: Empty model validator -> \n");
+            throw new RuntimeException("Empty model validator");
+        } else {
+            return instance;
+        }
     }
 
-	/**
-     * Checks if the input XML file is a valid instance of the given input schema
-     * @param schemaLocation: The path to the XML schema that defines the
-     *          structure of the XML model
-     * @param xmlFileName: The path to the XML file to be checked if it is a
-     *          valid instance of the given schema.
+    /**
+     * Checks if the input XML file is a valid instance of the given input
+     * schema
+     * 
+     * @param schemaLocation:
+     *            The path to the XML schema that defines the structure of the
+     *            XML model
+     * @param xmlFileName:
+     *            The path to the XML file to be checked if it is a valid
+     *            instance of the given schema.
      * @return true if the given XML file is valid against the given schema,
-     *          false otherwise
+     *         false otherwise
      */
-    public boolean isValid(String schemaLocation, String xmlFileName)
-    {
+    public boolean isValid(String schemaLocation, String xmlFileName) {
         // 1. Compile the schema.
         Schema schema;
-        try
-        {
+        try {
             File schemaFile = new File(schemaLocation);
 
             schema = SCHEMA_FACTORY.newSchema(schemaFile);
@@ -178,37 +165,33 @@ public class ModelValidator
             // 4. Check the document
             validator.validate(source);
             return true;
-        }
-        catch (SAXException ex)
-        {
-        	logger.warning(this.getClass().getName()+".isValid: " 
-					+xmlFileName + " not valid -> \n" + ex.getMessage());
-        	return false;
-        }
-        catch (IOException e)
-        {
-        	logger.warning(this.getClass().getName()+".isValid: Could not " +
-        			"read from source -> " + xmlFileName);
-        	return false;
+        } catch (SAXException ex) {
+            logger.warning(
+                    this.getClass().getName() + ".isValid: " + xmlFileName + " not valid -> \n" + ex.getMessage());
+            return false;
+        } catch (IOException e) {
+            logger.warning(this.getClass().getName() + ".isValid: Could not " + "read from source -> " + xmlFileName);
+            return false;
         }
     }
 
-    
     /**
-     * Checks if the input XML file is a valid instance of the given input schema
-     * @param schemaLocation: The path to the XML schema that defines the
-     *          structure of the XML model
-     * @param xmlFileName: The path to the XML file to be checked if it is a
-     *          valid instance of the given schema.
+     * Checks if the input XML file is a valid instance of the given input
+     * schema
+     * 
+     * @param schemaLocation:
+     *            The path to the XML schema that defines the structure of the
+     *            XML model
+     * @param xmlFileName:
+     *            The path to the XML file to be checked if it is a valid
+     *            instance of the given schema.
      * @return true if the given XML file is valid against the given schema,
-     *          false otherwise
+     *         false otherwise
      */
-    public boolean isValid(URL schemaLocation, String xmlFileName)
-    {
+    public boolean isValid(URL schemaLocation, String xmlFileName) {
         // 1. Compile the schema.
         Schema schema;
-        try
-        {
+        try {
             schema = SCHEMA_FACTORY.newSchema(schemaLocation);
 
             // 2. Get a validator from the schema.
@@ -220,89 +203,69 @@ public class ModelValidator
             // 4. Check the document
             validator.validate(source);
             return true;
-        }
-        catch (SAXException ex)
-        {
-        	logger.warning(this.getClass().getName()+".isValid: " 
-					+xmlFileName + " not valid -> \n" + ex.getMessage());
-        	return false;
-        }
-        catch (IOException e)
-        {
-        	logger.warning(this.getClass().getName()+".isValid: Could not " +
-        			"read from source -> " + xmlFileName);
+        } catch (SAXException ex) {
+            logger.warning(
+                    this.getClass().getName() + ".isValid: " + xmlFileName + " not valid -> \n" + ex.getMessage());
+            return false;
+        } catch (IOException e) {
+            logger.warning(this.getClass().getName() + ".isValid: Could not " + "read from source -> " + xmlFileName);
             return false;
         }
     }
 
-    
-    
     /**
      * Tests if the file encoded in the inputStream is valid with respect to the
      * bundle format XSD.
+     * 
      * @param inputStream
-     * @return true if the file encoded in the inputStream is valid with 
-     * respect to the bundle format XSD, false otherwise
-     * @throws ParseException 
-     * @throws IOException 
+     * @return true if the file encoded in the inputStream is valid with respect
+     *         to the bundle format XSD, false otherwise
+     * @throws ParseException
+     * @throws IOException
      */
-    public boolean isValidBundleDescriptor(final InputStream inputStream) throws ParseException, IOException
-    {
-        try
-        {
+    public boolean isValidBundleDescriptor(final InputStream inputStream) throws ParseException, IOException {
+        try {
             // Parse the document you want to check.
             Source source = new StreamSource(inputStream);
 
             // Check the document
             bundleDescriptorValidator.validate(source);
             return true;
-        }
-        catch (SAXException ex)
-        {
-        	logger.warning(this.getClass().getName()+"." +
-        			"isValidBundleDescriptor: input stream not a valid " +
-        			"bundle descriptor -> \n" + ex.getMessage());
-        	throw new ParseException("Bundle descriptor could not be parsed: "+ex.getMessage());
-        }
-        catch (IOException e)
-        {
-        	logger.warning(this.getClass().getName()+".isValidBundleDescriptor: " +
-        			"Could not read from source input stream \n");
-        	throw e;
+        } catch (SAXException ex) {
+            logger.warning(this.getClass().getName() + "." + "isValidBundleDescriptor: input stream not a valid "
+                    + "bundle descriptor -> \n" + ex.getMessage());
+            throw new ParseException("Bundle descriptor could not be parsed: " + ex.getMessage());
+        } catch (IOException e) {
+            logger.warning(this.getClass().getName() + ".isValidBundleDescriptor: "
+                    + "Could not read from source input stream \n");
+            throw e;
         }
     }
 
-    
     /**
      * Tests if the file encoded in the inputStream is valid with respect to the
      * deployment format XSD
+     * 
      * @param inputStream
-     * @return true if the file encoded in the inputStream is valid with 
-     * respect to the deployment format XSD, false otherwise
-     * @throws IOException 
-     * @throws ParseException 
+     * @return true if the file encoded in the inputStream is valid with respect
+     *         to the deployment format XSD, false otherwise
+     * @throws IOException
+     * @throws ParseException
      */
-    public boolean isValidDeploymentDescriptor(final InputStream inputStream) throws IOException, ParseException
-    {
-        try
-        {
+    public boolean isValidDeploymentDescriptor(final InputStream inputStream) throws IOException, ParseException {
+        try {
             // Parse the document you want to check.
             Source source = new StreamSource(inputStream);
             // Check the document
             deploymentDescriptorValidator.validate(source);
             return true;
-        }
-        catch (SAXException ex)
-        {
-        	logger.warning(this.getClass().getName()+"." +
-        			"isValidDeploymentDescriptor: input stream not a valid " +
-        			"deployment descriptor -> \n" + ex.getMessage());
-        	throw new ParseException("Deployment descriptor could not be parsed: "+ex.getMessage());        	
-        }
-        catch (IOException e)
-        {
-        	logger.warning(this.getClass().getName()+".isValidBundleDescriptor: " +
-					"Could not read from source input stream \n");
+        } catch (SAXException ex) {
+            logger.warning(this.getClass().getName() + "." + "isValidDeploymentDescriptor: input stream not a valid "
+                    + "deployment descriptor -> \n" + ex.getMessage());
+            throw new ParseException("Deployment descriptor could not be parsed: " + ex.getMessage());
+        } catch (IOException e) {
+            logger.warning(this.getClass().getName() + ".isValidBundleDescriptor: "
+                    + "Could not read from source input stream \n");
             throw e;
         }
     }

@@ -28,37 +28,32 @@ package eu.asterics.mw.model.deployment.impl;
 import eu.asterics.mw.model.deployment.IBindingEdge;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Sep 2, 2010
- *         Time: 5:06:53 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Sep 2, 2010 Time:
+ *         5:06:53 PM
  */
-public class DefaultBindingEdge implements IBindingEdge
-{
+public class DefaultBindingEdge implements IBindingEdge {
     private final String componentInstanceID;
     private final String portID;
 
-    public DefaultBindingEdge(final String componentInstanceID,
-                              final String portID)
-    {
+    public DefaultBindingEdge(final String componentInstanceID, final String portID) {
         super();
 
         this.componentInstanceID = componentInstanceID;
         this.portID = portID;
     }
 
-    public String getComponentInstanceID()
-    {
+    @Override
+    public String getComponentInstanceID() {
         return componentInstanceID;
     }
 
-    public String getPortID()
-    {
+    @Override
+    public String getPortID() {
         return portID;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "DefaultBindingEdge(" + componentInstanceID + ":" + portID + ")";
     }
 }

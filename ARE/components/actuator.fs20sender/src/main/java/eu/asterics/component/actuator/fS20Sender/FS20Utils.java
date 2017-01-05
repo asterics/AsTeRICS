@@ -25,11 +25,9 @@
 
 package eu.asterics.component.actuator.fS20Sender;
 
-import java.lang.*;
-
 public class FS20Utils {
-	
-	public static byte Off = 0x00;
+
+    public static byte Off = 0x00;
     public static byte OnStep1 = 0x01;
     public static byte OnStep2 = 0x02;
     public static byte OnStep3 = 0x03;
@@ -59,18 +57,17 @@ public class FS20Utils {
     public static byte Reset = 0x1B;
     public static byte OnForTimeOld = 0x1E;
     public static byte OnOldForTimeOld = 0x1F;
-    
-    
+
     public static byte FS20StringToByte(String value) {
         byte temp = 0x00;
         int tempValue = Integer.parseInt(value);
-        temp += (byte)((tempValue % 10) - 1);
+        temp += (byte) ((tempValue % 10) - 1);
         tempValue = (tempValue - (tempValue % 10)) / 10;
-        temp += (byte)(((tempValue % 10) - 1) * 4);
+        temp += (byte) (((tempValue % 10) - 1) * 4);
         tempValue = (tempValue - (tempValue % 10)) / 10;
-        temp += (byte)(((tempValue % 10) - 1) * 16);
+        temp += (byte) (((tempValue % 10) - 1) * 16);
         tempValue = (tempValue - (tempValue % 10)) / 10;
-        temp += (byte)(((tempValue % 10) - 1) * 64);
+        temp += (byte) (((tempValue % 10) - 1) * 64);
         return temp;
     }
 
@@ -98,50 +95,49 @@ public class FS20Utils {
         return timeAsString;
     }
 
-
     public static byte GetTimeFromSeconds(double time) {
         double timeConstant = 0.25;
         int counter = 0;
         int value = 0;
         do {
             if ((value = (int) (time / timeConstant)) <= 15) {
-                return (byte)(counter * 16 + value); 
+                return (byte) (counter * 16 + value);
             }
 
             timeConstant = timeConstant * 2;
             counter++;
         } while (timeConstant < 2048);
-        
+
         return 0x00; // Zeit nicht gefunden
     }
-    
+
     public static byte[] houseCodeToHex(int houseCode) {
-		int value = 0x00;
-		int tmp;
-		int u = 1;
-		for (int i = 1; i < 100000000;i*=10) {
-			tmp = ( (( (int) (houseCode/i)) % 10) - 1) * u;
-			u = u * 4;
-			value += tmp;
-		}
-		
-		byte [] hc = new byte[2];
-		hc[0] = (byte) ((value>>8)&255);
-		hc[1] = (byte) (value & 255);
-		return hc;
-	}
-    
+        int value = 0x00;
+        int tmp;
+        int u = 1;
+        for (int i = 1; i < 100000000; i *= 10) {
+            tmp = ((((int) (houseCode / i)) % 10) - 1) * u;
+            u = u * 4;
+            value += tmp;
+        }
+
+        byte[] hc = new byte[2];
+        hc[0] = (byte) ((value >> 8) & 255);
+        hc[1] = (byte) (value & 255);
+        return hc;
+    }
+
     public static byte addressToHex(int address) {
-    	int value = 0x00;
-		int tmp;
-		int u = 1;
-		for (int i = 1; i < 10000;i*=10) {
-			tmp = ( (( (int) (address/i)) % 10) - 1) * u;
-			u = u * 4;
-			value += tmp;
-		}
-		
-		return (byte) value;
-	}
-    
+        int value = 0x00;
+        int tmp;
+        int u = 1;
+        for (int i = 1; i < 10000; i *= 10) {
+            tmp = ((((int) (address / i)) % 10) - 1) * u;
+            u = u * 4;
+            value += tmp;
+        }
+
+        return (byte) value;
+    }
+
 }

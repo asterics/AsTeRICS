@@ -24,65 +24,56 @@
  */
 package eu.asterics.component.processor.oska;
 
-import java.util.StringTokenizer;
-
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- * OskaCommandKeyboardLoadedHandler handles the KeyboardLoaded command that can 
+ * OskaCommandKeyboardLoadedHandler handles the KeyboardLoaded command that can
  * be transferred by the OSKA. Retrieves the size of the new grid and sets the
  * highlighting system.
+ * 
  * @author Christoph Weiss [weissch@technikum-wien.at]
  */
 class OskaCommandKeyboardLoadedHandler implements IOskaCommandHandler {
 
-	/**
-	 * Extracts the row and column count of the new grid and uses it to update
-	 * the highlighter
-	 * @param arguments the arguments of the command
-	 * @return true if the command could be handled, false otherwise
-	 */
-	@Override
-	public boolean handleCommand(String [] arguments) 
-	{
-		if ( (arguments.length < 7) || 
-				!arguments[0].trim().startsWith("KEYBOARDLOADED"))
-		{
-			return false;
-		}
-		
-		try
-		{
-			int columns = Integer.parseInt(arguments[5].trim());
-			
-			// this is a workaround for the double "KEYBOARDLOADED" message !
-            String dummy =arguments[6].trim();
-            if (dummy.indexOf("KEYBOARDLOADED") != -1)
-            {
+    /**
+     * Extracts the row and column count of the new grid and uses it to update
+     * the highlighter
+     * 
+     * @param arguments
+     *            the arguments of the command
+     * @return true if the command could be handled, false otherwise
+     */
+    @Override
+    public boolean handleCommand(String[] arguments) {
+        if ((arguments.length < 7) || !arguments[0].trim().startsWith("KEYBOARDLOADED")) {
+            return false;
+        }
+
+        try {
+            int columns = Integer.parseInt(arguments[5].trim());
+
+            // this is a workaround for the double "KEYBOARDLOADED" message !
+            String dummy = arguments[6].trim();
+            if (dummy.indexOf("KEYBOARDLOADED") != -1) {
                 AstericsErrorHandling.instance.reportInfo(OskaInstance.instance,
                         String.format("Received malformed row: %s", dummy));
-               
-                dummy=dummy.substring(0,dummy.indexOf("KEYBOARDLOADED"));
-                AstericsErrorHandling.instance.reportInfo(OskaInstance.instance,
-                        String.format("corrected: %s", dummy));
+
+                dummy = dummy.substring(0, dummy.indexOf("KEYBOARDLOADED"));
+                AstericsErrorHandling.instance.reportInfo(OskaInstance.instance, String.format("corrected: %s", dummy));
 
             }
-            int rows     = Integer.parseInt(dummy);
-			
-			OskaInstance.instance.highlighter.setGridDimensions(columns, rows);
+            int rows = Integer.parseInt(dummy);
 
-			AstericsErrorHandling.instance.reportInfo(OskaInstance.instance, 
-					"Handled keyboard loaded command");
-		}
-		catch (Exception e)
-		{
-			AstericsErrorHandling.instance.reportInfo(OskaInstance.instance, 
-				String.format("Received malformed keyboardloaded " +
-						"message"));
-			return false;
-		}
+            OskaInstance.instance.highlighter.setGridDimensions(columns, rows);
 
-		return true;
-	}
+            AstericsErrorHandling.instance.reportInfo(OskaInstance.instance, "Handled keyboard loaded command");
+        } catch (Exception e) {
+            AstericsErrorHandling.instance.reportInfo(OskaInstance.instance,
+                    String.format("Received malformed keyboardloaded " + "message"));
+            return false;
+        }
+
+        return true;
+    }
 
 }

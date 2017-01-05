@@ -25,6 +25,8 @@
 
 package eu.asterics.component.actuator.fS20Sender;
 
+import java.io.IOException;
+
 import com.sun.jna.platform.win32.Advapi32Util;
 import com.sun.jna.platform.win32.WinReg;
 import eu.asterics.mw.services.AstericsErrorHandling;

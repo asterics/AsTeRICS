@@ -33,58 +33,49 @@ import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
+public class ThreadBasedRuntimeInputPort implements IRuntimeInputPort {
+    private final BlockingQueue<byte[]> queue = new LinkedBlockingQueue<byte[]>();
 
-public class ThreadBasedRuntimeInputPort implements IRuntimeInputPort{
-    private final BlockingQueue<byte []> queue = 
-    	new LinkedBlockingQueue<byte []>(); 
-    	
-    	private Logger logger = null;
-    	
-    	public ThreadBasedRuntimeInputPort()
-    	{
-    		logger = AstericsErrorHandling.instance.getLogger();
-    	}
-    	
-    	
-	public void receiveData(byte[] data) {
-		try {
-			queue.put(data);
-		} catch (InterruptedException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"receiveData: -> \n"+e.getMessage());
-		}
-	}
+    private Logger logger = null;
 
-	public byte[] takeData ()
-	{
-		try {
-			return queue.take();
-		} catch (InterruptedException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"takeData: -> \n"+e.getMessage());
-		}
-		return null;
-	}
+    public ThreadBasedRuntimeInputPort() {
+        logger = AstericsErrorHandling.instance.getLogger();
+    }
 
+    @Override
+    public void receiveData(byte[] data) {
+        try {
+            queue.put(data);
+        } catch (InterruptedException e) {
+            logger.warning(this.getClass().getName() + "." + "receiveData: -> \n" + e.getMessage());
+        }
+    }
 
-	@Override
-	public void startBuffering(AbstractRuntimeComponentInstance c, String portID) {
-		// TODO Auto-generated method stub
-		
-	}
+    public byte[] takeData() {
+        try {
+            return queue.take();
+        } catch (InterruptedException e) {
+            logger.warning(this.getClass().getName() + "." + "takeData: -> \n" + e.getMessage());
+        }
+        return null;
+    }
 
+    @Override
+    public void startBuffering(AbstractRuntimeComponentInstance c, String portID) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public void stopBuffering(AbstractRuntimeComponentInstance c, String portID) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
+    @Override
+    public void stopBuffering(AbstractRuntimeComponentInstance c, String portID) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public boolean isBuffered() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    }
+
+    @Override
+    public boolean isBuffered() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
 }

@@ -28,8 +28,7 @@ package eu.asterics.mw.cimcommunication;
 /**
  * An exception thrown on errors while reading the CIM protocol
  * 
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at]
- *         Date: Nov 3, 2010
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
 public class CIMProtocolException extends Exception {

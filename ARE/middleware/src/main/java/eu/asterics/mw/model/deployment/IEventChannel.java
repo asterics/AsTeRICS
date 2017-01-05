@@ -28,17 +28,15 @@ package eu.asterics.mw.model.deployment;
 import org.w3c.dom.Document;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Sep 2, 2010
- *         Time: 5:00:40 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Sep 2, 2010 Time:
+ *         5:00:40 PM
  */
-public interface IEventChannel
-{
+public interface IEventChannel {
     public String getChannelID();
 
-    public IEventEdge [] getSources();
+    public IEventEdge[] getSources();
 
-    public IEventEdge [] getTargets();
+    public IEventEdge[] getTargets();
 
-	public void appendXMLElements(Document doc);
+    public void appendXMLElements(Document doc);
 }

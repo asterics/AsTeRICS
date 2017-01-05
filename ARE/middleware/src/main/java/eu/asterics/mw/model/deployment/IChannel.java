@@ -28,12 +28,10 @@ package eu.asterics.mw.model.deployment;
 import org.w3c.dom.Document;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 4:34:35 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         4:34:35 PM
  */
-public interface IChannel extends IPropertyful
-{
+public interface IChannel extends IPropertyful {
     public String getSourceComponentInstanceID();
 
     public String getSourceOutputPortID();
@@ -44,9 +42,11 @@ public interface IChannel extends IPropertyful
 
     public String getChannelDescription();
 
-	public void appendXMLElements(Document doc);
+    public void appendXMLElements(Document doc);
 
-	public String getChannelID();
-public IBindingEdge getTarget();
-public IBindingEdge getSource();
+    public String getChannelID();
+
+    public IBindingEdge getTarget();
+
+    public IBindingEdge getSource();
 }

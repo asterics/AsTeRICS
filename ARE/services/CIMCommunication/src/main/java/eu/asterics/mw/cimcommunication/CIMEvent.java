@@ -26,23 +26,23 @@
 package eu.asterics.mw.cimcommunication;
 
 /**
- * The base event class for actions in the CIM port manager. It knows the
- * CIM port controller it originates from
+ * The base event class for actions in the CIM port manager. It knows the CIM
+ * port controller it originates from
  * 
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at]
- *         Date: Nov 3, 2010
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
 public class CIMEvent {
-	
-	public CIMPortController port;
-	
-	/**
-	 * Base constructor
-	 * @param port the origin of the port
-	 */
-	public CIMEvent(CIMPortController port) 
-	{
-		this.port = port;
-	}
+
+    public CIMPortController port;
+
+    /**
+     * Base constructor
+     * 
+     * @param port
+     *            the origin of the port
+     */
+    public CIMEvent(CIMPortController port) {
+        this.port = port;
+    }
 }

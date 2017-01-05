@@ -27,16 +27,14 @@
 package com.starlab.component.processor.jni;
 
 /**
- *   Implements the access to the native functions for computing the
- *   decimation
+ * Implements the access to the native functions for computing the decimation
  * 
- * @author Javier Acedo [javier.acedo@starlab.es]
- *         Date: Apr 29, 2011
- *         Time 04:51:02 PM
+ * @author Javier Acedo [javier.acedo@starlab.es] Date: Apr 29, 2011 Time
+ *         04:51:02 PM
  */
 public class JNIdecimation {
 
-	public native boolean nativeDecimation (double sample, int downs_ratio, double [] output);
+    public native boolean nativeDecimation(double sample, int downs_ratio, double[] output);
 
     static {
         System.loadLibrary("decimation");
@@ -45,20 +43,22 @@ public class JNIdecimation {
     /**
      * The class constructor.
      */
-	public JNIdecimation ()
-	{
-	}
-	
-	/**
-	 * Deciamtion calculation
-	 * @param samples          Input sample
-	 * @param downs_ration     Factor of decimation
-	 * @param ouput            Output decimated value
-	 * @return                 True when the output value has a new decimated
-	 *                         signal, false otherwise
-	 */
-	public boolean Decimation(double sample, int downs_ratio, double[] output)
-	{
-		return nativeDecimation(sample, downs_ratio, output);
-	}
+    public JNIdecimation() {
+    }
+
+    /**
+     * Deciamtion calculation
+     * 
+     * @param samples
+     *            Input sample
+     * @param downs_ration
+     *            Factor of decimation
+     * @param ouput
+     *            Output decimated value
+     * @return True when the output value has a new decimated signal, false
+     *         otherwise
+     */
+    public boolean Decimation(double sample, int downs_ratio, double[] output) {
+        return nativeDecimation(sample, downs_ratio, output);
+    }
 }

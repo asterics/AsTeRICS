@@ -30,26 +30,23 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 
 /**
- * OskaOutputs encapsulates all outputs of the OSKA plug-in. This class only 
- * works as a container and provides no additional functions. 
+ * OskaOutputs encapsulates all outputs of the OSKA plug-in. This class only
+ * works as a container and provides no additional functions.
+ * 
  * @author Christoph Weiss [weissch@technikum-wien.at]
  */
-class OskaOutputs 
-{
-	
-	private static final int NUMBER_OF_EVENT_TRIGGERS = 10;	
-	
-	IRuntimeOutputPort opAction 	= new DefaultRuntimeOutputPort();
-	IRuntimeOutputPort opKeycodes 	= new DefaultRuntimeOutputPort();
-	
-    final IRuntimeEventTriggererPort [] etpEventOut  = 
-    	new DefaultRuntimeEventTriggererPort[NUMBER_OF_EVENT_TRIGGERS];
-    
-    public OskaOutputs()
-    {
-    	for (int i = 0; i < etpEventOut.length; i++)
-    	{
-    		etpEventOut[i] = new DefaultRuntimeEventTriggererPort();
-    	}
+class OskaOutputs {
+
+    private static final int NUMBER_OF_EVENT_TRIGGERS = 10;
+
+    IRuntimeOutputPort opAction = new DefaultRuntimeOutputPort();
+    IRuntimeOutputPort opKeycodes = new DefaultRuntimeOutputPort();
+
+    final IRuntimeEventTriggererPort[] etpEventOut = new DefaultRuntimeEventTriggererPort[NUMBER_OF_EVENT_TRIGGERS];
+
+    public OskaOutputs() {
+        for (int i = 0; i < etpEventOut.length; i++) {
+            etpEventOut[i] = new DefaultRuntimeEventTriggererPort();
+        }
     }
 }

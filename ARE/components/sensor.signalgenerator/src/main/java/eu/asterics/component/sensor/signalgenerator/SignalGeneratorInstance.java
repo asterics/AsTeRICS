@@ -27,216 +27,193 @@
 package eu.asterics.component.sensor.signalgenerator;
 
 import java.util.logging.Logger;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.IAREEventListener;
-
 
 /**
- *   SignalGeneratorInstance provides signal simulation 
- *   in adjustable waveform, frequency, amplitude and offset
+ * SignalGeneratorInstance provides signal simulation in adjustable waveform,
+ * frequency, amplitude and offset
  *
- * @author Costas Kakousis [kakousis@cs.ucy.ac.cy]
- *         Date: Aug 20, 2010
- *         Time: 10:22:08 AM
+ * @author Costas Kakousis [kakousis@cs.ucy.ac.cy] Date: Aug 20, 2010 Time:
+ *         10:22:08 AM
  */
-public class SignalGeneratorInstance extends AbstractRuntimeComponentInstance
-{
+public class SignalGeneratorInstance extends AbstractRuntimeComponentInstance {
 
-	private final OutputPort opOut = new OutputPort();
-	private int propSendInterval = 10;  // milliseconds
-	private int propWaveForm = 1;
-	private double propAmplitude = 100;
-	private double propFrequency = 2;
-	private double propPhaseShift = 0;
-	private double propOffset = 0;
+    private final OutputPort opOut = new OutputPort();
+    private int propSendInterval = 10; // milliseconds
+    private int propWaveForm = 1;
+    private double propAmplitude = 100;
+    private double propFrequency = 2;
+    private double propPhaseShift = 0;
+    private double propOffset = 0;
 
-	static Logger logger = 	AstericsErrorHandling.instance.getLogger();
+    static Logger logger = AstericsErrorHandling.instance.getLogger();
 
-	private final CoordinatesGenerator cg = 
-		new CoordinatesGenerator(opOut, propSendInterval, propWaveForm, propFrequency, propAmplitude, propPhaseShift, propOffset);
+    private final CoordinatesGenerator cg = new CoordinatesGenerator(opOut, propSendInterval, propWaveForm,
+            propFrequency, propAmplitude, propPhaseShift, propOffset);
 
-	/**
-	 * The class constructor.
-	 */
-	public SignalGeneratorInstance()
-	{
-		// empty constructor - needed for OSGi service factory operations	
-	}
+    /**
+     * The class constructor.
+     */
+    public SignalGeneratorInstance() {
+        // empty constructor - needed for OSGi service factory operations
+    }
 
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
 
-	/**
-	 * returns an Input Port.
-	 * @param portID   the name of the port
-	 * @return         the input port or null if not found
-	 */
-	public IRuntimeInputPort getInputPort(String portID) {
+        return null;
+    }
 
-		return null;
-	}
+    /**
+     * returns an Output Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
+     */
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
 
-	/**
-	 * returns an Output Port.
-	 * @param portID   the name of the port
-	 * @return         the output port or null if not found
-	 */
-	public IRuntimeOutputPort getOutputPort(String portID)
-	{
+        if ("out".equalsIgnoreCase(portID)) {
+            return opOut;
+        }
+        return null;
+    }
 
-		if("out".equalsIgnoreCase(portID))
-		{
-			return opOut;
-		}
-		return null;
-	}
- 
-	/**
-	 * returns the value of the given property.
-	 * @param propertyName   the name of the property
-	 * @return               the property value or null if not found
-	 */
-	public Object getRuntimePropertyValue(String propertyName) {
-		if("sendInterval".equalsIgnoreCase(propertyName))
-		{
-			return this.propSendInterval;
-		}
-		else  if("waveForm".equalsIgnoreCase(propertyName))
-		{
-			return this.propWaveForm;
-		}
-		else   if("amplitude".equalsIgnoreCase(propertyName))
-		{
-			return this.propAmplitude;
-		}
-		else   if("frequency".equalsIgnoreCase(propertyName))
-		{
-			return this.propFrequency;
-		}
-		else   if("phaseShift".equalsIgnoreCase(propertyName))
-		{
-			return this.propPhaseShift;
-		}
-		else   if("offset".equalsIgnoreCase(propertyName))
-		{
-			return this.propOffset;
-		}
-		return null;
-	}
+    /**
+     * returns the value of the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
+     */
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("sendInterval".equalsIgnoreCase(propertyName)) {
+            return this.propSendInterval;
+        } else if ("waveForm".equalsIgnoreCase(propertyName)) {
+            return this.propWaveForm;
+        } else if ("amplitude".equalsIgnoreCase(propertyName)) {
+            return this.propAmplitude;
+        } else if ("frequency".equalsIgnoreCase(propertyName)) {
+            return this.propFrequency;
+        } else if ("phaseShift".equalsIgnoreCase(propertyName)) {
+            return this.propPhaseShift;
+        } else if ("offset".equalsIgnoreCase(propertyName)) {
+            return this.propOffset;
+        }
+        return null;
+    }
 
-	/**
-	 * sets a new value for the given property.
-	 * @param propertyName   the name of the property
-	 * @param newValue       the desired property value or null if not found
-	 */
-	public Object setRuntimePropertyValue(String propertyName, Object newValue) {
-		//        Logger.getAnonymousLogger().info("enter setRuntimePropertyValue:" + propertyName);
-		if("sendInterval".equalsIgnoreCase(propertyName))
-		{
-			final Integer oldValue = this.propSendInterval;
+    /**
+     * sets a new value for the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
+     */
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        // Logger.getAnonymousLogger().info("enter setRuntimePropertyValue:" +
+        // propertyName);
+        if ("sendInterval".equalsIgnoreCase(propertyName)) {
+            final Integer oldValue = this.propSendInterval;
 
-			propSendInterval = Integer.parseInt((String) newValue);
-			//System.out.println("->send interval set to " + sendInterval +" (ms).");
-			cg.setSendInterval(propSendInterval);
-			return oldValue;
-		}
-		else if("waveForm".equalsIgnoreCase(propertyName))
-		{
-			final Integer oldValue = this.propWaveForm;
-			propWaveForm = Integer.parseInt((String) newValue);
-			cg.setWaveForm(propWaveForm);
-			return oldValue;
-		}
-		else if("frequency".equalsIgnoreCase(propertyName))
-		{
-			final double oldValue = this.propFrequency;
-			propFrequency = Double.parseDouble((String) newValue);
-			cg.setFrequency(propFrequency);
-			return oldValue;
-		}
-		else if("amplitude".equalsIgnoreCase(propertyName))
-		{
-			final double oldValue = this.propAmplitude;
-			propAmplitude = Double.parseDouble((String) newValue);
-			cg.setAmplitude(propAmplitude);
-			return oldValue;
-		}
-		else if("phaseShift".equalsIgnoreCase(propertyName))
-		{
-			final double oldValue = this.propPhaseShift;
-			propPhaseShift = Double.parseDouble((String) newValue);
-			cg.setPhaseShift(propPhaseShift);
-			return oldValue;
-		}
-		else if("offset".equalsIgnoreCase(propertyName))
-		{
-			final double oldValue = this.propOffset;
-			propOffset = Double.parseDouble((String) newValue);
-			cg.setOffset(propOffset);
-			return oldValue;
-		}
+            propSendInterval = Integer.parseInt((String) newValue);
+            // System.out.println("->send interval set to " + sendInterval +"
+            // (ms).");
+            cg.setSendInterval(propSendInterval);
+            return oldValue;
+        } else if ("waveForm".equalsIgnoreCase(propertyName)) {
+            final Integer oldValue = this.propWaveForm;
+            propWaveForm = Integer.parseInt((String) newValue);
+            cg.setWaveForm(propWaveForm);
+            return oldValue;
+        } else if ("frequency".equalsIgnoreCase(propertyName)) {
+            final double oldValue = this.propFrequency;
+            propFrequency = Double.parseDouble((String) newValue);
+            cg.setFrequency(propFrequency);
+            return oldValue;
+        } else if ("amplitude".equalsIgnoreCase(propertyName)) {
+            final double oldValue = this.propAmplitude;
+            propAmplitude = Double.parseDouble((String) newValue);
+            cg.setAmplitude(propAmplitude);
+            return oldValue;
+        } else if ("phaseShift".equalsIgnoreCase(propertyName)) {
+            final double oldValue = this.propPhaseShift;
+            propPhaseShift = Double.parseDouble((String) newValue);
+            cg.setPhaseShift(propPhaseShift);
+            return oldValue;
+        } else if ("offset".equalsIgnoreCase(propertyName)) {
+            final double oldValue = this.propOffset;
+            propOffset = Double.parseDouble((String) newValue);
+            cg.setOffset(propOffset);
+            return oldValue;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
+    /**
+     * Output Port for sending values.
+     */
+    public class OutputPort extends DefaultRuntimeOutputPort {
+        public void sendData(double data) {
+            super.sendData(ConversionUtils.doubleToBytes(data));
+        }
+    }
 
-	/**
-	 * Output Port for sending values.
-	 */
-	public class OutputPort extends DefaultRuntimeOutputPort
-	{
-		public void sendData(double data)
-		{     			
-			super.sendData(ConversionUtils.doubleToBytes(data));
-		}
-	}
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        // logger.fine(this.getClass().getName()+" started");
+        super.start();
+        cg.start();
 
+    }
 
-	/**
-	 * called when model is started.
-	 */
-	@Override
-	public void start()
-	{
-		// logger.fine(this.getClass().getName()+" started");
-		super.start();
-		cg.start();
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+        cg.pause();
+    }
 
-	}
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+        cg.resume();
 
-	/**
-	 * called when model is paused.
-	 */
-	@Override
-	public void pause()
-	{
-		super.pause();
-		cg.pause();
-	}
+    }
 
-	/**
-	 * called when model is resumed.
-	 */
-	@Override
-	public void resume()
-	{
-		super.resume();
-		cg.resume();   
-
-	}
-
-	/**
-	 * called when model is stopped.
-	 */
-	@Override
-	public void stop()
-	{
-		super.stop();
-		cg.stop();   
-	}
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        super.stop();
+        cg.stop();
+    }
 
 }

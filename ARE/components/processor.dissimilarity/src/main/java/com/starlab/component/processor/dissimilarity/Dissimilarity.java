@@ -29,30 +29,30 @@ package com.starlab.component.processor.dissimilarity;
 import com.starlab.component.processor.jni.JNIdissimilarity;
 
 /**
- *   Implements the dissimilarity between two signals
+ * Implements the dissimilarity between two signals
  * 
- * @author Javier Acedo [javier.acedo@starlab.es]
- *         Date: Apr 29, 2011
- *         Time 04:51:02 PM
+ * @author Javier Acedo [javier.acedo@starlab.es] Date: Apr 29, 2011 Time
+ *         04:51:02 PM
  */
-public class Dissimilarity
-{
+public class Dissimilarity {
     private JNIdissimilarity jni = new JNIdissimilarity();
-    
+
     /**
      * The class constructor
      */
-    Dissimilarity () {
+    Dissimilarity() {
     }
 
     /**
-	 * Dissimilarity calculation
-	 * @param in1              First vector of samples
-	 * @param in2              Second vector of samples
-	 * @return                 Dissimilarity between the two input vectors
-	 */
-    double process (double[] in1, double[] in2)
-    {
+     * Dissimilarity calculation
+     * 
+     * @param in1
+     *            First vector of samples
+     * @param in2
+     *            Second vector of samples
+     * @return Dissimilarity between the two input vectors
+     */
+    double process(double[] in1, double[] in2) {
         return jni.Dissimilarity(in1, in2);
     }
 

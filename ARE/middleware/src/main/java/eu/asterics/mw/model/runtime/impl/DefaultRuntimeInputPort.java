@@ -30,25 +30,32 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 
 public abstract class DefaultRuntimeInputPort implements IRuntimeInputPort {
 
-	public boolean buffering;
-	
-	public DefaultRuntimeInputPort () {
-		super();
-		this.buffering = false;
-	}
-	
-	 public void receiveData(final byte [] data) {
-		 ;
-	 }
-	public void startBuffering (AbstractRuntimeComponentInstance c, 
-			String portID) {
-		
-		this.buffering = true;
-	
-	}
-	public void stopBuffering (AbstractRuntimeComponentInstance c, 
-			String portID) {
-		this.buffering = false;
-	}
-	public boolean isBuffered () {return this.buffering;}
+    public boolean buffering;
+
+    public DefaultRuntimeInputPort() {
+        super();
+        this.buffering = false;
+    }
+
+    @Override
+    public void receiveData(final byte[] data) {
+        ;
+    }
+
+    @Override
+    public void startBuffering(AbstractRuntimeComponentInstance c, String portID) {
+
+        this.buffering = true;
+
+    }
+
+    @Override
+    public void stopBuffering(AbstractRuntimeComponentInstance c, String portID) {
+        this.buffering = false;
+    }
+
+    @Override
+    public boolean isBuffered() {
+        return this.buffering;
+    }
 }

@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,209 +26,197 @@
 
 package eu.asterics.component.sensor.randomnumber;
 
-
 import java.util.Random;
-import java.util.logging.Logger;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 
 /**
  * 
  * <Describe purpose of this module>
  * 
  * 
- *  
- * @author <your name> [<your email address>]
- *         Date: 
- *         Time: 
+ * 
+ * @author <your name> [<your email address>] Date: Time:
  */
-public class RandomNumberInstance extends AbstractRuntimeComponentInstance
-{
-	final IRuntimeOutputPort opNumber = new DefaultRuntimeOutputPort();
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class RandomNumberInstance extends AbstractRuntimeComponentInstance {
+    final IRuntimeOutputPort opNumber = new DefaultRuntimeOutputPort();
+    // Usage of an output port e.g.:
+    // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	int propMin = 0;
-	int propMax = 1;
+    int propMin = 0;
+    int propMax = 1;
 
-	// declare member variables here
+    // declare member variables here
 
-  
-    
-   /**
-    * The class constructor.
-    */
-    public RandomNumberInstance()
-    {
+    /**
+     * The class constructor.
+     */
+    public RandomNumberInstance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
-		if ("number".equalsIgnoreCase(portID))
-		{
-			return opNumber;
-		}
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("number".equalsIgnoreCase(portID)) {
+            return opNumber;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-		if ("newNumber".equalsIgnoreCase(eventPortID))
-		{
-			return elpNewNumber;
-		}
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if ("newNumber".equalsIgnoreCase(eventPortID)) {
+            return elpNewNumber;
+        }
 
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("min".equalsIgnoreCase(propertyName))
-		{
-			return propMin;
-		}
-		if ("max".equalsIgnoreCase(propertyName))
-		{
-			return propMax;
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("min".equalsIgnoreCase(propertyName)) {
+            return propMin;
+        }
+        if ("max".equalsIgnoreCase(propertyName)) {
+            return propMax;
+        }
 
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("min".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propMin;
-			propMin = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
-		if ("max".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propMax;
-			propMax = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("min".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propMin;
+            propMin = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
+        if ("max".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propMax;
+            propMax = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
 
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
+    /**
+     * Input Ports for receiving values.
+     */
 
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpNewNumber = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            generateNumber();
+        }
+    };
 
-     /**
-      * Event Listerner Ports.
-      */
-	final IRuntimeEventListenerPort elpNewNumber = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-				generateNumber();
-		}
-	};
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
 
-	
+        super.start();
+        generateNumber();
+    }
 
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
-          super.start();
-          generateNumber();
-      }
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
 
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-          super.pause();
-      }
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
 
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-          super.resume();
-      }
+        super.stop();
+    }
 
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
-
-          super.stop();
-      }
-      
-      private void generateNumber()
-      {
-    	  Random zufall = new Random();
-    	  int x = zufall.nextInt((propMax - propMin) + 1) + propMin;
-    	  //System.out.println("Time: " + x);
-    	  opNumber.sendData(ConversionUtils.intToBytes(x));
-      }
+    private void generateNumber() {
+        Random zufall = new Random();
+        int x = zufall.nextInt((propMax - propMin) + 1) + propMin;
+        // System.out.println("Time: " + x);
+        opNumber.sendData(ConversionUtils.intToBytes(x));
+    }
 }
