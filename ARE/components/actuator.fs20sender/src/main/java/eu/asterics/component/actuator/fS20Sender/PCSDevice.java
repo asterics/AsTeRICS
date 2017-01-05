@@ -25,14 +25,6 @@
 
 package eu.asterics.component.actuator.fS20Sender;
 
-import java.io.IOException;
-
-import com.sun.jna.platform.win32.Advapi32Util;
-import com.sun.jna.platform.win32.WinReg;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import org.hid4java.HidDevice;
-import org.hid4java.HidManager;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,141 +38,154 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.hid4java.HidDevice;
+import org.hid4java.HidManager;
+
+import com.sun.jna.platform.win32.Advapi32Util;
+import com.sun.jna.platform.win32.WinReg;
+
+import eu.asterics.mw.services.AstericsErrorHandling;
+
 public class PCSDevice {
 
-  private static final String REGISTRY_PATH_DEVICE_PARAMS = "Device Parameters";
-  private static final String REGISTRY_PATH_FS20 = "SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_18EF&PID_E015";
-  private static final String REGISTRY_KEY_POWERMANAGEMENT = "EnhancedPowerManagementEnabled";
-  private static final String FILENAME_REGPATCH = "regpatchfs20.vbs";
-  private static final String FILENAME_REGPATCH2 = "regpatchfs20.cmd";
-  private static final String PATH_SEPARATOR = "\\";
+    private static final String REGISTRY_PATH_DEVICE_PARAMS = "Device Parameters";
+    private static final String REGISTRY_PATH_FS20 = "SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_18EF&PID_E015";
+    private static final String REGISTRY_KEY_POWERMANAGEMENT = "EnhancedPowerManagementEnabled";
+    private static final String FILENAME_REGPATCH = "regpatchfs20.vbs";
+    private static final String FILENAME_REGPATCH2 = "regpatchfs20.cmd";
+    private static final String PATH_SEPARATOR = "\\";
 
-  private Logger logger = AstericsErrorHandling.instance.getLogger();
-  private ScheduledExecutorService timerExecutor = Executors.newSingleThreadScheduledExecutor();
-  private int vid = 0x18EF;
-  private int pid = 0xE015;
+    private Logger logger = AstericsErrorHandling.instance.getLogger();
+    private ScheduledExecutorService timerExecutor = Executors.newSingleThreadScheduledExecutor();
+    private int vid = 0x18EF;
+    private int pid = 0xE015;
 
-  private HidDevice dev = null;
+    private HidDevice dev = null;
 
-  public PCSDevice() {
-  }
-
-  public boolean open() {
-
-    if (isWindowsOS()) {
-      logger.info("trying to patch registry for FS20 to disable power-save-mode...");
-      boolean patched = patchRegistryDisablePowerSaveMode();
-      if (patched) {
-        logger.info("successfully patched registry for FS20.");
-      } else {
-        logger.info("Registry for FS20 not patched (maybe not needed).");
-      }
+    public PCSDevice() {
     }
-    List<HidDevice> list = HidManager.getHidServices().getAttachedHidDevices();
-    for (HidDevice device : list) {
-      if (device.getVendorId() == (short) vid && device.getProductId() == (short) pid) {
-        dev = device;
-      }
-    }
-    if(dev == null) {
-      return false;
-    }
-    dev.open();
-    return dev.isOpen();
-  }
 
+    public boolean open() {
 
-  public boolean close() {
-    HidManager.getHidServices().shutdown();
-    timerExecutor.shutdownNow();
-    if(dev != null) {
-      dev.close();
-    }
-    return true;
-  }
-
-  public boolean send(int houseCode, int addr, int command) {
-    byte[] buf = new byte[11];
-    buf[0] = 0x01; // hid report id
-    buf[1] = 0x06; // byte anzahl
-    buf[2] = (byte) 0xF1; // Befehl ID
-    byte[] hc = FS20Utils.houseCodeToHex(houseCode);
-    buf[3] = hc[0]; // 1111 HC
-    buf[4] = hc[1]; // 1111 HC
-    buf[5] = FS20Utils.addressToHex(addr); // 1111 Adresse
-    buf[6] = (byte) command; // Befehl
-    buf[7] = 0x00; // Erweiterung
-    if (dev != null) dev.write(buf, buf.length, (byte) 0);
-    return true;
-  }
-
-  private boolean isWindowsOS() {
-    return System.getProperty("os.name").toLowerCase().contains("windows");
-  }
-
-  private boolean patchRegistryDisablePowerSaveMode() {
-    boolean patched = false;
-    try {
-      if (Advapi32Util.registryKeyExists(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20)) {
-        String[] subkeys = Advapi32Util.registryGetKeys(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20);
-        if (!allSubkeysPatched(subkeys)) {
-          copyBatchFromJar(FILENAME_REGPATCH);
-          copyBatchFromJar(FILENAME_REGPATCH2);
-          ProcessBuilder builder = new ProcessBuilder("cscript", "/E:JScript", "/nologo", FILENAME_REGPATCH, getArgString(subkeys));
-          builder.directory(new File(getHomePath()));
-          Process process = builder.start();
-          patched = process.waitFor() == 0;
-          deleteBatchFile(FILENAME_REGPATCH);
-          //second patch-script cannot be removed immediately, because maybe it is still executing, so wait 500ms
-          Runnable cleanupTask = new Runnable() {
-            @Override
-            public void run() {
-              try{
-                deleteBatchFile(FILENAME_REGPATCH2);
-              } catch(IOException e) {
-                logger.log(Level.INFO, "could not remove patch-script after patching registry for FS20.", e);
-              }
+        if (isWindowsOS()) {
+            logger.info("trying to patch registry for FS20 to disable power-save-mode...");
+            boolean patched = patchRegistryDisablePowerSaveMode();
+            if (patched) {
+                logger.info("successfully patched registry for FS20.");
+            } else {
+                logger.info("Registry for FS20 not patched (maybe not needed).");
             }
-          };
-          timerExecutor.schedule(cleanupTask, 500, TimeUnit.MILLISECONDS);
         }
-      }
-    } catch (Exception e) {
-      logger.log(Level.WARNING, "error patching registry.", e);
+        List<HidDevice> list = HidManager.getHidServices().getAttachedHidDevices();
+        for (HidDevice device : list) {
+            if (device.getVendorId() == (short) vid && device.getProductId() == (short) pid) {
+                dev = device;
+            }
+        }
+        if (dev == null) {
+            return false;
+        }
+        dev.open();
+        return dev.isOpen();
     }
-    return patched;
-  }
 
-  private String getArgString(String[] strings) {
-    String args = "";
-    for (String key : strings) {
-      args += " \"" + key + "\"";
+    public boolean close() {
+        HidManager.getHidServices().shutdown();
+        timerExecutor.shutdownNow();
+        if (dev != null) {
+            dev.close();
+        }
+        return true;
     }
-    return args.trim();
-  }
 
-  private void copyBatchFromJar(String batchFilename) throws IOException {
-    ClassLoader loader = PCSDevice.class.getClassLoader();
-    InputStream resource = loader.getResourceAsStream(batchFilename);
-    Files.copy(resource, Paths.get(getHomePath() + "\\" + batchFilename), StandardCopyOption.REPLACE_EXISTING);
-    resource.close();
-  }
-
-  private void deleteBatchFile(String batchFilename) throws IOException {
-    new File(getHomePath() + PATH_SEPARATOR + batchFilename).delete();
-  }
-
-  private String getHomePath() {
-    return System.getProperty("user.dir");
-  }
-
-  private boolean allSubkeysPatched(String[] subkeys) {
-    for (String subkey : subkeys) {
-      int value = Advapi32Util.registryGetIntValue(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20 + "\\" + subkey + "\\" + REGISTRY_PATH_DEVICE_PARAMS, REGISTRY_KEY_POWERMANAGEMENT);
-      if (value == 1) {
-        return false;
-      }
+    public boolean send(int houseCode, int addr, int command) {
+        byte[] buf = new byte[11];
+        buf[0] = 0x01; // hid report id
+        buf[1] = 0x06; // byte anzahl
+        buf[2] = (byte) 0xF1; // Befehl ID
+        byte[] hc = FS20Utils.houseCodeToHex(houseCode);
+        buf[3] = hc[0]; // 1111 HC
+        buf[4] = hc[1]; // 1111 HC
+        buf[5] = FS20Utils.addressToHex(addr); // 1111 Adresse
+        buf[6] = (byte) command; // Befehl
+        buf[7] = 0x00; // Erweiterung
+        if (dev != null)
+            dev.write(buf, buf.length, (byte) 0);
+        return true;
     }
-    return true;
-  }
+
+    private boolean isWindowsOS() {
+        return System.getProperty("os.name").toLowerCase().contains("windows");
+    }
+
+    private boolean patchRegistryDisablePowerSaveMode() {
+        boolean patched = false;
+        try {
+            if (Advapi32Util.registryKeyExists(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20)) {
+                String[] subkeys = Advapi32Util.registryGetKeys(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20);
+                if (!allSubkeysPatched(subkeys)) {
+                    copyBatchFromJar(FILENAME_REGPATCH);
+                    copyBatchFromJar(FILENAME_REGPATCH2);
+                    ProcessBuilder builder = new ProcessBuilder("cscript", "/E:JScript", "/nologo", FILENAME_REGPATCH,
+                            getArgString(subkeys));
+                    builder.directory(new File(getHomePath()));
+                    Process process = builder.start();
+                    patched = process.waitFor() == 0;
+                    deleteBatchFile(FILENAME_REGPATCH);
+                    // second patch-script cannot be removed immediately,
+                    // because maybe it is still executing, so wait 500ms
+                    Runnable cleanupTask = new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                deleteBatchFile(FILENAME_REGPATCH2);
+                            } catch (IOException e) {
+                                logger.log(Level.INFO,
+                                        "could not remove patch-script after patching registry for FS20.", e);
+                            }
+                        }
+                    };
+                    timerExecutor.schedule(cleanupTask, 500, TimeUnit.MILLISECONDS);
+                }
+            }
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "error patching registry.", e);
+        }
+        return patched;
+    }
+
+    private String getArgString(String[] strings) {
+        String args = "";
+        for (String key : strings) {
+            args += " \"" + key + "\"";
+        }
+        return args.trim();
+    }
+
+    private void copyBatchFromJar(String batchFilename) throws IOException {
+        ClassLoader loader = PCSDevice.class.getClassLoader();
+        InputStream resource = loader.getResourceAsStream(batchFilename);
+        Files.copy(resource, Paths.get(getHomePath() + "\\" + batchFilename), StandardCopyOption.REPLACE_EXISTING);
+        resource.close();
+    }
+
+    private void deleteBatchFile(String batchFilename) throws IOException {
+        new File(getHomePath() + PATH_SEPARATOR + batchFilename).delete();
+    }
+
+    private String getHomePath() {
+        return System.getProperty("user.dir");
+    }
+
+    private boolean allSubkeysPatched(String[] subkeys) {
+        for (String subkey : subkeys) {
+            int value = Advapi32Util.registryGetIntValue(WinReg.HKEY_LOCAL_MACHINE,
+                    REGISTRY_PATH_FS20 + "\\" + subkey + "\\" + REGISTRY_PATH_DEVICE_PARAMS,
+                    REGISTRY_KEY_POWERMANAGEMENT);
+            if (value == 1) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

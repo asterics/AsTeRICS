@@ -62,16 +62,16 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     // declare member variables here
 
-	private int houseCode = 11111111;
-	private int address = 1111;
-	private PCSDevice pcs;
-	private FS20SenderInstance instance = this;
-	
-	private Logger logger =	AstericsErrorHandling.instance.getLogger();
-    
-   /**
-    * The class constructor.
-    */
+    private int houseCode = 11111111;
+    private int address = 1111;
+    private PCSDevice pcs;
+    private FS20SenderInstance instance = this;
+
+    private Logger logger = AstericsErrorHandling.instance.getLogger();
+
+    /**
+     * The class constructor.
+     */
     public FS20SenderInstance() {
     }
 
