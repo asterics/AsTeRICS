@@ -452,24 +452,33 @@ public class RestServer {
         return response;
     }
 
-    @Path("/runtime/model/components/{componentId}/channels/data/ids")
+    @Path("/runtime/model/components/{componentId}/{portId}/channels/data/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getComponentDataChannelsIds(@PathParam("componentId") String componentId) {
+    public String getComponentDataChannelsIds(@PathParam("componentId") String componentId,
+            @PathParam("portId") String portId) {
         String response = "";
         String errorMessage = "";
 
         try {
             componentId = astericsAPIEncoding.decodeString(componentId);
+            portId = astericsAPIEncoding.decodeString(portId);
 
             final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
-            List<String> dataChannelIds = new ArrayList<String>();
+            Map<String, List<String>> dataChannelIds = new HashMap<>();
 
             Set<IChannel> dataChannels = currentRuntimeModel.getChannels();
             for (IChannel dataChannel : dataChannels) {
-                if ((dataChannel.getSource().getComponentInstanceID().equals(componentId))
-                        || (dataChannel.getTarget().getComponentInstanceID().equals(componentId))) {
-                    dataChannelIds.add(dataChannel.getChannelID());
+                String targetComponent = dataChannel.getTarget().getComponentInstanceID();
+                String sourceComponent = dataChannel.getSource().getComponentInstanceID();
+                String targetPort = dataChannel.getTarget().getPortID();
+                String sourcePort = dataChannel.getSource().getPortID();
+                if (targetComponent.equals(componentId) && targetPort.equals(portId)) {
+                    List<String> sourceComponentAndPort = Arrays.asList(sourceComponent, sourcePort);
+                    dataChannelIds.put(dataChannel.getChannelID(), sourceComponentAndPort);
+                } else if (sourceComponent.equals(componentId) && sourcePort.equals(portId)) {
+                    List<String> targetComponentAndPort = Arrays.asList(targetComponent, targetPort);
+                    dataChannelIds.put(dataChannel.getChannelID(), targetComponentAndPort);
                 }
             }
 
