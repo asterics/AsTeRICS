@@ -838,26 +838,26 @@ public class RestServer {
         return response;
     }
 
-    @Path("/runtime/model/components/input/{componentId}/{inputKey}")
+    @Path("/runtime/model/components/{componentId}/ports/{portId}/data")
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String sendDataToInputPort(String value, @PathParam("componentId") String componentId,
-            @PathParam("inputKey") String componentKey) {
+            @PathParam("portId") String portId) {
         String response;
         String errorMessage = "";
-        String decodedId = "", decodedKey = "";
+        String decodedCompId = "", decodedPortId = "";
 
         try {
-            decodedId = astericsAPIEncoding.decodeString(componentId);
-            decodedKey = astericsAPIEncoding.decodeString(componentKey);
-            logger.info(MessageFormat.format("sending data <{0}> to {1}-{2}", value, decodedId, decodedKey));
-            asapiSupport.sendData(decodedId, decodedKey, value.getBytes());
+            decodedCompId = astericsAPIEncoding.decodeString(componentId);
+            decodedPortId = astericsAPIEncoding.decodeString(portId);
+            logger.info(MessageFormat.format("sending data <{0}> to {1}-{2}", value, decodedCompId, decodedPortId));
+            asapiSupport.sendData(decodedCompId, decodedPortId, value.getBytes());
             response = "success";
         } catch (Exception e) {
             logger.log(Level.WARNING, "could not send data!", e);
-            errorMessage = "Couldn't set '" + value + "' value to '" + decodedKey + "' from '" + decodedId + "' ("
-                    + e.getMessage() + ")";
+            errorMessage = MessageFormat.format("Couldn't set <{0}> value to <{1}> from <{2}> ({3})", decodedPortId,
+                    decodedCompId, e.getMessage());
             response = "error:" + errorMessage;
         }
 
