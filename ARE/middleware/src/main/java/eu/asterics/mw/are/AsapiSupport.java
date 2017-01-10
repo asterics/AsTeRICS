@@ -328,30 +328,32 @@ public class AsapiSupport {
         return modelToXML();
     }
 
-  /**
-   * Returns the name of the currently deployed model
-   *
-   * @return the name of the currently deployed model or an empty string, if no model is deployed
-   */
-  public String getCurrentModelName() {
-    IRuntimeModel currentRuntimeModel  = DeploymentManager.instance.getCurrentRuntimeModel();
-    if(currentRuntimeModel == null) {
-      return "";
+    /**
+     * Returns the name of the currently deployed model
+     *
+     * @return the name of the currently deployed model or an empty string, if
+     *         no model is deployed
+     */
+    public String getCurrentModelName() {
+        IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+        if (currentRuntimeModel == null) {
+            return "";
+        }
+        return currentRuntimeModel.getModelName();
     }
-    return currentRuntimeModel.getModelName();
-  }
 
-	/**
-	 * Returns a string encoding of the model defined in the filename given
-	 * as argument. If there is no model, an empty string is returned.
-	 * 
-	 * @param filename the name of the file to be checked
-	 * @return a string encoding of the model defined in the filename
-	 * @throws AREAsapiException if could not get model from file
-	 */
-	public String getModelFromFile(String filename) throws AREAsapiException
-	{
-		filename = ResourceRegistry.MODELS_FOLDER + "/" + filename;
+    /**
+     * Returns a string encoding of the model defined in the filename given as
+     * argument. If there is no model, an empty string is returned.
+     * 
+     * @param filename
+     *            the name of the file to be checked
+     * @return a string encoding of the model defined in the filename
+     * @throws AREAsapiException
+     *             if could not get model from file
+     */
+    public String getModelFromFile(String filename) throws AREAsapiException {
+        filename = ResourceRegistry.MODELS_FOLDER + "/" + filename;
 
         // check if dir exists and if not create it
         File fileName = new File(filename);
