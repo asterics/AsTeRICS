@@ -67,6 +67,9 @@ public class PCSDevice {
 
     public boolean open() {
 
+        if (dev != null) {
+            dev.close();
+        }
         if (isWindowsOS()) {
             logger.info("trying to patch registry for FS20 to disable power-save-mode...");
             boolean patched = patchRegistryDisablePowerSaveMode();
@@ -109,9 +112,33 @@ public class PCSDevice {
         buf[5] = FS20Utils.addressToHex(addr); // 1111 Adresse
         buf[6] = (byte) command; // Befehl
         buf[7] = 0x00; // Erweiterung
-        if (dev != null)
-            dev.write(buf, buf.length, (byte) 0);
+        sendToDevice(buf);
         return true;
+    }
+
+    /**
+     * sends bytes to the fs20-device before sending it is tried to reopen the
+     * device, if it is null. if sending fails (returns -1) it is tried to
+     * reopen the device and send the bytes again
+     * 
+     * @param bytes
+     * @return number of bytes sent, -1 if sending failed
+     */
+    private int sendToDevice(byte[] bytes) {
+        int result = -1;
+        if (dev == null) {
+            open();
+        }
+        if (dev != null) {
+            result = dev.write(bytes, bytes.length, (byte) 0);
+            if (result < 0) {
+                open();
+                if (dev != null) {
+                    result = dev.write(bytes, bytes.length, (byte) 0);
+                }
+            }
+        }
+        return result;
     }
 
     private boolean isWindowsOS() {
