@@ -323,7 +323,44 @@ public class RestServer {
 
         return response;
     }
+    
 
+    @Path("/runtime/model/components/{componentId}/properties")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String setRuntimeComponentProperties(String bodyContents, @PathParam("componentId") String componentId) {
+        String response = "";
+        String errorMessage = "";
+        String decodedId = "";
+
+        try {
+            decodedId = astericsAPIEncoding.decodeString(componentId);
+            
+            Map<String, String> propertyMap = new HashMap<String, String>();
+            propertyMap = (Map<String, String>) ObjectTransformation.JSONToObject(bodyContents, Map.class);
+            
+            for (String componentKey: propertyMap.keySet()) {
+            	String newValue = propertyMap.get(componentKey);
+            	try {
+            		response = asapiSupport.setComponentProperty(decodedId, componentKey, newValue);
+            	}
+            	catch (Exception ex) {
+            		ex.printStackTrace();
+            	}
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errorMessage = "Couldn't set change multiple values of the component '" + decodedId + "' ("
+                    + e.getMessage() + ")";
+            response = "error:" + errorMessage;
+        }
+
+        return response;
+    }
+
+    
     @Path("/runtime/model/components/{componentId}/ports/input/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
