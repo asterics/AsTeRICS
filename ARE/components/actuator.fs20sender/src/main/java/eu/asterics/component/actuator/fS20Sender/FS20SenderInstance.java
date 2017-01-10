@@ -46,7 +46,7 @@ import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
  * <Describe purpose of this module>
  * 
  * 
- * 
+ *
  * @author David Thaller [dt@ki-i.at] Date: Time:
  */
 
@@ -77,11 +77,12 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * returns an Input Port.
-     * 
+     *
      * @param portID
      *            the name of the port
      * @return the input port or null if not found
      */
+    @Override
     public IRuntimeInputPort getInputPort(String portID) {
         if ("housecode".equalsIgnoreCase(portID)) {
             return ipHousecode;
@@ -98,11 +99,12 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * returns an Output Port.
-     * 
+     *
      * @param portID
      *            the name of the port
      * @return the output port or null if not found
      */
+    @Override
     public IRuntimeOutputPort getOutputPort(String portID) {
 
         return null;
@@ -110,11 +112,12 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * returns an Event Listener Port.
-     * 
+     *
      * @param eventPortID
      *            the name of the port
      * @return the EventListener port or null if not found
      */
+    @Override
     public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
         if ("off".equalsIgnoreCase(eventPortID)) {
             return elpOff;
@@ -209,11 +212,12 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * returns an Event Triggerer Port.
-     * 
+     *
      * @param eventPortID
      *            the name of the port
      * @return the EventTriggerer port or null if not found
      */
+    @Override
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
 
         return null;
@@ -221,11 +225,12 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * returns the value of the given property.
-     * 
+     *
      * @param propertyName
      *            the name of the property
      * @return the property value or null if not found
      */
+    @Override
     public Object getRuntimePropertyValue(String propertyName) {
         if ("housecode".equalsIgnoreCase(propertyName)) {
             return propHousecode;
@@ -239,12 +244,13 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * sets a new value for the given property.
-     * 
+     *
      * @param propertyName
      *            the name of the property
      * @param newValue
      *            the desired property value or null if not found
      */
+    @Override
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         if ("housecode".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propHousecode;
@@ -264,20 +270,24 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
      * Input Ports for receiving values.
      */
     private final IRuntimeInputPort ipHousecode = new DefaultRuntimeInputPort() {
+        @Override
         public void receiveData(byte[] data) {
             houseCode = ConversionUtils.intFromBytes(data);
         }
     };
     private final IRuntimeInputPort ipAddress = new DefaultRuntimeInputPort() {
+        @Override
         public void receiveData(byte[] data) {
             address = ConversionUtils.intFromBytes(data);
         }
     };
     private final IRuntimeInputPort ipAction = new DefaultRuntimeInputPort() {
+        @Override
         public void receiveData(byte[] data) {
             String action = ConversionUtils.stringFromBytes(data);
-            if (action == null)
+            if (action == null) {
                 return;
+            }
             action = action.trim();
 
             /*
@@ -285,7 +295,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
              * corresponding command to the specified device Format is as
              * follows: hc_address_command example: 11111112_1234_18 would send
              * the toggle command with housecode=11111112 and address=1234
-             * 
+             *
              * update: now also delimiters ' ' and ',' can be used between hc,
              * address and command !
              */
@@ -301,8 +311,9 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
                     int cmd = Integer.parseInt(st.nextToken());
                     try {
                         synchronized (pcs) {
-                            if (pcs != null)
+                            if (pcs != null) {
                                 pcs.send(hc, a, cmd);
+                            }
                         }
                     } catch (NullPointerException e) {
                         Logger.getAnonymousLogger().severe(e.toString());
@@ -321,146 +332,175 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
      * Event Listerner Ports.
      */
     final IRuntimeEventListenerPort elpOff = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.Off);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel1 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep1);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel2 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep2);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel3 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep3);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel4 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep4);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel5 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep5);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel6 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep6);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel7 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep7);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel8 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep8);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel9 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep9);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel10 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep10);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel11 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep11);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel12 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep12);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel13 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep13);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel14 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep14);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel15 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep15);
         }
     };
     final IRuntimeEventListenerPort elpOnLevel16 = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnStep16);
         }
     };
     final IRuntimeEventListenerPort elpOnOldLevel = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnOld);
         }
     };
     final IRuntimeEventListenerPort elpToggle = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.Toggle);
         }
     };
     final IRuntimeEventListenerPort elpDimUp = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.DimUp);
         }
     };
     final IRuntimeEventListenerPort elpDimDown = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.DimDown);
         }
     };
     final IRuntimeEventListenerPort elpDimUpAndDown = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.DimUpDown);
         }
     };
     final IRuntimeEventListenerPort elpProgramTimer = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.TimeSet);
         }
     };
     final IRuntimeEventListenerPort elpOffForTimerThenOldLevel = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OffForTimeOld);
         }
     };
     final IRuntimeEventListenerPort elpOnForTimerThenOff = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnForTimeOff);
         }
     };
     final IRuntimeEventListenerPort elpOnOldLevelForTimerThenOff = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnOldForTimeOff);
         }
     };
     final IRuntimeEventListenerPort elpReset = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.Reset);
         }
     };
     final IRuntimeEventListenerPort elpOnForTimerThenOldLevel = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnForTimeOld);
         }
     };
     final IRuntimeEventListenerPort elpOnOldLevelForTimerThenPreviousState = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.OnOldForTimeOld);
         }
@@ -525,7 +565,6 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
                             + "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
                     AstericsErrorHandling.instance.reportError(FS20SenderInstance.this,
                             "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
-                    pcs = null;
                     return;
                 }
             }
@@ -571,7 +610,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
     /**
      * Send data to FS20 device. The method is executed in the ModelExecutor
      * thread to prevent thread safety issues.
-     * 
+     *
      * @param houseCode
      * @param addr
      * @param command
