@@ -1,4 +1,5 @@
 package eu.asterics.mw.model.bundle.impl;
+
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -23,15 +24,13 @@ package eu.asterics.mw.model.bundle.impl;
  *         (please refer to the folder LICENSE)
  *
  */
-public class GroupReferences 
-{
-	String componentID, portID;
-	
-	public GroupReferences (String componentID, String portID)
-	{
-		this.componentID = componentID;
-		this.portID = portID;
-		
-	}
+public class GroupReferences {
+    String componentID, portID;
+
+    public GroupReferences(String componentID, String portID) {
+        this.componentID = componentID;
+        this.portID = portID;
+
+    }
 
 }

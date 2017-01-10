@@ -24,42 +24,37 @@
  */
 package eu.asterics.component.processor.oska;
 
-import java.util.StringTokenizer;
-
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
  * OskaCommandSizeHandler handles the information SIZE from the OSKA.
+ * 
  * @author Christoph Weiss [weissch@technikum-wien.at]
  *
  */
 class OskaCommandSizeHandler implements IOskaCommandHandler {
 
-	/**
-	 * Handles the size information by updating the grid size for highlighting
-	 * @param arguments the arguments of the command
-	 * @return true if the command could be handled, false otherwise
-	 */
-	@Override
-	public boolean handleCommand(String [] arguments) {
-		
-		if (arguments[0].trim().startsWith("SIZE:"))
-		{
-			try
-			{
-				int columns  = Integer.parseInt(arguments[2].trim());
-				int rows     = Integer.parseInt(arguments[3].trim());
-				
-				OskaInstance.instance.highlighter
-					.setGridDimensions(columns, rows);
-				return true;
-			}
-			catch (Exception e)
-			{
-				AstericsErrorHandling.instance.reportInfo(OskaInstance.instance, 
-					"Received malformed size response!");
-			}
-		}
-		return false;
-	}
+    /**
+     * Handles the size information by updating the grid size for highlighting
+     * 
+     * @param arguments
+     *            the arguments of the command
+     * @return true if the command could be handled, false otherwise
+     */
+    @Override
+    public boolean handleCommand(String[] arguments) {
+
+        if (arguments[0].trim().startsWith("SIZE:")) {
+            try {
+                int columns = Integer.parseInt(arguments[2].trim());
+                int rows = Integer.parseInt(arguments[3].trim());
+
+                OskaInstance.instance.highlighter.setGridDimensions(columns, rows);
+                return true;
+            } catch (Exception e) {
+                AstericsErrorHandling.instance.reportInfo(OskaInstance.instance, "Received malformed size response!");
+            }
+        }
+        return false;
+    }
 }

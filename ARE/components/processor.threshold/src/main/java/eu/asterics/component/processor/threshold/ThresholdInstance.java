@@ -25,162 +25,150 @@
 
 package eu.asterics.component.processor.threshold;
 
-import eu.asterics.mw.data.*;
+import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
-import java.util.*;
-
 /**
- * ThresholdInstance provides a method to set a threshold and manipulate the 
- * output data based on the input data being above or below the threshold.  
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at]
- *         Date: Aug 20, 2010
- *         Time: 10:22:08 AM
+ * ThresholdInstance provides a method to set a threshold and manipulate the
+ * output data based on the input data being above or below the threshold.
+ * 
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Aug 20,
+ *         2010 Time: 10:22:08 AM
  */
-public class ThresholdInstance extends AbstractRuntimeComponentInstance
-{
-	final private String OUT_VALUE_PORT_KEY 	= "out";
-	final private String OUT_BOOL_PORT_KEY 		= "out_bool";
-	final private String IN_PORT_KEY 			= "in";
-	final private String EVENT_TRIGGER_POSEDGE_PORT_KEY = "eventPosEdge";
-	final private String EVENT_TRIGGER_NEGEDGE_PORT_KEY = "eventNegEdge";
-	
-	final private String OUT_HIGH_PROPERTY_KEY 			= "outputHigh";
-	final private String OUT_LOW_PROPERTY_KEY 			= "outputLow";
-	final private String TRESHOLD_HIGH_VALUE_PROPERTY_KEY 	= "thresholdHigh";
-	final private String TRESHOLD_LOW_VALUE_PROPERTY_KEY 	= "thresholdLow";
-	
-	final private String OPERATION_MODE_PROPERTY_KEY 	= "operationMode";
-	final private int OPERATION_MODE_BINARY     = 1;
-	final private int OPERATION_MODE_CUTOFF 	= 2;
-	final private int OPERATION_MODE_DEADZONE   = 3;
+public class ThresholdInstance extends AbstractRuntimeComponentInstance {
+    final private String OUT_VALUE_PORT_KEY = "out";
+    final private String OUT_BOOL_PORT_KEY = "out_bool";
+    final private String IN_PORT_KEY = "in";
+    final private String EVENT_TRIGGER_POSEDGE_PORT_KEY = "eventPosEdge";
+    final private String EVENT_TRIGGER_NEGEDGE_PORT_KEY = "eventNegEdge";
 
-	final private String EVENT_CONDITION_PROPERTY_KEY 	= "eventCondition";
-	final private int EVENT_CONDITION_POS_EDGE = 0;
-	final private int EVENT_CONDITION_NEG_EDGE = 1;
-	final private int EVENT_CONDITION_BOTH_EDGE = 2;
-	
-	private IRuntimeInputPort ipInput = new ThresholdInputPort(this);
+    final private String OUT_HIGH_PROPERTY_KEY = "outputHigh";
+    final private String OUT_LOW_PROPERTY_KEY = "outputLow";
+    final private String TRESHOLD_HIGH_VALUE_PROPERTY_KEY = "thresholdHigh";
+    final private String TRESHOLD_LOW_VALUE_PROPERTY_KEY = "thresholdLow";
+
+    final private String OPERATION_MODE_PROPERTY_KEY = "operationMode";
+    final private int OPERATION_MODE_BINARY = 1;
+    final private int OPERATION_MODE_CUTOFF = 2;
+    final private int OPERATION_MODE_DEADZONE = 3;
+
+    final private String EVENT_CONDITION_PROPERTY_KEY = "eventCondition";
+    final private int EVENT_CONDITION_POS_EDGE = 0;
+    final private int EVENT_CONDITION_NEG_EDGE = 1;
+    final private int EVENT_CONDITION_BOTH_EDGE = 2;
+
+    private IRuntimeInputPort ipInput = new ThresholdInputPort(this);
     private IRuntimeOutputPort opOutput = new DefaultRuntimeOutputPort();
-    private IRuntimeOutputPort opOutputBool  = new DefaultRuntimeOutputPort();
-    
-    final IRuntimeEventTriggererPort etpEventPosEdge 
-    	= new DefaultRuntimeEventTriggererPort();    
-    final IRuntimeEventTriggererPort etpEventNegEdge 
-    	= new DefaultRuntimeEventTriggererPort();    
+    private IRuntimeOutputPort opOutputBool = new DefaultRuntimeOutputPort();
+
+    final IRuntimeEventTriggererPort etpEventPosEdge = new DefaultRuntimeEventTriggererPort();
+    final IRuntimeEventTriggererPort etpEventNegEdge = new DefaultRuntimeEventTriggererPort();
 
     // property variables
-	double propThresholdHigh;
-	double propThresholdLow;
-	double propOutputHigh;
-	double propOutputLow;
-	int propOperationMode = 2;
-	int propEventCondition = 0;
-	
-	// internal variables
-	boolean belowThreshold = false;
-	boolean initialized = false;
-	
-	/**
-	 * Constructs the component
-	 */
-    public ThresholdInstance()
-    {
+    double propThresholdHigh;
+    double propThresholdLow;
+    double propOutputHigh;
+    double propOutputLow;
+    int propOperationMode = 2;
+    int propEventCondition = 0;
+
+    // internal variables
+    boolean belowThreshold = false;
+    boolean initialized = false;
+
+    /**
+     * Constructs the component
+     */
+    public ThresholdInstance() {
         // empty constructor - needed for OSGi service factory operations
     }
 
     /**
-     * Starts the component 
+     * Starts the component
      */
-    public void start()
-    {
+    @Override
+    public void start() {
         super.start();
     }
 
     /**
      * Pauses the component
      */
-    public void pause()
-    {
+    @Override
+    public void pause() {
         super.pause();
     }
 
     /**
      * Resumes the component
      */
-    public void resume()
-    {
+    @Override
+    public void resume() {
         super.resume();
     }
 
     /**
      * Stops the component
      */
-    public void stop()
-    {
-    	initialized = false;
+    @Override
+    public void stop() {
+        initialized = false;
         super.stop();
     }
 
     /**
      * Returns the input ports of the component
-     * @param portID the ID of the requested port
+     * 
+     * @param portID
+     *            the ID of the requested port
      * @return the requested port instance
      */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-        if(IN_PORT_KEY.equalsIgnoreCase(portID))
-        {
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if (IN_PORT_KEY.equalsIgnoreCase(portID)) {
             return ipInput;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
     /**
      * Returns the output ports of the component
-     * @param portID the ID of the requested port
+     * 
+     * @param portID
+     *            the ID of the requested port
      * @return the requested port instance
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-    {
-        if(OUT_VALUE_PORT_KEY.equalsIgnoreCase(portID))
-        {
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if (OUT_VALUE_PORT_KEY.equalsIgnoreCase(portID)) {
             return opOutput;
-        }
-        else if(OUT_BOOL_PORT_KEY.equalsIgnoreCase(portID))
-        {
+        } else if (OUT_BOOL_PORT_KEY.equalsIgnoreCase(portID)) {
             return opOutputBool;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
-    
+
     /**
      * Returns the event triggerer ports of the component
-     * @param portID the ID of the requested port
+     * 
+     * @param portID
+     *            the ID of the requested port
      * @return the requested port instance
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
-        if(EVENT_TRIGGER_POSEDGE_PORT_KEY.equalsIgnoreCase(eventPortID))
-        {
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+        if (EVENT_TRIGGER_POSEDGE_PORT_KEY.equalsIgnoreCase(eventPortID)) {
             return etpEventPosEdge;
-        }
-        else if(EVENT_TRIGGER_NEGEDGE_PORT_KEY.equalsIgnoreCase(eventPortID))
-        {
+        } else if (EVENT_TRIGGER_NEGEDGE_PORT_KEY.equalsIgnoreCase(eventPortID)) {
             return etpEventNegEdge;
         }
         return null;
@@ -188,349 +176,294 @@ public class ThresholdInstance extends AbstractRuntimeComponentInstance
 
     /**
      * Returns the value of the specified property
-     * @param propertyName the requested property's name
+     * 
+     * @param propertyName
+     *            the requested property's name
      * @return the value of the property as an Object
      * 
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-    	if(TRESHOLD_HIGH_VALUE_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-        {
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if (TRESHOLD_HIGH_VALUE_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
             return propThresholdHigh;
-        }
-        else if(TRESHOLD_LOW_VALUE_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-        {
+        } else if (TRESHOLD_LOW_VALUE_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
             return propThresholdLow;
-        }
-        else if(OUT_HIGH_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-        {
+        } else if (OUT_HIGH_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
             return propOutputHigh;
-        }
-        else if(OUT_LOW_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-        {
+        } else if (OUT_LOW_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
             return propOutputLow;
-        }
-        else if(OPERATION_MODE_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-        {
-        	switch (propOperationMode)
-        	{
-        	case OPERATION_MODE_BINARY:
-        		return "binary";
-        	case OPERATION_MODE_CUTOFF:
-        		return "cutoff";
-        	case OPERATION_MODE_DEADZONE:
-        		return "deadzone";
-        	default:
-        		return null;
-        	}
-        }
-        else if(EVENT_CONDITION_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-        {
-        	return propEventCondition;
-        }
-        else
-        {
+        } else if (OPERATION_MODE_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
+            switch (propOperationMode) {
+            case OPERATION_MODE_BINARY:
+                return "binary";
+            case OPERATION_MODE_CUTOFF:
+                return "cutoff";
+            case OPERATION_MODE_DEADZONE:
+                return "deadzone";
+            default:
+                return null;
+            }
+        } else if (EVENT_CONDITION_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
+            return propEventCondition;
+        } else {
             return null;
         }
     }
 
     /**
      * Sets the value of the specified property
-     * @param propertyName the requested property's name
-     * @param newValue the new value for the property
+     * 
+     * @param propertyName
+     *            the requested property's name
+     * @param newValue
+     *            the new value for the property
      * @return the old value of the property as an Object, null on errors
      * 
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-        try
-        {
-	    	if(TRESHOLD_HIGH_VALUE_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-	        {
-	            final Object oldValue = propThresholdHigh;
-	           	propThresholdHigh = Double.parseDouble(newValue.toString());
-	
-	           	return oldValue;
-	        }
-	        else if(TRESHOLD_LOW_VALUE_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-	        {
-	            final Object oldValue = propThresholdLow;
-	           	propThresholdLow = Double.parseDouble(newValue.toString());
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        try {
+            if (TRESHOLD_HIGH_VALUE_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
+                final Object oldValue = propThresholdHigh;
+                propThresholdHigh = Double.parseDouble(newValue.toString());
 
-	           	return oldValue;
-	        }
-	        else if(OUT_HIGH_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-	        {
-	            final Object oldValue = propOutputHigh;
-	            propOutputHigh = Double.parseDouble(newValue.toString());
+                return oldValue;
+            } else if (TRESHOLD_LOW_VALUE_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
+                final Object oldValue = propThresholdLow;
+                propThresholdLow = Double.parseDouble(newValue.toString());
 
-	            return oldValue;
-	        }
-	        else if(OUT_LOW_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-	        {
-	            final Object oldValue = propOutputLow;
-            	propOutputLow = Double.parseDouble(newValue.toString());
+                return oldValue;
+            } else if (OUT_HIGH_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
+                final Object oldValue = propOutputHigh;
+                propOutputHigh = Double.parseDouble(newValue.toString());
 
-            	return oldValue;
-	        }
-	    	
-	        else if(OPERATION_MODE_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-	        {
-	            final Object oldValue = getRuntimePropertyValue(OPERATION_MODE_PROPERTY_KEY);
-	
-	        	if (newValue.equals("binary"))
-	        	{
-	        		propOperationMode = OPERATION_MODE_BINARY;
-	        	}
-	        	else if (newValue.equals("cutoff"))
-	        	{
-	        		propOperationMode = OPERATION_MODE_CUTOFF;
-	        	}
-	        	else if (newValue.equals("deadzone"))
-	        	{
-	        		propOperationMode = OPERATION_MODE_DEADZONE;
-	        	}
-	        	else
-	        	{
-	        		propOperationMode = 0;
-	            }
-	            return oldValue;
-	        }
-	        else if(EVENT_CONDITION_PROPERTY_KEY.equalsIgnoreCase(propertyName))
-	        {
-	            final Object oldValue = propOutputHigh;
-	        	
-            	propEventCondition = Integer.parseInt(newValue.toString());
-            	if ( (propEventCondition < EVENT_CONDITION_POS_EDGE) || (propEventCondition > EVENT_CONDITION_BOTH_EDGE) )
-            	{
-            		AstericsErrorHandling.instance.reportInfo(this, "Property value out of range for " + propertyName + ": " + newValue);
-            	}
-	            return oldValue;
-	        }
-    	}
-        catch (NumberFormatException nfe)
-        {
-        	AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
+                return oldValue;
+            } else if (OUT_LOW_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
+                final Object oldValue = propOutputLow;
+                propOutputLow = Double.parseDouble(newValue.toString());
+
+                return oldValue;
+            }
+
+            else if (OPERATION_MODE_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
+                final Object oldValue = getRuntimePropertyValue(OPERATION_MODE_PROPERTY_KEY);
+
+                if (newValue.equals("binary")) {
+                    propOperationMode = OPERATION_MODE_BINARY;
+                } else if (newValue.equals("cutoff")) {
+                    propOperationMode = OPERATION_MODE_CUTOFF;
+                } else if (newValue.equals("deadzone")) {
+                    propOperationMode = OPERATION_MODE_DEADZONE;
+                } else {
+                    propOperationMode = 0;
+                }
+                return oldValue;
+            } else if (EVENT_CONDITION_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
+                final Object oldValue = propOutputHigh;
+
+                propEventCondition = Integer.parseInt(newValue.toString());
+                if ((propEventCondition < EVENT_CONDITION_POS_EDGE)
+                        || (propEventCondition > EVENT_CONDITION_BOTH_EDGE)) {
+                    AstericsErrorHandling.instance.reportInfo(this,
+                            "Property value out of range for " + propertyName + ": " + newValue);
+                }
+                return oldValue;
+            }
+        } catch (NumberFormatException nfe) {
+            AstericsErrorHandling.instance.reportInfo(this,
+                    "Invalid property value for " + propertyName + ": " + newValue);
         }
         return null;
     }
 
     /**
-     * Processes the input for binary mode, output is either the fixed high 
+     * Processes the input for binary mode, output is either the fixed high
      * value or the fixed low input
-     * @param in the input to be clipped
+     * 
+     * @param in
+     *            the input to be clipped
      * @return true if value is in area below threshold hysteresis, false
-     * otherwise  
+     *         otherwise
      */
-    boolean processInputBinary(double in)
-    {
-    	if (belowThreshold)
-    	{
-	    	if (in > propThresholdHigh)
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(propOutputHigh));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
-	    		return false;
-	    	}
-	    	else
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(propOutputLow));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
-	    	}
-	    	return true;
-    	}
-    	else
-    	{
-	    	if (in < propThresholdLow)
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(propOutputLow));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
-	    		return true;
-	    	}
-	    	else
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(propOutputHigh));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
-	    	}
-	    	return false;
-    	}
+    boolean processInputBinary(double in) {
+        if (belowThreshold) {
+            if (in > propThresholdHigh) {
+                opOutput.sendData(ConversionUtils.doubleToBytes(propOutputHigh));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
+                return false;
+            } else {
+                opOutput.sendData(ConversionUtils.doubleToBytes(propOutputLow));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
+            }
+            return true;
+        } else {
+            if (in < propThresholdLow) {
+                opOutput.sendData(ConversionUtils.doubleToBytes(propOutputLow));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
+                return true;
+            } else {
+                opOutput.sendData(ConversionUtils.doubleToBytes(propOutputHigh));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
+            }
+            return false;
+        }
     }
 
     /**
-     * Processes the input for cut off mode, output is either the fixed high 
+     * Processes the input for cut off mode, output is either the fixed high
      * value or the input value if below the threshold
-     * @param in the input to be clipped
+     * 
+     * @param in
+     *            the input to be clipped
      * @return true if value is in area below threshold hysteresis, false
-     * otherwise  
+     *         otherwise
      */
-    boolean processInputCutoff(double in)
-    {
-    	if (belowThreshold)
-    	{
-	    	if (in > propThresholdHigh)
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(propOutputHigh));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
-	    		return false;
-	    	}
-	    	else
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(in));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
-	    	}
-	    	return true;
-    	}
-    	else
-    	{
-	    	if (in < propThresholdLow)
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(in));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
-	    		return true;
-	    	}
-	    	else
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(propOutputHigh));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
-	    	}
-	    	return false;
-    	}
-    }
-    
-    /**
-     * Processes the input for dead zone mode, output is either the fixed low 
-     * value or the input value if above the threshold
-     * @param in the input to be clipped
-     * @return true if value is in area below threshold hysteresis, false
-     * otherwise  
-     */
-    boolean processInputDeadzone(double in)
-    {
-    	if (belowThreshold)
-    	{
-	    	if (in > propThresholdHigh)
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(in));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
-	    		return false;
-	    	}
-	    	else
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(propOutputLow));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
-	    	}
-	    	return true;
-    	}
-    	else
-    	{
-	    	if (in < propThresholdLow)
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(propOutputLow));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
-	    		return true;
-	    	}
-	    	else
-	    	{
-	    		opOutput.sendData(ConversionUtils.doubleToBytes(in));
-	    		opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
-	    	}
-	    	return false;
-    	}
-    }
-    
-    /**
-     * Checks for event conditions and raises events if necessary  
-     * @param in the input to be checked
-     */
-    void checkAndHandleEventCondition(double in)
-    {
-    	if (initialized)
-    	{
-	    	switch (propEventCondition)
-	    	{
-	    	case EVENT_CONDITION_POS_EDGE:
-	    		if (belowThreshold && (in > propThresholdHigh))
-	    		{
-	    			etpEventPosEdge.raiseEvent();    			
-	    		}
-	    		break;
-	    	case EVENT_CONDITION_NEG_EDGE:
-	    		if (!belowThreshold && (in < propThresholdLow))
-	    		{
-	    			etpEventNegEdge.raiseEvent();    			
-	    		}
-	    		break;
-	    	case EVENT_CONDITION_BOTH_EDGE:
-	    		if (belowThreshold && (in > propThresholdHigh))
-	    		{
-	    			etpEventPosEdge.raiseEvent();    			
-	    		}
-	    		if (!belowThreshold && (in < propThresholdLow))
-	    		{
-	    			etpEventNegEdge.raiseEvent();    			
-	    		}
-	    		break;
-	    	default:
-	    		AstericsErrorHandling.instance.reportError(this, "Threshold component operated with non-existant event condition");
-	    	}
-    	}
+    boolean processInputCutoff(double in) {
+        if (belowThreshold) {
+            if (in > propThresholdHigh) {
+                opOutput.sendData(ConversionUtils.doubleToBytes(propOutputHigh));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
+                return false;
+            } else {
+                opOutput.sendData(ConversionUtils.doubleToBytes(in));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
+            }
+            return true;
+        } else {
+            if (in < propThresholdLow) {
+                opOutput.sendData(ConversionUtils.doubleToBytes(in));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
+                return true;
+            } else {
+                opOutput.sendData(ConversionUtils.doubleToBytes(propOutputHigh));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
+            }
+            return false;
+        }
     }
 
-    
     /**
-     * Processes the input for all modes and chooses the clipping mode 
-     * accordingly
-     * @param in the input to be clipped
+     * Processes the input for dead zone mode, output is either the fixed low
+     * value or the input value if above the threshold
+     * 
+     * @param in
+     *            the input to be clipped
+     * @return true if value is in area below threshold hysteresis, false
+     *         otherwise
      */
-    void processInput(double in)
-    {
-    	checkAndHandleEventCondition(in);
-    	
-    	switch (propOperationMode)
-    	{
-    	case OPERATION_MODE_BINARY:
-    		belowThreshold = processInputBinary(in);
-    		break;
-    	case OPERATION_MODE_CUTOFF:
-    		belowThreshold = processInputCutoff(in);
-    		break;
-    	case OPERATION_MODE_DEADZONE:
-    		belowThreshold = processInputDeadzone(in);
-    		break;
-    	default:
-    		AstericsErrorHandling.instance.reportError(this, "Threshold component operated in non-existant operation mode");
-    	}
-    	
-    	initialized = true;
+    boolean processInputDeadzone(double in) {
+        if (belowThreshold) {
+            if (in > propThresholdHigh) {
+                opOutput.sendData(ConversionUtils.doubleToBytes(in));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
+                return false;
+            } else {
+                opOutput.sendData(ConversionUtils.doubleToBytes(propOutputLow));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
+            }
+            return true;
+        } else {
+            if (in < propThresholdLow) {
+                opOutput.sendData(ConversionUtils.doubleToBytes(propOutputLow));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(false));
+                return true;
+            } else {
+                opOutput.sendData(ConversionUtils.doubleToBytes(in));
+                opOutputBool.sendData(ConversionUtils.booleanToBytes(true));
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Checks for event conditions and raises events if necessary
+     * 
+     * @param in
+     *            the input to be checked
+     */
+    void checkAndHandleEventCondition(double in) {
+        if (initialized) {
+            switch (propEventCondition) {
+            case EVENT_CONDITION_POS_EDGE:
+                if (belowThreshold && (in > propThresholdHigh)) {
+                    etpEventPosEdge.raiseEvent();
+                }
+                break;
+            case EVENT_CONDITION_NEG_EDGE:
+                if (!belowThreshold && (in < propThresholdLow)) {
+                    etpEventNegEdge.raiseEvent();
+                }
+                break;
+            case EVENT_CONDITION_BOTH_EDGE:
+                if (belowThreshold && (in > propThresholdHigh)) {
+                    etpEventPosEdge.raiseEvent();
+                }
+                if (!belowThreshold && (in < propThresholdLow)) {
+                    etpEventNegEdge.raiseEvent();
+                }
+                break;
+            default:
+                AstericsErrorHandling.instance.reportError(this,
+                        "Threshold component operated with non-existant event condition");
+            }
+        }
+    }
+
+    /**
+     * Processes the input for all modes and chooses the clipping mode
+     * accordingly
+     * 
+     * @param in
+     *            the input to be clipped
+     */
+    void processInput(double in) {
+        checkAndHandleEventCondition(in);
+
+        switch (propOperationMode) {
+        case OPERATION_MODE_BINARY:
+            belowThreshold = processInputBinary(in);
+            break;
+        case OPERATION_MODE_CUTOFF:
+            belowThreshold = processInputCutoff(in);
+            break;
+        case OPERATION_MODE_DEADZONE:
+            belowThreshold = processInputDeadzone(in);
+            break;
+        default:
+            AstericsErrorHandling.instance.reportError(this,
+                    "Threshold component operated in non-existant operation mode");
+        }
+
+        initialized = true;
     }
 
     /**
      * Input port implementation which processes input data for clipping
+     * 
      * @author weissch
      *
      */
-    private class ThresholdInputPort extends DefaultRuntimeInputPort
-    {
-    	ThresholdInstance owner;
-    	
-    	public ThresholdInputPort(ThresholdInstance owner)
-    	{
-    		this.owner = owner;
-    	}
-    	
-        public void receiveData(byte[] data)
-        {
+    private class ThresholdInputPort extends DefaultRuntimeInputPort {
+        ThresholdInstance owner;
+
+        public ThresholdInputPort(ThresholdInstance owner) {
+            this.owner = owner;
+        }
+
+        @Override
+        public void receiveData(byte[] data) {
             // convert input to int
             double in = ConversionUtils.doubleFromBytes(data);
-            
-            if (initialized==false)
-            {
-            	if (in<propThresholdLow) belowThreshold=true; 
-            	else belowThreshold=false;
+
+            if (initialized == false) {
+                if (in < propThresholdLow) {
+                    belowThreshold = true;
+                } else {
+                    belowThreshold = false;
+                }
             }
             owner.processInput(in);
         }
 
-		
     }
 }

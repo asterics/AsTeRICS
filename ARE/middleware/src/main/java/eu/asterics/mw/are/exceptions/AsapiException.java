@@ -1,7 +1,5 @@
 package eu.asterics.mw.are.exceptions;
 
-
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -27,16 +25,12 @@ package eu.asterics.mw.are.exceptions;
  *
  */
 
-
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * Date: Aug 25, 2010
- * Time: 11:44:11 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 25, 2010 Time:
+ *         11:44:11 AM
  */
-public class AsapiException extends Exception
-{
-    public AsapiException(final String message)
-    {
+public class AsapiException extends Exception {
+    public AsapiException(final String message) {
         super(message);
     }
 }

@@ -1,10 +1,10 @@
 package eu.asterics.mw.model.bundle.impl;
 
+import java.util.Map;
+
 import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IPortType;
 import eu.asterics.mw.model.bundle.PortType;
-
-import java.util.Map;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -32,23 +32,17 @@ import java.util.Map;
  */
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:42:06 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:42:06 PM
  */
-public class DefaultPortType extends DefaultPropertyfulType implements IPortType
-{
+public class DefaultPortType extends DefaultPropertyfulType implements IPortType {
     private final PortType portType;
     private final String description;
     private final DataType dataType;
     private final String id;
 
-    public DefaultPortType(final PortType portType,
-                           final String description,
-                           final DataType dataType,
-                           final Map<String, PropertyType> propertyTypes,
-                           final String id)
-    {
+    public DefaultPortType(final PortType portType, final String description, final DataType dataType,
+            final Map<String, PropertyType> propertyTypes, final String id) {
         super(propertyTypes);
 
         this.portType = portType;
@@ -57,29 +51,28 @@ public class DefaultPortType extends DefaultPropertyfulType implements IPortType
         this.id = id;
     }
 
-    public PortType getType()
-    {
+    @Override
+    public PortType getType() {
         return portType;
     }
 
-    public String getDescription()
-    {
+    @Override
+    public String getDescription() {
         return description;
     }
 
-    public DataType getDataType()
-    {
+    @Override
+    public DataType getDataType() {
         return dataType;
     }
 
-    public String getPortID()
-    {
+    @Override
+    public String getPortID() {
         return this.id;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "DefaultPortType(" + portType + ", " + description + ", " + dataType + ", id=" + id + ")";
     }
 }

@@ -23,8 +23,6 @@
  *
  */
 
-
-
 package eu.asterics.mw.gui;
 
 import java.awt.Dimension;
@@ -40,114 +38,99 @@ import javax.swing.JPanel;
 
 import eu.asterics.mw.are.AREProperties;
 
-
 /**
  * 
  * @author weissch
  *
  */
-public class AstericsDesktop extends JPanel implements ActionListener,
-MouseMotionListener 
-{
-	private Dimension screenSize, sizeBefore;
-	private boolean onFullScreen;
-	private int DEFAULT_WIDTH=200;
-	private int DEFAULT_HEIGHT=200;
-	AstericsGUI parentFrame;
-//	HashMap areOptions;
-	public AstericsDesktop (AstericsGUI frame)
-	{	
-		super(null);
+public class AstericsDesktop extends JPanel implements ActionListener, MouseMotionListener {
+    private Dimension screenSize;
+    AstericsGUI parentFrame;
 
-		AREProperties props = AREProperties.instance;
-		
-		parentFrame=frame;
-		if (props.checkProperty("fullscreen", "1"))
-			onFullScreen=true;
-		else
-			onFullScreen=false;
+    // HashMap areOptions;
+    public AstericsDesktop(AstericsGUI frame) {
+        super(null);
 
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setPreferredSize(new Dimension(screenSize.width, 
-				screenSize.height));
-		//setBorder(BorderFactory.createTitledBorder(
-		//"Desktop"));
-		addMouseMotionListener(this);
-		//sizeBefore = new Dimension (DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        AREProperties props = AREProperties.instance;
 
-		//this.getInputMap().put(KeyStroke.getKeyStroke("F11"), "fullscreen");
-		//this.getActionMap().put("fullscreen", setFullscreen());
+        parentFrame = frame;
+        if (props.checkProperty("fullscreen", "1")) {
+        } else {
+        }
 
-	}
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setPreferredSize(new Dimension(screenSize.width, screenSize.height));
+        // setBorder(BorderFactory.createTitledBorder(
+        // "Desktop"));
+        addMouseMotionListener(this);
+        // sizeBefore = new Dimension (DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
-	public Action setFullscreen() {
-		Action fullScreenAction = new FullScreenAction ();
-		return fullScreenAction;
-	}
+        // this.getInputMap().put(KeyStroke.getKeyStroke("F11"), "fullscreen");
+        // this.getActionMap().put("fullscreen", setFullscreen());
 
+    }
 
-	public class FullScreenAction extends AbstractAction 
-	{
-		public FullScreenAction() 
-		{
-			super();
-		}
-		public void actionPerformed(ActionEvent e) 
-		{
+    public Action setFullscreen() {
+        Action fullScreenAction = new FullScreenAction();
+        return fullScreenAction;
+    }
 
-//			if (!onFullScreen)
-//			{
-//				sizeBefore = parentFrame.getSize();
-//				parentFrame.dispose();
-//				parentFrame.setUndecorated(true); 
-//				parentFrame.pack();
-//				parentFrame.setVisible(true);
-//				((AstericsGUI) parentFrame).setVisible("lineStartPanel", false);
-//				parentFrame.setExtendedState(Frame.MAXIMIZED_BOTH);  
-//
-//				onFullScreen=true;
-//			}
-//			else
-//			{
-//				parentFrame.dispose();
-//				parentFrame.setUndecorated(false); 
-//				parentFrame.pack();
-//				parentFrame.setVisible(true);
-//				if (sizeBefore!=null)
-//					parentFrame.setSize(sizeBefore);
-//				else
-//					parentFrame.setExtendedState(Frame.NORMAL); 
-//				((AstericsGUI) parentFrame).setVisible("lineStartPanel", true);
-//
-//				onFullScreen=false;
-//			}
-		}
-	}
+    public class FullScreenAction extends AbstractAction {
+        public FullScreenAction() {
+            super();
+        }
 
-	public void addPanel (JPanel panel, int x, int y, int width, 
-			int height)
-	{
-		panel.setBounds(x, y, width, height);
-		add(panel);
-		validate();
-	}
-	
-	public void setFullScreenMode (boolean b)
-	{
-		this.onFullScreen=b;
-	}
+        @Override
+        public void actionPerformed(ActionEvent e) {
 
+            // if (!onFullScreen)
+            // {
+            // sizeBefore = parentFrame.getSize();
+            // parentFrame.dispose();
+            // parentFrame.setUndecorated(true);
+            // parentFrame.pack();
+            // parentFrame.setVisible(true);
+            // ((AstericsGUI) parentFrame).setVisible("lineStartPanel", false);
+            // parentFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
+            //
+            // onFullScreen=true;
+            // }
+            // else
+            // {
+            // parentFrame.dispose();
+            // parentFrame.setUndecorated(false);
+            // parentFrame.pack();
+            // parentFrame.setVisible(true);
+            // if (sizeBefore!=null)
+            // parentFrame.setSize(sizeBefore);
+            // else
+            // parentFrame.setExtendedState(Frame.NORMAL);
+            // ((AstericsGUI) parentFrame).setVisible("lineStartPanel", true);
+            //
+            // onFullScreen=false;
+            // }
+        }
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	}
+    public void addPanel(JPanel panel, int x, int y, int width, int height) {
+        panel.setBounds(x, y, width, height);
+        add(panel);
+        validate();
+    }
 
-	@Override
-	public void mouseDragged(MouseEvent arg0) {
-	}
+    public void setFullScreenMode(boolean b) {
+    }
 
-	@Override
-	public void mouseMoved(MouseEvent arg0) {
-	}
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent arg0) {
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent arg0) {
+    }
 
 }

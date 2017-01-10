@@ -23,286 +23,282 @@
  * 
  */
 
-package eu.asterics.component.sensor.eog; 
+package eu.asterics.component.sensor.eog;
 
-
-import java.util.logging.Logger;
-import eu.asterics.mw.cimcommunication.*;
+import eu.asterics.mw.cimcommunication.CIMEvent;
+import eu.asterics.mw.cimcommunication.CIMEventHandler;
+import eu.asterics.mw.cimcommunication.CIMEventPacketReceived;
+import eu.asterics.mw.cimcommunication.CIMPortController;
+import eu.asterics.mw.cimcommunication.CIMPortManager;
+import eu.asterics.mw.cimcommunication.CIMProtocolPacket;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 
 /**
  * 
  * <Interpretate and process incoming packets sent by EOG CIM>
  * 
  * 
- *  
+ * 
  * @author <Chris Veigl (FHTW), Benedikt Rossboth> [<benedikt@rossboth.at>]
  *         Date: 11/2011
  */
-public class EogInstance extends AbstractRuntimeComponentInstance implements CIMEventHandler
-{
-	private CIMPortController port = null; 
- 
-	final IRuntimeOutputPort opHorizontal = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opVertical = new DefaultRuntimeOutputPort();
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class EogInstance extends AbstractRuntimeComponentInstance implements CIMEventHandler {
+    private CIMPortController port = null;
 
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    final IRuntimeOutputPort opHorizontal = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opVertical = new DefaultRuntimeOutputPort();
+    // Usage of an output port e.g.:
+    // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
-	public int 					propUpdatePeriod 					= 10;
-	
-	private final short 		EOG_CIM_ID 							= (short) 0xa101;
-	
-	private static final short 	EOG_FEATURE_SERIAL_NUMBER 			= 0x0000;
-	private static final short 	EOG_FEATURE_ACTIVATE_PERIODIC_VALUE = 0x0001;
-	private static final short 	EOG_FEATURE_CHANNEL_VALUE_REPORT 	= 0x0002;
-	
-	// declare member variables here
+    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-   
-   /**
-    * The class constructor.
-    */
-    public EogInstance()
-    {
+    public int propUpdatePeriod = 10;
+
+    private final short EOG_CIM_ID = (short) 0xa101;
+
+    private static final short EOG_FEATURE_SERIAL_NUMBER = 0x0000;
+    private static final short EOG_FEATURE_ACTIVATE_PERIODIC_VALUE = 0x0001;
+    private static final short EOG_FEATURE_CHANNEL_VALUE_REPORT = 0x0002;
+
+    // declare member variables here
+
+    /**
+     * The class constructor.
+     */
+    public EogInstance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
-		if ("horizontal".equalsIgnoreCase(portID))
-		{
-			return opHorizontal;
-		}
-		if ("vertical".equalsIgnoreCase(portID))
-		{
-			return opVertical;
-		}
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("horizontal".equalsIgnoreCase(portID)) {
+            return opHorizontal;
+        }
+        if ("vertical".equalsIgnoreCase(portID)) {
+            return opVertical;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("updatePeriod".equalsIgnoreCase(propertyName))
-		{
-			return propUpdatePeriod;
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("updatePeriod".equalsIgnoreCase(propertyName)) {
+            return propUpdatePeriod;
+        }
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param[in] propertyName   the name of the property
-     * @param[in] newValue       the desired property value or null if not found
+     * 
+     * @param[in] propertyName the name of the property
+     * @param[in] newValue the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("updatePeriod".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propUpdatePeriod;
-			propUpdatePeriod = Integer.parseInt(newValue.toString());
-			
-			if ( port != null)
-			{
-				CIMPortManager.getInstance().sendPacket(port, ConversionUtils.shortToBytesLittleEndian((short)propUpdatePeriod), EOG_FEATURE_ACTIVATE_PERIODIC_VALUE, 
-						CIMProtocolPacket.COMMAND_REQUEST_WRITE_FEATURE, false);
-			}			
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("updatePeriod".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propUpdatePeriod;
+            propUpdatePeriod = Integer.parseInt(newValue.toString());
+
+            if (port != null) {
+                CIMPortManager.getInstance().sendPacket(port,
+                        ConversionUtils.shortToBytesLittleEndian((short) propUpdatePeriod),
+                        EOG_FEATURE_ACTIVATE_PERIODIC_VALUE, CIMProtocolPacket.COMMAND_REQUEST_WRITE_FEATURE, false);
+            }
+            return oldValue;
+        }
 
         return null;
     }
 
+    /**
+     * Handles an input packet from the ADC CIM. Reads the values on all active
+     * inputs and sends the data on the corresponding output ports
+     * 
+     * @param packet
+     *            the incoming packet
+     */
+    private void handleEogInputValuePacket(CIMProtocolPacket packet) {
+        byte[] b = packet.getData();
+        int horizontal = 0;
+        int vertical = 0;
 
-	/**
-	 * Handles an input packet from the ADC CIM. Reads the values on all active 
-	 * inputs and sends the data on the corresponding output ports 
-	 * @param packet the incoming packet
-	 */
-	private void handleEogInputValuePacket(CIMProtocolPacket packet)
-	{
-		byte [] b = packet.getData();
-		int horizontal = 0;
-		int vertical = 0;
+        horizontal = ((int) b[1]) & 0xff;
+        horizontal = horizontal | ((((int) b[0]) & 0xff) << 8);
 
-		horizontal =  ((int) b[1]) & 0xff;
-		horizontal =  horizontal | ((((int) b[0]) & 0xff) << 8);
-		
-		
-		vertical =  ((int) b[3]) & 0xff;
-		vertical =  vertical | ((((int) b[2]) & 0xff) << 8);
+        vertical = ((int) b[3]) & 0xff;
+        vertical = vertical | ((((int) b[2]) & 0xff) << 8);
 
-		opHorizontal.sendData(ConversionUtils.intToBytes(horizontal));												
-		opVertical.sendData(ConversionUtils.intToBytes(vertical));	
-	}
-	
-	private void handleEogSerialNumber(CIMProtocolPacket packet)
-	{
-		byte []b=packet.getData();
-		System.out.println(b);
-	}
-    
-	private void handleEogStartNumber(CIMProtocolPacket packet)
-	{
-		System.out.println("started Plug-In...");
-	}
+        opHorizontal.sendData(ConversionUtils.intToBytes(horizontal));
+        opVertical.sendData(ConversionUtils.intToBytes(vertical));
+    }
 
-	/**
-	 * Called by port controller if new packet has been received
-	 */
-	public void handlePacketReceived(CIMEvent e)
-	{
-		CIMEventPacketReceived ev = (CIMEventPacketReceived) e;
-		CIMProtocolPacket packet = ev.packet;
-		
-		short featureAddress = 0;
-		featureAddress=packet.getFeatureAddress();
-		
-		switch(packet.getRequestReplyCode())
-		{
-			case CIMProtocolPacket.COMMAND_REPLY_START_CIM:
-				System.out.println ("Reply Start.");
-				break;
-			case CIMProtocolPacket.COMMAND_REPLY_STOP_CIM:
-				System.out.println ("Reply Stop.");
-				break;
-			case CIMProtocolPacket.COMMAND_REPLY_RESET_CIM:
-				System.out.println ("Reply Reset.");
-				break;
-			case CIMProtocolPacket.COMMAND_REPLY_READ_FEATURE:
-				System.out.print ("Reply Read: ");
-				if (featureAddress == EOG_FEATURE_SERIAL_NUMBER )
-				{
-					System.out.println ("UniqueNumber");
-					handleEogSerialNumber(packet);
-				}
-				break;
-			case CIMProtocolPacket.COMMAND_EVENT_REPLY:
-				//System.out.print ("...");
-				if (featureAddress == EOG_FEATURE_CHANNEL_VALUE_REPORT)
-				{
-					handleEogInputValuePacket(packet);
-				}
-				break;
-			case CIMProtocolPacket.COMMAND_REPLY_WRITE_FEATURE:
-				System.out.print ("Replay Write: ");
-				if (featureAddress == EOG_FEATURE_ACTIVATE_PERIODIC_VALUE)
-				{
-					System.out.println ("Set PeriodicTimeValue.");
-				}
-				break;				
-		}		
-		//System.out.println("received packet.");
-	}
+    private void handleEogSerialNumber(CIMProtocolPacket packet) {
+        byte[] b = packet.getData();
+        System.out.println(b);
+    }
 
-	/**
-	 * Called upon faulty packet reception
-	 */
-	public void handlePacketError(CIMEvent e)
-	{
-		AstericsErrorHandling.instance.reportInfo(this, "Faulty packet received");
-	}
+    private void handleEogStartNumber(CIMProtocolPacket packet) {
+        System.out.println("started Plug-In...");
+    }
 
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
-  		  port = CIMPortManager.getInstance().getConnection(EOG_CIM_ID);
-		  if (port != null )
-		  {
-			port.addEventListener(this);
-			CIMPortManager.getInstance().sendPacket(port, null, (short) 0, CIMProtocolPacket.COMMAND_REPLY_START_CIM, false);
-			CIMPortManager.getInstance().sendPacket(port, ConversionUtils.shortToBytesLittleEndian((short)propUpdatePeriod), EOG_FEATURE_ACTIVATE_PERIODIC_VALUE, CIMProtocolPacket.COMMAND_REQUEST_WRITE_FEATURE, false);			
-		  }
-		  else
-		  {
-	       		AstericsErrorHandling.instance.reportError(this, "Could not find EOG Module. Please verify that the Module is connected to an USB Port and that the driver is installed.");
-		  }
-          super.start();
-      }
+    /**
+     * Called by port controller if new packet has been received
+     */
+    @Override
+    public void handlePacketReceived(CIMEvent e) {
+        CIMEventPacketReceived ev = (CIMEventPacketReceived) e;
+        CIMProtocolPacket packet = ev.packet;
 
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-          super.pause();
-      }
+        short featureAddress = 0;
+        featureAddress = packet.getFeatureAddress();
 
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-          super.resume();
-      }
+        switch (packet.getRequestReplyCode()) {
+        case CIMProtocolPacket.COMMAND_REPLY_START_CIM:
+            System.out.println("Reply Start.");
+            break;
+        case CIMProtocolPacket.COMMAND_REPLY_STOP_CIM:
+            System.out.println("Reply Stop.");
+            break;
+        case CIMProtocolPacket.COMMAND_REPLY_RESET_CIM:
+            System.out.println("Reply Reset.");
+            break;
+        case CIMProtocolPacket.COMMAND_REPLY_READ_FEATURE:
+            System.out.print("Reply Read: ");
+            if (featureAddress == EOG_FEATURE_SERIAL_NUMBER) {
+                System.out.println("UniqueNumber");
+                handleEogSerialNumber(packet);
+            }
+            break;
+        case CIMProtocolPacket.COMMAND_EVENT_REPLY:
+            // System.out.print ("...");
+            if (featureAddress == EOG_FEATURE_CHANNEL_VALUE_REPORT) {
+                handleEogInputValuePacket(packet);
+            }
+            break;
+        case CIMProtocolPacket.COMMAND_REPLY_WRITE_FEATURE:
+            System.out.print("Replay Write: ");
+            if (featureAddress == EOG_FEATURE_ACTIVATE_PERIODIC_VALUE) {
+                System.out.println("Set PeriodicTimeValue.");
+            }
+            break;
+        }
+        // System.out.println("received packet.");
+    }
 
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
-    	  port.removeEventListener(this);
-		  if ( port != null)
-		  {
-			  CIMPortManager.getInstance().sendPacket(port,null, (short)0, CIMProtocolPacket.COMMAND_REPLY_STOP_CIM, false);
-		  }
-          super.stop();
-      }
+    /**
+     * Called upon faulty packet reception
+     */
+    @Override
+    public void handlePacketError(CIMEvent e) {
+        AstericsErrorHandling.instance.reportInfo(this, "Faulty packet received");
+    }
+
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        port = CIMPortManager.getInstance().getConnection(EOG_CIM_ID);
+        if (port != null) {
+            port.addEventListener(this);
+            CIMPortManager.getInstance().sendPacket(port, null, (short) 0, CIMProtocolPacket.COMMAND_REPLY_START_CIM,
+                    false);
+            CIMPortManager.getInstance().sendPacket(port,
+                    ConversionUtils.shortToBytesLittleEndian((short) propUpdatePeriod),
+                    EOG_FEATURE_ACTIVATE_PERIODIC_VALUE, CIMProtocolPacket.COMMAND_REQUEST_WRITE_FEATURE, false);
+        } else {
+            AstericsErrorHandling.instance.reportError(this,
+                    "Could not find EOG Module. Please verify that the Module is connected to an USB Port and that the driver is installed.");
+        }
+        super.start();
+    }
+
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
+
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
+
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        port.removeEventListener(this);
+        if (port != null) {
+            CIMPortManager.getInstance().sendPacket(port, null, (short) 0, CIMProtocolPacket.COMMAND_REPLY_STOP_CIM,
+                    false);
+        }
+        super.stop();
+    }
 }

@@ -26,5 +26,5 @@
 package eu.asterics.mw.displayguimanagement;
 
 public interface IDisplayEventListener {
-	void action();
+    void action();
 }

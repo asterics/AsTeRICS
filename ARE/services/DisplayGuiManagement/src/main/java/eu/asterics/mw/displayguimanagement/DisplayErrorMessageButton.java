@@ -30,60 +30,50 @@ import java.util.List;
 
 public class DisplayErrorMessageButton extends DisplayButton {
 
-	private final int CHARACTERS_PER_LINE = 18 ;
-	private final int NUMBER_OF_LINES = 4 ;
-	
-	boolean active = false;
-	
-	List<String> errorMessages = new LinkedList<String>();
-	
-	public DisplayErrorMessageButton(int x, int y, int w, int h) {
-		super("", x, y, w, h);
-	}
-	
-	void addErrorMessage(String message)
-	{
-		active = true;
-		if (message.length() > CHARACTERS_PER_LINE)
-		{
-			int lines = 0;
-			StringBuffer buf = new StringBuffer();
-			buf.append("\37      ERROR       \36\n\r");
-			try
-			{
-				while (lines < NUMBER_OF_LINES)
-				{
-					buf.append(message.substring(CHARACTERS_PER_LINE*lines,
-							
-							CHARACTERS_PER_LINE*lines + CHARACTERS_PER_LINE));
-					buf.append("\n\r");
-					lines++;
-				}
-  			}
- 			catch (IndexOutOfBoundsException e)	
-			{
-				buf.append(message.substring(CHARACTERS_PER_LINE*lines));
-			}
-			message = buf.toString();
-		}
-//		System.out.println("Message added:" + message);
-		errorMessages.add(message);
-		caption = errorMessages.get(0);
-	}
+    private final int CHARACTERS_PER_LINE = 18;
+    private final int NUMBER_OF_LINES = 4;
 
-	@Override
-	public void press(int x, int y) 
-	{
-		errorMessages.remove(0);
-		if (errorMessages.isEmpty())
-		{
-			DisplayGuiManager.instance.errorMessageActive= false;
-			DisplayGuiManager.instance.displayMainMenu();
-		}
-		else
-		{
-			caption = errorMessages.get(0);
-			draw();
-		}
-	}
+    boolean active = false;
+
+    List<String> errorMessages = new LinkedList<String>();
+
+    public DisplayErrorMessageButton(int x, int y, int w, int h) {
+        super("", x, y, w, h);
+    }
+
+    void addErrorMessage(String message) {
+        active = true;
+        if (message.length() > CHARACTERS_PER_LINE) {
+            int lines = 0;
+            StringBuffer buf = new StringBuffer();
+            buf.append("\37      ERROR       \36\n\r");
+            try {
+                while (lines < NUMBER_OF_LINES) {
+                    buf.append(message.substring(CHARACTERS_PER_LINE * lines,
+
+                            CHARACTERS_PER_LINE * lines + CHARACTERS_PER_LINE));
+                    buf.append("\n\r");
+                    lines++;
+                }
+            } catch (IndexOutOfBoundsException e) {
+                buf.append(message.substring(CHARACTERS_PER_LINE * lines));
+            }
+            message = buf.toString();
+        }
+        // System.out.println("Message added:" + message);
+        errorMessages.add(message);
+        caption = errorMessages.get(0);
+    }
+
+    @Override
+    public void press(int x, int y) {
+        errorMessages.remove(0);
+        if (errorMessages.isEmpty()) {
+            DisplayGuiManager.instance.errorMessageActive = false;
+            DisplayGuiManager.instance.displayMainMenu();
+        } else {
+            caption = errorMessages.get(0);
+            draw();
+        }
+    }
 }

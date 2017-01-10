@@ -28,38 +28,34 @@ package eu.asterics.mw.model.deployment.impl;
 import java.util.Map;
 import java.util.Set;
 
-
 import eu.asterics.mw.model.deployment.IPropertyful;
 
 /**
  * @author Costas Kakpusis [kakousis@cs.ucy.ac.cy]
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:03:23 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:03:23 PM
  */
-public class DefaultPropertyful implements IPropertyful
-{
+public class DefaultPropertyful implements IPropertyful {
     private final Map<String, Object> propertyValues;
 
-    protected DefaultPropertyful(final Map<String, Object> propertyValues)
-    {
+    protected DefaultPropertyful(final Map<String, Object> propertyValues) {
         this.propertyValues = propertyValues;
     }
 
-    public Object getPropertyValue(String propertyName)
-    {
+    @Override
+    public Object getPropertyValue(String propertyName) {
         Object propertyValue = this.propertyValues.get(propertyName);
         return propertyValue == null ? null : propertyValue;
     }
-    
-    public Map<String, Object> getPropertyValues ()
-    {
-    	return this.propertyValues;
+
+    @Override
+    public Map<String, Object> getPropertyValues() {
+        return this.propertyValues;
     }
 
+    @Override
+    public Set<String> getPropertyKeys() {
 
-	public Set<String> getPropertyKeys() {
-		
-		return this.propertyValues.keySet();
-	}
+        return this.propertyValues.keySet();
+    }
 }

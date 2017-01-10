@@ -25,57 +25,62 @@
 
 package eu.asterics.mw.cimcommunication;
 
-public class CIMUniqueIdentifier  {
+public class CIMUniqueIdentifier {
 
-	final short CIMId;
-	final long  CIMUniqueNumber;
-	
-	public CIMUniqueIdentifier(short CIMId, long CIMUniqueNumber)
-	{
-		this.CIMId = CIMId;
-		this.CIMUniqueNumber = CIMUniqueNumber;
-	}
+    final short CIMId;
+    final long CIMUniqueNumber;
 
-	@Override
-	public String toString() {
-		return String.format("CIM Id: 0x%x, UniqueNumber: 0x%x", 
-				CIMId, CIMUniqueNumber );
-	}
-	
-	public String toIdentifierString() {
-		return String.format("0x%x-0x%x", 
-				CIMId, CIMUniqueNumber );
-	}
+    public CIMUniqueIdentifier(short CIMId, long CIMUniqueNumber) {
+        this.CIMId = CIMId;
+        this.CIMUniqueNumber = CIMUniqueNumber;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + CIMId;
-		result = prime * result
-				+ (int) (CIMUniqueNumber ^ (CIMUniqueNumber >>> 32));
-		return result;
-	}
+    @Override
+    public String toString() {
+        return String.format("CIM Id: 0x%x, UniqueNumber: 0x%x", CIMId, CIMUniqueNumber);
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CIMUniqueIdentifier other = (CIMUniqueIdentifier) obj;
-		if (CIMId != other.CIMId)
-			return false;
-		if (CIMUniqueNumber != other.CIMUniqueNumber)
-			return false;
-		return true;
-	}
+    public String toIdentifierString() {
+        return String.format("0x%x-0x%x", CIMId, CIMUniqueNumber);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + CIMId;
+        result = prime * result + (int) (CIMUniqueNumber ^ (CIMUniqueNumber >>> 32));
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        CIMUniqueIdentifier other = (CIMUniqueIdentifier) obj;
+        if (CIMId != other.CIMId) {
+            return false;
+        }
+        if (CIMUniqueNumber != other.CIMUniqueNumber) {
+            return false;
+        }
+        return true;
+    }
 }

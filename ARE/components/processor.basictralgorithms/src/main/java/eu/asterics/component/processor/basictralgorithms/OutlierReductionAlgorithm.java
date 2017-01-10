@@ -25,105 +25,99 @@
 
 package eu.asterics.component.processor.basictralgorithms;
 
-import java.math.*;
-
 /**
  * 
- * Implements the Outlier Reduction algorithm for absolute position points. 
- * In this algorithm, if the distance between two followed cursor positions is greater than the the maximum allowed distance, 
- * the distance between them will be reduced to the maximum allowed distance.
+ * Implements the Outlier Reduction algorithm for absolute position points. In
+ * this algorithm, if the distance between two followed cursor positions is
+ * greater than the the maximum allowed distance, the distance between them will
+ * be reduced to the maximum allowed distance.
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Mar 15, 2012
- *         Time: 10:06:15 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Mar 15, 2012 Time: 10:06:15
+ *         AM
  */
-class OutlierReductionAlgorithm extends TremorReductionBasicAlgorithm
-{
-	
-	private double distance;
-	private AlgorithmPoint lastPoint=null;
-	
-	/**
-	* The class constructor.
-	*/
-	public OutlierReductionAlgorithm()
-	{
-		distance=10.0;
-	}
-	
-	/**
-	* The class constructor.
-	* @param distance maximum allowed distance
-	*/
-	public OutlierReductionAlgorithm(double distance)
-	{
-		this.distance=distance;
-	}
-	
-	/**
-	* Calculates the new cursor position.
-	* @param inputPoint current cursor position
-	* @return new cursor position
-	*/
-	public AlgorithmPoint calcualteNewPoint(AlgorithmPoint inputPoint)
-	{
-		if(lastPoint==null)
-		{
-			lastPoint = new AlgorithmPoint(inputPoint);
-			return inputPoint;
-		}
-		
-		double factor=(lastPoint.getX()-inputPoint.getX())*(lastPoint.getX()-inputPoint.getX())+(lastPoint.getY()-inputPoint.getY())*(lastPoint.getY()-inputPoint.getY());
-		factor=Math.sqrt(factor);
-		
-		if(factor>distance)
-		{
-			double x=(double)(lastPoint.getX()-inputPoint.getX())/factor;
-			double y=(double)(lastPoint.getY()-inputPoint.getY())/factor;
-			
-			int newX = (int) ((double)lastPoint.getX()-x*distance);
-			int newY = (int) ((double)lastPoint.getY()-y*distance);
-			
-			if((double)lastPoint.getX()-x*distance-(double)newX>0.5)
-			{
-				newX++;
-			}
-			
-			if((double)lastPoint.getY()-y*distance-(double)newY>0.5)
-			{
-				newY++;
-			}
-			
-			AlgorithmPoint outputPoint = new AlgorithmPoint(newX,newY);
-			lastPoint = new AlgorithmPoint(outputPoint);
-			return outputPoint;
-			
-		}
-		else
-		{
-			lastPoint = new AlgorithmPoint(inputPoint);
-			return inputPoint;
-		}
-		
-	}
-	
-	/**
-	* Sets the new maximum distance.
-	* @param distance maximum allowed distance
-	*/
-	public void SetDistance(double distance)
-	{
-		if(distance>0)
-		{
-			this.distance=distance;
-		}
-	}
-	
-	/**
-	* Removes the last cursor position.
-	*/
-	public void clean()
-	{
-		 lastPoint=null;
-	}
+class OutlierReductionAlgorithm extends TremorReductionBasicAlgorithm {
+
+    private double distance;
+    private AlgorithmPoint lastPoint = null;
+
+    /**
+     * The class constructor.
+     */
+    public OutlierReductionAlgorithm() {
+        distance = 10.0;
+    }
+
+    /**
+     * The class constructor.
+     * 
+     * @param distance
+     *            maximum allowed distance
+     */
+    public OutlierReductionAlgorithm(double distance) {
+        this.distance = distance;
+    }
+
+    /**
+     * Calculates the new cursor position.
+     * 
+     * @param inputPoint
+     *            current cursor position
+     * @return new cursor position
+     */
+    @Override
+    public AlgorithmPoint calcualteNewPoint(AlgorithmPoint inputPoint) {
+        if (lastPoint == null) {
+            lastPoint = new AlgorithmPoint(inputPoint);
+            return inputPoint;
+        }
+
+        double factor = (lastPoint.getX() - inputPoint.getX()) * (lastPoint.getX() - inputPoint.getX())
+                + (lastPoint.getY() - inputPoint.getY()) * (lastPoint.getY() - inputPoint.getY());
+        factor = Math.sqrt(factor);
+
+        if (factor > distance) {
+            double x = (double) (lastPoint.getX() - inputPoint.getX()) / factor;
+            double y = (double) (lastPoint.getY() - inputPoint.getY()) / factor;
+
+            int newX = (int) ((double) lastPoint.getX() - x * distance);
+            int newY = (int) ((double) lastPoint.getY() - y * distance);
+
+            if ((double) lastPoint.getX() - x * distance - (double) newX > 0.5) {
+                newX++;
+            }
+
+            if ((double) lastPoint.getY() - y * distance - (double) newY > 0.5) {
+                newY++;
+            }
+
+            AlgorithmPoint outputPoint = new AlgorithmPoint(newX, newY);
+            lastPoint = new AlgorithmPoint(outputPoint);
+            return outputPoint;
+
+        } else {
+            lastPoint = new AlgorithmPoint(inputPoint);
+            return inputPoint;
+        }
+
+    }
+
+    /**
+     * Sets the new maximum distance.
+     * 
+     * @param distance
+     *            maximum allowed distance
+     */
+    public void SetDistance(double distance) {
+        if (distance > 0) {
+            this.distance = distance;
+        }
+    }
+
+    /**
+     * Removes the last cursor position.
+     */
+    @Override
+    public void clean() {
+        lastPoint = null;
+    }
 }

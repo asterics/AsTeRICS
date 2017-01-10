@@ -27,11 +27,10 @@ package eu.asterics.mw.cimcommunication;
 
 public class CIMWirelessDataEvent extends CIMEvent {
 
-	public byte [] data; 
-	
-	public CIMWirelessDataEvent(CIMPortController port, byte [] data) 
-	{
-		super(port);
-		this.data = data;
-	}
+    public byte[] data;
+
+    public CIMWirelessDataEvent(CIMPortController port, byte[] data) {
+        super(port);
+        this.data = data;
+    }
 }

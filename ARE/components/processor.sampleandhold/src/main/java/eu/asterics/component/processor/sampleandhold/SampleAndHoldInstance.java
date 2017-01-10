@@ -28,29 +28,25 @@ package eu.asterics.component.processor.sampleandhold;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import java.util.*;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 
 /**
- *  SampleAndHoldInstance performs an event-triggered sample-and-hold function
- *  on up to 4 channels
+ * SampleAndHoldInstance performs an event-triggered sample-and-hold function on
+ * up to 4 channels
  * 
- * @author Chris Veigl [veigl@technikum-wien.at]
- *         Date: Apr 18, 2011
- *         Time: 08:15:00 PM
+ * @author Chris Veigl [veigl@technikum-wien.at] Date: Apr 18, 2011 Time:
+ *         08:15:00 PM
  */
-public class SampleAndHoldInstance extends AbstractRuntimeComponentInstance
-{
-	
-    private double value1=0;
-    private double value2=0;
-    private double value3=0;
-    private double value4=0;
+public class SampleAndHoldInstance extends AbstractRuntimeComponentInstance {
+
+    private double value1 = 0;
+    private double value2 = 0;
+    private double value3 = 0;
+    private double value4 = 0;
 
     private IRuntimeInputPort ipIn1 = new InputPort1();
     private IRuntimeInputPort ipIn2 = new InputPort2();
@@ -62,160 +58,142 @@ public class SampleAndHoldInstance extends AbstractRuntimeComponentInstance
     private IRuntimeOutputPort opOut3 = new OutputPort();
     private IRuntimeOutputPort opOut4 = new OutputPort();
 
-	IRuntimeEventListenerPort elpSampleNow = new RuntimeEventListenerPortSampleNow();
+    IRuntimeEventListenerPort elpSampleNow = new RuntimeEventListenerPortSampleNow();
 
-    
     /**
      * The class constructor.
      */
-	public SampleAndHoldInstance()
-    {
+    public SampleAndHoldInstance() {
         // empty constructor - needed for OSGi service factory operations
     }
 
-
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-        if("in1".equalsIgnoreCase(portID))
-        {
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("in1".equalsIgnoreCase(portID)) {
             return ipIn1;
-        }
-        else if("in2".equalsIgnoreCase(portID))
-        {
+        } else if ("in2".equalsIgnoreCase(portID)) {
             return ipIn2;
-        }
-        else if("in3".equalsIgnoreCase(portID))
-        {
+        } else if ("in3".equalsIgnoreCase(portID)) {
             return ipIn3;
-        }
-        else if("in4".equalsIgnoreCase(portID))
-        {
+        } else if ("in4".equalsIgnoreCase(portID)) {
             return ipIn4;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-    {
-        if("out1".equalsIgnoreCase(portID))
-        {
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("out1".equalsIgnoreCase(portID)) {
             return opOut1;
-        }
-        else if("out2".equalsIgnoreCase(portID))
-        {
+        } else if ("out2".equalsIgnoreCase(portID)) {
             return opOut2;
-        }
-        else if("out3".equalsIgnoreCase(portID))
-        {
+        } else if ("out3".equalsIgnoreCase(portID)) {
             return opOut3;
-        }
-        else if("out4".equalsIgnoreCase(portID))
-        {
+        } else if ("out4".equalsIgnoreCase(portID)) {
             return opOut4;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
     /**
      * returns an Event Listener Port.
-     * @param portID   the name of the port
-     * @return         the event listener port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the event listener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-    	if (eventPortID.equalsIgnoreCase("sampleNow"))
-    	{
-    		return elpSampleNow;    		
-    	}
-    	return null;
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if (eventPortID.equalsIgnoreCase("sampleNow")) {
+            return elpSampleNow;
+        }
+        return null;
     }
-        
-    
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         return null;
     }
- 
-    
+
     /**
      * Event Listener Port for sampling the values.
      */
-	class RuntimeEventListenerPortSampleNow implements IRuntimeEventListenerPort
-	{
-		public void receiveEvent(final String data)
-	   	{
-		    opOut1.sendData(ConversionUtils.doubleToBytes(value1));
-		    opOut2.sendData(ConversionUtils.doubleToBytes(value2));
-		    opOut3.sendData(ConversionUtils.doubleToBytes(value3));
-		    opOut4.sendData(ConversionUtils.doubleToBytes(value4));
-	   	}
-	}
-   
-   /**
-    * Input Ports for receiving values.
-    */
-    private class InputPort1 extends DefaultRuntimeInputPort
-    {
-        public void receiveData(byte[] data)
-        {
+    class RuntimeEventListenerPortSampleNow implements IRuntimeEventListenerPort {
+        @Override
+        public void receiveEvent(final String data) {
+            opOut1.sendData(ConversionUtils.doubleToBytes(value1));
+            opOut2.sendData(ConversionUtils.doubleToBytes(value2));
+            opOut3.sendData(ConversionUtils.doubleToBytes(value3));
+            opOut4.sendData(ConversionUtils.doubleToBytes(value4));
+        }
+    }
+
+    /**
+     * Input Ports for receiving values.
+     */
+    private class InputPort1 extends DefaultRuntimeInputPort {
+        @Override
+        public void receiveData(byte[] data) {
             value1 = ConversionUtils.doubleFromBytes(data);
         }
 
-		
     }
-    private class InputPort2 extends DefaultRuntimeInputPort
-    {
-        public void receiveData(byte[] data)
-        {
+
+    private class InputPort2 extends DefaultRuntimeInputPort {
+        @Override
+        public void receiveData(byte[] data) {
             value2 = ConversionUtils.doubleFromBytes(data);
         }
 
-		
     }
-    private class InputPort3 extends DefaultRuntimeInputPort
-    {
-        public void receiveData(byte[] data)
-        {
+
+    private class InputPort3 extends DefaultRuntimeInputPort {
+        @Override
+        public void receiveData(byte[] data) {
             value3 = ConversionUtils.doubleFromBytes(data);
         }
 
-		
     }
-    private class InputPort4 extends DefaultRuntimeInputPort
-    {
-        public void receiveData(byte[] data)
-        {
+
+    private class InputPort4 extends DefaultRuntimeInputPort {
+        @Override
+        public void receiveData(byte[] data) {
             value4 = ConversionUtils.doubleFromBytes(data);
         }
     }
@@ -223,39 +201,39 @@ public class SampleAndHoldInstance extends AbstractRuntimeComponentInstance
     /**
      * Output Ports for sending result.
      */
-    private class OutputPort extends DefaultRuntimeOutputPort
-    {   }  // empty
- 
+    private class OutputPort extends DefaultRuntimeOutputPort {
+    } // empty
+
     /**
      * called when model is started.
      */
-     public void start()
-      {
-          super.start();
-      }
+    @Override
+    public void start() {
+        super.start();
+    }
 
-     /**
-      * called when model is paused.
-      */
-      public void pause()
-      {
-          super.pause();
-      }
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
     /**
      * called when model is resumed.
      */
-      public void resume()
-      {
-          super.resume();
-      }
+    @Override
+    public void resume() {
+        super.resume();
+    }
 
-     /**
-      * called when model is stopped.
-      */
-      public void stop()
-      {
-          super.stop();
-      }
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        super.stop();
+    }
 
 }

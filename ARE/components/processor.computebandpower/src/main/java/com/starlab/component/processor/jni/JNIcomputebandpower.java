@@ -27,46 +27,46 @@
 package com.starlab.component.processor.jni;
 
 /**
- *   Implements the access to the native functions for computing the power in
- *   band algorithm
+ * Implements the access to the native functions for computing the power in band
+ * algorithm
  * 
- * @author Javier Acedo [javier.acedo@starlab.es]
- *         Date: Feb 11, 2011
- *         Time 01:11:01 PM
+ * @author Javier Acedo [javier.acedo@starlab.es] Date: Feb 11, 2011 Time
+ *         01:11:01 PM
  */
 public class JNIcomputebandpower {
 
-	public native void nativeCBPInitialization();
-	public native void nativeCBPImplementation (double [] samples, int len, double [] output);
-	
-	static {
-		System.loadLibrary("computebandpower");
+    public native void nativeCBPInitialization();
+
+    public native void nativeCBPImplementation(double[] samples, int len, double[] output);
+
+    static {
+        System.loadLibrary("computebandpower");
     }
 
-	/**
+    /**
      * The class constructor.
      */
-	public JNIcomputebandpower ()
-	{
-	}
-	
-	/**
+    public JNIcomputebandpower() {
+    }
+
+    /**
      * Initialization of the compute band power algorithm
      */
-	public void CBPInitialization()
-	{
-		nativeCBPInitialization();
-	}
-	
-	/**
+    public void CBPInitialization() {
+        nativeCBPInitialization();
+    }
+
+    /**
      * Computation of the frequency transformation from the time domain samples
-     * @param samples       Vector with the input samples in the time domain
-     *                      to be processed
-     * @param output        Vector with the output samples corresponding to
-     *                      the frequency domain
+     * 
+     * @param samples
+     *            Vector with the input samples in the time domain to be
+     *            processed
+     * @param output
+     *            Vector with the output samples corresponding to the frequency
+     *            domain
      */
-	public void CBP (double [] samples, double [] output)
-	{
-		nativeCBPImplementation(samples, samples.length, output);
-	}
+    public void CBP(double[] samples, double[] output) {
+        nativeCBPImplementation(samples, samples.length, output);
+    }
 }

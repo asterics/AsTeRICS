@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -30,15 +29,15 @@ package eu.asterics.component.sensor.facetrackerCLM2;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import eu.asterics.component.sensor.facetrackerCLM2.jni.*;
+import eu.asterics.component.sensor.facetrackerCLM2.jni.FacetrackerCLM2Bridge;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
@@ -48,379 +47,343 @@ import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
  * <Describe purpose of this module>
  * 
  * 
- *  
- * @author <Andrea Carbone> [<carbone@isir.upmc.fr>]
- *         Date: 
- *         Time: 
+ * 
+ * @author <Andrea Carbone> [<carbone@isir.upmc.fr>] Date: Time:
  */
-public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance
-{
-	// Roll, Pitch, Yaw
-	final IRuntimeOutputPort opRoll	= new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opPitch = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opYaw = new DefaultRuntimeOutputPort();
-	// Pos
-	final IRuntimeOutputPort opPosX = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opPosY = new DefaultRuntimeOutputPort();
-	//Scale
-	final IRuntimeOutputPort opScale = new DefaultRuntimeOutputPort();
+public class FacetrackerCLM2Instance extends AbstractRuntimeComponentInstance {
+    // Roll, Pitch, Yaw
+    final IRuntimeOutputPort opRoll = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opPitch = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opYaw = new DefaultRuntimeOutputPort();
+    // Pos
+    final IRuntimeOutputPort opPosX = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opPosY = new DefaultRuntimeOutputPort();
+    // Scale
+    final IRuntimeOutputPort opScale = new DefaultRuntimeOutputPort();
 
-	final IRuntimeOutputPort opBrowLift = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opLipDistance = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opBrowLift = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opLipDistance = new DefaultRuntimeOutputPort();
 
-	final IRuntimeOutputPort opEyeLeft = new DefaultRuntimeOutputPort();
-	final IRuntimeOutputPort opEyeRight = new DefaultRuntimeOutputPort();
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
- 
-	public final IRuntimeEventTriggererPort etpEyebrowsRaised = 
-		new DefaultRuntimeEventTriggererPort();
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
-	
-	   
-	private boolean pluginReady=false;
-	int propCameraIndex = 0; 
-	int propCameraRes =1;
-	String modelName;
+    final IRuntimeOutputPort opEyeLeft = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opEyeRight = new DefaultRuntimeOutputPort();
+    // Usage of an output port e.g.:
+    // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
-	// declare member variables here
-	//private  GUI gui = null;   
- 
-	// Native runtime
-	private final FacetrackerCLM2Bridge bridge =
-		new FacetrackerCLM2Bridge(this);
-    
-   /**
-    * The class constructor.
-    */  
-    public FacetrackerCLM2Instance()
-    {
+    public final IRuntimeEventTriggererPort etpEyebrowsRaised = new DefaultRuntimeEventTriggererPort();
+    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+
+    private boolean pluginReady = false;
+    int propCameraIndex = 0;
+    int propCameraRes = 1;
+    String modelName;
+
+    // declare member variables here
+    // private GUI gui = null;
+
+    // Native runtime
+    private final FacetrackerCLM2Bridge bridge = new FacetrackerCLM2Bridge(this);
+
+    /**
+     * The class constructor.
+     */
+    public FacetrackerCLM2Instance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
-		if ("Roll".equalsIgnoreCase(portID))
-		{
-			return opRoll;
-		}   	
-		if ("Pitch".equalsIgnoreCase(portID))
-		{
-			return opPitch;
-		}
-		if ("Yaw".equalsIgnoreCase(portID))
-		{
-			return opYaw;
-		}
-		if ("PosX".equalsIgnoreCase(portID))
-		{
-			return opPosX;
-		}
-		if ("PosY".equalsIgnoreCase(portID))
-		{
-			return opPosY;
-		}
-		if ("Scale".equalsIgnoreCase(portID))
-		{
-			return opScale;
-		}
-		if ("BrowLift".equalsIgnoreCase(portID))
-		{
-			return opBrowLift;
-		}
-		if ("LipDistance".equalsIgnoreCase(portID))
-		{
-			return opLipDistance;
-		}
-		if ("EyeLeft".equalsIgnoreCase(portID))
-		{
-			return opEyeLeft;
-		}
-		if ("EyeRight".equalsIgnoreCase(portID))
-		{
-			return opEyeRight;
-		}
-		return null;
-	}
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("Roll".equalsIgnoreCase(portID)) {
+            return opRoll;
+        }
+        if ("Pitch".equalsIgnoreCase(portID)) {
+            return opPitch;
+        }
+        if ("Yaw".equalsIgnoreCase(portID)) {
+            return opYaw;
+        }
+        if ("PosX".equalsIgnoreCase(portID)) {
+            return opPosX;
+        }
+        if ("PosY".equalsIgnoreCase(portID)) {
+            return opPosY;
+        }
+        if ("Scale".equalsIgnoreCase(portID)) {
+            return opScale;
+        }
+        if ("BrowLift".equalsIgnoreCase(portID)) {
+            return opBrowLift;
+        }
+        if ("LipDistance".equalsIgnoreCase(portID)) {
+            return opLipDistance;
+        }
+        if ("EyeLeft".equalsIgnoreCase(portID)) {
+            return opEyeLeft;
+        }
+        if ("EyeRight".equalsIgnoreCase(portID)) {
+            return opEyeRight;
+        }
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-		if ("reset".equalsIgnoreCase(eventPortID))
-		{
-			return elpReset;
-		}
-        if("showCameraSettings".equalsIgnoreCase(eventPortID))
-        {
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if ("reset".equalsIgnoreCase(eventPortID)) {
+            return elpReset;
+        }
+        if ("showCameraSettings".equalsIgnoreCase(eventPortID)) {
             return elpShowCameraSettings;
-        } 
-        if("setReferencePose".equalsIgnoreCase(eventPortID))
-        {
+        }
+        if ("setReferencePose".equalsIgnoreCase(eventPortID)) {
             return elpSetReferencePose;
-        }         
+        }
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
-		if ("EyebrowsRaised".equalsIgnoreCase(eventPortID))
-		{
-			return etpEyebrowsRaised;
-		}
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+        if ("EyebrowsRaised".equalsIgnoreCase(eventPortID)) {
+            return etpEyebrowsRaised;
+        }
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("cameraSelection".equalsIgnoreCase(propertyName))
-		{
-			return bridge.getProperty(propertyName);
-		}
-		else if ("cameraResolution".equalsIgnoreCase(propertyName))
-		{
-			return bridge.getProperty(propertyName);
-		}
-		else if ("modelName".equalsIgnoreCase(propertyName))
-		{
-			return bridge.getProperty(propertyName);
-		}
-		else if ("cameraDisplayUpdate".equalsIgnoreCase(propertyName))
-		{
-			return bridge.getProperty(propertyName);
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("cameraSelection".equalsIgnoreCase(propertyName)) {
+            return bridge.getProperty(propertyName);
+        } else if ("cameraResolution".equalsIgnoreCase(propertyName)) {
+            return bridge.getProperty(propertyName);
+        } else if ("modelName".equalsIgnoreCase(propertyName)) {
+            return bridge.getProperty(propertyName);
+        } else if ("cameraDisplayUpdate".equalsIgnoreCase(propertyName)) {
+            return bridge.getProperty(propertyName);
+        }
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-    	
-		if ("cameraSelection".equalsIgnoreCase(propertyName))
-		{
-			propCameraIndex = Integer.parseInt(newValue.toString());
-			final Object oldValue=bridge.setProperty(propertyName, newValue.toString());
-			return oldValue;
-		}
-		
-		if ("cameraResolution".equalsIgnoreCase(propertyName))
-		{
-			propCameraRes = Integer.parseInt(newValue.toString());
-			final Object oldValue=bridge.setProperty(propertyName, newValue.toString());
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
 
-		if ("cameraDisplayUpdate".equalsIgnoreCase(propertyName))
-		{
-			//final Object oldValue = propCameraIndex;
-			propCameraRes = Integer.parseInt(newValue.toString());
-			final Object oldValue=bridge.setProperty(propertyName, newValue.toString());
-			return oldValue;
-		}
-		if ("modelName".equalsIgnoreCase(propertyName))
-		{
-			//final Object oldValue = propCameraIndex;
-			modelName = newValue.toString();// Integer.parseInt(newValue.toString());
-			final Object oldValue=bridge.setProperty(propertyName, newValue.toString());
-			return oldValue;
-		}		
+        if ("cameraSelection".equalsIgnoreCase(propertyName)) {
+            propCameraIndex = Integer.parseInt(newValue.toString());
+            final Object oldValue = bridge.setProperty(propertyName, newValue.toString());
+            return oldValue;
+        }
+
+        if ("cameraResolution".equalsIgnoreCase(propertyName)) {
+            propCameraRes = Integer.parseInt(newValue.toString());
+            final Object oldValue = bridge.setProperty(propertyName, newValue.toString());
+            return oldValue;
+        }
+
+        if ("cameraDisplayUpdate".equalsIgnoreCase(propertyName)) {
+            // final Object oldValue = propCameraIndex;
+            propCameraRes = Integer.parseInt(newValue.toString());
+            final Object oldValue = bridge.setProperty(propertyName, newValue.toString());
+            return oldValue;
+        }
+        if ("modelName".equalsIgnoreCase(propertyName)) {
+            // final Object oldValue = propCameraIndex;
+            modelName = newValue.toString();// Integer.parseInt(newValue.toString());
+            final Object oldValue = bridge.setProperty(propertyName, newValue.toString());
+            return oldValue;
+        }
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
+    /**
+     * Input Ports for receiving values.
+     */
 
-
-	/**
-	 * Event Listener Ports.
-	 */
-	final IRuntimeEventListenerPort elpReset = new IRuntimeEventListenerPort()
-	{
-		@Override 
-		public void receiveEvent(final String data)
-		{
-			// insert event handling here 
-			bridge.reset();
-		}
-	};	
-	
-	/**
-	 * Event Listener Port for Camera Settings Window.
-	 */
-    final IRuntimeEventListenerPort elpShowCameraSettings 	= new IRuntimeEventListenerPort()
-    {
-    	@Override 
-    	public void receiveEvent(String data)
-    	 {
-    		bridge.showCameraSettings();
-    	 }
+    /**
+     * Event Listener Ports.
+     */
+    final IRuntimeEventListenerPort elpReset = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            // insert event handling here
+            bridge.reset();
+        }
     };
-    
-	/**
-	 * Event Listener Port for Camera Settings Window.
-	 */
-    final IRuntimeEventListenerPort elpSetReferencePose 	= new IRuntimeEventListenerPort()
-    {
-    	@Override 
-    	public void receiveEvent(String data)
-    	 {
-    		bridge.setReferencePose();
-    	 }
+
+    /**
+     * Event Listener Port for Camera Settings Window.
+     */
+    final IRuntimeEventListenerPort elpShowCameraSettings = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(String data) {
+            bridge.showCameraSettings();
+        }
     };
- 
-    
-    public void newValuesCallback(
-			final double roll  
-		, 	final double pitch
-		, 	final double yaw
-		,	final double posx
-		,	final double posy
-		,	final double scale
-		,	final int browLift
-		,	final int lipDistance
-		,	final int eyeLeftState
-		,	final int eyeRightState)
-    {
-    	// TODO Auto-generated method stub
-    	if(!pluginReady) {System.out.println("bang coord"); return;}
-    	
-    	AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
 
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-		    	opRoll.sendData(ConversionUtils.doubleToBytes(roll));
-		    	opPitch.sendData(ConversionUtils.doubleToBytes(pitch));
-		    	opYaw.sendData(ConversionUtils.doubleToBytes(yaw));
+    /**
+     * Event Listener Port for Camera Settings Window.
+     */
+    final IRuntimeEventListenerPort elpSetReferencePose = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(String data) {
+            bridge.setReferencePose();
+        }
+    };
 
-		    	opPosX.sendData(ConversionUtils.doubleToBytes(posx));
-		    	opPosY.sendData(ConversionUtils.doubleToBytes(posy));
+    public void newValuesCallback(final double roll, final double pitch, final double yaw, final double posx,
+            final double posy, final double scale, final int browLift, final int lipDistance, final int eyeLeftState,
+            final int eyeRightState) {
+        // TODO Auto-generated method stub
+        if (!pluginReady) {
+            System.out.println("bang coord");
+            return;
+        }
 
-		    	opScale.sendData(ConversionUtils.doubleToBytes(scale));
+        AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
 
-		    	opBrowLift.sendData(ConversionUtils.intToBytes(browLift));
-		    	opLipDistance.sendData(ConversionUtils.intToBytes(lipDistance));				
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                opRoll.sendData(ConversionUtils.doubleToBytes(roll));
+                opPitch.sendData(ConversionUtils.doubleToBytes(pitch));
+                opYaw.sendData(ConversionUtils.doubleToBytes(yaw));
 
-		    	opEyeLeft.sendData(ConversionUtils.intToBytes(eyeLeftState));
-		    	opEyeRight.sendData(ConversionUtils.intToBytes(eyeRightState));				
-			}
-    		
-    	});
+                opPosX.sendData(ConversionUtils.doubleToBytes(posx));
+                opPosY.sendData(ConversionUtils.doubleToBytes(posy));
+
+                opScale.sendData(ConversionUtils.doubleToBytes(scale));
+
+                opBrowLift.sendData(ConversionUtils.intToBytes(browLift));
+                opLipDistance.sendData(ConversionUtils.intToBytes(lipDistance));
+
+                opEyeLeft.sendData(ConversionUtils.intToBytes(eyeLeftState));
+                opEyeRight.sendData(ConversionUtils.intToBytes(eyeRightState));
+            }
+
+        });
     }
-// 
-//    /**
-//     * This method is called back from the native code on demand to signify an
-//     * internal error. The first argument corresponds to an error code and the
-//     * second argument corresponds to a textual description of the error.
-//     *
-//     * @param level an error code
-//     * @param message a textual description of the error
-//     */
-//    private void report_callback(
-//            final int level,
-//            final String message)
-//    { 
-//    	switch (level) {
-//    		case 0:     	AstericsErrorHandling.instance.getLogger().fine(message); break;
-//    		case 1:     	AstericsErrorHandling.instance.getLogger().warning(message); break;
-//    		case 2:     	AstericsErrorHandling.instance.getLogger().severe(message); break;
-//    	}
-//    }
-    
+    //
+    // /**
+    // * This method is called back from the native code on demand to signify an
+    // * internal error. The first argument corresponds to an error code and the
+    // * second argument corresponds to a textual description of the error.
+    // *
+    // * @param level an error code
+    // * @param message a textual description of the error
+    // */
+    // private void report_callback(
+    // final int level,
+    // final String message)
+    // {
+    // switch (level) {
+    // case 0: AstericsErrorHandling.instance.getLogger().fine(message); break;
+    // case 1: AstericsErrorHandling.instance.getLogger().warning(message);
+    // break;
+    // case 2: AstericsErrorHandling.instance.getLogger().severe(message);
+    // break;
+    // }
+    // }
 
-    
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
-    	  pluginReady=false;
-    	  AstericsErrorHandling.instance.reportInfo(this, "CLM Instance::start()");
-			//gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
-			//AREServices.instance.displayPanel(gui, this, true);
-  		if (bridge.activate() == 0)
-			AstericsErrorHandling.instance.reportError(this, "Could not init CLM Facetracker");
-		else 
-		{
-			AstericsErrorHandling.instance.reportInfo(this, "CLM Facetracker activated");
-  			Point pos = AREServices.instance.getComponentPosition(this);
-  			Dimension d = AREServices.instance.getAvailableSpace(this);
-		   // System.out.println("LK window position:"+ pos.x +"/"+ pos.y+" Size:"+d.width+"/"+d.height);  
-		   bridge.setDisplayPosition(pos.x,pos.y,d.width,d.height);
-		}
-  		pluginReady=true;
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        pluginReady = false;
+        AstericsErrorHandling.instance.reportInfo(this, "CLM Instance::start()");
+        // gui = new GUI(this,AREServices.instance.getAvailableSpace(this));
+        // AREServices.instance.displayPanel(gui, this, true);
+        if (bridge.activate() == 0) {
+            AstericsErrorHandling.instance.reportError(this, "Could not init CLM Facetracker");
+        } else {
+            AstericsErrorHandling.instance.reportInfo(this, "CLM Facetracker activated");
+            Point pos = AREServices.instance.getComponentPosition(this);
+            Dimension d = AREServices.instance.getAvailableSpace(this);
+            // System.out.println("LK window position:"+ pos.x +"/"+ pos.y+"
+            // Size:"+d.width+"/"+d.height);
+            bridge.setDisplayPosition(pos.x, pos.y, d.width, d.height);
+        }
+        pluginReady = true;
 
-		super.start();
-		
-      }
+        super.start();
 
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-    	  pluginReady=false;
-    	  bridge.suspend();
-          super.pause();
-      }
+    }
 
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-    	  pluginReady=false;
-    	  bridge.resume();
-    	  pluginReady=true;
-          super.resume();
-      }
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        pluginReady = false;
+        bridge.suspend();
+        super.pause();
+    }
 
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
-    	  pluginReady=false;
-    	  bridge.deactivate();
-			//AREServices.instance.displayPanel(gui, this, false);
-          super.stop();
-      }
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        pluginReady = false;
+        bridge.resume();
+        pluginReady = true;
+        super.resume();
+    }
+
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        pluginReady = false;
+        bridge.deactivate();
+        // AREServices.instance.displayPanel(gui, this, false);
+        super.stop();
+    }
 }

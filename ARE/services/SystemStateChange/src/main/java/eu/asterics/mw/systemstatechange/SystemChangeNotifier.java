@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,171 +26,147 @@
 
 package eu.asterics.mw.systemstatechange;
 
- 
-import java.util.logging.Logger;
 import java.util.Vector;
 
-import com.sun.org.apache.bcel.internal.generic.LoadInstruction;
-
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
-import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
  * 
- * This module provides listeners for the low level system events
- * USB device attach/detach and system supend/wakeup
+ * This module provides listeners for the low level system events USB device
+ * attach/detach and system supend/wakeup
  * 
- *  
+ * 
  * @author Chris Veigl
  */
 
-public class SystemChangeNotifier 
-{ 
-	public static SystemChangeNotifier instance = null;
-	private static boolean loadingSuccessful=false;
-	
-	static      
-	{   
-		String os_name_lowercase=System.getProperty("os.name").toLowerCase();
-		if(os_name_lowercase.startsWith("win")) {
-			AstericsErrorHandling.instance.getLogger().fine("os.name: "+os_name_lowercase+", Loading \"systemevent.dll\" for lowlevel event notifications... ok!");
-			try{
-				System.loadLibrary("systemevent");
-				loadingSuccessful=true;
-			}catch(Exception e) {
-				loadingSuccessful=false;
-				AstericsErrorHandling.instance.getLogger().severe("Could not load \"systemevent.dll\" for lowlevel event notifications...Restart ARE manually!");    		
-			}
-		} else {
-			AstericsErrorHandling.instance.getLogger().fine("os.name: "+os_name_lowercase+", don't loading systemevent lib");
-		}
-		instance = new SystemChangeNotifier();
-	}
- 
-	// declare member variables here
-	native public int systemEventInit();
-	native public int systemEventExit();
-	
-	final int  EVENT_REQUEST_SLEEP = 0;
-	final int  EVENT_SLEEP=1;
-	final int  EVENT_WAKE=2;
-	final int  EVENT_USB_ATTACH=10; 
-	final int  EVENT_USB_DETACH=11;
-	
-	Object mutex = new Object();
-	
-    Vector<SystemChangeListener> listeners = new Vector<SystemChangeListener>();   
-    
-   /**
-    * The class constructor. This initaliases the USB event polling and starts
-    * the polling thread.
-    */
-    private SystemChangeNotifier()
-    {
-    	systemEventInit_generic();
+public class SystemChangeNotifier {
+    public static SystemChangeNotifier instance = null;
+    private static boolean loadingSuccessful = false;
+
+    static {
+        String os_name_lowercase = System.getProperty("os.name").toLowerCase();
+        if (os_name_lowercase.startsWith("win")) {
+            AstericsErrorHandling.instance.getLogger().fine("os.name: " + os_name_lowercase
+                    + ", Loading \"systemevent.dll\" for lowlevel event notifications... ok!");
+            try {
+                System.loadLibrary("systemevent");
+                loadingSuccessful = true;
+            } catch (Exception e) {
+                loadingSuccessful = false;
+                AstericsErrorHandling.instance.getLogger().severe(
+                        "Could not load \"systemevent.dll\" for lowlevel event notifications...Restart ARE manually!");
+            }
+        } else {
+            AstericsErrorHandling.instance.getLogger()
+                    .fine("os.name: " + os_name_lowercase + ", don't loading systemevent lib");
+        }
+        instance = new SystemChangeNotifier();
     }
-    
-    
+
+    // declare member variables here
+    native public int systemEventInit();
+
+    native public int systemEventExit();
+
+    final int EVENT_REQUEST_SLEEP = 0;
+    final int EVENT_SLEEP = 1;
+    final int EVENT_WAKE = 2;
+    final int EVENT_USB_ATTACH = 10;
+    final int EVENT_USB_DETACH = 11;
+
+    Object mutex = new Object();
+
+    Vector<SystemChangeListener> listeners = new Vector<SystemChangeListener>();
+
+    /**
+     * The class constructor. This initaliases the USB event polling and starts
+     * the polling thread.
+     */
+    private SystemChangeNotifier() {
+        systemEventInit_generic();
+    }
+
     private void systemEventInit_generic() {
-    	if(loadingSuccessful)
-	    	try{
-	    		systemEventInit();    		
-	    	}catch(Exception e) {
-	    		e.printStackTrace();
-	    	}
-    	else {
-    		AstericsErrorHandling.instance.getLogger().fine("Ignoring systemEventInit");
-    	}
+        if (loadingSuccessful) {
+            try {
+                systemEventInit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            AstericsErrorHandling.instance.getLogger().fine("Ignoring systemEventInit");
+        }
     }
 
+    synchronized private void systemEventCallback(final int eventType) {
+        switch (eventType) {
+        case EVENT_REQUEST_SLEEP:
+            AstericsErrorHandling.instance.getLogger().fine("systemEventCallback received:  REQUEST_SLEEP");
+            for (SystemChangeListener l : listeners) {
+                l.systemSleepRequested();
+            }
+            break;
 
-	synchronized private void systemEventCallback(final int eventType)
-    {
-    	switch (eventType) {
-    		case EVENT_REQUEST_SLEEP: 
-    				AstericsErrorHandling.instance.getLogger().fine("systemEventCallback received:  REQUEST_SLEEP"); 
- 				   for (SystemChangeListener l : listeners)
-				   {
-					   l.systemSleepRequested();
-				   }
-    			break;
-    		
-    		case EVENT_SLEEP: 
-    				AstericsErrorHandling.instance.getLogger().fine("systemEventCallback received: ENTER_SLEEP"); 
-  				   for (SystemChangeListener l : listeners)
-				   {
-					   l.systemSleep();
-				   }
-    			break;
-    			
-    		case EVENT_WAKE: 
-    				AstericsErrorHandling.instance.getLogger().fine("systemEventCallback received: WAKE_UP"); 
-   				   for (SystemChangeListener l : listeners)
-				   {
-					   l.systemResume();
-				   }
-    			break;
-    		
-    		case EVENT_USB_ATTACH:  
-				   AstericsErrorHandling.instance.getLogger().fine("systemEventCallback received: USB_ATTACH");
-				   for (SystemChangeListener l : listeners)
-				   {
-					   l.usbDevicesAttached();
-				   }
-				 break;
-				   
-    		case EVENT_USB_DETACH: 
-				   AstericsErrorHandling.instance.getLogger().fine("Usb devices detached");
-				   for (SystemChangeListener l : listeners)
-				   {
-					   l.usbDevicesRemoved();
-				   }
-				 break;
-    	}
+        case EVENT_SLEEP:
+            AstericsErrorHandling.instance.getLogger().fine("systemEventCallback received: ENTER_SLEEP");
+            for (SystemChangeListener l : listeners) {
+                l.systemSleep();
+            }
+            break;
+
+        case EVENT_WAKE:
+            AstericsErrorHandling.instance.getLogger().fine("systemEventCallback received: WAKE_UP");
+            for (SystemChangeListener l : listeners) {
+                l.systemResume();
+            }
+            break;
+
+        case EVENT_USB_ATTACH:
+            AstericsErrorHandling.instance.getLogger().fine("systemEventCallback received: USB_ATTACH");
+            for (SystemChangeListener l : listeners) {
+                l.usbDevicesAttached();
+            }
+            break;
+
+        case EVENT_USB_DETACH:
+            AstericsErrorHandling.instance.getLogger().fine("Usb devices detached");
+            for (SystemChangeListener l : listeners) {
+                l.usbDevicesRemoved();
+            }
+            break;
+        }
     }
-    
-    
+
     /**
      * 
      * @param listener
      */
-    public void addListener(SystemChangeListener listener)
-    {
-    	synchronized(mutex)
-    	{
-		   for (SystemChangeListener l : listeners)
-		   {
-			   if (listener.equals(l))
-			   {
-				   return; 
-			   }
-		   } 
-		   listeners.add(listener);
-    	}
+    public void addListener(SystemChangeListener listener) {
+        synchronized (mutex) {
+            for (SystemChangeListener l : listeners) {
+                if (listener.equals(l)) {
+                    return;
+                }
+            }
+            listeners.add(listener);
+        }
     }
 
-    public void removeListener(SystemChangeListener listener)
-    {
-    	synchronized(mutex)
-    	{
-		   for (SystemChangeListener l : listeners)
-		   {
-			   if (listener.equals(l))
-			   {
-				   listeners.remove(l);
-				   return;
-			   }
-		   }
-    	}
+    public void removeListener(SystemChangeListener listener) {
+        synchronized (mutex) {
+            for (SystemChangeListener l : listeners) {
+                if (listener.equals(l)) {
+                    listeners.remove(l);
+                    return;
+                }
+            }
+        }
     }
-    
-    public void clearListeners()
-    {
-    	synchronized(mutex)
-    	{
-    		listeners.clear();
-    	}
+
+    public void clearListeners() {
+        synchronized (mutex) {
+            listeners.clear();
+        }
     }
-	
+
 }

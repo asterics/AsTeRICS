@@ -30,58 +30,45 @@ import java.util.logging.Logger;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * Date: Feb 1, 2010
- * Time: 9:17:33 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Feb 1, 2010 Time:
+ *         9:17:33 AM
  */
-public class ImmutableArray<T> implements Immutable
-{
-    private final T [] array;
+public class ImmutableArray<T> implements Immutable {
+    private final T[] array;
     private Logger logger = null;
-    
-    public ImmutableArray(final T [] array)
-    {
+
+    public ImmutableArray(final T[] array) {
         super();
         logger = AstericsErrorHandling.instance.getLogger();
 
-        if(array == null)
-        {
-        	logger.severe(this.getClass().getName()+
-      		": ImmutableArray-> Invalid null argument");
+        if (array == null) {
+            logger.severe(this.getClass().getName() + ": ImmutableArray-> Invalid null argument");
             throw new IllegalArgumentException("Invalid null argument");
         }
 
         this.array = array.clone();
     }
 
-    public T get(final int index) throws ArrayIndexOutOfBoundsException
-    {
+    public T get(final int index) throws ArrayIndexOutOfBoundsException {
         return array[index];
     }
 
-    public int getSize()
-    {
+    public int getSize() {
         return array.length;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final int numOfElements = array.length;
         int counter = 0;
         final StringBuilder stringBuilder = new StringBuilder("[");
-        for(final T t : array)
-        {
-            stringBuilder
-                    .append(t.toString())
-                    .append(counter++ == numOfElements - 1 ? "]" : ", ");
+        for (final T t : array) {
+            stringBuilder.append(t.toString()).append(counter++ == numOfElements - 1 ? "]" : ", ");
         }
         return stringBuilder.toString();
     }
 
-    public String toShortString()
-    {
-        return super.toString() + " (" + array.length + " elements of type " +
-                array[0].getClass() + ")";
+    public String toShortString() {
+        return super.toString() + " (" + array.length + " elements of type " + array[0].getClass() + ")";
     }
 }

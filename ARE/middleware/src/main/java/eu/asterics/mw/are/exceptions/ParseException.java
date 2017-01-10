@@ -1,6 +1,5 @@
 package eu.asterics.mw.are.exceptions;
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -26,18 +25,13 @@ package eu.asterics.mw.are.exceptions;
  *
  */
 
-
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * Date: Aug 25, 2010
- * Time: 12:10:45 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 25, 2010 Time:
+ *         12:10:45 PM
  */
 
-
-public class ParseException extends Exception
-{
-    public ParseException(final String message)
-    {
+public class ParseException extends Exception {
+    public ParseException(final String message) {
         super(message);
     }
 }

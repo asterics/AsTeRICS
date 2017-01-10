@@ -26,19 +26,14 @@
 package eu.asterics.mw.model.runtime;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Aug 20, 2010
- *         Time: 10:52:43 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 20, 2010 Time:
+ *         10:52:43 AM
  */
-public interface IRuntimeOutputPort
-{
-    public void sendData(final byte [] data);
+public interface IRuntimeOutputPort {
+    public void sendData(final byte[] data);
 
-    public void addInputPortEndpoint(final String targetComponentID, 
-            final String portID,
+    public void addInputPortEndpoint(final String targetComponentID, final String portID,
             final IRuntimeInputPort inputPort, String conversion);
 
-
-    public void removeInputPortEndpoint(final String targetComponentID, 
-            final String portID);
+    public void removeInputPortEndpoint(final String targetComponentID, final String portID);
 }

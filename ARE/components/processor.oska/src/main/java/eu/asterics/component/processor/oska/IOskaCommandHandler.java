@@ -27,15 +27,17 @@ package eu.asterics.component.processor.oska;
 /**
  * IOskaCommandHandler is an interface that should be implemented by classes
  * that handle inputs received from the OSKA.
+ * 
  * @author Christoph Weiss [weissch@technikum-wien.at]
  *
  */
-interface IOskaCommandHandler 
-{
-	/**
-	 * Handles a specific command from OSKA
-	 * @param arguments the arguments of the command
-	 * @return true if the command could be handled, false otherwise
-	 */
-	boolean handleCommand(String [] arguments);
+interface IOskaCommandHandler {
+    /**
+     * Handles a specific command from OSKA
+     * 
+     * @param arguments
+     *            the arguments of the command
+     * @return true if the command could be handled, false otherwise
+     */
+    boolean handleCommand(String[] arguments);
 }

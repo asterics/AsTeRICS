@@ -28,259 +28,231 @@ package eu.asterics.component.processor.integrate;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.services.*;
-import java.util.*;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- *   Implements the integrate plugin, which adds 
- *   the current input value to and accumulator and puts the result
- *   to the output port
- *  
- * @author Chris Veigl [veigl@tecnikum-wien.at]
- *         Date: Feb 15, 2011
- *         Time: 01:30:00 PM
+ * Implements the integrate plugin, which adds the current input value to and
+ * accumulator and puts the result to the output port
+ * 
+ * @author Chris Veigl [veigl@tecnikum-wien.at] Date: Feb 15, 2011 Time:
+ *         01:30:00 PM
  */
-public class IntegrateInstance extends AbstractRuntimeComponentInstance
-{
+public class IntegrateInstance extends AbstractRuntimeComponentInstance {
 
-	private IRuntimeInputPort ipIn = new InputPort1();
-	private IRuntimeOutputPort opOut = new OutputPort1();
+    private IRuntimeInputPort ipIn = new InputPort1();
+    private IRuntimeOutputPort opOut = new OutputPort1();
 
-	private final String ELP_RESET_NAME 	= "reset";
-	private double propResetValue = 0;
-	private double propUpperLimit = 50000;
-	private double propLowerLimit = -50000;
-	private boolean propWrapAround = false;
+    private final String ELP_RESET_NAME = "reset";
+    private double propResetValue = 0;
+    private double propUpperLimit = 50000;
+    private double propLowerLimit = -50000;
+    private boolean propWrapAround = false;
 
-	private double accu = 0;
+    private double accu = 0;
 
-	/**
-	 * The class constructor.
-	 */
-	public IntegrateInstance()
-	{
-		// empty constructor - needed for OSGi service factory operations
-	}
+    /**
+     * The class constructor.
+     */
+    public IntegrateInstance() {
+        // empty constructor - needed for OSGi service factory operations
+    }
 
-	/**
-	 * returns an Input Port.
-	 * @param portID   the name of the port
-	 * @return         the input port or null if not found
-	 */
-	public IRuntimeInputPort getInputPort(String portID)
-	{
-		if("in".equalsIgnoreCase(portID))
-		{
-			return ipIn;
-		}
-		else
-		{
-			return null;
-		}
-	}
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("in".equalsIgnoreCase(portID)) {
+            return ipIn;
+        } else {
+            return null;
+        }
+    }
 
+    /**
+     * returns an Output Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
+     */
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("out".equalsIgnoreCase(portID)) {
+            return opOut;
+        }
+        return null;
+    }
 
-	/**
-	 * returns an Output Port.
-	 * @param portID   the name of the port
-	 * @return         the output port or null if not found
-	 */
-	public IRuntimeOutputPort getOutputPort(String portID)
-	{
-		if("out".equalsIgnoreCase(portID))
-		{
-			return opOut;
-		}
-		return null;
-	}
+    /**
+     * returns an Event Listener Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the event listener port or null if not found
+     */
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if (ELP_RESET_NAME.equalsIgnoreCase(eventPortID)) {
+            return elpReset;
+        }
+        return null;
+    }
 
-	/**
-	 * returns an Event Listener Port.
-	 * @param portID   the name of the port
-	 * @return         the event listener port or null if not found
-	 */
-	public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-	{
-		if(ELP_RESET_NAME.equalsIgnoreCase(eventPortID))
-		{
-			return elpReset;
-		}
-		return null;
-	}
+    /**
+     * returns the value of the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
+     */
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("resetValue".equalsIgnoreCase(propertyName)) {
+            return propResetValue;
+        } else if ("upperLimit".equalsIgnoreCase(propertyName)) {
+            return propUpperLimit;
+        } else if ("lower_limit".equalsIgnoreCase(propertyName)) {
+            return propLowerLimit;
+        } else if ("wrapAround".equalsIgnoreCase(propertyName)) {
+            return propWrapAround;
+        } else {
+            return null;
+        }
+    }
 
-	/**
-	 * returns the value of the given property.
-	 * @param propertyName   the name of the property
-	 * @return               the property value or null if not found
-	 */
-	public Object getRuntimePropertyValue(String propertyName)
-	{
-		if("resetValue".equalsIgnoreCase(propertyName))
-		{
-			return propResetValue;
-		}
-		else if("upperLimit".equalsIgnoreCase(propertyName))
-		{
-			return propUpperLimit;
-		}
-		else if("lower_limit".equalsIgnoreCase(propertyName))
-		{
-			return propLowerLimit;
-		}
-		else if("wrapAround".equalsIgnoreCase(propertyName))
-		{
-			return propWrapAround;
-		}
-		else
-		{
-			return null;
-		}
-	}
+    /**
+     * sets a new value for the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
+     */
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("resetValue".equalsIgnoreCase(propertyName)) {
+            final Double oldValue = propResetValue;
+            propResetValue = Double.parseDouble((String) newValue);
+            AstericsErrorHandling.instance.reportDebugInfo(this, "reset_value set to " + propResetValue);
+            return oldValue;
+        } else if ("upperLimit".equalsIgnoreCase(propertyName)) {
+            final Double oldValue = propUpperLimit;
+            propUpperLimit = Double.parseDouble((String) newValue);
+            AstericsErrorHandling.instance.reportDebugInfo(this, "upper_limit set to " + propUpperLimit);
+            return oldValue;
+        } else if ("lowerLimit".equalsIgnoreCase(propertyName)) {
+            final Double oldValue = propLowerLimit;
+            propLowerLimit = Double.parseDouble((String) newValue);
+            AstericsErrorHandling.instance.reportDebugInfo(this, "lower_limit set to " + propLowerLimit);
+            return oldValue;
+        } else if ("wrapAround".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propWrapAround;
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propWrapAround = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propWrapAround = false;
+            }
+            AstericsErrorHandling.instance.reportDebugInfo(this, "wrap_around set to " + propWrapAround);
+            return oldValue;
+        }
+        return null;
+    }
 
-	/**
-	 * sets a new value for the given property.
-	 * @param propertyName   the name of the property
-	 * @param newValue       the desired property value or null if not found
-	 */
-	public Object setRuntimePropertyValue(String propertyName, Object newValue)
-	{
-		if("resetValue".equalsIgnoreCase(propertyName)) 
-		{
-			final Double oldValue = propResetValue;      
-			propResetValue = Double.parseDouble((String) newValue);
-			AstericsErrorHandling.instance.reportDebugInfo(this, "reset_value set to " + propResetValue);
-			return oldValue;
-		}
-		else if("upperLimit".equalsIgnoreCase(propertyName))
-		{
-			final Double oldValue = propUpperLimit;
-			propUpperLimit = Double.parseDouble((String) newValue);
-			AstericsErrorHandling.instance.reportDebugInfo(this, "upper_limit set to " + propUpperLimit);
-			return oldValue;
-		}
-		else if("lowerLimit".equalsIgnoreCase(propertyName))
-		{
-			final Double oldValue = propLowerLimit;
-			propLowerLimit = Double.parseDouble((String) newValue);
-			AstericsErrorHandling.instance.reportDebugInfo(this, "lower_limit set to " + propLowerLimit);
-			return oldValue;
-		}
-		else if("wrapAround".equalsIgnoreCase(propertyName))
-		{ 
-			final Object oldValue = propWrapAround;
-			if("true".equalsIgnoreCase((String) newValue))
-			{
-				propWrapAround = true;
-			}
-			else if("false".equalsIgnoreCase((String) newValue))
-			{
-				propWrapAround = false;
-			}
-			AstericsErrorHandling.instance.reportDebugInfo(this, "wrap_around set to " + propWrapAround);
-			return oldValue;
-		}
-		return null;    
-	}
+    /**
+     * Input Port for receiving values.
+     */
+    private class InputPort1 extends DefaultRuntimeInputPort {
+        @Override
+        public void receiveData(byte[] data) {
+            // convert input to double
+            double in = ConversionUtils.doubleFromBytes(data);
 
+            // compute integration
+            accu += in;
+            if (propLowerLimit != propUpperLimit) {
+                if (accu > propUpperLimit) {
+                    if (propWrapAround == true) {
+                        accu = propLowerLimit;// + (accu-upper_limit);
+                    } else {
+                        accu = propUpperLimit;
+                    }
+                } else {
+                    if (accu < propLowerLimit) {
+                        if (propWrapAround == true) {
+                            accu = propUpperLimit;// - (lower_limit-accu);
+                        } else {
+                            accu = propLowerLimit;
+                        }
+                    }
+                }
+            }
 
-	/**
-	 * Input Port for receiving values.
-	 */
-	private class InputPort1 extends DefaultRuntimeInputPort
-	{
-		public void receiveData(byte[] data)
-		{
-			// convert input to double
-			double in = ConversionUtils.doubleFromBytes(data);
+            // send output
+            opOut.sendData(ConversionUtils.doubleToBytes(accu));
+        }
 
-			// compute integration
-			accu += in; 
-			if (propLowerLimit != propUpperLimit)
-			{
-				if (accu > propUpperLimit)
-				{
-					if (propWrapAround == true)
-						accu=propLowerLimit;// + (accu-upper_limit);
-						else accu=propUpperLimit;
-				}
-				else 
-				{
-					if (accu < propLowerLimit) 
-					{
-						if (propWrapAround == true)
-							accu=propUpperLimit;// - (lower_limit-accu);
-							else accu=propLowerLimit;
-					}
-				}
-			}
+    }
 
-			// send output
-			opOut.sendData(ConversionUtils.doubleToBytes(accu));
-		}
+    /**
+     * Output Port for sending values.
+     */
+    private class OutputPort1 extends DefaultRuntimeOutputPort {
+        // empty
+    }
 
-		
-	}
+    /**
+     * Event Listener Port for reset integration value.
+     */
+    final IRuntimeEventListenerPort elpReset = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            accu = propResetValue;
+            opOut.sendData(ConversionUtils.doubleToBytes(accu));
 
-	/**
-	 * Output Port for sending values.
-	 */
-	private class OutputPort1 extends DefaultRuntimeOutputPort
-	{
-		// empty
-	}
+        }
+    };
 
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        accu = propResetValue;
+        super.start();
+    }
 
-	/**
-	 * Event Listener Port for reset integration value.
-	 */
-	final IRuntimeEventListenerPort elpReset 	= new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			accu=propResetValue;
-			opOut.sendData(ConversionUtils.doubleToBytes(accu));
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
-		}
-	};    
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
 
-
-	/**
-	 * called when model is started.
-	 */
-	public void start()
-	{
-		accu=propResetValue;
-		super.start();
-	}
-
-	/**
-	 * called when model is paused.
-	 */
-	public void pause()
-	{
-		super.pause();
-	}
-
-	/**
-	 * called when model is resumed.
-	 */
-	public void resume()
-	{
-		super.resume();
-	}
-
-	/**
-	 * called when model is stopped.
-	 */
-	public void stop()
-	{
-		super.stop();
-	}
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        super.stop();
+    }
 
 }

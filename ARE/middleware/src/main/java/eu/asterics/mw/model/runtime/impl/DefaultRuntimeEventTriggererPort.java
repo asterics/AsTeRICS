@@ -26,39 +26,34 @@
 package eu.asterics.mw.model.runtime.impl;
 
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-
 
 /**
- * This is the default implementation/extension of the {@link AbstractRuntimeEventTriggererPort} class.
+ * This is the default implementation/extension of the
+ * {@link AbstractRuntimeEventTriggererPort} class.
  * 
- * Date: 1/7/11
- * Time: 2:01 PM
+ * Date: 1/7/11 Time: 2:01 PM
  */
-public class DefaultRuntimeEventTriggererPort extends AbstractRuntimeEventTriggererPort
-{
-	
+public class DefaultRuntimeEventTriggererPort extends AbstractRuntimeEventTriggererPort {
+
     @Override
-    public void setEventChannelID(String eventChannelID)
-    {
+    public void setEventChannelID(String eventChannelID) {
         super.setEventChannelID(eventChannelID);
     }
 
     @Override
-	public void raiseEvent() {
-    	super.raiseEvent();
-	}
-
-    @Override
-    public void addEventListener(String targetComponentID, String eventPortID, IRuntimeEventListenerPort eventListenerPort)
-    {
-    	super.addEventListener(targetComponentID, eventPortID, eventListenerPort);
+    public void raiseEvent() {
+        super.raiseEvent();
     }
 
     @Override
-    public void removeEventListener(String targetComponentID, String eventPortID)
-    {
-    	super.removeEventListener(targetComponentID, eventPortID);
+    public void addEventListener(String targetComponentID, String eventPortID,
+            IRuntimeEventListenerPort eventListenerPort) {
+        super.addEventListener(targetComponentID, eventPortID, eventListenerPort);
+    }
+
+    @Override
+    public void removeEventListener(String targetComponentID, String eventPortID) {
+        super.removeEventListener(targetComponentID, eventPortID);
     }
 
 }

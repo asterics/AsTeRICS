@@ -35,120 +35,110 @@ import eu.asterics.mw.model.deployment.IChannel;
 
 /**
  * @author Costas Kakousis [kakousis@cs.ucy.ac.cy]
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Aug 1, 2010
- *         Time: 4:03:23 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 1, 2010 Time:
+ *         4:03:23 PM
  */
-public class DefaultChannel extends DefaultPropertyful implements IChannel
-{
-	private final String sourceComponentID;
-	private final String sourceComponentPortID;
-	private final String targetComponentID;
-	private final String targetComponentPortID;
-	private final String description;
-	private final String id;
-private final IBindingEdge sourceBindingEdge;
+public class DefaultChannel extends DefaultPropertyful implements IChannel {
+    private final String sourceComponentID;
+    private final String sourceComponentPortID;
+    private final String targetComponentID;
+    private final String targetComponentPortID;
+    private final String description;
+    private final String id;
+    private final IBindingEdge sourceBindingEdge;
     private final IBindingEdge targetBindingEdge;
 
-	public DefaultChannel(final String description,
-			final String sourceComponentID,
-			final String sourceComponentPortID,
-			final String targetComponentID,
-			final String targetComponentPortID,
-			final String id,
-			final Map<String, Object> propertyValues)
-	{
-		super(propertyValues);
+    public DefaultChannel(final String description, final String sourceComponentID, final String sourceComponentPortID,
+            final String targetComponentID, final String targetComponentPortID, final String id,
+            final Map<String, Object> propertyValues) {
+        super(propertyValues);
 
-		this.description = description;
-		this.sourceComponentID = sourceComponentID;
-		this.sourceComponentPortID = sourceComponentPortID;
-		this.targetComponentID = targetComponentID;
-		this.targetComponentPortID = targetComponentPortID;
-		this.id = id;
+        this.description = description;
+        this.sourceComponentID = sourceComponentID;
+        this.sourceComponentPortID = sourceComponentPortID;
+        this.targetComponentID = targetComponentID;
+        this.targetComponentPortID = targetComponentPortID;
+        this.id = id;
 
- this.sourceBindingEdge = new DefaultBindingEdge(sourceComponentID, sourceComponentPortID);
+        this.sourceBindingEdge = new DefaultBindingEdge(sourceComponentID, sourceComponentPortID);
         this.targetBindingEdge = new DefaultBindingEdge(targetComponentID, targetComponentPortID);
-	}
-  public IBindingEdge getSource()
-    {
+    }
+
+    @Override
+    public IBindingEdge getSource() {
         return sourceBindingEdge;
     }
 
-    public IBindingEdge getTarget()
-    {
+    @Override
+    public IBindingEdge getTarget() {
         return targetBindingEdge;
     }
 
-	public String getSourceComponentInstanceID()
-	{
-		return sourceComponentID;
-	}
+    @Override
+    public String getSourceComponentInstanceID() {
+        return sourceComponentID;
+    }
 
-	public String getSourceOutputPortID()
-	{
-		return sourceComponentPortID;
-	}
+    @Override
+    public String getSourceOutputPortID() {
+        return sourceComponentPortID;
+    }
 
-	public String getTargetComponentInstanceID()
-	{
-		return targetComponentID;
-	}
+    @Override
+    public String getTargetComponentInstanceID() {
+        return targetComponentID;
+    }
 
-	public String getTargetInputPortID()
-	{
-		return targetComponentPortID;
-	}
+    @Override
+    public String getTargetInputPortID() {
+        return targetComponentPortID;
+    }
 
-	public String getChannelDescription()
-	{
-		return description;
-	}
-	@Override
-	public String getChannelID() {
-		
-		return this.id;
-	}
-	@Override
-	public void appendXMLElements(Document doc) {
+    @Override
+    public String getChannelDescription() {
+        return description;
+    }
 
-		Element channel = doc.createElement("channel");
-		Element channels = (Element) doc.getElementsByTagName("channels").item(0);
-		channels.appendChild(channel);
-		channel.setAttribute("id", this.id);
-		if (this.description!="")
-		{
-			Element description = doc.createElement("description");
-			channel.appendChild(description);
-			description.setTextContent(this.description);
-		}
-		//Create source edge
-		Element sourceElement = doc.createElement("source");
-		channel.appendChild(sourceElement);
-		Element sourceComponentElement = doc.createElement("component");
-		sourceElement.appendChild(sourceComponentElement);
-		sourceComponentElement.setAttribute("id", this.sourceComponentID);
+    @Override
+    public String getChannelID() {
 
-		Element sourceComponentPortElemnt = doc.createElement("port");
-		sourceElement.appendChild(sourceComponentPortElemnt);
-		sourceComponentPortElemnt.setAttribute("id", 
-				this.sourceComponentPortID);
+        return this.id;
+    }
 
-		//Create target edge
-		Element targetElement = doc.createElement("target");
-		channel.appendChild(targetElement);
-		Element targetComponentElement = doc.createElement("component");
-		targetElement.appendChild(targetComponentElement);
-		targetComponentElement.setAttribute("id", this.targetComponentID);
+    @Override
+    public void appendXMLElements(Document doc) {
 
-		Element targetComponentPortElemnt = doc.createElement("port");
-		targetElement.appendChild(targetComponentPortElemnt);
-		targetComponentPortElemnt.setAttribute("id", 
-				this.targetComponentPortID);
+        Element channel = doc.createElement("channel");
+        Element channels = (Element) doc.getElementsByTagName("channels").item(0);
+        channels.appendChild(channel);
+        channel.setAttribute("id", this.id);
+        if (this.description != "") {
+            Element description = doc.createElement("description");
+            channel.appendChild(description);
+            description.setTextContent(this.description);
+        }
+        // Create source edge
+        Element sourceElement = doc.createElement("source");
+        channel.appendChild(sourceElement);
+        Element sourceComponentElement = doc.createElement("component");
+        sourceElement.appendChild(sourceComponentElement);
+        sourceComponentElement.setAttribute("id", this.sourceComponentID);
 
-	}
+        Element sourceComponentPortElemnt = doc.createElement("port");
+        sourceElement.appendChild(sourceComponentPortElemnt);
+        sourceComponentPortElemnt.setAttribute("id", this.sourceComponentPortID);
 
-	
+        // Create target edge
+        Element targetElement = doc.createElement("target");
+        channel.appendChild(targetElement);
+        Element targetComponentElement = doc.createElement("component");
+        targetElement.appendChild(targetComponentElement);
+        targetComponentElement.setAttribute("id", this.targetComponentID);
 
+        Element targetComponentPortElemnt = doc.createElement("port");
+        targetElement.appendChild(targetComponentPortElemnt);
+        targetComponentPortElemnt.setAttribute("id", this.targetComponentPortID);
+
+    }
 
 }

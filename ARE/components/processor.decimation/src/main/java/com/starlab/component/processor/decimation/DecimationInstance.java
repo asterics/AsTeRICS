@@ -29,22 +29,19 @@ package com.starlab.component.processor.decimation;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- *   Implements the decimation of an input signal
+ * Implements the decimation of an input signal
  * 
- * @author Javier Acedo [javier.acedo@starlab.es]
- *         Date: Apr 29, 2011
- *         Time 04:51:02 PM
+ * @author Javier Acedo [javier.acedo@starlab.es] Date: Apr 29, 2011 Time
+ *         04:51:02 PM
  */
-public class DecimationInstance extends AbstractRuntimeComponentInstance
-{
-    
+public class DecimationInstance extends AbstractRuntimeComponentInstance {
+
     private InputPort ipInputPort = new InputPort();
     private OutputPort opOutputPort = new OutputPort();
 
@@ -57,8 +54,7 @@ public class DecimationInstance extends AbstractRuntimeComponentInstance
     /**
      * The class constructor
      */
-    public DecimationInstance ()
-    {
+    public DecimationInstance() {
         decimation.setDownSampling(propDownSampling);
     }
 
@@ -66,8 +62,7 @@ public class DecimationInstance extends AbstractRuntimeComponentInstance
      * called when model is started
      */
     @Override
-    public void start ()
-    {
+    public void start() {
         super.start();
     }
 
@@ -75,8 +70,7 @@ public class DecimationInstance extends AbstractRuntimeComponentInstance
      * called when model is paused
      */
     @Override
-    public void pause ()
-    {
+    public void pause() {
         super.pause();
     }
 
@@ -84,8 +78,7 @@ public class DecimationInstance extends AbstractRuntimeComponentInstance
      * called when model is resumed
      */
     @Override
-    public void resume ()
-    {
+    public void resume() {
         super.resume();
     }
 
@@ -93,21 +86,20 @@ public class DecimationInstance extends AbstractRuntimeComponentInstance
      * called when model is stopped
      */
     @Override
-    public void stop ()
-    {
+    public void stop() {
         super.stop();
     }
 
     /**
      * returns an Input Port.
-     * @param portID   the name of the port
-     * @return         the input port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
      */
     @Override
-    public IRuntimeInputPort getInputPort (String portID)
-    {
-        if ("input".equalsIgnoreCase(portID))
-        {
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("input".equalsIgnoreCase(portID)) {
             return ipInputPort;
         }
 
@@ -116,14 +108,14 @@ public class DecimationInstance extends AbstractRuntimeComponentInstance
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
     @Override
-    public IRuntimeOutputPort getOutputPort (String portID)
-    {
-        if ("output".equalsIgnoreCase(portID))
-        {
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("output".equalsIgnoreCase(portID)) {
             return opOutputPort;
         }
 
@@ -132,13 +124,14 @@ public class DecimationInstance extends AbstractRuntimeComponentInstance
 
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue (String propertyName)
-    {
-        if("DownSamplingRatio".equalsIgnoreCase(propertyName))
-        {
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("DownSamplingRatio".equalsIgnoreCase(propertyName)) {
             return propDownSampling;
         }
 
@@ -147,61 +140,58 @@ public class DecimationInstance extends AbstractRuntimeComponentInstance
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue (String propertyName, Object newValue)
-    {
-        if ("DownSamplingRatio".equalsIgnoreCase(propertyName))
-        {
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("DownSamplingRatio".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propDownSampling;
 
-            if (newValue != null)
-            {
-                try
-                {
-                	propDownSampling = Integer.parseInt(newValue.toString());
-                    if (propDownSampling <= MAXIMUM_DOWNSAMPLING_VALUE)
-                    {
+            if (newValue != null) {
+                try {
+                    propDownSampling = Integer.parseInt(newValue.toString());
+                    if (propDownSampling <= MAXIMUM_DOWNSAMPLING_VALUE) {
                         decimation.setDownSampling(propDownSampling);
+                    } else {
+                        AstericsErrorHandling.instance.reportInfo(this,
+                                "Invalid property value for " + propertyName + ": " + newValue);
                     }
-                    else AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
-                }
-                catch (NumberFormatException nfe)
-                {
-                    AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
+                } catch (NumberFormatException nfe) {
+                    AstericsErrorHandling.instance.reportInfo(this,
+                            "Invalid property value for " + propertyName + ": " + newValue);
                 }
             }
 
             return oldValue;
         }
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; // To change body of implemented methods use File |
+                     // Settings | File Templates.
     }
 
     /**
      * Input Port for receiving the input signal
      */
-    private class InputPort extends DefaultRuntimeInputPort
-    {
-        public void receiveData(byte[] data)
-        {
+    private class InputPort extends DefaultRuntimeInputPort {
+        @Override
+        public void receiveData(byte[] data) {
             // convert input to int
             double in = ConversionUtils.doubleFromBytes(data);
-            if (decimation.decimate(in))
-            {
+            if (decimation.decimate(in)) {
                 opOutputPort.sendData(ConversionUtils.doubleToBytes(decimation.getLastDecimated()));
             }
         }
 
-		
     }
 
     /**
      * Default Output Port for sending the values
      */
-    private class OutputPort extends DefaultRuntimeOutputPort
-    {
+    private class OutputPort extends DefaultRuntimeOutputPort {
         // empty
     }
 }

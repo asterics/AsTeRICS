@@ -25,48 +25,31 @@
 
 package eu.asterics.mw.model.runtime.impl;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.logging.Logger;
-
-import eu.asterics.mw.are.DeploymentManager;
-import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.deployment.IComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 
 /**
- * This is the default implementation/extension of the {@link AbstractRuntimeOutputPort} class.
- *  
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Aug 20, 2010
- *         Time: 3:20:36 PM
+ * This is the default implementation/extension of the
+ * {@link AbstractRuntimeOutputPort} class.
+ * 
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 20, 2010 Time:
+ *         3:20:36 PM
  */
 public class DefaultRuntimeOutputPort extends AbstractRuntimeOutputPort {
 
-	public void sendData(final byte[] data)
-	{
-		super.sendData(data);
-	}
+    @Override
+    public void sendData(final byte[] data) {
+        super.sendData(data);
+    }
 
-	public void addInputPortEndpoint(final String targetComponentID, 
-			final String portID,
-			final IRuntimeInputPort inputPort,
-			String conversion)
-	{
-		super.addInputPortEndpoint(targetComponentID, portID, inputPort, conversion);
-	}
+    @Override
+    public void addInputPortEndpoint(final String targetComponentID, final String portID,
+            final IRuntimeInputPort inputPort, String conversion) {
+        super.addInputPortEndpoint(targetComponentID, portID, inputPort, conversion);
+    }
 
-	
-	public void removeInputPortEndpoint(final String targetComponentID, final String portID)
-	{
-		super.removeInputPortEndpoint(targetComponentID, portID);
-	}
+    @Override
+    public void removeInputPortEndpoint(final String targetComponentID, final String portID) {
+        super.removeInputPortEndpoint(targetComponentID, portID);
+    }
 
 }

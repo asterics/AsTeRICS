@@ -30,92 +30,90 @@ import eu.asterics.component.sensor.keyboardcapture.KeyboardCaptureInstance;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- *   Java JNI bridge for interfacing C++ code for the keyboardcapture plugin
- *  
- * @author Chris Veigl [veigl@technikum-wien.at]
- *         Date: Mar 1, 2011
- *         Time: 3:35:00 PM
- */ 
-public class Bridge
-{
-    /** 
+ * Java JNI bridge for interfacing C++ code for the keyboardcapture plugin
+ * 
+ * @author Chris Veigl [veigl@technikum-wien.at] Date: Mar 1, 2011 Time: 3:35:00
+ *         PM
+ */
+public class Bridge {
+    /**
      * Statically load the native library
      */
-    static   
-    {  
+    static {
         System.loadLibrary("syshook");
-    	AstericsErrorHandling.instance.getLogger().fine("Loading \"syshook.dll\" for KeyboardCapture... ok!");
-  
+        AstericsErrorHandling.instance.getLogger().fine("Loading \"syshook.dll\" for KeyboardCapture... ok!");
+
     }
- 
+
     private final KeyboardCaptureInstance owner;
- 
-    public Bridge(final KeyboardCaptureInstance owner)
-    {
-        this.owner= owner;
+
+    public Bridge(final KeyboardCaptureInstance owner) {
+        this.owner = owner;
     }
 
     /**
      * Activates the underlying native code/hardware.
      *
      * @return 0 if everything was OK, a negative number corresponding to an
-     * error code otherwise
+     *         error code otherwise
      */
     native public int activate();
-  
+
     /**
      * Deactivates the underlying native code/hardware.
      *
      * @return 0 if everything was OK, a negative number corresponding to an
-     * error code otherwise
+     *         error code otherwise
      */
     native public int deactivate();
-        
+
     /**
      * Gets the value of the named property.
      *
-     * @param key the name of the property to be accessed
+     * @param key
+     *            the name of the property to be accessed
      * @return the value of the named property
      */
     native public String getProperty(String key);
- 
+
     /**
      * Sets the named property to the defined value.
      *
-     * @param key the name of the property to be accessed
-     * @param value the value to be assigned to the named property
+     * @param key
+     *            the name of the property to be accessed
+     * @param value
+     *            the value to be assigned to the named property
      * @return the value previously assigned to the named property
      */
     native public String setProperty(String key, final String value);
- 
-    /** 
+
+    /**
      * This method is called back from the native code on demand to signify an
      * internal error. The first argument corresponds to an error code and the
      * second argument corresponds to a textual description of the error.
      *
-     * @param errorCode an error code
-     * @param message a textual description of the error
+     * @param errorCode
+     *            an error code
+     * @param message
+     *            a textual description of the error
      */
-    private void errorReport_callback( 
-            final int errorCode,
-             final String message) 
-    {
-    	AstericsErrorHandling.instance.getLogger().fine(errorCode + ": " + message);
-    } 
-     
+    private void errorReport_callback(final int errorCode, final String message) {
+        AstericsErrorHandling.instance.getLogger().fine(errorCode + ": " + message);
+    }
+
     /**
      * This method is called back from the native code on demand. The passed
      * arguments correspond to the key press state and the keycode
      *
-     * @param pressState (boolean)
-     * @param keyCode - virtual key code (range is [0, Int.MAX_VALUE])
+     * @param pressState
+     *            (boolean)
+     * @param keyCode
+     *            - virtual key code (range is [0, Int.MAX_VALUE])
      */
-    private void newKey_callback(final boolean pressState, final int keyCode)
-    { 
-    	// AstericsErrorHandling.instance.getLogger().fine("Java: Callback [(" + pressState + ", " + keyCode + ")");
-    	owner.processKeyboardInput(pressState,keyCode);              
+    private void newKey_callback(final boolean pressState, final int keyCode) {
+        // AstericsErrorHandling.instance.getLogger().fine("Java: Callback [(" +
+        // pressState + ", " + keyCode + ")");
+        owner.processKeyboardInput(pressState, keyCode);
     }
 
-
- 
 }

@@ -34,63 +34,51 @@ import java.util.logging.Logger;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 
+public class AREProperties extends Properties {
+    public static AREProperties instance = new AREProperties();
+    static final String PROPERTY_FILENAME = "areProperties";
+    private static Logger logger = null;
 
-public class AREProperties extends Properties 
-{
-	public static AREProperties instance = new AREProperties();
-	static final String PROPERTY_FILENAME = "areProperties";
-	private static Logger logger = null;
-	
-	private AREProperties()
-	{
-		try 
-		{
-			logger = AstericsErrorHandling.instance.getLogger();
-			FileInputStream in;
-			in = new FileInputStream(PROPERTY_FILENAME);
-			load(in);
-			in.close();
+    private AREProperties() {
+        try {
+            logger = AstericsErrorHandling.instance.getLogger();
+            FileInputStream in;
+            in = new FileInputStream(PROPERTY_FILENAME);
+            load(in);
+            in.close();
 
-		} 
-		catch (IOException e) 
-		{
-			//Try to create the file if does not exist
-			File file = new File(PROPERTY_FILENAME);
-			boolean success;
-			try {
-				success = file.createNewFile();
-				if (success) 
-				{
-					logger.warning(this.getClass().getName()+".AREProperties(): " +
-						"Properties file was missing, it has been created.");
-				} 
-			} catch (IOException ioe) {
-				logger.severe(this.getClass().getName()+"." +
-						"AREProperties(): Options file was missing and " +
-						"couldn't be created.");
-			}
-		}
-	}
-	
-	public void storeProperties()
-	{
-		try
-		{
-			FileOutputStream out = new FileOutputStream(PROPERTY_FILENAME);
-			store(out, "ARE Properties");
-			out.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public boolean checkProperty(String key, String expectedValue)
-	{
-		if (containsKey(key))
-		{
-			return getProperty(key).equals(expectedValue);
-		}
-		return false;
-	}
+        } catch (IOException e) {
+            // Try to create the file if does not exist
+            File file = new File(PROPERTY_FILENAME);
+            boolean success;
+            try {
+                success = file.createNewFile();
+                if (success) {
+                    logger.warning(this.getClass().getName() + ".AREProperties(): "
+                            + "Properties file was missing, it has been created.");
+                }
+            } catch (IOException ioe) {
+                logger.severe(this.getClass().getName() + "." + "AREProperties(): Options file was missing and "
+                        + "couldn't be created.");
+            }
+        }
+    }
+
+    public void storeProperties() {
+        try {
+            FileOutputStream out = new FileOutputStream(PROPERTY_FILENAME);
+            store(out, "ARE Properties");
+            out.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public boolean checkProperty(String key, String expectedValue) {
+        if (containsKey(key)) {
+            return getProperty(key).equals(expectedValue);
+        }
+        return false;
+    }
 }

@@ -33,22 +33,21 @@ import org.osgi.framework.BundleContext;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class WebServiceActivator implements BundleActivator {
-	private Logger logger=null;
-	@Override
-	public void start(BundleContext bc) throws Exception 
-	{
-		logger = AstericsErrorHandling.instance.getLogger();
-		logger.fine("Starting WebServiceActivator");		
-		
-		WebServiceEngine.getInstance().initGrizzlyHttpService(bc);
-		//initNettySocketIO(bc);
-	}
-	
-	@Override
-	public void stop(BundleContext arg0) throws Exception 
-	{
-		logger.fine("Stopping WebServiceActivator");
-		WebServiceEngine.getInstance().stop();
-	}
+    private Logger logger = null;
+
+    @Override
+    public void start(BundleContext bc) throws Exception {
+        logger = AstericsErrorHandling.instance.getLogger();
+        logger.fine("Starting WebServiceActivator");
+
+        WebServiceEngine.getInstance().initGrizzlyHttpService(bc);
+        // initNettySocketIO(bc);
+    }
+
+    @Override
+    public void stop(BundleContext arg0) throws Exception {
+        logger.fine("Stopping WebServiceActivator");
+        WebServiceEngine.getInstance().stop();
+    }
 
 }

@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -25,8 +24,7 @@
  * 
  */
 
-package eu.asterics.component.sensor.keycapture; 
-
+package eu.asterics.component.sensor.keycapture;
 
 import java.lang.reflect.Field;
 
@@ -51,312 +49,285 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  * <Describe purpose of this module>
  * 
  * 
- *  
- * @author <your name> [<your email address>]
- *         Date: 
- *         Time: 
+ * 
+ * @author <your name> [<your email address>] Date: Time:
  */
-public class KeyCaptureInstance extends AbstractRuntimeComponentInstance implements NativeKeyListener 
-{
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class KeyCaptureInstance extends AbstractRuntimeComponentInstance implements NativeKeyListener {
+    // Usage of an output port e.g.:
+    // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
-	final IRuntimeEventTriggererPort etpKeyPressed = new DefaultRuntimeEventTriggererPort();
-	final IRuntimeEventTriggererPort etpKeyReleased = new DefaultRuntimeEventTriggererPort();
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    final IRuntimeEventTriggererPort etpKeyPressed = new DefaultRuntimeEventTriggererPort();
+    final IRuntimeEventTriggererPort etpKeyReleased = new DefaultRuntimeEventTriggererPort();
+    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	int propKeyCode = 0;
-	boolean propBlock = false;
-	boolean enabled = true;
-	
-	// declare member variables here
-	private boolean pressed;
-   /**
-    * The class constructor.
-    */
-    public KeyCaptureInstance()
-    {
+    int propKeyCode = 0;
+    boolean propBlock = false;
+    boolean enabled = true;
+
+    // declare member variables here
+    private boolean pressed;
+
+    /**
+     * The class constructor.
+     */
+    public KeyCaptureInstance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-		if ("keyCode".equalsIgnoreCase(portID))
-		{
-			return ipKeyCode;
-		}
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("keyCode".equalsIgnoreCase(portID)) {
+            return ipKeyCode;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-		if ("enable".equalsIgnoreCase(eventPortID))
-		{
-			return elpEnable;
-		}
-		if ("disable".equalsIgnoreCase(eventPortID))
-		{
-			return elpDisable;
-		}
-		if ("block".equalsIgnoreCase(eventPortID))
-		{
-			return elpBlock;
-		}
-		if ("unblock".equalsIgnoreCase(eventPortID))
-		{
-			return elpUnblock;
-		}
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if ("enable".equalsIgnoreCase(eventPortID)) {
+            return elpEnable;
+        }
+        if ("disable".equalsIgnoreCase(eventPortID)) {
+            return elpDisable;
+        }
+        if ("block".equalsIgnoreCase(eventPortID)) {
+            return elpBlock;
+        }
+        if ("unblock".equalsIgnoreCase(eventPortID)) {
+            return elpUnblock;
+        }
 
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
-		if ("keyPressed".equalsIgnoreCase(eventPortID))
-		{
-			return etpKeyPressed;
-		}
-		if ("keyReleased".equalsIgnoreCase(eventPortID))
-		{
-			return etpKeyReleased;
-		}
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+        if ("keyPressed".equalsIgnoreCase(eventPortID)) {
+            return etpKeyPressed;
+        }
+        if ("keyReleased".equalsIgnoreCase(eventPortID)) {
+            return etpKeyReleased;
+        }
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("keyCode".equalsIgnoreCase(propertyName))
-		{
-			return propKeyCode;
-		}
-		if ("block".equalsIgnoreCase(propertyName))
-		{
-			return propBlock;
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("keyCode".equalsIgnoreCase(propertyName)) {
+            return propKeyCode;
+        }
+        if ("block".equalsIgnoreCase(propertyName)) {
+            return propBlock;
+        }
 
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("keyCode".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propKeyCode;
-			propKeyCode = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
-		if ("block".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propBlock;
-			if("true".equalsIgnoreCase((String)newValue))
-			{
-				propBlock = true;
-			}
-			else if("false".equalsIgnoreCase((String)newValue))
-			{
-				propBlock = false;
-			}
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("keyCode".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propKeyCode;
+            propKeyCode = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
+        if ("block".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propBlock;
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propBlock = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propBlock = false;
+            }
+            return oldValue;
+        }
 
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
-	private final IRuntimeInputPort ipKeyCode  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-				 propKeyCode = ConversionUtils.intFromBytes(data); 
-		}
-	};
+    /**
+     * Input Ports for receiving values.
+     */
+    private final IRuntimeInputPort ipKeyCode = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            propKeyCode = ConversionUtils.intFromBytes(data);
+        }
+    };
 
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpEnable = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            enabled = true;
+        }
+    };
+    final IRuntimeEventListenerPort elpDisable = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            enabled = false;
+        }
+    };
+    final IRuntimeEventListenerPort elpBlock = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            propBlock = true;
 
-     /**
-      * Event Listerner Ports.
-      */
-	final IRuntimeEventListenerPort elpEnable = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-				 enabled = true;
-		}
-	};
-	final IRuntimeEventListenerPort elpDisable = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-				 enabled = false;
-		}
-	};
-	final IRuntimeEventListenerPort elpBlock = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-				 propBlock = true;
-				 
-		}
-	};
-	final IRuntimeEventListenerPort elpUnblock = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-				 propBlock = false;
-		}
-	};
+        }
+    };
+    final IRuntimeEventListenerPort elpUnblock = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            propBlock = false;
+        }
+    };
 
-	
-
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
-		  pressed = false;
-		  /*
-		  try 
-		  {
-			GlobalScreen.getInstance().setEventDispatcher(new VoidExecutorService());
-			GlobalScreen.registerNativeHook();
-		  } catch (NativeHookException ne) 
-		  {
-		  }*/
-		  NativeHookServices.init();
-          GlobalScreen.addNativeKeyListener(this);
-          enabled=true;
-          super.start();
-      }
-
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-		  //GlobalScreen.unregisterNativeHook();
-    	  enabled=false;
-          super.pause();
-      }
-
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-		  pressed = false;
-		  enabled=true;
-		  /*
-		  try 
-		  {
-			GlobalScreen.registerNativeHook();
-		  } catch (NativeHookException ne) 
-		  { 
-		  }*/
-          super.resume();
-      }
-
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {	  
-		  //GlobalScreen.unregisterNativeHook();
-    	  enabled=false;
-    	  GlobalScreen.removeNativeKeyListener(this);
-          super.stop();
-      }
-	  
-	 @Override
-	public void nativeKeyPressed(NativeKeyEvent nke) 
-	{
-		if (enabled == false)
-			return;
-		int keyCode = nke.getKeyCode();
-		if (keyCode == propKeyCode) 
-		{
-			if (pressed == false) {
-				etpKeyPressed.raiseEvent();
-				pressed = true;
-			}
-			if (propBlock) 
-			{
-				try 
-				{
-					Field f = NativeInputEvent.class.getDeclaredField("reserved");
-					f.setAccessible(true);
-					f.setShort(nke, (short) 0x01);
-				} catch (NoSuchFieldException nsfe) 
-				{
-					AstericsErrorHandling.instance.reportError(this, "Error blocking keycode --> NativeInputField not found");
-				} catch (IllegalAccessException iae) 
-				{ 
-					AstericsErrorHandling.instance.reportError(this, "Error blocking keycode --> IllegalAccess on NativeInputfield");
-				}
-				
-			}
-		}		
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        pressed = false;
+        /*
+         * try { GlobalScreen.getInstance().setEventDispatcher(new
+         * VoidExecutorService()); GlobalScreen.registerNativeHook(); } catch
+         * (NativeHookException ne) { }
+         */
+        NativeHookServices.init();
+        GlobalScreen.addNativeKeyListener(this);
+        enabled = true;
+        super.start();
     }
-    
-	
-	
+
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        // GlobalScreen.unregisterNativeHook();
+        enabled = false;
+        super.pause();
+    }
+
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        pressed = false;
+        enabled = true;
+        /*
+         * try { GlobalScreen.registerNativeHook(); } catch (NativeHookException
+         * ne) { }
+         */
+        super.resume();
+    }
+
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        // GlobalScreen.unregisterNativeHook();
+        enabled = false;
+        GlobalScreen.removeNativeKeyListener(this);
+        super.stop();
+    }
+
+    @Override
+    public void nativeKeyPressed(NativeKeyEvent nke) {
+        if (enabled == false) {
+            return;
+        }
+        int keyCode = nke.getKeyCode();
+        if (keyCode == propKeyCode) {
+            if (pressed == false) {
+                etpKeyPressed.raiseEvent();
+                pressed = true;
+            }
+            if (propBlock) {
+                try {
+                    Field f = NativeInputEvent.class.getDeclaredField("reserved");
+                    f.setAccessible(true);
+                    f.setShort(nke, (short) 0x01);
+                } catch (NoSuchFieldException nsfe) {
+                    AstericsErrorHandling.instance.reportError(this,
+                            "Error blocking keycode --> NativeInputField not found");
+                } catch (IllegalAccessException iae) {
+                    AstericsErrorHandling.instance.reportError(this,
+                            "Error blocking keycode --> IllegalAccess on NativeInputfield");
+                }
+
+            }
+        }
+    }
+
     @Override
     public void nativeKeyReleased(NativeKeyEvent nke) {
-		if (enabled == false)
-			return;
+        if (enabled == false) {
+            return;
+        }
         int keyCode = nke.getKeyCode();
-		if (keyCode == propKeyCode) {
-			etpKeyReleased.raiseEvent();
-			pressed = false;
-		}
+        if (keyCode == propKeyCode) {
+            etpKeyReleased.raiseEvent();
+            pressed = false;
+        }
     }
 
     @Override
     public void nativeKeyTyped(NativeKeyEvent nke) {
-        		
+
     }
-	
-   
-    
+
 }

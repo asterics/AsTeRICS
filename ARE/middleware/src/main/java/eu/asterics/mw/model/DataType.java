@@ -29,35 +29,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 1:02:38 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         1:02:38 PM
  */
-public enum DataType
-{
-    UNKNOWN("unknown"),
-    BOOLEAN("boolean"),
-    BYTE("byte"),
-    CHAR("char"),
-    INTEGER("integer"),
-    DOUBLE("double"),
-    STRING("string");
+public enum DataType {
+    UNKNOWN("unknown"), BOOLEAN("boolean"), BYTE("byte"), CHAR("char"), INTEGER("integer"), DOUBLE("double"), STRING(
+            "string");
 
     private final String dataType;
 
-    private DataType(final String dataType)
-    {
+    private DataType(final String dataType) {
         this.dataType = dataType;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return dataType;
     }
 
-    static public Set<DataType> getAllDataTypes()
-    {
+    static public Set<DataType> getAllDataTypes() {
         final Set<DataType> allDataTypes = new HashSet<DataType>();
 
         allDataTypes.add(BOOLEAN);

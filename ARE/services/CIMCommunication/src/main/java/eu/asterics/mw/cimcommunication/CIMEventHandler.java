@@ -26,29 +26,32 @@
 package eu.asterics.mw.cimcommunication;
 
 /**
- * The CIMEventHandler is the interface the CIM communication system uses to 
- * inform its applications of new events. Every component that communicates 
- * with CIMs has to implement this interface.
+ * The CIMEventHandler is the interface the CIM communication system uses to
+ * inform its applications of new events. Every component that communicates with
+ * CIMs has to implement this interface.
  * 
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at]
- *         Date: Nov 3, 2010
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
 public interface CIMEventHandler {
-	
-	/**
-	 * Called when a packet adhering to the CIM protocol has been received and
-	 * the sanity checks on the packet have been successful 
-	 * @param e the event holding all the information on the packet
-	 */
-	public void handlePacketReceived(CIMEvent e);
-	
-	/**
-	 * Called when an error happened during reception, this can vary from faulty
-	 * packets to lost packets and other error informations and needs to be
-	 * found out from the event type
-	 * @param e the error event
-	 */
-	public void handlePacketError(CIMEvent e);
+
+    /**
+     * Called when a packet adhering to the CIM protocol has been received and
+     * the sanity checks on the packet have been successful
+     * 
+     * @param e
+     *            the event holding all the information on the packet
+     */
+    public void handlePacketReceived(CIMEvent e);
+
+    /**
+     * Called when an error happened during reception, this can vary from faulty
+     * packets to lost packets and other error informations and needs to be
+     * found out from the event type
+     * 
+     * @param e
+     *            the error event
+     */
+    public void handlePacketError(CIMEvent e);
 
 }

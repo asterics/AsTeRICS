@@ -29,83 +29,75 @@ package eu.asterics.component.processor.differentiate;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import java.util.*;
-import java.util.logging.*;
-
 
 /**
- *   Implements the differentiate plugin, which outputs difference
- *   of the current and the previous input value
- *  
- * @author Chris Veigl [veigl@technikum-wien.at]
- *         Date: Feb 15, 2011
- *         Time: 01:45:00 PM
+ * Implements the differentiate plugin, which outputs difference of the current
+ * and the previous input value
+ * 
+ * @author Chris Veigl [veigl@technikum-wien.at] Date: Feb 15, 2011 Time:
+ *         01:45:00 PM
  */
-public class DifferentiateInstance extends AbstractRuntimeComponentInstance
-{
+public class DifferentiateInstance extends AbstractRuntimeComponentInstance {
 
     private IRuntimeInputPort ipIn = new InputPort1();
     private IRuntimeOutputPort ipOut = new OutputPort1();
 
     private double propResetValue = 0;
-    
+
     private double previousValue = 0;
 
-  /**
-   * The class constructor.
-   */
-   public DifferentiateInstance()
-    {
+    /**
+     * The class constructor.
+     */
+    public DifferentiateInstance() {
         // empty constructor - needed for OSGi service factory operations
     }
 
-
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-   public IRuntimeInputPort getInputPort(String portID)
-    {
-        if("in".equalsIgnoreCase(portID))
-        {
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("in".equalsIgnoreCase(portID)) {
             return ipIn;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
-   /**
-    * returns an Output Port.
-    * @param portID   the name of the port
-    * @return         the output port or null if not found
-    */
-    public IRuntimeOutputPort getOutputPort(String portID)
-    {
-        if("out".equalsIgnoreCase(portID))
-        {
+    /**
+     * returns an Output Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
+     */
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("out".equalsIgnoreCase(portID)) {
             return ipOut;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-        if("resetValue".equalsIgnoreCase(propertyName))
-        {
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("resetValue".equalsIgnoreCase(propertyName)) {
             return propResetValue;
         }
         return null;
@@ -113,80 +105,77 @@ public class DifferentiateInstance extends AbstractRuntimeComponentInstance
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if("resetValue".equalsIgnoreCase(propertyName))
-        {
-            final Double oldValue = this.propResetValue;      
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("resetValue".equalsIgnoreCase(propertyName)) {
+            final Double oldValue = this.propResetValue;
             propResetValue = Double.parseDouble((String) newValue);
             return oldValue;
         }
-        return null;    
+        return null;
     }
-
-
 
     /**
      * Input Port for receiving values.
      */
-    private class InputPort1 extends DefaultRuntimeInputPort
-    {
-        public void receiveData(byte[] data)
-        {
+    private class InputPort1 extends DefaultRuntimeInputPort {
+        @Override
+        public void receiveData(byte[] data) {
             // convert input to double
             double in = ConversionUtils.doubleFromBytes(data);
             // Logger.getAnonymousLogger().info("in data: " + in);
-            
+
             // compute and send output
-            ipOut.sendData(ConversionUtils.doubleToBytes(previousValue-in));
-            previousValue=in;
+            ipOut.sendData(ConversionUtils.doubleToBytes(previousValue - in));
+            previousValue = in;
         }
 
-		
     }
 
     /**
      * Output Port for sending values.
      */
-    private class OutputPort1 extends DefaultRuntimeOutputPort
-    {
+    private class OutputPort1 extends DefaultRuntimeOutputPort {
         // empty
     }
-    
+
     /**
      * called when model is started.
      */
-     public void start()
-      {
-     	  previousValue=propResetValue;
-          super.start();
-      }
+    @Override
+    public void start() {
+        previousValue = propResetValue;
+        super.start();
+    }
 
-     /**
-      * called when model is paused.
-      */
-      public void pause()
-      {
-          super.pause();
-      }
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
     /**
      * called when model is resumed.
      */
-      public void resume()
-      {
-          super.resume();
-      }
+    @Override
+    public void resume() {
+        super.resume();
+    }
 
-     /**
-      * called when model is stopped.
-      */
-      public void stop()
-      {
-          super.stop();
-      }
-      
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        super.stop();
+    }
+
 }

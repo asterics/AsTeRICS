@@ -35,28 +35,20 @@ package eu.asterics.mw.model.bundle;
  * oscilloscopes, etc.
  * </ul>
  *
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 12:48:30 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         12:48:30 PM
  */
-public enum ComponentType
-{
-    SENSOR("sensor"),
-    PROCESSOR("processor"),
-    ACTUATOR("actuator"),
-    SPECIAL("special"),
-    GROUP("group");
+public enum ComponentType {
+    SENSOR("sensor"), PROCESSOR("processor"), ACTUATOR("actuator"), SPECIAL("special"), GROUP("group");
 
     private final String type;
 
-    private ComponentType(final String type)
-    {
+    private ComponentType(final String type) {
         this.type = type;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return type;
     }
 }

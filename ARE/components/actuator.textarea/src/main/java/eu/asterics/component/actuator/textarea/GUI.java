@@ -26,188 +26,191 @@
 
 package eu.asterics.component.actuator.textarea;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.TitledBorder;
 
-import eu.asterics.mw.data.ConversionUtils;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.text.DecimalFormat;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.awt.geom.Rectangle2D;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 
 /**
- *   Implements the Graphical User Interface for the
- *   Text Area plugin
- *  
+ * Implements the Graphical User Interface for the Text Area plugin
+ * 
  * @author Karol Pecyna [kpecyna@harpo.com.pl]
- * @author Chris Veigl [veigl@technikum-wien.at]
- *         Date: Jul 20, 2013
+ * @author Chris Veigl [veigl@technikum-wien.at] Date: Jul 20, 2013
  */
-public class GUI extends JPanel 
-{
-    
-    private JPanel guiPanel;  
+public class GUI extends JPanel {
+
+    private JPanel guiPanel;
     private Dimension guiPanelSize;
-    public JTextArea textArea=null;
-    
-    //private final double verticalOffset=1;
-    private final float fontSizeMax=150;
-    private final float fontIncrementStep=0.5f;
+    public JTextArea textArea = null;
 
+    private final TextAreaInstance owner;
+    final IRuntimeEventTriggererPort etpClicked;
 
-	private final TextAreaInstance owner;
-	final IRuntimeEventTriggererPort etpClicked;
-	
     /**
      * The class constructor, initialises the GUI
-     * @param owner    the owner class instance
+     * 
+     * @param owner
+     *            the owner class instance
      */
-    public GUI(final TextAreaInstance owner, final Dimension space)
-    {
+    public GUI(final TextAreaInstance owner, final Dimension space) {
         super();
-    	this.owner=owner;
-    	this.etpClicked=owner.etpClicked;
-    	
-		this.setPreferredSize(new Dimension (space.width, space.height));
-		design (space.width, space.height);  	
+        this.owner = owner;
+        this.etpClicked = owner.etpClicked;
+
+        this.setPreferredSize(new Dimension(space.width, space.height));
+        design(space.width, space.height);
     }
 
-    
-	/**
-	 * set up the panel and its elements for the given size 
-	 * @param width
-	 * @param height
-	 */
-	private void design (int width, int height)
-	{
-		//Create Panels
-		guiPanel = new JPanel (new BorderLayout());
-		guiPanelSize = new Dimension (width, height);
-				
-		guiPanel.setMaximumSize(guiPanelSize);
-		guiPanel.setPreferredSize(guiPanelSize);
-		
-		guiPanel.setBorder(new TitledBorder(BorderFactory.createLineBorder(Color.BLACK),owner.getCaption()));     
-		
-		//guiPanel.setBackground(getColorProperty(owner.getBackgroundColor()));
-		
-		textArea = new JTextArea ();
-		JScrollPane scrollPane = new JScrollPane(textArea);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setPreferredSize(guiPanelSize);
+    /**
+     * set up the panel and its elements for the given size
+     * 
+     * @param width
+     * @param height
+     */
+    private void design(int width, int height) {
+        // Create Panels
+        guiPanel = new JPanel(new BorderLayout());
+        guiPanelSize = new Dimension(width, height);
 
-		setText(owner.getDefaultText());
-		 
-		
-		addMouseListener(new MouseAdapter() { 
-	          public void mousePressed(MouseEvent me) { 
-	            //System.out.println("click ");
-	        	etpClicked.raiseEvent();
-	          } 
-	        }); 
-		
-		Insets panelBorderInsets=guiPanel.getBorder().getBorderInsets(guiPanel);
-		
-		double labelWidth=width-panelBorderInsets.left-panelBorderInsets.right-1;
-		double labelHeight=height-panelBorderInsets.bottom - panelBorderInsets.top-1;
-		
-		Dimension labelDimension = new Dimension((int)labelWidth,(int)labelHeight);
+        guiPanel.setMaximumSize(guiPanelSize);
+        guiPanel.setPreferredSize(guiPanelSize);
 
-//		textArea.setPreferredSize(guiPanelSize);
-				
-		float fontSize=owner.propFontSize;
-		boolean finish=false;
+        guiPanel.setBorder(new TitledBorder(BorderFactory.createLineBorder(Color.BLACK), owner.getCaption()));
 
-		textArea.setOpaque(true);
-		textArea.setForeground(getColorProperty(owner.getTextColor()));
-		textArea.setBackground(getColorProperty(owner.getBackgroundColor()));
-		
-		Font font=textArea.getFont();
-		font=font.deriveFont(fontSize);
-		textArea.setFont(font);
-		textArea.setEditable(owner.propEditable);
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
+        // guiPanel.setBackground(getColorProperty(owner.getBackgroundColor()));
 
-		//Add Components to this panel.
-		
-		guiPanel.add(scrollPane,BorderLayout.CENTER);
-        
-	    this.setLayout(new BorderLayout());
-        add (guiPanel,BorderLayout.PAGE_START);
-	    
-	}
-	 
+        textArea = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setPreferredSize(guiPanelSize);
 
-	/**
+        setText(owner.getDefaultText());
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                // System.out.println("click ");
+                etpClicked.raiseEvent();
+            }
+        });
+
+        Insets panelBorderInsets = guiPanel.getBorder().getBorderInsets(guiPanel);
+
+        double labelWidth = width - panelBorderInsets.left - panelBorderInsets.right - 1;
+        double labelHeight = height - panelBorderInsets.bottom - panelBorderInsets.top - 1;
+
+        new Dimension((int) labelWidth, (int) labelHeight);
+
+        // textArea.setPreferredSize(guiPanelSize);
+
+        float fontSize = owner.propFontSize;
+        textArea.setOpaque(true);
+        textArea.setForeground(getColorProperty(owner.getTextColor()));
+        textArea.setBackground(getColorProperty(owner.getBackgroundColor()));
+
+        Font font = textArea.getFont();
+        font = font.deriveFont(fontSize);
+        textArea.setFont(font);
+        textArea.setEditable(owner.propEditable);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+
+        // Add Components to this panel.
+
+        guiPanel.add(scrollPane, BorderLayout.CENTER);
+
+        this.setLayout(new BorderLayout());
+        add(guiPanel, BorderLayout.PAGE_START);
+
+    }
+
+    /**
      * Sets the label text
-     * @param text new label text
+     * 
+     * @param text
+     *            new label text
      */
-	void setText(String text)
-	{
-		if(textArea!=null)
-		{
-			textArea.setText(text);	
-			textArea.setCaretPosition(textArea.getDocument().getLength());
-		}
-	}
-
-	void appendText(String text)
-	{
-		if(textArea!=null)
-		{
-			if (textArea.getDocument().getLength()>1) textArea.append("\n");	
-			textArea.append(text);	
-			textArea.setCaretPosition(textArea.getDocument().getLength());
-		}
-	}
-	
-	void deleteCharacter()
-	{
-		if(textArea!=null)
-		{
-			String actText=textArea.getText();
-			if (actText.length()>0)
-			{
-				textArea.setText(actText.substring(0, actText.length()-1));	
-				textArea.setCaretPosition(textArea.getDocument().getLength());
-			}
-		}
-	}
-
-	/**
-     * returns a color for a given color index
-     * @param index    the color index
-     * @return         the associated color
-     */
-    Color getColorProperty(int index)
-    {
-    	switch (index) {
-    	case 0: return(Color.BLACK); 
-    	case 1: return(Color.BLUE); 
-    	case 2: return(Color.CYAN); 
-    	case 3: return(Color.DARK_GRAY); 
-    	case 4: return(Color.GRAY); 
-    	case 5: return(Color.GREEN); 
-    	case 6: return(Color.LIGHT_GRAY);
-    	case 7: return(Color.MAGENTA); 
-    	case 8: return(Color.ORANGE); 
-    	case 9: return(Color.PINK); 
-    	case 10: return(Color.RED); 
-    	case 11: return(Color.WHITE);
-    	case 12: return(Color.YELLOW); 
-    	default: return(Color.BLUE);
-    	}
+    void setText(String text) {
+        if (textArea != null) {
+            textArea.setText(text);
+            textArea.setCaretPosition(textArea.getDocument().getLength());
+        }
     }
-  
-  
-   // add state change listeners or action listeners here
-   // interact with output port e.g. via
-   //  owner.opMyOutPort.sendData(ConversionUtils.intToBytes(source.getValue())
-  
+
+    void appendText(String text) {
+        if (textArea != null) {
+            if (textArea.getDocument().getLength() > 1) {
+                textArea.append("\n");
+            }
+            textArea.append(text);
+            textArea.setCaretPosition(textArea.getDocument().getLength());
+        }
+    }
+
+    void deleteCharacter() {
+        if (textArea != null) {
+            String actText = textArea.getText();
+            if (actText.length() > 0) {
+                textArea.setText(actText.substring(0, actText.length() - 1));
+                textArea.setCaretPosition(textArea.getDocument().getLength());
+            }
+        }
+    }
+
+    /**
+     * returns a color for a given color index
+     * 
+     * @param index
+     *            the color index
+     * @return the associated color
+     */
+    Color getColorProperty(int index) {
+        switch (index) {
+        case 0:
+            return (Color.BLACK);
+        case 1:
+            return (Color.BLUE);
+        case 2:
+            return (Color.CYAN);
+        case 3:
+            return (Color.DARK_GRAY);
+        case 4:
+            return (Color.GRAY);
+        case 5:
+            return (Color.GREEN);
+        case 6:
+            return (Color.LIGHT_GRAY);
+        case 7:
+            return (Color.MAGENTA);
+        case 8:
+            return (Color.ORANGE);
+        case 9:
+            return (Color.PINK);
+        case 10:
+            return (Color.RED);
+        case 11:
+            return (Color.WHITE);
+        case 12:
+            return (Color.YELLOW);
+        default:
+            return (Color.BLUE);
+        }
+    }
+
+    // add state change listeners or action listeners here
+    // interact with output port e.g. via
+    // owner.opMyOutPort.sendData(ConversionUtils.intToBytes(source.getValue())
+
 }

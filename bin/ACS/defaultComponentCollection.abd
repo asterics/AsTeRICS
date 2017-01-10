@@ -1719,9 +1719,15 @@
 			<eventListenerPort id="reset">
 				<description>resets the mediafile to initial position</description>
 			</eventListenerPort>
+			<eventListenerPort id="next">
+				<description>plays the next media item (in case a directory was specified as filename)</description>
+			</eventListenerPort>
+			<eventListenerPort id="previous">
+				<description>plays the previous media item (in case a directory was specified as filename)</description>
+			</eventListenerPort>
 		</events>			
         <properties>
-			<property description="path and filename of a valid media file" getStringList="true" name="filename" type="string" value=""/>
+			<property description="path and filename of a valid media file, or path to a directory containing multiple media files" getStringList="true" name="filename" type="string" value=""/>
 			<property description="automatically play the media file at startup or when a filename is received" name="autoplay" type="boolean" value="true"/>
 			<property description="shall a window be displayed (e.g for movies) or not ?" name="displayGui" type="boolean" value="true"/>
 			<property description="default path to the VLC media player installation (libvlc.dll)" name="pathToVLC" type="string" value="C:\Program Files (x86)\VideoLAN\VLC"/>
@@ -6418,6 +6424,91 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.processor.nexusconnector.NexusConnectorInstance" id="asterics.NexusConnector">
+        <type subtype="Web">processor</type>
+        <singleton>false</singleton>
+        <description>Nexus Connector</description>
+        <ports>
+            <inputPort id="in1d">
+                <description>Input 1 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="in2d">
+                <description>Input 2 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="in3d">
+                <description>Input 3 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="in4d">
+                <description>Input 4 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>double</dataType>
+            </inputPort>
+            <inputPort id="in5s">
+                <description>Input 5 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="in6s">
+                <description>Input 6 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="in7s">
+                <description>Input 7 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <inputPort id="in8s">
+                <description>Input 8 sends data to the Nexus</description>
+                <mustBeConnected>false</mustBeConnected>
+                <dataType>string</dataType>
+            </inputPort>
+            <outputPort id="out1d">
+                <description>Output 1 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out2d">
+                <description>Output 2 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out3d">
+                <description>Output 3 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out4d">
+                <description>Output 4 receives data from the Nexus</description>
+                <dataType>double</dataType>
+            </outputPort>
+            <outputPort id="out5s">
+                <description>Output 5 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out6s">
+                <description>Output 6 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out7s">
+                <description>Output 7 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out8s">
+                <description>Output 8 receives data from the Nexus</description>
+                <dataType>string</dataType>
+            </outputPort>
+        </ports>
+        <properties>
+            <property description="Hostname of Nexus" name="nexusHostname" type="string" value="localhost"/>
+            <property description="Port number of Nexus" name="nexusPort" type="integer" value="9081"/>
+            <property description="Nexus component to bind to" name="nexusComponentPath" type="string" value="nexus.asterics"/>
+        </properties>
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.processor.oneeventmanyactions.OneEventManyActionsInstance" id="asterics.OneEventManyActions">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -9792,6 +9883,63 @@
         </gui>
     </componentType>
 
+
+ <componentType canonical_name="eu.asterics.component.sensor.folderbrowser.FolderBrowserInstance" id="asterics.FolderBrowser">
+        <type subtype="File System">sensor</type>
+        <singleton>false</singleton>
+        <description>browse folders and files in filesystem</description>
+        <ports>
+
+			<outputPort id="folderName">
+				<description>name of the current folder (without path)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="folderPath">
+				<description>name of the current folder (including path)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="fileNames">
+				<description>names of the files in current folder</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="filePaths">
+				<description>names of the files in current folder (including path)</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="next">
+				<description>next folder in current directory</description>
+			</eventListenerPort>
+			<eventListenerPort id="previous">
+				<description>previous folder in current directory</description>
+			</eventListenerPort>
+			<eventListenerPort id="enter">
+				<description>enter current folder</description>
+			</eventListenerPort>
+			<eventListenerPort id="exit">
+				<description>exit current folder</description>
+			</eventListenerPort>
+			<eventListenerPort id="current">
+				<description>output current folder</description>
+			</eventListenerPort>
+			<eventListenerPort id="listFiles">
+				<description>lists files in current folder</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="initial folder where browsing starts" name="initialFolder" type="string" value="."/>
+			<property description="wrap around after last entry" name="wrapAround" type="boolean" value="true"/>
+			<property description="allow to exit the initial folder" name="exitInitialFolder" type="boolean" value="false"/>
+			<property description="automatically output files on folder entry " name="autoListFiles" type="boolean" value="false"/>
+			<property description="message to be sent to folderName port if no subfolder is available" name="noFolderMessage" type="string" value="no subfolder available"/>
+			<property description="message to be sent to fileNames port if no file is available" name="noFileMessage" type="string" value="no file available"/>
+        </properties>
+
+    </componentType>
 
  <componentType canonical_name="eu.asterics.component.sensor.fourdjoystick.FourDJoystickInstance" id="asterics.FourDJoystick">
         <type subtype="Others">sensor</type>

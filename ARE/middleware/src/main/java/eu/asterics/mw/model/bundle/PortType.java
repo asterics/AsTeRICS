@@ -26,25 +26,20 @@
 package eu.asterics.mw.model.bundle;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 1:07:09 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         1:07:09 PM
  */
-public enum PortType
-{
-    INPUT("input"),
-    OUTPUT("output");
+public enum PortType {
+    INPUT("input"), OUTPUT("output");
 
     private final String portType;
 
-    private PortType(final String portType)
-    {
+    private PortType(final String portType) {
         this.portType = portType;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return portType;
     }
 }

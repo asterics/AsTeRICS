@@ -40,26 +40,32 @@ public class VoidExecutorService extends AbstractExecutorService {
         isRunning = true;
     }
 
+    @Override
     public void shutdown() {
         isRunning = false;
     }
 
+    @Override
     public List<Runnable> shutdownNow() {
         return new ArrayList<Runnable>(0);
     }
 
+    @Override
     public boolean isShutdown() {
         return !isRunning;
     }
 
+    @Override
     public boolean isTerminated() {
         return !isRunning;
     }
 
+    @Override
     public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
         return true;
     }
 
+    @Override
     public void execute(Runnable r) {
         r.run();
     }

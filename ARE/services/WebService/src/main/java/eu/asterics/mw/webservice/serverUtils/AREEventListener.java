@@ -35,72 +35,72 @@ import eu.asterics.mw.webservice.SseResource;
  *
  */
 public class AREEventListener implements IAREEventListener {
-	
-	@Override
-	public void preDeployModel() {
-		SseResource.broadcastDeploymentEvent(AREEvent.PRE_DEPLOY_EVENT.toString());
-	}
 
-	@Override
-	public void postDeployModel() {
-		SseResource.broadcastDeploymentEvent(AREEvent.POST_DEPLOY_EVENT.toString());
-		SseResource.initializeDataChannelListeners();
-	}
+    @Override
+    public void preDeployModel() {
+        SseResource.broadcastDeploymentEvent(AREEvent.PRE_DEPLOY_EVENT.toString());
+    }
 
-	@Override
-	public void preStartModel() {
-		SseResource.broadcastModelStateEvent(AREEvent.PRE_START_EVENT.toString());
-	}
-	
-	@Override
-	public void postStartModel() {
-		SseResource.broadcastModelStateEvent(AREEvent.POST_START_EVENT.toString());
-	}
+    @Override
+    public void postDeployModel() {
+        SseResource.broadcastDeploymentEvent(AREEvent.POST_DEPLOY_EVENT.toString());
+        SseResource.initializeDataChannelListeners();
+    }
 
-	@Override
-	public void preStopModel() {
-		SseResource.broadcastModelStateEvent(AREEvent.PRE_STOP_EVENT.toString());
-		
-	}
-	
-	@Override
-	public void postStopModel() {
-		SseResource.broadcastModelStateEvent(AREEvent.POST_STOP_EVENT.toString());
-	}
+    @Override
+    public void preStartModel() {
+        SseResource.broadcastModelStateEvent(AREEvent.PRE_START_EVENT.toString());
+    }
 
-	@Override
-	public void prePauseModel() {
-		SseResource.broadcastModelStateEvent(AREEvent.PRE_PAUSE_EVENT.toString());
-	}
+    @Override
+    public void postStartModel() {
+        SseResource.broadcastModelStateEvent(AREEvent.POST_START_EVENT.toString());
+    }
 
-	@Override
-	public void postPauseModel() {
-		SseResource.broadcastModelStateEvent(AREEvent.POST_PAUSE_EVENT.toString());
-	}
+    @Override
+    public void preStopModel() {
+        SseResource.broadcastModelStateEvent(AREEvent.PRE_STOP_EVENT.toString());
 
-	@Override
-	public void preResumeModel() {
-		SseResource.broadcastModelStateEvent(AREEvent.PRE_RESUME_EVENT.toString());
-	}
+    }
 
-	@Override
-	public void postResumeModel() {
-		SseResource.broadcastModelStateEvent(AREEvent.POST_RESUME_EVENT.toString());
-	}
-	
-	@Override
-	public void preBundlesInstalled() {
-		//NOT SUPPORTED
-	}
-	
-	@Override
-	public void postBundlesInstalled() {
-		//NOT SUPPORTED
-	}
+    @Override
+    public void postStopModel() {
+        SseResource.broadcastModelStateEvent(AREEvent.POST_STOP_EVENT.toString());
+    }
 
-	@Override
-	public void onAreError(String msg) {
-		//NOT SUPPORTED
-	}
+    @Override
+    public void prePauseModel() {
+        SseResource.broadcastModelStateEvent(AREEvent.PRE_PAUSE_EVENT.toString());
+    }
+
+    @Override
+    public void postPauseModel() {
+        SseResource.broadcastModelStateEvent(AREEvent.POST_PAUSE_EVENT.toString());
+    }
+
+    @Override
+    public void preResumeModel() {
+        SseResource.broadcastModelStateEvent(AREEvent.PRE_RESUME_EVENT.toString());
+    }
+
+    @Override
+    public void postResumeModel() {
+        SseResource.broadcastModelStateEvent(AREEvent.POST_RESUME_EVENT.toString());
+    }
+
+    @Override
+    public void preBundlesInstalled() {
+        // NOT SUPPORTED
+    }
+
+    @Override
+    public void postBundlesInstalled() {
+        // NOT SUPPORTED
+    }
+
+    @Override
+    public void onAreError(String msg) {
+        // NOT SUPPORTED
+    }
 
 }

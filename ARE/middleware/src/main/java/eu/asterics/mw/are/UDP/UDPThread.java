@@ -32,31 +32,29 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  * This class starts the UDPServer in an separate thread. This thread has to be
  * started at the ARE startup
  * 
- * @author Roland Ossmann [ro@ki-i.at]
- *         Date: Sept 15, 2011
- *         Time: 11:08:01 AM
+ * @author Roland Ossmann [ro@ki-i.at] Date: Sept 15, 2011 Time: 11:08:01 AM
  *
  */
 
-public class UDPThread implements Runnable{
+public class UDPThread implements Runnable {
 
-	UDPServer udpServer=null;
-	private Logger logger = null;
-	public UDPThread (){
-		try {
-		  logger = AstericsErrorHandling.instance.getLogger();
-	      udpServer = new UDPServer();
-	     
-		} catch (Exception e) {
-			logger.warning(this.getClass().getName()+"." +
-					"UDPThread: -> \n"+e.getMessage());
-		}
+    UDPServer udpServer = null;
+    private Logger logger = null;
 
-	}
+    public UDPThread() {
+        try {
+            logger = AstericsErrorHandling.instance.getLogger();
+            udpServer = new UDPServer();
 
-	public void run() {
-		      udpServer.start();
-	}
+        } catch (Exception e) {
+            logger.warning(this.getClass().getName() + "." + "UDPThread: -> \n" + e.getMessage());
+        }
 
+    }
+
+    @Override
+    public void run() {
+        udpServer.start();
+    }
 
 }

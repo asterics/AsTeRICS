@@ -1,6 +1,5 @@
 package eu.asterics.mw.services;
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -26,22 +25,31 @@ package eu.asterics.mw.services;
  *
  */
 
+public interface IAREEventListener {
+    public void preDeployModel();
 
+    public void postDeployModel();
 
-public interface IAREEventListener
-{	
-	public void preDeployModel();
-	public void postDeployModel();
-	public void preStartModel();
-	public void postStartModel();
-	public void preStopModel();
-	public void postStopModel();
-	public void prePauseModel();
-	public void postPauseModel();
-	public void preResumeModel();
-	public void postResumeModel();
-	public void preBundlesInstalled();
-	public void postBundlesInstalled();
-	public void onAreError(String msg);
+    public void preStartModel();
+
+    public void postStartModel();
+
+    public void preStopModel();
+
+    public void postStopModel();
+
+    public void prePauseModel();
+
+    public void postPauseModel();
+
+    public void preResumeModel();
+
+    public void postResumeModel();
+
+    public void preBundlesInstalled();
+
+    public void postBundlesInstalled();
+
+    public void onAreError(String msg);
 
 }

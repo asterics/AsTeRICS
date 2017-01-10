@@ -25,139 +25,128 @@
 
 package eu.asterics.mw.model.deployment.impl;
 
-import eu.asterics.mw.model.deployment.IBindingEdge;
-import eu.asterics.mw.model.deployment.IEventChannel;
-import eu.asterics.mw.model.deployment.IEventEdge;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import eu.asterics.mw.model.deployment.IEventChannel;
+import eu.asterics.mw.model.deployment.IEventEdge;
+
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Sep 2, 2010
- *         Time: 5:10:20 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Sep 2, 2010 Time:
+ *         5:10:20 PM
  */
-public class DefaultEventChannel implements IEventChannel
-{
+public class DefaultEventChannel implements IEventChannel {
     private final Set<IEventEdge> sources = new LinkedHashSet<IEventEdge>();
     private final Set<IEventEdge> targets = new LinkedHashSet<IEventEdge>();
 
     private String id, description;
 
-    public DefaultEventChannel(final IEventEdge [] sources,
-            final IEventEdge [] targets,
-            final String id,
-            final String description)
-    {
+    public DefaultEventChannel(final IEventEdge[] sources, final IEventEdge[] targets, final String id,
+            final String description) {
         super();
 
         this.sources.addAll(Arrays.asList(sources));
         this.targets.addAll(Arrays.asList(targets));
         this.id = id;
         this.description = description;
-        
+
     }
 
-    public IEventEdge[] getSources()
-    {
+    @Override
+    public IEventEdge[] getSources() {
         return sources.toArray(new IEventEdge[sources.size()]);
     }
 
-    public IEventEdge[] getTargets()
-    {
+    @Override
+    public IEventEdge[] getTargets() {
         return targets.toArray(new IEventEdge[targets.size()]);
     }
-    
-    public String getChannelID (){
-        return this.id;
-    }
-    
-    public void appendXMLElements(Document doc) {
-
-		Element channel = doc.createElement("eventChannel");
-		Element channels = (Element) doc.getElementsByTagName("eventChannels").item(0);
-		channels.appendChild(channel);
-		channel.setAttribute("id", this.id);
-		if (this.description!="")
-		{
-			Element description = doc.createElement("description");
-			channel.appendChild(description);
-			description.setTextContent(this.description);
-		}
-		//Create sources
-		Element sourcesElement = doc.createElement("sources");
-		channel.appendChild(sourcesElement);
-		//Create source edges
-		//for (int i=0; i<sources.size(); i++)
-		//{
-			Iterator <IEventEdge>itr = sources.iterator();
-			
-			while (itr.hasNext())
-			{
-				IEventEdge source =  itr.next();
-				
-				Element sourceElement = doc.createElement("source");
-				sourcesElement.appendChild(sourceElement);
-				if (source.getComponentInstanceID()!="")
-				{
-					Element sourceComponentElement = doc.createElement("component");
-					sourceElement.appendChild(sourceComponentElement);
-					sourceComponentElement.setAttribute("id", source.getComponentInstanceID());
-				}
-				if (source.getEventPortID()!="")
-				{
-					Element sourceEventPortElement = doc.createElement("eventPort");
-					sourceElement.appendChild(sourceEventPortElement);
-					sourceEventPortElement.setAttribute("id", source.getEventPortID());
-				}
-			}
-		//}
-		//Create targets
-		Element targetsElement = doc.createElement("targets");
-		channel.appendChild(targetsElement);
-//		//Create target edges
-		//for (int i=0; i<targets.size(); i++)
-		//{
-			itr = targets.iterator();
-			while (itr.hasNext())
-			{
-				IEventEdge target =  itr.next();
-				Element targetElement = doc.createElement("target");
-				targetsElement.appendChild(targetElement);
-				if (target.getComponentInstanceID()!="")
-				{
-					Element targetComponentElement = doc.createElement("component");
-					targetElement.appendChild(targetComponentElement);
-					targetComponentElement.setAttribute("id", target.getComponentInstanceID());
-				}
-				if (target.getEventPortID()!="")
-				{
-					Element targetEventPortElement = doc.createElement("eventPort");
-					targetElement.appendChild(targetEventPortElement);
-					targetEventPortElement.setAttribute("id", target.getEventPortID());
-				}
-			}
-		//}
-	}
 
     @Override
-    public String toString()
-    {
+    public String getChannelID() {
+        return this.id;
+    }
+
+    @Override
+    public void appendXMLElements(Document doc) {
+
+        Element channel = doc.createElement("eventChannel");
+        Element channels = (Element) doc.getElementsByTagName("eventChannels").item(0);
+        channels.appendChild(channel);
+        channel.setAttribute("id", this.id);
+        if (this.description != "") {
+            Element description = doc.createElement("description");
+            channel.appendChild(description);
+            description.setTextContent(this.description);
+        }
+        // Create sources
+        Element sourcesElement = doc.createElement("sources");
+        channel.appendChild(sourcesElement);
+        // Create source edges
+        // for (int i=0; i<sources.size(); i++)
+        // {
+        Iterator<IEventEdge> itr = sources.iterator();
+
+        while (itr.hasNext()) {
+            IEventEdge source = itr.next();
+
+            Element sourceElement = doc.createElement("source");
+            sourcesElement.appendChild(sourceElement);
+            if (source.getComponentInstanceID() != "") {
+                Element sourceComponentElement = doc.createElement("component");
+                sourceElement.appendChild(sourceComponentElement);
+                sourceComponentElement.setAttribute("id", source.getComponentInstanceID());
+            }
+            if (source.getEventPortID() != "") {
+                Element sourceEventPortElement = doc.createElement("eventPort");
+                sourceElement.appendChild(sourceEventPortElement);
+                sourceEventPortElement.setAttribute("id", source.getEventPortID());
+            }
+        }
+        // }
+        // Create targets
+        Element targetsElement = doc.createElement("targets");
+        channel.appendChild(targetsElement);
+        // //Create target edges
+        // for (int i=0; i<targets.size(); i++)
+        // {
+        itr = targets.iterator();
+        while (itr.hasNext()) {
+            IEventEdge target = itr.next();
+            Element targetElement = doc.createElement("target");
+            targetsElement.appendChild(targetElement);
+            if (target.getComponentInstanceID() != "") {
+                Element targetComponentElement = doc.createElement("component");
+                targetElement.appendChild(targetComponentElement);
+                targetComponentElement.setAttribute("id", target.getComponentInstanceID());
+            }
+            if (target.getEventPortID() != "") {
+                Element targetEventPortElement = doc.createElement("eventPort");
+                targetElement.appendChild(targetEventPortElement);
+                targetEventPortElement.setAttribute("id", target.getEventPortID());
+            }
+        }
+        // }
+    }
+
+    @Override
+    public String toString() {
         final StringBuilder stringBuilder = new StringBuilder("DefaultEventChannel([");
-        for(final IEventEdge source : sources)
-        {
+        for (final IEventEdge source : sources) {
             stringBuilder.append(source).append(" ");
         }
         stringBuilder.append("] --> [");
-        for(final IEventEdge target : targets)
-        {
+        for (final IEventEdge target : targets) {
             stringBuilder.append(target).append(" ");
         }
         stringBuilder.append("])");
 
         return stringBuilder.toString();
     }
-    
+
 }

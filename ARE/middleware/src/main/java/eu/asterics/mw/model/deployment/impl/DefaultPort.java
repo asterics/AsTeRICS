@@ -32,38 +32,32 @@ import eu.asterics.mw.model.deployment.IPort;
 
 /**
  * @author Costas Kakpusis [kakousis@cs.ucy.ac.cy]
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:03:23 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:03:23 PM
  */
-public class DefaultPort extends DefaultPropertyful implements IPort
-{
+public class DefaultPort extends DefaultPropertyful implements IPort {
     final String portType;
     final DataType portDataType;
 
-    protected DefaultPort(final String portType,
-                          final DataType portDataType,
-                          final Map<String, Object> propertyValues)
-    {
+    protected DefaultPort(final String portType, final DataType portDataType,
+            final Map<String, Object> propertyValues) {
         super(propertyValues);
         this.portType = portType;
         this.portDataType = portDataType;
     }
 
-    public String getPortType()
-    {
+    @Override
+    public String getPortType() {
         return portType;
     }
 
     @Override
-    public DataType getPortDataType()
-    {
+    public DataType getPortDataType() {
         return portDataType;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "DefaultPort(" + portType + ", " + portDataType + ")";
     }
 }

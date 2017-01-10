@@ -29,14 +29,14 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 5:48:29 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         5:48:29 PM
  */
-public interface IPropertyful
-{
+public interface IPropertyful {
     public Object getPropertyValue(final String propertyName);
-    public Map<String, Object> getPropertyValues ();
-    public Set<String> getPropertyKeys ();
-  
+
+    public Map<String, Object> getPropertyValues();
+
+    public Set<String> getPropertyKeys();
+
 }

@@ -26,183 +26,184 @@
 
 package eu.asterics.component.actuator.imagebox;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.border.TitledBorder;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
-import eu.asterics.mw.data.ConversionUtils;
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+
 import eu.asterics.mw.services.AstericsErrorHandling;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.text.DecimalFormat;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.*;
-
 /**
- *   Implements the image panel for the
- *   ImageBox plugin
- *  
- *  @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Jan 17, 2012
- *         Time: 12:31:41 AM
+ * Implements the image panel for the ImageBox plugin
+ * 
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Jan 17, 2012 Time: 12:31:41
+ *         AM
  */
 
-public class ImageBoxPanel extends JPanel 
-{
-	private GUI owner;
-	
-	BufferedImage  image=null;
-	BufferedImage scalledImage=null;
-	
-	int scaledImageWidth=-1;
-	int scaledImageHeight=-1;
-	
-	/**
+public class ImageBoxPanel extends JPanel {
+    private GUI owner;
+
+    BufferedImage image = null;
+    BufferedImage scalledImage = null;
+
+    int scaledImageWidth = -1;
+    int scaledImageHeight = -1;
+
+    /**
      * Paints the picture
-     * @param g    Graphics
+     * 
+     * @param g
+     *            Graphics
      */
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		
-		setBackground(getColorProperty(owner.getBackgroundColor()));
-		
-		if(image!=null)
-		{
-			double panelWidth=this.getWidth();
-			double panelHeight=this.getHeight();
-			double pictureWidth=image.getWidth();
-			double pictureHeight=image.getHeight();
-			
-			double ratioWidth=pictureWidth/panelWidth;
-			double ratioHeight=pictureHeight/panelHeight;
-			double ratio=0;
-			
-			if(ratioWidth>ratioHeight)
-			{
-				ratio=ratioWidth;
-			}
-			else
-			{
-				ratio=ratioHeight;
-			}
-			
-			double scaledWidth=pictureWidth/ratio;
-			double scaledHeight=pictureHeight/ratio;
-			double positionX=(panelWidth-scaledWidth)/2;
-			double positionY=(panelHeight-scaledHeight)/2;
-			
-			//if(((int)scaledWidth!=scaledImageWidth) ||((int)scaledHeight!=scaledImageHeight))
-			//{
-				scaleImage((int)scaledWidth,(int)scaledHeight);
-			//}
-			
-	        
-			//g.drawImage(dimg, (int)positionX, (int)positionY, (int)scaledWidth, (int)scaledHeight, getColorProperty(owner.getBackgroundColor()),null);
-			g.drawImage(scalledImage, (int)positionX, (int)positionY, getColorProperty(owner.getBackgroundColor()),null);
-		}
-	}
-	
-	/**
-     * Scale image.
-     * @param width the width of the image
-     * @param height the height of the image
-     */
-	void scaleImage(int width, int height)
-	{
-		scaledImageWidth=width;
-		scaledImageHeight=height;
-		
-		if(scalledImage!=null)
-		{
-			scalledImage.flush();
-		}
-		scalledImage=null;
-		
-		scalledImage=new BufferedImage((int)width, (int)height, image.getType());  
-		Graphics2D g = scalledImage.createGraphics(); 
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.drawImage(image, 0, 0, scaledImageWidth, scaledImageHeight, 0, 0, image.getWidth(), image.getHeight(), null);  
-        g.dispose();
-	}
-	
-	 /**
-     * Sets the picture path.
-     * @param path path of the picture
-     */
-	void setPicturePath(String path)
-	{
-		if(path.length()==0)
-		{
-			if(image!=null)
-			{
-				image.flush();
-			}
-			image=null;
-		}
-		else
-		{
-			try
-			{
-				if(image!=null)
-				{
-					image.flush();
-				}
-				image=null;
-				File imageFile = new File(path.trim());
-				image = ImageIO.read(imageFile);
-			}
-			catch(Exception ex)
-			{
-				if(image!=null)
-				{
-					image.flush();
-				}
-				image=null;
-				AstericsErrorHandling.instance.getLogger().warning("Can not open picture: "+ path + " " + ex.getMessage());
-			}
-		}
-	}
-	
-	/**
-     * Sets the object owner
-     * @param owner owner of the object 
-     */
-	void setOwner(GUI owner)
-	{
-		this.owner=owner;
-	}
-	
-	/**
-     * returns a color for a given color index
-     * @param index    the color index
-     * @return         the associated color
-     */
-    Color getColorProperty(int index)
-    {
-    	switch (index) {
-    	case 0: return(Color.BLACK); 
-    	case 1: return(Color.BLUE); 
-    	case 2: return(Color.CYAN); 
-    	case 3: return(Color.DARK_GRAY); 
-    	case 4: return(Color.GRAY); 
-    	case 5: return(Color.GREEN); 
-    	case 6: return(Color.LIGHT_GRAY);
-    	case 7: return(Color.MAGENTA); 
-    	case 8: return(Color.ORANGE); 
-    	case 9: return(Color.PINK); 
-    	case 10: return(Color.RED); 
-    	case 11: return(Color.WHITE);
-    	case 12: return(Color.YELLOW); 
-    	default: return(Color.BLUE);
-    	}
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        setBackground(getColorProperty(owner.getBackgroundColor()));
+
+        if (image != null) {
+            double panelWidth = this.getWidth();
+            double panelHeight = this.getHeight();
+            double pictureWidth = image.getWidth();
+            double pictureHeight = image.getHeight();
+
+            double ratioWidth = pictureWidth / panelWidth;
+            double ratioHeight = pictureHeight / panelHeight;
+            double ratio = 0;
+
+            if (ratioWidth > ratioHeight) {
+                ratio = ratioWidth;
+            } else {
+                ratio = ratioHeight;
+            }
+
+            double scaledWidth = pictureWidth / ratio;
+            double scaledHeight = pictureHeight / ratio;
+            double positionX = (panelWidth - scaledWidth) / 2;
+            double positionY = (panelHeight - scaledHeight) / 2;
+
+            // if(((int)scaledWidth!=scaledImageWidth)
+            // ||((int)scaledHeight!=scaledImageHeight))
+            // {
+            scaleImage((int) scaledWidth, (int) scaledHeight);
+            // }
+
+            // g.drawImage(dimg, (int)positionX, (int)positionY,
+            // (int)scaledWidth, (int)scaledHeight,
+            // getColorProperty(owner.getBackgroundColor()),null);
+            g.drawImage(scalledImage, (int) positionX, (int) positionY, getColorProperty(owner.getBackgroundColor()),
+                    null);
+        }
     }
-    
-    
+
+    /**
+     * Scale image.
+     * 
+     * @param width
+     *            the width of the image
+     * @param height
+     *            the height of the image
+     */
+    void scaleImage(int width, int height) {
+        scaledImageWidth = width;
+        scaledImageHeight = height;
+
+        if (scalledImage != null) {
+            scalledImage.flush();
+        }
+        scalledImage = null;
+
+        scalledImage = new BufferedImage((int) width, (int) height, image.getType());
+        Graphics2D g = scalledImage.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g.drawImage(image, 0, 0, scaledImageWidth, scaledImageHeight, 0, 0, image.getWidth(), image.getHeight(), null);
+        g.dispose();
+    }
+
+    /**
+     * Sets the picture path.
+     * 
+     * @param path
+     *            path of the picture
+     */
+    void setPicturePath(String path) {
+        if (path.length() == 0) {
+            if (image != null) {
+                image.flush();
+            }
+            image = null;
+        } else {
+            try {
+                if (image != null) {
+                    image.flush();
+                }
+                image = null;
+                File imageFile = new File(path.trim());
+                image = ImageIO.read(imageFile);
+            } catch (Exception ex) {
+                if (image != null) {
+                    image.flush();
+                }
+                image = null;
+                AstericsErrorHandling.instance.getLogger()
+                        .warning("Can not open picture: " + path + " " + ex.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Sets the object owner
+     * 
+     * @param owner
+     *            owner of the object
+     */
+    void setOwner(GUI owner) {
+        this.owner = owner;
+    }
+
+    /**
+     * returns a color for a given color index
+     * 
+     * @param index
+     *            the color index
+     * @return the associated color
+     */
+    Color getColorProperty(int index) {
+        switch (index) {
+        case 0:
+            return (Color.BLACK);
+        case 1:
+            return (Color.BLUE);
+        case 2:
+            return (Color.CYAN);
+        case 3:
+            return (Color.DARK_GRAY);
+        case 4:
+            return (Color.GRAY);
+        case 5:
+            return (Color.GREEN);
+        case 6:
+            return (Color.LIGHT_GRAY);
+        case 7:
+            return (Color.MAGENTA);
+        case 8:
+            return (Color.ORANGE);
+        case 9:
+            return (Color.PINK);
+        case 10:
+            return (Color.RED);
+        case 11:
+            return (Color.WHITE);
+        case 12:
+            return (Color.YELLOW);
+        default:
+            return (Color.BLUE);
+        }
+    }
+
 }

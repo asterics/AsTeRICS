@@ -30,27 +30,28 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  * OskaCommandAtKbdHandler handles the @KBD commands that can be transferred by
  * the OSKA. Retrieves the keycode and sends it to the key codes output port of
  * the OSKA plug-in.
+ * 
  * @author Christoph Weiss [weissch@technikum-wien.at]
  *
  */
-class OskaCommandAtKbdHandler implements IOskaActionStringHandler 
-{
-	/**
-	 * Handles the @KBD command from OSKA. Extracts the keycode and forwards it 
-	 * to the output port
-	 * @param arguments the arguments of the command
-	 * @return true if the command could be handled, false otherwise
-	 */
-	@Override
-	public void handleActionString(String arguments) {
-		
-		String output = arguments.substring("@KBD:".length()); 
-		
-		AstericsErrorHandling.instance.reportInfo(OskaInstance.instance, 
-			String.format("Sending keycode string to " +
-					" keycodes output: %s", output));
-		
-		OskaInstance.instance.outputs.opKeycodes.sendData(output.getBytes());
-	}
+class OskaCommandAtKbdHandler implements IOskaActionStringHandler {
+    /**
+     * Handles the @KBD command from OSKA. Extracts the keycode and forwards it
+     * to the output port
+     * 
+     * @param arguments
+     *            the arguments of the command
+     * @return true if the command could be handled, false otherwise
+     */
+    @Override
+    public void handleActionString(String arguments) {
+
+        String output = arguments.substring("@KBD:".length());
+
+        AstericsErrorHandling.instance.reportInfo(OskaInstance.instance,
+                String.format("Sending keycode string to " + " keycodes output: %s", output));
+
+        OskaInstance.instance.outputs.opKeycodes.sendData(output.getBytes());
+    }
 
 }
