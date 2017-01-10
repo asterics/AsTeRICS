@@ -32,9 +32,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,7 +60,8 @@ public class PCSDevice {
     private static final String PATH_SEPARATOR = "\\";
 
     private Logger logger = AstericsErrorHandling.instance.getLogger();
-    private ScheduledExecutorService timerExecutor = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService timerExecutorPatch = null;
+    private ScheduledExecutorService timerExecutorSend = null;
     private int vid = 0x18EF;
     private int pid = 0xE015;
 
@@ -67,6 +72,8 @@ public class PCSDevice {
 
     public boolean open() {
 
+        timerExecutorPatch = Executors.newSingleThreadScheduledExecutor();
+        timerExecutorSend = Executors.newSingleThreadScheduledExecutor();
         if (dev != null) {
             dev.close();
         }
@@ -94,7 +101,8 @@ public class PCSDevice {
 
     public boolean close() {
         HidManager.getHidServices().shutdown();
-        timerExecutor.shutdownNow();
+        timerExecutorPatch.shutdownNow();
+        timerExecutorSend.shutdownNow();
         if (dev != null) {
             dev.close();
         }
@@ -117,28 +125,54 @@ public class PCSDevice {
     }
 
     /**
-     * sends bytes to the fs20-device before sending it is tried to reopen the
+     * sends bytes to the fs20-device. before sending, it is tried to reopen the
      * device, if it is null. if sending fails (returns -1) it is tried to
-     * reopen the device and send the bytes again
+     * reopen the device and send the bytes again. if sending needs more than 1
+     * second it is aborted and -1 is returned
      * 
      * @param bytes
      * @return number of bytes sent, -1 if sending failed
      */
     private int sendToDevice(byte[] bytes) {
         int result = -1;
-        if (dev == null) {
-            open();
+        Callable<Integer> sendTask = new SendCallable(bytes);
+        Future<Integer> handler = timerExecutorSend.submit(sendTask);
+        try {
+            result = handler.get(1, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            timerExecutorSend.shutdownNow();
+            timerExecutorSend = Executors.newSingleThreadScheduledExecutor();
+            logger.log(Level.WARNING, "sending to FS20 timed out!");
         }
-        if (dev != null) {
-            result = dev.write(bytes, bytes.length, (byte) 0);
-            if (result < 0) {
+
+        return result;
+    }
+
+    private class SendCallable implements Callable<Integer> {
+
+        private byte[] bytes;
+
+        public SendCallable(byte[] bytes) {
+            this.bytes = bytes;
+        }
+
+        @Override
+        public Integer call() throws Exception {
+            int result = -1;
+            if (dev == null) {
                 open();
-                if (dev != null) {
-                    result = dev.write(bytes, bytes.length, (byte) 0);
+            }
+            if (dev != null) {
+                result = dev.write(bytes, bytes.length, (byte) 0);
+                if (result < 0) {
+                    open();
+                    if (dev != null) {
+                        result = dev.write(bytes, bytes.length, (byte) 0);
+                    }
                 }
             }
+            return result;
         }
-        return result;
     }
 
     private boolean isWindowsOS() {
@@ -172,7 +206,7 @@ public class PCSDevice {
                             }
                         }
                     };
-                    timerExecutor.schedule(cleanupTask, 500, TimeUnit.MILLISECONDS);
+                    timerExecutorPatch.schedule(cleanupTask, 500, TimeUnit.MILLISECONDS);
                 }
             }
         } catch (Exception e) {
