@@ -24,51 +24,55 @@
  */
 
 package eu.asterics.mw.utils;
+
 /**
  * Helper class to find OS ARE is running on.
- *   
- * @author Martin Deinhofer [deinhofe@technikum-wien.at]
- *         Date: May 28, 2015 
+ * 
+ * @author Martin Deinhofer [deinhofe@technikum-wien.at] Date: May 28, 2015
  */
 public class OSUtils {
-	private static String OS = System.getProperty("os.name").toLowerCase();
- 
-	/**
-	 * Is the ARE running on any windows? 
-	 * @return true: yes
-	 */
-	public static boolean isWindows() {
-		return (OS.indexOf("win") >= 0);
-	}
- 
-	/**
-	 * Is the ARE running on an Mac OS X?
-	 * @return true: yes
-	 */
-	public static boolean isMac() {
-		return (OS.indexOf("mac") >= 0);
-	}
- 
-	/**
-	 * Is the ARE runningn on Linux or Unix?
-	 * @return true: yes
-	 */
-	public static boolean isUnix() {
-		return (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0 );
-	}
-	
-	/**
-	 * Returns the operating system name according to AsTeRICS convention.
-	 * @return
-	 */
-	public static String getOsName() {
-		if(isWindows()) {
-			return "windows";
-		} else if(isMac()) {
-			return "macosx";
-		} else if(isUnix()) {
-			return "linux";
-		}
-		return "unknown";
-	}
+    private static String OS = System.getProperty("os.name").toLowerCase();
+
+    /**
+     * Is the ARE running on any windows?
+     * 
+     * @return true: yes
+     */
+    public static boolean isWindows() {
+        return (OS.indexOf("win") >= 0);
+    }
+
+    /**
+     * Is the ARE running on an Mac OS X?
+     * 
+     * @return true: yes
+     */
+    public static boolean isMac() {
+        return (OS.indexOf("mac") >= 0);
+    }
+
+    /**
+     * Is the ARE runningn on Linux or Unix?
+     * 
+     * @return true: yes
+     */
+    public static boolean isUnix() {
+        return (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0);
+    }
+
+    /**
+     * Returns the operating system name according to AsTeRICS convention.
+     * 
+     * @return
+     */
+    public static String getOsName() {
+        if (isWindows()) {
+            return "windows";
+        } else if (isMac()) {
+            return "macosx";
+        } else if (isUnix()) {
+            return "linux";
+        }
+        return "unknown";
+    }
 }

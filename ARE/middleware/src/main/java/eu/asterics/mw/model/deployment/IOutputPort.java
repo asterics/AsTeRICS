@@ -25,13 +25,10 @@
 
 package eu.asterics.mw.model.deployment;
 
-
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:22:56 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:22:56 PM
  */
-public interface IOutputPort extends IPort
-{
+public interface IOutputPort extends IPort {
     // empty
 }

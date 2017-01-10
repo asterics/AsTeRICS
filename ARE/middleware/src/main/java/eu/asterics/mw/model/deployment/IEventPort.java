@@ -26,10 +26,8 @@
 package eu.asterics.mw.model.deployment;
 
 /**
- * Date: 1/5/11
- * Time: 4:13 PM
+ * Date: 1/5/11 Time: 4:13 PM
  */
-public interface IEventPort
-{
+public interface IEventPort {
     // empty
 }

@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -38,66 +37,65 @@ import eu.asterics.mw.services.AREServices;
 
 /**
  * 
- * The Model switche plugin allow to deploy and start another model
- * The model file name is given as property value 
- *  (and selected via Event Listener Port)
+ * The Model switche plugin allow to deploy and start another model The model
+ * file name is given as property value (and selected via Event Listener Port)
  * or it is sent directly to the string input port of the plugin
  * 
  * 
- *  
- * @author Chris Veigl [veigl@technikum-wien.at]
- *         Date: 2011-12-14
- *         Time: 17:55 
+ * 
+ * @author Chris Veigl [veigl@technikum-wien.at] Date: 2011-12-14 Time: 17:55
  */
-public class ModelSwitcherInstance extends AbstractRuntimeComponentInstance
-{
-	String propModel = "autostart.acs";
+public class ModelSwitcherInstance extends AbstractRuntimeComponentInstance {
+    String propModel = "autostart.acs";
 
-	// Event Listener Ports
-	private final String ELP_SWITCHMODEL 	= "switchModel";
-  
-    
-   /**
-    * The class constructor.
-    */
-    public ModelSwitcherInstance()
-    {
+    // Event Listener Ports
+    private final String ELP_SWITCHMODEL = "switchModel";
+
+    /**
+     * The class constructor.
+     */
+    public ModelSwitcherInstance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-		if ("modelName".equalsIgnoreCase(portID))
-		{
-			return ipModelName;
-		}
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("modelName".equalsIgnoreCase(portID)) {
+            return ipModelName;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
-		return null;
-	}
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-        if(ELP_SWITCHMODEL.equalsIgnoreCase(eventPortID)) {
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if (ELP_SWITCHMODEL.equalsIgnoreCase(eventPortID)) {
             return elpSwitchModel;
         }
 
@@ -106,108 +104,104 @@ public class ModelSwitcherInstance extends AbstractRuntimeComponentInstance
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("model".equalsIgnoreCase(propertyName))
-		{
-			return propModel;
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("model".equalsIgnoreCase(propertyName)) {
+            return propModel;
+        }
 
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("model".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propModel;
-			propModel = (String)newValue;
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("model".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propModel;
+            propModel = (String) newValue;
+            return oldValue;
+        }
 
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
-	private final IRuntimeInputPort ipModelName  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-			String modelName = ConversionUtils.stringFromBytes(data);
-			AREServices.instance.deployAndStartFile(modelName);
-		}
+    /**
+     * Input Ports for receiving values.
+     */
+    private final IRuntimeInputPort ipModelName = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            String modelName = ConversionUtils.stringFromBytes(data);
+            AREServices.instance.deployAndStartFile(modelName);
+        }
 
-		
-	};
+    };
 
-
-     /**
-      * Event Listener Port for model switch event.
-      */
-   final IRuntimeEventListenerPort elpSwitchModel = new IRuntimeEventListenerPort() {
+    /**
+     * Event Listener Port for model switch event.
+     */
+    final IRuntimeEventListenerPort elpSwitchModel = new IRuntimeEventListenerPort() {
+        @Override
         public void receiveEvent(String data) {
-    			AREServices.instance.deployAndStartFile(propModel);
+            AREServices.instance.deployAndStartFile(propModel);
         }
     };
 
-	
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
 
+        super.start();
+    }
 
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
-          super.start();
-      }
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
 
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-          super.pause();
-      }
-
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-          super.resume();
-      }
-
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
-          super.stop();
-      }
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        super.stop();
+    }
 }

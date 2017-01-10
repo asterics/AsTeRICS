@@ -30,58 +30,66 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-public class SkeletonPanel extends JPanel implements SkeletonListener{
+public class SkeletonPanel extends JPanel implements SkeletonListener {
 
-	private static final long serialVersionUID = 1L;
-	private Skeleton skel;
-	
-	
-	@Override
-	public void skeletonUpdate(Skeleton skel) {
-		this.skel = skel;
-		this.repaint();
-	}
+    private static final long serialVersionUID = 1L;
+    private Skeleton skel;
 
+    @Override
+    public void skeletonUpdate(Skeleton skel) {
+        this.skel = skel;
+        this.repaint();
+    }
 
-	@Override
-	public void paint(Graphics g) {
-		if (skel != null) {
-			g.setColor(Color.black);
-			g.fillRect(0,0,640,480);
-			g.setColor(Color.GREEN);
-			if (skel.head != null)
-				g.fillOval((int)skel.head.getX(),(int)skel.head.getY(), 15, 15);
-			if (skel.neck != null)
-				g.fillRect((int)skel.neck.getX(),(int)skel.neck.getY(), 5, 5);
-			if (skel.leftShoulder != null)
-				g.fillRect((int)skel.leftShoulder.getX(),(int)skel.leftShoulder.getY(), 5, 5);
-			if (skel.rightShoulder != null)
-				g.fillRect((int)skel.rightShoulder.getX(),(int)skel.rightShoulder.getY(), 5, 5);
-			if (skel.leftElbow != null)
-				g.fillRect((int)skel.leftElbow.getX(),(int)skel.leftElbow.getY(), 5, 5);
-			if (skel.rightElbow != null)
-				g.fillRect((int)skel.rightElbow.getX(),(int)skel.rightElbow.getY(), 5, 5);
-			if (skel.leftHand != null)
-				g.fillRect((int)skel.leftHand.getX(),(int)skel.leftHand.getY(), 5, 5);
-			if (skel.rightHand != null)
-				g.fillRect((int)skel.rightHand.getX(),(int)skel.rightHand.getY(), 5, 5);
-			if (skel.leftHip != null)
-				g.fillRect((int)skel.leftHip.getX(),(int)skel.leftHip.getY(), 5, 5);
-			if (skel.rightHip != null)
-				g.fillRect((int)skel.rightHip.getX(),(int)skel.rightHip.getY(), 5, 5);
-			if (skel.leftKnee != null)
-				g.fillRect((int)skel.leftKnee.getX(),(int)skel.leftKnee.getY(), 5, 5);
-			if (skel.rightKnee != null)
-				g.fillRect((int)skel.rightKnee.getX(),(int)skel.rightKnee.getY(), 5, 5);
-			if (skel.leftFoot != null)
-				g.fillRect((int)skel.leftFoot.getX(),(int)skel.leftFoot.getY(), 5, 5);
-			if (skel.rightFoot != null)
-				g.fillRect((int)skel.rightFoot.getX(),(int)skel.rightFoot.getY(), 5, 5);
-		}
-	}
+    @Override
+    public void paint(Graphics g) {
+        if (skel != null) {
+            g.setColor(Color.black);
+            g.fillRect(0, 0, 640, 480);
+            g.setColor(Color.GREEN);
+            if (skel.head != null) {
+                g.fillOval((int) skel.head.getX(), (int) skel.head.getY(), 15, 15);
+            }
+            if (skel.neck != null) {
+                g.fillRect((int) skel.neck.getX(), (int) skel.neck.getY(), 5, 5);
+            }
+            if (skel.leftShoulder != null) {
+                g.fillRect((int) skel.leftShoulder.getX(), (int) skel.leftShoulder.getY(), 5, 5);
+            }
+            if (skel.rightShoulder != null) {
+                g.fillRect((int) skel.rightShoulder.getX(), (int) skel.rightShoulder.getY(), 5, 5);
+            }
+            if (skel.leftElbow != null) {
+                g.fillRect((int) skel.leftElbow.getX(), (int) skel.leftElbow.getY(), 5, 5);
+            }
+            if (skel.rightElbow != null) {
+                g.fillRect((int) skel.rightElbow.getX(), (int) skel.rightElbow.getY(), 5, 5);
+            }
+            if (skel.leftHand != null) {
+                g.fillRect((int) skel.leftHand.getX(), (int) skel.leftHand.getY(), 5, 5);
+            }
+            if (skel.rightHand != null) {
+                g.fillRect((int) skel.rightHand.getX(), (int) skel.rightHand.getY(), 5, 5);
+            }
+            if (skel.leftHip != null) {
+                g.fillRect((int) skel.leftHip.getX(), (int) skel.leftHip.getY(), 5, 5);
+            }
+            if (skel.rightHip != null) {
+                g.fillRect((int) skel.rightHip.getX(), (int) skel.rightHip.getY(), 5, 5);
+            }
+            if (skel.leftKnee != null) {
+                g.fillRect((int) skel.leftKnee.getX(), (int) skel.leftKnee.getY(), 5, 5);
+            }
+            if (skel.rightKnee != null) {
+                g.fillRect((int) skel.rightKnee.getX(), (int) skel.rightKnee.getY(), 5, 5);
+            }
+            if (skel.leftFoot != null) {
+                g.fillRect((int) skel.leftFoot.getX(), (int) skel.leftFoot.getY(), 5, 5);
+            }
+            if (skel.rightFoot != null) {
+                g.fillRect((int) skel.rightFoot.getX(), (int) skel.rightFoot.getY(), 5, 5);
+            }
+        }
+    }
 
-	
-	
-	
-	
 }

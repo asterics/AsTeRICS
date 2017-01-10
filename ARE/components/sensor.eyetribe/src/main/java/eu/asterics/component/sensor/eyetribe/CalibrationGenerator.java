@@ -27,10 +27,9 @@
 package eu.asterics.component.sensor.eyetribe;
 
 import java.awt.AWTException;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.Robot;
 import java.awt.Point;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,262 +44,260 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import eu.asterics.mw.data.*;
-import eu.asterics.mw.services.AstericsErrorHandling;
+import com.theeyetribe.client.GazeManager;
+
 import eu.asterics.mw.services.AstericsThreadPool;
 
-
 /**
- *   Implements the calibration thread for the eyetribe plugin
- *  
- * @author Chris Veigl [veigl@technikum-wien.at]
- *         Date: Mar 8, 2012
- *         Time: 11:14:00 PM
+ * Implements the calibration thread for the eyetribe plugin
+ * 
+ * @author Chris Veigl [veigl@technikum-wien.at] Date: Mar 8, 2012 Time:
+ *         11:14:00 PM
  */
 
+public class CalibrationGenerator implements Runnable {
+    final static String CALIB_SOUND_INITCALIB = "./data/sounds/4.wav";
+    final static String CALIB_SOUND_NEXTCALIB = "./data/sounds/5.wav";
 
-public class CalibrationGenerator implements Runnable
-{
-	final static String CALIB_SOUND_INITCALIB = "./data/sounds/4.wav";
-	final static String CALIB_SOUND_NEXTCALIB = "./data/sounds/5.wav";
+    int DEBUG_OUTPUT = 0;
+    private final int WAVE_BUFFER_SIZE = 524288; // 128Kb
 
-	
-	int DEBUG_OUTPUT=0;
-    private final int WAVE_BUFFER_SIZE = 524288; // 128Kb 
-    
     Robot rob;
 
-	Thread t;	
-	long startTime,currentTime;
-	boolean active=false;
+    Thread t;
+    long startTime, currentTime;
+    boolean active = false;
 
-	final EyeTribeInstance owner;
+    final EyeTribeInstance owner;
 
-	public class calibPoint {
-	    public int xLocation;
-	    public int yLocation;
-	    public int xOffset;
-	    public int yOffset;
-	     
-	    // Class constructor
-	    public calibPoint(int i)
-	    {
-	    	int width=Toolkit.getDefaultToolkit().getScreenSize().width;
-	    	int height=Toolkit.getDefaultToolkit().getScreenSize().height;
-	        xLocation = width/2*(i%3);
-	        yLocation = height/2*(int)(i/3);
-	        
-			if (xLocation==0) xLocation+=10;
-			if (xLocation==width) xLocation-=20;
-			if (yLocation==0) yLocation+=10;
-			if (yLocation==height) yLocation-=20;
+    public class calibPoint {
+        public int xLocation;
+        public int yLocation;
+        public int xOffset;
+        public int yOffset;
 
-	        xOffset=0;
-	        yOffset=0;
-	    }
-	    public calibPoint(int x, int y, int xo, int yo)
-	    {
-	        xLocation = x;
-	        yLocation = y;
-	        xOffset=xo;
-	        yOffset=yo;
-	    }
-	   }
+        // Class constructor
+        public calibPoint(int i) {
+            int width = Toolkit.getDefaultToolkit().getScreenSize().width;
+            int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+            xLocation = width / 2 * (i % 3);
+            yLocation = height / 2 * (int) (i / 3);
 
-	private calibPoint[] calibPoints; 
-	List<calibPoint> offsetPoints = new ArrayList<calibPoint>();
-	
-	/**
-	 * The class constructor.
-	 */
-	public CalibrationGenerator(final EyeTribeInstance owner)
-	{
-			this.owner = owner;
-			
-	    	try {
-	       	 	rob = new Robot();
-	            rob.setAutoDelay(0);
-	       	}
-	       	catch(AWTException e){e.printStackTrace();}
+            if (xLocation == 0) {
+                xLocation += 10;
+            }
+            if (xLocation == width) {
+                xLocation -= 20;
+            }
+            if (yLocation == 0) {
+                yLocation += 10;
+            }
+            if (yLocation == height) {
+                yLocation -= 20;
+            }
 
-		
-		   calibPoints = new calibPoint[9];
-		   for(int i = 0; i < 9; i++)
-			  calibPoints[i]=new calibPoint(i);
-	}
+            xOffset = 0;
+            yOffset = 0;
+        }
 
-	   
-    public void playWavFile(String filename)
-    {
+        public calibPoint(int x, int y, int xo, int yo) {
+            xLocation = x;
+            yLocation = y;
+            xOffset = xo;
+            yOffset = yo;
+        }
+    }
+
+    private calibPoint[] calibPoints;
+    List<calibPoint> offsetPoints = new ArrayList<calibPoint>();
+
+    /**
+     * The class constructor.
+     */
+    public CalibrationGenerator(final EyeTribeInstance owner) {
+        this.owner = owner;
+
+        try {
+            rob = new Robot();
+            rob.setAutoDelay(0);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+
+        calibPoints = new calibPoint[9];
+        for (int i = 0; i < 9; i++) {
+            calibPoints[i] = new calibPoint(i);
+        }
+    }
+
+    public void playWavFile(String filename) {
         File soundFile = new File(filename);
-        if (!soundFile.exists()) { 
-        	return;
-        } 
+        if (!soundFile.exists()) {
+            return;
+        }
 
         AudioInputStream audioInputStream = null;
-        try { 
+        try {
             audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-        } catch (UnsupportedAudioFileException e1) { 
+        } catch (UnsupportedAudioFileException e1) {
             e1.printStackTrace();
             return;
-        } catch (IOException e1) { 
+        } catch (IOException e1) {
             e1.printStackTrace();
             return;
-        } 
+        }
 
         AudioFormat format = audioInputStream.getFormat();
         SourceDataLine auline = null;
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 
-        try { 
+        try {
             auline = (SourceDataLine) AudioSystem.getLine(info);
             auline.open(format);
-        } catch (LineUnavailableException e) { 
+        } catch (LineUnavailableException e) {
             e.printStackTrace();
             return;
-        } catch (Exception e) {  
+        } catch (Exception e) {
             e.printStackTrace();
             return;
-        } 
+        }
 
         auline.start();
         int nBytesRead = 0;
         byte[] abData = new byte[WAVE_BUFFER_SIZE];
 
-        try { 
-            while (nBytesRead != -1) { 
+        try {
+            while (nBytesRead != -1) {
                 nBytesRead = audioInputStream.read(abData, 0, abData.length);
-                if (nBytesRead >= 0) 
+                if (nBytesRead >= 0) {
                     auline.write(abData, 0, nBytesRead);
-            } 
-        } catch (IOException e) { 
+                }
+            }
+        } catch (IOException e) {
             e.printStackTrace();
             return;
-        } finally { 
+        } finally {
             auline.drain();
             auline.close();
         }
-   
+
     }
-    
-    
-	/**
-	 * called when calibration is started.
-	 */
-	public void startCalibration()	
-	{	
-		System.out.println("Starting Calibration\n");
-		offsetPoints.clear();
-		startTime=System.currentTimeMillis();
-		active=true;
-		AstericsThreadPool.instance.execute(this);
-	}
 
+    /**
+     * called when calibration is started.
+     */
+    public void startCalibration() {
+        System.out.println("Starting Calibration\n");
+        offsetPoints.clear();
+        startTime = System.currentTimeMillis();
+        active = true;
+        AstericsThreadPool.instance.execute(this);
+    }
 
-	/**
-	 * called when model is stopped or paused.
-	 */
-	public void stopCalibration()	
-	{	
-		active=false;
-	}
+    /**
+     * called when model is stopped or paused.
+     */
+    public void stopCalibration() {
+        active = false;
+    }
 
+    /**
+     * the time generation thread.
+     */
+    @Override
+    public void run() {
+        GazeManager.getInstance().calibrationStart(9, null);
 
-	/**
-	 * the time generation thread.
-	 */
-	public void run()
-	{
-	    owner.gm.getInstance().calibrationStart(9, null); 
-		
-		for (calibPoint point : calibPoints)
-		{
-			currentTime=System.currentTimeMillis()-startTime;
+        for (calibPoint point : calibPoints) {
+            currentTime = System.currentTimeMillis() - startTime;
 
-			try {
-	
-				if (active == false) break;
-				playWavFile(CALIB_SOUND_INITCALIB);
-			    rob.mouseMove(point.xLocation , point.yLocation);   // no idea why it needs multiple calls to work stably ..
-			    rob.mouseMove(point.xLocation , point.yLocation);
-			    rob.mouseMove(point.xLocation , point.yLocation);
-				System.out.println("starting calibration of point "+point.xLocation+"/"+point.yLocation);
-				Thread.sleep(200);				
+            try {
 
-				playWavFile(CALIB_SOUND_NEXTCALIB);
-				owner.gm.getInstance().calibrationPointStart(point.xLocation, point.yLocation);
-				Thread.sleep(800);
-			    owner.gm.getInstance().calibrationPointEnd();
+                if (active == false) {
+                    break;
+                }
+                playWavFile(CALIB_SOUND_INITCALIB);
+                rob.mouseMove(point.xLocation, point.yLocation); // no idea why
+                                                                 // it needs
+                                                                 // multiple
+                                                                 // calls to
+                                                                 // work stably
+                                                                 // ..
+                rob.mouseMove(point.xLocation, point.yLocation);
+                rob.mouseMove(point.xLocation, point.yLocation);
+                System.out.println("starting calibration of point " + point.xLocation + "/" + point.yLocation);
+                Thread.sleep(200);
 
-				} catch (InterruptedException e) {}
-		}
-		owner.calibrationDone();
-	}
+                playWavFile(CALIB_SOUND_NEXTCALIB);
+                GazeManager.getInstance().calibrationPointStart(point.xLocation, point.yLocation);
+                Thread.sleep(800);
+                GazeManager.getInstance().calibrationPointEnd();
 
-	public int removeOffsetPoint()	
-	{	
-		if (offsetPoints.size()>0)
-			offsetPoints.remove(offsetPoints.size()-1);
-		return(offsetPoints.size());
-	}
+            } catch (InterruptedException e) {
+            }
+        }
+        owner.calibrationDone();
+    }
 
-	public void newOffsetPoint(int x,int y,int xOffset,int yOffset)	
-	{	
-		int dist;
-		
-		Iterator<calibPoint> iterator = offsetPoints.iterator();
-		while (iterator.hasNext())
-		{
-			calibPoint act=iterator.next();
-			dist=(int)Math.sqrt((act.xLocation-x)*(act.xLocation-x)+(act.yLocation-y)*(act.yLocation-y));
-			if (dist<owner.propOffsetPointRemovalRadius)
-			{
-				System.out.println("removed point "+act.xLocation+"/"+act.xLocation+" because it was too near.");
-				iterator.remove();
-			}
-		} 
-		
-		offsetPoints.add(new calibPoint(x,y,xOffset,yOffset));
-		System.out.println("add calib point "+x+"/"+y+" with offset "+xOffset+"/"+yOffset+", new list has "+offsetPoints.size()+" elements.");
-	}
+    public int removeOffsetPoint() {
+        if (offsetPoints.size() > 0) {
+            offsetPoints.remove(offsetPoints.size() - 1);
+        }
+        return (offsetPoints.size());
+    }
 
-	public Point calcOffset(int x, int y)	
-	{	
-		double dist,factor=0,minDist=owner.propOffsetCorrectionRadius;
-		Point result=new Point(0,0);
+    public void newOffsetPoint(int x, int y, int xOffset, int yOffset) {
+        int dist;
 
-		for (calibPoint act: offsetPoints )
-		{
-			dist=Math.sqrt((act.xLocation-x)*(act.xLocation-x)+(act.yLocation-y)*(act.yLocation-y));
-			if (dist<minDist)
-			{
-				minDist=dist;
-				factor = 1-(dist/(float)owner.propOffsetCorrectionRadius);
-				result=new Point((int)(act.xOffset*factor),(int)(act.yOffset*factor));
-			}
-		}
+        Iterator<calibPoint> iterator = offsetPoints.iterator();
+        while (iterator.hasNext()) {
+            calibPoint act = iterator.next();
+            dist = (int) Math
+                    .sqrt((act.xLocation - x) * (act.xLocation - x) + (act.yLocation - y) * (act.yLocation - y));
+            if (dist < EyeTribeInstance.propOffsetPointRemovalRadius) {
+                System.out
+                        .println("removed point " + act.xLocation + "/" + act.xLocation + " because it was too near.");
+                iterator.remove();
+            }
+        }
 
-		if (minDist!=owner.propOffsetCorrectionRadius)
-			System.out.println("correction "+(int)(factor*100)+"% , values "+result.x+"/"+result.y);
+        offsetPoints.add(new calibPoint(x, y, xOffset, yOffset));
+        System.out.println("add calib point " + x + "/" + y + " with offset " + xOffset + "/" + yOffset
+                + ", new list has " + offsetPoints.size() + " elements.");
+    }
 
-		return(result);
-	}
+    public Point calcOffset(int x, int y) {
+        double dist, factor = 0, minDist = EyeTribeInstance.propOffsetCorrectionRadius;
+        Point result = new Point(0, 0);
 
-	public Point getOffsetPoint(int x, int y)	
-	{	
-		double dist,minDist=owner.propOffsetCorrectionRadius;
-		Point result=new Point(0,0);
-		
-		for (calibPoint act: offsetPoints )
-		{
-			dist=Math.sqrt((act.xLocation-x)*(act.xLocation-x)+(act.yLocation-y)*(act.yLocation-y));
-			if (dist<minDist)
-			{
-				result=new Point((int)(act.xOffset),(int)(act.yOffset));
-				minDist=dist;
-			}
-		}
-		return(result);
-	}
+        for (calibPoint act : offsetPoints) {
+            dist = Math.sqrt((act.xLocation - x) * (act.xLocation - x) + (act.yLocation - y) * (act.yLocation - y));
+            if (dist < minDist) {
+                minDist = dist;
+                factor = 1 - (dist / (float) EyeTribeInstance.propOffsetCorrectionRadius);
+                result = new Point((int) (act.xOffset * factor), (int) (act.yOffset * factor));
+            }
+        }
+
+        if (minDist != EyeTribeInstance.propOffsetCorrectionRadius) {
+            System.out.println("correction " + (int) (factor * 100) + "% , values " + result.x + "/" + result.y);
+        }
+
+        return (result);
+    }
+
+    public Point getOffsetPoint(int x, int y) {
+        double dist, minDist = EyeTribeInstance.propOffsetCorrectionRadius;
+        Point result = new Point(0, 0);
+
+        for (calibPoint act : offsetPoints) {
+            dist = Math.sqrt((act.xLocation - x) * (act.xLocation - x) + (act.yLocation - y) * (act.yLocation - y));
+            if (dist < minDist) {
+                result = new Point((int) (act.xOffset), (int) (act.yOffset));
+                minDist = dist;
+            }
+        }
+        return (result);
+    }
 
 }

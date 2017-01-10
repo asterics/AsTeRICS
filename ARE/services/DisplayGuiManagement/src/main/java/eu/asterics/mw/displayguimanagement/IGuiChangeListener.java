@@ -26,5 +26,5 @@
 package eu.asterics.mw.displayguimanagement;
 
 public interface IGuiChangeListener {
-	void guiChange(Object o);
+    void guiChange(Object o);
 }

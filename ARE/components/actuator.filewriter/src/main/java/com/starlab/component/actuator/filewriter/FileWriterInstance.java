@@ -25,49 +25,48 @@
  */
 
 package com.starlab.component.actuator.filewriter;
+
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.FileWriter;
-import java.util.Calendar;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- *   Implements a file writer actuator plugin, which can write the values on
- *   its input in ASCII mode to a file
- *  
- * @author Javier Acedo [javier.acedo@starlab.es]
- *         Date: May 5, 2011
- *         Time: 01:06:51 PM
+ * Implements a file writer actuator plugin, which can write the values on its
+ * input in ASCII mode to a file
+ * 
+ * @author Javier Acedo [javier.acedo@starlab.es] Date: May 5, 2011 Time:
+ *         01:06:51 PM
  */
-public class FileWriterInstance extends AbstractRuntimeComponentInstance
-{
-	private String propFileName = "filewriter";
-	private BufferedWriter out = null;
-	
-	/**
+public class FileWriterInstance extends AbstractRuntimeComponentInstance {
+    private String propFileName = "filewriter";
+    private BufferedWriter out = null;
+
+    /**
      * The class constructor.
      */
-    public FileWriterInstance()
-    {
+    public FileWriterInstance() {
         // empty constructor - needed for OSGi service factory operations
     }
 
     /**
      * returns an Input Port.
-     * @param portID   the name of the port
-     * @return         the input port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
      */
     @Override
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-        if("input".equalsIgnoreCase(portID))
-        {
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("input".equalsIgnoreCase(portID)) {
             return ipInputPort;
         }
         return null;
@@ -75,24 +74,26 @@ public class FileWriterInstance extends AbstractRuntimeComponentInstance
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
     @Override
-    public IRuntimeOutputPort getOutputPort(String portID)
-    {
+    public IRuntimeOutputPort getOutputPort(String portID) {
         return null;
     }
 
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if("FileName".equalsIgnoreCase(propertyName))
-        {
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("FileName".equalsIgnoreCase(propertyName)) {
             return propFileName;
         }
         return null;
@@ -100,16 +101,18 @@ public class FileWriterInstance extends AbstractRuntimeComponentInstance
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-        if("FileName".equalsIgnoreCase(propertyName))
-        {
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("FileName".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propFileName;
 
-            propFileName=(String)newValue;
+            propFileName = (String) newValue;
             return oldValue;
         }
         return null;
@@ -118,17 +121,15 @@ public class FileWriterInstance extends AbstractRuntimeComponentInstance
     /**
      * Input Port for receiving values.
      */
-    private final IRuntimeInputPort ipInputPort
-            = new DefaultRuntimeInputPort()
-    {
-        public void receiveData(byte[] data)
-        {
+    private final IRuntimeInputPort ipInputPort = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
             double valueToWrite = ConversionUtils.doubleFromBytes(data);
-			try {
-				out.write(Double.toString(valueToWrite) + System.getProperty("line.separator"));
-			} catch (IOException e) {
-				AstericsErrorHandling.instance.getLogger().severe("Error writing file");
-			}
+            try {
+                out.write(Double.toString(valueToWrite) + System.getProperty("line.separator"));
+            } catch (IOException e) {
+                AstericsErrorHandling.instance.getLogger().severe("Error writing file");
+            }
         }
 
     };
@@ -137,23 +138,21 @@ public class FileWriterInstance extends AbstractRuntimeComponentInstance
      * called when model is started.
      */
     @Override
-    public void start()
-    {
-		if (out != null)
-		{
-			try {
-				out.close();
-			} catch (IOException e) {
-				AstericsErrorHandling.instance.reportInfo(this, "Error closing previous file");
-			}
-		}
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		try {
-			out = new BufferedWriter(new FileWriter(propFileName + "_" + sdf.format(cal.getTime()) + ".txt"));
-		} catch (IOException e) {
-			AstericsErrorHandling.instance.reportInfo(this, "Error creating file");
-		}	
+    public void start() {
+        if (out != null) {
+            try {
+                out.close();
+            } catch (IOException e) {
+                AstericsErrorHandling.instance.reportInfo(this, "Error closing previous file");
+            }
+        }
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        try {
+            out = new BufferedWriter(new FileWriter(propFileName + "_" + sdf.format(cal.getTime()) + ".txt"));
+        } catch (IOException e) {
+            AstericsErrorHandling.instance.reportInfo(this, "Error creating file");
+        }
         super.start();
     }
 
@@ -161,34 +160,30 @@ public class FileWriterInstance extends AbstractRuntimeComponentInstance
      * called when model is paused.
      */
     @Override
-    public void pause()
-    {
-       super.pause();
+    public void pause() {
+        super.pause();
     }
-   
-   /**
-    * called when model is resumed.
-    */
+
+    /**
+     * called when model is resumed.
+     */
     @Override
-    public void resume()
-    {
-       super.resume();
+    public void resume() {
+        super.resume();
     }
-    
+
     /**
      * called when model is stopped.
      */
     @Override
-    public void stop()
-    {
-		if (out != null)
-		{
-			try {
-				out.close();
-			} catch (IOException e) {
-				AstericsErrorHandling.instance.reportInfo(this, "Error closing file");
-			}
-		}
+    public void stop() {
+        if (out != null) {
+            try {
+                out.close();
+            } catch (IOException e) {
+                AstericsErrorHandling.instance.reportInfo(this, "Error closing file");
+            }
+        }
         super.stop();
     }
 }

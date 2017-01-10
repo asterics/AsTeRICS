@@ -31,75 +31,76 @@ import java.util.ArrayList;
 import com.codeminders.hidapi.HIDDevice;
 import com.codeminders.hidapi.HIDDeviceNotFoundException;
 import com.codeminders.hidapi.HIDManager;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 
+import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- * ReaderThread: opening a connection to the FS20 Receiver and 
- * read the messages. Fire an event, if a message has been received
+ * ReaderThread: opening a connection to the FS20 Receiver and read the
+ * messages. Fire an event, if a message has been received
  */
 
 public class FS20Reader extends AbstractRuntimeComponentInstance implements Runnable {
-	public ArrayList<FS20EventListener> listeners;
-	
-	private boolean threadDone = false;
-	
-	HIDDevice pce;
-	
-	public FS20Reader() {
-		listeners = new ArrayList<FS20EventListener>();
-	}
-	
-	public void addEventListener(FS20EventListener l) {
-		listeners.add(l);
-	}
-	
-	private void fireFS20Event(FS20ReaderEvent evt) {
-		for (FS20EventListener l : listeners)
-			l.fs20EventOccurred(evt);
-	}
-	
-	public void done() {
-		threadDone = true;
-	}
-	
-	public void run() {
-		
-		threadDone = false;
-		try {
-			pce = HIDManager.getInstance().openById(0x18EF, 0xE014, null);
-			AstericsErrorHandling.instance.reportInfo(FS20Reader.this, "FS20 PCE Receiver device successfully opened");
-			pce.disableBlocking();			
-			byte[] rcvBuffer = new byte[14];		
-			while (!threadDone) {
-				int readed = pce.read(rcvBuffer);
-				Thread.sleep(300);
-//				int i = 0;
-//				for (byte b : rcvBuffer)
-//					System.out.println("Byte "+(i++) + ": " + b);
-				if (readed > 0 && rcvBuffer[0] == 0x02 && rcvBuffer[1] == 0x0b) {
-					fireFS20Event(new FS20ReaderEvent(this, rcvBuffer));
-				}
-			}
-		} catch (HIDDeviceNotFoundException nfe) {
-			AstericsErrorHandling.instance.reportError(this, "Could not find FS20 PCE Device");
-		} catch (IOException ioe) {
-			AstericsErrorHandling.instance.reportError(this, "Error reading data from FS20 PCE Device");
-		} catch(InterruptedException ie) {
-			
-		} catch (Exception ex) {
-			AstericsErrorHandling.instance.reportError(this, "Could not find FS20 PCE Device");
-		} finally {
-			try {
-				pce.close();
-			} catch (Exception e) {
-				//AstericsErrorHandling.instance.reportError(this, "Error closing FS20 PCE Device");
-			}
-		}
-	
-	}
+    public ArrayList<FS20EventListener> listeners;
 
-	
-		
+    private boolean threadDone = false;
+
+    HIDDevice pce;
+
+    public FS20Reader() {
+        listeners = new ArrayList<FS20EventListener>();
+    }
+
+    public void addEventListener(FS20EventListener l) {
+        listeners.add(l);
+    }
+
+    private void fireFS20Event(FS20ReaderEvent evt) {
+        for (FS20EventListener l : listeners) {
+            l.fs20EventOccurred(evt);
+        }
+    }
+
+    public void done() {
+        threadDone = true;
+    }
+
+    @Override
+    public void run() {
+
+        threadDone = false;
+        try {
+            pce = HIDManager.getInstance().openById(0x18EF, 0xE014, null);
+            AstericsErrorHandling.instance.reportInfo(FS20Reader.this, "FS20 PCE Receiver device successfully opened");
+            pce.disableBlocking();
+            byte[] rcvBuffer = new byte[14];
+            while (!threadDone) {
+                int readed = pce.read(rcvBuffer);
+                Thread.sleep(300);
+                // int i = 0;
+                // for (byte b : rcvBuffer)
+                // System.out.println("Byte "+(i++) + ": " + b);
+                if (readed > 0 && rcvBuffer[0] == 0x02 && rcvBuffer[1] == 0x0b) {
+                    fireFS20Event(new FS20ReaderEvent(this, rcvBuffer));
+                }
+            }
+        } catch (HIDDeviceNotFoundException nfe) {
+            AstericsErrorHandling.instance.reportError(this, "Could not find FS20 PCE Device");
+        } catch (IOException ioe) {
+            AstericsErrorHandling.instance.reportError(this, "Error reading data from FS20 PCE Device");
+        } catch (InterruptedException ie) {
+
+        } catch (Exception ex) {
+            AstericsErrorHandling.instance.reportError(this, "Could not find FS20 PCE Device");
+        } finally {
+            try {
+                pce.close();
+            } catch (Exception e) {
+                // AstericsErrorHandling.instance.reportError(this, "Error
+                // closing FS20 PCE Device");
+            }
+        }
+
+    }
+
 }

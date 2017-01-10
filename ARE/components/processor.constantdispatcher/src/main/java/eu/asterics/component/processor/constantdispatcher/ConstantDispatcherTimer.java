@@ -25,75 +25,68 @@
 
 package eu.asterics.component.processor.constantdispatcher;
 
-import eu.asterics.mw.services.AstericsErrorHandling;
-
 /**
- *   Implements the timer functionality for the ConstantDispatcherInstance class. 
- *   It is used in slot series Dispatching.
+ * Implements the timer functionality for the ConstantDispatcherInstance class.
+ * It is used in slot series Dispatching.
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Feb 15, 2011
- *         Time: 11:41:08 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Feb 15, 2011 Time: 11:41:08
+ *         AM
  */
 
-public class ConstantDispatcherTimer implements Runnable
-{
-  private final ConstantDispatcherInstance owner;
-  private Thread t;
-  private int numberOfSlotsToSend=0;
-  private int delay;
-  private boolean fastFinish=false;
-	
-  /**
-   * The class constructor.
-   */	
-  public ConstantDispatcherTimer(final ConstantDispatcherInstance owner)
-  {
-    this.owner = owner;
-  }
-  
-  /**
-   * Sends slot series.
-   * @param numberOfSlotsToSend   the number of slots to send
-   * @param delay    the delay between slots send.
-   */
-  public void sendSeries(int numberOfSlotsToSend, int delay)
-  {
-    fastFinish=false;
-	this.numberOfSlotsToSend=numberOfSlotsToSend;
-	this.delay=delay;
-	t=new Thread(this);
-	t.start();
-		
-  }
-  
-  /**
-   * Finish the sending series immediately.
-   */
-  public void finishNow()
-  {
-    fastFinish=true;
-  }
+public class ConstantDispatcherTimer implements Runnable {
+    private final ConstantDispatcherInstance owner;
+    private Thread t;
+    private int numberOfSlotsToSend = 0;
+    private int delay;
+    private boolean fastFinish = false;
 
-  /**
-   * Timer function.
-   */
-  public void run()
-  {
-    for(int i=0;i<numberOfSlotsToSend;i++)
-	{
-	  if(fastFinish==true)
-      {
-        fastFinish=false;
-		break;
-	  }
-	  owner.sendNextSlotFromSeries();
-	  try 
-	  {
-        t.sleep(delay);
-	  } 
-	  catch (InterruptedException e) {}
+    /**
+     * The class constructor.
+     */
+    public ConstantDispatcherTimer(final ConstantDispatcherInstance owner) {
+        this.owner = owner;
     }
-    owner.resetBlock();
-  }
+
+    /**
+     * Sends slot series.
+     * 
+     * @param numberOfSlotsToSend
+     *            the number of slots to send
+     * @param delay
+     *            the delay between slots send.
+     */
+    public void sendSeries(int numberOfSlotsToSend, int delay) {
+        fastFinish = false;
+        this.numberOfSlotsToSend = numberOfSlotsToSend;
+        this.delay = delay;
+        t = new Thread(this);
+        t.start();
+
+    }
+
+    /**
+     * Finish the sending series immediately.
+     */
+    public void finishNow() {
+        fastFinish = true;
+    }
+
+    /**
+     * Timer function.
+     */
+    @Override
+    public void run() {
+        for (int i = 0; i < numberOfSlotsToSend; i++) {
+            if (fastFinish == true) {
+                fastFinish = false;
+                break;
+            }
+            owner.sendNextSlotFromSeries();
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+            }
+        }
+        owner.resetBlock();
+    }
 }

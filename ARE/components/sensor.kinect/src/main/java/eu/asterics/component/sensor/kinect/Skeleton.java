@@ -29,7 +29,7 @@ package eu.asterics.component.sensor.kinect;
  * @author David Thaller
  */
 public class Skeleton {
-    
+
     public Point3D head;
     public Point3D neck;
     public Point3D leftShoulder;
@@ -45,6 +45,5 @@ public class Skeleton {
     public Point3D rightKnee;
     public Point3D leftFoot;
     public Point3D rightFoot;
-    
-    
+
 }

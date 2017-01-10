@@ -1,32 +1,23 @@
 package eu.asterics.mw.are;
 
-import eu.asterics.mw.are.UDP.UDPThread;
-import eu.asterics.mw.are.asapi.Activator;
-import eu.asterics.mw.are.exceptions.AREAsapiException;
-import eu.asterics.mw.are.exceptions.DeploymentException;
-import eu.asterics.mw.gui.AstericsGUI;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
-import eu.asterics.mw.services.AstericsThreadPool;
-import eu.asterics.mw.utils.OSUtils;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-
 import java.awt.EventQueue;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+
+import eu.asterics.mw.are.UDP.UDPThread;
+import eu.asterics.mw.are.asapi.Activator;
+import eu.asterics.mw.gui.AstericsGUI;
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
+import eu.asterics.mw.services.AstericsThreadPool;
+import eu.asterics.mw.utils.OSUtils;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -53,182 +44,178 @@ import javax.swing.JOptionPane;
  *
  */
 
-
-
 /**
  * Starting point for ARE middleware
  *
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Aug 23, 2010
- *         Time: 11:36:14 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 23, 2010 Time:
+ *         11:36:14 AM
  */
-public class Main implements BundleActivator
-{
-	public static final String ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY = "ASAPI.enableAREAutoDetection";
-	public static final String ASAPI_ENABLE_ACS_PORT_CONNECTION="ASAPI.enableACSPortConnection";
+public class Main implements BundleActivator {
+    public static final String ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY = "ASAPI.enableAREAutoDetection";
+    public static final String ASAPI_ENABLE_ACS_PORT_CONNECTION = "ASAPI.enableACSPortConnection";
 
-	private static Logger logger = null;
+    private static Logger logger = null;
 
-	private BundleManager bundleManager = null;
+    private BundleManager bundleManager = null;
 
-	private AstericsGUI astericsGUI=null;
-	private JFrame astericsFrame;
-	
+    private AstericsGUI astericsGUI = null;
+    private JFrame astericsFrame;
 
-	private static BundleContext areContext;
+    private static BundleContext areContext;
 
-	public static BundleContext getAREContext (){
-		return areContext;
-	}
-	
-	public void start(final BundleContext context) throws Exception
-	{
-		logger = AstericsErrorHandling.instance.getLogger();
-		// Check if not 32bit
-		String bits = System.getProperty("sun.arch.data.model");
-		if (OSUtils.isWindows() && bits.compareTo("64") == 0) {
-			String message=bits+"bit Java Runtime detected! Many plugins of the ARE need a 32bit Java Runtime.\nJava Download: http://www.java.com/de/download/manual.jsp";
-			logger.warning(message);
-			startupMessage(message,JOptionPane.WARNING_MESSAGE,false);
-		}
-		logger.info("JVM " + bits + " bit detected");
-		final String startModel = context
-				.getProperty("eu.asterics.ARE.startModel");
-		logger.info("Property eu.asterics.ARE.startModel: " + startModel);
+    public static BundleContext getAREContext() {
+        return areContext;
+    }
 
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					astericsGUI = new AstericsGUI(context);
+    @Override
+    public void start(final BundleContext context) throws Exception {
+        logger = AstericsErrorHandling.instance.getLogger();
+        // Check if not 32bit
+        String bits = System.getProperty("sun.arch.data.model");
+        if (OSUtils.isWindows() && bits.compareTo("64") == 0) {
+            String message = bits
+                    + "bit Java Runtime detected! Many plugins of the ARE need a 32bit Java Runtime.\nJava Download: http://www.java.com/de/download/manual.jsp";
+            logger.warning(message);
+            startupMessage(message, JOptionPane.WARNING_MESSAGE, false);
+        }
+        logger.info("JVM " + bits + " bit detected");
+        final String startModel = context.getProperty("eu.asterics.ARE.startModel");
+        logger.info("Property eu.asterics.ARE.startModel: " + startModel);
 
-					astericsFrame = astericsGUI.getFrame();
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    astericsGUI = new AstericsGUI(context);
 
-					DeploymentManager.instance.setGui(astericsGUI);
+                    astericsFrame = astericsGUI.getFrame();
 
-					DeploymentManager.instance.setStatus(AREStatus.UNKNOWN);
-					AstericsErrorHandling.instance.setStatusObject(
-							AREStatus.UNKNOWN.toString(), "", "");
-					areContext = context;
+                    DeploymentManager.instance.setGui(astericsGUI);
 
+                    DeploymentManager.instance.setStatus(AREStatus.UNKNOWN);
+                    AstericsErrorHandling.instance.setStatusObject(AREStatus.UNKNOWN.toString(), "", "");
+                    areContext = context;
 
-					bundleManager = new BundleManager(context);
-					context.addBundleListener(bundleManager);
-					context.addFrameworkListener(bundleManager);
-					bundleManager.start();
+                    bundleManager = new BundleManager(context);
+                    context.addBundleListener(bundleManager);
+                    context.addFrameworkListener(bundleManager);
+                    bundleManager.start();
 
-					DeploymentManager.instance
-					.setBundleManager(bundleManager);
+                    DeploymentManager.instance.setBundleManager(bundleManager);
 
-					DeploymentManager.instance.start(context);
+                    DeploymentManager.instance.start(context);
 
+                    // Create thread pools and eventually store back
+                    // properties
+                    AstericsThreadPool.getInstance();
+                    AstericsModelExecutionThreadPool.getInstance();
 
-					// Create thread pools and eventually store back
-					// properties
-					AstericsThreadPool.getInstance();
-					AstericsModelExecutionThreadPool.getInstance();
+                    DeploymentManager.instance.setStatus(AREStatus.OK);
+                    AstericsErrorHandling.instance.setStatusObject(AREStatus.OK.toString(), "", "");
 
-					DeploymentManager.instance.setStatus(AREStatus.OK);
-					AstericsErrorHandling.instance.setStatusObject(
-							AREStatus.OK.toString(), "", "");
+                    AsapiSupport as = new AsapiSupport();
+                    // System.out.println("*** starting model !");
+                    as.autostart(startModel);
 
-					AsapiSupport as = new AsapiSupport();
-					// System.out.println("***  starting model !");
-					as.autostart(startModel);
+                    if (!AREProperties.instance.containsKey(ASAPI_ENABLE_ACS_PORT_CONNECTION)
+                            || AREProperties.instance.checkProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1")) {
+                        // set default value, if property was not in file.
+                        AREProperties.instance.setProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1");
+                        logger.info("ASAPI: Enabling ACS port connection");
+                        Thread asapiServerThread = new Thread(new Activator());
+                        asapiServerThread.start();
+                    } else {
+                        logger.info("ASAPI: ACS port connection disabled");
+                    }
 
-					if(!AREProperties.instance.containsKey(ASAPI_ENABLE_ACS_PORT_CONNECTION) || AREProperties.instance.checkProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1")) {
-						//set default value, if property was not in file.
-						AREProperties.instance.setProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1");
-						logger.info("ASAPI: Enabling ACS port connection");
-						Thread asapiServerThread = new Thread(new Activator());
-						asapiServerThread.start();
-					} else {
-						logger.info("ASAPI: ACS port connection disabled");
-					}
+                    if (!AREProperties.instance.containsKey(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY)
+                            || AREProperties.instance.checkProperty(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY, "1")) {
+                        // set default value, if property was not in file.
+                        AREProperties.instance.setProperty(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY, "1");
 
-					if(!AREProperties.instance.containsKey(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY) || AREProperties.instance.checkProperty(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY, "1")) {
-						//set default value, if property was not in file.
-						AREProperties.instance.setProperty(ASAPI_ENABLE_ARE_AUTODETECTION_PROPKEY, "1");
+                        logger.info("ASAPI: Enabling ARE auto detection");
+                        Thread udpThread = new Thread(new UDPThread());
+                        udpThread.start();
+                    } else {
+                        logger.info("ASAPI: ARE auto detection disabled");
+                    }
 
-						logger.info("ASAPI: Enabling ARE auto detection");
-						Thread udpThread = new Thread(new UDPThread());
-						udpThread.start();
-					} else {
-						logger.info("ASAPI: ARE auto detection disabled");
-					}
+                    // This is very ugly, we have to store back properties, if
+                    // any of the other initialization code
+                    // sets a property key. This is to generate a default
+                    // areProperties file if it does not exist.
+                    // @TODO: Collect all property keys and move them to
+                    // AREProperties class and provide mechanism to generate
+                    // default
+                    // file including comments
+                    AREProperties.instance.storeProperties();
 
-					//This is very ugly, we have to store back properties, if any of the other initialization code
-					//sets a property key. This is to generate a default areProperties file if it does not exist.
-					//@TODO: Collect all property keys and move them to AREProperties class and provide mechanism to generate default
-					//file including comments
-					AREProperties.instance.storeProperties();
+                } catch (Throwable e) {
+                    // In case of a startup error show the ARE gui panel, so
+                    // that the user is able to select a model manually.
+                    if (astericsFrame != null && astericsGUI != null) {
+                        astericsGUI.unsetSystemTray();
+                    }
 
-				} catch (Throwable e) {
-					//In case of a startup error show the ARE gui panel, so that the user is able to select a model manually.
-					if(astericsFrame!=null&&astericsGUI!=null) {
-						astericsGUI.unsetSystemTray();
-					}
-					
-					String reason=e.getMessage()!=null ? ":\n\n"+e.getMessage() : "";
-					String message="The AsTeRICS Runtime Environment started with errors"+reason;
-					logger.severe(message);
-					startupMessage(message,JOptionPane.ERROR_MESSAGE,false);
-				}
-			}
-		});
-	}
-	
-	/**
-	 * Show non-modal info/warning/error message not disable-able by areProperties.
-	 * @param message
-	 * @param messageType
-	 */
-	private void startupMessage(String message, int messageType, boolean exit) {
-		JOptionPane op = new JOptionPane (message,messageType);
+                    String reason = e.getMessage() != null ? ":\n\n" + e.getMessage() : "";
+                    String message = "The AsTeRICS Runtime Environment started with errors" + reason;
+                    logger.severe(message);
+                    startupMessage(message, JOptionPane.ERROR_MESSAGE, false);
+                }
+            }
+        });
+    }
 
-		//Show error dialog, but not modal to not risk a dead lock because of other modal error dialogs of components.
-		JDialog dialog = op.createDialog("ARE message");
-		dialog.setAlwaysOnTop(true);
-		//if exit==true make dialog modal
-		dialog.setModal(exit);
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		dialog.setVisible(true);
-		
-		if(exit) {
-			System.exit(1);
-		}
-	}
+    /**
+     * Show non-modal info/warning/error message not disable-able by
+     * areProperties.
+     * 
+     * @param message
+     * @param messageType
+     */
+    private void startupMessage(String message, int messageType, boolean exit) {
+        JOptionPane op = new JOptionPane(message, messageType);
 
+        // Show error dialog, but not modal to not risk a dead lock because of
+        // other modal error dialogs of components.
+        JDialog dialog = op.createDialog("ARE message");
+        dialog.setAlwaysOnTop(true);
+        // if exit==true make dialog modal
+        dialog.setModal(exit);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
 
-	/**
-	 * This method stops the ARE.
-	 * @param context the BundleContext
-	 * @throws Exception
-	 */
-	public void stop(BundleContext context) throws Exception
-	{
-		logger.fine(this.getClass().getName()+".stop: " +
-				"removing bundle listener \n");
+        if (exit) {
+            System.exit(1);
+        }
+    }
 
-		context.removeBundleListener(bundleManager);
+    /**
+     * This method stops the ARE.
+     * 
+     * @param context
+     *            the BundleContext
+     * @throws Exception
+     */
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        logger.fine(this.getClass().getName() + ".stop: " + "removing bundle listener \n");
 
-		bundleManager.stop();
+        context.removeBundleListener(bundleManager);
 
-		logger.fine(this.getClass().getName()+".stop: " +
-				"destroying the bundle manager \n");
+        bundleManager.stop();
 
-		bundleManager = null;
+        logger.fine(this.getClass().getName() + ".stop: " + "destroying the bundle manager \n");
 
-		logger.fine(this.getClass().getName()+".stop: " +
-				"stopping deployment manager \n");
+        bundleManager = null;
 
-		DeploymentManager.instance.stop();
+        logger.fine(this.getClass().getName() + ".stop: " + "stopping deployment manager \n");
 
+        DeploymentManager.instance.stop();
 
+        logger.fine(this.getClass().getName() + ".stop: " + "destroying the bundle manager \n");
 
-		logger.fine(this.getClass().getName()+".stop: " +
-				"destroying the bundle manager \n");
-
-		logger.fine(this.getClass().getName()+".stop: OK \n");
-		astericsFrame.setVisible(false);
-	}
+        logger.fine(this.getClass().getName() + ".stop: OK \n");
+        astericsFrame.setVisible(false);
+    }
 }

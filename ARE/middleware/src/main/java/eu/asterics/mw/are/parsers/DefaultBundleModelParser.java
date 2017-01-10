@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -20,16 +17,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import eu.asterics.mw.are.exceptions.ParseException;
-import eu.asterics.mw.model.bundle.*;
-import eu.asterics.mw.model.bundle.impl.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,10 +29,23 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.Multiplicity;
+import eu.asterics.mw.model.bundle.ComponentType;
+import eu.asterics.mw.model.bundle.IComponentType;
+import eu.asterics.mw.model.bundle.IEventListenerPortType;
+import eu.asterics.mw.model.bundle.IEventTriggererPortType;
+import eu.asterics.mw.model.bundle.IInputPortType;
+import eu.asterics.mw.model.bundle.IOutputPortType;
+import eu.asterics.mw.model.bundle.PortType;
+import eu.asterics.mw.model.bundle.impl.DefaultComponentType;
+import eu.asterics.mw.model.bundle.impl.DefaultEventListenerPortType;
+import eu.asterics.mw.model.bundle.impl.DefaultEventTriggererPortType;
+import eu.asterics.mw.model.bundle.impl.DefaultInputPortType;
+import eu.asterics.mw.model.bundle.impl.DefaultOutputPortType;
+import eu.asterics.mw.model.bundle.impl.PropertyType;
 import eu.asterics.mw.services.AstericsErrorHandling;
-
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -67,703 +72,520 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  *
  */
 
-
-
 /**
- * @author 
- * This class parses models provided as input streams or files,
- * according to the bundle descriptor format (XSD) and produces 
- * IComponentTypes as a result.
- * Date: 
+ * @author This class parses models provided as input streams or files,
+ *         according to the bundle descriptor format (XSD) and produces
+ *         IComponentTypes as a result. Date:
  */
 
 public class DefaultBundleModelParser {
-	public static final String BUNDLE_DESCRIPTOR_RELATIVE_URI="/bundle_descriptor.xml";
-	
-	private Logger logger = null;
-	
-	private DocumentBuilder builder;
-	
-	//private ModelValidator modelValidator;
-	private DefaultBundleModelParser() {
-		logger = AstericsErrorHandling.instance.getLogger();
-	}
+    public static final String BUNDLE_DESCRIPTOR_RELATIVE_URI = "/bundle_descriptor.xml";
 
-	public static final DefaultBundleModelParser instance =
-		new DefaultBundleModelParser();
+    private Logger logger = null;
 
-	/**
-	 * Parses the specified input stream according to the bundle descriptor
-	 * format (XSD) and produces a set of {@link IComponentType}s as a result.
-	 *
-	 * @param inputStream encodes the XML-based bundle descriptor
-	 * @return a set of {@link IComponentType}s
-	 * @throws ParseException
-	 */
-	public Set<IComponentType> parseModel(InputStream inputStream)
-	throws ParseException {
-		final DocumentBuilderFactory builderFactory =
-			DocumentBuilderFactory.newInstance();
-	
+    private DocumentBuilder builder;
 
-		try 
-		{
-			builder = builderFactory.newDocumentBuilder();
-			synchronized(builder){
-			Document document = builder.parse(inputStream);
-			return parse(document);
-			}
-		} catch (ParserConfigurationException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"parseModel: Parse error -> \n"+e.getMessage());
-			throw new ParseException(e.getMessage());
-		} catch (SAXException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"parseModel: Parse error -> \n"+e.getMessage());
-			throw new ParseException(e.getMessage());
-		} catch (IOException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"parseModel: Parse error -> \n"+e.getMessage());
-			throw new ParseException(e.getMessage());
-		}
-	}
+    // private ModelValidator modelValidator;
+    private DefaultBundleModelParser() {
+        logger = AstericsErrorHandling.instance.getLogger();
+    }
 
-	
-	
-	/**
-	 * Parses the specified input file according to the bundle descriptor
-	 * format (XSD) and produces a set of {@link IComponentType}s as a result.
-	 *
-	 * @param modelFile the file to be parsed
-	 * @return a set of {@link IComponentType}s
-	 * @throws FileNotFoundException, ParseException
-	 */
-	public Set<IComponentType> parseModel(File modelFile) 
-	throws FileNotFoundException, ParseException
-	{
-		return this.parseModel(new FileInputStream(modelFile));
-	}
+    public static final DefaultBundleModelParser instance = new DefaultBundleModelParser();
 
-	
-	
-	/**
-	 * Parses the specified input URL according to the bundle descriptor
-	 * format (XSD) and produces a set of {@link IComponentType}s as a result.
-	 *
-	 * @param url the URL to be parsed
-	 * @return a set of {@link IComponentType}s
-	 * @throws ParseException, UnsupportedEncodingException
-	 */
-	public Set<IComponentType> parseModel(String url)
-	throws ParseException, UnsupportedEncodingException 
-	{
-		DocumentBuilderFactory builderFactory =
-		DocumentBuilderFactory.newInstance();
-		try {
-			builder = builderFactory.newDocumentBuilder();
-			synchronized(builder){
-			Document document = builder.parse(url);
-			return parse(document);
-			}
-		} catch (ParserConfigurationException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"parseModel: Parse error -> \n"+e.getMessage());
-			throw new ParseException(e.getMessage());
-		} catch (SAXException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"parseModel: Parse error -> \n"+e.getMessage());
-			throw new ParseException(e.getMessage());
-		} catch (IOException e) {
-			logger.warning(this.getClass().getName()+"." +
-					"parseModel: Parse error -> \n"+e.getMessage());
-			throw new ParseException(e.getMessage());
-		}
-	}
+    /**
+     * Parses the specified input stream according to the bundle descriptor
+     * format (XSD) and produces a set of {@link IComponentType}s as a result.
+     *
+     * @param inputStream
+     *            encodes the XML-based bundle descriptor
+     * @return a set of {@link IComponentType}s
+     * @throws ParseException
+     */
+    public Set<IComponentType> parseModel(InputStream inputStream) throws ParseException {
+        final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
+        try {
+            builder = builderFactory.newDocumentBuilder();
+            synchronized (builder) {
+                Document document = builder.parse(inputStream);
+                return parse(document);
+            }
+        } catch (ParserConfigurationException e) {
+            logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
+            throw new ParseException(e.getMessage());
+        } catch (SAXException e) {
+            logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
+            throw new ParseException(e.getMessage());
+        } catch (IOException e) {
+            logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
+            throw new ParseException(e.getMessage());
+        }
+    }
 
-	//--------------------Parser-----------------------//
+    /**
+     * Parses the specified input file according to the bundle descriptor format
+     * (XSD) and produces a set of {@link IComponentType}s as a result.
+     *
+     * @param modelFile
+     *            the file to be parsed
+     * @return a set of {@link IComponentType}s
+     * @throws FileNotFoundException,
+     *             ParseException
+     */
+    public Set<IComponentType> parseModel(File modelFile) throws FileNotFoundException, ParseException {
+        return this.parseModel(new FileInputStream(modelFile));
+    }
 
-	/**
-	 *  This class is responsible for parsing the Bundle descriptor
-	 * document and instantiating the type elements found (componentTypes,
-	 * portTypes,etc).
-	 * 
-	 * @return A set of IComponentType elements which contain all the needed
-	 * information
-	 * @throws ParseException
-	 */
-	private Set<IComponentType> parse(Document document) throws ParseException 
-	{
+    /**
+     * Parses the specified input URL according to the bundle descriptor format
+     * (XSD) and produces a set of {@link IComponentType}s as a result.
+     *
+     * @param url
+     *            the URL to be parsed
+     * @return a set of {@link IComponentType}s
+     * @throws ParseException,
+     *             UnsupportedEncodingException
+     */
+    public Set<IComponentType> parseModel(String url) throws ParseException, UnsupportedEncodingException {
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        try {
+            builder = builderFactory.newDocumentBuilder();
+            synchronized (builder) {
+                Document document = builder.parse(url);
+                return parse(document);
+            }
+        } catch (ParserConfigurationException e) {
+            logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
+            throw new ParseException(e.getMessage());
+        } catch (SAXException e) {
+            logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
+            throw new ParseException(e.getMessage());
+        } catch (IOException e) {
+            logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
+            throw new ParseException(e.getMessage());
+        }
+    }
 
-		//get the root element
-		Element root = document.getDocumentElement();
-		NodeList components = root.getChildNodes();
-		if (components == null) 
-		{
-			logger.warning(this.getClass().getName()+"." +
-					"parse: Empty bundle model \n");
-			throw new ParseException(" empty bundle model ");
-		}
+    // --------------------Parser-----------------------//
 
-		final Set<IComponentType> componentTypes = 
-			new LinkedHashSet<IComponentType>();
+    /**
+     * This class is responsible for parsing the Bundle descriptor document and
+     * instantiating the type elements found (componentTypes, portTypes,etc).
+     * 
+     * @return A set of IComponentType elements which contain all the needed
+     *         information
+     * @throws ParseException
+     */
+    private Set<IComponentType> parse(Document document) throws ParseException {
 
-		//iterate through the components
-		for (int i = 0; i < components.getLength(); i++) 
-		{
-			Node node = components.item(i);
-			if (node instanceof Element) 
-			{
-				Element component = (Element) node;
-				componentTypes.add(getIComponentType(component));
-			}
-		}
-		return componentTypes;
-	}
+        // get the root element
+        Element root = document.getDocumentElement();
+        NodeList components = root.getChildNodes();
+        if (components == null) {
+            logger.warning(this.getClass().getName() + "." + "parse: Empty bundle model \n");
+            throw new ParseException(" empty bundle model ");
+        }
 
-	/**
-	 * Returns the bundle descriptor xml string for the given componentTypeId.
-	 * 
-	 * @param componentTypeId
-	 * @param inputStream
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 */
-	public String getBundleDescriptionOfComponentTypeId(String componentTypeId, InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
-		final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+        final Set<IComponentType> componentTypes = new LinkedHashSet<IComponentType>();
 
-		builder = builderFactory.newDocumentBuilder();
-		Document document = builder.parse(inputStream);
+        // iterate through the components
+        for (int i = 0; i < components.getLength(); i++) {
+            Node node = components.item(i);
+            if (node instanceof Element) {
+                Element component = (Element) node;
+                componentTypes.add(getIComponentType(component));
+            }
+        }
+        return componentTypes;
+    }
 
-		Element root = document.getDocumentElement();
-		NodeList components = root.getChildNodes();
+    /**
+     * Returns the bundle descriptor xml string for the given componentTypeId.
+     * 
+     * @param componentTypeId
+     * @param inputStream
+     * @return
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     */
+    public String getBundleDescriptionOfComponentTypeId(String componentTypeId, InputStream inputStream)
+            throws ParserConfigurationException, SAXException, IOException {
+        final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
-		//iterate through the components
-		for (int i = 0; i < components.getLength(); i++) 
-		{
-			Node node = components.item(i);
-			if (node instanceof Element) 
-			{
-				Element component = (Element) node;
-				String ID = component.getAttribute("id");
-				if(componentTypeId.equals(ID)) {
-					try {
-						StringWriter stw = new StringWriter(); 
-						Transformer serializer;
+        builder = builderFactory.newDocumentBuilder();
+        Document document = builder.parse(inputStream);
 
-						serializer = TransformerFactory.newInstance().newTransformer();
-						serializer.transform(new DOMSource(component), new StreamResult(stw));
-						System.out.println(stw.toString());
-						return stw.toString();
-					} catch (TransformerFactoryConfigurationError | TransformerException e) {
-						// TODO Auto-generated catch block
-						logger.warning(e.getMessage());
-					} 
-				}
-			}
-		}
-		return "";
-	}
+        Element root = document.getDocumentElement();
+        NodeList components = root.getChildNodes();
 
-	/**
-	 * 
-	 * Create an IComponentType from the given XML element
-	 * @param component the XML element
-	 * @return an IComponentTYpe object
-	 * @throws ParseException
-	 */
-	private IComponentType getIComponentType (Element component) 
-	throws ParseException
-	{
-		if (component.getTagName().compareTo("componentType") == 0) 
-		{
-			//Get componentType id
-			String ID = component.getAttribute("id");
-			//Get componentType canonical name
-			String canonicalName = component.getAttribute("canonical_name");
-			if (ID == null || canonicalName == null) 
-			{
-				logger.warning(this.getClass().getName()+"." +
-						"getIComponentType:  Missing required component attributes \n");
-				throw new ParseException 
-						(" missing required component attributes ");
-			}
-			NodeList componentTypeChildNodes =	component.getChildNodes();
-			ComponentType componentType = null;
-			boolean singleton = false;
-			boolean isExternalGui = false;
-			String description = null;
-			final Set<IInputPortType> inputPortTypes =
-				new LinkedHashSet<IInputPortType>();
-			final Set<IOutputPortType> outputPortTypes =
-				new LinkedHashSet<IOutputPortType>();
-			
-			Map<String, PropertyType> cPropertyTypes = null;
-			Set<IEventListenerPortType> eventListenerPortTypes = 
-				new LinkedHashSet<IEventListenerPortType>();
-			Set<IEventTriggererPortType> eventTriggererPortTypes = 
-				new LinkedHashSet<IEventTriggererPortType>();
+        // iterate through the components
+        for (int i = 0; i < components.getLength(); i++) {
+            Node node = components.item(i);
+            if (node instanceof Element) {
+                Element component = (Element) node;
+                String ID = component.getAttribute("id");
+                if (componentTypeId.equals(ID)) {
+                    try {
+                        StringWriter stw = new StringWriter();
+                        Transformer serializer;
 
-			//Iterate through the children of the componentType
-			for (int j = 0; j < componentTypeChildNodes.getLength(); j++) 
-			{
-				Node componentTypeChild = componentTypeChildNodes.item(j);
-				if (componentTypeChild instanceof Element) 
-				{
-					Element componentTypeChildElement =
-						(Element) componentTypeChild;
-					//Type
-					if (componentTypeChildElement.getTagName().equals("type")) 
-					{
-						String componentTypeString =
-							componentTypeChildElement.getTextContent();
-						componentType =
-							getComponentType(componentTypeString);
+                        serializer = TransformerFactory.newInstance().newTransformer();
+                        serializer.transform(new DOMSource(component), new StreamResult(stw));
+                        System.out.println(stw.toString());
+                        return stw.toString();
+                    } catch (TransformerFactoryConfigurationError | TransformerException e) {
+                        // TODO Auto-generated catch block
+                        logger.warning(e.getMessage());
+                    }
+                }
+            }
+        }
+        return "";
+    }
 
-					}
-					//Singleton
-					else if (componentTypeChildElement.getTagName().
-							equals("singleton")) 
-					{
-						String singletonString =
-							componentTypeChildElement.getTextContent();
-						singleton =
-							getBoolean(singletonString);
-					} 
-					else if (componentTypeChildElement.getTagName().
-							equals("description")) 
-					{
-						description = componentTypeChildElement.
-						getTextContent();
+    /**
+     * 
+     * Create an IComponentType from the given XML element
+     * 
+     * @param component
+     *            the XML element
+     * @return an IComponentTYpe object
+     * @throws ParseException
+     */
+    private IComponentType getIComponentType(Element component) throws ParseException {
+        if (component.getTagName().compareTo("componentType") == 0) {
+            // Get componentType id
+            String ID = component.getAttribute("id");
+            // Get componentType canonical name
+            String canonicalName = component.getAttribute("canonical_name");
+            if (ID == null || canonicalName == null) {
+                logger.warning(this.getClass().getName() + "."
+                        + "getIComponentType:  Missing required component attributes \n");
+                throw new ParseException(" missing required component attributes ");
+            }
+            NodeList componentTypeChildNodes = component.getChildNodes();
+            ComponentType componentType = null;
+            boolean singleton = false;
+            boolean isExternalGui = false;
+            String description = null;
+            final Set<IInputPortType> inputPortTypes = new LinkedHashSet<IInputPortType>();
+            final Set<IOutputPortType> outputPortTypes = new LinkedHashSet<IOutputPortType>();
 
-					} 
-					else if (componentTypeChildElement.getTagName().
-							equals("ports")) 
-					{
+            Map<String, PropertyType> cPropertyTypes = null;
+            Set<IEventListenerPortType> eventListenerPortTypes = new LinkedHashSet<IEventListenerPortType>();
+            Set<IEventTriggererPortType> eventTriggererPortTypes = new LinkedHashSet<IEventTriggererPortType>();
 
-						NodeList portTypes =
-							componentTypeChildElement.getChildNodes();
-						for (int k = 0; k < portTypes.getLength(); k++)
-						{
-							Node portTypesChild = portTypes.item(k);
+            // Iterate through the children of the componentType
+            for (int j = 0; j < componentTypeChildNodes.getLength(); j++) {
+                Node componentTypeChild = componentTypeChildNodes.item(j);
+                if (componentTypeChild instanceof Element) {
+                    Element componentTypeChildElement = (Element) componentTypeChild;
+                    // Type
+                    if (componentTypeChildElement.getTagName().equals("type")) {
+                        String componentTypeString = componentTypeChildElement.getTextContent();
+                        componentType = getComponentType(componentTypeString);
 
-							if (portTypesChild instanceof Element) 
-							{
-								Element portTypeElement = (Element)
-								portTypesChild;
+                    }
+                    // Singleton
+                    else if (componentTypeChildElement.getTagName().equals("singleton")) {
+                        String singletonString = componentTypeChildElement.getTextContent();
+                        singleton = getBoolean(singletonString);
+                    } else if (componentTypeChildElement.getTagName().equals("description")) {
+                        description = componentTypeChildElement.getTextContent();
 
-								if (portTypeElement.getTagName().
-										equals("inputPort")) 
-								{
-									inputPortTypes.
-										add(getInputPortType(portTypeElement));
-								} 
-								else if (portTypeElement.getTagName().
-										equals("outputPort")) 
-								{
-									outputPortTypes.
-										add(getOutputPortType(portTypeElement));
-								}
-							}
-						}
-					} 
-					else if (componentTypeChildElement.getTagName().
-							equals("events")) 
-					{
-						setEvents(componentTypeChildElement,
-								eventListenerPortTypes, 
-								eventTriggererPortTypes);
-					} 
-					else if (componentTypeChildElement.getTagName().
-							equals("properties")) 
-					{
-						if (componentTypeChildElement.getChildNodes().
-								getLength() > 0) 
-						{
-							cPropertyTypes =
-								getPropertyTypes
-								(componentTypeChildElement.
-										getChildNodes());
-						} 
-						else 
-						{
-							cPropertyTypes = new LinkedHashMap<String,PropertyType>();
-						}
-					}
-					else if (componentTypeChildElement.getTagName().equals("gui"))
-					{
-						if (componentTypeChildElement.hasAttribute("IsExternalGUIElement"))
-						{
-							String externalGuiString = componentTypeChildElement
-								.getAttribute("IsExternalGUIElement");
-							isExternalGui =	getBoolean(externalGuiString);
-						}
-					}
-					else 
-					{
-						logger.warning(this.getClass().getName()+"." +
-								"getIComponentType:   unknown element: " + 
-								componentTypeChildElement.getTagName());
-						throw new ParseException
-						(" unknown componentType child element: " + 
-								componentTypeChildElement.getTagName());
-					}
-				}
-			}
+                    } else if (componentTypeChildElement.getTagName().equals("ports")) {
 
-			final IComponentType defaultComponentType =
-				new DefaultComponentType(
-						ID,
-						canonicalName,
-						componentType,
-						singleton,
-						description,
-						inputPortTypes,
-						outputPortTypes,
-						cPropertyTypes,
-						eventListenerPortTypes,
-						eventTriggererPortTypes,
-						isExternalGui);
+                        NodeList portTypes = componentTypeChildElement.getChildNodes();
+                        for (int k = 0; k < portTypes.getLength(); k++) {
+                            Node portTypesChild = portTypes.item(k);
 
-			return defaultComponentType;
-		}
-		throw new ParseException
-		(" expecting componentType Element ");
-	}
+                            if (portTypesChild instanceof Element) {
+                                Element portTypeElement = (Element) portTypesChild;
 
-	/**
-	 * Instantiates objects of IEventListenerPortType and
-	 * IEventTriggererPortType
-	 * @param componentTypeChildElement
-	 * @param eventListenerPortTypes
-	 * @param eventTriggererPortTypes
-	 */
-	private void setEvents (Node componentTypeChildElement, 
-			Set<IEventListenerPortType> eventListenerPortTypes,
-			Set<IEventTriggererPortType> eventTriggererPortTypes)
-	{
-		NodeList eventPortTypes = componentTypeChildElement.getChildNodes();
-		for (int k = 0; k < eventPortTypes.getLength(); k++)
-		{
-			Node eventPortTypesChild = eventPortTypes.item(k);
+                                if (portTypeElement.getTagName().equals("inputPort")) {
+                                    inputPortTypes.add(getInputPortType(portTypeElement));
+                                } else if (portTypeElement.getTagName().equals("outputPort")) {
+                                    outputPortTypes.add(getOutputPortType(portTypeElement));
+                                }
+                            }
+                        }
+                    } else if (componentTypeChildElement.getTagName().equals("events")) {
+                        setEvents(componentTypeChildElement, eventListenerPortTypes, eventTriggererPortTypes);
+                    } else if (componentTypeChildElement.getTagName().equals("properties")) {
+                        if (componentTypeChildElement.getChildNodes().getLength() > 0) {
+                            cPropertyTypes = getPropertyTypes(componentTypeChildElement.getChildNodes());
+                        } else {
+                            cPropertyTypes = new LinkedHashMap<String, PropertyType>();
+                        }
+                    } else if (componentTypeChildElement.getTagName().equals("gui")) {
+                        if (componentTypeChildElement.hasAttribute("IsExternalGUIElement")) {
+                            String externalGuiString = componentTypeChildElement.getAttribute("IsExternalGUIElement");
+                            isExternalGui = getBoolean(externalGuiString);
+                        }
+                    } else {
+                        logger.warning(this.getClass().getName() + "." + "getIComponentType:   unknown element: "
+                                + componentTypeChildElement.getTagName());
+                        throw new ParseException(
+                                " unknown componentType child element: " + componentTypeChildElement.getTagName());
+                    }
+                }
+            }
 
-			if (eventPortTypesChild instanceof Element) 
-			{
-				Element portTypeElement = (Element) eventPortTypesChild;
+            final IComponentType defaultComponentType = new DefaultComponentType(ID, canonicalName, componentType,
+                    singleton, description, inputPortTypes, outputPortTypes, cPropertyTypes, eventListenerPortTypes,
+                    eventTriggererPortTypes, isExternalGui);
 
-				if (portTypeElement.getTagName().equals("eventListenerPort"))
-				{
-					String eventPortID = portTypeElement.getAttribute("id");
-					NodeList portTypeChildElements = portTypeElement.
-					getChildNodes();
-					String epDescription = null;
+            return defaultComponentType;
+        }
+        throw new ParseException(" expecting componentType Element ");
+    }
 
-					for (int l = 0; l < portTypeChildElements.getLength(); l++) 
-					{
-						if (portTypeChildElements.item(l) instanceof Element) 
-						{
-							Element portTypeChildElement = 
-								(Element) portTypeChildElements.item(l);
+    /**
+     * Instantiates objects of IEventListenerPortType and
+     * IEventTriggererPortType
+     * 
+     * @param componentTypeChildElement
+     * @param eventListenerPortTypes
+     * @param eventTriggererPortTypes
+     */
+    private void setEvents(Node componentTypeChildElement, Set<IEventListenerPortType> eventListenerPortTypes,
+            Set<IEventTriggererPortType> eventTriggererPortTypes) {
+        NodeList eventPortTypes = componentTypeChildElement.getChildNodes();
+        for (int k = 0; k < eventPortTypes.getLength(); k++) {
+            Node eventPortTypesChild = eventPortTypes.item(k);
 
-							if (portTypeChildElement.getTagName().
-									equals("description")) 
-							{
-								epDescription = portTypeChildElement.
-															getTextContent();
-							}
-							
-						}
-					}
-					IEventListenerPortType eventListenerPortType = 
-						new DefaultEventListenerPortType(eventPortID,
-														epDescription);
-					eventListenerPortTypes.add(eventListenerPortType);
+            if (eventPortTypesChild instanceof Element) {
+                Element portTypeElement = (Element) eventPortTypesChild;
 
-				} 
-				else if (portTypeElement.getTagName().
-						equals("eventTriggererPort")) 
-				{
-					String eventPortID = portTypeElement.getAttribute("id");
-					NodeList portTypeChildElements = 
-						portTypeElement.getChildNodes();
-					String epDescription = null;
+                if (portTypeElement.getTagName().equals("eventListenerPort")) {
+                    String eventPortID = portTypeElement.getAttribute("id");
+                    NodeList portTypeChildElements = portTypeElement.getChildNodes();
+                    String epDescription = null;
 
-					for (int l = 0; l < portTypeChildElements.getLength(); l++) 
-					{
-						if (portTypeChildElements.item(l) instanceof Element) 
-						{
-							Element portTypeChildElement = 
-								(Element) portTypeChildElements.item(l);
-							if (portTypeChildElement.getTagName().
-									equals("description")) 
-							{
-								epDescription = portTypeChildElement.
-															getTextContent();
-							}
-							
-						}
-					}
-					IEventTriggererPortType eventTriggererPortType = 
-						new DefaultEventTriggererPortType(eventPortID, 
-														epDescription );
-					eventTriggererPortTypes.add(eventTriggererPortType);
-				}
-			}
-		}
-	}
+                    for (int l = 0; l < portTypeChildElements.getLength(); l++) {
+                        if (portTypeChildElements.item(l) instanceof Element) {
+                            Element portTypeChildElement = (Element) portTypeChildElements.item(l);
 
-	/**
-	 * 
-	 * @param portTypeElement
-	 * @return Objects of DefaultInputPortTypes
-	 */
-	private DefaultInputPortType getInputPortType (Element portTypeElement)
-	{
+                            if (portTypeChildElement.getTagName().equals("description")) {
+                                epDescription = portTypeChildElement.getTextContent();
+                            }
 
-		final String portID = portTypeElement.getAttribute("id");
-	    //final ArrayList<String> bufferedPortIds = new ArrayList<String> (); //Sync
+                        }
+                    }
+                    IEventListenerPortType eventListenerPortType = new DefaultEventListenerPortType(eventPortID,
+                            epDescription);
+                    eventListenerPortTypes.add(eventListenerPortType);
 
+                } else if (portTypeElement.getTagName().equals("eventTriggererPort")) {
+                    String eventPortID = portTypeElement.getAttribute("id");
+                    NodeList portTypeChildElements = portTypeElement.getChildNodes();
+                    String epDescription = null;
 
-		NodeList portTypeChildElements =
-			portTypeElement.getChildNodes();
-		String ipDescription = null;
-		DataType ipDataType = null;
-		Multiplicity ipMultiplicity = null;
-		boolean ipMustBeConnected = false;
-		Map<String, PropertyType> ipPropertyTypes = null;
-		for (int l = 0; l < portTypeChildElements.getLength(); l++) 
-		{
-			if (portTypeChildElements.item(l) instanceof Element) 
-			{
-				Element portTypeChildElement = 
-					(Element)portTypeChildElements.item(l);
+                    for (int l = 0; l < portTypeChildElements.getLength(); l++) {
+                        if (portTypeChildElements.item(l) instanceof Element) {
+                            Element portTypeChildElement = (Element) portTypeChildElements.item(l);
+                            if (portTypeChildElement.getTagName().equals("description")) {
+                                epDescription = portTypeChildElement.getTextContent();
+                            }
 
-				if (portTypeChildElement.getTagName().equals("description")) 
-				{
-					ipDescription =	portTypeChildElement.getTextContent();
+                        }
+                    }
+                    IEventTriggererPortType eventTriggererPortType = new DefaultEventTriggererPortType(eventPortID,
+                            epDescription);
+                    eventTriggererPortTypes.add(eventTriggererPortType);
+                }
+            }
+        }
+    }
 
-				} 
-				else if (portTypeChildElement.getTagName().
-						equals("mustBeConnected")) 
-				{
-					if (portTypeChildElement.getTextContent().
-							compareToIgnoreCase("true") == 0) 
-					{
-						ipMustBeConnected = true;
-					} 
-					else
-						ipMustBeConnected = false;
-				} 
-				else if (portTypeChildElement.getTagName().equals("dataType")) 
-				{
-					ipDataType = getDataType(portTypeChildElement.
-							getTextContent());
-				} 
-				else if (portTypeChildElement.getTagName().equals("properties")) 
-				{
-					if (portTypeChildElement.getChildNodes().getLength() > 0)
-					{
-						ipPropertyTypes = 
-							getPropertyTypes(portTypeChildElement.
-									getChildNodes());
-					} 
-					else 
-					{
-						ipPropertyTypes = new LinkedHashMap<String,PropertyType>();
-					}
-				}
-				
-				//Sync
-				else if (portTypeChildElement.getTagName().
-						equals("bufferedPorts")) 
-				{
-					
-					System.out.println("found bufferedPorts:"+portTypeChildElement.getTextContent());
+    /**
+     * 
+     * @param portTypeElement
+     * @return Objects of DefaultInputPortTypes
+     */
+    private DefaultInputPortType getInputPortType(Element portTypeElement) {
 
-//					if (portTypeChildElement.getChildNodes().getLength() > 0)
-//					{
-//						NodeList ports = portTypeChildElement.getChildNodes();
-//						for (int k = 0; k < ports.getLength(); k++) 
-//						{
-//							Node port = ports.item(k);
-//
-//							if (port instanceof Element) 
-//							{
-//								port = (Element) port;
-//								bufferedPortIds.add(port.getTextContent());
-//							}
-//						}
-//					} 
-					
-				} 
-			} 
-		}
+        final String portID = portTypeElement.getAttribute("id");
+        // final ArrayList<String> bufferedPortIds = new ArrayList<String> ();
+        // //Sync
 
-		DefaultInputPortType inputPortType = new DefaultInputPortType(	
-															PortType.INPUT,
-															ipDescription,
-															ipDataType,
-															ipPropertyTypes,
-															ipMultiplicity,
-															ipMustBeConnected,
-															portID);
-															//, 
-															//bufferedPortIds); //Sync
-		return inputPortType;
-	}
+        NodeList portTypeChildElements = portTypeElement.getChildNodes();
+        String ipDescription = null;
+        DataType ipDataType = null;
+        Multiplicity ipMultiplicity = null;
+        boolean ipMustBeConnected = false;
+        Map<String, PropertyType> ipPropertyTypes = null;
+        for (int l = 0; l < portTypeChildElements.getLength(); l++) {
+            if (portTypeChildElements.item(l) instanceof Element) {
+                Element portTypeChildElement = (Element) portTypeChildElements.item(l);
 
-	
-	/**
-	 * 
-	 * @param portTypeElement
-	 * @return
-	 */
-	private IOutputPortType getOutputPortType(Element portTypeElement) {
-		String portID =
-			portTypeElement.getAttribute("id");
+                if (portTypeChildElement.getTagName().equals("description")) {
+                    ipDescription = portTypeChildElement.getTextContent();
 
-		NodeList portTypeChildElements =
-			portTypeElement.getChildNodes();
-		String opDescription = null;
-		DataType opDataType = null;
+                } else if (portTypeChildElement.getTagName().equals("mustBeConnected")) {
+                    if (portTypeChildElement.getTextContent().compareToIgnoreCase("true") == 0) {
+                        ipMustBeConnected = true;
+                    } else {
+                        ipMustBeConnected = false;
+                    }
+                } else if (portTypeChildElement.getTagName().equals("dataType")) {
+                    ipDataType = getDataType(portTypeChildElement.getTextContent());
+                } else if (portTypeChildElement.getTagName().equals("properties")) {
+                    if (portTypeChildElement.getChildNodes().getLength() > 0) {
+                        ipPropertyTypes = getPropertyTypes(portTypeChildElement.getChildNodes());
+                    } else {
+                        ipPropertyTypes = new LinkedHashMap<String, PropertyType>();
+                    }
+                }
 
-		Map<String, PropertyType>
-		opPropertyTypes = null;
-		for (int l = 0; l < portTypeChildElements.
-		getLength(); l++) {
-			if (portTypeChildElements.item(l) instanceof Element) {
-				Element portTypeChildElement =
-					(Element)
-					portTypeChildElements.item(l);
+                // Sync
+                else if (portTypeChildElement.getTagName().equals("bufferedPorts")) {
 
+                    System.out.println("found bufferedPorts:" + portTypeChildElement.getTextContent());
 
-				if (portTypeChildElement.
-						getTagName().equals
-						("description")) {
-					opDescription =
-						portTypeChildElement.
-						getTextContent();
+                    // if (portTypeChildElement.getChildNodes().getLength() > 0)
+                    // {
+                    // NodeList ports = portTypeChildElement.getChildNodes();
+                    // for (int k = 0; k < ports.getLength(); k++)
+                    // {
+                    // Node port = ports.item(k);
+                    //
+                    // if (port instanceof Element)
+                    // {
+                    // port = (Element) port;
+                    // bufferedPortIds.add(port.getTextContent());
+                    // }
+                    // }
+                    // }
 
-				} else if (portTypeChildElement.
-						getTagName().equals
-						("dataType")) {
-					opDataType = getDataType
-					(portTypeChildElement
-							.getTextContent());
+                }
+            }
+        }
 
-				} else if (portTypeChildElement.
-						getTagName().equals
-						("properties")) {
+        DefaultInputPortType inputPortType = new DefaultInputPortType(PortType.INPUT, ipDescription, ipDataType,
+                ipPropertyTypes, ipMultiplicity, ipMustBeConnected, portID);
+        // ,
+        // bufferedPortIds); //Sync
+        return inputPortType;
+    }
 
-					if (portTypeChildElement.
-							getChildNodes().
-							getLength() > 0) {
-						opPropertyTypes =
-							getPropertyTypes
-							(portTypeChildElement.
-									getChildNodes());
-					} else {
-						opPropertyTypes =
-							new LinkedHashMap<String,
-							PropertyType>();
-					}
-				}
-				
+    /**
+     * 
+     * @param portTypeElement
+     * @return
+     */
+    private IOutputPortType getOutputPortType(Element portTypeElement) {
+        String portID = portTypeElement.getAttribute("id");
 
-			}
-		}
+        NodeList portTypeChildElements = portTypeElement.getChildNodes();
+        String opDescription = null;
+        DataType opDataType = null;
 
-		DefaultOutputPortType outputPortType = new DefaultOutputPortType
-		(PortType.OUTPUT,
-				opDescription,
-				opDataType,
-				opPropertyTypes,
-				portID);
+        Map<String, PropertyType> opPropertyTypes = null;
+        for (int l = 0; l < portTypeChildElements.getLength(); l++) {
+            if (portTypeChildElements.item(l) instanceof Element) {
+                Element portTypeChildElement = (Element) portTypeChildElements.item(l);
 
-		return outputPortType;
-	}
+                if (portTypeChildElement.getTagName().equals("description")) {
+                    opDescription = portTypeChildElement.getTextContent();
 
+                } else if (portTypeChildElement.getTagName().equals("dataType")) {
+                    opDataType = getDataType(portTypeChildElement.getTextContent());
 
-	private Map<String, PropertyType> getPropertyTypes(NodeList properties) 
-	{
-		Map<String, PropertyType> propertyTypes =
-			new LinkedHashMap<String, PropertyType>();
-		PropertyType pt;
-		Node node;
-		Element property;
-		String description;
-		boolean getStringList=false;
-		
-		for (int k = 0; k < properties.getLength(); k++) {
-			node = properties.item(k);
+                } else if (portTypeChildElement.getTagName().equals("properties")) {
 
-			if (node instanceof Element) {
-				property = (Element) node;
+                    if (portTypeChildElement.getChildNodes().getLength() > 0) {
+                        opPropertyTypes = getPropertyTypes(portTypeChildElement.getChildNodes());
+                    } else {
+                        opPropertyTypes = new LinkedHashMap<String, PropertyType>();
+                    }
+                }
 
-				if (property.getAttribute("description") != null) {
-					description = property.getAttribute("description");
-				} else
-					description = "";
-				
-				if (property.getAttribute("getStringList") != null) 
-				{
-					if (property.getAttribute("getStringList") == "true" ) 
-							getStringList=true; 
-					else
-						getStringList=false ;
-				}
-				else
-					description = "";
+            }
+        }
 
-				pt = new PropertyType(property.getAttribute("name"),
-						getDataType(property.getAttribute("type")),
-						description,
-						property.getAttribute("value"),
-						property.getAttribute("combobox"),
-						getStringList);
-				propertyTypes.put(property.getAttribute("name"), pt);
+        DefaultOutputPortType outputPortType = new DefaultOutputPortType(PortType.OUTPUT, opDescription, opDataType,
+                opPropertyTypes, portID);
 
-			}
-		}
-		return propertyTypes;
-	}
+        return outputPortType;
+    }
 
-	private ComponentType getComponentType(String componentTypeString) {
-		if (componentTypeString.compareToIgnoreCase("ACTUATOR") == 0)
-			return ComponentType.ACTUATOR;
-		else if (componentTypeString.compareToIgnoreCase("SENSOR") == 0)
-			return ComponentType.SENSOR;
-		else if (componentTypeString.compareToIgnoreCase("PROCESSOR") == 0)
-			return ComponentType.PROCESSOR;
-		else if (componentTypeString.compareToIgnoreCase("SPECIAL") == 0)
-			return ComponentType.SPECIAL;
-		else if (componentTypeString.compareToIgnoreCase("GROUP") == 0)
-			return ComponentType.GROUP;
-		else
-			return null;
+    private Map<String, PropertyType> getPropertyTypes(NodeList properties) {
+        Map<String, PropertyType> propertyTypes = new LinkedHashMap<String, PropertyType>();
+        PropertyType pt;
+        Node node;
+        Element property;
+        String description;
+        boolean getStringList = false;
 
-	}
+        for (int k = 0; k < properties.getLength(); k++) {
+            node = properties.item(k);
 
-	private DataType getDataType(String dataTypeString) {
-		if (dataTypeString.compareToIgnoreCase("BOOLEAN") == 0)
-			return DataType.BOOLEAN;
-		else if (dataTypeString.compareToIgnoreCase("BYTE") == 0)
-			return DataType.BYTE;
-		else if (dataTypeString.compareToIgnoreCase("CHAR") == 0)
-			return DataType.CHAR;
-		else if (dataTypeString.compareToIgnoreCase("DOUBLE") == 0)
-			return DataType.DOUBLE;
-		else if (dataTypeString.compareToIgnoreCase("INTEGER") == 0)
-			return DataType.INTEGER;
-		else if (dataTypeString.compareToIgnoreCase("STRING") == 0)
-			return DataType.STRING;
-		else
-			return null;
-	}
+            if (node instanceof Element) {
+                property = (Element) node;
 
-	private boolean getBoolean(final String booleanString) {
-		return Boolean.getBoolean(booleanString);
-	}
+                if (property.getAttribute("description") != null) {
+                    description = property.getAttribute("description");
+                } else {
+                    description = "";
+                }
+
+                if (property.getAttribute("getStringList") != null) {
+                    if (property.getAttribute("getStringList") == "true") {
+                        getStringList = true;
+                    } else {
+                        getStringList = false;
+                    }
+                } else {
+                    description = "";
+                }
+
+                pt = new PropertyType(property.getAttribute("name"), getDataType(property.getAttribute("type")),
+                        description, property.getAttribute("value"), property.getAttribute("combobox"), getStringList);
+                propertyTypes.put(property.getAttribute("name"), pt);
+
+            }
+        }
+        return propertyTypes;
+    }
+
+    private ComponentType getComponentType(String componentTypeString) {
+        if (componentTypeString.compareToIgnoreCase("ACTUATOR") == 0) {
+            return ComponentType.ACTUATOR;
+        } else if (componentTypeString.compareToIgnoreCase("SENSOR") == 0) {
+            return ComponentType.SENSOR;
+        } else if (componentTypeString.compareToIgnoreCase("PROCESSOR") == 0) {
+            return ComponentType.PROCESSOR;
+        } else if (componentTypeString.compareToIgnoreCase("SPECIAL") == 0) {
+            return ComponentType.SPECIAL;
+        } else if (componentTypeString.compareToIgnoreCase("GROUP") == 0) {
+            return ComponentType.GROUP;
+        } else {
+            return null;
+        }
+
+    }
+
+    private DataType getDataType(String dataTypeString) {
+        if (dataTypeString.compareToIgnoreCase("BOOLEAN") == 0) {
+            return DataType.BOOLEAN;
+        } else if (dataTypeString.compareToIgnoreCase("BYTE") == 0) {
+            return DataType.BYTE;
+        } else if (dataTypeString.compareToIgnoreCase("CHAR") == 0) {
+            return DataType.CHAR;
+        } else if (dataTypeString.compareToIgnoreCase("DOUBLE") == 0) {
+            return DataType.DOUBLE;
+        } else if (dataTypeString.compareToIgnoreCase("INTEGER") == 0) {
+            return DataType.INTEGER;
+        } else if (dataTypeString.compareToIgnoreCase("STRING") == 0) {
+            return DataType.STRING;
+        } else {
+            return null;
+        }
+    }
+
+    private boolean getBoolean(final String booleanString) {
+        return Boolean.getBoolean(booleanString);
+    }
 }

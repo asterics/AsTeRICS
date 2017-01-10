@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="javascript/JSmap.js"></script> 
+		<script src="javascript/areCommunicator.js"></script>
+		 
+		<title>REST client - ARE repository </title>
+		
+		
+		<script type="text/javascript">
+			/* This is an example of how to use the ARE Javascipt framework for the communication
+				with the ARE Restful Services.
+				
+				The location of the server should be defined with the 'setBaseURI(<url>)' method.
+				
+				A success-callback function and an error-callback function should be passed as an argument
+				for every function.
+			*/
+		
+			setBaseURI("http://localhost:8081/rest/");
+		
+
+			//listStoredModels
+			function LSM() {
+				listStoredModels(defaultSuccessCallback, defaultErrorCallback);
+			}
+
+
+			//downloadModelFromFile
+			function DOWNLOAD_MODEL_FROM_FILE() {
+				var filepath = document.getElementById("DMFfilepath").value;
+				downloadModelFromFile(consoleSuccessCallback, defaultErrorCallback, filepath);
+			}
+			
+			
+			//uploadModel
+			function UPLOAD_MODEL() {
+				var modelInXML = document.getElementById("UMmodel").value;
+				uploadModel(defaultSuccessCallback, defaultErrorCallback, modelInXML);
+			}
+
+
+			//deleteModelFromFile
+			function DELETE_MODEL_FROM_FILE() {
+				var filepath = document.getElementById("DELETEfilepath").value;
+				deleteModelFromFile(defaultSuccessCallback, defaultErrorCallback, filepath);
+			}
+			
+			
+			//getComponentDescriptorsAsXml
+			function COMPONENT_DESCRIPTORS_XML() {
+				getComponentDescriptorsAsXml(consoleSuccessCallback, defaultErrorCallback);
+			}
+			
+					
+			//getComponentDescriptorsAsJSON
+			function COMPONENT_DESCRIPTORS_JSON() {
+				getComponentDescriptorsAsJSON(consoleSuccessCallback, defaultErrorCallback);
+			}
+
+
+			function defaultSuccessCallback(data, HTTPstatus) { alert(data); }
+			function defaultErrorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+			function consoleSuccessCallback(data, HTTPstatus) { console.log(data); }
+			function consoleErrorCallback(HTTPstatus, AREerrorMessage) { console.log(AREerrorMessage); }
+
+		</script>
+		
+	</head>
+	
+	<body>
+
+		<div id="header">
+			<img src="./img/logo.png">
+			<h1> REST client -  ARE Repository </h1>
+		</div>
+
+		<div id="content">
+
+		<button onclick="LSM()" title="Description: Retrieves the model names that are saved in the ARE repository (as JSON array) &#013;Ouput: alert"> 
+			List stored models 
+		</button> <br>
+		
+		<button onclick="DOWNLOAD_MODEL_FROM_FILE()" title="Description: Returns an xml representation of a model in a specific file &#013;Ouput: alert"> 
+			Download model from file 
+		</button>
+		<input placeholder="filepath" type="text" id="DMFfilepath"/>
+		<br>
+					
+		<button onclick="STORE_MODEL()" title="Description: Stores a model in the given filepath &#013;Ouput: alert">
+			Store model to file 
+		</button>
+		<input placeholder="filepath" type="text" id="STOREfilepath"/>
+		<input placeholder="modelInXML" type="text" id="STOREmodel"/>
+		<br>
+		
+		<button onclick="DELETE_MODEL_FROM_FILE()" title="Description: Deletes the model with the given filepath &#013;Ouput: alert"> Delete model </button>
+		<input placeholder="filepath" type="text" id="DELETEfilepath"/>
+		<br>
+		
+		<button onclick="COMPONENT_DESCRIPTORS_XML()" title="Description: Returns an xml string containing the descriptors of the created components with some modifications in order to be used by the webACS &#013;Ouput: console"> 
+			Get components descriptors as xml 
+		</button>
+		<br>
+
+		<button onclick="COMPONENT_DESCRIPTORS_JSON()" title="Description: Retrieves the exact content of the component descriptors contained in the ARE repository (as JSON array) &#013;Ouput: console"> Get components descriptors as JSON array </button>
+
+		</div>
+		
+	</body>
+	
+</html>

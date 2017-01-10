@@ -26,16 +26,14 @@ package eu.asterics.ape.main;
  */
 
 /**
- * Exception to indicate a configuration error.
- *         Author: martin.deinhofer@technikum-wien.at
- *         Date: Jan 28, 2016
- *         Time: 14:30:00 PM
+ * Exception to indicate a configuration error. Author:
+ * martin.deinhofer@technikum-wien.at Date: Jan 28, 2016 Time: 14:30:00 PM
  */
 
 public class APEConfigurationException extends Exception {
 
-	public APEConfigurationException(String message) {
-		super(message);
-	}
+    public APEConfigurationException(String message) {
+        super(message);
+    }
 
 }

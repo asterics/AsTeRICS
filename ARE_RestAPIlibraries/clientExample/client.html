@@ -1,17 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script src="javascript/JSmap.js"></script> 
 		<script src="javascript/areCommunicator.js"></script>
 		 
-		<title>Rest Client</title>
+		<title>Rest client example</title>
 		
 		
 		<script type="text/javascript">
 			/* This is an example of how to use the ARE Javascipt framework for the communication
-				with the ARE Restfull Services.
+				with the ARE Restful Services.
 				
 				The location of the server should be defined with the 'setBaseURI(<url>)' method.
 				
@@ -23,480 +26,47 @@
 		
 		
 			//downloadDeployedModel
-			function DDM() {
-				downloadDeployedModel(DDM_successCallback, DDM_errorCallback);
+			function myFunction() {
+				downloadDeployedModel(consoleSuccessCallback, defaultErrorCallback);
 			}
-			
-			function DDM_successCallback(data, HTTPstatus) { console.log('-'+data+'-'); }
-			function DDM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
-			
-			//downloadModelFromFile
-			function DMF() {
-				var filepath = document.getElementById("DMFfilepath").value;
-				downloadModelFromFile(DMF_successCallback, DMF_errorCallback, filepath);
-			}
-			
-			function DMF_successCallback(data, HTTPstatus) { console.log(data); }
-			function DMF_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
-			
-			//uploadModel
-			function UM() {
-				var modelInXML = document.getElementById("UMmodel").value;
-				uploadModel(UM_successCallback, UM_errorCallback, modelInXML);
-			}
-						
-			function UM_successCallback(data, HTTPstatus) { alert(data); }
-			function UM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
-			
-			//autorun
-			function AUTO() {
-				var filepath = document.getElementById("AUTOfilepath").value;
-				autorun(AUTO_successCallback, AUTO_errorCallback, filepath);
-			}
-			
-			function AUTO_successCallback(data, HTTPstatus) { alert(data); }
-			function AUTO_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
-			
-			//getModelState
-			function MS() {
-				getModelState(MS_successCallback, MS_errorCallback);
-			}
-			
-			function MS_successCallback(data, HTTPstatus) { alert(data); }
-			function MS_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
-			
-			//pauseModel
-			function PAUSE() {
-				pauseModel(PAUSE_successCallback, PAUSE_errorCallback);
-			}
-						
-			function PAUSE_successCallback(data, HTTPstatus) { alert(data); }
-			function PAUSE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-						
-			
-			//startModel
-			function START() {
-				startModel(START_successCallback, START_errorCallback);
-			}
-						
-			function START_successCallback(data, HTTPstatus) { alert(data); }
-			function START_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-						
-			
-			//stopModel
-			function STOP() { 
-				stopModel(STOP_successCallback, STOP_errorCallback); 
-			}
-						
-			function STOP_successCallback(data, HTTPstatus) { alert(data); }
-			function STOP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-
-
-			//storeModel
-			function STORE() {
-				var filepath = document.getElementById("STOREfilepath").value;
-				var modelInXML = document.getElementById("STOREmodel").value;
-				storeModel(STORE_successCallback, STORE_errorCallback, filepath, modelInXML);
-			}
-									
-			function STORE_successCallback(data, HTTPstatus) { alert(data); }
-			function STORE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
-			
-			//deployModelFromFile
-			function DepMF() {
-				var filepath = document.getElementById("DepMFfilepath").value;
-				deployModelFromFile(DepMF_successCallback, DepMF_errorCallback, filepath);
-			}
-									
-			function DepMF_successCallback(data, HTTPstatus) { alert(data); }
-			function DepMF_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 			
 
-			//deleteModelFromFile
-			function DELETE() {
-				var filepath = document.getElementById("DELETEfilepath").value;
-				deleteModelFromFile(DELETE_successCallback, DELETE_errorCallback, filepath);
-			}
-									
-			function DELETE_successCallback(data, HTTPstatus) { alert(data); }
-			function DELETE_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
-			
-			//getRuntimeComponentIds
-			function GRC() {
-				getRuntimeComponentIds(GRC_successCallback, GRC_errorCallback);
-			}
-						
-			function GRC_successCallback(data, HTTPstatus) { alert(data); }
-			function GRC_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
+			function defaultSuccessCallback(data, HTTPstatus) { alert(data); }
+			function defaultErrorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
 
-			//listStoredModels
-			function LSM() {
-				listStoredModels(LSM_successCallback, LSM_errorCallback);
-			}
-						
-			function LSM_successCallback(data, HTTPstatus) { alert(data); }
-			function LSM_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
-			
-			//getComponentDescriptorsAsXml
-			function COMPONENT_DESCRIPTORS_XML() {
-				getComponentDescriptorsAsXml(COMPONENT_DESCRIPTORS_XML_successCallback, COMPONENT_DESCRIPTORS_XML_errorCallback);
-			}
-									
-			function COMPONENT_DESCRIPTORS_XML_successCallback(data, HTTPstatus) {
-				console.log(data);
-			}
-			function COMPONENT_DESCRIPTORS_XML_errorCallback(HTTPstatus, AREerrorMessage) {
-				console.log(AREerrorMessage);
-			}
-			
-					
-			//getComponentDescriptorsAsJSON
-			function COMPONENT_DESCRIPTORS_JSON() {
-				getComponentDescriptorsAsJSON(COMPONENT_DESCRIPTORS_JSON_successCallback, COMPONENT_DESCRIPTORS_JSON_errorCallback);
-			}
-									
-			function COMPONENT_DESCRIPTORS_JSON_successCallback(data, HTTPstatus) {
-				console.log(data);
-				//console.log(data[0]); //get a single component
-			}
-			function COMPONENT_DESCRIPTORS_JSON_errorCallback(HTTPstatus, AREerrorMessage) {
-				console.log(AREerrorMessage);
-			}
-			
-			
-			//getRuntimeComponentPropertyKeys
-			function GRCPK() {
-				var componentId = document.getElementById("GRCPKid").value;
-				getRuntimeComponentPropertyKeys(GRCPK_successCallback, GRCPK_errorCallback, componentId);
-			}
-						
-			function GRCPK_successCallback(data, HTTPstatus) { alert(data); }
-			function GRCPK_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
-
-			//getRuntimeComponentProperty
-			function GRCP() {
-				var componentId = document.getElementById("GRCPid").value;
-				var componentKey = document.getElementById("GRCPkey").value;
-				getRuntimeComponentProperty(GRCP_successCallback, GRCP_errorCallback, componentId, componentKey);
-			}
-						
-			function GRCP_successCallback(data, HTTPstatus) { alert(data); }
-			function GRCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-			
-			
-			//setRuntimeComponentProperty
-			function SRCP() {
-				var componentId = document.getElementById("SRCPid").value;
-				var componentKey = document.getElementById("SRCPkey").value;
-				var componentValue = document.getElementById("SRCPvalue").value;
-				setRuntimeComponentProperty(SRCP_successCallback, SRCP_errorCallback, componentId, componentKey, componentValue);
-			}
-						
-			function SRCP_successCallback(data, HTTPstatus) { alert(data); }
-			function SRCP_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-				
-		
-
-			//getEventChannelsIds
-			function GECI() {
-				getEventChannelsIds(GECI_successCallback, GECI_errorCallback);
-			}
-
-			function GECI_successCallback(data, HTTPstatus) { alert(data); }
-			function GECI_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-
-
-			//getEventChannelSource
-			function GECS() {
-				var channelId = document.getElementById("GECSid").value;
-				getEventChannelSource(GECS_successCallback, GECS_errorCallback, channelId);
-			}
-
-			function GECS_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
-			function GECS_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-				
-
-			//getEventChannelTarget
-			function GECT() {
-				var channelId = document.getElementById("GECTid").value;
-				getEventChannelTarget(GECT_successCallback, GECT_errorCallback, channelId);
-			}
-
-			function GECT_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
-			function GECT_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-
-
-			//getComponentEventChannelsIds
-			function GCECI() {
-				var componentId = document.getElementById("GCECIid").value;
-				getComponentEventChannelsIds(GCECI_successCallback, GCECI_errorCallback, componentId);
-			}
-
-			function GCECI_successCallback(data, HTTPstatus) { alert(data); }
-			function GCECI_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-				
-
-			//getDataChannelsIds
-			function GDCI() {
-				getDataChannelsIds(GDCI_successCallback, GDCI_errorCallback);
-			}
-
-			function GDCI_successCallback(data, HTTPstatus) { alert(data); }
-			function GDCI_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-
-
-			//getDataChannelSource
-			function GDCS() {
-				var channelId = document.getElementById("GDCSid").value;
-				getDataChannelSource(GDCS_successCallback, GDCS_errorCallback, channelId);
-			}
-
-			function GDCS_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
-			function GDCS_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-				
-
-			//getDataChannelTarget
-			function GDCT() {
-				var channelId = document.getElementById("GDCTid").value;
-				getDataChannelTarget(GDCT_successCallback, GDCT_errorCallback, channelId);
-			}
-
-			function GDCT_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
-			function GDCT_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-		
-
-			//getComponentDataChannelsIds
-			function GCDCI() {
-				var componentId = document.getElementById("GCDCIid").value;
-				getComponentDataChannelsIds(GCDCI_successCallback, GCDCI_errorCallback, componentId);
-			}
-
-			function GCDCI_successCallback(data, HTTPstatus) { alert(data); }
-			function GCDCI_errorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
-				
-
-			//getRestFunctions
-			function FUNCTIONS() {
-				getRestFunctions(FUNCTIONS_successCallback, FUNCTIONS_errorCallback);
-			}
-						
-			function FUNCTIONS_successCallback(data, HTTPstatus) {
-				console.log(JSON.stringify(data));
-				//console.log(data[0]); //get single function
-			}
-			function FUNCTIONS_errorCallback(HTTPstatus, AREerrorMessage) {
-				alert(AREerrorMessage);
-			}
-							
-			
-			//subscribe to SSE
-			function SUBSCRIBE_EVENTS() {
-				//var eventType = document.getElementById("subid").value;
-				var selects = document.getElementById("eTypesS");
-				var eventType = selects.options[selects.selectedIndex].value;
-				subscribe(SUBSCRIBE_EVENTS_successCallback, SUBSCRIBE_EVENTS_errorCallback, eventType);
-			}
-					
-			function SUBSCRIBE_EVENTS_successCallback(data, HTTPstatus) {
-				var eventsBox = document.getElementById("eventsBox");
-				eventsBox.innerHTML = "SSE event: " + data; 
-				console.log("SSE event: " + data);
-			}
-			
-			function SUBSCRIBE_EVENTS_errorCallback(HTTPstatus, AREerrorMessage) {
-				var eventsBox = document.getElementById("eventsBox");
-				eventsBox.innerHTML = data;
-				console.log(AREerrorMessage);
-			}
-			
-			
-			//unsubscribe from SSE
-			function UNSUBSCRIBE_EVENTS() {
-				//var eventType = document.getElementById("unsubid").value;
-				var selects = document.getElementById("eTypesS");
-				var eventType = selects.options[selects.selectedIndex].value;
-				unsubscribe(eventType);
-			}
+			function consoleSuccessCallback(data, HTTPstatus) { console.log(data); }
+			function consoleErrorCallback(HTTPstatus, AREerrorMessage) { console.log(AREerrorMessage); }
 
 		</script>
 		
 	</head>
 	
 	<body>
-		<hr>
 
-		<h1> Rest Client </h1>
-		
-		
-		<h4>(Place your mouse over a button to see additional info)</h4>
-		
-		<hr>
+		<div id="header">
+			
+			<img src="./img/logo.png">
+			<h1> Rest Client Template </h1>
 
-		<br>
-		
-		<h3> ARE Repository </h3>
-		
-		<button onclick="LSM()" title="Description: Retrieves the model names that are saved in the ARE repository (as JSON array) &#013;Ouput: alert"> 
-			List stored models 
-		</button>
-		<br/> <br/>
-		
-		<button onclick="DMF()" title="Description: Returns an xml representation of a model in a specific file &#013;Ouput: alert"> 
-			Download model from file 
-		</button>
-		<input placeholder="filepath" type="text" id="DMFfilepath"/>
-		<br/> <br/>
-					
-		<button onclick="STORE()" title="Description: Stores a model in the given filepath &#013;Ouput: alert">
-			Store model to file 
-		</button>
-		<input placeholder="filepath" type="text" id="STOREfilepath"/>
-		<input placeholder="modelInXML" type="text" id="STOREmodel"/>
-		<br/> <br/>
-				
-		<button onclick="DELETE()" title="Description: Deletes the model with the given filepath &#013;Ouput: alert"> Delete model </button>
-		<input placeholder="filepath" type="text" id="DELETEfilepath"/>
-		<br/> <br/>
-		
-		<button onclick="COMPONENT_DESCRIPTORS_XML()" title="Description: Returns an xml string containing the descriptors of the created components with some modifications in order to be used by the webACS &#013;Ouput: console"> 
-			Get components descriptors as xml 
-		</button>
-		<br/> <br/>
-		
-		<button onclick="COMPONENT_DESCRIPTORS_JSON()" title="Description: Retrieves the exact content of the component descriptors contained in the ARE repository (as JSON array) &#013;Ouput: console"> Get components descriptors as JSON array </button>
-		<br/> <br/>
-		
-		<hr>
-		
-		<h3> ARE Runtime Handling </h3>
-		
-		<button onclick="DDM()" title="Description: Retrieves the currently deployed model in XML &#013;Ouput: alert"> Download deployed model </button>
-		<br/> <br/>
-		
-		<button onclick="UM()" title="Description: Deploys the model given as a parameter &#013;Ouput: alert"> Upload model </button>
-		<input placeholder="modelInXML" type="text" id="UMmodel"/>
-		<br/> <br/>
-		
-		<button onclick="AUTO()" title="Description: Deploys and starts the model in the given filepath &#013;Ouput: alert"> Autorun </button>
-		<input placeholder="filepath" type="text" id="AUTOfilepath"/>
-		<br/> <br/>
-				
-		<button onclick="DepMF()" title="Description: Deploys the model contained in the given filepath &#013;Ouput: alert"> Deploy model from file </button>
-		<input placeholder="filepath" type="text" id="DepMFfilepath"/>
-		<br/>
+		</div>
 
-		<h5> Component Properties </h5>
-				
-		<button onclick="GRC()" title="Description: Retrieves all the component Ids contained in the currently deployed model (as JSON array) &#013;Ouput: alert"> Get runtime component Ids </button>
-		<br/> <br/>
-		
-		<button onclick="GRCPK()" title="Description: Returns all property keys of the component with the given componentId in the currently deployed model (as JSON array) &#013;Ouput: alert"> Get runtime component property keys </button>
-		<input placeholder="componentId" type="text" id="GRCPKid"/>
-		<br/> <br/>
-		
-		<button onclick="GRCP()" title="Description: Retrieves property value of a specific component, in the currently deployed model &#013;Ouput: alert"> Get runtime component property </button>
-		<input placeholder="componentId" type="text" id="GRCPid"/>
-		<input placeholder="componentKey"type="text" id="GRCPkey"/>
-		<br/> <br/>
-		
-		<button onclick="SRCP()" title="Description: Changes a property value of a specific component,  in the currently deployed model &#013;Ouput: alert"> Set runtime component property </button>
-		<input placeholder="componentId" type="text" id="SRCPid"/>
-		<input placeholder="componentKey" type="text" id="SRCPkey"/>
-		<input placeholder="componentKeyValue" type="text" id="SRCPvalue"/>
-		<br/>
+		<div id="content">
 
+			<ul>
+				<li>
+					<h3> <a href="are_repository.html" target="_blank"> ARE Repository examples </a> </h3>
+				</li>
 
-		<h5> Channels </h5>
+				<li>
+					<h3> <a href="are_runtime.html" target="_blank"> ARE Runtime examples </a> </h3>
+				</li>
 
-		<button onclick="GECI()" title="Description: returns all the event channel ids of the current model (as JSON array) &#013;Ouput: alert"> Get event channels ids </button>
-		<br/> <br/>
+				<li>
+					<h3> <a href="sse.html" target="_blank"> Server Sent Events examples </a> </h3>
+				</li>
+			</ul>
 
-		<button onclick="GECS()" title="Description: returns the source (component id and port) a of a specific event channel &#013;Ouput: alert"> Get event channel source </button>
-		<input placeholder="channelId" type="text" id="GECSid"/>
-		<br/> <br/>
-		
-		<button onclick="GECT()" title="Description: returns the target (component id and port) a of a specific event channel &#013;Ouput: alert"> Get event channel target </button>
-		<input placeholder="channelId" type="text" id="GECTid"/>
-		<br/> <br/>
-
-		<button onclick="GCECI()" title="Description: returns all the event channel ids of the given component (as JSON array) &#013;Ouput: alert"> Get component event channel ids </button>
-		<input placeholder="componentId" type="text" id="GCECIid"/>
-		<br/> <br/>
-
-		<button onclick="GDCI()" title="Description: returns all the data channel ids of the current model (as JSON array) &#013;Ouput: alert"> Get data channels ids </button>
-		<br/> <br/>
-
-		<button onclick="GDCS()" title="Description: returns the source (component id and port) a of a specific data channel &#013;Ouput: alert"> Get data channel source </button>
-		<input placeholder="channelId" type="text" id="GDCSid"/>
-		<br/> <br/>
-		
-		<button onclick="GDCT()" title="Description: returns the target (component id and port) a of a specific data channel &#013;Ouput: alert"> Get data channel target </button>
-		<input placeholder="channelId" type="text" id="GDCTid"/>
-		<br/> <br/>
-
-		<button onclick="GCDCI()" title="Description: returns all the data channel ids of the given component (as JSON array) &#013;Ouput: alert"> Get component data channel ids </button>
-		<input placeholder="componentId" type="text" id="GCDCIid"/>
-		<br/> <br/>
-
-
-		<hr>
-		<h3> Model State </h3>
-		
-		<button onclick="PAUSE()" title="Description: Changes the state of the deployed model to PAUSED &#013;Ouput: alert"> Pause model </button>
-		<br/> <br/>
-		
-		<button onclick="START()" title="Description: Changes the state of the deployed model to STARTED &#013;Ouput: alert"> Start model </button>
-		<br/> <br/>
-		
-		<button onclick="STOP()" title="Description: Changes the state of the deployed model to STOPPED &#013;Ouput: alert"> Stop model </button>
-		<br/> <br/>
-				
-		<button onclick="MS()" title="Description: Returns the state of the deployed model &#013;Ouput: alert"> Get model state </button>
-		<br/> <br/>
-		
-		<hr>
-		
-		<h3> Server Events </h3>
-		
-		<button onclick="SUBSCRIBE_EVENTS()" title="Description: Opens a persistent connection with ARE and listens for Server Sent Events &#013;Ouput: box below"> SSE subscribe </button>
-		<select id="eTypesS">
-			<option value="model_state_changed">MODEL_STATE_CHANGED</option>
-			<option value="model_changed">MODEL_CHANGED</option>
-			<option value="model_event">MODEL_EVENT</option>
-		</select>
-		<br/> <br/>
-		
-		<button onclick="UNSUBSCRIBE_EVENTS()" title="Description: Closes the connection for Server Sent Events. Returns true if the unsubscription was successful and false otherwise"> SSE unsubscribe </button>
-		<select id="eTypesU">
-			<option value="model_state_changed">MODEL_STATE_CHANGED</option>
-			<option value="model_changed">MODEL_CHANGED</option>
-			<option value="model_event">MODEL_EVENT</option>
-		</select>
-		<br/> <br/>
-		
-				
-		<div id="eventsBox" style="border:1px solid; width:30%; height: auto; padding: 3px;"></div>
-		<br/> <br/>
-		
-		<hr>
-		
-		<h3> ARE Information </h3>
-		
-		<button onclick="FUNCTIONS()" title="Description: Retrieves the information for all the available rest functions provided by the Restful API (as JSON array with Function objects) &#013;Ouput: console"> getRestFunctions </button>
-		<br/> <br/>
-		
-		<hr>
-		<br> <br> <br>
+		</div>
 		
 	</body>
 	

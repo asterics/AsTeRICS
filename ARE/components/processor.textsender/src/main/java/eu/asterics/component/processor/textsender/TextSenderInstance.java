@@ -23,208 +23,188 @@
  * 
  */
 
-
 package eu.asterics.component.processor.textsender;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-
-import java.util.*;
-import java.util.logging.*;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 
 /**
- *Implemets plugin which sends text when it get the event.
+ * Implemets plugin which sends text when it get the event.
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Feb 15, 2011
- *         Time: 11:41:08 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Feb 15, 2011 Time: 11:41:08
+ *         AM
  */
-public class TextSenderInstance  extends AbstractRuntimeComponentInstance
-{
-    
-  private final String OP_OUTPUT="output";
-  private final String ELP_SEND_TEXT="sendText";
-  private final String PROP_TEXT="text";
-  
-  private OutputPort opOutput = new OutputPort();
-  private String propText = "This is a sample text.";
-  
-  /**
-   * The class constructor.
-   */
-  public TextSenderInstance()
-  {
-  }
+public class TextSenderInstance extends AbstractRuntimeComponentInstance {
 
-  /**
-   * Called when model is started.
-   */
-  public void start()
-  {
-    super.start();
-  }
+    private final String OP_OUTPUT = "output";
+    private final String ELP_SEND_TEXT = "sendText";
+    private final String PROP_TEXT = "text";
 
-  /**
-   * Called when model is paused.
-   */
-  public void pause()
-  {
-    super.pause();
-  }
+    private OutputPort opOutput = new OutputPort();
+    private String propText = "This is a sample text.";
 
-  /**
-   * Called when model is resumed.
-   */
-  public void resume()
-  {
-    super.resume();
-  }
+    /**
+     * The class constructor.
+     */
+    public TextSenderInstance() {
+    }
 
-  /**
-   * Called when model is stopped
-   */
-  public void stop()
-  {
-    super.stop();
-  }
+    /**
+     * Called when model is started.
+     */
+    @Override
+    public void start() {
+        super.start();
+    }
 
-  /**
-   * Returns an Input Port.
-   * @param portID   the name of the port
-   * @return         the input port or null if not found
-   */
-  public IRuntimeInputPort getInputPort(String portID)
-  {
-    if("setText".equalsIgnoreCase(portID))
-    {
-      return ipSetText;
+    /**
+     * Called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
     }
-    return null;
-  }
-  
-  /**
-   * Returns an Output Port.
-   * @param portID   the name of the port
-   * @return         the output port
-   */ 
-  public IRuntimeOutputPort getOutputPort(String portID)
-  {
-    if(OP_OUTPUT.equalsIgnoreCase(portID))
-    {
-      return opOutput;
-    }
-    else
-    {
-      return null;
-    }
-  }
- 
-  /**
-   * Sends the text
-   */ 
-  public void sendText()
-  {
-	  opOutput.sendData(propText);
-  }
-  
-  /**
-   * Returns the value of the given property.
-   * @param propertyName   the name of the property
-   * @return               the property value or null if not found
-   */  
-  public Object getRuntimePropertyValue(String propertyName)
-  {
-    if(PROP_TEXT.equalsIgnoreCase(propertyName))
-    {
-      return propText;
-    }
-    else
-    {
-      return null;
-    }
-  }
 
-  /**
-   * Sets a new value for the given property.
-   * @param propertyName   the name of the property
-   * @param newValue       the desired property value
-   * @return old property value
-   */
-  public Object setRuntimePropertyValue(String propertyName, Object newValue)
-  {
-    if(PROP_TEXT.equalsIgnoreCase(propertyName))
-    {
-      final Object oldValue = propText;
-      propText=(String)newValue;
-      return oldValue;
+    /**
+     * Called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
     }
-    else
-    {
-      return null;
-    }
-    
-  }
-  
-  /**
-   * Returns an Event Listener Port.
-   * @param eventPortID   the name of the port
-   * @return         the event listener port or null if not found
-   */
-  @Override
-  public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-  {
-    if(ELP_SEND_TEXT.equalsIgnoreCase(eventPortID))
-    {
-      return elpSendText;
-    }
-    else
-    {
-      return null;
-    }
-  }
-  
-  /**
-   * Input event port.
-   */
-  final IRuntimeEventListenerPort elpSendText 	= new IRuntimeEventListenerPort()
-  {
-    @Override 
-    public void receiveEvent(String data)
-    {
-      sendText();
-    }
-  };    
- 
-  
 
-  /**
-   * Plugin input port.
-   */
-  
-	private final IRuntimeInputPort ipSetText  = new DefaultRuntimeInputPort()
-	{
-		public void receiveData(byte[] data)
-		{
-			propText=ConversionUtils.stringFromBytes(data);
-		}
-
-	};
-
-  /**
-   * Plugin output port.
-   */
-  private class OutputPort extends DefaultRuntimeOutputPort
-  {
-    public void sendData(String data)
-    {
-      super.sendData(ConversionUtils.stringToBytes(data));
+    /**
+     * Called when model is stopped
+     */
+    @Override
+    public void stop() {
+        super.stop();
     }
-  }
+
+    /**
+     * Returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("setText".equalsIgnoreCase(portID)) {
+            return ipSetText;
+        }
+        return null;
+    }
+
+    /**
+     * Returns an Output Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port
+     */
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if (OP_OUTPUT.equalsIgnoreCase(portID)) {
+            return opOutput;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Sends the text
+     */
+    public void sendText() {
+        opOutput.sendData(propText);
+    }
+
+    /**
+     * Returns the value of the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
+     */
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if (PROP_TEXT.equalsIgnoreCase(propertyName)) {
+            return propText;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Sets a new value for the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value
+     * @return old property value
+     */
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if (PROP_TEXT.equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propText;
+            propText = (String) newValue;
+            return oldValue;
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
+     * Returns an Event Listener Port.
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the event listener port or null if not found
+     */
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if (ELP_SEND_TEXT.equalsIgnoreCase(eventPortID)) {
+            return elpSendText;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Input event port.
+     */
+    final IRuntimeEventListenerPort elpSendText = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(String data) {
+            sendText();
+        }
+    };
+
+    /**
+     * Plugin input port.
+     */
+
+    private final IRuntimeInputPort ipSetText = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            propText = ConversionUtils.stringFromBytes(data);
+        }
+
+    };
+
+    /**
+     * Plugin output port.
+     */
+    private class OutputPort extends DefaultRuntimeOutputPort {
+        public void sendData(String data) {
+            super.sendData(ConversionUtils.stringToBytes(data));
+        }
+    }
 }

@@ -24,18 +24,16 @@
  * 
  */
 
-
 package com.starlab.component.processor.computebandpower;
 
 import com.starlab.component.processor.jni.JNIcomputebandpower;
 
 /**
- *   Implements the bridge to the JNI functions that execute the compute band
- *   power algorithm
+ * Implements the bridge to the JNI functions that execute the compute band
+ * power algorithm
  * 
- * @author Javier Acedo [javier.acedo@starlab.es]
- *         Date: May 5, 2011
- *         Time 01:06:51 PM
+ * @author Javier Acedo [javier.acedo@starlab.es] Date: May 5, 2011 Time
+ *         01:06:51 PM
  */
 public class ComputeBandPower {
 
@@ -55,143 +53,146 @@ public class ComputeBandPower {
     /**
      * The class constructor.
      */
-    public ComputeBandPower ()
-    {
+    public ComputeBandPower() {
         jni.CBPInitialization();
     }
-    
+
     /**
      * It Sets the psd computing rate (as a % of the dataLen)
-     * @return             psd computing rate
+     * 
+     * @return psd computing rate
      */
-    public void setPsdComputingRate(int psdComputingRate)
-    {
-    	int val = (int)(psdComputingRate*this.dataLen/100);
-    	
-    	if (val < 1)
-    		this.psdComputingRate = 1;
-    	else
-    		this.psdComputingRate = val;         
+    public void setPsdComputingRate(int psdComputingRate) {
+        int val = (int) (psdComputingRate * this.dataLen / 100);
+
+        if (val < 1) {
+            this.psdComputingRate = 1;
+        } else {
+            this.psdComputingRate = val;
+        }
     }
 
     /**
      * It sets the length of the input data
-     * @param dataLen       Lenght of the input data
+     * 
+     * @param dataLen
+     *            Lenght of the input data
      */
-    public void setDataLen (int dataLen)
-    {
+    public void setDataLen(int dataLen) {
         this.dataLen = dataLen;
     }
 
     /**
      * It sets the sample rate of the input signal
-     * @param sampleRate    Sample rate of the input signal
+     * 
+     * @param sampleRate
+     *            Sample rate of the input signal
      */
-    void setSampleRate(int sampleRate)
-    {
+    void setSampleRate(int sampleRate) {
         this.sampleRate = sampleRate;
     }
 
     /**
      * It set the start frequency of the band where the computations is
      * performed
-     * @param starBand      Start frequency of the band under analysis
+     * 
+     * @param starBand
+     *            Start frequency of the band under analysis
      */
-    void setStartBand(int startBand)
-    {
+    void setStartBand(int startBand) {
         this.startBand = startBand;
     }
 
     /**
-     * It set the end frequency of the band where the computations is
-     * performed
-     * @param endBand      End frequency of the band under analysis
+     * It set the end frequency of the band where the computations is performed
+     * 
+     * @param endBand
+     *            End frequency of the band under analysis
      */
-    void setEndBand(int endBand)
-    {
+    void setEndBand(int endBand) {
         this.endBand = endBand;
     }
-    
+
     /**
      * It gets the configured psd computing rate (in samlpes)
-     * @return             psd computing rate
+     * 
+     * @return psd computing rate
      */
-    int getPsdComputingRate()
-    {
+    int getPsdComputingRate() {
         return this.psdComputingRate;
     }
 
     /**
      * It gets the configured length of the input data
-     * @return             Lenght of the input data
+     * 
+     * @return Lenght of the input data
      */
-    int getDataLen()
-    {
+    int getDataLen() {
         return this.dataLen;
     }
 
     /**
      * It gets the configured sample rate of the input signal
-     * @return             Sample rate of the input signal
+     * 
+     * @return Sample rate of the input signal
      */
-    int getSampleRate()
-    {
+    int getSampleRate() {
         return this.sampleRate;
     }
 
     /**
      * It gets the configured start frequency of the band where the computation
      * is performed
-     * @return             Start frequency of the band under analysis
+     * 
+     * @return Start frequency of the band under analysis
      */
-    int getStartBand()
-    {
+    int getStartBand() {
         return this.startBand;
     }
 
     /**
-     * It gets the configured end frequency of the band where the computation
-     * is performed
-     * @return             End frequency of the band under analysis
+     * It gets the configured end frequency of the band where the computation is
+     * performed
+     * 
+     * @return End frequency of the band under analysis
      */
-    int getEndBand()
-    {
+    int getEndBand() {
         return this.endBand;
     }
 
     /**
      * It computes the power that the input signal has in the configured band
-     * @param in           Vector of input samples in the time domain
-     * @return             Power in V^2 (assuming the input signal is given in
-     *                     Volts) that is present in input signal in the given
-     *                     band 
+     * 
+     * @param in
+     *            Vector of input samples in the time domain
+     * @return Power in V^2 (assuming the input signal is given in Volts) that
+     *         is present in input signal in the given band
      */
-    public double compute(double[] in)
-    {
-    	//int len = in.length;
-        if (in.length != dataLen)
-           return -1;
+    public double compute(double[] in) {
+        // int len = in.length;
+        if (in.length != dataLen) {
+            return -1;
+        }
 
-        double[] out = new double[dataLen/2];
+        double[] out = new double[dataLen / 2];
 
         jni.CBP(in, out);
 
-		//Calculation of the PSD of the band
-		int psdLen = dataLen / 2;
-		double hzperbin = sampleRate / (double)dataLen;
-		double currentF = 0;
-		double psd = 0;
-		for (int i = 0; i < psdLen; i++)
-		{
-			if (currentF >= (double)startBand)
-			{
-				if (currentF > (double)endBand)
-					break;
-				psd += 2* ((out[i] / (double)dataLen) * (out[i] / (double)dataLen));
-			}
-			currentF += hzperbin;
-		}
-		
+        // Calculation of the PSD of the band
+        int psdLen = dataLen / 2;
+        double hzperbin = sampleRate / (double) dataLen;
+        double currentF = 0;
+        double psd = 0;
+        for (int i = 0; i < psdLen; i++) {
+            if (currentF >= (double) startBand) {
+                if (currentF > (double) endBand) {
+                    break;
+                }
+                psd += 2 * ((out[i] / (double) dataLen) * (out[i] / (double) dataLen));
+            }
+            currentF += hzperbin;
+        }
+
         return psd;
     }
 

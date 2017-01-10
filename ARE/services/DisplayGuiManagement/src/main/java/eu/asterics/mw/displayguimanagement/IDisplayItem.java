@@ -25,19 +25,14 @@
 
 package eu.asterics.mw.displayguimanagement;
 
-public interface IDisplayItem 
-{
-	enum NavigationDirection
-	{
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT,
-		BACK,
-		ENTER
-	};
-	
-	public void draw();
-	public void press(int x, int y);
-	public void navigate(NavigationDirection nav);
+public interface IDisplayItem {
+    enum NavigationDirection {
+        UP, DOWN, LEFT, RIGHT, BACK, ENTER
+    };
+
+    public void draw();
+
+    public void press(int x, int y);
+
+    public void navigate(NavigationDirection nav);
 }

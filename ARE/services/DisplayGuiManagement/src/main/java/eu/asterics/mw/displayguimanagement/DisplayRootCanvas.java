@@ -25,75 +25,57 @@
 
 package eu.asterics.mw.displayguimanagement;
 
-public class DisplayRootCanvas extends DisplayCanvas 
-{
-	protected static final long ACTIVITY_TIMEOUT = 5000;
-	private DisplayCanvas navigationElement;
-	private DisplayCanvas displayedCanvas = null;
-	private DisplayCanvas previouslyDisplayedCanvas = null;
-	private DisplayCanvas mainMenuCanvas;
-	
-	private long lastActivity = System.currentTimeMillis();
-	private boolean threadActive = true;
-	
-	private Runnable r = null;
-	private DisplayCanvas sleepCanvas;
-		
-	public DisplayRootCanvas(int x, int y, int w, int h) 
-	{
-		super(x,y,w,h);
-	}
+public class DisplayRootCanvas extends DisplayCanvas {
+    protected static final long ACTIVITY_TIMEOUT = 5000;
+    private DisplayCanvas navigationElement;
+    private DisplayCanvas displayedCanvas = null;
+    private DisplayCanvas previouslyDisplayedCanvas = null;
+    private DisplayCanvas mainMenuCanvas;
 
-	private void removeChild(DisplayCanvas canvas)
-	{
-		children.remove(canvas);
-	}
-	
-	void setCanvas(DisplayCanvas canvas)
-	{
-		if (displayedCanvas != null)
-		{
-			removeChild(displayedCanvas);
-			displayedCanvas.setInvisible();
-			previouslyDisplayedCanvas = displayedCanvas;
-			displayedCanvas = null;
-			navigationElement = null;
-		}
-		addChild(canvas);
-		displayedCanvas = canvas;
-		navigationElement = canvas;
-	}
+    private long lastActivity = System.currentTimeMillis();
 
-	void displayCanvas()
-	{ 
-		draw();
-	}
+    public DisplayRootCanvas(int x, int y, int w, int h) {
+        super(x, y, w, h);
+    }
 
-	@Override
-	public void navigate(NavigationDirection nav) 
-	{
-		DisplayGuiManager.debugMessage("DisplayRootCanvas.navigate()");
-		if (navigationElement != null)
-		{
-			if (nav != NavigationDirection.BACK)
-			{
-				navigationElement.navigate(nav);
-				draw();
-			}
-			else
-			{
-				if ( (displayedCanvas != null) && 
-					 (previouslyDisplayedCanvas != null) )
-				{	
-					setCanvas(this.mainMenuCanvas);
-					draw();
-				}
-			}
-		}
-	}
+    private void removeChild(DisplayCanvas canvas) {
+        children.remove(canvas);
+    }
 
-	public void setMainMenuCanvas(DisplayCanvas mainMenuCanvas) 
-	{
-		this.mainMenuCanvas = mainMenuCanvas;
-	}
+    void setCanvas(DisplayCanvas canvas) {
+        if (displayedCanvas != null) {
+            removeChild(displayedCanvas);
+            displayedCanvas.setInvisible();
+            previouslyDisplayedCanvas = displayedCanvas;
+            displayedCanvas = null;
+            navigationElement = null;
+        }
+        addChild(canvas);
+        displayedCanvas = canvas;
+        navigationElement = canvas;
+    }
+
+    void displayCanvas() {
+        draw();
+    }
+
+    @Override
+    public void navigate(NavigationDirection nav) {
+        DisplayGuiManager.debugMessage("DisplayRootCanvas.navigate()");
+        if (navigationElement != null) {
+            if (nav != NavigationDirection.BACK) {
+                navigationElement.navigate(nav);
+                draw();
+            } else {
+                if ((displayedCanvas != null) && (previouslyDisplayedCanvas != null)) {
+                    setCanvas(this.mainMenuCanvas);
+                    draw();
+                }
+            }
+        }
+    }
+
+    public void setMainMenuCanvas(DisplayCanvas mainMenuCanvas) {
+        this.mainMenuCanvas = mainMenuCanvas;
+    }
 }

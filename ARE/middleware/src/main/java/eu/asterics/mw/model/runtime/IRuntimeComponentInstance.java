@@ -25,20 +25,16 @@
 
 package eu.asterics.mw.model.runtime;
 
-import java.awt.Dimension;
-import java.net.ServerSocket;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * Specifies the methods for lifecycle support of AsTeRICS components.
  *
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Aug 19, 2010
- *         Time: 8:34:50 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 19, 2010 Time:
+ *         8:34:50 PM
  */
-public interface IRuntimeComponentInstance
-{
+public interface IRuntimeComponentInstance {
     // ------------------ Lifecycle support methods ------------------------- //
 
     public void start();
@@ -62,14 +58,13 @@ public interface IRuntimeComponentInstance
     public IRuntimeEventTriggererPort getEventTriggererPort(final String eventPortID);
 
     public Object getRuntimePropertyValue(String propertyName);
-    
-	public List<String> getRuntimePropertyList(String key);
+
+    public List<String> getRuntimePropertyList(String key);
 
     public Object setRuntimePropertyValue(String propertyName, Object newValue);
 
     // -------------- End of component support methods ---------------------- //
-    
-    public void syncedValuesReceived (HashMap <String, byte[]> dataRow);
 
-    
+    public void syncedValuesReceived(HashMap<String, byte[]> dataRow);
+
 }

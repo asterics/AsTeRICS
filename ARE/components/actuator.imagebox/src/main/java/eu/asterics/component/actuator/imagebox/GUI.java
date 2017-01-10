@@ -26,132 +26,119 @@
 
 package eu.asterics.component.actuator.imagebox;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.border.TitledBorder;
-
-import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.text.DecimalFormat;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+
+import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 
 /**
- *   Implements the Graphical User Interface for the
- *   ImageBox plugin
- *  
- *  @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Jan 17, 2012
- *         Time: 12:31:41 AM
+ * Implements the Graphical User Interface for the ImageBox plugin
+ * 
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Jan 17, 2012 Time: 12:31:41
+ *         AM
  */
-public class GUI extends JPanel 
-{
-    
-    private JPanel guiPanel;  
+public class GUI extends JPanel {
+
+    private JPanel guiPanel;
     private Dimension guiPanelSize;
     // private JLabel myLabel;
     // add more GUI elements here
 
-	private final ImageBoxInstance owner;
-	final IRuntimeEventTriggererPort etpClicked;
-	
-	ImageBoxPanel imageBoxPanel=null;
-	
+    private final ImageBoxInstance owner;
+    final IRuntimeEventTriggererPort etpClicked;
+
+    ImageBoxPanel imageBoxPanel = null;
+
     /**
      * The class constructor, initialises the GUI
-     * @param owner    the Slider instance
+     * 
+     * @param owner
+     *            the Slider instance
      */
-    public GUI(final ImageBoxInstance owner, final Dimension space)
-    {
+    public GUI(final ImageBoxInstance owner, final Dimension space) {
         super();
-    	this.owner=owner;
-    	this.etpClicked=owner.etpClicked;
-    	
-		this.setPreferredSize(new Dimension (space.width, space.height));
-		design (space.width, space.height);  	
+        this.owner = owner;
+        this.etpClicked = owner.etpClicked;
+
+        this.setPreferredSize(new Dimension(space.width, space.height));
+        design(space.width, space.height);
     }
 
-    
-	/**
-	 * set up the panel and its elements for the given size 
-	 * @param width
-	 * @param height
-	 */
-	private void design (int width, int height)
-	{
-		//Create Panels
-		guiPanel = new JPanel (new BorderLayout());
-		
-		guiPanelSize = new Dimension (width, height);
-
-		guiPanel.setMaximumSize(guiPanelSize);
-		guiPanel.setPreferredSize(guiPanelSize);
-		
-		guiPanel.setBorder(new TitledBorder(BorderFactory.createLineBorder(Color.BLACK),owner.getCaption()));
-		
-		
-		addMouseListener(new MouseAdapter() { 
-	          public void mousePressed(MouseEvent me) { 
-	            //System.out.println("click ");
-	        	etpClicked.raiseEvent();
-	          } 
-	        }); 
-		
-		
-		Insets panelBorderInsets=guiPanel.getBorder().getBorderInsets(guiPanel);
-		
-		imageBoxPanel=new ImageBoxPanel();
-		imageBoxPanel.setOwner(this);
-		imageBoxPanel.setPicturePath(owner.getDefaultPicturePath());
-		
-		guiPanel.setVisible(true);
-		
-		//this.setBorder(new TitledBorder(owner.propMyTitle));     
-		// myLabel = new JLabel (owner.propMyLabelCaption);
-		// guiPanel.add(myLabel);
-		guiPanel.add(imageBoxPanel,BorderLayout.CENTER);
-		
-	    this.setLayout(new BorderLayout());
-        add (guiPanel,BorderLayout.PAGE_START);
-	    
-	}
-	
-	
-	 /**
-     * Returns the background color.
-     * @return   background color
+    /**
+     * set up the panel and its elements for the given size
+     * 
+     * @param width
+     * @param height
      */
-    int getBackgroundColor()
-    {
-  	  return owner.getBackgroundColor();
+    private void design(int width, int height) {
+        // Create Panels
+        guiPanel = new JPanel(new BorderLayout());
+
+        guiPanelSize = new Dimension(width, height);
+
+        guiPanel.setMaximumSize(guiPanelSize);
+        guiPanel.setPreferredSize(guiPanelSize);
+
+        guiPanel.setBorder(new TitledBorder(BorderFactory.createLineBorder(Color.BLACK), owner.getCaption()));
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent me) {
+                // System.out.println("click ");
+                etpClicked.raiseEvent();
+            }
+        });
+
+        guiPanel.getBorder().getBorderInsets(guiPanel);
+
+        imageBoxPanel = new ImageBoxPanel();
+        imageBoxPanel.setOwner(this);
+        imageBoxPanel.setPicturePath(owner.getDefaultPicturePath());
+
+        guiPanel.setVisible(true);
+
+        // this.setBorder(new TitledBorder(owner.propMyTitle));
+        // myLabel = new JLabel (owner.propMyLabelCaption);
+        // guiPanel.add(myLabel);
+        guiPanel.add(imageBoxPanel, BorderLayout.CENTER);
+
+        this.setLayout(new BorderLayout());
+        add(guiPanel, BorderLayout.PAGE_START);
+
     }
-	
-	
+
+    /**
+     * Returns the background color.
+     * 
+     * @return background color
+     */
+    int getBackgroundColor() {
+        return owner.getBackgroundColor();
+    }
+
     /**
      * Sets the picture path.
-     * @param path path of the picture
+     * 
+     * @param path
+     *            path of the picture
      */
-	void setPicturePath(String path)
-	{
-		if(imageBoxPanel!=null)
-		{
-			imageBoxPanel.setPicturePath(path);
-			imageBoxPanel.repaint();
-			imageBoxPanel.revalidate();
-		}
-	}
-	
-  
-   // add state change listeners or action listeners here
-   // interact with output port e.g. via
-   //  owner.opMyOutPort.sendData(ConversionUtils.intToBytes(source.getValue())
-  
+    void setPicturePath(String path) {
+        if (imageBoxPanel != null) {
+            imageBoxPanel.setPicturePath(path);
+            imageBoxPanel.repaint();
+            imageBoxPanel.revalidate();
+        }
+    }
+
+    // add state change listeners or action listeners here
+    // interact with output port e.g. via
+    // owner.opMyOutPort.sendData(ConversionUtils.intToBytes(source.getValue())
+
 }

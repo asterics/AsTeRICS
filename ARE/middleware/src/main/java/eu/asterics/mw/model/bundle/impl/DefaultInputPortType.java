@@ -1,12 +1,12 @@
 package eu.asterics.mw.model.bundle.impl;
 
+import java.util.Map;
+
 import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.Multiplicity;
 import eu.asterics.mw.model.bundle.IInputPortType;
 import eu.asterics.mw.model.bundle.PortType;
 
-import java.util.ArrayList;
-import java.util.Map;
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -32,50 +32,42 @@ import java.util.Map;
  *
  */
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:54:10 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:54:10 PM
  */
-public class DefaultInputPortType extends DefaultPortType implements IInputPortType
-{
+public class DefaultInputPortType extends DefaultPortType implements IInputPortType {
     private final Multiplicity multiplicity;
     private final boolean mustBeConnected;
-   // private final ArrayList<String> bufferedPortIds; //Sync
+    // private final ArrayList<String> bufferedPortIds; //Sync
 
-    public DefaultInputPortType(final PortType portType,
-    		final String description, 
-    		final DataType dataType,
-    		final Map<String, PropertyType> propertyTypes, 
-    		final Multiplicity multiplicity,
-    		final boolean mustBeConnected,
-    		String id) 
-    {
+    public DefaultInputPortType(final PortType portType, final String description, final DataType dataType,
+            final Map<String, PropertyType> propertyTypes, final Multiplicity multiplicity,
+            final boolean mustBeConnected, String id) {
         super(portType, description, dataType, propertyTypes, id);
 
         this.multiplicity = multiplicity;
         this.mustBeConnected = mustBeConnected;
-       // this.bufferedPortIds = bufferedPortIds;
+        // this.bufferedPortIds = bufferedPortIds;
 
     }
 
-    public Multiplicity getMultiplicity()
-    {
+    @Override
+    public Multiplicity getMultiplicity() {
         return multiplicity;
     }
 
-    public boolean mustBeConnected()
-    {
+    @Override
+    public boolean mustBeConnected() {
         return mustBeConnected;
     }
 
     @Override
-    final public PortType getType()
-    {
+    final public PortType getType() {
         return PortType.INPUT;
     }
 
-	//Sync
-//	public ArrayList<String> getBufferedPortIds() {
-//		return this.bufferedPortIds;
-//	}
+    // Sync
+    // public ArrayList<String> getBufferedPortIds() {
+    // return this.bufferedPortIds;
+    // }
 }

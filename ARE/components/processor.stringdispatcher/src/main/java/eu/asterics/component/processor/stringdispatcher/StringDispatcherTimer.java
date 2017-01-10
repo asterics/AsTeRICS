@@ -25,78 +25,72 @@
 
 package eu.asterics.component.processor.stringdispatcher;
 
-import eu.asterics.mw.services.AstericsErrorHandling;
-
-
 /**
- *Implements the timer functionality for the StringDispatcherInstance class. 
- *It is used in slot series Dispatching.
+ * Implements the timer functionality for the StringDispatcherInstance class. It
+ * is used in slot series Dispatching.
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Feb 15, 2011
- *         Time: 11:41:08 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Feb 15, 2011 Time: 11:41:08
+ *         AM
  */
 
-public class StringDispatcherTimer implements Runnable
-{
-  final StringDispatcherInstance owner;
-  private int numberOfNoEmptySlots=0;
-  private int delay;
-  private boolean fastFinish=false;
-  private Thread t;
-	
-  /**
-   * The class constructor.
-   * @param owner instance of the StringDispatcherInstance class
-   */	
-  public StringDispatcherTimer(final StringDispatcherInstance owner)
-  {
-    this.owner = owner;
-  }
-	
-  /**
-   * Sends slot series.
-   * @param numberOfSlotsToSend   the number of slots to send
-   * @param delay    the delay between slots send.
-   */
-  public void sendAll(int numberOfNoEmptySlots, int delay)
-  {
-    fastFinish=false;
-	this.numberOfNoEmptySlots=numberOfNoEmptySlots;
-	this.delay=delay;
-	t=new Thread(this);
-	t.start();
-		
-  }
-  
-  /**
-   * Finish the sending series immediately.
-   */	
-  public void finishNow()
-  {
-    fastFinish=true;
-  }
- 
-  /**
-   * Timer function.
-   */
-  public void run()
-  {
-    for(int i=0;i<numberOfNoEmptySlots;i++)
-	{
-	  if(fastFinish==true)
-	  {
-	    fastFinish=false;
-		break;
-	  }
-	  owner.sendNextSlotFromSeries();
-	  try 
-	  {
-        t.sleep(delay);
-	  } 
-	  catch (InterruptedException e) {}  
-	}
-	
-    owner.resetBlock();
-  }
+public class StringDispatcherTimer implements Runnable {
+    final StringDispatcherInstance owner;
+    private int numberOfNoEmptySlots = 0;
+    private int delay;
+    private boolean fastFinish = false;
+    private Thread t;
+
+    /**
+     * The class constructor.
+     * 
+     * @param owner
+     *            instance of the StringDispatcherInstance class
+     */
+    public StringDispatcherTimer(final StringDispatcherInstance owner) {
+        this.owner = owner;
+    }
+
+    /**
+     * Sends slot series.
+     * 
+     * @param numberOfSlotsToSend
+     *            the number of slots to send
+     * @param delay
+     *            the delay between slots send.
+     */
+    public void sendAll(int numberOfNoEmptySlots, int delay) {
+        fastFinish = false;
+        this.numberOfNoEmptySlots = numberOfNoEmptySlots;
+        this.delay = delay;
+        t = new Thread(this);
+        t.start();
+
+    }
+
+    /**
+     * Finish the sending series immediately.
+     */
+    public void finishNow() {
+        fastFinish = true;
+    }
+
+    /**
+     * Timer function.
+     */
+    @Override
+    public void run() {
+        for (int i = 0; i < numberOfNoEmptySlots; i++) {
+            if (fastFinish == true) {
+                fastFinish = false;
+                break;
+            }
+            owner.sendNextSlotFromSeries();
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+            }
+        }
+
+        owner.resetBlock();
+    }
 }

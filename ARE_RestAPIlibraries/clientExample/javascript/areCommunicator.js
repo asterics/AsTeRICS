@@ -9,10 +9,23 @@ var _eventSourceMap = new Map();
 var delimiter = "-";
 
 //enumeration for server event types
-var ServerEvents = {
-		MODEL_STATE_CHANGED: "model_state_changed",
+var ServerEventTypes = {
 		MODEL_CHANGED: "model_changed",
-		MODEL_EVENT: "model_event"
+		MODEL_STATE_CHANGED: "model_state_changed",
+		EVENT_CHANNEL_TRANSMISSION: "event_channel_transmission",
+		DATA_CHANNEL_TRANSMISSION: "data_channel_transmission",
+		PROPERTY_CHANGED: "property_changed"
+};
+
+//Port datatypes
+var PortDatatype = {
+		UNKNOWN: "unknown",
+		BOOLEAN: "boolean",
+		BYTE: "byte",
+		CHAR: "char",
+		INTEGER: "integer",
+		DOUBLE: "double",
+		STRING: "string"
 };
 
 //set the base uri (usually where ARE runs at)
@@ -283,7 +296,7 @@ function setRuntimeComponentProperty(successCallback, errorCallback, componentId
 function getEventChannelsIds(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/eventChannels/ids",
+		url: _baseURI + "runtime/model/channels/event/ids",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -305,7 +318,7 @@ function getEventChannelSource(successCallback, errorCallback, channelId) {
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/eventChannels/"+encodeParam(channelId) + "/source",
+		url: _baseURI + "runtime/model/channels/event/"+encodeParam(channelId) + "/source",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -327,7 +340,7 @@ function getEventChannelTarget(successCallback, errorCallback, channelId) {
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/eventChannels/"+encodeParam(channelId) + "/target",
+		url: _baseURI + "runtime/model/channels/event/"+encodeParam(channelId) + "/target",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -349,7 +362,7 @@ function getComponentEventChannelsIds(successCallback, errorCallback, componentI
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/eventChannels/ids",
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/channels/event/ids",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -368,7 +381,7 @@ function getComponentEventChannelsIds(successCallback, errorCallback, componentI
 function getDataChannelsIds(successCallback, errorCallback) {
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/dataChannels/ids",
+		url: _baseURI + "runtime/model/channels/data/ids",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -390,7 +403,7 @@ function getDataChannelSource(successCallback, errorCallback, channelId) {
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/dataChannels/"+encodeParam(channelId) + "/source",
+		url: _baseURI + "runtime/model/channels/data/"+encodeParam(channelId) + "/source",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -412,7 +425,7 @@ function getDataChannelTarget(successCallback, errorCallback, channelId) {
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/dataChannels/"+encodeParam(channelId) + "/target",
+		url: _baseURI + "runtime/model/channels/data/"+encodeParam(channelId) + "/target",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -434,7 +447,7 @@ function getComponentDataChannelsIds(successCallback, errorCallback, componentId
 	
 	$.ajax({
 		type: "GET",
-		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/dataChannels/ids",
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/channels/data/ids",
 		datatype: "application/json",
 		crossDomain: true,
 		success:
@@ -450,6 +463,70 @@ function getComponentDataChannelsIds(successCallback, errorCallback, componentId
 }
 
 
+function getComponentInputPortIds(successCallback, errorCallback, componentId) {
+	
+	if ( componentId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/components/"+encodeParam(componentId) + "/ports/input/ids",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(JSON.parse(jsonString), textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getComponentOutputPortIds(successCallback, errorCallback, componentId) {
+	
+	if ( componentId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/components/" + encodeParam(componentId) + "/ports/output/ids",
+		datatype: "application/json",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(jsonString, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+function getPortDatatype(successCallback, errorCallback, componentId, portId) {
+	
+	if ( componentId == "" ) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "runtime/model/components/" + encodeParam(componentId) + "/ports/" + encodeParam(portId) + "/datatype",
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					jsonString = jqXHR.responseText;
+					successCallback(jsonString, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
 
 
 /*************************************
@@ -606,23 +683,45 @@ function getRestFunctions(successCallback, errorCallback) {
  *	Subscription to SSE events
  **********************************/
 
-function subscribe(successCallback, errorCallback, eventsType) {
+function subscribe(successCallback, errorCallback, eventType, channelId) {
 	
 	// Browser does not support SSE
-	if((typeof EventSource)==="undefined") { 
+	if( (typeof EventSource)==="undefined" ) { 
 	   alert("SSE not supported by browser");
 	   return;
 	}
 
-	var eventSource = _eventSourceMap.get(eventsType);
+	var eventSource = _eventSourceMap.get(eventType);
 	if (eventSource != null) {
 		eventSource.close();
 	}
-	eventSource = new EventSource(_baseURI + "events/subscribe"); // Connecting to SSE service
-	_eventSourceMap.add(eventsType, eventSource);
+
+	switch (eventType) {
+	    case ServerEventTypes.MODEL_CHANGED:
+	        resource = "runtime/deployment/listener";
+	        break;
+	    case ServerEventTypes.MODEL_STATE_CHANGED:
+	        resource = "runtime/model/state/listener";
+	        break;
+	    case ServerEventTypes.EVENT_CHANNEL_TRANSMISSION:
+	        resource = "runtime/model/channels/event/listener";
+	        break;
+	    case ServerEventTypes.DATA_CHANNEL_TRANSMISSION:
+	        resource = "runtime/model/channels/data/" + encodeParam(channelId) + "/listener";
+	        break;
+	    case ServerEventTypes.PROPERTY_CHANGED:
+	        resource = "runtime/model/components/properties/listener";
+	        break;
+        default:
+        	console.error("ERROR: Unknown event type given as a parameter '" + eventType + "'");
+			return;
+	}
+
+	eventSource = new EventSource(_baseURI + resource); // Connecting to SSE service
+	_eventSourceMap.add(eventType, eventSource);
 	
 	//adding listener for specific events
-	eventSource.addEventListener(eventsType, function(e) {
+	eventSource.addEventListener("event", function(e) {
 		successCallback(e.data, 200);
 	}, false);
 	
@@ -635,10 +734,10 @@ function subscribe(successCallback, errorCallback, eventsType) {
 	eventSource.onerror = function (e) {
 		switch(e.target.readyState) {
 			case EventSource.CONNECTING:	
-				errorCallback(400, 'reconnecting');
+				console.log(400, 'reconnecting');
 				break;
 			case EventSource.CLOSED:		
-				errorCallback(400, 'connectionLost');
+				console.log(400, 'connectionLost');
 				break;
 			default:
 				errorCallback(400, 'someErrorOccurred');
@@ -648,9 +747,14 @@ function subscribe(successCallback, errorCallback, eventsType) {
 }
 
 
-function unsubscribe(eventsType) {
-	var eventSource = _eventSourceMap.remove(eventsType);
-	
+function unsubscribe(eventType, channelId) {
+	closeEventSource(eventType);
+}
+
+
+function closeEventSource(eventType) {
+	var eventSource = _eventSourceMap.remove(eventType);
+
 	if (eventSource == null) {
 		return false;
 	}

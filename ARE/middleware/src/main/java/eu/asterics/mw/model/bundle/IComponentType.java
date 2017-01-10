@@ -25,17 +25,15 @@
 
 package eu.asterics.mw.model.bundle;
 
-import eu.asterics.mw.model.DataType;
-
 import java.util.Set;
 
+import eu.asterics.mw.model.DataType;
+
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 12:28:47 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         12:28:47 PM
  */
-public interface IComponentType extends IPropertyfulType
-{
+public interface IComponentType extends IPropertyfulType {
     public String getID();
 
     public String getCanonicalName();
@@ -50,15 +48,15 @@ public interface IComponentType extends IPropertyfulType
      * component whenever a new instance is requested.
      *
      * @return true if and only if the corresponding component type is a
-     * singleton
+     *         singleton
      */
     public boolean isSingleton();
 
     /**
      * Returns a human-readable description of the component type.
      *
-     * @return a string containing a human-readable description of the
-     *         component type
+     * @return a string containing a human-readable description of the component
+     *         type
      */
     public String getDescription();
 

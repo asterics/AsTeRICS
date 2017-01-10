@@ -10,6 +10,7 @@ import eu.asterics.mw.model.deployment.impl.DefaultChannel;
 import eu.asterics.mw.model.deployment.impl.DefaultComponentInstance;
 import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
 import eu.asterics.mw.model.deployment.impl.ModelState;
+
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -36,83 +37,74 @@ import eu.asterics.mw.model.deployment.impl.ModelState;
  */
 /**
  * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * @author Costas Kakousis [kakousis@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 2:24:52 PM
+ * @author Costas Kakousis [kakousis@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         2:24:52 PM
  */
-public interface IRuntimeModel
-{
+public interface IRuntimeModel {
     public Set<IComponentInstance> getComponentInstances();
 
     public Set<IChannel> getChannels();
-    
-    public IComponentInstance getComponentInstance (String componentInstanceID);
 
-	public String[] getComponentInstancesIDs();
+    public IComponentInstance getComponentInstance(String componentInstanceID);
 
-	public String[] getChannelsIDs(String componentID);
+    public String[] getComponentInstancesIDs();
 
-	public void removeComponentInstance(String componentID) 
-	throws AREAsapiException;
+    public String[] getChannelsIDs(String componentID);
 
-	public String[] getComponentPorts(String componentID)
-	throws AREAsapiException;
+    public void removeComponentInstance(String componentID) throws AREAsapiException;
 
-	public String[] getComponentInputPorts(String componentID)
-	throws AREAsapiException;
+    public String[] getComponentPorts(String componentID) throws AREAsapiException;
 
-	public String[] getComponentOutputPorts(String componentID)
-	throws AREAsapiException;
+    public String[] getComponentInputPorts(String componentID) throws AREAsapiException;
 
-	public String getChannelProperty(String channelID, String key);
+    public String[] getComponentOutputPorts(String componentID) throws AREAsapiException;
 
-	public String[] getChannelPropertyKeys(String channelID);
+    public String getChannelProperty(String channelID, String key);
 
-	public String getComponentProperty(String componentID, String key);
+    public String[] getChannelPropertyKeys(String channelID);
 
-	public String[] getComponentPropertyKeys(String componentID);
+    public String getComponentProperty(String componentID, String key);
 
-	public String getPortProperty(String componentID, String portID, String key);
+    public String[] getComponentPropertyKeys(String componentID);
 
-	public String[] getPortPropertyKeys(String componentID, String portID);
+    public String getPortProperty(String componentID, String portID, String key);
 
-	public String setPortProperty(String componentID, String portID,
-			String key, String value);
+    public String[] getPortPropertyKeys(String componentID, String portID);
 
-	public String setComponentProperty(String componentID, String key,
-			String value);
+    public String setPortProperty(String componentID, String portID, String key, String value);
 
-	public String setChannelProperty(String channelID, String key, String value);
+    public String setComponentProperty(String componentID, String key, String value);
 
-	public void removeChannel(String channelID) throws AREAsapiException;
+    public String setChannelProperty(String channelID, String key, String value);
 
-	public void insertComponent(DefaultComponentInstance newInstance);
+    public void removeChannel(String channelID) throws AREAsapiException;
 
-	public void insertChannel(DefaultChannel newChannel);
+    public void insertComponent(DefaultComponentInstance newInstance);
 
-	public IPort getPort(String componentID, String portID);
+    public void insertChannel(DefaultChannel newChannel);
+
+    public IPort getPort(String componentID, String portID);
 
     public DataType getPortDataType(final String componentID, final String portID);
 
     public Set<IEventChannel> getEventChannels();
 
-	public ModelState getState();
-	
-	public void setState(ModelState state);
-	
-	public String getModelName ();
-	
-	public String getModelDescription ();
+    public ModelState getState();
 
-	public String getModelVersion();
+    public void setState(ModelState state);
 
-	public String getModelShortDescription();
+    public String getModelName();
 
-	public String getModelRequirements();
-	
-	public ArrayList<DefaultACSGroup> getACSGroups();
-	
-	public ModelGUIInfo getModelGuiInfo();
+    public String getModelDescription();
 
+    public String getModelVersion();
+
+    public String getModelShortDescription();
+
+    public String getModelRequirements();
+
+    public ArrayList<DefaultACSGroup> getACSGroups();
+
+    public ModelGUIInfo getModelGuiInfo();
 
 }

@@ -23,27 +23,25 @@
  * 
  */
 
-
 package eu.asterics.component.sensor.fs20receiver;
 
 import java.util.EventObject;
 
-
 public class FS20ReaderEvent extends EventObject {
-    
-	/**
-	 * Event Object to be thrown when a FS20Event will be fired
-	 */
-	private static final long serialVersionUID = 6477559656007124640L;
-	
-	private byte[] msg;
 
-	public FS20ReaderEvent(Object source, byte[] msg) {
+    /**
+     * Event Object to be thrown when a FS20Event will be fired
+     */
+    private static final long serialVersionUID = 6477559656007124640L;
+
+    private byte[] msg;
+
+    public FS20ReaderEvent(Object source, byte[] msg) {
         super(source);
         this.msg = msg;
     }
 
-	public byte[] getMsg() {
-		return msg;
-	}
+    public byte[] getMsg() {
+        return msg;
+    }
 }

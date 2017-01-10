@@ -31,87 +31,79 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Aug 20, 2010
- *         Time: 11:29:06 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Aug 20, 2010 Time:
+ *         11:29:06 AM
  */
-abstract public class AbstractRuntimeComponentInstance implements IRuntimeComponentInstance
-{
-    public AbstractRuntimeComponentInstance()
-    {
+abstract public class AbstractRuntimeComponentInstance implements IRuntimeComponentInstance {
+    public AbstractRuntimeComponentInstance() {
         super();
     }
 
     protected RuntimeState runtimeState = RuntimeState.READY;
 
-    public void start()
-    {
+    @Override
+    public void start() {
         runtimeState = RuntimeState.ACTIVE;
     }
 
-    public void pause()
-    {
+    @Override
+    public void pause() {
         runtimeState = RuntimeState.SUSPENDED;
     }
 
-    public void resume()
-    {
+    @Override
+    public void resume() {
         runtimeState = RuntimeState.ACTIVE;
     }
 
-    public void stop()
-    {
+    @Override
+    public void stop() {
         runtimeState = RuntimeState.STOPPED;
     }
 
     @Override
-    public IRuntimeInputPort getInputPort(String portID)
-    {
+    public IRuntimeInputPort getInputPort(String portID) {
         return null;
     }
 
     @Override
-    public IRuntimeOutputPort getOutputPort(String portID)
-    {
+    public IRuntimeOutputPort getOutputPort(String portID) {
         return null;
     }
 
     @Override
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
         return null;
     }
 
     @Override
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
         return null;
     }
-    
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-    	return null;
+
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        return null;
     }
 
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-    	return null;
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        return null;
     }
-    
-    public List<String> getRuntimePropertyList(String key){
-    	return new ArrayList<String>();
+
+    @Override
+    public List<String> getRuntimePropertyList(String key) {
+        return new ArrayList<String>();
     }
-    
-    public void syncedValuesReceived (HashMap <String, byte[]> dataRow)
-    {
-    	
-		for (Map.Entry<String, byte[]> e: dataRow.entrySet())
-		{
-			IRuntimeInputPort p = getInputPort(e.getKey());
-			if (p != null)
-			{
-				p.receiveData(e.getValue());
-			}
-		}
-     }
+
+    @Override
+    public void syncedValuesReceived(HashMap<String, byte[]> dataRow) {
+
+        for (Map.Entry<String, byte[]> e : dataRow.entrySet()) {
+            IRuntimeInputPort p = getInputPort(e.getKey());
+            if (p != null) {
+                p.receiveData(e.getValue());
+            }
+        }
+    }
 }

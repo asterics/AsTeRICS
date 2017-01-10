@@ -26,16 +26,14 @@
 package eu.asterics.mw.data;
 
 /**
- * All data classes must implement this interface. All classes implementing
- * this interface should make ensure that they are immutable. See:
- * <a href="http://en.wikipedia.org/wiki/Immutable_object">
- * http://en.wikipedia.org/wiki/Immutable_object</a>.
+ * All data classes must implement this interface. All classes implementing this
+ * interface should make ensure that they are immutable. See:
+ * <a href="http://en.wikipedia.org/wiki/Immutable_object"> http://en.wikipedia.
+ * org/wiki/Immutable_object</a>.
  *
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- * Date: Feb 1, 2010
- * Time: 8:45:24 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Feb 1, 2010 Time:
+ *         8:45:24 AM
  */
-public interface Immutable
-{
+public interface Immutable {
     // empty
 }

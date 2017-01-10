@@ -2,7 +2,6 @@ package eu.asterics.mw.services;
 
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  *
@@ -28,17 +27,14 @@ import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
  *
  */
 
+public interface IAstericsErrorHandling {
 
+    public void reportError(IRuntimeComponentInstance component, String errorMsg);
 
-public interface IAstericsErrorHandling 
-{
+    public void reportInfo(IRuntimeComponentInstance component, String info);
 
-	public void reportError (IRuntimeComponentInstance component, 
-			String errorMsg);
-	public void reportInfo (IRuntimeComponentInstance component, String info);
-	public void reportDebugInfo (IRuntimeComponentInstance component, 
-			String info);
-	public void reportOk (IRuntimeComponentInstance component, 
-			String info);
-	
+    public void reportDebugInfo(IRuntimeComponentInstance component, String info);
+
+    public void reportOk(IRuntimeComponentInstance component, String info);
+
 }

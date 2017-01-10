@@ -25,148 +25,124 @@
 
 package eu.asterics.mw.displayguimanagement;
 
-import java.awt.Point;
 import java.awt.Rectangle;
-
-import eu.asterics.mw.cimcommunication.CIMPortManager;
-import eu.asterics.mw.cimcommunication.CIMProtocolPacket;
-import eu.asterics.mw.services.AstericsThreadPool;
 
 public class DisplayLabel extends DisplayCanvas {
 
-	String caption;
-	Rectangle iconLocation = new Rectangle();
-	byte [] iconData = null;
-	byte [] invertedIconData = null;
-	
-	boolean drawText = true;
-		
-	public DisplayLabel(String caption, int x, int y, int w, int h)
-	{
-		super(x, y, w, h);
-		this.caption = caption;
-		
-	}
-	
-	public DisplayLabel(String caption)
-	{
-		this.caption = caption;
-	}
-	
-	public DisplayLabel()
-	{
-		this.caption = "";
-	}
-	
-	
-	@Override
-	public void draw() 
-	{
-		DisplayGuiManager.debugMessage("DisplayLabel.draw():"+ canvasName);
-		// set text window
-		DisplayGuiManager.instance.writeToDisplay((short) 0x71, locationToBytes());
+    String caption;
+    Rectangle iconLocation = new Rectangle();
+    byte[] iconData = null;
+    byte[] invertedIconData = null;
 
-		setVisible();
-		
-		if (drawText)
-		{
-			DisplayGuiManager.debugMessage("DisplayLabel.draw():"+ canvasName + " drawing text");
-			// write text
-			DisplayGuiManager.instance.writeToDisplay((short) 0x72, locationToBytes());
-			DisplayGuiManager.instance.writeToDisplay((short) 0x74, (caption).getBytes());
-		}
-		
-		if (iconData != null)
-		{
-			DisplayGuiManager.debugMessage("DisplayLabel.draw():"+ canvasName + " drawing icon");
-			byte [] data = new byte[8 + iconData.length]; 
-			
-			System.arraycopy(iconLocationToBytes(), 0, data, 0, 8);
-			System.arraycopy(iconData, 0, data, 8, iconData.length);
+    boolean drawText = true;
 
-			/* for (int i = 0; i< data.length; i++)
-			{
-				DisplayGuiManager.debugMessage(String.format("%2x, ", data[i]));
-				if (((i + 1) % 8) == 0) 
-				{
-					System.out.print("\n"); 
-				}
-			}
-			*/ 
-			DisplayGuiManager.instance.writeToDisplay((short) 0x75, data);
+    public DisplayLabel(String caption, int x, int y, int w, int h) {
+        super(x, y, w, h);
+        this.caption = caption;
 
-		}
+    }
 
-	}
+    public DisplayLabel(String caption) {
+        this.caption = caption;
+    }
 
-	public void drawInverted() 
-	{
-		DisplayGuiManager.debugMessage("DisplayLabel.drawInverted():"+ canvasName);
-		// set text window
-		DisplayGuiManager.instance.writeToDisplay((short) 0x71, locationToBytes());
+    public DisplayLabel() {
+        this.caption = "";
+    }
 
-		setVisible();
-		
-		if (drawText)
-		{
-			DisplayGuiManager.debugMessage("DisplayLabel.draw():"+ canvasName + " drawing inverted text");
-			DisplayGuiManager.instance.writeToDisplay((short) 0x72, locationToBytes());				
-			DisplayGuiManager.instance.writeToDisplay((short) 0x74, ("\f\37" + caption + "\36").getBytes());	  
-		}
+    @Override
+    public void draw() {
+        DisplayGuiManager.debugMessage("DisplayLabel.draw():" + canvasName);
+        // set text window
+        DisplayGuiManager.instance.writeToDisplay((short) 0x71, locationToBytes());
 
-		if (invertedIconData != null)
-		{
-			DisplayGuiManager.debugMessage("DisplayLabel.draw():"+ canvasName + " drawing inverted icon");
+        setVisible();
 
-			byte [] data = new byte[8 + invertedIconData.length]; 
-			System.arraycopy(iconLocationToBytes(), 0, data, 0, 8);
-			System.arraycopy(invertedIconData, 0, data, 8, invertedIconData.length);
+        if (drawText) {
+            DisplayGuiManager.debugMessage("DisplayLabel.draw():" + canvasName + " drawing text");
+            // write text
+            DisplayGuiManager.instance.writeToDisplay((short) 0x72, locationToBytes());
+            DisplayGuiManager.instance.writeToDisplay((short) 0x74, (caption).getBytes());
+        }
 
-			DisplayGuiManager.instance.writeToDisplay((short) 0x75, data);
-		}
-	}
+        if (iconData != null) {
+            DisplayGuiManager.debugMessage("DisplayLabel.draw():" + canvasName + " drawing icon");
+            byte[] data = new byte[8 + iconData.length];
 
-	
-	byte [] iconLocationToBytes()
-	{
-		
-		int x = absPosition.x + iconLocation.x;
-		int y = absPosition.y + iconLocation.y;
-		DisplayGuiManager.debugMessage(String.format("DisplayCanvas.iconLocationToBytes() on %s, x: %d, y: %d", canvasName, x, y ));		
+            System.arraycopy(iconLocationToBytes(), 0, data, 0, 8);
+            System.arraycopy(iconData, 0, data, 8, iconData.length);
 
-		byte [] data = new byte[8];
-		data[0] = (byte) ( x & 0xff);
-		data[1] = (byte) ((x >> 8) & 0xff);
-		data[2] = (byte) ( y & 0xff);
-		data[3] = (byte) ((y >> 8) & 0xff);
-		data[4] = (byte) ( iconLocation.width & 0xff);
-		data[5] = (byte) ((iconLocation.width >> 8) & 0xff);
-		data[6] = (byte) ( iconLocation.height & 0xff);
-		data[7] = (byte) ((iconLocation.height >> 8) & 0xff);
+            /*
+             * for (int i = 0; i< data.length; i++) {
+             * DisplayGuiManager.debugMessage(String.format("%2x, ", data[i]));
+             * if (((i + 1) % 8) == 0) { System.out.print("\n"); } }
+             */
+            DisplayGuiManager.instance.writeToDisplay((short) 0x75, data);
 
-		return data;
-	}	
-	
-	void setIcon(byte [] iconData)
-	{
-		this.iconData = iconData;
-		invertedIconData = new byte[iconData.length]; 
-		
-		for (int i = 0; i< iconData.length; i++)
-		{
-			invertedIconData[i]=(byte) (255-iconData[i]);
-		}
-		
-	}
-	
-	void setIconLocation(int x, int y, int w, int h)
-	{
-		iconLocation.setBounds(x, y, w, h);
-	}
-	
-	void enableText(boolean drawText)
-	{
-		this.drawText = drawText;
-	}
-	
+        }
+
+    }
+
+    public void drawInverted() {
+        DisplayGuiManager.debugMessage("DisplayLabel.drawInverted():" + canvasName);
+        // set text window
+        DisplayGuiManager.instance.writeToDisplay((short) 0x71, locationToBytes());
+
+        setVisible();
+
+        if (drawText) {
+            DisplayGuiManager.debugMessage("DisplayLabel.draw():" + canvasName + " drawing inverted text");
+            DisplayGuiManager.instance.writeToDisplay((short) 0x72, locationToBytes());
+            DisplayGuiManager.instance.writeToDisplay((short) 0x74, ("\f\37" + caption + "\36").getBytes());
+        }
+
+        if (invertedIconData != null) {
+            DisplayGuiManager.debugMessage("DisplayLabel.draw():" + canvasName + " drawing inverted icon");
+
+            byte[] data = new byte[8 + invertedIconData.length];
+            System.arraycopy(iconLocationToBytes(), 0, data, 0, 8);
+            System.arraycopy(invertedIconData, 0, data, 8, invertedIconData.length);
+
+            DisplayGuiManager.instance.writeToDisplay((short) 0x75, data);
+        }
+    }
+
+    byte[] iconLocationToBytes() {
+
+        int x = absPosition.x + iconLocation.x;
+        int y = absPosition.y + iconLocation.y;
+        DisplayGuiManager.debugMessage(
+                String.format("DisplayCanvas.iconLocationToBytes() on %s, x: %d, y: %d", canvasName, x, y));
+
+        byte[] data = new byte[8];
+        data[0] = (byte) (x & 0xff);
+        data[1] = (byte) ((x >> 8) & 0xff);
+        data[2] = (byte) (y & 0xff);
+        data[3] = (byte) ((y >> 8) & 0xff);
+        data[4] = (byte) (iconLocation.width & 0xff);
+        data[5] = (byte) ((iconLocation.width >> 8) & 0xff);
+        data[6] = (byte) (iconLocation.height & 0xff);
+        data[7] = (byte) ((iconLocation.height >> 8) & 0xff);
+
+        return data;
+    }
+
+    void setIcon(byte[] iconData) {
+        this.iconData = iconData;
+        invertedIconData = new byte[iconData.length];
+
+        for (int i = 0; i < iconData.length; i++) {
+            invertedIconData[i] = (byte) (255 - iconData[i]);
+        }
+
+    }
+
+    void setIconLocation(int x, int y, int w, int h) {
+        iconLocation.setBounds(x, y, w, h);
+    }
+
+    void enableText(boolean drawText) {
+        this.drawText = drawText;
+    }
+
 }

@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,287 +26,261 @@
 
 package eu.asterics.component.processor.eventdelay;
 
-
-import java.util.logging.Logger;
-import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 import java.util.Vector;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
+import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
+import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+
 /**
  * 
- * This component collects events and sends them to the output port after defined delay.
+ * This component collects events and sends them to the output port after
+ * defined delay.
  * 
- *  
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Apr 03, 2012
- *         Time: 12:10:20 AM
+ * 
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Apr 03, 2012 Time: 12:10:20
+ *         AM
  */
-public class EventDelayInstance extends AbstractRuntimeComponentInstance
-{
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class EventDelayInstance extends AbstractRuntimeComponentInstance {
+    // Usage of an output port e.g.:
+    // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
-	final IRuntimeEventTriggererPort etpOutput = new DefaultRuntimeEventTriggererPort();
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    final IRuntimeEventTriggererPort etpOutput = new DefaultRuntimeEventTriggererPort();
+    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	int propDelay = 100;
+    int propDelay = 100;
 
-	// declare member variables here
-	private Vector<Long> eventTime=new Vector<Long>();
-	private Lock lock = new ReentrantLock();
-	private boolean timerWorks=false;
+    // declare member variables here
+    private Vector<Long> eventTime = new Vector<Long>();
+    private Lock lock = new ReentrantLock();
     private DelayTimer timer = new DelayTimer(this);
-    private boolean stateActive=false;
-	
-   /**
-    * The class constructor.
-    */
-    public EventDelayInstance()
-    {
+    private boolean stateActive = false;
+
+    /**
+     * The class constructor.
+     */
+    public EventDelayInstance() {
         // empty constructor
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-		if ("input".equalsIgnoreCase(eventPortID))
-		{
-			return elpInput;
-		}
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if ("input".equalsIgnoreCase(eventPortID)) {
+            return elpInput;
+        }
 
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
-		if ("output".equalsIgnoreCase(eventPortID))
-		{
-			return etpOutput;
-		}
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+        if ("output".equalsIgnoreCase(eventPortID)) {
+            return etpOutput;
+        }
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("delay".equalsIgnoreCase(propertyName))
-		{
-			return propDelay;
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("delay".equalsIgnoreCase(propertyName)) {
+            return propDelay;
+        }
 
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("delay".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propDelay;
-			propDelay = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("delay".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propDelay;
+            propDelay = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
 
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
+    /**
+     * Input Ports for receiving values.
+     */
 
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpInput = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            try {
+                lock.lock();
+                if (stateActive) {
+                    long time = System.currentTimeMillis();
+                    eventTime.add(time);
+                    if (timer.timerState() == false) {
+                        timer.setDelayTime(propDelay);
+                        timer.startDelay();
+                    }
+                }
 
-     /**
-      * Event Listerner Ports.
-      */
-	final IRuntimeEventListenerPort elpInput = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			try
-			{
-				lock.lock();
-				if(stateActive)
-				{
-					long time=System.currentTimeMillis();
-					eventTime.add(time);
-					if(timer.timerState()==false)
-					{
-						timer.setDelayTime(propDelay);
-						timer.startDelay();
-					}
-				}
-				
-			}
-			finally
-			{
-				lock.unlock();
-				
-			}
-		}
-	};
-	
-	
-	/**
+            } finally {
+                lock.unlock();
+
+            }
+        }
+    };
+
+    /**
      * Removes events from the collection.
      */
-	void removeEvents()
-	{
-		try
-		{
-			lock.lock();
-			eventTime.clear();
-			
-			
-		}
-		finally
-		{
-			lock.unlock();
-			
-		}
-	}
-	
-	/**
+    void removeEvents() {
+        try {
+            lock.lock();
+            eventTime.clear();
+
+        } finally {
+            lock.unlock();
+
+        }
+    }
+
+    /**
      * Sends the event and sets the delay for the next event.
+     * 
      * @return delay for the next event
      */
-	long sendEvent()
-	{
-		long nextDelay=-1;
-		try
-		{
-			lock.lock();
-			if((eventTime.size()>0)&&(stateActive==true))
-			{
-				eventTime.remove(0);
-				etpOutput.raiseEvent();
-				
-				
-				boolean finish=true;
-				
-				do
-				{
-					finish=true;
-					if(eventTime.size()>0)
-					{
-						long currentTime=System.currentTimeMillis();
-						long storedEventTime=eventTime.firstElement();
-						if(storedEventTime+propDelay>currentTime)
-						{
-							//timer.setDelayTime(storedEventTime+propDelay-currentTime);
-							nextDelay=storedEventTime+propDelay-currentTime;
-						}
-						else
-						{
-							eventTime.remove(0);
-							etpOutput.raiseEvent();
-							finish=false;
-						}
-					}
-				}
-				while(finish==false);
-			}
-			
-		}
-		finally
-		{
-			lock.unlock();
-			
-		}
-		
-		return nextDelay;
-	}
-	
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
-    	  
-          super.start();
-          
-          stateActive=true;
-      }
+    long sendEvent() {
+        long nextDelay = -1;
+        try {
+            lock.lock();
+            if ((eventTime.size() > 0) && (stateActive == true)) {
+                eventTime.remove(0);
+                etpOutput.raiseEvent();
 
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-          super.pause();
-          stateActive=false;
-          removeEvents();
-      }
+                boolean finish = true;
 
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-          super.resume();
-          stateActive=true;
-      }
+                do {
+                    finish = true;
+                    if (eventTime.size() > 0) {
+                        long currentTime = System.currentTimeMillis();
+                        long storedEventTime = eventTime.firstElement();
+                        if (storedEventTime + propDelay > currentTime) {
+                            // timer.setDelayTime(storedEventTime+propDelay-currentTime);
+                            nextDelay = storedEventTime + propDelay - currentTime;
+                        } else {
+                            eventTime.remove(0);
+                            etpOutput.raiseEvent();
+                            finish = false;
+                        }
+                    }
+                } while (finish == false);
+            }
 
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
+        } finally {
+            lock.unlock();
 
-          super.stop();
-          stateActive=false;
-          removeEvents();
-      }
+        }
+
+        return nextDelay;
+    }
+
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+
+        super.start();
+
+        stateActive = true;
+    }
+
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+        stateActive = false;
+        removeEvents();
+    }
+
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+        stateActive = true;
+    }
+
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+
+        super.stop();
+        stateActive = false;
+        removeEvents();
+    }
 }

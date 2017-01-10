@@ -26,81 +26,63 @@
 
 package eu.asterics.component.actuator.emulatefaultyplugin;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.border.TitledBorder;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
-import eu.asterics.mw.data.ConversionUtils;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.text.DecimalFormat;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-
-
+import javax.swing.JPanel;
 
 /**
- *   Implements the Graphical User Interface for the
- *   <pluginname> plugin
- *  
- * @author <your name> [<your email>]
- *         Date: 
- *         Time: 
+ * Implements the Graphical User Interface for the <pluginname> plugin
+ * 
+ * @author <your name> [<your email>] Date: Time:
  */
-public class GUI extends JPanel 
-{
-    
-    private JPanel guiPanel;  
+public class GUI extends JPanel {
+
+    private JPanel guiPanel;
     private Dimension guiPanelSize;
 
     // private JLabel myLabel;
     // add more GUI elements here
 
-	private final EmulateFaultyPluginInstance owner;
-
     /**
      * The class constructor, initialises the GUI
-     * @param owner    the owner class instance
+     * 
+     * @param owner
+     *            the owner class instance
      */
-    public GUI(final EmulateFaultyPluginInstance owner, final Dimension space)
-    {
+    public GUI(final EmulateFaultyPluginInstance owner, final Dimension space) {
         super();
-    	this.owner=owner;
-
-		this.setPreferredSize(new Dimension (space.width, space.height));
-		design (space.width, space.height);  	
+        this.setPreferredSize(new Dimension(space.width, space.height));
+        design(space.width, space.height);
     }
 
-    
-	/**
-	 * set up the panel and its elements for the given size 
-	 * @param width
-	 * @param height
-	 */
-	private void design (int width, int height)
-	{
-		//Create Panels
-		guiPanel = new JPanel ();
-		guiPanelSize = new Dimension (width, height);
+    /**
+     * set up the panel and its elements for the given size
+     * 
+     * @param width
+     * @param height
+     */
+    private void design(int width, int height) {
+        // Create Panels
+        guiPanel = new JPanel();
+        guiPanelSize = new Dimension(width, height);
 
-		guiPanel.setMaximumSize(guiPanelSize);
-		guiPanel.setPreferredSize(guiPanelSize);
-		
-		guiPanel.setVisible(true);
-		
-		//this.setBorder(new TitledBorder(owner.propMyTitle));     
-		// myLabel = new JLabel (owner.propMyLabelCaption);
-		// guiPanel.add(myLabel);
-        
-	    this.setLayout(new BorderLayout());
-        add (guiPanel,BorderLayout.PAGE_START);
-	    
-	}
-  
-  
-   // add state change listeners or action listeners here
-   // interact with output port e.g. via
-   //  owner.opMyOutPort.sendData(ConversionUtils.intToBytes(source.getValue())
-  
+        guiPanel.setMaximumSize(guiPanelSize);
+        guiPanel.setPreferredSize(guiPanelSize);
+
+        guiPanel.setVisible(true);
+
+        // this.setBorder(new TitledBorder(owner.propMyTitle));
+        // myLabel = new JLabel (owner.propMyLabelCaption);
+        // guiPanel.add(myLabel);
+
+        this.setLayout(new BorderLayout());
+        add(guiPanel, BorderLayout.PAGE_START);
+
+    }
+
+    // add state change listeners or action listeners here
+    // interact with output port e.g. via
+    // owner.opMyOutPort.sendData(ConversionUtils.intToBytes(source.getValue())
+
 }

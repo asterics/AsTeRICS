@@ -25,21 +25,19 @@
 
 package eu.asterics.mw.model.bundle;
 
-import eu.asterics.mw.model.DataType;
-
 import java.util.Set;
 
+import eu.asterics.mw.model.DataType;
+
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 12:59:55 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         12:59:55 PM
  */
-public interface IPropertyfulType
-{
+public interface IPropertyfulType {
     public Set<String> getPropertyNames();
 
     public DataType getDataType(final String propertyName);
 
-    public String getDescription(final String propertyName);    
-    
+    public String getDescription(final String propertyName);
+
 }

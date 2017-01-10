@@ -28,64 +28,57 @@ package eu.asterics.mw.cimcommunication;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class CIMWirelessPortController extends CIMPortController 
-{
+public class CIMWirelessPortController extends CIMPortController {
 
-	CIMWirelessHubPortController hubCtrl;
-	CIMUniqueIdentifier cuid;
-	
-	public CIMWirelessPortController(CIMUniqueIdentifier cuid, CIMWirelessHubPortController hubCtrl) {
-		super(cuid.toIdentifierString());
-		this.cuid = cuid;
-		this.hubCtrl = hubCtrl;
-		logger.fine("WirelessPortCtrl "+  comPortName + " constructed");
-	}
+    CIMWirelessHubPortController hubCtrl;
+    CIMUniqueIdentifier cuid;
 
+    public CIMWirelessPortController(CIMUniqueIdentifier cuid, CIMWirelessHubPortController hubCtrl) {
+        super(cuid.toIdentifierString());
+        this.cuid = cuid;
+        this.hubCtrl = hubCtrl;
+        logger.fine("WirelessPortCtrl " + comPortName + " constructed");
+    }
 
-	@Override
-	void closePort() {
-	}
+    @Override
+    void closePort() {
+    }
 
-	void receivePacket(byte [] d)
-	{
-//		System.out.println("WirelessPortCtrl "+  comPortName + " received:");
-//		for (int i = 0; i < d.length; i++)
-//		{
-//			d[i] = din.readByte();
-//			System.out.print(String.format("\tdata[%d]:  %x ('%c')", i, d[i], d[i]));
-//		}
-		
-		for (CIMEventHandler e : eventHandlers)
-		{
-			e.handlePacketReceived(new CIMWirelessDataEvent(this, d));
-		}
-	}
-	
+    void receivePacket(byte[] d) {
+        // System.out.println("WirelessPortCtrl "+ comPortName + " received:");
+        // for (int i = 0; i < d.length; i++)
+        // {
+        // d[i] = din.readByte();
+        // System.out.print(String.format("\tdata[%d]: %x ('%c')", i, d[i],
+        // d[i]));
+        // }
 
-	@Override
-	byte sendPacket(byte[] data, short featureAddress, short requestCode,
-			boolean crc) 
-	{
-		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		LEDataOutputStream dos = new LEDataOutputStream(bos);
-		
-		try {
-			dos.writeInt((int) cuid.CIMUniqueNumber);
-			dos.writeShort(cuid.CIMId);
-			dos.writeShort(data.length);
-			dos.write(data);
-			dos.flush();
-			dos.close();
-			bos.close();			
-			return hubCtrl.sendPacket(bos.toByteArray(), 
-					featureAddress, requestCode, crc);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-//		byte [] data = new byte[8 + d.length];
-		return 0;
-	}
+        for (CIMEventHandler e : eventHandlers) {
+            e.handlePacketReceived(new CIMWirelessDataEvent(this, d));
+        }
+    }
+
+    @Override
+    byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        LEDataOutputStream dos = new LEDataOutputStream(bos);
+
+        try {
+            dos.writeInt((int) cuid.CIMUniqueNumber);
+            dos.writeShort(cuid.CIMId);
+            dos.writeShort(data.length);
+            dos.write(data);
+            dos.flush();
+            dos.close();
+            bos.close();
+            return hubCtrl.sendPacket(bos.toByteArray(), featureAddress, requestCode, crc);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // byte [] data = new byte[8 + d.length];
+        return 0;
+    }
 
 }

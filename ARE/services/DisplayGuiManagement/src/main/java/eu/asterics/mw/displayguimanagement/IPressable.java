@@ -25,7 +25,6 @@
 
 package eu.asterics.mw.displayguimanagement;
 
-public interface IPressable 
-{
-	void press(int x, int y);
+public interface IPressable {
+    void press(int x, int y);
 }

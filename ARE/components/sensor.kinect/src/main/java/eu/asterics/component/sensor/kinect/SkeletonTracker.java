@@ -44,30 +44,29 @@ import org.OpenNI.UserGenerator;
  *
  * @author David Thaller
  */
-public class SkeletonTracker  extends Thread{
+public class SkeletonTracker extends Thread {
 
-	
-	
-	//class NewSkeletonObserver implements IObserver<> 
-    
+    // class NewSkeletonObserver implements IObserver<>
+
     class NewUserObserver implements IObserver<UserEventArgs> {
 
         @Override
         public void update(IObservable<UserEventArgs> observable, UserEventArgs args) {
-        	System.out.println("New User found");
-            if (isTracking())
+            System.out.println("New User found");
+            if (isTracking()) {
                 return;
-            
+            }
+
             userID = args.getId();
-            System.out.println("with id "+userID);
-            try	{
-            	skelCap.loadSkeletonCalibrationDatadFromFile(userID, "data/sensor.kinect/calib.data");
+            System.out.println("with id " + userID);
+            try {
+                skelCap.loadSkeletonCalibrationDatadFromFile(userID, "data/sensor.kinect/calib.data");
                 skelCap.startTracking(userID);
-                System.out.println("Started Tracking for new User "+userID);
-			} catch (StatusException e) {
-				e.printStackTrace();
-			}
-        
+                System.out.println("Started Tracking for new User " + userID);
+            } catch (StatusException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -77,8 +76,9 @@ public class SkeletonTracker  extends Thread{
         public void update(IObservable<UserEventArgs> observable, UserEventArgs args) {
             try {
                 System.out.println("Lost user " + args.getId());
-                if (skelCap.isSkeletonTracking(args.getId()))
+                if (skelCap.isSkeletonTracking(args.getId())) {
                     skelCap.stopTracking(args.getId());
+                }
             } catch (StatusException ex) {
                 Logger.getLogger(SkeletonTracker.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -88,15 +88,16 @@ public class SkeletonTracker  extends Thread{
     private boolean isTracking() {
         try {
             for (int user : userGen.getUsers()) {
-            	if (skelCap.isSkeletonTracking(user))
+                if (skelCap.isSkeletonTracking(user)) {
                     return true;
+                }
             }
         } catch (StatusException ex) {
             Logger.getLogger(SkeletonTracker.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
-    
+
     private Context context;
     private DepthGenerator depthGen;
     private UserGenerator userGen;
@@ -105,27 +106,27 @@ public class SkeletonTracker  extends Thread{
     private ArrayList<SkeletonListener> skelListeners;
     private int userID = 0;
     private boolean paused = false;
-    
-    public SkeletonTracker(Context context, DepthGenerator depthGen,UserGenerator userGen,SkeletonCapability skelCap){
-    	skelListeners = new ArrayList<SkeletonListener>();
+
+    public SkeletonTracker(Context context, DepthGenerator depthGen, UserGenerator userGen,
+            SkeletonCapability skelCap) {
+        skelListeners = new ArrayList<SkeletonListener>();
 
         try {
-        	this.context = context;
-        	this.depthGen = depthGen;
-        	this.userGen = userGen;
-        	this.skelCap = skelCap;
-        	
-			userGen.getNewUserEvent().addObserver(new NewUserObserver());
+            this.context = context;
+            this.depthGen = depthGen;
+            this.userGen = userGen;
+            this.skelCap = skelCap;
 
-	        userGen.getLostUserEvent().addObserver(new LostUserObserver());
-	        
+            userGen.getNewUserEvent().addObserver(new NewUserObserver());
+
+            userGen.getLostUserEvent().addObserver(new LostUserObserver());
 
             skelCap.setSkeletonProfile(SkeletonProfile.ALL);
-            
-		} catch (StatusException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+        } catch (StatusException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -136,44 +137,47 @@ public class SkeletonTracker  extends Thread{
     @Override
     public void run() {
         try {
-        	System.out.println("running");
+            System.out.println("running");
             shouldRun = true;
             context.startGeneratingAll();
             while (shouldRun) {
-            	if (paused == false) {
-	            	context.waitAnyUpdateAll();
-	                if (isTracking()) {
-	                    Skeleton skel = getSkeleton();
-	                    if (skel.head.getZ() != 0)
-	                    	for (SkeletonListener sl : skelListeners) 
-	                    		sl.skeletonUpdate(skel);
-	                }
-            	} else Thread.sleep(400);
+                if (paused == false) {
+                    context.waitAnyUpdateAll();
+                    if (isTracking()) {
+                        Skeleton skel = getSkeleton();
+                        if (skel.head.getZ() != 0) {
+                            for (SkeletonListener sl : skelListeners) {
+                                sl.skeletonUpdate(skel);
+                            }
+                        }
+                    }
+                } else {
+                    Thread.sleep(400);
+                }
             }
             context.stopGeneratingAll();
         } catch (Exception ex) {
             Logger.getLogger(SkeletonTracker.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void pauseTracking(){
-    	paused = true;
+
+    public void pauseTracking() {
+        paused = true;
     }
-    
+
     public void resumeTracking() {
-    	paused = false;
+        paused = false;
     }
-    
+
     public void stopTracking() {
-    	shouldRun = false;
-    	paused = false;
+        shouldRun = false;
+        paused = false;
     }
-    
+
     public void addSkeletonListener(SkeletonListener l) {
         skelListeners.add(l);
     }
-    
-    
+
     private Skeleton getSkeleton() {
         Skeleton skel = new Skeleton();
         skel.head = getJoint(userID, SkeletonJoint.HEAD);
@@ -186,14 +190,15 @@ public class SkeletonTracker  extends Thread{
         skel.rightHand = getJoint(userID, SkeletonJoint.RIGHT_HAND);
         skel.leftFoot = getJoint(userID, SkeletonJoint.LEFT_FOOT);
         skel.rightFoot = getJoint(userID, SkeletonJoint.RIGHT_FOOT);
-        /*skel.leftHip = getJoint(userID, SkeletonJoint.LEFT_HIP);
-        skel.rightHip = getJoint(userID, SkeletonJoint.RIGHT_HIP);
-        skel.leftKnee = getJoint(userID, SkeletonJoint.LEFT_KNEE);
-        skel.rightKnee = getJoint(userID, SkeletonJoint.RIGHT_KNEE);
-        */
+        /*
+         * skel.leftHip = getJoint(userID, SkeletonJoint.LEFT_HIP);
+         * skel.rightHip = getJoint(userID, SkeletonJoint.RIGHT_HIP);
+         * skel.leftKnee = getJoint(userID, SkeletonJoint.LEFT_KNEE);
+         * skel.rightKnee = getJoint(userID, SkeletonJoint.RIGHT_KNEE);
+         */
         return skel;
     }
-    
+
     private Point3D getJoint(int user, SkeletonJoint joint) {
         try {
             SkeletonJointPosition pos = skelCap.getSkeletonJointPosition(user, joint);

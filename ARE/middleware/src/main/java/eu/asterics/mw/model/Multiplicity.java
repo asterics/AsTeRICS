@@ -26,25 +26,20 @@
 package eu.asterics.mw.model;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 14, 2010
- *         Time: 2:25:49 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 14, 2010 Time:
+ *         2:25:49 PM
  */
-public enum Multiplicity
-{
-    ONE_TO_ONE("one-to-one"),
-    ONE_TO_MANY("one-to-many");
+public enum Multiplicity {
+    ONE_TO_ONE("one-to-one"), ONE_TO_MANY("one-to-many");
 
     private String multiplicity;
 
-    private Multiplicity(final String multiplicity)
-    {
+    private Multiplicity(final String multiplicity) {
         this.multiplicity = multiplicity;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return multiplicity;
     }
 }

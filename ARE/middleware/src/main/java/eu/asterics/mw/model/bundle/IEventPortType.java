@@ -29,11 +29,10 @@ package eu.asterics.mw.model.bundle;
  * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
  * @author Konstantinos Kakousis [kakousis@cs.ucy.ac.cy]
  *
- * Date: 1/5/11
- * Time: 3:11 PM
+ *         Date: 1/5/11 Time: 3:11 PM
  */
-public interface IEventPortType
-{
+public interface IEventPortType {
     public String getID();
+
     public String getDescription();
 }

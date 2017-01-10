@@ -27,7 +27,7 @@ package eu.asterics.mw.services;
 
 /**
  * The interface to be implemented for components communicating with external
- * software via sockets. This will handle information on establishing and 
+ * software via sockets. This will handle information on establishing and
  * terminating communication as well as the incoming packets from the third
  * party.
  * 
@@ -36,31 +36,32 @@ package eu.asterics.mw.services;
  */
 public interface IRemoteConnectionListener {
 
+    /**
+     * Gets called after a remote client has connected to the server socket and
+     * sender and receiver threads are set up
+     */
+    void connectionEstablished();
 
-	/**
-	 * Gets called after a remote client has connected to the server socket
-	 * and sender and receiver threads are set up
-	 */
-	void connectionEstablished();
+    /**
+     * Gets called when data arrives from the remote client Although there
+     * should be a certain buffering mechanism on the receiving side of the
+     * socket, the handling of dataReceived should be executed in sufficiently
+     * short time or otherwise executed in a different thread.
+     * 
+     * @param data
+     *            data to be transferred
+     */
+    void dataReceived(byte[] data);
 
-	/**
-	 * Gets called when data arrives from the remote client
-	 * Although there should be a certain buffering mechanism on the receiving 
-	 * side of the socket, the handling of dataReceived should be executed in 
-	 * sufficiently short time or otherwise executed in a different thread.
-	 * @param data data to be transferred
-	 */
-	void dataReceived(byte [] data);
+    /**
+     * Gets called when the socket connection cannot read or write from the
+     * socket anymore
+     */
+    void connectionLost();
 
-	/**
-	 * Gets called when the socket connection cannot read or write from the 
-	 * socket anymore
-	 */
-	void connectionLost();
-
-	/**
-	 * Gets called after connection has been closed 
-	 */
-	void connectionClosed();
+    /**
+     * Gets called after connection has been closed
+     */
+    void connectionClosed();
 
 }

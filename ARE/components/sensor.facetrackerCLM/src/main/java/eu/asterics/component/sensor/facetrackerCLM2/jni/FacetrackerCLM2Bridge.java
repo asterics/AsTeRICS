@@ -24,50 +24,48 @@
  */
 package eu.asterics.component.sensor.facetrackerCLM2.jni;
 
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 import eu.asterics.component.sensor.facetrackerCLM2.FacetrackerCLM2Instance;
+import eu.asterics.mw.services.AstericsErrorHandling;
+
 /**
  * @author Andrea Carbone
  *
  */
 public class FacetrackerCLM2Bridge {
 
-	static 
-	{
-		AstericsErrorHandling.instance.getLogger().fine("Loading CLM DLLS !");
-		System.loadLibrary("tbb");
-		AstericsErrorHandling.instance.getLogger().fine("Loading \"tbb.dll\" ... ok!");
-		System.loadLibrary("sensor.facetrackerCLM");
-		AstericsErrorHandling.instance.getLogger().fine("Loading \"sensor.facetrackerCLM.dll\" ... ok!");
-	}
+    static {
+        AstericsErrorHandling.instance.getLogger().fine("Loading CLM DLLS !");
+        System.loadLibrary("tbb");
+        AstericsErrorHandling.instance.getLogger().fine("Loading \"tbb.dll\" ... ok!");
+        System.loadLibrary("sensor.facetrackerCLM");
+        AstericsErrorHandling.instance.getLogger().fine("Loading \"sensor.facetrackerCLM.dll\" ... ok!");
+    }
 
-	
-	private final FacetrackerCLM2Instance owner;
-	
-	public FacetrackerCLM2Bridge(
-			final FacetrackerCLM2Instance instance) {
-		this.owner=instance;
-	}
+    private final FacetrackerCLM2Instance owner;
 
-	native public int activate();
+    public FacetrackerCLM2Bridge(final FacetrackerCLM2Instance instance) {
+        this.owner = instance;
+    }
 
-	native public int suspend();
+    native public int activate();
 
-	native public int resume();
+    native public int suspend();
 
-	native public int deactivate();
-	
-	native public int showCameraSettings();
-	
-	native public int setReferencePose();
-	
-	native public void setDisplayPosition(int x, int y, int w, int h);
-	
+    native public int resume();
+
+    native public int deactivate();
+
+    native public int showCameraSettings();
+
+    native public int setReferencePose();
+
+    native public void setDisplayPosition(int x, int y, int w, int h);
+
     /**
      * Gets the value of the named property.
      *
-     * @param key the name of the property to be accessed
+     * @param key
+     *            the name of the property to be accessed
      * @return the value of the named property
      */
     native public String getProperty(String key);
@@ -75,59 +73,56 @@ public class FacetrackerCLM2Bridge {
     /**
      * Sets the named property to the defined value.
      *
-     * @param key the name of the property to be accessed
-     * @param value the value to be assigned to the named property
+     * @param key
+     *            the name of the property to be accessed
+     * @param value
+     *            the value to be assigned to the named property
      * @return the value previously assigned to the named property
      */
     native public String setProperty(String key, final String value);
-    
+
     native public void reset();
-    
 
     /**
      * This method is called back from the native code on demand to signify an
      * internal error. The first argument corresponds to an error code and the
      * second argument corresponds to a textual description of the error.
      *
-     * @param errorCode an error code
-     * @param message a textual description of the error
+     * @param errorCode
+     *            an error code
+     * @param message
+     *            a textual description of the error
      */
-    private void report_callback(
-            final int level,
-            final String message)
-    { 
-    	switch (level) {
-    		case 0:     	AstericsErrorHandling.instance.getLogger().fine(message); break;
-    		case 1:     	AstericsErrorHandling.instance.getLogger().warning(message); break;
-    		case 2:     	AstericsErrorHandling.instance.getLogger().severe(message); break;
-    	}
+    private void report_callback(final int level, final String message) {
+        switch (level) {
+        case 0:
+            AstericsErrorHandling.instance.getLogger().fine(message);
+            break;
+        case 1:
+            AstericsErrorHandling.instance.getLogger().warning(message);
+            break;
+        case 2:
+            AstericsErrorHandling.instance.getLogger().severe(message);
+            break;
+        }
     }
-    
+
     /**
      * 
      */
-    private void newValuesCallback(
-    				final double roll  
-    			, 	final double pitch
-    			, 	final double yaw
-    			,	final double posx
-    			,	final double posy
-    			,	final double scale
-    			,	final int browLift
-    			, 	final int lipDistance
-    			,	final int eyeLeftState
-    			, 	final int eyeRightState)
-    {
-    	//System.out.print(".");
-    	owner.newValuesCallback(roll, pitch, yaw, posx, posy, scale, browLift, lipDistance, eyeLeftState, eyeRightState);			
+    private void newValuesCallback(final double roll, final double pitch, final double yaw, final double posx,
+            final double posy, final double scale, final int browLift, final int lipDistance, final int eyeLeftState,
+            final int eyeRightState) {
+        // System.out.print(".");
+        owner.newValuesCallback(roll, pitch, yaw, posx, posy, scale, browLift, lipDistance, eyeLeftState,
+                eyeRightState);
     }
-    
+
     /**
      * 
      */
-    public void raiseGestureSurpriseEvt()
-    {	
-    	//report_callback(0, "JNI >> etpEyebrowsRaised.raiseEvent();");
-    	owner.etpEyebrowsRaised.raiseEvent();
+    public void raiseGestureSurpriseEvt() {
+        // report_callback(0, "JNI >> etpEyebrowsRaised.raiseEvent();");
+        owner.etpEyebrowsRaised.raiseEvent();
     }
 }

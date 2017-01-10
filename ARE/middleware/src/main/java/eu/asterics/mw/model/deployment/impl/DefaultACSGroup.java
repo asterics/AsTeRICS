@@ -33,87 +33,74 @@ import org.w3c.dom.Element;
 
 public class DefaultACSGroup {
 
+    private String description;
+    private ArrayList<String> componentIds;
+    private ArrayList<DefaultPortAlias> portAlias;
+    private String id;
 
+    public DefaultACSGroup(String description, ArrayList<String> componentIds, ArrayList<DefaultPortAlias> portAlias,
+            String id) {
+        this.description = description;
+        this.componentIds = componentIds;
+        this.portAlias = portAlias;
+        this.id = id;
+    }
 
-	private String description;
-	private ArrayList<String> componentIds;
-	private ArrayList<DefaultPortAlias> portAlias;
-	private String id;
+    public String getId() {
+        return this.id;
+    }
 
-	public DefaultACSGroup (String description, ArrayList<String> componentIds, 
-			ArrayList<DefaultPortAlias> portAlias, String id)
-	{
-		this.description = description;
-		this.componentIds = componentIds;
-		this.portAlias = portAlias;
-		this.id = id;
-	}
+    public ArrayList<DefaultPortAlias> getPortAlias() {
+        return this.portAlias;
+    }
 
-	public String getId()
-	{
-		return this.id;
-	}
+    public ArrayList<String> getComponentIds() {
+        return this.componentIds;
+    }
 
-	public ArrayList<DefaultPortAlias> getPortAlias()
-	{
-		return this.portAlias;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public ArrayList<String> getComponentIds ()
-	{
-		return this.componentIds;
-	}
+    public void appendXMLElements(Document doc) {
 
-	public String getDescription ()
-	{
-		return this.description;
-	}
+        Element group = doc.createElement("group");
+        Element groups = (Element) doc.getElementsByTagName("groups").item(0);
+        groups.appendChild(group);
+        group.setAttribute("id", this.getId());
 
-	public void appendXMLElements(Document doc) 
-	{
+        if (this.getDescription() != "") {
+            Element description = doc.createElement("description");
+            group.appendChild(description);
+            description.setTextContent(this.description);
+        }
 
-		Element group = doc.createElement("group");
-		Element groups = (Element) doc.getElementsByTagName("groups").item(0);
-		groups.appendChild(group);
-		group.setAttribute("id", this.getId());
+        // Check for component ids
+        if (this.getComponentIds().size() > 0) {
+            Iterator<String> itr = this.getComponentIds().iterator();
+            String cid = "";
+            while (itr.hasNext()) {
+                cid = itr.next();
+                Element cidEl = doc.createElement("componentId");
+                group.appendChild(cidEl);
+                cidEl.setTextContent(cid);
 
-		if (this.getDescription()!="")
-		{
-			Element description = doc.createElement("description");
-			group.appendChild(description);
-			description.setTextContent(this.description);
-		}
+            }
+        }
 
-		//Check for component ids
-		if (this.getComponentIds().size()>0)
-		{
-			Iterator<String> itr = this.getComponentIds().iterator();
-			String cid="";
-			while(itr.hasNext())
-			{
-				cid = itr.next();
-				Element cidEl = doc.createElement("componentId");
-				group.appendChild(cidEl);
-				cidEl.setTextContent(cid);
+        // Check for port aliases
+        if (this.getPortAlias().size() > 0) {
+            Iterator<DefaultPortAlias> itr = this.getPortAlias().iterator();
+            DefaultPortAlias alias = null;
+            while (itr.hasNext()) {
+                alias = itr.next();
+                Element aliasEl = doc.createElement("portAlias");
+                group.appendChild(aliasEl);
+                aliasEl.setAttribute("portId", alias.getPortId());
+                aliasEl.setAttribute("portAlias", alias.getPortAlias());
 
-			}
-		}
+            }
+        }
 
-		//Check for port aliases
-		if (this.getPortAlias().size()>0)
-		{
-			Iterator<DefaultPortAlias> itr = this.getPortAlias().iterator();
-			DefaultPortAlias alias = null;
-			while(itr.hasNext())
-			{
-				alias = itr.next();
-				Element aliasEl = doc.createElement("portAlias");
-				group.appendChild(aliasEl);
-				aliasEl.setAttribute("portId", alias.getPortId());
-				aliasEl.setAttribute("portAlias", alias.getPortAlias());
-
-			}
-		}
-
-	}
+    }
 }

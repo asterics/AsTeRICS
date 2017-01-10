@@ -33,74 +33,66 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.osgi.framework.BundleContext;
-
-
 /**
- * @author Konstantinos Kakousis
- * This class generates a JFrame for setting ARE options
+ * @author Konstantinos Kakousis This class generates a JFrame for setting ARE
+ *         options
  * 
- * Date: Oct 10, 2011
+ *         Date: Oct 10, 2011
  */
-public class OptionsFrame extends JDialog 
-{
-	private static final int OPTIONS_PRAME_WIDTH = 650;
-	private static final int OPTIONS_PRAME_HEIGHT = 550;
-	static String ICON_PATH = "/images/icon.gif";
-	JDialog thisDialog;
-	AstericsGUI parent;
-	private TabbedPane tabbedPane;
-	public OptionsFrame (AstericsGUI parent, JFrame mainFrame)
-	{
-		super(mainFrame);
-		thisDialog=this;
-		this.parent = parent;
-		final URL iconPath = parent.getBundleContext().getBundle().
-			getResource(ICON_PATH);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
-		setTitle ("Model Help and Options");
-		setPreferredSize(new Dimension(OPTIONS_PRAME_WIDTH, 
-				OPTIONS_PRAME_HEIGHT));
-		setLocation(100,100);
-		tabbedPane = new TabbedPane(parent); 
-		add(tabbedPane, BorderLayout.CENTER);
-		
-		
-		 JPanel panel = new JPanel(false);
-	        JButton savebutton = new JButton("OK");
-	        savebutton.addActionListener(new ActionListener() {
+public class OptionsFrame extends JDialog {
+    private static final int OPTIONS_PRAME_WIDTH = 650;
+    private static final int OPTIONS_PRAME_HEIGHT = 550;
+    static String ICON_PATH = "/images/icon.gif";
+    JDialog thisDialog;
+    AstericsGUI parent;
+    private TabbedPane tabbedPane;
 
-				public void actionPerformed(ActionEvent arg0) {
-					
-					tabbedPane.storeProperties();
-					//parent.applyChanges ();
-					thisDialog.dispose();
-					
-				}
-			});
-	        panel.add(savebutton);
+    public OptionsFrame(AstericsGUI parent, JFrame mainFrame) {
+        super(mainFrame);
+        thisDialog = this;
+        this.parent = parent;
+        final URL iconPath = parent.getBundleContext().getBundle().getResource(ICON_PATH);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
+        setTitle("Model Help and Options");
+        setPreferredSize(new Dimension(OPTIONS_PRAME_WIDTH, OPTIONS_PRAME_HEIGHT));
+        setLocation(100, 100);
+        tabbedPane = new TabbedPane(parent);
+        add(tabbedPane, BorderLayout.CENTER);
 
-		add(panel, BorderLayout.SOUTH);
-	}
-	
-	public void showFrame()
-	{
-		remove(tabbedPane);                    // TBD: improve this !
-		tabbedPane = new TabbedPane(parent);
-		add(tabbedPane, BorderLayout.CENTER);
-		pack();
-		//this.setLocation(parent.getFrame().getLocation());
+        JPanel panel = new JPanel(false);
+        JButton savebutton = new JButton("OK");
+        savebutton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+
+                tabbedPane.storeProperties();
+                // parent.applyChanges ();
+                thisDialog.dispose();
+
+            }
+        });
+        panel.add(savebutton);
+
+        add(panel, BorderLayout.SOUTH);
+    }
+
+    public void showFrame() {
+        remove(tabbedPane); // TBD: improve this !
+        tabbedPane = new TabbedPane(parent);
+        add(tabbedPane, BorderLayout.CENTER);
+        pack();
+        // this.setLocation(parent.getFrame().getLocation());
         this.setLocationRelativeTo(parent.getFrame());
-	    setVisible(true);
-	}
-	public void hideFrame()
-	{ 
-	    setVisible(false);
-	}
+        setVisible(true);
+    }
+
+    public void hideFrame() {
+        setVisible(false);
+    }
 
 }

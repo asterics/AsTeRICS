@@ -26,116 +26,110 @@
 
 package eu.asterics.component.sensor.textfieldreader;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 /**
- *   Implements the GUI for the textfieldreader plugin, which
- *   displays one edit field to take keyboard input
+ * Implements the GUI for the textfieldreader plugin, which displays one edit
+ * field to take keyboard input
  * 
- * @author Chris Veigl [veigl@technikum-wien.at]
- *         Date: Mar 2, 2011
- *         Time: 19:35:00 PM
+ * @author Chris Veigl [veigl@technikum-wien.at] Date: Mar 2, 2011 Time:
+ *         19:35:00 PM
  */
 public class GUI extends JFrame implements KeyListener
 
 {
-	protected JTextField textField;
-	protected JTextArea textArea;
-	private final static String newline = "\n";
+    protected JTextField textField;
+    protected JTextArea textArea;
+    private final static String newline = "\n";
 
-	private final TextfieldreaderInstance owner;
-	private JFrame myframe;
+    private final TextfieldreaderInstance owner;
 
+    /**
+     * The class constructor, creates the GUI
+     */
+    public GUI(final TextfieldreaderInstance owner) {
+        super("Txt-Reader");
+        this.owner = owner;
+        // super(new GridBagLayout());
 
-	/**
-	 * The class constructor, creates the GUI
-	 */
-	public GUI(final TextfieldreaderInstance owner)
-	{
-		super("Txt-Reader");
-		this.owner=owner;
-		//super(new GridBagLayout());
+        setLayout(new BorderLayout());
+        textField = new JTextField(20);
+        // textField.addActionListener(this);
+        textField.addKeyListener(this);
 
-		setLayout(new BorderLayout());
-		textField = new JTextField(20);
-		//        textField.addActionListener(this);
-		textField.addKeyListener(this);
+        add(textField, BorderLayout.NORTH);
+        textArea = new JTextArea(5, 20);
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
 
-		add(textField, BorderLayout.NORTH);
-		textArea = new JTextArea(5, 20);
-		textArea.setEditable(false);
-		JScrollPane scrollPane = new JScrollPane(textArea);
+        add(scrollPane, BorderLayout.SOUTH);
 
-		add(scrollPane, BorderLayout.SOUTH);
+        /*
+         * 
+         * //Add Components to this panel. GridBagConstraints c = new
+         * GridBagConstraints(); c.gridwidth = GridBagConstraints.REMAINDER;
+         * 
+         * c.fill = GridBagConstraints.HORIZONTAL; add(textField, c);
+         * 
+         * c.fill = GridBagConstraints.BOTH; c.weightx = 1.0; c.weighty = 1.0;
+         * add(scrollPane, c);
+         */
 
-		/*
+        setSize(250, 150);
+        setLocation(10, 400);
+        toFront();
+        requestFocus();
+        repaint();
 
-        //Add Components to this panel.
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridwidth = GridBagConstraints.REMAINDER;
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                textField.requestFocusInWindow();
+            }
+        });
+    }
 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(textField, c);
+    /**
+     * called if key typed
+     */
+    @Override
+    public void keyTyped(KeyEvent e) { // System.out.println("Key Typed");
+    }
 
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        add(scrollPane, c); 
-		 */
+    /**
+     * called if key pressed, forwards key to processing method
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        // System.out.println("Key "+ e.getKeyText(e.getKeyCode()));
+        // System.out.println("Code: "+ e.getKeyCode());
+        owner.processKeyboardInput(e.getKeyChar(), e.getKeyCode());
+        // System.out.println("Key Pressed");
+    }
 
-		setSize(250, 150);
-		setLocation(10,400);
-		toFront();
-		requestFocus();
-		repaint();
+    /**
+     * called if key released
+     */
+    @Override
+    public void keyReleased(KeyEvent e) { // System.out.println("Key Released");
+    }
 
-		addWindowListener( new WindowAdapter() {
-			public void windowOpened( WindowEvent e ){
-				textField.requestFocusInWindow();
-			}
-		});
-	}
-
-
-	/**
-	 * called if key typed
-	 */
-	public void keyTyped(KeyEvent e)
-	{ //System.out.println("Key Typed"); 
-	}
-
-	/**
-	 * called if key pressed, forwards key to processing method
-	 */
-	public void keyPressed(KeyEvent e)
-	{ 
-		//System.out.println("Key "+ e.getKeyText(e.getKeyCode()));
-		//System.out.println("Code: "+ e.getKeyCode());
-		owner.processKeyboardInput(e.getKeyChar(),e.getKeyCode());
-		//System.out.println("Key Pressed"); 
-	}
-
-	/**
-	 * called if key released
-	 */	
-	public void keyReleased(KeyEvent e)
-	{ //System.out.println("Key Released"); 
-	}
-
-	/**
-	 * appends recognized command to textArea
-	 */
-	public void logCommand(String str)
-	{
-		textArea.append(str + newline);
-		textField.setText(str.substring(0,str.length()-1));    
-		textArea.setCaretPosition(textArea.getDocument().getLength());
-	}
+    /**
+     * appends recognized command to textArea
+     */
+    public void logCommand(String str) {
+        textArea.append(str + newline);
+        textField.setText(str.substring(0, str.length() - 1));
+        textArea.setCaretPosition(textArea.getDocument().getLength());
+    }
 
 }
-
-
-
-

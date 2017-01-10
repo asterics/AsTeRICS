@@ -23,214 +23,184 @@
  * 
  */
 
-
 package eu.asterics.component.actuator.syntheticvoice;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.component.actuator.syntheticvoice.SyntheticVoiceBridge;
-import eu.asterics.mw.services.AstericsErrorHandling;
-
-import java.util.*;
-import java.util.logging.*;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 
 /**
  * Implements the Synthetic Voice plugin
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Aug 20, 2010
- *         Time: 10:22:08 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Aug 20, 2010 Time: 10:22:08
+ *         AM
  */
-public class SyntheticVoiceInstance extends AbstractRuntimeComponentInstance
-{
-     
-  private final String IP_INPUT="input";
-  private final String PROP_VOLUME="volume";
-  private final String PROP_SPEED="speed";
-  private final String PROP_VOICE ="voice";
-  private final String PROP_XML_TAGS="xmlTags";
-	
-  private IRuntimeInputPort ipInput = new InputPort();
-  private final SyntheticVoiceBridge bridge = new SyntheticVoiceBridge(this);
-	
-  /**
-   * The class constructor.
-   */	
-  public SyntheticVoiceInstance()
-  {
-  }
-    
-  /**
-   * Called when model is started.
-   */
-  public void start()
-  {
-    bridge.start();
-    super.start();
-  }
+public class SyntheticVoiceInstance extends AbstractRuntimeComponentInstance {
 
-  /**
-   * Called when model is paused.
-   */
-  public void pause()
-  {
-    bridge.stop();
-    super.pause();
-  }
+    private final String IP_INPUT = "input";
+    private final String PROP_VOLUME = "volume";
+    private final String PROP_SPEED = "speed";
+    private final String PROP_VOICE = "voice";
+    private final String PROP_XML_TAGS = "xmlTags";
 
-  /**
-   * Called when model is resumed.
-   */
-  public void resume()
-  {
-    bridge.start();
-    super.resume();
-  }
+    private IRuntimeInputPort ipInput = new InputPort();
+    private final SyntheticVoiceBridge bridge = new SyntheticVoiceBridge(this);
 
-  /**
-   * Called when model is stopped.
-   */
-  public void stop()
-  {
-    bridge.stop();
-    super.stop();
-  }
-
-  /**
-   * Returns an Input Port.
-   * @param portID   the name of the port
-   * @return         the input port or null if not found
-   */
-  public IRuntimeInputPort getInputPort(String portID)
-  {
-    if(IP_INPUT.equalsIgnoreCase(portID))
-    {
-      return ipInput;
+    /**
+     * The class constructor.
+     */
+    public SyntheticVoiceInstance() {
     }
-    else
-    {
-       return null;
-    }
-  }
 
-  /**
-   * Returns an Output Port.
-   * @param portID   the name of the port
-   * @return         the output port
-   */  
-  public IRuntimeOutputPort getOutputPort(String portID)
-  {     
-    return null;     
-  }
-
-  /**
-   * Returns the value of the given property.
-   * @param propertyName   the name of the property
-   * @return               the property value or null if not found
-   */
-  public Object getRuntimePropertyValue(String propertyName)
-  {
-    if(PROP_VOLUME.equalsIgnoreCase(propertyName))
-    {
-      return bridge.getVolume();
+    /**
+     * Called when model is started.
+     */
+    @Override
+    public void start() {
+        bridge.start();
+        super.start();
     }
-    else if(PROP_SPEED.equalsIgnoreCase(propertyName))
-    {
-      return bridge.getSpeed();
-    }
-    else if(PROP_VOICE.equalsIgnoreCase(propertyName))
-    {
-      return bridge.getVoice();
-    }
-    else if(PROP_XML_TAGS.equalsIgnoreCase(propertyName))
-    {
-      return bridge.getXmlTags();
-     }
-     return null;
-  }
 
+    /**
+     * Called when model is paused.
+     */
+    @Override
+    public void pause() {
+        bridge.stop();
+        super.pause();
+    }
 
-  /**
-   * Sets a new value for the given property.
-   * @param propertyName   the name of the property
-   * @param newValue       the desired property value
-   * @return   old property value
-   */
-  public Object setRuntimePropertyValue(String propertyName, Object newValue)
-  {      
-    if(PROP_VOLUME.equalsIgnoreCase(propertyName))
-    {
-      int oldValue = bridge.getVolume();
-      int newIntValue;
-      try
-      {
-        newIntValue = Integer.parseInt((String) newValue);
-      }
-      catch(NumberFormatException ex)
-      {
+    /**
+     * Called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        bridge.start();
+        super.resume();
+    }
+
+    /**
+     * Called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        bridge.stop();
+        super.stop();
+    }
+
+    /**
+     * Returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if (IP_INPUT.equalsIgnoreCase(portID)) {
+            return ipInput;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Returns an Output Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port
+     */
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
         return null;
-      }
-          
-      bridge.setVolume(newIntValue);
-          
-      return oldValue;
     }
-    else if(PROP_SPEED.equalsIgnoreCase(propertyName))
-    {
-      int oldValue = bridge.getSpeed();
-      int newIntValue;
-      try
-      {
-        newIntValue = Integer.parseInt((String) newValue);
-      }
-      catch(NumberFormatException ex)
-      {
+
+    /**
+     * Returns the value of the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
+     */
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if (PROP_VOLUME.equalsIgnoreCase(propertyName)) {
+            return bridge.getVolume();
+        } else if (PROP_SPEED.equalsIgnoreCase(propertyName)) {
+            return bridge.getSpeed();
+        } else if (PROP_VOICE.equalsIgnoreCase(propertyName)) {
+            return bridge.getVoice();
+        } else if (PROP_XML_TAGS.equalsIgnoreCase(propertyName)) {
+            return bridge.getXmlTags();
+        }
         return null;
-      }
-            
-      bridge.setSpeed(newIntValue);
-            
-      return oldValue;
-    } 
-    else if(PROP_VOICE.equalsIgnoreCase(propertyName))
-    {
-      final Object oldValue = bridge.getVoice();
-      bridge.setVoice((String)newValue);
-      return oldValue;
     }
-    else if(PROP_XML_TAGS.equalsIgnoreCase(propertyName))
-    {
-      final Object oldValue = bridge.getXmlTags();
-      if("true".equalsIgnoreCase((String)newValue))
-      {
-        bridge.setXmlTags(true);
-      }
-      else if("false".equalsIgnoreCase((String)newValue))
-      {
-        bridge.setXmlTags(false);
-      }
-            
-      return oldValue;
-    }
-    
-    return null;
-  }
 
+    /**
+     * Sets a new value for the given property.
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value
+     * @return old property value
+     */
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if (PROP_VOLUME.equalsIgnoreCase(propertyName)) {
+            int oldValue = bridge.getVolume();
+            int newIntValue;
+            try {
+                newIntValue = Integer.parseInt((String) newValue);
+            } catch (NumberFormatException ex) {
+                return null;
+            }
 
-  /**
-   * Defines input port
-   */
-  private class InputPort extends DefaultRuntimeInputPort
-  {
-    public void receiveData(byte[] data)
-    {
-      String text = ConversionUtils.stringFromBytes(data);
-            
-      bridge.speechText(text);           
+            bridge.setVolume(newIntValue);
+
+            return oldValue;
+        } else if (PROP_SPEED.equalsIgnoreCase(propertyName)) {
+            int oldValue = bridge.getSpeed();
+            int newIntValue;
+            try {
+                newIntValue = Integer.parseInt((String) newValue);
+            } catch (NumberFormatException ex) {
+                return null;
+            }
+
+            bridge.setSpeed(newIntValue);
+
+            return oldValue;
+        } else if (PROP_VOICE.equalsIgnoreCase(propertyName)) {
+            final Object oldValue = bridge.getVoice();
+            bridge.setVoice((String) newValue);
+            return oldValue;
+        } else if (PROP_XML_TAGS.equalsIgnoreCase(propertyName)) {
+            final Object oldValue = bridge.getXmlTags();
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                bridge.setXmlTags(true);
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                bridge.setXmlTags(false);
+            }
+
+            return oldValue;
+        }
+
+        return null;
     }
-  } 
+
+    /**
+     * Defines input port
+     */
+    private class InputPort extends DefaultRuntimeInputPort {
+        @Override
+        public void receiveData(byte[] data) {
+            String text = ConversionUtils.stringFromBytes(data);
+
+            bridge.speechText(text);
+        }
+    }
 }

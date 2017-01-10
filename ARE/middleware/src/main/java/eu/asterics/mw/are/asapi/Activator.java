@@ -28,73 +28,80 @@ package eu.asterics.mw.are.asapi;
 import java.util.logging.Logger;
 
 import org.apache.thrift.server.TServer;
-import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
-import org.apache.thrift.server.TThreadPoolServer;
-import org.apache.thrift.protocol.TBinaryProtocol;
 
 import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
+public class Activator implements Runnable {
+    public static final String ASAPI_ACS_PORT_NUMBER_PROPKEY = "ASAPI.ACSPortNumber";
+    public static int ASAPI_ACS_PORT_NUMBER_DEFAULT = 9090;
 
-public class Activator implements Runnable{
-	public static final String ASAPI_ACS_PORT_NUMBER_PROPKEY="ASAPI.ACSPortNumber";
-	public static int ASAPI_ACS_PORT_NUMBER_DEFAULT=9090;
-	
-	/**
-	 * Read porperty value ASAPI.ACSPortNumber and return portnumber to use.
-	 * @return
-	 */
-	private int getPortNumber() {
-		String ASAPIACSPort=AREProperties.instance.getProperty(ASAPI_ACS_PORT_NUMBER_PROPKEY, String.valueOf(ASAPI_ACS_PORT_NUMBER_DEFAULT));
-		//set back default value, if property was not in file.
-		AREProperties.instance.setProperty(ASAPI_ACS_PORT_NUMBER_PROPKEY, ASAPIACSPort);
+    /**
+     * Read porperty value ASAPI.ACSPortNumber and return portnumber to use.
+     * 
+     * @return
+     */
+    private int getPortNumber() {
+        String ASAPIACSPort = AREProperties.instance.getProperty(ASAPI_ACS_PORT_NUMBER_PROPKEY,
+                String.valueOf(ASAPI_ACS_PORT_NUMBER_DEFAULT));
+        // set back default value, if property was not in file.
+        AREProperties.instance.setProperty(ASAPI_ACS_PORT_NUMBER_PROPKEY, ASAPIACSPort);
 
-		try {
-			return Integer.valueOf(ASAPIACSPort);
-		}catch(NumberFormatException e) {
-			return ASAPI_ACS_PORT_NUMBER_DEFAULT;
-		}
-	}
+        try {
+            return Integer.valueOf(ASAPIACSPort);
+        } catch (NumberFormatException e) {
+            return ASAPI_ACS_PORT_NUMBER_DEFAULT;
+        }
+    }
 
-	TServer server=null;
-	private Logger logger = null;
-	public Activator (){
-		try {
-		  logger = AstericsErrorHandling.instance.getLogger();
-	      AsapiServerHandler handler = new AsapiServerHandler();
-	      AsapiServer.Processor processor = new AsapiServer.Processor(handler);
-	      int portNr=getPortNumber();
-	      logger.info("Using ASAPI ACS port number: "+portNr);
-	      TServerTransport serverTransport = new TServerSocket(portNr); // socket timeout after 3000ms => TServerSocket(9090, 3000)
-	      // simple server for thrift 0.5.0
-	      //server = new TSimpleServer(processor, serverTransport);
-	      // simple server for thrift 0.6.1
-	      //server = new TSimpleServer(new TServer.Args(serverTransport).processor(processor));
-	      
-	      // multithreaded server for thrift 0.5.0
-	      //server = new TThreadPoolServer(processor, serverTransport);
-	      // multithreaded server for thrift >= 0.6.1
-	      server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
-	      
-	      
-//	      TThreadPoolServer.Args serverArgs = new TThreadPoolServer.Args(serverTransport);
-//	      serverArgs.maxWorkerThreads(4);
-//	      server = new TThreadPoolServer(serverArgs.processor(processor).protocolFactory(new TBinaryProtocol.Factory()));
-	      
-		} catch (Exception e) {
-			logger.warning(this.getClass().getName()+"." +
-					"Activator: -> \n"+e.getMessage());
-		}
+    TServer server = null;
+    private Logger logger = null;
 
-	}
+    public Activator() {
+        try {
+            logger = AstericsErrorHandling.instance.getLogger();
+            AsapiServerHandler handler = new AsapiServerHandler();
+            AsapiServer.Processor processor = new AsapiServer.Processor(handler);
+            int portNr = getPortNumber();
+            logger.info("Using ASAPI ACS port number: " + portNr);
+            TServerTransport serverTransport = new TServerSocket(portNr); // socket
+                                                                          // timeout
+                                                                          // after
+                                                                          // 3000ms
+                                                                          // =>
+                                                                          // TServerSocket(9090,
+                                                                          // 3000)
+            // simple server for thrift 0.5.0
+            // server = new TSimpleServer(processor, serverTransport);
+            // simple server for thrift 0.6.1
+            // server = new TSimpleServer(new
+            // TServer.Args(serverTransport).processor(processor));
 
-	public void run() {
-		      server.serve();
-		      
-	}
+            // multithreaded server for thrift 0.5.0
+            // server = new TThreadPoolServer(processor, serverTransport);
+            // multithreaded server for thrift >= 0.6.1
+            server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
 
+            // TThreadPoolServer.Args serverArgs = new
+            // TThreadPoolServer.Args(serverTransport);
+            // serverArgs.maxWorkerThreads(4);
+            // server = new
+            // TThreadPoolServer(serverArgs.processor(processor).protocolFactory(new
+            // TBinaryProtocol.Factory()));
+
+        } catch (Exception e) {
+            logger.warning(this.getClass().getName() + "." + "Activator: -> \n" + e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void run() {
+        server.serve();
+
+    }
 
 }

@@ -33,27 +33,22 @@ import eu.asterics.mw.model.deployment.IOutputPort;
 
 /**
  * @author Costas Kakpusis [kakousis@cs.ucy.ac.cy]
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jul 15, 2010
- *         Time: 4:03:23 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jul 15, 2010 Time:
+ *         4:03:23 PM
  */
-public class DefaultOutputPort extends DefaultPort implements IOutputPort
-{
-    public DefaultOutputPort(final String portType,
-                             final DataType portDataType,
-                             final Map<String, Object> propertyValues, 
-                             GroupReferences groupReferences)
-    {
+public class DefaultOutputPort extends DefaultPort implements IOutputPort {
+    public DefaultOutputPort(final String portType, final DataType portDataType,
+            final Map<String, Object> propertyValues, GroupReferences groupReferences) {
         super(portType, portDataType, propertyValues);
     }
 
-    public String getPortType()
-    {
+    @Override
+    public String getPortType() {
         return super.getPortType();
     }
 
-    public Object getPropertyValue(String propertyName)
-    {
+    @Override
+    public Object getPropertyValue(String propertyName) {
         return super.getPropertyValue(propertyName);
     }
 }

@@ -27,105 +27,109 @@ package eu.asterics.component.processor.basictralgorithms;
 
 /**
  * 
- * Implements the class which keeps coordinates of the point for tremor reduction algorithms
+ * Implements the class which keeps coordinates of the point for tremor
+ * reduction algorithms
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Mar 15, 2012
- *         Time: 10:06:15 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Mar 15, 2012 Time: 10:06:15
+ *         AM
  */
-class AlgorithmPoint
-{
-	private int x;
-	private int y;
-	
-   /**
-	* The class constructor.
-	*/
-	public AlgorithmPoint()
-	{
-		x=0;
-		y=0;
-	}
-	
-   /**
-	* The class constructor.
-	* @param x the x coordinate
-	* @param y the y coordinate
-    */
-	public AlgorithmPoint(int x,int y)
-	{
-		this.x=x;
-		this.y=y;
-	}
-	
-	/**
-	* The class constructor.
-	* @param p the point
-    */	
-	public AlgorithmPoint(AlgorithmPoint p)
-	{
-		this.x = p.getX();
-		this.y = p.getY();
-	}
-	
-	/**
-	* Return the x coordinate.
-	* @return x coordinate
-    */		
-	public int getX()
-	{
-		return x;
-	}
+class AlgorithmPoint {
+    private int x;
+    private int y;
 
-	/**
-	* Return the y coordinate.
-	* @return y coordinate
-    */	
-	public int getY()
-	{
-		return y;
-	}
-	
-	/**
-	* Sets the x coordinate.
-	* @param x coordinate
-    */	
-	public void setX(int x)
-	{
-		this.x=x;
-	}
-	
-	/**
-	* Sets the y coordinate.
-	* @param y coordinate
-    */		
-	public void setY(int y)
-	{
-		this.y=y;
-	}
-	
+    /**
+     * The class constructor.
+     */
+    public AlgorithmPoint() {
+        x = 0;
+        y = 0;
+    }
+
+    /**
+     * The class constructor.
+     * 
+     * @param x
+     *            the x coordinate
+     * @param y
+     *            the y coordinate
+     */
+    public AlgorithmPoint(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
+     * The class constructor.
+     * 
+     * @param p
+     *            the point
+     */
+    public AlgorithmPoint(AlgorithmPoint p) {
+        this.x = p.getX();
+        this.y = p.getY();
+    }
+
+    /**
+     * Return the x coordinate.
+     * 
+     * @return x coordinate
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Return the y coordinate.
+     * 
+     * @return y coordinate
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Sets the x coordinate.
+     * 
+     * @param x
+     *            coordinate
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * Sets the y coordinate.
+     * 
+     * @param y
+     *            coordinate
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
+
 }
 
 /**
  * 
- * implements the abstract class for tremor reduction algorithms. 
- * Classes which implement tremor reduction algorithms should inherit from this class.
+ * implements the abstract class for tremor reduction algorithms. Classes which
+ * implement tremor reduction algorithms should inherit from this class.
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Mar 15, 2012
- *         Time: 10:06:15 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Mar 15, 2012 Time: 10:06:15
+ *         AM
  */
-abstract class TremorReductionBasicAlgorithm
-{
-	/**
-	* This method calculates the new cursor position based on actual cursor position.
-	* @param inputPoint actual cursor position
-	* @return new cursor position
-    */		
-	public abstract  AlgorithmPoint calcualteNewPoint(AlgorithmPoint inputPoint);
-	
-	/**
-	* Cleans the algorithm internal data and state to default.
-    */		
-	public abstract void clean();
+abstract class TremorReductionBasicAlgorithm {
+    /**
+     * This method calculates the new cursor position based on actual cursor
+     * position.
+     * 
+     * @param inputPoint
+     *            actual cursor position
+     * @return new cursor position
+     */
+    public abstract AlgorithmPoint calcualteNewPoint(AlgorithmPoint inputPoint);
+
+    /**
+     * Cleans the algorithm internal data and state to default.
+     */
+    public abstract void clean();
 }

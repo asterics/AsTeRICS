@@ -29,102 +29,83 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class DisplayListCanvas extends DisplayCanvas {
 
-	String title;
-	
-	int nextChildY = 16;
-	final int listElementHeight = 16;
-	
-	int lastCanvasIndex = 0;
-	int visibleCanvasIndex = 0;
-	int fillOfLastCanvas = 0;
-	int elementsPerCanvas = 0;
-	
-	
-			
-	public DisplayListCanvas(String title, int x, int y, int w, int h) 
-	{
-		super(x, y, w, h);
-		 
-		if (h < listElementHeight)
-		{
-			AstericsErrorHandling.instance.getLogger()
-				.warning("Warning: Canvas height does not fit a single element");
-		}
-		
-		this.title = title;
-		elementsPerCanvas = h / listElementHeight;
-		DisplayCanvas canvas = new DisplayCanvas(x, y, w, h);
-		canvas.addChild(new DisplayLabel("\37" + title 
-				+ "                       \36", 0, 0, w, h));
-		fillOfLastCanvas++;
-		children.add(canvas);
-	}
+    String title;
 
-	@Override
-	public void addChild(DisplayCanvas canvas) {
-		DisplayGuiManager.debugMessage("DisplayListCanvas.addChild(): adding " +  canvas.canvasName);
-		DisplayCanvas parent = children.get(lastCanvasIndex);
-		
-		canvas.setPosition(0, nextChildY);
-		nextChildY += listElementHeight;
-		canvas.setSize(relPosition.width, listElementHeight);
-		if (fillOfLastCanvas < elementsPerCanvas)
-		{
-			parent.addChild(canvas);
-			fillOfLastCanvas++;
-		}
-		else
-		{
-			DisplayCanvas c = new DisplayCanvas(relPosition.x, relPosition.y, 
-					relPosition.width, relPosition.height);
-			
-			canvas.setPosition(0, 0);
-			c.addChild(canvas);
-			children.add(c);
-			nextChildY = 16;
-			fillOfLastCanvas = 1;
-			lastCanvasIndex++;
-		}
-	}
+    int nextChildY = 16;
+    final int listElementHeight = 16;
 
-	@Override
-	public void draw() 
-	{
-		DisplayGuiManager.debugMessage("DisplayListCanvas.draw()");
-		setVisible();
-		children.get(visibleCanvasIndex).draw();		
-	}
-	
-	@Override
-	public void press(int x, int y)
-	{
-		DisplayGuiManager.debugMessage("DisplayListCanvas.press() on " + canvasName 
-				+ " active canvas=" + visibleCanvasIndex  );
-		
-		DisplayCanvas c = children.get(visibleCanvasIndex);
-		if (pressOnCanvas(x,y))
-		{
-			c.press(x, y);
-		}
-	}
+    int lastCanvasIndex = 0;
+    int visibleCanvasIndex = 0;
+    int fillOfLastCanvas = 0;
+    int elementsPerCanvas = 0;
 
-	@Override
-	public void navigate(NavigationDirection nav) 
-	{
-		if (nav == NavigationDirection.DOWN)
-		{
-			if (visibleCanvasIndex < lastCanvasIndex)
-			{
-				visibleCanvasIndex++;
-			}
-		}
-		else if (nav == NavigationDirection.UP)
-		{
-			
-			if (visibleCanvasIndex > 0)
-			{
-				visibleCanvasIndex--;
-			}
-		}
-	}
+    public DisplayListCanvas(String title, int x, int y, int w, int h) {
+        super(x, y, w, h);
+
+        if (h < listElementHeight) {
+            AstericsErrorHandling.instance.getLogger().warning("Warning: Canvas height does not fit a single element");
+        }
+
+        this.title = title;
+        elementsPerCanvas = h / listElementHeight;
+        DisplayCanvas canvas = new DisplayCanvas(x, y, w, h);
+        canvas.addChild(new DisplayLabel("\37" + title + "                       \36", 0, 0, w, h));
+        fillOfLastCanvas++;
+        children.add(canvas);
+    }
+
+    @Override
+    public void addChild(DisplayCanvas canvas) {
+        DisplayGuiManager.debugMessage("DisplayListCanvas.addChild(): adding " + canvas.canvasName);
+        DisplayCanvas parent = children.get(lastCanvasIndex);
+
+        canvas.setPosition(0, nextChildY);
+        nextChildY += listElementHeight;
+        canvas.setSize(relPosition.width, listElementHeight);
+        if (fillOfLastCanvas < elementsPerCanvas) {
+            parent.addChild(canvas);
+            fillOfLastCanvas++;
+        } else {
+            DisplayCanvas c = new DisplayCanvas(relPosition.x, relPosition.y, relPosition.width, relPosition.height);
+
+            canvas.setPosition(0, 0);
+            c.addChild(canvas);
+            children.add(c);
+            nextChildY = 16;
+            fillOfLastCanvas = 1;
+            lastCanvasIndex++;
+        }
+    }
+
+    @Override
+    public void draw() {
+        DisplayGuiManager.debugMessage("DisplayListCanvas.draw()");
+        setVisible();
+        children.get(visibleCanvasIndex).draw();
+    }
+
+    @Override
+    public void press(int x, int y) {
+        DisplayGuiManager
+                .debugMessage("DisplayListCanvas.press() on " + canvasName + " active canvas=" + visibleCanvasIndex);
+
+        DisplayCanvas c = children.get(visibleCanvasIndex);
+        if (pressOnCanvas(x, y)) {
+            c.press(x, y);
+        }
+    }
+
+    @Override
+    public void navigate(NavigationDirection nav) {
+        if (nav == NavigationDirection.DOWN) {
+            if (visibleCanvasIndex < lastCanvasIndex) {
+                visibleCanvasIndex++;
+            }
+        } else if (nav == NavigationDirection.UP) {
+
+            if (visibleCanvasIndex > 0) {
+                visibleCanvasIndex--;
+            }
+        }
+    }
 }

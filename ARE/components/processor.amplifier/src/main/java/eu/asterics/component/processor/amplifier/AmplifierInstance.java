@@ -29,139 +29,126 @@ package eu.asterics.component.processor.amplifier;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
-import java.util.*;
-
 /**
- * The amplifier is a simple processor component which increases or decreases 
+ * The amplifier is a simple processor component which increases or decreases
  * the input by a factor set as a property
-  * 
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at]
- *         Date: Nov 3, 2010
+ * 
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
-public class AmplifierInstance extends AbstractRuntimeComponentInstance
-{
+public class AmplifierInstance extends AbstractRuntimeComponentInstance {
     public static final double DEFAULT_FACTOR = 1;
 
     private double propFactor = DEFAULT_FACTOR;
 
     /**
-     * The input port instance of this component. 
+     * The input port instance of this component.
      */
     private IRuntimeInputPort ipSigIn = new InputPort1();
 
     private IRuntimeOutputPort opSigOut = new DefaultRuntimeOutputPort();
 
-	
-    public AmplifierInstance()
-    {
+    public AmplifierInstance() {
         // empty constructor - needed for OSGi service factory operations
     }
 
     /**
      * Returns the input port of the component
-     * @param portID the name of the port
+     * 
+     * @param portID
+     *            the name of the port
      * @return the instance of the port, null otherwise
      */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-        if("sigIn".equalsIgnoreCase(portID))
-        {
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("sigIn".equalsIgnoreCase(portID)) {
             return ipSigIn;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
     /**
      * Returns the output port of the component
-     * @param portID the name of the port
+     * 
+     * @param portID
+     *            the name of the port
      * @return the instance of the port, null otherwise
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-    {
-        if("sigOut".equalsIgnoreCase(portID))
-        {
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("sigOut".equalsIgnoreCase(portID)) {
             return opSigOut;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
     /**
      * Returns the values of properties of the component
-     * @param propertyName name of the property
-     * @return  the value of the property as an Object
+     * 
+     * @param propertyName
+     *            name of the property
+     * @return the value of the property as an Object
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-        if("factor".equalsIgnoreCase(propertyName))
-        {
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("factor".equalsIgnoreCase(propertyName)) {
             return propFactor;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
     /**
      * Sets the values of properties of the component
-     * @param propertyName name of the property
-     * @param newValue the new value as an Object
-     * @return  the old value of the property as an Object
+     * 
+     * @param propertyName
+     *            name of the property
+     * @param newValue
+     *            the new value as an Object
+     * @return the old value of the property as an Object
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-        if("factor".equalsIgnoreCase(propertyName))
-        {
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("factor".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propFactor;
 
-            if(newValue != null)
-            {
-                try
-                {
-                	propFactor = Double.parseDouble(newValue.toString());
-                }
-                catch (NumberFormatException nfe)
-                {
-                	AstericsErrorHandling.instance.reportInfo(this, "Invalid property value for " + propertyName + ": " + newValue);
+            if (newValue != null) {
+                try {
+                    propFactor = Double.parseDouble(newValue.toString());
+                } catch (NumberFormatException nfe) {
+                    AstericsErrorHandling.instance.reportInfo(this,
+                            "Invalid property value for " + propertyName + ": " + newValue);
                 }
             }
             return oldValue;
-        }
-        else
-        {
+        } else {
             return null;
         }
     }
 
     /**
-     * The input port of this component. Performs all amplification 
+     * The input port of this component. Performs all amplification
      * calculations.
      * 
      * @author weissch
      *
      */
-    private class InputPort1 extends DefaultRuntimeInputPort
-    {
-    	/**
-    	 * Converts and amplifies the input data
-    	 */
-        public void receiveData(byte[] data)
-        {
+    private class InputPort1 extends DefaultRuntimeInputPort {
+        /**
+         * Converts and amplifies the input data
+         */
+        @Override
+        public void receiveData(byte[] data) {
             // convert input to int
             double in = ConversionUtils.doubleFromBytes(data);
-            
+
             // send output
             opSigOut.sendData(ConversionUtils.doubleToBytes(in * propFactor));
         }

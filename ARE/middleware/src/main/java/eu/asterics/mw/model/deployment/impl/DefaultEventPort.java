@@ -28,10 +28,8 @@ package eu.asterics.mw.model.deployment.impl;
 import eu.asterics.mw.model.deployment.IEventPort;
 
 /**
- * Date: 1/5/11
- * Time: 4:19 PM
+ * Date: 1/5/11 Time: 4:19 PM
  */
-public class DefaultEventPort implements IEventPort
-{
+public class DefaultEventPort implements IEventPort {
     // empty
 }

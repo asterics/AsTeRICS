@@ -28,161 +28,146 @@ package eu.asterics.component.processor.eventdispatcher;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
+import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 
-import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-import java.util.*;
-import java.util.logging.*;
-
-
 /**
- *   Implements the event displatcher plugin, which compares an
- *   input string with up to 10 string templates and generates a
- *   dedicated event if a match is found.
- *     
- * @author Chris Veigl [veigl@technikum-wien.at]
- *         Date: Apr 23, 2011
- *         Time: 06:35:00 PM
+ * Implements the event displatcher plugin, which compares an input string with
+ * up to 10 string templates and generates a dedicated event if a match is
+ * found.
+ * 
+ * @author Chris Veigl [veigl@technikum-wien.at] Date: Apr 23, 2011 Time:
+ *         06:35:00 PM
  */
-public class EventdispatcherInstance extends AbstractRuntimeComponentInstance
-{
-	private final int NUMBER_OF_COMMANDS = 10;
-	private final String KEY_PROPERTY_COMMAND = "command";
-	private final String KEY_PROPERTY_EVENT = "recognizedCommand";
-    	
-    private IRuntimeInputPort cmdPort = new CmdPort();
-    final IRuntimeEventTriggererPort [] etpRecognizedCommand = new DefaultRuntimeEventTriggererPort[NUMBER_OF_COMMANDS];    
+public class EventdispatcherInstance extends AbstractRuntimeComponentInstance {
+    private final int NUMBER_OF_COMMANDS = 10;
+    private final String KEY_PROPERTY_COMMAND = "command";
+    private final String KEY_PROPERTY_EVENT = "recognizedCommand";
 
-    private String[] commands = {"one","two","three","four","five","six","seven","eight","nine","ten"};
-    
- 
+    private IRuntimeInputPort cmdPort = new CmdPort();
+    final IRuntimeEventTriggererPort[] etpRecognizedCommand = new DefaultRuntimeEventTriggererPort[NUMBER_OF_COMMANDS];
+
+    private String[] commands = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" };
+
     /**
      * The class constructor, instantiates the event trigger ports
      */
-    public EventdispatcherInstance()
-    {
-    	for (int i = 0; i < NUMBER_OF_COMMANDS; i++)
-		{
-    		etpRecognizedCommand[i] = new DefaultRuntimeEventTriggererPort();
-		}
+    public EventdispatcherInstance() {
+        for (int i = 0; i < NUMBER_OF_COMMANDS; i++) {
+            etpRecognizedCommand[i] = new DefaultRuntimeEventTriggererPort();
+        }
     }
-
 
     /**
      * returns an Input Port.
-     * @param portID   the name of the port
-     * @return         the input port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
      */
-   public IRuntimeInputPort getInputPort(String portID)
-    {
-        if("cmd".equalsIgnoreCase(portID))
-        {
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        if ("cmd".equalsIgnoreCase(portID)) {
             return cmdPort;
         }
         return null;
     }
-  
-   /**
-    * returns an Output Port.
-    * @param portID   the name of the port
-    * @return         the output port or null if not found
-    */
-    public IRuntimeOutputPort getOutputPort(String portID)
-    {
+
+    /**
+     * returns an Output Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
+     */
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
         return null;
     }
-  
 
     /**
      * returns an Event Trigger Port.
-     * @param eventPortID   the name of the port
-     * @return         the Event Trigger port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the Event Trigger port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
-    	for (int i = 0; i < NUMBER_OF_COMMANDS; i++)
-		{
-			String s = KEY_PROPERTY_EVENT + (i + 1);
-			if (s.equalsIgnoreCase(eventPortID))
-			{
-	            return etpRecognizedCommand[i];
-			}
-		}
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
+        for (int i = 0; i < NUMBER_OF_COMMANDS; i++) {
+            String s = KEY_PROPERTY_EVENT + (i + 1);
+            if (s.equalsIgnoreCase(eventPortID)) {
+                return etpRecognizedCommand[i];
+            }
+        }
         return null;
     }
-     
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-        for (int i = 0; i < NUMBER_OF_COMMANDS; i++)
-       	{
-        		String s = KEY_PROPERTY_COMMAND + (i + 1);
-        		if (s.equalsIgnoreCase(propertyName))
-        		{
-        			return (commands[i]);
-        		}
-       	}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        for (int i = 0; i < NUMBER_OF_COMMANDS; i++) {
+            String s = KEY_PROPERTY_COMMAND + (i + 1);
+            if (s.equalsIgnoreCase(propertyName)) {
+                return (commands[i]);
+            }
+        }
         return null;
     }
-    
+
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-       	for (int i = 0; i < NUMBER_OF_COMMANDS; i++)
-   		{
-    			String s = KEY_PROPERTY_COMMAND + (i + 1);
-    			if (s.equalsIgnoreCase(propertyName))
-    			{
-    				commands[i] = (String)newValue;
-    	        	// Logger.getAnonymousLogger().info(String.format("Setting command %d to %s", i+1, newValue));
-    			}
-   		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        for (int i = 0; i < NUMBER_OF_COMMANDS; i++) {
+            String s = KEY_PROPERTY_COMMAND + (i + 1);
+            if (s.equalsIgnoreCase(propertyName)) {
+                commands[i] = (String) newValue;
+                // Logger.getAnonymousLogger().info(String.format("Setting
+                // command %d to %s", i+1, newValue));
+            }
+        }
         return null;
     }
 
-
-
     /**
-     * Input Port for receiving string command,
-     *  raises event of matching command slot.
-     */       
-    private class CmdPort extends DefaultRuntimeInputPort
-    {
-        public void receiveData(byte[] data)
-        {
+     * Input Port for receiving string command, raises event of matching command
+     * slot.
+     */
+    private class CmdPort extends DefaultRuntimeInputPort {
+        @Override
+        public void receiveData(byte[] data) {
             String cmd = ConversionUtils.stringFromBytes(data);
-            
-       		for (int i=0;i<NUMBER_OF_COMMANDS;i++)
-       		{
-        		    if (commands[i].equalsIgnoreCase(cmd))
-        		    {
-        			  etpRecognizedCommand[i].raiseEvent();
-        		    }
-       		}
+
+            for (int i = 0; i < NUMBER_OF_COMMANDS; i++) {
+                if (commands[i].equalsIgnoreCase(cmd)) {
+                    etpRecognizedCommand[i].raiseEvent();
+                }
+            }
         }
 
-		
     }
-    
+
     /**
      * called when model is started.
      */
     @Override
-    public void start()
-    {
+    public void start() {
         super.start();
 
     }
@@ -191,8 +176,7 @@ public class EventdispatcherInstance extends AbstractRuntimeComponentInstance
      * called when model is paused.
      */
     @Override
-    public void pause()
-    {
+    public void pause() {
         super.pause();
     }
 
@@ -200,17 +184,15 @@ public class EventdispatcherInstance extends AbstractRuntimeComponentInstance
      * called when model is resumed.
      */
     @Override
-    public void resume()
-    {
+    public void resume() {
         super.resume();
     }
-  
+
     /**
      * called when model is stopped.
      */
     @Override
-    public void stop()
-    {
+    public void stop() {
         super.stop();
     }
 }

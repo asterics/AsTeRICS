@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.FolderBrowser"
+                   canonical_name="eu.asterics.component.sensor.folderbrowser.FolderBrowserInstance">
+        <type subtype="File System">sensor</type>
+        <singleton>false</singleton>
+        <description>browse folders and files in filesystem</description>
+        <ports>
+
+			<outputPort id="folderName">
+				<description>name of the current folder (without path)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="folderPath">
+				<description>name of the current folder (including path)</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="fileNames">
+				<description>names of the files in current folder</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="filePaths">
+				<description>names of the files in current folder (including path)</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="next">
+				<description>next folder in current directory</description>
+			</eventListenerPort>
+			<eventListenerPort id="previous">
+				<description>previous folder in current directory</description>
+			</eventListenerPort>
+			<eventListenerPort id="enter">
+				<description>enter current folder</description>
+			</eventListenerPort>
+			<eventListenerPort id="exit">
+				<description>exit current folder</description>
+			</eventListenerPort>
+			<eventListenerPort id="current">
+				<description>output current folder</description>
+			</eventListenerPort>
+			<eventListenerPort id="listFiles">
+				<description>lists files in current folder</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property name="initialFolder"
+				type="string"
+				value="."
+				description="initial folder where browsing starts"/>
+			<property name="wrapAround"
+				type="boolean"
+				value="true"
+				description="wrap around after last entry"/>
+			<property name="exitInitialFolder"
+				type="boolean"
+				value="false"
+				description="allow to exit the initial folder"/>
+			<property name="autoListFiles"
+				type="boolean"
+				value="false"
+				description="automatically output files on folder entry "/>
+			<property name="noFolderMessage"
+				type="string"
+				value="no subfolder available"
+				description="message to be sent to folderName port if no subfolder is available"/>
+			<property name="noFileMessage"
+				type="string"
+				value="no file available"
+				description="message to be sent to fileNames port if no file is available"/>
+        </properties>
+
+    </componentType>
+</componentTypes>

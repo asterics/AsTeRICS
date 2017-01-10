@@ -26,142 +26,128 @@
 
 package eu.asterics.component.sensor.slider;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.services.AREServices;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.text.DecimalFormat;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-
-
-
 /**
- *   Implements the Graphical User Interface for the
- *   slider sensor plugin
- *  
- * @author Chris Veigl [veigl@technikum-wien.at]
- *         Date: Oct 11, 2011
- *         Time: 04:28:05 PM
+ * Implements the Graphical User Interface for the slider sensor plugin
+ * 
+ * @author Chris Veigl [veigl@technikum-wien.at] Date: Oct 11, 2011 Time:
+ *         04:28:05 PM
  */
-public class GUI extends JPanel implements ChangeListener
-{
-    //private MyPanel paintPanel = new MyPanel();
-    
-    private JPanel sliderPanel,paintPanel; 
-    private JSlider slider=null;
-    private JLabel sliderLabel;
+public class GUI extends JPanel implements ChangeListener {
+    // private MyPanel paintPanel = new MyPanel();
+
+    private JPanel sliderPanel;
+    private JSlider slider = null;
     private Dimension sliderPanelSize;
     private Dimension sliderSize;
 
-    private final int X_OFFSET=35;
-    private final int Y_OFFSET=20;
-    
-	private GUI thisPanel;
-	private final SliderInstance owner;
-	private boolean changingSliderByInputValue=false;
-
+    private final SliderInstance owner;
+    private boolean changingSliderByInputValue = false;
 
     /**
      * The class constructor, initialises the GUI
-     * @param owner    the Slider instance
+     * 
+     * @param owner
+     *            the Slider instance
      */
-    public GUI(final SliderInstance owner, final Dimension space)
-    {
+    public GUI(final SliderInstance owner, final Dimension space) {
         super();
-    	this.owner=owner;
+        this.owner = owner;
 
-		this.setPreferredSize(new Dimension (space.width, space.height));
-		design (space.width, space.height);  	
+        this.setPreferredSize(new Dimension(space.width, space.height));
+        design(space.width, space.height);
     }
 
-    
-	/**
-	 * The GUI consists of one panel with the slider element.
-	 * @param width
-	 * @param height
-	 */
-	private void design (int width, int height)
-	{
-    	Font actFont=new Font ("Arial", 0, owner.propFontSize);
-        
-		//Create Panels
-		sliderPanel = new JPanel (new BorderLayout());
-		sliderPanelSize = new Dimension (width, height);
-		sliderSize = new Dimension (width, height);
+    /**
+     * The GUI consists of one panel with the slider element.
+     * 
+     * @param width
+     * @param height
+     */
+    private void design(int width, int height) {
+        Font actFont = new Font("Arial", 0, owner.propFontSize);
 
+        // Create Panels
+        sliderPanel = new JPanel(new BorderLayout());
+        sliderPanelSize = new Dimension(width, height);
+        sliderSize = new Dimension(width, height);
 
-		sliderPanel.setMaximumSize(sliderPanelSize);
-		sliderPanel.setPreferredSize(sliderPanelSize);
-			
-		TitledBorder b = BorderFactory.createTitledBorder(owner.propCaption);
-		b.setTitleFont(actFont); 
-		this.setBorder (b);
-		
-      
-		//Slider
-        if (owner.propAlignment==0)
-        	slider = new JSlider(JSlider.HORIZONTAL, owner.propMin, owner.propMax, 
-				owner.propDefault);
-        else
-        	slider = new JSlider(JSlider.VERTICAL, owner.propMin, owner.propMax, 
-    				owner.propDefault);
+        sliderPanel.setMaximumSize(sliderPanelSize);
+        sliderPanel.setPreferredSize(sliderPanelSize);
 
-		slider.setPaintTicks(true);
-		slider.setPaintLabels(true);
-		slider.setSnapToTicks(true);
-		slider.setMajorTickSpacing(owner.propMajorTickSpacing);
-		slider.setMinorTickSpacing(owner.propMinorTickSpacing);
-		slider.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
-		slider.setMaximumSize(sliderSize);
-		slider.setPreferredSize(sliderSize);
+        TitledBorder b = BorderFactory.createTitledBorder(owner.propCaption);
+        b.setTitleFont(actFont);
+        this.setBorder(b);
+
+        // Slider
+        if (owner.propAlignment == 0) {
+            slider = new JSlider(SwingConstants.HORIZONTAL, owner.propMin, owner.propMax, owner.propDefault);
+        } else {
+            slider = new JSlider(SwingConstants.VERTICAL, owner.propMin, owner.propMax, owner.propDefault);
+        }
+
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setSnapToTicks(true);
+        slider.setMajorTickSpacing(owner.propMajorTickSpacing);
+        slider.setMinorTickSpacing(owner.propMinorTickSpacing);
+        slider.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+        slider.setMaximumSize(sliderSize);
+        slider.setPreferredSize(sliderSize);
         slider.addChangeListener(this);
         slider.setFont(actFont);
-		sliderPanel.add(slider,BorderLayout.CENTER);
-		AREServices.instance.adjustFonts(sliderPanel, 24, 6, 0);
-		sliderPanel.setVisible(true);
+        sliderPanel.add(slider, BorderLayout.CENTER);
+        AREServices.instance.adjustFonts(sliderPanel, 24, 6, 0);
+        sliderPanel.setVisible(true);
 
-        
-	    this.setLayout(new BorderLayout());
-        add (sliderPanel,BorderLayout.CENTER);
-	    
-        thisPanel=this;
- 
-	}
-  
+        this.setLayout(new BorderLayout());
+        add(sliderPanel, BorderLayout.CENTER);
+
+    }
+
     /** Listen to the slider. */
+    @Override
     public void stateChanged(ChangeEvent e) {
-        JSlider source = (JSlider)e.getSource();
-    	
-    	if (changingSliderByInputValue==false)
-    	{
-         // if (!source.getValueIsAdjusting()) {
-            owner.opValue.sendData(
-            		ConversionUtils.intToBytes(source.getValue()));   
-          //}
-    	}
-        changingSliderByInputValue=false;
-		if (owner.propStoreValue == true)
-			owner.storeRuntimeValue("sliderPosition",source.getValue());
+        JSlider source = (JSlider) e.getSource();
+
+        if (changingSliderByInputValue == false) {
+            // if (!source.getValueIsAdjusting()) {
+            owner.opValue.sendData(ConversionUtils.intToBytes(source.getValue()));
+            // }
+        }
+        changingSliderByInputValue = false;
+        if (owner.propStoreValue == true) {
+            owner.storeRuntimeValue("sliderPosition", source.getValue());
+        }
     }
 
     public int getSliderValue() {
-    	if (slider != null)
-    		return(slider.getValue());
-    	else return(0);
+        if (slider != null) {
+            return (slider.getValue());
+        } else {
+            return (0);
+        }
     }
 
     public void valueChanged(int value) {
-    	if (slider != null)
-    	{
-    		changingSliderByInputValue=true;
-    		slider.setValue(value);
-    	}
+        if (slider != null) {
+            changingSliderByInputValue = true;
+            slider.setValue(value);
+        }
     }
 
 }

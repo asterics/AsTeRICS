@@ -24,64 +24,60 @@
  * 
  */
 
-
-package eu.asterics.component.sensor.eyetracker.jni; 
+package eu.asterics.component.sensor.eyetracker.jni;
 
 import eu.asterics.component.sensor.eyetracker.EyetrackerInstance;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- *   Java JNI bridge for interfacing C++ code for the facetracker_lk plugin
- *  
- * @author Chris Veigl [veigl@technikum-wien.at]
- *         Date: Mar 1, 2011
- *         Time: 3:35:00 PM
+ * Java JNI bridge for interfacing C++ code for the facetracker_lk plugin
+ * 
+ * @author Chris Veigl [veigl@technikum-wien.at] Date: Mar 1, 2011 Time: 3:35:00
+ *         PM
  */
-public class Bridge                          
-{   
-    /** 
-     * Statically load the native library 
+public class Bridge {
+    /**
+     * Statically load the native library
      */
-    static   
-    {   
-    	//Same for both versions
+    static {
+        // Same for both versions
         System.loadLibrary("tbb");
         AstericsErrorHandling.instance.getLogger().fine("Loading \"tbb.dll\" ... ok!");
-        
+
         System.loadLibrary("eyetracker");
         AstericsErrorHandling.instance.getLogger().fine("Loading \"eyetracker.dll\" ... ok!");
-        
+
     }
- 
- //   private final EyetrackerInstance.OutputPort x;
- //   private final EyetrackerInstance.OutputPort y;
+
+    // private final EyetrackerInstance.OutputPort x;
+    // private final EyetrackerInstance.OutputPort y;
     private final EyetrackerInstance owner;
-    
-    public Bridge(final EyetrackerInstance owner)
-    {
+
+    public Bridge(final EyetrackerInstance owner) {
         this.owner = owner;
-    } 
-  
+    }
+
     /**
      * Activates the underlying native code/hardware.
      *
      * @return 0 if everything was OK, a negative number corresponding to an
-     * error code otherwise
-     */  
-    native public int activate();   
+     *         error code otherwise
+     */
+    native public int activate();
 
     /**
      * Deactivates the underlying native code/hardware.
      *
      * @return 0 if everything was OK, a negative number corresponding to an
-     * error code otherwise
+     *         error code otherwise
      */
     native public int deactivate();
 
     /**
      * Gets the value of the named property.
      *
-     * @param key the name of the property to be accessed
+     * @param key
+     *            the name of the property to be accessed
      * @return the value of the named property
      */
     native public String getProperty(String key);
@@ -89,47 +85,52 @@ public class Bridge
     /**
      * Sets the named property to the defined value.
      *
-     * @param key the name of the property to be accessed
-     * @param value the value to be assigned to the named property
+     * @param key
+     *            the name of the property to be accessed
+     * @param value
+     *            the value to be assigned to the named property
      * @return the value previously assigned to the named property
      */
     native public String setProperty(String key, final String value);
 
-
     native public void calibrate();
+
     native public void showCameraSettings();
+
     native public void setDisplayPosition(int x, int y, int w, int h);
-    native public void saveCameraProfile(String filename);   
+
+    native public void saveCameraProfile(String filename);
+
     native public void loadCameraProfile(String filename);
 
-    
     /**
      * This method is called back from the native code on demand to signify an
      * internal error. The first argument corresponds to an error code and the
      * second argument corresponds to a textual description of the error.
      *
-     * @param errorCode an error code
-     * @param message a textual description of the error
-     */ 
-    private void errorReport_callback(
-            final int errorCode,
-            final String message)
-    {
-    	AstericsErrorHandling.instance.getLogger().warning(errorCode + ": " + message);
+     * @param errorCode
+     *            an error code
+     * @param message
+     *            a textual description of the error
+     */
+    private void errorReport_callback(final int errorCode, final String message) {
+        AstericsErrorHandling.instance.getLogger().warning(errorCode + ": " + message);
     }
-  
+
     /**
      * This method is called back from the native code on demand. The passed
-     * arguments correspond to x/y position of the tracked round object (e.g. the pupil)
+     * arguments correspond to x/y position of the tracked round object (e.g.
+     * the pupil)
      *
-     * @param x_location the x eye location (range is [0, Short.MAX_VALUE])
-     * @param y_location the y eye location (range is [0, Short.MAX_VALUE])
+     * @param x_location
+     *            the x eye location (range is [0, Short.MAX_VALUE])
+     * @param y_location
+     *            the y eye location (range is [0, Short.MAX_VALUE])
      */
-    synchronized private void newCoordinates_callback(final int x_location, final int y_location)
-    {
-    	owner.eyeLocationCallback (x_location,y_location); 
-//    		x.sendData(x_location); 
-//    		y.sendData(y_location);        
-//    	} 
+    synchronized private void newCoordinates_callback(final int x_location, final int y_location) {
+        owner.eyeLocationCallback(x_location, y_location);
+        // x.sendData(x_location);
+        // y.sendData(y_location);
+        // }
     }
 }

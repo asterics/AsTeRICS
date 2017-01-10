@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -28,86 +27,71 @@
 package eu.asterics.component.actuator.event_visualizer;
 
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
- * EventVisualizerInstance adds a GUI which displays incoming events 
+ * EventVisualizerInstance adds a GUI which displays incoming events
  * 
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
- *         Date: Jan 09, 2010
- *         Time: 11:23:48 AM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Date: Jan 09, 2010 Time:
+ *         11:23:48 AM
  */
-public class EventVisualizerInstance extends AbstractRuntimeComponentInstance
-{
-    private VisualizerGUI visualizerGUI = null; 
-    public boolean propDisplayGUI=true;
+public class EventVisualizerInstance extends AbstractRuntimeComponentInstance {
+    private VisualizerGUI visualizerGUI = null;
+    public boolean propDisplayGUI = true;
 
-    
-    public EventVisualizerInstance()
-    {
+    public EventVisualizerInstance() {
         // empty constructor - needed for OSGi service factory operations
     }
 
     @Override
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-    	if("displayGUI".equalsIgnoreCase(propertyName))
-        {
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("displayGUI".equalsIgnoreCase(propertyName)) {
             return propDisplayGUI;
         }
         return null;
     }
 
     @Override
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-    	if("displayGUI".equalsIgnoreCase(propertyName))
-        {
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("displayGUI".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propDisplayGUI;
 
-            if("true".equalsIgnoreCase((String)newValue))
-            {
-            	propDisplayGUI = true;
-            }
-            else if("false".equalsIgnoreCase((String)newValue))
-            {
-            	propDisplayGUI = false;
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propDisplayGUI = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propDisplayGUI = false;
             }
             return oldValue;
-        }    	
+        }
         return null;
     }
-    
-    public IRuntimeInputPort getInputPort(String portID)
-    {
-       return null;
+
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
+        return null;
     }
 
     final IRuntimeEventListenerPort elpEventDisplay = new IRuntimeEventListenerPort() {
         @Override
-        public void receiveEvent(String data)
-        {
-        	if (visualizerGUI!=null)
-        	{
-        		try {
-        			visualizerGUI.addEvent(data);
-				} catch (java.lang.ClassCastException e) {
-					AstericsErrorHandling.instance.getLogger().fine("EventVisualizer: event ignored");  
+        public void receiveEvent(String data) {
+            if (visualizerGUI != null) {
+                try {
+                    visualizerGUI.addEvent(data);
+                } catch (java.lang.ClassCastException e) {
+                    AstericsErrorHandling.instance.getLogger().fine("EventVisualizer: event ignored");
 
-				}
-        	}
-        		
+                }
+            }
+
         }
     };
 
     @Override
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-        if("eventDisplay".equalsIgnoreCase(eventPortID))
-        {
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if ("eventDisplay".equalsIgnoreCase(eventPortID)) {
             return elpEventDisplay;
         }
 
@@ -115,18 +99,18 @@ public class EventVisualizerInstance extends AbstractRuntimeComponentInstance
     }
 
     @Override
-    public void start()
-    {
+    public void start() {
 
-    	visualizerGUI = new VisualizerGUI(this,AREServices.instance.getAvailableSpace(this));
-    	if (propDisplayGUI) AREServices.instance.displayPanel(visualizerGUI, this, true);
-    	super.start();
-        
+        visualizerGUI = new VisualizerGUI(this, AREServices.instance.getAvailableSpace(this));
+        if (propDisplayGUI) {
+            AREServices.instance.displayPanel(visualizerGUI, this, true);
+        }
+        super.start();
+
     }
 
     @Override
-    public void stop()
-    {
+    public void stop() {
         super.stop();
 
         visualizerGUI.setVisible(false);

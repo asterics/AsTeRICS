@@ -1,5 +1,4 @@
 
-
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
  * 
@@ -27,273 +26,268 @@
 
 package eu.asterics.component.processor.yaak;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.logging.Logger;
-
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.IRuntimeInputPort;
+import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AREServices;
 
 /**
  * 
  * <Describe purpose of this module>
  * 
  * 
- *  
- * @author David Thaller dt@ki-i.at
- *         Date: 30.06.2012
- *         Time: 13:37
+ * 
+ * @author David Thaller dt@ki-i.at Date: 30.06.2012 Time: 13:37
  */
-public class YaakInstance extends AbstractRuntimeComponentInstance
-{
-	final IRuntimeOutputPort opAction = new DefaultRuntimeOutputPort();
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
+public class YaakInstance extends AbstractRuntimeComponentInstance {
+    final IRuntimeOutputPort opAction = new DefaultRuntimeOutputPort();
+    // Usage of an output port e.g.:
+    // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
-	String propHostname = "localhost";
-	int propPort = 44000;
-	Thread reader;
-	Socket s;
-	BufferedReader in;
-	PrintWriter out;
-	String action = "";
-	// declare member variables here
+    String propHostname = "localhost";
+    int propPort = 44000;
+    Thread reader;
+    Socket s;
+    BufferedReader in;
+    PrintWriter out;
+    String action = "";
+    // declare member variables here
 
-  
-    
-   /**
-    * The class constructor.
-    */
-    public YaakInstance()
-    {
-        
+    /**
+     * The class constructor.
+     */
+    public YaakInstance() {
+
     }
 
-   /**
-    * returns an Input Port.
-    * @param portID   the name of the port
-    * @return         the input port or null if not found
-    */
-    public IRuntimeInputPort getInputPort(String portID)
-    {
+    /**
+     * returns an Input Port.
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the input port or null if not found
+     */
+    @Override
+    public IRuntimeInputPort getInputPort(String portID) {
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Output Port.
-     * @param portID   the name of the port
-     * @return         the output port or null if not found
+     * 
+     * @param portID
+     *            the name of the port
+     * @return the output port or null if not found
      */
-    public IRuntimeOutputPort getOutputPort(String portID)
-	{
-		if ("action".equalsIgnoreCase(portID))
-		{
-			return opAction;
-		}
+    @Override
+    public IRuntimeOutputPort getOutputPort(String portID) {
+        if ("action".equalsIgnoreCase(portID)) {
+            return opAction;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     /**
      * returns an Event Listener Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventListener port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventListener port or null if not found
      */
-    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID)
-    {
-		if ("trigger".equalsIgnoreCase(eventPortID))
-		{
-			return elpTrigger;
-		}
+    @Override
+    public IRuntimeEventListenerPort getEventListenerPort(String eventPortID) {
+        if ("trigger".equalsIgnoreCase(eventPortID)) {
+            return elpTrigger;
+        }
 
         return null;
     }
 
     /**
      * returns an Event Triggerer Port.
-     * @param eventPortID   the name of the port
-     * @return         the EventTriggerer port or null if not found
+     * 
+     * @param eventPortID
+     *            the name of the port
+     * @return the EventTriggerer port or null if not found
      */
-    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID)
-    {
+    @Override
+    public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
 
         return null;
     }
-		
+
     /**
      * returns the value of the given property.
-     * @param propertyName   the name of the property
-     * @return               the property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @return the property value or null if not found
      */
-    public Object getRuntimePropertyValue(String propertyName)
-    {
-		if ("hostname".equalsIgnoreCase(propertyName))
-		{
-			return propHostname;
-		}
-		if ("port".equalsIgnoreCase(propertyName))
-		{
-			return propPort;
-		}
+    @Override
+    public Object getRuntimePropertyValue(String propertyName) {
+        if ("hostname".equalsIgnoreCase(propertyName)) {
+            return propHostname;
+        }
+        if ("port".equalsIgnoreCase(propertyName)) {
+            return propPort;
+        }
 
         return null;
     }
 
     /**
      * sets a new value for the given property.
-     * @param propertyName   the name of the property
-     * @param newValue       the desired property value or null if not found
+     * 
+     * @param propertyName
+     *            the name of the property
+     * @param newValue
+     *            the desired property value or null if not found
      */
-    public Object setRuntimePropertyValue(String propertyName, Object newValue)
-    {
-		if ("hostname".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propHostname;
-			propHostname = (String)newValue;
-			return oldValue;
-		}
-		if ("port".equalsIgnoreCase(propertyName))
-		{
-			final Object oldValue = propPort;
-			propPort = Integer.parseInt(newValue.toString());
-			return oldValue;
-		}
+    @Override
+    public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("hostname".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propHostname;
+            propHostname = (String) newValue;
+            return oldValue;
+        }
+        if ("port".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propPort;
+            propPort = Integer.parseInt(newValue.toString());
+            return oldValue;
+        }
 
         return null;
     }
 
-     /**
-      * Input Ports for receiving values.
-      */
+    /**
+     * Input Ports for receiving values.
+     */
 
+    /**
+     * Event Listerner Ports.
+     */
+    final IRuntimeEventListenerPort elpTrigger = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            System.out.println("Send trigger");
+            if (out.checkError() == false) {
+                out.println("trigger");
+                out.flush();
+            } else {
+                System.out.println("Error");
+            }
+        }
+    };
 
-     /**
-      * Event Listerner Ports.
-      */
-	final IRuntimeEventListenerPort elpTrigger = new IRuntimeEventListenerPort()
-	{
-		public void receiveEvent(final String data)
-		{
-			 	 System.out.println("Send trigger");
-			 	 if (out.checkError() == false) {
-			 		 out.println("trigger");
-			 		 out.flush();
-			 	 } else System.out.println("Error");
-		}
-	};
+    /**
+     * called when model is started.
+     */
+    @Override
+    public void start() {
+        super.start();
+        openSocket();
+    }
 
-	
+    private void openSocket() {
+        try {
+            s = new Socket(propHostname, propPort);
+            out = new PrintWriter(s.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            reader = new Thread(new Runnable() {
 
-     /**
-      * called when model is started.
-      */
-      @Override
-      public void start()
-      {
-          super.start();
-          openSocket();
-      }
+                @Override
+                public void run() {
+                    try {
+                        StringBuilder sb = new StringBuilder();
+                        while (true) {
+                            if (in.ready()) {
+                                char c = (char) in.read();
+                                sb.append(c);
+                                System.out.println("Received char: " + c);
+                                if (c == '\n') {
+                                    opAction.sendData(ConversionUtils.stringToBytes(sb.toString().trim()));
+                                    sb = new StringBuilder();
+                                }
+                            } else {
+                                Thread.sleep(50);
+                            }
+                        }
+                    } catch (InterruptedException ie) {
+                        ie.printStackTrace();
+                    } catch (IOException io) {
+                        io.printStackTrace();
+                    }
+                }
+            });
+            reader.start();
+        } catch (UnknownHostException ue) {
+            ue.printStackTrace();
+            AstericsErrorHandling.instance.reportError(this,
+                    "Yaak: Could not find host: " + propHostname + ":" + propPort);
+        } catch (IOException io) {
+            AstericsErrorHandling.instance.reportError(this,
+                    "Yaak: Error opening socket for host: " + propHostname + ":" + propPort);
+            io.printStackTrace();
+        }
+    }
 
-      private void openSocket() {
-    	  try {
-    		  s = new Socket(propHostname,propPort);
-    		  out = new PrintWriter(s.getOutputStream());
-    		  in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-    		  reader = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					try {
-						StringBuilder sb = new StringBuilder();
-						while (true) {
-							if (in.ready()) {
-								char c = (char) in.read();
-								sb.append(c);
-								System.out.println("Received char: " + c);
-								if (c == '\n') {
-									opAction.sendData(ConversionUtils.stringToBytes(sb.toString().trim()));
-									sb = new StringBuilder();
-								}
-							} else
-								Thread.sleep(50);
-						}
-					} catch (InterruptedException ie) {
-						ie.printStackTrace();
-					} catch (IOException io) {
-						io.printStackTrace();
-					}
-				}
-			});
-    		reader.start();
-    	  } catch (UnknownHostException ue) {
-        	  ue.printStackTrace();
-        	  AstericsErrorHandling.instance.reportError(this,"Yaak: Could not find host: " + propHostname + ":"+propPort);
-          } catch (IOException io) {
-        	  AstericsErrorHandling.instance.reportError(this,"Yaak: Error opening socket for host: " + propHostname + ":"+propPort);
-        	  io.printStackTrace();
-          }
-      }
-      
-      private void closeSocket() {
-    	  try {
-    		  if (out != null)
-    			  out.close();
-    		  if (reader != null)
-    			  reader.interrupt();
-    		  if (in != null)
-    			  in.close();
-        	  if (s != null)
-        		  s.close();
-    	  } catch (IOException io) {
-    		  AstericsErrorHandling.instance.reportError(this,"Yaak: Error closing the socket");
-    		  io.printStackTrace();
-    	  }
-      }
-      
-     /**
-      * called when model is paused.
-      */
-      @Override
-      public void pause()
-      {
-          super.pause();
-      }
+    private void closeSocket() {
+        try {
+            if (out != null) {
+                out.close();
+            }
+            if (reader != null) {
+                reader.interrupt();
+            }
+            if (in != null) {
+                in.close();
+            }
+            if (s != null) {
+                s.close();
+            }
+        } catch (IOException io) {
+            AstericsErrorHandling.instance.reportError(this, "Yaak: Error closing the socket");
+            io.printStackTrace();
+        }
+    }
 
-     /**
-      * called when model is resumed.
-      */
-      @Override
-      public void resume()
-      {
-          super.resume();
-      }
+    /**
+     * called when model is paused.
+     */
+    @Override
+    public void pause() {
+        super.pause();
+    }
 
-     /**
-      * called when model is stopped.
-      */
-      @Override
-      public void stop()
-      {
-          super.stop();
-          closeSocket();
-      }
+    /**
+     * called when model is resumed.
+     */
+    @Override
+    public void resume() {
+        super.resume();
+    }
+
+    /**
+     * called when model is stopped.
+     */
+    @Override
+    public void stop() {
+        super.stop();
+        closeSocket();
+    }
 }

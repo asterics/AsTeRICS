@@ -25,8 +25,6 @@
 
 package eu.asterics.component.sensor.kinect;
 
-
-
 /**
  *
  * @author David Thaller

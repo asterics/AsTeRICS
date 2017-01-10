@@ -22,8 +22,9 @@
  *         (please refer to the folder LICENSE)
  * 
  */
- 
-package eu.asterics.mw.cimcommunication;   
+
+package eu.asterics.mw.cimcommunication;
+
 //import eu.asterics.mw.services.AstericsLogger;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,195 +40,162 @@ import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
 
-
-/**     
+/**
  * A class to communicate with a device connected to a serial port which does
- * not adhere to the CIM protocol specification. This class mainly wraps the 
- * RXTX implementation to something that can be used more easily in the 
+ * not adhere to the CIM protocol specification. This class mainly wraps the
+ * RXTX implementation to something that can be used more easily in the
  * framework of the AsTeRICS project.
  * 
- * @author Christoph Weiss [christoph.weiss@technikum-wien.at] 
- *         Date: Nov 3, 2010
+ * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
-class CIMRawPortController extends CIMPortController 
-	implements Runnable
-{
-	private int baudRate = 115200;
-	
-	InputStream inputStream;
-	CIMPortEventListener eventListener;
-	
-	
-	private Logger logger = AstericsErrorHandling.instance.getLogger();
-	
-	 // Java and communication related
-	boolean threadRunning = true;
-	CIMEventHandler eventHandler;
-	BlockingQueue<Byte> dataSource;
-	 
-	// serial port handling 
-	SerialPort port;
-	 
-	/**
-	 * Creates the raw port controller from a port identifier and a given 
-	 * baudrate.
-	 * @param portIdentifier identifier for the request COM port
-	 * @param baudRate the requested baud rate for the port
-	 * @throws CIMException 
-	 */
-	CIMRawPortController(CommPortIdentifier portIdentifier, int baudRate) 
-		throws CIMException 
-	{
-		super(portIdentifier.getName());
+class CIMRawPortController extends CIMPortController implements Runnable {
+    private int baudRate = 115200;
 
-		dataSource = new LinkedBlockingQueue<Byte>();
- 
-		try {
-			port = (SerialPort) portIdentifier.open(
-					this.getClass().getName() + comPortName, 2000);
+    InputStream inputStream;
+    CIMPortEventListener eventListener;
 
-			port.setSerialPortParams(baudRate, SerialPort.DATABITS_8, 
-					SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+    private Logger logger = AstericsErrorHandling.instance.getLogger();
 
-			//bug fix high cpu load on Win10: https://github.com/asterics/AsTeRICS/issues/116
-			port.enableReceiveTimeout(RXTX_PORT_ENABLE_RECEIVE_TIMEOUT);
-			
-			inputStream = port.getInputStream();
-			eventListener = new CIMPortEventListener(inputStream, dataSource);
-			port.addEventListener(eventListener);
-			port.notifyOnDataAvailable(true);
-			
-			
-		} 
-		catch (UnsupportedCommOperationException ucoe)
-		{
-			logger.severe(this.getClass().getName()+"." +
-					"CIMSerialPortController: Could not set serial port " +
-					"parameters -> \n" + ucoe.getMessage());
-			port.close();
-			throw new CIMException();
-		} 
-		catch (PortInUseException piue) 
-		{
-			logger.warning(this.getClass().getName()+"." +
-					"CIMSerialPortController: "+
-					String.format("Port %s already in use", comPortName)+
-					" -> \n" + piue.getMessage());
-			throw new CIMException();
-		}
-		catch (IOException ioe)
-		{
-			logger.severe(this.getClass().getName()+"." +
-					"CIMSerialPortController: Could not get input stream" +
-					" -> \n" + ioe.getMessage());
-			port.close();
-			throw new CIMException();
-		} 
-		catch (TooManyListenersException tmle) 
-		{
-			logger.warning(this.getClass().getName()+"." +
-					"CIMSerialPortController: "+
-					String.format("Too many listeners on port %s", comPortName)+ 
-					" -> \n" + tmle.getMessage());
-			throw new CIMException();
-		}
-		
-	}
-	 
-	/**
-	 * Switchtes the baud rate of the serial port
-	 * @param baudRate selected baudrate
-	 */
-	 void setBaudRate(int baudRate) 
-	 {
-		 if (this.baudRate != baudRate)
-		 {
-			 try
-			 {
-				 this.baudRate = baudRate;
-				 port.setSerialPortParams(baudRate, SerialPort.DATABITS_8, 
-						 SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-				 logger.fine(this.getClass().getName()+".setBaudRate:" 
-							+" Baudrate set to: " + baudRate);
-			 } catch (Exception e) {
-				 e.printStackTrace();
-			 }
-		 }
-	 }
-	 
-	@Override
-	public void run() {
+    // Java and communication related
+    boolean threadRunning = true;
+    CIMEventHandler eventHandler;
+    BlockingQueue<Byte> dataSource;
 
-		// near endless loop
-		CIMEventRawPacket rp = new CIMEventRawPacket(this, null);
+    // serial port handling
+    SerialPort port;
 
-		while (threadRunning)
-		{
-			try {
-				// wait for next byte in queue
-				Byte b = dataSource.poll(1000L, TimeUnit.MILLISECONDS);
+    /**
+     * Creates the raw port controller from a port identifier and a given
+     * baudrate.
+     * 
+     * @param portIdentifier
+     *            identifier for the request COM port
+     * @param baudRate
+     *            the requested baud rate for the port
+     * @throws CIMException
+     */
+    CIMRawPortController(CommPortIdentifier portIdentifier, int baudRate) throws CIMException {
+        super(portIdentifier.getName());
 
-				if (b != null)
-				{
-					for (CIMEventHandler handler : eventHandlers)
-					{
-						rp.b = b;
-						handler.handlePacketReceived(rp);
-					}
-				}
-				Thread.yield();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		logger.fine(this.getClass().getName()+".run: Thread " + comPortName + 
-		" main loop ended, cleaning up \n");
-		
-		closePort();
+        dataSource = new LinkedBlockingQueue<Byte>();
 
-		logger.fine(this.getClass().getName()+".run: Thread on serial port " + 
-				comPortName + " ended \n");
-	}
+        try {
+            port = (SerialPort) portIdentifier.open(this.getClass().getName() + comPortName, 2000);
 
-	@Override
-	void closePort() {
-		if (port != null)
-		{
-			try {
-				port.notifyOnDataAvailable(false);
-				port.removeEventListener();
-				port.getOutputStream().close(); 
-				port.getInputStream().close();
-				port.close();
-				port = null;
-				logger.fine(this.getClass().getName()+".run: Port " + 
-						comPortName + " closed \n");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		threadRunning = false;
-	}
+            port.setSerialPortParams(baudRate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
-	@Override
-	byte sendPacket(byte[] data, short featureAddress, short requestCode,
-			boolean crc) 
-	{
-		try {
-//			for (byte b : data)
-//			{
-//            	System.out.println(String.format("Sent: 0x%2x ('%c')", b, b));
-//			}
-			port.getOutputStream().write(data);
-			port.getOutputStream().flush();
-			port.getOutputStream().close();
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		return 0;
-	}	 
-	 
+            // bug fix high cpu load on Win10:
+            // https://github.com/asterics/AsTeRICS/issues/116
+            port.enableReceiveTimeout(RXTX_PORT_ENABLE_RECEIVE_TIMEOUT);
+
+            inputStream = port.getInputStream();
+            eventListener = new CIMPortEventListener(inputStream, dataSource);
+            port.addEventListener(eventListener);
+            port.notifyOnDataAvailable(true);
+
+        } catch (UnsupportedCommOperationException ucoe) {
+            logger.severe(this.getClass().getName() + "." + "CIMSerialPortController: Could not set serial port "
+                    + "parameters -> \n" + ucoe.getMessage());
+            port.close();
+            throw new CIMException();
+        } catch (PortInUseException piue) {
+            logger.warning(this.getClass().getName() + "." + "CIMSerialPortController: "
+                    + String.format("Port %s already in use", comPortName) + " -> \n" + piue.getMessage());
+            throw new CIMException();
+        } catch (IOException ioe) {
+            logger.severe(this.getClass().getName() + "." + "CIMSerialPortController: Could not get input stream"
+                    + " -> \n" + ioe.getMessage());
+            port.close();
+            throw new CIMException();
+        } catch (TooManyListenersException tmle) {
+            logger.warning(this.getClass().getName() + "." + "CIMSerialPortController: "
+                    + String.format("Too many listeners on port %s", comPortName) + " -> \n" + tmle.getMessage());
+            throw new CIMException();
+        }
+
+    }
+
+    /**
+     * Switchtes the baud rate of the serial port
+     * 
+     * @param baudRate
+     *            selected baudrate
+     */
+    void setBaudRate(int baudRate) {
+        if (this.baudRate != baudRate) {
+            try {
+                this.baudRate = baudRate;
+                port.setSerialPortParams(baudRate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
+                        SerialPort.PARITY_NONE);
+                logger.fine(this.getClass().getName() + ".setBaudRate:" + " Baudrate set to: " + baudRate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void run() {
+
+        // near endless loop
+        CIMEventRawPacket rp = new CIMEventRawPacket(this, null);
+
+        while (threadRunning) {
+            try {
+                // wait for next byte in queue
+                Byte b = dataSource.poll(1000L, TimeUnit.MILLISECONDS);
+
+                if (b != null) {
+                    for (CIMEventHandler handler : eventHandlers) {
+                        rp.b = b;
+                        handler.handlePacketReceived(rp);
+                    }
+                }
+                Thread.yield();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.fine(this.getClass().getName() + ".run: Thread " + comPortName + " main loop ended, cleaning up \n");
+
+        closePort();
+
+        logger.fine(this.getClass().getName() + ".run: Thread on serial port " + comPortName + " ended \n");
+    }
+
+    @Override
+    void closePort() {
+        if (port != null) {
+            try {
+                port.notifyOnDataAvailable(false);
+                port.removeEventListener();
+                port.getOutputStream().close();
+                port.getInputStream().close();
+                port.close();
+                port = null;
+                logger.fine(this.getClass().getName() + ".run: Port " + comPortName + " closed \n");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        threadRunning = false;
+    }
+
+    @Override
+    byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
+        try {
+            // for (byte b : data)
+            // {
+            // System.out.println(String.format("Sent: 0x%2x ('%c')", b, b));
+            // }
+            port.getOutputStream().write(data);
+            port.getOutputStream().flush();
+            port.getOutputStream().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

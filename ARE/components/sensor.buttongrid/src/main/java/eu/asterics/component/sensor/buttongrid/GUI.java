@@ -25,311 +25,294 @@
 
 package eu.asterics.component.sensor.buttongrid;
 
-import eu.asterics.mw.data.ConversionUtils;
-import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
-import eu.asterics.mw.model.runtime.IRuntimeInputPort;
-import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
-import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
-import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
-
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AstericsThreadPool;
-
-import java.awt.geom.Rectangle2D;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Insets;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import eu.asterics.mw.services.AstericsThreadPool;
+
 /**
  * Implements the graphic interface for the GuiKeyboardInstance class.
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl]
- *         Date: Mar 03, 2011
- *         Time: 9:49:00 AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Mar 03, 2011 Time: 9:49:00
+ *         AM
  */
-public class GUI extends JPanel
-{
-	private final int USE_DEFAULT_COLOR = 13;
-	private final int DEFAULT_BORDER_THICKNESS = 2;
-	
-  private final ButtonGridInstance owner;
-  private JPanel panel;
+public class GUI extends JPanel {
+    private final int USE_DEFAULT_COLOR = 13;
+    private JPanel panel;
 
-  JButton buttons[];
-  private int numberOfKeys=0;
-  private Color colSav=null;
-  private final double horizontalOffset=7;
-  private final double verticalOffset=1;
-  private final float fontSizeMax=150;
-  private final float fontIncrementStep=0.5f;
-  
-  /**
-   * The class constructor.
-   * @param owner the GuiKeyboardInstance class instance
-   * @param space plugin dimension
-   */
-  public GUI(final ButtonGridInstance owner,final Dimension space) 
-  {
-    this.owner = owner;
-    	
-    final JButton buttons[] = new JButton[owner.NUMBER_OF_KEYS];
-    panel = new JPanel();
-    
-    setLayout(new BorderLayout());
-    
-    int labelHeight;
-    
-    if(owner.getCaption().length()>0)
-    {
-    	JLabel label = new JLabel(owner.getCaption(),0);
-    	add(label, BorderLayout.NORTH);
-    	labelHeight=(int)getPreferredSize().getHeight();
+    JButton buttons[];
+    private int numberOfKeys = 0;
+    private Color colSav = null;
+    private final double horizontalOffset = 7;
+    private final double verticalOffset = 1;
+    private final float fontSizeMax = 150;
+    private final float fontIncrementStep = 0.5f;
+
+    /**
+     * The class constructor.
+     * 
+     * @param owner
+     *            the GuiKeyboardInstance class instance
+     * @param space
+     *            plugin dimension
+     */
+    public GUI(final ButtonGridInstance owner, final Dimension space) {
+        final JButton buttons[] = new JButton[owner.NUMBER_OF_KEYS];
+        panel = new JPanel();
+
+        setLayout(new BorderLayout());
+
+        int labelHeight;
+
+        if (owner.getCaption().length() > 0) {
+            JLabel label = new JLabel(owner.getCaption(), 0);
+            add(label, BorderLayout.NORTH);
+            labelHeight = (int) getPreferredSize().getHeight();
+        } else {
+            labelHeight = 0;
+        }
+
+        for (int i = 0; i < owner.NUMBER_OF_KEYS; i++) {
+            buttons[i] = new JButton();
+            String caption = owner.getButtonCaption(i);
+            buttons[i].setText(caption);
+            if ("".equalsIgnoreCase(caption)) {
+                buttons[i].setEnabled(false);
+                buttons[i].setVisible(false);
+            } else {
+                numberOfKeys = numberOfKeys + 1;
+                buttons[i].setEnabled(true);
+                buttons[i].setVisible(true);
+
+                final JButton b = buttons[i];
+
+                // final Border raisedBevelBorder =
+                // BorderFactory.createRaisedBevelBorder();
+                // final Insets insets =
+                // raisedBevelBorder.getBorderInsets(buttons[i]);
+                // final EmptyBorder emptyBorder = new EmptyBorder(insets);
+                // b.setBorder(emptyBorder);
+                // b.setOpaque(false);
+                // b.setContentAreaFilled(false);
+
+                if (owner.propBorderColor != USE_DEFAULT_COLOR) {
+                    b.setBorder(BorderFactory.createLineBorder(getColorProperty(owner.propBorderColor),
+                            owner.propBorderThickness));
+                }
+
+                b.setFocusPainted(false);
+                if (!("".equalsIgnoreCase(owner.getToolTip(i)))) {
+                    b.setToolTipText(owner.getToolTip(i));
+                }
+
+                if (owner.propBackgroundColor != USE_DEFAULT_COLOR) {
+                    b.setBackground(getColorProperty(owner.propBackgroundColor));
+                }
+
+                if (owner.propTextColor != USE_DEFAULT_COLOR) {
+                    b.setForeground(getColorProperty(owner.propTextColor));
+                }
+
+                if (owner.propSelectionFrameColor != USE_DEFAULT_COLOR) {
+                    b.getModel().addChangeListener(new ChangeListener() {
+                        @Override
+                        public void stateChanged(ChangeEvent e) {
+                            ButtonModel model = (ButtonModel) e.getSource();
+                            if (model.isRollover()) {
+                                // b.setBorder(raisedBevelBorder);
+                                b.setBorder(
+                                        BorderFactory.createLineBorder(getColorProperty(owner.propSelectionFrameColor),
+                                                owner.propSelectionFrameThickness));
+                            } else {
+                                // b.setBorder(emptyBorder);
+                                b.setBorder(BorderFactory.createLineBorder(getColorProperty(owner.propBorderColor),
+                                        owner.propBorderThickness));
+                            }
+                        }
+                    });
+                }
+            }
+
+            final int y = i;
+
+            buttons[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (colSav == null) {
+                        colSav = buttons[y].getBackground();
+                    }
+                    if (owner.propSelectionFrameColor == USE_DEFAULT_COLOR) {
+                        buttons[y].setBackground(Color.RED);
+                    } else {
+                        buttons[y].setBackground(getColorProperty(owner.propSelectionFrameColor));
+                    }
+                    owner.etpKeyArray[y].raiseEvent();
+
+                    AstericsThreadPool.instance.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(250);
+                                buttons[y].setBackground(colSav);
+                            } catch (InterruptedException e) {
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        if (numberOfKeys > 0) {
+
+            Dimension buttonDimension;
+            Dimension panelDimension;
+
+            if (owner.propHorizontalOrientation == true) {
+                buttonDimension = new Dimension(space.width / numberOfKeys, ((space.height - labelHeight)));
+
+                panelDimension = new Dimension(numberOfKeys * buttonDimension.width, buttonDimension.height);
+            } else {
+                buttonDimension = new Dimension(space.width, ((space.height - labelHeight) / numberOfKeys));
+
+                panelDimension = new Dimension(space.width, numberOfKeys * buttonDimension.height);
+            }
+
+            panel.setMaximumSize(panelDimension);
+            panel.setPreferredSize(panelDimension);
+            panel.setMinimumSize(panelDimension);
+            panel.setVisible(true);
+
+            if (owner.propHorizontalOrientation == true) {
+                panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+            } else {
+                panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            }
+
+            for (int i = 0; i < owner.NUMBER_OF_KEYS; i++) {
+                buttons[i].setPreferredSize(buttonDimension);
+                buttons[i].setMinimumSize(buttonDimension);
+                buttons[i].setMaximumSize(buttonDimension);
+                // panel.add(buttons[i]);
+            }
+
+            float maxFontSize = fontSizeMax;
+            float maxFontSizeTable[] = new float[owner.NUMBER_OF_KEYS];
+
+            new Rectangle();
+
+            for (int i = 0; i < owner.NUMBER_OF_KEYS; i++) {
+                float fontSize = 0;
+                boolean finish = false;
+                maxFontSizeTable[i] = 0;
+                if (owner.getButtonCaption(i).length() > 0) {
+                    do {
+
+                        fontSize = fontSize + fontIncrementStep;
+
+                        buttons[i].setMargin(new Insets(2, 2, 2, 2));
+
+                        Font font = buttons[i].getFont();
+                        font = font.deriveFont(fontSize);
+                        FontMetrics fontMetrics = buttons[i].getFontMetrics(font);
+                        Rectangle2D tmpFontSize = fontMetrics.getStringBounds(owner.getButtonCaption(i),
+                                buttons[i].getGraphics());
+
+                        Insets insets = buttons[i].getMargin();
+
+                        double height = tmpFontSize.getHeight();
+                        double width = tmpFontSize.getWidth();
+                        double buttonHeightSpace = buttonDimension.getHeight() - (double) insets.bottom
+                                - (double) insets.top - verticalOffset;
+                        double buttonWidthSpace = buttonDimension.getWidth() - (double) insets.left
+                                - (double) insets.right - horizontalOffset;
+
+                        if ((height >= buttonHeightSpace) || (width >= buttonWidthSpace)) {
+                            finish = true;
+                            maxFontSizeTable[i] = fontSize - 1;
+                        } else {
+
+                            if (fontSize > fontSizeMax) {
+                                finish = true;
+                                maxFontSizeTable[i] = fontSize;
+                            }
+                        }
+
+                    } while (!finish);
+
+                }
+
+            }
+
+            for (int i = 0; i < owner.NUMBER_OF_KEYS; i++) {
+                if ((maxFontSizeTable[i] > 0) && (maxFontSizeTable[i] < maxFontSize)) {
+                    maxFontSize = maxFontSizeTable[i];
+                }
+            }
+
+            for (int i = 0; i < owner.NUMBER_OF_KEYS; i++) {
+                Font font = buttons[i].getFont();
+                font = font.deriveFont(maxFontSize);
+                buttons[i].setFont(font);
+            }
+
+        }
+
+        for (int i = 0; i < owner.NUMBER_OF_KEYS; i++) {
+            panel.add(buttons[i]);
+        }
+
+        add(panel, BorderLayout.CENTER);
+        setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
-    else
-    {
-    	labelHeight=0;
+
+    Color getColorProperty(int index) {
+        switch (index) {
+        case 0:
+            return (Color.BLACK);
+        case 1:
+            return (Color.BLUE);
+        case 2:
+            return (Color.CYAN);
+        case 3:
+            return (Color.DARK_GRAY);
+        case 4:
+            return (Color.GRAY);
+        case 5:
+            return (Color.GREEN);
+        case 6:
+            return (Color.LIGHT_GRAY);
+        case 7:
+            return (Color.MAGENTA);
+        case 8:
+            return (Color.ORANGE);
+        case 9:
+            return (Color.PINK);
+        case 10:
+            return (Color.RED);
+        case 11:
+            return (Color.WHITE);
+        case 12:
+            return (Color.YELLOW);
+        default:
+            return (Color.BLUE);
+        }
     }
-   
- 	
-    for( int i=0;i<owner.NUMBER_OF_KEYS;i++)
-    {
-      buttons[i]=new JButton();
-      String caption = owner.getButtonCaption(i);
-      buttons[i].setText(caption);
-      if ("".equalsIgnoreCase(caption))
-      {
-        buttons[i].setEnabled(false);
-        buttons[i].setVisible(false);
-      }
-      else
-      {
-    	numberOfKeys=numberOfKeys+1;
-    	buttons[i].setEnabled(true);
-        buttons[i].setVisible(true);
 
-        final JButton b =buttons[i];
-
-        //final Border raisedBevelBorder = BorderFactory.createRaisedBevelBorder();
-        //final Insets insets = raisedBevelBorder.getBorderInsets(buttons[i]);
-        //final EmptyBorder emptyBorder = new EmptyBorder(insets);
-        //b.setBorder(emptyBorder);
-        //b.setOpaque(false);
-        //b.setContentAreaFilled(false);
-        
-        if (owner.propBorderColor != USE_DEFAULT_COLOR)
-        	b.setBorder(BorderFactory.createLineBorder(getColorProperty(owner.propBorderColor), owner.propBorderThickness));
-
-        b.setFocusPainted(false);
-        if (!("".equalsIgnoreCase(owner.getToolTip(i))))
-        		b.setToolTipText(owner.getToolTip(i));
-        
-        if (owner.propBackgroundColor != USE_DEFAULT_COLOR)
-        	b.setBackground(getColorProperty(owner.propBackgroundColor));
-        
-        if (owner.propTextColor != USE_DEFAULT_COLOR)
-        	b.setForeground(getColorProperty(owner.propTextColor));
-
-        if (owner.propSelectionFrameColor != USE_DEFAULT_COLOR)
-        {
-	        b.getModel().addChangeListener(new ChangeListener() {
-	            @Override
-	            public void stateChanged(ChangeEvent e) {
-	                ButtonModel model = (ButtonModel) e.getSource();
-	                if (model.isRollover()) {
-	                	// b.setBorder(raisedBevelBorder);
-	               	   b.setBorder(BorderFactory.createLineBorder(getColorProperty(owner.propSelectionFrameColor), owner.propSelectionFrameThickness));
-	                } else {
-	                	// b.setBorder(emptyBorder);
-	                	b.setBorder(BorderFactory.createLineBorder(getColorProperty(owner.propBorderColor), owner.propBorderThickness));
-	                }
-	            }
-	        });
-        }        
-      }
-        	
-      final int y =i;
-        	
-      buttons[i].addActionListener(new ActionListener() 
-      {
-        public void actionPerformed(ActionEvent e) 
-        {
-          if (colSav==null) colSav=buttons[y].getBackground();
-          if (owner.propSelectionFrameColor==USE_DEFAULT_COLOR)
-        	  buttons[y].setBackground(Color.RED);
-          else
-        	  buttons[y].setBackground(getColorProperty(owner.propSelectionFrameColor));
-          owner.etpKeyArray[y].raiseEvent();
-          
-		  AstericsThreadPool.instance.execute(new Runnable() {
-			  public void run()
-			  {
-    				try
-    				{
-						   Thread.sleep(250);
-					       buttons[y].setBackground(colSav);
-    				}
-    				catch (InterruptedException e) {}
-	    		}
-	    	  }
-	    	  );
-        } 
-      });
-    }
-    
-    if(numberOfKeys>0)
-    {
-    	
-    	Dimension buttonDimension;
-    	Dimension panelDimension;
-    
-    	if(owner.propHorizontalOrientation==true)
-    	{
-    		buttonDimension=new Dimension(space.width/numberOfKeys,((space.height-labelHeight)));
-    
-    		panelDimension=new Dimension(numberOfKeys*buttonDimension.width,buttonDimension.height);
-    	}
-    	else
-    	{
-    		buttonDimension=new Dimension(space.width,((space.height-labelHeight)/numberOfKeys));
-        
-    		panelDimension=new Dimension(space.width,numberOfKeys*buttonDimension.height);
-    	}
-    
-    	panel.setMaximumSize(panelDimension);
-    	panel.setPreferredSize(panelDimension);
-    	panel.setMinimumSize(panelDimension);
-    	panel.setVisible(true);
-		
-    	if(owner.propHorizontalOrientation==true)
-    	{
-    		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-    	}
-    	else
-    	{
-    		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-    	}
-    
-    
-    	for(int i=0;i<owner.NUMBER_OF_KEYS;i++)
-    	{
-    		buttons[i].setPreferredSize(buttonDimension);
-    		buttons[i].setMinimumSize(buttonDimension);
-    		buttons[i].setMaximumSize(buttonDimension);
-    		//panel.add(buttons[i]);
-    	}
-    
-   
-    	float maxFontSize=fontSizeMax;
-    	float maxFontSizeTable[]=new float[owner.NUMBER_OF_KEYS];
-    	
-    	Rectangle buttonRectangle=new Rectangle();
-    	
-    	for(int i=0;i<owner.NUMBER_OF_KEYS;i++)
-    	{
-    		float fontSize=0;
-    		boolean finish=false;
-    		maxFontSizeTable[i]=0;
-    		if(owner.getButtonCaption(i).length()>0)
-    		{
-    			do
-    			{
-    			
-    				fontSize=fontSize+fontIncrementStep;
-    				
-    				buttons[i].setMargin(new Insets(2,2,2,2));
-    				
-    				Font font=buttons[i].getFont();
-    				font=font.deriveFont(fontSize);
-    				FontMetrics fontMetrics = buttons[i].getFontMetrics(font);
-    				Rectangle2D tmpFontSize=fontMetrics.getStringBounds(owner.getButtonCaption(i), buttons[i].getGraphics());
-    				
-    				Insets insets = buttons[i].getMargin();
-    				
-    				double height=tmpFontSize.getHeight();
-    				double width=tmpFontSize.getWidth();
-    				double buttonHeightSpace=buttonDimension.getHeight()-(double)insets.bottom-(double)insets.top-verticalOffset;
-    				double buttonWidthSpace=buttonDimension.getWidth()-(double)insets.left-(double)insets.right-horizontalOffset;
-    				
-    				
-    				if((height>=buttonHeightSpace)||(width>=buttonWidthSpace))
-    				{
-    					finish=true;
-    					maxFontSizeTable[i]=fontSize-1;
-    				}
-    				else
-    				{
-    	    	
-    					if(fontSize>fontSizeMax)
-    					{
-    						finish=true;
-    						maxFontSizeTable[i]=fontSize;
-    					}
-    				}
-    	    	
-    			}while(!finish);
-    			
-    		}
-    	
-    	}
-    	
-    	for(int i=0;i<owner.NUMBER_OF_KEYS;i++)
-		{
-    		if((maxFontSizeTable[i]>0)&&(maxFontSizeTable[i]<maxFontSize))
-    		{
-    			maxFontSize=maxFontSizeTable[i];
-    		}
-		}
-    	    	
-    	for(int i=0;i<owner.NUMBER_OF_KEYS;i++)
-		{
-    		Font font=buttons[i].getFont();
-			font=font.deriveFont(maxFontSize);
-			buttons[i].setFont(font);
-		}
-    	
-    }
-	
-    for(int i=0;i<owner.NUMBER_OF_KEYS;i++)
-    {
-    	panel.add(buttons[i]);
-    }
-		
-    add(panel, BorderLayout.CENTER);
-    setBorder(BorderFactory.createLineBorder(Color.BLACK));
-  }
-
-  
-  Color getColorProperty(int index)
-  {
-  	switch (index) {
-  	case 0: return(Color.BLACK); 
-  	case 1: return(Color.BLUE); 
-  	case 2: return(Color.CYAN); 
-  	case 3: return(Color.DARK_GRAY); 
-  	case 4: return(Color.GRAY); 
-  	case 5: return(Color.GREEN); 
-  	case 6: return(Color.LIGHT_GRAY);
-  	case 7: return(Color.MAGENTA); 
-  	case 8: return(Color.ORANGE); 
-  	case 9: return(Color.PINK); 
-  	case 10: return(Color.RED); 
-  	case 11: return(Color.WHITE);
-  	case 12: return(Color.YELLOW); 
-  	default: return(Color.BLUE);
-  	}
-  }
-  
-  
 }

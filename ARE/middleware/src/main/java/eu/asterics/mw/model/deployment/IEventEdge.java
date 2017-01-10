@@ -26,11 +26,9 @@
 package eu.asterics.mw.model.deployment;
 
 /**
- * Date: 1/5/11
- * Time: 4:11 PM
+ * Date: 1/5/11 Time: 4:11 PM
  */
-public interface IEventEdge
-{
+public interface IEventEdge {
     public String getComponentInstanceID();
 
     public String getEventPortID();
