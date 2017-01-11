@@ -270,13 +270,13 @@ function getRuntimeComponentProperty(successCallback, errorCallback, componentId
 }
 
 
-function setRuntimeComponentProperties(successCallback, errorCallback, componentId, propertyMap) {
+function setRuntimeComponentProperties(successCallback, errorCallback, propertyMap) {
 	
-	if ( (componentId == "") || (propertyMap == "") ) return;
+	if ( propertyMap == "" ) return;
 	
 	$.ajax({
 		type: "PUT",
-		url: _baseURI + "runtime/model/components/"+encodeParam(componentId)+"/properties",
+		url: _baseURI + "runtime/model/components/properties",
 		contentType: "application/json",
 		data: propertyMap,
 		datatype: "text",

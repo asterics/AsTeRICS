@@ -29,6 +29,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -325,39 +326,45 @@ public class RestServer {
     }
     
 
-    @Path("/runtime/model/components/{componentId}/properties")
+    @Path("/runtime/model/components/properties")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String setRuntimeComponentProperties(String bodyContents, @PathParam("componentId") String componentId) {
+    public String setRuntimeComponentProperties(String bodyContent) {
         String response = "";
         String errorMessage = "";
-        String decodedId = "";
-
+        Set<String> changedValues = new HashSet<String>();
+        
         try {
-            decodedId = astericsAPIEncoding.decodeString(componentId);
-            
-            Map<String, String> propertyMap = new HashMap<String, String>();
-            propertyMap = (Map<String, String>) ObjectTransformation.JSONToObject(bodyContents, Map.class);
-            
-            for (String componentKey: propertyMap.keySet()) {
-            	String newValue = propertyMap.get(componentKey);
-            	try {
-            		response = asapiSupport.setComponentProperty(decodedId, componentKey, newValue);
-            	}
-            	catch (Exception ex) {
-            		ex.printStackTrace();
-            	}
+            Map<String, Map<String, String>> propertyMap = new HashMap<String, Map<String, String>>();
+            propertyMap = (Map<String, Map<String, String>>) ObjectTransformation.JSONToObject(bodyContent, Map.class);
+
+            for (String componentId: propertyMap.keySet()) {
+            	Map<String, String> componentPropertyMap = propertyMap.get(componentId);
+	            for (String componentKey: componentPropertyMap.keySet()) {
+	            	String newValue = componentPropertyMap.get(componentKey);
+	            	try {
+	            		asapiSupport.setComponentProperty(componentId, componentKey, newValue);
+	            		changedValues.add(componentId+"#"+componentKey);
+	            	}
+	            	catch (Exception ex) {
+	            		ex.printStackTrace();
+	            	}
+	            }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            errorMessage = "Couldn't set change multiple values of the component '" + decodedId + "' ("
-                    + e.getMessage() + ")";
+            errorMessage = "Couldn't change the component(s) value(s) (" + e.getMessage() + ")";
             response = "error:" + errorMessage;
         }
 
-        return response;
+        try {
+        	return ObjectTransformation.objectToJSON(changedValues);
+        }
+        catch (Exception ex) {
+        	return "";
+        }
     }
 
     
