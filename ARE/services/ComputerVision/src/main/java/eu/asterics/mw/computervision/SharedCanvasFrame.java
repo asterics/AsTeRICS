@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacv.CanvasFrame;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 
@@ -47,9 +48,13 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 public class SharedCanvasFrame {
     public static SharedCanvasFrame instance = new SharedCanvasFrame();
-
+    
     private Map<String, CanvasFrame> key2canvasFrame = new HashMap<String, CanvasFrame>();
+    // CanvasFrame, FrameGrabber, and FrameRecorder use Frame objects to communicate image data.
+    // We need a FrameConverter to interface with other APIs (Android, Java 2D, or OpenCV).
+    private OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
 
+    
     public void createCanvasFrame(final String canvasKey, final String title, final double gammaOfGrabber,
             final Point pos, final Dimension d) {
         // must be invoked non-blocking because obviously the ctor of
@@ -103,7 +108,9 @@ public class SharedCanvasFrame {
             // SwingUtilities.invokeLater(new Runnable() {
             // @Override
             // public void run() {
-            frame.showImage(image);
+        	if(image!=null) {
+        		frame.showImage(converter.convert(image));
+        	}
             // }
             // });
         }

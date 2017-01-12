@@ -30,7 +30,7 @@ import static org.bytedeco.javacpp.helper.opencv_core.CV_RGB;
 import static org.bytedeco.javacpp.opencv_core.CV_TERMCRIT_EPS;
 import static org.bytedeco.javacpp.opencv_core.CV_TERMCRIT_ITER;
 import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
-import static org.bytedeco.javacpp.opencv_core.cvCircle;
+import static org.bytedeco.javacpp.opencv_imgproc.cvCircle;
 import static org.bytedeco.javacpp.opencv_core.cvFlip;
 import static org.bytedeco.javacpp.opencv_core.cvPoint;
 import static org.bytedeco.javacpp.opencv_core.cvRect;
@@ -661,7 +661,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
                 CvPoint2D32f pointsA = new CvPoint2D32f(MAX_POINTS);
                 pointsA = addCvPoints(pointsA, initNose);
                 pointsA = addCvPoints(pointsA, initChin);
-                nrPoints.put(pointsA.position());
+                nrPoints.put((int) pointsA.position());
                 pointsA.position(0);
 
                 // Setting image ROI should improve tracking quality, but

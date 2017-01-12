@@ -42,6 +42,7 @@ import org.bytedeco.javacpp.videoInputLib.videoInput;
 import org.bytedeco.javacpp.helper.opencv_core.AbstractIplImage;
 import org.bytedeco.javacv.CameraDevice;
 import org.bytedeco.javacv.FrameGrabber;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.utils.OSUtils;
@@ -61,6 +62,8 @@ public class SharedFrameGrabber {
     public static final String OPENCV_GRABBER_KEY = "OpenCV";
     public static final String VIDEOINPUT_GRABBER_KEY = "VideoInput";
     public static final String OPENKINECT_GRABBER_KEY = "OpenKinect";
+    public static final String OPENKINECT2_GRABBER_KEY = "OpenKinect2";
+    public static final String REALSENSE_GRABBER_KEY="RealSense";
     public static final String IPCAMERA_GRABBER_KEY = "IPCamera";
     public static final String PS3Eye_GRABBER_KEY = "PS3Eye";
     public static final String FFMPEG_GRABBER_KEY = "FFmpeg";
@@ -73,8 +76,10 @@ public class SharedFrameGrabber {
     private Map<String, GrabberThread> grabberThreads = new HashMap<String, GrabberThread>();
 
     private List<String> grabberList = null;
-    private String[] defaultGrabberList = new String[] { OPENCV_GRABBER_KEY, VIDEOINPUT_GRABBER_KEY,
-            FFMPEG_GRABBER_KEY };
+    //Defines preferred order of framegrabbers to use
+    //The framegrabbers are checked in the list of available ones. 
+    private String[] defaultGrabberList = new String[] { VIDEOINPUT_GRABBER_KEY, OPENCV_GRABBER_KEY,
+            FFMPEG_GRABBER_KEY, OPENKINECT_GRABBER_KEY,  OPENKINECT2_GRABBER_KEY, REALSENSE_GRABBER_KEY, PS3Eye_GRABBER_KEY, IPCAMERA_GRABBER_KEY};
     private int[][] RESOLUTIONS = new int[][] { { 160, 120 }, { 320, 240 }, { 352, 288 }, { 640, 480 }, { 800, 600 },
             { 1024, 768 }, { 1600, 1200 } };
 
@@ -198,10 +203,28 @@ public class SharedFrameGrabber {
             for (String grabberName : FrameGrabber.list) {
                 try {
                     Class<? extends FrameGrabber> c = FrameGrabber.get(grabberName);
+                    System.out.println("\n\n++++++++++Trying to load "+grabberName+"++++++\n\n");
                     c.getMethod("tryLoad").invoke(null);
+                    boolean mayContainCameras = false;
+                    try {
+                        String[] s = (String[])c.getMethod("getDeviceDescriptions").invoke(null);
+                        if (s.length > 0) {
+                            mayContainCameras = true;
+                        }
+                    } catch (Throwable t) {
+                        if (t.getCause() instanceof UnsupportedOperationException) {
+                            mayContainCameras = true;
+                        }
+                    }
+                    if(!mayContainCameras) {
+                    	continue;
+                    }
                     grabberList.add(grabberName);
                 } catch (Throwable t) {
                 }
+            }
+            if(!grabberList.contains(IPCAMERA_GRABBER_KEY)) {
+            	grabberList.add(IPCAMERA_GRABBER_KEY);
             }
         }
         return grabberList;
@@ -375,7 +398,7 @@ public class SharedFrameGrabber {
     }
 
     class GrabberThread extends Thread {
-        boolean stopGrabbing = false;
+        private volatile boolean stopGrabbing = false;
         private String deviceKey;
 
         public GrabberThread(String deviceKey) {
@@ -386,6 +409,10 @@ public class SharedFrameGrabber {
         @Override
         public void run() {
             FrameGrabber grabber;
+            // CanvasFrame, FrameGrabber, and FrameRecorder use Frame objects to communicate image data.
+            // We need a FrameConverter to interface with other APIs (Android, Java 2D, or OpenCV).
+            OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
+          
             List<GrabbedImageListener> deviceListeners = listeners.get(deviceKey);
             try {
                 grabber = getFrameGrabber(deviceKey);
@@ -394,7 +421,15 @@ public class SharedFrameGrabber {
                 if (grabber != null) {
                     grabber.start();
                     while (!stopGrabbing) {
-                        IplImage image = grabber.grab();
+                        // FAQ about IplImage and Mat objects from OpenCV:
+                        // - For custom raw processing of data, createBuffer() returns an NIO direct
+                        //   buffer wrapped around the memory pointed by imageData, and under Android we can
+                        //   also use that Buffer with Bitmap.copyPixelsFromBuffer() and copyPixelsToBuffer().
+                        // - To get a BufferedImage from an IplImage, or vice versa, we can chain calls to
+                        //   Java2DFrameConverter and OpenCVFrameConverter, one after the other.
+                        // - Java2DFrameConverter also has static copy() methods that we can use to transfer
+                        //   data more directly between BufferedImage and IplImage or Mat via Frame objects.
+                        IplImage image = converter.convert(grabber.grab());             
                         notifyGrabbedImageListener(deviceListeners, image);
                     }
                     grabber.stop();
