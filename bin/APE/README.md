@@ -30,7 +30,7 @@ Relative paths are resolved against the APE directory..
 * **APE.models**: Provide a semicolon (;) seperated list of model files or folder. Relative and absolute paths can be mixed where relative paths are resolved against the APE directory. By default, the directroy ```<APE.projectDir>/custom/bin/ARE/models``` is automatically added to the parameter.
 * **APE.buildDir**: The path to the build (output) folder. The downsized ARE is copied to that folder. The path can be relative or absolute where a relative path is resolved against the APE directory. By default, the ```build``` subfolder of the project directory (```APE.projectDir```) is used.
 * **ARE.baseURI**: The path to the ARE installation. This can be the path to the ```bin/ARE``` folder of a development version (cloned git repository) or the ```ARE``` path of an installed AsTeRICS release (>= 2.8). The path can be relative or absolute where a relative path is resolved against the APE directory. By default, the parallel ```ARE`` folder is used.
-* **APE.projectDir**: The path of the project directory to use. If the directory does not exist it is automatically created by copying the ```template``` directory to the project directory. The given project directory must contain the ```APE.properties``` file, which contains default project-specific property values that can be overridden by the commandline switches of APE-copy. Additionally, the files and resources in the subfolder ```custom``` are finally copied to the target build directory (```APE.buildDir```). Read more about [customization of the ARE] here. By default, the project directory ```APE.projectDir=<APE.baseURI>/defProjectDir``` is used.
+* **APE.projectDir**: The path of the project directory to use. If the directory does not exist it is automatically created by copying the [```template```](#simplified-folder-structure) directory to the project directory. The given project directory must contain the ```APE.properties``` file, which contains default project-specific property values that can be overridden by the commandline switches of APE-copy. Additionally, the files and resources in the subfolder ```custom``` are finally copied to the target build directory (```APE.buildDir```). Read more about [customization of the ARE] here. By default, the project directory ```APE.projectDir=<APE.baseURI>/defProjectDir``` is used.
 * **APE.logLevel**: You can specify the verbosity of the console output of the APE-copy command. Additionally, the log messages of the command execution are logged to the ```<APE.projectDir>/tmp```
 
 ### Example usages of the APE-copy commandline tool
@@ -72,6 +72,30 @@ The tool APE-copy is only used to copy the required resources for a given model 
 * replace single files/resources (images, model files, component and services jars and the respective configurations,...) of the ARE installation with custom files of the folder ```<APE.projectDir>/custom```
 * customize the installer creation by providing drop-in resources and installer-specific files in the folder ```<APE.projectDir>/package/linux```, ```<APE.projectDir>/package/windows``` or ```<APE.projectDir>/package/macosx```
 * trigger the creation of a native installer by using the provided ant build file at ```<APE.projectDir>/build.xml```
+
+### Simplified folder structure
+Subsequently you can see the simplified folder structure of an APE-based project, which contains an ant build file (**```build.xml```**), a property-based configuration file (**```APE.properties```**), the **```custom/bin/ARE```** folder to store the solution-specific files (e.g. model files), a **```build```** folder and a **```package```** folder for native installer customization. 
+
+```
+build
+  |- merged
+  |- deploy
+custom
+  |- bin/ARE
+    |- data
+    |- images
+    |- LICENSE
+    |- models
+      |- <custom model file>.acs
+      |- ...
+    |-profile
+package
+  |- linux
+  |- windows
+  |- macosx
+APE.properties
+build.xml
+```
 
 ### General workflow for using the build infrastructure
 
