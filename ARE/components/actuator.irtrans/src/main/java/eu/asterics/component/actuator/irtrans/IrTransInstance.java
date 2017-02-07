@@ -29,6 +29,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,6 +55,11 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
     private final int NUMBER_OF_COMMANDS = 24;
     private final String KEY_PROPERTY_COMMAND = "send";
     private final String KEY_PROPERTY_EVENT = "sendprop";
+    private final byte[] BYTES_ASCI_INIT = "ASCI".getBytes();
+    private final byte[] BYTES_TESTCOMMAND = "Asnd irtrans,ok\n".getBytes();
+    private final String ERROR_RESULT = "ERROR_SOCKET_NOT_OPEN";
+    private final int READ_TIMEOUT_LEARN_MS = 6000;
+    private final int READ_TIMEOUT_SEND_MS = 500;
 
     // prestring will be part of every command, which will be sent
     private String propPrestring = "";
@@ -80,13 +87,21 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
             if (!propHostname.isEmpty() && !propPort.isEmpty()) {
                 socket = new Socket(InetAddress.getByName(propHostname), Integer.parseInt(propPort));
                 if (socket != null) {
-                    socket.setSoTimeout(AstericsModelExecutionThreadPool.TASK_SUBMIT_TIMEOUT);
-                    socket.getOutputStream().write("ASCI".getBytes());
+                    socket.getOutputStream().write(BYTES_ASCI_INIT);
+                    socket.getOutputStream().write(BYTES_TESTCOMMAND);
                     socket.getOutputStream().flush();
+                    // if test-command does not return within 500ms -> assume
+                    // IrTrans not connected => set socket null
+                    String result = readFromSocket(READ_TIMEOUT_SEND_MS);
+                    if (ERROR_RESULT.equals(result)) {
+                        logger.log(Level.WARNING, "failed to open IRTrans-socket! Test command did not return.");
+                        closeSocket();
+                    }
                 }
             }
         } catch (Exception e) {
-            logger.log(Level.WARNING, "failed to open IRTrans-socket!");
+            closeSocket();
+            logger.log(Level.WARNING, "failed to open IRTrans-socket!", e);
         }
     }
 
@@ -222,27 +237,43 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
     };
 
     /**
-     * Creating the string, which will be sent as a TCP package.
-     * See API and possible commands at http://www.irtrans.de/download/Docs/IRTrans%20TCP%20ASCII%20Schnittstelle_DE.pdf
+     * Creating the string, which will be sent as a TCP package. See API and
+     * possible commands at
+     * http://www.irtrans.de/download/Docs/IRTrans%20TCP%20ASCII%20Schnittstelle_DE.pdf
      * The response is written to the Port named "output"
      *
      * @param cmdString
-     *            The string to be sent, must not contain the prefix "A", it is appended in the method in order to be
-     *            compatible to old UDP-commands
+     *            The string to be sent, must not contain the prefix "A", it is
+     *            appended in the method in order to be compatible to old
+     *            UDP-commands
      */
     private void sendString(String cmdString) {
         try {
-            //remove spaces at beginning and end and replace double spaces in string with single space
-            byte[] sendBytes = ("A" + cmdString.trim().replaceAll("\\s+", " ") + "\n").getBytes();
-            socket.getInputStream().skip(socket.getInputStream().available());
-            socket.getOutputStream().write(sendBytes);
-            socket.getOutputStream().flush();
-            AstericsErrorHandling.instance.reportInfo(this, "IRTrans sent data: " + cmdString);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String result = bufferedReader.readLine();
-            AstericsErrorHandling.instance.reportInfo(this, "IRTrans response: " + result);
-            opOutput.sendData(result.getBytes());
+            int readTimeout = cmdString.contains("learn") ? READ_TIMEOUT_LEARN_MS : READ_TIMEOUT_SEND_MS;
+            if (socket == null || socket.isClosed() || !socket.isConnected()) {
+                initSocket();
+            }
+            if (socket != null) {
+                // remove spaces at beginning and end and replace double spaces
+                // in
+                // string with single space
+                byte[] sendBytes = ("A" + cmdString.trim().replaceAll("\\s+", " ") + "\n").getBytes();
+                socket.getInputStream().skip(socket.getInputStream().available());
+                socket.getOutputStream().write(sendBytes);
+                socket.getOutputStream().flush();
+                AstericsErrorHandling.instance.reportInfo(this, "IRTrans sent data: " + cmdString);
+                String result = readFromSocket(readTimeout);
+                if (ERROR_RESULT.equals(result)) {
+                    closeSocket();
+                }
+                AstericsErrorHandling.instance.reportInfo(this, "IRTrans response: " + result);
+                opOutput.sendData(result.getBytes());
+            } else {
+                opOutput.sendData(ERROR_RESULT.getBytes());
+            }
         } catch (Exception e) {
+            opOutput.sendData(ERROR_RESULT.getBytes());
+            closeSocket();
             AstericsErrorHandling.instance.reportError(this,
                     "The IRTrans - Plugin could not send data. Please verify that the IRTrans Module is connected and installed, and that the IP-address is correctly specified.");
             AstericsErrorHandling.instance.reportInfo(this, e.toString());
@@ -268,14 +299,39 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void stop() {
+        closeSocket();
+        AstericsErrorHandling.instance.reportInfo(this, "IRTransmitter Instance stopped");
+        super.stop();
+    }
+
+    private void closeSocket() {
         if (socket != null) {
             try {
                 socket.close();
             } catch (Exception e) {
+                logger.log(Level.WARNING, "error closing socket", e);
             }
         }
         socket = null;
-        AstericsErrorHandling.instance.reportInfo(this, "IRTransmitter Instance stopped");
-        super.stop();
+    }
+
+    private String readFromSocket(int timeoutMillis) {
+        int oldTimeoutMillis = AstericsModelExecutionThreadPool.TASK_SUBMIT_TIMEOUT;
+        String result = ERROR_RESULT;
+        try {
+            oldTimeoutMillis = socket.getSoTimeout();
+            socket.setSoTimeout(timeoutMillis);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            result = bufferedReader.readLine();
+        } catch (Exception e) {
+            try {
+                logger.log(Level.WARNING,
+                        MessageFormat.format("reading from socket timed out (timeout: {0}ms)", timeoutMillis), e);
+                socket.setSoTimeout(oldTimeoutMillis);
+            } catch (SocketException e1) {
+                logger.log(Level.WARNING, "error setting socket timeout", e1);
+            }
+        }
+        return result;
     }
 }
