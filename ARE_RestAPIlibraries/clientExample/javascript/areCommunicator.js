@@ -270,6 +270,30 @@ function getRuntimeComponentProperty(successCallback, errorCallback, componentId
 }
 
 
+function setRuntimeComponentProperties(successCallback, errorCallback, propertyMap) {
+	
+	if ( propertyMap == "" ) return;
+	
+	$.ajax({
+		type: "PUT",
+		url: _baseURI + "runtime/model/components/properties",
+		contentType: "application/json",
+		data: propertyMap,
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(jqXHR.responseText, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+
+
 function setRuntimeComponentProperty(successCallback, errorCallback, componentId, componentKey, componentValue) {
 	
 	if ( (componentId == "") || (componentKey == "") || (componentValue == "") ) return;
