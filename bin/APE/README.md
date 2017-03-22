@@ -184,6 +184,13 @@ If you want to exclude some of the ARE services (e.g. ```javacv-*.jar``` or ```c
 ### Installer customization
 If you want to customize installer-specific configuration files (.e.g .iss for .exe installer) or add your own application icon. Use the respective platform-specific subfolder in the [package](template/package) folder. There you can place replacement files for the default ones. To find out the supported files, that can be replaced, enable verbosity by setting ```fx.deploy.verbose=true``` in the [```APE.properties```](template/APE.properties) file.
 
+Summurized, the following steps are necessary:
+1. Enable verbose mode in [```APE.properties```](template/APE.properties): ```fx.deploy.verbose=true```
+2. Run ```ant deploy```
+3. Copy the resources (e.g. .iss or icon files) from the temp folder of the installer creation to the [package/<os>](template/package) folder
+4. Edit the custom files
+5. Rerun ```ant deploy```
+
 If you want to know more, read [Customizing the Package Using Drop-In Resources](https://docs.oracle.com/javase/8/docs/technotes/guides/deploy/self-contained-packaging.html#BCGICFDB).
 
 ### ant build files
