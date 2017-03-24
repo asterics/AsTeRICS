@@ -38,6 +38,7 @@ import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 
@@ -106,8 +107,11 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public IRuntimeOutputPort getOutputPort(String portID) {
-
-        return null;
+        if ("output".equalsIgnoreCase(portID)) {
+            return opOutput;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -269,6 +273,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
     /**
      * Input Ports for receiving values.
      */
+    private final IRuntimeOutputPort opOutput = new DefaultRuntimeOutputPort();
     private final IRuntimeInputPort ipHousecode = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
@@ -301,8 +306,21 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
              */
 
             final String ACTION_STRING_PREFIX = "@FS20:";
+            final String ACTION_STRING_PATCH_REGISTRY = "@FS20:patch";
 
-            if (action.startsWith(ACTION_STRING_PREFIX)) {
+            if (ACTION_STRING_PATCH_REGISTRY.equals(action)) {
+                if (FS20Utils.isWindowsOS()) {
+                    logger.info("trying to patch registry for FS20 to disable power-save-mode...");
+                    boolean patched = FS20Utils.patchRegistryDisablePowerSaveMode();
+                    if (patched) {
+                        logger.info("successfully patched registry for FS20.");
+                        opOutput.sendData(String.valueOf("1").getBytes());
+                    } else {
+                        logger.info("Registry for FS20 not patched (maybe not needed).");
+                        opOutput.sendData(String.valueOf("0").getBytes());
+                    }
+                }
+            } else if (action.startsWith(ACTION_STRING_PREFIX)) {
                 try {
                     StringTokenizer st = new StringTokenizer(action.substring(ACTION_STRING_PREFIX.length()), "_, ");
                     int hc = Integer.parseInt(st.nextToken()); // this is the
@@ -312,7 +330,8 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
                     try {
                         synchronized (pcs) {
                             if (pcs != null) {
-                                pcs.send(hc, a, cmd);
+                                int result = pcs.send(hc, a, cmd);
+                                opOutput.sendData(String.valueOf(result).getBytes());
                             }
                         }
                     } catch (NullPointerException e) {
@@ -624,7 +643,9 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
                 logger.fine("[" + curThread + "]" + "Sending data to FS20...");
 
                 if (pcs != null) {
-                    pcs.send(houseCode, addr, command);
+                    int result = pcs.send(houseCode, addr, command);
+                    opOutput.sendData(String.valueOf(result).getBytes());
+
                 }
             }
         };
