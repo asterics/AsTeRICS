@@ -1,4 +1,4 @@
-# Welcome to AsTeRICS
+# Welcome to AsTeRICS - branch BSA-4C1-gr1
 -------------------
 
 AsTeRICS is a free and Open-Source graphical construction set for assistive technologies (AT).
