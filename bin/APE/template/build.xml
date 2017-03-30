@@ -24,6 +24,6 @@
 	<target name='before-deploy'>
 	</target>
 	
-	<target name="deploy" depends="init-fx-tasks, cleanup, setup-staging-area, APE-copy, before-deploy, before-deploy-windows, before-deploy-linux, before-deploy-macosx, make-installer-only">
+	<target name="deploy" depends="init-fx-tasks, cleanup, setup-staging-area, APE-copy-release, before-deploy, before-deploy-windows, before-deploy-linux, before-deploy-macosx, make-installer-only" description="Creates installer packages for this APE project. The result can be found in the build/deploy folder.">
 	</target>
 </project>

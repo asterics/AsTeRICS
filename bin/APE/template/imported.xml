@@ -191,7 +191,7 @@
 	</target>
 
 	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
-	<target name="APE-copy">
+	<target name="APE-copy" description="Build APE project: The result can be found in the build/merged folder.">
 		<java jar="${APE.baseURI}/APE.jar" fork="true">
 			<sysproperty key="APE.projectDir" value="${basedir}"/>	
 		</java>	
@@ -199,4 +199,58 @@
 		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
 		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx"/>			
 	</target>
+
+	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
+	<target name="APE-copy-release" description="Build APE project for deployment: The result can be found in the build/merged folder.">
+		<java jar="${APE.baseURI}/APE.jar" fork="true">
+			<sysproperty key="APE.projectDir" value="${basedir}"/>
+			<sysproperty key="APE.buildMode" value="release"/>	
+		</java>	
+		<!-- fix cr and lf and set execution permissions -->
+		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
+		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx"/>			
+	</target>
+
+	
+	<target name="build-dependencies" description="Builds all the dependencies of the dependencies subfolder.">
+          <subant>
+			<fileset dir="dependencies" includes="*/build.xml"/>
+          </subant>
+    </target>
+
+	<!-- Build dependencies and APE project. -->
+	<target name="build-all" depends="build-dependencies,APE-copy" description="Builds the dependencies and then executes APE-copy.">
+    </target>
+
+	<target name="quick-run" depends="APE-copy" description="Peforms APE-copy and starts the ARE: For doing quick test runs of an AsTeRICS solution.">
+		<java jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+			<sysproperty key="osgi.configuration.area" value="profile" />
+			<sysproperty key="osgi.clean" value="true" />
+			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
+			<sysproperty key="org.osgi.framework.system.packages.extra" value="sun.misc" />
+			<sysproperty key="Ansi" value="true" />
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
+			<!--
+			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
+			-->
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles}" />
+			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
+		</java>	
+	</target>
+	
+	<target name="run" depends="build-all" description="Peforms build-all and starts the ARE.">
+		<java jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+			<sysproperty key="osgi.configuration.area" value="profile" />
+			<sysproperty key="osgi.clean" value="true" />
+			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
+			<sysproperty key="org.osgi.framework.system.packages.extra" value="sun.misc" />
+			<sysproperty key="Ansi" value="true" />
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
+			<!--
+			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
+			-->
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles}" />
+			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
+		</java>	
+	</target>	
 </project>
