@@ -1,4 +1,4 @@
-# Welcome to AsTeRICS - branch BSA-4C1-gr1
+# Welcome to AsTeRICS
 -------------------
 Commited from submodule
 
