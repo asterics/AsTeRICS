@@ -53,9 +53,9 @@
 		</javac>
 	</target>
 
-	<target name="jar-windows" depends="compile-RXTXcomm" description="generate the OSGi bundle" >
+	<target name="jar-windows" depends="compile-nrjavaserial" description="generate the OSGi bundle" >
 		<jar jarfile="${dist}/asterics.${component.id}-windows.jar" basedir="${build.RXTXcomm}"
-	         manifest="${resources}/META-INF/MANIFEST-windows.MF">
+	         manifest="${resources}/META-INF/MANIFEST.MF">
 			<fileset dir="${resources}"/>
 		</jar>
 	</target>
