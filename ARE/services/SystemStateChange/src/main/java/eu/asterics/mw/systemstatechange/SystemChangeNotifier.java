@@ -29,6 +29,7 @@ package eu.asterics.mw.systemstatechange;
 import java.util.Vector;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.utils.OSUtils;
 
 /**
  * 
@@ -44,21 +45,18 @@ public class SystemChangeNotifier {
     private static boolean loadingSuccessful = false;
 
     static {
-        String os_name_lowercase = System.getProperty("os.name").toLowerCase();
-        if (os_name_lowercase.startsWith("win")) {
-            AstericsErrorHandling.instance.getLogger().fine("os.name: " + os_name_lowercase
-                    + ", Loading \"systemevent.dll\" for lowlevel event notifications... ok!");
+        String bits = System.getProperty("sun.arch.data.model");
+        if (OSUtils.isWindows() && bits.compareTo("32") == 0) {
+            AstericsErrorHandling.instance.getLogger().fine("Loading \"systemevent.dll\" for lowlevel event notifications... ok!");
             try {
                 System.loadLibrary("systemevent");
                 loadingSuccessful = true;
             } catch (Exception e) {
                 loadingSuccessful = false;
-                AstericsErrorHandling.instance.getLogger().severe(
-                        "Could not load \"systemevent.dll\" for lowlevel event notifications...Restart ARE manually!");
+                AstericsErrorHandling.instance.getLogger().severe("Could not load \"systemevent.dll\" for lowlevel event notifications...Restart ARE manually!");
             }
         } else {
-            AstericsErrorHandling.instance.getLogger()
-                    .fine("os.name: " + os_name_lowercase + ", don't loading systemevent lib");
+            AstericsErrorHandling.instance.getLogger().fine("Not on windows or not 32-bit JRE --> don't load systemevent lib");
         }
         instance = new SystemChangeNotifier();
     }
