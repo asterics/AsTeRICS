@@ -24,7 +24,7 @@ If you just want to use the current snapshot.
 
 1. Clone Repository
   ```
-  git clone https://es.technikum-wien.at/bsa4-students/AsTeRICS.git
+  git clone https://github.com/asterics/AsTeRICS.git
   ```
 2. Install the [**Java Development Kit (JDK, 32bit version) >= 7**] (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
   * Ensure to set “JAVA_HOME” to the folder where you installed the Java JDK and add the JDK bin path to the  Environment Variable “Path”
