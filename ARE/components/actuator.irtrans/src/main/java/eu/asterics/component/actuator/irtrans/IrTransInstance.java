@@ -43,7 +43,6 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 
 /**
  * Component to send commands to the IR-transmitter of the company irtrans
@@ -77,6 +76,13 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
     public IrTransInstance() {
         for (int i = 0; i < NUMBER_OF_COMMANDS; i++) {
             elpRuntimeEventListenerCmds[i] = new EventListenerPortSendString();
+        }
+    }
+
+    private void reinitSocketIfOpen() {
+        if (socket != null) {
+            closeSocket();
+            initSocket();
         }
     }
 
@@ -195,12 +201,12 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
         } else if ("hostname".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propHostname;
             propHostname = (String) newValue;
-            initSocket();
+            reinitSocketIfOpen();
             return oldValue;
         } else if ("port".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propPort;
             propPort = (String) newValue;
-            initSocket();
+            reinitSocketIfOpen();
             return oldValue;
         } else {
             for (int i = 0; i < NUMBER_OF_COMMANDS; i++) {
@@ -278,7 +284,6 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void start() {
         super.start();
-        initSocket();
         AstericsErrorHandling.instance.reportInfo(this, "IRTransmitter Instance started");
     }
 
