@@ -8112,6 +8112,61 @@
 
     </componentType>
 
+ <componentType canonical_name="eu.asterics.component.processor.stringformatter.StringFormatterInstance" id="asterics.StringFormatter">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>Uses the defined format string and converts the values of the input ports according to that format string. See Java Class Formatter.</description>
+        <ports>
+			<inputPort id="in1String">
+				<description>Input variable of type string, referenced with %1$ in the format string.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="in2String">
+				<description>Input variable of type string, referenced with %2$ in the format string.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="in3Double">
+				<description>Input variable of type double, referenced with %3$ in the format string.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="in4Integer">
+				<description>Input variable of type integer, referenced with %4$ in the format string.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="setFormatStr">
+				<description>Set the format string to the input port value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="formattedStr">
+				<description>Formatted string according to input variables and format string</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="sendFormattedStr">
+				<description>Sends the formatted string to the output port</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="The format string to use, see Java class Formatter. The input ports in1XXX-in4XXX represent the formatable variables and can be referenced with the %n$ syntax." name="formatString" type="string" value="%1$s, %2$s, %3$4.2f, %4$d"/>
+			<property description="The default value of in1String. Used if there is no input port value." name="defaultIn1String" type="string" value=""/>
+			<property description="The default value of in2String. Used if there is no input port value." name="defaultIn2String" type="string" value=""/>
+			<property description="The default value of in3Double. Used if there is no input port value." name="defaultIn3Double" type="double" value="0"/>				
+			<property description="The default value of in4Integer. Used if there is no input port value." name="defaultIn4Integer" type="integer" value="0"/>				
+			<property description="Only sends the value of the formatted string, if the event sendFormattedStr is received." name="sendOnlyByEvent" type="boolean" value="0"/>				
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.processor.stringpathmultiplexer.StringPathMultiplexerInstance" id="asterics.StringPathMultiplexer">
         <type subtype="Signal Pathways">processor</type>
         <singleton>false</singleton>
