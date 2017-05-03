@@ -104,6 +104,9 @@
 		<delete verbose="true" includeemptydirs="true">
 			<fileset dir="." includes="bin/**"/>
 		</delete>
+		<delete verbose="true">
+			<fileset dir="${runtime}" includes="asterics*.jar"></fileset>
+		</delete>	
     </target>
 	
 	<target name="copyLicensesAll" depends="cleanLicenses">
