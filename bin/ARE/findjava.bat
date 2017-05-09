@@ -9,15 +9,16 @@ REM author: Martin Deinhofer, mailtto:martin.deinhofer@technikum-wien.at
 setlocal
 REM echo "params: %1, %2"
 set JAVA_EXE=%2
+set BATCH_DIR=%~dp0
 
 REM uncomment for testing the single strategies
 REM goto :seven
 
 :one
 REM 1) in case this is an installed AsTeRICS with an embedded java in the java subfolder
-if exist "java\bin\%JAVA_EXE%" (
-	set java_bin="java\bin\%JAVA_EXE%"
-	echo Step One, found java path:
+if exist "%BATCH_DIR%\java\bin\%JAVA_EXE%" (
+	set java_bin="%BATCH_DIR%\java\bin\%JAVA_EXE%"
+	REM echo Step One, found java path:
 	goto foundjava
 )
 
@@ -28,7 +29,7 @@ call :findjava32 jre
 
 if exist "%jre%\bin\%JAVA_EXE%" (
 	set java_bin="%jre%\bin\%JAVA_EXE%"
-	echo Step Two, found java path:
+	REM echo Step Two, found java path:
 	goto foundjava	
 )
 
@@ -38,7 +39,7 @@ set "branch=HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\JavaSoft\Java Development Ki
 call :findjava32 jre
 if exist "%jre%\jre\bin\%JAVA_EXE%" (
 	set java_bin="%jre%\jre\bin\%JAVA_EXE%"
-	echo Step Three, found java path:
+	REM echo Step Three, found java path:
 	goto foundjava
 )
 
@@ -46,7 +47,7 @@ if exist "%jre%\jre\bin\%JAVA_EXE%" (
 REM 4) next, try the programdata symbolic link
 if exist "%ProgramData%\Oracle\Java\javapath32\%JAVA_EXE%" (
 	set java_bin="%ProgramData%\Oracle\Java\javapath32\%JAVA_EXE%"
-	echo Step Four, found java path:
+	REM echo Step Four, found java path:
 	goto foundjava
 )
 
@@ -55,7 +56,7 @@ REM 5) next, search for an entry in the %ProgramFiles(x86)% subfolder, because t
 FOR /D %%d IN ("%ProgramFiles(x86)%\Java\*") DO (
 	if exist "%%d\bin\%JAVA_EXE%" (
 		set java_bin="%%d\bin\%JAVA_EXE%"
-		echo Step Five, found java path:
+		REM echo Step Five, found java path:
 		goto foundjava
 	)
 )
@@ -65,7 +66,7 @@ REM 6) Finally, if we could not find anything else, search in the 64-bit  standa
 FOR /D %%d IN ("%ProgramFiles%\Java\*") DO (
 	if exist "%%d\bin\%JAVA_EXE%" (
 		set java_bin="%%d\bin\%JAVA_EXE%"
-		echo Step Six, found java path:
+		REM echo Step Six, found java path:
 		goto foundjava
 	)
 )
@@ -73,7 +74,7 @@ FOR /D %%d IN ("%ProgramFiles%\Java\*") DO (
 :seven
 REM 7) Try if %JAVA_EXE% is in path, because this could be any other than the standard paths in theory.
 set java_bin="%JAVA_EXE%"
-echo Step Seven, found java path:
+REM echo Step Seven, found java path:
 goto foundjava
 
 
@@ -89,7 +90,7 @@ REM test, if java is ok
 REM ERRORLEVEL: 9009: command not found --> path, program not existent or executable
 REM ERRORLEVEL: 1: jre version < 1.7
 REM ERRORLEVEL: 0: JRE OK
-%java_bin% -version 2>&1 | jtester.exe
+%java_bin% -version 2>&1 | %BATCH_DIR%\jtester.exe 2>nul >nul
 REM echo java version "1.6.0_12" |jtester.exe
 IF NOT ERRORLEVEL 0 goto :nojava
 
