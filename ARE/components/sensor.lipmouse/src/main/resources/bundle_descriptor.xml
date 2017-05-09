@@ -8,6 +8,11 @@
         <singleton>false</singleton>
         <description>Lipmouse CIM</description>
         <ports>
+			<inputPort id="AtCmd">
+				<description>AT-Command to be sent to Lipmouse</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
 
 			<outputPort id="X">
 				<description>X's value</description>

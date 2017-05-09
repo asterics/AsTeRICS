@@ -9,14 +9,23 @@
         <description>This plugin can send and receive data from a serial (COM) port.</description>
         <ports>
 			<inputPort id="send">
-				<description>data to be sent to COM port</description>
+				<description>data to be sent to the serial port</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
+			<inputPort id="sendBytes">
+				<description>bytes to be sent to the serial port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>byte</dataType>
+			</inputPort>			
 			<outputPort id="received">
-				<description>received data from COM port</description>
+				<description>received data from the serial port</description>
 				<dataType>string</dataType>
 			</outputPort>
+			<outputPort id="receivedBytes">
+				<description>received bytes from the serial port</description>
+				<dataType>byte</dataType>
+			</outputPort>			
         </ports>
 		<events>
 
@@ -40,8 +49,11 @@
                 type="integer"
                 value="0"
                 description="wait for a termination character when receiving characters (-> receive a string) ?"
-                combobox="not used//cr (13)//lf (10)//cr+lf//zero(0)"/>			
-				
+                combobox="not used//cr (13)//lf (10)//cr+lf//zero(0)"/>
+			<property name="sendBytesBufferSize"
+				type="integer"
+				value="1"
+				description="Wait for the given number of bytes before sending them to the serial port."/>                							
         </properties>
     </componentType>
 </componentTypes>
