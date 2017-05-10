@@ -165,6 +165,8 @@
 		<delete failonerror="false">
 			<fileset dir="${build.merged.ARE}/profile/org.eclipse.osgi" />
 		</delete>
+		<delete failonerror="false" file="${build.merged.ARE}/profile/loader_componentlist.ini">
+		</delete>
 	</target>
 		
 	<!-- calls the javafx deployment tasks and creates the requested installers -->
@@ -235,6 +237,7 @@
 	<target name="APE-copy-release" description="Build APE project for deployment: The result can be found in the build/merged folder.">
 		<java jar="${APE.baseURI}/APE.jar" fork="true">
 			<sysproperty key="APE.projectDir" value="${basedir}"/>
+			<!-- force buildMode release to ensure that the merged folder is cleaned and only needed plugins are copied -->
 			<sysproperty key="APE.buildMode" value="release"/>	
 		</java>	
 		<!-- fix cr and lf and set execution permissions -->
@@ -243,7 +246,7 @@
 	</target>
 
 	<!-- build ARE if the ARE.baseURI points to an Astercis sourcecode repository -->
-	<target name="build-dependencies" description="Builds an AsTeRICS snapshot, if ARE.baseURI points to one." if="ARE.baseURI.is.snapshot">
+	<target name="build-dependencies" depends="cleanup" description="Builds an AsTeRICS snapshot, if ARE.baseURI points to one." if="ARE.baseURI.is.snapshot">
 		<subant target="buildAllNoCleanNoCopyLicenses" buildpath="${ARE.baseURI}/../../ARE/"/>		
     </target>
 
@@ -277,7 +280,8 @@
 		</echoproperties>
 		-->
 	</target>
-	<target name="run-quick" depends="APE-copy, findjava" description="Peforms APE-copy and starts the ARE: For doing quick test runs of an AsTeRICS solution.">
+	
+	<target name="run" depends="build-all, findjava" description="Peforms build-all and starts the ARE.">
 		<java jvm="${APE.runARE.java.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
@@ -292,8 +296,8 @@
 			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
 		</java>	
 	</target>
-	
-	<target name="run" depends="build-all, findjava" description="Peforms build-all and starts the ARE.">
+
+	<target name="run-quick" depends="APE-copy, findjava" description="Peforms APE-copy and starts the ARE: For doing quick test runs of an AsTeRICS solution.">
 		<java jvm="${APE.runARE.java.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
