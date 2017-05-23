@@ -90,7 +90,7 @@ REM test, if java is ok
 REM ERRORLEVEL: 9009: command not found --> path, program not existent or executable
 REM ERRORLEVEL: 1: jre version < 1.7
 REM ERRORLEVEL: 0: JRE OK
-%java_bin% -version 2>&1 | %BATCH_DIR%\jtester.exe 2>nul >nul
+%java_bin% -version 2>&1 | "%BATCH_DIR%\jtester.exe" 2>nul >nul
 REM echo java version "1.6.0_12" |jtester.exe
 IF NOT ERRORLEVEL 0 goto :nojava
 
