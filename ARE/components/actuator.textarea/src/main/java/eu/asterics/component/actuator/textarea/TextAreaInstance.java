@@ -26,6 +26,8 @@
 
 package eu.asterics.component.actuator.textarea;
 
+import javax.swing.SwingUtilities;
+
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
@@ -78,8 +80,8 @@ public class TextAreaInstance extends AbstractRuntimeComponentInstance {
     final IRuntimeEventTriggererPort etpClicked = new DefaultRuntimeEventTriggererPort();
     final IRuntimeOutputPort opText = new DefaultRuntimeOutputPort();
 
-    private GUI gui = null;
-    private boolean guiReady = false;
+    private volatile GUI gui = null;
+    private volatile boolean guiReady = false;
 
     /**
      * The class constructor.
@@ -335,11 +337,20 @@ public class TextAreaInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void start() {
-        gui = new GUI(this, AREServices.instance.getAvailableSpace(this));
-        if (propDisplayGUI) {
-            AREServices.instance.displayPanel(gui, this, true);
+        if(gui!=null) {
+            stop();
         }
-        guiReady = true;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                gui = new GUI(TextAreaInstance.this, AREServices.instance.getAvailableSpace(TextAreaInstance.this));
+                if (propDisplayGUI) {
+                    AREServices.instance.displayPanel(gui, TextAreaInstance.this, true);
+                }
+                guiReady = true;
+            }
+        });
+        
         super.start();
     }
 
@@ -348,6 +359,7 @@ public class TextAreaInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void pause() {
+        guiReady=false;
         super.pause();
 
     }
@@ -357,6 +369,9 @@ public class TextAreaInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void resume() {
+        if(gui!=null) {
+            guiReady=true;
+        }
         super.resume();
 
     }
@@ -366,8 +381,14 @@ public class TextAreaInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void stop() {
-        AREServices.instance.displayPanel(gui, this, false);
         guiReady = false;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                AREServices.instance.displayPanel(gui, TextAreaInstance.this, false);
+                gui=null;
+            }
+        });
         super.stop();
     }
 
