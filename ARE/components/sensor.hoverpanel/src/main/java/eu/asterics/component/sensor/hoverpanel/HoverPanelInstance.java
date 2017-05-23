@@ -46,6 +46,7 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 import eu.asterics.mw.services.AstericsThreadPool;
 
@@ -483,9 +484,10 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance impleme
         active = true;
 
         gui = new GUI(this, position, dimension);
-        gui.addMouseListener(this);
-        gui.addMouseMotionListener(this);
-
+        if(gui!=null) {
+			gui.addMouseListener(this);
+			gui.addMouseMotionListener(this);
+        }
         super.start();
     }
 
@@ -494,8 +496,10 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance impleme
      */
     @Override
     public void pause() {
-        gui.removeMouseListener(this);
-        gui.removeMouseMotionListener(this);
+		if (gui != null) {
+			gui.removeMouseListener(this);
+			gui.removeMouseMotionListener(this);
+		}
         super.pause();
         
     }
@@ -505,8 +509,10 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance impleme
      */
     @Override
     public void resume() {
-        gui.addMouseListener(this);
-        gui.addMouseMotionListener(this);
+		if (gui != null) {
+			gui.addMouseListener(this);
+			gui.addMouseMotionListener(this);
+		}
         super.resume();
     }
 
@@ -517,26 +523,30 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance impleme
     public void stop() {
         super.stop();
 
-        gui.removeMouseListener(this);
-        gui.removeMouseMotionListener(this);
         active = false;
         selected = 0;
         hoverState = 0;
         idleState = 0;
 
-        System.out.println("HoverPanel " + propCaption + " Stop called !!");
+        AstericsErrorHandling.instance.getLogger().fine("HoverPanel " + propCaption + " Stop called !!");
 
         // gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
         // System.out.println("HoverPanel "+propCaption+"after dispatch !!");
 
+        //first hand the gui object over to a new temp variable. This assignment is threadsafe and besides
+        //start/stop/pause/resume methods are guaranteed to be called within the same thread.
+        final GUI guiToDestroy=gui;
+        gui=null;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if (gui != null) {
-                    gui.setVisible(false);
-                    gui.dispose();
-                    gui = null;
-                    System.out.println("HoverPanel " + propCaption + "after dispatch !!");
+            	//now the cleanup of the window can be done at any time in the event dispatch thread wihtout interfering the other code.
+                if (guiToDestroy != null) {
+                	guiToDestroy.removeMouseListener(HoverPanelInstance.this);
+                	guiToDestroy.removeMouseMotionListener(HoverPanelInstance.this);
+                	guiToDestroy.setVisible(false);
+                	guiToDestroy.dispose();
+                    AstericsErrorHandling.instance.getLogger().fine("HoverPanel " + propCaption + "after dispatch !!");
                 }
             }
         });
