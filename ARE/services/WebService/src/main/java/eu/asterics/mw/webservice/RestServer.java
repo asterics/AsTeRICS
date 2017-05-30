@@ -700,8 +700,7 @@ public class RestServer {
         String decodedFilepath = "";
 
         if ((modelInXML == "") || (modelInXML == null)) {
-            errorMessage = "invalid parameters";
-            response = "error:" + errorMessage;
+            return "error: invalid parameters";
         }
 
         try {
@@ -712,6 +711,35 @@ public class RestServer {
         } catch (Exception e) {
             e.printStackTrace();
             errorMessage = "Could not store the model" + decodedFilepath + "' (" + e.getMessage() + ")";
+            response = "error:" + errorMessage;
+        }
+
+        return response;
+    }
+
+    @Path("/storage/data/{path}/{filename}")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String storeData(@PathParam("path") String path, @PathParam("filename") String filename, String data) {
+        String response;
+        String errorMessage;
+        String decodedPath = "";
+
+        if (data == null || data.isEmpty() || filename == null || filename.isEmpty() || path == null
+                || path.isEmpty()) {
+            return "error: invalid parameters";
+        }
+
+        try {
+            String decodedFilename = astericsAPIEncoding.decodeString(filename);
+            decodedPath = astericsAPIEncoding.decodeString(path);
+
+            asapiSupport.storeData(data, decodedPath, decodedFilename);
+            response = "OK";
+        } catch (Exception e) {
+            e.printStackTrace();
+            errorMessage = "Could not store data to " + decodedPath + "' (" + e.getMessage() + ")";
             response = "error:" + errorMessage;
         }
 

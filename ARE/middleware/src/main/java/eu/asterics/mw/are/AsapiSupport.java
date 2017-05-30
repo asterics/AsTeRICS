@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +44,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.io.Charsets;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.w3c.dom.DOMImplementation;
@@ -171,7 +173,7 @@ public class AsapiSupport {
     /**
      * Returns a formatted XML String of the componentType(s) in the bundle
      * descriptor.
-     * 
+     *
      * @param bundleDescriptorURL
      * @return
      * @throws MalformedURLException
@@ -331,7 +333,7 @@ public class AsapiSupport {
     /**
      * Returns a string encoding of the model defined in the filename given as
      * argument. If there is no model, an empty string is returned.
-     * 
+     *
      * @param filename
      *            the name of the file to be checked
      * @return a string encoding of the model defined in the filename
@@ -394,7 +396,7 @@ public class AsapiSupport {
 
     /**
      * Returns the state of the current runtime model.
-     * 
+     *
      * @return - The state of the runtime model. See {@link ModelState} class
      *         for the available states.
      */
@@ -455,10 +457,10 @@ public class AsapiSupport {
 
     /**
      * Retrieves the descriptors of AsTeRiCS bundles.
-     * 
+     *
      * @return A {@link List} of {@link String} which contains all the bundle
      *         descriptors.
-     * 
+     *
      * @throws AREAsapiException
      */
     public List<String> getBundelDescriptors() throws AREAsapiException {
@@ -505,7 +507,7 @@ public class AsapiSupport {
      * creating an empty model and deploying it using
      * {@link #deployModel(String)}. This results to freeing all resources in
      * the ARE (i.e., if a previous model reserved any).
-     * 
+     *
      * @throws AREAsapiException
      */
     public void newModel() throws AREAsapiException {
@@ -563,7 +565,7 @@ public class AsapiSupport {
 
     /**
      * It starts or resumes the execution of the model.
-     * 
+     *
      * @throws AREAsapiException
      *             if an exception occurs while validating and starting the
      *             deployed model.
@@ -588,7 +590,7 @@ public class AsapiSupport {
      * Briefly stops the execution of the model. Its main difference from the
      * {@link #stopModel()} method is that it does not reset the components
      * (e.g., the buffers are not cleared).
-     * 
+     *
      * @throws AREAsapiException
      *             if the deployed model is not started already, or if the
      *             execution cannot be paused
@@ -601,7 +603,7 @@ public class AsapiSupport {
      * Stops the execution of the model. Unlike the {@link #pauseModel()}
      * method, this one resets the components, which means that when the model
      * is started again it starts from scratch (i.e., with a new state).
-     * 
+     *
      * @throws AREAsapiException
      *             if the deployed model is not started already, or if the
      *             execution cannot be stopped
@@ -622,7 +624,7 @@ public class AsapiSupport {
          * .instance.setStatusObject(AREStatus.OK.toString(), "", "");
          * logger.fine (this.getClass().getName()+".stopModel: model stopped \n"
          * ); System.out.println("Model stopped!");
-         * 
+         *
          * }
          */
 
@@ -1604,7 +1606,7 @@ public class AsapiSupport {
     /**
      * Deploys the model associated to the specified filename. The file should
      * be already available on the ARE file system.
-     * 
+     *
      * @param filename
      *            the filename of the model to be deployed
      * @throws AREAsapiException
@@ -1688,7 +1690,7 @@ public class AsapiSupport {
 
     /**
      * Deletes the file of the model specified by the filename parameter
-     * 
+     *
      * @param filename
      *            the name of the file to be deleted
      * @return true if the file was successfully deleted or false otherwise
@@ -1738,7 +1740,7 @@ public class AsapiSupport {
     /**
      * Returns a list with all stored models (all models in the directory
      * MODELS_FOLDER except default_model.xml)
-     * 
+     *
      * @return a list with all stored models
      * @throws AREAsapiException
      *             if MODELS_FOLDER directory could not be found
@@ -1747,7 +1749,7 @@ public class AsapiSupport {
         /*
          * ArrayList <String> fileNames = new ArrayList<String> (); File dir =
          * new File(MODELS_FOLDER+"/");
-         * 
+         *
          * String[] children = dir.list(); if (children == null) {
          * logger.warning(this.getClass().getName()+".listAllStoredModels: " +
          * "could not find models directory\n"); throw new AREAsapiException(
@@ -1757,18 +1759,18 @@ public class AsapiSupport {
          * !filename.equals("default_model.xml")) fileNames.add(filename); } }
          * String[] res = new String[fileNames.size()]; for (int i=0;
          * i<res.length; i++) { res[i] = fileNames.get(i); } return res;
-         * 
+         *
          */
         /*
          * List<String> res = new ArrayList<String>(); List<String> nextDir =
          * new ArrayList<String>(); //Directories
          * nextDir.add(ResourceRegistry.MODELS_FOLDER);
          * //nextDir.add("data/sounds");
-         * 
+         *
          * try { while(nextDir.size() > 0) { File pathName = new
          * File(nextDir.get(0)); String[] fileNames = pathName.list(); // lists
          * all files in the directory
-         * 
+         *
          * for(int i = 0; i < fileNames.length; i++) { File f = new
          * File(pathName.getPath(), fileNames[i]); // getPath converts abstract
          * path to path in String, // constructor creates new File object with
@@ -1778,11 +1780,11 @@ public class AsapiSupport {
          * +1)); } } nextDir.remove(0); } } catch (Exception e)
          * {System.out.println ("could not find directories for model files !"
          * );}
-         * 
-         * 
+         *
+         *
          * String[] res2 = new String[res.size()]; for (int i=0; i<res2.length;
          * i++) { res2[i] = res.get(i); }
-         * 
+         *
          * return res2;
          */
 
@@ -1791,55 +1793,86 @@ public class AsapiSupport {
     }
 
     /**
-     * Stores the XML model specified by the string parameter in the file
-     * specified by the filename parameter
-     * 
-     * @param modelInXML
-     *            the XML model as a String
+     * Stores data specified by the string parameter in the file specified by
+     * the path/filename parameter
+     *
+     * @param data
+     *            the data to be stored
+     * @param path
+     *            the path where the file should be stored
      * @param filename
-     *            the name of the file the model is to be stored
+     *            the name of the file to be stored
+     * @param charset
+     *            the charset the file should be stored with
      * @throws AREAsapiException
      *             if the file cannot be created or if the model cannot be
      *             stored
      */
-    public void storeModel(String modelInXML, String filename) throws AREAsapiException {
-        // First check if the model is a valid XML model
+    public void storeData(String data, String path, String filename, Charset charset) throws AREAsapiException {
 
-        File fileName = new File(ResourceRegistry.MODELS_FOLDER + "/" + filename);
-        File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
-        if (!fileName.exists()) {
+        File file = new File(path + "/" + filename);
+        File directory = new File(path);
+        if (!file.exists()) {
             try {
-                modelsDir.mkdir();
-                fileName.createNewFile();
+                directory.mkdir();
+                file.createNewFile();
             } catch (IOException e) {
                 logger.warning(
-                        this.getClass().getName() + ".storeModel: " + "The file or directory could not be created\n");
+                        this.getClass().getName() + ".storeData: " + "The file or directory could not be created\n");
             }
         }
         try {
-            InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
+            // Convert the string to a byte array.
+            byte dataBytes[] = data.getBytes(charset);
+            BufferedWriter c = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charset));
 
-            synchronized (DefaultDeploymentModelParser.instance) {
-                DefaultDeploymentModelParser.instance.parseModel(is);
+            for (int i = 0; i < dataBytes.length; i++) {
+                c.write(dataBytes[i]);
+            }
 
-                // Convert the string to a byte array.
-                String s = modelInXML;
-                byte data[] = s.getBytes();
-                BufferedWriter c = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-16"));
-
-                for (int i = 0; i < data.length; i++) {
-                    c.write(data[i]);
-                }
-
-                if (c != null) {
-                    c.flush();
-                    c.close();
-                }
+            if (c != null) {
+                c.flush();
+                c.close();
             }
         } catch (IOException e) {
             String errorMsg = "Failed to store model -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
+        }
+    }
+
+    /**
+     * stores data with UTF-8
+     *
+     * @param data
+     * @param path
+     * @param filename
+     * @throws AREAsapiException
+     */
+    public void storeData(String data, String path, String filename) throws AREAsapiException {
+        this.storeData(data, path, filename, Charsets.UTF_8);
+    }
+
+    /**
+     * Stores the XML model specified by the string parameter in the file
+     * specified by the filename parameter
+     *
+     * @param modelInXML
+     *            the XML model as a String
+     * @param filepath
+     *            the name of the file the model is to be stored
+     * @throws AREAsapiException
+     *             if the file cannot be created or if the model cannot be
+     *             stored
+     */
+    public void storeModel(String modelInXML, String filepath) throws AREAsapiException {
+
+        // check if valid model
+        try {
+            InputStream is = new ByteArrayInputStream(modelInXML.getBytes(Charsets.UTF_16));
+            synchronized (DefaultDeploymentModelParser.instance) {
+                DefaultDeploymentModelParser.instance.parseModel(is);
+            }
         } catch (ParseException e) {
             String errorMsg = "Failed to parse model, maybe model version not in sync with compononent descriptors -> \n"
                     + e.getMessage();
@@ -1850,11 +1883,13 @@ public class AsapiSupport {
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
         }
+
+        this.storeData(modelInXML, ResourceRegistry.MODELS_FOLDER, filepath, Charsets.UTF_16);
     }
 
     /**
      * Returns the log file as a string.
-     * 
+     *
      * @return the log file as a string.
      */
     public String getLogFile() {
@@ -1889,7 +1924,7 @@ public class AsapiSupport {
     /**
      * It is called on startup by the middleware in order to autostart a default
      * model without the need of pressing deploy and start model first.
-     * 
+     *
      * @param startModel
      *            TODO
      * @throws AREAsapiException
@@ -1943,7 +1978,7 @@ public class AsapiSupport {
     /**
      * Helper method to convert an InputStream of an XML-file to an XML String
      * object.
-     * 
+     *
      * @param inputStream
      * @return
      */
