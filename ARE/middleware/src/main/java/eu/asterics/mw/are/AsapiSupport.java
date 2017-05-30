@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +44,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.io.Charsets;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.w3c.dom.DOMImplementation;
@@ -1827,55 +1829,86 @@ public class AsapiSupport {
     }
 
     /**
-     * Stores the XML model specified by the string parameter in the file
-     * specified by the filename parameter
+     * Stores data specified by the string parameter in the file specified by
+     * the path/filename parameter
      *
-     * @param modelInXML
-     *            the XML model as a String
+     * @param data
+     *            the data to be stored
+     * @param path
+     *            the path where the file should be stored
      * @param filename
-     *            the name of the file the model is to be stored
+     *            the name of the file to be stored
+     * @param charset
+     *            the charset the file should be stored with
      * @throws AREAsapiException
      *             if the file cannot be created or if the model cannot be
      *             stored
      */
-    public void storeModel(String modelInXML, String filename) throws AREAsapiException {
-        // First check if the model is a valid XML model
+    public void storeData(String data, String path, String filename, Charset charset) throws AREAsapiException {
 
-        File fileName = new File(ResourceRegistry.MODELS_FOLDER + "/" + filename);
-        File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
-        if (!fileName.exists()) {
+        File file = new File(path + "/" + filename);
+        File directory = new File(path);
+        if (!file.exists()) {
             try {
-                modelsDir.mkdir();
-                fileName.createNewFile();
+                directory.mkdir();
+                file.createNewFile();
             } catch (IOException e) {
                 logger.warning(
-                        this.getClass().getName() + ".storeModel: " + "The file or directory could not be created\n");
+                        this.getClass().getName() + ".storeData: " + "The file or directory could not be created\n");
             }
         }
         try {
-            InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
+            // Convert the string to a byte array.
+            byte dataBytes[] = data.getBytes(charset);
+            BufferedWriter c = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), charset));
 
-            synchronized (DefaultDeploymentModelParser.instance) {
-                DefaultDeploymentModelParser.instance.parseModel(is);
+            for (int i = 0; i < dataBytes.length; i++) {
+                c.write(dataBytes[i]);
+            }
 
-                // Convert the string to a byte array.
-                String s = modelInXML;
-                byte data[] = s.getBytes();
-                BufferedWriter c = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-16"));
-
-                for (int i = 0; i < data.length; i++) {
-                    c.write(data[i]);
-                }
-
-                if (c != null) {
-                    c.flush();
-                    c.close();
-                }
+            if (c != null) {
+                c.flush();
+                c.close();
             }
         } catch (IOException e) {
             String errorMsg = "Failed to store model -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
+        }
+    }
+
+    /**
+     * stores data with UTF-8
+     *
+     * @param data
+     * @param path
+     * @param filename
+     * @throws AREAsapiException
+     */
+    public void storeData(String data, String path, String filename) throws AREAsapiException {
+        this.storeData(data, path, filename, Charsets.UTF_8);
+    }
+
+    /**
+     * Stores the XML model specified by the string parameter in the file
+     * specified by the filename parameter
+     *
+     * @param modelInXML
+     *            the XML model as a String
+     * @param filepath
+     *            the name of the file the model is to be stored
+     * @throws AREAsapiException
+     *             if the file cannot be created or if the model cannot be
+     *             stored
+     */
+    public void storeModel(String modelInXML, String filepath) throws AREAsapiException {
+
+        // check if valid model
+        try {
+            InputStream is = new ByteArrayInputStream(modelInXML.getBytes(Charsets.UTF_16));
+            synchronized (DefaultDeploymentModelParser.instance) {
+                DefaultDeploymentModelParser.instance.parseModel(is);
+            }
         } catch (ParseException e) {
             String errorMsg = "Failed to parse model, maybe model version not in sync with compononent descriptors -> \n"
                     + e.getMessage();
@@ -1886,6 +1919,8 @@ public class AsapiSupport {
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
         }
+
+        this.storeData(modelInXML, ResourceRegistry.MODELS_FOLDER, filepath, Charsets.UTF_16);
     }
 
     /**
