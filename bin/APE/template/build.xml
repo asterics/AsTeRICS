@@ -14,6 +14,9 @@
 	<condition property="ARE.baseURI" value="dependencies/AsTeRICS/bin/ARE/">
 		<available file="dependencies/AsTeRICS/bin/ARE/" type="dir"/>
 	</condition>
+	<condition property="ARE.baseURI" value="../../ARE/">
+		<available file="../../ARE/" type="dir"/>
+	</condition>	
 	<condition property="ARE.baseURI" value="../AsTeRICS/bin/ARE/">
 		<available file="../AsTeRICS/bin/ARE/" type="dir"/>
 	</condition>
