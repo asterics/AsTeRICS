@@ -1,4 +1,22 @@
-<project name="asterics.imported" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+<project name="APE.imported" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<!-- define macro for easier finding paths:
+	searches for a filename pattern in a given dir and returns the first element by setting the given property name.
+	 -->
+    <macrodef name="findfirstpath">
+      <attribute name="dir"/>
+      <attribute name="name"/>
+      <attribute name="property"/>
+      <sequential>
+        <pathconvert property="@{property}" setonempty="false">
+          <first>
+            <fileset dir="@{dir}">	        	
+	          <include name="@{name}"/>
+	        </fileset>
+      	  </first>
+        </pathconvert>
+      </sequential>
+    </macrodef>	
+	
 	<property name="APE.propertiesFile" value="APE.properties"></property>
 	<property name="APE.optionalServicesFile" value="" />
 	
@@ -74,11 +92,10 @@
 		</not>
 	</condition>
 
-	<!-- save user setting of the property. to be used in the findjava and run targets -->
+	<!-- save user setting of the property. to be used in the findjava and run targets -->	
 	<condition property="fx.platform.basedir.orig" value="${fx.platform.basedir}">		
 		<isset property="fx.platform.basedir" />
 	</condition>
-	
 	
 	<!-- if fx.platform.basedir is not set, java.home will be used as platform for embedding java -->
 	<condition property="fx.platform.basedir" value="${java.home}">		
@@ -86,10 +103,7 @@
 			<isset property="fx.platform.basedir" />
 		</not>
 	</condition>
-	
-	<!-- set default value for jre bin path used to execute the ARE, on windows this will eventually be overridden by the findjava.bat result -->
-	<!-- <property name="APE.runARE.java.bin.path" value="${fx.platform.basedir}/bin/java"/> -->
-	
+		
 	<!-- only if APE.embedJava=true the JRE of the configured platform.basedir will be embedded -->
 	<condition property="APE.embedJava.fx.platform.basedir" value="${fx.platform.basedir}" else="">
 		<istrue value="${APE.embedJava}"/>
@@ -128,6 +142,23 @@
 	
 	<!-- check if the used ARE.baseURI is binary only (e.g. Asterics 2.8 installation or a source code repo -->
 	<available file="${ARE.baseURI}/../../ARE/build.xml" property="ARE.baseURI.is.snapshot"/>
+
+	<!-- tries to detect the installation path of a jre with 32bit architecture -->
+	<property environment="env"></property>
+	<findfirstpath dir="${env.ProgramFiles(x86)}/Java" name="**/java.exe" property="APE.jre32.bin.path.windows"/>		
+	<!-- set APE.jre.bin.path to the path of a 32bit JRE, if the property fx.platform.basedir was not set manually in APE.properties
+	and targetOS is windows and a 32bit JRE could be found with the target findfirstpath. Otherwise set the property to the value of either fx.platform.basedir or JAVA_HOME, whatever was set.
+	-->
+	<condition property="APE.jre.bin.path" value="${APE.jre32.bin.path.windows}" else="${fx.platform.basedir}/bin/java">
+		<and>
+			<isset property="APE.jre32.bin.path.windows" />
+			<isset property="APE.isWindows"/>
+			<not>
+				<isset property="fx.platform.basedir.orig" />			
+			</not>
+		</and>
+	</condition>
+    <echo>  Using JRE path: ${APE.jre.bin.path}</echo>
 
 	<!--
 	<echoproperties>
@@ -254,35 +285,8 @@
 	<target name="build-all" depends="build-dependencies,APE-copy" description="Builds the dependencies and then executes APE-copy.">
     </target>
 
-	<!-- tries to detect the installation path of a jre, preferably with 32bit architecture -->
-	<!-- uses the findjava.bat script also used for the windows start scripts of the ARE -->
-	<target name="findjava">
-		<!-- 
-		By now disable automatic finding of JRE on windows because of backwards compatibility:
-		executing the script needs a patch in findjava.bat which is not present when Asterics 2.8 is used. 
-				
-		<exec executable="${ARE.baseURI}/findjava.bat" osfamily="windows" outputproperty="APE.java.bin.path">
-			<arg value="JAVA_BIN"/>
-			<arg value="java.exe"/>			
-		</exec>
-		-->
-		<condition property="APE.runARE.java.bin.path" value="${APE.java.bin.path}" else="${fx.platform.basedir}/bin/java">
-			<and>
-				<isset property="APE.java.bin.path" />
-				<not>
-					<isset property="fx.platform.basedir.orig" />			
-				</not>
-			</and>
-		</condition>
-		<!--
-		<property environment="env"></property>		
-		<echoproperties>
-		</echoproperties>
-		-->
-	</target>
-	
-	<target name="run" depends="build-all, findjava" description="Peforms build-all and starts the ARE.">
-		<java jvm="${APE.runARE.java.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+	<target name="run" depends="build-all" description="Peforms build-all and starts the ARE.">
+		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
 			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
@@ -297,8 +301,8 @@
 		</java>	
 	</target>
 
-	<target name="run-quick" depends="APE-copy, findjava" description="Peforms APE-copy and starts the ARE: For doing quick test runs of an AsTeRICS solution.">
-		<java jvm="${APE.runARE.java.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+	<target name="run-quick" depends="APE-copy" description="Peforms APE-copy and starts the ARE: For doing quick test runs of an AsTeRICS solution.">
+		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
 			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
@@ -313,8 +317,8 @@
 		</java>	
 	</target>
 	
-	<target name="run-debug" depends="build-all, findjava" description="Peforms build-all and starts the ARE with debug options (port 1044).">
-		<java jvm="${APE.runARE.java.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+	<target name="run-debug" depends="build-all" description="Peforms build-all and starts the ARE with debug options (port 1044).">
+		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
 			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
@@ -330,5 +334,13 @@
 			<jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044"/>
 		</java>	
 	</target>	
-	
+
+	<!-- test macro findfirstpath -->
+	<target name="test-findfirstpath">
+		<property environment="env"></property>
+	    <findfirstpath dir="${env.ProgramFiles(x86)}/Java" name="**/java.exe" property="match.1"/>
+	    <echo message="found: ${match.1}"/>
+	    <findfirstpath dir="custom" name="**/*.md" property="match.2"/>
+	    <echo message="found: ${match.2}"/>
+    </target>	
 </project>
