@@ -1,7 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="asterics-application" default="run" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
-	<import file="imported.xml"/>
+	
+	<!-- import generic APE functionality from APE accompanied to the ARE.baseURI -->
+	<property name="APE.propertiesFile" value="APE.properties"></property>	
+	<loadproperties srcFile="${APE.propertiesFile}" />
+	
+	<!-- if ARE.baseURI is not set, try to find a default value in the following order:
+	1) dependencies/AsTeRICS/bin/ARE (if Asterics is added as submodule)
+	2) ../AsTeRICS/bin/ARE (if it's an APE projectdir withouth FABI and FLipMouse folder structure)
+	3) ../../AsTeRICS/bin/ARE (if it's an AT solution folder structure)
+	4) C:/Program Files (x86)/AsTeRICS/ARE/ (if there is an Asterics installation on windows)
+	-->
+	<condition property="ARE.baseURI" value="dependencies/AsTeRICS/bin/ARE/">
+		<available file="dependencies/AsTeRICS/bin/ARE/" type="dir"/>
+	</condition>
+	<condition property="ARE.baseURI" value="../AsTeRICS/bin/ARE/">
+		<available file="../AsTeRICS/bin/ARE/" type="dir"/>
+	</condition>
+	<condition property="ARE.baseURI" value="../../AsTeRICS/bin/ARE/">
+		<available file="../../AsTeRICS/bin/ARE/" type="dir"/>
+	</condition>
+	<condition property="ARE.baseURI" value="C:/Program Files (x86)/AsTeRICS/ARE/">
+		<available file="C:/Program Files (x86)/AsTeRICS/ARE/" type="dir"/>
+	</condition>
+	
+	<!-- if ARE.baseURI is not set assume that APE is located in the parent folder of basedir -->
+	<condition property="APE.baseURI" else="${ARE.baseURI}/../APE/" value="${basedir}/../">
+		<not>
+			<isset property="ARE.baseURI" />
+		</not>
+	</condition>
 
+	<condition property="APE.imported.build.file" value="imported.xml" else="${APE.baseURI}/template/imported.xml">
+		<available file="imported.xml" type="file"/>
+	</condition>
+	
+	<echo>
+  If no JRE is found, try to set the path manually in APE.properties (fx.platform.basedir).
+  If no AsTeRICS framework can be found or the used version is incompatible with your solution, define the path manually in APE.properties (ARE.baseURI) 
+  or ensure to clone the current snapshot to the parallel folder:	
+    git clone https://github.com/asterics/AsTeRICS.git		
+  
+  Using ARE.baseURI: ${ARE.baseURI}
+  Using imported.xml from: ${APE.imported.build.file}</echo>
+
+	<import file="${APE.imported.build.file}"/>
+	<!-- finished imported APE functionality -->
+	
 	<!-- do platform specific preparations before deployment: here you can delete some platform specific files -->
 	<target name="before-deploy-windows" if="APE.isWindows">
 	    <delete verbose="true">
