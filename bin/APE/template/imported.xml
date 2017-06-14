@@ -207,8 +207,9 @@
 			<fx:fileset dir="${build.merged.ARE}" type="license" includes="LICENSE" />
 		</fx:resources>
 
-		<fx:application id="fxApplication" name="${fx.application.name}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
+		
 		<fx:deploy verbose="${fx.deploy.verbose}" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="${fx.application.name}" nativeBundles="${fx.deploy.nativeBundles}" updatemode="background">
+			<fx:application id="${fx.application.name}" name="${fx.application.name}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
 			<fx:preferences shortcut="${fx.preferences.shortcut}" install="${fx.preferences.install}" menu="${fx.preferences.menu}" />
 
 			<fx:platform basedir="${APE.embedJava.fx.platform.basedir}">				
@@ -224,8 +225,7 @@
 				<property name="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles}" />
 				<property name="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
 			</fx:platform>
-
-			<fx:application refId="fxApplication" />
+		
 			<fx:resources refid="appRes" />
 			<fx:info title="${fx.info.title}" vendor="${fx.info.vendor}" description="${fx.info.description}" license="${fx.info.license}" category="${fx.info.category}" />
 		</fx:deploy>
