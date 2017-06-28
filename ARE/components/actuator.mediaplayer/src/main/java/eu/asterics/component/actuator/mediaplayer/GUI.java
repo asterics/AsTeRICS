@@ -261,7 +261,7 @@ public class GUI extends JPanel {
                         }
                     }
                     mediaListPlayer.setMediaList(mediaList);
-                    mediaListPlayer.setMode(MediaListPlayerMode.LOOP);
+                    //mediaListPlayer.setMode(MediaListPlayerMode.LOOP);
                     if (mediaList.size() > 0) {
                         mediaListPlayer.playItem(0);
                         // mediaListPlayer.play();
