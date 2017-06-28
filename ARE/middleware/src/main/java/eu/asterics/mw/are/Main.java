@@ -124,10 +124,6 @@ public class Main implements BundleActivator {
                     DeploymentManager.instance.setStatus(AREStatus.OK);
                     AstericsErrorHandling.instance.setStatusObject(AREStatus.OK.toString(), "", "");
 
-                    AsapiSupport as = new AsapiSupport();
-                    // System.out.println("*** starting model !");
-                    as.autostart(startModel);
-
                     if (!AREProperties.instance.containsKey(ASAPI_ENABLE_ACS_PORT_CONNECTION)
                             || AREProperties.instance.checkProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1")) {
                         // set default value, if property was not in file.
@@ -160,6 +156,11 @@ public class Main implements BundleActivator {
                     // default
                     // file including comments
                     AREProperties.instance.storeProperties();
+
+                    // Finally autostart model, everything else should now be initialized correctly, if not the code should have thrown an exception already
+                    AsapiSupport as = new AsapiSupport();
+                    // System.out.println("*** starting model !");
+                    as.autostart(startModel);
                 } catch (Throwable e) {
                     // In case of a startup error show the ARE gui panel, so
                     // that the user is able to select a model manually.

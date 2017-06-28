@@ -39,6 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
@@ -142,30 +143,45 @@ public class GUI extends JPanel {
      * @param text
      *            new label text
      */
-    void setText(String text) {
+    void setText(final String text) {
         if (textArea != null) {
-            textArea.setText(text);
-            textArea.setCaretPosition(textArea.getDocument().getLength());
+            SwingUtilities.invokeLater(new Runnable() {                
+                @Override
+                public void run() {
+                    textArea.setText(text);
+                    textArea.setCaretPosition(textArea.getDocument().getLength());
+                }
+            });
         }
     }
 
-    void appendText(String text) {
+    void appendText(final String text) {
         if (textArea != null) {
-            if (textArea.getDocument().getLength() > 1) {
-                textArea.append("\n");
-            }
-            textArea.append(text);
-            textArea.setCaretPosition(textArea.getDocument().getLength());
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    if (textArea.getDocument().getLength() > 1) {
+                        textArea.append("\n");
+                    }
+                    textArea.append(text);
+                    textArea.setCaretPosition(textArea.getDocument().getLength());                    
+                }                
+            });
         }
     }
 
     void deleteCharacter() {
         if (textArea != null) {
-            String actText = textArea.getText();
-            if (actText.length() > 0) {
-                textArea.setText(actText.substring(0, actText.length() - 1));
-                textArea.setCaretPosition(textArea.getDocument().getLength());
-            }
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    String actText = textArea.getText();
+                    if (actText.length() > 0) {
+                        textArea.setText(actText.substring(0, actText.length() - 1));
+                        textArea.setCaretPosition(textArea.getDocument().getLength());
+                    }
+                }
+            });
         }
     }
 

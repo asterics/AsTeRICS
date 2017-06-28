@@ -11,20 +11,18 @@
   <body>
     <h1>SerialPort</h1>
     <h3>Component Type: Processor (Subcategory: Communication)</h3>
-    <p>The SerialPort plugin can be used to send and receive data from serial devices (e.g. microcontrollers/embedded devices/wireless links etc.) via a COM port or virtual COM port.
-	The plugin adds some convinience methods to append or wait for termination characters.
+    <p>The SerialPort plugin can be used to send and receive data from serial devices (e.g. microcontrollers/embedded devices/wireless links etc.) via a serial port (COM port) or virtual serial port.
+	The plugin adds some convinience methods to append or wait for termination characters. Furthermore the sending and receiving of byte values is supported.
 	</p>
-    <div class="image"><img src="img/COMPort.jpg"
-        alt="Screenshot: COMPort plugin" title="Screenshot:
-        COMPort plugin"><br>
-      SerialPort plugin</div>
     <h2>Input Port Description</h2>
     <ul>
       <li><strong>send [string]:</strong> string which will be sent to the microcontroller / embedded module</li>
+	  <li><strong>sendBytes [byte]:</strong> bytes to be sent to the serial port.</li>
     </ul>
     <h2>Output Port Description</h2>
     <ul>
       <li><strong>received [string]:</strong> string which has been received (was sent from the microcontroller / embedded module)</li>
+	  <li><strong>receivedBytes [byte]:</strong> received bytes from the serial port. </li>
     </ul>
     <h2>Properties </h2>
     <ul>
@@ -32,6 +30,7 @@
       <li><strong>BaudRate [integer]:</strong> Defines the Baudrate for the communication. It must match the baudrate of the target device</li>
 	  <li><strong>sendStringTerminator [combobox selection]:</strong>Append a character when sending the string, e.g. CR, LF, CR+LF, 0</li>
 	  <li><strong>receiveStringTerminator [combobox selection]:</strong>wait for a termination character when receiving characters (-> receive a string) </li>
+	  <li><strong>sendBytesBufferSize [integer]:</strong>Wait for the given number of bytes before sending them to the serial port.</li>
     </ul>
   </body>
 </html>

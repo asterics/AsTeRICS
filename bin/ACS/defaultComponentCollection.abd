@@ -7344,16 +7344,16 @@
  <componentType canonical_name="eu.asterics.component.processor.regularexpression.RegularExpressionInstance" id="asterics.RegularExpression">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
-        <description>Process the string with regular expressions.</description>
+        <description>Match the input port string to the defined regular expression (see Java class Pattern).</description>
         <ports>
 			<inputPort id="input">
-				<description>Input port.</description>
+				<description>String to match against the regular expression.</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
 
 			<outputPort id="output">
-				<description>Output port.</description>
+				<description>If property replace=false, sends out input string in case of a match. if property replace=true, sends out replaced string.</description>
 				<dataType>string</dataType>
 			</outputPort>
 
@@ -7361,22 +7361,22 @@
 		<events>
 
 			<eventTriggererPort id="match">
-				<description>The string match to  the pattern.</description>
+				<description>The input string matches the pattern.</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="notMatch">
-				<description>The string do not match to the pattern.</description>
+				<description>The input string does not match the pattern.</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="replace">
-				<description>The string was changed.</description>
+				<description>The string was replaced according to the replaceString.</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="notReplace">
-				<description>The string was not changed</description>
+				<description>The string was not replaced.</description>
 			</eventTriggererPort>
 
 		</events>			
         <properties>
-			<property description="The match pattern" name="pattern" type="string" value=""/>
-			<property description="Defines if the string parts that match to the pattern should be replace by the replaceString" name="replace" type="boolean" value="false"/>
+			<property description="The regular expression pattern (see Java class Pattern)" name="pattern" type="string" value=""/>
+			<property description="Defines if string parts that match to the pattern should be replaced by the replaceString" name="replace" type="boolean" value="false"/>
 			<property description="Replace string." name="replaceString" type="string" value=""/>
 
         </properties>
@@ -7516,14 +7516,23 @@
         <description>This plugin can send and receive data from a serial (COM) port.</description>
         <ports>
 			<inputPort id="send">
-				<description>data to be sent to COM port</description>
+				<description>data to be sent to the serial port</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
+			<inputPort id="sendBytes">
+				<description>bytes to be sent to the serial port</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>byte</dataType>
+			</inputPort>			
 			<outputPort id="received">
-				<description>received data from COM port</description>
+				<description>received data from the serial port</description>
 				<dataType>string</dataType>
 			</outputPort>
+			<outputPort id="receivedBytes">
+				<description>received bytes from the serial port</description>
+				<dataType>byte</dataType>
+			</outputPort>			
         </ports>
 		<events>
 
@@ -7533,8 +7542,8 @@
 			<property description="The COM Port which will be opened" name="ComPort" type="string" value="COM4"/>
 			<property description="The baud rate for the communication" name="BaudRate" type="integer" value="9600"/>
 			<property combobox="not used//cr (13)//lf (10)//cr+lf//zero(0)" description="append a character when sending the string ?" name="sendStringTerminator" type="integer" value="0"/>			
-			<property combobox="not used//cr (13)//lf (10)//cr+lf//zero(0)" description="wait for a termination character when receiving characters (-&gt; receive a string) ?" name="receiveStringTerminator" type="integer" value="0"/>			
-				
+			<property combobox="not used//cr (13)//lf (10)//cr+lf//zero(0)" description="wait for a termination character when receiving characters (-&gt; receive a string) ?" name="receiveStringTerminator" type="integer" value="0"/>
+			<property description="Wait for the given number of bytes before sending them to the serial port." name="sendBytesBufferSize" type="integer" value="1"/>                							
         </properties>
     </componentType>
 
@@ -8099,6 +8108,61 @@
 			<property description="if selected, only strings that contain the filter text will be passed to output" name="passOnlyIfContains" type="boolean" value="true"/>
 			<property description="if selected, the filter text will be removed" name="cropFilterText" type="boolean" value="true"/>
 
+        </properties>
+
+    </componentType>
+
+ <componentType canonical_name="eu.asterics.component.processor.stringformatter.StringFormatterInstance" id="asterics.StringFormatter">
+        <type subtype="Event and String Processing">processor</type>
+        <singleton>false</singleton>
+        <description>Uses the defined format string and converts the values of the input ports according to that format string. See Java Class Formatter.</description>
+        <ports>
+			<inputPort id="in1String">
+				<description>Input variable of type string, referenced with %1$ in the format string.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="in2String">
+				<description>Input variable of type string, referenced with %2$ in the format string.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="in3Double">
+				<description>Input variable of type double, referenced with %3$ in the format string.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>double</dataType>
+			</inputPort>
+			<inputPort id="in4Integer">
+				<description>Input variable of type integer, referenced with %4$ in the format string.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>integer</dataType>
+			</inputPort>
+			<inputPort id="setFormatStr">
+				<description>Set the format string to the input port value</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="formattedStr">
+				<description>Formatted string according to input variables and format string</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="sendFormattedStr">
+				<description>Sends the formatted string to the output port</description>
+			</eventListenerPort>
+
+
+		</events>			
+        <properties>
+			<property description="The format string to use, see Java class Formatter. The input ports in1XXX-in4XXX represent the formatable variables and can be referenced with the %n$ syntax." name="formatString" type="string" value="%1$s, %2$s, %3$4.2f, %4$d"/>
+			<property description="The default value of in1String. Used if there is no input port value." name="defaultIn1String" type="string" value=""/>
+			<property description="The default value of in2String. Used if there is no input port value." name="defaultIn2String" type="string" value=""/>
+			<property description="The default value of in3Double. Used if there is no input port value." name="defaultIn3Double" type="double" value="0"/>				
+			<property description="The default value of in4Integer. Used if there is no input port value." name="defaultIn4Integer" type="integer" value="0"/>				
+			<property description="Only sends the value of the formatted string, if the event sendFormattedStr is received." name="sendOnlyByEvent" type="boolean" value="0"/>				
         </properties>
 
     </componentType>
