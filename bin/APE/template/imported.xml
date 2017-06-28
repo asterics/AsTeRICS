@@ -144,7 +144,7 @@
 	<available file="${ARE.baseURI}/../../ARE/build.xml" property="ARE.baseURI.is.snapshot"/>
 
 	<!-- tries to detect the installation path of a jre with 32bit architecture -->
-	<findfirstpath dir="C:/Program Files (x86)/AsTeRICS/Java" name="**/java.exe" property="APE.jre32.bin.path.windows"/>		
+	<findfirstpath dir="C:/Program Files (x86)/Java" name="**/java.exe" property="APE.jre32.bin.path.windows"/>		
 	<!-- set APE.jre.bin.path to the path of a 32bit JRE, if the property fx.platform.basedir was not set manually in APE.properties
 	and targetOS is windows and a 32bit JRE could be found with the target findfirstpath. Otherwise set the property to the value of either fx.platform.basedir or JAVA_HOME, whatever was set.
 	-->
