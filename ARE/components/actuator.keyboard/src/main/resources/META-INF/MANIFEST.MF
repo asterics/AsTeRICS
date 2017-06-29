@@ -4,5 +4,5 @@ Bundle-Name: asterics.keyboard
 Bundle-SymbolicName: eu.asterics.component.actuator.keyboard
 Bundle-Version: 0.1.0
 Require-Bundle: eu.asterics.mw.jnativehook
+Bundle-NativeCode: lib/native/kbdevent.dll
 DynamicImport-Package: *
-
