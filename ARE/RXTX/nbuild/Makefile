@@ -40,15 +40,15 @@
 # your Java SDK is located
 #
 
-JAVA_HOME = C:\Java\jdk1.7.0_02
-JAVAC = $(JAVA_HOME)\bin\javac
-JAR = $(JAVA_HOME)\bin\jar
-JAVAH = $(JAVA_HOME)\bin\javah
+#JAVA_HOME = C:\Java\jdk1.7.0_02
+JAVAC = "$(JAVA_HOME)\bin\javac"
+JAR = "$(JAVA_HOME)\bin\jar"
+JAVAH = "$(JAVA_HOME)\bin\javah"
 
 
 SRC=..\src
-CFLAGS= -nologo -I$(JAVA_HOME)\include -I$(JAVA_HOME)\include\win32 -I$(SRC) -I. -DWIN32 
-LINK_FLAGS = -nologo -map -incremental:no
+CFLAGS= -nologo -I"$(JAVA_HOME)\include" -I"$(JAVA_HOME)\include\win32" -I"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Include" -I"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include" -I$(SRC) -I. -DWIN32 
+LINK_FLAGS = -nologo -map -incremental:no /libpath:"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib" /libpath:"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib"
 
 !IFDEF DEBUG_INFO
 CFLAGS = -Z7 -Oi -Oy- $(CFLAGS)
@@ -62,10 +62,15 @@ CFLAGS = $(CFLAGS) -Ox
 OBJS=init.obj SerialImp.obj termios.obj fuserImp.obj
 PARALLEL_OBJS= ParallelImp.obj termios.obj init.obj
 
+vcvarsall:
+	"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" x86
 
+vcbuildtools:
+	"C:\Program Files (x86)\Microsoft Visual C++ Build Tools\vcbuildtools.bat" x86
+	
 all: serial parallel
 
-serial: RXTXcomm.jar rxtxSerial.dll
+serial: vcvarsall RXTXcomm.jar rxtxSerial.dll
 
 parallel: RXTXcomm.jar rxtxParallel.dll
 
@@ -87,10 +92,10 @@ ParallelImp.obj:  config.h gnu_io_LPRPort.h
 	$(CC) $(CFLAGS) -c $(SRC)\ParallelImp.c
 
 rxtxSerial.dll: $(OBJS)
-	link -dll -out:$@ $** $(LINK_FLAGS)
+	"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe" -dll -out:$@ $** $(LINK_FLAGS)
 
 rxtxParallel.dll: $(PARALLEL_OBJS)
-	link -dll -out:$@ $** $(LINK_FLAGS)
+	$(LINK) -dll -out:$@ $** $(LINK_FLAGS)
 
 
 gnu_io_RXTXPort.h gnu_io_CommPortIdentifier.h gnu_io_LPRPort.h: RXTXcomm.jar
