@@ -13,11 +13,17 @@
 # line switches like /Z7 -debugtype:CV -pdb:NONE won't work with 
 # MSVC 7.0 or above.
 #
+#Update on 2017-07-19, mad
+#Added setting of dependencies and environment manually because vcvarsall.bat did work for me. Please ensure to define the paths of
+# MS Visual Studio (tested with 10.0)
+# MS SDK
+# JDK
+# Ensure to add executables like CL.exe and LINK.exe to the environment variable PATH, also add the path %VS10%\Common7\IDE to the PATH variable
+
 # The serial port library seems to be working, execept the hangup while 
 # writing to  unpluged serial port. BTW the mingw32 library behavior 
 # is the same.
 #
-# Parallel port library compiles, but I have not used it
 #
 # To build rxtx library execute commands like the following
 #  mkdir build
@@ -30,25 +36,39 @@
 # or 
 # nmake parallel
 #
+# By default the build target is x86, to compile for x64 set the variable TARGET=amd64, e.g.
+# nmake TARGET=amd64 serial
+#
 # If you wish to make the version with debug info then do something 
 # like this
 # nmake serial DEBUG_INFO=1
 #
 # 'nmake clean' will remove all object dll and other working files  
 #
-# Please make sure that variable JAVA_HOME points to the place where 
-# your Java SDK is located
-#
 
-#JAVA_HOME = C:\Java\jdk1.7.0_02
 JAVAC = "$(JAVA_HOME)\bin\javac"
 JAR = "$(JAVA_HOME)\bin\jar"
 JAVAH = "$(JAVA_HOME)\bin\javah"
+MSVS=C:\Program Files (x86)\Microsoft Visual Studio 10.0
+MSSDK=C:\Program Files (x86)\Microsoft SDKs\Windows
+CC= "$(MSVS)\VC\bin\link.exe"
+LINK= "$(MSVS)\VC\bin\link.exe"
 
 
 SRC=..\src
-CFLAGS= -nologo -I"$(JAVA_HOME)\include" -I"$(JAVA_HOME)\include\win32" -I"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Include" -I"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include" -I$(SRC) -I. -DWIN32 
-LINK_FLAGS = -nologo -map -incremental:no /libpath:"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib" /libpath:"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib"
+
+CFLAGS= -nologo -I"$(JAVA_HOME)\include" -I"$(JAVA_HOME)\include\win32" -I"$(MSSDK)\v7.0A\Include" -I"$(MSVS)\VC\include" -I$(SRC) -I.
+CFLAGS_X86= -DWIN32
+CFLAGS_X64=
+ 
+LINK_FLAGS= -nologo -map -incremental:no
+LINK_FLAGS_X86 = /libpath:"$(MSSDK)\v7.0A\Lib" /libpath:"$(MSVS)\VC\lib"
+LINK_FLAGS_X64 = /libpath:"$(MSSDK)\v7.0A\Lib\x64" /libpath:"$(MSVS)\VC\lib\amd64"
+
+!IFDEF TARGET
+!ELSE
+TARGET=x86
+!ENDIF
 
 !IFDEF DEBUG_INFO
 CFLAGS = -Z7 -Oi -Oy- $(CFLAGS)
@@ -59,20 +79,31 @@ DEBUG_INFO_FLAG = DEBUG_INFO^=1
 CFLAGS = $(CFLAGS) -Ox
 !ENDIF
 
+!IF "$(TARGET)" == "x86"
+CC= "$(MSVS)\VC\bin\cl.exe"
+LINK= "$(MSVS)\VC\bin\link.exe"
+
+CFLAGS=$(CFLAGS) $(CFLAGS_X86)
+LINK_FLAGS=$(LINK_FLAGS) $(LINK_FLAGS_X86)
+!ELSE
+CC= "$(MSVS)\VC\bin\amd64\cl.exe"
+LINK= "$(MSVS)\VC\bin\amd64\link.exe"
+
+CFLAGS=$(CFLAGS) $(CFLAGS_X86)
+LINK_FLAGS=$(LINK_FLAGS) $(LINK_FLAGS_X64)
+!ENDIF
+
 OBJS=init.obj SerialImp.obj termios.obj fuserImp.obj
 PARALLEL_OBJS= ParallelImp.obj termios.obj init.obj
 
 vcvarsall:
-	"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" x86
+	"$(MSVS)\VC\vcvarsall.bat" $(TARGET)
 
-vcbuildtools:
-	"C:\Program Files (x86)\Microsoft Visual C++ Build Tools\vcbuildtools.bat" x86
-	
 all: serial parallel
 
-serial: vcvarsall RXTXcomm.jar rxtxSerial.dll
+serial: clean vcvarsall RXTXcomm.jar rxtxSerial.dll
 
-parallel: RXTXcomm.jar rxtxParallel.dll
+parallel: clean vcvarsall RXTXcomm.jar rxtxParallel.dll
 
 init.obj: config.h
 	$(CC) $(CFLAGS) /TP -c $(SRC)\init.cc
@@ -92,7 +123,7 @@ ParallelImp.obj:  config.h gnu_io_LPRPort.h
 	$(CC) $(CFLAGS) -c $(SRC)\ParallelImp.c
 
 rxtxSerial.dll: $(OBJS)
-	"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe" -dll -out:$@ $** $(LINK_FLAGS)
+	$(LINK) -dll -out:$@ $** $(LINK_FLAGS)
 
 rxtxParallel.dll: $(PARALLEL_OBJS)
 	$(LINK) -dll -out:$@ $** $(LINK_FLAGS)
