@@ -46,7 +46,7 @@ public class SystemChangeNotifier {
 
     static {
         String bits = System.getProperty("sun.arch.data.model");
-        if (OSUtils.isWindows() && bits.compareTo("32") == 0) {
+        if (OSUtils.isWindows()) { // && bits.compareTo("32") == 0) {
             AstericsErrorHandling.instance.getLogger().fine("Loading \"systemevent.dll\" for lowlevel event notifications... ok!");
             try {
                 System.loadLibrary("systemevent");
