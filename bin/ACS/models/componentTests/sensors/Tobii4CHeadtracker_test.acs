@@ -1,0 +1,415 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS\bin\ACS\models\componentTests\sensors\Tobii4CHeadtracker_test.acs_2017_8_28_18_13" version="20130320">
+  <components>
+    <component id="DotMeter.1" type_id="asterics.DotMeter">
+      <description>DotMeter</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="xMin" value="-100" />
+        <property name="xMax" value="100" />
+        <property name="yMin" value="-100" />
+        <property name="yMax" value="100" />
+        <property name="mode" value="1" />
+        <property name="dotSize" value="10" />
+        <property name="centerLine" value="true" />
+        <property name="displayDot" value="true" />
+        <property name="displayCaptions" value="true" />
+        <property name="gridColor" value="0" />
+        <property name="dotColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="headpos-xy" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>245</posX>
+        <posY>78</posY>
+      </layout>
+      <gui>
+        <posX>250</posX>
+        <posY>1889</posY>
+        <width>3000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="Tobii4CHeadTracker.1" type_id="asterics.Tobii4CHeadTracker">
+      <description>The plugin provides the head tracking functionality of the Tobii 4C eye tracker. </description>
+      <ports>
+        <outputPort portTypeID="headRotX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="headRotY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="headRotZ">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="headPosX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="headPosY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="headPosZ">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="enabled" value="true" />
+      </properties>
+      <layout>
+        <posX>26</posX>
+        <posY>138</posY>
+      </layout>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>148</posX>
+        <posY>386</posY>
+      </layout>
+      <gui>
+        <posX>250</posX>
+        <posY>667</posY>
+        <width>3000</width>
+        <height>1000</height>
+      </gui>
+    </component>
+    <component id="DotMeter.1.1" type_id="asterics.DotMeter">
+      <description>DotMeter</description>
+      <ports>
+        <inputPort portTypeID="x">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="y">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="xMin" value="-1" />
+        <property name="xMax" value="1" />
+        <property name="yMin" value="-1" />
+        <property name="yMax" value="1" />
+        <property name="mode" value="1" />
+        <property name="dotSize" value="10" />
+        <property name="centerLine" value="true" />
+        <property name="displayDot" value="true" />
+        <property name="displayCaptions" value="true" />
+        <property name="gridColor" value="0" />
+        <property name="dotColor" value="8" />
+        <property name="backgroundColor" value="11" />
+        <property name="fontSize" value="14" />
+        <property name="caption" value="headrot-xy" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>246</posX>
+        <posY>240</posY>
+      </layout>
+      <gui>
+        <posX>250</posX>
+        <posY>5000</posY>
+        <width>3000</width>
+        <height>3000</height>
+      </gui>
+    </component>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="Keyboard" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Activate" />
+        <property name="buttonCaption2" value="Deactivate" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>19</posX>
+        <posY>379</posY>
+      </layout>
+      <gui>
+        <posX>3322</posX>
+        <posY>676</posY>
+        <width>938</width>
+        <height>1556</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.1">
+      <source>
+        <component id="Tobii4CHeadTracker.1" />
+        <port id="headPosY" />
+      </source>
+      <target>
+        <component id="DotMeter.1" />
+        <port id="y" />
+      </target>
+    </channel>
+    <channel id="binding.0">
+      <source>
+        <component id="Tobii4CHeadTracker.1" />
+        <port id="headPosX" />
+      </source>
+      <target>
+        <component id="DotMeter.1" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="Tobii4CHeadTracker.1" />
+        <port id="headRotX" />
+      </source>
+      <target>
+        <component id="DotMeter.1.1" />
+        <port id="x" />
+      </target>
+    </channel>
+    <channel id="binding.3">
+      <source>
+        <component id="Tobii4CHeadTracker.1" />
+        <port id="headRotY" />
+      </source>
+      <target>
+        <component id="DotMeter.1.1" />
+        <port id="y" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="userPresenceStatusAway_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="userPresenceStatusAway" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="userPresenceStatusPresent_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="userPresenceStatusPresent" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="calibrationStarted_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="calibrationStarted" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="calibrationFinished_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="calibrationFinished" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="displayAreaChanged_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="displayAreaChanged" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="powerSaveStateTrue_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="powerSaveStateTrue" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="powerSaveStateFalse_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="powerSaveStateFalse" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="deviceOff_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="deviceOff" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="deviceOn_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="deviceOn" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_activate">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="activate" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_deactivate">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="Tobii4CHeadTracker.1" />
+          <eventPort id="deactivate" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>250</posX>
+      <posY>244</posY>
+      <width>4500</width>
+      <height>7778</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>
