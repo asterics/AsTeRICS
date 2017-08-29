@@ -7,14 +7,19 @@
 </HEAD>
 <BODY>
 <H1>Tobii4CHeadTracker</H1> 
-<H3>Component Type: Sensor (Subcategory: Computer Vision)</H3>
+<H3>Component Type: Sensor (Subcategory: Computer Vision)<p>OS: Windows</H3>
 <p>
-This component provides access to the raw head tracking data of the <a href="https://tobiigaming.com/eye-tracker-4c/">Tobii Tracker 4C</a> eye tracking device. The data includes the head position (x/y/z) in mm and the head rotation (x/y/z) in Euler angles. The plugin connects to the device via the <a href="https://tobiigaming.com/getstarted/">Tobii Eye Tracking Core Software</a>.
+This component provides access to the raw head tracking data of the <a href="https://tobiigaming.com/eye-tracker-4c/">Tobii Tracker 4C</a> eye tracking device. The data includes the head position (x/y/z) in mm and the head rotation (x/y/z) in Euler angles. The Tobii4CHeadTracker plugin can be combined with the <a href="http://asterics.github.io/AsTeRICS/AsTeRICS-Help/master/Plugins/sensors/EyeX.htm">EyeX</a> plugin to also get the eye gaze data.
+<p>The plugin connects to the device via the <a href="https://tobiigaming.com/getstarted/">Tobii Eye Tracking Core Software</a>.
 </p>
 
 <p>
 <H2>Requirements</H2>
-The Tobii Tracker 4C device must be connected to a USB 2.0 port and the latest <a href="https://tobiigaming.com/getstarted/">Tobii Eye Tracking Core Software</a> installed and running. 
+<ul>
+<li>OS: Windows</li>
+<li>USB port: The Tracker 4C needs at least a USB 2.0 port. Preferably don't use a USB hub, or only use a <a href="https://help.tobii.com/hc/en-us/articles/212907389-Recommended-USB-2-0-hubs">recommended hub from Tobii</a>.</li>
+<li><a href="https://tobiigaming.com/getstarted/">Tobii Eye Tracking Core Software</a> must be installed and running.</li>
+</ul>
 <p>
 <div class="image"><img src="img/Tobiigaming_Product_4c.png" alt="Screenshot: Tobii Tracker 4C plugin" title="Screenshot: Tobii Tracker 4C plugin" /><br>
 Tobii Tracker 4C</div>
