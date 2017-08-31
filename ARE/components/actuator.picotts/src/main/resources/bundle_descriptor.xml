@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.PicoTTS"
+                   canonical_name="eu.asterics.component.actuator.picotts.PicoTTSInstance">
+        <type subtype="Audio and Voice">actuator</type>
+        <singleton>false</singleton>
+        <description>My Plugin description</description>
+        <ports>
+			<inputPort id="input">
+				<description>text to be spoken</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property name="language"
+				type="integer"
+				value="0"
+				combobox="english (GBR)//english(USA)//german//french//spanish//italian"
+				description="creates speech output on RaspberryPi via the PicoTTS framework"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

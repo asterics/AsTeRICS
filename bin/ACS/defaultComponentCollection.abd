@@ -2336,6 +2336,30 @@
     </componentType>
 
 
+ <componentType canonical_name="eu.asterics.component.actuator.picotts.PicoTTSInstance" id="asterics.PicoTTS">
+        <type subtype="Audio and Voice">actuator</type>
+        <singleton>false</singleton>
+        <description>My Plugin description</description>
+        <ports>
+			<inputPort id="input">
+				<description>text to be spoken</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+
+        </ports>
+		<events>
+
+
+		</events>			
+        <properties>
+			<property combobox="english (GBR)//english(USA)//german//french//spanish//italian" description="creates speech output on RaspberryPi via the PicoTTS framework" name="language" type="integer" value="0"/>
+
+        </properties>
+
+    </componentType>
+
  <componentType canonical_name="eu.asterics.component.actuator.platformdigitalout.PlatformDigitalOutInstance" id="asterics.PlatformDigitalOut">
         <type subtype="Personal Platform">actuator</type>
         <singleton>true</singleton>
