@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-sensors.tobii4cheadtracker
+Bundle-SymbolicName: eu.asterics.component.sensor.tobii4cheadtracker
+Bundle-Version: 0.1.0
+Bundle-NativeCode: lib/native/windows/x86/tobii_stream_engine.dll;
+ lib/native/windows/x86/tobii4C_stream_engine_JNI_bridge.dll;
+ osname=win32;processor=x86,
+ lib/native/windows/x86_64/tobii_stream_engine.dll;
+ lib/native/windows/x86_64/tobii4C_stream_engine_JNI_bridge.dll;
+ osname=win32;processor=x86_64
+DynamicImport-Package: *
+ 
+ 

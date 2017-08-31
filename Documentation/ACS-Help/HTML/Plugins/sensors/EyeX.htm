@@ -7,17 +7,28 @@
 </HEAD>
 <BODY>
 <H1>EyeX</H1> 
-<H3>Component Type: Sensor (Subcategory: Computer Vision)</H3>
+<H3>Component Type: Sensor (Subcategory: Computer Vision)<p>OS: Windows</H3>
 <p>
-This component provides access to the raw gaze tracking data from the <a href="http://www.tobii.com/en/eye-experience/eyex/">Tobii EyeX</a> eye tracking device. The data includes the estimated gazepoint (x/y), the eye location (x/y), fixation time and eye close time. The plugin connects to the deveice via the Tobii EyeX SDK.
+This component provides access to the raw gaze tracking data from <a href="https://tobiigaming.com/products/">Tobii eye tracking devices</a>. The data includes the estimated gazepoint (x/y), the eye location (x/y), fixation time and eye close time. The plugin connects to the device via the Tobii SDK.
+<p>
+Currently the following devices should work:
+<ul>
+<li><a href="https://tobiigaming.com/product/tobii-eyex/">Tobii EyeX</a></li>
+<li><a href="https://tobiigaming.com/eye-tracker-4c/">Tobii Tracker 4C</a>: Also supports head tracking and can be combined with the <a href="http://asterics.github.io/AsTeRICS/AsTeRICS-Help/master/Plugins/sensors/Tobii4CHeadTracker.htm">Tobii4CHeadTracker</a> plugin to get eye gaze and head pose data.</li>
+<li><a href="https://de.steelseries.com/gaming-controllers/sentry">Steel Series Sentry</a> (not tested)</li>
 </p>
-
+<p>
 <div class="image"><img src="img/EyeX.jpg" alt="Screenshot: Tobii EyeX plugin" title="Screenshot: Tobii EyeX plugin" /><br>
 Tobii EyeX plugin</div>
 
 <p>
 <H2>Requirements</H2>
-The Tobii EyeX tracker must be connected to an USB3.0 port and the Tobii EyeX server software must be running. 
+<ul>
+<li>OS: Windows</li>
+<li>USB port: The Tobii EyeX device needs a USB3.0 port, the Tracker 4C needs at least a USB 2.0 port. Preferably don't use a USB hub, or only use a <a href="https://help.tobii.com/hc/en-us/articles/212907389-Recommended-USB-2-0-hubs">recommended hub from Tobii</a>.</li>
+<li><a href="https://tobiigaming.com/getstarted/">Tobii Eye Tracking Core Software</a> must be installed and running.</li>
+</ul>
+<p>
 <div class="image"><img src="img/EyeX_hw.png" alt="Screenshot: Tobii EyeX hardware" title="Screenshot: Tobii EyeX hardware" /><br>
 Tobii EyeX hardware</div>
 
