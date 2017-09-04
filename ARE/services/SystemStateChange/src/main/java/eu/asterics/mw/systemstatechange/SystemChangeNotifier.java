@@ -56,7 +56,7 @@ public class SystemChangeNotifier {
                 AstericsErrorHandling.instance.getLogger().severe("Could not load \"systemevent.dll\" for lowlevel event notifications...Restart ARE manually!");
             }
         } else {
-            AstericsErrorHandling.instance.getLogger().fine("Not on windows or not 32-bit JRE --> don't load systemevent lib");
+            AstericsErrorHandling.instance.getLogger().fine("Not on windows --> don't load systemevent lib");
         }
         instance = new SystemChangeNotifier();
     }
