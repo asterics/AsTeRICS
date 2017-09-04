@@ -32,4 +32,4 @@ LIBS = -lexpat -lsvoxpico
 # 	-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.c=.d)
 
 all:
-	$(CC) -Llib/ strdup16to8.c strdup8to16.c svox_ssml_parser.cpp com_svox_picottsengine.cpp main.cpp $(LIBS) -Ilib/ -fpermissive -o $(TARGET)
+	$(CC) -Llib/ strdup16to8.c strdup8to16.c svox_ssml_parser.cpp com_svox_picottsengine.cpp main.cpp $(LIBS) -Ilib/ -fpermissive -Wno-narrowing -o $(TARGET)
