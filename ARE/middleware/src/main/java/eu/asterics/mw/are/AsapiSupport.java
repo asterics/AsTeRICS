@@ -356,7 +356,7 @@ public class AsapiSupport {
      * @throws AREAsapiException
      *             if could not get model from file
      */
-    public String getModelFromFile(String filename) throws AREAsapiException {
+    public String getModelFromFile(String filename) throws AREAsapiException {        
         filename = ResourceRegistry.MODELS_FOLDER + "/" + filename;
 
         // check if dir exists and if not create it
@@ -383,7 +383,6 @@ public class AsapiSupport {
                 transformer.transform(domSource, result);
                 modelInString = writer.toString();
             }
-
         } catch (SAXException e1) {
             logger.warning(this.getClass().getName() + "." + "getModelFromFile: Failed to get model from file -> \n"
                     + e1.getMessage());
@@ -405,7 +404,7 @@ public class AsapiSupport {
                     + e5.getMessage());
             throw (new AREAsapiException(e5.getMessage()));
         }
-
+        
         return modelInString;
 
     }
@@ -417,9 +416,12 @@ public class AsapiSupport {
      *         for the available states.
      */
     public String getModelState() {
-        ModelState modelState = DeploymentManager.instance.getCurrentRuntimeModel().getState();
-
-        return modelState.toString();
+        try{
+            ModelState modelState = DeploymentManager.instance.getCurrentRuntimeModel().getState();
+            return modelState.toString();
+        }catch(NullPointerException e) {
+            return ModelState.STOPPED.toString();
+        }
     }
 
     /**
@@ -1477,6 +1479,9 @@ public class AsapiSupport {
 
         // Get the current runtime model instance
         final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+        if(currentRuntimeModel==null) {
+            return null;
+        }
 
         // We need a Document
 

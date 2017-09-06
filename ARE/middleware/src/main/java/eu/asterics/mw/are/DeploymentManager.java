@@ -156,8 +156,8 @@ public class DeploymentManager {
 
         modelStartupFinished = false;
         if (runtimeModel == null) {
-            logger.severe(this.getClass().getName() + ": install-> Illegal null argument");
-            throw new RuntimeException("Illegal null argument");
+            logger.severe(this.getClass().getName() + ".deployModel: runtime model object null.");
+            throw new RuntimeException("Can not deploy null model object.");
         }
 
         // Very important undeploy previous model, just to be sure that no

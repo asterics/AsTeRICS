@@ -44,6 +44,7 @@ public class APEProperties extends Properties {
     public static final String P_APE_BUILD_DIR = "APE.buildDir";
     public static final String P_APE_DATA_COPY_MODE = "APE.dataCopyMode";
     public static final String P_APE_LOG_LEVEL = "APE.logLevel";
+    public static final String P_APE_BUILD_MODE = "APE.buildMode";    
 
     public static final String APE_PROP_PREFIX = "APE.";
     public static final String ARE_PROP_PREFIX = "ARE.";
@@ -52,6 +53,7 @@ public class APEProperties extends Properties {
     public static String DEFAULT_PROJECT_DIR = "defProjectDir/";
     public static String DEFAULT_BUILD_DIR = "build/";
     public static String DEFAULT_APE_LOG_LEVEL = "INFO";
+    public static APE_BUILD_MODE DEFAULT_APE_BUILD_MODE = APE_BUILD_MODE.RELEASE;
 
     public static URI APE_BASE_URI = null;
     // public static URI APE_PROJECT_DIR_URI=null;
@@ -63,8 +65,20 @@ public class APEProperties extends Properties {
      * @author mad
      *
      */
-    public enum DATA_COPY_MODE {
+    public enum APE_DATA_COPY_MODE {
         ALL, FOLDER, SINGLE, NONE
+    }
+    
+    /**
+     * Allowed build modes.
+     * 
+     * devel: Optimization of the workflow for development: no clean of build; only copies jars, if build/merged folder is empty; if copying jar, copy all jars instead of just referenced ones.
+     * release: clean, APE-copy with referenced jars only
+     * @author mad
+     *
+     */
+    public enum APE_BUILD_MODE {
+    	DEVEL, RELEASE
     }
 
     public APEProperties() {

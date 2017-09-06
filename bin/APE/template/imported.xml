@@ -1,4 +1,22 @@
-<project name="asterics.imported" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+<project name="APE.imported" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+	<!-- define macro for easier finding paths:
+	searches for a filename pattern in a given dir and returns the first element by setting the given property name.
+	 -->
+    <macrodef name="findfirstpath">
+      <attribute name="dir"/>
+      <attribute name="name"/>
+      <attribute name="property"/>
+      <sequential>
+        <pathconvert property="@{property}" setonempty="false">
+          <first>
+            <fileset dir="@{dir}" erroronmissingdir="false">	        	
+	          <include name="@{name}"/>
+	        </fileset>
+      	  </first>
+        </pathconvert>
+      </sequential>
+    </macrodef>	
+	
 	<property name="APE.propertiesFile" value="APE.properties"></property>
 	<property name="APE.optionalServicesFile" value="" />
 	
@@ -73,14 +91,19 @@
 			<isset property="APE.embedJava" />
 		</not>
 	</condition>
-	
-	<!-- if fx.platform.basedir is not set, java.home will be used as platform -->	
-	<condition property="fx.platform.basedir" value="${java.home}">		
-			<not>
-				<isset property="fx.platform.basedir" />
-			</not>
+
+	<!-- save user setting of the property. to be used in the findjava and run targets -->	
+	<condition property="fx.platform.basedir.orig" value="${fx.platform.basedir}">		
+		<isset property="fx.platform.basedir" />
 	</condition>
 	
+	<!-- if fx.platform.basedir is not set, java.home will be used as platform for embedding java -->
+	<condition property="fx.platform.basedir" value="${java.home}">		
+		<not>
+			<isset property="fx.platform.basedir" />
+		</not>
+	</condition>
+		
 	<!-- only if APE.embedJava=true the JRE of the configured platform.basedir will be embedded -->
 	<condition property="APE.embedJava.fx.platform.basedir" value="${fx.platform.basedir}" else="">
 		<istrue value="${APE.embedJava}"/>
@@ -91,21 +114,58 @@
 		<istrue value="${APE.embedJava}"/>
 	</condition>	
 	
+	<!-- if ARE.baseURI is not set, try to find a default value in the following order:
+	1) dependencies/AsTeRICS/bin/ARE (if Asterics is added as submodule)
+	2) ../AsTeRICS/bin/ARE (if it's an APE projectdir withouth FABI and FLipMouse folder structure)
+	3) ../../AsTeRICS/bin/ARE (if it's an AT solution folder structure)
+	4) C:/Program Files (x86)/AsTeRICS/ARE/ (if there is an Asterics installation on windows)
+	-->
+	<condition property="ARE.baseURI" value="dependencies/AsTeRICS/bin/ARE/">
+		<available file="dependencies/AsTeRICS/bin/ARE/" type="dir"/>
+	</condition>
+	<condition property="ARE.baseURI" value="../AsTeRICS/bin/ARE/">
+		<available file="../AsTeRICS/bin/ARE/" type="dir"/>
+	</condition>
+	<condition property="ARE.baseURI" value="../../AsTeRICS/bin/ARE/">
+		<available file="../../AsTeRICS/bin/ARE/" type="dir"/>
+	</condition>
+	<condition property="ARE.baseURI" value="C:/Program Files (x86)/AsTeRICS/ARE/">
+		<available file="C:/Program Files (x86)/AsTeRICS/ARE/" type="dir"/>
+	</condition>
+	
 	<!-- if ARE.baseURI is not set assume that APE is located in the parent folder of basedir -->
-	<condition property="APE.baseURI" else="${ARE.baseURI}../APE/" value="${basedir}/../">
+	<condition property="APE.baseURI" else="${ARE.baseURI}/../APE/" value="${basedir}/../">
 		<not>
 			<isset property="ARE.baseURI" />
 		</not>
 	</condition>
+	
+	<!-- check if the used ARE.baseURI is binary only (e.g. Asterics 2.8 installation or a source code repo -->
+	<available file="${ARE.baseURI}/../../ARE/build.xml" property="ARE.baseURI.is.snapshot"/>
+
+	<!-- tries to detect the installation path of a jre with 32bit architecture -->
+	<findfirstpath dir="C:/Program Files (x86)/Java" name="**/java.exe" property="APE.jre32.bin.path.windows"/>		
+	<!-- set APE.jre.bin.path to the path of a 32bit JRE, if the property fx.platform.basedir was not set manually in APE.properties
+	and targetOS is windows and a 32bit JRE could be found with the target findfirstpath. Otherwise set the property to the value of either fx.platform.basedir or JAVA_HOME, whatever was set.
+	-->
+	<condition property="APE.jre.bin.path" value="${APE.jre32.bin.path.windows}" else="${fx.platform.basedir}/bin/java">
+		<and>
+			<isset property="APE.jre32.bin.path.windows" />
+			<isset property="APE.isWindows"/>
+			<not>
+				<isset property="fx.platform.basedir.orig" />			
+			</not>
+		</and>
+	</condition>
+    <echo>  Using JRE path: ${APE.jre.bin.path}</echo>
 
 	<!--
 	<echoproperties>
 	</echoproperties>
 	-->
 
-	<target name="clean">
-		<delete includeemptydirs="true" dir="${APE.buildDir}/">
-		</delete>
+	<!-- clean temporary files and folder -->
+	<target name="clean" depends="cleanup" description="Clean temporary folder and files e.g. build and tmp">
 		<delete includeemptydirs="true" dir="tmp/">
 		</delete>
 	</target>
@@ -122,9 +182,10 @@
 		<taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpathref="fxant" />
 	</target>
 
+	<!-- cleans up the build folder only -->
 	<target name="cleanup">
-		<delete dir="${build.deploy}" failonerror="false" />
-		<delete dir="${build.merged.ARE}" failonerror="false"/>
+		<delete includeemptydirs="true" failonerror="false" dir="${APE.buildDir}/">
+		</delete>
 	</target>
 	<target name="setup-staging-area">
 		<mkdir dir="${build.deploy}" />
@@ -133,6 +194,8 @@
 		</delete>
 		<delete failonerror="false">
 			<fileset dir="${build.merged.ARE}/profile/org.eclipse.osgi" />
+		</delete>
+		<delete failonerror="false" file="${build.merged.ARE}/profile/loader_componentlist.ini">
 		</delete>
 	</target>
 		
@@ -143,8 +206,9 @@
 			<fx:fileset dir="${build.merged.ARE}" type="license" includes="LICENSE" />
 		</fx:resources>
 
-		<fx:application id="fxApplication" name="${fx.application.name}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
+		
 		<fx:deploy verbose="${fx.deploy.verbose}" embedJNLP="false" extension="false" includeDT="false" offlineAllowed="true" outdir="${build.deploy}" outfile="${fx.application.name}" nativeBundles="${fx.deploy.nativeBundles}" updatemode="background">
+			<fx:application id="${fx.application.name}" name="${fx.application.name}" mainClass="org.eclipse.core.runtime.adaptor.EclipseStarter" version="${fx.application.version}" toolkit="swing" />
 			<fx:preferences shortcut="${fx.preferences.shortcut}" install="${fx.preferences.install}" menu="${fx.preferences.menu}" />
 
 			<fx:platform basedir="${APE.embedJava.fx.platform.basedir}">				
@@ -160,8 +224,7 @@
 				<property name="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles}" />
 				<property name="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
 			</fx:platform>
-
-			<fx:application refId="fxApplication" />
+		
 			<fx:resources refid="appRes" />
 			<fx:info title="${fx.info.title}" vendor="${fx.info.vendor}" description="${fx.info.description}" license="${fx.info.license}" category="${fx.info.category}" />
 		</fx:deploy>
@@ -191,12 +254,91 @@
 	</target>
 
 	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
-	<target name="APE-copy">
+	<target name="APE-copy" description="Build APE project: The result can be found in the build/merged folder.">
 		<java jar="${APE.baseURI}/APE.jar" fork="true">
 			<sysproperty key="APE.projectDir" value="${basedir}"/>	
 		</java>	
 		<!-- fix cr and lf and set execution permissions -->
 		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
-		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx"/>			
+		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx" failonerror="false"/>			
 	</target>
+
+	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
+	<target name="APE-copy-release" description="Build APE project for deployment: The result can be found in the build/merged folder.">
+		<java jar="${APE.baseURI}/APE.jar" fork="true">
+			<sysproperty key="APE.projectDir" value="${basedir}"/>
+			<!-- force buildMode release to ensure that the merged folder is cleaned and only needed plugins are copied -->
+			<sysproperty key="APE.buildMode" value="release"/>	
+		</java>	
+		<!-- fix cr and lf and set execution permissions -->
+		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
+		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx" failonerror="false"/>			
+	</target>
+
+	<!-- build ARE if the ARE.baseURI points to an Astercis sourcecode repository -->
+	<target name="build-dependencies" depends="cleanup" description="Builds an AsTeRICS snapshot, if ARE.baseURI points to one." if="ARE.baseURI.is.snapshot">
+		<subant target="buildAllNoCleanNoCopyLicenses" buildpath="${ARE.baseURI}/../../ARE/"/>		
+    </target>
+
+	<!-- Build dependencies and APE project. -->
+	<target name="build-all" depends="build-dependencies,APE-copy" description="Builds the dependencies and then executes APE-copy.">
+    </target>
+
+	<target name="run" depends="build-all" description="Peforms build-all and starts the ARE.">
+		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+			<sysproperty key="osgi.configuration.area" value="profile" />
+			<sysproperty key="osgi.clean" value="true" />
+			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
+			<sysproperty key="org.osgi.framework.system.packages.extra" value="sun.misc" />
+			<sysproperty key="Ansi" value="true" />
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
+			<!--
+			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
+			-->
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles};services_websocketdemo.ini" />
+			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
+		</java>	
+	</target>
+
+	<target name="run-quick" depends="APE-copy" description="Peforms APE-copy and starts the ARE: For doing quick test runs of an AsTeRICS solution.">
+		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+			<sysproperty key="osgi.configuration.area" value="profile" />
+			<sysproperty key="osgi.clean" value="true" />
+			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
+			<sysproperty key="org.osgi.framework.system.packages.extra" value="sun.misc" />
+			<sysproperty key="Ansi" value="true" />
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
+			<!--
+			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
+			-->
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles};services_websocketdemo.ini" />
+			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
+		</java>	
+	</target>
+	
+	<target name="run-debug" depends="build-all" description="Peforms build-all and starts the ARE with debug options (port 1044).">
+		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+			<sysproperty key="osgi.configuration.area" value="profile" />
+			<sysproperty key="osgi.clean" value="true" />
+			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
+			<sysproperty key="org.osgi.framework.system.packages.extra" value="sun.misc" />
+			<sysproperty key="Ansi" value="true" />
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
+			<sysproperty key="eu.asterics.mw.services.AstericsErrorHandling.consoleLogLevel" value="FINE"/>
+			<!--
+			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
+			-->
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles};services_websocketdemo.ini" />		
+			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
+			<jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044"/>
+		</java>	
+	</target>	
+
+	<!-- test macro findfirstpath -->
+	<target name="test-findfirstpath">
+	    <findfirstpath dir="C:/Program Files (x86)/AsTeRICS/Java" name="**/java.exe" property="match.1"/>
+	    <echo message="found: ${match.1}"/>
+	    <findfirstpath dir="custom" name="**/*.md" property="match.2"/>
+	    <echo message="found: ${match.2}"/>
+    </target>	
 </project>

@@ -359,16 +359,18 @@ public class BundleManager implements BundleListener, FrameworkListener {
 
         // Now try to restore previous state!
         try {
-            DeploymentManager.instance.deployModel(currentRuntimeModel);
-            if (currentModelStatus == AREStatus.RUNNING || currentModelStatus == AREStatus.PAUSED) {
-                AREServices.instance.runModelInternal();
+            if(currentRuntimeModel!=null) {
+                DeploymentManager.instance.deployModel(currentRuntimeModel);
+                if (currentModelStatus == AREStatus.RUNNING || currentModelStatus == AREStatus.PAUSED) {
+                    AREServices.instance.runModelInternal();
+                }
+                if (currentModelStatus == AREStatus.PAUSED) {
+                    AREServices.instance.pausModelInternal();
+                }
+                // Now it should be in the same state as before - puh!!
             }
-            if (currentModelStatus == AREStatus.PAUSED) {
-                AREServices.instance.pausModelInternal();
-            }
-            // Now it should be in the same state as before - puh!!
         } catch (DeploymentException e) {
-            logger.severe("in BundleManager.getInstallableComponentList: Could not redeploy current runtimeModel");
+            AstericsErrorHandling.instance.reportError(null,"in BundleManager.getInstallableComponentList: Could not redeploy current runtimeModel");
         }
         return bundleList;
     }
