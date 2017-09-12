@@ -295,7 +295,7 @@
 			<!--
 			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
 			-->
-			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles};services_websocketdemo.ini" />
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles}" />
 			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
 		</java>	
 	</target>
@@ -311,7 +311,7 @@
 			<!--
 			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
 			-->
-			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles};services_websocketdemo.ini" />
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles}" />
 			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
 		</java>	
 	</target>
@@ -328,7 +328,7 @@
 			<!--
 			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
 			-->
-			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles};services_websocketdemo.ini" />		
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles}" />		
 			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
 			<jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044"/>
 		</java>	

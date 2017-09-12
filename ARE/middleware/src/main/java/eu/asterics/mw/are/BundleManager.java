@@ -616,7 +616,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
 
         // Hard code loading of services defined in services.ini and
         // services-{os.name}.ini
-        SERVICES_FILES = "services.ini;services-" + OSUtils.getOsName() + ".ini;" + SERVICES_FILES;
+        SERVICES_FILES = "services.ini;services-" + OSUtils.getOsName() + ".ini;services_webservice.ini;" + SERVICES_FILES;
         logger.fine("Using the following .ini files to load services: " + SERVICES_FILES);
 
         // First load all services defined in the services-*.ini files
