@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -314,6 +316,39 @@ public class BundleManager implements BundleListener, FrameworkListener {
         }
         return bundleDescriptorURIs;
     }
+    
+    public List<String> getInstallableBundleNameListCached() throws URISyntaxException {
+    	List<String> bundleList=new ArrayList<String>();
+    	if(bundleChangeDetected()) {
+    		logger.fine("Testing installable bundles and generating cache file");
+    		List<Bundle> bundlesList=getInstallableBundleList();
+    		URI installerFileURI=ResourceRegistry.getInstance().getResource("installable_bundle_list.txt", RES_TYPE.TMP);
+    		logger.fine("Generating installable bundles list to "+installerFileURI);
+    		try(BufferedWriter writer=new BufferedWriter(new FileWriter(ResourceRegistry.toFile(installerFileURI)))) {    			
+    			for(Bundle bundle : bundlesList) {
+    				bundleList.add(bundle.getLocation());
+    				writer.write(bundle.getLocation());
+    				writer.newLine();
+    			}
+    		}catch(IOException e) {
+    			logger.severe("Error generating installable_bundle_list.txt: "+e.getMessage());
+    		}    		
+    	} else {
+    		//if no change was detected, use the cache file
+    		logger.fine("Don't test installable bundles but using cache file");
+    		try(InputStream in=ResourceRegistry.getInstance().getResourceInputStream("installable_bundle_list.txt", RES_TYPE.TMP)) {
+    			
+    			BufferedReader inReader=new BufferedReader(new InputStreamReader(in));
+    			String line=null;
+    			while((line=inReader.readLine()) != null) {
+    				bundleList.add(line);
+    			}
+    		}catch(IOException | URISyntaxException e) {
+    			logger.severe("Error reading from installable_bundle_list.txt: "+e.getMessage());
+    		}
+    	}
+    	return bundleList;
+    }
 
     /**
      * Before installing the bundles an uninstall of all bundles is done.
@@ -600,6 +635,27 @@ public class BundleManager implements BundleListener, FrameworkListener {
             throw new BundleManagementException("Could not find valid bundle descriptor in jarURI: " + jarURI);
         }
         return bundle;
+    }
+    
+    /**
+     * Checks if the internal cache files (loader_componentlist.ini, component collections, help files,...) should be regenerated, 
+     * due to a change of any plugin or jar file. (added, deleted, changed). Also returns true, if any of the cache files does not 
+     * exist.
+     *    
+     * @return
+     */
+    public boolean bundleChangeDetected() {
+    	try {
+			if(!ResourceRegistry.getInstance().resourceExists(ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION,RES_TYPE.PROFILE)) ||
+					!ResourceRegistry.getInstance().resourceExists(ResourceRegistry.getInstance().getResource("webservice/componentCollections/defaultComponentCollection.abd",RES_TYPE.DATA))||
+					!ResourceRegistry.getInstance().resourceExists(ResourceRegistry.getInstance().getResource("installable_bundle_list.txt", RES_TYPE.TMP))) {
+				return true;
+			}
+		} catch (URISyntaxException e) {
+			logger.finer("Plugin change detection failed, URI of loader_componentlist.ini errornous: "+e.getMessage());
+			return false;
+		}
+    	return false;
     }
 
     /**

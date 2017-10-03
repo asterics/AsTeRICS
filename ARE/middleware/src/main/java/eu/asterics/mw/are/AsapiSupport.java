@@ -43,6 +43,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.osgi.service.localization.BundleLocalization;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.w3c.dom.DOMImplementation;
@@ -224,11 +225,13 @@ public class AsapiSupport {
                             response += "<?xml version=\"1.0\"?>";
                             response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
 
-                            List<Bundle> bundleList = DeploymentManager.instance.getBundleManager()
-                                    .getInstallableBundleList();
-                            for (Bundle bundle : bundleList) {
-                                URL bundleDescriptorURL = bundle
-                                        .getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+                            List<String> bundleList = DeploymentManager.instance.getBundleManager()
+                                    .getInstallableBundleNameListCached();
+                            for (String bundleName : bundleList) {
+                            	URI jarInternalURI = ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getResource(bundleName, RES_TYPE.JAR),
+                                        DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+                            	
+                                URL bundleDescriptorURL = jarInternalURI.toURL();                                        
                                 if (bundleDescriptorURL != null) {
                                     try {
                                         response += getFormattedBundleDescriptorStringOfComponentTypeId(
@@ -238,7 +241,7 @@ public class AsapiSupport {
                                         // 'getBundleDescriptors' function)
                                         AstericsErrorHandling.instance.getLogger()
                                                 .warning("Could not get AsTeRiCS bundle descriptor for bundle: "
-                                                        + bundle.getBundleId());
+                                                        + bundleName);
                                     }
                                 }
                             }
@@ -472,13 +475,17 @@ public class AsapiSupport {
                         public List<String> call() throws Exception {
                             List<String> res = new ArrayList<String>();
 
-                            List<Bundle> bundleList = DeploymentManager.instance.getBundleManager()
-                                    .getInstallableBundleList();
-                            for (Bundle bundle : bundleList) {
-                                URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-                                if (url != null) {
+                            List<String> bundleList = DeploymentManager.instance.getBundleManager()
+                                    .getInstallableBundleNameListCached();
+                            
+                            for (String bundleName : bundleList) {
+                            	URI jarInternalURI = ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getResource(bundleName, RES_TYPE.JAR),
+                                        DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+                            	
+                                URL bundleDescriptorURL = jarInternalURI.toURL();                                        
+                                if (bundleDescriptorURL != null) {
                                     try {
-                                        res.add(convertXMLFileToString(url.openStream()));
+                                        res.add(convertXMLFileToString(bundleDescriptorURL.openStream()));
                                     } catch (IOException e) {
                                         // TODO Auto-generated catch block
                                         // throw (new
@@ -488,7 +495,7 @@ public class AsapiSupport {
                                         // several bundles are not supported for
                                         // the platform
                                         AstericsErrorHandling.instance.getLogger()
-                                                .warning("Could not get AsTeRICS bundle descriptor for url: " + url);
+                                                .warning("Could not get AsTeRICS bundle descriptor for url: " + bundleDescriptorURL);
                                     }
                                 }
                             }
