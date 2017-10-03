@@ -26,8 +26,18 @@
 
 package eu.asterics.component.sensor.mousecapture;
 
-import eu.asterics.component.sensor.mousecapture.jni.Bridge;
+import java.lang.reflect.Field;
+
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+import org.jnativehook.NativeInputEvent;
+import org.jnativehook.mouse.NativeMouseEvent;
+import org.jnativehook.mouse.NativeMouseListener;
+import org.jnativehook.mouse.NativeMouseMotionListener;
+import org.jnativehook.mouse.NativeMouseWheelEvent;
+import org.jnativehook.mouse.NativeMouseWheelListener;
 import eu.asterics.mw.data.ConversionUtils;
+import eu.asterics.mw.jnativehook.NativeHookServices;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
@@ -35,15 +45,16 @@ import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
  * MouseCaptureInstance intercepts local mouse input and routes the mouse
- * actions to output ports of the plugin
+ * actions to output ports of the plugin.
+ * Improved version, using the jnativehook service
  * 
- * @author Chris Veigl [veigl@technikum-wien.at] Date: Feb 10, 2011 Time:
- *         2:45:00 PM
+ * @author Benjamin Aigner <aignerb@technikum-wien.at>, October 2017
  */
-public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
+public class MouseCaptureInstance extends AbstractRuntimeComponentInstance implements NativeMouseListener, NativeMouseMotionListener, NativeMouseWheelListener {
     private final OutputPort opMouseX = new OutputPort();
     private final OutputPort opMouseY = new OutputPort();
     private final EventTriggerPort etpLeftButtonPressed = new EventTriggerPort();
@@ -55,10 +66,8 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
     private final EventTriggerPort etpWheelUp = new EventTriggerPort();
     private final EventTriggerPort etpWheelDown = new EventTriggerPort();
 
-    private final Bridge bridge = new Bridge(opMouseX, opMouseY, etpLeftButtonPressed, etpLeftButtonReleased,
-            etpRightButtonPressed, etpRightButtonReleased, etpMiddleButtonPressed, etpMiddleButtonReleased, etpWheelUp,
-            etpWheelDown);
-
+    boolean propBlock = false;
+    boolean enabled = true;
     /**
      * The class constructor.
      */
@@ -106,7 +115,7 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
     @Override
     public Object getRuntimePropertyValue(String propertyName) {
         if ("blockEvents".equalsIgnoreCase(propertyName)) {
-            return bridge.getProperty(propertyName);
+            return propBlock;
         }
         return null;
     }
@@ -122,9 +131,12 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
     @Override
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         if ("blockEvents".equalsIgnoreCase(propertyName)) {
-            final String oldValue = bridge.getProperty(propertyName);
-            bridge.setProperty(propertyName, newValue.toString());
-
+            final String oldValue = String.valueOf(propBlock);
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propBlock = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propBlock = false;
+            }
             return oldValue;
         }
         return null;
@@ -136,25 +148,21 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
     final IRuntimeEventListenerPort elpBlockEvents = new IRuntimeEventListenerPort() {
         @Override
         public void receiveEvent(final String data) {
-            bridge.setProperty("blockEvents", "true");
+            propBlock = true;
         }
     };
 
     final IRuntimeEventListenerPort elpForwardEvents = new IRuntimeEventListenerPort() {
         @Override
         public void receiveEvent(final String data) {
-            bridge.setProperty("blockEvents", "false");
+            propBlock = false;
         }
     };
 
     final IRuntimeEventListenerPort elpToggleBlock = new IRuntimeEventListenerPort() {
         @Override
         public void receiveEvent(final String data) {
-            if ("true".equals(bridge.getProperty("blockEvents")) || "True".equals(bridge.getProperty("blockEvents"))) {
-                bridge.setProperty("blockEvents", "false");
-            } else {
-                bridge.setProperty("blockEvents", "true");
-            }
+            propBlock = !propBlock;
         }
     };
 
@@ -230,7 +238,11 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void start() {
-        bridge.activate();
+        NativeHookServices.init();
+        GlobalScreen.addNativeMouseWheelListener(this);
+        GlobalScreen.addNativeMouseListener(this);
+		GlobalScreen.addNativeMouseMotionListener(this);
+        enabled = true;
         super.start();
     }
 
@@ -239,7 +251,7 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void pause() {
-        bridge.deactivate();
+        enabled = false;
         super.pause();
     }
 
@@ -248,7 +260,7 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void resume() {
-        bridge.activate();
+        enabled = true;
         super.resume();
     }
 
@@ -257,8 +269,125 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void stop() {
-        bridge.deactivate();
+        enabled = false;
+        GlobalScreen.removeNativeMouseWheelListener(this);
+        GlobalScreen.removeNativeMouseListener(this);
+		GlobalScreen.removeNativeMouseMotionListener(this);
         super.stop();
     }
+
+	@Override
+	public void nativeMouseWheelMoved(NativeMouseWheelEvent e) {
+		if (enabled == false) {
+            return;
+        }
+		int rotation = e.getWheelRotation();
+		
+		//raise wheel events, according to jnative declaration:
+		//negative rotation -> wheel up
+		//positive rotation -> wheel down
+		if(rotation < 0)
+		{
+			etpWheelUp.raiseEvent();
+		} else {
+			etpWheelDown.raiseEvent();
+		}
+		//block events, if requested to
+		if(propBlock == true)
+		{
+			try {
+                Field f = NativeInputEvent.class.getDeclaredField("reserved");
+                f.setAccessible(true);
+                f.setShort(e, (short) 0x01);
+            } catch (NoSuchFieldException nsfe) {
+                AstericsErrorHandling.instance.reportError(this,
+                        "Error blocking keycode --> NativeInputField not found, blocking not supported in Linux yet!");
+            } catch (IllegalAccessException iae) {
+                AstericsErrorHandling.instance.reportError(this,
+                        "Error blocking keycode --> IllegalAccess on NativeInputfield, blocking not supported in Linux yet!");
+            }
+
+		}
+	}
+
+	@Override
+	public void nativeMouseDragged(NativeMouseEvent e) {
+		return;
+		//not used in this plugin, clicks & move is already forwarde
+		//possible access:
+		//e.getX();
+		//e.getY();
+	}
+
+	@Override
+	public void nativeMouseMoved(NativeMouseEvent e) {
+		if (enabled == false) {
+            return;
+        }
+		opMouseX.sendData(ConversionUtils.intToBytes(e.getX()));
+		opMouseY.sendData(ConversionUtils.intToBytes(e.getY()));
+		//TODO: blocking?!?
+	}
+
+	@Override
+	public void nativeMouseClicked(NativeMouseEvent e) {
+		return; // just do nothing
+		//e.getClickCount(); //could be used, not in this plugin
+	}
+
+	@Override
+	public void nativeMousePressed(NativeMouseEvent e) {
+		if (enabled == false) {
+            return;
+        }
+		switch(e.getButton())
+		{
+			//left mouse button
+			case NativeMouseEvent.BUTTON1:
+				etpLeftButtonPressed.raiseEvent();
+				break;
+			//Linux: middle mouse button (mostly scroll wheel click)
+			//Windows: right mouse button
+			case NativeMouseEvent.BUTTON2:
+				etpMiddleButtonPressed.raiseEvent();
+				break;
+			//Linux: right mouse button
+			//Windows: middle mouse button (mostly scroll wheel click)
+			case NativeMouseEvent.BUTTON3:
+				etpRightButtonPressed.raiseEvent();
+				break;
+			default:
+				//no button event available, might be used in future version
+				break;
+		}
+		//TODO: blocking?!?
+		//TODO: switch between windows/Linux
+	}
+
+	@Override
+	public void nativeMouseReleased(NativeMouseEvent e) {
+		if (enabled == false) {
+            return;
+        }
+		switch(e.getButton())
+		{
+			//left mouse button
+			case NativeMouseEvent.BUTTON1:
+				etpLeftButtonReleased.raiseEvent();
+				break;
+			//middle mouse button (mostly scroll wheel click)
+			case NativeMouseEvent.BUTTON2:
+				etpMiddleButtonReleased.raiseEvent();
+				break;
+			//right mouse button
+			case NativeMouseEvent.BUTTON3:
+				etpRightButtonReleased.raiseEvent();
+				break;
+			default:
+				//no button event available, might be used in future version
+				break;
+		}
+		//TODO: blocking?!?
+	}
 
 }
