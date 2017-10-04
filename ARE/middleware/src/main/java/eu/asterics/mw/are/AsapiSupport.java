@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -169,39 +171,6 @@ public class AsapiSupport {
         return new String[0];
     }
 
-    /**
-     * Returns a formatted XML String of the componentType(s) in the bundle
-     * descriptor.
-     * 
-     * @param bundleDescriptorURL
-     * @return
-     * @throws MalformedURLException
-     * @throws IOException
-     */
-    private String getFormattedBundleDescriptorStringOfComponentTypeId(URL bundleDescriptorURL)
-            throws MalformedURLException, IOException {
-        // Actually we should ask DefaultBundleModelParser to return just the
-        // part that belongs to the requested componentTypeId
-        // e.g. in case of AnalogIn there is also a second component type
-        // LegacyAnalogIn in the bundle_descriptor.xml
-        // Skip it for now because result is unformatted and JavaScript showed
-        // error callback.
-        // String
-        // bundleDescriptorString=DefaultBundleModelParser.instance.getBundleDescriptionOfComponentTypeId(componentTypeId,
-        // bundleDescriptorURI.toURL().openStream());
-
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bundleDescriptorURL.openStream()));
-        String bundle_descriptor = "", line;
-        while ((line = bufferedReader.readLine()) != null) {
-            bundle_descriptor += line + "\n";
-        }
-
-        bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
-        bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
-        bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");
-
-        return bundle_descriptor;
-    }
 
     /**
      * Returns an xml String containing the component collection (bundle
@@ -219,33 +188,28 @@ public class AsapiSupport {
 
                         @Override
                         public String call() throws Exception {
-
                             String response = "";
 
-                            response += "<?xml version=\"1.0\"?>";
-                            response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
-
-                            List<String> bundleList = DeploymentManager.instance.getBundleManager()
-                                    .getInstallableBundleNameListCached();
-                            for (String bundleName : bundleList) {
-                            	URI jarInternalURI = ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getResource(bundleName, RES_TYPE.JAR),
-                                        DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-                            	
-                                URL bundleDescriptorURL = jarInternalURI.toURL();                                        
-                                if (bundleDescriptorURL != null) {
-                                    try {
-                                        response += getFormattedBundleDescriptorStringOfComponentTypeId(
-                                                bundleDescriptorURL);
-                                    } catch (IOException e) {
-                                        // just logging (as
-                                        // 'getBundleDescriptors' function)
-                                        AstericsErrorHandling.instance.getLogger()
-                                                .warning("Could not get AsTeRiCS bundle descriptor for bundle: "
-                                                        + bundleName);
-                                    }
-                                }
+                            File cacheFile=ResourceRegistry.toFile(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI);
+                            if(DeploymentManager.instance.getBundleManager().bundleChangeDetected()||!cacheFile.exists()) {
+                            	//if a bundle change was detected, generate a new component collection file.
+                            	response=DeploymentManager.instance.getBundleManager().generateComponentDescriptorsAsXml(cacheFile);
+                            } else {
+                            	//if no bundle change was detected, use the cached component collection file.
+                            	StringBuilder responseBuilder=new StringBuilder();
+                            	try(BufferedReader in=new BufferedReader(new FileReader(cacheFile))) {                            		
+                            		String line;
+									while((line=in.readLine())!=null) {
+                            			responseBuilder.append(line);
+                            		}
+									response=responseBuilder.toString();
+                            	}catch(IOException e) {                            		
+                            		logger.severe("Error reading cached component collection from file <"+cacheFile+">, reason: "+e.getMessage());
+                            		//We must rethrow the exception, because we could not read the file.
+                            		//@todo think about falling back to providing file without cache.
+                            		throw new AREAsapiException(e.getMessage());
+                            	}
                             }
-                            response += "</componentTypes>";
 
                             return response;
                         }
@@ -255,6 +219,7 @@ public class AsapiSupport {
             throw new AREAsapiException(e.getMessage());
         }
     }
+    
 
     /**
      * Returns a string encoding the currently deployed model in XML. If there
@@ -499,7 +464,6 @@ public class AsapiSupport {
                                     }
                                 }
                             }
-
                             return res;
                         }
                     });

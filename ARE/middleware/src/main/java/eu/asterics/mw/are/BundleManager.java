@@ -89,6 +89,11 @@ public class BundleManager implements BundleListener, FrameworkListener {
             System.getProperty("osgi.configuration.area", ResourceRegistry.PROFILE_FOLDER)).getName();
     public static String LOADER_COMPONENTLIST_LOCATION = "loader_componentlist.ini";
     static String SERVICES_FILES = System.getProperty("eu.asterics.ARE.ServicesFiles", "services.ini");
+    
+    //define URIs for diverse cache files
+    public static URI COMPONENT_COLLECTION_CACHE_FILE_URI;
+    public static URI LOADER_COMPONENTLIST_CACHE_FILE_URI;
+    public static URI INSTALLABLE_BUNDLE_LIST_CACHE_FILE_URI;
 
     final int MODE_DEFAULT = 0;
     final int MODE_GET_ALL_COMPONENTS = 1;
@@ -135,15 +140,25 @@ public class BundleManager implements BundleListener, FrameworkListener {
     }
 
     public void start() {
+        installServices();
+        
         try {
-            createComponentListCache();
+        	COMPONENT_COLLECTION_CACHE_FILE_URI=ResourceRegistry.getInstance().getResource("componentCollections/defaultComponentCollection.abd",RES_TYPE.WEB_DOCUMENT_ROOT);
+        	LOADER_COMPONENTLIST_CACHE_FILE_URI=ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION,RES_TYPE.PROFILE);
+        	INSTALLABLE_BUNDLE_LIST_CACHE_FILE_URI=ResourceRegistry.getInstance().getResource("installable_bundle_list.txt", RES_TYPE.TMP);
+        	
+            //Before we can start, let's ensure the generation of cached files
+            if(bundleChangeDetected()) {
+                createComponentListCache();
+                            	
+            	logger.fine("Starting generation of component collection cache file");
+            	generateComponentDescriptorsAsXml(ResourceRegistry.toFile(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI));                    	
+            }
         } catch (IOException | ParseException | URISyntaxException e1) {
             // TODO Auto-generated catch block
             AstericsErrorHandling.instance.reportError(null,
                     "Could not create cache for Asterics components:\n" + e1.getMessage());
         }
-
-        installServices();
     }
 
     public void stop() {
@@ -645,18 +660,95 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * @return
      */
     public boolean bundleChangeDetected() {
-    	try {
-			if(!ResourceRegistry.getInstance().resourceExists(ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION,RES_TYPE.PROFILE)) ||
-					!ResourceRegistry.getInstance().resourceExists(ResourceRegistry.getInstance().getResource("webservice/componentCollections/defaultComponentCollection.abd",RES_TYPE.DATA))||
-					!ResourceRegistry.getInstance().resourceExists(ResourceRegistry.getInstance().getResource("installable_bundle_list.txt", RES_TYPE.TMP))) {
-				return true;
-			}
-		} catch (URISyntaxException e) {
-			logger.finer("Plugin change detection failed, URI of loader_componentlist.ini errornous: "+e.getMessage());
-			return false;
-		}
+		if(!ResourceRegistry.resourceExists(LOADER_COMPONENTLIST_CACHE_FILE_URI) ||
+    		!ResourceRegistry.resourceExists(COMPONENT_COLLECTION_CACHE_FILE_URI)||
+    		!ResourceRegistry.resourceExists(INSTALLABLE_BUNDLE_LIST_CACHE_FILE_URI)) {
+    		return true;
+    	}
+
     	return false;
     }
+    
+    /**
+     * This method generates a component collection string and also writes it to the cache file located at {@link BundleManager#COMPONENT_COLLECTION_CACHE_FILE_URI}.
+     * @param cacheFile
+     * @return
+     * @throws URISyntaxException
+     * @throws MalformedURLException
+     */
+    public String generateComponentDescriptorsAsXml(File cacheFile) throws URISyntaxException, MalformedURLException {
+    	String response="";
+    	
+    	response += "<?xml version=\"1.0\"?>";
+    	response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
+
+    	List<String> bundleList = getInstallableBundleNameListCached();
+    	for (String bundleName : bundleList) {
+    		URI jarInternalURI = ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getResource(bundleName, RES_TYPE.JAR),
+    				DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+
+    		URL bundleDescriptorURL = jarInternalURI.toURL();                                        
+    		if (bundleDescriptorURL != null) {
+    			try {
+    				response += getFormattedBundleDescriptorStringOfComponentTypeId(
+    						bundleDescriptorURL);
+    			} catch (IOException e) {
+    				// just logging (as
+    				// 'getBundleDescriptors' function)
+    				AstericsErrorHandling.instance.getLogger()
+    				.warning("Could not get AsTeRiCS bundle descriptor for bundle: "
+    						+ bundleName);
+    			}
+    		}
+    	}
+    	response += "</componentTypes>";
+    	
+    	//now write out the cache file.
+    	try(BufferedWriter out=new BufferedWriter(new FileWriter(cacheFile))) {
+    		out.write(response);
+    		out.flush();
+    		out.close();
+    	}catch(IOException e) {
+    		//logging is sufficient here, because if writing the file does not work, the fallback solution is to provide the
+    		//component collection uncached.
+    		logger.severe("Error writing cached component collection to file <"+cacheFile+">, reason: "+e.getMessage());
+    	}
+    	return response;
+    }
+    
+    /**
+     * Returns a formatted XML String of the componentType(s) in the bundle
+     * descriptor.
+     * 
+     * @param bundleDescriptorURL
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    private String getFormattedBundleDescriptorStringOfComponentTypeId(URL bundleDescriptorURL)
+            throws MalformedURLException, IOException {
+        // Actually we should ask DefaultBundleModelParser to return just the
+        // part that belongs to the requested componentTypeId
+        // e.g. in case of AnalogIn there is also a second component type
+        // LegacyAnalogIn in the bundle_descriptor.xml
+        // Skip it for now because result is unformatted and JavaScript showed
+        // error callback.
+        // String
+        // bundleDescriptorString=DefaultBundleModelParser.instance.getBundleDescriptionOfComponentTypeId(componentTypeId,
+        // bundleDescriptorURI.toURL().openStream());
+
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bundleDescriptorURL.openStream()));
+        String bundle_descriptor = "", line;
+        while ((line = bufferedReader.readLine()) != null) {
+            bundle_descriptor += line + "\n";
+        }
+
+        bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
+        bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
+        bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");
+
+        return bundle_descriptor;
+    }    
 
     /**
      * Installs services and bundles at startup of the BundleManager.
@@ -727,7 +819,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
     public void createComponentListCache()
             throws MalformedURLException, IOException, ParseException, URISyntaxException {
         File componentList = ResourceRegistry
-                .toFile(ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION, RES_TYPE.PROFILE));
+                .toFile(LOADER_COMPONENTLIST_CACHE_FILE_URI);
 
         // OSGIMode=true: only generate list if it does not exist.
         // OSGIMode=false: Always generate cache list. This is also needed to
