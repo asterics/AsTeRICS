@@ -148,9 +148,8 @@ public class BundleManager implements BundleListener, FrameworkListener {
         	INSTALLABLE_BUNDLE_LIST_CACHE_FILE_URI=ResourceRegistry.getInstance().getResource("installable_bundle_list.txt", RES_TYPE.TMP);
         	
             //Before we can start, let's ensure the generation of cached files
+        	createComponentListCache();
             if(bundleChangeDetected()) {
-                createComponentListCache();
-                            	
             	logger.fine("Starting generation of component collection cache file");
             	generateComponentDescriptorsAsXml(ResourceRegistry.toFile(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI));                    	
             }
@@ -704,6 +703,8 @@ public class BundleManager implements BundleListener, FrameworkListener {
     	response += "</componentTypes>";
     	
     	//now write out the cache file.
+    	//Ensure the creation of parent folders.
+    	cacheFile.getParentFile().mkdirs();
     	try(BufferedWriter out=new BufferedWriter(new FileWriter(cacheFile))) {
     		out.write(response);
     		out.flush();
