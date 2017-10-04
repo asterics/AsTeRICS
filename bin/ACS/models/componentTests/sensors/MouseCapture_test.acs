@@ -1,253 +1,1 @@
-<?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\MouseCapture_test.acs_2015_10_9_10_39" version="20130320">
-  <components>
-    <component id="MouseCapture.1" type_id="asterics.MouseCapture">
-      <description>Captures mouse cursor activity from local system</description>
-      <ports>
-        <outputPort portTypeID="mouseX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="mouseY">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="blockEvents" value="False" />
-      </properties>
-      <layout>
-        <posX>52</posX>
-        <posY>55</posY>
-      </layout>
-    </component>
-    <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
-      <description>Oscilloscope display for one signal channel</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="displayBuffer" value="3" />
-        <property name="drawingMode" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="drawingInterval" value="100" />
-        <property name="min" value="-100" />
-        <property name="max" value="100" />
-        <property name="gridColor" value="0" />
-        <property name="channelColor" value="10" />
-        <property name="backgroundColor" value="11" />
-        <property name="fontSize" value="14" />
-        <property name="caption" value="Mouse-X" />
-        <property name="displayGUI" value="true" />
-      </properties>
-      <layout>
-        <posX>246</posX>
-        <posY>25</posY>
-      </layout>
-      <gui>
-        <posX>0</posX>
-        <posY>822</posY>
-        <width>5400</width>
-        <height>3000</height>
-      </gui>
-    </component>
-    <component id="Oscilloscope.2" type_id="asterics.Oscilloscope">
-      <description>Oscilloscope display for one signal channel</description>
-      <ports>
-        <inputPort portTypeID="in">
-          <properties />
-        </inputPort>
-      </ports>
-      <properties>
-        <property name="displayBuffer" value="3" />
-        <property name="drawingMode" value="0" />
-        <property name="displayMode" value="0" />
-        <property name="drawingInterval" value="100" />
-        <property name="min" value="-100" />
-        <property name="max" value="100" />
-        <property name="gridColor" value="0" />
-        <property name="channelColor" value="10" />
-        <property name="backgroundColor" value="11" />
-        <property name="fontSize" value="14" />
-        <property name="caption" value="Mouse-Y" />
-        <property name="displayGUI" value="true" />
-      </properties>
-      <layout>
-        <posX>338</posX>
-        <posY>159</posY>
-      </layout>
-      <gui>
-        <posX>0</posX>
-        <posY>3911</posY>
-        <width>5400</width>
-        <height>3200</height>
-      </gui>
-    </component>
-    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
-      <description>Simple Event Visualizer</description>
-      <ports />
-      <properties>
-        <property name="displayGUI" value="true" />
-      </properties>
-      <layout>
-        <posX>162</posX>
-        <posY>204</posY>
-      </layout>
-      <gui>
-        <posX>5475</posX>
-        <posY>1533</posY>
-        <width>2700</width>
-        <height>5000</height>
-      </gui>
-    </component>
-  </components>
-  <channels>
-    <channel id="binding.0">
-      <source>
-        <component id="MouseCapture.1" />
-        <port id="mouseX" />
-      </source>
-      <target>
-        <component id="Oscilloscope.1" />
-        <port id="in" />
-      </target>
-    </channel>
-    <channel id="binding.1">
-      <source>
-        <component id="MouseCapture.1" />
-        <port id="mouseY" />
-      </source>
-      <target>
-        <component id="Oscilloscope.2" />
-        <port id="in" />
-      </target>
-    </channel>
-  </channels>
-  <eventChannels>
-    <eventChannel id="leftButtonPressed_eventDisplay">
-      <sources>
-        <source>
-          <component id="MouseCapture.1" />
-          <eventPort id="leftButtonPressed" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="leftButtonReleased_eventDisplay">
-      <sources>
-        <source>
-          <component id="MouseCapture.1" />
-          <eventPort id="leftButtonReleased" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="rightButtonPressed_eventDisplay">
-      <sources>
-        <source>
-          <component id="MouseCapture.1" />
-          <eventPort id="rightButtonPressed" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="rightButtonReleased_eventDisplay">
-      <sources>
-        <source>
-          <component id="MouseCapture.1" />
-          <eventPort id="rightButtonReleased" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="middleButtonPressed_eventDisplay">
-      <sources>
-        <source>
-          <component id="MouseCapture.1" />
-          <eventPort id="middleButtonPressed" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="middleButtonReleased_eventDisplay">
-      <sources>
-        <source>
-          <component id="MouseCapture.1" />
-          <eventPort id="middleButtonReleased" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="wheelUp_eventDisplay">
-      <sources>
-        <source>
-          <component id="MouseCapture.1" />
-          <eventPort id="wheelUp" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="wheelDown_eventDisplay">
-      <sources>
-        <source>
-          <component id="MouseCapture.1" />
-          <eventPort id="wheelDown" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="EventVisualizer.1" />
-          <eventPort id="eventDisplay" />
-        </target>
-      </targets>
-    </eventChannel>
-  </eventChannels>
-  <modelGUI>
-    <Decoration>true</Decoration>
-    <Fullscreen>false</Fullscreen>
-    <AlwaysOnTop>false</AlwaysOnTop>
-    <ToSystemTray>false</ToSystemTray>
-    <ShopControlPanel>true</ShopControlPanel>
-    <AREGUIWindow>
-      <posX>0</posX>
-      <posY>0</posY>
-      <width>8788</width>
-      <height>7111</height>
-    </AREGUIWindow>
-  </modelGUI>
-</model>
+﻿<?xml version="1.0"?><model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\MouseCapture_test.acs_2015_10_9_10_39" version="20130320">	<modelDescription>		<shortDescription></shortDescription>		<requirements></requirements>		<description></description>	</modelDescription>	<components>		<component id="MouseCapture.1" type_id="asterics.MouseCapture">			<description>Captures mouse cursor activity from local system</description>			<ports>				<outputPort portTypeID="mouseX">					<properties />				</outputPort>				<outputPort portTypeID="mouseY">					<properties />				</outputPort>			</ports>			<properties>				<property name="blockEvents" value="False" />			</properties>			<layout>				<posX>52</posX>				<posY>55</posY>			</layout>		</component>		<component id="Oscilloscope.1" type_id="asterics.Oscilloscope">			<description>Oscilloscope display for one signal channel</description>			<ports>				<inputPort portTypeID="in" sync="false">					<properties />				</inputPort>			</ports>			<properties>				<property name="displayBuffer" value="3" />				<property name="drawingMode" value="0" />				<property name="displayMode" value="0" />				<property name="drawingInterval" value="100" />				<property name="min" value="-100" />				<property name="max" value="100" />				<property name="gridColor" value="0" />				<property name="channelColor" value="10" />				<property name="backgroundColor" value="11" />				<property name="fontSize" value="14" />				<property name="caption" value="Mouse-X" />				<property name="displayGUI" value="true" />			</properties>			<layout>				<posX>246</posX>				<posY>25</posY>			</layout>			<gui>				<posX>0</posX>				<posY>741</posY>				<width>1771</width>				<height>2963</height>			</gui>		</component>		<component id="Oscilloscope.2" type_id="asterics.Oscilloscope">			<description>Oscilloscope display for one signal channel</description>			<ports>				<inputPort portTypeID="in" sync="false">					<properties />				</inputPort>			</ports>			<properties>				<property name="displayBuffer" value="3" />				<property name="drawingMode" value="0" />				<property name="displayMode" value="0" />				<property name="drawingInterval" value="100" />				<property name="min" value="-100" />				<property name="max" value="100" />				<property name="gridColor" value="0" />				<property name="channelColor" value="10" />				<property name="backgroundColor" value="11" />				<property name="fontSize" value="14" />				<property name="caption" value="Mouse-Y" />				<property name="displayGUI" value="true" />			</properties>			<layout>				<posX>338</posX>				<posY>159</posY>			</layout>			<gui>				<posX>0</posX>				<posY>3889</posY>				<width>1771</width>				<height>2963</height>			</gui>		</component>		<component id="EventVisualizer.1" type_id="asterics.EventVisualizer">			<description>Simple Event Visualizer</description>			<ports />			<properties>				<property name="displayGUI" value="true" />			</properties>			<layout>				<posX>487</posX>				<posY>235</posY>			</layout>			<gui>				<posX>1875</posX>				<posY>741</posY>				<width>2604</width>				<height>4629</height>			</gui>		</component>		<component id="KeyCapture.1" type_id="asterics.KeyCapture">			<description>captures key presses and releases for a single keyboard key</description>			<ports>				<inputPort portTypeID="keyCode" sync="false">					<properties />				</inputPort>			</ports>			<properties>				<property name="keyCode" value="30" />				<property name="block" value="false" />			</properties>			<layout>				<posX>81</posX>				<posY>266</posY>			</layout>		</component>		<component id="TextArea.1" type_id="asterics.TextArea">			<description>GUI component, which displays text.</description>			<ports>				<inputPort portTypeID="setText" sync="false">					<properties />				</inputPort>				<inputPort portTypeID="appendText" sync="false">					<properties />				</inputPort>				<outputPort portTypeID="text">					<properties />				</outputPort>			</ports>			<properties>				<property name="caption" value="" />				<property name="default" value="Press key &quot;a&quot; to toggle mouse blocking" />				<property name="editable" value="false" />				<property name="fontSize" value="14" />				<property name="textColor" value="0" />				<property name="backgroundColor" value="11" />				<property name="displayGUI" value="true" />			</properties>			<layout>				<posX>227</posX>				<posY>339</posY>			</layout>			<gui>				<posX>1875</posX>				<posY>5556</posY>				<width>2604</width>				<height>1296</height>			</gui>		</component>	</components>	<channels>		<channel id="binding.0">			<source>				<component id="MouseCapture.1" />				<port id="mouseX" />			</source>			<target>				<component id="Oscilloscope.1" />				<port id="in" />			</target>		</channel>		<channel id="binding.1">			<source>				<component id="MouseCapture.1" />				<port id="mouseY" />			</source>			<target>				<component id="Oscilloscope.2" />				<port id="in" />			</target>		</channel>	</channels>	<eventChannels>		<eventChannel id="leftButtonPressed_eventDisplay">			<sources>				<source>					<component id="MouseCapture.1" />					<eventPort id="leftButtonPressed" />				</source>			</sources>			<targets>				<target>					<component id="EventVisualizer.1" />					<eventPort id="eventDisplay" />				</target>			</targets>		</eventChannel>		<eventChannel id="leftButtonReleased_eventDisplay">			<sources>				<source>					<component id="MouseCapture.1" />					<eventPort id="leftButtonReleased" />				</source>			</sources>			<targets>				<target>					<component id="EventVisualizer.1" />					<eventPort id="eventDisplay" />				</target>			</targets>		</eventChannel>		<eventChannel id="rightButtonPressed_eventDisplay">			<sources>				<source>					<component id="MouseCapture.1" />					<eventPort id="rightButtonPressed" />				</source>			</sources>			<targets>				<target>					<component id="EventVisualizer.1" />					<eventPort id="eventDisplay" />				</target>			</targets>		</eventChannel>		<eventChannel id="rightButtonReleased_eventDisplay">			<sources>				<source>					<component id="MouseCapture.1" />					<eventPort id="rightButtonReleased" />				</source>			</sources>			<targets>				<target>					<component id="EventVisualizer.1" />					<eventPort id="eventDisplay" />				</target>			</targets>		</eventChannel>		<eventChannel id="middleButtonPressed_eventDisplay">			<sources>				<source>					<component id="MouseCapture.1" />					<eventPort id="middleButtonPressed" />				</source>			</sources>			<targets>				<target>					<component id="EventVisualizer.1" />					<eventPort id="eventDisplay" />				</target>			</targets>		</eventChannel>		<eventChannel id="middleButtonReleased_eventDisplay">			<sources>				<source>					<component id="MouseCapture.1" />					<eventPort id="middleButtonReleased" />				</source>			</sources>			<targets>				<target>					<component id="EventVisualizer.1" />					<eventPort id="eventDisplay" />				</target>			</targets>		</eventChannel>		<eventChannel id="wheelUp_eventDisplay">			<sources>				<source>					<component id="MouseCapture.1" />					<eventPort id="wheelUp" />				</source>			</sources>			<targets>				<target>					<component id="EventVisualizer.1" />					<eventPort id="eventDisplay" />				</target>			</targets>		</eventChannel>		<eventChannel id="wheelDown_eventDisplay">			<sources>				<source>					<component id="MouseCapture.1" />					<eventPort id="wheelDown" />				</source>			</sources>			<targets>				<target>					<component id="EventVisualizer.1" />					<eventPort id="eventDisplay" />				</target>			</targets>		</eventChannel>		<eventChannel id="keyPressed_toggleBlock">			<sources>				<source>					<component id="KeyCapture.1" />					<eventPort id="keyPressed" />				</source>			</sources>			<targets>				<target>					<component id="MouseCapture.1" />					<eventPort id="toggleBlock" />				</target>			</targets>		</eventChannel>		<eventChannel id="keyPressed_eventDisplay">			<sources>				<source>					<component id="KeyCapture.1" />					<eventPort id="keyPressed" />				</source>			</sources>			<targets>				<target>					<component id="EventVisualizer.1" />					<eventPort id="eventDisplay" />				</target>			</targets>		</eventChannel>	</eventChannels>	<modelGUI>		<Decoration>true</Decoration>		<Fullscreen>false</Fullscreen>		<AlwaysOnTop>false</AlwaysOnTop>		<ToSystemTray>false</ToSystemTray>		<ShopControlPanel>true</ShopControlPanel>		<AREGUIWindow>			<posX>0</posX>			<posY>0</posY>			<width>4896</width>			<height>6852</height>		</AREGUIWindow>	</modelGUI></model>
