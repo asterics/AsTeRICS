@@ -8,6 +8,8 @@
 	<target name="cleanProfile">
 	    <delete dir =  "${runtime}/profile/org.eclipse.osgi"/>
 	    <delete file =  "${runtime}/profile/loader_componentlist.ini"/>
+		<delete file =  "${runtime}/tmp/installable_bundle_list.txt"/>
+		<delete file =  "${runtime}/data/webservice/componentCollections/defaultComponentCollection.abd"/>
 	</target>
 
 	<target name="buildARE" depends="cleanProfile">
@@ -73,7 +75,9 @@
 			<!--
 			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
 			-->
-			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="services_websocketdemo.ini" />
+			<!--
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="" />
+			-->
 			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
 		</java>	
 	</target>	
@@ -90,7 +94,9 @@
 			<!--
 			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
 			-->
-			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="services_websocketdemo.ini" />		
+			<!--
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="" />
+			-->		
 			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
 			<jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044"/>
 		</java>	
