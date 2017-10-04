@@ -219,7 +219,7 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
      */
     public class OutputPort extends DefaultRuntimeOutputPort {
         public void sendData(int data) {
-            super.sendData(ConversionUtils.intToByteArray(data));
+            super.sendData(ConversionUtils.intToBytes(data));
         }
     }
 
@@ -295,17 +295,7 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 		//block events, if requested to
 		if(propBlock == true)
 		{
-			try {
-                Field f = NativeInputEvent.class.getDeclaredField("reserved");
-                f.setAccessible(true);
-                f.setShort(e, (short) 0x01);
-            } catch (NoSuchFieldException nsfe) {
-                AstericsErrorHandling.instance.reportError(this,
-                        "Error blocking keycode --> NativeInputField not found, blocking not supported in Linux yet!");
-            } catch (IllegalAccessException iae) {
-                AstericsErrorHandling.instance.reportError(this,
-                        "Error blocking keycode --> IllegalAccess on NativeInputfield, blocking not supported in Linux yet!");
-            }
+			blockEvent(e);
 
 		}
 	}
@@ -326,7 +316,28 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
         }
 		opMouseX.sendData(ConversionUtils.intToBytes(e.getX()));
 		opMouseY.sendData(ConversionUtils.intToBytes(e.getY()));
-		//TODO: blocking?!?
+		
+		//block events, if requested to
+		if(propBlock == true)
+		{
+			blockEvent(e);
+
+		}
+	}
+	
+	private void blockEvent(NativeMouseEvent e)
+	{
+		try {
+            Field f = NativeInputEvent.class.getDeclaredField("reserved");
+            f.setAccessible(true);
+            f.setShort(e, (short) 0x01);
+        } catch (NoSuchFieldException nsfe) {
+            AstericsErrorHandling.instance.reportError(this,
+                    "Error blocking keycode --> NativeInputField not found, blocking not supported in Linux yet!");
+        } catch (IllegalAccessException iae) {
+            AstericsErrorHandling.instance.reportError(this,
+                    "Error blocking keycode --> IllegalAccess on NativeInputfield, blocking not supported in Linux yet!");
+        }
 	}
 
 	@Override
@@ -360,8 +371,12 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 				//no button event available, might be used in future version
 				break;
 		}
-		//TODO: blocking?!?
-		//TODO: switch between windows/Linux
+		
+		if(propBlock == true)
+		{
+			blockEvent(e);
+
+		}
 	}
 
 	@Override
@@ -387,7 +402,12 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 				//no button event available, might be used in future version
 				break;
 		}
-		//TODO: blocking?!?
+		
+		if(propBlock == true)
+		{
+			blockEvent(e);
+
+		}
 	}
 
 }
