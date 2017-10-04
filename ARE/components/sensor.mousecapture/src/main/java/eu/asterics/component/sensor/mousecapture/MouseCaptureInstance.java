@@ -69,6 +69,9 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 
     boolean propBlock = false;
     boolean enabled = true;
+    int Xprev = 0;
+    int Yprev = 0;
+    boolean isMousePrevValid = true;
     /**
      * The class constructor.
      */
@@ -253,6 +256,7 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
     @Override
     public void pause() {
         enabled = false;
+        isMousePrevValid = false;
         super.pause();
     }
 
@@ -271,6 +275,7 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
     @Override
     public void stop() {
         enabled = false;
+        isMousePrevValid = false;
         GlobalScreen.removeNativeMouseWheelListener(this);
         GlobalScreen.removeNativeMouseListener(this);
 		GlobalScreen.removeNativeMouseMotionListener(this);
@@ -318,15 +323,29 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 		
 		//send either absolute positioning values (not blocking)
 		//or relative values (blocking)
-		//TODO: test on windows with blocking
-		opMouseX.sendData(ConversionUtils.intToBytes(e.getX()));
-		opMouseY.sendData(ConversionUtils.intToBytes(e.getY()));
 		
 		//block events, if requested to
 		if(propBlock == true)
 		{
 			blockEvent(e);
-
+			if(isMousePrevValid)
+			{
+				//send relative coordinates
+				opMouseX.sendData(ConversionUtils.intToBytes(Xprev - e.getX()));
+				opMouseY.sendData(ConversionUtils.intToBytes(Yprev - e.getY()));
+				//save current position for next call
+				Xprev = e.getX();
+				Yprev = e.getY();
+			} else {
+				//if no valid previous value is available:
+				//save current values & send data next time
+				Xprev = e.getX();
+				Yprev = e.getY();
+				isMousePrevValid = true;
+			}
+		} else {
+			opMouseX.sendData(ConversionUtils.intToBytes(e.getX()));
+			opMouseY.sendData(ConversionUtils.intToBytes(e.getY()));
 		}
 	}
 	
