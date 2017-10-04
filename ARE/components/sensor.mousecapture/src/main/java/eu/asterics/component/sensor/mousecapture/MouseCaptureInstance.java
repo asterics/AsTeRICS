@@ -46,6 +46,7 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.utils.OSUtils;
 
 /**
  * MouseCaptureInstance intercepts local mouse input and routes the mouse
@@ -360,13 +361,29 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 			//Linux: middle mouse button (mostly scroll wheel click)
 			//Windows: right mouse button
 			case NativeMouseEvent.BUTTON2:
-				etpMiddleButtonPressed.raiseEvent();
+				switch(OSUtils.getOsName())
+				{
+				case "windows":
+					etpRightButtonPressed.raiseEvent();
+					break;
+				default:
+					.raiseEvent();
+					break;
+				}
+				
 				break;
 			//Linux: right mouse button
 			//Windows: middle mouse button (mostly scroll wheel click)
 			case NativeMouseEvent.BUTTON3:
-				etpRightButtonPressed.raiseEvent();
-				break;
+				switch(OSUtils.getOsName())
+				{
+				case "windows":
+					etpMiddleButtonPressed.raiseEvent();
+					break;
+				default:
+					etpRightButtonPressed.raiseEvent();
+					break;
+				}
 			default:
 				//no button event available, might be used in future version
 				break;
@@ -392,6 +409,10 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 				break;
 			//middle mouse button (mostly scroll wheel click)
 			case NativeMouseEvent.BUTTON2:
+				//@TODO: will this be fixed in jnativehook?
+				//currently, BUTTON2 refers to middle click in Linux & right click in Windows
+				//Unknown on macOS.
+				
 				etpMiddleButtonReleased.raiseEvent();
 				break;
 			//right mouse button
