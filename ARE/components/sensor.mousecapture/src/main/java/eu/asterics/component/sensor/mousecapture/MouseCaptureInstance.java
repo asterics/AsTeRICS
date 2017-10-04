@@ -315,6 +315,10 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 		if (enabled == false) {
             return;
         }
+		
+		//send either absolute positioning values (not blocking)
+		//or relative values (blocking)
+		//TODO: test on windows with blocking
 		opMouseX.sendData(ConversionUtils.intToBytes(e.getX()));
 		opMouseY.sendData(ConversionUtils.intToBytes(e.getY()));
 		
@@ -367,7 +371,7 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 					etpRightButtonPressed.raiseEvent();
 					break;
 				default:
-					.raiseEvent();
+					etpMiddleButtonPressed.raiseEvent();
 					break;
 				}
 				
