@@ -78,6 +78,7 @@ public class ResourceRegistry {
     public static final String LICENSES_FOLDER = "LICENSE/";
     public static final String IMAGES_FOLDER = "images/";
     public static final String TMP_FOLDER = "tmp/";
+    public static final String WEB_DOCUMENT_ROOT_FOLDER="data/webservice/";
 
     private static URI ARE_BASE_URI = null;
     // currently not used but the idea is to have a base URI for readonly,
@@ -108,7 +109,7 @@ public class ResourceRegistry {
     }
 
     public enum RES_TYPE {
-        ANY, MODEL, DATA, JAR, PROFILE, STORAGE, LICENSE, IMAGE, TMP
+        ANY, MODEL, DATA, JAR, PROFILE, STORAGE, LICENSE, IMAGE, TMP, WEB_DOCUMENT_ROOT 
     };
 
     /**
@@ -139,6 +140,8 @@ public class ResourceRegistry {
             return IMAGES_FOLDER;
         case TMP:
             return TMP_FOLDER;
+        case WEB_DOCUMENT_ROOT:
+        	return WEB_DOCUMENT_ROOT_FOLDER;
         }
         return ".";
     }
@@ -336,6 +339,9 @@ public class ResourceRegistry {
                     break;
                 case TMP:
                     resFilePath = resolveRelativeFilePath(toAbsolute(TMP_FOLDER), resourcePathSlashified, false);
+                    break;
+                case WEB_DOCUMENT_ROOT:
+                    resFilePath = resolveRelativeFilePath(toAbsolute(WEB_DOCUMENT_ROOT_FOLDER), resourcePathSlashified, false);
                     break;
                 default:
                     resFilePath = resolveRelativeFilePath(getAREBaseURIFile(), resourcePathSlashified, false);
