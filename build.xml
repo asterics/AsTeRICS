@@ -27,12 +27,19 @@
 		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
 
-	<target name="buildAll-release" description="Build the whole project with prior cleaning and no debug information. Other steps for a release might be done as well.">
+	<target name="buildAll-release" depends="copyHelpFiles" description="Build the whole project with prior cleaning and no debug information. Other steps for a release might be done as well.">
 		<subant target="buildAll-release">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 			<fileset dir="ARE_RestAPIlibraries" includes="build.xml"> </fileset>
 		</subant>
 		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
+	</target>
+	
+	<target name="copyHelpFiles" description="Copy all help files to the webserver document root help path">
+		<mkdir dir="${runtime}/data/webservice/help/"/>
+		<copy todir="${runtime}/data/webservice/help/" failonerror="true">
+		    <fileset dir="Documentation/ACS-Help/HTML/"/>			
+		</copy>			
 	</target>
 	
 	<!-- This is the default test target, which calls unit tests -->
