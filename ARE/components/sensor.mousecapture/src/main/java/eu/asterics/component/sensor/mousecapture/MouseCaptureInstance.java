@@ -331,8 +331,8 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 			if(isMousePrevValid)
 			{
 				//send relative coordinates
-				opMouseX.sendData(ConversionUtils.intToBytes(Xprev - e.getX()));
-				opMouseY.sendData(ConversionUtils.intToBytes(Yprev - e.getY()));
+				opMouseX.sendData(ConversionUtils.intToBytes(e.getX()-Xprev+1));
+				opMouseY.sendData(ConversionUtils.intToBytes(e.getY()-Yprev+1));
 				//save current position for next call
 				Xprev = e.getX();
 				Yprev = e.getY();
@@ -430,18 +430,32 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 			case NativeMouseEvent.BUTTON1:
 				etpLeftButtonReleased.raiseEvent();
 				break;
-			//middle mouse button (mostly scroll wheel click)
+			//Linux: middle mouse button (mostly scroll wheel click)
+			//Windows: right mouse button
 			case NativeMouseEvent.BUTTON2:
-				//@TODO: will this be fixed in jnativehook?
-				//currently, BUTTON2 refers to middle click in Linux & right click in Windows
-				//Unknown on macOS.
+				switch(OSUtils.getOsName())
+				{
+				case "windows":
+					etpRightButtonReleased.raiseEvent();
+					break;
+				default:
+					etpMiddleButtonReleased.raiseEvent();
+					break;
+				}
 				
-				etpMiddleButtonReleased.raiseEvent();
 				break;
-			//right mouse button
+			//Linux: right mouse button
+			//Windows: middle mouse button (mostly scroll wheel click)
 			case NativeMouseEvent.BUTTON3:
-				etpRightButtonReleased.raiseEvent();
-				break;
+				switch(OSUtils.getOsName())
+				{
+				case "windows":
+					etpMiddleButtonReleased.raiseEvent();
+					break;
+				default:
+					etpRightButtonReleased.raiseEvent();
+					break;
+				}
 			default:
 				//no button event available, might be used in future version
 				break;
