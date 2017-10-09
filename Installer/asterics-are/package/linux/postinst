@@ -45,6 +45,18 @@ case "$1" in
 		mv $APPPATH/profile $WRITEDIR 
 		mv $APPPATH/data $WRITEDIR
 		[ -e $APPPATH/areProperties ] && mv $APPPATH/areProperties $WRITEDIR || touch $APPPATH/areProperties
+		
+                # component FS20
+		echo creating udev rule 50-asterics-fs20.rules for FS20 devices
+		echo 'ATTRS{idProduct}=="e015", ATTRS{idVendor}=="18ef", MODE="0660", GROUP="plugdev"' > /etc/udev/rules.d/50-asterics-fs20.rules
+		
+		# soft-link for FS20 component, according to:
+		# https://github.com/gary-rowe/hid4java
+		if [ "$(dpkg --print-architecture)" == "armhf" ]; then
+                    echo linking libudev for hid4java library (only on ARM)
+                    ln -sf /lib/arm-linux-gnueabihf/libudev.so.1 /lib/arm-linux-gnueabihf/libudev.so.0
+                fi
+		
 	
 		chmod -R o+w $WRITEDIR
 		ln -sf $WRITEDIR/models $APPPATH/models
