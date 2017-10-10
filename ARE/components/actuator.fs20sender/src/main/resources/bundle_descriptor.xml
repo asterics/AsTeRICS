@@ -23,6 +23,10 @@
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
+            <outputPort id="output">
+                <description>Sent bytes after sending a FS20 command, smaller 0 if failure</description>
+                <dataType>string</dataType>
+            </outputPort>
         </ports>
 		<events>
 			<eventListenerPort id="off">

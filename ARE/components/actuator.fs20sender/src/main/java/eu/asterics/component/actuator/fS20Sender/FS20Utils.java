@@ -25,7 +25,34 @@
 
 package eu.asterics.component.actuator.fS20Sender;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.sun.jna.platform.win32.Advapi32Util;
+import com.sun.jna.platform.win32.WinReg;
+
+import eu.asterics.mw.services.AstericsErrorHandling;
+
 public class FS20Utils {
+
+    private static Logger logger = AstericsErrorHandling.instance.getLogger();
+
+    private static final String REGISTRY_PATH_DEVICE_PARAMS = "Device Parameters";
+    private static final String REGISTRY_PATH_FS20 = "SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_18EF&PID_E015";
+    private static final String REGISTRY_KEY_POWERMANAGEMENT = "EnhancedPowerManagementEnabled";
+    private static final String FILENAME_REGPATCH = "regpatchfs20.vbs";
+    private static final String FILENAME_REGPATCH2 = "regpatchfs20.cmd";
+    private static final String PATH_SEPARATOR = "\\";
+    private static ScheduledExecutorService timerExecutorPatch = Executors.newSingleThreadScheduledExecutor();;
 
     public static byte Off = 0x00;
     public static byte OnStep1 = 0x01;
@@ -138,6 +165,81 @@ public class FS20Utils {
         }
 
         return (byte) value;
+    }
+
+    public static boolean isWindowsOS() {
+        return System.getProperty("os.name").toLowerCase().contains("windows");
+    }
+
+    public static boolean patchRegistryDisablePowerSaveMode() {
+        boolean patched = false;
+        try {
+            if (Advapi32Util.registryKeyExists(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20)) {
+                String[] subkeys = Advapi32Util.registryGetKeys(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20);
+                if (!allSubkeysPatched(subkeys)) {
+                    copyBatchFromJar(FILENAME_REGPATCH);
+                    copyBatchFromJar(FILENAME_REGPATCH2);
+                    ProcessBuilder builder = new ProcessBuilder("cscript", "/E:JScript", "/nologo", FILENAME_REGPATCH,
+                            getArgString(subkeys));
+                    builder.directory(new File(getHomePath()));
+                    Process process = builder.start();
+                    patched = process.waitFor() == 0;
+                    deleteBatchFile(FILENAME_REGPATCH);
+                    // second patch-script cannot be removed immediately,
+                    // because maybe it is still executing, so wait 500ms
+                    Runnable cleanupTask = new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                deleteBatchFile(FILENAME_REGPATCH2);
+                            } catch (IOException e) {
+                                logger.log(Level.INFO,
+                                        "could not remove patch-script after patching registry for FS20.", e);
+                            }
+                        }
+                    };
+                    timerExecutorPatch.schedule(cleanupTask, 500, TimeUnit.MILLISECONDS);
+                }
+            }
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "error patching registry.", e);
+        }
+        return patched;
+    }
+
+    private static String getArgString(String[] strings) {
+        String args = "";
+        for (String key : strings) {
+            args += " \"" + key + "\"";
+        }
+        return args.trim();
+    }
+
+    private static void copyBatchFromJar(String batchFilename) throws IOException {
+        ClassLoader loader = PCSDevice.class.getClassLoader();
+        InputStream resource = loader.getResourceAsStream(batchFilename);
+        Files.copy(resource, Paths.get(getHomePath() + "\\" + batchFilename), StandardCopyOption.REPLACE_EXISTING);
+        resource.close();
+    }
+
+    private static void deleteBatchFile(String batchFilename) throws IOException {
+        new File(getHomePath() + PATH_SEPARATOR + batchFilename).delete();
+    }
+
+    private static String getHomePath() {
+        return System.getProperty("user.dir");
+    }
+
+    private static boolean allSubkeysPatched(String[] subkeys) {
+        for (String subkey : subkeys) {
+            int value = Advapi32Util.registryGetIntValue(WinReg.HKEY_LOCAL_MACHINE,
+                    REGISTRY_PATH_FS20 + "\\" + subkey + "\\" + REGISTRY_PATH_DEVICE_PARAMS,
+                    REGISTRY_KEY_POWERMANAGEMENT);
+            if (value == 1) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

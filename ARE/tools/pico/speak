@@ -1,3 +1,0 @@
-cd /home/asterics/projects/AsTeRICS/bin/ARE/tools/pico
-./tts -l de "asterics speech output on raspberry pi" | aplay --rate=16000 --channels=1 --format=S16_LE
-
