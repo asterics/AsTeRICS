@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.concurrent.Executors;
@@ -41,6 +42,7 @@ import com.sun.jna.platform.win32.Advapi32Util;
 import com.sun.jna.platform.win32.WinReg;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.utils.OSUtils;
 
 public class FS20Utils {
 
@@ -49,8 +51,8 @@ public class FS20Utils {
     private static final String REGISTRY_PATH_DEVICE_PARAMS = "Device Parameters";
     private static final String REGISTRY_PATH_FS20 = "SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_18EF&PID_E015";
     private static final String REGISTRY_KEY_POWERMANAGEMENT = "EnhancedPowerManagementEnabled";
-    private static final String FILENAME_REGPATCH = "regpatchfs20.vbs";
-    private static final String FILENAME_REGPATCH2 = "regpatchfs20.cmd";
+    static final String FILENAME_REGPATCH = "regpatchfs20.vbs";
+    static final String FILENAME_REGPATCH2 = "regpatchfs20.cmd";
     private static final String PATH_SEPARATOR = "\\";
     private static ScheduledExecutorService timerExecutorPatch = Executors.newSingleThreadScheduledExecutor();;
 
@@ -168,7 +170,8 @@ public class FS20Utils {
     }
 
     public static boolean isWindowsOS() {
-        return System.getProperty("os.name").toLowerCase().contains("windows");
+    	//Use already existing utility function for detecting os
+        return OSUtils.isWindows();
     }
 
     public static boolean patchRegistryDisablePowerSaveMode() {
@@ -184,6 +187,7 @@ public class FS20Utils {
                     builder.directory(new File(getHomePath()));
                     Process process = builder.start();
                     patched = process.waitFor() == 0;
+                    /* should not be necessary, because the patch files are created temporarily and should be deleted on program exit.
                     deleteBatchFile(FILENAME_REGPATCH);
                     // second patch-script cannot be removed immediately,
                     // because maybe it is still executing, so wait 500ms
@@ -199,6 +203,7 @@ public class FS20Utils {
                         }
                     };
                     timerExecutorPatch.schedule(cleanupTask, 500, TimeUnit.MILLISECONDS);
+                    */
                 }
             }
         } catch (Exception e) {
@@ -215,16 +220,28 @@ public class FS20Utils {
         return args.trim();
     }
 
-    private static void copyBatchFromJar(String batchFilename) throws IOException {
+    static void copyBatchFromJar(String batchFilename) throws IOException {
+    	//This is a small hack because we want to get the system or user temp dir but don't want to get a unique tempfilename.
+    	//Create a temp file 
+    	File tempFile=File.createTempFile(batchFilename,"");
+    	tempFile.deleteOnExit();
+    	//use parent directory to know actual temp dir
+    	File tempDir=tempFile.getParentFile();
+    	//create a file with the name we want.
+    	File batchFile=new File(tempDir,batchFilename);
+    	//delete both temp files on exit of the program.
+    	batchFile.deleteOnExit();
+    	logger.fine("Extracting FS20 batch file to "+batchFile);
         ClassLoader loader = PCSDevice.class.getClassLoader();
-        InputStream resource = loader.getResourceAsStream(batchFilename);
-        Files.copy(resource, Paths.get(getHomePath() + "\\" + batchFilename), StandardCopyOption.REPLACE_EXISTING);
-        resource.close();
+        try(InputStream resource = loader.getResourceAsStream(batchFilename);) {
+        	Files.copy(resource, batchFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
     }
 
+    /*
     private static void deleteBatchFile(String batchFilename) throws IOException {
         new File(getHomePath() + PATH_SEPARATOR + batchFilename).delete();
-    }
+    }*/
 
     private static String getHomePath() {
         return System.getProperty("user.dir");
