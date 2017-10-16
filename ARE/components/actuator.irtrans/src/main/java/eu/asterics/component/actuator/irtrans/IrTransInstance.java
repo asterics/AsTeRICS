@@ -58,6 +58,7 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
     private final String ERROR_RESULT = "ERROR_SOCKET_NOT_OPEN";
     private final int READ_TIMEOUT_LEARN_MS = 6000;
     private final int READ_TIMEOUT_SEND_MS = 500;
+    private final int TIMEOUT_JOIN_THREAD = 2000;
 
     // prestring will be part of every command, which will be sent
     private String propPrestring = "";
@@ -85,6 +86,17 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
             closeTcpSocket(tcpSocket);
             tcpSocket = initTcpSocket(tcpSocket);
         }
+        if (tcpSocketRead != null) {
+            closeTcpSocket(tcpSocketRead);
+            tcpSocketRead = initTcpSocket(tcpSocketRead);
+        }
+        readerThread.interrupt();
+        try {
+            readerThread.join(TIMEOUT_JOIN_THREAD);
+        } catch (InterruptedException e) {
+            logger.info("interrupted exception on joining reader thread");
+        }
+        receiveCommandsToOutputPort();
     }
 
     private Socket initTcpSocket(Socket tcpSocket) {
@@ -293,6 +305,8 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
                     }
                 } catch (Exception e) {
                     logger.log(Level.INFO, "reading from socket to receive command stopped");
+                } finally {
+                    closeTcpSocket(tcpSocketRead);
                 }
             }
         });
@@ -354,7 +368,7 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
         // remove spaces at beginning and end and replace double spaces in
         // string with single space
         byte[] sendBytes = ("A" + cmdString.trim().replaceAll("\\s+", " ") + "\n").getBytes();
-        socket.getInputStream().skip(tcpSocket.getInputStream().available());
+        socket.getInputStream().skip(socket.getInputStream().available());
         socket.getOutputStream().write(sendBytes);
         socket.getOutputStream().flush();
         AstericsErrorHandling.instance.reportInfo(this, "IRTrans sent data: " + cmdString);
