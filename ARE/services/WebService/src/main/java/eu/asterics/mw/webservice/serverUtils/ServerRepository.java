@@ -27,6 +27,10 @@ package eu.asterics.mw.webservice.serverUtils;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.logging.Level;
+
+import eu.asterics.mw.are.AREProperties;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
  * The repository used by the Grizzly servers, holding static information.
@@ -35,17 +39,80 @@ import java.util.ArrayList;
  *
  */
 public class ServerRepository {
+    //Singleton instance
+    private static ServerRepository instance;
+    
+	
 
     // Rest Server configuration
+    public static final String ARE_WEBSERVICE_PORT_REST_KEY = "ARE.webservice.port.REST";
     public static final String PATH_REST = "/rest";
-    public static final int PORT_REST = 8081;
-    public static final URI BASE_URI_REST = URI.create("http://0.0.0.0:" + PORT_REST + PATH_REST);
-
-    // Web Service Server configuration
+    static int DEFAULT_PORT_REST = 8081;    
+    
+    // Web Socket Server configuration
     public static final String PATH_WS = "/ws";
     public static final String PATH_WS_ASTERICS_DATA = "/astericsData";
-    public static final int PORT_WS = 8082;
-    public static final URI BASE_URI_WS = URI.create("http://localhost:" + PORT_WS + PATH_WS);
+    public static final String ARE_WEBSERVICE_PORT_WS_KEY = "ARE.webservice.port.websocket";    
+    static int DEFAULT_PORT_WS = 8082;
+    
+    //member variables holding property values
+    private int portREST=DEFAULT_PORT_REST;
+    private int portWS=DEFAULT_PORT_WS;
+    
+    /**
+     * Private ctor used for initializing the class.
+     */
+    private ServerRepository() {
+    	//init ports and paths with property values
+    	try {
+    		portREST=Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY, String.valueOf(DEFAULT_PORT_REST)));
+    		//We have to store back the actual property value so that it will be written to the areProperties config file if it did not exist before.
+    		AREProperties.instance.setProperty(ARE_WEBSERVICE_PORT_REST_KEY, String.valueOf(portREST));
+    	}catch(NumberFormatException e) {
+    		AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()", "Configured port for REST service invalid: "+ e.getMessage(),e);
+    	}
+    	//init ports and paths with property values
+    	try {
+    		portWS=Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_WS_KEY, String.valueOf(DEFAULT_PORT_WS)));
+    		//We have to store back the actual property value so that it will be written to the areProperties config file if it did not exist before.
+    		AREProperties.instance.setProperty(ARE_WEBSERVICE_PORT_WS_KEY, String.valueOf(portWS));
+    	}catch(NumberFormatException e) {
+    		AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()", "Configured port for Websocket service invalid: "+e.getMessage(),e);
+    	}
+    }
+    
+    /**
+	 * @return the baseUriRest
+	 */
+	public URI getBaseUriREST() {
+		return URI.create("http://0.0.0.0:" + getPortREST() + PATH_REST);
+	}
+
+	/**
+	 * @return the baseUriWs
+	 */
+	public URI getBaseUriWS() {
+		return URI.create("http://localhost:" + getPortWS() + PATH_WS);
+	}
+	
+	public int getPortREST() {
+		return portREST;
+	}
+	
+	public int getPortWS() {
+		return portWS;
+	}
+	
+	/**
+     * Returns a singleton instance of the ServerRepository class
+     * @return
+     */
+    public static ServerRepository getInstance() {
+    	if(instance==null) {
+    		instance=new ServerRepository();
+    	}
+    	return instance;
+    }
 
     // a list with the functions of the Restful API
     public static final ArrayList<RestFunction> restFunctions = new ArrayList<RestFunction>() {

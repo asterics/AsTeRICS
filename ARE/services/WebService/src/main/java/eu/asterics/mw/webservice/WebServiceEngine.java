@@ -89,14 +89,14 @@ public class WebServiceEngine {
      */
     public void initGrizzlyHttpService(BundleContext bc) throws IOException {
 
-        logger.fine("Starting grizzly HTTP-server, " + ServerRepository.BASE_URI_REST);
+        logger.fine("Starting REST API at " + ServerRepository.getInstance().getBaseUriREST());
 
         ResourceConfig rc = new ResourceConfig();
 
         // REST SERVER CONFIGURATION
         rc.registerClasses(RestServer.class, SseResource.class, SseFeature.class);
         rc.register(new ResponseFilter());
-        restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.BASE_URI_REST, rc);
+        restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.getInstance().getBaseUriREST(), rc);
         restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler("./data/webservice"), "/");
         for (NetworkListener l : restServer.getListeners()) {
             l.getFileCache().setEnabled(false);
@@ -104,10 +104,10 @@ public class WebServiceEngine {
 
         restServer.start();
 
-        logger.fine("Starting grizzly WS-server, " + ServerRepository.BASE_URI_WS);
+        logger.fine("Initializing Websocket... ");
 
         // WEB SERVICE SERVER CONFIGURATION
-        wsServer = HttpServer.createSimpleServer("./data/webservice", "0.0.0.0", ServerRepository.PORT_WS);
+        wsServer = HttpServer.createSimpleServer("./data/webservice", "0.0.0.0", ServerRepository.getInstance().getPortWS());
 
         final WebSocketAddOn addon = new WebSocketAddOn();
         for (NetworkListener listener : wsServer.getListeners()) {
@@ -117,7 +117,7 @@ public class WebServiceEngine {
         astericsApplication = new AstericsDataApplication();
 
         logger.fine(
-                "Registering Websocket URI: " + ServerRepository.BASE_URI_WS + ServerRepository.PATH_WS_ASTERICS_DATA);
+                "Registering Websocket URI: " + ServerRepository.getInstance().getBaseUriWS() + ServerRepository.PATH_WS_ASTERICS_DATA);
         WebSocketEngine.getEngine().register(ServerRepository.PATH_WS, ServerRepository.PATH_WS_ASTERICS_DATA,
                 astericsApplication);
 
