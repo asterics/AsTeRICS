@@ -71,7 +71,7 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
     boolean enabled = true;
     int Xprev = 0;
     int Yprev = 0;
-    boolean isMousePrevValid = true;
+    boolean isMousePrevValid = false;
     /**
      * The class constructor.
      */
@@ -317,6 +317,8 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 
 	@Override
 	public void nativeMouseMoved(NativeMouseEvent e) {
+		int X,Y;
+		
 		if (enabled == false) {
             return;
         }
@@ -330,9 +332,21 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 			blockEvent(e);
 			if(isMousePrevValid)
 			{
-				//send relative coordinates
-				opMouseX.sendData(ConversionUtils.intToBytes(e.getX()-Xprev+1));
-				opMouseY.sendData(ConversionUtils.intToBytes(e.getY()-Yprev+1));
+				//send relative coordinates, depending 
+				//on the current move direction
+				if(e.getX() >= Xprev)
+				{
+					X = e.getX() - Xprev + 1;
+				} else { 
+					X = e.getX() - Xprev - 1;
+				}
+				if(e.getY() >= Yprev)
+				{
+					Y = e.getY() - Yprev + 1;
+				} else { 
+					Y = e.getY() - Yprev - 1;
+				}
+				
 				//save current position for next call
 				Xprev = e.getX();
 				Yprev = e.getY();
@@ -342,11 +356,20 @@ public class MouseCaptureInstance extends AbstractRuntimeComponentInstance imple
 				Xprev = e.getX();
 				Yprev = e.getY();
 				isMousePrevValid = true;
+				
+				//do not send relative coordinates in the first run
+				return;
 			}
 		} else {
-			opMouseX.sendData(ConversionUtils.intToBytes(e.getX()));
-			opMouseY.sendData(ConversionUtils.intToBytes(e.getY()));
+			//absolute coordinates if not blocking
+			X = e.getX();
+			Y = e.getY();
 		}
+		
+		//send new values to the output port
+		opMouseX.sendData(ConversionUtils.intToBytes(X));
+		opMouseY.sendData(ConversionUtils.intToBytes(Y));
+		
 	}
 	
 	private void blockEvent(NativeMouseEvent e)
