@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
@@ -37,41 +38,22 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class AREProperties extends Properties {
     public static AREProperties instance = new AREProperties();
     static final String PROPERTY_FILENAME = "areProperties";
-    private static Logger logger = null;
+    private static Logger logger;
 
     private AREProperties() {
-        try {
-            logger = AstericsErrorHandling.instance.getLogger();
-            FileInputStream in;
-            in = new FileInputStream(PROPERTY_FILENAME);
+        logger = AstericsErrorHandling.instance.getLogger();
+        try (FileInputStream in = new FileInputStream(PROPERTY_FILENAME);) {
             load(in);
-            in.close();
-
         } catch (IOException e) {
-            // Try to create the file if does not exist
-            File file = new File(PROPERTY_FILENAME);
-            boolean success;
-            try {
-                success = file.createNewFile();
-                if (success) {
-                    logger.warning(this.getClass().getName() + ".AREProperties(): "
-                            + "Properties file was missing, it has been created.");
-                }
-            } catch (IOException ioe) {
-                logger.severe(this.getClass().getName() + "." + "AREProperties(): Options file was missing and "
-                        + "couldn't be created.");
-            }
+            logger.info("The file " + PROPERTY_FILENAME + " does not exist, it will be generated automatically.");
         }
     }
 
     public void storeProperties() {
-        try {
-            FileOutputStream out = new FileOutputStream(PROPERTY_FILENAME);
+        try (FileOutputStream out = new FileOutputStream(PROPERTY_FILENAME);) {
             store(out, "ARE Properties");
-            out.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 

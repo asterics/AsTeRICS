@@ -126,8 +126,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
             CommPortIdentifier portIdentifier = (CommPortIdentifier) portEnum.nextElement();
             if (!portIdentifier.isCurrentlyOwned()
                     && (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL)) {
-                // logger.fine(this.getClass().getName()+".rescan: " +
-                // "CIM scanning on port " + portIdentifier.getName());
+                logger.fine(this.getClass().getName()+".rescan: CIM scanning on port <" + portIdentifier.getName()+">");
                 for (String s : ignoredComPorts) {
                     if (portIdentifier.getName().trim().equals(s.trim())) {
                         // this port be ignored, nothing has been opened so far

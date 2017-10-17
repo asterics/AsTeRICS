@@ -28,6 +28,9 @@ package eu.asterics.component.processor.serialport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.logging.Level;
 
 import eu.asterics.mw.cimcommunication.CIMPortController;
 import eu.asterics.mw.cimcommunication.CIMPortManager;
@@ -52,6 +55,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  */
 public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     private final OutputPort opReceived = new OutputPort();
+    private final OutputPort opReceivedBytes = new OutputPort();
 
     // Usage of an output port e.g.:
     // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
@@ -66,7 +70,10 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     int propBaudRate = 9600;
     int propSendStringTerminator = 0;
     int propReceiveStringTerminator = 0;
-
+    int propSendBytesBufferSize=1;
+    
+    private ByteBuffer sendBytesBuffer=ByteBuffer.allocate(propSendBytesBufferSize);
+    
     // declare member variables here
     CIMPortController portController = null;
 
@@ -88,7 +95,11 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     public IRuntimeInputPort getInputPort(String portID) {
         if ("send".equalsIgnoreCase(portID)) {
             return ipSend;
+        } else if ("sendBytes".equalsIgnoreCase(portID)) {
+            return ipSendBytes;
         }
+
+        
         return null;
     }
 
@@ -103,7 +114,10 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     public IRuntimeOutputPort getOutputPort(String portID) {
         if ("received".equalsIgnoreCase(portID)) {
             return opReceived;
+        } else if ("receivedBytes".equalsIgnoreCase(portID)) {
+            return opReceivedBytes;
         }
+
         return null;
     }
 
@@ -154,6 +168,9 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
         if ("receiveStringTerminator".equalsIgnoreCase(propertyName)) {
             return propReceiveStringTerminator;
         }
+        if ("sendBytesBufferSize".equalsIgnoreCase(propertyName)) {
+            return propReceiveStringTerminator;
+        }
         return null;
     }
 
@@ -187,6 +204,12 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
             propReceiveStringTerminator = Integer.parseInt(newValue.toString());
             return oldValue;
         }
+        if ("sendBytesBufferSize".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propSendBytesBufferSize;
+            propSendBytesBufferSize = Integer.parseInt(newValue.toString());
+            sendBytesBuffer=ByteBuffer.allocate(propSendBytesBufferSize);
+            return oldValue;
+        }        
 
         return null;
     }
@@ -236,12 +259,47 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
                         break;
                     }
                 } catch (Exception e) {
+                    AstericsErrorHandling.instance.getLogger().warning("Sending data to serial port <"+propComPort+"> failed, reason: "+e.getMessage());
                 }
                 ;
 
             }
         }
     };
+    
+    /**
+     * Input Ports for receiving values.
+     */
+    private final IRuntimeInputPort ipSendBytes = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            // stringBuffer.append(new String(data));
+            // opActResult.sendData
+            // (ConversionUtils.stringToBytes(stringBuffer.toString()));
+
+            if (out != null && data != null) {
+                try {
+                    if(sendBytesBuffer.hasRemaining()) {
+                        sendBytesBuffer.put(data);
+                    } 
+                    if(!sendBytesBuffer.hasRemaining() && sendBytesBuffer.hasArray()) {
+                        //If the buffer is full, send the data and then clear the buffer again.
+                        byte[] sendBytes=sendBytesBuffer.array();
+                        if(AstericsErrorHandling.instance.getLogger().isLoggable(Level.FINE)) {
+                            AstericsErrorHandling.instance.getLogger().fine("Sending data to serial port <"+propComPort+">, data: "+Arrays.toString(sendBytes));
+                        }
+                        
+                        out.write(sendBytes);                        
+                        sendBytesBuffer.clear();
+                    } 
+                } catch (Exception e) {
+                    AstericsErrorHandling.instance.getLogger().warning("Sending data to serial port <"+propComPort+"> failed, reason: "+e.getMessage());
+                }
+            }
+        }
+    };
+    
+    
 
     /**
      * Called by the raw port controller if data is available
@@ -258,9 +316,12 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     public void handlePacketReceived(byte actbyte) {
         boolean finished = false;
 
+        //First directly send the byte to the receivedBytes output port.
+        opReceivedBytes.sendData(ConversionUtils.byteToBytes(actbyte));
+        
         // System.out.println("received " + Integer.toHexString(0x000000ff &
         // actbyte) +" hex");
-
+        
         switch (propSendStringTerminator) {
         case 0:
             received += (char) actbyte;
@@ -316,8 +377,14 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void start() {
+        //Sanity check: if portController != null stop the connection first.
+        if(portController!=null) {
+            stop();
+        }
+
         portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
         received = "";
+
         if (portController == null) {
             AstericsErrorHandling.instance.reportError(this,
                     "SerialPort-plugin: Could not construct raw port controller, please verify that the COM port is valid.");

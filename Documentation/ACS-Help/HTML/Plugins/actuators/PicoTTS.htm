@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=ISO-8859-2">
+    <meta name="GENERATOR" content="Microsoft is shit...">
+    <link rel="stylesheet" type="text/css"
+      href="../../stylesheet/help.css" media="screen">
+    <title>PicoTTS</title>
+  </head>
+  <body>
+    <h1>PicoTTS (text-to-speech</h1>
+    <h3>Component Type: Actuator (Subcategory: Audio and Voice)</h3>
+    <p>The PicoTTS component creates speech output of given input text.</p>
+    <p>This component uses the picoTTS binary to create a temporary wavefile,
+    which is played after creation.</p>
+    <div class="image"><img src="img/picoTTS.png"
+        alt="Screenshot: picoTTS plugin" title="Screenshot:
+        picoTTS plugin"><br>
+      picoTTS plugin</div>
+    <h2>Requirements</h2>
+    <b>Linux environment only!</b><br>
+    Please install the pico2wave binary with following command (on Debian/Ubuntu based platforms):<br>
+    <i>"sudo apt install libttspico-utils"</i> <br>
+    If this plugin is not working (no speech output), please ensure, that the <i>aplay</i> command is available.
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>input [string]:</strong> The text sentence, which will
+        be converted into speech.</li>
+    </ul>
+    <h2>Properties </h2>
+    <ul>
+      <li><strong>language [choice]:</strong> Defines the output language. Available by picoTTS: English (UK/US), German, Italian, Spanish, French</li>
+    </ul>
+  </body>
+</html>
