@@ -552,6 +552,30 @@ function getPortDatatype(successCallback, errorCallback, componentId, portId) {
 	});
 }
 
+function sendDataToInputPort(successCallback, errorCallback, componentId, portId, value) {
+    if ( !componentId || !portId || !value) return;
+
+    $.ajax({
+        type: "PUT",
+        beforeSend: function(request) {
+            request.setRequestHeader("Content-Type", "text/plain");
+        },
+        url: _baseURI + "runtime/model/components/" + encodeParam(componentId) + "/ports/" + encodeParam(portId) + "/data",
+        datatype: "text",
+        crossDomain: true,
+		data: value,
+        success:
+            function (data, textStatus, jqXHR){
+                jsonString = jqXHR.responseText;
+                successCallback(jsonString, textStatus);
+            },
+        error:
+            function (jqXHR, textStatus, errorThrown) {
+                errorCallback(errorThrown,jqXHR.responseText);
+            }
+    });
+}
+
 
 /*************************************
  *	Storage/ARE-repository resources
