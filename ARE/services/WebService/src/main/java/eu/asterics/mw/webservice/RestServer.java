@@ -324,7 +324,7 @@ public class RestServer {
 
         return response;
     }
-    
+
 
     @Path("/runtime/model/components/properties")
     @PUT
@@ -334,7 +334,7 @@ public class RestServer {
         String response = "";
         String errorMessage = "";
         Set<String> changedValues = new HashSet<String>();
-        
+
         try {
             Map<String, Map<String, String>> propertyMap = new HashMap<String, Map<String, String>>();
             propertyMap = (Map<String, Map<String, String>>) ObjectTransformation.JSONToObject(bodyContent, Map.class);
@@ -367,7 +367,7 @@ public class RestServer {
         }
     }
 
-    
+
     @Path("/runtime/model/components/{componentId}/ports/input/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -873,8 +873,8 @@ public class RestServer {
             response = "success";
         } catch (Exception e) {
             logger.log(Level.WARNING, "could not send data!", e);
-            errorMessage = MessageFormat.format("Couldn't set <{0}> value to <{1}> from <{2}> ({3})", decodedPortId,
-                    decodedCompId, e.getMessage());
+            errorMessage = MessageFormat.format("Couldnt set port <{0}> of component <{1}> to value <{2}> (Exception: {3})", decodedPortId, decodedCompId,
+                    value, e.getMessage());
             response = "error:" + errorMessage;
         }
 
