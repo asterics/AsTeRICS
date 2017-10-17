@@ -86,7 +86,14 @@
 
 				getPortDatatype(defaultSuccessCallback, defaultErrorCallback, componentId, portId);
 			}
-			
+
+            function SEND_DATA_TO_INPUT_PORT() {
+                var componentId = document.getElementById("SDTIPcid").value;
+                var portId = document.getElementById("SDTIPpid").value;
+                var value = document.getElementById("SDTIPval").value;
+
+                sendDataToInputPort(defaultSuccessCallback, defaultErrorCallback, componentId, portId, value);
+            }
 
 			//getComponentEventChannelsIds
 			function GET_COMPONENT_EVENT_CHANNEL_IDS() {
@@ -165,6 +172,12 @@
 			<button onclick="GET_PORT_DATATYPE()" title="Description: returns the datatype of the specified port &#013;Ouput: alert"> Get port datatype </button>
 			<input placeholder="componentId" type="text" id="GCPDTid"/>
 			<input placeholder="componentId" type="text" id="GCPDTpid"/>
+			<br/>
+
+			<button onclick="SEND_DATA_TO_INPUT_PORT()" title="Description: sends given data to a input port of a component;Ouput: alert"> Send data to input port </button>
+			<input placeholder="componentId" type="text" id="SDTIPcid"/>
+			<input placeholder="portId" type="text" id="SDTIPpid"/>
+			<input placeholder="value" type="text" id="SDTIPval"/>
 			<br/>
 
 			<button onclick="GET_COMPONENT_DATA_CHANNEL_IDS()" title="Description: returns all the data channel ids of the given component (as JSON array) &#013;Ouput: alert"> Get component data channel ids </button>
