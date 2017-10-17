@@ -90,13 +90,15 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
             closeTcpSocket(tcpSocketRead);
             tcpSocketRead = initTcpSocket(tcpSocketRead);
         }
-        readerThread.interrupt();
-        try {
-            readerThread.join(TIMEOUT_JOIN_THREAD);
-        } catch (InterruptedException e) {
-            logger.info("interrupted exception on joining reader thread");
+        if(readerThread != null) {
+            readerThread.interrupt();
+            try {
+                readerThread.join(TIMEOUT_JOIN_THREAD);
+            } catch (InterruptedException e) {
+                logger.info("interrupted exception on joining reader thread");
+            }
+            receiveCommandsToOutputPort();
         }
-        receiveCommandsToOutputPort();
     }
 
     private Socket initTcpSocket(Socket tcpSocket) {
