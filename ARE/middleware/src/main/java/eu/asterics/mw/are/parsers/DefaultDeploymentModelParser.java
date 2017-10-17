@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import eu.asterics.mw.are.ComponentRepository;
@@ -206,6 +209,40 @@ public class DefaultDeploymentModelParser {
             logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
             throw new ParseException(" parse error: IOException " + e.getMessage());
         }
+    }
+    
+    /**
+     * This method parses the given model represented as an XML string.
+     * @param modelInXML
+     * @return
+     * @throws ParseException
+     * @throws BundleManagementException
+     */
+    public DefaultRuntimeModel parseModelAsXMLString(String modelInXML) throws ParseException, BundleManagementException {
+    	DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+
+        try {
+        	//We must use UTF-16 here, the parser expects this. Although it might happen, that some model files
+        	//are not stored in UTF-16, when reading them they should already be converted to that encoding.
+        	InputStream is=new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
+            modelValidator.isValidDeploymentDescriptor(is);
+
+            builder = builderFactory.newDocumentBuilder();
+            synchronized (builder) {
+            	StringReader modelReader=new StringReader(modelInXML);
+                Document document = builder.parse(new InputSource(modelReader));
+                return parse(document);
+            }
+        } catch (ParserConfigurationException e) {
+            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
+            throw new ParseException(" parse error: ParserConfigurationException " + e.getMessage());
+        } catch (SAXException e) {
+            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
+            throw new ParseException(" parse error: SAXException " + e.getMessage());
+        } catch (IOException e) {
+            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
+            throw new ParseException(" parse error: IOException " + e.getMessage());
+        }    	
     }
 
     public static final String COMPONENTS_TAG = "components";

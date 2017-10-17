@@ -134,10 +134,7 @@ public class AstericsModelExecutionThreadPool {
         logger.info(TASK_SUBMIT_TIMEOUT_PROPERTY + "=" + TASK_SUBMIT_TIMEOUT);
         AREProperties.instance.setProperty(TASK_SUBMIT_TIMEOUT_PROPERTY, Integer.toString(TASK_SUBMIT_TIMEOUT));
 
-        int poolSize = new Integer(
-                AREProperties.instance.getProperty(THREAD_POOL_SIZE, Integer.toString(DEFAULT_POOL_SIZE)));
-        logger.info(THREAD_POOL_SIZE + "=" + poolSize);
-        AREProperties.instance.setProperty(THREAD_POOL_SIZE, Integer.toString(poolSize));
+        int poolSize = 1;
 
         modelExecutorLifecycle = createExecutorService();
         pool = modelExecutorLifecycle;

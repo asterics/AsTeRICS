@@ -29,6 +29,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -341,7 +342,50 @@ public class RestServer {
 
         return response;
     }
+    
 
+    @Path("/runtime/model/components/properties")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String setRuntimeComponentProperties(String bodyContent) {
+        String response = "";
+        String errorMessage = "";
+        Set<String> changedValues = new HashSet<String>();
+        
+        try {
+            Map<String, Map<String, String>> propertyMap = new HashMap<String, Map<String, String>>();
+            propertyMap = (Map<String, Map<String, String>>) ObjectTransformation.JSONToObject(bodyContent, Map.class);
+
+            for (String componentId: propertyMap.keySet()) {
+            	Map<String, String> componentPropertyMap = propertyMap.get(componentId);
+	            for (String componentKey: componentPropertyMap.keySet()) {
+	            	String newValue = componentPropertyMap.get(componentKey);
+	            	try {
+	            		asapiSupport.setComponentProperty(componentId, componentKey, newValue);
+	            		changedValues.add(componentId+"#"+componentKey);
+	            	}
+	            	catch (Exception ex) {
+	            		ex.printStackTrace();
+	            	}
+	            }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            errorMessage = "Couldn't change the component(s) value(s) (" + e.getMessage() + ")";
+            response = "error:" + errorMessage;
+        }
+
+        try {
+        	return ObjectTransformation.objectToJSON(changedValues);
+        }
+        catch (Exception ex) {
+        	return "";
+        }
+    }
+
+    
     @Path("/runtime/model/components/{componentId}/ports/input/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)

@@ -25,40 +25,63 @@
 
 package eu.asterics.component.actuator.fS20Sender;
 
-import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.codeminders.hidapi.HIDDevice;
-import com.codeminders.hidapi.HIDDeviceNotFoundException;
-import com.codeminders.hidapi.HIDManager;
+import org.hid4java.HidDevice;
+import org.hid4java.HidManager;
+
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class PCSDevice {
 
-    private HIDDevice dev = null;
+    private Logger logger = AstericsErrorHandling.instance.getLogger();
+    private ScheduledExecutorService timerExecutorSend = null;
+    private int vid = 0x18EF;
+    private int pid = 0xE015;
+
+    private HidDevice dev = null;
 
     public PCSDevice() {
     }
 
     public boolean open() {
-        try {
-            dev = HIDManager.getInstance().openById(0x18EF, 0xE015, null);
-        } catch (HIDDeviceNotFoundException e) {
-            return false;
-        } catch (IOException ioe) {
+
+        timerExecutorSend = Executors.newSingleThreadScheduledExecutor();
+        if (dev != null) {
+            dev.close();
+        }
+        List<HidDevice> list = HidManager.getHidServices().getAttachedHidDevices();
+        for (HidDevice device : list) {
+            if (device.getVendorId() == (short) vid && device.getProductId() == (short) pid) {
+                dev = device;
+            }
+        }
+        if (dev == null) {
             return false;
         }
-        return true;
+        dev.open();
+        return dev.isOpen();
     }
 
     public boolean close() {
-        try {
+        HidManager.getHidServices().shutdown();
+        timerExecutorSend.shutdownNow();
+        if (dev != null) {
             dev.close();
-        } catch (IOException ioe) {
-            return false;
         }
         return true;
     }
 
-    public boolean send(int houseCode, int addr, int command) {
+    public int send(int houseCode, int addr, int command) {
         byte[] buf = new byte[11];
         buf[0] = 0x01; // hid report id
         buf[1] = 0x06; // byte anzahl
@@ -69,13 +92,57 @@ public class PCSDevice {
         buf[5] = FS20Utils.addressToHex(addr); // 1111 Adresse
         buf[6] = (byte) command; // Befehl
         buf[7] = 0x00; // Erweiterung
+        return sendToDevice(buf);
+    }
+
+    /**
+     * sends bytes to the fs20-device. before sending, it is tried to reopen the
+     * device, if it is null. if sending fails (returns -1) it is tried to
+     * reopen the device and send the bytes again. if sending needs more than 1
+     * second it is aborted and -1 is returned
+     * 
+     * @param bytes
+     * @return number of bytes sent, -1 if sending failed
+     */
+    private int sendToDevice(byte[] bytes) {
+        int result = -1;
+        Callable<Integer> sendTask = new SendCallable(bytes);
+        Future<Integer> handler = timerExecutorSend.submit(sendTask);
         try {
-            if (dev != null) {
-                dev.write(buf);
-            }
-        } catch (IOException ie) {
-            ie.printStackTrace();
+            result = handler.get(1, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            timerExecutorSend.shutdownNow();
+            timerExecutorSend = Executors.newSingleThreadScheduledExecutor();
+            logger.log(Level.WARNING, "sending to FS20 timed out!");
         }
-        return true;
+
+        return result;
+    }
+
+    private class SendCallable implements Callable<Integer> {
+
+        private byte[] bytes;
+
+        public SendCallable(byte[] bytes) {
+            this.bytes = bytes;
+        }
+
+        @Override
+        public Integer call() throws Exception {
+            int result = -1;
+            if (dev == null) {
+                open();
+            }
+            if (dev != null) {
+                result = dev.write(bytes, bytes.length, (byte) 0);
+                if (result < 0) {
+                    open();
+                    if (dev != null) {
+                        result = dev.write(bytes, bytes.length, (byte) 0);
+                    }
+                }
+            }
+            return result;
+        }
     }
 }

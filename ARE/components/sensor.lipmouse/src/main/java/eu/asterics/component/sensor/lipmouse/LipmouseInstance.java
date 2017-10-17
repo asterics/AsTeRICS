@@ -43,6 +43,7 @@ import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
@@ -63,6 +64,7 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
     private static final short LIPMOUSE_CIM_FEATURE_ADCREPORT = 0x0002;
     private static final short LIPMOUSE_CIM_FEATURE_BUTTONREPORT = 0x0003;
     private static final short LIPMOUSE_CIM_FEATURE_SETLEDS = 0x0004;
+    private static final short LIPMOUSE_CIM_FEATURE_ATCMD = 0x0005;
 
     final IRuntimeOutputPort opX = new DefaultRuntimeOutputPort();
     final IRuntimeOutputPort opY = new DefaultRuntimeOutputPort();
@@ -116,6 +118,9 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
      */
     @Override
     public IRuntimeInputPort getInputPort(String portID) {
+        if ("AtCmd".equalsIgnoreCase(portID)) {
+            return ipAtCmd;
+        }
 
         return null;
     }
@@ -418,6 +423,22 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
         }
     };
 
+    
+    
+    /**
+     * Input Ports for receiving values.
+     */
+    
+    private final IRuntimeInputPort ipAtCmd = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+       //     String cmdToSend = ConversionUtils.stringFromBytes(data);
+            sendLipmouseWriteFeatureString(LIPMOUSE_CIM_FEATURE_ATCMD, data);
+        }
+    };
+
+    
+    
     /**
      * Handles an input packet from Lipmouse CIM. Reads the values of all ADC
      * channels and sends the data to the corresponding output ports
@@ -707,6 +728,19 @@ public class LipmouseInstance extends AbstractRuntimeComponentInstance implement
 
         if (port != null) {
             CIMPortManager.getInstance().sendPacket(port, b, feature, CIMProtocolPacket.COMMAND_REQUEST_WRITE_FEATURE,
+                    false);
+        }
+    }
+
+    synchronized private final void sendLipmouseWriteFeatureString(short feature, byte[] str) {
+        // send packet
+//        byte[] b = new byte[2];
+//        b[0] = (byte) (value & 0xff);
+//        b[1] = (byte) ((value >> 8) & 0xff);
+
+        if (port != null) {
+            // System.out.println("sending lipmouse-packet !");
+            CIMPortManager.getInstance().sendPacket(port, str, feature, CIMProtocolPacket.COMMAND_REQUEST_WRITE_FEATURE,
                     false);
         }
     }
