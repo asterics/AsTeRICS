@@ -186,6 +186,22 @@ function getModelState(successCallback, errorCallback) {
 	});
 }
 
+function getModelName(successCallback, errorCallback) {
+    $.ajax({
+        type: "GET",
+        url: _baseURI + "runtime/model/name",
+        datatype: "text",
+        crossDomain: true,
+        success:
+            function (data, textStatus, jqXHR){
+                successCallback(jqXHR.responseText, textStatus);
+            },
+        error:
+            function (jqXHR, textStatus, errorThrown) {
+                errorCallback(errorThrown,jqXHR.responseText);
+            }
+    });
+}
 
 function deployModelFromFile(successCallback, errorCallback, filepath) {
 	

@@ -29,8 +29,12 @@
 			function GET_MODEL_STATE() {
 				getModelState(defaultSuccessCallback, defaultErrorCallback);
 			}
-			
-			
+
+            //getModelName
+            function GET_MODEL_NAME() {
+                getModelName(defaultSuccessCallback, defaultErrorCallback);
+            }
+
 			//pauseModel
 			function PAUSE_MODEL() {
 				pauseModel(defaultSuccessCallback, defaultErrorCallback);
@@ -81,6 +85,9 @@
 			<br/>
 					
 			<button onclick="GET_MODEL_STATE()" title="Description: Returns the state of the deployed model &#013;Ouput: alert"> Get model state </button>
+			<br/>
+
+			<button onclick="GET_MODEL_NAME()" title="Description: Returns the name of the deployed model &#013;Ouput: alert"> Get model name </button>
 			<br/>
 
 		</div>
