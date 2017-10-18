@@ -49,6 +49,23 @@ public class AREProperties extends Properties {
         }
     }
 
+    /**
+     * Returns the current property value and sets it to the default value if it was not contained in the Properties object before. This is done to ensure that
+     * it will be saved to a file with {@see AREProperties#storeProperties()}
+     * 
+     * @see java.util.Properties#getProperty(java.lang.String, java.lang.String)
+     */
+    @Override
+    public String getProperty(String key, String defaultValue) {
+        String propValue = super.getProperty(key, defaultValue);
+        // Store back current property value to ensure that it will be saved to a file with storeProperties.
+        setProperty(key, propValue);
+        return propValue;
+    }
+
+    /**
+     * Saves the properties of this instance to the file {@see AREProperties#PROPERTY_FILENAME}.
+     */
     public void storeProperties() {
         try (FileOutputStream out = new FileOutputStream(PROPERTY_FILENAME);) {
             store(out, "ARE Properties");
@@ -57,6 +74,13 @@ public class AREProperties extends Properties {
         }
     }
 
+    /**
+     * Checks if the given property key has the given expectedValue.
+     * 
+     * @param key
+     * @param expectedValue
+     * @return
+     */
     public boolean checkProperty(String key, String expectedValue) {
         if (containsKey(key)) {
             return getProperty(key).equals(expectedValue);
