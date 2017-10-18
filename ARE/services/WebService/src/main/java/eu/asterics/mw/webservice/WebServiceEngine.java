@@ -53,8 +53,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 /**
- * This class initializes the web services of the AsTeRICS framework. This
- * includes an http-server, a REST interface and a websocket.
+ * This class initializes the web services of the AsTeRICS framework. This includes an http-server, a REST interface and a websocket.
  * 
  * @author mad
  *
@@ -69,8 +68,7 @@ public class WebServiceEngine {
     private AstericsDataApplication astericsApplication = null;
 
     /**
-     * Method that returns the instance of this class, based on the Singleton
-     * Design pattern.
+     * Method that returns the instance of this class, based on the Singleton Design pattern.
      * 
      * @return - The {@link WebServiceEngine} object of this class.
      */
@@ -97,7 +95,7 @@ public class WebServiceEngine {
         rc.registerClasses(RestServer.class, SseResource.class, SseFeature.class);
         rc.register(new ResponseFilter());
         restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.getInstance().getBaseUriREST(), rc);
-        //Configure document root at the ARE/data/webservice folder
+        // Configure document root at the ARE/data/webservice folder
         restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler("./data/webservice"), "/");
         for (NetworkListener l : restServer.getListeners()) {
             l.getFileCache().setEnabled(false);
@@ -117,17 +115,14 @@ public class WebServiceEngine {
         }
         astericsApplication = new AstericsDataApplication();
 
-        logger.fine(
-                "Registering Websocket URI: " + ServerRepository.getInstance().getBaseUriWebsocket() + ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA);
-        WebSocketEngine.getEngine().register(ServerRepository.PATH_WEBSOCKET, ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA,
-                astericsApplication);
+        logger.fine("Registering Websocket URI: " + ServerRepository.getInstance().getBaseUriWebsocket() + ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA);
+        WebSocketEngine.getEngine().register(ServerRepository.PATH_WEBSOCKET, ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA, astericsApplication);
 
         wsServer.start();
     }
 
     /**
-     * Returns the instance of the AsTeRICS websocket application containing
-     * IRuntimInputPort and IRuntimeOutputPort instances.
+     * Returns the instance of the AsTeRICS websocket application containing IRuntimInputPort and IRuntimeOutputPort instances.
      * 
      * @return
      */
@@ -136,8 +131,7 @@ public class WebServiceEngine {
     }
 
     /**
-     * This is just an example of how to use the OSGI HttpService lookup
-     * mechanism to register a URI
+     * This is just an example of how to use the OSGI HttpService lookup mechanism to register a URI
      * 
      * @param bc
      * @throws NamespaceException
@@ -154,10 +148,8 @@ public class WebServiceEngine {
                 http.registerServlet("/time", new HttpServlet() {
 
                     @Override
-                    protected void service(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
-                        final SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz",
-                                Locale.US);
+                    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                        final SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
                         final String date = format.format(new Date(System.currentTimeMillis()));
                         resp.setContentType("text/plain");
                         resp.setContentLength(date.length());
