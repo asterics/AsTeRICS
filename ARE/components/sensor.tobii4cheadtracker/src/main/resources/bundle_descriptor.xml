@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.Tobii4CHeadTracker"
+                   canonical_name="eu.asterics.component.sensor.tobii4cheadtracker.Tobii4CHeadTrackerInstance">
+        <type subtype="Computer Vision">sensor</type>
+        <singleton>true</singleton>
+        <description>The plugin provides the head tracking functionality of the Tobii 4C eye tracker. </description>
+        <ports>
+
+			<outputPort id="headRotX">
+				<description>Head rotation x angle (Euler)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="headRotY">
+				<description>Head rotation y angle (Euler)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="headRotZ">
+				<description>Head rotation z angle (Euler)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="headPosX">
+				<description>Head position x coordinate (mm)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="headPosY">
+				<description>Head position y coordinate (mm)</description>
+				<dataType>double</dataType>
+			</outputPort>
+			<outputPort id="headPosZ">
+				<description>Head position z coordinate (mm)</description>
+				<dataType>double</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="activate">
+				<description>Activate eye tracker</description>
+			</eventListenerPort>
+			<eventListenerPort id="deactivate">
+				<description>Deactivate eye tracker</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="userPresenceStatusAway">
+				<description>Indicates that no user is sitting front of the tracker</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="userPresenceStatusPresent">
+				<description>Indicates that a user is sitting in front of the tracker</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="calibrationStarted">
+				<description>Indicates that the tracker calibration has been started</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="calibrationFinished">
+				<description>Indicates that the tracker calibration has been finished</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="displayAreaChanged">
+				<description>Indicates that the assigned display has been changed</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="powerSaveStateTrue">
+				<description>Indicates that the tracker is in power save mode</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="powerSaveStateFalse">
+				<description>Indicates that the tracker is not in power save mode</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="deviceOff">
+				<description>Indicates that the tracker is currently paused</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="deviceOn">
+				<description>Indicates that the tracker is currently  enabled</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="enabled"
+				type="boolean"
+				value="true"
+				description="Selects if the tracker is enabled at startup"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>

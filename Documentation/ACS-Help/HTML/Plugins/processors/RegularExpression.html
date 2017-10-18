@@ -14,7 +14,7 @@
       Processing)</h3>
     <p>This component processes strings with regular expressions. It can
       work in two modes: match strings with the pattern or replace
-      string parts which match the pattern with another string.<br>
+      string parts with another string. The regular expression syntax is defined in the <a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html">Java class Pattern</a>.<br>
     </p>
     <div class="image"><img src="img/RegularExpression.jpg"
         alt="Screenshot: RegularExpression plugin" title="Screenshot:
@@ -22,12 +22,11 @@
       RegularExpression plugin</div>
     <h2>Input Port Description</h2>
     <ul>
-      <li><strong>input [string]:</strong> Input port for strings.</li>
+      <li><strong>input [string]:</strong> String to match against the regular expression.</li>
     </ul>
     <h2>Output Port Description</h2>
     <ul>
-      <li><strong>output [string]:</strong> The port for strings which
-        match the pattern or which were changed.<br>
+      <li><strong>output [string]:</strong> If property replace=false, sends out input string in case of a match. if property replace=true, sends out replaced string.<br>
       </li>
     </ul>
     <h2>Event Trigger Description<br>
@@ -47,7 +46,7 @@
     </ul>
     <h2>Properties</h2>
     <ul>
-      <li><strong>pattern [string]:</strong> Regular expression pattern.</li>
+      <li><strong>pattern [string]:</strong> Regular expression pattern, see <a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html">Java class Pattern</a>.</li>
       <li><strong>replace [boolean]:</strong> If the property is set to
         true, the component will search parts of the string which match
         the pattern and replace these parts with the replaceString,

@@ -465,35 +465,7 @@ public class AREServices implements IAREServices {
             DeploymentManager.instance.undeployModel();
         }
         DefaultDeploymentModelParser defaultDeploymentModelParser = DefaultDeploymentModelParser.instance;
-
-        File modelFile = new File(MODELS_FOLDER + "/model.xml");
-        File modelsDir = new File(MODELS_FOLDER);
-        if (!modelFile.exists()) {
-            modelsDir.mkdir();
-            modelFile.createNewFile();
-        }
-
-        // Convert the string to a byte array.
-        String s = modelInXML;
-        byte data[] = s.getBytes();
-        BufferedWriter c = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(modelFile), "UTF-16"));
-
-        // out = new BufferedOutputStream(new FileOutputStream(modelFile));
-        for (int i = 0; i < data.length; i++) {
-            c.write(data[i]);
-        }
-
-        if (c != null) {
-            c.flush();
-            c.close();
-        }
-        InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
-        IRuntimeModel runtimeModel = defaultDeploymentModelParser.parseModel(is);
-
-        /*
-         * if (runtimeModel==null) { logger.fine("Failed to create model"); }
-         */
-
+        IRuntimeModel runtimeModel = defaultDeploymentModelParser.parseModelAsXMLString(modelInXML);
         DeploymentManager.instance.deployModel(runtimeModel);
         DeploymentManager.instance.setStatus(AREStatus.DEPLOYED);
         AstericsErrorHandling.instance.setStatusObject(AREStatus.DEPLOYED.toString(), "", "");

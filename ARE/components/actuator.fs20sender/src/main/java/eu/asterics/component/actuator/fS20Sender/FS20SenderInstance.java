@@ -31,8 +31,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
-import com.codeminders.hidapi.ClassPathLibraryLoader;
-
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
@@ -40,6 +38,7 @@ import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 
@@ -48,7 +47,7 @@ import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
  * <Describe purpose of this module>
  * 
  * 
- * 
+ *
  * @author David Thaller [dt@ki-i.at] Date: Time:
  */
 
@@ -75,17 +74,11 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
      * The class constructor.
      */
     public FS20SenderInstance() {
-        logger.fine("Trying to load library for FS20...");
-        boolean successLoading = ClassPathLibraryLoader.loadNativeHIDLibrary();
-        if (successLoading == false) {
-            throw new RuntimeException("Could not load native lib for FS20 device.");
-        }
-        logger.fine("Success loading native lib for FS20: " + successLoading);
     }
 
     /**
      * returns an Input Port.
-     * 
+     *
      * @param portID
      *            the name of the port
      * @return the input port or null if not found
@@ -107,20 +100,23 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * returns an Output Port.
-     * 
+     *
      * @param portID
      *            the name of the port
      * @return the output port or null if not found
      */
     @Override
     public IRuntimeOutputPort getOutputPort(String portID) {
-
-        return null;
+        if ("output".equalsIgnoreCase(portID)) {
+            return opOutput;
+        } else {
+            return null;
+        }
     }
 
     /**
      * returns an Event Listener Port.
-     * 
+     *
      * @param eventPortID
      *            the name of the port
      * @return the EventListener port or null if not found
@@ -220,7 +216,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * returns an Event Triggerer Port.
-     * 
+     *
      * @param eventPortID
      *            the name of the port
      * @return the EventTriggerer port or null if not found
@@ -233,7 +229,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * returns the value of the given property.
-     * 
+     *
      * @param propertyName
      *            the name of the property
      * @return the property value or null if not found
@@ -252,7 +248,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
 
     /**
      * sets a new value for the given property.
-     * 
+     *
      * @param propertyName
      *            the name of the property
      * @param newValue
@@ -277,6 +273,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
     /**
      * Input Ports for receiving values.
      */
+    private final IRuntimeOutputPort opOutput = new DefaultRuntimeOutputPort();
     private final IRuntimeInputPort ipHousecode = new DefaultRuntimeInputPort() {
         @Override
         public void receiveData(byte[] data) {
@@ -303,14 +300,27 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
              * corresponding command to the specified device Format is as
              * follows: hc_address_command example: 11111112_1234_18 would send
              * the toggle command with housecode=11111112 and address=1234
-             * 
+             *
              * update: now also delimiters ' ' and ',' can be used between hc,
              * address and command !
              */
 
             final String ACTION_STRING_PREFIX = "@FS20:";
+            final String ACTION_STRING_PATCH_REGISTRY = "@FS20:patch";
 
-            if (action.startsWith(ACTION_STRING_PREFIX)) {
+            if (ACTION_STRING_PATCH_REGISTRY.equals(action)) {
+                if (FS20Utils.isWindowsOS()) {
+                    logger.info("trying to patch registry for FS20 to disable power-save-mode...");
+                    boolean patched = FS20Utils.patchRegistryDisablePowerSaveMode();
+                    if (patched) {
+                        logger.info("successfully patched registry for FS20.");
+                        opOutput.sendData(String.valueOf("1").getBytes());
+                    } else {
+                        logger.info("Registry for FS20 not patched (maybe not needed).");
+                        opOutput.sendData(String.valueOf("0").getBytes());
+                    }
+                }
+            } else if (action.startsWith(ACTION_STRING_PREFIX)) {
                 try {
                     StringTokenizer st = new StringTokenizer(action.substring(ACTION_STRING_PREFIX.length()), "_, ");
                     int hc = Integer.parseInt(st.nextToken()); // this is the
@@ -320,7 +330,8 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
                     try {
                         synchronized (pcs) {
                             if (pcs != null) {
-                                pcs.send(hc, a, cmd);
+                                int result = pcs.send(hc, a, cmd);
+                                opOutput.sendData(String.valueOf(result).getBytes());
                             }
                         }
                     } catch (NullPointerException e) {
@@ -573,7 +584,6 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
                             + "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
                     AstericsErrorHandling.instance.reportError(FS20SenderInstance.this,
                             "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
-                    pcs = null;
                     return;
                 }
             }
@@ -619,7 +629,7 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
     /**
      * Send data to FS20 device. The method is executed in the ModelExecutor
      * thread to prevent thread safety issues.
-     * 
+     *
      * @param houseCode
      * @param addr
      * @param command
@@ -633,7 +643,9 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
                 logger.fine("[" + curThread + "]" + "Sending data to FS20...");
 
                 if (pcs != null) {
-                    pcs.send(houseCode, addr, command);
+                    int result = pcs.send(houseCode, addr, command);
+                    opOutput.sendData(String.valueOf(result).getBytes());
+
                 }
             }
         };

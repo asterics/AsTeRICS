@@ -55,6 +55,14 @@
 			}
 
 
+
+			//setRuntimeComponentProperties
+			function SET_RUNTIME_COMPONENT_PROPERTIES() {
+				var propertyMap = document.getElementById("propertyMap").value;
+				setRuntimeComponentProperties(defaultSuccessCallback, defaultErrorCallback, propertyMap);
+			}
+
+
 			//getComponentInputPortIds
 			function GET_COMPONENT_INPUT_PORT_IDS() {
 				var componentId = document.getElementById("GCIPIid").value;
@@ -131,6 +139,19 @@
 			<input placeholder="componentId" type="text" id="SRCPid"/>
 			<input placeholder="componentKey" type="text" id="SRCPkey"/>
 			<input placeholder="componentKeyValue" type="text" id="SRCPvalue"/>
+			<br/>
+
+			<button onclick="SET_RUNTIME_COMPONENT_PROPERTIES()" title=""> Set runtime component properties </button>
+			<textarea id="propertyMap" placeholder='{
+   "Component_id_1":{
+      "key_1_1":"val_1_1",
+      "key_1_2":"val_1_2"
+   },
+   "Component_id_2":{
+      "key_2_1":"val_2_1",
+      "key_2_2":"val_2_2"
+   }
+}'></textarea>
 			<br/>
 
 			<button onclick="GET_COMPONENT_INPUT_PORT_IDS()" title="Description: returns the input port ids of the specified component as a json array &#013;Ouput: alert"> Get component input ports </button>
