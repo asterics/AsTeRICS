@@ -64,8 +64,6 @@ public class ServerRepository {
         // init ports and paths with property values
         try {
             portREST = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_REST_KEY, String.valueOf(DEFAULT_PORT_REST)));
-            // We have to store back the actual property value so that it will be written to the areProperties config file if it did not exist before.
-            AREProperties.instance.setProperty(ARE_WEBSERVICE_PORT_REST_KEY, String.valueOf(portREST));
         } catch (NumberFormatException e) {
             AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
                     "Configured port for REST service invalid: " + e.getMessage(), e);
@@ -73,8 +71,6 @@ public class ServerRepository {
         // init ports and paths with property values
         try {
             portWebsocket = Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_PORT_WEBSOCKET)));
-            // We have to store back the actual property value so that it will be written to the areProperties config file if it did not exist before.
-            AREProperties.instance.setProperty(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY, String.valueOf(portWebsocket));
         } catch (NumberFormatException e) {
             AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()",
                     "Configured port for Websocket service invalid: " + e.getMessage(), e);
