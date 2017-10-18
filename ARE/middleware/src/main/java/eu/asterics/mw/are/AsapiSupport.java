@@ -1,36 +1,15 @@
 package eu.asterics.mw.are;
 
-import java.awt.Point;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
+import java.awt.*;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +19,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -53,27 +31,16 @@ import org.osgi.framework.BundleException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 import eu.asterics.mw.are.asapi.StatusObject;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
-import eu.asterics.mw.are.exceptions.DeploymentException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
 import eu.asterics.mw.model.bundle.IComponentType;
-import eu.asterics.mw.model.deployment.IChannel;
-import eu.asterics.mw.model.deployment.IComponentInstance;
-import eu.asterics.mw.model.deployment.IEventChannel;
-import eu.asterics.mw.model.deployment.IInputPort;
-import eu.asterics.mw.model.deployment.IOutputPort;
-import eu.asterics.mw.model.deployment.IRuntimeModel;
-import eu.asterics.mw.model.deployment.impl.DefaultACSGroup;
-import eu.asterics.mw.model.deployment.impl.DefaultChannel;
-import eu.asterics.mw.model.deployment.impl.DefaultComponentInstance;
-import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
-import eu.asterics.mw.model.deployment.impl.ModelState;
+import eu.asterics.mw.model.deployment.*;
+import eu.asterics.mw.model.deployment.impl.*;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.services.AREServices;
@@ -413,7 +380,7 @@ public class AsapiSupport {
      * creating an empty model and deploying it using
      * {@link #deployModel(String)}. This results to freeing all resources in
      * the ARE (i.e., if a previous model reserved any).
-     * 
+     *
      * @throws AREAsapiException
      */
     public void newModel() throws AREAsapiException {
@@ -452,7 +419,7 @@ public class AsapiSupport {
 
     /**
      * It starts or resumes the execution of the model.
-     * 
+     *
      * @throws AREAsapiException
      *             if an exception occurs while validating and starting the
      *             deployed model.
@@ -465,7 +432,7 @@ public class AsapiSupport {
      * Briefly stops the execution of the model. Its main difference from the
      * {@link #stopModel()} method is that it does not reset the components
      * (e.g., the buffers are not cleared).
-     * 
+     *
      * @throws AREAsapiException
      *             if the deployed model is not started already, or if the
      *             execution cannot be paused
@@ -478,7 +445,7 @@ public class AsapiSupport {
      * Stops the execution of the model. Unlike the {@link #pauseModel()}
      * method, this one resets the components, which means that when the model
      * is started again it starts from scratch (i.e., with a new state).
-     * 
+     *
      * @throws AREAsapiException
      *             if the deployed model is not started already, or if the
      *             execution cannot be stopped
@@ -1428,7 +1395,7 @@ public class AsapiSupport {
     /**
      * Deploys the model associated to the specified filename. The file should
      * be already available on the ARE file system.
-     * 
+     *
      * @param filename
      *            the filename of the model to be deployed
      * @throws AREAsapiException
@@ -1464,7 +1431,7 @@ public class AsapiSupport {
 
     /**
      * Deletes the file of the model specified by the filename parameter
-     * 
+     *
      * @param filename
      *            the name of the file to be deleted
      * @return true if the file was successfully deleted or false otherwise
@@ -1506,7 +1473,7 @@ public class AsapiSupport {
     /**
      * Returns a list with all stored models (all models in the directory
      * MODELS_FOLDER except default_model.xml)
-     * 
+     *
      * @return a list with all stored models
      * @throws AREAsapiException
      *             if MODELS_FOLDER directory could not be found
@@ -1517,55 +1484,40 @@ public class AsapiSupport {
     }
 
     /**
-     * Stores the XML model specified by the string parameter in the file
-     * specified by the filename parameter
-     * 
-     * @param modelInXML
-     *            the XML model as a String
-     * @param filename
-     *            the name of the file the model is to be stored
+     * Stores data to a given filename (+ path) in a given resource-Type directory
+     *
+     * @param data
+     *            data to store as string
+     * @param filepath
+     *            the name of the file the data is to be stored. If the data should be stored in a subpath with path-prefix.
      * @throws AREAsapiException
-     *             if the file cannot be created or if the model cannot be
-     *             stored
+     *             if the file cannot be created or stored
      */
-    public void storeModel(String modelInXML, String filename) throws AREAsapiException {
+    private void storeData(String data, String filepath, RES_TYPE resourceType, Charset charset) throws AREAsapiException {
         try {
-        	//The deploymentmodel parser expects the inputstream in UTF-16
-            InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
-            DefaultDeploymentModelParser.instance.parseModel(is);
-
-            File filenameAsFile=ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(filename, RES_TYPE.MODEL));
-            File parentDir=filenameAsFile.getParentFile();
-            if(!parentDir.exists()) {
-            	if(!parentDir.mkdirs()) {
-            		logger.severe("Could not create parent directories for model file: "+filenameAsFile);
-            		throw new AREAsapiException("Could not create parent directories for model file.");
-            	}
+            File filenameAsFile = ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(filepath, resourceType));
+            File parentDir = filenameAsFile.getParentFile();
+            if (!parentDir.exists()) {
+                if (!parentDir.mkdirs()) {
+                    logger.severe("Could not create parent directories for data file: " + filenameAsFile);
+                    throw new AREAsapiException("Could not create parent directories for data file.");
+                }
             }
-            try(FileWriter outWriter=new FileWriter(filenameAsFile);){
-            	//fetch bytes as UTF-16 and tell the writer to interpret and write it as UTF-16
-            	IOUtils.write(modelInXML.getBytes("UTF-16"), outWriter,"UTF-16");
-            	outWriter.flush();
-            	outWriter.close();
+            try (FileWriter outWriter = new FileWriter(filenameAsFile);) {
+                // fetch bytes as UTF-16 and tell the writer to interpret and write it as UTF-16
+                IOUtils.write(data.getBytes(charset), outWriter, charset);
+                outWriter.flush();
+                outWriter.close();
             }
         } catch (IOException e) {
-            String errorMsg = "Failed to store model -> \n" + e.getMessage();
-            AstericsErrorHandling.instance.reportError(null, errorMsg);
-            throw (new AREAsapiException(errorMsg));
-        } catch (ParseException e) {
-            String errorMsg = "Failed to parse model, maybe model version not in sync with compononent descriptors -> \n"
-                    + e.getMessage();
-            AstericsErrorHandling.instance.reportError(null, errorMsg);
-            throw (new AREAsapiException(errorMsg));
-        } catch (BundleManagementException e) {
-            String errorMsg = "Failed to install model components -> \n" + e.getMessage();
+            String errorMsg = "Failed to store data -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
         } catch (URISyntaxException e) {
-            String errorMsg = "Failed to create file URI to store model -> \n" + e.getMessage();
+            String errorMsg = "Failed to create file URI to store data -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
-		}
+        }
     }
 
     /**
@@ -1577,12 +1529,42 @@ public class AsapiSupport {
      * @throws AREAsapiException
      */
     public void storeData(String data, String path, String filename) throws AREAsapiException {
-        this.storeData(data, path, filename, Charsets.UTF_8);
+        String filepath = path + "/" + filename;
+        this.storeData(data, filepath, RES_TYPE.DATA, Charsets.UTF_8);
+    }
+
+    /**
+     * Stores the XML model specified by the string parameter in the file specified by the filename parameter
+     *
+     * @param modelInXML
+     *            the XML model as a String
+     * @param filename
+     *            the name of the file the model is to be stored.
+     * @throws AREAsapiException
+     *             if the file cannot be created or if the model cannot be stored
+     */
+    public void storeModel(String modelInXML, String filename) throws AREAsapiException {
+
+        try {
+            // The deploymentmodel parser expects the inputstream in UTF-16
+            InputStream is = new ByteArrayInputStream(modelInXML.getBytes(Charsets.UTF_16));
+            DefaultDeploymentModelParser.instance.parseModel(is);
+        } catch (ParseException e) {
+            String errorMsg = "Failed to parse model, maybe model version not in sync with compononent descriptors -> \n" + e.getMessage();
+            AstericsErrorHandling.instance.reportError(null, errorMsg);
+            throw (new AREAsapiException(errorMsg));
+        } catch (BundleManagementException e) {
+            String errorMsg = "Failed to install model components -> \n" + e.getMessage();
+            AstericsErrorHandling.instance.reportError(null, errorMsg);
+            throw (new AREAsapiException(errorMsg));
+        }
+
+        this.storeData(modelInXML, filename, RES_TYPE.MODEL, Charsets.UTF_16);
     }
 
     /**
      * Returns the log file as a string.
-     * 
+     *
      * @return the log file as a string.
      */
     public String getLogFile() {
@@ -1617,7 +1599,7 @@ public class AsapiSupport {
     /**
      * It is called on startup by the middleware in order to autostart a default
      * model without the need of pressing deploy and start model first.
-     * 
+     *
      * @param startModel
      *            TODO
      * @throws AREAsapiException
@@ -1671,7 +1653,7 @@ public class AsapiSupport {
     /**
      * Helper method to convert an InputStream of an XML-file to an XML String
      * object.
-     * 
+     *
      * @param inputStream
      * @return
      * @throws IOException
