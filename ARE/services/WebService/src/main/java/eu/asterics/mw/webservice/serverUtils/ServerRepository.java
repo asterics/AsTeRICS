@@ -47,17 +47,17 @@ public class ServerRepository {
     // Rest Server configuration
     public static final String ARE_WEBSERVICE_PORT_REST_KEY = "ARE.webservice.port.REST";
     public static final String PATH_REST = "/rest";
-    static int DEFAULT_PORT_REST = 8081;    
+    public static final int DEFAULT_PORT_REST = 8081;    
     
     // Web Socket Server configuration
-    public static final String PATH_WS = "/ws";
-    public static final String PATH_WS_ASTERICS_DATA = "/astericsData";
-    public static final String ARE_WEBSERVICE_PORT_WS_KEY = "ARE.webservice.port.websocket";    
-    static int DEFAULT_PORT_WS = 8082;
+    public static final String PATH_WEBSOCKET = "/ws";
+    public static final String PATH_WEBSOCKET_ASTERICS_DATA = "/astericsData";
+    public static final String ARE_WEBSERVICE_PORT_WEBSOCKET_KEY = "ARE.webservice.port.websocket";    
+    public static final int DEFAULT_PORT_WEBSOCKET = 8082;
     
     //member variables holding property values
     private int portREST=DEFAULT_PORT_REST;
-    private int portWS=DEFAULT_PORT_WS;
+    private int portWebsocket=DEFAULT_PORT_WEBSOCKET;
     
     /**
      * Private ctor used for initializing the class.
@@ -73,15 +73,16 @@ public class ServerRepository {
     	}
     	//init ports and paths with property values
     	try {
-    		portWS=Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_WS_KEY, String.valueOf(DEFAULT_PORT_WS)));
+    		portWebsocket=Integer.parseInt(AREProperties.instance.getProperty(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY, String.valueOf(DEFAULT_PORT_WEBSOCKET)));
     		//We have to store back the actual property value so that it will be written to the areProperties config file if it did not exist before.
-    		AREProperties.instance.setProperty(ARE_WEBSERVICE_PORT_WS_KEY, String.valueOf(portWS));
+    		AREProperties.instance.setProperty(ARE_WEBSERVICE_PORT_WEBSOCKET_KEY, String.valueOf(portWebsocket));
     	}catch(NumberFormatException e) {
     		AstericsErrorHandling.instance.getLogger().logp(Level.WARNING, this.getClass().getName(), "ServerRepository()", "Configured port for Websocket service invalid: "+e.getMessage(),e);
     	}
     }
     
     /**
+     * Returns the baseURI for the REST API.
 	 * @return the baseUriRest
 	 */
 	public URI getBaseUriREST() {
@@ -89,18 +90,35 @@ public class ServerRepository {
 	}
 
 	/**
+	 * Returns the baseURI for the websocket functionality. The actual websocket channels must be subpaths of it, 
+	 * e.g. {@link ServerRepository#PATH_WEBSOCKET_ASTERICS_DATA}  
 	 * @return the baseUriWs
 	 */
-	public URI getBaseUriWS() {
-		return URI.create("http://localhost:" + getPortWS() + PATH_WS);
+	public URI getBaseUriWebsocket() {
+		return URI.create("http://localhost:" + getPortWebsocket() + PATH_WEBSOCKET);
 	}
 	
+	/**
+	 * Returns the configured port number for the REST API.
+	 * @return
+	 */
 	public int getPortREST() {
 		return portREST;
 	}
 	
-	public int getPortWS() {
-		return portWS;
+	/**
+	 * Returns the configured port number for the webserver, which should be the same as the one for the REST API.
+	 */
+	public int getPortWebserver() {
+	    return getPortREST();
+	}
+	
+	/**
+	 * Returns the configured port number for the Websocket functionality.
+	 * @return
+	 */
+	public int getPortWebsocket() {
+		return portWebsocket;
 	}
 	
 	/**

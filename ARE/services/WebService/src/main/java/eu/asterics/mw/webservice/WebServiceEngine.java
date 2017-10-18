@@ -97,6 +97,7 @@ public class WebServiceEngine {
         rc.registerClasses(RestServer.class, SseResource.class, SseFeature.class);
         rc.register(new ResponseFilter());
         restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.getInstance().getBaseUriREST(), rc);
+        //Configure document root at the ARE/data/webservice folder
         restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler("./data/webservice"), "/");
         for (NetworkListener l : restServer.getListeners()) {
             l.getFileCache().setEnabled(false);
@@ -107,7 +108,7 @@ public class WebServiceEngine {
         logger.fine("Initializing Websocket... ");
 
         // WEB SERVICE SERVER CONFIGURATION
-        wsServer = HttpServer.createSimpleServer("./data/webservice", "0.0.0.0", ServerRepository.getInstance().getPortWS());
+        wsServer = HttpServer.createSimpleServer("./data/webservice", "0.0.0.0", ServerRepository.getInstance().getPortWebsocket());
 
         final WebSocketAddOn addon = new WebSocketAddOn();
         for (NetworkListener listener : wsServer.getListeners()) {
@@ -117,8 +118,8 @@ public class WebServiceEngine {
         astericsApplication = new AstericsDataApplication();
 
         logger.fine(
-                "Registering Websocket URI: " + ServerRepository.getInstance().getBaseUriWS() + ServerRepository.PATH_WS_ASTERICS_DATA);
-        WebSocketEngine.getEngine().register(ServerRepository.PATH_WS, ServerRepository.PATH_WS_ASTERICS_DATA,
+                "Registering Websocket URI: " + ServerRepository.getInstance().getBaseUriWebsocket() + ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA);
+        WebSocketEngine.getEngine().register(ServerRepository.PATH_WEBSOCKET, ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA,
                 astericsApplication);
 
         wsServer.start();
