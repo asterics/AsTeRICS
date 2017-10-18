@@ -1549,6 +1549,7 @@ public class AsapiSupport {
             // The deploymentmodel parser expects the inputstream in UTF-16
             InputStream is = new ByteArrayInputStream(modelInXML.getBytes(Charsets.UTF_16));
             DefaultDeploymentModelParser.instance.parseModel(is);
+            this.storeData(modelInXML, filename, RES_TYPE.MODEL, Charsets.UTF_16);
         } catch (ParseException e) {
             String errorMsg = "Failed to parse model, maybe model version not in sync with compononent descriptors -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
@@ -1558,8 +1559,6 @@ public class AsapiSupport {
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
         }
-
-        this.storeData(modelInXML, filename, RES_TYPE.MODEL, Charsets.UTF_16);
     }
 
     /**
