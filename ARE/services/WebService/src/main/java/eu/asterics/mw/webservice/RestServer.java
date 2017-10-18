@@ -212,12 +212,12 @@ public class RestServer {
     @Produces(MediaType.TEXT_PLAIN)
     public String getCurrentModelName() {
         String response;
-        String errorMessage = "";
+        String errorMessage;
 
         try {
             response = asapiSupport.getCurrentModelName();
         } catch (Exception e) {
-            errorMessage = MessageFormat.format("Couldn't get model name! error: {0}", e.getMessage());
+            errorMessage = MessageFormat.format("Could not get model name! error: {0}", e.getMessage());
             logger.log(Level.WARNING, errorMessage, e);
             response = "error:" + errorMessage;
         }
