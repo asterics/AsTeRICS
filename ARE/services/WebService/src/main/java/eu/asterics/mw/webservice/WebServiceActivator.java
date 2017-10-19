@@ -41,7 +41,6 @@ public class WebServiceActivator implements BundleActivator {
         logger.fine("Starting WebServiceActivator");
 
         WebServiceEngine.getInstance().initGrizzlyHttpService(bc);
-        // initNettySocketIO(bc);
     }
 
     @Override
