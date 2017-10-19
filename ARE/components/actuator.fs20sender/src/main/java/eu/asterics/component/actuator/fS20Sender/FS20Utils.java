@@ -53,8 +53,6 @@ public class FS20Utils {
     private static final String REGISTRY_KEY_POWERMANAGEMENT = "EnhancedPowerManagementEnabled";
     static final String FILENAME_REGPATCH = "regpatchfs20.vbs";
     static final String FILENAME_REGPATCH2 = "regpatchfs20.cmd";
-    private static final String PATH_SEPARATOR = "\\";
-    private static ScheduledExecutorService timerExecutorPatch = Executors.newSingleThreadScheduledExecutor();;
 
     public static byte Off = 0x00;
     public static byte OnStep1 = 0x01;
@@ -180,30 +178,13 @@ public class FS20Utils {
             if (Advapi32Util.registryKeyExists(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20)) {
                 String[] subkeys = Advapi32Util.registryGetKeys(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20);
                 if (!allSubkeysPatched(subkeys)) {
-                    copyBatchFromJar(FILENAME_REGPATCH);
+                    String pathPatchFile = copyBatchFromJar(FILENAME_REGPATCH);
                     copyBatchFromJar(FILENAME_REGPATCH2);
-                    ProcessBuilder builder = new ProcessBuilder("cscript", "/E:JScript", "/nologo", FILENAME_REGPATCH,
+                    ProcessBuilder builder = new ProcessBuilder("cscript", "/E:JScript", "/nologo", pathPatchFile,
                             getArgString(subkeys));
                     builder.directory(new File(getHomePath()));
                     Process process = builder.start();
                     patched = process.waitFor() == 0;
-                    /* should not be necessary, because the patch files are created temporarily and should be deleted on program exit.
-                    deleteBatchFile(FILENAME_REGPATCH);
-                    // second patch-script cannot be removed immediately,
-                    // because maybe it is still executing, so wait 500ms
-                    Runnable cleanupTask = new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                deleteBatchFile(FILENAME_REGPATCH2);
-                            } catch (IOException e) {
-                                logger.log(Level.INFO,
-                                        "could not remove patch-script after patching registry for FS20.", e);
-                            }
-                        }
-                    };
-                    timerExecutorPatch.schedule(cleanupTask, 500, TimeUnit.MILLISECONDS);
-                    */
                 }
             }
         } catch (Exception e) {
@@ -220,7 +201,14 @@ public class FS20Utils {
         return args.trim();
     }
 
-    static void copyBatchFromJar(String batchFilename) throws IOException {
+    /**
+     * copies a file with given name from java package to a temp-file. the temp file is deleted on exit of the program
+     *
+     * @param batchFilename
+     * @return the path of the temp-file
+     * @throws IOException
+     */
+    static String copyBatchFromJar(String batchFilename) throws IOException {
     	//This is a small hack because we want to get the system or user temp dir but don't want to get a unique tempfilename.
     	//Create a temp file 
     	File tempFile=File.createTempFile(batchFilename,"");
@@ -236,12 +224,8 @@ public class FS20Utils {
         try(InputStream resource = loader.getResourceAsStream(batchFilename);) {
         	Files.copy(resource, batchFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
+        return batchFile.getAbsolutePath();
     }
-
-    /*
-    private static void deleteBatchFile(String batchFilename) throws IOException {
-        new File(getHomePath() + PATH_SEPARATOR + batchFilename).delete();
-    }*/
 
     private static String getHomePath() {
         return System.getProperty("user.dir");
