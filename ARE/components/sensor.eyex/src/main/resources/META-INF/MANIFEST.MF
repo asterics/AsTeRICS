@@ -3,10 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: asterics-sensors.eyex
 Bundle-SymbolicName: eu.asterics.component.sensor.eyex
 Bundle-Version: 0.1.0
- Bundle-NativeCode: lib/native/windows/x86/eyex.dll;
+Bundle-NativeCode: lib/native/windows/x86/eyex.dll;
  lib/native/windows/x86/Tobii.EyeX.Client.dll;
  osname=win32;processor=x86,
- lib/native/windows/x86_64/eyex.dll;
- lib/native/windows/x86_64/Tobii.EyeX.Client.dll;
+ lib/native/windows/x64/eyex.dll;
+ lib/native/windows/x64/Tobii.EyeX.Client.dll;
  osname=win32;processor=x86_64
 DynamicImport-Package: *
