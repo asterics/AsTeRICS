@@ -33,7 +33,7 @@ import com.starlab.component.processor.jni.JNIdissimilarity;
  * 
  * @author Javier Acedo [javier.acedo@starlab.es] Date: Apr 29, 2011 Time
  *         04:51:02 PM
- */
+ */ 
 public class Dissimilarity {
     private JNIdissimilarity jni = new JNIdissimilarity();
 
