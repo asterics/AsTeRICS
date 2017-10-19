@@ -40,7 +40,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  * 
  * @author Javier Acedo [javier.acedo@starlab.es] Date: May 1, 2011 Time
  *         20:28:57 PM
- */
+ */ 
 public class ComputeBandPowerInstance extends AbstractRuntimeComponentInstance {
     private InputPort ipInputPort = new InputPort();
     private OutputPort opOutputPort = new OutputPort();
