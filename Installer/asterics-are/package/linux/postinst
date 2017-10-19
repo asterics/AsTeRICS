@@ -47,8 +47,9 @@ case "$1" in
 		[ -e $APPPATH/areProperties ] && mv $APPPATH/areProperties $WRITEDIR || touch $APPPATH/areProperties
 		
                 # component FS20
-		echo creating udev rule 50-asterics-fs20.rules for FS20 devices
-		echo 'ATTRS{idProduct}=="e015", ATTRS{idVendor}=="18ef", MODE="0660", GROUP="plugdev"' > /etc/udev/rules.d/50-asterics-fs20.rules
+		echo creating udev rule 50-asterics-fs20.rules for FS20 devices (receiver/sender)
+		echo 'ATTRS{idProduct}=="e015", ATTRS{idVendor}=="18ef", MODE="0660", GROUP="plugdev"' > /etc/udev/rules.d/50-asterics-fs20-pce.rules
+		echo 'ATTRS{idProduct}=="e014", ATTRS{idVendor}=="18ef", MODE="0660", GROUP="plugdev"' > /etc/udev/rules.d/50-asterics-fs20-pcs.rules
 		
 		# soft-link for FS20 component, according to:
 		# https://github.com/gary-rowe/hid4java

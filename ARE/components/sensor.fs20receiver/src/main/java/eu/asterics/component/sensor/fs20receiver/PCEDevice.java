@@ -14,7 +14,7 @@
  *
  *                    homepage: http://www.asterics.org 
  *
- *       This project has been partly funded by the European Commission, 
+ *         This project has been funded by the European Commission, 
  *                      Grant Agreement Number 247730
  *  
  *  
@@ -25,30 +25,31 @@
 
 package eu.asterics.component.sensor.fs20receiver;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Logger;
 
-import com.codeminders.hidapi.HIDDevice;
-import com.codeminders.hidapi.HIDDeviceNotFoundException;
-import com.codeminders.hidapi.HIDManager;
+import org.hid4java.HidDevice;
+import org.hid4java.HidManager;
 
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
-/**
- * ReaderThread: opening a connection to the FS20 Receiver and read the
- * messages. Fire an event, if a message has been received
- */
+public class PCEDevice extends AbstractRuntimeComponentInstance implements Runnable{
 
-public class FS20Reader extends AbstractRuntimeComponentInstance implements Runnable {
+    private Logger logger = AstericsErrorHandling.instance.getLogger();
+    private ScheduledExecutorService timerExecutorSend = null;
+    private int vid = 0x18EF;
+    private int pid = 0xE014;
     public ArrayList<FS20EventListener> listeners;
-
     private boolean threadDone = false;
 
-    HIDDevice pce;
+    private HidDevice dev = null;
 
-    public FS20Reader() {
-        listeners = new ArrayList<FS20EventListener>();
+    public PCEDevice() {
+    	listeners = new ArrayList<FS20EventListener>();
     }
 
     public void addEventListener(FS20EventListener l) {
@@ -60,22 +61,57 @@ public class FS20Reader extends AbstractRuntimeComponentInstance implements Runn
             l.fs20EventOccurred(evt);
         }
     }
+    
 
     public void done() {
         threadDone = true;
     }
+
+    public boolean open() {
+
+        timerExecutorSend = Executors.newSingleThreadScheduledExecutor();
+        if (dev != null) {
+            dev.close();
+        }
+        List<HidDevice> list = HidManager.getHidServices().getAttachedHidDevices();
+        for (HidDevice device : list) {
+            if (device.getVendorId() == (short) vid && device.getProductId() == (short) pid) {
+                dev = device;
+            }
+        }
+        if (dev == null) {
+            return false;
+        }
+        dev.open();
+        return dev.isOpen();
+    }
+
+    public boolean close() {
+        HidManager.getHidServices().shutdown();
+        timerExecutorSend.shutdownNow();
+        if (dev != null) {
+            dev.close();
+        }
+        return true;
+    }
+    
 
     @Override
     public void run() {
 
         threadDone = false;
         try {
-            pce = HIDManager.getInstance().openById(0x18EF, 0xE014, null);
-            AstericsErrorHandling.instance.reportInfo(FS20Reader.this, "FS20 PCE Receiver device successfully opened");
-            pce.disableBlocking();
+        	if(open() == false) {
+        		AstericsErrorHandling.instance.reportError(this, "Could not find FS20 PCE Device");
+        		return;
+        	}
+        	
+            AstericsErrorHandling.instance.reportInfo(PCEDevice.this, "FS20 PCE Receiver device successfully opened");
+            dev.setNonBlocking(true);
+            
             byte[] rcvBuffer = new byte[14];
             while (!threadDone) {
-                int readed = pce.read(rcvBuffer);
+                int readed = dev.read(rcvBuffer);
                 Thread.sleep(300);
                 // int i = 0;
                 // for (byte b : rcvBuffer)
@@ -84,17 +120,11 @@ public class FS20Reader extends AbstractRuntimeComponentInstance implements Runn
                     fireFS20Event(new FS20ReaderEvent(this, rcvBuffer));
                 }
             }
-        } catch (HIDDeviceNotFoundException nfe) {
-            AstericsErrorHandling.instance.reportError(this, "Could not find FS20 PCE Device");
-        } catch (IOException ioe) {
-            AstericsErrorHandling.instance.reportError(this, "Error reading data from FS20 PCE Device");
-        } catch (InterruptedException ie) {
-
         } catch (Exception ex) {
             AstericsErrorHandling.instance.reportError(this, "Could not find FS20 PCE Device");
         } finally {
             try {
-                pce.close();
+                dev.close();
             } catch (Exception e) {
                 // AstericsErrorHandling.instance.reportError(this, "Error
                 // closing FS20 PCE Device");
@@ -102,5 +132,4 @@ public class FS20Reader extends AbstractRuntimeComponentInstance implements Runn
         }
 
     }
-
 }

@@ -25,7 +25,7 @@ Windows (x86,x64), Linux (x86, x64, arm(Raspberry Pi)), Mac OSX(x86, x64)
 
 If you installed AsTeRICS as package, all necessary permission already set.
 If you built AsTeRICS on your own, please type following command on a terminal window:<br><br>
-<i>sudo echo 'ATTRS{idProduct}=="e015", ATTRS{idVendor}=="18ef", MODE="0660", GROUP="plugdev"' > /etc/udev/rules.d/50-asterics-fs20.rules</i><br><br>
+<i>sudo echo 'ATTRS{idProduct}=="e015", ATTRS{idVendor}=="18ef", MODE="0660", GROUP="plugdev"' > /etc/udev/rules.d/50-asterics-fs20-pcs.rules</i><br><br>
 Onw additional command is necessary if you work on ARM based platforms (RaspberryPi, BananaPi,...):<br><br>
 <i>sudo ln -sf /lib/arm-linux-gnueabihf/libudev.so.1 /lib/arm-linux-gnueabihf/libudev.so.0</i><br><br>
 Afterwards, unplug and plug in the FS20 device and restart AsTeRICS.

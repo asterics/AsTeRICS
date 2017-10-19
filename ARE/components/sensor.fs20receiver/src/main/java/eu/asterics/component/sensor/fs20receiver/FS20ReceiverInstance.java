@@ -27,8 +27,6 @@ package eu.asterics.component.sensor.fs20receiver;
 
 import java.util.logging.Logger;
 
-import com.codeminders.hidapi.ClassPathLibraryLoader;
-
 //import java.util.logging.Logger;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
@@ -47,7 +45,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  * event if the received command fits to the set housecode and sender address.
  * 
  * 
- * 
+ * @author Benjamin Aigner [aignerb@technikum-wien.at] Date: 19.10.2017
  * @author Roland Ossmann [ro@ki-i.at] Date: 15.05.2012 Time: 11:13
  */
 public class FS20ReceiverInstance extends AbstractRuntimeComponentInstance {
@@ -94,7 +92,7 @@ public class FS20ReceiverInstance extends AbstractRuntimeComponentInstance {
     int propHousecode = 11111111;
     int propSendaddress = 1111;
 
-    FS20Reader runnable;
+    PCEDevice runnable;
     Thread readerThread;
     private Logger logger = AstericsErrorHandling.instance.getLogger();
 
@@ -102,12 +100,6 @@ public class FS20ReceiverInstance extends AbstractRuntimeComponentInstance {
      * The class constructor.
      */
     public FS20ReceiverInstance() {
-        logger.fine("Trying to load library for FS20...");
-        boolean successLoading = ClassPathLibraryLoader.loadNativeHIDLibrary();
-        if (successLoading == false) {
-            throw new RuntimeException("Could not load native lib for FS20 device.");
-        }
-        logger.fine("Success loading native lib for FS20: " + successLoading);
     }
 
     /**
@@ -423,7 +415,7 @@ public class FS20ReceiverInstance extends AbstractRuntimeComponentInstance {
         // AstericsErrorHandling.instance.reportError(this, "Could not find FS20
         // PCE Device");
         AstericsErrorHandling.instance.reportInfo(this, "Starting FS20 Receiver");
-        runnable = new FS20Reader();
+        runnable = new PCEDevice();
 
         runnable.addEventListener(new FS20EventListener() {
             @Override
