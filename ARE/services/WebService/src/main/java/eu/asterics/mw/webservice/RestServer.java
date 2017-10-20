@@ -779,29 +779,26 @@ public class RestServer {
         return response;
     }
 
-    @Path("/storage/data/{path}/{filename}")
+    @Path("/storage/data/{filepath}")
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    public String storeData(@PathParam("path") String path, @PathParam("filename") String filename, String data) {
+    public String storeData(@PathParam("filepath") String filepath, String data) {
         String response;
         String errorMessage;
-        String decodedPath = "";
+        String decodedFilepath = "";
 
-        if (data == null || data.isEmpty() || filename == null || filename.isEmpty() || path == null
-                || path.isEmpty()) {
+        if (data == null || data.isEmpty() || filepath == null || filepath.isEmpty()) {
             return "error: invalid parameters";
         }
 
         try {
-            String decodedFilename = astericsAPIEncoding.decodeString(filename);
-            decodedPath = astericsAPIEncoding.decodeString(path);
-
-            asapiSupport.storeData(data, decodedPath, decodedFilename);
+            decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+            asapiSupport.storeData(data, decodedFilepath);
             response = "OK";
         } catch (Exception e) {
             e.printStackTrace();
-            errorMessage = "Could not store data to " + decodedPath + "' (" + e.getMessage() + ")";
+            errorMessage = "Could not store data to " + decodedFilepath + "' (" + e.getMessage() + ")";
             response = "error:" + errorMessage;
         }
 

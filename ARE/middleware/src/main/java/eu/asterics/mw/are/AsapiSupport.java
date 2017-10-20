@@ -1557,15 +1557,13 @@ public class AsapiSupport {
     }
 
     /**
-     * stores data with UTF-8
+     * stores data with UTF-8 to folder ARE/data
      *
      * @param data
-     * @param path
-     * @param filename
+     * @param filepath path + filename of the data to store (or only filename if no subpath is needed)
      * @throws AREAsapiException
      */
-    public void storeData(String data, String path, String filename) throws AREAsapiException {
-        String filepath = path + "/" + filename;
+    public void storeData(String data, String filepath) throws AREAsapiException {
         this.storeData(data, filepath, RES_TYPE.DATA, Charsets.UTF_8);
     }
 
