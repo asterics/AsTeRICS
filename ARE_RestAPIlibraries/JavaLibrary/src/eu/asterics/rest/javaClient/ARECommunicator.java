@@ -17,7 +17,7 @@ import eu.asterics.rest.javaClient.utils.SseCommunicator;
 
 /**
  * A class that provides methods to communicate with the AsTeRICS Runtime Enviroment (ARE)
- * 
+ *
  * @author Marios Komodromos
  *
  */
@@ -208,6 +208,22 @@ public class ARECommunicator {
 			throw e;
 		}
 	}
+
+    /**
+     * Stores data in the given filepath, to the ARE/data folder
+     *
+     * @param filepath - the filepath to store the data. can contain path + filename or only filename
+     * @param data     - the data to save
+     * @return - a string informing if the store operation was successful
+     * @throws Exception
+     */
+    public String storeData(String filepath, String data) throws Exception {
+        String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
+        HttpResponse httpResponse = httpCommunicator.postRequest("/storage/data/" + encodedFilepath, null, null,
+                HttpCommunicator.DATATYPE_TEXT_PLAIN, HttpCommunicator.DATATYPE_TEXT_PLAIN,
+                data);
+        return httpResponse.getBody();
+    }
 
 	/**
 	 * Deploys a model contained in the given file
