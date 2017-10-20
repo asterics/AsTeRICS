@@ -185,6 +185,9 @@ public class ServerRepository {
 
             add(new RestFunction("PUT", "/runtime/model/components/{componentId}/ports/{portId}/data", "text/plain",
                     "text/plain", "input value", "Sets an input port of a component to a given value"));
+
+            add(new RestFunction("GET", "/runtime/model/name", "", "text/plain", "",
+                    "Returns the name of the currently deployed model"));
         }
     };
 

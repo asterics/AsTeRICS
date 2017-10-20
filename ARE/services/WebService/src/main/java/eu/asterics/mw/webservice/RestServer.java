@@ -207,6 +207,24 @@ public class RestServer {
         return response;
     }
 
+    @Path("/runtime/model/name")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getCurrentModelName() {
+        String response;
+        String errorMessage;
+
+        try {
+            response = asapiSupport.getCurrentModelName();
+        } catch (Exception e) {
+            errorMessage = MessageFormat.format("Could not get model name! error: {0}", e.getMessage());
+            logger.log(Level.WARNING, errorMessage, e);
+            response = "error:" + errorMessage;
+        }
+
+        return response;
+    }
+
     @Path("/runtime/model/autorun/{filepath}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)

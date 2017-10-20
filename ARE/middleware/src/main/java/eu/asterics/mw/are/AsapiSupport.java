@@ -250,6 +250,20 @@ public class AsapiSupport {
     }
 
     /**
+     * Returns the name of the currently deployed model. This is the attribute "modelName" from the XML, containing
+     * the full path at creation time, filename and creation timestamp. Therefore it is an ID of the model.
+     *
+     * @return the name (ID) of the currently deployed model or an empty string, if no model is deployed
+     */
+    public String getCurrentModelName() {
+        IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+        if (currentRuntimeModel == null) {
+            return "";
+        }
+        return currentRuntimeModel.getModelName();
+    }
+
+    /**
      * Returns a string encoding of the model defined in the filename given as
      * argument. If there is no model, an empty string is returned.
      *
@@ -1585,7 +1599,7 @@ public class AsapiSupport {
 
     /**
      * Returns the log file as a string.
-     *
+     * 
      * @return the log file as a string.
      */
     public String getLogFile() {
