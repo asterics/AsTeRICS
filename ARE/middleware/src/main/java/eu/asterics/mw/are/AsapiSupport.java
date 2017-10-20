@@ -60,6 +60,8 @@ import eu.asterics.mw.are.exceptions.DeploymentException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
+import eu.asterics.mw.data.ConversionUtils;
+import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.model.deployment.IChannel;
 import eu.asterics.mw.model.deployment.IComponentInstance;
@@ -1236,9 +1238,11 @@ public class AsapiSupport {
             AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<Void>() {
                 @Override
                 public Void call() throws Exception {
+                    // get runtime instances
                     IRuntimeModel model = DeploymentManager.instance.getCurrentRuntimeModel();
                     IComponentInstance instance = null;
                     IRuntimeInputPort inputPort = null;
+                    byte[] sendData = data;
                     if (model != null) {
                         instance = model.getComponentInstance(targetComponentID);
                         if (instance != null) {
@@ -1250,7 +1254,25 @@ public class AsapiSupport {
                                 MessageFormat.format("send data failed! model: {0}, instance: {1}, inputPort: {2}",
                                         model, instance, inputPort));
                     }
-                    inputPort.receiveData(data);
+                    // convert to target datatype
+                    DataType targetDatatype = null;
+                    for (IInputPort port : instance.getInputPorts()) {
+                        if (targetInputPortID.equals(port.getPortType())) {
+                            targetDatatype = port.getPortDataType();
+                        }
+                    }
+                    if (targetDatatype == null) {
+                        throw new AREAsapiException(MessageFormat.format(
+                                "send data failed! model: {0}, instance: {1}, inputPort: {2}. Could not determine datatype of inputPort.",
+                                model, instance, inputPort));
+                    }
+                    if (!DataType.STRING.equals(targetDatatype)) {
+                        String conversion = ConversionUtils.getDataTypeConversionString(DataType.STRING,
+                                targetDatatype);
+                        sendData = ConversionUtils.convertData(data, conversion);
+                    }
+
+                    inputPort.receiveData(sendData);
                     return null;
                 }
             });

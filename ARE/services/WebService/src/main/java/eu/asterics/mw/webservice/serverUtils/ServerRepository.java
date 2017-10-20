@@ -79,7 +79,7 @@ public class ServerRepository {
 
     /**
      * Returns the baseURI for the REST API.
-     * 
+     *
      * @return the baseUriRest
      */
     public URI getBaseUriREST() {
@@ -89,7 +89,7 @@ public class ServerRepository {
     /**
      * Returns the baseURI for the websocket functionality. The actual websocket channels must be subpaths of it, e.g.
      * {@link ServerRepository#PATH_WEBSOCKET_ASTERICS_DATA}
-     * 
+     *
      * @return the baseUriWs
      */
     public URI getBaseUriWebsocket() {
@@ -98,7 +98,7 @@ public class ServerRepository {
 
     /**
      * Returns the configured port number for the REST API.
-     * 
+     *
      * @return
      */
     public int getPortREST() {
@@ -114,7 +114,7 @@ public class ServerRepository {
 
     /**
      * Returns the configured port number for the Websocket functionality.
-     * 
+     *
      * @return
      */
     public int getPortWebsocket() {
@@ -123,7 +123,7 @@ public class ServerRepository {
 
     /**
      * Returns a singleton instance of the ServerRepository class
-     * 
+     *
      * @return
      */
     public static ServerRepository getInstance() {
@@ -183,8 +183,8 @@ public class ServerRepository {
 
             add(new RestFunction("GET", "/events/subscribe", "", "", "", "Opens a persistent connection with ARE to use it for Server Sent Events"));
 
-            add(new RestFunction("PUT", "/runtime/model/components/input/{componentId}/{inputKey}", "text/plain", "text/plain", "input value",
-                    "Sets an input port of a component to a given value"));
+            add(new RestFunction("PUT", "/runtime/model/components/{componentId}/ports/{portId}/data", "text/plain",
+                    "text/plain", "input value", "Sets an input port of a component to a given value"));
         }
     };
 
