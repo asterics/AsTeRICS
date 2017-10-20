@@ -33,7 +33,7 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
-
+ 
 /**
  * Implements the derivative of the input signal
  * 

@@ -55,7 +55,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  * function / keycodes are supported right now.
  * 
  * @author Christoph Veigl [christoph.veigl@technikum-wien.at] Date: Apr 24,
- *         2011 Time: 04:45:08 PM
+ *         2011 Time: 04:45:08 PM 
  */
 public class KeyboardInstance extends AbstractRuntimeComponentInstance {
     /**

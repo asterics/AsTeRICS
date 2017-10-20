@@ -1,5 +1,6 @@
 package eu.asterics.rest.javaClient;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -350,6 +351,25 @@ public class ARECommunicator {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	/**
+	 * sends data to a input port of a component of the currently deployed model
+	 *
+	 * @param componentId id of the component to send data to
+	 * @param portId port of the component to send data to
+	 * @param value data to send
+	 * @return
+	 * @throws Exception
+	 */
+	public String sendDataToInputPort(String componentId, String portId, String value) throws Exception {
+		String encodedId = astericsAPIEncoding.encodeString(componentId);
+		String encodedPortId = astericsAPIEncoding.encodeString(portId);
+		String url = MessageFormat.format("/runtime/model/components/{0}/ports/{1}/data", encodedId, encodedPortId);
+		HttpResponse httpResponse = httpCommunicator.putRequest(url,
+				HttpCommunicator.DATATYPE_TEXT_PLAIN, HttpCommunicator.DATATYPE_TEXT_PLAIN,
+				value);
+		return httpResponse != null ? httpResponse.getBody() : null;
 	}
 
 	/**
