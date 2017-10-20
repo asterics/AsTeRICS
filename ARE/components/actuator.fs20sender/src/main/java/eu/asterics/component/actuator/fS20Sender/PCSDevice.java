@@ -43,6 +43,8 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class PCSDevice {
 
+    private String TEST = "ÄÜßÖ@€µ!§$%&/()=?üäö{}\\[]<>|";
+
     private Logger logger = AstericsErrorHandling.instance.getLogger();
     private ScheduledExecutorService timerExecutorSend = null;
     private int vid = 0x18EF;
