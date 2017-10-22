@@ -277,7 +277,7 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
 
         while (index < propKeyCodeString.length()) {
             try {
-                character = propKeyCodeString.charAt(index);
+                character = propKeyCodeString.charAt(index);                
             } catch (Exception e) {
                 character = ' ';
             }
@@ -335,6 +335,18 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
                         break;
                     case '#':
                         keyCode = 191;
+                        break;
+                    case 'ä':
+                        keyCode = 222;
+                        break;
+                    case 'ß':
+                        keyCode = 219;
+                        break;
+                    case 'ö':
+                        keyCode = 192;
+                        break;
+                    case 'ü':
+                        keyCode = 186;
                         break;
                     case ':':
                         keyCodeArray.add(16);
@@ -743,7 +755,7 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
         super.start();
         // NativeHookServices.init();
         AstericsErrorHandling.instance.reportInfo(this, "KeyboardInstance started");
-
+        
     }
 
     /**
