@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="bundle_model.xsd">
+
+    <componentType id="asterics.AcousticScanning"
+                   canonical_name="eu.asterics.component.processor.acousticscanning.AcousticScanningInstance">
+        <type subtype="Audio and Voice">processor</type>
+        <singleton>false</singleton>
+        <description>Acoustic scanning of selection sets (words, letters) for composition of text or commands</description>
+        <ports>
+			<inputPort id="loadSetFile">
+				<description>name of file containing new selectionSets to load</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="selectionPreview">
+				<description>preview for word composition</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="selection">
+				<description>selected word composition</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="selectionSet1">
+				<description>start playback of selection set 1</description>
+			</eventListenerPort>
+			<eventListenerPort id="selectionSet2">
+				<description>start playback of selection set 2</description>
+			</eventListenerPort>
+			<eventListenerPort id="selectionSet3">
+				<description>start playback of selection set 3</description>
+			</eventListenerPort>
+			<eventListenerPort id="selectionSet4">
+				<description>start playback of selection set 4</description>
+			</eventListenerPort>
+			<eventListenerPort id="selectionSet5">
+				<description>start playback of selection set 5</description>
+			</eventListenerPort>
+			<eventListenerPort id="selectionSet6">
+				<description>start playback of selection set 6</description>
+			</eventListenerPort>
+			<eventListenerPort id="select">
+				<description>select currently played item</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="event1">
+				<description>event1 has been selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="event2">
+				<description>event2 has been selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="event3">
+				<description>event3 has been selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="event4">
+				<description>event4 has been selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="event5">
+				<description>event5 has been selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="event6">
+				<description>event6 has been selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="event7">
+				<description>event7 has been selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="event8">
+				<description>event8 has been selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="event9">
+				<description>event9 has been selected</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="event10">
+				<description>event10 has been selected</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="language"
+				type="string"
+				value="de"
+				description="language"/>
+			<property name="voice"
+				type="string"
+				value="voice-cmu-slt-hsmm-5.2"
+				description="a german voice"/>
+			<property name="delayTime"
+				type="integer"
+				value="800"
+				description="delay between selection items"/>
+			<property name="selectionSet1"
+				type="string"
+				value="a,b,c,d,e,f,g,h"
+				description="items of selection set 1"/>
+			<property name="selectionSet2"
+				type="string"
+				value="i,j,k,l,m,n,o,p"
+				description="items of selection set 2"/>
+			<property name="selectionSet3"
+				type="string"
+				value="q,r,s,t,u,v,w,x,y,z"
+				description="items of selection set 3"/>
+			<property name="selectionSet4"
+				type="string"
+				value="1,2,3,4,5,6,7,8,9,0"
+				description="items of selection set 4"/>
+			<property name="selectionSet5"
+				type="string"
+				value="backspace#del,space key#space,enter key#enter,speak preview#speak,commit text#commit,clear all#clear"
+				description="items of selection set 5"/>
+			<property name="selectionSet6"
+				type="string"
+				value="event1#event1,event2#event2,speak different text#this text is different"
+				description="items of selection set 6"/>
+
+        </properties>
+
+    </componentType>
+</componentTypes>
