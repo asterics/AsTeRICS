@@ -1522,14 +1522,12 @@ public class AsapiSupport {
     /**
      * Stores data to a given filename (+ path) in a given resource-Type directory
      *
-     * @param data
-     *            data to store as string
-     * @param filepath
-     *            the name of the file the data is to be stored. If the data should be stored in a subpath with path-prefix.
-     * @throws AREAsapiException
-     *             if the file cannot be created or stored
+     * @param data         data to store as string
+     * @param filepath     the name of the file the data is to be stored. If the data should be stored in a subpath with path-prefix.
+     * @param resourceType RES_TYPE that defines where to store the data (e.g. DATA or MODEL)
+     * @throws AREAsapiException if the file cannot be created or stored
      */
-    private void storeData(String data, String filepath, RES_TYPE resourceType, Charset charset) throws AREAsapiException {
+    private void storeData(String data, String filepath, RES_TYPE resourceType) throws AREAsapiException {
         try {
             File filenameAsFile = ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(filepath, resourceType));
             File parentDir = filenameAsFile.getParentFile();
@@ -1541,7 +1539,7 @@ public class AsapiSupport {
             }
             try (FileWriter outWriter = new FileWriter(filenameAsFile);) {
                 // fetch bytes as UTF-16 and tell the writer to interpret and write it as UTF-16
-                IOUtils.write(data.getBytes(charset), outWriter, charset);
+                IOUtils.write(data.getBytes(Charsets.UTF_16), outWriter, Charsets.UTF_16);
                 outWriter.flush();
                 outWriter.close();
             }
@@ -1564,7 +1562,7 @@ public class AsapiSupport {
      * @throws AREAsapiException
      */
     public void storeData(String data, String filepath) throws AREAsapiException {
-        this.storeData(data, filepath, RES_TYPE.DATA, Charsets.UTF_8);
+        this.storeData(data, filepath, RES_TYPE.DATA);
     }
 
     /**
@@ -1583,7 +1581,7 @@ public class AsapiSupport {
             // The deploymentmodel parser expects the inputstream in UTF-16
             InputStream is = new ByteArrayInputStream(modelInXML.getBytes(Charsets.UTF_16));
             DefaultDeploymentModelParser.instance.parseModel(is);
-            this.storeData(modelInXML, filename, RES_TYPE.MODEL, Charsets.UTF_16);
+            this.storeData(modelInXML, filename, RES_TYPE.MODEL);
         } catch (ParseException e) {
             String errorMsg = "Failed to parse model, maybe model version not in sync with compononent descriptors -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
