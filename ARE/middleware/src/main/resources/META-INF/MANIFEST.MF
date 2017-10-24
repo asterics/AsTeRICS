@@ -19,4 +19,5 @@ Bundle-ClassPath: .,
  lib/libthrift.jar,
  lib/slf4j-api-1.6.0.jar,
  lib/slf4j-simple-1.6.0.jar, 
- lib/commons-io-2.4.jar
+ lib/commons-io-2.4.jar,
+ lib/commons-codec-1.11.jar
