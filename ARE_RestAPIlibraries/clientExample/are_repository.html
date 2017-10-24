@@ -43,7 +43,13 @@
 				var modelInXML = document.getElementById("UMmodel").value;
 				uploadModel(defaultSuccessCallback, defaultErrorCallback, modelInXML);
 			}
-
+			
+			//storeData
+			function STORE_DATA() {
+				var filepath = document.getElementById("storeData_filepath").value;
+				var data = document.getElementById("storeData_data").value;
+				storeData(defaultSuccessCallback, defaultErrorCallback, filepath, data);
+			}
 
 			//deleteModelFromFile
 			function DELETE_MODEL_FROM_FILE() {
@@ -98,6 +104,13 @@
 		</button>
 		<input placeholder="filepath" type="text" id="STOREfilepath"/>
 		<input placeholder="modelInXML" type="text" id="STOREmodel"/>
+		<br>
+		
+		<button onclick="STORE_DATA()" title="Description: Stores data in the given filepath in the ARE/data folder &#013;Ouput: alert">
+			Store data to file 
+		</button>
+		<input placeholder="filepath" type="text" id="storeData_filepath"/>
+		<input placeholder="data" type="text" id="storeData_data"/>
 		<br>
 		
 		<button onclick="DELETE_MODEL_FROM_FILE()" title="Description: Deletes the model with the given filepath &#013;Ouput: alert"> Delete model </button>
