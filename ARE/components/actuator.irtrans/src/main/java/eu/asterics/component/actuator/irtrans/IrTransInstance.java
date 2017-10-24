@@ -302,6 +302,9 @@ public class IrTransInstance extends AbstractRuntimeComponentInstance {
                     tcpSocketRead = initTcpSocket(tcpSocketRead);
                     while (!readerThread.isInterrupted()) {
                         String result = readFromSocket(tcpSocketRead, 0);
+                        if(ERROR_RESULT.equals(result)) {
+                            readerThread.interrupt();
+                        }
                         opOutput.sendData(ConversionUtils.stringToBytes(result));
                         logger.log(Level.INFO, "IRTrans received: " + result);
                     }

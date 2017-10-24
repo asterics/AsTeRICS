@@ -640,6 +640,28 @@ function storeModel(successCallback, errorCallback, filepath, modelInXML) {
 	});
 }
 
+function storeData(successCallback, errorCallback, filepath, data) {
+	
+	if (!filepath || !data) return;
+	
+	$.ajax({
+		type: "POST",
+		url: _baseURI + "storage/data/" + encodeParam(filepath),
+		contentType: "text/plain",
+		data: data,	
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(jqXHR.responseText, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
 
 function deleteModelFromFile(successCallback, errorCallback, filepath) {
 	
