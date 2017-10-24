@@ -137,8 +137,11 @@ public class Packager {
 			Set<URI> modelURIs = modelInspector.getModelURIsFromProperty();
 			Notifier.info("Found model URIs: " + modelURIs);
 			if (modelURIs.size() == 0) {
-				throw new APEConfigurationException("STOPPING: No model URIs found. Please check value of property "
-						+ APEProperties.P_APE_MODELS + ": " + apeProperties.getProperty(APEProperties.P_APE_MODELS));
+			    /* Don't panic if no model URIs were provided, but print out a warning!! */
+				//throw new APEConfigurationException("STOPPING: No model URIs found. Please check value of property "
+				//		+ APEProperties.P_APE_MODELS + ": " + apeProperties.getProperty(APEProperties.P_APE_MODELS));
+			    
+			    Notifier.warning("No model URIs found - Your solution might NOT be runnable! Please check value of property "+ APEProperties.P_APE_MODELS + ": " + apeProperties.getProperty(APEProperties.P_APE_MODELS),null);
 			}
 
 			// get model instances
