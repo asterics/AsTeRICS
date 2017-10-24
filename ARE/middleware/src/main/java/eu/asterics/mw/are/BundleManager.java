@@ -3,16 +3,19 @@ package eu.asterics.mw.are;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,6 +27,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
+import org.apache.commons.codec.binary.Hex;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -147,17 +151,133 @@ public class BundleManager implements BundleListener, FrameworkListener {
         	LOADER_COMPONENTLIST_CACHE_FILE_URI=ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION,RES_TYPE.PROFILE);
         	INSTALLABLE_BUNDLE_LIST_CACHE_FILE_URI=ResourceRegistry.getInstance().getResource("installable_bundle_list.txt", RES_TYPE.TMP);
         	
-            //Before we can start, let's ensure the generation of cached files
-        	createComponentListCache();
-            if(bundleChangeDetected()) {
-            	logger.fine("Starting generation of component collection cache file");
-            	generateComponentDescriptorsAsXml(ResourceRegistry.toFile(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI));                    	
-            }
-        } catch (IOException | ParseException | URISyntaxException e1) {
+        	String md5Sum=generateMD5Sum();
+        	if(bundleChangeDetected(md5Sum)||cacheFileMissing()) {
+        	    generateCacheFiles();
+        	}
+        	storeMD5Sum(md5Sum);
+            readComponentListCache();
+        } catch (IOException | ParseException | URISyntaxException | NoSuchAlgorithmException e1) {
             // TODO Auto-generated catch block
             AstericsErrorHandling.instance.reportError(null,
                     "Could not create cache for Asterics components:\n" + e1.getMessage());
         }
+    }
+
+    /**
+     * Checks one of the used cache files is misssing.
+     * @return
+     */
+    private boolean cacheFileMissing() {
+        logger.fine("Checking missing cache files");
+        if(!ResourceRegistry.resourceExists(LOADER_COMPONENTLIST_CACHE_FILE_URI) ||
+                !ResourceRegistry.resourceExists(COMPONENT_COLLECTION_CACHE_FILE_URI)||
+                !ResourceRegistry.resourceExists(INSTALLABLE_BUNDLE_LIST_CACHE_FILE_URI)) {
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Compares the given md5sum hex string and checks it for equality with a newly created md5 hash string of all plugin jars.
+     * @param md5Sum
+     * @return
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    private boolean bundleChangeDetected(String md5Sum) throws URISyntaxException, IOException {
+        logger.fine("Checking bundle change...");
+        if(md5Sum==null) {
+            logger.warning("Given MD5 sum is null --> bundle change: true");
+            return true;
+        }
+        
+        URI pluginJarsHashFileURI=ResourceRegistry.getInstance().getResource("caching/pluginJarsHash.txt", RES_TYPE.TMP);
+        File pluginJarsHashFile=ResourceRegistry.toFile(pluginJarsHashFileURI);
+        if(!pluginJarsHashFile.exists()) {
+            logger.warning("pluginJars hash file does not exist --> bundle change: true");
+            return true;
+        }
+        try(BufferedReader reader=new BufferedReader(new FileReader(pluginJarsHashFile))) {
+            String storedMD5Sum=reader.readLine();
+            if(md5Sum.equals(storedMD5Sum)) {
+                logger.fine("bundle change: false");
+                return false;
+            }
+        }
+        
+        logger.fine("bundle change: true");
+        return true;
+    }
+
+    /**
+     * Stores the given MD5 hash hex string to a file.
+     * @param md5Sum
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    private void storeMD5Sum(String md5Sum) throws URISyntaxException, IOException {
+        logger.fine("Storing MD5 sum...");
+        URI pluginJarsHashFileURI=ResourceRegistry.getInstance().getResource("caching/pluginJarsHash.txt", RES_TYPE.TMP);
+        File pluginJarsHashFile=ResourceRegistry.toFile(pluginJarsHashFileURI);
+        File parentFile=pluginJarsHashFile.getParentFile();
+        
+        if(!parentFile.exists()) {
+            if(!parentFile.mkdirs()) {
+                throw new IOException("Could not create parent directories for MD5 hash file: "+pluginJarsHashFile);
+            }
+        }
+        try(FileWriter writer=new FileWriter(pluginJarsHashFile)) {
+            writer.write(md5Sum.trim());
+        }
+    }
+
+    /**
+     * This method generates all needed cachde files.
+     * @throws MalformedURLException
+     * @throws IOException
+     * @throws ParseException
+     * @throws URISyntaxException
+     */
+    private void generateCacheFiles() throws MalformedURLException, IOException, ParseException, URISyntaxException {
+        logger.fine("Generating cache files/help files");
+        //Before we can start, let's ensure the generation of cached files
+        logger.fine("Creating loader_componentlist.ini");
+        createComponentListCache();
+        logger.fine("Generating component collection cache file");
+        generateComponentDescriptorsAsXml(ResourceRegistry.toFile(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI));                        
+    }
+
+    /**
+     * Generates an MD5 hex string of the bytes of all plugin jars.
+     * A plugin jar is defined as an osgi bundle containing a bundle_descriptor.xml file in the root folder of the bundle.
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    private String generateMD5Sum() throws NoSuchAlgorithmException, MalformedURLException, IOException {
+        logger.fine("Generating MD5 sum of bundle jars....");
+        long timeStart=System.currentTimeMillis();
+        MessageDigest MDInstance=MessageDigest.getInstance("MD5");
+        List<URI> compJarList=ResourceRegistry.getInstance().getComponentJarList(false);
+        
+        for(URI compJarURI : compJarList) {
+            try(DigestInputStream dis=new DigestInputStream(compJarURI.toURL().openStream(), MDInstance)) {
+                //Just opening automatically updates the MessageDigest object.
+                byte[] readBytes = new byte[1024];
+                int numRead=0;
+                while((numRead=dis.read(readBytes))!=-1) {
+                    MDInstance.update(readBytes,0,numRead);
+                }
+            }
+        }
+        byte[] MD5OfJar=MDInstance.digest();
+        long timeEnd=System.currentTimeMillis();
+        String MD5HexString=Hex.encodeHexString(MD5OfJar);
+        
+        logger.fine(MessageFormat.format("Calculated MD5 hash of all {0} bundle jars in {1} ms. MD5Hex: {2}",compJarList.size(),timeEnd-timeStart,MD5HexString));
+        return MD5HexString;
     }
 
     public void stop() {
@@ -659,13 +779,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * @return
      */
     public boolean bundleChangeDetected() {
-		if(!ResourceRegistry.resourceExists(LOADER_COMPONENTLIST_CACHE_FILE_URI) ||
-    		!ResourceRegistry.resourceExists(COMPONENT_COLLECTION_CACHE_FILE_URI)||
-    		!ResourceRegistry.resourceExists(INSTALLABLE_BUNDLE_LIST_CACHE_FILE_URI)) {
-    		return true;
-    	}
-
-    	return false;
+    	return cacheFileMissing();
     }
     
     /**
@@ -819,17 +933,15 @@ public class BundleManager implements BundleListener, FrameworkListener {
      */
     public void createComponentListCache()
             throws MalformedURLException, IOException, ParseException, URISyntaxException {
-        File componentList = ResourceRegistry
-                .toFile(LOADER_COMPONENTLIST_CACHE_FILE_URI);
+        File componentList = ResourceRegistry.toFile(LOADER_COMPONENTLIST_CACHE_FILE_URI);
 
         // OSGIMode=true: only generate list if it does not exist.
         // OSGIMode=false: Always generate cache list. This is also needed to
         // force parsing the bundle_descriptors and installing ComponentType
         // instances in ComponentRepository.
-        if (!componentList.exists() || !ResourceRegistry.getInstance().isOSGIMode()) {
+        //if (!componentList.exists() || !ResourceRegistry.getInstance().isOSGIMode()) {
             generateComponentListCache(componentList);
-        }
-        readComponentListCache(componentList.toURI().toURL());
+        //}
     }
 
     /**
@@ -890,9 +1002,12 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * 
      * @param componentListCache
      * @throws IOException
+     * @throws URISyntaxException 
      */
-    public void readComponentListCache(URL componentListCache) throws IOException {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(componentListCache.openStream()))) {
+    public void readComponentListCache() throws IOException, URISyntaxException {
+        File componentList = ResourceRegistry.toFile(LOADER_COMPONENTLIST_CACHE_FILE_URI);
+        
+        try (BufferedReader in = new BufferedReader(new FileReader(componentList))) {
             String actLine = "";
             componentTypeIDToJarName.clear();
             while ((actLine = in.readLine()) != null) {
