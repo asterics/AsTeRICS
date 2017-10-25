@@ -51,8 +51,10 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 
 /**
  * 
- * <Describe purpose of this module>
- * 
+ * This plugin allows reconfiguration of a FABI box during runtime
+ * One major application is flexibility in gaming.
+ * A list of button actions (FABI slot configurations per console and per game)
+ * can be saved in a .csv file and applied via event triggers
  * 
  * 
  * @author <your name> [<your email address>] Date: Time:
@@ -83,7 +85,7 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
     private static int timeout = 0;
 
     String selectedConsole, selectedGame;
-    String noData = "";
+    String incomingData = "";
     String receivedMessage = "";
     boolean errorEEPROM = false;
     boolean busy = false;
@@ -260,19 +262,19 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 
     public void OutputConsole(String text) {
         System.out.print("################################################################################");
-        System.out.println("Load Console " + text);
+        System.out.println("FABI: Load Console " + text);
         opOutConsole.sendData(ConversionUtils.stringToBytes(text));
     }
 
     public void OutputGame(String text) {
         System.out.print("################################################################################");
-        System.out.println("Load Game " + text);
+        System.out.println("FABI: Load Game " + text);
         opOutGame.sendData(ConversionUtils.stringToBytes(text));
     }
 
     public void OutputMode(int text) {
         System.out.print("################################################################################");
-        System.out.println("Load Mode " + text);
+        System.out.println("FABI: Load Mode " + text);
         opOutMode.sendData(toByteArray(text));
     }
 
@@ -300,8 +302,7 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
                 }
             }
             OutputConsole(selectedConsole);
-
-            loadNewModel(selectedConsole);
+             // loadNewModel(selectedConsole);
         }
     };
     private final IRuntimeInputPort ipInGame = new DefaultRuntimeInputPort() {
@@ -332,7 +333,6 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 
             OutputGame(selectedGame);
             SetReadyEvent();
-
         }
     };
 
@@ -354,7 +354,7 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
             }
 
             int getMode = byteArrayToInt(data);
-            switchMode(getMode);
+            ApplyButtons(getMode);
             SetReadyEvent();
         }
     };
@@ -365,7 +365,6 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
     final IRuntimeEventListenerPort elpModeSwitcher = new IRuntimeEventListenerPort() {
         @Override
         public void receiveEvent(final String data) {
-            // Call next Mode (AT N)
             switchMode();
         }
     };
@@ -373,7 +372,6 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveEvent(final String data) {
             SetBusyEvent();
-            deleteEEPROM();
             if (selectedConsole == null) {
                 SetReadyEvent();
                 return;
@@ -400,16 +398,13 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 
             OutputGame(selectedGame);
             SetReadyEvent();
-
-            loadNewModel(selectedGame);
+            // loadNewModel(selectedGame);
         }
     };
     final IRuntimeEventListenerPort elpConsoleSwitcher = new IRuntimeEventListenerPort() {
         @Override
         public void receiveEvent(final String data) {
             SetBusyEvent();
-            deleteEEPROM();
-
             if (selectedConsole == null) {
                 selectedConsole = consoles.get(0);
                 OutputConsole(selectedConsole);
@@ -429,7 +424,6 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
             if ((consoles.size() - 1) >= (index + 1)) {
                 if (consoles.get(index + 1) != null) {
                     selectedConsole = consoles.get(index + 1);
-
                     // setMode(consoles.get(index+1),
                     // games.get(index+1).get(0));
                 }
@@ -442,8 +436,7 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
             opOutGame.sendData(ConversionUtils.stringToBytes(""));
             opOutMode.sendData(ConversionUtils.stringToBytes(""));
             SetReadyEvent();
-
-            loadNewModel(selectedConsole);
+            // loadNewModel(selectedConsole);
         }
     };
 
@@ -453,7 +446,10 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void start() {
         SetBusyEvent();
+        System.out.println("FABI: trying to open COM Port");
+
         if (!openCOMPort()) {
+            System.out.println("FABI: open COM Port failed");
             SetReadyEvent();
             super.start();
             return;
@@ -461,36 +457,29 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 
         // load csv
         try {
+            System.out.println("FABI: trying to load csv");
             loadCsv();
+            System.out.println("FABI: load csv done");
         } catch (IOException e) {
+            System.out.println("FABI: load csv failed");
             // TODO Auto-generated catch block
             e.printStackTrace();
             SetReadyEvent();
         }
-
-        // delete EEPROM
-        deleteEEPROM();
-
         modes.keySet().iterator().next();
-
-        try {
-            SetCommand("AT ID");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
+        System.out.println("FABI: requesting ID");
+        sendToFabi("AT ID\n");
         SetReadyEvent();
         super.start();
     }
 
-    private String KeyMouseIdentifier(String button) {
-        if (button.contains("KEY_")) {
-            button = "AT KP " + button;
+    private String getATcommand(String command) {
+        if (command.contains("KEY_")) {
+        	command = "AT KP " + command + "\n";
         } else {
-            button = "AT " + button;
+        	command = "AT " + command + "\n";
         }
-        return button;
+        return command;
     }
 
     private void setMode(String console, String game) {
@@ -502,148 +491,69 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 
         gameMode = modes.get(console.toUpperCase());
         eachMode = gameMode.get(game.toUpperCase());
-        maxModeCount = 1;
+        maxModeCount = eachMode.size();
+        
+        System.out.println("FABI: Selecting mode "+console+" - Game:"+game);
+        System.out.println("FABI: This mode has "+maxModeCount+" Key slots!");
 
-        int indexButton = 1;
-        busy = true;
-        for (ArrayList<String> mode : eachMode) {
-            for (String config : mode) {
-                try {
-                    if (errorEEPROM) {
-                        return;
-                    }
-                    SetModeCommand("AT BM " + indexButton, KeyMouseIdentifier(config));
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                indexButton++;
-            }
-            indexButton = 1;
-            // Speichern ins EEPROM
-            saveToEEPROM(maxModeCount);
-            switchModeForSaving(maxModeCount);
-
-            maxModeCount++;
-        }
-        busy = false;
         modeCounter = 1;
         switchMode();
         System.out.println("Ready!");
     }
 
-    private void saveToEEPROM(int modeToLoad) {
-        try {
-            System.out.println("save mode to EEPROM");
-            out.write(ConversionUtils.stringToBytes("AT SAVE " + modeToLoad + "\n"));
-
-            checkMessageReceived();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
     private void switchMode() {
-        switchMode(modeCounter);
+        ApplyButtons(modeCounter);
         modeCounter++;
-
         if (modeCounter >= maxModeCount) {
             modeCounter = 1;
         }
-
     }
 
-    private void switchModeForSaving(int modeToLoad) {
-        try {
-            out.write(ConversionUtils.stringToBytes("AT NEXT\n"));
-
-            checkMessageReceived();
-            checkMessageReceived();
-
-            out.write(ConversionUtils.stringToBytes("AT LOAD " + modeToLoad + "\n"));
-
-            checkMessageReceived();
-            checkMessageReceived();
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public void sendToFabi(String text ) {
+    	try 
+    	{
+    		System.out.print("FABI: sending to FABI:"+text);
+    		out.write(ConversionUtils.stringToBytes(text));
+    	}
+    	catch (Exception e) {
+    		System.out.println("FABI: send failed!");
+    		
+    	}
     }
-
-    public void ShowButtons(int modeToLoad) {
+    public void ApplyButtons(int modeToLoad) {
         String buttons = "";
         ArrayList<ArrayList<String>> eachMode;
         Map<String, ArrayList<ArrayList<String>>> gameMode;
+        int actbutton=1;
 
         gameMode = modes.get(selectedConsole.toUpperCase());
         eachMode = gameMode.get(selectedGame.toUpperCase());
 
         ArrayList<String> mode = eachMode.get(modeToLoad - 1);
         for (String config : mode) {
-            if (config.contains("KEY_CTRL KEY_ESC")) {
-                config = "Modus/Zurueck";
-            } else if (config.contains("KEY_")) {
-                config = config.replace("KEY_", "");
-            }
-            buttons += config + ",";
+        	String buttonMode="AT BM "+actbutton+"\n";
+        	actbutton++;
+       	    sendToFabi (buttonMode);
+       	    sendToFabi(getATcommand(config));
+	        if (config.contains("KEY_F12"))
+	      	    buttons += "Modus/Zurueck";
+	      	 else buttons += config.replace("KEY_", "");
+            buttons += ",";
         }
         System.out.println("Buttons : " + buttons);
         opOutButtons.sendData(ConversionUtils.stringToBytes(buttons));
     }
 
-    private void switchMode(int modeToLoad) {
-        ShowButtons(modeToLoad);
-        ShowButtons(modeToLoad);
-        try {
-            OutputMode(modeToLoad);
-            System.out.println("switch Mode");
-
-            out.write(ConversionUtils.stringToBytes("AT LOAD " + modeToLoad + "\n"));
-
-            checkMessageReceived();
-            checkMessageReceived();
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    private void SetModeCommand(String command, String modeButton) throws IOException {
-        System.out.println(command);
-        out.write(ConversionUtils.stringToBytes(command + "\n"));
-
-        checkMessageReceived();
-
-        System.out.println(modeButton);
-        out.write(ConversionUtils.stringToBytes(modeButton + "\n"));
-
-        checkMessageReceived();
-    }
-
-    public void SetCommand(String command) throws IOException {
-        System.out.println(command);
-        out.write(ConversionUtils.stringToBytes(command + "\n"));
-        String message = checkMessageReceived();
-        // System.out.println(message);
-        if (message.contains("2.0")) {
-            System.out.println("Fabi2.0 is detected!");
-        } else {
-            System.out.println("#ERROR: Only Fabi2.0 is supported!");
-        }
-    }
-
     private boolean openCOMPort() {
-        portController = CIMPortManager.getInstance().getRawConnection("COM" + propComPort, 9600, true);
+        portController = CIMPortManager.getInstance().getRawConnection("COM" + propComPort, 115200, true);
 
         if (portController == null) {
             System.out.println(
-                    "Fabi: Could not construct raw port controller, please verify that the COM port is valid.");
+                    "FABI: Could not construct raw port controller, please verify that the COM port is valid.");
             return false;
         } else {
-            System.out.println("COM" + propComPort + " Port open!");
+            System.out.println("FABI: COM" + propComPort + " Port open!");
+            System.out.println("FABI: string reader thread !");
             in = portController.getInputStream();
             out = portController.getOutputStream();
             readThread = new Thread(new Runnable() {
@@ -652,12 +562,10 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
                     running = true;
                     while (running) {
                         try {
-
-                            if (in.available() > 0) {
+                            while (in.available() > 0) {
                                 handlePacketReceived((byte) in.read());
-                            } else {
-                                Thread.sleep(1);
-                            }
+                            } 
+                            Thread.sleep(10);
                         } catch (IOException | InterruptedException io) {
                             io.printStackTrace();
                         }
@@ -666,66 +574,20 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
             });
 
             readThread.start();
-
         }
         return true;
     }
 
     public void handlePacketReceived(byte data) {
-        System.out.print((char) data);
-        noData += (char) data;
+        incomingData += (char) data;
 
         if ((char) data == '\n') {
-            receivedMessage = noData;
-            if (noData.contains("no data found")) {
-                errorEEPROM = true;
-            }
+            receivedMessage = incomingData;
+            System.out.println("FABI: ---- incoming message ---->" + receivedMessage.replace("\n", ""));
             messageReceived = true;
-            noData = "";
+            incomingData = "";
         }
 
-    }
-
-    private void deleteEEPROM() {
-
-        try {
-            if (out == null) {
-                System.out.println("Problem with COM Port!");
-                return;
-            }
-            System.out.println("AT CLEAR");
-            out.write(ConversionUtils.stringToBytes("AT CLEAR\n"));
-            checkMessageReceived();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    private String checkMessageReceived() {
-        if (messageReceived) {
-            messageReceived = false;
-            return null;
-        }
-
-        while (!messageReceived) {
-            timeout++;
-            if (timeout == 50) {
-                System.out.println("no data received within half a second");
-                timeout = 0;
-                messageReceived = true;
-            }
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-        timeout = 0;
-        messageReceived = false;
-        return receivedMessage;
     }
 
     private void loadCsv() throws FileNotFoundException, IOException {
@@ -822,9 +684,6 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void pause() {
-
-        waitUnitlEverythingIsFinished();
-
         super.pause();
     }
 
@@ -833,7 +692,6 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void resume() {
-        openCOMPort();
         super.resume();
     }
 
@@ -842,8 +700,6 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void stop() {
-
-        waitUnitlEverythingIsFinished();
 
         if (readThread != null) {
             running = false;
@@ -854,23 +710,12 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
                 e.printStackTrace();
             }
         }
-        super.stop();
-    }
-
-    private void waitUnitlEverythingIsFinished() {
-        int timeout = 0;
-        while (busy || timeout < 20) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            timeout++;
-        }
 
         if (portController != null) {
             CIMPortManager.getInstance().closeRawConnection("COM" + propComPort);
         }
+        super.stop();
     }
+
+   
 }
