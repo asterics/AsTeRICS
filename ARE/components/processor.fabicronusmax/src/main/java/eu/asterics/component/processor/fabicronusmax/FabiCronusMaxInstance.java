@@ -48,6 +48,7 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
+import eu.asterics.mw.services.AstericsErrorHandling;
 
 /**
  * 
@@ -450,6 +451,9 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 
         if (!openCOMPort()) {
             System.out.println("FABI: open COM Port failed");
+            AstericsErrorHandling.instance.reportError(this, "Could not find FABI Module at COM" + propComPort
+                    + ". Please verify that the Module is connected to an USB Port, the driver is installed and the COM Port number is correct.");
+
             SetReadyEvent();
             super.start();
             return;
@@ -516,8 +520,7 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
     		out.write(ConversionUtils.stringToBytes(text));
     	}
     	catch (Exception e) {
-    		System.out.println("FABI: send failed!");
-    		
+    		System.out.println("FABI: send failed!");    		
     	}
     }
     public void ApplyButtons(int modeToLoad) {
@@ -525,6 +528,11 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
         ArrayList<ArrayList<String>> eachMode;
         Map<String, ArrayList<ArrayList<String>>> gameMode;
         int actbutton=1;
+        
+        if (selectedConsole==null || selectedGame==null) {
+            System.out.println("FABI: cannot apply buttons (null) !");           
+            return;
+        }
 
         gameMode = modes.get(selectedConsole.toUpperCase());
         eachMode = gameMode.get(selectedGame.toUpperCase());
@@ -540,7 +548,7 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
 	      	 else buttons += config.replace("KEY_", "");
             buttons += ",";
         }
-        System.out.println("Buttons : " + buttons);
+        System.out.println("FABI Buttons : " + buttons);
         opOutButtons.sendData(ConversionUtils.stringToBytes(buttons));
     }
 
@@ -570,6 +578,7 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
                             io.printStackTrace();
                         }
                     }
+                    System.out.println("FABI: Thread end reached !");            
                 }
             });
 
@@ -598,7 +607,7 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
         modes = new HashMap<String, Map<String, ArrayList<ArrayList<String>>>>();
         games = new HashMap<String, List<String>>();
         consoles = new ArrayList<String>();
-        System.out.println("Open configuartion file at path " + propModeFilePath);
+        System.out.println("FABI: Open configuartion file at path " + propModeFilePath);
         try {
 
             br = new BufferedReader(new FileReader(propModeFilePath));
@@ -611,7 +620,7 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
                 String consoleNameUp = gameMode[0].toUpperCase();
                 String gameNameUp = gameMode[1].toUpperCase();
 
-                System.out.println("Game-Mode " + consoleNameUp + ", game " + gameNameUp);
+                System.out.println("FABI: Game-Mode " + consoleNameUp + ", game " + gameNameUp);
                 Map<String, ArrayList<ArrayList<String>>> gameName = new HashMap<String, ArrayList<ArrayList<String>>>();
                 ArrayList<ArrayList<String>> eachMode = new ArrayList<ArrayList<String>>();
 
@@ -701,17 +710,23 @@ public class FabiCronusMaxInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void stop() {
 
+        System.out.println("FABI: Trying to stop FABI plugin");            
         if (readThread != null) {
             running = false;
             try {
+                System.out.println("FABI: JOIN");            
                 readThread.join(2000);
+                System.out.println("FABI: JOIN DONE");            
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
 
+        System.out.println("FABI: After Thread Join");            
+
         if (portController != null) {
+            System.out.println("FABI: Trying to close COM Port");            
             CIMPortManager.getInstance().closeRawConnection("COM" + propComPort);
         }
         super.stop();
