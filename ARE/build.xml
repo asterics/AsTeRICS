@@ -82,7 +82,7 @@
 		<antcall target="start"/>
 	</target>	
 	
-	<target name="start" description="Starts the ARE with debug options without compiling.">
+	<target name="run-quick" description="Starts the ARE with debug options without compiling.">
 		<java jar="${runtime}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${runtime}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
