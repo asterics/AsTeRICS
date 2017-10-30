@@ -225,6 +225,10 @@ public class ResourceRegistry {
             AstericsErrorHandling.instance.getLogger().warning("ResourceRegistry.getResource(): The given RES_TYPE type is null --> Changing it to RES_TYPE.ANY by default.");
             type=RES_TYPE.ANY;
         }
+        //Trim input parameter
+        resourcePath=resourcePath.trim();
+        if(componentTypeId!=null) componentTypeId=componentTypeId.trim();
+        if(runtimeComponentInstanceId!=null) runtimeComponentInstanceId=runtimeComponentInstanceId.trim();
         
         try {
             URL url = new URL(resourcePath);
