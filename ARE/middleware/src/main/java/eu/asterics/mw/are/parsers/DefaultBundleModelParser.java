@@ -135,37 +135,6 @@ public class DefaultBundleModelParser {
     public Set<IComponentType> parseModel(File modelFile) throws FileNotFoundException, ParseException {
         return this.parseModel(new FileInputStream(modelFile));
     }
-
-    /**
-     * Parses the specified input URL according to the bundle descriptor format
-     * (XSD) and produces a set of {@link IComponentType}s as a result.
-     *
-     * @param url
-     *            the URL to be parsed
-     * @return a set of {@link IComponentType}s
-     * @throws ParseException,
-     *             UnsupportedEncodingException
-     */
-    public Set<IComponentType> parseModel(String url) throws ParseException, UnsupportedEncodingException {
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-        try {
-            builder = builderFactory.newDocumentBuilder();
-            synchronized (builder) {
-                Document document = builder.parse(url);
-                return parse(document);
-            }
-        } catch (ParserConfigurationException e) {
-            logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
-            throw new ParseException(e.getMessage());
-        } catch (SAXException e) {
-            logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
-            throw new ParseException(e.getMessage());
-        } catch (IOException e) {
-            logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
-            throw new ParseException(e.getMessage());
-        }
-    }
-
     // --------------------Parser-----------------------//
 
     /**
