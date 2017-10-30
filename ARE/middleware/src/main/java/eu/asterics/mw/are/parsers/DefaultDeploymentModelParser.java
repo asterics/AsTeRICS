@@ -52,6 +52,7 @@ import eu.asterics.mw.model.deployment.impl.DefaultRuntimeModel;
 import eu.asterics.mw.model.deployment.impl.ModelDescription;
 import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -149,25 +150,11 @@ public class DefaultDeploymentModelParser {
      */
     public DefaultRuntimeModel parseModel(final InputStream modelInputStream)
             throws ParseException, BundleManagementException {
-        modelInputStream.mark(MAX_INPUT_STRREAM);
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-
         try {
-            modelValidator.isValidDeploymentDescriptor(modelInputStream);
-            modelInputStream.reset();
-            builder = builderFactory.newDocumentBuilder();
-            synchronized (builder) {
-                Document document = builder.parse(modelInputStream);
-                return parse(document);
-            }
-        } catch (ParserConfigurationException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: ParserConfigurationException " + e.getMessage());
-        } catch (SAXException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: SAXException " + e.getMessage());
+            String modelAsXMLString=ResourceRegistry.getResourceContentAsString(modelInputStream);
+            return parseModelAsXMLString(modelAsXMLString);
         } catch (IOException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
+            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> \n" + e.getMessage());
             throw new ParseException(" parse error: IOException " + e.getMessage());
         }
     }
