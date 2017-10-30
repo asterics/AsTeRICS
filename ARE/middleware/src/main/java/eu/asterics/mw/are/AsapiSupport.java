@@ -1334,15 +1334,7 @@ public class AsapiSupport {
 
                 @Override
                 public Object call() throws Exception {
-                    final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
-
-                    if (currentRuntimeModel != null) {
-                        stopModel();
-                    }
-
-                    String modelAsXMLString = ResourceRegistry.getInstance().getResourceContentAsString(filename, RES_TYPE.MODEL);                    
-                    deployModel(modelAsXMLString);
-                    AstericsErrorHandling.instance.getLogger().info("Deployed Model " + filename + " !");
+                    AREServices.instance.deployFileInternal(filename);
                     return null;
                 }
             });
