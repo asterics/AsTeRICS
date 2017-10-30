@@ -1,15 +1,27 @@
 package eu.asterics.mw.are;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.Point;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +36,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
@@ -38,11 +49,21 @@ import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
+import eu.asterics.mw.are.parsers.ModelValidator;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IComponentType;
-import eu.asterics.mw.model.deployment.*;
-import eu.asterics.mw.model.deployment.impl.*;
+import eu.asterics.mw.model.deployment.IChannel;
+import eu.asterics.mw.model.deployment.IComponentInstance;
+import eu.asterics.mw.model.deployment.IEventChannel;
+import eu.asterics.mw.model.deployment.IInputPort;
+import eu.asterics.mw.model.deployment.IOutputPort;
+import eu.asterics.mw.model.deployment.IRuntimeModel;
+import eu.asterics.mw.model.deployment.impl.DefaultACSGroup;
+import eu.asterics.mw.model.deployment.impl.DefaultChannel;
+import eu.asterics.mw.model.deployment.impl.DefaultComponentInstance;
+import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
+import eu.asterics.mw.model.deployment.impl.ModelState;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.services.AREServices;
@@ -240,7 +261,7 @@ public class AsapiSupport {
     		return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
     			@Override
     			public String call() throws Exception {
-    				return modelToXML();
+    				return DeploymentManager.instance.getCurrentRuntimeModelAsXMLString();
     			}
     		});
     	} catch (Exception e) {
@@ -274,9 +295,8 @@ public class AsapiSupport {
      *             if could not get model from file
      */
     public String getModelFromFile(String filename) throws AREAsapiException {
-    	try {
-			URI modelFileURI=ResourceRegistry.getInstance().getResource(filename, RES_TYPE.MODEL);
-			return convertXMLFileToString(modelFileURI.toURL().openStream());
+    	try {			
+			return ResourceRegistry.getInstance().getResourceContentAsString(filename, RES_TYPE.MODEL);
 		} catch (URISyntaxException | IOException e) {
             logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "getModelFromFile(String filename)", e.getMessage(), e);
 			throw new AREAsapiException(e.getMessage());
@@ -367,7 +387,7 @@ public class AsapiSupport {
                                 URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
                                 if (url != null) {
                                     try {
-                                        res.add(convertXMLFileToString(url.openStream()));
+                                        res.add(ResourceRegistry.getResourceContentAsString(url.openStream()));
                                     } catch (IOException e) {
                                         // TODO Auto-generated catch block
                                         // throw (new
@@ -1298,135 +1318,6 @@ public class AsapiSupport {
         // todo
     }
 
-    /**
-     * This method converts a given IRuntimeModel instance into an XML representation.
-     * The method is not threadsafe and must only be called within the model executor thread.
-     * @return
-     * @throws TransformerException
-     * @throws ParserConfigurationException
-     */
-    private final String modelToXML() throws TransformerException, ParserConfigurationException {
-
-    	// Get the current runtime model instance
-    	final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
-    	if(currentRuntimeModel==null) {
-    		return null;
-    	}
-
-    	// We need a Document
-
-    	DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
-    	DocumentBuilder docBuilder;
-    	docBuilder = dbfac.newDocumentBuilder();
-
-    	DOMImplementation impl = docBuilder.getDOMImplementation();
-    	Document doc = impl.createDocument(null, null, null);
-
-    	// Create the root
-    	Element model = doc.createElement("model");
-    	doc.appendChild(model);
-    	model.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-    	model.setAttribute("xsi:noNamespaceSchemaLocation", "deployment_model.xsd");
-    	model.setAttribute("modelName", currentRuntimeModel.getModelName());
-    	model.setAttribute("modelVersion", currentRuntimeModel.getModelVersion());
-    	// model.setAttribute ("modelDescription",
-    	// currentRuntimeModel.getModelDescription() );
-
-    	// Add description
-    	Element descElement = doc.createElement("modelDescription");
-    	model.appendChild(descElement);
-    	Element shortDescElement = doc.createElement("shortDescription");
-    	descElement.appendChild(shortDescElement);
-    	shortDescElement.setTextContent(currentRuntimeModel.getModelShortDescription());
-    	Element reqElement = doc.createElement("requirements");
-    	descElement.appendChild(reqElement);
-    	reqElement.setTextContent(currentRuntimeModel.getModelRequirements());
-    	Element descriptionElement = doc.createElement("description");
-    	descElement.appendChild(descriptionElement);
-    	descriptionElement.setTextContent(currentRuntimeModel.getModelDescription());
-
-    	// End of channels
-
-    	// Add components
-    	Element components = doc.createElement("components");
-
-    	model.appendChild(components);
-
-    	Set<IComponentInstance> componentInstances = currentRuntimeModel.getComponentInstances();
-
-    	for (IComponentInstance ci : componentInstances) {
-
-    		ci.appendXMLElements(doc);
-
-    	}
-
-    	// End of components
-    	// Add channels
-    	Set<IChannel> channels = currentRuntimeModel.getChannels();
-    	if (channels.size() > 0) {
-    		Element channelsElement = doc.createElement("channels");
-    		model.appendChild(channelsElement);
-    		for (IChannel channel : channels) {
-    			channel.appendXMLElements(doc);
-    		}
-    	}
-    	// End of channels
-
-    	// Add event channels
-
-    	Set<IEventChannel> ecentChannels = currentRuntimeModel.getEventChannels();
-    	if (ecentChannels.size() > 0) {
-    		Element eventChannelsElement = doc.createElement("eventChannels");
-    		model.appendChild(eventChannelsElement);
-
-    		for (IEventChannel eventChannel : ecentChannels) {
-    			eventChannel.appendXMLElements(doc);
-    		}
-    	}
-
-    	// Add Groups
-    	ArrayList<DefaultACSGroup> groups = currentRuntimeModel.getACSGroups();
-    	if (groups.size() > 0) {
-
-    		Element groupsElement = doc.createElement("groups");
-    		model.appendChild(groupsElement);
-    		Iterator<DefaultACSGroup> itr = groups.iterator();
-    		while (itr.hasNext()) {
-    			DefaultACSGroup group = itr.next();
-    			group.appendXMLElements(doc);
-    		}
-
-    	}
-    	// End of channels
-
-    	ModelGUIInfo modelGUIInfo = currentRuntimeModel.getModelGuiInfo();
-    	if (modelGUIInfo != null) {
-    		Element modelGUI = doc.createElement("modelGUI");
-    		model.appendChild(modelGUI);
-    		modelGUIInfo.appendXMLElements(doc);
-    	}
-
-    	// transform the Document into a String
-    	DOMSource domSource = new DOMSource(doc);
-
-    	TransformerFactory tf = TransformerFactory.newInstance();
-    	Transformer transformer = tf.newTransformer();
-    	transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-
-    	transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-    	transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-    	transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-    	transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-    	java.io.StringWriter sw = new java.io.StringWriter();
-    	StreamResult sr = new StreamResult(sw);
-    	transformer.transform(domSource, sr);
-    	String xml = sw.toString();
-    	logger.fine(this.getClass().getName() + ".modelToXML: OK\n");
-
-    	// System.out.println ("AsapiSupport.getModel():"+xml);
-    	return xml;
-    }
 
     /**
      * Deploys the model associated to the specified filename. The file should
@@ -1449,12 +1340,9 @@ public class AsapiSupport {
                         stopModel();
                     }
 
-                    java.net.URI uri = ResourceRegistry.getInstance().getResource(filename, RES_TYPE.MODEL);
-                    String modelInString=convertXMLFileToString(uri.toURL().openStream());
-                    // calling the asapi function with a string
-                    // representation of the model
-                    deployModel(modelInString);
-                    AstericsErrorHandling.instance.getLogger().info("Deployed Model " + uri + " !");
+                    String modelAsXMLString = ResourceRegistry.getInstance().getResourceContentAsString(filename, RES_TYPE.MODEL);                    
+                    deployModel(modelAsXMLString);
+                    AstericsErrorHandling.instance.getLogger().info("Deployed Model " + filename + " !");
                     return null;
                 }
             });
@@ -1520,29 +1408,15 @@ public class AsapiSupport {
     }
 
     /**
-     * Stores data to a given filename (+ path) in a given resource-Type directory
+     * stores data with UTF-8 to folder ARE/data
      *
-     * @param data         data to store as string
-     * @param filepath     the name of the file the data is to be stored. If the data should be stored in a subpath with path-prefix.
-     * @param resourceType RES_TYPE that defines where to store the data (e.g. DATA or MODEL)
-     * @throws AREAsapiException if the file cannot be created or stored
+     * @param data
+     * @param resourcePath resourcePath of the data to store to.
+     * @throws AREAsapiException
      */
-    private void storeData(String data, String filepath, RES_TYPE resourceType) throws AREAsapiException {
+    public void storeData(String data, String resourcePath) throws AREAsapiException {
         try {
-            File filenameAsFile = ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(filepath, resourceType));
-            File parentDir = filenameAsFile.getParentFile();
-            if (!parentDir.exists()) {
-                if (!parentDir.mkdirs()) {
-                    logger.severe("Could not create parent directories for data file: " + filenameAsFile);
-                    throw new AREAsapiException("Could not create parent directories for data file.");
-                }
-            }
-            try (FileWriter outWriter = new FileWriter(filenameAsFile);) {
-                // fetch bytes as UTF-16 and tell the writer to interpret and write it as UTF-16
-                IOUtils.write(data.getBytes(Charsets.UTF_16), outWriter, Charsets.UTF_16);
-                outWriter.flush();
-                outWriter.close();
-            }
+            ResourceRegistry.getInstance().storeResource(data, resourcePath, RES_TYPE.DATA);
         } catch (IOException e) {
             String errorMsg = "Failed to store data -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
@@ -1552,17 +1426,6 @@ public class AsapiSupport {
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
         }
-    }
-
-    /**
-     * stores data with UTF-8 to folder ARE/data
-     *
-     * @param data
-     * @param filepath path + filename of the data to store (or only filename if no subpath is needed)
-     * @throws AREAsapiException
-     */
-    public void storeData(String data, String filepath) throws AREAsapiException {
-        this.storeData(data, filepath, RES_TYPE.DATA);
     }
 
     /**
@@ -1576,18 +1439,23 @@ public class AsapiSupport {
      *             if the file cannot be created or if the model cannot be stored
      */
     public void storeModel(String modelInXML, String filename) throws AREAsapiException {
-
         try {
-            // The deploymentmodel parser expects the inputstream in UTF-16
-            InputStream is = new ByteArrayInputStream(modelInXML.getBytes(Charsets.UTF_16));
-            DefaultDeploymentModelParser.instance.parseModel(is);
-            this.storeData(modelInXML, filename, RES_TYPE.MODEL);
+            DefaultDeploymentModelParser.instance.parseModelAsXMLString(modelInXML);
+            ResourceRegistry.getInstance().storeResource(modelInXML, filename, RES_TYPE.MODEL);
         } catch (ParseException e) {
             String errorMsg = "Failed to parse model, maybe model version not in sync with compononent descriptors -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
         } catch (BundleManagementException e) {
             String errorMsg = "Failed to install model components -> \n" + e.getMessage();
+            AstericsErrorHandling.instance.reportError(null, errorMsg);
+            throw (new AREAsapiException(errorMsg));
+        } catch (IOException e) {
+            String errorMsg = "Failed to store model -> \n" + e.getMessage();
+            AstericsErrorHandling.instance.reportError(null, errorMsg);
+            throw (new AREAsapiException(errorMsg));
+        } catch (URISyntaxException e) {
+            String errorMsg = "Failed to create file URI to store model -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
         }
@@ -1680,21 +1548,4 @@ public class AsapiSupport {
         }
         return list;
     }
-
-    /**
-     * Helper method to convert an InputStream of an XML-file to an XML String
-     * object.
-     *
-     * @param inputStream
-     * @return
-     * @throws IOException
-     */
-    private String convertXMLFileToString(InputStream inputStream) throws IOException {
-    	//Use the IOUtils class of apache commons, which automagically determines encoding of InputStream.
-    	//Worked UTF-16 and non UTF-16 files for mad
-    	String modelAsString=IOUtils.toString(inputStream);
-    	//System.out.println("model as UTF-16: "+modelAsString);
-    	return modelAsString;
-    }
-
 }

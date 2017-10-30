@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -189,6 +188,8 @@ public class DefaultDeploymentModelParser {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         try {
+            //@TODO MAD: Check if this really works: This returns the bytes of the url string and then validates it, which is probably 
+            //not the expected behaviour.
             // throws exception if invalid
             modelValidator.isValidDeploymentDescriptor(new ByteArrayInputStream(url.getBytes("UTF-16")));
 
@@ -222,10 +223,7 @@ public class DefaultDeploymentModelParser {
     	DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         try {
-        	//We must use UTF-16 here, the parser expects this. Although it might happen, that some model files
-        	//are not stored in UTF-16, when reading them they should already be converted to that encoding.
-        	InputStream is=new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
-            modelValidator.isValidDeploymentDescriptor(is);
+            modelValidator.isValidDeploymentDescriptor(modelInXML);
 
             builder = builderFactory.newDocumentBuilder();
             synchronized (builder) {
