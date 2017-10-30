@@ -79,7 +79,7 @@
 	</target>	
 	
 	<target name="run-debug" depends="buildAllNoCleanNoCopyLicenses" description="Peforms buildAllNoCleanNoCopyLicenses and starts the ARE with debug options.">
-		<antcall target="start"/>
+		<antcall target="run-quick"/>
 	</target>	
 	
 	<target name="run-quick" description="Starts the ARE with debug options without compiling.">
