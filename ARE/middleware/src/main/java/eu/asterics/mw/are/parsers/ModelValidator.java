@@ -215,8 +215,7 @@ public class ModelValidator {
     }
 
     /**
-     * Tests if the file encoded in the inputStream is valid with respect to the
-     * bundle format XSD.
+     * Tests if the given input stream contains a valid bundle descriptor according to {@link ModelValidator#BUNDLE_DESCRIPTOR_SCHEMA_URLL}.
      * 
      * @param inputStream
      * @return true if the file encoded in the inputStream is valid with respect
@@ -225,12 +224,22 @@ public class ModelValidator {
      * @throws IOException
      */
     public boolean isValidBundleDescriptor(final InputStream inputStream) throws ParseException, IOException {
+        // Parse the document you want to check.
+        Source source = new StreamSource(inputStream);
+        return isValidBundleDescriptor(source);
+    }
+    
+    /**
+     * Tests if the given input stream contains a valid bundle descriptor according to {@link ModelValidator#BUNDLE_DESCRIPTOR_SCHEMA_URLL}. 
+     * @param xmlSource
+     * @return
+     * @throws ParseException
+     * @throws IOException
+     */
+    public boolean isValidBundleDescriptor(final Source xmlSource) throws ParseException, IOException {    
         try {
-            // Parse the document you want to check.
-            Source source = new StreamSource(inputStream);
-
             // Check the document
-            bundleDescriptorValidator.validate(source);
+            bundleDescriptorValidator.validate(xmlSource);
             return true;
         } catch (SAXException ex) {
             logger.warning(this.getClass().getName() + "." + "isValidBundleDescriptor: input stream not a valid "
@@ -242,7 +251,18 @@ public class ModelValidator {
             throw e;
         }
     }
-
+    
+    /**
+     * Tests if the given input stream contains a valid bundle descriptor according to {@link ModelValidator#BUNDLE_DESCRIPTOR_SCHEMA_URLL}. 
+     * @param bundleDescriptorAsXMLString
+     * @return
+     * @throws ParseException
+     * @throws IOException
+     */
+    public boolean isValidBundleDescriptor(final String bundleDescriptorAsXMLString) throws ParseException, IOException {
+        Source xmlSource = new StreamSource(new StringReader(bundleDescriptorAsXMLString));
+        return isValidBundleDescriptor(xmlSource);
+    }
     /**
      * Tests if the given input stream contains a valid model according to {@link ModelValidator#DEPLOYMENT_DESCRIPTOR_SCHEMA_URL}.  
      * 

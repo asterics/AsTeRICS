@@ -131,9 +131,10 @@ public class DefaultDeploymentModelParser {
      * @throws ParseException,
      *             FileNotFoundException
      * @throws BundleManagementException
+     * @throws IOException 
      */
     public DefaultRuntimeModel parseModel(File modelFile)
-            throws ParseException, FileNotFoundException, BundleManagementException {
+            throws ParseException, BundleManagementException, IOException {
 
         return this.parseModel(new FileInputStream(modelFile));
     }
@@ -147,16 +148,12 @@ public class DefaultDeploymentModelParser {
      * @return a DefaultRuntimeModel
      * @throws ParseException
      * @throws BundleManagementException
+     * @throws IOException 
      */
     public DefaultRuntimeModel parseModel(final InputStream modelInputStream)
-            throws ParseException, BundleManagementException {
-        try {
-            String modelAsXMLString=ResourceRegistry.getResourceContentAsString(modelInputStream);
-            return parseModelAsXMLString(modelAsXMLString);
-        } catch (IOException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> \n" + e.getMessage());
-            throw new ParseException(" parse error: IOException " + e.getMessage());
-        }
+            throws ParseException, BundleManagementException, IOException {
+        String modelAsXMLString=ResourceRegistry.getResourceContentAsString(modelInputStream);
+        return parseModelAsXMLString(modelAsXMLString);
     }
     
     /**
@@ -173,11 +170,9 @@ public class DefaultDeploymentModelParser {
             modelValidator.isValidDeploymentDescriptor(modelInXML);
 
             builder = builderFactory.newDocumentBuilder();
-            synchronized (builder) {
-            	StringReader modelReader=new StringReader(modelInXML);
-                Document document = builder.parse(new InputSource(modelReader));
-                return parse(document);
-            }
+            StringReader modelReader=new StringReader(modelInXML);
+            Document document = builder.parse(new InputSource(modelReader));
+            return parse(document);
         } catch (ParserConfigurationException e) {
             logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
             throw new ParseException(" parse error: ParserConfigurationException " + e.getMessage());

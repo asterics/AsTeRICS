@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
@@ -27,6 +28,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import eu.asterics.mw.are.exceptions.ParseException;
@@ -46,6 +48,7 @@ import eu.asterics.mw.model.bundle.impl.DefaultInputPortType;
 import eu.asterics.mw.model.bundle.impl.DefaultOutputPortType;
 import eu.asterics.mw.model.bundle.impl.PropertyType;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -91,25 +94,20 @@ public class DefaultBundleModelParser {
     }
 
     public static final DefaultBundleModelParser instance = new DefaultBundleModelParser();
-
+    
     /**
      * Parses the specified input stream according to the bundle descriptor
-     * format (XSD) and produces a set of {@link IComponentType}s as a result.
-     *
-     * @param inputStream
-     *            encodes the XML-based bundle descriptor
-     * @return a set of {@link IComponentType}s
+     * @param bundleDescriptorAsXMLString
+     * @return
      * @throws ParseException
      */
-    public Set<IComponentType> parseModel(InputStream inputStream) throws ParseException {
-        final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-
+    public Set<IComponentType> parseModelAsXMLString(String bundleDescriptorAsXMLString) throws ParseException {
         try {
+            ModelValidator.getInstance().isValidBundleDescriptor(bundleDescriptorAsXMLString);
+            final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             builder = builderFactory.newDocumentBuilder();
-            synchronized (builder) {
-                Document document = builder.parse(inputStream);
-                return parse(document);
-            }
+            Document document = builder.parse(new InputSource(new StringReader(bundleDescriptorAsXMLString)));
+            return parse(document);
         } catch (ParserConfigurationException e) {
             logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
             throw new ParseException(e.getMessage());
@@ -119,7 +117,23 @@ public class DefaultBundleModelParser {
         } catch (IOException e) {
             logger.warning(this.getClass().getName() + "." + "parseModel: Parse error -> \n" + e.getMessage());
             throw new ParseException(e.getMessage());
-        }
+        }        
+    }
+
+    /**
+     * Parses the specified input stream according to the bundle descriptor
+     * format (XSD) and produces a set of {@link IComponentType}s as a result.
+     * The input stream is expected to be encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}.
+     *
+     * @param inputStream
+     *            encodes the XML-based bundle descriptor
+     * @return a set of {@link IComponentType}s
+     * @throws ParseException
+     * @throws IOException 
+     */
+    public Set<IComponentType> parseModel(InputStream inputStream) throws ParseException, IOException {
+        String bundleDescriptorAsXMLString=ResourceRegistry.getResourceContentAsString(inputStream);
+        return parseModelAsXMLString(bundleDescriptorAsXMLString);        
     }
 
     /**
@@ -129,10 +143,9 @@ public class DefaultBundleModelParser {
      * @param modelFile
      *            the file to be parsed
      * @return a set of {@link IComponentType}s
-     * @throws FileNotFoundException,
-     *             ParseException
+     * @throws IOException 
      */
-    public Set<IComponentType> parseModel(File modelFile) throws FileNotFoundException, ParseException {
+    public Set<IComponentType> parseModel(File modelFile) throws ParseException, IOException {
         return this.parseModel(new FileInputStream(modelFile));
     }
     // --------------------Parser-----------------------//
