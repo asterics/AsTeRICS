@@ -114,40 +114,8 @@ public class ModelInspector {
      */
     public IRuntimeModel parseModel(InputStream modelStream) throws ParseException, ParserConfigurationException,
             SAXException, IOException, TransformerException, BundleManagementException {
-        String utf16String = convertToUTF16String(modelStream);
-        IRuntimeModel runtimeModel = deploymentModelParser.parseModel(openUTF16StringAsInputStream(utf16String));
+        IRuntimeModel runtimeModel=deploymentModelParser.parseModel(modelStream);
         return runtimeModel;
-    }
-
-    /**
-     * Converts the given InputStream content into UTF-16 characters and returns
-     * them as a String.
-     */
-    private String convertToUTF16String(InputStream modelStream)
-            throws ParserConfigurationException, SAXException, IOException, TransformerException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(modelStream);
-        DOMSource domSource = new DOMSource(doc);
-        StringWriter writer = new StringWriter();
-        StreamResult result = new StreamResult(writer);
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-        transformer.transform(domSource, result);
-        String modelInString = writer.toString();
-        return modelInString;
-    }
-
-    /**
-     * Returns the given UTF16 encoded String as an InputStream object.
-     * 
-     * @param modelStringinUTF16
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    public InputStream openUTF16StringAsInputStream(String modelStringinUTF16) throws UnsupportedEncodingException {
-        return new ByteArrayInputStream(modelStringinUTF16.getBytes("UTF-16"));
     }
 
     /**
@@ -184,8 +152,7 @@ public class ModelInspector {
     public Set<IRuntimeModel> getIRuntimeModelsOfModelURIs(Set<URI> modelURIs) {
         Set<IRuntimeModel> modelInstances = new HashSet<IRuntimeModel>();
         for (URI modelURI : modelURIs) {
-            try {
-                InputStream iStr = modelURI.toURL().openStream();
+            try (InputStream iStr = modelURI.toURL().openStream();) {
                 IRuntimeModel model = parseModel(iStr);
                 // The default implementation of IRuntimeModel is
                 // DefaultRuntimeModel which does not have a correct
@@ -212,8 +179,7 @@ public class ModelInspector {
     public Set<IComponentInstance> getIComponentInstancesOfModelURIs(Set<URI> modelURIs) {
         Set<IComponentInstance> componentInstances = new HashSet<IComponentInstance>();
         for (URI modelURI : modelURIs) {
-            try {
-                InputStream iStr = modelURI.toURL().openStream();
+            try (InputStream iStr = modelURI.toURL().openStream();) {
                 IRuntimeModel model = parseModel(iStr);
 
                 // The default implementation of IRuntimeModel is
@@ -315,9 +281,10 @@ public class ModelInspector {
             TransformerException, BundleManagementException {
         Set<URI> modelComponentJarURIs = new HashSet<URI>();
         for (URI modelURI : modelURIs) {
-            InputStream iStr = modelURI.toURL().openStream();
-            IRuntimeModel model = parseModel(iStr);
-            modelComponentJarURIs.addAll(getComponentTypeJarURIsOfModel(model));
+            try(InputStream iStr = modelURI.toURL().openStream();) {
+                IRuntimeModel model = parseModel(iStr);
+                modelComponentJarURIs.addAll(getComponentTypeJarURIsOfModel(model));
+            }
         }
         return modelComponentJarURIs;
     }

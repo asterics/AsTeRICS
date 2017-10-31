@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -53,6 +52,7 @@ import eu.asterics.mw.model.deployment.impl.DefaultRuntimeModel;
 import eu.asterics.mw.model.deployment.impl.ModelDescription;
 import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -131,9 +131,10 @@ public class DefaultDeploymentModelParser {
      * @throws ParseException,
      *             FileNotFoundException
      * @throws BundleManagementException
+     * @throws IOException 
      */
     public DefaultRuntimeModel parseModel(File modelFile)
-            throws ParseException, FileNotFoundException, BundleManagementException {
+            throws ParseException, BundleManagementException, IOException {
 
         return this.parseModel(new FileInputStream(modelFile));
     }
@@ -147,68 +148,12 @@ public class DefaultDeploymentModelParser {
      * @return a DefaultRuntimeModel
      * @throws ParseException
      * @throws BundleManagementException
+     * @throws IOException 
      */
     public DefaultRuntimeModel parseModel(final InputStream modelInputStream)
-            throws ParseException, BundleManagementException {
-        modelInputStream.mark(MAX_INPUT_STRREAM);
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-
-        try {
-            modelValidator.isValidDeploymentDescriptor(modelInputStream);
-            modelInputStream.reset();
-            builder = builderFactory.newDocumentBuilder();
-            synchronized (builder) {
-                Document document = builder.parse(modelInputStream);
-                return parse(document);
-            }
-        } catch (ParserConfigurationException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: ParserConfigurationException " + e.getMessage());
-        } catch (SAXException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: SAXException " + e.getMessage());
-        } catch (IOException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: IOException " + e.getMessage());
-        }
-    }
-
-    /**
-     * Parses an input url and on success produces a DefaultRuntimeModel as a
-     * result.
-     * 
-     * @param url
-     *            the url to be parsed
-     * @return a DefaultRuntimeModel
-     * @throws ParseException,
-     *             UnsupportedEncodingException
-     * @throws BundleManagementException
-     */
-    public DefaultRuntimeModel parseModel(String url)
-            throws ParseException, UnsupportedEncodingException, BundleManagementException {
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-
-        try {
-            // throws exception if invalid
-            modelValidator.isValidDeploymentDescriptor(new ByteArrayInputStream(url.getBytes("UTF-16")));
-
-            builder = builderFactory.newDocumentBuilder();
-            synchronized (builder) {
-
-                Document document = builder.parse(url);
-
-                return parse(document);
-            }
-        } catch (ParserConfigurationException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: ParserConfigurationException " + e.getMessage());
-        } catch (SAXException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: SAXException " + e.getMessage());
-        } catch (IOException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: IOException " + e.getMessage());
-        }
+            throws ParseException, BundleManagementException, IOException {
+        String modelAsXMLString=ResourceRegistry.getResourceContentAsString(modelInputStream);
+        return parseModelAsXMLString(modelAsXMLString);
     }
     
     /**
@@ -222,17 +167,12 @@ public class DefaultDeploymentModelParser {
     	DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         try {
-        	//We must use UTF-16 here, the parser expects this. Although it might happen, that some model files
-        	//are not stored in UTF-16, when reading them they should already be converted to that encoding.
-        	InputStream is=new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
-            modelValidator.isValidDeploymentDescriptor(is);
+            modelValidator.isValidDeploymentDescriptor(modelInXML);
 
             builder = builderFactory.newDocumentBuilder();
-            synchronized (builder) {
-            	StringReader modelReader=new StringReader(modelInXML);
-                Document document = builder.parse(new InputSource(modelReader));
-                return parse(document);
-            }
+            StringReader modelReader=new StringReader(modelInXML);
+            Document document = builder.parse(new InputSource(modelReader));
+            return parse(document);
         } catch (ParserConfigurationException e) {
             logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
             throw new ParseException(" parse error: ParserConfigurationException " + e.getMessage());

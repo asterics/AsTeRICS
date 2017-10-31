@@ -166,7 +166,7 @@
 			<isset property="APE.buildMode" />
 		</not>
 	</condition>
-	<condition property="APE.dataCopyMode" else="${APE.dataCopyMode}" value="single">
+	<condition property="APE.dataCopyMode" else="${APE.dataCopyMode}" value="ALL">
 		<not>
 			<isset property="APE.dataCopyMode" />
 		</not>
@@ -268,7 +268,7 @@
 
 	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
 	<target name="APE-copy" description="Build APE project: The result can be found in the build/merged folder.">
-		<java jar="${APE.baseURI}/APE.jar" fork="true">
+		<java jar="${APE.baseURI}/APE.jar" fork="true" failonerror="true">
 		    <!-- 
 			If the user manually overrides property values with -D on the command line this is only allowed for the following properties.
 			The others may only be set in the file APE.properties 
@@ -287,7 +287,7 @@
 
 	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
 	<target name="APE-copy-release" description="Build APE project for deployment: The result can be found in the build/merged folder.">
-		<java jar="${APE.baseURI}/APE.jar" fork="true">
+		<java jar="${APE.baseURI}/APE.jar" fork="true" failonerror="true">
 		    <!-- 
 			If the user manually overrides property values with -D on the command line this is only allowed for the following properties.
 			The others may only be set in the file APE.properties 
