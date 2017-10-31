@@ -44,7 +44,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class PCSDevice {
 
     private Logger logger = AstericsErrorHandling.instance.getLogger();
-    private ScheduledExecutorService timerExecutorSend = null;
+    private ScheduledExecutorService timerExecutorSend = Executors.newSingleThreadScheduledExecutor();;
     private int vid = 0x18EF;
     private int pid = 0xE015;
 
@@ -55,7 +55,6 @@ public class PCSDevice {
 
     public boolean open() {
 
-        timerExecutorSend = Executors.newSingleThreadScheduledExecutor();
         if (dev != null) {
             dev.close();
         }
@@ -111,8 +110,6 @@ public class PCSDevice {
         try {
             result = handler.get(1, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            timerExecutorSend.shutdownNow();
-            timerExecutorSend = Executors.newSingleThreadScheduledExecutor();
             logger.log(Level.WARNING, "sending to FS20 timed out!");
         }
 
