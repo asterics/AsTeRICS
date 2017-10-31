@@ -91,6 +91,16 @@ public class TestResourceRegistry {
             String testURIString = ResourceRegistry.getInstance().getAREBaseURI().toString();
             URI actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.ANY);
             assertTrue(ResourceRegistry.equalsNormalizedURIs(areBaseURI, actual));
+            
+            //Test null URI
+            try {
+                actual=ResourceRegistry.getInstance().getResource(null, null);
+                fail("null resource String not handled correctly");
+            }catch(URISyntaxException e) {                
+            }
+            //Test null RES_TYPE. The result should be the same as above with RES_TYPE.ANY
+            actual=ResourceRegistry.getInstance().getResource(testURIString, null);
+            assertTrue(ResourceRegistry.equalsNormalizedURIs(areBaseURI, actual));
 
             // Test http:// URL
             testURIString = "http://www.asterics-academy.net/test";

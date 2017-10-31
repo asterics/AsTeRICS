@@ -38,10 +38,12 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -73,6 +75,7 @@ import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.model.deployment.impl.ModelState;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
+import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -106,8 +109,6 @@ import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
  */
 
 public class AREServices implements IAREServices {
-
-    private final String MODELS_FOLDER = "models";
     private final String STORAGE_FOLDER = "storage";
     private Logger logger = null;
 
@@ -146,7 +147,7 @@ public class AREServices implements IAREServices {
             });
         } catch (Exception e) {
             String message = createErrorMsg("Could not deploy model", e);
-            logger.warning(message);
+            logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "deployFile(String)", e.getMessage(), e);
             DeploymentManager.instance.reseToCleanState();
             AstericsErrorHandling.instance.reportError(null, message);
         }
@@ -168,40 +169,20 @@ public class AREServices implements IAREServices {
      * @throws BundleManagementException
      * @throws ParseException
      * @throws DeploymentException
+     * @throws URISyntaxException 
      */
 
     public void deployFileInternal(String filename) throws ParserConfigurationException, SAXException, IOException,
-            TransformerException, DeploymentException, ParseException, BundleManagementException {
-        filename = MODELS_FOLDER + "/" + filename;
-        logger.fine("deployFile <" + filename + ">");
-
+            TransformerException, DeploymentException, ParseException, BundleManagementException, URISyntaxException {
         final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
 
         if (currentRuntimeModel != null) {
-            this.stopModelInternal();
-            DeploymentManager.instance.undeployModel();
+            stopModel();
         }
 
-        // this is for getting the text xml and converting it to string
-        String xmlFile = filename;
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        synchronized (builder) {
-
-            Document doc = builder.parse(new File(xmlFile));
-            DOMSource domSource = new DOMSource(doc);
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-            transformer.transform(domSource, result);
-            String modelInString = writer.toString();
-            // calling the asapi function with a string representation of the
-            // model
-            deployModelInternal(modelInString);
-            logger.fine(this.getClass().getName() + "." + "deployFile: OK\n");
-        }
+        String modelAsXMLString = ResourceRegistry.getInstance().getResourceContentAsString(filename, RES_TYPE.MODEL);                    
+        deployModelInternal(modelAsXMLString);
+        AstericsErrorHandling.instance.getLogger().info("Deployed Model " + filename + " !");        
     }
 
     /**
@@ -222,7 +203,8 @@ public class AREServices implements IAREServices {
             AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable() {
                 @Override
                 public Object call() throws Exception {
-                    deployAndStartFileInternal(filename);
+                    deployFileInternal(filename);
+                    runModelInternal();
                     return null;
                 }
             });
@@ -233,61 +215,6 @@ public class AREServices implements IAREServices {
 
             logger.warning(message);
             AstericsErrorHandling.instance.reportError(null, message);
-        }
-    }
-
-    /**
-     * Deploys the model associated to the specified filename. The file should
-     * be already available on the ARE file system. This method will also start
-     * the model as soon as it is deployed.
-     * 
-     * This method is not thread-safe, only use it in combination with
-     * {@link AstericsModelExecutionThreadPool#execAndWaitOnModelExecutorLifecycleThread(Callable)}
-     * 
-     * @param filename
-     *            the filename of the model to be deployed
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
-     * @throws TransformerException
-     * @throws BundleManagementException
-     * @throws ParseException
-     * @throws DeploymentException
-     */
-
-    public void deployAndStartFileInternal(String filename) throws ParserConfigurationException, SAXException,
-            IOException, TransformerException, DeploymentException, ParseException, BundleManagementException {
-        filename = MODELS_FOLDER + "/" + filename;
-
-        logger.fine("Deploying file <" + filename + ">");
-        final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
-
-        // this is for getting the text xml and converting it to string
-        String xmlFile = filename;
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        synchronized (builder) {
-            Document doc = builder.parse(new File(xmlFile));
-            DOMSource domSource = new DOMSource(doc);
-            StringWriter writer = new StringWriter();
-            StreamResult result = new StreamResult(writer);
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-            transformer.transform(domSource, result);
-
-            String modelInString = writer.toString();
-
-            if (currentRuntimeModel != null) {
-                this.stopModelInternal();
-                DeploymentManager.instance.undeployModel();
-            }
-            // calling the asapi function with a string
-            // representation of the model
-            deployModelInternal(modelInString);
-            logger.fine(this.getClass().getName() + "." + "deployAndStartFile: OK\n");
-            runModelInternal();
-
         }
     }
 
@@ -465,35 +392,7 @@ public class AREServices implements IAREServices {
             DeploymentManager.instance.undeployModel();
         }
         DefaultDeploymentModelParser defaultDeploymentModelParser = DefaultDeploymentModelParser.instance;
-
-        File modelFile = new File(MODELS_FOLDER + "/model.xml");
-        File modelsDir = new File(MODELS_FOLDER);
-        if (!modelFile.exists()) {
-            modelsDir.mkdir();
-            modelFile.createNewFile();
-        }
-
-        // Convert the string to a byte array.
-        String s = modelInXML;
-        byte data[] = s.getBytes();
-        BufferedWriter c = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(modelFile), "UTF-16"));
-
-        // out = new BufferedOutputStream(new FileOutputStream(modelFile));
-        for (int i = 0; i < data.length; i++) {
-            c.write(data[i]);
-        }
-
-        if (c != null) {
-            c.flush();
-            c.close();
-        }
-        InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
-        IRuntimeModel runtimeModel = defaultDeploymentModelParser.parseModel(is);
-
-        /*
-         * if (runtimeModel==null) { logger.fine("Failed to create model"); }
-         */
-
+        IRuntimeModel runtimeModel = defaultDeploymentModelParser.parseModelAsXMLString(modelInXML);
         DeploymentManager.instance.deployModel(runtimeModel);
         DeploymentManager.instance.setStatus(AREStatus.DEPLOYED);
         AstericsErrorHandling.instance.setStatusObject(AREStatus.DEPLOYED.toString(), "", "");

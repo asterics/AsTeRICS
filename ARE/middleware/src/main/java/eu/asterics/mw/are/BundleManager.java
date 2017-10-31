@@ -245,7 +245,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
         logger.fine("Creating loader_componentlist.ini");
         createComponentListCache();
         logger.fine("Generating component collection cache file");
-        generateComponentDescriptorsAsXml(ResourceRegistry.toFile(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI));                        
+        generateComponentDescriptorsAsXml();                        
     }
 
     /**
@@ -397,20 +397,12 @@ public class BundleManager implements BundleListener, FrameworkListener {
             return false;
         }
 
-        try (InputStream bundleDescriptorInputStream = bundleDescriptorUrl.openStream()) {
-            return modelValidator.isValidBundleDescriptor(bundleDescriptorInputStream);
-        } catch (IOException ioe) {
-            // Don't log because if it does not exist we don't expect a
-            // component. This indicates that it is a jar file without an
-            // Asterics plugin.
-        } catch (ParseException ioe) {
-            // If there is a ParseException then we should log it, because there
-            // should be a valid plugin
-            logger.warning(getClass().getName() + ".checkForAstericsMetadata: validation error for file "
-                    + bundleDescriptorUrl + ", bundle " + symbolicName + " -> \n" + ioe.getMessage());
-
+        try {
+            return ResourceRegistry.resourceExists(bundleDescriptorUrl.toURI());
+        } catch (URISyntaxException e) {
+            logger.warning("Could not check for Asterics metadata (bundle_descriptor.xml) due to invalid URI: "+bundleDescriptorUrl);
+            return false;
         }
-        return false;
     }
 
     private Map<IComponentType, ServiceRegistration> serviceRegistrations = new HashMap<IComponentType, ServiceRegistration>();
@@ -787,9 +779,9 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * @param cacheFile
      * @return
      * @throws URISyntaxException
-     * @throws MalformedURLException
+     * @throws IOException 
      */
-    public String generateComponentDescriptorsAsXml(File cacheFile) throws URISyntaxException, MalformedURLException {
+    public String generateComponentDescriptorsAsXml() throws URISyntaxException, IOException {
     	String response="";
     	
     	response += "<?xml version=\"1.0\"?>";
@@ -816,25 +808,15 @@ public class BundleManager implements BundleListener, FrameworkListener {
     	}
     	response += "</componentTypes>";
     	
-    	//now write out the cache file.
-    	//Ensure the creation of parent folders.
-    	cacheFile.getParentFile().mkdirs();
-    	try(BufferedWriter out=new BufferedWriter(new FileWriter(cacheFile))) {
-    		out.write(response);
-    		out.flush();
-    		out.close();
-    	}catch(IOException e) {
-    		//logging is sufficient here, because if writing the file does not work, the fallback solution is to provide the
-    		//component collection uncached.
-    		logger.severe("Error writing cached component collection to file <"+cacheFile+">, reason: "+e.getMessage());
-    	}
+    	//Store bundle descriptors into cache file.
+    	ResourceRegistry.getInstance().storeResource(response, COMPONENT_COLLECTION_CACHE_FILE_URI);
     	return response;
     }
     
     /**
      * Returns a formatted XML String of the componentType(s) in the bundle
      * descriptor.
-     * 
+     *
      * @param bundleDescriptorURL
      * @return
      * @throws MalformedURLException
@@ -852,18 +834,14 @@ public class BundleManager implements BundleListener, FrameworkListener {
         // bundleDescriptorString=DefaultBundleModelParser.instance.getBundleDescriptionOfComponentTypeId(componentTypeId,
         // bundleDescriptorURI.toURL().openStream());
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bundleDescriptorURL.openStream()));
-        String bundle_descriptor = "", line;
-        while ((line = bufferedReader.readLine()) != null) {
-            bundle_descriptor += line + "\n";
-        }
+        String bundle_descriptor = ResourceRegistry.getResourceContentAsString(bundleDescriptorURL.openStream());
 
         bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
         bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
         bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");
 
         return bundle_descriptor;
-    }    
+    }
 
     /**
      * Installs services and bundles at startup of the BundleManager.

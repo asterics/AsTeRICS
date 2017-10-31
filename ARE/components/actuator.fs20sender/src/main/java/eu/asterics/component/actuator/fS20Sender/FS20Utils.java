@@ -25,7 +25,34 @@
 
 package eu.asterics.component.actuator.fS20Sender;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.sun.jna.platform.win32.Advapi32Util;
+import com.sun.jna.platform.win32.WinReg;
+
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.utils.OSUtils;
+
 public class FS20Utils {
+
+    private static Logger logger = AstericsErrorHandling.instance.getLogger();
+
+    private static final String REGISTRY_PATH_DEVICE_PARAMS = "Device Parameters";
+    private static final String REGISTRY_PATH_FS20 = "SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_18EF&PID_E015";
+    private static final String REGISTRY_KEY_POWERMANAGEMENT = "EnhancedPowerManagementEnabled";
+    static final String FILENAME_REGPATCH = "regpatchfs20.vbs";
+    static final String FILENAME_REGPATCH2 = "regpatchfs20.cmd";
 
     public static byte Off = 0x00;
     public static byte OnStep1 = 0x01;
@@ -138,6 +165,82 @@ public class FS20Utils {
         }
 
         return (byte) value;
+    }
+
+    public static boolean isWindowsOS() {
+    	//Use already existing utility function for detecting os
+        return OSUtils.isWindows();
+    }
+
+    public static boolean patchRegistryDisablePowerSaveMode() {
+        boolean patched = false;
+        try {
+            if (Advapi32Util.registryKeyExists(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20)) {
+                String[] subkeys = Advapi32Util.registryGetKeys(WinReg.HKEY_LOCAL_MACHINE, REGISTRY_PATH_FS20);
+                if (!allSubkeysPatched(subkeys)) {
+                    String pathPatchFile = copyBatchFromJar(FILENAME_REGPATCH);
+                    copyBatchFromJar(FILENAME_REGPATCH2);
+                    ProcessBuilder builder = new ProcessBuilder("cscript", "/E:JScript", "/nologo", pathPatchFile,
+                            getArgString(subkeys));
+                    builder.directory(new File(getHomePath()));
+                    Process process = builder.start();
+                    patched = process.waitFor() == 0;
+                }
+            }
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "error patching registry.", e);
+        }
+        return patched;
+    }
+
+    private static String getArgString(String[] strings) {
+        String args = "";
+        for (String key : strings) {
+            args += " \"" + key + "\"";
+        }
+        return args.trim();
+    }
+
+    /**
+     * copies a file with given name from java package to a temp-file. the temp file is deleted on exit of the program
+     *
+     * @param batchFilename
+     * @return the path of the temp-file
+     * @throws IOException
+     */
+    static String copyBatchFromJar(String batchFilename) throws IOException {
+    	//This is a small hack because we want to get the system or user temp dir but don't want to get a unique tempfilename.
+    	//Create a temp file 
+    	File tempFile=File.createTempFile(batchFilename,"");
+    	tempFile.deleteOnExit();
+    	//use parent directory to know actual temp dir
+    	File tempDir=tempFile.getParentFile();
+    	//create a file with the name we want.
+    	File batchFile=new File(tempDir,batchFilename);
+    	//delete both temp files on exit of the program.
+    	batchFile.deleteOnExit();
+    	logger.fine("Extracting FS20 batch file to "+batchFile);
+        ClassLoader loader = PCSDevice.class.getClassLoader();
+        try(InputStream resource = loader.getResourceAsStream(batchFilename);) {
+        	Files.copy(resource, batchFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+        return batchFile.getAbsolutePath();
+    }
+
+    private static String getHomePath() {
+        return System.getProperty("user.dir");
+    }
+
+    private static boolean allSubkeysPatched(String[] subkeys) {
+        for (String subkey : subkeys) {
+            int value = Advapi32Util.registryGetIntValue(WinReg.HKEY_LOCAL_MACHINE,
+                    REGISTRY_PATH_FS20 + "\\" + subkey + "\\" + REGISTRY_PATH_DEVICE_PARAMS,
+                    REGISTRY_KEY_POWERMANAGEMENT);
+            if (value == 1) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

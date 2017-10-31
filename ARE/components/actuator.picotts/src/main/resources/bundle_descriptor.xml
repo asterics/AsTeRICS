@@ -6,11 +6,11 @@
                    canonical_name="eu.asterics.component.actuator.picotts.PicoTTSInstance">
         <type subtype="Audio and Voice">actuator</type>
         <singleton>false</singleton>
-        <description>My Plugin description</description>
+        <description>Text-to-speech via picoTTS</description>
         <ports>
 			<inputPort id="input">
 				<description>text to be spoken</description>
-				<mustBeConnected>false</mustBeConnected>
+				<mustBeConnected>true</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
 

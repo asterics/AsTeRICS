@@ -36,7 +36,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
  * 
  * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Aug 20, 2010 Time: 10:22:08
  *         AM
- */
+ */  
 public class SyntheticVoiceInstance extends AbstractRuntimeComponentInstance {
 
     private final String IP_INPUT = "input";

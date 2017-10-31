@@ -2,6 +2,8 @@ package eu.asterics.mw.services;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,11 +21,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BOMInputStream;
 
 import eu.asterics.mw.are.BundleManager;
 import eu.asterics.mw.are.DeploymentManager;
+import eu.asterics.mw.are.exceptions.AREAsapiException;
+import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -86,6 +93,12 @@ public class ResourceRegistry {
     private static URI ARE_WRITABLE_URI = null;
 
     private static boolean OSGI_MODE = true;
+    
+    //Expected encoding of a model file, a bundle descriptor file or any other file.
+    public static final String ARE_FILE_ENCODING = "UTF-8"; 
+    
+    //logger instance
+    static Logger logger;
 
     static {
         URI defaultAREBaseURI = Paths.get(".").toUri();
@@ -96,6 +109,8 @@ public class ResourceRegistry {
         } catch (URISyntaxException e) {
         }
         ARE_BASE_URI = URI.create(System.getProperty("eu.asterics.ARE.baseURI", defaultAREBaseURI.toString()));
+        logger=AstericsErrorHandling.instance.getLogger();
+        
         AstericsErrorHandling.instance.getLogger().fine("Setting ARE base URI to <" + ARE_BASE_URI + ">");
 
         String areWritableURIString = System.getProperty("eu.asterics.ARE.writableURI");
@@ -204,7 +219,20 @@ public class ResourceRegistry {
             String runtimeComponentInstanceId) throws URISyntaxException {
         URI uri = null;
         File resFilePath = null;
-
+        
+        //Do some sanity checks
+        if(resourcePath==null) {
+            throw new URISyntaxException("", "The given resourcePath is null");
+        }
+        if(type==null) {
+            AstericsErrorHandling.instance.getLogger().warning("ResourceRegistry.getResource(): The given RES_TYPE type is null --> Changing it to RES_TYPE.ANY by default.");
+            type=RES_TYPE.ANY;
+        }
+        //Trim input parameter
+        resourcePath=resourcePath.trim();
+        if(componentTypeId!=null) componentTypeId=componentTypeId.trim();
+        if(runtimeComponentInstanceId!=null) runtimeComponentInstanceId=runtimeComponentInstanceId.trim();
+        
         try {
             URL url = new URL(resourcePath);
             AstericsErrorHandling.instance.getLogger().fine("Resource URL: " + url);
@@ -570,6 +598,102 @@ public class ResourceRegistry {
     public OutputStream getResourceOutputStream(String resourcePath, RES_TYPE type)
             throws MalformedURLException, IOException, URISyntaxException {
         return getResource(resourcePath, type).toURL().openConnection().getOutputStream();
+    }
+    
+    /**
+     * Returns the contents of the given resourcePath and RES_TYPE resource as String.
+     * The content of the resource is expected to be encoded in {@link ResourceRegistry#ARE_FILE_ENCODING}.  
+     * @param resourcePath
+     * @param type
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public String getResourceContentAsString(String resourcePath, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
+        return getResourceContentAsString(getResourceInputStream(resourcePath, type));
+    }
+    
+    /**
+     * Helper method to convert an InputStream to a String.
+     * The content of the InputStream is expected to be encoded in {@link ResourceRegistry#ARE_FILE_ENCODING}.
+     * The method automatically closes the given InputStream instance.  
+     *
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
+    public static String getResourceContentAsString(InputStream inputStream) throws IOException {
+        /* Use the IOUtils class of apache commons, makes it easier to deal with encodings.
+           We encapsulate the inputStream into a BOMInputStream to exclude an optional BOM: 
+           @link http://www.rgagnon.com/javadetails/java-handle-utf8-file-with-bom.html 
+           @link https://commons.apache.org/proper/commons-io/javadocs/api-2.5/org/apache/commons/io/input/BOMInputStream.html
+        */
+        try {
+            String modelAsString=IOUtils.toString(new BOMInputStream(inputStream),ResourceRegistry.ARE_FILE_ENCODING);       
+            return modelAsString;
+        }finally {
+            inputStream.close();
+        }
+    }    
+    
+    /**
+     * Stores data to a given resource path in a given resource-Type directory defined by {@link ResourceRegistry#RES_TYPE}.
+     *
+     * @param data         data to store as string
+     * @param resourcePath     the relative resource path the data should be stored to.
+     * @param resourceType RES_TYPE that defines where to store the data (e.g. DATA or MODEL)
+     * @throws AREAsapiException if the file cannot be created or stored
+     * @throws URISyntaxException 
+     * @throws IOException 
+     * @throws FileNotFoundException 
+     */
+    public void storeResource(String data, String resourcePath, RES_TYPE resourceType) throws AREAsapiException, URISyntaxException, FileNotFoundException, IOException {
+        storeResource(data, ResourceRegistry.getInstance().getResource(resourcePath, resourceType));
+    }
+    
+    /**
+     * Stores the given data at the given URI and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}. 
+     * @param data
+     * @param storeResourceURI
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    public static void storeResource(String data, URI storeResourceURI) throws URISyntaxException, IOException {
+        storeResource(data, ResourceRegistry.toFile(storeResourceURI));
+    }
+
+    /**
+     * Stores the given data at the given File object and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}. 
+     * @param data
+     * @param storeResourceFile
+     * @throws IOException
+     */
+    //Made this method private to not tempt developers to directly create File object paths and store to it.
+    private static void storeResource(String data, File storeResourceFile) throws IOException {
+        File parentDir = storeResourceFile.getParentFile();
+        if (!parentDir.exists()) {
+            if (!parentDir.mkdirs()) {
+                logger.severe("Could not create parent directories for data file: " + storeResourceFile);
+                throw new IOException("Could not create parent directories for data file.");
+            }
+        }
+        storeResource(data, new FileOutputStream(storeResourceFile));
+    }
+    
+    /**
+     * Stores the given data to the given OutputStream and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}. 
+     * @param data
+     * @param outputStream
+     * @throws IOException
+     */
+    public static void storeResource(String data, OutputStream outputStream) throws IOException {
+        try {
+            IOUtils.write(data, outputStream, ResourceRegistry.ARE_FILE_ENCODING);
+        } finally {
+            outputStream.flush();
+            outputStream.close();
+        }        
     }
 
     // public void setAREBaseURI()

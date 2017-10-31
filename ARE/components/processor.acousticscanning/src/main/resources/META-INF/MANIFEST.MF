@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: asterics-processors.acousticscanning
+Bundle-SymbolicName: eu.asterics.component.processor.acousticscanning
+Bundle-Version: 0.1.0
+Bundle-Classpath: ., lib/marytts-runtime-5.2-jar-with-dependencies.jar, lib/marytts-lang-de-5.2.jar, lib/marytts-lang-en-5.2.jar, lib/voice-cmu-slt-hsmm-5.2.jar, lib/voice-dfki-pavoque-neutral-hsmm-5.2.jar
+DynamicImport-Package: *

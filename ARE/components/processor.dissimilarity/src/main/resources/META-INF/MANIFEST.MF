@@ -5,16 +5,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: asterics-processor.dissimilarity
 Bundle-SymbolicName: com.starlab.component.processor.dissimilarity
 Bundle-Version: 0.1.0
-Bundle-NativeCode: lib/native/dissimilarity.dll;
- osname=win32;processor=x86;
- osname=win;processor=x86-64;
- osname=win8;processor=x86;
- osname=win8;processor=x86-64;
- osname=windows 8;processor=x86;
- osname=windows 8;processor=x86-64;
- osname=windows8;processor=x86;
- osname=windows8;processor=x86-64;
- osname=Windows 8.1;processor=x86;
- osname=Windows 8.1;processor=x86-64
+Bundle-NativeCode: lib/native/windows/x86/dissimilarity.dll;
+ osname=win32;processor=x86,
+ lib/native/windows/x64/dissimilarity.dll;
+ osname=win32;processor=x86_64
 DynamicImport-Package: *
 

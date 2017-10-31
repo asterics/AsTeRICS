@@ -44,7 +44,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  * seven command strings which were typed
  * 
  * @author Chris Veigl [veigl@technikum-wien.at] Date: Mar 1, 2011 Time: 3:35:00
- *         PM
+ *         PM 
  */
 public class KeyboardCaptureInstance extends AbstractRuntimeComponentInstance {
     private final int NUMBER_OF_COMMANDS = 10;

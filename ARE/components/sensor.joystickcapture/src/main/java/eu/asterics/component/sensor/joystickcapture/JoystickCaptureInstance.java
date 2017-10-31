@@ -41,7 +41,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  * 12 buttons and provides these input values via ports
  * 
  * @author Christoph Veigl [veigl@technikum-wien.at] Date: Oct 30, 2011 Time:
- *         02:10:00 PM
+ *         02:10:00 PM 
  */
 public class JoystickCaptureInstance extends AbstractRuntimeComponentInstance {
     public final int NUMBER_OF_BUTTONS = 20;

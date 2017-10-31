@@ -41,7 +41,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
  * actions to output ports of the plugin
  * 
  * @author Chris Veigl [veigl@technikum-wien.at] Date: Feb 10, 2011 Time:
- *         2:45:00 PM
+ *         2:45:00 PM 
  */
 public class MouseCaptureInstance extends AbstractRuntimeComponentInstance {
     private final OutputPort opMouseX = new OutputPort();

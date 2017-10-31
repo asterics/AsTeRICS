@@ -16,13 +16,16 @@
  *
  *                    homepage: http://www.asterics.org 
  *
- *         This project has been funded by the European Commission, 
- *                      Grant Agreement Number 247730
+ *         The development of this plugin was partly funded by the municipal
+ *         department 23 (MA23) of the City of Vienna within the Call 18
+ *         project ToRaDes (grant number 18-04)
  *  
  *  
  *         Dual License: MIT or GPL v3.0 with "CLASSPATH" exception
  *         (please refer to the folder LICENSE)
  * 
+ *         Author:  Chris Veigl <veigl@technikum-wien.at>
+ *                  Benjamin Aigner <aignerb@technikum-wien.at>
  */
 
 package eu.asterics.component.actuator.picotts;
@@ -35,6 +38,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.net.URL;
+import javax.sound.sampled.*;
 
 import java.util.logging.Logger;
 import eu.asterics.mw.data.ConversionUtils;
@@ -52,25 +57,30 @@ import eu.asterics.mw.services.AREServices;
 
 /**
  * 
- * <Describe purpose of this module>
+ * This module creates a speech output for a given text.
+ * Input data is processed with the commandline tool "pico2wave",
+ * temporarily saved in /tmp/pico.wav (because this tool is Linux only,
+ * this path is set at compilation) and output via Java audio output.
  * 
- * 
- *  
- * @author <your name> [<your email address>]
- *         Date: 
+ * @author Chris Veigl <veigl@technikum-wien.at>
+ * @author Benjamin Aigner <aignerb@technikum-wien.at>
+ *         Date: 28.09.2017
  */
 public class PicoTTSInstance extends AbstractRuntimeComponentInstance
 {
-	// Usage of an output port e.g.: opMyOutPort.sendData(ConversionUtils.intToBytes(10)); 
-
-	// Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
-
 	int propLanguage = 0;
 
-	// declare member variables here
+	//temp folder to put the speech wave to
+    static final String TEMP_FOLDER = "/tmp";
+    //binary to process text-to-speech
+    static final String PICOBINARYNAME = "pico2wave";
+    //binary to play the wave file
+    static final String PLAYBACKBINARYNAME = "aplay";
+    //output filename
+    String outputfile = TEMP_FOLDER + "/pico.wav";
 
     String textToSpeak = "";
-    Process process = null;
+    Process p = null;
     boolean processStarted = false;
     private boolean endThread = false;
  
@@ -170,70 +180,82 @@ public class PicoTTSInstance extends AbstractRuntimeComponentInstance
 	{
 		public void receiveData(byte[] data)
 		{
-				 // insert data reception handling here, e.g.: 
-				 // myVar = ConversionUtils.doubleFromBytes(data); 
-				 // myVar = ConversionUtils.stringFromBytes(data); 
-				 // myVar = ConversionUtils.intFromBytes(data); 
+            //parse text to speak from input port
             textToSpeak = ConversionUtils.stringFromBytes(data);
+            //launch text-to-speech
             launchNow();
 		}
 	};
 
 
     private final void launchNow() {
+        
         if (processStarted == true) {
             closeNow();
         }
         try {
-                List<String> command = new ArrayList<String>();
-                command.add("tools/pico/tts");
-                switch (propLanguage)  {
-                	case 0: command.add("-l en"); break;
-                	case 1: command.add("-l us"); break;
-                	case 2: command.add("-l de"); break;
-                	case 3: command.add("-l fr"); break;
-                	case 4: command.add("-l es"); break;
-                	case 5: command.add("-l it"); break;
-                	default:  command.add("-l en"); 
-                }
+            //default language
+            String language = "--lang=en-GB";
+            
+            //set language according to property
+            switch (propLanguage)  {
+                case 0: language = "--lang=en-GB"; break;
+                case 1: language = "--lang=en-US"; break;
+                case 2: language = "--lang=de-DE"; break;
+                case 3: language = "--lang=fr-FR"; break;
+                case 4: language = "--lang=es-ES"; break;
+                case 5: language = "--lang=it-IT"; break;
+                default:  language = "--lang=en-GB"; break;
+            }
 
-        	    command.add(textToSpeak);
+            //create a command for TTS, with given language and text
+            String command[] = {PICOBINARYNAME,language,"--wave=" + TEMP_FOLDER + "/pico.wav",textToSpeak};
 
-                ProcessBuilder builder = new ProcessBuilder(command);
+            ProcessBuilder builder = new ProcessBuilder(command);
+            builder.environment();
+            builder.directory(new File("."));
+            
+            Logger.getAnonymousLogger().info("running command: " + builder.command());
+            p = builder.start();
+            processStarted = true;
+
+            int returnValue = p.waitFor();
+            
+            //check if process finished with exit code 0 (success)
+            if(returnValue == 0)
+            {
+                //if yes, output wave file
+                String commandPlay[] = {PLAYBACKBINARYNAME,outputfile};
+                
+                builder = new ProcessBuilder(commandPlay);
                 builder.environment();
-                // builder.directory(new File(propWorkingDirectory));
                 builder.directory(new File("."));
-                process = builder.start();
-                processStarted = true;
-
-                endThread = false;
-                AstericsThreadPool.instance.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        String s;
-                        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-                        try {
-                            while (((s = in.readLine()) != null) && (endThread == false)) {
-                                System.out.println(s);
-                                Thread.sleep(5);
-
-                            }
-                        } catch (InterruptedException e) {
-                        } catch (IOException e) {
-                        }
-                    }
-                });
+                
+                Logger.getAnonymousLogger().info("running command-playback: " + builder.command());
+                p = builder.start();
+                
+                returnValue = p.waitFor();
+                
+                if(returnValue != 0) AstericsErrorHandling.instance.reportError(this, "playback returned error " + returnValue);
+            } else {
+                //if no, report an error
+                AstericsErrorHandling.instance.reportError(this, "picoTTS returned error " + returnValue);      
+            }
+            
+            processStarted = false;
+                
         } catch (IOException e) {
             AstericsErrorHandling.instance.reportError(this, "IOException: problem starting picoTTS");
         } catch (IllegalArgumentException e) {
             AstericsErrorHandling.instance.reportError(this,
                     "IllegalArgument: problem starting picoTTS");
+        } catch (InterruptedException e) {
+            AstericsErrorHandling.instance.reportError(this, "Execution interrupted!");
         }
     }
 
     private final void closeNow() {
-        if (process != null) {
+        if (p != null) {
             System.out.println("closing Process");
             endThread = true;
             try {
@@ -241,8 +263,8 @@ public class PicoTTSInstance extends AbstractRuntimeComponentInstance
             } catch (InterruptedException e) {
             }
 
-            process.destroy();
-            process = null;
+            p.destroy();
+            p = null;
         }
         processStarted = false;
 
@@ -284,7 +306,19 @@ public class PicoTTSInstance extends AbstractRuntimeComponentInstance
       @Override
       public void stop()
       {
-
-          super.stop();
+        //if yes, output wave file
+        String commandrm[] = {"rm",outputfile};
+        
+        ProcessBuilder builder = new ProcessBuilder(commandrm);
+        builder.environment();
+        builder.directory(new File("."));
+        
+        Logger.getAnonymousLogger().info("deleting temp wave file: " + builder.command());
+        try {
+            p = builder.start();
+        } catch (Exception e) {
+            AstericsErrorHandling.instance.reportError(this, "Execution failed. Don't care anyway, because we are closing...");
+        }
+        super.stop();
       }
 }

@@ -39,7 +39,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
  * Implements the Windows Mobile phone plugin
  * 
  * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Feb 11, 2011 Time: 4:27:47
- *         PM
+ *         PM 
  */
 public class PhoneControlInstance extends AbstractRuntimeComponentInstance {
     private final String IP_PHONE_ID = "phoneID";

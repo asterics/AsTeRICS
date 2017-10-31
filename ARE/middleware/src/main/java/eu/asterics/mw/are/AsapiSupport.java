@@ -3,8 +3,6 @@ package eu.asterics.mw.are;
 import java.awt.Point;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,25 +11,22 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -39,27 +34,29 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+
 import org.eclipse.osgi.service.localization.BundleLocalization;
+import org.apache.commons.io.IOUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 import eu.asterics.mw.are.asapi.StatusObject;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
-import eu.asterics.mw.are.exceptions.DeploymentException;
 import eu.asterics.mw.are.exceptions.ParseException;
 import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
+import eu.asterics.mw.are.parsers.ModelValidator;
+import eu.asterics.mw.data.ConversionUtils;
+import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.model.deployment.IChannel;
 import eu.asterics.mw.model.deployment.IComponentInstance;
@@ -133,8 +130,12 @@ public class AsapiSupport {
      * (in Java) of the corresponding implementation.
      *
      * @return an array containing all available component types
+     * @throws AREAsapiException 
      */
-    public String[] getAvailableComponentTypes() {
+    public String[] getAvailableComponentTypes() throws AREAsapiException {
+        //MAD: It seems that this method is not used by the ACS and is actually redundant to getBundleDescriptors
+        throw new AREAsapiException("Method not implemented: getAvailableComponentTypes()");
+        /*
         try {
             return AstericsModelExecutionThreadPool.instance
                     .execAndWaitOnModelExecutorLifecycleThread(new Callable<String[]>() {
@@ -161,6 +162,7 @@ public class AsapiSupport {
                                 componentTypes[counter++] = componentType.getID();
                             }
 
+                            System.out.println("\n\nin getAvailableComponentTypes: \n\n");
                             return componentTypes;
                         }
                     });
@@ -169,8 +171,8 @@ public class AsapiSupport {
             logger.severe("Error in fetching installed componentType of ComponentRepository: " + e.getMessage());
         }
         return new String[0];
+        */
     }
-
 
     /**
      * Returns an xml String containing the component collection (bundle
@@ -188,34 +190,28 @@ public class AsapiSupport {
 
                         @Override
                         public String call() throws Exception {
+                            logger.fine("\n\ngetComponentDescriptorsAsXml: \n\n");
                             String response = "";
-
-                            File cacheFile=ResourceRegistry.toFile(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI);
-                            if(DeploymentManager.instance.getBundleManager().bundleChangeDetected()||!cacheFile.exists()) {
+                                                       
+                            if(DeploymentManager.instance.getBundleManager().bundleChangeDetected()) {
                             	//if a bundle change was detected, generate a new component collection file.
-                            	response=DeploymentManager.instance.getBundleManager().generateComponentDescriptorsAsXml(cacheFile);
+                            	response=DeploymentManager.instance.getBundleManager().generateComponentDescriptorsAsXml();
                             } else {
                             	//if no bundle change was detected, use the cached component collection file.
-                            	StringBuilder responseBuilder=new StringBuilder();
-                            	try(BufferedReader in=new BufferedReader(new FileReader(cacheFile))) {                            		
-                            		String line;
-									while((line=in.readLine())!=null) {
-                            			responseBuilder.append(line);
-                            		}
-									response=responseBuilder.toString();
+                            	try {
+                            	    response=ResourceRegistry.getResourceContentAsString(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI.toURL().openStream());
                             	}catch(IOException e) {                            		
-                            		logger.severe("Error reading cached component collection from file <"+cacheFile+">, reason: "+e.getMessage());
+                            		logger.severe("Error reading cached component collection from file <"+BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI+">, reason: "+e.getMessage());
                             		//We must rethrow the exception, because we could not read the file.
                             		//@todo think about falling back to providing file without cache.
                             		throw new AREAsapiException(e.getMessage());
                             	}
-                            }
-
+                            }                            
                             return response;
                         }
                     });
         } catch (Exception e) {
-            logger.severe("Error in fetching installable bundle list: " + e.getMessage());
+            logger.severe("Error in fetching bundle descriptors: " + e.getMessage());
             throw new AREAsapiException(e.getMessage());
         }
     }
@@ -230,138 +226,55 @@ public class AsapiSupport {
      * @throws AREAsapiException
      */
     public String getModel() throws AREAsapiException {
-        final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+    	try {
+    		return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+    			@Override
+    			public String call() throws Exception {
+    				return DeploymentManager.instance.getCurrentRuntimeModelAsXMLString();
+    			}
+    		});
+    	} catch (Exception e) {
+    		logger.logp(Level.SEVERE,this.getClass().getCanonicalName(),"getModel()",e.getMessage(),e);
+    		throw (new AREAsapiException(e.getMessage()));
+    	}
+    }
 
-        // If trying to get a model with no model deployed
-        // we deploy the lastly used model and then we return it
+    /**
+     * Returns the name of the currently deployed model. This is the attribute "modelName" from the XML, containing
+     * the full path at creation time, filename and creation timestamp. Therefore it is an ID of the model.
+     *
+     * @return the name (ID) of the currently deployed model or an empty string, if no model is deployed
+     */
+    public String getCurrentModelName() {
+        IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
         if (currentRuntimeModel == null) {
-            try {
-
-                // this is for getting the text xml and converting it to string
-                String xmlFile = ResourceRegistry.MODELS_FOLDER + "/model.xml";
-
-                // check if dir exists and if not create it
-                File fileName = new File(xmlFile);
-                File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
-                if (!fileName.exists()) {
-                    modelsDir.mkdir();
-                }
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
-                builder = factory.newDocumentBuilder();
-                synchronized (builder) {
-                    Document doc = builder.parse(fileName);
-
-                    DOMSource domSource = new DOMSource(doc);
-
-                    StringWriter writer = new StringWriter();
-                    StreamResult result = new StreamResult(writer);
-                    TransformerFactory tf = TransformerFactory.newInstance();
-                    Transformer transformer = tf.newTransformer();
-                    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-                    transformer.transform(domSource, result);
-
-                    String modelInString = writer.toString();
-                    // calling the asapi function with a string representation
-                    // of the model
-                    deployModel(modelInString);
-                }
-
-            } catch (AREAsapiException e1) {
-                logger.warning(
-                        this.getClass().getName() + "." + "getModel: Failed to get model -> \n" + e1.getMessage());
-                throw (new AREAsapiException(e1.getMessage()));
-            } catch (SAXException e2) {
-                logger.warning(
-                        this.getClass().getName() + "." + "getModel: Failed to get model -> \n" + e2.getMessage());
-                throw (new AREAsapiException(e2.getMessage()));
-            } catch (IOException e3) {
-                logger.warning(
-                        this.getClass().getName() + "." + "getModel: Failed to get model -> \n" + e3.getMessage());
-                throw (new AREAsapiException(e3.getMessage()));
-            } catch (ParserConfigurationException e4) {
-                logger.warning(
-                        this.getClass().getName() + "." + "getModel: Failed to get model -> \n" + e4.getMessage());
-                throw (new AREAsapiException(e4.getMessage()));
-            } catch (TransformerConfigurationException e5) {
-                logger.warning(
-                        this.getClass().getName() + "." + "getModel: Failed to get model -> \n" + e5.getMessage());
-                throw (new AREAsapiException(e5.getMessage()));
-            } catch (TransformerException e6) {
-                logger.warning(
-                        this.getClass().getName() + "." + "getModel: Failed to get model -> \n" + e6.getMessage());
-                throw (new AREAsapiException(e6.getMessage()));
-            }
+            return "";
         }
-        return modelToXML();
+        return currentRuntimeModel.getModelName();
     }
 
     /**
      * Returns a string encoding of the model defined in the filename given as
      * argument. If there is no model, an empty string is returned.
-     * 
+     *
      * @param filename
      *            the name of the file to be checked
      * @return a string encoding of the model defined in the filename
      * @throws AREAsapiException
      *             if could not get model from file
      */
-    public String getModelFromFile(String filename) throws AREAsapiException {        
-        filename = ResourceRegistry.MODELS_FOLDER + "/" + filename;
-
-        // check if dir exists and if not create it
-        File fileName = new File(filename);
-        File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
-        if (!fileName.exists()) {
-            modelsDir.mkdir();
-        }
-        String modelInString = "";
-        try {
-            // this is for getting the text xml and converting it to string
-
-            String xmlFile = filename;
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            builder = factory.newDocumentBuilder();
-            synchronized (builder) {
-                Document doc = builder.parse(new File(xmlFile));
-                DOMSource domSource = new DOMSource(doc);
-                StringWriter writer = new StringWriter();
-                StreamResult result = new StreamResult(writer);
-                TransformerFactory tf = TransformerFactory.newInstance();
-                Transformer transformer = tf.newTransformer();
-                transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-                transformer.transform(domSource, result);
-                modelInString = writer.toString();
-            }
-        } catch (SAXException e1) {
-            logger.warning(this.getClass().getName() + "." + "getModelFromFile: Failed to get model from file -> \n"
-                    + e1.getMessage());
-            throw (new AREAsapiException(e1.getMessage()));
-        } catch (IOException e2) {
-            logger.warning(this.getClass().getName() + "." + "getModelFromFile: Failed to get model from file -> \n"
-                    + e2.getMessage());
-            throw (new AREAsapiException(e2.getMessage()));
-        } catch (ParserConfigurationException e3) {
-            logger.warning(this.getClass().getName() + "." + "getModelFromFile: Failed to get model from file -> \n"
-                    + e3.getMessage());
-            throw (new AREAsapiException(e3.getMessage()));
-        } catch (TransformerConfigurationException e4) {
-            logger.warning(this.getClass().getName() + "." + "getModelFromFile: Failed to get model from file -> \n"
-                    + e4.getMessage());
-            throw (new AREAsapiException(e4.getMessage()));
-        } catch (TransformerException e5) {
-            logger.warning(this.getClass().getName() + "." + "getModelFromFile: Failed to get model from file -> \n"
-                    + e5.getMessage());
-            throw (new AREAsapiException(e5.getMessage()));
-        }
-        
-        return modelInString;
-
+    public String getModelFromFile(String filename) throws AREAsapiException {
+    	try {			
+			return ResourceRegistry.getInstance().getResourceContentAsString(filename, RES_TYPE.MODEL);
+		} catch (URISyntaxException | IOException e) {
+            logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "getModelFromFile(String filename)", e.getMessage(), e);
+			throw new AREAsapiException(e.getMessage());
+		}
     }
 
     /**
      * Returns the state of the current runtime model.
-     * 
+     *
      * @return - The state of the runtime model. See {@link ModelState} class
      *         for the available states.
      */
@@ -388,18 +301,17 @@ public class AsapiSupport {
      *             error occurred after reading the model
      */
     public void deployModel(final String modelInXML) throws AREAsapiException {
-        // Stop running model first if there is one
-        if (DeploymentManager.instance.getCurrentRuntimeModel() != null) {
-            logger.fine("Before Deploying model, trying to stop old before.");
-            stopModel();
-            DeploymentManager.instance.undeployModel();
-        }
-
         try {
             AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<Object>() {
-
                 @Override
                 public Object call() throws Exception {
+                    // Stop running model first if there is one
+                    if (DeploymentManager.instance.getCurrentRuntimeModel() != null) {
+                        logger.fine("Before Deploying model, trying to stop old before.");
+                        stopModel();
+                        DeploymentManager.instance.undeployModel();
+                    }
+
                     AREServices.instance.deployModelInternal(modelInXML);
                     return null;
                 }
@@ -408,16 +320,14 @@ public class AsapiSupport {
             DeploymentManager.instance.undeployModel();
             DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
             AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-            logger.warning(
-                    this.getClass().getName() + "." + "deployModel: Failed to deploy model -> \n" + e4.getMessage());
+            logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "deployModel(String)", e4.getMessage(), e4);
             throw (new AREAsapiException(
                     "Model could not be parsed or is not compatible with installed components.\nTry to convert the model file by opening and resaving it with the AsTeRICS Configuration Suite (ACS)"));
         } catch (Throwable t) {
             DeploymentManager.instance.undeployModel();
             DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
             AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-            logger.warning(
-                    this.getClass().getName() + "." + "deployModel: Failed to deploy model -> \n" + t.getMessage());
+            logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "deployModel(String)", t.getMessage(), t);
             throw (new AREAsapiException("Model could not be deployed."));
         }
 
@@ -425,10 +335,10 @@ public class AsapiSupport {
 
     /**
      * Retrieves the descriptors of AsTeRiCS bundles.
-     * 
+     *
      * @return A {@link List} of {@link String} which contains all the bundle
      *         descriptors.
-     * 
+     *
      * @throws AREAsapiException
      */
     public List<String> getBundelDescriptors() throws AREAsapiException {
@@ -438,6 +348,7 @@ public class AsapiSupport {
 
                         @Override
                         public List<String> call() throws Exception {
+                            logger.fine("\n\ngetBundelDescriptors\n\n");
                             List<String> res = new ArrayList<String>();
 
                             List<String> bundleList = DeploymentManager.instance.getBundleManager()
@@ -450,7 +361,7 @@ public class AsapiSupport {
                                 URL bundleDescriptorURL = jarInternalURI.toURL();                                        
                                 if (bundleDescriptorURL != null) {
                                     try {
-                                        res.add(convertXMLFileToString(bundleDescriptorURL.openStream()));
+                                        res.add(ResourceRegistry.getResourceContentAsString(bundleDescriptorURL.openStream()));
                                     } catch (IOException e) {
                                         // TODO Auto-generated catch block
                                         // throw (new
@@ -463,12 +374,12 @@ public class AsapiSupport {
                                                 .warning("Could not get AsTeRICS bundle descriptor for url: " + bundleDescriptorURL);
                                     }
                                 }
-                            }
+                            }                            
                             return res;
                         }
                     });
         } catch (Exception e) {
-            logger.severe("Error in fetching installable bundle list: " + e.getMessage());
+            logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "getBundelDescriptors()", e.getMessage(), e);
             throw new AREAsapiException(e.getMessage());
         }
     }
@@ -478,90 +389,29 @@ public class AsapiSupport {
      * creating an empty model and deploying it using
      * {@link #deployModel(String)}. This results to freeing all resources in
      * the ARE (i.e., if a previous model reserved any).
-     * 
+     *
      * @throws AREAsapiException
      */
     public void newModel() throws AREAsapiException {
-        try {
-            AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<Object>() {
-
-                @Override
-                public Object call() throws Exception {
-                    final URL url = Main.getAREContext().getBundle().getResource(DEFAULT_MODEL_URL);
-
-                    // try {
-                    synchronized (DefaultDeploymentModelParser.instance) {
-
-                        IRuntimeModel runtimeModel = DefaultDeploymentModelParser.instance.parseModel(url.toString());
-                        if (runtimeModel == null) {
-                            DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-                            AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "",
-                                    "Deployment Error");
-
-                            logger.warning(this.getClass().getName() + "." + "newModel: Failed to create new model ->"
-                                    + " the default model could not be found\n");
-                            return null;
-                        }
-                        DeploymentManager.instance.deployModel(runtimeModel);
-                    }
-                    return null;
-                }
-            });
-        } catch (DeploymentException e) {
-            DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-            AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-            logger.warning(
-                    this.getClass().getName() + "." + "newModel: Failed to create new model -> \n" + e.getMessage());
-            throw (new AREAsapiException(e.getMessage()));
-        } catch (ParseException e1) {
-            DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-            AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-            logger.warning(
-                    this.getClass().getName() + "." + "newModel: Failed to create new model -> \n" + e1.getMessage());
-            throw (new AREAsapiException(e1.getMessage()));
-        } catch (UnsupportedEncodingException e2) {
-            DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-            AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-            logger.warning(
-                    this.getClass().getName() + "." + "newModel: Failed to create new model -> \n" + e2.getMessage());
-            throw (new AREAsapiException(e2.getMessage()));
-        } catch (Exception e) {
-            DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-            AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-            logger.warning(
-                    this.getClass().getName() + "." + "newModel: Failed to create new model -> \n" + e.getMessage());
-            throw (new AREAsapiException(e.getMessage()));
-        }
+        throw new AREAsapiException("The ASAPI function is not supported: newModel()");
     }
 
     /**
      * It starts or resumes the execution of the model.
-     * 
+     *
      * @throws AREAsapiException
      *             if an exception occurs while validating and starting the
      *             deployed model.
      */
     public void runModel() throws AREAsapiException {
         AREServices.instance.runModel();
-        /*
-         * if (DeploymentManager.instance.getCurrentRuntimeModel().getState().
-         * equals(ModelState.STOPPED)) { DeploymentManager.instance.runModel();
-         * } else { DeploymentManager.instance.resumeModel(); }
-         * DeploymentManager.instance.getCurrentRuntimeModel().
-         * setState(ModelState.STARTED);
-         * DeploymentManager.instance.setStatus(AREStatus.RUNNING);
-         * AstericsErrorHandling
-         * .instance.setStatusObject(AREStatus.RUNNING.toString(), "", "");
-         * logger.fine(this.getClass().getName()+".runModel: model running \n");
-         * System.out.println("Model started!");
-         */
     }
 
     /**
      * Briefly stops the execution of the model. Its main difference from the
      * {@link #stopModel()} method is that it does not reset the components
      * (e.g., the buffers are not cleared).
-     * 
+     *
      * @throws AREAsapiException
      *             if the deployed model is not started already, or if the
      *             execution cannot be paused
@@ -574,7 +424,7 @@ public class AsapiSupport {
      * Stops the execution of the model. Unlike the {@link #pauseModel()}
      * method, this one resets the components, which means that when the model
      * is started again it starts from scratch (i.e., with a new state).
-     * 
+     *
      * @throws AREAsapiException
      *             if the deployed model is not started already, or if the
      *             execution cannot be stopped
@@ -582,23 +432,6 @@ public class AsapiSupport {
     public void stopModel() throws AREAsapiException {
         // Delegate to AREServices
         AREServices.instance.stopModel();
-
-        /*
-         * if (DeploymentManager.instance.getStatus()==AREStatus.RUNNING ||
-         * DeploymentManager.instance.getStatus()==AREStatus.PAUSED ||
-         * DeploymentManager.instance.getStatus()==AREStatus.ERROR) {
-         * DeploymentManager.instance.stopModel();
-         * DeploymentManager.instance.getCurrentRuntimeModel().
-         * setState(ModelState.STOPPED);
-         * DeploymentManager.instance.setStatus(AREStatus.OK);
-         * AstericsErrorHandling
-         * .instance.setStatusObject(AREStatus.OK.toString(), "", "");
-         * logger.fine (this.getClass().getName()+".stopModel: model stopped \n"
-         * ); System.out.println("Model stopped!");
-         * 
-         * }
-         */
-
     }
 
     /**
@@ -1351,9 +1184,11 @@ public class AsapiSupport {
             AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<Void>() {
                 @Override
                 public Void call() throws Exception {
+                    // get runtime instances
                     IRuntimeModel model = DeploymentManager.instance.getCurrentRuntimeModel();
                     IComponentInstance instance = null;
                     IRuntimeInputPort inputPort = null;
+                    byte[] sendData = data;
                     if (model != null) {
                         instance = model.getComponentInstance(targetComponentID);
                         if (instance != null) {
@@ -1365,7 +1200,25 @@ public class AsapiSupport {
                                 MessageFormat.format("send data failed! model: {0}, instance: {1}, inputPort: {2}",
                                         model, instance, inputPort));
                     }
-                    inputPort.receiveData(data);
+                    // convert to target datatype
+                    DataType targetDatatype = null;
+                    for (IInputPort port : instance.getInputPorts()) {
+                        if (targetInputPortID.equals(port.getPortType())) {
+                            targetDatatype = port.getPortDataType();
+                        }
+                    }
+                    if (targetDatatype == null) {
+                        throw new AREAsapiException(MessageFormat.format(
+                                "send data failed! model: {0}, instance: {1}, inputPort: {2}. Could not determine datatype of inputPort.",
+                                model, instance, inputPort));
+                    }
+                    if (!DataType.STRING.equals(targetDatatype)) {
+                        String conversion = ConversionUtils.getDataTypeConversionString(DataType.STRING,
+                                targetDatatype);
+                        sendData = ConversionUtils.convertData(data, conversion);
+                    }
+
+                    inputPort.receiveData(sendData);
                     return null;
                 }
             });
@@ -1408,263 +1261,36 @@ public class AsapiSupport {
         // todo
     }
 
-    private final String modelToXML() {
-
-        // Get the current runtime model instance
-        final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
-        if(currentRuntimeModel==null) {
-            return null;
-        }
-
-        // We need a Document
-
-        DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder;
-        try {
-
-            docBuilder = dbfac.newDocumentBuilder();
-            synchronized (docBuilder) {
-                DOMImplementation impl = docBuilder.getDOMImplementation();
-                Document doc = impl.createDocument(null, null, null);
-
-                // Create the root
-                Element model = doc.createElement("model");
-                doc.appendChild(model);
-                model.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-                model.setAttribute("xsi:noNamespaceSchemaLocation", "deployment_model.xsd");
-                model.setAttribute("modelName", currentRuntimeModel.getModelName());
-                model.setAttribute("modelVersion", currentRuntimeModel.getModelVersion());
-                // model.setAttribute ("modelDescription",
-                // currentRuntimeModel.getModelDescription() );
-
-                // Add description
-                Element descElement = doc.createElement("modelDescription");
-                model.appendChild(descElement);
-                Element shortDescElement = doc.createElement("shortDescription");
-                descElement.appendChild(shortDescElement);
-                shortDescElement.setTextContent(currentRuntimeModel.getModelShortDescription());
-                Element reqElement = doc.createElement("requirements");
-                descElement.appendChild(reqElement);
-                reqElement.setTextContent(currentRuntimeModel.getModelRequirements());
-                Element descriptionElement = doc.createElement("description");
-                descElement.appendChild(descriptionElement);
-                descriptionElement.setTextContent(currentRuntimeModel.getModelDescription());
-
-                // End of channels
-
-                // Add components
-                Element components = doc.createElement("components");
-
-                model.appendChild(components);
-
-                Set<IComponentInstance> componentInstances = currentRuntimeModel.getComponentInstances();
-
-                for (IComponentInstance ci : componentInstances) {
-
-                    ci.appendXMLElements(doc);
-
-                }
-
-                // End of components
-                // Add channels
-                Set<IChannel> channels = currentRuntimeModel.getChannels();
-                if (channels.size() > 0) {
-                    Element channelsElement = doc.createElement("channels");
-                    model.appendChild(channelsElement);
-                    for (IChannel channel : channels) {
-                        channel.appendXMLElements(doc);
-                    }
-                }
-                // End of channels
-
-                // Add event channels
-
-                Set<IEventChannel> ecentChannels = currentRuntimeModel.getEventChannels();
-                if (ecentChannels.size() > 0) {
-                    Element eventChannelsElement = doc.createElement("eventChannels");
-                    model.appendChild(eventChannelsElement);
-
-                    for (IEventChannel eventChannel : ecentChannels) {
-                        eventChannel.appendXMLElements(doc);
-                    }
-                }
-
-                // Add Groups
-                ArrayList<DefaultACSGroup> groups = currentRuntimeModel.getACSGroups();
-                if (groups.size() > 0) {
-
-                    Element groupsElement = doc.createElement("groups");
-                    model.appendChild(groupsElement);
-                    Iterator<DefaultACSGroup> itr = groups.iterator();
-                    while (itr.hasNext()) {
-                        DefaultACSGroup group = itr.next();
-                        group.appendXMLElements(doc);
-                    }
-
-                }
-                // End of channels
-
-                ModelGUIInfo modelGUIInfo = currentRuntimeModel.getModelGuiInfo();
-                if (modelGUIInfo != null) {
-                    Element modelGUI = doc.createElement("modelGUI");
-                    model.appendChild(modelGUI);
-                    modelGUIInfo.appendXMLElements(doc);
-                }
-
-                // transform the Document into a String
-                DOMSource domSource = new DOMSource(doc);
-
-                TransformerFactory tf = TransformerFactory.newInstance();
-                Transformer transformer = tf.newTransformer();
-                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-
-                transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-                transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-                transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-                java.io.StringWriter sw = new java.io.StringWriter();
-                StreamResult sr = new StreamResult(sw);
-                transformer.transform(domSource, sr);
-                String xml = sw.toString();
-                logger.fine(this.getClass().getName() + ".modelToXML: OK\n");
-
-                // System.out.println ("AsapiSupport.getModel():"+xml);
-                return xml;
-            }
-
-        } catch (ParserConfigurationException e) {
-            logger.warning(this.getClass().getName() + ".modelToXML: Failed -> \n" + e.getMessage());
-            new AREAsapiException(e.getMessage());
-            return null;
-        } catch (TransformerException e1) {
-            logger.warning(this.getClass().getName() + ".modelToXML: Failed -> \n" + e1.getMessage());
-            new AREAsapiException(e1.getMessage());
-            return null;
-        }
-
-    }
-
-    private void printFile(File modelFile) {
-        try {
-
-            FileInputStream fis = new FileInputStream(modelFile);
-
-            // Here BufferedInputStream is added for fast reading.
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            DataInputStream dis = new DataInputStream(bis);
-
-            // dis.available() returns 0 if the file does not have more lines.
-            while (dis.available() != 0) {
-
-                // this statement reads the line from the file and print it to
-                // the console.
-                System.out.println(dis.readLine());
-            }
-
-            // dispose all the resources after using them.
-            fis.close();
-            bis.close();
-            dis.close();
-            logger.fine(this.getClass().getName() + ".printFile: OK\n");
-
-        } catch (FileNotFoundException e) {
-            logger.warning(this.getClass().getName() + ".printFile: Failed -> \n" + e.getMessage());
-            e.printStackTrace();
-        } catch (IOException e1) {
-            logger.warning(this.getClass().getName() + ".printFile: Failed -> \n" + e1.getMessage());
-            e1.printStackTrace();
-        }
-    }
 
     /**
      * Deploys the model associated to the specified filename. The file should
      * be already available on the ARE file system.
-     * 
+     *
      * @param filename
      *            the filename of the model to be deployed
      * @throws AREAsapiException
      *             if the specified filename is not found or cannot be deployed
      */
     public void deployFile(final String filename) throws AREAsapiException {
-        // stopModel outside of try catch to ensure that a current model is
-        // stopped any way.
-        final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
-
-        if (currentRuntimeModel != null) {
-            stopModel();
-        }
-
         try {
             AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<Object>() {
 
                 @Override
                 public Object call() throws Exception {
-
-                    // try{
-                    synchronized (this) {
-                        java.net.URI uri = ResourceRegistry.getInstance().getResource(filename, RES_TYPE.MODEL);
-
-                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        synchronized (builder) {
-
-                            // Document doc = builder.parse(new File(xmlFile));
-                            Document doc = builder.parse(uri.toURL().openStream());
-                            DOMSource domSource = new DOMSource(doc);
-                            StringWriter writer = new StringWriter();
-                            StreamResult result = new StreamResult(writer);
-                            TransformerFactory tf = TransformerFactory.newInstance();
-                            Transformer transformer = tf.newTransformer();
-                            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-16");
-                            transformer.transform(domSource, result);
-                            String modelInString = writer.toString();
-                            // calling the asapi function with a string
-                            // representation of the model
-                            deployModel(modelInString);
-
-                            // logger.fine(this.getClass().getName()+"." +
-                            // "deployFile: OK\n");
-                            AstericsErrorHandling.instance.getLogger().info("Deployed Model " + uri + " !");
-                        }
-                    }
+                    AREServices.instance.deployFileInternal(filename);
                     return null;
                 }
             });
-
-        } catch (AREAsapiException e1) {
-            logger.warning(
-                    this.getClass().getName() + "." + "deployFile: Failed to deploy file -> \n" + e1.getMessage());
-            throw e1;
-        } catch (SAXException e3) {
-            logger.warning(
-                    this.getClass().getName() + "." + "deployFile: Failed to deploy file -> \n" + e3.getMessage());
-            throw (new AREAsapiException(e3.getMessage()));
-        } catch (IOException e4) {
-            logger.warning(
-                    this.getClass().getName() + "." + "deployFile: Failed to deploy file -> \n" + e4.getMessage());
-            throw (new AREAsapiException(e4.getMessage()));
-        } catch (ParserConfigurationException e5) {
-            logger.warning(
-                    this.getClass().getName() + "." + "deployFile: Failed to deploy file -> \n" + e5.getMessage());
-            throw (new AREAsapiException(e5.getMessage()));
-        } catch (TransformerConfigurationException e6) {
-            logger.warning(
-                    this.getClass().getName() + "." + "deployFile: Failed to deploy file -> \n" + e6.getMessage());
-            throw (new AREAsapiException(e6.getMessage()));
-        } catch (TransformerException e7) {
-            logger.warning(
-                    this.getClass().getName() + "." + "deployFile: Failed to deploy file -> \n" + e7.getMessage());
-            throw (new AREAsapiException(e7.getMessage()));
         } catch (Exception e) {
             // TODO Auto-generated catch block
+            logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "deployFile(String)", e.getMessage(), e);
             throw (new AREAsapiException(e.getMessage()));
         }
     }
 
     /**
      * Deletes the file of the model specified by the filename parameter
-     * 
+     *
      * @param filename
      *            the name of the file to be deleted
      * @return true if the file was successfully deleted or false otherwise
@@ -1672,157 +1298,99 @@ public class AsapiSupport {
      *             if the file could not be found or failed to be deleted
      */
     public boolean deleteModelFile(String filename) throws AREAsapiException {
-        filename = ResourceRegistry.MODELS_FOLDER + "/" + filename;
-        String ex = "";
-        StringTokenizer tkz = new StringTokenizer(filename, ".");
-        while (tkz.hasMoreElements()) {
-            ex = tkz.nextToken();
-        }
+        File f;
+		try {
+			f = ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(filename, RES_TYPE.MODEL));
 
-        if (!ex.equals("xml") && !ex.equals("acs")) {
-            logger.warning(this.getClass().getName() + ".deleteModelFile: " + "Unsupported file extension: " + ex);
-            // throw new AREAsapiException(
-            // "Unsupported file extension: " + ex);
-            return false;
-        }
+	        // Make sure the file or directory exists and isn't write protected
+	        if (!f.exists()) {
+	            logger.warning(this.getClass().getName() + ".deleteModelFile: " + "no such file or directory: " + filename);
+	            throw new AREAsapiException("deleteModelFile: no such file or directory: " + filename);
+	        }
 
-        File f = new File(filename);
+	        if (!f.canWrite()) {
+	            logger.warning(
+	                    this.getClass().getName() + ".deleteModelFile: " + "file " + filename + " write protected\n");
+	            throw new AREAsapiException("Delete: write protected: " + filename);
+	        }
 
-        // Make sure the file or directory exists and isn't write protected
-        if (!f.exists()) {
-            logger.warning(this.getClass().getName() + ".deleteModelFile: " + "no such file or directory: " + filename);
-            throw new AREAsapiException("deleteModelFile: no such file or directory: " + filename);
-        }
-
-        if (!f.canWrite()) {
-            logger.warning(
-                    this.getClass().getName() + ".deleteModelFile: " + "file " + filename + " write protected\n");
-            throw new AREAsapiException("Delete: write protected: " + filename);
-        }
-
-        // Attempt to delete it
-        if (f.delete()) {
-            logger.fine(this.getClass().getName() + ".deleteModelFile: OK\n");
-            return true;
-        } else {
-            logger.warning(this.getClass().getName() + ".deleteModelFile: " + "Failed to delete file " + filename);
-            return false;
-        }
+	        // Attempt to delete it
+	        if (f.delete()) {
+	            logger.fine(this.getClass().getName() + ".deleteModelFile: OK\n");
+	            return true;
+	        } else {
+	            logger.warning(this.getClass().getName() + ".deleteModelFile: " + "Failed to delete file " + filename);
+	            return false;
+	        }
+		} catch (URISyntaxException e) {
+			logger.logp(Level.SEVERE,this.getClass().getCanonicalName(),"deleteModelFile(String)",e.getMessage(),e);
+			throw new AREAsapiException("Could not delete model file");
+		}
 
     }
 
     /**
      * Returns a list with all stored models (all models in the directory
      * MODELS_FOLDER except default_model.xml)
-     * 
+     *
      * @return a list with all stored models
      * @throws AREAsapiException
      *             if MODELS_FOLDER directory could not be found
      */
     public String[] listAllStoredModels() throws AREAsapiException {
-        /*
-         * ArrayList <String> fileNames = new ArrayList<String> (); File dir =
-         * new File(MODELS_FOLDER+"/");
-         * 
-         * String[] children = dir.list(); if (children == null) {
-         * logger.warning(this.getClass().getName()+".listAllStoredModels: " +
-         * "could not find models directory\n"); throw new AREAsapiException(
-         * "could not find models directory!"); } else { for (int i=0;
-         * i<children.length; i++) { // Get filename of file or directory String
-         * filename = children[i]; if (!filename.equals("model.xml")&&
-         * !filename.equals("default_model.xml")) fileNames.add(filename); } }
-         * String[] res = new String[fileNames.size()]; for (int i=0;
-         * i<res.length; i++) { res[i] = fileNames.get(i); } return res;
-         * 
-         */
-        /*
-         * List<String> res = new ArrayList<String>(); List<String> nextDir =
-         * new ArrayList<String>(); //Directories
-         * nextDir.add(ResourceRegistry.MODELS_FOLDER);
-         * //nextDir.add("data/sounds");
-         * 
-         * try { while(nextDir.size() > 0) { File pathName = new
-         * File(nextDir.get(0)); String[] fileNames = pathName.list(); // lists
-         * all files in the directory
-         * 
-         * for(int i = 0; i < fileNames.length; i++) { File f = new
-         * File(pathName.getPath(), fileNames[i]); // getPath converts abstract
-         * path to path in String, // constructor creates new File object with
-         * fileName name if (f.isDirectory()) { nextDir.add(f.getPath()); } else
-         * { if (f.getPath().toLowerCase().endsWith(".acs"))
-         * res.add(f.getPath().substring(ResourceRegistry.MODELS_FOLDER.length()
-         * +1)); } } nextDir.remove(0); } } catch (Exception e)
-         * {System.out.println ("could not find directories for model files !"
-         * );}
-         * 
-         * 
-         * String[] res2 = new String[res.size()]; for (int i=0; i<res2.length;
-         * i++) { res2[i] = res.get(i); }
-         * 
-         * return res2;
-         */
-
         List<URI> storedModelList = ResourceRegistry.getInstance().getModelList(true);
         return ResourceRegistry.toStringArray(storedModelList);
     }
 
     /**
-     * Stores the XML model specified by the string parameter in the file
-     * specified by the filename parameter
-     * 
+     * stores data with UTF-8 to folder ARE/data
+     *
+     * @param data
+     * @param resourcePath resourcePath of the data to store to.
+     * @throws AREAsapiException
+     */
+    public void storeData(String data, String resourcePath) throws AREAsapiException {
+        try {
+            ResourceRegistry.getInstance().storeResource(data, resourcePath, RES_TYPE.DATA);
+        } catch (IOException e) {
+            String errorMsg = "Failed to store data -> \n" + e.getMessage();
+            AstericsErrorHandling.instance.reportError(null, errorMsg);
+            throw (new AREAsapiException(errorMsg));
+        } catch (URISyntaxException e) {
+            String errorMsg = "Failed to create file URI to store data -> \n" + e.getMessage();
+            AstericsErrorHandling.instance.reportError(null, errorMsg);
+            throw (new AREAsapiException(errorMsg));
+        }
+    }
+
+    /**
+     * Stores the XML model specified by the string parameter in the file specified by the filename parameter
+     *
      * @param modelInXML
      *            the XML model as a String
      * @param filename
-     *            the name of the file the model is to be stored
+     *            the name of the file the model is to be stored.
      * @throws AREAsapiException
-     *             if the file cannot be created or if the model cannot be
-     *             stored
+     *             if the file cannot be created or if the model cannot be stored
      */
     public void storeModel(String modelInXML, String filename) throws AREAsapiException {
-        // First check if the model is a valid XML model
-
-        File fileName = new File(ResourceRegistry.MODELS_FOLDER + "/" + filename);
-        File modelsDir = new File(ResourceRegistry.MODELS_FOLDER);
-        if (!fileName.exists()) {
-            try {
-                modelsDir.mkdir();
-                fileName.createNewFile();
-            } catch (IOException e) {
-                logger.warning(
-                        this.getClass().getName() + ".storeModel: " + "The file or directory could not be created\n");
-            }
-        }
         try {
-            InputStream is = new ByteArrayInputStream(modelInXML.getBytes("UTF-16"));
-
-            synchronized (DefaultDeploymentModelParser.instance) {
-                DefaultDeploymentModelParser.instance.parseModel(is);
-
-                // Convert the string to a byte array.
-                String s = modelInXML;
-                byte data[] = s.getBytes();
-                BufferedWriter c = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF-16"));
-
-                for (int i = 0; i < data.length; i++) {
-                    c.write(data[i]);
-                }
-
-                if (c != null) {
-                    c.flush();
-                    c.close();
-                }
-            }
-        } catch (IOException e) {
-            String errorMsg = "Failed to store model -> \n" + e.getMessage();
-            AstericsErrorHandling.instance.reportError(null, errorMsg);
-            throw (new AREAsapiException(errorMsg));
+            DefaultDeploymentModelParser.instance.parseModelAsXMLString(modelInXML);
+            ResourceRegistry.getInstance().storeResource(modelInXML, filename, RES_TYPE.MODEL);
         } catch (ParseException e) {
-            String errorMsg = "Failed to parse model, maybe model version not in sync with compononent descriptors -> \n"
-                    + e.getMessage();
+            String errorMsg = "Failed to parse model, maybe model version not in sync with compononent descriptors -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
         } catch (BundleManagementException e) {
             String errorMsg = "Failed to install model components -> \n" + e.getMessage();
+            AstericsErrorHandling.instance.reportError(null, errorMsg);
+            throw (new AREAsapiException(errorMsg));
+        } catch (IOException e) {
+            String errorMsg = "Failed to store model -> \n" + e.getMessage();
+            AstericsErrorHandling.instance.reportError(null, errorMsg);
+            throw (new AREAsapiException(errorMsg));
+        } catch (URISyntaxException e) {
+            String errorMsg = "Failed to create file URI to store model -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
         }
@@ -1832,40 +1400,22 @@ public class AsapiSupport {
      * Returns the log file as a string.
      * 
      * @return the log file as a string.
+     * @throws AREAsapiException 
      */
-    public String getLogFile() {
-        StringBuffer logFile = new StringBuffer();
+    public String getLogFile() throws AREAsapiException {
         try {
-            File file = new File("asterics_logger.log");
-            if (!file.exists()) {
-                logger.warning(
-                        this.getClass().getName() + ".getLogFile: " + "Failed to create file asterics_logger.log");
-            }
-
-            FileInputStream fileInputStream = new FileInputStream(file);
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-            DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
-            while (dataInputStream.available() != 0) {
-                logFile.append(dataInputStream.readLine().toString() + "\n");
-            }
-            fileInputStream.close();
-            bufferedInputStream.close();
-            dataInputStream.close();
-
-        } catch (FileNotFoundException e) {
-            logger.warning(this.getClass().getName() + ".getLogFile: Failed -> \n" + e.getMessage());
+            return ResourceRegistry.getInstance().getResourceContentAsString("asterics_logger.log", RES_TYPE.TMP);
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            logger.warning(this.getClass().getName() + ".getLogFile: Failed -> \n" + e.getMessage());
-            e.printStackTrace();
+            logger.warning("Could not fetch log file: "+e.getMessage());
+            throw new AREAsapiException(e.getMessage());
         }
-        return logFile.toString();
     }
 
     /**
      * It is called on startup by the middleware in order to autostart a default
      * model without the need of pressing deploy and start model first.
-     * 
+     *
      * @param startModel
      *            TODO
      * @throws AREAsapiException
@@ -1915,26 +1465,4 @@ public class AsapiSupport {
         }
         return list;
     }
-
-    /**
-     * Helper method to convert an InputStream of an XML-file to an XML String
-     * object.
-     * 
-     * @param inputStream
-     * @return
-     */
-    private String convertXMLFileToString(InputStream inputStream) {
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            org.w3c.dom.Document doc = documentBuilderFactory.newDocumentBuilder().parse(inputStream);
-            StringWriter stw = new StringWriter();
-            Transformer serializer = TransformerFactory.newInstance().newTransformer();
-            serializer.transform(new DOMSource(doc), new StreamResult(stw));
-            return stw.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 }

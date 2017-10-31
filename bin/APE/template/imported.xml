@@ -159,6 +159,19 @@
 	</condition>
     <echo>  Using JRE path: ${APE.jre.bin.path}</echo>
 
+	
+	<!-- Set some defaults if the values were not set so far, neither as -D property nor in APE.properties file.-->
+	<condition property="APE.buildMode" else="${APE.buildMode}" value="devel">
+		<not>
+			<isset property="APE.buildMode" />
+		</not>
+	</condition>
+	<condition property="APE.dataCopyMode" else="${APE.dataCopyMode}" value="ALL">
+		<not>
+			<isset property="APE.dataCopyMode" />
+		</not>
+	</condition>
+
 	<!--
 	<echoproperties>
 	</echoproperties>
@@ -255,8 +268,17 @@
 
 	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
 	<target name="APE-copy" description="Build APE project: The result can be found in the build/merged folder.">
-		<java jar="${APE.baseURI}/APE.jar" fork="true">
-			<sysproperty key="APE.projectDir" value="${basedir}"/>	
+		<java jar="${APE.baseURI}/APE.jar" fork="true" failonerror="true">
+		    <!-- 
+			If the user manually overrides property values with -D on the command line this is only allowed for the following properties.
+			The others may only be set in the file APE.properties 
+			Ensure that the APE-copy command has the same property values as the ant build files in case of overriding them.
+			-->
+			<sysproperty key="APE.projectDir" value="${basedir}"/>
+			<sysproperty key="ARE.baseURI" value="${ARE.baseURI}"/>
+			<sysproperty key="APE.buildDir" value="${APE.buildDir}"/>
+			<sysproperty key="APE.dataCopyMode" value="${APE.dataCopyMode}"/>
+			<sysproperty key="APE.buildMode" value="${APE.buildMode}"/>	
 		</java>	
 		<!-- fix cr and lf and set execution permissions -->
 		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
@@ -265,8 +287,16 @@
 
 	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
 	<target name="APE-copy-release" description="Build APE project for deployment: The result can be found in the build/merged folder.">
-		<java jar="${APE.baseURI}/APE.jar" fork="true">
+		<java jar="${APE.baseURI}/APE.jar" fork="true" failonerror="true">
+		    <!-- 
+			If the user manually overrides property values with -D on the command line this is only allowed for the following properties.
+			The others may only be set in the file APE.properties 
+			Ensure that the APE-copy command has the same property values as the ant build files in case of overriding them.
+			-->
 			<sysproperty key="APE.projectDir" value="${basedir}"/>
+			<sysproperty key="ARE.baseURI" value="${ARE.baseURI}"/>
+			<sysproperty key="APE.buildDir" value="${APE.buildDir}"/>
+			<sysproperty key="APE.dataCopyMode" value="${APE.dataCopyMode}"/>
 			<!-- force buildMode release to ensure that the merged folder is cleaned and only needed plugins are copied -->
 			<sysproperty key="APE.buildMode" value="release"/>	
 		</java>	

@@ -117,7 +117,7 @@ public class APE {
 
         try {
             APE.getInstance().start();
-        } catch (APEConfigurationException e) {
+        } catch (Exception e) {
             Notifier.error(e.getMessage(), null);
             System.exit(1);
         }
