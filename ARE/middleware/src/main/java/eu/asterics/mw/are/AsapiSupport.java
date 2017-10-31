@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -125,8 +126,12 @@ public class AsapiSupport {
      * (in Java) of the corresponding implementation.
      *
      * @return an array containing all available component types
+     * @throws AREAsapiException 
      */
-    public String[] getAvailableComponentTypes() {
+    public String[] getAvailableComponentTypes() throws AREAsapiException {
+        //MAD: It seems that this method is not used by the ACS and is actually redundant to getBundleDescriptors
+        throw new AREAsapiException("Method not implemented: getAvailableComponentTypes()");
+        /*
         try {
             return AstericsModelExecutionThreadPool.instance
                     .execAndWaitOnModelExecutorLifecycleThread(new Callable<String[]>() {
@@ -153,6 +158,7 @@ public class AsapiSupport {
                                 componentTypes[counter++] = componentType.getID();
                             }
 
+                            System.out.println("\n\nin getAvailableComponentTypes: \n\n");
                             return componentTypes;
                         }
                     });
@@ -161,6 +167,7 @@ public class AsapiSupport {
             logger.severe("Error in fetching installed componentType of ComponentRepository: " + e.getMessage());
         }
         return new String[0];
+        */
     }
 
     /**
@@ -184,11 +191,7 @@ public class AsapiSupport {
         // bundleDescriptorString=DefaultBundleModelParser.instance.getBundleDescriptionOfComponentTypeId(componentTypeId,
         // bundleDescriptorURI.toURL().openStream());
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bundleDescriptorURL.openStream()));
-        String bundle_descriptor = "", line;
-        while ((line = bufferedReader.readLine()) != null) {
-            bundle_descriptor += line + "\n";
-        }
+        String bundle_descriptor = ResourceRegistry.getResourceContentAsString(bundleDescriptorURL.openStream());
 
         bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
         bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
@@ -213,7 +216,7 @@ public class AsapiSupport {
 
                         @Override
                         public String call() throws Exception {
-
+                            logger.fine("\n\ngetComponentDescriptorsAsXml: \n\n");
                             String response = "";
 
                             response += "<?xml version=\"1.0\"?>";
@@ -237,8 +240,7 @@ public class AsapiSupport {
                                     }
                                 }
                             }
-                            response += "</componentTypes>";
-
+                            response += "</componentTypes>";                            
                             return response;
                         }
                     });
@@ -379,6 +381,7 @@ public class AsapiSupport {
 
                         @Override
                         public List<String> call() throws Exception {
+                            logger.fine("\n\ngetBundelDescriptors\n\n");
                             List<String> res = new ArrayList<String>();
 
                             List<Bundle> bundleList = DeploymentManager.instance.getBundleManager()
@@ -400,8 +403,7 @@ public class AsapiSupport {
                                                 .warning("Could not get AsTeRICS bundle descriptor for url: " + url);
                                     }
                                 }
-                            }
-
+                            }                            
                             return res;
                         }
                     });
@@ -420,7 +422,7 @@ public class AsapiSupport {
      * @throws AREAsapiException
      */
     public void newModel() throws AREAsapiException {
-        throw new AREAsapiException("The ASAPI function is not supported: newModel");
+        throw new AREAsapiException("The ASAPI function is not supported: newModel()");
     }
 
     /**
@@ -1427,34 +1429,16 @@ public class AsapiSupport {
      * Returns the log file as a string.
      * 
      * @return the log file as a string.
+     * @throws AREAsapiException 
      */
-    public String getLogFile() {
-        StringBuffer logFile = new StringBuffer();
+    public String getLogFile() throws AREAsapiException {
         try {
-            File file = new File("asterics_logger.log");
-            if (!file.exists()) {
-                logger.warning(
-                        this.getClass().getName() + ".getLogFile: " + "Failed to create file asterics_logger.log");
-            }
-
-            FileInputStream fileInputStream = new FileInputStream(file);
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-            DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
-            while (dataInputStream.available() != 0) {
-                logFile.append(dataInputStream.readLine().toString() + "\n");
-            }
-            fileInputStream.close();
-            bufferedInputStream.close();
-            dataInputStream.close();
-
-        } catch (FileNotFoundException e) {
-            logger.warning(this.getClass().getName() + ".getLogFile: Failed -> \n" + e.getMessage());
+            return ResourceRegistry.getInstance().getResourceContentAsString("asterics_logger.log", RES_TYPE.TMP);
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            logger.warning(this.getClass().getName() + ".getLogFile: Failed -> \n" + e.getMessage());
-            e.printStackTrace();
+            logger.warning("Could not fetch log file: "+e.getMessage());
+            throw new AREAsapiException(e.getMessage());
         }
-        return logFile.toString();
     }
 
     /**
