@@ -261,20 +261,12 @@ public class BundleManager implements BundleListener, FrameworkListener {
             return false;
         }
 
-        try (InputStream bundleDescriptorInputStream = bundleDescriptorUrl.openStream()) {
-            return modelValidator.isValidBundleDescriptor(bundleDescriptorInputStream);
-        } catch (IOException ioe) {
-            // Don't log because if it does not exist we don't expect a
-            // component. This indicates that it is a jar file without an
-            // Asterics plugin.
-        } catch (ParseException ioe) {
-            // If there is a ParseException then we should log it, because there
-            // should be a valid plugin
-            logger.warning(getClass().getName() + ".checkForAstericsMetadata: validation error for file "
-                    + bundleDescriptorUrl + ", bundle " + symbolicName + " -> \n" + ioe.getMessage());
-
+        try {
+            return ResourceRegistry.resourceExists(bundleDescriptorUrl.toURI());
+        } catch (URISyntaxException e) {
+            logger.warning("Could not check for Asterics metadata (bundle_descriptor.xml) due to invalid URI: "+bundleDescriptorUrl);
+            return false;
         }
-        return false;
     }
 
     private Map<IComponentType, ServiceRegistration> serviceRegistrations = new HashMap<IComponentType, ServiceRegistration>();
