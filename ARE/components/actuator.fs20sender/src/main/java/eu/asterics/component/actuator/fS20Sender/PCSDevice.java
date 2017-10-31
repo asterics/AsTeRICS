@@ -44,7 +44,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class PCSDevice {
 
     private Logger logger = AstericsErrorHandling.instance.getLogger();
-    private ScheduledExecutorService timerExecutorSend = Executors.newSingleThreadScheduledExecutor();;
+    private ScheduledExecutorService timerExecutorSend = Executors.newSingleThreadScheduledExecutor();
     private int vid = 0x18EF;
     private int pid = 0xE015;
 
