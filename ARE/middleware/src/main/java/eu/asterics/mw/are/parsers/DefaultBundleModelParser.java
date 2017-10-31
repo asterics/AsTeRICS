@@ -193,10 +193,12 @@ public class DefaultBundleModelParser {
      */
     public String getBundleDescriptionOfComponentTypeId(String componentTypeId, InputStream inputStream)
             throws ParserConfigurationException, SAXException, IOException {
+        String bundleDescriptorAsXMLString=ResourceRegistry.getResourceContentAsString(inputStream);
+        
         final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         builder = builderFactory.newDocumentBuilder();
-        Document document = builder.parse(inputStream);
+        Document document = builder.parse(new InputSource(new StringReader(bundleDescriptorAsXMLString)));
 
         Element root = document.getDocumentElement();
         NodeList components = root.getChildNodes();
