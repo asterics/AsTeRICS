@@ -158,46 +158,6 @@ public class DefaultDeploymentModelParser {
             throw new ParseException(" parse error: IOException " + e.getMessage());
         }
     }
-
-    /**
-     * Parses an input url and on success produces a DefaultRuntimeModel as a
-     * result.
-     * 
-     * @param url
-     *            the url to be parsed
-     * @return a DefaultRuntimeModel
-     * @throws ParseException,
-     *             UnsupportedEncodingException
-     * @throws BundleManagementException
-     */
-    public DefaultRuntimeModel parseModel(String url)
-            throws ParseException, UnsupportedEncodingException, BundleManagementException {
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-
-        try {
-            //@TODO MAD: Check if this really works: This returns the bytes of the url string and then validates it, which is probably 
-            //not the expected behaviour.
-            // throws exception if invalid
-            modelValidator.isValidDeploymentDescriptor(new ByteArrayInputStream(url.getBytes("UTF-16")));
-
-            builder = builderFactory.newDocumentBuilder();
-            synchronized (builder) {
-
-                Document document = builder.parse(url);
-
-                return parse(document);
-            }
-        } catch (ParserConfigurationException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: ParserConfigurationException " + e.getMessage());
-        } catch (SAXException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: SAXException " + e.getMessage());
-        } catch (IOException e) {
-            logger.warning(this.getClass().getName() + ".parseModel: " + "parse error -> /n" + e.getMessage());
-            throw new ParseException(" parse error: IOException " + e.getMessage());
-        }
-    }
     
     /**
      * This method parses the given model represented as an XML string.

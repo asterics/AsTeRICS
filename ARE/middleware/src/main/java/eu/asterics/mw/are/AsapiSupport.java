@@ -420,37 +420,7 @@ public class AsapiSupport {
      * @throws AREAsapiException
      */
     public void newModel() throws AREAsapiException {
-        try {
-            AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<Object>() {
-
-                @Override
-                public Object call() throws Exception {
-                    final URL url = Main.getAREContext().getBundle().getResource(DEFAULT_MODEL_URL);
-
-                    // try {
-                    synchronized (DefaultDeploymentModelParser.instance) {
-
-                        IRuntimeModel runtimeModel = DefaultDeploymentModelParser.instance.parseModel(url.toString());
-                        if (runtimeModel == null) {
-                            DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-                            AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "",
-                                    "Deployment Error");
-
-                            logger.warning(this.getClass().getName() + "." + "newModel: Failed to create new model ->"
-                                    + " the default model could not be found\n");
-                            return null;
-                        }
-                        DeploymentManager.instance.deployModel(runtimeModel);
-                    }
-                    return null;
-                }
-            });
-        } catch (Exception e) {
-            DeploymentManager.instance.setStatus(AREStatus.FATAL_ERROR);
-            AstericsErrorHandling.instance.setStatusObject(AREStatus.FATAL_ERROR.toString(), "", "Deployment Error");
-            logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "newModel()", e.getMessage(), e);
-            throw (new AREAsapiException(e.getMessage()));
-        }
+        throw new AREAsapiException("The ASAPI function is not supported: newModel");
     }
 
     /**
