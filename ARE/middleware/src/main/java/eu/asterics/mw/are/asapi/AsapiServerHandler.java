@@ -128,8 +128,14 @@ public class AsapiServerHandler implements AsapiServer.Iface {
     @Override
     public List<String> GetAvailableComponentTypes() throws TException {
         // System.out.println("*** GET AVAILABLE COMPONENTS");
-        String[] types = asapiSupport.getAvailableComponentTypes();
-        return new ArrayList<String>(Arrays.asList(types));
+        try {
+            String[] types = asapiSupport.getAvailableComponentTypes();
+            return new ArrayList<String>(Arrays.asList(types));
+        } catch (AREAsapiException e) {
+            logger.warning(this.getClass().getName() + "." + "GetAvailableComponentTypes failed -> \n"
+                    + e.getMessage());
+            throw new TException(e.getMessage());
+        }
     }
 
     /**
@@ -746,7 +752,13 @@ public class AsapiServerHandler implements AsapiServer.Iface {
      */
     @Override
     public String getLogFile() throws TException {
-        return asapiSupport.getLogFile();
+        try {
+            return asapiSupport.getLogFile();
+        } catch (AREAsapiException e) {
+            logger.warning(this.getClass().getName() + "." + "getLogFile failed -> \n"
+                    + e.getMessage());
+            throw new TException(e.getMessage());
+        }
     }
 
     /**
