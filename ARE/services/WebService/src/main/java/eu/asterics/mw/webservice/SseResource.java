@@ -100,10 +100,11 @@ public class SseResource {
         runtimeListener.clearDataChannelList();
 
         // initialize accordint to the new model
-        for (IChannel channel : DeploymentManager.instance.getCurrentRuntimeModel().getChannels()) {
-            dataChannelBroadcaster.put(channel.getChannelID(), new HashSet<EventOutput>());
+        if(DeploymentManager.instance.getCurrentRuntimeModel()!=null) {
+            for (IChannel channel : DeploymentManager.instance.getCurrentRuntimeModel().getChannels()) {
+                dataChannelBroadcaster.put(channel.getChannelID(), new HashSet<EventOutput>());
+            }
         }
-
     }
 
     /***********************************
