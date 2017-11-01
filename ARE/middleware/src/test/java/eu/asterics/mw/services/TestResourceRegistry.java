@@ -68,7 +68,6 @@ public class TestResourceRegistry {
         modelValidator = new ModelValidator();
         deploymentModelParser = DefaultDeploymentModelParser.create(modelValidator);
         bundleManager = new BundleManager(modelValidator);
-        bundleManager.createComponentListCache();
         DeploymentManager.instance.setBundleManager(bundleManager);
     }
 
