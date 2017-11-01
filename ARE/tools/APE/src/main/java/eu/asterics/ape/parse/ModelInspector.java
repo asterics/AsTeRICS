@@ -343,19 +343,6 @@ public class ModelInspector {
     }
 
     /**
-     * Delegates the generation of the componentList cache in the BundleManager.
-     * 
-     * @param componentList
-     * @throws MalformedURLException
-     * @throws IOException
-     * @throws ParseException
-     */
-    public void generateComponentListCache(File componentList)
-            throws MalformedURLException, IOException, ParseException {
-        bundleManager.generateComponentListCache(componentList);
-    }
-
-    /**
      * This method checks the values of all component properties found in the
      * given set IRuntimeModel instances. Ths values are tested as resource keys
      * for
