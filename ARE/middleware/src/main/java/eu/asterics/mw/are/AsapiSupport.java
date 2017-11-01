@@ -190,23 +190,16 @@ public class AsapiSupport {
 
                         @Override
                         public String call() throws Exception {
-                            logger.fine("\n\ngetComponentDescriptorsAsXml: \n\n");
+                            logger.fine("getComponentDescriptorsAsXml()");
                             String response = "";
-                                                       
-                            if(DeploymentManager.instance.getBundleManager().bundleChangeDetected()) {
-                            	//if a bundle change was detected, generate a new component collection file.
-                            	response=DeploymentManager.instance.getBundleManager().generateComponentDescriptorsAsXml();
-                            } else {
-                            	//if no bundle change was detected, use the cached component collection file.
-                            	try {
-                            	    response=ResourceRegistry.getResourceContentAsString(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI.toURL().openStream());
-                            	}catch(IOException e) {                            		
-                            		logger.severe("Error reading cached component collection from file <"+BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI+">, reason: "+e.getMessage());
-                            		//We must rethrow the exception, because we could not read the file.
-                            		//@todo think about falling back to providing file without cache.
-                            		throw new AREAsapiException(e.getMessage());
-                            	}
-                            }                            
+                            try {
+                                response=ResourceRegistry.getResourceContentAsString(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI.toURL().openStream());
+                            }catch(IOException e) {                            		
+                                logger.severe("Error reading cached component collection from file <"+BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI+">, reason: "+e.getMessage());
+                                //We must rethrow the exception, because we could not read the file.
+                                //@todo think about falling back to providing file without cache.
+                                throw new AREAsapiException(e.getMessage());
+                            }
                             return response;
                         }
                     });
@@ -348,33 +341,9 @@ public class AsapiSupport {
 
                         @Override
                         public List<String> call() throws Exception {
-                            logger.fine("\n\ngetBundelDescriptors\n\n");
+                            logger.fine("getBundelDescriptors()");
                             List<String> res = new ArrayList<String>();
-
-                            List<String> bundleList = DeploymentManager.instance.getBundleManager()
-                                    .getInstallableBundleNameListCached();
-                            
-                            for (String bundleName : bundleList) {
-                            	URI jarInternalURI = ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getResource(bundleName, RES_TYPE.JAR),
-                                        DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-                            	
-                                URL bundleDescriptorURL = jarInternalURI.toURL();                                        
-                                if (bundleDescriptorURL != null) {
-                                    try {
-                                        res.add(ResourceRegistry.getResourceContentAsString(bundleDescriptorURL.openStream()));
-                                    } catch (IOException e) {
-                                        // TODO Auto-generated catch block
-                                        // throw (new
-                                        // AREAsapiException(e.getMessage()));
-                                        // keep it by just logging
-                                        // because we have to assume that
-                                        // several bundles are not supported for
-                                        // the platform
-                                        AstericsErrorHandling.instance.getLogger()
-                                                .warning("Could not get AsTeRICS bundle descriptor for url: " + bundleDescriptorURL);
-                                    }
-                                }
-                            }                            
+                            res.add(getComponentDescriptorsAsXml());
                             return res;
                         }
                     });

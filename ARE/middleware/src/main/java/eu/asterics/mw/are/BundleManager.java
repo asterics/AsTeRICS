@@ -19,7 +19,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +87,7 @@ import eu.asterics.mw.utils.OSUtils;
  */
 
 public class BundleManager implements BundleListener, FrameworkListener {
+    private static final String CACHING_PLUGIN_JARS_HASH_TXT = "caching/pluginJarsHash.txt";
     private static final String SERVICES_FILES_DELIM = ";";
     static String PROFILE_LOCATION = new File(
             System.getProperty("osgi.configuration.area", ResourceRegistry.PROFILE_FOLDER)).getName();
@@ -97,7 +97,6 @@ public class BundleManager implements BundleListener, FrameworkListener {
     //define URIs for diverse cache files
     public static URI COMPONENT_COLLECTION_CACHE_FILE_URI;
     public static URI LOADER_COMPONENTLIST_CACHE_FILE_URI;
-    public static URI INSTALLABLE_BUNDLE_LIST_CACHE_FILE_URI;
 
     final int MODE_DEFAULT = 0;
     final int MODE_GET_ALL_COMPONENTS = 1;
@@ -108,12 +107,14 @@ public class BundleManager implements BundleListener, FrameworkListener {
 
     private ModelValidator modelValidator;
 
+    //Reference to ComponentRepository which stores references to installed IComponentType instances from a given componentType
     private static ComponentRepository componentRepository = ComponentRepository.instance;
 
+    //Maps to find osgi bundle according to a given componentTypeId
     private static Map<Bundle, Set<IComponentType>> bundlesToComponentTypesMap = new HashMap<Bundle, Set<IComponentType>>();
-
     private static Map<String, Bundle> componentTypeIDToBundle = new HashMap<String, Bundle>();
 
+    //Maps to find the jar name and bundle descriptor string according to a given componentTypeId
     private static Map<String, String> componentTypeIDToJarName = new HashMap<String, String>();
 
     /**
@@ -143,24 +144,58 @@ public class BundleManager implements BundleListener, FrameworkListener {
         logger = AstericsErrorHandling.instance.getLogger();
     }
 
+    /**
+     * Initializes and starts the BundleManager.
+     * When in OSGI mode all installable bundles for this platform are tested.
+     * When in NON-OSGI mode all bundle jars for this platform are used.
+     */
     public void start() {
+        logger.fine("BundleManager.start");
         installServices();
         
         try {
         	COMPONENT_COLLECTION_CACHE_FILE_URI=ResourceRegistry.getInstance().getResource("componentCollections/defaultComponentCollection.abd",RES_TYPE.WEB_DOCUMENT_ROOT);
         	LOADER_COMPONENTLIST_CACHE_FILE_URI=ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION,RES_TYPE.PROFILE);
-        	INSTALLABLE_BUNDLE_LIST_CACHE_FILE_URI=ResourceRegistry.getInstance().getResource("installable_bundle_list.txt", RES_TYPE.TMP);
         	
-        	String md5Sum=generateMD5Sum();
-        	if(bundleChangeDetected(md5Sum)||cacheFileMissing()) {
-        	    generateCacheFiles();
+        	if(ResourceRegistry.getInstance().isOSGIMode()) {
+        	    String md5Sum=generateMD5Sum();
+        	    if(bundleChangeDetected(md5Sum)||cacheFileMissing()) {
+        	        generateCacheFiles();
+        	    }
+        	    storeMD5Sum(md5Sum);
         	}
-        	storeMD5Sum(md5Sum);
-            readComponentListCache();
+            initComponentTypeIDToJarNameMap();
+            logger.fine("BundleManager initialization finished");
         } catch (IOException | ParseException | URISyntaxException | NoSuchAlgorithmException e1) {
             // TODO Auto-generated catch block
             AstericsErrorHandling.instance.reportError(null,
                     "Could not create cache for Asterics components:\n" + e1.getMessage());
+        }
+    }
+    
+    /**
+     * Initializes the internal maps either with caching (in OSGI mode) or without caching in NON-OSGI mode (used by APE).
+     * @throws IOException
+     * @throws URISyntaxException
+     * @throws ParseException
+     */
+    private void initComponentTypeIDToJarNameMap() throws IOException, URISyntaxException, ParseException {
+        if(ResourceRegistry.getInstance().isOSGIMode()) {
+            readComponentListCache();
+        } else {
+            logger.fine("Not in OSGI Mode --> init maps without cache files.");
+            componentTypeIDToJarName.clear();
+            List<URI> jarNameURIList=ResourceRegistry.getInstance().getComponentJarList(false);
+            for(URI jarNameURI : jarNameURIList) {
+                URI bundleDescriptorURI=ResourceRegistry.toJarInternalURI(jarNameURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+                String bundleDescriptorAsXMLString=ResourceRegistry.getResourceContentAsString(bundleDescriptorURI.toURL().openStream());
+                Set<IComponentType> componentTypeSet = DefaultBundleModelParser.instance.parseModelAsXMLString(bundleDescriptorAsXMLString);
+                for(IComponentType componentType : componentTypeSet) {
+                    componentTypeIDToJarName.put(componentType.getID(),ResourceRegistry.toString(ResourceRegistry.getInstance().toRelative(jarNameURI)));
+                    ComponentRepository.instance.install(componentType);
+                }
+            }
+            logger.fine("Found the following componentTypeIds: "+componentTypeIDToJarName.keySet().toString());
         }
     }
 
@@ -171,8 +206,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
     private boolean cacheFileMissing() {
         logger.fine("Checking missing cache files");
         if(!ResourceRegistry.resourceExists(LOADER_COMPONENTLIST_CACHE_FILE_URI) ||
-                !ResourceRegistry.resourceExists(COMPONENT_COLLECTION_CACHE_FILE_URI)||
-                !ResourceRegistry.resourceExists(INSTALLABLE_BUNDLE_LIST_CACHE_FILE_URI)) {
+                !ResourceRegistry.resourceExists(COMPONENT_COLLECTION_CACHE_FILE_URI)) {
                 return true;
         }
         return false;
@@ -192,7 +226,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
             return true;
         }
         
-        URI pluginJarsHashFileURI=ResourceRegistry.getInstance().getResource("caching/pluginJarsHash.txt", RES_TYPE.TMP);
+        URI pluginJarsHashFileURI=ResourceRegistry.getInstance().getResource(CACHING_PLUGIN_JARS_HASH_TXT, RES_TYPE.TMP);
         File pluginJarsHashFile=ResourceRegistry.toFile(pluginJarsHashFileURI);
         if(!pluginJarsHashFile.exists()) {
             logger.warning("pluginJars hash file does not exist --> bundle change: true");
@@ -218,7 +252,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
      */
     private void storeMD5Sum(String md5Sum) throws URISyntaxException, IOException {
         logger.fine("Storing MD5 sum...");
-        URI pluginJarsHashFileURI=ResourceRegistry.getInstance().getResource("caching/pluginJarsHash.txt", RES_TYPE.TMP);
+        URI pluginJarsHashFileURI=ResourceRegistry.getInstance().getResource(CACHING_PLUGIN_JARS_HASH_TXT, RES_TYPE.TMP);
         File pluginJarsHashFile=ResourceRegistry.toFile(pluginJarsHashFileURI);
         File parentFile=pluginJarsHashFile.getParentFile();
         
@@ -239,13 +273,12 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * @throws ParseException
      * @throws URISyntaxException
      */
-    private void generateCacheFiles() throws MalformedURLException, IOException, ParseException, URISyntaxException {
+    private void generateCacheFiles() throws MalformedURLException, IOException, ParseException, URISyntaxException {        
         logger.fine("Generating cache files/help files");
+        long startTime=System.currentTimeMillis();       
         //Before we can start, let's ensure the generation of cached files
-        logger.fine("Creating loader_componentlist.ini");
-        createComponentListCache();
-        logger.fine("Generating component collection cache file");
-        generateComponentDescriptorsAsXml();                        
+        generateLoaderComponentListAndBundleDescriptorCacheFiles();
+        logger.fine(MessageFormat.format("Generated cache files in {0} ms",(System.currentTimeMillis()-startTime)));
     }
 
     /**
@@ -443,39 +476,6 @@ public class BundleManager implements BundleListener, FrameworkListener {
         return bundleDescriptorURIs;
     }
     
-    public List<String> getInstallableBundleNameListCached() throws URISyntaxException {
-    	List<String> bundleList=new ArrayList<String>();
-    	if(bundleChangeDetected()) {
-    		logger.fine("Testing installable bundles and generating cache file");
-    		List<Bundle> bundlesList=getInstallableBundleList();
-    		URI installerFileURI=ResourceRegistry.getInstance().getResource("installable_bundle_list.txt", RES_TYPE.TMP);
-    		logger.fine("Generating installable bundles list to "+installerFileURI);
-    		try(BufferedWriter writer=new BufferedWriter(new FileWriter(ResourceRegistry.toFile(installerFileURI)))) {    			
-    			for(Bundle bundle : bundlesList) {
-    				bundleList.add(bundle.getLocation());
-    				writer.write(bundle.getLocation());
-    				writer.newLine();
-    			}
-    		}catch(IOException e) {
-    			logger.severe("Error generating installable_bundle_list.txt: "+e.getMessage());
-    		}    		
-    	} else {
-    		//if no change was detected, use the cache file
-    		logger.fine("Don't test installable bundles but using cache file");
-    		try(InputStream in=ResourceRegistry.getInstance().getResourceInputStream("installable_bundle_list.txt", RES_TYPE.TMP)) {
-    			
-    			BufferedReader inReader=new BufferedReader(new InputStreamReader(in));
-    			String line=null;
-    			while((line=inReader.readLine()) != null) {
-    				bundleList.add(line);
-    			}
-    		}catch(IOException | URISyntaxException e) {
-    			logger.severe("Error reading from installable_bundle_list.txt: "+e.getMessage());
-    		}
-    	}
-    	return bundleList;
-    }
-
     /**
      * Before installing the bundles an uninstall of all bundles is done.
      * Returns a list of bundles that are installable for this platform the ARE
@@ -584,30 +584,6 @@ public class BundleManager implements BundleListener, FrameworkListener {
         URI bundleDescriptorURI = ResourceRegistry.toJarInternalURI(jarNameURI,
                 DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
         return bundleDescriptorURI;
-    }
-
-    /**
-     * Returns a Set of component jar names of the currently installed
-     * components.
-     * 
-     * @return
-     */
-    public Set<String> getInstalledComponentJarNames() {
-        final Set<IComponentType> componentTypeSet = componentRepository.getInstalledComponentTypes();
-        HashSet<String> jarNameSet = new HashSet<String>();
-
-        for (final IComponentType componentType : componentTypeSet) {
-            String jarName;
-            try {
-                jarName = getJarNameFromComponentTypeId(componentType.getID());
-                jarNameSet.add(jarName);
-            } catch (BundleManagementException e) {
-                // TODO Auto-generated catch block
-                logger.warning(e.getMessage());
-            }
-        }
-
-        return jarNameSet;
     }
 
     /**
@@ -762,85 +738,18 @@ public class BundleManager implements BundleListener, FrameworkListener {
         }
         return bundle;
     }
-    
+               
     /**
-     * Checks if the internal cache files (loader_componentlist.ini, component collections, help files,...) should be regenerated, 
-     * due to a change of any plugin or jar file. (added, deleted, changed). Also returns true, if any of the cache files does not 
-     * exist.
-     *    
+     * Removes surrounding xml tag and componentTypes tag
+     * @param bundleDescriptorStringAsXML
      * @return
      */
-    public boolean bundleChangeDetected() {
-    	return cacheFileMissing();
-    }
-    
-    /**
-     * This method generates a component collection string and also writes it to the cache file located at {@link BundleManager#COMPONENT_COLLECTION_CACHE_FILE_URI}.
-     * @param cacheFile
-     * @return
-     * @throws URISyntaxException
-     * @throws IOException 
-     */
-    public String generateComponentDescriptorsAsXml() throws URISyntaxException, IOException {
-    	String response="";
-    	
-    	response += "<?xml version=\"1.0\"?>";
-    	response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
+    private String removeSurroundingComponentTypesTags(String bundleDescriptorStringAsXML) {
+        bundleDescriptorStringAsXML = bundleDescriptorStringAsXML.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
+        bundleDescriptorStringAsXML = bundleDescriptorStringAsXML.replaceFirst("^(<componentTypes)?^[^>]*>", "");
+        bundleDescriptorStringAsXML = bundleDescriptorStringAsXML.replaceFirst("</componentTypes>", "");
 
-    	List<String> bundleList = getInstallableBundleNameListCached();
-    	for (String bundleName : bundleList) {
-    		URI jarInternalURI = ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getResource(bundleName, RES_TYPE.JAR),
-    				DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-
-    		URL bundleDescriptorURL = jarInternalURI.toURL();                                        
-    		if (bundleDescriptorURL != null) {
-    			try {
-    				response += getFormattedBundleDescriptorStringOfComponentTypeId(
-    						bundleDescriptorURL);
-    			} catch (IOException e) {
-    				// just logging (as
-    				// 'getBundleDescriptors' function)
-    				AstericsErrorHandling.instance.getLogger()
-    				.warning("Could not get AsTeRiCS bundle descriptor for bundle: "
-    						+ bundleName);
-    			}
-    		}
-    	}
-    	response += "</componentTypes>";
-    	
-    	//Store bundle descriptors into cache file.
-    	ResourceRegistry.getInstance().storeResource(response, COMPONENT_COLLECTION_CACHE_FILE_URI);
-    	return response;
-    }
-    
-    /**
-     * Returns a formatted XML String of the componentType(s) in the bundle
-     * descriptor.
-     *
-     * @param bundleDescriptorURL
-     * @return
-     * @throws MalformedURLException
-     * @throws IOException
-     */
-    private String getFormattedBundleDescriptorStringOfComponentTypeId(URL bundleDescriptorURL)
-            throws MalformedURLException, IOException {
-        // Actually we should ask DefaultBundleModelParser to return just the
-        // part that belongs to the requested componentTypeId
-        // e.g. in case of AnalogIn there is also a second component type
-        // LegacyAnalogIn in the bundle_descriptor.xml
-        // Skip it for now because result is unformatted and JavaScript showed
-        // error callback.
-        // String
-        // bundleDescriptorString=DefaultBundleModelParser.instance.getBundleDescriptionOfComponentTypeId(componentTypeId,
-        // bundleDescriptorURI.toURL().openStream());
-
-        String bundle_descriptor = ResourceRegistry.getResourceContentAsString(bundleDescriptorURL.openStream());
-
-        bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
-        bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
-        bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");
-
-        return bundle_descriptor;
+        return bundleDescriptorStringAsXML;        
     }
 
     /**
@@ -896,74 +805,45 @@ public class BundleManager implements BundleListener, FrameworkListener {
     }
 
     /**
-     * Creates the file loader_componentlist.ini, which is actually a cache and
-     * maps Asterics components to the associated component jar. This is
-     * necessary because, unlike in OSGi normally, there is no 1:1 mapping
-     * between a component and the jar name. In Asterics a several components
-     * may be bundled within one jar file. This method is a wrapper for @link
-     * {@link BundleManager.generateComponentListCache} and only generates the
-     * cache if it does not already exist.
-     * 
-     * @throws MalformedURLException
-     * @throws IOException
-     * @throws ParseException
-     * @throws URISyntaxException
-     */
-    public void createComponentListCache()
-            throws MalformedURLException, IOException, ParseException, URISyntaxException {
-        File componentList = ResourceRegistry.toFile(LOADER_COMPONENTLIST_CACHE_FILE_URI);
-
-        // OSGIMode=true: only generate list if it does not exist.
-        // OSGIMode=false: Always generate cache list. This is also needed to
-        // force parsing the bundle_descriptors and installing ComponentType
-        // instances in ComponentRepository.
-        //if (!componentList.exists() || !ResourceRegistry.getInstance().isOSGIMode()) {
-            generateComponentListCache(componentList);
-        //}
-    }
-
-    /**
      * Actually generates the loader_componentlist.ini file, which is actually a
      * cache and maps Asterics components to the associated component jar. This
      * is necessary because, unlike in OSGi normally, there is no 1:1 mapping
      * between a component and the jar name. In Asterics a several components
      * may be bundled within one jar file.
      * 
-     * @param componentList
      * @throws MalformedURLException
      * @throws IOException
      * @throws ParseException
+     * @throws URISyntaxException 
      */
-    public void generateComponentListCache(File componentList)
-            throws MalformedURLException, IOException, ParseException {
-        // The component list does not exist, so we create it.
-        List<URI> componentJarURIs = ResourceRegistry.getInstance().getComponentJarList(false);
+    public void generateLoaderComponentListAndBundleDescriptorCacheFiles()
+            throws MalformedURLException, IOException, ParseException, URISyntaxException {
+        File componentList = ResourceRegistry.toFile(LOADER_COMPONENTLIST_CACHE_FILE_URI);
+
+        StringBuilder bundleDescriptorsXMLBuilder=new StringBuilder();
+        bundleDescriptorsXMLBuilder.append("<?xml version=\"1.0\"?>");
+        bundleDescriptorsXMLBuilder.append("<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">");
+
+        List<Bundle> installableBundleList=getInstallableBundleList();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(componentList))) {
-            for (URI componentJarURI : componentJarURIs) {
-                String inputFilePath = "jar:file://" + componentJarURI.getPath() + "!/bundle_descriptor.xml";
+            for(Bundle bundle : installableBundleList) {
+                URL bundleDescriptor=bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
 
-                URL bundleDescriptor = new URL(inputFilePath);
-                URI relativeURI = ResourceRegistry.getInstance().toRelative(componentJarURI);
-
-                Set<IComponentType> componentTypeSet = DefaultBundleModelParser.instance
-                        .parseModel(bundleDescriptor.openStream());
+                String bundleDescriptorAsXMLString=ResourceRegistry.getResourceContentAsString(bundleDescriptor.openStream());
+                Set<IComponentType> componentTypeSet = DefaultBundleModelParser.instance.parseModelAsXMLString(bundleDescriptorAsXMLString);
+                
+                //update big bundle descriptors string 
+                bundleDescriptorsXMLBuilder.append(removeSurroundingComponentTypesTags(bundleDescriptorAsXMLString));
+                String installableBundleJarName=ResourceRegistry.getInstance().toRelative(bundle.getLocation()).getPath();
+                
+                //extract component types and store them in loader_componentlist.ini
                 if (componentTypeSet.size() >= 1) {
-                    StringBuffer line = new StringBuffer(relativeURI.getPath());
+                    StringBuilder line = new StringBuilder(installableBundleJarName);
                     for (IComponentType componentType : componentTypeSet) {
                         line.append(COMPONENTLIST_DELIM);
                         line.append(" ");
                         line.append(componentType.getID());
-
-                        if (!ResourceRegistry.getInstance().isOSGIMode()) {
-                            // Also install ComponentType in
-                            // ComponentRepository, to support non-osgi mode.
-                            // This is actually not a good location for doing it
-                            // because the main purpose of this method is to
-                            // generate the cache, but
-                            // here we have all we need.
-                            ComponentRepository.instance.install(componentType);
-                        }
                     }
                     writer.write(line.toString());
                     writer.newLine();
@@ -971,7 +851,11 @@ public class BundleManager implements BundleListener, FrameworkListener {
             }
             writer.flush();
             writer.close();
-        }
+        }        
+        
+        //Finalize bundle descriptors string and store it into the cache file.
+        bundleDescriptorsXMLBuilder.append("</componentTypes>");
+        ResourceRegistry.storeResource(bundleDescriptorsXMLBuilder.toString(), COMPONENT_COLLECTION_CACHE_FILE_URI);
     }
 
     /**
@@ -982,7 +866,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * @throws IOException
      * @throws URISyntaxException 
      */
-    public void readComponentListCache() throws IOException, URISyntaxException {
+    private void readComponentListCache() throws IOException, URISyntaxException {
         File componentList = ResourceRegistry.toFile(LOADER_COMPONENTLIST_CACHE_FILE_URI);
         
         try (BufferedReader in = new BufferedReader(new FileReader(componentList))) {
@@ -1000,7 +884,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
             in.close();
         }
     }
-
+    
     /**
      * Checks if the specified bundle URI contains an OSGi service. The test is
      * based on checking if the
