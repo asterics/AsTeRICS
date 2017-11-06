@@ -336,16 +336,16 @@ public class KeyboardInstance extends AbstractRuntimeComponentInstance {
                     case '#':
                         keyCode = 191;
                         break;
-                    case 'ä':
+                    case 'Ã¤':
                         keyCode = 222;
                         break;
-                    case 'ß':
+                    case 'ÃŸ':
                         keyCode = 219;
                         break;
-                    case 'ö':
+                    case 'Ã¶':
                         keyCode = 192;
                         break;
-                    case 'ü':
+                    case 'Ã¼':
                         keyCode = 186;
                         break;
                     case ':':
