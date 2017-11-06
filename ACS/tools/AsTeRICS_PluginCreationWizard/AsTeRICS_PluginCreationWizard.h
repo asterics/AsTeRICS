@@ -5,6 +5,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 #include <windows.h>
+#include <WindowsX.h>
+
 #include "resource.h"
 #include <io.h>
 #include <stdio.h>
@@ -104,5 +106,5 @@ BOOL				InitInstance( HINSTANCE, int );
 LRESULT CALLBACK	WndProc( HWND, UINT, WPARAM, LPARAM );
 LRESULT CALLBACK	About( HWND, UINT, WPARAM, LPARAM );
 LRESULT CALLBACK    ITEMDlghandler( HWND , UINT, WPARAM , LPARAM );
-LRESULT CALLBACK	BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam );
+INT_PTR CALLBACK	BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam );
 
