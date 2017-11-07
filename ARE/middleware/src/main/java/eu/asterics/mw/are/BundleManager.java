@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -159,7 +160,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
 
             if (ResourceRegistry.getInstance().isOSGIMode()) {
                 String mdSum = generateMDSum();
-                if (bundleChangeDetected(mdSum) || cacheFileMissing()) {
+                if (cacheFileMissing() || bundleChangeDetected(mdSum)) {
                     generateCacheFiles();
                 }
                 storeMDSum(mdSum);
@@ -220,17 +221,22 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * @throws URISyntaxException
      * @throws IOException
      */
-    private boolean bundleChangeDetected(String mdSum) throws URISyntaxException, IOException {
+    private boolean bundleChangeDetected(String mdSum) {
         logger.fine("Checking bundle change...");
         if (mdSum == null) {
             logger.warning("Given MD sum is null --> bundle change: true");
             return true;
         }
 
-        String storedMDSum = ResourceRegistry.getInstance().getResourceContentAsString(CACHING_PLUGIN_JARS_HASH_TXT, RES_TYPE.TMP);
-        if (mdSum.equals(storedMDSum)) {
-            logger.fine("bundle change: false");
-            return false;
+        try {
+            String storedMDSum = ResourceRegistry.getInstance().getResourceContentAsString(CACHING_PLUGIN_JARS_HASH_TXT, RES_TYPE.TMP);
+            if (mdSum.equals(storedMDSum)) {
+                logger.fine("bundle change: false");
+                return false;
+            }
+        } catch (IOException | URISyntaxException e) {
+            logger.fine(CACHING_PLUGIN_JARS_HASH_TXT + " not found or URI invalid --> bundle change: true");
+            // catch exception so, that it will lead to return true;
         }
 
         logger.fine("bundle change: true");
@@ -781,40 +787,38 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * @throws URISyntaxException
      */
     public void generateLoaderComponentListAndBundleDescriptorCacheFiles() throws MalformedURLException, IOException, ParseException, URISyntaxException {
-        File componentList = ResourceRegistry.toFile(LOADER_COMPONENTLIST_CACHE_FILE_URI);
-
         StringBuilder bundleDescriptorsXMLBuilder = new StringBuilder();
         bundleDescriptorsXMLBuilder.append("<?xml version=\"1.0\"?>");
         bundleDescriptorsXMLBuilder
                 .append("<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">");
 
-        // List<Bundle> installableBundleList = getInstallableBundleList();
         List<URI> bundleURIList = getBundleURIList();
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(componentList))) {
-            for (URI bundleURI : bundleURIList) {
-                URL bundleDescriptor = ResourceRegistry.toJarInternalURI(bundleURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI).toURL();
+        StringWriter loaderComponentListWriter = new StringWriter();
+        for (URI bundleURI : bundleURIList) {
+            URL bundleDescriptor = ResourceRegistry.toJarInternalURI(bundleURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI).toURL();
 
-                String bundleDescriptorAsXMLString = ResourceRegistry.getResourceContentAsString(bundleDescriptor.openStream());
-                Set<IComponentType> componentTypeSet = DefaultBundleModelParser.instance.parseModelAsXMLString(bundleDescriptorAsXMLString);
+            String bundleDescriptorAsXMLString = ResourceRegistry.getResourceContentAsString(bundleDescriptor.openStream());
+            Set<IComponentType> componentTypeSet = DefaultBundleModelParser.instance.parseModelAsXMLString(bundleDescriptorAsXMLString);
 
-                // update big bundle descriptors string
-                bundleDescriptorsXMLBuilder.append(removeSurroundingComponentTypesTags(bundleDescriptorAsXMLString));
-                String installableBundleJarName = ResourceRegistry.getInstance().toRelative(bundleURI).getPath();
+            // update big bundle descriptors string
+            bundleDescriptorsXMLBuilder.append(removeSurroundingComponentTypesTags(bundleDescriptorAsXMLString));
+            String installableBundleJarName = ResourceRegistry.getInstance().toRelative(bundleURI).getPath();
 
-                // extract component types and store them in loader_componentlist.ini
-                if (componentTypeSet.size() >= 1) {
-                    StringBuilder line = new StringBuilder(installableBundleJarName);
-                    for (IComponentType componentType : componentTypeSet) {
-                        line.append(COMPONENTLIST_DELIM);
-                        line.append(" ");
-                        line.append(componentType.getID());
-                    }
-                    writer.write(line.toString());
-                    writer.newLine();
+            // extract component types and store them in loader_componentlist.ini
+            if (componentTypeSet.size() >= 1) {
+                StringBuilder line = new StringBuilder(installableBundleJarName);
+                for (IComponentType componentType : componentTypeSet) {
+                    line.append(COMPONENTLIST_DELIM);
+                    line.append(" ");
+                    line.append(componentType.getID());
                 }
+                loaderComponentListWriter.write(line.toString());
+                loaderComponentListWriter.write("\n");
             }
         }
+        // Write component list cache
+        ResourceRegistry.storeResource(loaderComponentListWriter.toString(), LOADER_COMPONENTLIST_CACHE_FILE_URI);
 
         // Finalize bundle descriptors string and store it into the cache file.
         bundleDescriptorsXMLBuilder.append("</componentTypes>");
@@ -847,9 +851,8 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * @throws URISyntaxException
      */
     private void readComponentListCache() throws IOException, URISyntaxException {
-        File componentList = ResourceRegistry.toFile(LOADER_COMPONENTLIST_CACHE_FILE_URI);
-
-        try (BufferedReader in = new BufferedReader(new FileReader(componentList))) {
+        try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(ResourceRegistry.getInstance().getResourceInputStream(LOADER_COMPONENTLIST_LOCATION, RES_TYPE.TMP)))) {
             String actLine = "";
             componentTypeIDToJarName.clear();
             while ((actLine = in.readLine()) != null) {
