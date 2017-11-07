@@ -25,27 +25,41 @@
 
 package eu.asterics.mw.are;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
+import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
+import javafx.util.converter.DateStringConverter;
 
 public class AREProperties extends Properties {
+    private static final String ARE_PROPERTIES_NAME = "areProperties";
     public static AREProperties instance = new AREProperties();
-    static final String PROPERTY_FILENAME = "areProperties";
+    static final String PROPERTY_FILENAME = ARE_PROPERTIES_NAME;
     private static Logger logger;
+    private Map<String, String> propertyComments = new HashMap<String, String>();
 
     private AREProperties() {
         logger = AstericsErrorHandling.instance.getLogger();
-        try (FileInputStream in = new FileInputStream(PROPERTY_FILENAME);) {
-            load(in);
+        /*
+         * try (FileInputStream in = new FileInputStream(PROPERTY_FILENAME);) { load(in); } catch (IOException e) { logger.info("The file " + PROPERTY_FILENAME
+         * + " does not exist, it will be generated automatically."); }
+         */
+        try {
+            load(ResourceRegistry.getInstance().getResourceInputStream(ARE_PROPERTIES_NAME, RES_TYPE.ANY));
+        } catch (MalformedURLException | URISyntaxException e) {
+            logger.logp(Level.SEVERE, this.getClass().getName(), "AREProperties", "Could not load properties file: " + e.getMessage(), e);
         } catch (IOException e) {
-            logger.info("The file " + PROPERTY_FILENAME + " does not exist, it will be generated automatically.");
+            logger.fine("Properties file does not exist, using default values");
         }
     }
 
@@ -64,14 +78,46 @@ public class AREProperties extends Properties {
     }
 
     /**
+     * This method returns the value of the given property and the given defaultValue, if the property was not found in the file. Additionally, the given
+     * propertyComment is registered for being stored right before the property in the {{@link #PROPERTY_FILENAME} file when {{@link #storeProperties()} is
+     * called.
+     * 
+     * @param key
+     * @param defaultValue
+     * @param propertyComment
+     * @return
+     */
+    public String getProperty(String key, String defaultValue, String propertyComment) {
+        propertyComments.put(key, propertyComment);
+        return getProperty(key, defaultValue);
+    }
+
+    /**
      * Saves the properties of this instance to the file {@see AREProperties#PROPERTY_FILENAME}.
      */
     public void storeProperties() {
-        try (FileOutputStream out = new FileOutputStream(PROPERTY_FILENAME);) {
-            store(out, "ARE Properties");
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getMessage(), e);
+        StringBuilder propertiesStringBuilder = new StringBuilder();
+        Enumeration<?> propertiesNames = propertyNames();
+        propertiesStringBuilder.append("# ARE properties, generated at " + new Date(System.currentTimeMillis()) + "\n");
+        while (propertiesNames.hasMoreElements()) {
+            String key = (String) propertiesNames.nextElement();
+            if (propertyComments.containsKey(key)) {
+                propertiesStringBuilder.append("# " + propertyComments.get(key));
+                propertiesStringBuilder.append("\n");
+            }
+            propertiesStringBuilder.append(key + "=" + getProperty(key));
+            propertiesStringBuilder.append("\n");
         }
+        try {
+            ResourceRegistry.getInstance().storeResource(propertiesStringBuilder.toString(), ARE_PROPERTIES_NAME, RES_TYPE.ANY);
+        } catch (URISyntaxException | IOException e) {
+            logger.logp(Level.SEVERE, this.getClass().getName(), "storeProperties", "Could not store properties file: " + e.getMessage(), e);
+        }
+        /*
+         * try (FileOutputStream out = new FileOutputStream(PROPERTY_FILENAME);) { store(out, "ARE Properties");
+         * 
+         * } catch (IOException e) { logger.log(Level.SEVERE, e.getMessage(), e); }
+         */
     }
 
     /**
