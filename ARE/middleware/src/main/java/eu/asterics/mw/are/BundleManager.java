@@ -84,6 +84,8 @@ import eu.asterics.mw.utils.OSUtils;
  */
 
 public class BundleManager implements BundleListener, FrameworkListener {
+    private static final String ARE_GENERATE_CACHES_FROM_INSTALLABLE_BUNDLES_PROP_KEY = "ARE.generate.caches.from.installable.bundles";
+    public static final String DEFAULT_COMPONENT_COLLECTION_ABD = "componentCollections/defaultComponentCollection.abd";
     public static final String MESSAGE_DIGEST_ALGORITHM = "MD5";
     private static final String CACHING_PLUGIN_JARS_HASH_TXT = "caching/pluginJarsHash.txt";
     private static final String SERVICES_FILES_DELIM = ";";
@@ -145,11 +147,14 @@ public class BundleManager implements BundleListener, FrameworkListener {
      */
     public void start() {
         logger.fine("BundleManager.start");
+        // init properties of BundleManager
+        AREProperties.instance.getProperty(ARE_GENERATE_CACHES_FROM_INSTALLABLE_BUNDLES_PROP_KEY, "false",
+                "Enable/Disable if bundles should be tested for being installable on this platform via OSGI");
+
         installServices();
 
         try {
-            COMPONENT_COLLECTION_CACHE_FILE_URI = ResourceRegistry.getInstance().getResource("componentCollections/defaultComponentCollection.abd",
-                    RES_TYPE.WEB_DOCUMENT_ROOT);
+            COMPONENT_COLLECTION_CACHE_FILE_URI = ResourceRegistry.getInstance().getResource(DEFAULT_COMPONENT_COLLECTION_ABD, RES_TYPE.WEB_DOCUMENT_ROOT);
             LOADER_COMPONENTLIST_CACHE_FILE_URI = ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION, RES_TYPE.PROFILE);
 
             if (ResourceRegistry.getInstance().isOSGIMode()) {
@@ -275,7 +280,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * @throws IOException
      */
     private String generateMDSum() throws NoSuchAlgorithmException, MalformedURLException, IOException {
-        logger.fine("Generating MD sum of bundle jars using algorithm "+MESSAGE_DIGEST_ALGORITHM);
+        logger.fine("Generating MD sum of bundle jars using algorithm " + MESSAGE_DIGEST_ALGORITHM);
         long timeStart = System.currentTimeMillis();
         MessageDigest mdInstance = MessageDigest.getInstance(MESSAGE_DIGEST_ALGORITHM);
         List<URI> compJarList = ResourceRegistry.getInstance().getComponentJarList(false);
@@ -295,8 +300,8 @@ public class BundleManager implements BundleListener, FrameworkListener {
         long timeEnd = System.currentTimeMillis();
         String mdHexString = Hex.encodeHexString(mdOfJar);
 
-        logger.fine(MessageFormat.format("Calculated message digest hash of all {0} bundle jars in {1} ms. MDHex: {2}", compJarList.size(),
-                timeEnd - timeStart, mdHexString));
+        logger.fine(MessageFormat.format("Calculated message digest hash of all {0} bundle jars in {1} ms. MDHex: {2}", compJarList.size(), timeEnd - timeStart,
+                mdHexString));
         return mdHexString;
     }
 
@@ -461,8 +466,8 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * 
      * @return
      */
-    public List<Bundle> getInstallableBundleList() {
-        List<Bundle> bundleList = new ArrayList<Bundle>();
+    public List<URI> getInstallableBundleList() {
+        List<URI> installableBundleURIList = new ArrayList<URI>();
         List<URI> componentJarURIs = ResourceRegistry.getInstance().getComponentJarList(false);
 
         // Remember current runtime model state, because afterwards we have to
@@ -480,7 +485,8 @@ public class BundleManager implements BundleListener, FrameworkListener {
                 Bundle b = null;
                 b = installSingle(componentJarURI);
                 if (b != null) {
-                    bundleList.add(b);
+                    // Remember the absolute URI, the caller expects it.
+                    installableBundleURIList.add(ResourceRegistry.getInstance().toAbsolute(b.getLocation()));
                 }
             } catch (BundleException | IOException | ParseException | BundleManagementException e) {
                 // If the installation of the bundle fails
@@ -506,7 +512,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
         } catch (DeploymentException e) {
             AstericsErrorHandling.instance.reportError(null, "in BundleManager.getInstallableComponentList: Could not redeploy current runtimeModel");
         }
-        return bundleList;
+        return installableBundleURIList;
     }
 
     /**
@@ -782,18 +788,19 @@ public class BundleManager implements BundleListener, FrameworkListener {
         bundleDescriptorsXMLBuilder
                 .append("<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">");
 
-        List<Bundle> installableBundleList = getInstallableBundleList();
+        // List<Bundle> installableBundleList = getInstallableBundleList();
+        List<URI> bundleURIList = getBundleURIList();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(componentList))) {
-            for (Bundle bundle : installableBundleList) {
-                URL bundleDescriptor = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+            for (URI bundleURI : bundleURIList) {
+                URL bundleDescriptor = ResourceRegistry.toJarInternalURI(bundleURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI).toURL();
 
                 String bundleDescriptorAsXMLString = ResourceRegistry.getResourceContentAsString(bundleDescriptor.openStream());
                 Set<IComponentType> componentTypeSet = DefaultBundleModelParser.instance.parseModelAsXMLString(bundleDescriptorAsXMLString);
 
                 // update big bundle descriptors string
                 bundleDescriptorsXMLBuilder.append(removeSurroundingComponentTypesTags(bundleDescriptorAsXMLString));
-                String installableBundleJarName = ResourceRegistry.getInstance().toRelative(bundle.getLocation()).getPath();
+                String installableBundleJarName = ResourceRegistry.getInstance().toRelative(bundleURI).getPath();
 
                 // extract component types and store them in loader_componentlist.ini
                 if (componentTypeSet.size() >= 1) {
@@ -812,6 +819,24 @@ public class BundleManager implements BundleListener, FrameworkListener {
         // Finalize bundle descriptors string and store it into the cache file.
         bundleDescriptorsXMLBuilder.append("</componentTypes>");
         ResourceRegistry.storeResource(bundleDescriptorsXMLBuilder.toString(), COMPONENT_COLLECTION_CACHE_FILE_URI);
+    }
+
+    /**
+     * Returns a list of bundle URIs depending on the configured cache generation mode (see {@value #ARE_GENERATE_CACHES_FROM_INSTALLABLE_BUNDLES_PROP_KEY}).
+     * 
+     * @return
+     */
+    private List<URI> getBundleURIList() {
+        List<URI> bundleURIList = new ArrayList<URI>();
+        if (Boolean.valueOf(AREProperties.instance.getProperty(ARE_GENERATE_CACHES_FROM_INSTALLABLE_BUNDLES_PROP_KEY))) {
+            logger.fine("Generating caches only for platform installable bundles.");
+            bundleURIList = getInstallableBundleList();
+        } else {
+            logger.fine("Generating caches for all bundles");
+            bundleURIList = ResourceRegistry.getInstance().getComponentJarList(false);
+        }
+        logger.fine("Returning bundle URI list with " + bundleURIList.size() + " elements.");
+        return bundleURIList;
     }
 
     /**
