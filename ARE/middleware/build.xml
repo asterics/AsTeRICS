@@ -15,7 +15,8 @@
        	<pathelement location="src/main/resources/lib/libthrift.jar"/>
        	<pathelement location="src/main/resources/lib/slf4j-api-1.6.0.jar"/>
     	<pathelement location="src/main/resources/lib/slf4j-simple-1.6.0.jar"/>
-    	<pathelement location="src/main/resources/lib/commons-io-2.4.jar"/>
+    	<pathelement location="src/main/resources/lib/commons-codec-1.11.jar"/>
+       	<pathelement location="src/main/resources/lib/commons-io-2.4.jar"/>
 		<pathelement location="${classpath}/junit/junit-4.8.2.jar" />
     </path>
     

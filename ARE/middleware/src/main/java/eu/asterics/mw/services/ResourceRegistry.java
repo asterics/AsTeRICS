@@ -30,7 +30,6 @@ import org.apache.commons.io.input.BOMInputStream;
 import eu.asterics.mw.are.BundleManager;
 import eu.asterics.mw.are.DeploymentManager;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
-import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -58,21 +57,15 @@ import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
  */
 
 /**
- * This class is the central point to find and fetch resources used by the ARE
- * middleware, osgi services and osgi plugins. The idea is to generically
- * implement the fetching of resources to enable the same approach for the whole
- * AsTeRICS framework. This way all plugins, services and other classes will be
- * able to also support URI schemes (e.g. http, jar,...). Furthermore base URIs
- * can be reconfigured depending on platform specific or usecase specific
- * requirements (e.g. readonly jar respository from a website and writable local
- * folder for caching and model creation).
+ * This class is the central point to find and fetch resources used by the ARE middleware, osgi services and osgi plugins. The idea is to generically implement
+ * the fetching of resources to enable the same approach for the whole AsTeRICS framework. This way all plugins, services and other classes will be able to also
+ * support URI schemes (e.g. http, jar,...). Furthermore base URIs can be reconfigured depending on platform specific or usecase specific requirements (e.g.
+ * readonly jar respository from a website and writable local folder for caching and model creation).
  * 
- * Currently only file based ARE baseURIs are supported. Later maybe the base
- * URI could also be an http-URL and the plugin resources directly fetched from
- * an http-URL.
+ * Currently only file based ARE baseURIs are supported. Later maybe the base URI could also be an http-URL and the plugin resources directly fetched from an
+ * http-URL.
  * 
- * Author: martin.deinhofer@technikum-wien.at Date: Oct 11, 2015 Time: 00:17:00
- * AM
+ * Author: martin.deinhofer@technikum-wien.at Date: Oct 11, 2015 Time: 00:17:00 AM
  */
 
 public class ResourceRegistry {
@@ -85,6 +78,7 @@ public class ResourceRegistry {
     public static final String LICENSES_FOLDER = "LICENSE/";
     public static final String IMAGES_FOLDER = "images/";
     public static final String TMP_FOLDER = "tmp/";
+    public static final String WEB_DOCUMENT_ROOT_FOLDER = "data/webservice/";
 
     private static URI ARE_BASE_URI = null;
     // currently not used but the idea is to have a base URI for readonly,
@@ -92,24 +86,23 @@ public class ResourceRegistry {
     private static URI ARE_WRITABLE_URI = null;
 
     private static boolean OSGI_MODE = true;
-    
-    //Expected encoding of a model file, a bundle descriptor file or any other file.
-    public static final String ARE_FILE_ENCODING = "UTF-8"; 
-    
-    //logger instance
+
+    // Expected encoding of a model file, a bundle descriptor file or any other file.
+    public static final String ARE_FILE_ENCODING = "UTF-8";
+
+    // logger instance
     static Logger logger;
 
     static {
         URI defaultAREBaseURI = Paths.get(".").toUri();
         try {
-            defaultAREBaseURI = ResourceRegistry.toPath(
-                    ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toURI())
+            defaultAREBaseURI = ResourceRegistry.toPath(ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toURI())
                     .getParent().toUri();
         } catch (URISyntaxException e) {
         }
         ARE_BASE_URI = URI.create(System.getProperty("eu.asterics.ARE.baseURI", defaultAREBaseURI.toString()));
-        logger=AstericsErrorHandling.instance.getLogger();
-        
+        logger = AstericsErrorHandling.instance.getLogger();
+
         AstericsErrorHandling.instance.getLogger().fine("Setting ARE base URI to <" + ARE_BASE_URI + ">");
 
         String areWritableURIString = System.getProperty("eu.asterics.ARE.writableURI");
@@ -123,12 +116,11 @@ public class ResourceRegistry {
     }
 
     public enum RES_TYPE {
-        ANY, MODEL, DATA, JAR, PROFILE, STORAGE, LICENSE, IMAGE, TMP
+        ANY, MODEL, DATA, JAR, PROFILE, STORAGE, LICENSE, IMAGE, TMP, WEB_DOCUMENT_ROOT
     };
 
     /**
-     * Maps the given RES_TYPE to the corresponding folder name. Should be
-     * changed to return a URI?
+     * Maps the given RES_TYPE to the corresponding folder name. Should be changed to return a URI?
      * 
      * @param type
      * @return
@@ -154,6 +146,8 @@ public class ResourceRegistry {
             return IMAGES_FOLDER;
         case TMP:
             return TMP_FOLDER;
+        case WEB_DOCUMENT_ROOT:
+            return WEB_DOCUMENT_ROOT_FOLDER;
         }
         return ".";
     }
@@ -168,68 +162,54 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns the URI of the requested resource. Generally the URI is not
-     * tested for existence it just constructs a valid URI for the given
-     * parameters. The returned URI can be opened with {@link URI#toURL()} and
-     * {@link URL#openStream()}, or better use directly
-     * {@link ResourceRegistry#getResourceInputStream(String, RES_TYPE)}. If you
-     * know that it is a file path URI and need to perform file operations,
-     * convert it to a file with {@link ResourceRegistry#toFile(URI)}.
+     * Returns the URI of the requested resource. Generally the URI is not tested for existence it just constructs a valid URI for the given parameters. The
+     * returned URI can be opened with {@link URI#toURL()} and {@link URL#openStream()}, or better use directly
+     * {@link ResourceRegistry#getResourceInputStream(String, RES_TYPE)}. If you know that it is a file path URI and need to perform file operations, convert it
+     * to a file with {@link ResourceRegistry#toFile(URI)}.
      * 
-     * resourcePath can be an absolute URL-conforming string (e.g. file://,
-     * http://). In this case the string must be encoded correctly. or an
-     * absolute or relative file path (windows or unix-style). In this case
-     * {@link File} class and its method {@link File#toURI()} is used. The file
-     * path may contain both \\ and / seperators. Relative resourcePaths are
-     * resolved against the ARE.baseURI or a subfolder depending on the provided
-     * type ({@link RES_TYPE}).
+     * resourcePath can be an absolute URL-conforming string (e.g. file://, http://). In this case the string must be encoded correctly. or an absolute or
+     * relative file path (windows or unix-style). In this case {@link File} class and its method {@link File#toURI()} is used. The file path may contain both
+     * \\ and / seperators. Relative resourcePaths are resolved against the ARE.baseURI or a subfolder depending on the provided type ({@link RES_TYPE}).
      * 
-     * The type ({@link RES_TYPE}) determines the type of the resource which is
-     * used to append the respective subfolder for the resource type (e.g. data,
-     * models). In case of {@value RES_TYPE#DATA} a 4 step approach is used to
-     * guess the correct subfolder (e.g. a sensor.facetrackerLK or pictures):
-     * Step 1: If resource ARE.baseURI/data/{resourcePath} exists, return Step
-     * 2: If componentTypeId!=null and resource
-     * ARE.baseURI/{DATA_FOLDER}/{componentTypeId}/{resourcePath} exists, return
-     * Step 3: If componentTypeId!=null and resource
-     * ARE.baseURI/{DATA_FOLDER}/{*componentTypeId*}/{resourcePath} exists,
-     * return Step 4: If resource ARE.baseURI/{DATA_FOLDER}/{*}/{resourcePath}
-     * exists, return Default: If none of the above was successful,
-     * ARE.baseURI/data/{resourcePath} is returned. In case of
-     * {@value RES_TYPE#ANY} no subfolder is appended.
+     * The type ({@link RES_TYPE}) determines the type of the resource which is used to append the respective subfolder for the resource type (e.g. data,
+     * models). In case of {@value RES_TYPE#DATA} a 4 step approach is used to guess the correct subfolder (e.g. a sensor.facetrackerLK or pictures): Step 1: If
+     * resource ARE.baseURI/data/{resourcePath} exists, return Step 2: If componentTypeId!=null and resource
+     * ARE.baseURI/{DATA_FOLDER}/{componentTypeId}/{resourcePath} exists, return Step 3: If componentTypeId!=null and resource
+     * ARE.baseURI/{DATA_FOLDER}/{*componentTypeId*}/{resourcePath} exists, return Step 4: If resource ARE.baseURI/{DATA_FOLDER}/{*}/{resourcePath} exists,
+     * return Default: If none of the above was successful, ARE.baseURI/data/{resourcePath} is returned. In case of {@value RES_TYPE#ANY} no subfolder is
+     * appended.
      * 
      * @param resourcePath
-     *            an absolute URL-conforming string or an absolute or relative
-     *            file path string
+     *            an absolute URL-conforming string or an absolute or relative file path string
      * @param type
      *            The resource type {@link RES_TYPE} for the requested resource
      * @param componentTypeId
-     *            Hint for a better guessing of a {@value RES_TYPE#DATA}
-     *            resource.
+     *            Hint for a better guessing of a {@value RES_TYPE#DATA} resource.
      * @param runtimeComponentInstanceId
-     *            Hint for a better guessing of a {@value RES_TYPE#DATA}
-     *            resource.
+     *            Hint for a better guessing of a {@value RES_TYPE#DATA} resource.
      * @return a valid URI.
      * @throws URISyntaxException
      */
-    public URI getResource(String resourcePath, RES_TYPE type, String componentTypeId,
-            String runtimeComponentInstanceId) throws URISyntaxException {
+    public URI getResource(String resourcePath, RES_TYPE type, String componentTypeId, String runtimeComponentInstanceId) throws URISyntaxException {
         URI uri = null;
         File resFilePath = null;
-        
-        //Do some sanity checks
-        if(resourcePath==null) {
+
+        // Do some sanity checks
+        if (resourcePath == null) {
             throw new URISyntaxException("", "The given resourcePath is null");
         }
-        if(type==null) {
-            AstericsErrorHandling.instance.getLogger().warning("ResourceRegistry.getResource(): The given RES_TYPE type is null --> Changing it to RES_TYPE.ANY by default.");
-            type=RES_TYPE.ANY;
+        if (type == null) {
+            AstericsErrorHandling.instance.getLogger()
+                    .warning("ResourceRegistry.getResource(): The given RES_TYPE type is null --> Changing it to RES_TYPE.ANY by default.");
+            type = RES_TYPE.ANY;
         }
-        //Trim input parameter
-        resourcePath=resourcePath.trim();
-        if(componentTypeId!=null) componentTypeId=componentTypeId.trim();
-        if(runtimeComponentInstanceId!=null) runtimeComponentInstanceId=runtimeComponentInstanceId.trim();
-        
+        // Trim input parameter
+        resourcePath = resourcePath.trim();
+        if (componentTypeId != null)
+            componentTypeId = componentTypeId.trim();
+        if (runtimeComponentInstanceId != null)
+            runtimeComponentInstanceId = runtimeComponentInstanceId.trim();
+
         try {
             URL url = new URL(resourcePath);
             AstericsErrorHandling.instance.getLogger().fine("Resource URL: " + url);
@@ -263,12 +243,9 @@ public class ResourceRegistry {
                     break;
                 case DATA:
                     /*
-                     * 1) Check resourceName directly, if it exists return 2)
-                     * Check resourceName with exactly matching componentTypeId,
-                     * if it exists return 3) Check resourceName with first
-                     * subfolder containing componentTypeId, if it exists return
-                     * 4) Check all subfolders (only first level) and resolve
-                     * against the given resourceName, if it exists return
+                     * 1) Check resourceName directly, if it exists return 2) Check resourceName with exactly matching componentTypeId, if it exists return 3)
+                     * Check resourceName with first subfolder containing componentTypeId, if it exists return 4) Check all subfolders (only first level) and
+                     * resolve against the given resourceName, if it exists return
                      */
                     URI dataFolderURI = toAbsolute(DATA_FOLDER);
                     File dataFolderFile = ResourceRegistry.toFile(dataFolderURI);
@@ -282,8 +259,7 @@ public class ResourceRegistry {
                     if (componentTypeId != null) {
                         // 2) Check resourceName with exactly matching
                         // componentTypeId, if it exists return
-                        resFilePath = resolveRelativeFilePath(dataFolderFile,
-                                componentTypeId + "/" + resourcePathSlashified, false);
+                        resFilePath = resolveRelativeFilePath(dataFolderFile, componentTypeId + "/" + resourcePathSlashified, false);
                         if (resFilePath.exists()) {
                             break;
                         }
@@ -295,8 +271,7 @@ public class ResourceRegistry {
                         String[] componentTypeIdSplit = componentTypeId.split("\\.");
                         // split returns the given string as element 0 if the
                         // regex patterns was not found.
-                        final String componentTypeIdLC = componentTypeIdSplit[componentTypeIdSplit.length - 1]
-                                .toLowerCase();
+                        final String componentTypeIdLC = componentTypeIdSplit[componentTypeIdSplit.length - 1].toLowerCase();
 
                         File[] dataSubFolderFiles = dataFolderFile.listFiles(new FileFilter() {
                             @Override
@@ -365,6 +340,9 @@ public class ResourceRegistry {
                 case TMP:
                     resFilePath = resolveRelativeFilePath(toAbsolute(TMP_FOLDER), resourcePathSlashified, false);
                     break;
+                case WEB_DOCUMENT_ROOT:
+                    resFilePath = resolveRelativeFilePath(toAbsolute(WEB_DOCUMENT_ROOT_FOLDER), resourcePathSlashified, false);
+                    break;
                 default:
                     resFilePath = resolveRelativeFilePath(getAREBaseURIFile(), resourcePathSlashified, false);
                     break;
@@ -385,17 +363,14 @@ public class ResourceRegistry {
         if (uri != null) {
             uri = uri.normalize();
         }
-        AstericsErrorHandling.instance.getLogger()
-                .fine("resourceName=" + resourcePath + ", componentTypeId=" + componentTypeId
-                        + ", runtimeComponentInstanceId=" + runtimeComponentInstanceId + ", Resource URI <" + uri
-                        + ">");
+        AstericsErrorHandling.instance.getLogger().fine("resourceName=" + resourcePath + ", componentTypeId=" + componentTypeId
+                + ", runtimeComponentInstanceId=" + runtimeComponentInstanceId + ", Resource URI <" + uri + ">");
         return uri;
     }
 
     /**
-     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The
-     * string may contain normal file path characters like space and supports \\
-     * and / as seperators.
+     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
+     * as seperators.
      * 
      * @param baseURI
      * @param nonURIConformingFilePath
@@ -406,9 +381,8 @@ public class ResourceRegistry {
     }
 
     /**
-     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The
-     * string may contain normal file path characters like space and supports \\
-     * and / as seperators if parameter slashify=true
+     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
+     * as seperators if parameter slashify=true
      * 
      * @param baseURIPath
      * @param nonURIConformingFilePath
@@ -433,9 +407,8 @@ public class ResourceRegistry {
     }
 
     /**
-     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The
-     * string may contain normal file path characters like space and supports \\
-     * and / as seperators.
+     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
+     * as seperators.
      * 
      * @param baseURIPath
      * @param nonURIConformingFilePath
@@ -446,9 +419,8 @@ public class ResourceRegistry {
     }
 
     /**
-     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The
-     * string may contain normal file path characters like space and supports \\
-     * and / as seperators if parameter slashify=true
+     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
+     * as seperators if parameter slashify=true
      * 
      * @param baseURIPath
      * @param nonURIConformingFilePath
@@ -469,8 +441,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Compares equalness of the given uri to the ARE.baseURI. Before comparison
-     * the URIs are normalized.
+     * Compares equalness of the given uri to the ARE.baseURI. Before comparison the URIs are normalized.
      * 
      * @param uri
      * @return
@@ -490,8 +461,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Compares equalness of the given URIs. Before comparison the URIs are
-     * normalized.
+     * Compares equalness of the given URIs. Before comparison the URIs are normalized.
      * 
      * @param first
      * @param second
@@ -516,8 +486,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Tests whether the given URI exists by 1) testing if it is a File and
-     * invoking the File.exists method 2) trying to open an InputStream
+     * Tests whether the given URI exists by 1) testing if it is a File and invoking the File.exists method 2) trying to open an InputStream
      * 
      * @param uri
      * @return
@@ -547,8 +516,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Return the URI according to the given resourcePath string and the given
-     * resource type RES_TYPE. For more details see
+     * Return the URI according to the given resourcePath string and the given resource type RES_TYPE. For more details see
      * {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)}.
      * 
      * @param resourcePath
@@ -561,8 +529,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns an InputStream for the given resourcePath and RES_TYPE. For more
-     * details about resourcePath, see
+     * Returns an InputStream for the given resourcePath and RES_TYPE. For more details about resourcePath, see
      * {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)}.
      * 
      * @param resourcePath
@@ -572,14 +539,12 @@ public class ResourceRegistry {
      * @throws IOException
      * @throws URISyntaxException
      */
-    public InputStream getResourceInputStream(String resourcePath, RES_TYPE type)
-            throws MalformedURLException, IOException, URISyntaxException {
+    public InputStream getResourceInputStream(String resourcePath, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
         return getResource(resourcePath, type).toURL().openStream();
     }
 
     /**
-     * Returns an OutputStream for the given resourcePath and RES_TYPE. For more
-     * details about resourcePath, see
+     * Returns an OutputStream for the given resourcePath and RES_TYPE. For more details about resourcePath, see
      * {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)}.
      * 
      * @param resourcePath
@@ -589,14 +554,14 @@ public class ResourceRegistry {
      * @throws IOException
      * @throws URISyntaxException
      */
-    public OutputStream getResourceOutputStream(String resourcePath, RES_TYPE type)
-            throws MalformedURLException, IOException, URISyntaxException {
+    public OutputStream getResourceOutputStream(String resourcePath, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
         return getResource(resourcePath, type).toURL().openConnection().getOutputStream();
     }
-    
+
     /**
-     * Returns the contents of the given resourcePath and RES_TYPE resource as String.
-     * The content of the resource is expected to be encoded in {@link ResourceRegistry#ARE_FILE_ENCODING}.  
+     * Returns the contents of the given resourcePath and RES_TYPE resource as String. The content of the resource is expected to be encoded in
+     * {@link ResourceRegistry#ARE_FILE_ENCODING}.
+     * 
      * @param resourcePath
      * @param type
      * @return
@@ -607,56 +572,103 @@ public class ResourceRegistry {
     public String getResourceContentAsString(String resourcePath, RES_TYPE type) throws MalformedURLException, IOException, URISyntaxException {
         return getResourceContentAsString(getResourceInputStream(resourcePath, type));
     }
-    
+
     /**
-     * Helper method to convert an InputStream to a String.
-     * The content of the InputStream is expected to be encoded in {@link ResourceRegistry#ARE_FILE_ENCODING}.  
+     * Helper method to convert an InputStream to a String. The content of the InputStream is expected to be encoded in
+     * {@link ResourceRegistry#ARE_FILE_ENCODING}. The method automatically closes the given InputStream instance.
      *
      * @param inputStream
      * @return
      * @throws IOException
      */
     public static String getResourceContentAsString(InputStream inputStream) throws IOException {
-        /* Use the IOUtils class of apache commons, makes it easier to deal with encodings.
-           We encapsulate the inputStream into a BOMInputStream to exclude an optional BOM: 
-           @link http://www.rgagnon.com/javadetails/java-handle-utf8-file-with-bom.html 
-           @link https://commons.apache.org/proper/commons-io/javadocs/api-2.5/org/apache/commons/io/input/BOMInputStream.html
-        */
-        String modelAsString=IOUtils.toString(new BOMInputStream(inputStream),ResourceRegistry.ARE_FILE_ENCODING);       
-        return modelAsString;
-    }    
-    
+        /*
+         * Use the IOUtils class of apache commons, makes it easier to deal with encodings. We encapsulate the inputStream into a BOMInputStream to exclude an
+         * optional BOM:
+         * 
+         * @link http://www.rgagnon.com/javadetails/java-handle-utf8-file-with-bom.html
+         * 
+         * @link https://commons.apache.org/proper/commons-io/javadocs/api-2.5/org/apache/commons/io/input/BOMInputStream.html
+         */
+        try {
+            String modelAsString = IOUtils.toString(new BOMInputStream(inputStream), ResourceRegistry.ARE_FILE_ENCODING);
+            return modelAsString;
+        } finally {
+            inputStream.close();
+        }
+    }
+
     /**
      * Stores data to a given resource path in a given resource-Type directory defined by {@link ResourceRegistry#RES_TYPE}.
      *
-     * @param data         data to store as string
-     * @param resourcePath     the relative resource path the data should be stored to.
-     * @param resourceType RES_TYPE that defines where to store the data (e.g. DATA or MODEL)
-     * @throws AREAsapiException if the file cannot be created or stored
-     * @throws URISyntaxException 
-     * @throws IOException 
-     * @throws FileNotFoundException 
+     * @param data
+     *            data to store as string
+     * @param resourcePath
+     *            the relative resource path the data should be stored to.
+     * @param resourceType
+     *            RES_TYPE that defines where to store the data (e.g. DATA or MODEL)
+     * @throws AREAsapiException
+     *             if the file cannot be created or stored
+     * @throws URISyntaxException
+     * @throws IOException
+     * @throws FileNotFoundException
      */
-    public void storeResource(String data, String resourcePath, RES_TYPE resourceType) throws AREAsapiException, URISyntaxException, FileNotFoundException, IOException {
-        File filenameAsFile = ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(resourcePath, resourceType));
-        File parentDir = filenameAsFile.getParentFile();
+    public void storeResource(String data, String resourcePath, RES_TYPE resourceType)
+            throws URISyntaxException, FileNotFoundException, IOException {
+        storeResource(data, ResourceRegistry.getInstance().getResource(resourcePath, resourceType));
+    }
+
+    /**
+     * Stores the given data at the given URI and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}.
+     * 
+     * @param data
+     * @param storeResourceURI
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    public static void storeResource(String data, URI storeResourceURI) throws URISyntaxException, IOException {
+        storeResource(data, ResourceRegistry.toFile(storeResourceURI));
+    }
+
+    /**
+     * Stores the given data at the given File object and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}.
+     * 
+     * @param data
+     * @param storeResourceFile
+     * @throws IOException
+     */
+    // Made this method private to not tempt developers to directly create File object paths and store to it.
+    private static void storeResource(String data, File storeResourceFile) throws IOException {
+        File parentDir = storeResourceFile.getParentFile();
         if (!parentDir.exists()) {
             if (!parentDir.mkdirs()) {
-                logger.severe("Could not create parent directories for data file: " + filenameAsFile);
-                throw new AREAsapiException("Could not create parent directories for data file.");
+                logger.severe("Could not create parent directories for data file: " + storeResourceFile);
+                throw new IOException("Could not create parent directories for data file.");
             }
         }
-        try (FileOutputStream outStream = new FileOutputStream(filenameAsFile);) {
-            IOUtils.write(data, outStream, ResourceRegistry.ARE_FILE_ENCODING);
-            outStream.flush();
-            outStream.close();
+        storeResource(data, new FileOutputStream(storeResourceFile));
+    }
+
+    /**
+     * Stores the given data to the given OutputStream and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}. The OutputStream is automatically closed
+     * afterwards.
+     * 
+     * @param data
+     * @param outputStream
+     * @throws IOException
+     */
+    public static void storeResource(String data, OutputStream outputStream) throws IOException {
+        try {
+            IOUtils.write(data, outputStream, ResourceRegistry.ARE_FILE_ENCODING);
+        } finally {
+            outputStream.flush();
+            outputStream.close();
         }
-    }    
+    }
 
     // public void setAREBaseURI()
     /**
-     * Set the base URI of the ARE. This URI will be used as parent path for all
-     * resources like models, data, storage,... Also the jars of the ARE and the
+     * Set the base URI of the ARE. This URI will be used as parent path for all resources like models, data, storage,... Also the jars of the ARE and the
      * plugins are expected in that path.
      * 
      * @param areBaseURI
@@ -668,11 +680,9 @@ public class ResourceRegistry {
     }
 
     /**
-     * Get the base URI of the ARE. This URI will be used as parent path for all
-     * resources like models, data, storage,... Also the jars of the ARE and the
-     * plugins are expected in that path. The default base URI is the location
-     * of the ARE.jar file. It can be changed by the property
-     * eu.asterics.ARE.baseURI or by using the method {@link setAREBaseURI}.
+     * Get the base URI of the ARE. This URI will be used as parent path for all resources like models, data, storage,... Also the jars of the ARE and the
+     * plugins are expected in that path. The default base URI is the location of the ARE.jar file. It can be changed by the property eu.asterics.ARE.baseURI or
+     * by using the method {@link setAREBaseURI}.
      * 
      * @return
      */
@@ -681,15 +691,13 @@ public class ResourceRegistry {
     }
 
     /**
-     * Sets the location for writable (File) access. This is needed for
-     * temporary storage like osgi cache and log files but also for models or
-     * data files that were deployed.
+     * Sets the location for writable (File) access. This is needed for temporary storage like osgi cache and log files but also for models or data files that
+     * were deployed.
      * 
      * @param writableURI
      */
     /*
-     * //Not yet supported public void setAREWritableURI(URI writableURI) {
-     * ARE_WRITABLE_URI=writableURI; }
+     * //Not yet supported public void setAREWritableURI(URI writableURI) { ARE_WRITABLE_URI=writableURI; }
      */
 
     /**
@@ -698,13 +706,11 @@ public class ResourceRegistry {
      * @return
      */
     /*
-     * //Not yet supported public URI getAREWritableURI() { return
-     * ARE_WRITABLE_URI != null ? ARE_WRITABLE_URI : getAREBaseURI(); }
+     * //Not yet supported public URI getAREWritableURI() { return ARE_WRITABLE_URI != null ? ARE_WRITABLE_URI : getAREBaseURI(); }
      */
 
     /**
-     * Converts the given absolutePath to a path relative to the ARE base URI
-     * {@link getAREBaseURI}.
+     * Converts the given absolutePath to a path relative to the ARE base URI {@link getAREBaseURI}.
      * 
      * @param absolutePath
      * @return
@@ -714,8 +720,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Converts the given absolutePath to a path relative to the folder of the
-     * given RES_TYPE {@link getAREBaseURI}.
+     * Converts the given absolutePath to a path relative to the folder of the given RES_TYPE {@link getAREBaseURI}.
      * 
      * @param absolutePath
      * @param type
@@ -726,8 +731,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Converts the given absolutePath URI to a path relative to the ARE base
-     * URI {@link getAREBaseURI}.
+     * Converts the given absolutePath URI to a path relative to the ARE base URI {@link getAREBaseURI}.
      * 
      * @param absolutePath
      * @return
@@ -737,8 +741,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Converts the given absolutePath to a path relative to the folder of the
-     * given RES_TYPE {@link getAREBaseURI}.
+     * Converts the given absolutePath to a path relative to the folder of the given RES_TYPE {@link getAREBaseURI}.
      * 
      * @param absolutePath
      * @param type
@@ -749,9 +752,8 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns the file/directory name of a given URI. This method simply splits
-     * the URI.getPath into elements seperated by a slash (/) and returns the
-     * last element.
+     * Returns the file/directory name of a given URI. This method simply splits the URI.getPath into elements seperated by a slash (/) and returns the last
+     * element.
      * 
      * @param absolutePath
      * @return
@@ -765,8 +767,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Converts the given relativePath to an absolute path by resolving with the
-     * ARE base URI {@link getAREBaseURI}.
+     * Converts the given relativePath to an absolute path by resolving with the ARE base URI {@link getAREBaseURI}.
      * 
      * @param relativePath
      * @return
@@ -776,8 +777,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Converts the given relativePath URI to an absolute one by adding ARE base
-     * URI {@link getAREBaseURI}.
+     * Converts the given relativePath URI to an absolute one by adding ARE base URI {@link getAREBaseURI}.
      * 
      * @param relativePath
      * @return
@@ -790,8 +790,7 @@ public class ResourceRegistry {
      * Checks whether the given URI is a URL or not.
      * 
      * @param uriToCheck
-     *            true: URI is a URL, false: URI is not a URL but probably a
-     *            file (relative or absolute)
+     *            true: URI is a URL, false: URI is not a URL but probably a file (relative or absolute)
      * @return
      */
     public static boolean isURL(URI uriToCheck) {
@@ -804,8 +803,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a File object representing the given URI if possible. This only
-     * works if the given URI is a relative path or is a path with a file scheme
+     * Returns a File object representing the given URI if possible. This only works if the given URI is a relative path or is a path with a file scheme
      * (starting with: file)
      * 
      * @param uri
@@ -833,9 +831,7 @@ public class ResourceRegistry {
     /**
      * Returns the current value of the flag OSGI_MODE.
      * 
-     * @return false: The ARE and involved classes are not running within an
-     *         OSGi context. Which can be the case if the ARE is used as a
-     *         library.
+     * @return false: The ARE and involved classes are not running within an OSGi context. Which can be the case if the ARE is used as a library.
      */
     public boolean isOSGIMode() {
         return OSGI_MODE;
@@ -852,8 +848,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of component jarname URIs. The URIs could be a local file
-     * but also an HTTP URL.
+     * Returns a list of component jarname URIs. The URIs could be a local file but also an HTTP URL.
      * 
      * @param relative:
      *            true: Only return name without absolute path.
@@ -864,16 +859,15 @@ public class ResourceRegistry {
         List<URI> URIs = ComponentUtils.findFiles(getAREBaseURI(), relative, 1, new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
-                return (name.startsWith("asterics.processor") || name.startsWith("asterics.actuator")
-                        || name.startsWith("asterics.sensor")) && name.endsWith(".jar");
+                return (name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor"))
+                        && name.endsWith(".jar");
             }
         });
         return URIs;
     }
 
     /**
-     * Returns a list of license file URIs. The URIs could be a local file but
-     * also an HTTP URL.
+     * Returns a list of license file URIs. The URIs could be a local file but also an HTTP URL.
      * 
      * @param relative
      *            true: Only return name without absolute path.
@@ -908,8 +902,7 @@ public class ResourceRegistry {
                     int firstDot = jarName.indexOf(".");
                     int lastDot = jarName.lastIndexOf(".");
                     final String compTypeString = jarName.substring(firstDot + 1, lastDot);
-                    AstericsErrorHandling.instance.getLogger()
-                            .fine("Searching license for compTypeString=" + compTypeString);
+                    AstericsErrorHandling.instance.getLogger().fine("Searching license for compTypeString=" + compTypeString);
 
                     List<URI> compLicenseURIs = ResourceRegistry.getInstance().getLicensesList(new FilenameFilter() {
                         @Override
@@ -928,13 +921,11 @@ public class ResourceRegistry {
                 } else {
                     // If it is not an asterics jar, then we simply use the full
                     // jarname without extension
-                    AstericsErrorHandling.instance.getLogger()
-                            .fine("No Asterics jar, trying to find license of thirdparty jar: " + jarName);
+                    AstericsErrorHandling.instance.getLogger().fine("No Asterics jar, trying to find license of thirdparty jar: " + jarName);
                     // Extract name without extension
                     int lastDot = jarName.lastIndexOf(".");
                     final String licenseNameString = jarName.substring(0, lastDot);
-                    AstericsErrorHandling.instance.getLogger()
-                            .fine("Searching license file for prefix=" + licenseNameString);
+                    AstericsErrorHandling.instance.getLogger().fine("Searching license file for prefix=" + licenseNameString);
 
                     List<URI> compLicenseURIs = ResourceRegistry.getInstance().getLicensesList(new FilenameFilter() {
                         @Override
@@ -948,8 +939,7 @@ public class ResourceRegistry {
                             // AstericsErrorHandling.instance.getLogger().fine("prefixString1:
                             // "+prefixString1+", prefixString2:
                             // "+prefixString2+", name: "+lcName);
-                            return (lcName.startsWith(prefixString1) || lcName.startsWith(prefixString2))
-                                    && name.endsWith(".txt");
+                            return (lcName.startsWith(prefixString1) || lcName.startsWith(prefixString2)) && name.endsWith(".txt");
                         }
 
                     }, false);
@@ -965,8 +955,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of license URIs corresponding to the given FilenameFilter
-     * instance.
+     * Returns a list of license URIs corresponding to the given FilenameFilter instance.
      * 
      * @param filter
      * @param relative
@@ -979,8 +968,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of URIs asterics service bundles. The URIs could be a
-     * local file but also an HTTP URL.
+     * Returns a list of URIs asterics service bundles. The URIs could be a local file but also an HTTP URL.
      * 
      * @param relative
      *            true: Only return name without absolute path.
@@ -992,18 +980,15 @@ public class ResourceRegistry {
             @Override
             public boolean accept(File dir, String name) {
                 // Should we include the ARE here??
-                return !(name.startsWith("asterics.processor") || name.startsWith("asterics.actuator")
-                        || name.startsWith("asterics.sensor")) && name.endsWith(".jar")
-                        && DeploymentManager.instance.getBundleManager()
-                                .checkForServiceBundle(new File(dir, name).toURI());
+                return !(name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor"))
+                        && name.endsWith(".jar") && DeploymentManager.instance.getBundleManager().checkForServiceBundle(new File(dir, name).toURI());
             }
         });
         return URIs;
     }
 
     /**
-     * Returns the URI of the ARE jar. The URI could be a local file but also an
-     * HTTP URL.
+     * Returns the URI of the ARE jar. The URI could be a local file but also an HTTP URL.
      * 
      * @param relative
      *            true: Only return name without absolute path.
@@ -1014,8 +999,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of URIs jars other than component, service or ARE. The
-     * URIs could be a local file but also an HTTP URL.
+     * Returns a list of URIs jars other than component, service or ARE. The URIs could be a local file but also an HTTP URL.
      * 
      * @param relative
      *            true: Only return name without absolute path.
@@ -1028,11 +1012,9 @@ public class ResourceRegistry {
             public boolean accept(File dir, String name) {
                 // Should we include the ARE here??
                 return (name.startsWith("asterics.ARE") || name.startsWith("org.eclipse.osgi")
-                        || (!(name.startsWith("asterics.processor") || name.startsWith("asterics.actuator")
-                                || name.startsWith("asterics.sensor") || name.startsWith("asterics.mw")
-                                || name.startsWith("asterics.ARE") || name.startsWith("asterics.proxy"))
-                                && !DeploymentManager.instance.getBundleManager()
-                                        .checkForServiceBundle(new File(dir, name).toURI())))
+                        || (!(name.startsWith("asterics.processor") || name.startsWith("asterics.actuator") || name.startsWith("asterics.sensor")
+                                || name.startsWith("asterics.mw") || name.startsWith("asterics.ARE") || name.startsWith("asterics.proxy"))
+                                && !DeploymentManager.instance.getBundleManager().checkForServiceBundle(new File(dir, name).toURI())))
                         && name.endsWith(".jar");
             }
         });
@@ -1040,8 +1022,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of URIs of other Asterics files like start scripts and
-     * areProperties. The URIs could be a local file but also an HTTP URL.
+     * Returns a list of URIs of other Asterics files like start scripts and areProperties. The URIs could be a local file but also an HTTP URL.
      * 
      * @param relative
      *            true: Only return name without absolute path.
@@ -1056,9 +1037,9 @@ public class ResourceRegistry {
             public boolean accept(File dir, String name) {
                 // Should we include the ARE here??
                 String toLowerName = name.toLowerCase();
-                return toLowerName != null && (toLowerName.endsWith(".exe") || toLowerName.endsWith(".bat")
-                        || toLowerName.endsWith(".sh") || toLowerName.endsWith(".dll") || toLowerName.endsWith(".txt")
-                        || toLowerName.endsWith(".properties") || whiteList.contains(toLowerName));
+                return toLowerName != null
+                        && (toLowerName.endsWith(".exe") || toLowerName.endsWith(".bat") || toLowerName.endsWith(".sh") || toLowerName.endsWith(".dll")
+                                || toLowerName.endsWith(".txt") || toLowerName.endsWith(".properties") || whiteList.contains(toLowerName));
             }
         });
 
@@ -1066,8 +1047,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of URIs of mandatory (must exist at startup) profile
-     * config files. The URIs could be a local file but also an HTTP URL.
+     * Returns a list of URIs of mandatory (must exist at startup) profile config files. The URIs could be a local file but also an HTTP URL.
      * 
      * @param relative
      *            true: Only return name without absolute path.
@@ -1082,8 +1062,7 @@ public class ResourceRegistry {
             @Override
             public boolean accept(File dir, String name) {
                 // Should we include the ARE here??
-                return name != null && name.endsWith(".ini")
-                        && !name.toLowerCase().equals(BundleManager.LOADER_COMPONENTLIST_LOCATION);
+                return name != null && name.endsWith(".ini") && !name.toLowerCase().equals(BundleManager.LOADER_COMPONENTLIST_LOCATION);
             }
         });
 
@@ -1091,8 +1070,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of URIs all AsTeRICS application images. The URIs could be
-     * a local file but also an HTTP URL.
+     * Returns a list of URIs all AsTeRICS application images. The URIs could be a local file but also an HTTP URL.
      * 
      * @param relative
      *            true: Only return name without absolute path.
@@ -1109,8 +1087,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of URIs all jars. The URIs could be a local file but also
-     * an HTTP URL.
+     * Returns a list of URIs all jars. The URIs could be a local file but also an HTTP URL.
      * 
      * @param relative
      *            true: Only return name without absolute path.
@@ -1127,8 +1104,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of URIs of all data resources available for plugins. The
-     * URIs could be a local file but also an HTTP URL.
+     * Returns a list of URIs of all data resources available for plugins. The URIs could be a local file but also an HTTP URL.
      * 
      * @param relative
      *            true: Only return name without absolute path.
@@ -1147,8 +1123,7 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of URIs of models. The URIs could be a local file but also
-     * an HTTP URL.
+     * Returns a list of URIs of models. The URIs could be a local file but also an HTTP URL.
      * 
      * @param relative
      *            true: Only return name without absolute path.
@@ -1186,8 +1161,7 @@ public class ResourceRegistry {
      */
     File getAREBaseURIFile() throws URISyntaxException {
         /*
-         * if(getAREBaseURI().getScheme().startsWith("file")) { return new
-         * File(getAREBaseURI()); }
+         * if(getAREBaseURI().getScheme().startsWith("file")) { return new File(getAREBaseURI()); }
          */
         return toFile(getAREBaseURI());
         // return null;
@@ -1253,9 +1227,7 @@ public class ResourceRegistry {
      * @param jarFileURI
      *            The jarFileURI that contains the resource.
      * @param relativeInternalURI
-     *            The relative path to the resource within the jar file. The
-     *            relative path must have a leading / (e.g.
-     *            /bundle_descriptor.xml)
+     *            The relative path to the resource within the jar file. The relative path must have a leading / (e.g. /bundle_descriptor.xml)
      * @return
      */
     public static URI toJarInternalURI(URI jarFileURI, String relativeInternalURI) {

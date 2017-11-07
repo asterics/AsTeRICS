@@ -1,24 +1,13 @@
 package eu.asterics.mw.are;
 
 import java.awt.Point;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,42 +17,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.io.IOUtils;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import eu.asterics.mw.are.asapi.StatusObject;
 import eu.asterics.mw.are.exceptions.AREAsapiException;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.ParseException;
-import eu.asterics.mw.are.parsers.DefaultBundleModelParser;
 import eu.asterics.mw.are.parsers.DefaultDeploymentModelParser;
-import eu.asterics.mw.are.parsers.ModelValidator;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.DataType;
 import eu.asterics.mw.model.bundle.IComponentType;
 import eu.asterics.mw.model.deployment.IChannel;
 import eu.asterics.mw.model.deployment.IComponentInstance;
-import eu.asterics.mw.model.deployment.IEventChannel;
 import eu.asterics.mw.model.deployment.IInputPort;
 import eu.asterics.mw.model.deployment.IOutputPort;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
-import eu.asterics.mw.model.deployment.impl.DefaultACSGroup;
 import eu.asterics.mw.model.deployment.impl.DefaultChannel;
 import eu.asterics.mw.model.deployment.impl.DefaultComponentInstance;
-import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
 import eu.asterics.mw.model.deployment.impl.ModelState;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
@@ -102,10 +73,8 @@ import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
  * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy]
  * @author Costas Kakousis [kakousis@cs.ucy.ac.cy]
  * 
- *         This class implements the actual functionality of the AsapiServer
- *         Interface methods. The methods of this class are called by the
- *         corresponding methods in the AsapiSupport class. Date: Aug 25, 2010
- *         Time: 11:35:35 AM
+ *         This class implements the actual functionality of the AsapiServer Interface methods. The methods of this class are called by the corresponding
+ *         methods in the AsapiSupport class. Date: Aug 25, 2010 Time: 11:35:35 AM
  */
 public class AsapiSupport {
     private final ComponentRepository componentRepository = ComponentRepository.instance;
@@ -121,160 +90,91 @@ public class AsapiSupport {
     }
 
     /**
-     * Returns an array containing all the available (i.e., installed) component
-     * types. These are encoded as strings, representing the absolute class name
-     * (in Java) of the corresponding implementation.
+     * Returns an array containing all the available (i.e., installed) component types. These are encoded as strings, representing the absolute class name (in
+     * Java) of the corresponding implementation.
      *
      * @return an array containing all available component types
-     * @throws AREAsapiException 
+     * @throws AREAsapiException
      */
     public String[] getAvailableComponentTypes() throws AREAsapiException {
-        //MAD: It seems that this method is not used by the ACS and is actually redundant to getBundleDescriptors
+        // MAD: It seems that this method is not used by the ACS and is actually redundant to getBundleDescriptors
         throw new AREAsapiException("Method not implemented: getAvailableComponentTypes()");
         /*
-        try {
-            return AstericsModelExecutionThreadPool.instance
-                    .execAndWaitOnModelExecutorLifecycleThread(new Callable<String[]>() {
-
-                        @Override
-                        public String[] call() throws Exception {
-
-                            // The method name indicates available (all
-                            // components for the platform) but
-                            // componentRepository.getInstalledComponentTypes()
-                            // returns the currently installed ones, maybe
-                            // should remove this method.
-                            final Set<IComponentType> componentTypeSet = componentRepository
-                                    .getInstalledComponentTypes();
-
-                            if (componentTypeSet.size() == 0) {
-                                logger.fine(this.getClass().getName() + ".getAvailableComponentTypes:"
-                                        + " No installed component types found!");
-                            }
-                            final String[] componentTypes = new String[componentTypeSet.size()];
-
-                            int counter = 0;
-                            for (final IComponentType componentType : componentTypeSet) {
-                                componentTypes[counter++] = componentType.getID();
-                            }
-
-                            System.out.println("\n\nin getAvailableComponentTypes: \n\n");
-                            return componentTypes;
-                        }
-                    });
-
-        } catch (Exception e) {
-            logger.severe("Error in fetching installed componentType of ComponentRepository: " + e.getMessage());
-        }
-        return new String[0];
-        */
+         * try { return AstericsModelExecutionThreadPool.instance .execAndWaitOnModelExecutorLifecycleThread(new Callable<String[]>() {
+         * 
+         * @Override public String[] call() throws Exception {
+         * 
+         * // The method name indicates available (all // components for the platform) but // componentRepository.getInstalledComponentTypes() // returns the
+         * currently installed ones, maybe // should remove this method. final Set<IComponentType> componentTypeSet = componentRepository
+         * .getInstalledComponentTypes();
+         * 
+         * if (componentTypeSet.size() == 0) { logger.fine(this.getClass().getName() + ".getAvailableComponentTypes:" + " No installed component types found!");
+         * } final String[] componentTypes = new String[componentTypeSet.size()];
+         * 
+         * int counter = 0; for (final IComponentType componentType : componentTypeSet) { componentTypes[counter++] = componentType.getID(); }
+         * 
+         * System.out.println("\n\nin getAvailableComponentTypes: \n\n"); return componentTypes; } });
+         * 
+         * } catch (Exception e) { logger.severe("Error in fetching installed componentType of ComponentRepository: " + e.getMessage()); } return new String[0];
+         */
     }
 
     /**
-     * Returns a formatted XML String of the componentType(s) in the bundle
-     * descriptor.
+     * Returns an xml String containing the component collection (bundle descriptors of every AsTeRiCS component). This function reads the file
+     * {@link BundleManager#COMPONENT_COLLECTION_CACHE_FILE_URI} and returns its contents.
      *
-     * @param bundleDescriptorURL
-     * @return
-     * @throws MalformedURLException
-     * @throws IOException
-     */
-    private String getFormattedBundleDescriptorStringOfComponentTypeId(URL bundleDescriptorURL)
-            throws MalformedURLException, IOException {
-        // Actually we should ask DefaultBundleModelParser to return just the
-        // part that belongs to the requested componentTypeId
-        // e.g. in case of AnalogIn there is also a second component type
-        // LegacyAnalogIn in the bundle_descriptor.xml
-        // Skip it for now because result is unformatted and JavaScript showed
-        // error callback.
-        // String
-        // bundleDescriptorString=DefaultBundleModelParser.instance.getBundleDescriptionOfComponentTypeId(componentTypeId,
-        // bundleDescriptorURI.toURL().openStream());
-
-        String bundle_descriptor = ResourceRegistry.getResourceContentAsString(bundleDescriptorURL.openStream());
-
-        bundle_descriptor = bundle_descriptor.replaceFirst("<\\?xml version=\"[0-9]\\.[0-9]\"\\?>", "");
-        bundle_descriptor = bundle_descriptor.replaceFirst("^(<componentTypes)?^[^>]*>", "");
-        bundle_descriptor = bundle_descriptor.replaceFirst("</componentTypes>", "");
-
-        return bundle_descriptor;
-    }
-
-    /**
-     * Returns an xml String containing the component collection (bundle
-     * descriptors of every AsTeRiCS component). This function searches in the
-     * bin/ARE folder to discover the created components.
-     *
-     * @return an xml string containing all the bundle descriptors (some parts
-     *         of the descriptor are removed) and null if an error has occurred.
+     * @return an xml string containing all the bundle descriptors (some parts of the descriptor are removed) and null if an error has occurred.
      * @throws AREAsapiException
      */
     public String getComponentDescriptorsAsXml() throws AREAsapiException {
         try {
-            return AstericsModelExecutionThreadPool.instance
-                    .execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+            return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
 
-                        @Override
-                        public String call() throws Exception {
-                            logger.fine("\n\ngetComponentDescriptorsAsXml: \n\n");
-                            String response = "";
-
-                            response += "<?xml version=\"1.0\"?>";
-                            response += "<componentTypes xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">";
-
-                            List<Bundle> bundleList = DeploymentManager.instance.getBundleManager()
-                                    .getInstallableBundleList();
-                            for (Bundle bundle : bundleList) {
-                                URL bundleDescriptorURL = bundle
-                                        .getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-                                if (bundleDescriptorURL != null) {
-                                    try {
-                                        response += getFormattedBundleDescriptorStringOfComponentTypeId(
-                                                bundleDescriptorURL);
-                                    } catch (IOException e) {
-                                        // just logging (as
-                                        // 'getBundleDescriptors' function)
-                                        AstericsErrorHandling.instance.getLogger()
-                                                .warning("Could not get AsTeRiCS bundle descriptor for bundle: "
-                                                        + bundle.getBundleId());
-                                    }
-                                }
-                            }
-                            response += "</componentTypes>";                            
-                            return response;
-                        }
-                    });
+                @Override
+                public String call() throws Exception {
+                    logger.fine("getComponentDescriptorsAsXml()");
+                    String response = "";
+                    try {
+                        response = ResourceRegistry.getResourceContentAsString(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI.toURL().openStream());
+                    } catch (IOException e) {
+                        logger.severe("Error reading cached component collection from file <" + BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI
+                                + ">, reason: " + e.getMessage());
+                        // We must rethrow the exception, because we could not read the file.
+                        // @todo think about falling back to providing file without cache.
+                        throw new AREAsapiException(e.getMessage());
+                    }
+                    return response;
+                }
+            });
         } catch (Exception e) {
-            logger.severe("Error in fetching installable bundle list: " + e.getMessage());
+            logger.severe("Error in fetching bundle descriptors: " + e.getMessage());
             throw new AREAsapiException(e.getMessage());
         }
     }
 
     /**
-     * Returns a string encoding the currently deployed model in XML. If there
-     * is no model deployed, then an empty one is returned.
+     * Returns a string encoding the currently deployed model in XML. If there is no model deployed, then an empty one is returned.
      *
-     * @return a string encoding the currently deployed model in XML or an empty
-     *         string if there is no model deployed
+     * @return a string encoding the currently deployed model in XML or an empty string if there is no model deployed
      * @throws AREAsapiException
      */
     public String getModel() throws AREAsapiException {
-    	try {
-    		return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
-    			@Override
-    			public String call() throws Exception {
-    				return DeploymentManager.instance.getCurrentRuntimeModelAsXMLString();
-    			}
-    		});
-    	} catch (Exception e) {
-    		logger.logp(Level.SEVERE,this.getClass().getCanonicalName(),"getModel()",e.getMessage(),e);
-    		throw (new AREAsapiException(e.getMessage()));
-    	}
+        try {
+            return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+                @Override
+                public String call() throws Exception {
+                    return DeploymentManager.instance.getCurrentRuntimeModelAsXMLString();
+                }
+            });
+        } catch (Exception e) {
+            logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "getModel()", e.getMessage(), e);
+            throw (new AREAsapiException(e.getMessage()));
+        }
     }
 
     /**
-     * Returns the name of the currently deployed model. This is the attribute "modelName" from the XML, containing
-     * the full path at creation time, filename and creation timestamp. Therefore it is an ID of the model.
+     * Returns the name of the currently deployed model. This is the attribute "modelName" from the XML, containing the full path at creation time, filename and
+     * creation timestamp. Therefore it is an ID of the model.
      *
      * @return the name (ID) of the currently deployed model or an empty string, if no model is deployed
      */
@@ -287,8 +187,7 @@ public class AsapiSupport {
     }
 
     /**
-     * Returns a string encoding of the model defined in the filename given as
-     * argument. If there is no model, an empty string is returned.
+     * Returns a string encoding of the model defined in the filename given as argument. If there is no model, an empty string is returned.
      *
      * @param filename
      *            the name of the file to be checked
@@ -297,41 +196,37 @@ public class AsapiSupport {
      *             if could not get model from file
      */
     public String getModelFromFile(String filename) throws AREAsapiException {
-    	try {			
-			return ResourceRegistry.getInstance().getResourceContentAsString(filename, RES_TYPE.MODEL);
-		} catch (URISyntaxException | IOException e) {
+        try {
+            return ResourceRegistry.getInstance().getResourceContentAsString(filename, RES_TYPE.MODEL);
+        } catch (URISyntaxException | IOException e) {
             logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "getModelFromFile(String filename)", e.getMessage(), e);
-			throw new AREAsapiException(e.getMessage());
-		}
+            throw new AREAsapiException(e.getMessage());
+        }
     }
 
     /**
      * Returns the state of the current runtime model.
      *
-     * @return - The state of the runtime model. See {@link ModelState} class
-     *         for the available states.
+     * @return - The state of the runtime model. See {@link ModelState} class for the available states.
      */
     public String getModelState() {
-        try{
+        try {
             ModelState modelState = DeploymentManager.instance.getCurrentRuntimeModel().getState();
             return modelState.toString();
-        }catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             return ModelState.STOPPED.toString();
         }
     }
 
     /**
-     * Deploys the model encoded in the specified string into the ARE. An
-     * exception is thrown if the specified string is either not well-defined
-     * XML, or not well defined ASAPI model encoding, or if a validation error
-     * occurred after reading the model.
+     * Deploys the model encoded in the specified string into the ARE. An exception is thrown if the specified string is either not well-defined XML, or not
+     * well defined ASAPI model encoding, or if a validation error occurred after reading the model.
      *
      * @param modelInXML
      *            a string representation in XML of the model to be deployed
      * @throws AREAsapiException
-     *             if the specified string is either not well-defined XML, or
-     *             not well defined ASAPI model encoding, or if a validation
-     *             error occurred after reading the model
+     *             if the specified string is either not well-defined XML, or not well defined ASAPI model encoding, or if a validation error occurred after
+     *             reading the model
      */
     public void deployModel(final String modelInXML) throws AREAsapiException {
         try {
@@ -367,46 +262,25 @@ public class AsapiSupport {
     }
 
     /**
-     * Retrieves the descriptors of AsTeRiCS bundles.
+     * Retrieves the descriptors of AsTeRiCS bundles as a Java List. This function is used by the WebACS when 'Download Component Collection' is clicked.
+     * Internally the contents of {{@link #getComponentDescriptorsAsXml()} is added as first element of the List.
      *
-     * @return A {@link List} of {@link String} which contains all the bundle
-     *         descriptors.
+     * @return A {@link List} of {@link String} which contains all the bundle descriptors.
      *
      * @throws AREAsapiException
      */
-    public List<String> getBundelDescriptors() throws AREAsapiException {
+    public List<String> getBundleDescriptors() throws AREAsapiException {
         try {
-            return AstericsModelExecutionThreadPool.instance
-                    .execAndWaitOnModelExecutorLifecycleThread(new Callable<List<String>>() {
+            return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<List<String>>() {
 
-                        @Override
-                        public List<String> call() throws Exception {
-                            logger.fine("\n\ngetBundelDescriptors\n\n");
-                            List<String> res = new ArrayList<String>();
-
-                            List<Bundle> bundleList = DeploymentManager.instance.getBundleManager()
-                                    .getInstallableBundleList();
-                            for (Bundle bundle : bundleList) {
-                                URL url = bundle.getResource(DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-                                if (url != null) {
-                                    try {
-                                        res.add(ResourceRegistry.getResourceContentAsString(url.openStream()));
-                                    } catch (IOException e) {
-                                        // TODO Auto-generated catch block
-                                        // throw (new
-                                        // AREAsapiException(e.getMessage()));
-                                        // keep it by just logging
-                                        // because we have to assume that
-                                        // several bundles are not supported for
-                                        // the platform
-                                        AstericsErrorHandling.instance.getLogger()
-                                                .warning("Could not get AsTeRICS bundle descriptor for url: " + url);
-                                    }
-                                }
-                            }                            
-                            return res;
-                        }
-                    });
+                @Override
+                public List<String> call() throws Exception {
+                    logger.fine("getBundelDescriptors()");
+                    List<String> res = new ArrayList<String>();
+                    res.add(getComponentDescriptorsAsXml());
+                    return res;
+                }
+            });
         } catch (Exception e) {
             logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "getBundelDescriptors()", e.getMessage(), e);
             throw new AREAsapiException(e.getMessage());
@@ -414,10 +288,8 @@ public class AsapiSupport {
     }
 
     /**
-     * Deploys a new empty model into the ARE. In essence, this is equivalent to
-     * creating an empty model and deploying it using
-     * {@link #deployModel(String)}. This results to freeing all resources in
-     * the ARE (i.e., if a previous model reserved any).
+     * Deploys a new empty model into the ARE. In essence, this is equivalent to creating an empty model and deploying it using {@link #deployModel(String)}.
+     * This results to freeing all resources in the ARE (i.e., if a previous model reserved any).
      *
      * @throws AREAsapiException
      */
@@ -429,34 +301,29 @@ public class AsapiSupport {
      * It starts or resumes the execution of the model.
      *
      * @throws AREAsapiException
-     *             if an exception occurs while validating and starting the
-     *             deployed model.
+     *             if an exception occurs while validating and starting the deployed model.
      */
     public void runModel() throws AREAsapiException {
         AREServices.instance.runModel();
     }
 
     /**
-     * Briefly stops the execution of the model. Its main difference from the
-     * {@link #stopModel()} method is that it does not reset the components
-     * (e.g., the buffers are not cleared).
+     * Briefly stops the execution of the model. Its main difference from the {@link #stopModel()} method is that it does not reset the components (e.g., the
+     * buffers are not cleared).
      *
      * @throws AREAsapiException
-     *             if the deployed model is not started already, or if the
-     *             execution cannot be paused
+     *             if the deployed model is not started already, or if the execution cannot be paused
      */
     public void pauseModel() throws AREAsapiException {
         AREServices.instance.pauseModel();
     }
 
     /**
-     * Stops the execution of the model. Unlike the {@link #pauseModel()}
-     * method, this one resets the components, which means that when the model
-     * is started again it starts from scratch (i.e., with a new state).
+     * Stops the execution of the model. Unlike the {@link #pauseModel()} method, this one resets the components, which means that when the model is started
+     * again it starts from scratch (i.e., with a new state).
      *
      * @throws AREAsapiException
-     *             if the deployed model is not started already, or if the
-     *             execution cannot be stopped
+     *             if the deployed model is not started already, or if the execution cannot be stopped
      */
     public void stopModel() throws AREAsapiException {
         // Delegate to AREServices
@@ -464,8 +331,7 @@ public class AsapiSupport {
     }
 
     /**
-     * Returns an array that includes all existing component instances in the
-     * model (even multiple instances of the same component type).
+     * Returns an array that includes all existing component instances in the model (even multiple instances of the same component type).
      *
      * @return an array of all the IDs of the existing component instances
      */
@@ -482,13 +348,11 @@ public class AsapiSupport {
     }
 
     /**
-     * Returns an array containing the IDs of all the channels that include the
-     * specified component instance either as a source or target.
+     * Returns an array containing the IDs of all the channels that include the specified component instance either as a source or target.
      *
      * @param componentID
      *            the ID of the specified component instance
-     * @return an array containing the IDs of all the channels which include the
-     *         specified component instance
+     * @return an array containing the IDs of all the channels which include the specified component instance
      */
     public String[] getChannels(final String componentID) {
         String[] channels = DeploymentManager.instance.getCurrentRuntimeModel().getChannelsIDs(componentID);
@@ -502,18 +366,15 @@ public class AsapiSupport {
     }
 
     /**
-     * Used to create a new instance of the specified component type, with the
-     * assigned ID. Throws an exception if the specified component type is not
+     * Used to create a new instance of the specified component type, with the assigned ID. Throws an exception if the specified component type is not
      * available, or if the specified ID is already defined.
      *
      * @param componentID
      *            the unique ID to be assigned to the new component instance
      * @param componentType
-     *            describes the component type of the component to be
-     *            instantiated
+     *            describes the component type of the component to be instantiated
      * @throws AREAsapiException
-     *             if the specified component type is not available, or if the
-     *             specified ID is already defined
+     *             if the specified component type is not available, or if the specified ID is already defined
      */
     public void insertComponent(final String componentID, final String componentType) throws AREAsapiException {
         // Should also be called with AstericsModelExecutorThreadPool
@@ -530,8 +391,7 @@ public class AsapiSupport {
         }
         if (isAvailable) {
             boolean alreadyDefined = false;
-            Set<IComponentInstance> componentInstances = DeploymentManager.instance.getCurrentRuntimeModel()
-                    .getComponentInstances();
+            Set<IComponentInstance> componentInstances = DeploymentManager.instance.getCurrentRuntimeModel().getComponentInstances();
 
             for (IComponentInstance ci : componentInstances) {
                 if (ci.getInstanceID().equals(componentID)) {
@@ -544,23 +404,19 @@ public class AsapiSupport {
                 throw new AREAsapiException("Already defined component ID: " + componentID);
             }
             // TODO All OK, insert component
-            DefaultComponentInstance newInstance = new DefaultComponentInstance(componentID, componentType, "",
-                    new LinkedHashSet<IInputPort>(), new LinkedHashSet<IOutputPort>(),
-                    new LinkedHashMap<String, Object>(), new Point(0, 0),
+            DefaultComponentInstance newInstance = new DefaultComponentInstance(componentID, componentType, "", new LinkedHashSet<IInputPort>(),
+                    new LinkedHashSet<IOutputPort>(), new LinkedHashMap<String, Object>(), new Point(0, 0),
                     // false,
                     null, new LinkedHashSet<IInputPort>());
             DeploymentManager.instance.getCurrentRuntimeModel().insertComponent(newInstance);
         } else {
-            logger.warning(this.getClass().getName() + ".insertComponent: " + "not available component type -> "
-                    + componentType + " \n");
+            logger.warning(this.getClass().getName() + ".insertComponent: " + "not available component type -> " + componentType + " \n");
             throw new AREAsapiException("Not available component type: " + componentType);
         }
     }
 
     /**
-     * Used to delete the instance of the component that is specified by the
-     * given ID. Throws an exception if the specified component ID is not
-     * defined.
+     * Used to delete the instance of the component that is specified by the given ID. Throws an exception if the specified component ID is not defined.
      *
      * @param componentID
      *            the ID of the component to be removed
@@ -570,12 +426,10 @@ public class AsapiSupport {
     public void removeComponent(final String componentID) throws AREAsapiException {
         // Should also be called with AstericsModelExecutorThreadPool
 
-        IComponentInstance componentInstance = DeploymentManager.instance.getCurrentRuntimeModel()
-                .getComponentInstance(componentID);
+        IComponentInstance componentInstance = DeploymentManager.instance.getCurrentRuntimeModel().getComponentInstance(componentID);
 
         if (componentInstance == null) {
-            logger.warning(
-                    this.getClass().getName() + ".removeComponent: " + "component " + componentID + " missing \n");
+            logger.warning(this.getClass().getName() + ".removeComponent: " + "component " + componentID + " missing \n");
             throw new AREAsapiException("Component " + componentID + "missing");
         }
 
@@ -592,14 +446,12 @@ public class AsapiSupport {
     }
 
     /**
-     * Returns an array containing the IDs of all the ports (i.e., includes both
-     * input and output ones) of the specified component instance. An exception
-     * is thrown if the specified component instance is not defined.
+     * Returns an array containing the IDs of all the ports (i.e., includes both input and output ones) of the specified component instance. An exception is
+     * thrown if the specified component instance is not defined.
      *
      * @param componentID
      *            the ID of the specified component instance
-     * @return an array (non empty) containing the IDs of all the ports of the
-     *         specified component instance
+     * @return an array (non empty) containing the IDs of all the ports of the specified component instance
      * @throws AREAsapiException
      *             if the specified component instance is not defined
      */
@@ -616,14 +468,12 @@ public class AsapiSupport {
     }
 
     /**
-     * Returns an array containing the IDs of all the input ports of the
-     * specified component instance. An exception is thrown if the specified
-     * component instance is not defined.
+     * Returns an array containing the IDs of all the input ports of the specified component instance. An exception is thrown if the specified component
+     * instance is not defined.
      *
      * @param componentID
      *            the ID of the specified component instance
-     * @return an array (possibly empty) containing the IDs of all the input
-     *         ports of the specified component instance
+     * @return an array (possibly empty) containing the IDs of all the input ports of the specified component instance
      * @throws AREAsapiException
      *             if the specified component instance is not defined
      */
@@ -640,14 +490,12 @@ public class AsapiSupport {
     }
 
     /**
-     * Returns an array containing the IDs of all the output ports of the
-     * specified component instance. An exception is thrown if the specified
-     * component instance is not defined.
+     * Returns an array containing the IDs of all the output ports of the specified component instance. An exception is thrown if the specified component
+     * instance is not defined.
      *
      * @param componentID
      *            the ID of the specified component instance
-     * @return an array (possibly empty) containing the IDs of all the output
-     *         ports of the specified component instance
+     * @return an array (possibly empty) containing the IDs of all the output ports of the specified component instance
      * @throws AREAsapiException
      *             if the specified component instance is not defined
      */
@@ -664,12 +512,9 @@ public class AsapiSupport {
     }
 
     /**
-     * Creates a channel between the specified source and target components and
-     * ports. Throws an exception if the specified ID is already defined, or the
-     * specified component or port IDs is not found, or if the data types of the
-     * ports do not match. Also, an exception is thrown if there is already a
-     * channel connected to the specified input port (only one channel is
-     * allowed per input port).
+     * Creates a channel between the specified source and target components and ports. Throws an exception if the specified ID is already defined, or the
+     * specified component or port IDs is not found, or if the data types of the ports do not match. Also, an exception is thrown if there is already a channel
+     * connected to the specified input port (only one channel is allowed per input port).
      *
      * @param channelID
      *            the ID to be assigned to the formed channel
@@ -682,26 +527,22 @@ public class AsapiSupport {
      * @param targetPortID
      *            the ID of the target port
      * @throws AREAsapiException
-     *             if either of the specified component or port IDs is not
-     *             found, or if the data types of the ports do not match, or if
-     *             there is already a channel connected to the specified input
-     *             port
+     *             if either of the specified component or port IDs is not found, or if the data types of the ports do not match, or if there is already a
+     *             channel connected to the specified input port
      */
-    public void insertChannel(final String channelID, final String sourceComponentID, final String sourcePortID,
-            final String targetComponentID, final String targetPortID) throws AREAsapiException {
+    public void insertChannel(final String channelID, final String sourceComponentID, final String sourcePortID, final String targetComponentID,
+            final String targetPortID) throws AREAsapiException {
         // Should also be called with AstericsModelExecutorThreadPool
 
         IRuntimeModel model = DeploymentManager.instance.getCurrentRuntimeModel();
 
         if (model.getComponentInstance(sourceComponentID) == null) {
-            logger.warning(this.getClass().getName() + ".insertChannel: " + "Undefined source component ID "
-                    + sourceComponentID + "\n");
+            logger.warning(this.getClass().getName() + ".insertChannel: " + "Undefined source component ID " + sourceComponentID + "\n");
             throw new AREAsapiException("Undefined source component ID: " + sourceComponentID);
         }
 
         if (model.getComponentInstance(targetComponentID) == null) {
-            logger.warning(this.getClass().getName() + ".insertChannel: " + "Undefined target component ID "
-                    + targetComponentID + "\n");
+            logger.warning(this.getClass().getName() + ".insertChannel: " + "Undefined target component ID " + targetComponentID + "\n");
             throw new AREAsapiException("Undefined target component ID: " + targetComponentID);
         }
 
@@ -709,39 +550,35 @@ public class AsapiSupport {
         for (IChannel ch : channels) {
 
             if (ch.getChannelID().equals(channelID)) {
-                logger.warning(
-                        this.getClass().getName() + ".insertChannel: " + "Channel " + channelID + " already defined\n");
+                logger.warning(this.getClass().getName() + ".insertChannel: " + "Channel " + channelID + " already defined\n");
                 throw new AREAsapiException("Channel " + channelID + " already defined");
             }
 
             // check if there is already a channel connected to the
             // specified input port (i.e., there is already a channel of which
             // the sourcecomponentinstanceid and sourceportid are the same
-            if (ch.getSourceComponentInstanceID().equals(sourceComponentID)
-                    && model.getPort(sourceComponentID, sourcePortID) != null) {
-                logger.warning(this.getClass().getName() + ".insertChannel: "
-                        + "Input port already connected to a channel with ID " + ch.getChannelID() + "\n");
+            if (ch.getSourceComponentInstanceID().equals(sourceComponentID) && model.getPort(sourceComponentID, sourcePortID) != null) {
+                logger.warning(
+                        this.getClass().getName() + ".insertChannel: " + "Input port already connected to a channel with ID " + ch.getChannelID() + "\n");
                 throw new AREAsapiException("Input port already connected to a channel with ID: " + ch.getChannelID());
             }
 
         }
 
         if (!isOfTheSameType(sourceComponentID, sourcePortID, targetComponentID, targetPortID)) {
-            logger.warning(this.getClass().getName() + ".insertChannel: " + "Icompatible port data types between port "
-                    + sourcePortID + " and " + targetPortID + "\n");
-            throw new AREAsapiException(
-                    "Icompatible port data types between port " + sourcePortID + " and " + targetPortID);
+            logger.warning(this.getClass().getName() + ".insertChannel: " + "Icompatible port data types between port " + sourcePortID + " and " + targetPortID
+                    + "\n");
+            throw new AREAsapiException("Icompatible port data types between port " + sourcePortID + " and " + targetPortID);
         }
 
-        DefaultChannel newChannel = new DefaultChannel("", sourceComponentID, sourcePortID, targetComponentID,
-                targetPortID, channelID, new LinkedHashMap<String, Object>());
+        DefaultChannel newChannel = new DefaultChannel("", sourceComponentID, sourcePortID, targetComponentID, targetPortID, channelID,
+                new LinkedHashMap<String, Object>());
 
         model.insertChannel(newChannel);
 
     }
 
-    private boolean isOfTheSameType(String sourceComponentID, String sourcePortID, String targetComponentID,
-            String targetPortID) {
+    private boolean isOfTheSameType(String sourceComponentID, String sourcePortID, String targetComponentID, String targetPortID) {
 
         String srcPortID, trgPortID, srcType, trgType;
 
@@ -757,10 +594,8 @@ public class AsapiSupport {
                 for (IInputPort ip : inPorts) {
                     trgPortID = ip.getPortType();
                     if (trgPortID.equals(targetPortID)) {
-                        srcType = this.componentRepository.getPortDataType(sourceComponentTypeID, sourcePortID)
-                                .toString();
-                        trgType = this.componentRepository.getPortDataType(targetComponentTypeID, targetPortID)
-                                .toString();
+                        srcType = this.componentRepository.getPortDataType(sourceComponentTypeID, sourcePortID).toString();
+                        trgType = this.componentRepository.getPortDataType(targetComponentTypeID, targetPortID).toString();
 
                         if (srcType != null && trgType != null && srcType.equals(trgType)) {
                             logger.fine(this.getClass().getName() + ".isOfTheSameType: OK\n");
@@ -778,9 +613,7 @@ public class AsapiSupport {
     }
 
     /**
-     * Removes an existing channel between the specified source and target
-     * components and ports. Throws an exception if the specified channel is not
-     * found.
+     * Removes an existing channel between the specified source and target components and ports. Throws an exception if the specified channel is not found.
      *
      * @param channelID
      *            the ID of the channel to be removed
@@ -798,16 +631,14 @@ public class AsapiSupport {
      *
      * @param componentID
      *            the ID of the component to be checked
-     * @return an array (possibly empty) with all the property keys for the
-     *         specified component
+     * @return an array (possibly empty) with all the property keys for the specified component
      * @throws AREAsapiException
      *             if the specified component is not found
      */
     public String[] getComponentPropertyKeys(final String componentID) throws AREAsapiException {
         String[] result = DeploymentManager.instance.getCurrentRuntimeModel().getComponentPropertyKeys(componentID);
         if (result == null) {
-            logger.warning(this.getClass().getName() + "." + "getComponentPropertyKeys: " + "Undefined component "
-                    + componentID + "\n");
+            logger.warning(this.getClass().getName() + "." + "getComponentPropertyKeys: " + "Undefined component " + componentID + "\n");
             throw new AREAsapiException("Undefined component ID: " + componentID);
         } else {
             logger.fine(this.getClass().getName() + "." + "getComponentPropertyKeys: OK\n");
@@ -816,15 +647,13 @@ public class AsapiSupport {
     }
 
     /**
-     * Returns the value of the property with the specified key in the component
-     * with the specified ID as a string.
+     * Returns the value of the property with the specified key in the component with the specified ID as a string.
      *
      * @param componentID
      *            the ID of the component to be checked
      * @param key
      *            the key of the property to be retrieved
-     * @return the value of the property with the specified key in the component
-     *         with the specified ID as a string
+     * @return the value of the property with the specified key in the component with the specified ID as a string
      * @throws AREAsapiException
      *             if the specified component is not found
      */
@@ -838,8 +667,7 @@ public class AsapiSupport {
         }
 
         if (result == null) {
-            logger.warning(this.getClass().getName() + "." + "getComponentProperty: Undefined component " + componentID
-                    + "\n");
+            logger.warning(this.getClass().getName() + "." + "getComponentProperty: Undefined component " + componentID + "\n");
             throw new AREAsapiException("Undefined component ID: " + componentID);
         } else {
             logger.fine(this.getClass().getName() + "." + "getComponentProperty: OK\n");
@@ -848,45 +676,38 @@ public class AsapiSupport {
     }
 
     /**
-     * Sets the property with the specified key in the component with the
-     * specified ID with the given string representation of the value.
+     * Sets the property with the specified key in the component with the specified ID with the given string representation of the value.
      *
      * @param componentID
      *            the ID of the component to be checked
      * @param key
      *            the key of the property to be set
      * @param value
-     *            the string-representation of the value to be set to the
-     *            specified key
-     * @return the previous value of the property with the specified key in the
-     *         component with the specified ID as a string, or an empty string
-     *         if the property was not previously set
+     *            the string-representation of the value to be set to the specified key
+     * @return the previous value of the property with the specified key in the component with the specified ID as a string, or an empty string if the property
+     *         was not previously set
      * @throws AREAsapiException
      *             if the specified component is not found
      */
-    public String setComponentProperty(final String componentID, final String key, final String value)
-            throws AREAsapiException {
+    public String setComponentProperty(final String componentID, final String key, final String value) throws AREAsapiException {
         try {
-            return AstericsModelExecutionThreadPool.instance
-                    .execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+            return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
 
-                        @Override
-                        public String call() throws Exception {
+                @Override
+                public String call() throws Exception {
 
-                            String result = DeploymentManager.instance.getCurrentRuntimeModel()
-                                    .setComponentProperty(componentID, key, value);
-                            DeploymentManager.instance.setComponentProperty(componentID, key, value);
-                            if (result == null) {
-                                logger.warning(this.getClass().getName() + "."
-                                        + "setComponentProperty: Undefined component " + componentID + "\n");
-                                throw new AREAsapiException("Undefined component ID: " + componentID);
-                            } else {
-                                logger.fine(this.getClass().getName() + "." + "setComponentProperty: OK\n");
-                                return result;
-                            }
+                    String result = DeploymentManager.instance.getCurrentRuntimeModel().setComponentProperty(componentID, key, value);
+                    DeploymentManager.instance.setComponentProperty(componentID, key, value);
+                    if (result == null) {
+                        logger.warning(this.getClass().getName() + "." + "setComponentProperty: Undefined component " + componentID + "\n");
+                        throw new AREAsapiException("Undefined component ID: " + componentID);
+                    } else {
+                        logger.fine(this.getClass().getName() + "." + "setComponentProperty: OK\n");
+                        return result;
+                    }
 
-                        }
-                    });
+                }
+            });
         } catch (Exception e) {
             throw (new AREAsapiException(e.getMessage()));
         }
@@ -899,15 +720,13 @@ public class AsapiSupport {
      *            the ID of the port's component
      * @param portID
      *            the ID of the port to be checked
-     * @return an array (possibly empty) with all the property keys for the
-     *         specified port, or null if the specified port is not found
+     * @return an array (possibly empty) with all the property keys for the specified port, or null if the specified port is not found
      * @throws AREAsapiException
      */
     public String[] getPortPropertyKeys(final String componentID, final String portID) throws AREAsapiException {
         String[] result = DeploymentManager.instance.getCurrentRuntimeModel().getPortPropertyKeys(componentID, portID);
         if (result == null) {
-            logger.warning(this.getClass().getName() + "." + "getPortPropertyKeys: Undefined component or port "
-                    + componentID + ", " + portID + "\n");
+            logger.warning(this.getClass().getName() + "." + "getPortPropertyKeys: Undefined component or port " + componentID + ", " + portID + "\n");
             throw new AREAsapiException("Undefined component or port ID: " + componentID + ", " + portID);
         } else {
             logger.fine(this.getClass().getName() + ".getPortPropertyKeys: OK\n");
@@ -916,8 +735,7 @@ public class AsapiSupport {
     }
 
     /**
-     * Returns the value of the property with the specified key of the port with
-     * the specified ID in the component with the specified ID as a string.
+     * Returns the value of the property with the specified key of the port with the specified ID in the component with the specified ID as a string.
      *
      * @param componentID
      *            the ID of the component to be checked
@@ -925,17 +743,14 @@ public class AsapiSupport {
      *            the ID of the port to be checked
      * @param key
      *            the key of the property to be retrieved
-     * @return the value of the property with the specified key in the component
-     *         and port with the specified IDs as a string
+     * @return the value of the property with the specified key in the component and port with the specified IDs as a string
      * @throws AREAsapiException
      *             if the specified component or port are not found
      */
-    public String getPortProperty(final String componentID, final String portID, final String key)
-            throws AREAsapiException {
+    public String getPortProperty(final String componentID, final String portID, final String key) throws AREAsapiException {
         String result = DeploymentManager.instance.getCurrentRuntimeModel().getPortProperty(componentID, portID, key);
         if (result == null) {
-            logger.warning(this.getClass().getName() + "." + "getPortProperty: Undefined component or port "
-                    + componentID + ", " + portID + "\n");
+            logger.warning(this.getClass().getName() + "." + "getPortProperty: Undefined component or port " + componentID + ", " + portID + "\n");
             throw new AREAsapiException("Undefined component or port ID: " + componentID + ", " + portID);
         } else {
             logger.fine(this.getClass().getName() + ".getPortProperty: OK \n");
@@ -944,8 +759,7 @@ public class AsapiSupport {
     }
 
     /**
-     * Sets the property with the specified key in the port with the specified
-     * ID with the given string representation of the value.
+     * Sets the property with the specified key in the port with the specified ID with the given string representation of the value.
      *
      * @param componentID
      *            the ID of the component to be checked
@@ -954,38 +768,30 @@ public class AsapiSupport {
      * @param key
      *            the key of the property to be set
      * @param value
-     *            the string-representation of the value to be set to the
-     *            specified key
-     * @return the previous value of the property with the specified key in the
-     *         component and port with the specified IDs, as a string, or an
-     *         empty string if the property was not previously set
+     *            the string-representation of the value to be set to the specified key
+     * @return the previous value of the property with the specified key in the component and port with the specified IDs, as a string, or an empty string if
+     *         the property was not previously set
      * @throws AREAsapiException
      *             if the specified component or port are not found
      */
-    public String setPortProperty(final String componentID, final String portID, final String key, final String value)
-            throws AREAsapiException {
+    public String setPortProperty(final String componentID, final String portID, final String key, final String value) throws AREAsapiException {
         try {
-            return AstericsModelExecutionThreadPool.instance
-                    .execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+            return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
 
-                        @Override
-                        public String call() throws Exception {
+                @Override
+                public String call() throws Exception {
 
-                            String result = DeploymentManager.instance.getCurrentRuntimeModel()
-                                    .setPortProperty(componentID, portID, key, value);
-                            if (result == null) {
-                                logger.warning(this.getClass().getName() + "."
-                                        + "setPortProperty: Undefined component or port " + componentID + ", " + portID
-                                        + "\n");
-                                throw new AREAsapiException(
-                                        "Undefined component or port ID: " + componentID + ", " + portID);
-                            } else {
-                                logger.fine(this.getClass().getName() + "." + "setPortProperty: OK\n");
-                                return result;
-                            }
+                    String result = DeploymentManager.instance.getCurrentRuntimeModel().setPortProperty(componentID, portID, key, value);
+                    if (result == null) {
+                        logger.warning(this.getClass().getName() + "." + "setPortProperty: Undefined component or port " + componentID + ", " + portID + "\n");
+                        throw new AREAsapiException("Undefined component or port ID: " + componentID + ", " + portID);
+                    } else {
+                        logger.fine(this.getClass().getName() + "." + "setPortProperty: OK\n");
+                        return result;
+                    }
 
-                        }
-                    });
+                }
+            });
         } catch (Exception e) {
             throw (new AREAsapiException(e.getMessage()));
         }
@@ -998,16 +804,14 @@ public class AsapiSupport {
      *
      * @param channelID
      *            the ID of the channel to be checked
-     * @return an array (possibly empty) with all the property keys for the
-     *         specified channel
+     * @return an array (possibly empty) with all the property keys for the specified channel
      * @throws AREAsapiException
      *             if the specified channel is not found
      */
     public String[] getChannelPropertyKeys(final String channelID) throws AREAsapiException {
         String[] result = DeploymentManager.instance.getCurrentRuntimeModel().getChannelPropertyKeys(channelID);
         if (result == null) {
-            logger.warning(
-                    this.getClass().getName() + "." + "getChannelPropertyKeys: Undefined channel " + channelID + "\n");
+            logger.warning(this.getClass().getName() + "." + "getChannelPropertyKeys: Undefined channel " + channelID + "\n");
             throw new AREAsapiException("Undefined channel ID: " + channelID);
         } else {
             logger.fine(this.getClass().getName() + "." + "getChannelPropertyKeys: OK\n");
@@ -1016,23 +820,19 @@ public class AsapiSupport {
     }
 
     /**
-     * Returns the value of the property with the specified key in the channel
-     * with the specified ID as a string.
+     * Returns the value of the property with the specified key in the channel with the specified ID as a string.
      *
      * @param channelID
      *            the ID of the channel to be checked
      * @param key
      *            the key of the property to be retrieved
-     * @return the value of the property with the specified key in the channel
-     *         with the specified ID as a string, or null if the specified
-     *         channel is not found
+     * @return the value of the property with the specified key in the channel with the specified ID as a string, or null if the specified channel is not found
      * @throws AREAsapiException
      */
     public String getChannelProperty(final String channelID, final String key) throws AREAsapiException {
         String result = DeploymentManager.instance.getCurrentRuntimeModel().getChannelProperty(channelID, key);
         if (result == null) {
-            logger.warning(
-                    this.getClass().getName() + "." + "getChannelProperty: Undefined channel " + channelID + "\n");
+            logger.warning(this.getClass().getName() + "." + "getChannelProperty: Undefined channel " + channelID + "\n");
             throw new AREAsapiException("Undefined channel ID: " + channelID);
         } else {
             logger.fine(this.getClass().getName() + ".getChannelProperty: OK\n");
@@ -1041,73 +841,58 @@ public class AsapiSupport {
     }
 
     /**
-     * Sets the property with the specified key in the channel with the
-     * specified ID with the given string representation of the value.
+     * Sets the property with the specified key in the channel with the specified ID with the given string representation of the value.
      *
      * @param channelID
      *            the ID of the channel to be checked
      * @param key
      *            the key of the property to be set
      * @param value
-     *            the string-representation of the value to be set to the
-     *            specified key
-     * @return the previous value of the property with the specified key in the
-     *         channel with the specified ID as a string, or an empty string if
-     *         the property was not previously set
+     *            the string-representation of the value to be set to the specified key
+     * @return the previous value of the property with the specified key in the channel with the specified ID as a string, or an empty string if the property
+     *         was not previously set
      * @throws AREAsapiException
      *             if the specified channel is not found
      */
-    public String setChannelProperty(final String channelID, final String key, final String value)
-            throws AREAsapiException {
+    public String setChannelProperty(final String channelID, final String key, final String value) throws AREAsapiException {
         try {
-            return AstericsModelExecutionThreadPool.instance
-                    .execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
+            return AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<String>() {
 
-                        @Override
-                        public String call() throws Exception {
+                @Override
+                public String call() throws Exception {
 
-                            String result = DeploymentManager.instance.getCurrentRuntimeModel()
-                                    .setChannelProperty(channelID, key, value);
-                            if (result == null) {
-                                logger.warning(this.getClass().getName() + "."
-                                        + "setChannelProperty: Undefined channel " + channelID + "\n");
-                                throw new AREAsapiException("Undefined channel ID: " + channelID);
-                            } else {
-                                logger.fine(this.getClass().getName() + ".setChannelProperty: OK\n");
-                                return result;
-                            }
-                        }
-                    });
+                    String result = DeploymentManager.instance.getCurrentRuntimeModel().setChannelProperty(channelID, key, value);
+                    if (result == null) {
+                        logger.warning(this.getClass().getName() + "." + "setChannelProperty: Undefined channel " + channelID + "\n");
+                        throw new AREAsapiException("Undefined channel ID: " + channelID);
+                    } else {
+                        logger.fine(this.getClass().getName() + ".setChannelProperty: OK\n");
+                        return result;
+                    }
+                }
+            });
         } catch (Exception e) {
             throw (new AREAsapiException(e.getMessage()));
         }
     }
 
     /**
-     * Registers a remote consumer to the data produced by the specified source
-     * component and the corresponding output port. In the background, the ARE
-     * forms a proxy component that is connected to the specified component and
-     * port, which is utilized to communicate the data to the corresponding
-     * remote consumer. This is similar to the proxy-based approach used in Java
-     * RMI (see
-     * <a href="http://java.sun.com/developer/technicalArticles/RMI/rmi"> http:/
-     * /java.sun.com/developer/technicalArticles/RMI/rmi</a> and <a href=
-     * "http://today.java.net/article/2004/05/28/rmi-dynamic-proxies-and-evolution-deployment">
-     * http://today.java.net/article/2004/05/28/rmi-dynamic-proxies-and-
-     * evolution-deployment </a>).
+     * Registers a remote consumer to the data produced by the specified source component and the corresponding output port. In the background, the ARE forms a
+     * proxy component that is connected to the specified component and port, which is utilized to communicate the data to the corresponding remote consumer.
+     * This is similar to the proxy-based approach used in Java RMI (see <a href="http://java.sun.com/developer/technicalArticles/RMI/rmi"> http:/
+     * /java.sun.com/developer/technicalArticles/RMI/rmi</a> and
+     * <a href= "http://today.java.net/article/2004/05/28/rmi-dynamic-proxies-and-evolution-deployment">
+     * http://today.java.net/article/2004/05/28/rmi-dynamic-proxies-and- evolution-deployment </a>).
      *
      * @param sourceComponentID
      *            the ID of the source component instance
      * @param sourceOutputPortID
-     *            the ID of the source output port from where data will be
-     *            communicated
-     * @return remote consumer ID - a unique ID used to select the data received
-     *         for this link
+     *            the ID of the source output port from where data will be communicated
+     * @return remote consumer ID - a unique ID used to select the data received for this link
      * @throws AREAsapiException
      *             if the specified component ID or port ID are not defined
      */
-    public String registerRemoteConsumer(final String sourceComponentID, final String sourceOutputPortID)
-            throws AREAsapiException {
+    public String registerRemoteConsumer(final String sourceComponentID, final String sourceOutputPortID) throws AREAsapiException {
         // TODO
         return null;
         // return
@@ -1128,25 +913,19 @@ public class AsapiSupport {
     }
 
     /**
-     * Registers a remote producer to provide data to the specified target
-     * component and the corresponding input port. In the background, the ARE
-     * forms a proxy component that is connected to the specified component and
-     * port, which is utilized to receive the data from the corresponding remote
-     * producer.
+     * Registers a remote producer to provide data to the specified target component and the corresponding input port. In the background, the ARE forms a proxy
+     * component that is connected to the specified component and port, which is utilized to receive the data from the corresponding remote producer.
      *
      * @param targetComponentID
      *            the ID of the target component instance
      * @param targetInputPortID
-     *            the ID of the target input port where data will be
-     *            communicated to
+     *            the ID of the target input port where data will be communicated to
      * @return remote producer ID - a unique ID used to mark the data sent
      * @throws AREAsapiException
-     *             if the specified component ID or port ID are not found, or if
-     *             the input port already has an assigned channel
+     *             if the specified component ID or port ID are not found, or if the input port already has an assigned channel
      * @see #registerRemoteConsumer(String, String)
      */
-    public String registerRemoteProducer(final String targetComponentID, final String targetInputPortID)
-            throws AREAsapiException {
+    public String registerRemoteProducer(final String targetComponentID, final String targetInputPortID) throws AREAsapiException {
         // todo
         return null;
     }
@@ -1164,51 +943,41 @@ public class AsapiSupport {
     }
 
     /**
-     * This method is used to poll (i.e., retrieve) data from the specified
-     * source component and its corresponding output port. Just one tuple of
-     * data is returned. The actual amount of data (i.e., in bytes) depends on
-     * the type of the port (it is the responsibility of the developer to
-     * appropriately deal with the byte array size).
+     * This method is used to poll (i.e., retrieve) data from the specified source component and its corresponding output port. Just one tuple of data is
+     * returned. The actual amount of data (i.e., in bytes) depends on the type of the port (it is the responsibility of the developer to appropriately deal
+     * with the byte array size).
      *
      * @param sourceComponentID
      *            the ID of the source component
      * @param sourceOutputPortID
      *            the ID of the corresponding output port
-     * @return an array of bytes that includes the requested tuple of data (can
-     *         be null if no data were produced)
+     * @return an array of bytes that includes the requested tuple of data (can be null if no data were produced)
      * @throws AREAsapiException
      *             if the specified component ID or port ID are not available
      */
     public byte[] pollData(final String sourceComponentID, final String sourceOutputPortID) throws AREAsapiException {
         /*
-         * byte[] result =
-         * this.DeploymentManager.instance.getCurrentRuntimeModel().
-         * pollData(sourceComponentID, sourceOutputPortID); if (result == null)
-         * throw new AsapiException ("Undefined component or port ID: "
-         * +sourceComponentID+", "+sourceOutputPortID); else return result;
+         * byte[] result = this.DeploymentManager.instance.getCurrentRuntimeModel(). pollData(sourceComponentID, sourceOutputPortID); if (result == null) throw
+         * new AsapiException ("Undefined component or port ID: " +sourceComponentID+", "+sourceOutputPortID); else return result;
          */
         return null;
     }
 
     /**
-     * This method is used to pull (i.e., send) data to the specified target
-     * component and its corresponding input port. Just one tuple of data is
-     * communicated. The actual amount of data (i.e., in bytes) depends on the
-     * type of the port (it is the responsibility of the developer to
-     * appropriately deal with the byte array size).
+     * This method is used to pull (i.e., send) data to the specified target component and its corresponding input port. Just one tuple of data is communicated.
+     * The actual amount of data (i.e., in bytes) depends on the type of the port (it is the responsibility of the developer to appropriately deal with the byte
+     * array size).
      *
      * @param targetComponentID
      *            the ID of the target component
      * @param targetInputPortID
      *            the ID of the corresponding input port
      * @param data
-     *            an array of bytes that includes the communicated tuple of data
-     *            (cannot be null)
+     *            an array of bytes that includes the communicated tuple of data (cannot be null)
      * @throws AREAsapiException
      *             if the specified component ID or port ID are not available
      */
-    public void sendData(final String targetComponentID, final String targetInputPortID, final byte[] data)
-            throws AREAsapiException {
+    public void sendData(final String targetComponentID, final String targetInputPortID, final byte[] data) throws AREAsapiException {
         try {
             AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<Void>() {
                 @Override
@@ -1226,8 +995,7 @@ public class AsapiSupport {
                     }
                     if (model == null || instance == null || inputPort == null) {
                         throw new AREAsapiException(
-                                MessageFormat.format("send data failed! model: {0}, instance: {1}, inputPort: {2}",
-                                        model, instance, inputPort));
+                                MessageFormat.format("send data failed! model: {0}, instance: {1}, inputPort: {2}", model, instance, inputPort));
                     }
                     // convert to target datatype
                     DataType targetDatatype = null;
@@ -1237,13 +1005,12 @@ public class AsapiSupport {
                         }
                     }
                     if (targetDatatype == null) {
-                        throw new AREAsapiException(MessageFormat.format(
-                                "send data failed! model: {0}, instance: {1}, inputPort: {2}. Could not determine datatype of inputPort.",
-                                model, instance, inputPort));
+                        throw new AREAsapiException(
+                                MessageFormat.format("send data failed! model: {0}, instance: {1}, inputPort: {2}. Could not determine datatype of inputPort.",
+                                        model, instance, inputPort));
                     }
                     if (!DataType.STRING.equals(targetDatatype)) {
-                        String conversion = ConversionUtils.getDataTypeConversionString(DataType.STRING,
-                                targetDatatype);
+                        String conversion = ConversionUtils.getDataTypeConversionString(DataType.STRING, targetDatatype);
                         sendData = ConversionUtils.convertData(data, conversion);
                     }
 
@@ -1268,12 +1035,10 @@ public class AsapiSupport {
     }
 
     /**
-     * Registers an asynchronous log listener to the ARE platform. Returns an ID
-     * which is used to identify the data packets concerning the registered log
+     * Registers an asynchronous log listener to the ARE platform. Returns an ID which is used to identify the data packets concerning the registered log
      * messages.
      *
-     * @return an ID which is used to identify the data packets concerning the
-     *         registered log messages
+     * @return an ID which is used to identify the data packets concerning the registered log messages
      */
     public String registerLogListener() {
         // todo
@@ -1290,10 +1055,8 @@ public class AsapiSupport {
         // todo
     }
 
-
     /**
-     * Deploys the model associated to the specified filename. The file should
-     * be already available on the ARE file system.
+     * Deploys the model associated to the specified filename. The file should be already available on the ARE file system.
      *
      * @param filename
      *            the filename of the model to be deployed
@@ -1328,39 +1091,37 @@ public class AsapiSupport {
      */
     public boolean deleteModelFile(String filename) throws AREAsapiException {
         File f;
-		try {
-			f = ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(filename, RES_TYPE.MODEL));
+        try {
+            f = ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(filename, RES_TYPE.MODEL));
 
-	        // Make sure the file or directory exists and isn't write protected
-	        if (!f.exists()) {
-	            logger.warning(this.getClass().getName() + ".deleteModelFile: " + "no such file or directory: " + filename);
-	            throw new AREAsapiException("deleteModelFile: no such file or directory: " + filename);
-	        }
+            // Make sure the file or directory exists and isn't write protected
+            if (!f.exists()) {
+                logger.warning(this.getClass().getName() + ".deleteModelFile: " + "no such file or directory: " + filename);
+                throw new AREAsapiException("deleteModelFile: no such file or directory: " + filename);
+            }
 
-	        if (!f.canWrite()) {
-	            logger.warning(
-	                    this.getClass().getName() + ".deleteModelFile: " + "file " + filename + " write protected\n");
-	            throw new AREAsapiException("Delete: write protected: " + filename);
-	        }
+            if (!f.canWrite()) {
+                logger.warning(this.getClass().getName() + ".deleteModelFile: " + "file " + filename + " write protected\n");
+                throw new AREAsapiException("Delete: write protected: " + filename);
+            }
 
-	        // Attempt to delete it
-	        if (f.delete()) {
-	            logger.fine(this.getClass().getName() + ".deleteModelFile: OK\n");
-	            return true;
-	        } else {
-	            logger.warning(this.getClass().getName() + ".deleteModelFile: " + "Failed to delete file " + filename);
-	            return false;
-	        }
-		} catch (URISyntaxException e) {
-			logger.logp(Level.SEVERE,this.getClass().getCanonicalName(),"deleteModelFile(String)",e.getMessage(),e);
-			throw new AREAsapiException("Could not delete model file");
-		}
+            // Attempt to delete it
+            if (f.delete()) {
+                logger.fine(this.getClass().getName() + ".deleteModelFile: OK\n");
+                return true;
+            } else {
+                logger.warning(this.getClass().getName() + ".deleteModelFile: " + "Failed to delete file " + filename);
+                return false;
+            }
+        } catch (URISyntaxException e) {
+            logger.logp(Level.SEVERE, this.getClass().getCanonicalName(), "deleteModelFile(String)", e.getMessage(), e);
+            throw new AREAsapiException("Could not delete model file");
+        }
 
     }
 
     /**
-     * Returns a list with all stored models (all models in the directory
-     * MODELS_FOLDER except default_model.xml)
+     * Returns a list with all stored models (all models in the directory MODELS_FOLDER except default_model.xml)
      *
      * @return a list with all stored models
      * @throws AREAsapiException
@@ -1375,7 +1136,8 @@ public class AsapiSupport {
      * stores data with UTF-8 to folder ARE/data
      *
      * @param data
-     * @param resourcePath resourcePath of the data to store to.
+     * @param resourcePath
+     *            resourcePath of the data to store to.
      * @throws AREAsapiException
      */
     public void storeData(String data, String resourcePath) throws AREAsapiException {
@@ -1429,21 +1191,20 @@ public class AsapiSupport {
      * Returns the log file as a string.
      * 
      * @return the log file as a string.
-     * @throws AREAsapiException 
+     * @throws AREAsapiException
      */
     public String getLogFile() throws AREAsapiException {
         try {
             return ResourceRegistry.getInstance().getResourceContentAsString("asterics_logger.log", RES_TYPE.TMP);
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
-            logger.warning("Could not fetch log file: "+e.getMessage());
+            logger.warning("Could not fetch log file: " + e.getMessage());
             throw new AREAsapiException(e.getMessage());
         }
     }
 
     /**
-     * It is called on startup by the middleware in order to autostart a default
-     * model without the need of pressing deploy and start model first.
+     * It is called on startup by the middleware in order to autostart a default model without the need of pressing deploy and start model first.
      *
      * @param startModel
      *            TODO
@@ -1455,8 +1216,7 @@ public class AsapiSupport {
             try {
                 // try to find autostart model
                 // First look for a model file names autostart.acs
-                File autostartModel = ResourceRegistry
-                        .toFile(ResourceRegistry.getInstance().getResource(AUTO_START_MODEL, RES_TYPE.MODEL));
+                File autostartModel = ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(AUTO_START_MODEL, RES_TYPE.MODEL));
                 if (autostartModel.exists()) {
                     startModel = autostartModel.getPath();
                 } else {
@@ -1467,14 +1227,12 @@ public class AsapiSupport {
                         startModel = ResourceRegistry.toString(models.get(0));
                     } else {
                         throw new AREAsapiException(
-                                "No model found for autostart. To define autostart model, either\n\ncreate model "
-                                        + ResourceRegistry.MODELS_FOLDER
+                                "No model found for autostart. To define autostart model, either\n\ncreate model " + ResourceRegistry.MODELS_FOLDER
                                         + "autostart.acs or\nprovide model name as command line argument or\nopen model manually in the ARE GUI.");
                     }
                 }
             } catch (URISyntaxException e) {
-                throw new AREAsapiException("Error during autostart of model:\n" + e.getMessage()
-                        + "\nTry to open model manually in the ARE GUI.");
+                throw new AREAsapiException("Error during autostart of model:\n" + e.getMessage() + "\nTry to open model manually in the ARE GUI.");
             }
         }
         deployFile(startModel);
@@ -1482,8 +1240,7 @@ public class AsapiSupport {
     }
 
     public List<String> getRuntimePropertyList(String componentID, String key) throws AREAsapiException {
-        Collection<IRuntimeComponentInstance> componentInstances = DeploymentManager.instance
-                .getComponentRuntimeInstances();
+        Collection<IRuntimeComponentInstance> componentInstances = DeploymentManager.instance.getComponentRuntimeInstances();
         List<String> list = new ArrayList<String>();
         for (IRuntimeComponentInstance ci : componentInstances) {
             String id = DeploymentManager.instance.getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(ci);

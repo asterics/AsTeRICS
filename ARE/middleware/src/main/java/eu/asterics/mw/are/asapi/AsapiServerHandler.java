@@ -635,7 +635,7 @@ public class AsapiServerHandler implements AsapiServer.Iface {
         // System.out.println("*** GET BUNDLE DESCRIPTORS");
 
         try {
-            return asapiSupport.getBundelDescriptors();
+            return asapiSupport.getBundleDescriptors();
 
         } catch (AREAsapiException e) {
             logger.warning(this.getClass().getName() + "."

@@ -68,7 +68,6 @@ public class TestResourceRegistry {
         modelValidator = new ModelValidator();
         deploymentModelParser = DefaultDeploymentModelParser.create(modelValidator);
         bundleManager = new BundleManager(modelValidator);
-        bundleManager.createComponentListCache();
         DeploymentManager.instance.setBundleManager(bundleManager);
     }
 
@@ -170,6 +169,13 @@ public class TestResourceRegistry {
             }
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.ANY, null, null);
             assertTrue(ResourceRegistry.equalsNormalizedURIs(new File(testURIString).toURI(), actual));
+            
+            //Test webserver document root URI
+            testURIString = "index.html";
+            actual = areBaseURI.resolve("data/webservice/index.html");
+            assertTrue(ResourceRegistry.equalsNormalizedURIs(
+            		ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.WEB_DOCUMENT_ROOT, null, null), actual));
+
 
             // System.out.println("testGetResource: "+arebaseURI);
         } catch (URISyntaxException e) {

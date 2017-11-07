@@ -884,7 +884,7 @@ public class RestServer {
         String errorMessage;
 
         try {
-            List<String> array = asapiSupport.getBundelDescriptors();
+            List<String> array = asapiSupport.getBundleDescriptors();
             response = ObjectTransformation.objectToJSON(Arrays.asList(array));
             if (response.equals("")) {
                 response = "{'error':'Could not retrieve the components descriptors (Object serialization failure)'}";
