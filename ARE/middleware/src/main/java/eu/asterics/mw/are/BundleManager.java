@@ -84,6 +84,7 @@ import eu.asterics.mw.utils.OSUtils;
  */
 
 public class BundleManager implements BundleListener, FrameworkListener {
+    public static final String MESSAGE_DIGEST_ALGORITHM = "MD5";
     private static final String CACHING_PLUGIN_JARS_HASH_TXT = "caching/pluginJarsHash.txt";
     private static final String SERVICES_FILES_DELIM = ";";
     static String PROFILE_LOCATION = new File(System.getProperty("osgi.configuration.area", ResourceRegistry.PROFILE_FOLDER)).getName();
@@ -152,11 +153,11 @@ public class BundleManager implements BundleListener, FrameworkListener {
             LOADER_COMPONENTLIST_CACHE_FILE_URI = ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION, RES_TYPE.PROFILE);
 
             if (ResourceRegistry.getInstance().isOSGIMode()) {
-                String md5Sum = generateMDSum();
-                if (bundleChangeDetected(md5Sum) || cacheFileMissing()) {
+                String mdSum = generateMDSum();
+                if (bundleChangeDetected(mdSum) || cacheFileMissing()) {
                     generateCacheFiles();
                 }
-                storeMDSum(md5Sum);
+                storeMDSum(mdSum);
             }
             initComponentTypeIDToJarNameMap();
             logger.fine("BundleManager initialization finished");
@@ -207,7 +208,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
     }
 
     /**
-     * Compares the given md5sum hex string and checks it for equality with a newly created md5 hash string of all plugin jars.
+     * Compares the given mdsum hex string and checks it for equality with a newly created message digest hash string of all plugin jars.
      * 
      * @param mdSum
      * @return
@@ -232,14 +233,14 @@ public class BundleManager implements BundleListener, FrameworkListener {
     }
 
     /**
-     * Stores the given MD5 hash hex string to a file.
+     * Stores the given MD hash hex string to a file.
      * 
      * @param mdSum
      * @throws URISyntaxException
      * @throws IOException
      */
     private void storeMDSum(String mdSum) throws URISyntaxException, IOException {
-        logger.fine("Storing MD5 sum...");
+        logger.fine("Storing MD sum...");
 
         if (mdSum == null) {
             logger.severe("Given message digest sum is null --> won't store it");
@@ -274,9 +275,9 @@ public class BundleManager implements BundleListener, FrameworkListener {
      * @throws IOException
      */
     private String generateMDSum() throws NoSuchAlgorithmException, MalformedURLException, IOException {
-        logger.fine("Generating MD sum of bundle jars....");
+        logger.fine("Generating MD sum of bundle jars using algorithm "+MESSAGE_DIGEST_ALGORITHM);
         long timeStart = System.currentTimeMillis();
-        MessageDigest mdInstance = MessageDigest.getInstance("MD5");
+        MessageDigest mdInstance = MessageDigest.getInstance(MESSAGE_DIGEST_ALGORITHM);
         List<URI> compJarList = ResourceRegistry.getInstance().getComponentJarList(false);
 
         for (URI compJarURI : compJarList) {
@@ -294,7 +295,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
         long timeEnd = System.currentTimeMillis();
         String mdHexString = Hex.encodeHexString(mdOfJar);
 
-        logger.fine(MessageFormat.format("Calculated message digest hash of all {0} bundle jars in {1} ms. MD5Hex: {2}", compJarList.size(),
+        logger.fine(MessageFormat.format("Calculated message digest hash of all {0} bundle jars in {1} ms. MDHex: {2}", compJarList.size(),
                 timeEnd - timeStart, mdHexString));
         return mdHexString;
     }
