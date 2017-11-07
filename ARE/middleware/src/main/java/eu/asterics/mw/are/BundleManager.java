@@ -90,7 +90,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
     private static final String CACHING_PLUGIN_JARS_HASH_TXT = "caching/pluginJarsHash.txt";
     private static final String SERVICES_FILES_DELIM = ";";
     static String PROFILE_LOCATION = new File(System.getProperty("osgi.configuration.area", ResourceRegistry.PROFILE_FOLDER)).getName();
-    public static String LOADER_COMPONENTLIST_LOCATION = "loader_componentlist.ini";
+    public static String LOADER_COMPONENTLIST_LOCATION = "caching/loader_componentlist.ini";
     static String SERVICES_FILES = System.getProperty("eu.asterics.ARE.ServicesFiles", "services.ini");
 
     // define URIs for diverse cache files
@@ -155,7 +155,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
 
         try {
             COMPONENT_COLLECTION_CACHE_FILE_URI = ResourceRegistry.getInstance().getResource(DEFAULT_COMPONENT_COLLECTION_ABD, RES_TYPE.WEB_DOCUMENT_ROOT);
-            LOADER_COMPONENTLIST_CACHE_FILE_URI = ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION, RES_TYPE.PROFILE);
+            LOADER_COMPONENTLIST_CACHE_FILE_URI = ResourceRegistry.getInstance().getResource(LOADER_COMPONENTLIST_LOCATION, RES_TYPE.TMP);
 
             if (ResourceRegistry.getInstance().isOSGIMode()) {
                 String mdSum = generateMDSum();
