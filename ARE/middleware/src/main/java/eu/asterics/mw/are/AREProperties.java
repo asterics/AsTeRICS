@@ -50,10 +50,6 @@ public class AREProperties extends Properties {
 
     private AREProperties() {
         logger = AstericsErrorHandling.instance.getLogger();
-        /*
-         * try (FileInputStream in = new FileInputStream(PROPERTY_FILENAME);) { load(in); } catch (IOException e) { logger.info("The file " + PROPERTY_FILENAME
-         * + " does not exist, it will be generated automatically."); }
-         */
         try {
             load(ResourceRegistry.getInstance().getResourceInputStream(ARE_PROPERTIES_NAME, RES_TYPE.ANY));
         } catch (MalformedURLException | URISyntaxException e) {
@@ -113,11 +109,6 @@ public class AREProperties extends Properties {
         } catch (URISyntaxException | IOException e) {
             logger.logp(Level.SEVERE, this.getClass().getName(), "storeProperties", "Could not store properties file: " + e.getMessage(), e);
         }
-        /*
-         * try (FileOutputStream out = new FileOutputStream(PROPERTY_FILENAME);) { store(out, "ARE Properties");
-         * 
-         * } catch (IOException e) { logger.log(Level.SEVERE, e.getMessage(), e); }
-         */
     }
 
     /**
