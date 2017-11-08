@@ -39,7 +39,6 @@ import java.util.logging.Logger;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.ResourceRegistry;
 import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
-import javafx.util.converter.DateStringConverter;
 
 public class AREProperties extends Properties {
     private static final String ARE_PROPERTIES_NAME = "areProperties";
