@@ -286,7 +286,7 @@
 	</target>
 
 	<!-- call APE tool from build script to copy AsTeRICS resources to ${build.merged.ARE} -->
-	<target name="APE-copy-release" description="Build APE project for deployment: The result can be found in the build/merged folder.">
+	<target name="APE-copy-release" description="Build APE project for deployment: The result can be found in the build/merged folder." depends="cleanup, setup-staging-area, build-dependencies-release">
 		<java jar="${APE.baseURI}/APE.jar" fork="true" failonerror="true">
 		    <!-- 
 			If the user manually overrides property values with -D on the command line this is only allowed for the following properties.
@@ -313,6 +313,12 @@
 	<!-- Build dependencies and APE project. -->
 	<target name="build-all" depends="build-dependencies,APE-copy" description="Builds the dependencies and then executes APE-copy.">
     </target>
+
+	<!-- build ARE if the ARE.baseURI points to an Astercis sourcecode repository -->
+	<target name="build-dependencies-release" description="Builds an AsTeRICS snapshot, if ARE.baseURI points to one." if="ARE.baseURI.is.snapshot">
+		<!-- Ensure to call buildAll-release target of AsTERICS framework -->
+		<subant target="buildAll-release" buildpath="${ARE.baseURI}/../../ARE/"/>		
+    </target>	
 
 	<target name="run" depends="build-all" description="Peforms build-all and starts the ARE.">
 		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
