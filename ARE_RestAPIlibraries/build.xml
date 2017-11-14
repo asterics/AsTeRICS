@@ -3,7 +3,7 @@
 	<property name="runtime" location="../bin/ARE"/>
 
 	<target name="clean">
-		<delete includeemptydirs="true">
+		<delete includeemptydirs="true" failonerror="false">
 		    <fileset dir="${runtime}/data/webservice">
 				<include name="AsTeRICS_rest_API.html"/>
 			</fileset>
@@ -12,7 +12,7 @@
 	</target>
 
 	<target name="buildAll" depends="buildAllNoClean"/>
-	<target name="buildAll-release" depends="buildAllNoClean"/>
+	<target name="buildAll-release" depends="clean, buildAllNoClean"/>
 	<target name="buildAllNoClean">
 		<copy todir="${runtime}/data/webservice">
 		    <fileset dir=".">
