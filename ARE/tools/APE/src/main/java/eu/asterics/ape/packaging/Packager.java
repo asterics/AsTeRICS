@@ -177,6 +177,19 @@ public class Packager {
 			} else {
 				Notifier.info("Don't copy any data files");
 			}
+			
+			
+            APE_WEB_COPY_MODE webCopyMode = APE_WEB_COPY_MODE.valueOf(
+                    apeProperties.getProperty(P_APE_WEB_COPY_MODE, APE_WEB_COPY_MODE.ALL.toString()).toUpperCase());
+            Notifier.info("ApeProp[" + P_APE_WEB_COPY_MODE + "]=" + webCopyMode);
+
+            if (APE_WEB_COPY_MODE.ALL.equals(webCopyMode)) {			
+                Notifier.info("Copying ALL web files of "+ResourceRegistry.getInstance().getResource("/", RES_TYPE.WEB_DOCUMENT_ROOT));
+                uriList = ResourceRegistry.getInstance().getWebDocumentRootContentList(false);
+                copyURIs(uriList, buildMergedAREDir);
+            } else {
+                Notifier.info("Don't copy web files of "+ ResourceRegistry.getInstance().getResource("/", RES_TYPE.WEB_DOCUMENT_ROOT));
+            }
 
 			uriList = ResourceRegistry.getInstance().getLicenseURIsofAsTeRICSJarURIs(allJarURIs);
 			copyURIs(uriList, buildMergedAREDir);

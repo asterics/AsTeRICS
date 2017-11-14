@@ -43,6 +43,7 @@ public class APEProperties extends Properties {
     public static final String P_APE_PROJECT_DIR = "APE.projectDir";
     public static final String P_APE_BUILD_DIR = "APE.buildDir";
     public static final String P_APE_DATA_COPY_MODE = "APE.dataCopyMode";
+    public static final String P_APE_WEB_COPY_MODE = "APE.webCopyMode";
     public static final String P_APE_LOG_LEVEL = "APE.logLevel";
     public static final String P_APE_BUILD_MODE = "APE.buildMode";    
 
@@ -54,6 +55,7 @@ public class APEProperties extends Properties {
     public static String DEFAULT_BUILD_DIR = "build/";
     public static String DEFAULT_APE_LOG_LEVEL = "INFO";
     public static APE_BUILD_MODE DEFAULT_APE_BUILD_MODE = APE_BUILD_MODE.RELEASE;
+    public static APE_WEB_COPY_MODE DEFAULT_WEB_COPY_MODE=APE_WEB_COPY_MODE.ALL;
 
     public static URI APE_BASE_URI = null;
     // public static URI APE_PROJECT_DIR_URI=null;
@@ -79,6 +81,10 @@ public class APEProperties extends Properties {
      */
     public enum APE_BUILD_MODE {
     	DEVEL, RELEASE
+    }
+    
+    public enum APE_WEB_COPY_MODE {
+        ALL,NONE
     }
 
     public APEProperties() {
