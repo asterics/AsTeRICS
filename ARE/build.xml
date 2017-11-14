@@ -6,12 +6,9 @@
   <property name="osgi" location="osgi"/>
 	
 	<target name="cleanProfile">
-	    <delete dir =  "${runtime}/profile/org.eclipse.osgi"/>
-		<!--
-	    <delete file =  "${runtime}/profile/loader_componentlist.ini"/>
-		<delete file =  "${runtime}/tmp/installable_bundle_list.txt"/>
-		<delete file =  "${runtime}/data/webservice/componentCollections/defaultComponentCollection.abd"/>
-		-->
+	    <delete dir =  "${runtime}/profile/org.eclipse.osgi" failonerror="false"/>
+	    <delete dir =  "${runtime}/tmp/caching/" failonerror="false"/>
+		<delete dir =  "${runtime}/data/webservice/componentCollections/" failonerror="false"/>
 	</target>
 
 	<target name="buildARE" depends="cleanProfile">
@@ -104,7 +101,7 @@
 		</java>	
 	</target>
 	
-	<target name="clean">
+	<target name="clean" depends="cleanProfile">
         <subant target="clean">
           <fileset dir="." includes="*/build.xml"/>
         </subant>
