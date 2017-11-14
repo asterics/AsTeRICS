@@ -93,7 +93,7 @@ public class ServerRepository {
      * @return the baseUriWs
      */
     public URI getBaseUriWebsocket() {
-        return URI.create("http://localhost:" + getPortWebsocket() + PATH_WEBSOCKET);
+        return URI.create("http://0.0.0.0:" + getPortWebsocket() + PATH_WEBSOCKET);
     }
 
     /**

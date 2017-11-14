@@ -2,13 +2,14 @@
 <project name="asterics" basedir="." default="buildAllNoClean">
 	<property name="debug" value="true"/>
 	<property name="runtime" location="bin/ARE"/>
+	<property name="web.docroot" location="${runtime}/web/"/>
 
 	<target name="clean" description="Clean the whole project">
 		<subant target="clean">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 			<fileset dir="ARE_RestAPIlibraries" includes="build.xml"> </fileset>
 		</subant>
-		<delete dir="${runtime}/data/webservice/help/"/>
+		<delete dir="${web.docroot}/help/"/>
 	</target>
 
 	<!-- Build the whole AsTeRICS framework including ACS and help specific tasks  -->
@@ -37,8 +38,8 @@
 	</target>
 	
 	<target name="copyHelpFiles" description="Copy all help files to the webserver document root help path">
-		<mkdir dir="${runtime}/data/webservice/help/"/>
-		<copy todir="${runtime}/data/webservice/help/" failonerror="true">
+		<mkdir dir="${web.docroot}/help/"/>
+		<copy todir="${web.docroot}/help/" failonerror="true">
 		    <fileset dir="Documentation/ACS-Help/HTML/"/>			
 		</copy>			
 	</target>

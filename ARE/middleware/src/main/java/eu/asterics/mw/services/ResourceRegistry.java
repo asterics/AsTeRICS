@@ -69,6 +69,7 @@ import eu.asterics.mw.are.exceptions.AREAsapiException;
  */
 
 public class ResourceRegistry {
+    private static final int RECURSIVE_FILE_SEARCH_DEPTH = 10;
     private static ResourceRegistry instance = new ResourceRegistry();
     // todo replace with ComponentRepository
     public static final String MODELS_FOLDER = "models/";
@@ -78,7 +79,7 @@ public class ResourceRegistry {
     public static final String LICENSES_FOLDER = "LICENSE/";
     public static final String IMAGES_FOLDER = "images/";
     public static final String TMP_FOLDER = "tmp/";
-    public static final String WEB_DOCUMENT_ROOT_FOLDER = "data/webservice/";
+    public static final String WEB_DOCUMENT_ROOT_FOLDER = "web/";
 
     private static URI ARE_BASE_URI = null;
     // currently not used but the idea is to have a base URI for readonly,
@@ -1113,13 +1114,30 @@ public class ResourceRegistry {
     public List<URI> getDataList(boolean relative) {
         // get asterics involved data files
         // Not sure how deep we should search, but 10 seems to be enough
-        List<URI> URIs = ComponentUtils.findFiles(toAbsolute(DATA_FOLDER), relative, 10, new FilenameFilter() {
+        List<URI> URIs = ComponentUtils.findFiles(toAbsolute(DATA_FOLDER), relative, RECURSIVE_FILE_SEARCH_DEPTH, new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return true;
             }
         });
         return URIs;
+    }
+    
+    /**
+     * Returns a list of URIs of all web 
+     * @param relative
+     * @return
+     */
+    public List<URI> getWebDocumentRootContentList(boolean relative) {
+        // get asterics involved data files
+        // Not sure how deep we should search, but 10 seems to be enough
+        List<URI> URIs = ComponentUtils.findFiles(toAbsolute(WEB_DOCUMENT_ROOT_FOLDER), relative, RECURSIVE_FILE_SEARCH_DEPTH, new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return true;
+            }
+        });
+        return URIs;        
     }
 
     /**
@@ -1144,7 +1162,7 @@ public class ResourceRegistry {
     public static List<URI> getModelList(URI modelDirURI, boolean relative) {
         // get asterics involved model files
         // Not sure how deep we should search, but 10 seems to be enough
-        List<URI> URIs = ComponentUtils.findFiles(modelDirURI, relative, 10, new FilenameFilter() {
+        List<URI> URIs = ComponentUtils.findFiles(modelDirURI, relative, RECURSIVE_FILE_SEARCH_DEPTH, new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name != null && name.endsWith(".acs");
