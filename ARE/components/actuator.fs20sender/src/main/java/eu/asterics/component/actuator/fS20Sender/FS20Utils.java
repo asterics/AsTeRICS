@@ -25,24 +25,19 @@
 
 package eu.asterics.component.actuator.fS20Sender;
 
+import com.sun.jna.platform.win32.Advapi32Util;
+import com.sun.jna.platform.win32.WinReg;
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.utils.OSUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.sun.jna.platform.win32.Advapi32Util;
-import com.sun.jna.platform.win32.WinReg;
-
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.utils.OSUtils;
 
 public class FS20Utils {
 
@@ -210,7 +205,7 @@ public class FS20Utils {
      */
     static String copyBatchFromJar(String batchFilename) throws IOException {
     	//This is a small hack because we want to get the system or user temp dir but don't want to get a unique tempfilename.
-    	//Create a temp file 
+    	//Create a temp file
     	File tempFile=File.createTempFile(batchFilename,"");
     	tempFile.deleteOnExit();
     	//use parent directory to know actual temp dir
@@ -233,9 +228,15 @@ public class FS20Utils {
 
     private static boolean allSubkeysPatched(String[] subkeys) {
         for (String subkey : subkeys) {
-            int value = Advapi32Util.registryGetIntValue(WinReg.HKEY_LOCAL_MACHINE,
-                    REGISTRY_PATH_FS20 + "\\" + subkey + "\\" + REGISTRY_PATH_DEVICE_PARAMS,
-                    REGISTRY_KEY_POWERMANAGEMENT);
+            int value = 0;
+            String regPath = null;
+            try {
+                regPath = REGISTRY_PATH_FS20 + "\\" + subkey + "\\" + REGISTRY_PATH_DEVICE_PARAMS;
+                value = Advapi32Util.registryGetIntValue(WinReg.HKEY_LOCAL_MACHINE, regPath, REGISTRY_KEY_POWERMANAGEMENT);
+            } catch (Exception e) {
+                logger.log(Level.INFO, MessageFormat.format("could not get registry value {0} from path {1}", REGISTRY_KEY_POWERMANAGEMENT, regPath));
+                continue;
+            }
             if (value == 1) {
                 return false;
             }
