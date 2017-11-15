@@ -26,6 +26,7 @@ package eu.asterics.mw.webservice;
  */
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -50,6 +51,8 @@ import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
+import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 /**
@@ -84,8 +87,9 @@ public class WebServiceEngine {
      * 
      * @param bc
      * @throws IOException
+     * @throws URISyntaxException 
      */
-    public void initGrizzlyHttpService(BundleContext bc) throws IOException {
+    public void initGrizzlyHttpService(BundleContext bc) throws IOException, URISyntaxException {
 
         logger.fine("Starting REST API at " + ServerRepository.getInstance().getBaseUriREST());
 
@@ -95,18 +99,25 @@ public class WebServiceEngine {
         rc.registerClasses(RestServer.class, SseResource.class, SseFeature.class);
         rc.register(new ResponseFilter());
         restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.getInstance().getBaseUriREST(), rc);
-        // Configure document root at the ARE/data/webservice folder
-        restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler("./data/webservice"), "/");
+ 
+        // Normal Web server configuration (document root)
+        String docRoot=ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("/",RES_TYPE.WEB_DOCUMENT_ROOT));
+        logger.info("Registering webserver document root at "+docRoot);
+        restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(docRoot), "/");
+        /*
+        //Code to register data and models folder as virtual subpaths?
+        restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("/",RES_TYPE.MODEL))), "models/");
+        restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("/",RES_TYPE.DATA))), "data/");
+        /**/
         for (NetworkListener l : restServer.getListeners()) {
             l.getFileCache().setEnabled(false);
         }
 
         restServer.start();
 
+        // Websocket configuration
         logger.fine("Initializing Websocket... ");
-
-        // WEB SERVICE SERVER CONFIGURATION
-        wsServer = HttpServer.createSimpleServer("./data/webservice", "0.0.0.0", ServerRepository.getInstance().getPortWebsocket());
+        wsServer = HttpServer.createSimpleServer(docRoot, "0.0.0.0", ServerRepository.getInstance().getPortWebsocket());
 
         final WebSocketAddOn addon = new WebSocketAddOn();
         for (NetworkListener listener : wsServer.getListeners()) {

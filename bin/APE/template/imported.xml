@@ -171,7 +171,11 @@
 			<isset property="APE.dataCopyMode" />
 		</not>
 	</condition>
-
+	<condition property="APE.webCopyMode" else="${APE.webCopyMode}" value="ALL">
+		<not>
+			<isset property="APE.webCopyMode" />
+		</not>
+	</condition>
 	<!--
 	<echoproperties>
 	</echoproperties>
@@ -278,6 +282,7 @@
 			<sysproperty key="ARE.baseURI" value="${ARE.baseURI}"/>
 			<sysproperty key="APE.buildDir" value="${APE.buildDir}"/>
 			<sysproperty key="APE.dataCopyMode" value="${APE.dataCopyMode}"/>
+			<sysproperty key="APE.webCopyMode" value="${APE.webCopyMode}"/>			
 			<sysproperty key="APE.buildMode" value="${APE.buildMode}"/>	
 		</java>	
 		<!-- fix cr and lf and set execution permissions -->
@@ -297,6 +302,7 @@
 			<sysproperty key="ARE.baseURI" value="${ARE.baseURI}"/>
 			<sysproperty key="APE.buildDir" value="${APE.buildDir}"/>
 			<sysproperty key="APE.dataCopyMode" value="${APE.dataCopyMode}"/>
+			<sysproperty key="APE.webCopyMode" value="${APE.webCopyMode}"/>
 			<!-- force buildMode release to ensure that the merged folder is cleaned and only needed plugins are copied -->
 			<sysproperty key="APE.buildMode" value="release"/>	
 		</java>	
