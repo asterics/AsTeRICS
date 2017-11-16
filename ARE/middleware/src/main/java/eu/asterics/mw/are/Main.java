@@ -20,6 +20,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 import eu.asterics.mw.services.AstericsThreadPool;
 import eu.asterics.mw.utils.OSUtils;
+import eu.asterics.rest.javaClient.ARECommunicator;
 
 /*
  *    AsTeRICS - Assistive Technology Rapid Integration and Construction Set
@@ -92,6 +93,33 @@ public class Main implements BundleActivator {
         logger.info("JVM " + bits + " bit detected");
         final String startModel = context.getProperty("eu.asterics.ARE.startModel");
         logger.info("Property eu.asterics.ARE.startModel: " + startModel);
+        
+        try {
+            //Check if another instance with the same REST ports is already running.
+            //If yes, try to connect to it and deploy the given autostart model, if successful exit.
+            //This ensure that only one instance of an ARE with dedicated port configuration is running on this system
+            ARECommunicator areCommunicator = new ARECommunicator("http://localhost:8081/rest/");
+            String remoteStartModel=startModel;
+            if(remoteStartModel==null || "".equals(remoteStartModel)) {
+                remoteStartModel="autostart.acs";
+            }
+            logger.info("Found running ARE instance at port 8081, so trying to deploy "+remoteStartModel+" to that one and exiting...");
+            String[] arrayResponse = areCommunicator.listStoredModels();
+            for (String storedModel: arrayResponse) {
+                System.out.println(storedModel);
+            }
+            System.out.println("\n");
+   
+            
+            //String response=areCommunicator.deployModelFromFile(startModel);
+            //logger.info("Response of deploying model: "+response);
+            //String response=areCommunicator.startModel();
+            //logger.info("Response of starting model: "+response);
+            System.exit(0);
+        }catch(Exception e) {
+            logger.info("Could not find running ARE instance at port 8081");
+        }
+        
 
         EventQueue.invokeLater(new Runnable() {
             @Override

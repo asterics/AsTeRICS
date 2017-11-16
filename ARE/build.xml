@@ -7,9 +7,11 @@
   <property name="web.docroot" location="${runtime}/web/"/>
 	
 	<target name="cleanProfile">
+		<!--
 	    <delete dir =  "${runtime}/profile/org.eclipse.osgi" failonerror="false"/>
 	    <delete dir =  "${runtime}/tmp/caching/" failonerror="false"/>
 		<delete dir =  "${web.docroot}/componentCollections/" failonerror="false"/>
+		-->
 	</target>
 
 	<target name="buildARE" depends="cleanProfile">
