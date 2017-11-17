@@ -1138,11 +1138,12 @@ public class AsapiSupport {
      * @param data
      * @param resourcePath
      *            resourcePath of the data to store to.
+     * @param resourceType the resource type to save the data
      * @throws AREAsapiException
      */
-    public void storeData(String data, String resourcePath) throws AREAsapiException {
+    public void storeData(String data, String resourcePath, RES_TYPE resourceType) throws AREAsapiException {
         try {
-            ResourceRegistry.getInstance().storeResource(data, resourcePath, RES_TYPE.DATA);
+            ResourceRegistry.getInstance().storeResource(data, resourcePath, resourceType);
         } catch (IOException e) {
             String errorMsg = "Failed to store data -> \n" + e.getMessage();
             AstericsErrorHandling.instance.reportError(null, errorMsg);
@@ -1152,6 +1153,35 @@ public class AsapiSupport {
             AstericsErrorHandling.instance.reportError(null, errorMsg);
             throw (new AREAsapiException(errorMsg));
         }
+    }
+
+    /**
+     * stores data with UTF-8 to folder ARE/data
+     *
+     * @param data
+     * @param resourcePath
+     *            resourcePath of the data to store to.
+     * @throws AREAsapiException
+     */
+    public void storeData(String data, String resourcePath) throws AREAsapiException {
+        storeData(data, resourcePath, RES_TYPE.DATA);
+    }
+
+    /**
+     * stores data with UTF-8 to folder ARE/data
+     *
+     * @param data
+     * @param resourcePath
+     *            resourcePath of the data to store to.
+     * @param webappId the id of the webapp to save the data
+     * @throws AREAsapiException
+     */
+    public void storeWebappData(String data, String resourcePath, String webappId) throws AREAsapiException {
+        String webappPath = ResourceRegistry.WEBAPP_FOLDER + webappId;
+        //TODO: check if folder "ResourceRegistry.WEBAPP_FOLDER + webappId" exists, if not throw exception
+
+        String storePath = MessageFormat.format("{0}/{1}{2}", webappPath, ResourceRegistry.DATA_FOLDER, resourcePath);
+        storeData(data, storePath, RES_TYPE.WEB_DOCUMENT_ROOT);
     }
 
     /**
