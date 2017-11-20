@@ -849,7 +849,7 @@ public class RestServer {
         try {
             decodedFilepath = astericsAPIEncoding.decodeString(filepath);
             decodedWebappName = astericsAPIEncoding.decodeString(webappName);
-            String fullFilepath = ResourceRegistry.WEBAPP_FOLDER + decodedWebappName + "/data/" + decodedFilepath;
+            String fullFilepath = ResourceRegistry.WEBAPP_FOLDER + decodedWebappName + "/" + ResourceRegistry.WEBAPP_SUBFOLDER_DATA + decodedFilepath;
             response = ResourceRegistry.getInstance().getResourceContentAsString(fullFilepath, ResourceRegistry.RES_TYPE.WEB_DOCUMENT_ROOT);
         } catch (Exception e) {
             logger.log(Level.WARNING, "could get webapp data!", e);

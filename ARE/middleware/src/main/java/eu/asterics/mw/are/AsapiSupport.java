@@ -1191,7 +1191,7 @@ public class AsapiSupport {
             throw new AREAsapiException(msg);
         }
 
-        String storePath = MessageFormat.format("{0}/{1}{2}", webappPath, ResourceRegistry.DATA_FOLDER, resourcePath);
+        String storePath = MessageFormat.format("{0}/{1}{2}", webappPath, ResourceRegistry.WEBAPP_SUBFOLDER_DATA, resourcePath);
         storeData(data, storePath, RES_TYPE.WEB_DOCUMENT_ROOT);
     }
 
