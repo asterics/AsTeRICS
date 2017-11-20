@@ -852,8 +852,8 @@ public class RestServer {
             String fullFilepath = ResourceRegistry.WEBAPP_FOLDER + decodedWebappName + "/data/" + decodedFilepath;
             response = ResourceRegistry.getInstance().getResourceContentAsString(fullFilepath, ResourceRegistry.RES_TYPE.WEB_DOCUMENT_ROOT);
         } catch (Exception e) {
-            logger.log(Level.WARNING, "could retrieve webapp data!", e);
-            errorMessage = MessageFormat.format("Could not store webapp data to <{0}> ({1}).", decodedFilepath, e.getMessage());
+            logger.log(Level.WARNING, "could get webapp data!", e);
+            errorMessage = MessageFormat.format("Could not get webapp data from <{0}> ({1}).", decodedFilepath, e.getMessage());
             response = "error:" + errorMessage;
         }
         return response;
