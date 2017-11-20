@@ -836,7 +836,7 @@ public class RestServer {
     @Path("/storage/webapps/{webappName}/{filepath}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String storeWebappData(@PathParam("webappName") String webappName, @PathParam("filepath") String filepath) {
+    public String getWebappData(@PathParam("webappName") String webappName, @PathParam("filepath") String filepath) {
         String response;
         String errorMessage;
         String decodedFilepath = "";
