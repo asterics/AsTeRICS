@@ -80,6 +80,8 @@ public class ResourceRegistry {
     public static final String IMAGES_FOLDER = "images/";
     public static final String TMP_FOLDER = "tmp/";
     public static final String WEB_DOCUMENT_ROOT_FOLDER = "web/";
+    public static final String WEBAPP_FOLDER = "webapps/";
+    public static final String WEBAPP_SUBFOLDER_DATA = "data/";
 
     private static URI ARE_BASE_URI = null;
     // currently not used but the idea is to have a base URI for readonly,

@@ -55,13 +55,14 @@ import eu.asterics.mw.model.deployment.IEventChannel;
 import eu.asterics.mw.model.deployment.IPort;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 import eu.asterics.mw.webservice.serverUtils.AstericsAPIEncoding;
 import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 /**
  * The implementation of the Rest Server class.
- * 
+ *
  * @author Marios Komodromos (mkomod05@cs.ucy.ac.cy)
  *
  */
@@ -802,6 +803,59 @@ public class RestServer {
             response = "error:" + errorMessage;
         }
 
+        return response;
+    }
+
+    @Path("/storage/webapps/{webappName}/{filepath}")
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String storeWebappData(@PathParam("webappName") String webappName, @PathParam("filepath") String filepath, String data) {
+        String response;
+        String errorMessage;
+        String decodedFilepath = "";
+        String decodedWebappName = "";
+
+        if (data == null || data.isEmpty() || filepath == null || filepath.isEmpty() || webappName == null || webappName.isEmpty()) {
+            return "error: invalid parameters";
+        }
+
+        try {
+            decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+            decodedWebappName = astericsAPIEncoding.decodeString(webappName);
+            asapiSupport.storeWebappData(data, decodedFilepath, decodedWebappName);
+            response = "OK";
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "could not store webapp data!", e);
+            errorMessage = MessageFormat.format("Could not store webapp data to <{0}> ({1}).", decodedFilepath, e.getMessage());
+            response = "error:" + errorMessage;
+        }
+        return response;
+    }
+
+    @Path("/storage/webapps/{webappName}/{filepath}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getWebappData(@PathParam("webappName") String webappName, @PathParam("filepath") String filepath) {
+        String response;
+        String errorMessage;
+        String decodedFilepath = "";
+        String decodedWebappName = "";
+
+        if (filepath == null || filepath.isEmpty() || webappName == null || webappName.isEmpty()) {
+            return "error: invalid parameters";
+        }
+
+        try {
+            decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+            decodedWebappName = astericsAPIEncoding.decodeString(webappName);
+            String fullFilepath = ResourceRegistry.WEBAPP_FOLDER + decodedWebappName + "/" + ResourceRegistry.WEBAPP_SUBFOLDER_DATA + decodedFilepath;
+            response = ResourceRegistry.getInstance().getResourceContentAsString(fullFilepath, ResourceRegistry.RES_TYPE.WEB_DOCUMENT_ROOT);
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "could get webapp data!", e);
+            errorMessage = MessageFormat.format("Could not get webapp data from <{0}> ({1}).", decodedFilepath, e.getMessage());
+            response = "error:" + errorMessage;
+        }
         return response;
     }
 

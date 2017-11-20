@@ -181,6 +181,12 @@ public class ServerRepository {
             add(new RestFunction("GET", "/storage/components/descriptors/json", "", "text/xml", "",
                     "Retrieves the exact content of the component descriptors contained in the ARE repository"));
 
+            add(new RestFunction("POST", "/storage/webapps/{webappName}/{filepath}", "text/plain", "text/plain", "data to save",
+                    "Stores data for a webapp with the given filename to webapps/<webappName>/data"));
+
+            add(new RestFunction("GET", "/storage/webapps/{webappName}/{filepath}", "", "text/plain", "",
+                    "Gets stored webapp-data with the given filename from webapps/<webappName>/data"));
+
             add(new RestFunction("GET", "/events/subscribe", "", "", "", "Opens a persistent connection with ARE to use it for Server Sent Events"));
 
             add(new RestFunction("PUT", "/runtime/model/components/{componentId}/ports/{portId}/data", "text/plain",

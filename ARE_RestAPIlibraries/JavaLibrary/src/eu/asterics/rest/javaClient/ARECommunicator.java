@@ -1,19 +1,17 @@
 package eu.asterics.rest.javaClient;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.codehaus.jackson.type.TypeReference;
-import org.glassfish.jersey.media.sse.EventListener;
-
 import eu.asterics.rest.javaClient.serialization.ObjectTransformation;
 import eu.asterics.rest.javaClient.serialization.RestFunction;
 import eu.asterics.rest.javaClient.utils.AstericsAPIEncoding;
 import eu.asterics.rest.javaClient.utils.HttpCommunicator;
 import eu.asterics.rest.javaClient.utils.HttpResponse;
 import eu.asterics.rest.javaClient.utils.SseCommunicator;
+import org.codehaus.jackson.type.TypeReference;
+import org.glassfish.jersey.media.sse.EventListener;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class that provides methods to communicate with the AsTeRICS Runtime Enviroment (ARE)
@@ -224,6 +222,37 @@ public class ARECommunicator {
                 data);
         return httpResponse.getBody();
     }
+
+	/**
+	 * Stores webapp data in the given filepath, to the ARE/web/webapps/<webappId>/data folder
+	 *
+	 * @param filepath - the filepath to store the data. can contain path + filename or only filename
+	 * @param data     - the data to save
+	 * @return - a string informing if the store operation was successful
+	 * @throws Exception
+	 */
+	public String storeWebappData(String webappId, String filepath, String data) throws Exception {
+		String encodedWebappId = astericsAPIEncoding.encodeString(webappId);
+		String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
+		HttpResponse httpResponse = httpCommunicator.postRequest("/storage/webapps/" + encodedWebappId + "/" + encodedFilepath, null, null,
+				HttpCommunicator.DATATYPE_TEXT_PLAIN, HttpCommunicator.DATATYPE_TEXT_PLAIN,
+				data);
+		return httpResponse.getBody();
+	}
+
+	/**
+	 * Retrieves webapp data from the given filepath, from the ARE/web/webapps/<webappId>/data folder
+	 *
+	 * @param filepath - the filepath to retrieve the data. can contain path + filename or only filename
+	 * @return - the data saved at the given filepath
+	 * @throws Exception
+	 */
+	public String getWebappData(String webappId, String filepath) throws Exception {
+		String encodedWebappId = astericsAPIEncoding.encodeString(webappId);
+		String encodedFilepath = astericsAPIEncoding.encodeString(filepath);
+		HttpResponse httpResponse = httpCommunicator.getRequest("/storage/webapps/" + encodedWebappId + "/" + encodedFilepath, HttpCommunicator.DATATYPE_TEXT_PLAIN);
+		return httpResponse.getBody();
+	}
 
 	/**
 	 * Deploys a model contained in the given file
