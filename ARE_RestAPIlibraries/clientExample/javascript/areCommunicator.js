@@ -662,6 +662,48 @@ function storeData(successCallback, errorCallback, filepath, data) {
 	});
 }
 
+function storeWebappData(successCallback, errorCallback, webappId, filepath, data) {
+	
+	if (!webappId || !filepath || !data) return;
+	
+	$.ajax({
+		type: "POST",
+		url: _baseURI + "storage/webapps/" + encodeParam(webappId) + "/"  + encodeParam(filepath),
+		contentType: "text/plain",
+		data: data,	
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(jqXHR.responseText, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+function getWebappData(successCallback, errorCallback, webappId, filepath) {
+	
+	if (!webappId || !filepath) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "storage/webapps/" + encodeParam(webappId) + "/"  + encodeParam(filepath),
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(jqXHR.responseText, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
 
 function deleteModelFromFile(successCallback, errorCallback, filepath) {
 	

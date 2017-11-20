@@ -22,7 +22,7 @@
 				for every function.
 			*/
 		
-			setBaseURI("http://localhost:8081/rest/");
+			setBaseURI("http://localhost:8091/rest/");
 		
 
 			//listStoredModels
@@ -49,6 +49,21 @@
 				var filepath = document.getElementById("storeData_filepath").value;
 				var data = document.getElementById("storeData_data").value;
 				storeData(defaultSuccessCallback, defaultErrorCallback, filepath, data);
+			}
+			
+			//storeData
+			function STORE_WEBAPP_DATA() {
+				var webappId = document.getElementById("storeWebappData_webappId").value;
+				var filepath = document.getElementById("storeWebappData_filepath").value;
+				var data = document.getElementById("storeWebappData_data").value;
+				storeWebappData(defaultSuccessCallback, defaultErrorCallback, webappId, filepath, data);
+			}
+			
+			//storeData
+			function GET_WEBAPP_DATA() {
+				var webappId = document.getElementById("getWebappData_webappId").value;
+				var filepath = document.getElementById("getWebappData_filepath").value;
+				getWebappData(defaultSuccessCallback, defaultErrorCallback, webappId, filepath);
 			}
 
 			//deleteModelFromFile
@@ -111,6 +126,21 @@
 		</button>
 		<input placeholder="filepath" type="text" id="storeData_filepath"/>
 		<input placeholder="data" type="text" id="storeData_data"/>
+		<br>
+		
+		<button onclick="STORE_WEBAPP_DATA()" title="Description: Stores webapp-data in the given filepath in the ARE/web/webapps/<webappId>/data folder &#013;Ouput: alert">
+			Store webapp-data to file 
+		</button>
+		<input placeholder="webappId" type="text" id="storeWebappData_webappId"/>
+		<input placeholder="filepath" type="text" id="storeWebappData_filepath"/>
+		<input placeholder="data" type="text" id="storeWebappData_data"/>
+		<br>
+		
+		<button onclick="GET_WEBAPP_DATA()" title="Description: Gets webapp-data from the given filepath in the ARE/web/webapps/<webappId>/data folder &#013;Ouput: alert">
+			Retrieve webapp-data
+		</button>
+		<input placeholder="webappId" type="text" id="getWebappData_webappId"/>
+		<input placeholder="filepath" type="text" id="getWebappData_filepath"/>
 		<br>
 		
 		<button onclick="DELETE_MODEL_FROM_FILE()" title="Description: Deletes the model with the given filepath &#013;Ouput: alert"> Delete model </button>
