@@ -1133,7 +1133,7 @@ public class AsapiSupport {
     }
 
     /**
-     * stores data with UTF-8 to folder ARE/data
+     * stores data with UTF-8. the location where the data is stored is determined by parameter resourceType
      *
      * @param data
      * @param resourcePath
@@ -1168,17 +1168,28 @@ public class AsapiSupport {
     }
 
     /**
-     * stores data with UTF-8 to folder ARE/data
+     * stores data with UTF-8 to folder ARE/web/webapps/<webappId>/data
      *
-     * @param data
+     * @param data the data to store
      * @param resourcePath
-     *            resourcePath of the data to store to.
+     *            resourcePath of the data to store to (folderpath + filename + extension)
      * @param webappId the id of the webapp to save the data
      * @throws AREAsapiException
      */
     public void storeWebappData(String data, String resourcePath, String webappId) throws AREAsapiException {
         String webappPath = ResourceRegistry.WEBAPP_FOLDER + webappId;
-        //TODO: check if folder "ResourceRegistry.WEBAPP_FOLDER + webappId" exists, if not throw exception
+        try {
+            URI webappUri = ResourceRegistry.getInstance().getResource(webappPath, RES_TYPE.WEB_DOCUMENT_ROOT);
+            if(!ResourceRegistry.resourceExists(webappUri)) {
+                String msg = MessageFormat.format("tried to store data for webapp with ID <{0}>, but it does not exist. Aborting...", webappId);
+                logger.log(Level.WARNING, msg);
+                throw new AREAsapiException(msg);
+            }
+        } catch (URISyntaxException e) {
+            String msg = MessageFormat.format("failed to store data for webapp with ID <{0}>, failed to open webapp-folder.", webappId);
+            logger.log(Level.WARNING, msg);
+            throw new AREAsapiException(msg);
+        }
 
         String storePath = MessageFormat.format("{0}/{1}{2}", webappPath, ResourceRegistry.DATA_FOLDER, resourcePath);
         storeData(data, storePath, RES_TYPE.WEB_DOCUMENT_ROOT);
