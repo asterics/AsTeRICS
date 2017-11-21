@@ -1,9 +1,6 @@
 [submodule "bin/ARE/web/webapps/WebACS"]
 	path = bin/ARE/web/webapps/WebACS
 	url = https://github.com/asterics/WebACS.git
-[submodule "help"]
-	path = bin/ACS/AsTeRICS-help
-	url = https://github.com/asterics/AsTeRICS-help.git
 [submodule "bin/ACS/help"]
 	path = bin/ACS/help
 	url = https://github.com/asterics/AsTeRICS-help.git
