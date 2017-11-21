@@ -1,8 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
 <HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<meta charset="UTF-8">
+
 <Title>FS20Sender</Title>
 </HEAD>
 <BODY>
@@ -21,14 +21,33 @@ Picture of the PCS FS20 sender
 <H2>Supported OSes</H2>
 Windows (x86,x64), Linux (x86, x64, arm(Raspberry Pi)), Mac OSX(x86, x64)
 
-<H2>Notes on Linux platform</H2>
+<H2>Troubleshooting problems under Win8/Win8.1</H2>
 
-If you installed AsTeRICS as package, all necessary permission already set.
-If you built AsTeRICS on your own, please type following command on a terminal window:<br><br>
-<i>sudo echo 'ATTRS{idProduct}=="e015", ATTRS{idVendor}=="18ef", MODE="0660", GROUP="plugdev"' > /etc/udev/rules.d/50-asterics-fs20.rules</i><br><br>
-Onw additional command is necessary if you work on ARM based platforms (RaspberryPi, BananaPi,...):<br><br>
-<i>sudo ln -sf /lib/arm-linux-gnueabihf/libudev.so.1 /lib/arm-linux-gnueabihf/libudev.so.0</i><br><br>
-Afterwards, unplug and plug in the FS20 device and restart AsTeRICS.
+Under Windows 8 and Windows 8.1, there can be problems concering the
+operation of the FS20 PCS device: If the red control led stays on just a few seconds after plugging in the device,
+and then goes dark and teh PCS sender cannot be used, the reason could be that the power management
+settings on Win8/8.1 switch the device off per default - this can be changed by applying the following steps:
+
+<ul>
+<li>Open the Device Manager (usually can be selected by right-clicking at the bottom left corner of your windows desktop)</li>
+<li>Open the device group "Human Interface Devices"</li>
+<li>Locate the device which pops up when you insert or remove the FS20 PCS module to/from an USB port
+   It should be a "HID compliant supplier defined device". You can distinguish different devices by right-clicking a device
+   and looking into rider "details" and "properites" - there you can find the VID and PID values, e.g. under property "last known parent"
+<li> Note the VID and PID values. For example if you see a line like "USB\VID_1B1F&PID_C00F\EEE0000473" the values are VID:1B1F and PID:C00F</li>
+   
+<li>Press the Windows-Key and "R" to open the command window. Type "regedit" and press enter</li>
+<li>Select the entry "HKEY_LOCAL_MACHINE" > "SYSTEM" > "CurrentControlSet" > "Enum" > "USB".</li>
+<li>In this list, select the entry for the FS20 PCS (given by VID und PID you noted)</li>
+<li>Open the Subfolder "Device Paramteters" and double click the property "EnhancedPowerManagementEnabled" which appears in the right window section</li>
+<li>Change the property value from 1 to 0 and commit by clicking "OK"</li>
+<li>Restart you PC - now hopefully the FS20 PCS works as intended.</li>
+</li>
+</ul>
+
+<H2>Udev rules Linux</H2>
+You must run the ARE as root for being able to access the device. Alternatively you can define a <a href="https://github.com/signal11/hidapi/blob/master/udev/99-hid.rules">udev rule</a>
+
 
 <H2>Input Port Description</H2>
 <ul>
