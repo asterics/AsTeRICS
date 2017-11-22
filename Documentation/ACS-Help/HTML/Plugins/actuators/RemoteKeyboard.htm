@@ -1,8 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
 <HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<meta charset="UTF-8">
+
 <Title>RemoteKeyboard</Title>
 </HEAD>
 <BODY>
@@ -31,50 +31,5 @@ the HID Actuator plugs into the target computer and connects via Bluetooth wirel
 <li><STRONG>keyCodeString [string]:</STRONG> A string containing keys and keycodes. Please note that this string will be replaced by an incoming string at the keycodes input port. The keycode-string can contain alphanumeric characters and special characters. Special characters are written in parentheses, for example {SHIFT}, {CTRL}, {ALT}, {BACKSPACE}, {ENTER} etc. Modifier keys like {SHIFT} or {ALT} are combined as they appear consecutively in the keystring, and are sent with the next a printable character. For example, the keystrings "{SHIFT}a" or "{CTRL}{ALT}{DEL}" are sent as single key-values to the target computer.</li>
 <li><STRONG>uniqueId:</STRONG> unique number of the CIM - if more than one CIMs of the same type are used. The module flashes a LED for identification when the ID is selected. <b>Supports value suggestions from ARE (dynamic property)</b></li>
 </ul>
-
-<H2>List of supported special key code identifiers</H2>
-
-<pre>
-
-{LEFTCTRL}
-{LEFTSHIFT}
-{ALT}, {LEFTALT}
-{WIN}, {LEFTGUI}
-{CTRL}, {RIGHTCTRL}
-{SHIFT}, {RIGHTSHIFT}
-{ALTGR}, {RIGHTALT}
-{RIGHTGUI}
-{F1}
-{F2}
-{F3}
-{F4}
-{F5}
-{F6}
-{F7}
-{F8}
-{F9}
-{F10}
-{F11}
-{F12}
-{RETURN}, {ENTER}
-{ESCAPE}
-{BACKSPACE}
-{TAB}
-{PRINT}, {PRINTSCREEN}
-{PAUSE}
-{INSERT}, {INS}
-{HOME}, {POS1}
-{END}
-{DEL}, {DELETE}
-{PAGEUP}
-{PAGEDOWN}
-{RIGHT}, {RIGHTARROW}
-{LEFT}, {LEFTARROW}
-{DOWN}, {DOWNARROW}
-{UP}, {UPARROW}
-{WAIT}
-</pre>
-
-
 </BODY>
 </HTML>

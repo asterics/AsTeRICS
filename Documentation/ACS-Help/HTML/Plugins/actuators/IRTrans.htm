@@ -1,8 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
 <HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
+<meta charset="UTF-8">
+
 <Title>IR Trans</Title>
 </HEAD>
 <BODY>
@@ -21,16 +21,11 @@ IRTrans universal IR remote module</div>
 
 <H2>Input Port Description</H2>
 <ul>
-<li>
-<STRONG>action[string]:</STRONG> A string, which will be sent to the IRTrans module, must start with "@IRTRANS".</br>
-For possible commands see <a href="http://www.irtrans.de/download/Docs/IRTrans%20TCP%20ASCII%20Interface_EN.pdf">official IrTrans protocol guide</a>.</br>
-<STRONG>Note:</STRONG> the action string sent to the input port must not contain the prefix "A" like described in the protocol guide. This is because of compatibility reasons with the old UDP protocol.
-</li>
+<li><STRONG>action[string]:</STRONG> A string, which will be sent to the IRTrans module, must start with "@IRTRANS".</li>
 </ul>
 <H2>Output Port Description</H2>
 <ul>
-<li><STRONG>output[string]:</STRONG> The IRTrans can also receive IR-Commands. With the IRTrans Configuration tool string commands can be defined for every received IR-Command. Received IR-commands are sent to this port, e.g. "**00028 RCV_COM test,on,0,0" (see protocol guide for format details)</li>
-<li><STRONG>outputResult[string]:</STRONG> Receives the result of an action string that was previously sent to action-port.</li>
+<li><STRONG>output[string]:</STRONG> The IRTrans can also receive IR-Commands. With the IRTrans Configuration tool string commands can be defined for every received IR-Command which will be sent to a custom UDP server. If the target is the computer where the ARE runs on, the given string will be received by this output port.</li>
 </ul>
 <H2>Event Listener Description</H2>
 <ul>
