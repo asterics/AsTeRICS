@@ -25,7 +25,7 @@
 	<fileset id="javacv-files-windows" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/*-linux-*.jar, **/*-macosx-*.jar" includes="lib/native/*.jar">
 	</fileset>
 
-	<fileset id="javacv-files-linux" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/videoinput*.jar, **/*-windows-*.jar, **/*-macosx-*.jar" includes="lib/native/*.jar">
+	<fileset id="javacv-files-linux" dir="javacv/src/main/resources" excludes="**/videoinput*.jar, **/*-windows-*.jar, **/*-macosx-*.jar" includes="lib/native/*.jar">
 	</fileset>
 	<fileset id="javacv-files-macosx" dir="javacv/src/main/resources" excludes="**/ffmpeg*.jar, **/videoinput*.jar, **/*-windows-*.jar, **/*-linux-*.jar" includes="lib/native/*.jar">
 	</fileset>
