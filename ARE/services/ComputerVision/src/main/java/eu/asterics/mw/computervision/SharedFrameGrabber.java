@@ -90,7 +90,8 @@ public class SharedFrameGrabber {
             throws Exception {
         FrameGrabber grabber = null;
 
-        if (FFMPEG_GRABBER_KEY.equalsIgnoreCase(grabberName) && (grabberFormat == null || "".equals(grabberFormat))) {
+		//on RPi we did not need it, but on windows we needed to set it, but maybe it is different with the new version of ffmpeg.
+        if (OSUtils.isWindows() && FFMPEG_GRABBER_KEY.equalsIgnoreCase(grabberName) && (grabberFormat == null || "".equals(grabberFormat))) {            
             grabberFormat = "dshow";
         }
 
@@ -143,12 +144,14 @@ public class SharedFrameGrabber {
             devSet.setImageWidth(userWidth);
             devSet.setImageHeight(userHeight);
         }
-        devSet.setFormat(grabberFormat);
+        devSet.setFormat(grabberFormat);        
         devSet.getDescription();
         System.out.println(devSet.getDescription());
 
         CameraDevice dev = new CameraDevice(devSet);
         grabber = dev.createFrameGrabber();
+        //enable setting framerate 
+        grabber.setFrameRate(15);        
 
         // FFmpegFrameGrabber grabber =new FFmpegFrameGrabber("video=Integrated
         // Camera");
@@ -201,6 +204,7 @@ public class SharedFrameGrabber {
             grabberList = new ArrayList<String>();
             grabberList.add(DEFAULT_GRABBER_KEY);
             for (String grabberName : FrameGrabber.list) {
+            //for (String grabberName : new String[]{OPENCV_GRABBER_KEY, FFMPEG_GRABBER_KEY}) {				
                 try {
                     Class<? extends FrameGrabber> c = FrameGrabber.get(grabberName);
                     System.out.println("\n\n++++++++++Trying to load "+grabberName+"++++++\n\n");
@@ -232,7 +236,7 @@ public class SharedFrameGrabber {
 
     public String getDefaultFrameGrabberName() {
         List<String> grabberList = getFrameGrabberList();
-        for (String grabberName : defaultGrabberList) {
+        for (String grabberName : new String[]{OPENCV_GRABBER_KEY}) {
             if (grabberList.contains(grabberName)) {
                 return grabberName;
             }
@@ -433,6 +437,7 @@ public class SharedFrameGrabber {
                         notifyGrabbedImageListener(deviceListeners, image);
                     }
                     grabber.stop();
+                    grabber.release();
                     AstericsErrorHandling.instance.reportDebugInfo(null, "Grabbing stopped");
                 }
             } catch (Exception e) {
