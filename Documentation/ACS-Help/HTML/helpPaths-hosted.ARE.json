@@ -1,7 +1,7 @@
 {
 	"ARE": "help_files/ARE/",
-	"ACS": "help_files/WebACS/",
+	"ACS": "help_files/ACS/",
 	"plugins": "help_files/Plugins/",
-	"componentCollection": "./help_files/",
+	"componentCollection": "../componentCollections/",
 	"stylesheet": "styles/"
 }
