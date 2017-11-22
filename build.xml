@@ -6,11 +6,14 @@
 	<property name="web.docroot" location="${runtime}/web/"/>
 	<property name="WebACS.bin" location="${web.docroot}/webapps/WebACS"/>
 
-	<target name="clean" description="Clean the whole project">
+	<target name="clean" description="Clean the whole project" depends="cleanHelpFiles">
 		<subant target="clean">
 			<fileset dir="ARE" includes="build.xml"> </fileset>
 			<fileset dir="ARE_RestAPIlibraries" includes="build.xml"> </fileset>
 		</subant>
+	</target>
+	
+	<target name="cleanHelpFiles" description="Cleans the help_files folders in the help folders">
 		<delete dir="${web.docroot}/help/help_files/"/>
 		<delete dir="${ACS.bin}/help/help_files/"/>
 		<delete dir="${WebACS.bin}/help/help_files/"/>
