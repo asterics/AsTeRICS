@@ -1,46 +1,51 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>Control the ARE</Title>
-</HEAD>
-<BODY>
-<h1>Control the ARE</h1>
-<p>In the system-tab, the group ARE handles the functionalities for connecting to and communicating with the ARE. The connection to the ARE is handled by the AsTeRICS Application Programming Interface (ASAPI).</p>
-<div class="image"><img src="img/ARE_and_ARE_Storage_Group.png" alt="Screenshot: System Tab, ARE and ARE Storage Group" title="Screenshot: System Tab, ARE and ARE Storage Group" /><br>
-System Tab, ARE and ARE Storage Group</div>
-<ul>
-<li>
-<EM>Connect to ARE </EM>connects the ACS with the ARE. The Connect to ARE dialog appears, asking for the connection data. The host name (IP-address of the host) can be found in the ARE configuration, the default port should be 9090. Beside this connection dialog, also auto connection can be used, see the section Options / General Settings.
-<div class="bullet_image"><img src="img/ARE_Connection_Dialog.jpg" alt="Screenshot: The ARE Connection Dialog" title="Screenshot: The ARE Connection Dialog" /><br>
-The ARE Connection Dialog</div>
-When the connection has been established, two special cases can occur:
-<ul>
-<li>An active model (deployment) has been detected on the ARE. The user will be asked to download this model or to proceed without downloading it.</li>
-<li>An active model (deployment) has been detected and is running on the ARE. The user will be asked to download this model and switch the ACS to <EM>Running</EM> mode or to proceed without downloading it.</li>
-</ul>
-</li>
-<li><EM>Disconnect from ARE </EM>closes the connection to the ARE.</li> 
-<li><EM>Upload Model </EM>transmits the model in the drawing from the ACS to the ARE. The model on the ARE will be overwritten. Uploading the model to the ARE does not start the model on the ARE.</li> 
-<li><EM>Download Model </EM>transmits the active model from the ARE to the ACS. The model on the drawing area will be overwritten.</li> 
-<li><EM>Download Bundles </EM>transmits the bundel description (describing the components) form the connected ARE to the ACS. These bundel descrptions will be available as components in the components-tab. Then bundles can be managed with the <em>Bundle Manager</em>.</li> 
-</ul>
-<p>The group ARE Storage deals with the storage on the ARE. The storage is an area within the ARE where models can be stored and also activated using the ARE interface.</p>
-<ul>
-<li><EM>Store Model on ARE</EM> transmits the model in the drawing from the ACS to the ARE storage. A dialog appears to set the filename.</li>
-<li><EM>Load Model from Storage</EM> transmits a model from the ARE storage to the ACS. The model on the ACS drawing area will be overwritten. A dialog appears to select the filename of the model.</li>
-<li><EM>Activate a Stored Model</EM>: A dialog appears to select the filename of a model in the storage. This model will be set active in the ARE and also will be started. Furthermore, the model on the ACS drawing area will be overwritten with the selected model and the ACS switches to run-mode.</li>
-<li><EM>Delete a Stored Model </EM>deletes a model from the ARE storage using a file dialog.</li>
-<li><EM>Set as Autorun </EM>sets the model as autorun model. This model will be started automatically when the ARE starts.</li>
-</ul>
-<p>Starting and stopping a model can be done with the buttons in the group Model.</p>
-<div class="small_image"><img src="img/Model_Group_in_System_Tab.jpg" alt="Screenshot: The Model Group in the System Tab" title="Screenshot: The Model Group in the System Tab" /><br>
-The Model Group in the System Tab</div>
-<ul>
-<li><EM>Start Model </EM>starts the model on the ARE and switches the ACS into run-mode. This means that now no components, channels and event channels can be added, edited or deleted. The drawing area is greyed out.</li> 
-<li><EM>Pause Model </EM>pauses the model on the ARE.</li> 
-<li><EM>Stop Model </EM>stops the model on the ARE and ends the run-mode.</li> 
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Control the ARE</Title>
+	</HEAD>
+	<BODY>
+		<h1>Control the ARE</h1>
+		<p>In the system-tab, the group ARE handles the functionalities for connecting to and communicating with the ARE. The connection to the ARE is handled by the AsTeRICS Application Programming Interface (ASAPI).</p>
+		<figure>
+			<img class="image" src="img/ARE_and_ARE_Storage_Group.png" alt="Screenshot: System Tab, ARE and ARE Storage Group" title="Screenshot: System Tab, ARE and ARE Storage Group" />
+			<figcaption>System Tab, ARE and ARE Storage Group</figcaption>
+		</figure>
+		<ul>
+			<li>
+				<EM>Connect to ARE </EM>connects the ACS with the ARE. The Connect to ARE dialog appears, asking for the connection data. The host name (IP-address of the host) can be found in the ARE configuration, the default port should be 9090. Beside this connection dialog, also auto connection can be used, see the section Options / General Settings.
+				<figure>
+					<img class="bullet_image" src="img/ARE_Connection_Dialog.jpg" alt="Screenshot: The ARE Connection Dialog" title="Screenshot: The ARE Connection Dialog" />
+					<figcaption>The ARE Connection Dialog</figcaption>
+				</figure>
+				When the connection has been established, two special cases can occur:
+				<ul>
+					<li>An active model (deployment) has been detected on the ARE. The user will be asked to download this model or to proceed without downloading it.</li>
+					<li>An active model (deployment) has been detected and is running on the ARE. The user will be asked to download this model and switch the ACS to <EM>Running</EM> mode or to proceed without downloading it.</li>
+				</ul>
+			</li>
+			<li><EM>Disconnect from ARE </EM>closes the connection to the ARE.</li> 
+			<li><EM>Upload Model </EM>transmits the model in the drawing from the ACS to the ARE. The model on the ARE will be overwritten. Uploading the model to the ARE does not start the model on the ARE.</li> 
+			<li><EM>Download Model </EM>transmits the active model from the ARE to the ACS. The model on the drawing area will be overwritten.</li> 
+			<li><EM>Download Bundles </EM>transmits the bundel description (describing the components) form the connected ARE to the ACS. These bundel descrptions will be available as components in the components-tab. Then bundles can be managed with the <em>Bundle Manager</em>.</li> 
+		</ul>
+		<p>The group ARE Storage deals with the storage on the ARE. The storage is an area within the ARE where models can be stored and also activated using the ARE interface.</p>
+		<ul>
+			<li><EM>Store Model on ARE</EM> transmits the model in the drawing from the ACS to the ARE storage. A dialog appears to set the filename.</li>
+			<li><EM>Load Model from Storage</EM> transmits a model from the ARE storage to the ACS. The model on the ACS drawing area will be overwritten. A dialog appears to select the filename of the model.</li>
+			<li><EM>Activate a Stored Model</EM>: A dialog appears to select the filename of a model in the storage. This model will be set active in the ARE and also will be started. Furthermore, the model on the ACS drawing area will be overwritten with the selected model and the ACS switches to run-mode.</li>
+			<li><EM>Delete a Stored Model </EM>deletes a model from the ARE storage using a file dialog.</li>
+			<li><EM>Set as Autorun </EM>sets the model as autorun model. This model will be started automatically when the ARE starts.</li>
+		</ul>
+		<p>Starting and stopping a model can be done with the buttons in the group Model.</p>
+		<figure>
+			<img class="tiny_image" src="img/Model_Group_in_System_Tab.jpg" alt="Screenshot: The Model Group in the System Tab" title="Screenshot: The Model Group in the System Tab" />
+			<figcaption>The Model Group in the System Tab</figcaption>
+		</figure>
+		<ul>
+			<li><EM>Start Model </EM>starts the model on the ARE and switches the ACS into run-mode. This means that now no components, channels and event channels can be added, edited or deleted. The drawing area is greyed out.</li> 
+			<li><EM>Pause Model </EM>pauses the model on the ARE.</li> 
+			<li><EM>Stop Model </EM>stops the model on the ARE and ends the run-mode.</li> 
+		</ul>
+	</BODY>
 </HTML>

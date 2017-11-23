@@ -4,51 +4,51 @@
 	<ul class="menuList">
 		<!--Each menu item has to have a special attribute "data-filename", containing the relative path
 		(below the path specified in "helpPaths.json") and the complete filename.-->
-		<li class="menuItem" data-filename="acs_basic_functions.htm">ACS Basic Functions</li>
+		<li class="menuItem" data-filename="acs/acs_basic_functions.htm">ACS Basic Functions</li>
 		<li class="menuItem">
 			Create and Edit a Model
 			<ul class="menuList">
-				<li class="menuItem" data-filename="Create_and_Edit_a_Model.htm">Introduction</li>
-				<li class="menuItem" data-filename="The_Edit_Tab.htm">The Edit Tab</li>
-				<li class="menuItem" data-filename="Component_Context_Menu.htm">Component Context Menu</li>
-				<li class="menuItem" data-filename="Channels.htm">Channels</li>
-				<li class="menuItem" data-filename="Events.htm">Events</li>
-				<li class="menuItem" data-filename="Setting_the_Properties.htm">Setting the Properties</li>
+				<li class="menuItem" data-filename="acs/Create_and_Edit_a_Model.htm">Introduction</li>
+				<li class="menuItem" data-filename="acs/The_Edit_Tab.htm">The Edit Tab</li>
+				<li class="menuItem" data-filename="acs/Component_Context_Menu.htm">Component Context Menu</li>
+				<li class="menuItem" data-filename="acs/Channels.htm">Channels</li>
+				<li class="menuItem" data-filename="acs/Events.htm">Events</li>
+				<li class="menuItem" data-filename="acs/Setting_the_Properties.htm">Setting the Properties</li>
 			</ul>
 		</li>
-		<li class="menuItem" data-filename="acs_basic_functions.htm">Tooltips</li>
-		<li class="menuItem" data-filename="acs_basic_functions.htm">Open and Save Models</li>
-		<li class="menuItem" data-filename="acs_basic_functions.htm">Control the ARE</li>
-		<li class="menuItem" data-filename="acs_basic_functions.htm">GUI Designer</li>
+		<li class="menuItem" data-filename="acs/Tooltips.htm">Tooltips</li>
+		<li class="menuItem" data-filename="acs/Load_and_Save_Models.htm">Open and Save Models</li>
+		<li class="menuItem" data-filename="acs/Control_the_ARE.htm">Control the ARE</li>
+		<li class="menuItem" data-filename="acs/GUI_Designer.htm">GUI Designer</li>
 		<li class="menuItem">
 			Miscellaneous
 			<ul class="menuList">
-				<li class="menuItem" data-filename="Miscellaneous.htm">Introduction</li>
-				<li class="menuItem" data-filename="Status_Reporting_and_Error_Logging.htm">Status Reporting and Error Logging</li>
-				<li class="menuItem" data-filename="Component_Collection_Manager.htm">Component Collection Manager</li>
+				<li class="menuItem" data-filename="acs/Miscellaneous.htm">Introduction</li>
+				<li class="menuItem" data-filename="acs/Status_Reporting_and_Error_Logging.htm">Status Reporting and Error Logging</li>
+				<li class="menuItem" data-filename="acs/Component_Collection_Manager.htm">Component Collection Manager</li>
 			</ul>
 		</li>
-		<li class="menuItem" data-filename="Print.htm">Print</li>
+		<li class="menuItem" data-filename="acs/Print.htm">Print</li>
 		<li class="menuItem">
 			Options
 			<ul class="menuList">
-				<li class="menuItem" data-filename="Options.htm">Introduction</li>
-				<li class="menuItem" data-filename="General_settings.htm">General Settings</li>
-				<li class="menuItem" data-filename="Dialogs_settings.htm">Dialogs Settings</li>
-				<li class="menuItem" data-filename="Colours_settings.htm">Colours Settings</li>
+				<li class="menuItem" data-filename="acs/Options.htm">Introduction</li>
+				<li class="menuItem" data-filename="acs/General_settings.htm">General Settings</li>
+				<li class="menuItem" data-filename="acs/Dialogs_settings.htm">Dialogs Settings</li>
+				<li class="menuItem" data-filename="acs/Colours_settings.htm">Colours Settings</li>
 			</ul>
 		</li>
 		<li class="menuItem">
 			Modes
 			<ul class="menuList">
-				<li class="menuItem" data-filename="Modes.htm">Introduction</li>
-				<li class="menuItem" data-filename="Disconnected.htm">Disconnected</li>
-				<li class="menuItem" data-filename="Connected.htm">Connected</li>
-				<li class="menuItem" data-filename="Synchronized.htm">Synchronised</li>
-				<li class="menuItem" data-filename="Running.htm">Running</li>
-				<li class="menuItem" data-filename="Pause.htm">Pause</li>
+				<li class="menuItem" data-filename="acs/Modes.htm">Introduction</li>
+				<li class="menuItem" data-filename="acs/Disconnected.htm">Disconnected</li>
+				<li class="menuItem" data-filename="acs/Connected.htm">Connected</li>
+				<li class="menuItem" data-filename="acs/Synchronized.htm">Synchronised</li>
+				<li class="menuItem" data-filename="acs/Running.htm">Running</li>
+				<li class="menuItem" data-filename="acs/Pause.htm">Pause</li>
 			</ul>
 		</li>
-		<li class="menuItem" data-filename="Keyboard_control.htm">Keyboard Control</li>
+		<li class="menuItem" data-filename="acs/Keyboard_control.htm">Keyboard Control</li>
 	</ul>
 </li>
