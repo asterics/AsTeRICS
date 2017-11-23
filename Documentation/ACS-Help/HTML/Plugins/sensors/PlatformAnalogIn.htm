@@ -1,35 +1,35 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>Platform Analog In</Title>
-</HEAD>
-<BODY>
-<H1>Platform Analog In</H1>
-<H3>Component Type: Sensor (Subcategory: Generic Control Input)</H3>
-<p>The PlatformAnalogIn component is a sensor which is used in combination with the analog inputs of the personal platform. The component provides two output ports which correlate to the inputs IN1 and IN2 of the platform. The component can be set up to sample the inputs periodically or upon an incoming event. Both inputs can be used for voltage and resistance measurement.</p>
-
-<div class="image"><img src="img/PlatformAnalogIn.jpg" alt="Screenshot: PlatformAnalogIn plugin" title="Screenshot: PlatformAnalogIn plugin" /><br>
-Platform AnalogIn plugin</div>
-
-<H2>Requirements</H2>
-This component requires the Core CIM (CIM Id: 0x0602) of the AsTeRICS Personal Platform. 
-<div class="image"><img src="img/PersonalPlatform.jpg" alt="The AsteRICS Personal Platform (preliminary version)" title="The AsteRICS Personal Platform (preliminary version)" /><br>
-The AsteRICS Personal Platform</div>
-
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>in1 to in2 [integer]:</STRONG> Each of these output port corresponds to one input of the ADC CIM. The measured values are forwarded directly from the CIM thus corresponding to the description given in the CIM specification. Depending on the type of connected sensor the values either correspond to a voltage or a resistive value.</li>
-</ul>
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>adcSampleTrigger:</STRONG> An incoming event on this port will cause the ADC CIM to sample data on its inputs. This event will only take effect if the periodic_update property is set to 0.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>periodicUpdate [integer]:</STRONG> This property defines the time between data sampling requests to the ADC CIM (in milliseconds). The software component will send requests to the CIM in the given intervals. Due to current limitations of the ADC CIM it is recommended to use time intervals not lower than 50 milliseconds (20 samples per second).</li>
-<li><STRONG>activateInput1 to activateInput2 [Boolean]:</STRONG> These properties correspond the CIM's ADC inputs IN1 to IN8, if the property is true, the corresponding output port of the software component will send the sampled data.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Platform Analog In</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Platform Analog In</H1>
+		<span class="componentType">Component Type: Sensor (Subcategory: Generic Control Input)</span>
+		<p>The PlatformAnalogIn component is a sensor which is used in combination with the analog inputs of the personal platform. The component provides two output ports which correlate to the inputs IN1 and IN2 of the platform. The component can be set up to sample the inputs periodically or upon an incoming event. Both inputs can be used for voltage and resistance measurement.</p>
+		<figure>
+			<img class="image" src="img/PlatformAnalogIn.jpg" alt="Screenshot: PlatformAnalogIn plugin" title="Screenshot: PlatformAnalogIn plugin" />
+			<figcaption>Platform AnalogIn plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		This component requires the Core CIM (CIM Id: 0x0602) of the AsTeRICS Personal Platform. 
+		<figure>
+			<img class="image" src="img/PersonalPlatform.jpg" alt="The AsteRICS Personal Platform (preliminary version)" title="The AsteRICS Personal Platform (preliminary version)" />
+			<figcaption>The AsteRICS Personal Platform</figcaption>
+		</figure>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>in1 to in2 [integer]:</STRONG> Each of these output port corresponds to one input of the ADC CIM. The measured values are forwarded directly from the CIM thus corresponding to the description given in the CIM specification. Depending on the type of connected sensor the values either correspond to a voltage or a resistive value.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>adcSampleTrigger:</STRONG> An incoming event on this port will cause the ADC CIM to sample data on its inputs. This event will only take effect if the periodic_update property is set to 0.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>periodicUpdate [integer]:</STRONG> This property defines the time between data sampling requests to the ADC CIM (in milliseconds). The software component will send requests to the CIM in the given intervals. Due to current limitations of the ADC CIM it is recommended to use time intervals not lower than 50 milliseconds (20 samples per second).</li>
+			<li><STRONG>activateInput1 to activateInput2 [Boolean]:</STRONG> These properties correspond the CIM's ADC inputs IN1 to IN8, if the property is true, the corresponding output port of the software component will send the sampled data.</li>
+		</ul>
+	</BODY>
 </HTML>

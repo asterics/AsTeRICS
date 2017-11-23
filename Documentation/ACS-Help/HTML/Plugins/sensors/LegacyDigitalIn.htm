@@ -1,31 +1,32 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>Legacy Digital In</Title>
-</HEAD>
-<BODY>
-<H1>Legacy Digital In</H1> 
-<H3>Component Type: Sensor (Subcategory: Generic Control Input)</H3>
-<p>
-The LegacyDigitalIn component provides an interface to read the digital inputs of the legacy GPIO CIM (CIM Id: 0x0201). On state changes of the connected signals (transitions to high or low level), the component generates corresponding trigger-events. </p>
-<div class="image"><img src="img/LegacyDigitalIn.jpg" alt="Screenshot: LegacyDigitalIn plugin" title="Screenshot: LegacyDigitalIn plugin" /><br>
-LegacyDigitalIn plugin</div>
-
-<H2>Requirements</H2>
-This component requires the legacy GPIO CIM (CIM Id: 0x0201) connected to an USB port. 
-<div class="image"><img src="img/DigitalIn_CIM.jpg" alt="GPIO CIM" title="GPIO CIM" /><br>
-GPIO CIM</div>
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>in1High to in8High:</STRONG> Each of these event ports is linked to one input port, if the device connection to this input port delivers a signal which changes to high level, an event will be raised on the corresponding port.</li>
-<li><STRONG>in1Low to in8Low:</STRONG> Each of these event ports is linked to one input port, if the device connection to this input port delivers a signal which changes to low level, an event will be raised on the corresponding port.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>activateEventIn1 to activateEventIn8 [Boolean]:</STRONG> These properties declare for each port whether or not a signal transition on the actual input port should result in an event being triggered in the ARE. If a property is set true for one input, it will raise events on signal transitions, if it is set to false it will not.</li>
-<li><STRONG>periodicUpdate:</STRONG> Period in milliseconds for update messages about state of device inputs. If the property is set to zero, the plugin will receive messages from the CIM on signal transitions, if the property is non-zero, the CIM will send status messages in the defined intervals without extra event messages on signal changes. Both modes will have the same effect on the software plugin, it will raise events on its trigger ports.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Legacy Digital In</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Legacy Digital In</H1> 
+		<span class="componentType">Component Type: Sensor (Subcategory: Generic Control Input)</span>
+		<p>The LegacyDigitalIn component provides an interface to read the digital inputs of the legacy GPIO CIM (CIM Id: 0x0201). On state changes of the connected signals (transitions to high or low level), the component generates corresponding trigger-events. </p>
+		<figure>
+			<img class="image" src="img/LegacyDigitalIn.jpg" alt="Screenshot: LegacyDigitalIn plugin" title="Screenshot: LegacyDigitalIn plugin" />
+			<figcaption>LegacyDigitalIn plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		This component requires the legacy GPIO CIM (CIM Id: 0x0201) connected to an USB port. 
+		<figure>
+			<img class="image" src="img/DigitalIn_CIM.jpg" alt="GPIO CIM" title="GPIO CIM" />
+			<figcaption>GPIO CIM</figcaption>
+		</figure>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>in1High to in8High:</STRONG> Each of these event ports is linked to one input port, if the device connection to this input port delivers a signal which changes to high level, an event will be raised on the corresponding port.</li>
+			<li><STRONG>in1Low to in8Low:</STRONG> Each of these event ports is linked to one input port, if the device connection to this input port delivers a signal which changes to low level, an event will be raised on the corresponding port.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>activateEventIn1 to activateEventIn8 [Boolean]:</STRONG> These properties declare for each port whether or not a signal transition on the actual input port should result in an event being triggered in the ARE. If a property is set true for one input, it will raise events on signal transitions, if it is set to false it will not.</li>
+			<li><STRONG>periodicUpdate:</STRONG> Period in milliseconds for update messages about state of device inputs. If the property is set to zero, the plugin will receive messages from the CIM on signal transitions, if the property is non-zero, the CIM will send status messages in the defined intervals without extra event messages on signal changes. Both modes will have the same effect on the software plugin, it will raise events on its trigger ports.</li>
+		</ul>
+	</BODY>
 </HTML>

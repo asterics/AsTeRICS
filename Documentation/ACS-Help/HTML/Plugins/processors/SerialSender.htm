@@ -1,21 +1,17 @@
 <!doctype html>
 <html>
   <head>
-    
-      
     <meta charset="UTF-8">
-    
-      
     <title>SerialSender</title>
   </head>
-  <body>
+  <body class="innerBody">
     <h1>SerialSender</h1>
-    <h3>Component Type: Processor (Subcategory: Serial Communication)</h3>
+    <span class="componentType">Component Type: Processor (Subcategory: Serial Communication)</span>
     <p>The Serialsender can be used to send structured data to Serial devices. It has 16 data slots. Whenever a send event occurs the plugin sends every slot which is active to the device, beginning with slot0</p>
-    <div class="image"><img src="img/SerialSender.png"
-        alt="Screenshot: SerialSender plugin" title="Screenshot:
-        SerialSender plugin"><br>
-      SerialSender plugin</div>
+    <figure>
+		<img class="image" src="img/SerialSender.png" alt="Screenshot: SerialSender plugin" title="Screenshot: SerialSender plugin">
+		<figcaption>SerialSender plugin</figcaption>
+	</figure>
     <h2>Input Port Description</h2>
     <ul>
       <li><strong>slot0 - slot15 [int]:</strong> Input data for each slot. The lower 8 Bit of the input will be sent when the slot is set Active and a send event occurs</li>

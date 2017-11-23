@@ -1,57 +1,51 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>TuioReactivision</Title>
-</HEAD>
-<BODY>
-<H1>TuioReactivision</H1>
-<H3>Component Type: Sensor (Subcategory: Sensor Modules)</H3>
-<p>This component integrates reacTIVision into AsTeRICS</p>
-<div class="image"><img src="img/reactivision.jpg" alt="Screenshot: TuioReactivision plug-in" title="Screenshot: TuioReactivision plug-in" /><br>
-TuioReactivision plug-in</div>
-<H2>Requirements</H2>
-This component requires that the reacTIVision.exe is running --> Download: http://reactivision.sourceforge.net/. 
-It can either be started manually, with the ApplicationLauncher plug-in or via a reference in the tuioReactivision plug-in's property "reactivisionPath"
-
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>Marker ID [Integer]:</STRONG> The fiducial marker's ID</li>
-<li><STRONG>Session ID [Float]]:</STRONG> Temporary object ID</li>
-<li><STRONG> xPos [Float]:</STRONG> The marker's position on the x-axis</li>
-<li><STRONG> yPos [Float]:</STRONG> The marker's position on the y-axis</li>
-<li><strong> angel [Float]:</strong> The marker's angle</li>
-<li><strong> motion speed [Float]:</strong> Movement vector which shows the marker's motion speed </li>
-<li><strong> rotation speed [Float]:</strong>  Rotation vector which shows the marker's rotation speed</li>
-<li><strong> motionAccel [Float]:</strong>  The marker's motion acceleration</li>
-<li><strong> rotationAccel  [Float]:</strong>  The marker's rotation acceleration</li>
-<li><strong> Text  [String]:</strong>  Sends the text assigned to the marker which is recognised on the display</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>Text Output  [Boolean]:</STRONG> If it is true, a string can be assigned to a marker. Therefor, a text file is necessary</li>
-<li><STRONG>Marker Allocation [Boolean]:</STRONG> If it is true, an event port can be assigned to a marker. Therefor, a text file is necessary. Only Text Output or Marker Allocation can be true</li> 
-<li><strong>reactivisionPath [Boolean]:</strong> Contains the path to the reacTIVision.exe</li> 
-<li><STRONG>Text File [String]:</STRONG> Contains the path of the text file in which the marker is either assigned to a text or an event port (e.g. "1-3" marker three is assigned to event trigger one )</li>
-    </ul>
-
-    <div class="image">
-        <img src="img/liste.jpg" alt="Screenshot: examplary text file" title="Screenshot: examplary text file" /><br>
-        Examplary text file when a marker should be assigned to a string (Marker number is on the left side)
-
-    </div>
-
-    <div class="image">
-        <img src="img/listeInt.jpg" alt="Screenshot: exemplary text file" title="Screenshot: examplary text file" /><br>
-        Examplary text file ehen a marker should be assigned to an integer (Marker number is on the right side)
-
-    </div>
-
- <H2>Event Trigger</H2>
- <ul>
- <li><strong>Event Trigger</strong> Port 1-6 can only be used when marker allocation is true. </li>
-
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>TuioReactivision</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>TuioReactivision</H1>
+		<span class="componentType">Component Type: Sensor (Subcategory: Sensor Modules)</span>
+		<p>This component integrates reacTIVision into AsTeRICS</p>
+		<figure>
+			<img class="medium_image" src="img/reactivision.jpg" alt="Screenshot: TuioReactivision plug-in" title="Screenshot: TuioReactivision plug-in" />
+			<figcaption>TuioReactivision plug-in</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		This component requires that the reacTIVision.exe is running --> Download: http://reactivision.sourceforge.net/. 
+		It can either be started manually, with the ApplicationLauncher plug-in or via a reference in the tuioReactivision plug-in's property "reactivisionPath"
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>Marker ID [Integer]:</STRONG> The fiducial marker's ID</li>
+			<li><STRONG>Session ID [Float]]:</STRONG> Temporary object ID</li>
+			<li><STRONG> xPos [Float]:</STRONG> The marker's position on the x-axis</li>
+			<li><STRONG> yPos [Float]:</STRONG> The marker's position on the y-axis</li>
+			<li><strong> angel [Float]:</strong> The marker's angle</li>
+			<li><strong> motion speed [Float]:</strong> Movement vector which shows the marker's motion speed </li>
+			<li><strong> rotation speed [Float]:</strong>  Rotation vector which shows the marker's rotation speed</li>
+			<li><strong> motionAccel [Float]:</strong>  The marker's motion acceleration</li>
+			<li><strong> rotationAccel  [Float]:</strong>  The marker's rotation acceleration</li>
+			<li><strong> Text  [String]:</strong>  Sends the text assigned to the marker which is recognised on the display</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>Text Output  [Boolean]:</STRONG> If it is true, a string can be assigned to a marker. Therefor, a text file is necessary</li>
+			<li><STRONG>Marker Allocation [Boolean]:</STRONG> If it is true, an event port can be assigned to a marker. Therefor, a text file is necessary. Only Text Output or Marker Allocation can be true</li> 
+			<li><strong>reactivisionPath [Boolean]:</strong> Contains the path to the reacTIVision.exe</li> 
+			<li><STRONG>Text File [String]:</STRONG> Contains the path of the text file in which the marker is either assigned to a text or an event port (e.g. "1-3" marker three is assigned to event trigger one )</li>
+		</ul>
+		<figure>
+			<img class="image" src="img/liste.jpg" alt="Screenshot: examplary text file" title="Screenshot: examplary text file" />
+			<figcaption>Examplary text file when a marker should be assigned to a string (Marker number is on the left side)</figcaption>
+		</figure>
+		<figure>
+			<img class="image" src="img/listeInt.jpg" alt="Screenshot: exemplary text file" title="Screenshot: examplary text file" />
+			<figcaption>Examplary text file ehen a marker should be assigned to an integer (Marker number is on the right side)</figcaption>
+		</figure>
+		<H2>Event Trigger</H2>
+		<ul>
+			<li><strong>Event Trigger</strong> Port 1-6 can only be used when marker allocation is true. </li>
+		</ul>
+	</BODY>
 </HTML>

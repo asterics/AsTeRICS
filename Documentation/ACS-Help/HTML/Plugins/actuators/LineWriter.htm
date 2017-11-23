@@ -1,29 +1,24 @@
 <!doctype html>
 <html>
   <head>
-    
-      
     <meta charset="UTF-8">
-    
-      
     <title>LineWriter</title>
   </head>
-  <body>
+  <body class="innerBody">
     <h1>LineWriter</h1>
-    <h3>Component Type: Actuator (Subcategory: File System)</h3>
+    <span class="componentType">Component Type: Actuator (Subcategory: File System)</span>
     <p>This component writes lines from an input port to a text file.</p>
-    <div class="image"><img src="img/LineWriter.jpg" alt="Screenshot:
-        LineWriter plugin" title="Screenshot: LineWriter plugin"><br>
-      ButtonGrid plugin</div>
+    <figure>
+		<img class="image" src="img/LineWriter.jpg" alt="Screenshot: LineWriter plugin" title="Screenshot: LineWriter plugin">
+		<figcaption>ButtonGrid plugin</figcaption>
+	</figure>
     <h2>Input port Description</h2>
     <ul>
-      <li><strong>actLine (string):</strong> an incoming string is stored into the text file.
+      <li><strong>actLine (string):</strong> an incoming string is stored into the text file.</li>
 	</ul>
-
     <h2>Properties</h2>
     <ul>
-      <li><strong>fileName [string]:</strong> The full path and file name of the text file to be written. The path can be given
-	    as absolute path or relative to the ARE executable's directory</li>
+      <li><strong>fileName [string]:</strong> The full path and file name of the text file to be written. The path can be given as absolute path or relative to the ARE executable's directory</li>
       <li><strong>addTimeToFileName [boolean]:</strong> If selected, a timestamp will be added to the filename, to avoid overwriting files</li>
       <li><strong>titleCaption [string]:</strong> if not empty, this string parameter will be used as first line in the file (e.g. to create table caption in a csv file)</li>
       <li><strong>timestamp  [integer, combobox selection]:</strong> The type of timestamp which will be added befor each line (currently either "no timestamp" or "milliseconds" can be chosen).</li>

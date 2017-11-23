@@ -1,41 +1,37 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>EOG</Title>
-</HEAD>
-<BODY>
-<H1>EOG</H1> 
-<H3>Component Type: Sensor (Subcategory:Sensor Modules)</H3>
-<p>
-This component provides the EOG signal (electro-oculogram) from the EOG sensor board, which has been developed in course of the Bachelor theses of Benedikt Rossboth at the UAS Technikum Wien. 
-The EOG sensor board delivers information about eye movements and eye blinks which can be used in alternative user input setups. 
-<p> For operation, three surface electrodes must be fixed to the users head
-(one electrode aside and above one eye, and one DRL electrode e.g. at the wrist of the user). In a proof-of-concept model, a musical instrument was implemented where a user can control midi tones via eye movements.
-For detailed information please refer to the file Documentation/DIYGuides/EOG_Rossboth.pdf
-
-
-<div class="image"><img src="img/EOG.jpg" alt="Screenshot: EOG plugin" title="Screenshot: EOG plugin" /><br>
-the EOG sensor plugin</div>
-
-<H2>Requirements</H2>
-The EOG sensor has to be connected to a USB port. The design documentation of the electronic circuit can be found in the thesis pdf. The firmware for the EOG sensor's microcontroller is available in the folder CIMs/EOG_CIM.
-The image below shows the breadboard setup of the circuit and a measurement of 6 eye blinks (above) and a left/right eye movement (below).
-<p>
-<div class="image"><img src="img/EOGApplication.jpg" alt="EOG sensor application" title="EOG sensor application" /><br>
-EOG sensor application</div>
-
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>horizontal [integer]:</STRONG> the currently measured horizontal eye movement value</li>
-<li><STRONG>vertical [integer]:</STRONG> the currently measured vertical eye movement value</li>
-</ul>
-
-
-<H2>Properties</H2>
-<ul>
-<li><STRONG>updatePeriod [integer]:</STRONG> the update period for values in milliseconds.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>EOG</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>EOG</H1> 
+		<span class="componentType">Component Type: Sensor (Subcategory:Sensor Modules)</span>
+		<p>
+		This component provides the EOG signal (electro-oculogram) from the EOG sensor board, which has been developed in course of the Bachelor theses of Benedikt Rossboth at the UAS Technikum Wien. 
+		The EOG sensor board delivers information about eye movements and eye blinks which can be used in alternative user input setups. 
+		<p> For operation, three surface electrodes must be fixed to the users head
+		(one electrode aside and above one eye, and one DRL electrode e.g. at the wrist of the user). In a proof-of-concept model, a musical instrument was implemented where a user can control midi tones via eye movements.<br>
+		For detailed information please refer to the file Documentation/DIYGuides/EOG_Rossboth.pdf
+		<figure>
+			<img class="image" src="img/EOG.jpg" alt="Screenshot: EOG plugin" title="Screenshot: EOG plugin" />
+			<figcaption>The EOG sensor plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		The EOG sensor has to be connected to a USB port. The design documentation of the electronic circuit can be found in the thesis pdf. The firmware for the EOG sensor's microcontroller is available in the folder CIMs/EOG_CIM.
+		The image below shows the breadboard setup of the circuit and a measurement of 6 eye blinks (above) and a left/right eye movement (below).
+		<figure>
+			<img class="image" src="img/EOGApplication.jpg" alt="EOG sensor application" title="EOG sensor application" />
+			<figcaption>EOG sensor application</figcaption>
+		</figure>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>horizontal [integer]:</STRONG> the currently measured horizontal eye movement value</li>
+			<li><STRONG>vertical [integer]:</STRONG> the currently measured vertical eye movement value</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>updatePeriod [integer]:</STRONG> the update period for values in milliseconds.</li>
+		</ul>
+	</BODY>
 </HTML>

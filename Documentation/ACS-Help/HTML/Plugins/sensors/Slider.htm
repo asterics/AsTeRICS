@@ -1,41 +1,40 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>Slider</Title>
-</HEAD>
-<BODY>
-<H1>Slider</H1>
-<H3>Component Type: Sensor (Subcategory: Graphical User Interface)</H3>
-<p>The Slider component generates a slider with adjustable range of values and size on the ARE desktop. This slider can be used to change important parameters of the model during runtime. Furthermore, an incoming signal can be adjusted by the slider component, using a gain factor property.</p>
-
-<div class="image"><img src="img/Slider.jpg" alt="Screenshot: Slider plugin" title="Screenshot: Slider plugin" /><br>
-Slider plugin</div>
-
-<h2>Input Port Description</h2>
-<ul>
-  <li><strong>setValue [integer]:</strong> Sets the slider position to the incoming value. Note that this value is not propagated to the output port (to avoid loops).</li>
-  <li><strong>in [double]:</strong> input port for an incoming signal which can be amplified by the slider component</li>
-</ul>
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>value [integer]:</STRONG> This port provides the currently selected slider value (position). Only integer values are possible. </li>
-<li><STRONG>out [double]:</STRONG> The amplified (or attenuated) input signal (out = in * gain * slider value)</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>min [integer]:</STRONG> The minimum value of the slider range</li>
-<li><STRONG>max [integer]:</STRONG> The maximum value of the slider range</li>
-<li><STRONG>default [integer]:</STRONG> The defualt position of the slider at model startup (this value is not automatically sent to the port at model startup.</li>
-<li><STRONG>gain [double]:</STRONG> The amplification value for an (optional) incoming signal (out = in * gain * slider value)</li>
-<li><STRONG>caption [string]:</STRONG> A label for the slider</li>
-<li><STRONG>majorTickspacing [integer]:</STRONG> Coarse sections for the slider value captions</li>
-<li><STRONG>minorTickspacing [integer]:</STRONG> Fine sections for the slider value captions</li>
-<li><STRONG>alignment [integer, combobox selection]:</STRONG> Slider orientation in the GUI, can be horizontal or vertical</li>
-<li><STRONG>fontSize [integer]:</STRONG> Font size of the caption</li>
-<li><STRONG>storeValue [boolean]:</STRONG> if the storeValue property is enabled, the current value of the slider position is stored and restored when the model is started next time. Note that this overrides the defaultValue property.</li>
-<li><strong>displayGUI [boolean]:</strong> if selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Slider</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Slider</H1>
+		<span class="componentType">Component Type: Sensor (Subcategory: Graphical User Interface)</span>
+		<p>The Slider component generates a slider with adjustable range of values and size on the ARE desktop. This slider can be used to change important parameters of the model during runtime. Furthermore, an incoming signal can be adjusted by the slider component, using a gain factor property.</p>
+		<figure>
+			<img class="image" src="img/Slider.jpg" alt="Screenshot: Slider plugin" title="Screenshot: Slider plugin" />
+			<figcaption>Slider plugin</figcaption>
+		</figure>
+		<h2>Input Port Description</h2>
+		<ul>
+		  <li><strong>setValue [integer]:</strong> Sets the slider position to the incoming value. Note that this value is not propagated to the output port (to avoid loops).</li>
+		  <li><strong>in [double]:</strong> input port for an incoming signal which can be amplified by the slider component</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>value [integer]:</STRONG> This port provides the currently selected slider value (position). Only integer values are possible. </li>
+			<li><STRONG>out [double]:</STRONG> The amplified (or attenuated) input signal (out = in * gain * slider value)</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>min [integer]:</STRONG> The minimum value of the slider range</li>
+			<li><STRONG>max [integer]:</STRONG> The maximum value of the slider range</li>
+			<li><STRONG>default [integer]:</STRONG> The defualt position of the slider at model startup (this value is not automatically sent to the port at model startup.</li>
+			<li><STRONG>gain [double]:</STRONG> The amplification value for an (optional) incoming signal (out = in * gain * slider value)</li>
+			<li><STRONG>caption [string]:</STRONG> A label for the slider</li>
+			<li><STRONG>majorTickspacing [integer]:</STRONG> Coarse sections for the slider value captions</li>
+			<li><STRONG>minorTickspacing [integer]:</STRONG> Fine sections for the slider value captions</li>
+			<li><STRONG>alignment [integer, combobox selection]:</STRONG> Slider orientation in the GUI, can be horizontal or vertical</li>
+			<li><STRONG>fontSize [integer]:</STRONG> Font size of the caption</li>
+			<li><STRONG>storeValue [boolean]:</STRONG> if the storeValue property is enabled, the current value of the slider position is stored and restored when the model is started next time. Note that this overrides the defaultValue property.</li>
+			<li><strong>displayGUI [boolean]:</strong> if selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.</li>
+		</ul>
+	</BODY>
 </HTML>

@@ -1,40 +1,41 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>MidiPlayer</Title>
-</HEAD>
-<BODY>
-<H1>Midi Player</H1>
-<H3>Component Type: Actuator (Subcategory: Audio and Voice)</H3>
-<p>The MidiPlayer component can generate midi tone output on the default midi device of the system. This can be used for audio feedback (e.g. for a selection or click) or for creation of musical instruments. The MidiPlayer Plugin features an optional GUI where the currently played tone can be seen.</p>
-<div class="image"><img src="img/MidiPanel.jpg" alt="Screenshot: MidiPlayer GUI" title="Screenshot: MidiPlayer GUI" /><br>
-MidiPlayer GUI</div>
-<p></p>
-
-<div class="image"><img src="img/MidiPlayer.jpg" alt="Screenshot: MidiPlayer plugin" title="Screenshot: MidiPlayer plugin" /><br>
-MidiPlayer plugin</div>
-
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>trigger [integer]:</STRONG> The input strength (tone trigger).</li>
-<li><STRONG>pitch [integer]:</STRONG> The tone height input.</li>
-<li><STRONG>instrument [string]:</STRONG> accepts a string which contains a valid instrument name to select this instrument</li>
-<li><STRONG>scale [string]:</STRONG> accepts a string which contains a tone scale name to select this tone scale</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>midiDevice [combobox]:</STRONG> The Midi Output device. This combobox allows selection of an installed Midi device for tone output. <b>Supports value suggestions from ARE (dynamic property)</b></li>
-<li><STRONG>channel [combobox]:</STRONG> The midi channel (1-16, 10 usually is the drum channel).</li>
-<li><STRONG>instrument [combobox]:</STRONG> The midi instrument or controller (the first 127 selections are instruments, then 127 controllers are available. if a controller is selected, the incoming pitch value is use as control change value). <b>Supports value suggestions from ARE (dynamic property)</b></li>
-<li><STRONG>triggerThreshold [integer]:</STRONG> The value of the trigger input threshold. Tones will only be generated if the trigger input is bigger than this value. If the trigger inptu is not used, all tone heights received at the pitch input port are played with full volume.</li>
-<li><STRONG>triggerMax [integer]:</STRONG> The maximum value of the trigger input. This value influences the volume of the played tones: Tones will get louder as the trigger input value approaches the triggerMax value.</li>
-<li><STRONG>pitchMin [integer]:</STRONG> The minimum value for pitch input. Defines the pitch input value for the lowest tone output.</li>
-<li><STRONG>pitchMax [integer]:</STRONG> The maximum value for pitch input Defines the pitch input value for the highest tone output.</li>
-<li><STRONG>toneScale [integer]:</STRONG> One of several tone scales can be selected. The tonscales are stored in the plugin's subfolder in the ARE. <b>Supports value suggestions from ARE (dynamic property)</b></li>
-<li><STRONG>playOnlyChangingNotes [boolean]:</STRONG> If selected, only different note values are triggered (else, same note values can be played multiple times)</li>
-<li><STRONG>displayGUI [boolean]:</STRONG> If this property value is set to true, the GUI window for the MidiPlugin will be displayed. The GUI window shows the current tone height and the available feedback tone scale.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>MidiPlayer</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Midi Player</H1>
+		<span class="componentType">Component Type: Actuator (Subcategory: Audio and Voice)</span>
+		<p>The MidiPlayer component can generate midi tone output on the default midi device of the system. This can be used for audio feedback (e.g. for a selection or click) or for creation of musical instruments. The MidiPlayer Plugin features an optional GUI where the currently played tone can be seen.</p>
+		<figure>
+			<img class="image" src="img/MidiPanel.jpg" alt="Screenshot: MidiPlayer GUI" title="Screenshot: MidiPlayer GUI" />
+			<figcaption>MidiPlayer GUI</figcaption>
+		</figure>
+		<br>
+		<figure>
+			<img class="image" src="img/MidiPlayer.jpg" alt="Screenshot: MidiPlayer plugin" title="Screenshot: MidiPlayer plugin" />
+			<figcaption>MidiPlayer plugin</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>trigger [integer]:</STRONG> The input strength (tone trigger).</li>
+			<li><STRONG>pitch [integer]:</STRONG> The tone height input.</li>
+			<li><STRONG>instrument [string]:</STRONG> accepts a string which contains a valid instrument name to select this instrument</li>
+			<li><STRONG>scale [string]:</STRONG> accepts a string which contains a tone scale name to select this tone scale</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>midiDevice [combobox]:</STRONG> The Midi Output device. This combobox allows selection of an installed Midi device for tone output. <strong>Supports value suggestions from ARE (dynamic property)</strong></li>
+			<li><STRONG>channel [combobox]:</STRONG> The midi channel (1-16, 10 usually is the drum channel).</li>
+			<li><STRONG>instrument [combobox]:</STRONG> The midi instrument or controller (the first 127 selections are instruments, then 127 controllers are available. if a controller is selected, the incoming pitch value is use as control change value). <strong>Supports value suggestions from ARE (dynamic property)</strong></li>
+			<li><STRONG>triggerThreshold [integer]:</STRONG> The value of the trigger input threshold. Tones will only be generated if the trigger input is bigger than this value. If the trigger inptu is not used, all tone heights received at the pitch input port are played with full volume.</li>
+			<li><STRONG>triggerMax [integer]:</STRONG> The maximum value of the trigger input. This value influences the volume of the played tones: Tones will get louder as the trigger input value approaches the triggerMax value.</li>
+			<li><STRONG>pitchMin [integer]:</STRONG> The minimum value for pitch input. Defines the pitch input value for the lowest tone output.</li>
+			<li><STRONG>pitchMax [integer]:</STRONG> The maximum value for pitch input Defines the pitch input value for the highest tone output.</li>
+			<li><STRONG>toneScale [integer]:</STRONG> One of several tone scales can be selected. The tonscales are stored in the plugin's subfolder in the ARE. <strong>Supports value suggestions from ARE (dynamic property)</strong></li>
+			<li><STRONG>playOnlyChangingNotes [boolean]:</STRONG> If selected, only different note values are triggered (else, same note values can be played multiple times)</li>
+			<li><STRONG>displayGUI [boolean]:</STRONG> If this property value is set to true, the GUI window for the MidiPlugin will be displayed. The GUI window shows the current tone height and the available feedback tone scale.</li>
+		</ul>
+	</BODY>
 </HTML>

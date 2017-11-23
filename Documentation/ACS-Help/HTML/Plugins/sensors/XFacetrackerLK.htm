@@ -1,98 +1,85 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>XFacetrackerLK</Title>
-</HEAD>
-<BODY>
-<H1>XFacetrackerLK</H1> 
-<H3>Component Type: Sensor (Subcategory: Computer Vision) <p>OS: Windows, Linux, Mac OSX</H3>
-<p>
-This component provides a cross-platform face tracking computer vision algorithm which puts out estimated movement of a users’ nose and chin in x and y coordinates. 
-The underlying mechanism builds upon the JavaCV (OpenCV) library (in particular a trained cascade of haar-like features in combination with a Lukas Kanade optical flow algorithm is used to track a face and its movement). 
-The x- and y- coordinates can be used in camera-mouse configurations or to enable selection or control tasks. The values are only provided if a face can be tracked by the algorithm. 
-Note that the x- and y- values represent relative movement in pixels and have to be accumulated (e.g. via the integrate component) to generate e.g. absolute mouse positions.
-<p>
-</p>
-<H2>Requirements</H2>
-A camera has to be available (this can be any webcam or a camera which is available as image acquisition device via the operating system). The picture below shows the Logitech Webcam 9000 Pro. 
-Also the camera device of a Kinect sensor or PS3Eye should work. Furthermore, a video stream of an IP camera can be used for tracking.
-<div class="image"><img src="img/webcam.jpg" alt="Logitech Webcam 9000 Pro" title="Logitech Webcam 9000 Pro" /><br>
-Logitech Webcam 9000 Pro</div>
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>noseX [integer]:</STRONG> This value specifies the relative change in the x coordinate of the user's nose with respect to the previous image frame.</li>
-<li><STRONG>noseY [integer]:</STRONG> This value specifies the relative change in the y coordinate of the user's nose with respect to the previous image frame.</li>
-<li><STRONG>chinX [integer]:</STRONG> This value specifies the relative change in the x coordinate of the user's chin with respect to the previous image frame.</li>
-<li><STRONG>chinY [integer]:</STRONG> This value specifies the relative change in the y coordinate of the user's chin with respect to the previous image frame.</li>
-</ul>
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>init:</STRONG> if this event is triggered, the face recognition procedure is initiated. This can be useful if the correct face position has been lost due to drifting of the LK algorithm.</li>
-<li><STRONG>showCameraSettings</STRONG> an incoming event displays the settings window for the camera device (only on Windows), where parameters like image brightness or contrast can be adjusted.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>frameGrabber[string, combobox selection]:</STRONG>Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera).</li>
-<li><STRONG>frameGrabberFormat[string]:</STRONG>Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'.</li>
-<li><STRONG>deviceList [string, combobox selection]:</STRONG>List of available devices, if supported by grabber</li>
-<li><STRONG>cameraSelection [string]:</STRONG> The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera.</li>
-<li><STRONG>cameraResolution [string, combobox selection]:</STRONG> This selection box provides several standard camera resolutions. Changing the resolution affects accuracy and performance (CPU load of the runtime system). 
-Provided selections include “160x120”, “320x240”, “640x480”, “800x600”, “1024x768” and “1600x1200”.</li>
-<li><STRONG>titleVideoFrameWindow [string]:</STRONG>The title of the window showing the video frame.</li>
-</ul>
-
-<H2>Example Configuraitons</H2>
-
-<H3>Default</H3>
-Let the plugin probe available framegrabbers and choose the first available one.
-The following grabber are tried in the following order:
-<ol>
-<li>OpenCV</li>
-<li>VideoInput</li>
-<li>FFmpeg</li>
-</ol>
-<p>Configuration
-<ul>
-<li>frameGrabber:Default</li>
-<li>cameraSelection:0</li>
-</ul>
-
-<H3>OpenCV</H3>
-<ul>
-<li>frameGrabber:OpenCV</li>
-<li>cameraSelection:0</li>
-</ul>
-
-<H3>VideoInput</H3>
-<ul>
-<li>frameGrabber:VideoInput</li>
-<li>cameraSelection:0</li>
-</ul>
-
-<H3>FFmpeg</H3>
-<ul>
-<li>frameGrabber:FFmpeg</li>
-<li>frameGrabberFormat (or vfwcap):dshow</li>
-<li>cameraSelection (device name as of device manager):video=Integrated Camera</li>
-</ul>
-
-<H3>MJPEG stream of SmartPhone camera</H3>
-Install the following Android app on your smartphone and start streaming the front camera:
-<a href="https://play.google.com/store/apps/details?id=com.vinternete.camerastream">Camera Stream - WiFi IP Webcam (Web Host LLC)</a>
-<p>
-Enter the http url displayed at your smartphone and add /video to the url
-<p>e.g.
-<p>http://192.168.1.100:8080/video
-
-<p>Set the cameraSelection property of the XFacetrackerLK plugin to this url.
- <p>Configuration
-<ul>
-<li>frameGrabber:IPCamera</li>
-<li>cameraSelection:http://192.168.1.100:8080/video</li>
-</ul>
-
-
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>XFacetrackerLK</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>XFacetrackerLK</H1> 
+		<span class="componentType">Component Type: Sensor (Subcategory: Computer Vision) <br><br>OS: Windows, Linux, Mac OSX</span>
+		<p>This component provides a cross-platform face tracking computer vision algorithm which puts out estimated movement of a users' nose and chin in x and y coordinates. 
+		The underlying mechanism builds upon the JavaCV (OpenCV) library (in particular a trained cascade of haar-like features in combination with a Lukas Kanade optical flow algorithm is used to track a face and its movement).<br>
+		The x- and y- coordinates can be used in camera-mouse configurations or to enable selection or control tasks. The values are only provided if a face can be tracked by the algorithm. 
+		Note that the x- and y- values represent relative movement in pixels and have to be accumulated (e.g. via the integrate component) to generate e.g. absolute mouse positions.</p>
+		<H2>Requirements</H2>
+		A camera has to be available (this can be any webcam or a camera which is available as image acquisition device via the operating system). The picture below shows the Logitech Webcam 9000 Pro. 
+		Also the camera device of a Kinect sensor or PS3Eye should work. Furthermore, a video stream of an IP camera can be used for tracking.
+		<figure>
+			<img class="medium_image" src="img/webcam.jpg" alt="Logitech Webcam 9000 Pro" title="Logitech Webcam 9000 Pro" />
+			<figcaption>Logitech Webcam 9000 Pro</figcaption>
+		</figure>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>noseX [integer]:</STRONG> This value specifies the relative change in the x coordinate of the user's nose with respect to the previous image frame.</li>
+			<li><STRONG>noseY [integer]:</STRONG> This value specifies the relative change in the y coordinate of the user's nose with respect to the previous image frame.</li>
+			<li><STRONG>chinX [integer]:</STRONG> This value specifies the relative change in the x coordinate of the user's chin with respect to the previous image frame.</li>
+			<li><STRONG>chinY [integer]:</STRONG> This value specifies the relative change in the y coordinate of the user's chin with respect to the previous image frame.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>init:</STRONG> if this event is triggered, the face recognition procedure is initiated. This can be useful if the correct face position has been lost due to drifting of the LK algorithm.</li>
+			<li><STRONG>showCameraSettings</STRONG> an incoming event displays the settings window for the camera device (only on Windows), where parameters like image brightness or contrast can be adjusted.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>frameGrabber[string, combobox selection]:</STRONG>Name of FrameGrabber to use (Default, VideoInput, OpenCV, FFmpeg, OpenKinect, PS3Eye, IPCamera).</li>
+			<li><STRONG>frameGrabberFormat[string]:</STRONG>Format for grabber, e.g. FFmpeg: 'dshow' (default), 'vfwcap', 'gdigrab'.</li>
+			<li><STRONG>deviceList [string, combobox selection]:</STRONG>List of available devices, if supported by grabber</li>
+			<li><STRONG>cameraSelection [string]:</STRONG> The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera.</li>
+			<li><STRONG>cameraResolution [string, combobox selection]:</STRONG> This selection box provides several standard camera resolutions. Changing the resolution affects accuracy and performance (CPU load of the runtime system). 
+			Provided selections include "160x120", "320x240", "640x480", "800x600", "1024x768" and "1600x1200".</li>
+			<li><STRONG>titleVideoFrameWindow [string]:</STRONG>The title of the window showing the video frame.</li>
+		</ul>
+		<H2>Example Configuraitons</H2>
+		<H3>Default</H3>
+		Let the plugin probe available framegrabbers and choose the first available one.
+		The following grabber are tried in the following order:
+		<ol>
+			<li>OpenCV</li>
+			<li>VideoInput</li>
+			<li>FFmpeg</li>
+		</ol>
+		<h4>Configuration</h4>
+		<ul>
+			<li>frameGrabber:Default</li>
+			<li>cameraSelection:0</li>
+		</ul>
+		<H3>OpenCV</H3>
+		<ul>
+			<li>frameGrabber:OpenCV</li>
+			<li>cameraSelection:0</li>
+		</ul>
+		<H3>VideoInput</H3>
+		<ul>
+			<li>frameGrabber:VideoInput</li>
+			<li>cameraSelection:0</li>
+		</ul>
+		<H3>FFmpeg</H3>
+		<ul>
+			<li>frameGrabber:FFmpeg</li>
+			<li>frameGrabberFormat (or vfwcap):dshow</li>
+			<li>cameraSelection (device name as of device manager):video=Integrated Camera</li>
+		</ul>
+		<H3>MJPEG stream of SmartPhone camera</H3>
+		Install the following Android app on your smartphone and start streaming the front camera:
+		<a href="https://play.google.com/store/apps/details?id=com.vinternete.camerastream">Camera Stream - WiFi IP Webcam (Web Host LLC)</a>
+		<p>Enter the http url displayed at your smartphone and add /video to the url<br>
+		e.g.: http://192.168.1.100:8080/video</p>
+		<p>Set the cameraSelection property of the XFacetrackerLK plugin to this url.
+		<h4>Configuration</h4>
+		<ul>
+			<li>frameGrabber:IPCamera</li>
+			<li>cameraSelection:http://192.168.1.100:8080/video</li>
+		</ul>
+	</BODY>
 </HTML>

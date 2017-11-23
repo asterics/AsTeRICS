@@ -1,26 +1,28 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>Event Visualizer</Title>
-</HEAD>
-<BODY>
-<H1>Event Visualizer </H1>
-<H3>Component Type: Actuator (Subcategory: Graphical User Interface)</H3>
-<p>This plugin provides a graphical feedback for events. It can be used to monitor event activities and is mainly targeted for testing of configurations during setup time. The plugin offers a GUI (simple window with text output) where event names are displayed.</p>
-<div class="image"><img src="img/EventVisualizer.jpg" alt="Screenshot: EventVisualizer plugin" title="Screenshot: EventVisualizer plugin" /><br>
-EventVisualizer plugin</div>
-
-<H2>Requirements</H2>
-No special hardware or software required.
-<H2>Port Description</H2>
-This plugin does not provide input or output ports.
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>event_in_1:</STRONG> incoming events will be displayed in the GUI.</li>
-</ul>
-<H2>Properties</H2>
-<li><strong>displayGUI [boolean]:</strong> if selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.</li>	   
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Event Visualizer</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Event Visualizer </H1>
+		<span class="componentType">Component Type: Actuator (Subcategory: Graphical User Interface)</span>
+		<p>This plugin provides a graphical feedback for events. It can be used to monitor event activities and is mainly targeted for testing of configurations during setup time. The plugin offers a GUI (simple window with text output) where event names are displayed.</p>
+		<figure>
+			<img class="image" src="img/EventVisualizer.jpg" alt="Screenshot: EventVisualizer plugin" title="Screenshot: EventVisualizer plugin" />
+			<figcaption>EventVisualizer plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		No special hardware or software required.
+		<H2>Port Description</H2>
+		This plugin does not provide input or output ports.
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>event_in_1:</STRONG> incoming events will be displayed in the GUI.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><strong>displayGUI [boolean]:</strong> if selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.</li>	  
+		</ul>
+	</BODY>
 </HTML>

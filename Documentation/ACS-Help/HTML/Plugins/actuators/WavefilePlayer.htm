@@ -1,32 +1,31 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>WavefilePlayer</Title>
-</HEAD>
-<BODY>
-<H1>Wavefile Player</H1> 
-<H3>Component Type: Actuator (Subcategory: Audio and Voice)</H3>
-<p>This plugin plays a wave file specified in the properties on the platforms sound output.</p>
-<div class="image"><img src="img/WavefilePlayer.jpg" alt="Screenshot: WavefilePlayer plugin" title="Screenshot: WavefilePlayer plugin" /><br>
-WavefilePlayer plugin</div>
-
-<H2>Input port Description</H2>
-<ul>
-<li><STRONG>wavefileName[string]:</STRONG> this port will change the property filename to the string on the input. Thus it is possible to have other plugins change the file to be played.</li>
-</ul>
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>Start:</STRONG> An incoming event at this port initiates the playback of the wave file indicated in the property <i>filename</i>.</li>
-<li><STRONG>Stop:</STRONG> An incoming event at this port stops the playback of the wave file indicated in the property <i>filename</i>.</li>
-<li><STRONG>VolumeUp:</STRONG> An incoming event increases the volume of the current playback.</li>
-<li><STRONG>VolumeDown:</STRONG> An incoming event decreases the volume of the current playback.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>filename[string]:</STRONG> The value of this property specifies the file name of the wave file to be played. <b>Supports value suggestions from ARE (dynamic property)</b></li>
-</ul>
-
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>WavefilePlayer</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Wavefile Player</H1> 
+		<span class="componentType">Component Type: Actuator (Subcategory: Audio and Voice)</span>
+		<p>This plugin plays a wave file specified in the properties on the platforms sound output.</p>
+		<figure>
+			<img class="image" src="img/WavefilePlayer.jpg" alt="Screenshot: WavefilePlayer plugin" title="Screenshot: WavefilePlayer plugin" />
+			<figcaption>WavefilePlayer plugin</figcaption>
+		</figure>
+		<H2>Input port Description</H2>
+		<ul>
+			<li><STRONG>wavefileName[string]:</STRONG> this port will change the property filename to the string on the input. Thus it is possible to have other plugins change the file to be played.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>Start:</STRONG> An incoming event at this port initiates the playback of the wave file indicated in the property <em>filename</em>.</li>
+			<li><STRONG>Stop:</STRONG> An incoming event at this port stops the playback of the wave file indicated in the property <em>filename</em>.</li>
+			<li><STRONG>VolumeUp:</STRONG> An incoming event increases the volume of the current playback.</li>
+			<li><STRONG>VolumeDown:</STRONG> An incoming event decreases the volume of the current playback.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>filename[string]:</STRONG> The value of this property specifies the file name of the wave file to be played. <strong>Supports value suggestions from ARE (dynamic property)</strong></li>
+		</ul>
+	</BODY>
 </HTML>

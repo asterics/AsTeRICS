@@ -1,25 +1,21 @@
 <!doctype html>
 <html>
   <head>
-    
-      
     <meta charset="UTF-8">
-    
-      
     <title>AndroidPhoneControl</title>
   </head>
-  <body>
+  <body class="innerBody">
     <h1>AndroidPhoneControl</h1>
-    <h3>Component Type: Actuator (Subcategory: Phone Interface)</h3>
+    <span class="componentType">Component Type: Actuator (Subcategory: Phone Interface)</span>
     <p>This component controls a mobile phone with Android operating
       system through the TCP/IP connection. Currently this component is
       able to perform such action as: call a remote phone, drop a phone
-      call, send and receive SMS message. <br>
+      call, send and receive SMS message.
     </p>
-    <div class="image"><img src="img/AndroidPhoneControl.jpg"
-        alt="Screenshot: AndroidPhoneControl plugin" title="Screenshot:
-        AndroidPhoneControl plugin"><br>
-      AndroidPhoneControl plugin</div>
+    <figure>
+		<img class="image" src="img/AndroidPhoneControl.jpg" alt="Screenshot: AndroidPhoneControl plugin" title="Screenshot: AndroidPhoneControl plugin">
+		<figcaption>AndroidPhoneControl plugin</figcaption>
+	</figure>
     <h2>Requirements</h2>
     Android phone running AsTeRICSPhoneServer application.<br>
     <h2>Input Port Description</h2>
@@ -72,18 +68,16 @@
     <h2>Properties</h2>
     <ul>
       <li><strong>connectionType [integer]:</strong> Defines connection
-        type for the plugin: client or server.<br>
+        type for the plugin: client or server.
       </li>
       <li><strong>IP [string]: </strong>IP of the remote server used in
-        the client mode.<br>
+        the client mode.
       </li>
       <li><strong>port [integer]:</strong> TCP/IP port of the service.</li>
       <li><strong>defaultPhoneID [string]:</strong> Default phone number
         for outgoing SMS and phone calls.</li>
     </ul>
     <br>
-    <a href="Android_connection.htm">Preparation of the connection with
-      Android Phone.</a> <br>
-    <br>
+    <a href="Android_connection.htm">Preparation of the connection with Android Phone.</a>
   </body>
 </html>

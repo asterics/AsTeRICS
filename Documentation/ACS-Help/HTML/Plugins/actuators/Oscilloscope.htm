@@ -1,36 +1,35 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>Oscilloscope</Title>
-</HEAD>
-<BODY>
-<H1>Oscilloscope</H1> 
-<H3>Component Type: Actuator (Subcategory: Graphical User Interface)</H3>
-<p>The Oscilloscope provides graphical output of one or two signal values. It is a very basic implementation but useful to visualize sensor values, changes in values and value history. The trace colours and update speed can be configured via component parameters.</p>
-<div class="image"><img src="img/Oscilloscope.jpg" alt="Screenshot: Oscilloscope plugin" title="Screenshot: Oscilloscope plugin" /><br>
-Oscilloscope plugin</div>
-
-
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>in [double]:</STRONG> The input signal for the oscilloscope.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>displayBuffer [integer]:</STRONG> This property value specifies how often the oscilloscope window is drawn. For example if the display buffer size is 0, the oscilloscope traces are redrawn at every incoming value. If the display buffer size is set to 10, 10 values are stored in a buffer and drawn at once as the tenth value is received. This significantly reduces the computational resources spent for drawing the oscilloscope, which is useful especially at high update rates.</li>
-<li><STRONG>drawingMode [integer]:</STRONG> Declares whether the y axis is adapting to mininum and maximum values automatically or to stay in preset bounds.</li>
-<li><STRONG>displayMode [integer]:</STRONG> Affects the time when oscilloscope is redrawn. Can be set to the values "redraw on incoming samples" or "redraw periodically".</li>
-<li><STRONG>drawInterval [integer]:</STRONG> Redraw interval in milliseconds (if periodic drawing is used).</li>
-<li><STRONG>min [integer]:</STRONG> Preset minimum value for y axis of oscilloscope.</li>
-<li><STRONG>max [integer]:</STRONG> Preset maximum value for y axis of oscilloscope.</li>
-<li><STRONG>gridColor [integer]:</STRONG> The colour of the value-grid.</li>
-<li><STRONG>channelColor [integer]:</STRONG> The colour of the signal trace for the channel.</li>
-<li><STRONG>backgroundColor [integer]:</STRONG> The colour of the background of the oscilloscope window.</li>
-<li><STRONG>fontSize [integer]:</STRONG> The size of the oscilloscope's caption.</li>
-<li><STRONG>caption [string]:</STRONG> The caption to be displayed on the oscilloscope.</li>
-<li><strong>displayGUI [boolean]:</strong> If selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.</li>	   
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Oscilloscope</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Oscilloscope</H1> 
+		<span class="componentType">Component Type: Actuator (Subcategory: Graphical User Interface)</span>
+		<p>The Oscilloscope provides graphical output of one or two signal values. It is a very basic implementation but useful to visualize sensor values, changes in values and value history. The trace colours and update speed can be configured via component parameters.</p>
+		<figure>
+			<img class="image" src="img/Oscilloscope.jpg" alt="Screenshot: Oscilloscope plugin" title="Screenshot: Oscilloscope plugin" />
+			<figcaption>Oscilloscope plugin</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>in [double]:</STRONG> The input signal for the oscilloscope.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>displayBuffer [integer]:</STRONG> This property value specifies how often the oscilloscope window is drawn. For example if the display buffer size is 0, the oscilloscope traces are redrawn at every incoming value. If the display buffer size is set to 10, 10 values are stored in a buffer and drawn at once as the tenth value is received. This significantly reduces the computational resources spent for drawing the oscilloscope, which is useful especially at high update rates.</li>
+			<li><STRONG>drawingMode [integer]:</STRONG> Declares whether the y axis is adapting to mininum and maximum values automatically or to stay in preset bounds.</li>
+			<li><STRONG>displayMode [integer]:</STRONG> Affects the time when oscilloscope is redrawn. Can be set to the values "redraw on incoming samples" or "redraw periodically".</li>
+			<li><STRONG>drawInterval [integer]:</STRONG> Redraw interval in milliseconds (if periodic drawing is used).</li>
+			<li><STRONG>min [integer]:</STRONG> Preset minimum value for y axis of oscilloscope.</li>
+			<li><STRONG>max [integer]:</STRONG> Preset maximum value for y axis of oscilloscope.</li>
+			<li><STRONG>gridColor [integer]:</STRONG> The colour of the value-grid.</li>
+			<li><STRONG>channelColor [integer]:</STRONG> The colour of the signal trace for the channel.</li>
+			<li><STRONG>backgroundColor [integer]:</STRONG> The colour of the background of the oscilloscope window.</li>
+			<li><STRONG>fontSize [integer]:</STRONG> The size of the oscilloscope's caption.</li>
+			<li><STRONG>caption [string]:</STRONG> The caption to be displayed on the oscilloscope.</li>
+			<li><strong>displayGUI [boolean]:</strong> If selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.</li>	   
+		</ul>
+	</BODY>
 </HTML>

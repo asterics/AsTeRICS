@@ -1,70 +1,66 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>FabiCronusMax</Title>
-</HEAD>
-<BODY>
-<H1>FabiCronusMax</H1>
-<H3>Component Type: Processor (Subcategory: Microcontroller Interface)</H3>
-<p>This component provides an interface for the FABI controller and the CronsuMax USB stick. 
-It enables the programming process of the FABI as well as the configuration for all supported gaming consoles.
-It is possible to configure the buttons which are connected to the FABI controller and store the set to the built-in EEPROM.
-Via the plugin the CronusMax stick controls the selected gaming device through the external buttons connected to the FABI.
-The set of buttons can be defined in a configuration file and modified for each game and console.
-</p>
-
-<div class="image"><img src="img/FabiCronusMax.png" alt="Screenshot: FabiCronusMax plugin" title="Screenshot: FabiCronusMax plugin" /><br>
-FabiCronusMax plugin</div>
-<div class="small_image"><img src="img/CronusMax.jpg" alt="Screenshot: CronusMax plugin" title="Screenshot: CronusMax plugin" /><br>
-CronusMax USB Stick</div>
-<H2>Requirements</H2>
-The Plugin requires a FABI2.0 compatible Version as well as the right COM Port. The Baudrate for the FABI controller is predefined at 9600 Baud.
-Additionally a CronusMax device is necessary as well as the software GTuner (<a href="http://controllermax.com/downloads/">GTuner download</a>)
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>InConsole [string]:</STRONG> Input of the selected Console (e.g. PS3)</li>
-<li><STRONG>InGame [string]: </STRONG> Input of the selected Game (e.g. Need For Speed)</li>
-<li><STRONG>InMode [Integer]:</STRONG> Input of the selected Mode (e.g. 1)</li>
-</ul>
-
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>OutConsole [string]:</STRONG> Output of the selected Console (e.g. PS3)</li>
-<li><STRONG>OutGame [string]:</STRONG> Output of the selected Game (e.g. Need For Speed)</li>
-<li><STRONG>OutMode [Integer]:</STRONG> Output of the selected Mode (e.g. 1)</li>
-<li><STRONG>OutModel [string]:</STRONG> Output for the next model to be started</li>
-<li><STRONG>OutButtons [string]:</STRONG> Output for the buttons in current mode, separated through a comma ','</li>
-</ul>
-
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>ModeSwitcher:</STRONG> Switch between the modes.</li>
-<li><STRONG>GameSwitcher:</STRONG> Switch between the Games.</li>
-<li><STRONG>ConsoleSwitcher:</STRONG> Switch between the consoles.</li>
-</ul>
-
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>Busy:</STRONG> Triggered if Fabi is busy.</li>
-<li><STRONG>Ready:</STRONG> Triggered if Fabi is ready.</li>
-<li><STRONG>loadModel:</STRONG> Triggered to load new model.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>ComPort [integer]:</STRONG> COM Port of FABI.</li>
-<li><STRONG>ModeFilePath [string]:</STRONG> Path to the file with the configuration.</li>
-</ul>
-<H2>Configuration file</H2>
-<p>The configuration file has to be a *.CSV file and the data has to be separated with ','.
-The following two lines show the structure of a configuration file:<br><br>
-XBOXONE, BattleField, Mode, KEY_A, KEY_B, Mode, KEY_1, KEY_2<br>
-XBOX360, Formel1, Mode, KEY_A, KEY_B, KEY_C, KEY_D, KEY_E<br><br>
-
-The first field defines the console and the second one defines the game.
-"Mode" signals that the following fields are the keycodes which are connected to the buttons in the right order.
-There can be up to 10 modes per game and up to 6 buttons per mode.
-</p>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>FabiCronusMax</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>FabiCronusMax</H1>
+		<span class="componentType">Component Type: Processor (Subcategory: Microcontroller Interface)</span>
+		<p>This component provides an interface for the FABI controller and the CronsuMax USB stick. 
+		It enables the programming process of the FABI as well as the configuration for all supported gaming consoles.
+		It is possible to configure the buttons which are connected to the FABI controller and store the set to the built-in EEPROM.
+		Via the plugin the CronusMax stick controls the selected gaming device through the external buttons connected to the FABI.
+		The set of buttons can be defined in a configuration file and modified for each game and console.</p>
+		<figure>
+			<img class="image" src="img/FabiCronusMax.png" alt="Screenshot: FabiCronusMax plugin" title="Screenshot: FabiCronusMax plugin" />
+			<figcaption>FabiCronusMax plugin</figcaption>
+		</figure>
+		<figure>
+			<img class="small_image" src="img/CronusMax.jpg" alt="Screenshot: CronusMax plugin" title="Screenshot: CronusMax plugin" />
+			<figcaption>CronusMax USB Stick</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		The Plugin requires a FABI2.0 compatible Version as well as the right COM Port. The Baudrate for the FABI controller is predefined at 9600 Baud.
+		Additionally a CronusMax device is necessary as well as the software GTuner (<a href="http://controllermax.com/downloads/">GTuner download</a>)
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>InConsole [string]:</STRONG> Input of the selected Console (e.g. PS3)</li>
+			<li><STRONG>InGame [string]: </STRONG> Input of the selected Game (e.g. Need For Speed)</li>
+			<li><STRONG>InMode [Integer]:</STRONG> Input of the selected Mode (e.g. 1)</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>OutConsole [string]:</STRONG> Output of the selected Console (e.g. PS3)</li>
+			<li><STRONG>OutGame [string]:</STRONG> Output of the selected Game (e.g. Need For Speed)</li>
+			<li><STRONG>OutMode [Integer]:</STRONG> Output of the selected Mode (e.g. 1)</li>
+			<li><STRONG>OutModel [string]:</STRONG> Output for the next model to be started</li>
+			<li><STRONG>OutButtons [string]:</STRONG> Output for the buttons in current mode, separated through a comma ','</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>ModeSwitcher:</STRONG> Switch between the modes.</li>
+			<li><STRONG>GameSwitcher:</STRONG> Switch between the Games.</li>
+			<li><STRONG>ConsoleSwitcher:</STRONG> Switch between the consoles.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>Busy:</STRONG> Triggered if Fabi is busy.</li>
+			<li><STRONG>Ready:</STRONG> Triggered if Fabi is ready.</li>
+			<li><STRONG>loadModel:</STRONG> Triggered to load new model.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>ComPort [integer]:</STRONG> COM Port of FABI.</li>
+			<li><STRONG>ModeFilePath [string]:</STRONG> Path to the file with the configuration.</li>
+		</ul>
+		<H2>Configuration file</H2>
+		<p>The configuration file has to be a *.CSV file and the data has to be separated with ','.
+		The following two lines show the structure of a configuration file:<br><br>
+		XBOXONE, BattleField, Mode, KEY_A, KEY_B, Mode, KEY_1, KEY_2<br>
+		XBOX360, Formel1, Mode, KEY_A, KEY_B, KEY_C, KEY_D, KEY_E<br><br>
+		The first field defines the console and the second one defines the game.
+		"Mode" signals that the following fields are the keycodes which are connected to the buttons in the right order.
+		There can be up to 10 modes per game and up to 6 buttons per mode.</p>
+	</BODY>
 </HTML>

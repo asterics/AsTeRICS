@@ -1,25 +1,20 @@
 <!doctype html>
 <html>
   <head>
-    
-      
     <meta charset="UTF-8">
-    
-      
     <title>RegularExpression</title>
   </head>
-  <body>
+  <body class="innerBody">
     <h1>Regular Expression</h1>
-    <h3>Component Type: Processor (Subcategory: Event and String
-      Processing)</h3>
+    <span class="componentType">Component Type: Processor (Subcategory: Event and String Processing)</span>
     <p>This component processes strings with regular expressions. It can
       work in two modes: match strings with the pattern or replace
       string parts with another string. The regular expression syntax is defined in the <a href="https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html">Java class Pattern</a>.<br>
     </p>
-    <div class="image"><img src="img/RegularExpression.jpg"
-        alt="Screenshot: RegularExpression plugin" title="Screenshot:
-        RegularExpression plugin"><br>
-      RegularExpression plugin</div>
+    <figure>
+		<img class="image" src="img/RegularExpression.jpg" alt="Screenshot: RegularExpression plugin" title="Screenshot: RegularExpression plugin">
+		<figcaption>RegularExpression plugin</figcaption>
+	</figure>
     <h2>Input Port Description</h2>
     <ul>
       <li><strong>input [string]:</strong> String to match against the regular expression.</li>
@@ -51,8 +46,7 @@
         true, the component will search parts of the string which match
         the pattern and replace these parts with the replaceString,
         otherwise the component will match the whole string with the
-        pattern<span id="result_box" class="short_text" lang="en"><span
-            class="hps"></span></span>.</li>
+        pattern.</li>
       <li><strong>replaceString [string]:</strong> The string which
         replaces expressions which matching the pattern.<br>
       </li>

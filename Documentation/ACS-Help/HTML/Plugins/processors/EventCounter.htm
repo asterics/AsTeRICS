@@ -1,22 +1,18 @@
 <!doctype html>
 <html>
   <head>
-    
-      
     <meta charset="UTF-8">
-    
-      
     <title>EventCounter</title>
   </head>
-  <body>
+  <body class="innerBody">
     <h1>Event Counter</h1>
-    <h3>Component Type: Processor (Subcategory: Event and String
-      Processing)</h3>
+    <span class="componentType">Component Type: Processor (Subcategory: Event and String Processing)</span>
     <p>This component counts events. It can increase and decrease a counts via incoming
       events.</p>
-    <div class="image"><img src="img/EventCounter.jpg" alt="Screenshot:
-        EventCounter plugin" title="Screenshot: EventCounter plugin"><br>
-      EventCounter plugin</div>
+    <figure>
+		<img class="image" src="img/EventCounter.jpg" alt="Screenshot: EventCounter plugin" title="Screenshot: EventCounter plugin">
+		<figcaption>EventCounter plugin</figcaption>
+	</figure>
     <h2>Input Port Description</h2>
     <ul>
       <li><strong>setValue [integer]:</strong> Sets the event counter to the incoming value. Note that this value is not propagated to the output port (to avoid loops).</li>

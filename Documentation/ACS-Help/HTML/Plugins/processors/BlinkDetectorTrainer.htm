@@ -1,44 +1,38 @@
 <!doctype html>
 <HTML>
-<HEAD>
-<meta charset="UTF-8">
-
-<Title>Blink Detector Trainer</Title>
-</HEAD>
-<BODY>
-<H1>Blink Detector Trainer</H1>
-<H3>Component Type: Processor (Subcategory: DSP and Feature Detection)</H3>
-<p>This component calculates the maxThreshold, minThreshold, BlinkLength and DoubleBlinkSeparation customized properties of the <a href="../processors/BlinkDetector.htm">Blink Detector</a> plugin for each specific subject. For a description of the meaning of these properties, please see <a href="../processors/BlinkDetector.htm">Blink Detector</a>.
-
-The training of the system consists on asking the subject to follow a protocol. This protocol consists on a series of 5 simple blinks and 5 double blinks. Note that the subject can perform only <STRONG>one</STRONG> simple (or double) blink each time the protocol indicates so through its Protocol port. When the protocol finishes, the results show up through the Results output port.
-
-</p>
-
-<div class="image"><img src="img/BlinkDetectorTrainer.jpg" alt="Screenshot: Blink Detector Trainer plugin" title="Screenshot: Blink Detector Trainer plugin" /><br>
-Blink Detector plugin</div>
-<H2>Requirements</H2>
-The input signal shall correspond to a 250-Hz sampled electro-oculogram signal, i.e., an output port of the <a href="../sensors/Enobio.htm">Enobio</a> component when the corresponding electrode is placed on the user's forehead.
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>input [integer]:</STRONG> Input values that correspond to a 250-Hz sampled electro-oculogram signal.</li>
-</ul>
-
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>Protocol [string]:</STRONG> Actions to be performed by the user. Note that the user must perform just one blink (or double blink) each time the corresponding message is delivered through this port.</li>
-<li><STRONG>Results [string]:</STRONG> Final parameters calculated for the specific subject. They will delivered when the protocol has finished.</li>
-</ul>
-
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>StartProtocol [integer]:</STRONG> Starts the training protocol. The actions to be performed by the subject will be delivered through the Protocol port.</li>
-<li><STRONG>StopProtocol:</STRONG> Stops the training protocol.</li>
-</ul>
-
-<H2>Properties</H2>
-<ul>
-<li><STRONG>sampleRate [integer]:</STRONG> Sample rate of the input signal in Hertz.</li>
-<li><STRONG>language [list]:</STRONG> Language of the messages thrown through the Protocol port while the protocol is running. The user can chose English or Spanish.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Blink Detector Trainer</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Blink Detector Trainer</H1>
+		<span class="componentType">Component Type: Processor (Subcategory: DSP and Feature Detection)</span>
+		<p>This component calculates the maxThreshold, minThreshold, BlinkLength and DoubleBlinkSeparation customized properties of the <a href="../processors/BlinkDetector.htm">Blink Detector</a> plugin for each specific subject. For a description of the meaning of these properties, please see <a href="../processors/BlinkDetector.htm">Blink Detector</a>.
+		The training of the system consists on asking the subject to follow a protocol. This protocol consists on a series of 5 simple blinks and 5 double blinks. Note that the subject can perform only <STRONG>one</STRONG> simple (or double) blink each time the protocol indicates so through its Protocol port. When the protocol finishes, the results show up through the Results output port.</p>
+		<figure>
+			<img class="image" src="img/BlinkDetectorTrainer.jpg" alt="Screenshot: Blink Detector Trainer plugin" title="Screenshot: Blink Detector Trainer plugin" />
+			<figcaption>Blink Detector plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		The input signal shall correspond to a 250-Hz sampled electro-oculogram signal, i.e., an output port of the <a href="../sensors/Enobio.htm">Enobio</a> component when the corresponding electrode is placed on the user's forehead.
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>input [integer]:</STRONG> Input values that correspond to a 250-Hz sampled electro-oculogram signal.</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>Protocol [string]:</STRONG> Actions to be performed by the user. Note that the user must perform just one blink (or double blink) each time the corresponding message is delivered through this port.</li>
+			<li><STRONG>Results [string]:</STRONG> Final parameters calculated for the specific subject. They will delivered when the protocol has finished.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>StartProtocol [integer]:</STRONG> Starts the training protocol. The actions to be performed by the subject will be delivered through the Protocol port.</li>
+			<li><STRONG>StopProtocol:</STRONG> Stops the training protocol.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>sampleRate [integer]:</STRONG> Sample rate of the input signal in Hertz.</li>
+			<li><STRONG>language [list]:</STRONG> Language of the messages thrown through the Protocol port while the protocol is running. The user can chose English or Spanish.</li>
+		</ul>
+	</BODY>
 </HTML>

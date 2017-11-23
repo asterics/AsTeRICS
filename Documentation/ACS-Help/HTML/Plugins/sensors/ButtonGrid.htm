@@ -1,21 +1,18 @@
 <!doctype html>
 <html>
   <head>
-    
-      
     <meta charset="UTF-8">
-    
-      
     <title>ButtonGrid</title>
   </head>
-  <body>
+  <body class="innerBody">
     <h1>Button Grid</h1>
-    <h3>Component Type: Sensor (Subcategory: Graphical User Interface)</h3>
+    <span class="componentType">Component Type: Sensor (Subcategory: Graphical User Interface)</span>
     <p>The Button Grid component is a simple GUI on-screen keyboard. It
       sends events after buttons have been pressed.</p>
-    <div class="image"><img src="img/ButtonGrid.jpg" alt="Screenshot:
-        ButtonGrid plugin" title="Screenshot: ButtonGrid plugin"><br>
-      ButtonGrid plugin</div>
+    <figure>
+		<img class="image" src="img/ButtonGrid.jpg" alt="Screenshot: ButtonGrid plugin" title="Screenshot: ButtonGrid plugin">
+		<figcaption>ButtonGrid plugin</figcaption>
+	</figure>
     <h2>Event Trigger Description</h2>
     <ul>
       <li><strong>button1...button20:</strong> These events are fired as
@@ -26,8 +23,7 @@
       <li><strong>caption [string]:</strong> The text shown on the
         component caption.</li>
       <li><strong>horizontalOrientation [boolean]:</strong> If selected,
-        the keyboard will be placed horizontally, <span id="result_box"
-          class="short_text" lang="en"><span class="hps">otherwise the
+        the keyboard will be placed horizontally, otherwise the
             keyboard will be placed vertically.</li>
       <li><strong>textColor [integer, combobox selection]:</strong>
 	   The color of the caption text ("default" keeps the standard setting)</li>
