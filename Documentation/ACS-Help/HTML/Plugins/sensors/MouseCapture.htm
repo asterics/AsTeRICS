@@ -1,43 +1,44 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>MouseCapture</Title>
-</HEAD>
-<BODY>
-<H1>Mouse Capture</H1> 
-<H3>Component Type: Sensor (Subcategory: Standard Input Devices)</H3>
-<p>This component provides access to mouse input activities of connected a standard mouse, like mouse x/y movement or button press/release activities. Mouse wheel and third mouse button are supported.</p> 
-<div class="image"><img src="img/MouseCapture.jpg" alt="Screenshot: MouseCapture plugin" title="Screenshot: MouseCapture plugin" /><br>
-MouseCapture plugin</div>
-<H2>Requirements</H2>
-A mouse or mouse-equivalent must be connected to the computer/personal platform. 
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>mouseX [integer]:</STRONG> This port provides current absolute mouse X-position or relative mouse X-movement as integer value (depending on the mode of operation).</li>
-<li><STRONG>mouseY [integer]:</STRONG> This port provides current absolute mouse Y-position or relative mouse Y-movement as integer value (depending on the mode of operation).</li>
-</ul>
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>blockEvents:</STRONG> After this incoming event no mouse activities will be routed to the operating system.</li>
-<li><STRONG>forwardEvents:</STRONG> After this incoming event all mouse activities will also be forwarded to the operating system.</li>
-<li><STRONG>toggleBlock:</STRONG> An incoming event toggles the current blockEvents. If the mouse activities were forwarded they will now be kept and vica versa.</li>
-</ul>
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>leftButtonPressed:</STRONG> This port fires an event as the left mouse button is pressed.</li>
-<li><STRONG>leftButtonReleased:</STRONG> This port fires an event as the left mouse button is released.</li>
-<li><STRONG>rightButtonPressed:</STRONG> This port fires an event as the right mouse button is pressed.</li>
-<li><STRONG>rightButtonReleased:</STRONG> This port fires an event as the right mouse button is released.</li>
-<li><STRONG>middleButtonPressed:</STRONG> This port fires an event as the middle mouse button is pressed.</li>
-<li><STRONG>middleButtonReleased:</STRONG> This port fires an event as the middle mouse button is released.</li>
-<li><STRONG>wheelUp:</STRONG> This port fires an event as the mouse wheel is turned one step away from the user.</li>
-<li><STRONG>wheelDown:</STRONG> This port fires an event as the mouse wheel is turned one step towards the user.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>blockEvents [boolean]:</STRONG> This property defines the mode of operation of the mousehook component. If this property is set to true, no mouse activities will be routed to the operating system - they will not be processed by other applications, the mouse cursor will not move and no clicks will be actually performed by the operation system. This can be useful if the mouse activity shall be transferred e.g. from the AsTeRICS personal platform to another system (via the HID actuator) or the mouse should be trapped to control a particular GUI or menu structure. In this case, the mouse component outputs only relative mouse movements in X and Y axis at the corresponding output ports. If the property value is set to false, mouse activities will be passed back to the operating system and will be processed as usual. In this case, the mousehook component provides the absolute mouse positions at the component?s output ports.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>MouseCapture</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Mouse Capture</H1> 
+		<span class="componentType">Component Type: Sensor (Subcategory: Standard Input Devices)</span>
+		<p>This component provides access to mouse input activities of connected a standard mouse, like mouse x/y movement or button press/release activities. Mouse wheel and third mouse button are supported.</p> 
+		<figure>
+			<img class="image" src="img/MouseCapture.jpg" alt="Screenshot: MouseCapture plugin" title="Screenshot: MouseCapture plugin" />
+			<figcaption>MouseCapture plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		A mouse or mouse-equivalent must be connected to the computer/personal platform. 
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>mouseX [integer]:</STRONG> This port provides current absolute mouse X-position or relative mouse X-movement as integer value (depending on the mode of operation).</li>
+			<li><STRONG>mouseY [integer]:</STRONG> This port provides current absolute mouse Y-position or relative mouse Y-movement as integer value (depending on the mode of operation).</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>blockEvents:</STRONG> After this incoming event no mouse activities will be routed to the operating system.</li>
+			<li><STRONG>forwardEvents:</STRONG> After this incoming event all mouse activities will also be forwarded to the operating system.</li>
+			<li><STRONG>toggleBlock:</STRONG> An incoming event toggles the current blockEvents. If the mouse activities were forwarded they will now be kept and vica versa.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>leftButtonPressed:</STRONG> This port fires an event as the left mouse button is pressed.</li>
+			<li><STRONG>leftButtonReleased:</STRONG> This port fires an event as the left mouse button is released.</li>
+			<li><STRONG>rightButtonPressed:</STRONG> This port fires an event as the right mouse button is pressed.</li>
+			<li><STRONG>rightButtonReleased:</STRONG> This port fires an event as the right mouse button is released.</li>
+			<li><STRONG>middleButtonPressed:</STRONG> This port fires an event as the middle mouse button is pressed.</li>
+			<li><STRONG>middleButtonReleased:</STRONG> This port fires an event as the middle mouse button is released.</li>
+			<li><STRONG>wheelUp:</STRONG> This port fires an event as the mouse wheel is turned one step away from the user.</li>
+			<li><STRONG>wheelDown:</STRONG> This port fires an event as the mouse wheel is turned one step towards the user.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>blockEvents [boolean]:</STRONG> This property defines the mode of operation of the mousehook component. If this property is set to true, no mouse activities will be routed to the operating system - they will not be processed by other applications, the mouse cursor will not move and no clicks will be actually performed by the operation system. This can be useful if the mouse activity shall be transferred e.g. from the AsTeRICS personal platform to another system (via the HID actuator) or the mouse should be trapped to control a particular GUI or menu structure. In this case, the mouse component outputs only relative mouse movements in X and Y axis at the corresponding output ports. If the property value is set to false, mouse activities will be passed back to the operating system and will be processed as usual. In this case, the mousehook component provides the absolute mouse positions at the component?s output ports.</li>
+		</ul>
+	</BODY>
 </HTML>

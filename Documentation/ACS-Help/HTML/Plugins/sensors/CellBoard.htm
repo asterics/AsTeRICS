@@ -1,16 +1,12 @@
-<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <html>
   <head>
-    <meta http-equiv="content-type" content="text/html;
-      charset=ISO-8859-2">
-    <meta name="GENERATOR" content="Microsoft&#174; HTML Help Workshop 4.1">
-    <link rel="stylesheet" type="text/css"
-      href="../../stylesheet/help.css" media="screen">
+    <meta charset="UTF-8">
     <title>CellBoard</title>
   </head>
-  <body>
+  <body class="innerBody">
     <h1>CellBoard</h1>
-    <h3>Component Type: Sensor (Subcategory: Graphical User Interface)</h3>
+    <span class="componentType">Component Type: Sensor (Subcategory: Graphical User Interface)</span>
     <p>The CellBoard plugin is a GUI plugin which can display a panel
       with multiple cells. It can be used as a simple on-screen keyboard. 
 	  Each cell can contain text and a picture, and it
@@ -18,11 +14,11 @@
 	  cellboards (which can be stored as .xml files). The CellBoard plugin provides 
 	  basic scanning options (to select a cell via a stepwise process). It also provides
 	  a small editor for designing the cells and saving the whole cellboard grid as an .xml file.</p>
-    <div class="image"><img src="img/CellBoard.jpg" alt="Screenshot:
-        CellBoard plugin" title="Screenshot: CellBoard plugin"><br>
-      CellBoard plugin</div>
+    <figure>
+		<img class="image" src="img/CellBoard.jpg" alt="Screenshot: CellBoard plugin" title="Screenshot: CellBoard plugin">
+		<figcaption>CellBoard plugin</figcaption>
+	</figure>
     <h2>Using the cell editor</h2>
-
     <p>The cell editor can be opened by right-clicking a cell. (This option can be enabled/disabled by using the 
 	property "enableEdit"). The cell editor allows to define the content of a cell (cell caption, action string, 
 	cell image and sounds for cell-selection or acoustic preview during cell scanning). "Switch to Cellboard" allows
@@ -30,12 +26,10 @@
 	previously loded cellboard will be restored. Thus, complex communication/selection grids can be layered. The whole current
 	cellboard is saved as an .xml file when "Save Cellboard" is clicked. Existing .xml files can be selected to be loaded on startup
     via the "keyboardFile"-property of the cellboard plugin in the ACS property editor. </p>
-    <div class="image"><img src="img/CellBoardEditor.jpg" alt="Screenshot:
-        CellBoard editor" title="Screenshot: CellBoard editor"><br>
-      CellBoard editor</div>
-
-	
-
+    <figure>
+		<img class="image" src="img/CellBoardEditor.jpg" alt="Screenshot: CellBoard editor" title="Screenshot: CellBoard editor">
+		<figcaption>CellBoard editor</figcaption>
+	</figure>
     <h2>Input Port Description</h2>
     <ul>
       <li><strong>row [integer]:</strong> This port can be used in
@@ -141,20 +135,19 @@
       <li><strong>hoverTime [integer]:</strong> This parameter is used
         in "hover selection" mode. It defines the time of hovering
         needed to select the cell (in milliseconds).</li>
-      <li><strong>hoverTimeIndicator [integer]:</strong> This parameter 
-	  adjusts the way a hover selection prgress is indicated to the user:
-		        <ul>
-          <li><em>"fixed frame":</em> No graphical indication - the frame of the 
-		    currently active cell is shown but does not change.</li>
-          <li><em>"growing frame":</em> The frame of the active cell is growing
-		    until the value of property "hoverSelectionThickness" is reached - then
+      <li>
+		<strong>hoverTimeIndicator [integer]:</strong> This parameter adjusts the way a hover selection prgress is indicated to the user:
+		<ul>
+			<li><em>"fixed frame":</em> No graphical indication - the frame of the 
+			currently active cell is shown but does not change.</li>
+			<li><em>"growing frame":</em> The frame of the active cell is growing
+			until the value of property "hoverSelectionThickness" is reached - then
 			the cell is selected.</li>
-          <li><em>"backgorund color":</em> The background color of the cell changes slowly
+			<li><em>"backgorund color":</em> The background color of the cell changes slowly
 			from the selected "backgroundColor" to the selected "scanColor" - then the cell
 			is selected.</li>
-        </ul>
-		</li>
-		
+		</ul>
+	  </li>
       <li><strong>hoverFrameThickness [integer]:</strong> Maximum thickness of the cell frame
 	  (only valid for the hover selection mode with indicator "growing frame").
 	  </li>
@@ -171,15 +164,15 @@
       <li><strong>keyboardFile [string]:</strong> Name of a cellboard .xml file 
 	  (the sugeested files are located in folder data/cellBoardKeyboards or in folder "models"). This file will be loaded 
 	  at startup of the model. If no file is specified, only the cell contents defined via the ACS editor
-	  will be available.<b>Supports value suggestions 
-	  for existing xml-files from the ARE (dynamic property)</b></li>
+	  will be available.<strong>Supports value suggestions 
+	  for existing xml-files from the ARE (dynamic property)</strong></li>
       <li><strong>ignoreKeyboardFileProperties [boolean]:</strong> If selected, the general cellboard parameters 
 	  (rows/columns/colors/scan mode etc.) will be kept as defined via the ACS editor when a cellboard .xml file is loaded.
 	  If not selected, these parameters will be loaded from the .xml file, thereby overriding the values defined in the ACS editor.</li>
-      <li><strong>dispayGUI [boolean]:</strong> If selected, the component
-	  will be displayed in the ARE GUI. Otherwise the componentent will be hidden !</li>
-	  <p>The following properties will be overwritten if cellboard .xml files are loaded:</p>
-
+      <li><strong>dispayGUI [boolean]:</strong> If selected, the component will be displayed in the ARE GUI. Otherwise the componentent will be hidden !</li>
+	</ul>
+	<p>The following properties will be overwritten if cellboard .xml files are loaded:</p>
+	<ul>
       <li><strong>cellText1...cellText36 [string]:</strong> The text
         displayed on the cell.</li>
       <li><strong>cellImage1...cellImage36 [string]:</strong> The path
@@ -187,6 +180,6 @@
       <li><strong>actionText1...actionText36 [string]:</strong> The text
         sent through the selectedCellText output port, when the cell is
         selected.</li>
-    </ul>
+	</ul>
   </body>
 </html>

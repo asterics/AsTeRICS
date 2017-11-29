@@ -148,6 +148,7 @@ namespace Asterics.ACS {
         private int AREPort = 0;
         private String AREHostIP = "";
         private String AREHost = "";
+        private int AREWebserverPort = 8081;
 
         private AstericsStack<CommandObject> redoStack;
         private AstericsStack<CommandObject> undoStack;
@@ -2563,29 +2564,30 @@ namespace Asterics.ACS {
                     }
                 }
             } else {
-                logger.Log(LogLevel.Debug, "Help file (.chm) does not exist - searching for ACSHelp.htm.");
-                if (File.Exists(@"help/ACSHelp.htm")) {
-                    logger.Log(LogLevel.Debug, "ACSHelp.htm found!");
+                String htmlHelpPath = @"help/index.html";
+                logger.Log(LogLevel.Debug, "Help file (.chm) does not exist - searching for "+htmlHelpPath);
+                if (File.Exists(htmlHelpPath)) {
+                    logger.Log(LogLevel.Debug, htmlHelpPath+" found!");
                     String browserPath = GetStandardBrowserPath();
                     if (string.IsNullOrEmpty(browserPath)) {
                         logger.Log(LogLevel.Debug, "No standard browser found for launching help!");
                     } else {
                         if (sender is RibbonButton) {
-                            Process.Start(browserPath, "help/ACSHelp.htm");
+                            OpenBrowserHelp(htmlHelpPath,"");
                         } else {
                             if (focusedComponent != null) {
                                 ACS2.componentTypesComponentType comp = (ACS2.componentTypesComponentType)componentList[focusedComponent.type_id];
                                 String id = focusedComponent.type_id;
                                 if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length-9); // eleminiate prefix
-                                Process.Start(browserPath, "help/ACSHelp.htm?" + comp.type.Value + "s/" + comp.type.subtype.Replace(" ", "_") + "/" + id + ".htm");
+                                OpenBrowserHelp(htmlHelpPath, "?plugins&" + comp.type.Value + "s/" + "/" + id + ".htm");
                             } else {
                                 if (selectedComponentList.Count == 0) {
-                                    Process.Start(browserPath, "help/ACSHelp.htm");
+                                    OpenBrowserHelp(htmlHelpPath,"");
                                 } else {
                                     ACS2.componentTypesComponentType comp = (ACS2.componentTypesComponentType)componentList[selectedComponentList.First.Value.type_id];
                                     String id = selectedComponentList.First.Value.type_id;
                                     if (id.Substring(0, 9) == "asterics.") id = id.Substring(9, id.Length-9); // eleminiate prefix
-                                    Process.Start(browserPath, "help/ACSHelp.htm?" + comp.type.Value + "s/" + comp.type.subtype.Replace(" ", "_") + "/" + id + ".htm");
+                                    OpenBrowserHelp(htmlHelpPath, "?plugins&" + comp.type.Value + "s/" + "/" + id + ".htm");
                                 }
                             }
                         }
@@ -2593,6 +2595,24 @@ namespace Asterics.ACS {
                 } else {
                     logger.Log(LogLevel.Debug, "No help files found!");
                 }
+            }
+        }
+
+        private void OpenBrowserHelp(String relativeHelpPath, String queryString)
+        {
+            String browserPath = GetStandardBrowserPath();
+            //If the ACS is connected to the ARE, open the hosted version of the help system, otherwise the local file.
+            if (areStatus.Status == AREStatus.ConnectionStatus.Connected)
+            {
+                String absoluteURL="http://"+AREHost+":"+AREWebserverPort + "/" + relativeHelpPath+queryString;
+                logger.Log(LogLevel.Debug, "ACS is connected, so starting help of ARE with URL "+absoluteURL);
+                Process.Start(browserPath, absoluteURL);
+            }
+            else
+            {
+                String absoluteURL = new Uri(Environment.CurrentDirectory + "/" + relativeHelpPath).AbsoluteUri + queryString;
+                logger.Log(LogLevel.Debug, "ACS is not connected, so starting local help with URL " + absoluteURL);
+                Process.Start(browserPath, absoluteURL);
             }
         }
 

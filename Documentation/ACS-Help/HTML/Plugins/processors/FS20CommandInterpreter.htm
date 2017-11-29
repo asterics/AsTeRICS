@@ -1,152 +1,148 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>FS20CommandInterpreter</Title>
-</HEAD>
-<BODY>
-<H1>FS20 Command Interpreter</H1>
-<H3>Component Type: Processor (Subcategory: Home Control)</H3>
-<p>
-The FS20CommandInterpreter receives strings containing commands of the home automation system FS20 for ELV Electronics. Depending on the received commands, events
-will be fired.</p>
-<div class="image"><img src="img/FS20Command.jpg" alt="FS20 Command Interpreter Plugin" title="FS20 Command Interpreter Plugin" /><br>
-FS20 Command Interpreter Plugin</div>
-
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>command [string]:</STRONG> The command string containing the FS20 Command. The data must have the following format: 
-housecode_sendaddress_command, e.g. 11111111_3343_17</li>
-</ul>
-
-<H2>Event Trigger Description</H2>
-Each received command triggers an event, being mapped to this command. The following table will describe this events:
-
-<table border="1" summary="Mapping of the commands and the events of the FS20 system">
-<caption>Command Mapping</caption>
-<tr>
-	<th scope="col">Event</th>
-	<th scope="col">Command</th>
-</tr>
-<tr>
-	<td>Off</td>
-	<td>0</td>
-</tr>
-<tr>
-	<td>Level1</td>
-	<td>1</td>
-</tr>
-<tr>
-	<td>Level2</td>
-	<td>2</td>
-</tr>
-<tr>
-	<td>Level3</td>
-	<td>3</td>
-</tr>
-<tr>
-	<td>Level4</td>
-	<td>4</td>
-</tr>
-<tr>
-	<td>Level5</td>
-	<td>5</td>
-</tr>
-<tr>
-	<td>Level6</td>
-	<td>6</td>
-</tr>
-<tr>
-	<td>Level7</td>
-	<td>7</td>
-</tr>
-<tr>
-	<td>Level8</td>
-	<td>8</td>
-</tr>
-<tr>
-	<td>Level9</td>
-	<td>9</td>
-</tr>
-<tr>
-	<td>Level10</td>
-	<td>10</td>
-</tr>
-<tr>
-	<td>Level11</td>
-	<td>11</td>
-</tr>
-<tr>
-	<td>Level12</td>
-	<td>12</td>
-</tr>
-<tr>
-	<td>Level13</td>
-	<td>13</td>
-</tr>
-<tr>
-	<td>Level14</td>
-	<td>14</td>
-</tr>
-<tr>
-	<td>Level15</td>
-	<td>15</td>
-</tr>
-<tr>
-	<td>Level16</td>
-	<td>16</td>
-</tr>
-<tr>
-	<td>OnOldLevel</td>
-	<td>17</td>
-</tr>
-<tr>
-	<td>Toggle</td>
-	<td>18</td>
-</tr>
-<tr>
-	<td>Dim Up</td>
-	<td>19</td>
-</tr>
-<tr>
-	<td>Dim Down</td>
-	<td>20</td>
-</tr>
-<tr>
-	<td>Dim Up and Down</td>
-	<td>21</td>
-</tr>
-<tr>
-	<td>Program internal timer</td>
-	<td>22</td>
-</tr>
-<tr>
-	<td>Off for timer then old brightness level</td>
-	<td>24</td>
-</tr>
-<tr>
-	<td>On for timer then off</td>
-	<td>25</td>
-</tr>
-<tr>
-	<td>On old brightness level for timer then off</td>
-	<td>26</td>
-</tr>
-<tr>
-	<td>On for timer then old brightness level</td>
-	<td>30</td>
-</tr>
-<tr>
-	<td>On for old level then previous state</td>
-	<td>31</td>
-</tr>
-</table>
-
-<H2>Properties</H2>
-<ul>
-<li><STRONG>housecode [integer]</STRONG> The housecode, the plugin should react on. The housecode has 8 digits, each from 1 to 4. </li>
-<li><STRONG>sendaddress [integer]</STRONG> The sendaddress, the plugin should react on. The sendaddress has 4 digits, each from 1 to 4. </li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>FS20CommandInterpreter</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>FS20 Command Interpreter</H1>
+		<span class="componentType">Component Type: Processor (Subcategory: Home Control)</span>
+		<p>The FS20CommandInterpreter receives strings containing commands of the home automation system FS20 for ELV Electronics. Depending on the received commands, events
+		will be fired.</p>
+		<figure>
+			<img class="image" src="img/FS20Command.jpg" alt="FS20 Command Interpreter Plugin" title="FS20 Command Interpreter Plugin" />
+			<figcaption>FS20 Command Interpreter Plugin</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>command [string]:</STRONG> The command string containing the FS20 Command. The data must have the following format: 
+			housecode_sendaddress_command, e.g. 11111111_3343_17</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		Each received command triggers an event, being mapped to this command. The following table will describe this events:
+		<table>
+			<caption>Command Mapping</caption>
+			<tr>
+				<th scope="col">Event</th>
+				<th scope="col">Command</th>
+			</tr>
+			<tr>
+				<td>Off</td>
+				<td>0</td>
+			</tr>
+			<tr>
+				<td>Level1</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>Level2</td>
+				<td>2</td>
+			</tr>
+			<tr>
+				<td>Level3</td>
+				<td>3</td>
+			</tr>
+			<tr>
+				<td>Level4</td>
+				<td>4</td>
+			</tr>
+			<tr>
+				<td>Level5</td>
+				<td>5</td>
+			</tr>
+			<tr>
+				<td>Level6</td>
+				<td>6</td>
+			</tr>
+			<tr>
+				<td>Level7</td>
+				<td>7</td>
+			</tr>
+			<tr>
+				<td>Level8</td>
+				<td>8</td>
+			</tr>
+			<tr>
+				<td>Level9</td>
+				<td>9</td>
+			</tr>
+			<tr>
+				<td>Level10</td>
+				<td>10</td>
+			</tr>
+			<tr>
+				<td>Level11</td>
+				<td>11</td>
+			</tr>
+			<tr>
+				<td>Level12</td>
+				<td>12</td>
+			</tr>
+			<tr>
+				<td>Level13</td>
+				<td>13</td>
+			</tr>
+			<tr>
+				<td>Level14</td>
+				<td>14</td>
+			</tr>
+			<tr>
+				<td>Level15</td>
+				<td>15</td>
+			</tr>
+			<tr>
+				<td>Level16</td>
+				<td>16</td>
+			</tr>
+			<tr>
+				<td>OnOldLevel</td>
+				<td>17</td>
+			</tr>
+			<tr>
+				<td>Toggle</td>
+				<td>18</td>
+			</tr>
+			<tr>
+				<td>Dim Up</td>
+				<td>19</td>
+			</tr>
+			<tr>
+				<td>Dim Down</td>
+				<td>20</td>
+			</tr>
+			<tr>
+				<td>Dim Up and Down</td>
+				<td>21</td>
+			</tr>
+			<tr>
+				<td>Program internal timer</td>
+				<td>22</td>
+			</tr>
+			<tr>
+				<td>Off for timer then old brightness level</td>
+				<td>24</td>
+			</tr>
+			<tr>
+				<td>On for timer then off</td>
+				<td>25</td>
+			</tr>
+			<tr>
+				<td>On old brightness level for timer then off</td>
+				<td>26</td>
+			</tr>
+			<tr>
+				<td>On for timer then old brightness level</td>
+				<td>30</td>
+			</tr>
+			<tr>
+				<td>On for old level then previous state</td>
+				<td>31</td>
+			</tr>
+		</table>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>housecode [integer]</STRONG> The housecode, the plugin should react on. The housecode has 8 digits, each from 1 to 4. </li>
+			<li><STRONG>sendaddress [integer]</STRONG> The sendaddress, the plugin should react on. The sendaddress has 4 digits, each from 1 to 4. </li>
+		</ul>
+	</BODY>
 </HTML>

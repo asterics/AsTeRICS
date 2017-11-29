@@ -1,39 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>JoystickCapture</Title>
-</HEAD>
-<BODY>
-<H1>Joystick Capture </H1>
-<H3>Component Type: Sensor (Subcategory: Standard Input Devices)</H3>
-<p>The JoystickCapture component provides data from the first detected Joystick controller which is available on the local system.
-Six Joystick analog positions (axis), the Point-Of-View angle and up to 20 Buttons are available as output ports and event triggers.</p>
-<div class="image"><img src="img/JoystickCapture.jpg" alt="Screenshot: JoystickCapture plugin" title="Screenshot: JoystickCapture plugin" /><br>
-JoystickCapture plugin</div>
-<H2>Requirements</H2>
-A joystick has to be connected and available to the operating system. 
-<div class="image"><img src="img/GamePad.jpg" alt="PC compatible GamePad" title="PC compatible GamePad" /><br>
-PC compatible GamePad</div>
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>x [integer]:</STRONG> The X-Position of the Joystick.</li>
-<li><STRONG>y [integer]:</STRONG> The Y-Position of the Joystick.</li>
-<li><STRONG>z [integer]:</STRONG> The Z-Position of the Joystick.</li>
-<li><STRONG>r [integer]:</STRONG> The R-Position of the Joystick.</li>
-<li><STRONG>u [integer]:</STRONG> The U-Position of the Joystick.</li>
-<li><STRONG>v [integer]:</STRONG> The V-Position of the Joystick.</li>
-<li><STRONG>pov [integer]:</STRONG> The POV-angle of the Joystick.</li>
-</ul>
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>pressedButton1 - pressedButton20:</STRONG> This event is fired if the corresponding button of the Joystick has been pressed.</li>
-<li><STRONG>releasedButton1 - releasedButton20:</STRONG> This event is fired if the corresponding button of the Joystick has been released.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>updatePeriod [integer]:</STRONG> This property value sets the update time for refreshing the joystick information (in milliseconds).</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>JoystickCapture</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Joystick Capture </H1>
+		<span class="componentType">Component Type: Sensor (Subcategory: Standard Input Devices)</span>
+		<p>The JoystickCapture component provides data from the first detected Joystick controller which is available on the local system.
+		Six Joystick analog positions (axis), the Point-Of-View angle and up to 20 Buttons are available as output ports and event triggers.</p>
+		<figure>
+			<img class="image" src="img/JoystickCapture.jpg" alt="Screenshot: JoystickCapture plugin" title="Screenshot: JoystickCapture plugin" />
+			<figcaption>JoystickCapture plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		A joystick has to be connected and available to the operating system. 
+		<figure>
+			<img class="image" src="img/GamePad.jpg" alt="PC compatible GamePad" title="PC compatible GamePad" />
+			<figcaption>PC compatible GamePad</figcaption>
+		</figure>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>x [integer]:</STRONG> The X-Position of the Joystick.</li>
+			<li><STRONG>y [integer]:</STRONG> The Y-Position of the Joystick.</li>
+			<li><STRONG>z [integer]:</STRONG> The Z-Position of the Joystick.</li>
+			<li><STRONG>r [integer]:</STRONG> The R-Position of the Joystick.</li>
+			<li><STRONG>u [integer]:</STRONG> The U-Position of the Joystick.</li>
+			<li><STRONG>v [integer]:</STRONG> The V-Position of the Joystick.</li>
+			<li><STRONG>pov [integer]:</STRONG> The POV-angle of the Joystick.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>pressedButton1 - pressedButton20:</STRONG> This event is fired if the corresponding button of the Joystick has been pressed.</li>
+			<li><STRONG>releasedButton1 - releasedButton20:</STRONG> This event is fired if the corresponding button of the Joystick has been released.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>updatePeriod [integer]:</STRONG> This property value sets the update time for refreshing the joystick information (in milliseconds).</li>
+		</ul>
+	</BODY>
 </HTML>

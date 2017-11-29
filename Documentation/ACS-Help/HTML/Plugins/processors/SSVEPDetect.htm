@@ -1,79 +1,77 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="SSVEPDetect" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>SSVEP Detect</Title>
-</HEAD>
-<BODY>
-<H1>SSVEP Detect</H1> 
-This component is in charge of evaluating the SSVEP response (up to 4 different frequencies) among the frequencies defined by the user. It also calculates the config file based on previously recorded training files that will be used to evaluate the detection, and is also in charge of updating its parameters according to the config file
-<H3>Component Type: Processor (Subcategory: DSP and Feauture extraction)</H3>
-<p>
-<div class="image"><img src="img/SSVEPDetect.jpg" alt="Screenshot: SSVEPDetect plugin" title="Screenshot: SSVEPDetect plugin" /><br>
-SSVEPDetect plugin</div>
-</p>
-
-<H2>Requirements</H2>
-SSVEPTrainFunction.exe and Matlab 2008B runtime engine
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>O1 [double]:</STRONG> Input port for the EEG channel O1. <b>This input port supports synchronization</b></li>
-<li><STRONG>Oz [double]:</STRONG> Input port for the EEG channel Oz. <b>This input port supports synchronization</b></li>
-<li><STRONG>O2 [double]:</STRONG> Input port for the EEG channel O2. <b>This input port supports synchronization</b></li>
-<li><STRONG>UserName [string]:</STRONG> Name Identifying current the user.</li>
-<li><STRONG>NumberOfPanels [string]:</STRONG> Number of stimulation panels.</li>
-<li><STRONG>FreqP1 [string]:</STRONG> Stimulation frequency of panel 1.</li>
-<li><STRONG>FreqP2 [string]:</STRONG> Stimulation frequency of panel 2.</li>
-<li><STRONG>FreqP3 [string]:</STRONG> Stimulation frequency of panel 3.</li>
-<li><STRONG>FreqP4 [string]:</STRONG> Stimulation frequency of panel 4.</li>
-</ul>
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>FreqP1 [integer]:</STRONG> Stimulation frequency of panel 1.</li>
-<li><STRONG>FreqP2 [integer]:</STRONG> Stimulation frequency of panel 2.</li>
-<li><STRONG>FreqP3 [integer]:</STRONG> Stimulation frequency of panel 3.</li>
-<li><STRONG>FreqP4 [integer]:</STRONG> Stimulation frequency of panel 4.</li>
-</ul>
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>StartStim:</STRONG> Event Informing that the stimulation period has started.</li>
-<li><STRONG>StopStim:</STRONG> Event Informing that the stimulation period has finished.</li>
-<li><STRONG>CalculateConfigFile:</STRONG> Event requesting the calculation of the configuration file</li>
-<li><STRONG>UpdateFromConfigFile:</STRONG> Event requested an update of the properties according to the configuration file.</li>
-<li><STRONG>UpdatePanelsConfig:</STRONG> Event reporting the stimulation panels plugin to update the stimulation frequencies.</li>
-</ul>
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>UpdatePanelsConfig: </STRONG> Event reporting the stimulation panels plugin to update the stimulation frequencies.</li>
-<li><STRONG>NonStimFreqD: </STRONG> Event reporting that none stimulation frequency could be detected.</li>
-<li><STRONG>StimFreq1D:</STRONG> Event reporting that stimulation frequency number 1 was detected.</li>
-<li><STRONG>StimFreq2D:</STRONG> Event reporting that stimulation frequency number 2 was detected.</li>
-<li><STRONG>StimFreq3D:</STRONG> Event reporting that stimulation frequency number 3 was detected.</li>
-<li><STRONG>StimFreq4D:</STRONG> Event reporting that stimulation frequency number 4 was detected.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>SF1GO1 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 1 and electrode O1.</li>
-<li><STRONG>SF1GOz [double]:</STRONG> Spatial filter coefficient for stimulation frequency 1 and electrode Oz.</li>
-<li><STRONG>SF1GO2 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 1 and electrode O2.</li>
-<li><STRONG>SF2GO1 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 2 and electrode O1.</li>
-<li><STRONG>SF2GOz [double]:</STRONG> Spatial filter coefficient for stimulation frequency 2 and electrode Oz.</li>
-<li><STRONG>SF2GO2 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 2 and electrode O2.</li>
-<li><STRONG>SF3GO1 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 3 and electrode O1.</li>
-<li><STRONG>SF3GOz [double]:</STRONG> Spatial filter coefficient for stimulation frequency 3 and electrode Oz.</li>
-<li><STRONG>SF3GO2 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 3 and electrode O2.</li>
-<li><STRONG>SF4GO1 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 4 and electrode O1.</li>
-<li><STRONG>SF4GOz [double]:</STRONG> Spatial filter coefficient for stimulation frequency 4 and electrode Oz.</li>
-<li><STRONG>SF4GO2 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 4 and electrode O2.</li>
-<li><STRONG>StimFreq1 [integer]:</STRONG> Stimulation frequency number 2 in Hz. If its value is 0 it will not be evaluated in the SSVEP detection..</li>
-<li><STRONG>StimFreq2 [integer]:</STRONG> Stimulation frequency number 2 in Hz. If its value is 0 it will not be evaluated in the SSVEP detection.</li>
-<li><STRONG>StimFreq3 [integer]:</STRONG> Stimulation frequency number 3 in Hz. If its value is 0 it will not be evaluated in the SSVEP detection.</li>
-<li><STRONG>StimFreq4 [integer]:</STRONG> Stimulation frequency number 4 in Hz. If its value is 0 it will not be evaluated in the SSVEP detection.</li>
-<li><STRONG>BestHarm1 [integer]:</STRONG> Best harmonic to detect stimulation frequency 1.</li>
-<li><STRONG>BestHarm2 [integer]:</STRONG> Best harmonic to detect stimulation frequency 2.</li>
-<li><STRONG>BestHarm3 [integer]:</STRONG> Best harmonic to detect stimulation frequency 3.</li>
-<li><STRONG>BestHarm4 [integer]:</STRONG> Best harmonic to detect stimulation frequency 4.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>SSVEP Detect</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>SSVEP Detect</H1> 
+		This component is in charge of evaluating the SSVEP response (up to 4 different frequencies) among the frequencies defined by the user. It also calculates the config file based on previously recorded training files that will be used to evaluate the detection, and is also in charge of updating its parameters according to the config file
+		<span class="componentType">Component Type: Processor (Subcategory: DSP and Feauture extraction)</span>
+		<figure>
+			<img class="image" src="img/SSVEPDetect.jpg" alt="Screenshot: SSVEPDetect plugin" title="Screenshot: SSVEPDetect plugin" />
+			<figcaption>SSVEPDetect plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		SSVEPTrainFunction.exe and Matlab 2008B runtime engine
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>O1 [double]:</STRONG> Input port for the EEG channel O1. <strong>This input port supports synchronization</strong></li>
+			<li><STRONG>Oz [double]:</STRONG> Input port for the EEG channel Oz. <strong>This input port supports synchronization</strong></li>
+			<li><STRONG>O2 [double]:</STRONG> Input port for the EEG channel O2. <strong>This input port supports synchronization</strong></li>
+			<li><STRONG>UserName [string]:</STRONG> Name Identifying current the user.</li>
+			<li><STRONG>NumberOfPanels [string]:</STRONG> Number of stimulation panels.</li>
+			<li><STRONG>FreqP1 [string]:</STRONG> Stimulation frequency of panel 1.</li>
+			<li><STRONG>FreqP2 [string]:</STRONG> Stimulation frequency of panel 2.</li>
+			<li><STRONG>FreqP3 [string]:</STRONG> Stimulation frequency of panel 3.</li>
+			<li><STRONG>FreqP4 [string]:</STRONG> Stimulation frequency of panel 4.</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>FreqP1 [integer]:</STRONG> Stimulation frequency of panel 1.</li>
+			<li><STRONG>FreqP2 [integer]:</STRONG> Stimulation frequency of panel 2.</li>
+			<li><STRONG>FreqP3 [integer]:</STRONG> Stimulation frequency of panel 3.</li>
+			<li><STRONG>FreqP4 [integer]:</STRONG> Stimulation frequency of panel 4.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>StartStim:</STRONG> Event Informing that the stimulation period has started.</li>
+			<li><STRONG>StopStim:</STRONG> Event Informing that the stimulation period has finished.</li>
+			<li><STRONG>CalculateConfigFile:</STRONG> Event requesting the calculation of the configuration file</li>
+			<li><STRONG>UpdateFromConfigFile:</STRONG> Event requested an update of the properties according to the configuration file.</li>
+			<li><STRONG>UpdatePanelsConfig:</STRONG> Event reporting the stimulation panels plugin to update the stimulation frequencies.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>UpdatePanelsConfig: </STRONG> Event reporting the stimulation panels plugin to update the stimulation frequencies.</li>
+			<li><STRONG>NonStimFreqD: </STRONG> Event reporting that none stimulation frequency could be detected.</li>
+			<li><STRONG>StimFreq1D:</STRONG> Event reporting that stimulation frequency number 1 was detected.</li>
+			<li><STRONG>StimFreq2D:</STRONG> Event reporting that stimulation frequency number 2 was detected.</li>
+			<li><STRONG>StimFreq3D:</STRONG> Event reporting that stimulation frequency number 3 was detected.</li>
+			<li><STRONG>StimFreq4D:</STRONG> Event reporting that stimulation frequency number 4 was detected.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>SF1GO1 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 1 and electrode O1.</li>
+			<li><STRONG>SF1GOz [double]:</STRONG> Spatial filter coefficient for stimulation frequency 1 and electrode Oz.</li>
+			<li><STRONG>SF1GO2 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 1 and electrode O2.</li>
+			<li><STRONG>SF2GO1 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 2 and electrode O1.</li>
+			<li><STRONG>SF2GOz [double]:</STRONG> Spatial filter coefficient for stimulation frequency 2 and electrode Oz.</li>
+			<li><STRONG>SF2GO2 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 2 and electrode O2.</li>
+			<li><STRONG>SF3GO1 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 3 and electrode O1.</li>
+			<li><STRONG>SF3GOz [double]:</STRONG> Spatial filter coefficient for stimulation frequency 3 and electrode Oz.</li>
+			<li><STRONG>SF3GO2 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 3 and electrode O2.</li>
+			<li><STRONG>SF4GO1 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 4 and electrode O1.</li>
+			<li><STRONG>SF4GOz [double]:</STRONG> Spatial filter coefficient for stimulation frequency 4 and electrode Oz.</li>
+			<li><STRONG>SF4GO2 [double]:</STRONG> Spatial filter coefficient for stimulation frequency 4 and electrode O2.</li>
+			<li><STRONG>StimFreq1 [integer]:</STRONG> Stimulation frequency number 2 in Hz. If its value is 0 it will not be evaluated in the SSVEP detection..</li>
+			<li><STRONG>StimFreq2 [integer]:</STRONG> Stimulation frequency number 2 in Hz. If its value is 0 it will not be evaluated in the SSVEP detection.</li>
+			<li><STRONG>StimFreq3 [integer]:</STRONG> Stimulation frequency number 3 in Hz. If its value is 0 it will not be evaluated in the SSVEP detection.</li>
+			<li><STRONG>StimFreq4 [integer]:</STRONG> Stimulation frequency number 4 in Hz. If its value is 0 it will not be evaluated in the SSVEP detection.</li>
+			<li><STRONG>BestHarm1 [integer]:</STRONG> Best harmonic to detect stimulation frequency 1.</li>
+			<li><STRONG>BestHarm2 [integer]:</STRONG> Best harmonic to detect stimulation frequency 2.</li>
+			<li><STRONG>BestHarm3 [integer]:</STRONG> Best harmonic to detect stimulation frequency 3.</li>
+			<li><STRONG>BestHarm4 [integer]:</STRONG> Best harmonic to detect stimulation frequency 4.</li>
+		</ul>
+	</BODY>
 </HTML>

@@ -1,31 +1,26 @@
-<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <html>
   <head>
-    <meta http-equiv="content-type" content="text/html;
-      charset=ISO-8859-2">
-    <meta name="GENERATOR" content="Microsoft&#174; HTML Help Workshop 4.1">
-    <link rel="stylesheet" type="text/css"
-      href="../../stylesheet/help.css" media="screen">
+    <meta charset="UTF-8">
     <title>Filter</title>
   </head>
-  <body>
+  <body class="innerBody">
     <h1>Filter</h1>
-    <H3>Component Type: Processor (Subcategory: DSP and Feature Detection)</H3>
-    <p>This plugin implements a FIR Filter<br>
-    </p>
-    <div class="image"><img src="img/Filter.jpg" alt="Screenshot: Filter plugin" title="Screenshot: Filter plugin" /><br>
-    Filter plugin</div>
+    <span class="componentType">Component Type: Processor (Subcategory: DSP and Feature Detection)</span>
+    <p>This plugin implements a FIR Filter</p>
+    <figure>
+		<img class="image" src="img/Filter.jpg" alt="Screenshot: Filter plugin" title="Screenshot: Filter plugin" />
+		<figcaption>Filter plugin</figcaption>
+	</figure>
     <H2>Input Port Description</H2>
     <ul>
-    <li><STRONG>Input [double]:</STRONG> The signal to be filtered.</li>
+		<li><STRONG>Input [double]:</STRONG> The signal to be filtered.</li>
     </ul>
-
     <H2>Output Port Description</H2>
     <ul>
-    <li><STRONG>Output [double]:</STRONG> The filtered signal.</li>
-    <li><STRONG>SignalPower [double]:</STRONG> Signal Power on the band pass.</li>
+		<li><STRONG>Output [double]:</STRONG> The filtered signal.</li>
+		<li><STRONG>SignalPower [double]:</STRONG> Signal Power on the band pass.</li>
     </ul>
-    
     <h2>Properties</h2>
     <ul>
       <li><strong>Order [integer]:</strong> Order of the filter. It is recommended to use orders around the sampling rate.<br>

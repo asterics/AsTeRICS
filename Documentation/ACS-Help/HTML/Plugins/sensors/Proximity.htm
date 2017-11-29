@@ -1,47 +1,42 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>Proximity</Title>
-</HEAD>
-<BODY>
-<H1>Proximity</H1> 
-<H3>Component Type: Sensor (Subcategory:Sensor Modules)</H3>
-<p>
-This component provides the distance sensor signal from the Proximity sensor board, which has been developed in course of the Bachelor Theses of Franziska Horak at the UAS Technikum Wien. 
-The Proximity sensor board can be head mounted and offers an alternative input method via minimal movements of facial features - e.g. chin movements. In several proof-of-concept
-models, on-screen keyboard control and mouse control could be shown. For detailed information please refer to the file Documentation/DIYGuides/ProximitySensor_Horak.pdf
-
-
-<div class="image"><img src="img/Proximity.jpg" alt="Screenshot: Proximity plugin" title="Screenshot: Proximity plugin" /><br>
-the Proximity sensor plugin</div>
-
-<H2>Requirements</H2>
-The Proximity sensor has to be connected to a USB port. Design files and firmware for the proximity sensor can be found in the folder CIMs/Proximity_CIM.
-<div class="image"><img src="img/ProximityApplication.jpg" alt="Proximity sensor application" title="Proximity sensor application" /><br>
-Proximity sensor application</div>
-
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>input [integer]:</STRONG> this input port allows setting the threshold value for the creation of events</li>
-</ul>
-
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>distance [integer]:</STRONG> the currently measured distance from sensor to subject</li>
-</ul>
-
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>LowToHigh:</STRONG> this event is triggered when the distance increases above the threshold value</li>
-<li><STRONG>HighToLow:</STRONG> this event is triggered when the distance decreases below the threshold value</li>
-</ul>
-
-<H2>Properties</H2>
-<ul>
-<li><STRONG>threshold [integer]:</STRONG> the threshold value for creating events.</li>
-<li><STRONG>sendingMode [combobox selection]:</STRONG> if "Continuous data" is selected, the distance values are sent to the output port, if "Events: below->above", "Events: above->below" or "Events: both" are selected, the respective event triggers will be generated.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Proximity</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Proximity</H1> 
+		<span class="componentType">Component Type: Sensor (Subcategory:Sensor Modules)</span>
+		<p>This component provides the distance sensor signal from the Proximity sensor board, which has been developed in course of the Bachelor Theses of Franziska Horak at the UAS Technikum Wien. 
+		The Proximity sensor board can be head mounted and offers an alternative input method via minimal movements of facial features - e.g. chin movements. In several proof-of-concept
+		models, on-screen keyboard control and mouse control could be shown. For detailed information please refer to the file Documentation/DIYGuides/ProximitySensor_Horak.pdf</p>
+		<figure>
+			<img class="image" src="img/Proximity.jpg" alt="Screenshot: Proximity plugin" title="Screenshot: Proximity plugin" />
+			<figcaption>The Proximity sensor plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		The Proximity sensor has to be connected to a USB port. Design files and firmware for the proximity sensor can be found in the folder CIMs/Proximity_CIM.
+		<figure>
+			<img class="image" src="img/ProximityApplication.jpg" alt="Proximity sensor application" title="Proximity sensor application" />
+			<figcaption>Proximity sensor application</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>input [integer]:</STRONG> this input port allows setting the threshold value for the creation of events</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>distance [integer]:</STRONG> the currently measured distance from sensor to subject</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>LowToHigh:</STRONG> this event is triggered when the distance increases above the threshold value</li>
+			<li><STRONG>HighToLow:</STRONG> this event is triggered when the distance decreases below the threshold value</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>threshold [integer]:</STRONG> the threshold value for creating events.</li>
+			<li><STRONG>sendingMode [combobox selection]:</STRONG> if "Continuous data" is selected, the distance values are sent to the output port, if "Events: below->above", "Events: above->below" or "Events: both" are selected, the respective event triggers will be generated.</li>
+		</ul>
+	</BODY>
 </HTML>

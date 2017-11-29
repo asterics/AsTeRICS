@@ -1,3 +1,12 @@
 [submodule "bin/ARE/web/webapps/WebACS"]
 	path = bin/ARE/web/webapps/WebACS
 	url = https://github.com/asterics/WebACS.git
+	ingore = dirty
+[submodule "bin/ACS/help"]
+	path = bin/ACS/help
+	url = https://github.com/asterics/AsTeRICS-help.git
+	ignore = dirty
+[submodule "bin/ARE/web/help"]
+	path = bin/ARE/web/help
+	url = https://github.com/asterics/AsTeRICS-help.git
+	ignore = dirty

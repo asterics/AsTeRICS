@@ -1,0 +1,42 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>External Tools</Title>
+	</HEAD>
+	<BODY>
+		<h1>External Tools</h1>
+		<p>Within the tab <EM>Miscellaneous</EM> (Misc.), external tools can be launched. The three integrated external tools are the <em>Plugin Creation Wizard</em>, the <em>Plugin Activation Wizard</em> and the <em>Language Translation File Creator</em>.</p>
+		<figure>
+			<img class="image" src="img/Miscellaneous_Tab.png" alt="Screenshot: The Miscellaneous Tab" title="Screenshot: The Miscellaneous Tab" />
+			<figcaption>The Miscellaneous Tab</figcaption>
+		</figure>
+		<ul>
+			<li>
+				The <em>Plugin Creation Wizard</em> is an external tool to create the stub for a new plugin. All characteristics, like input and output ports, events and properties can be defined. As output, a java-class and all necessary files for an ARE plugin will be created. The figure below shows a screenshot of the tool.
+				<figure>
+					<img class="bullet_image" src="img/Plugin_Creator.png" alt="Screenshot: The Plugin Creation Wizard" title="Screenshot: The Plugin Creation Wizard" />
+					<figcaption>The Plugin Creation Wizard</figcaption>
+				</figure>
+			</li>
+			<li>
+				The <em>Plugin Activation Wizard</em> is an external tool to create bundle files (describing the interface of a plugin) and configuration files for the ARE. Therefore, the source code folder of the ARE will be scanned. The figure below shows a screenshot of the tool.
+				<figure>
+					<img class="bullet_image" src="img/Plugin_Activation.png" alt="Screenshot: Plugin Activation Wizard" title="Screenshot: Plugin Activation Wizard" />
+					<figcaption>Plugin Activation Wizard</figcaption>
+				</figure>
+			</li>
+			<li>
+				The <em>Create Language Translation File</em> opens another external tool for creating language translation files for the properties (as shown in the figure below). This tool scans the bundle file and lists all properties in a text file, which can be extended with the translation for any language. This text file will be loaded at startup of the ACS, so also the components now have multi language support.
+				After selecting a bundle file, the destination file has to be set. If the destination file (a language translation file) already exists, it can be chosen, if the file should be overwritten or integrated into an existing language file. The Constants are strings, occurring in each plugin. By using the constants, they just must be translated once. All other strings must be translated in the created textfile, where all strings, ending with equal to (=) must be translated. Example:<br>
+				Frequency=<br>
+				Amplitude=<br>
+				When the translation is finished, the language file must be copied to the <em>lang</em> subfolder within the ACS folder (if the file isn't there already). The file must be named as the supported languages of the ACS. At the moment, en-GB, de-AT, es-ES and pl-PL are supported. Furthermore, the file must have the ending .txt. For the German language file, it would look like <em>de-AT.txt</em>.
+				<figure>
+					<img class="bullet_image" src="img/LanguageFileCreator.png" alt="Screenshot: Language File Creator" title="Screenshot: Language File Creator" />
+					<figcaption>Language File Creator</figcaption>
+				</figure>
+			</li>
+		</ul>
+	</BODY>
+</HTML>

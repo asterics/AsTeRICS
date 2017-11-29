@@ -1,84 +1,79 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>Keyboard</Title>
-</HEAD>
-<BODY>
-<H1>Keyboard</H1> 
-<H3>Component Type: Actuator (Subcategory: Input Device Emulation)</H3>
-<p>The Keyboard component generates local keyboard input on the computer that the ARE is running on (per software emulation). 
-The component supports key press/hold/release actions and sending key sequences and special keycodes. special or non-printable
-characters can be sent using curly braces and key identifier strings, e.g. {UP} {ENTER} {ALT} {DELETE} etc. - see description of the property keyCodeString.
-Multiple instances of the Keyboard component can be used to provide different key actions.</p>
-<div class="image"><img src="img/Keyboard.jpg" alt="Screenshot: Keyboard plugin" title="Screenshot: Keyboard plugin" /><br>
-Keyboard plugin</div>
-
-<H2>Requirements</H2>
-No special hardware or software required.
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>keyCodes [string]:</STRONG> An incoming string which consists of alphanumeric characters and special key codes. The keys are sequentially generated as local keystrokes as the string is received, and as the sendKeys and other input related events of the component are being triggered.</li>
-</ul>
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>sendKeys:</STRONG> An incoming event at this port generates all keycodes of the keycode string (sequentially).</li>
-<li><STRONG>pressKey:</STRONG> An incoming event at this port pressed (and releases) the key (first key + modifiers if there are multiple keys).</li>
-<li><STRONG>holdKey:</STRONG> An incoming event at this port holds the key (first key + modifiers if there are multiple keys). The key is pressed but not released. The holdKey listener can be used together with the releaseKey feature to create long key presses of single keys (e.g. of the cursor keys) to allow game control etc.</li>
-<li><STRONG>releaseKey:</STRONG> An incoming event at this port releases the key which was pressed using the hold event.</li> 
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>keyCodeString [string]:</STRONG> A string containing keys and keycodes. Please note that this string will be replaced by an incoming string at the keycodes input port. The keyCodeString can contain alphanumeric characters and special characters. Special characters are written in parentheses, for example {SHIFT}, {CTRL}, {ALT}, {BACKSPACE}, {ENTER} etc. Modifier keys like {SHIFT} or {ALT} are combined as they appear consecutively in the keystring, and are generated with the next printable character. For example, the keystrings "{SHIFT}" or "{CTRL}{ALT}{DEL}" are sent as single key values. For a description of the currently supported special key codes see the table below.</li>
-<li><STRONG>inputMethod [integer]:</STRONG> Declares whether to use sending window messages (Windows), system-wide SendInput API function (Windows) or JNativehook (cross-platform) as key injection method. (Please note that there are still problems with locales and special key translation...)</li>
-<li><STRONG>waitTime [integer]:</STRONG> Defines a number of milliseconds for a pause which shall occur when {WAIT} appears in the keycode string.</li>
-</ul>
-
-
-<H2>List of supported special key code identifiers</H2>
-
-<pre>
-{SHIFT}
-{CTRL}
-{ALT}, {LEFTALT}, {MENU}
-{ALTGR}, {RIGHTALT}
-{WINDOWS}
-{LWIN}
-{RWIN}
-{UP}, {UPARROW}
-{DOWN}, {DOWNARROW}
-{LEFT}, {LEFTARROW}
-{RIGHT}, {RIGHTARROW}
-{RETURN}
-{ENTER}
-{ESCAPE}
-{BACKSPACE}
-{TAB}
-{PRINT}, {PRINTSCREEN}
-{PAUSE}
-{INSERT}, {INS}
-{HOME}, {POS1}
-{END}
-{DEL}
-{DELETE}
-{PAGEUP}
-{PAGEDOWN}
-{F1}
-{F2}
-{F3}
-{F4}
-{F5}
-{F6}
-{F7}
-{F8}
-{F9}
-{F10}
-{F11}
-{F12}
-{WAIT}
-</pre>
-
-
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Keyboard</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Keyboard</H1> 
+		<H2>Component Type: Actuator (Subcategory: Input Device Emulation)</H2>
+		<p>The Keyboard component generates local keyboard input on the computer that the ARE is running on (per software emulation). 
+		The component supports key press/hold/release actions and sending key sequences and special keycodes. special or non-printable
+		characters can be sent using curly braces and key identifier strings, e.g. {UP} {ENTER} {ALT} {DELETE} etc. - see description of the property keyCodeString.
+		Multiple instances of the Keyboard component can be used to provide different key actions.</p>
+		<figure>
+			<img class="image" src="img/Keyboard.jpg" alt="Screenshot: Keyboard plugin" title="Screenshot: Keyboard plugin" />
+			<figcaption>Keyboard plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		No special hardware or software required.
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>keyCodes [string]:</STRONG> An incoming string which consists of alphanumeric characters and special key codes. The keys are sequentially generated as local keystrokes as the string is received, and as the sendKeys and other input related events of the component are being triggered.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>sendKeys:</STRONG> An incoming event at this port generates all keycodes of the keycode string (sequentially).</li>
+			<li><STRONG>pressKey:</STRONG> An incoming event at this port pressed (and releases) the key (first key + modifiers if there are multiple keys).</li>
+			<li><STRONG>holdKey:</STRONG> An incoming event at this port holds the key (first key + modifiers if there are multiple keys). The key is pressed but not released. The holdKey listener can be used together with the releaseKey feature to create long key presses of single keys (e.g. of the cursor keys) to allow game control etc.</li>
+			<li><STRONG>releaseKey:</STRONG> An incoming event at this port releases the key which was pressed using the hold event.</li> 
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>keyCodeString [string]:</STRONG> A string containing keys and keycodes. Please note that this string will be replaced by an incoming string at the keycodes input port. The keyCodeString can contain alphanumeric characters and special characters. Special characters are written in parentheses, for example {SHIFT}, {CTRL}, {ALT}, {BACKSPACE}, {ENTER} etc. Modifier keys like {SHIFT} or {ALT} are combined as they appear consecutively in the keystring, and are generated with the next printable character. For example, the keystrings "{SHIFT}" or "{CTRL}{ALT}{DEL}" are sent as single key values. For a description of the currently supported special key codes see the table below.</li>
+			<li><STRONG>inputMethod [integer]:</STRONG> Declares whether to use sending window messages (Windows), system-wide SendInput API function (Windows) or JNativehook (cross-platform) as key injection method. (Please note that there are still problems with locales and special key translation...)</li>
+			<li><STRONG>waitTime [integer]:</STRONG> Defines a number of milliseconds for a pause which shall occur when {WAIT} appears in the keycode string.</li>
+		</ul>
+		<H2>List of supported special key code identifiers</H2>
+		<ul>
+			<li>{SHIFT}</li>
+			<li>{CTRL}</li>
+			<li>{ALT}, {LEFTALT}, {MENU}</li>
+			<li>{ALTGR}, {RIGHTALT}</li>
+			<li>{WINDOWS}</li>
+			<li>{LWIN}</li>
+			<li>{RWIN}</li>
+			<li>{UP}, {UPARROW}</li>
+			<li>{DOWN}, {DOWNARROW}</li>
+			<li>{LEFT}, {LEFTARROW}</li>
+			<li>{RIGHT}, {RIGHTARROW}</li>
+			<li>{RETURN}</li>
+			<li>{ENTER}</li>
+			<li>{ESCAPE}</li>
+			<li>{BACKSPACE}</li>
+			<li>{TAB}</li>
+			<li>{PRINT}, {PRINTSCREEN}</li>
+			<li>{PAUSE}</li>
+			<li>{INSERT}, {INS}</li>
+			<li>{HOME}, {POS1}</li>
+			<li>{END}</li>
+			<li>{DEL}</li>
+			<li>{DELETE}</li>
+			<li>{PAGEUP}</li>
+			<li>{PAGEDOWN}</li>
+			<li>{F1}</li>
+			<li>{F2}</li>
+			<li>{F3}</li>
+			<li>{F4}</li>
+			<li>{F5}</li>
+			<li>{F6}</li>
+			<li>{F7}</li>
+			<li>{F8}</li>
+			<li>{F9}</li>
+			<li>{F10}</li>
+			<li>{F11}</li>
+			<li>{F12}</li>
+			<li>{WAIT}</li>
+		</ul>
+	</BODY>
 </HTML>

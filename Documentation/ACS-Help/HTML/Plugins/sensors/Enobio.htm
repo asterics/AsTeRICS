@@ -1,35 +1,38 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>Enobio</Title>
-</HEAD>
-<BODY>
-<H1>Enobio</H1>
-<H3>Component Type: Sensor (Subcategory: Bioelectric Measurement)</H3>
-<p>This component interfaces the Enobio sensor to the AsTeRICS system. It is in charge of driving the USB interface, commanding the proprietary protocol that Enobio uses, filtering the signal for removing the environmental noise and performing an automatic offset compensation for each channel in order to keep the electrophysiological signal correctly calibrated and avoid the effects that the skin contact may introduce in the signal. The component delivers the sampled signal in the Enobio electrodes through four output ports (one per channel). In addition, there is another output port which reports the calibration status of the channels and information regarding the sample loses due to environmental issues in the wireless link. The output ports (sampled data and status) deliver 250 values per second, which corresponds to the sample rate in the Enobio electrodes. </p>
-<div class="image"><img src="img/Enobio.jpg" alt="Screenshot: Enobio plugin" title="Screenshot: Enobio plugin" /><br>
-Enobio plugin</div>
-<H2>Requirements</H2>
-This software component requires an Enobio receiver connected to the platform, the Enobio device switched on and the electrodes correctly placed on the user. 
-<div class="image"><img src="img/Enobio_picture.jpg" alt="Enobio device" title="Enobio device" /><br>
-Enobio device</div>
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>Channel1 to Channel4 [integer]:</STRONG> Each output corresponds to the sampled data from its corresponding Enobio channel. The integer represents the microvolts of the electro-physiological signal read by Enobio. The data might be pre-processed according to the value of the properties of the component.</li>
-<li><STRONG>Status [integer]:</STRONG> This port provides information regarding both the calibration status of the four channels and the status of the wireless link. For every integer value that is available in the data output ports, another integer value is available in this port with the corresponding status information. The information is proprietary codified within a 16-bit integer. This includes information of calibration status of each channel and the status of the wireless link. This information would be kept away for the moment form the ARE programmers and provided upon request if necessary.</li>
-</ul>
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>externalSignalPosEdgeEvent:</STRONG> This event is fired if the external signal toggles from low to high level.</li>
-<li><STRONG>externalSignalNegEdgeEvent:</STRONG> This event is fired if the external signal toggles from high to low level.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>IsChannel1Activated to IsChannel4Activated [Boolean]:</STRONG> If this property is set to true, the corresponding channel is calibrated, thus the raw data from this channel will be meaningful.</li>
-<li><STRONG>HighPassFilterInChannel1 to HighPassFilterInChannel4 [Boolean]:</STRONG> If this property is set to true, a high pass filter is applied to the data from the corresponding channel.</li> 
-<li><STRONG>LineNoiseFilter [Boolean]:</STRONG> If this property is set to true, a 50 Hz band pass filter is applied to the data before it is passed to the output port. This filter is useful when the environmental electrical noise is present in the signal.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Enobio</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Enobio</H1>
+		<span class="componentType">Component Type: Sensor (Subcategory: Bioelectric Measurement)</span>
+		<p>This component interfaces the Enobio sensor to the AsTeRICS system. It is in charge of driving the USB interface, commanding the proprietary protocol that Enobio uses, filtering the signal for removing the environmental noise and performing an automatic offset compensation for each channel in order to keep the electrophysiological signal correctly calibrated and avoid the effects that the skin contact may introduce in the signal. The component delivers the sampled signal in the Enobio electrodes through four output ports (one per channel). In addition, there is another output port which reports the calibration status of the channels and information regarding the sample loses due to environmental issues in the wireless link. The output ports (sampled data and status) deliver 250 values per second, which corresponds to the sample rate in the Enobio electrodes. </p>
+		<figure>
+			<img class="image" src="img/Enobio.jpg" alt="Screenshot: Enobio plugin" title="Screenshot: Enobio plugin" />
+			<figcaption>Enobio plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		This software component requires an Enobio receiver connected to the platform, the Enobio device switched on and the electrodes correctly placed on the user. 
+		<figure>
+			<img class="image" src="img/Enobio_picture.jpg" alt="Enobio device" title="Enobio device" />
+			<figcaption>Enobio device</figcaption>
+		</figure>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>Channel1 to Channel4 [integer]:</STRONG> Each output corresponds to the sampled data from its corresponding Enobio channel. The integer represents the microvolts of the electro-physiological signal read by Enobio. The data might be pre-processed according to the value of the properties of the component.</li>
+			<li><STRONG>Status [integer]:</STRONG> This port provides information regarding both the calibration status of the four channels and the status of the wireless link. For every integer value that is available in the data output ports, another integer value is available in this port with the corresponding status information. The information is proprietary codified within a 16-bit integer. This includes information of calibration status of each channel and the status of the wireless link. This information would be kept away for the moment form the ARE programmers and provided upon request if necessary.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>externalSignalPosEdgeEvent:</STRONG> This event is fired if the external signal toggles from low to high level.</li>
+			<li><STRONG>externalSignalNegEdgeEvent:</STRONG> This event is fired if the external signal toggles from high to low level.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>IsChannel1Activated to IsChannel4Activated [Boolean]:</STRONG> If this property is set to true, the corresponding channel is calibrated, thus the raw data from this channel will be meaningful.</li>
+			<li><STRONG>HighPassFilterInChannel1 to HighPassFilterInChannel4 [Boolean]:</STRONG> If this property is set to true, a high pass filter is applied to the data from the corresponding channel.</li> 
+			<li><STRONG>LineNoiseFilter [Boolean]:</STRONG> If this property is set to true, a 50 Hz band pass filter is applied to the data before it is passed to the output port. This filter is useful when the environmental electrical noise is present in the signal.</li>
+		</ul>
+	</BODY>
 </HTML>

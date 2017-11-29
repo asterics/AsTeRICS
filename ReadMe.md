@@ -22,9 +22,9 @@ Check out our demos [here](http://asterics.github.io/AsTeRICS/demos.html)
 ## Quick Build Instructions for Windows
 If you just want to use the current snapshot.
 
-1. Clone Repository
+1. Clone Repository (including submodules)
   ```
-  git clone https://github.com/asterics/AsTeRICS.git
+  git clone --recurse-submodules https://github.com/asterics/AsTeRICS.git
   ```
 2. Install the [**Java Development Kit (JDK, 32bit version) >= 7**](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
   * Ensure to set “JAVA_HOME” to the folder where you installed the Java JDK and add the JDK bin path to the  Environment Variable “Path”
