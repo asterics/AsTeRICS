@@ -1211,7 +1211,12 @@ public class DeploymentManager {
 
     public void displayPanel(JPanel panel, IRuntimeComponentInstance componentInstance, boolean display) {
 
-        Set<IComponentInstance> componentInstances = getCurrentRuntimeModel().getComponentInstances();
+        IRuntimeModel currentModel=getCurrentRuntimeModel();
+        if(currentModel==null||panel==null||componentInstance==null) {
+            logger.warning("DeploymentManager.displayPanel: returning: currentRuntimeModel: "+currentModel+", panel: "+panel+", componentInstance: "+componentInstance);
+            return;
+        }
+        Set<IComponentInstance> componentInstances = currentModel.getComponentInstances();
 
         AREGUIElement ele;
         String id = getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);
