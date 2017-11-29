@@ -532,6 +532,18 @@ public class ResourceRegistry {
     }
 
     /**
+     * Return the base URI according to the given resource type RES_TYPE. For more details see
+     * {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)}.
+     *
+     * @param type
+     * @return
+     * @throws URISyntaxException
+     */
+    public URI getResource(RES_TYPE type) throws URISyntaxException {
+        return getResource(".", type, null, null);
+    }
+
+    /**
      * Returns an InputStream for the given resourcePath and RES_TYPE. For more details about resourcePath, see
      * {@link ResourceRegistry#getResource(String, RES_TYPE, String, String)}.
      * 
