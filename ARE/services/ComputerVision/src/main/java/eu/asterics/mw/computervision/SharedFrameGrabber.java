@@ -48,25 +48,28 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.utils.OSUtils;
 
 /**
- * Contains code to unify/simplify enumeration/initialization/opening/closing of
- * camera devices and frame grabbing. Also supports publish/subscribe mechanism
- * for grabbed frames. It is planned to also support shared camera usage for
- * several plugins.
+ * Contains code to unify/simplify enumeration/initialization/opening/closing of camera devices and frame grabbing. Also supports publish/subscribe mechanism
+ * for grabbed frames. It is planned to also support shared camera usage for several plugins.
  * 
  * @author mad
  *
  */
 public class SharedFrameGrabber {
+    public static final int DEFAULT_FRAME_RATE = 15;
+    private static final int DEFAULT_GRABBER_KEY_INDEX = 1;
     // timeout for grabber thread to die in ms.
     public static final String DEFAULT_GRABBER_KEY = "Default";
     public static final String OPENCV_GRABBER_KEY = "OpenCV";
     public static final String VIDEOINPUT_GRABBER_KEY = "VideoInput";
     public static final String OPENKINECT_GRABBER_KEY = "OpenKinect";
     public static final String OPENKINECT2_GRABBER_KEY = "OpenKinect2";
-    public static final String REALSENSE_GRABBER_KEY="RealSense";
+    public static final String REALSENSE_GRABBER_KEY = "RealSense";
     public static final String IPCAMERA_GRABBER_KEY = "IPCamera";
     public static final String PS3Eye_GRABBER_KEY = "PS3Eye";
     public static final String FFMPEG_GRABBER_KEY = "FFmpeg";
+    public static final String DC1394_GRABBER_KEY = "DC1394";
+    public static final String FLYCAPTURE_GRABBER_KEY = "FlyCapture";
+    public static final String FLYCAPTURE2_GRABBER_KEY = "FlyCapture2";
 
     private static final long GRABBER_STOP_TIMEOUT = 10000;
     public static SharedFrameGrabber instance = new SharedFrameGrabber();
@@ -76,22 +79,27 @@ public class SharedFrameGrabber {
     private Map<String, GrabberThread> grabberThreads = new HashMap<String, GrabberThread>();
 
     private List<String> grabberList = null;
-    //Defines preferred order of framegrabbers to use
-    //The framegrabbers are checked in the list of available ones. 
-    private String[] defaultGrabberList = new String[] { VIDEOINPUT_GRABBER_KEY, OPENCV_GRABBER_KEY,
-            FFMPEG_GRABBER_KEY, OPENKINECT_GRABBER_KEY,  OPENKINECT2_GRABBER_KEY, REALSENSE_GRABBER_KEY, PS3Eye_GRABBER_KEY, IPCAMERA_GRABBER_KEY};
-    private int[][] RESOLUTIONS = new int[][] { { 160, 120 }, { 320, 240 }, { 352, 288 }, { 640, 480 }, { 800, 600 },
-            { 1024, 768 }, { 1600, 1200 } };
+    // Defines preferred order of framegrabbers to use
+    private Map<String, String[]> defaultGrabberList = new HashMap<String, String[]>();
+
+    private int[][] RESOLUTIONS = new int[][] { { 160, 120 }, { 320, 240 }, { 352, 288 }, { 640, 480 }, { 800, 600 }, { 1024, 768 }, { 1600, 1200 } };
 
     public SharedFrameGrabber() {
+        // The framegrabbers are checked in the list of available ones.
+        defaultGrabberList.put(OSUtils.WINDOWS, new String[] { DEFAULT_GRABBER_KEY, VIDEOINPUT_GRABBER_KEY, OPENCV_GRABBER_KEY, OPENKINECT_GRABBER_KEY,
+                REALSENSE_GRABBER_KEY, PS3Eye_GRABBER_KEY, DC1394_GRABBER_KEY, FLYCAPTURE_GRABBER_KEY, FLYCAPTURE2_GRABBER_KEY, IPCAMERA_GRABBER_KEY });
+        defaultGrabberList.put(OSUtils.LINUX, new String[] { DEFAULT_GRABBER_KEY, FFMPEG_GRABBER_KEY, OPENCV_GRABBER_KEY, OPENKINECT_GRABBER_KEY,
+                REALSENSE_GRABBER_KEY, PS3Eye_GRABBER_KEY, DC1394_GRABBER_KEY, FLYCAPTURE_GRABBER_KEY, FLYCAPTURE2_GRABBER_KEY, IPCAMERA_GRABBER_KEY });
+        defaultGrabberList.put(OSUtils.MACOSX, new String[] { DEFAULT_GRABBER_KEY, OPENCV_GRABBER_KEY, OPENKINECT_GRABBER_KEY, REALSENSE_GRABBER_KEY,
+                PS3Eye_GRABBER_KEY, DC1394_GRABBER_KEY, FLYCAPTURE_GRABBER_KEY, FLYCAPTURE2_GRABBER_KEY, IPCAMERA_GRABBER_KEY });
+
     }
 
-    private void init(String grabberName, String deviceKey, int userWidth, int userHeight, String grabberFormat)
-            throws Exception {
+    private void init(String grabberName, String deviceKey, int userWidth, int userHeight, String grabberFormat) throws Exception {
         FrameGrabber grabber = null;
 
-		//on RPi we did not need it, but on windows we needed to set it, but maybe it is different with the new version of ffmpeg.
-        if (OSUtils.isWindows() && FFMPEG_GRABBER_KEY.equalsIgnoreCase(grabberName) && (grabberFormat == null || "".equals(grabberFormat))) {            
+        // on RPi we did not need it, but on windows we needed to set it, but maybe it is different with the new version of ffmpeg.
+        if (OSUtils.isWindows() && FFMPEG_GRABBER_KEY.equalsIgnoreCase(grabberName) && (grabberFormat == null || "".equals(grabberFormat))) {
             grabberFormat = "dshow";
         }
 
@@ -114,10 +122,9 @@ public class SharedFrameGrabber {
         // DC1394FrameGrabber, FlyCaptureFrameGrabber, OpenKinectFrameGrabber,
         // PS3EyeFrameGrabber, VideoInputFrameGrabber, and FFmpegFrameGrabber.
 
-        if (grabberName == null || grabberName.equals(DEFAULT_GRABBER_KEY)) {
-            grabberName = getDefaultFrameGrabberName();
-            AstericsErrorHandling.instance.reportInfo(null, "Creating default FrameGrabber: " + grabberName);
-        }
+        //Set default grabber key, if the given one is null or empty or has the value of DEFAULT_GRABBER_KEY
+        grabberName = getDefaultFrameGrabberName(grabberName);
+        AstericsErrorHandling.instance.reportInfo(null, "Using FrameGrabber: " + grabberName);
         doSanityChecks(grabberName, deviceKey);
 
         // System.out.println("Using grabber: "+grabberName+", and camIdx:
@@ -144,14 +151,14 @@ public class SharedFrameGrabber {
             devSet.setImageWidth(userWidth);
             devSet.setImageHeight(userHeight);
         }
-        devSet.setFormat(grabberFormat);        
+        devSet.setFormat(grabberFormat);
         devSet.getDescription();
         System.out.println(devSet.getDescription());
 
         CameraDevice dev = new CameraDevice(devSet);
         grabber = dev.createFrameGrabber();
-        //enable setting framerate 
-        grabber.setFrameRate(15);        
+        // enable setting framerate
+        grabber.setFrameRate(DEFAULT_FRAME_RATE);
 
         // FFmpegFrameGrabber grabber =new FFmpegFrameGrabber("video=Integrated
         // Camera");
@@ -159,8 +166,7 @@ public class SharedFrameGrabber {
         // FFmpegFrameGrabber grabber =new FFmpegFrameGrabber("0");
         // grabber.setFormat("vfwcap");
 
-        AstericsErrorHandling.instance.getLogger()
-                .fine("Adding FrameGrabber with key <" + deviceKey + ">, grabber <" + grabber + ">");
+        AstericsErrorHandling.instance.getLogger().fine("Adding FrameGrabber with key <" + deviceKey + ">, grabber <" + grabber + ">");
         device2FrameGrabber.put(deviceKey, grabber);
     }
 
@@ -172,8 +178,7 @@ public class SharedFrameGrabber {
                 Integer.parseInt(deviceKey);
                 File vidFile = new File("/dev/video" + deviceKey);
                 if (!vidFile.exists()) {
-                    throw new Exception(
-                            "Cannot create FrameGrabber <" + grabberName + "> for device <" + deviceKey + ">");
+                    throw new Exception("Cannot create FrameGrabber <" + grabberName + "> for device <" + deviceKey + ">");
                 }
             } catch (NumberFormatException e) {
             }
@@ -184,7 +189,7 @@ public class SharedFrameGrabber {
         String[] s = null;
         try {
             AstericsErrorHandling.instance.reportDebugInfo(null, "Retrieving device list");
-            Class<? extends FrameGrabber> c = FrameGrabber.get(grabberName);
+            Class<? extends FrameGrabber> c = FrameGrabber.get(getDefaultFrameGrabberName(grabberName));
             c.getMethod("tryLoad").invoke(null);
             try {
                 s = (String[]) c.getMethod("getDeviceDescriptions").invoke(null);
@@ -198,55 +203,71 @@ public class SharedFrameGrabber {
         return Arrays.asList(new String[] { "Not available" });
     }
 
+    /**
+     * Returns a list of theoretically available framegrabbers for the current platform depending on {@link OSUtils#getOsName(). The frame grabber are not
+     * actually tested if they ca be loaded on the platform.
+     * 
+     * @return
+     */
     public List<String> getFrameGrabberList() {
         if (grabberList == null) {
             AstericsErrorHandling.instance.reportDebugInfo(null, "Creating list of available frame grabbers");
             grabberList = new ArrayList<String>();
-            grabberList.add(DEFAULT_GRABBER_KEY);
-            for (String grabberName : FrameGrabber.list) {
-            //for (String grabberName : new String[]{OPENCV_GRABBER_KEY, FFMPEG_GRABBER_KEY}) {				
+            for (String grabberName : defaultGrabberList.get(OSUtils.getOsName())) {
                 try {
+                    if (grabberName.equals(DEFAULT_GRABBER_KEY)) {
+                        grabberList.add(DEFAULT_GRABBER_KEY);
+                        continue;
+                    }
                     Class<? extends FrameGrabber> c = FrameGrabber.get(grabberName);
-                    System.out.println("\n\n++++++++++Trying to load "+grabberName+"++++++\n\n");
-                    c.getMethod("tryLoad").invoke(null);
-                    boolean mayContainCameras = false;
-                    try {
-                        String[] s = (String[])c.getMethod("getDeviceDescriptions").invoke(null);
-                        if (s.length > 0) {
-                            mayContainCameras = true;
-                        }
-                    } catch (Throwable t) {
-                        if (t.getCause() instanceof UnsupportedOperationException) {
-                            mayContainCameras = true;
-                        }
+
+                    if (c != null) {
+                        // Don't do testing of grabber loading now, because it can be very time-consuming.
+                        /*
+                         * System.out.println("\n\n++++++++++Trying to load "+grabberName+"++++++\n\n"); c.getMethod("tryLoad").invoke(null); boolean
+                         * mayContainCameras = false; try { String[] s = (String[])c.getMethod("getDeviceDescriptions").invoke(null); if (s.length > 0) {
+                         * mayContainCameras = true; } } catch (Throwable t) { if (t.getCause() instanceof UnsupportedOperationException) { mayContainCameras =
+                         * true; } } if(!mayContainCameras) { continue; }
+                         */
+
+                        grabberList.add(grabberName);
                     }
-                    if(!mayContainCameras) {
-                    	continue;
-                    }
-                    grabberList.add(grabberName);
                 } catch (Throwable t) {
                 }
             }
-            if(!grabberList.contains(IPCAMERA_GRABBER_KEY)) {
-            	grabberList.add(IPCAMERA_GRABBER_KEY);
+            if (!grabberList.contains(IPCAMERA_GRABBER_KEY)) {
+                grabberList.add(IPCAMERA_GRABBER_KEY);
             }
         }
         return grabberList;
     }
 
+    /**
+     * Returns the name of the default grabber key for this platform depending on {@link OSUtils#getOsName().
+     * 
+     * @return
+     */
     public String getDefaultFrameGrabberName() {
-        List<String> grabberList = getFrameGrabberList();
-        for (String grabberName : new String[]{OPENCV_GRABBER_KEY}) {
-            if (grabberList.contains(grabberName)) {
-                return grabberName;
-            }
-        }
-        return "";
+        return getDefaultFrameGrabberName(null);
     }
 
     /**
-     * Shows camera settings by using VideoInput showCameraSettings method. This
-     * method is only available on Windows.
+     * Returns the name of the default grabber key for this platform depending on {@link OSUtils#getOsName(), if grabberKey is null or "" or
+     * {@link #DEFAULT_GRABBER_KEY}.
+     * 
+     * @param grabberKey
+     * @return
+     */
+    public String getDefaultFrameGrabberName(String grabberKey) {
+        if (grabberKey == null || "".equals(grabberKey) || DEFAULT_GRABBER_KEY.equals(grabberKey)) {
+            // Return the first grabber key after the DEFAULT_GRABBER_KEY
+            return defaultGrabberList.get(OSUtils.getOsName())[DEFAULT_GRABBER_KEY_INDEX];
+        }
+        return grabberKey;
+    }
+
+    /**
+     * Shows camera settings by using VideoInput showCameraSettings method. This method is only available on Windows.
      * 
      * @param deviceKey
      */
@@ -266,8 +287,7 @@ public class SharedFrameGrabber {
 
             IplImage bgrImage = null;
             BytePointer bgrImageData = null;
-            SharedCanvasFrame.instance.createCanvasFrame("showCameraSettings", "Preview Camera Settings", 1,
-                    new Point(0, 0), new Dimension(200, 200));
+            SharedCanvasFrame.instance.createCanvasFrame("showCameraSettings", "Preview Camera Settings", 1, new Point(0, 0), new Dimension(200, 200));
 
             AstericsErrorHandling.instance.reportDebugInfo(null, "Showing camera preview for 500 frames");
             for (int i = 0; i < 500; i++) {
@@ -292,8 +312,7 @@ public class SharedFrameGrabber {
 
     }
 
-    public FrameGrabber getFrameGrabber(String deviceKey, String grabberName, int resolutionIdx, String grabberFormat)
-            throws Exception {
+    public FrameGrabber getFrameGrabber(String deviceKey, String grabberName, int resolutionIdx, String grabberFormat) throws Exception {
         if (device2FrameGrabber.containsKey(deviceKey)) {
             return device2FrameGrabber.get(deviceKey);
         }
@@ -340,8 +359,7 @@ public class SharedFrameGrabber {
         }
         deviceListeners.add(listener);
         listeners.put(deviceKey, deviceListeners);
-        AstericsErrorHandling.instance.reportDebugInfo(null,
-                "After registering: Registered grabbing listeners: " + deviceListeners);
+        AstericsErrorHandling.instance.reportDebugInfo(null, "After registering: Registered grabbing listeners: " + deviceListeners);
     }
 
     public void deregisterGrabbedImageListener(String deviceKey, GrabbedImageListener listener) {
@@ -365,8 +383,7 @@ public class SharedFrameGrabber {
                 }
             }
         }
-        AstericsErrorHandling.instance.reportDebugInfo(null,
-                "After deregistering: Registered grabbing listeners: " + deviceListeners);
+        AstericsErrorHandling.instance.reportDebugInfo(null, "After deregistering: Registered grabbing listeners: " + deviceListeners);
     }
 
     public void startGrabbing(final String deviceKey) {
@@ -416,24 +433,23 @@ public class SharedFrameGrabber {
             // CanvasFrame, FrameGrabber, and FrameRecorder use Frame objects to communicate image data.
             // We need a FrameConverter to interface with other APIs (Android, Java 2D, or OpenCV).
             OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
-          
+
             List<GrabbedImageListener> deviceListeners = listeners.get(deviceKey);
             try {
                 grabber = getFrameGrabber(deviceKey);
-                AstericsErrorHandling.instance.reportDebugInfo(null,
-                        "Start grabbing for devicekey <" + deviceKey + ">, grabber <" + grabber + ">");
+                AstericsErrorHandling.instance.reportDebugInfo(null, "Start grabbing for devicekey <" + deviceKey + ">, grabber <" + grabber + ">");
                 if (grabber != null) {
                     grabber.start();
                     while (!stopGrabbing) {
                         // FAQ about IplImage and Mat objects from OpenCV:
                         // - For custom raw processing of data, createBuffer() returns an NIO direct
-                        //   buffer wrapped around the memory pointed by imageData, and under Android we can
-                        //   also use that Buffer with Bitmap.copyPixelsFromBuffer() and copyPixelsToBuffer().
+                        // buffer wrapped around the memory pointed by imageData, and under Android we can
+                        // also use that Buffer with Bitmap.copyPixelsFromBuffer() and copyPixelsToBuffer().
                         // - To get a BufferedImage from an IplImage, or vice versa, we can chain calls to
-                        //   Java2DFrameConverter and OpenCVFrameConverter, one after the other.
+                        // Java2DFrameConverter and OpenCVFrameConverter, one after the other.
                         // - Java2DFrameConverter also has static copy() methods that we can use to transfer
-                        //   data more directly between BufferedImage and IplImage or Mat via Frame objects.
-                        IplImage image = converter.convert(grabber.grab());             
+                        // data more directly between BufferedImage and IplImage or Mat via Frame objects.
+                        IplImage image = converter.convert(grabber.grab());
                         notifyGrabbedImageListener(deviceListeners, image);
                     }
                     grabber.stop();
