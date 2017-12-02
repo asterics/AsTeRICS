@@ -140,7 +140,9 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     private CvScalar[] COLORS= {CvScalar.GREEN,CvScalar.YELLOW,CvScalar.RED,CvScalar.BLUE};
     private int frameCount=0;
     private long frameCountStart=0;
-    private long calculatedFrameRate=0;
+    private int initCycles=0;
+    private long realFrameRate=0;
+    
 
     /**
      * The class constructor.
@@ -148,7 +150,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
     public XFacetrackerLKInstance() {
         // empty constructor - needed for OSGi service factory operations
         //If we want to draw an overlay text, we have to init it first.
-        cvInitFont(overlayTextFont,FONT_HERSHEY_SIMPLEX, 1, 1,1,4,8);
+        cvInitFont(overlayTextFont,FONT_HERSHEY_SIMPLEX, 1, 1,1,2,4);
     }
 
     /**
@@ -315,6 +317,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         @Override
         public void receiveEvent(String data) {
             needToInit = true;
+            initCycles=0;
         }
     };
 
@@ -429,6 +432,11 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         roiRect = null;
         faceRect = null;
         flags = 0;
+        
+        frameCount=0;
+        frameCountStart=0;
+        initCycles=0;
+        realFrameRate=0;
     }
 
     private void initTracker(IplImage img) {
@@ -452,9 +460,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
      * Callback called when a new frame was grabbed.
      */
     @Override
-    public void imageGrabbed(IplImage img) {
-        frameCount++;
-        
+    public void imageGrabbed(IplImage img) {        		
         // System.out.println(".");
         // if this is the first frame, init tracker
         if (imgGrey[A] == null) {
@@ -468,7 +474,12 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         cvCvtColor(img, imgGrey[B], CV_BGR2GRAY);
         cvSetImageROI(imgGrey[B], roiRect);
 
-        if (points[A] == null || needToInit) {
+		if(System.currentTimeMillis()%1000 > 800) {
+			initCycles=0;
+		}
+
+        if ((points[A] == null || needToInit) && initCycles <= 3) {
+			initCycles++;
             cvResetImageROI(imgGrey[A]);
             points[A] = findFeatures(imgGrey[A]);
             faceDetection.drawFaceRect(faceRect, img);
@@ -491,6 +502,8 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
             }
         }
         
+        //Count frames after tracking to reflect real frame rate including tracking.        
+        frameCount++;        
         long now=System.currentTimeMillis();
         if(frameCountStart==0) {
             frameCountStart=now;
@@ -498,11 +511,12 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         long duration=now-frameCountStart;
         if(duration>1000) {
             //Here we could set a text as overlay into the image.
-            calculatedFrameRate=frameCount/(duration/1000);
+            realFrameRate=frameCount/(duration/1000);
             frameCount=0;
             frameCountStart=now;
         }
-        cvPutText(img, "FPS: "+calculatedFrameRate, new int[] {30,30},overlayTextFont,CvScalar.BLACK);
+        cvPutText(img, "Dev: "+propCameraSelection, new int[] {20,20},overlayTextFont,CvScalar.BLACK);
+        cvPutText(img, "FPS: "+realFrameRate, new int[] {20,50},overlayTextFont,CvScalar.BLACK);
 
         // and a very platform dependant Canvas/Frame!!
         SharedCanvasFrame.instance.showImage(instanceId, img);
@@ -558,6 +572,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
             if (features_found.get(i) == 0 || feature_errors.get(i) > 550) {
                 System.out.println("Error is " + feature_errors.get(i) + "/n");
                 needToInit = true;
+                initCycles=0;
                 return pointsB;
             }
             // System.out.println("Got it/n");
@@ -572,6 +587,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
                     || !(validRect.y() <= pointsB.y() && pointsB.y() <= (validRect.y() + validRect.height()))) {
                 System.out.println("out of roi: " + validRect);
                 needToInit = true;
+                initCycles=0;
                 return pointsB;
             }
 
@@ -584,6 +600,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
             if (dx / faceRect.width() > relDispTresh || dy / faceRect.height() > relDispTresh) {
                 System.out.println(dx / faceRect.width() + " || " + dy / faceRect.height() + " > " + relDispTresh);
                 needToInit = true;
+                initCycles=0;
                 return pointsB;
             }
 
@@ -597,6 +614,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         if (!(lowerDistChin2NosetipTresh <= relDistChin2Nosetip && relDistChin2Nosetip <= upperDistChin2NosetipTresh)) {
             System.out.println("chin y-disp out of range: " + lowerDistChin2NosetipTresh + " <= " + relDistChin2Nosetip + " <= " + upperDistChin2NosetipTresh);
             needToInit = true;
+            initCycles=0;
             return pointsB;
         }
 
@@ -612,6 +630,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         if (!((-1 * angleTolerance) <= angleChin2Nosetip && angleChin2Nosetip <= angleTolerance)) {
             System.out.println("angle chin2nosetip out of range: " + (-1 * angleTolerance) + " <= " + angleChin2Nosetip + " <= " + angleTolerance);
             needToInit = true;
+            initCycles=0;
             return pointsB;
         }
 
