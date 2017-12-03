@@ -49,11 +49,19 @@ public class StringPathselectorInstance extends AbstractRuntimeComponentInstance
     final private String OUT_PORT2_KEY = "out2";
     final private String OUT_PORT3_KEY = "out3";
     final private String OUT_PORT4_KEY = "out4";
+    final private String OUT_PORT5_KEY = "out5";
+    final private String OUT_PORT6_KEY = "out6";
+    final private String OUT_PORT7_KEY = "out7";
+    final private String OUT_PORT8_KEY = "out8";
     final private String IN_PORT_KEY = "in";
     final private String EVENT_LISTENER_SELECT1_KEY = "select1";
     final private String EVENT_LISTENER_SELECT2_KEY = "select2";
     final private String EVENT_LISTENER_SELECT3_KEY = "select3";
     final private String EVENT_LISTENER_SELECT4_KEY = "select4";
+    final private String EVENT_LISTENER_SELECT5_KEY = "select5";
+    final private String EVENT_LISTENER_SELECT6_KEY = "select6";
+    final private String EVENT_LISTENER_SELECT7_KEY = "select7";
+    final private String EVENT_LISTENER_SELECT8_KEY = "select8";
     final private String EVENT_LISTENER_SELECT_NEXT_KEY = "selectNext";
     final private String EVENT_LISTENER_SELECT_PREV_KEY = "selectPrevious";
 
@@ -63,6 +71,10 @@ public class StringPathselectorInstance extends AbstractRuntimeComponentInstance
     final IRuntimeOutputPort opOut2 = new DefaultRuntimeOutputPort();
     final IRuntimeOutputPort opOut3 = new DefaultRuntimeOutputPort();
     final IRuntimeOutputPort opOut4 = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opOut5 = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opOut6 = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opOut7 = new DefaultRuntimeOutputPort();
+    final IRuntimeOutputPort opOut8 = new DefaultRuntimeOutputPort();
 
     int propActivePorts = 2;
     int selectedPort = 1;
@@ -106,6 +118,14 @@ public class StringPathselectorInstance extends AbstractRuntimeComponentInstance
             return opOut3;
         } else if (OUT_PORT4_KEY.equalsIgnoreCase(portID)) {
             return opOut4;
+        } else if (OUT_PORT5_KEY.equalsIgnoreCase(portID)) {
+            return opOut5;
+        } else if (OUT_PORT6_KEY.equalsIgnoreCase(portID)) {
+            return opOut6;
+        } else if (OUT_PORT7_KEY.equalsIgnoreCase(portID)) {
+            return opOut7;
+        } else if (OUT_PORT8_KEY.equalsIgnoreCase(portID)) {
+            return opOut8;
         }
         return null;
     }
@@ -127,6 +147,14 @@ public class StringPathselectorInstance extends AbstractRuntimeComponentInstance
             return elpSelect3;
         } else if (EVENT_LISTENER_SELECT4_KEY.equalsIgnoreCase(eventPortID)) {
             return elpSelect4;
+        } else if (EVENT_LISTENER_SELECT5_KEY.equalsIgnoreCase(eventPortID)) {
+            return elpSelect5;
+        } else if (EVENT_LISTENER_SELECT6_KEY.equalsIgnoreCase(eventPortID)) {
+            return elpSelect6;
+        } else if (EVENT_LISTENER_SELECT7_KEY.equalsIgnoreCase(eventPortID)) {
+            return elpSelect7;
+        } else if (EVENT_LISTENER_SELECT8_KEY.equalsIgnoreCase(eventPortID)) {
+            return elpSelect8;
         } else if (EVENT_LISTENER_SELECT_NEXT_KEY.equalsIgnoreCase(eventPortID)) {
             return elpSelectNext;
         } else if (EVENT_LISTENER_SELECT_PREV_KEY.equalsIgnoreCase(eventPortID)) {
@@ -164,7 +192,7 @@ public class StringPathselectorInstance extends AbstractRuntimeComponentInstance
             if (ACTIVE_PORTS_PROPERTY_KEY.equalsIgnoreCase(propertyName)) {
                 final Object oldValue = propActivePorts - 1;
                 propActivePorts = Integer.parseInt(newValue.toString()) + 1;
-                if ((propActivePorts < 1) || (propActivePorts > 4)) {
+                if ((propActivePorts < 1) || (propActivePorts > 8)) {
                     AstericsErrorHandling.instance.reportInfo(this,
                             "Property value out of range for " + propertyName + ": " + newValue);
                 }
@@ -196,6 +224,18 @@ public class StringPathselectorInstance extends AbstractRuntimeComponentInstance
                 break;
             case 4:
                 opOut4.sendData(ConversionUtils.stringToBytes(in));
+                break;
+            case 5:
+                opOut5.sendData(ConversionUtils.stringToBytes(in));
+                break;
+            case 6:
+                opOut6.sendData(ConversionUtils.stringToBytes(in));
+                break;
+            case 7:
+                opOut7.sendData(ConversionUtils.stringToBytes(in));
+                break;
+            case 8:
+                opOut8.sendData(ConversionUtils.stringToBytes(in));
                 break;
             default:
                 break;
@@ -244,6 +284,42 @@ public class StringPathselectorInstance extends AbstractRuntimeComponentInstance
         }
     };
 
+    /**
+     * Event Listener Port for selection of out port 5
+     */
+    final IRuntimeEventListenerPort elpSelect5 = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            selectedPort = 5;
+        }
+    };
+    /**
+     * Event Listener Port for selection of out port 6
+     */
+    final IRuntimeEventListenerPort elpSelect6 = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            selectedPort = 6;
+        }
+    };
+    /**
+     * Event Listener Port for selection of out port 7
+     */
+    final IRuntimeEventListenerPort elpSelect7 = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            selectedPort = 7;
+        }
+    };
+    /**
+     * Event Listener Port for selection of out port 8
+     */
+    final IRuntimeEventListenerPort elpSelect8 = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            selectedPort = 8;
+        }
+    };
     /**
      * Event Listener Port for selection of next out port
      */
