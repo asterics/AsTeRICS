@@ -27,7 +27,8 @@
         </ports>
     </componentType>
 
- <componentType id="asterics.AndroidPhoneControl"
+
+    <componentType id="asterics.AndroidPhoneControl"
                    canonical_name="eu.asterics.component.actuator.androidphonecontrol.AndroidPhoneControlInstance">
         <type subtype="Phone Interface">actuator</type>
         <singleton>true</singleton>
@@ -117,7 +118,8 @@
 
     </componentType>
 
- <componentType id="asterics.ApplicationLauncher"
+
+    <componentType id="asterics.ApplicationLauncher"
                    canonical_name="eu.asterics.component.actuator.applicationlauncher.ApplicationLauncherInstance">
         <type subtype="File System">actuator</type>
         <singleton>false</singleton>
@@ -175,7 +177,8 @@
 
     </componentType>
 
- <componentType id="asterics.AREWindow"
+
+    <componentType id="asterics.AREWindow"
                    canonical_name="eu.asterics.component.actuator.arewindow.AREWindowInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -249,7 +252,8 @@
 
     </componentType>
 
- <componentType id="asterics.BarDisplay"
+
+    <componentType id="asterics.BarDisplay"
                    canonical_name="eu.asterics.component.actuator.bardisplay.BardisplayInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -325,7 +329,8 @@
         </gui>
     </componentType>
 
- <componentType id="asterics.DialogBox"
+
+    <componentType id="asterics.DialogBox"
                    canonical_name="eu.asterics.component.actuator.dialogbox.DialogBoxInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -402,7 +407,8 @@
 
     </componentType>
 
- <componentType id="asterics.DigitalOut"
+
+    <componentType id="asterics.DigitalOut"
                    canonical_name="eu.asterics.component.actuator.digitalout.DigitalOutInstance">
         <type subtype="Generic Control Output">actuator</type>
         <singleton>true</singleton>
@@ -595,7 +601,8 @@
     
 
 
- <componentType id="asterics.DotMeter"
+
+    <componentType id="asterics.DotMeter"
                    canonical_name="eu.asterics.component.actuator.dotmeter.DotmeterInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -692,7 +699,8 @@
         </gui>
     </componentType>
 
- <componentType id="asterics.EasyHomeControl"
+
+    <componentType id="asterics.EasyHomeControl"
                    canonical_name="eu.asterics.component.actuator.easyhomecontrol.EasyHomeControlInstance">
         <type subtype="Home Control">actuator</type>
         <singleton>true</singleton>
@@ -921,7 +929,8 @@
 
     </componentType>
 
- <componentType id="asterics.EmulateFaultyPlugin"
+
+    <componentType id="asterics.EmulateFaultyPlugin"
                    canonical_name="eu.asterics.component.actuator.emulatefaultyplugin.EmulateFaultyPluginInstance">
         <type subtype="Test">actuator</type>
         <singleton>false</singleton>
@@ -1086,7 +1095,8 @@
 
     </componentType>
 
- <componentType id="asterics.EnobioDisplay"
+
+    <componentType id="asterics.EnobioDisplay"
                    canonical_name="com.starlab.component.actuator.enobiodisplay.EnobioDisplayInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>true</singleton>
@@ -1125,7 +1135,8 @@
     </componentType>
 
 
- <componentType id="asterics.enocean"
+
+    <componentType id="asterics.enocean"
                    canonical_name="eu.asterics.component.actuator.enocean.EnoceanInstance">
         <type subtype="Home Control">actuator</type>
         <singleton>false</singleton>
@@ -1426,7 +1437,8 @@
         </properties>
     </componentType>
 
- <componentType id="asterics.EventVisualizer"
+
+    <componentType id="asterics.EventVisualizer"
                    canonical_name="eu.asterics.component.actuator.event_visualizer.EventVisualizerInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -1451,7 +1463,8 @@
     </componentType>
 
 
- <componentType id="asterics.FileWriter"
+
+    <componentType id="asterics.FileWriter"
                    canonical_name="com.starlab.component.actuator.filewriter.FileWriterInstance">
         <type subtype="File System">actuator</type>
         <singleton>false</singleton>
@@ -1472,7 +1485,8 @@
     </componentType>
 
 
- <componentType id="asterics.FlickeringLightStimulator"
+
+    <componentType id="asterics.FlickeringLightStimulator"
                    canonical_name="com.starlab.component.actuator.flickeringlightstimulator.FlickeringLightStimulatorInstance">
         <type subtype="Brain Computer Interface">actuator</type>
         <singleton>false</singleton>
@@ -1586,7 +1600,8 @@
 
     </componentType>
 
- <componentType id="asterics.FS20Sender"
+
+    <componentType id="asterics.FS20Sender"
                    canonical_name="eu.asterics.component.actuator.fS20Sender.FS20SenderInstance">
         <type subtype="Home Control">actuator</type>
         <singleton>true</singleton>
@@ -1717,7 +1732,8 @@
 
     </componentType>
 
- <componentType id="asterics.GMailShortcuts"
+
+    <componentType id="asterics.GMailShortcuts"
                    canonical_name="eu.asterics.component.actuator.gmailshortcuts.GMailShortcutsInstance">
         <type subtype="Others">actuator</type>
         <singleton>false</singleton>
@@ -1741,7 +1757,8 @@
 
     </componentType>
 
- <componentType id="asterics.GSMModem"
+
+    <componentType id="asterics.GSMModem"
                    canonical_name="eu.asterics.component.actuator.gsmmodem.GSMModemInstance">
         <type subtype="Communication">actuator</type>
         <singleton>true</singleton>
@@ -1807,7 +1824,8 @@
 
     </componentType>
 
- <componentType id="asterics.gui_tester"
+
+    <componentType id="asterics.gui_tester"
                    canonical_name="eu.asterics.component.actuator.gui_tester.GuiTesterInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -1832,7 +1850,8 @@
         </gui>
     </componentType>
 
- <componentType id="asterics.ImageBox"
+
+    <componentType id="asterics.ImageBox"
                    canonical_name="eu.asterics.component.actuator.imagebox.ImageBoxInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -1883,7 +1902,8 @@
 
     </componentType>
 
- <componentType id="asterics.IrTrans"
+
+    <componentType id="asterics.IrTrans"
                    canonical_name="eu.asterics.component.actuator.irtrans.IrTransInstance">
         <type subtype="Home Control">actuator</type>
         <singleton>false</singleton>
@@ -2094,7 +2114,8 @@
     </componentType>
 
 
- <componentType id="asterics.Keyboard"
+
+    <componentType id="asterics.Keyboard"
                    canonical_name="eu.asterics.component.actuator.keyboard.KeyboardInstance">
         <type subtype="Input Device Emulation">actuator</type>
         <singleton>false</singleton>
@@ -2139,7 +2160,8 @@
     </componentType>
 
 
- <componentType id="asterics.Knx"
+
+    <componentType id="asterics.Knx"
                    canonical_name="eu.asterics.component.actuator.knx.KnxInstance">
         <type subtype="Home Control">actuator</type>
         <singleton>false</singleton>
@@ -2497,7 +2519,8 @@
         </properties>
     </componentType>
 
- <componentType id="asterics.LineWriter"
+
+    <componentType id="asterics.LineWriter"
                    canonical_name="eu.asterics.component.actuator.linewriter.LineWriterInstance">
         <type subtype="File System">actuator</type>
         <singleton>false</singleton>
@@ -2547,7 +2570,8 @@
 
     </componentType>
 
- <componentType id="asterics.MediaPlayer"
+
+    <componentType id="asterics.MediaPlayer"
                    canonical_name="eu.asterics.component.actuator.mediaplayer.MediaPlayerInstance">
         <type subtype="File System">actuator</type>
         <singleton>false</singleton>
@@ -2619,7 +2643,8 @@
 
     </componentType>
 
- <componentType id="asterics.MidiPlayer"
+
+    <componentType id="asterics.MidiPlayer"
                    canonical_name="eu.asterics.component.actuator.midi.MidiInstance">
         <type subtype="Audio and Voice">actuator</type>
         <singleton>false</singleton>
@@ -2704,7 +2729,8 @@
 
     </componentType>
 
- <componentType id="asterics.modelSwitcher"
+
+    <componentType id="asterics.modelSwitcher"
                    canonical_name="eu.asterics.component.actuator.modelSwitcher.ModelSwitcherInstance">
         <type subtype="File System">actuator</type>
         <singleton>false</singleton>
@@ -2730,7 +2756,8 @@
         </properties>
     </componentType>
 
- <componentType id="asterics.Mouse"
+
+    <componentType id="asterics.Mouse"
                    canonical_name="eu.asterics.component.actuator.mouse.MouseInstance">
         <type subtype="Input Device Emulation">actuator</type>
         <singleton>true</singleton>
@@ -2842,7 +2869,8 @@
     </componentType>
 
 
- <componentType id="asterics.MouseCursorIcon"
+
+    <componentType id="asterics.MouseCursorIcon"
                    canonical_name="eu.asterics.component.actuator.mousecursoricon.MouseCursorIconInstance">
         <type subtype="Input Device Emulation">actuator</type>
         <singleton>true</singleton>
@@ -2929,7 +2957,8 @@
 
     </componentType>
 
- <componentType id="asterics.NetConnection"
+
+    <componentType id="asterics.NetConnection"
                    canonical_name="eu.asterics.component.actuator.netconnection.NetConnectionInstance">
         <type subtype="Communication">actuator</type>
         <singleton>false</singleton>
@@ -3160,7 +3189,8 @@
 
     </componentType>
 
- <componentType id="asterics.Oscilloscope"
+
+    <componentType id="asterics.Oscilloscope"
                    canonical_name="eu.asterics.component.actuator.oscilloscope.OscilloscopeInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -3236,7 +3266,8 @@
     </componentType>
 
 
- <componentType id="asterics.OscOutClient"
+
+    <componentType id="asterics.OscOutClient"
                    canonical_name="eu.asterics.component.actuator.oscoutclient.OscOutClientInstance">
         <type subtype="Communication">actuator</type>
         <singleton>false</singleton>
@@ -3300,7 +3331,8 @@
 
     </componentType>
 
- <componentType id="asterics.PhoneControl"
+
+    <componentType id="asterics.PhoneControl"
                    canonical_name="eu.asterics.component.actuator.phonecontrol.PhoneControlInstance">
         <type subtype="Phone Interface">actuator</type>
         <singleton>true</singleton>
@@ -3383,7 +3415,8 @@
     </componentType>
 
 
- <componentType id="asterics.PicoTTS"
+
+    <componentType id="asterics.PicoTTS"
                    canonical_name="eu.asterics.component.actuator.picotts.PicoTTSInstance">
         <type subtype="Audio and Voice">actuator</type>
         <singleton>false</singleton>
@@ -3413,7 +3446,8 @@
     </componentType>
 
 
- <componentType id="asterics.PlatformDigitalOut"
+
+    <componentType id="asterics.PlatformDigitalOut"
                    canonical_name="eu.asterics.component.actuator.platformdigitalout.PlatformDigitalOutInstance">
         <type subtype="Personal Platform">actuator</type>
         <singleton>true</singleton>
@@ -3468,7 +3502,8 @@
     </componentType>
 
 
- <componentType id="asterics.PlatformLCD"
+
+    <componentType id="asterics.PlatformLCD"
                    canonical_name="eu.asterics.component.actuator.platformlcd.PlatformLCDInstance">
         <type subtype="Personal Platform">actuator</type>
         <singleton>false</singleton>
@@ -3484,7 +3519,8 @@
         </properties>
     </componentType>
 
- <componentType id="asterics.PongGame"
+
+    <componentType id="asterics.PongGame"
                    canonical_name="eu.asterics.component.actuator.ponggame.PongGameInstance">
         <type subtype="Others">actuator</type>
         <singleton>true</singleton>
@@ -3615,7 +3651,8 @@
 
     </componentType>
 
- <componentType id="asterics.RemoteJoystick"
+
+    <componentType id="asterics.RemoteJoystick"
                    canonical_name="eu.asterics.component.actuator.remotejoystick.RemoteJoystickInstance">
         <type subtype="Input Device Emulation">actuator</type>
         <singleton>false</singleton>
@@ -3745,7 +3782,8 @@
     </componentType>
 
 
- <componentType id="asterics.RemoteKeyboard"
+
+    <componentType id="asterics.RemoteKeyboard"
                    canonical_name="eu.asterics.component.actuator.remotekeyboard.RemoteKeyboardInstance">
         <type subtype="Input Device Emulation">actuator</type>
         <singleton>false</singleton>
@@ -3786,7 +3824,8 @@
     </componentType>
 
 
- <componentType id="asterics.RemoteMouse"
+
+    <componentType id="asterics.RemoteMouse"
                    canonical_name="eu.asterics.component.actuator.remotemouse.RemoteMouseInstance">
         <type subtype="Input Device Emulation">actuator</type>
         <singleton>true</singleton>
@@ -3876,7 +3915,8 @@
     </componentType>
 
 
- <componentType id="asterics.RemoteTablet"
+
+    <componentType id="asterics.RemoteTablet"
                    canonical_name="eu.asterics.component.actuator.remotetablet.RemoteTabletInstance">
         <type subtype="Input Device Emulation">actuator</type>
         <singleton>true</singleton>
@@ -3965,7 +4005,8 @@
     </componentType>
 
 
- <componentType id="asterics.RemoteWindow"
+
+    <componentType id="asterics.RemoteWindow"
                    canonical_name="eu.asterics.component.actuator.remotewindow.RemoteWindowInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -4045,7 +4086,8 @@
 
     </componentType>
 
- <componentType id="asterics.serialSender"
+
+    <componentType id="asterics.serialSender"
                    canonical_name="eu.asterics.component.actuator.serialSender.SerialSenderInstance">
         <type subtype="Generic Control Output">actuator</type>
         <singleton>false</singleton>
@@ -4351,7 +4393,8 @@
 
     </componentType>
 
- <componentType id="asterics.Skype"
+
+    <componentType id="asterics.Skype"
                    canonical_name="eu.asterics.component.actuator.skype.SkypeInstance">
         <type subtype="Communication">actuator</type>
         <singleton>true</singleton>
@@ -4428,7 +4471,8 @@
 
     </componentType>
 
- <componentType id="asterics.SkyWatcherMount"
+
+    <componentType id="asterics.SkyWatcherMount"
                    canonical_name="eu.asterics.component.actuator.skywatchermount.SkyWatcherMountInstance">
         <type subtype="Others">actuator</type>
         <singleton>false</singleton>
@@ -4542,7 +4586,8 @@
 
     </componentType>
 
- <componentType id="asterics.SSVEPFileWriter"
+
+    <componentType id="asterics.SSVEPFileWriter"
                    canonical_name="com.starlab.component.actuator.ssvepfilewriter.SSVEPFileWriterInstance">
         <type subtype="Brain Computer Interface">actuator</type>
         <singleton>false</singleton>
@@ -4607,7 +4652,8 @@
 
     </componentType>
 
- <componentType id="asterics.SSVEPStimulator"
+
+    <componentType id="asterics.SSVEPStimulator"
                    canonical_name="eu.asterics.component.actuator.ssvepstimulator.SSVEPStimulatorInstance">
         <type subtype="Brain Computer Interface">actuator</type>
         <singleton>false</singleton>
@@ -4659,7 +4705,8 @@
     </componentType>
 
 
- <componentType id="asterics.SyntheticVoice"
+
+    <componentType id="asterics.SyntheticVoice"
                    canonical_name="eu.asterics.component.actuator.syntheticvoice.SyntheticVoiceInstance">
         <type subtype="Audio and Voice">actuator</type>
         <singleton>false</singleton>
@@ -4692,7 +4739,8 @@
     </componentType>
 
 
- <componentType id="asterics.TeensyRCprototype"
+
+    <componentType id="asterics.TeensyRCprototype"
                    canonical_name="eu.asterics.component.actuator.teensyrcprototype.TeensyRCprototypeInstance">
         <type subtype="Others">actuator</type>
         <singleton>false</singleton>
@@ -4749,7 +4797,8 @@
 
     </componentType>
 
- <componentType id="asterics.TextArea"
+
+    <componentType id="asterics.TextArea"
                    canonical_name="eu.asterics.component.actuator.textarea.TextAreaInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -4826,7 +4875,8 @@
 
     </componentType>
 
- <componentType id="asterics.TextDisplay"
+
+    <componentType id="asterics.TextDisplay"
                    canonical_name="eu.asterics.component.actuator.textdisplay.TextDisplayInstance">
         <type subtype="Graphical User Interface">actuator</type>
         <singleton>false</singleton>
@@ -4882,7 +4932,8 @@
 
     </componentType>
 
- <componentType id="asterics.ToneGenerator"
+
+    <componentType id="asterics.ToneGenerator"
                    canonical_name="eu.asterics.component.actuator.tonegenerator.ToneGeneratorInstance">
         <type subtype="Audio and Voice">actuator</type>
         <singleton>false</singleton>
@@ -4928,7 +4979,8 @@
 
     </componentType>
 
- <componentType id="asterics.WavefilePlayer"
+
+    <componentType id="asterics.WavefilePlayer"
                    canonical_name="eu.asterics.component.actuator.wavefileplayer.WavefilePlayerInstance">
         <type subtype="Audio and Voice">actuator</type>
         <singleton>false</singleton>
@@ -4965,7 +5017,8 @@
     </componentType>
 
 
- <componentType id="asterics.WriteCSV"
+
+    <componentType id="asterics.WriteCSV"
                    canonical_name="eu.asterics.component.actuator.writecsv.WriteCSVInstance">
         <type subtype="File System">actuator</type>
         <singleton>false</singleton>
@@ -4993,7 +5046,8 @@
 			<property name="FilePath" type="string" value="./data/csv" description="path of the file"></property></properties>
     </componentType>
 
- <componentType id="asterics.WriteEDF"
+
+    <componentType id="asterics.WriteEDF"
                    canonical_name="eu.asterics.component.actuator.writeedf.WriteEDFInstance">
         <type subtype="File System">actuator</type>
         <singleton>false</singleton>
@@ -5223,7 +5277,8 @@
 
     </componentType>
 
- <componentType id="asterics.AcousticScanning"
+
+    <componentType id="asterics.AcousticScanning"
                    canonical_name="eu.asterics.component.processor.acousticscanning.AcousticScanningInstance">
         <type subtype="Audio and Voice">processor</type>
         <singleton>false</singleton>
@@ -5342,7 +5397,8 @@
 
     </componentType>
 
- <componentType id="asterics.AdjustmentCurve"
+
+    <componentType id="asterics.AdjustmentCurve"
                    canonical_name="eu.asterics.component.processor.adjustmentcurve.AdjustmentCurveInstance">
         <type subtype="Signal Shaping">processor</type>
         <singleton>false</singleton>
@@ -5422,7 +5478,8 @@
         </gui>
     </componentType>
 
- <componentType id="asterics.Amplifier"
+
+    <componentType id="asterics.Amplifier"
                    canonical_name="eu.asterics.component.processor.amplifier.AmplifierInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -5447,7 +5504,8 @@
     </componentType>
 
 
- <componentType id="asterics.Arduino"
+
+    <componentType id="asterics.Arduino"
                    canonical_name="eu.asterics.component.processor.arduino.ArduinoInstance">
         <type subtype="Microcontroller Interface">processor</type>
         <singleton>false</singleton>
@@ -5719,7 +5777,8 @@
 
     </componentType>
 
- <componentType id="asterics.AudioSelector"
+
+    <componentType id="asterics.AudioSelector"
                    canonical_name="com.starlab.component.processor.audioselector.AudioSelectorInstance">
         <type subtype="Audio and Voice">processor</type>
         <singleton>true</singleton>
@@ -5800,7 +5859,8 @@
     </componentType>
 
 
- <componentType id="asterics.BasicTRalgorithms"
+
+    <componentType id="asterics.BasicTRalgorithms"
                    canonical_name="eu.asterics.component.processor.basictralgorithms.BasicTRalgorithmsInstance">
         <type subtype="Signal Shaping">processor</type>
         <singleton>false</singleton>
@@ -5879,7 +5939,8 @@
 
     </componentType>
 
- <componentType id="asterics.Benchmark"
+
+    <componentType id="asterics.Benchmark"
                    canonical_name="eu.asterics.component.processor.benchmark.BenchmarkInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -5916,7 +5977,8 @@
     </componentType>
 
 
- <componentType id="asterics.BlinkDetector"
+
+    <componentType id="asterics.BlinkDetector"
                    canonical_name="com.starlab.component.processor.blinkdetector.BlinkDetectorInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>false</singleton>
@@ -5973,7 +6035,8 @@
 
     </componentType>
 
- <componentType id="asterics.BlinkDetectorTrainer"
+
+    <componentType id="asterics.BlinkDetectorTrainer"
                    canonical_name="com.starlab.component.processor.blinkdetectortrainer.BlinkDetectorTrainerInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>true</singleton>
@@ -6020,7 +6083,8 @@
 
     </componentType>
 
- <componentType id="asterics.Comparator"
+
+    <componentType id="asterics.Comparator"
                    canonical_name="eu.asterics.component.processor.comparator.ComparatorInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -6079,7 +6143,8 @@
     </componentType>
 
 
- <componentType id="asterics.ComPort"
+
+    <componentType id="asterics.ComPort"
                    canonical_name="eu.asterics.component.processor.comport.ComPortInstance">
         <type subtype="Communication">processor</type>
         <singleton>false</singleton>
@@ -6125,7 +6190,8 @@
 
     </componentType>
 
- <componentType id="asterics.ComputeBandpower"
+
+    <componentType id="asterics.ComputeBandpower"
                    canonical_name="com.starlab.component.processor.computebandpower.ComputeBandPowerInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>true</singleton>
@@ -6166,7 +6232,8 @@
     </componentType>
 
 
- <componentType id="asterics.ConstantDispatcher"
+
+    <componentType id="asterics.ConstantDispatcher"
                    canonical_name="eu.asterics.component.processor.constantdispatcher.ConstantDispatcherInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -6351,7 +6418,8 @@
     </componentType>
 
 
- <componentType id="asterics.DataType"
+
+    <componentType id="asterics.DataType"
                    canonical_name="eu.asterics.component.processor.datatype.DataTypeInstance">
         <type subtype="Data Converters">processor</type>
         <singleton>false</singleton>
@@ -6428,7 +6496,8 @@
 
     </componentType>
 
- <componentType id="asterics.Deadzone"
+
+    <componentType id="asterics.Deadzone"
                    canonical_name="eu.asterics.component.processor.deadzone.DeadzoneInstance">
         <type subtype="Signal Shaping">processor</type>
         <singleton>false</singleton>
@@ -6493,7 +6562,8 @@
     </componentType>
 
 
- <componentType id="asterics.Decimation"
+
+    <componentType id="asterics.Decimation"
                    canonical_name="com.starlab.component.processor.decimation.DecimationInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>true</singleton>
@@ -6519,7 +6589,8 @@
 
 
 
- <componentType id="asterics.Delay"
+
+    <componentType id="asterics.Delay"
                    canonical_name="eu.asterics.component.processor.delay.DelayInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -6551,7 +6622,8 @@
 
     </componentType>
 
- <componentType id="asterics.Derivative"
+
+    <componentType id="asterics.Derivative"
                    canonical_name="com.starlab.component.processor.derivative.DerivativeInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -6577,7 +6649,8 @@
 
 
 
- <componentType id="asterics.Differentiate"
+
+    <componentType id="asterics.Differentiate"
                    canonical_name="eu.asterics.component.processor.differentiate.DifferentiateInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -6603,7 +6676,8 @@
     </componentType>
 
 
- <componentType id="asterics.Dissimilarity"
+
+    <componentType id="asterics.Dissimilarity"
                    canonical_name="com.starlab.component.processor.dissimilarity.DissimilarityInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>false</singleton>
@@ -6634,7 +6708,8 @@
 
 
 
- <componentType id="asterics.DoubleToString"
+
+    <componentType id="asterics.DoubleToString"
                    canonical_name="eu.asterics.component.processor.doubletostring.DoubleToStringInstance">
         <type subtype="Data Converters">processor</type>
         <singleton>false</singleton>
@@ -6662,7 +6737,8 @@
 
     </componentType>
 
- <componentType id="asterics.ECMAScriptInterpreter"
+
+    <componentType id="asterics.ECMAScriptInterpreter"
                    canonical_name="org.whitesoft.asterics.component.processor.ecmascriptinterpreter.ECMAScriptInterpreterInstance">
         <type subtype="Scripting">processor</type>
         <singleton>false</singleton>
@@ -6846,7 +6922,8 @@
 
     </componentType>
 
- <componentType id="asterics.EventBlock"
+
+    <componentType id="asterics.EventBlock"
                    canonical_name="eu.asterics.component.processor.eventblock.EventBlockInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -6888,7 +6965,8 @@
 
     </componentType>
 
- <componentType id="asterics.EventCascade"
+
+    <componentType id="asterics.EventCascade"
                    canonical_name="eu.asterics.component.processor.eventcascade.EventCascadeInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -7039,7 +7117,8 @@
 
     </componentType>
 
- <componentType id="asterics.EventCounter"
+
+    <componentType id="asterics.EventCounter"
                    canonical_name="eu.asterics.component.processor.eventcounter.EventCounterInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -7106,7 +7185,8 @@
     </componentType>
 
 
- <componentType id="asterics.EventDelay"
+
+    <componentType id="asterics.EventDelay"
                    canonical_name="eu.asterics.component.processor.eventdelay.EventDelayInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -7135,7 +7215,8 @@
 
     </componentType>
 
- <componentType id="asterics.EventDispatcher"
+
+    <componentType id="asterics.EventDispatcher"
                    canonical_name="eu.asterics.component.processor.eventdispatcher.EventdispatcherInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -7225,7 +7306,8 @@
     </componentType>
 
 
- <componentType id="asterics.EventFlipFlop"
+
+    <componentType id="asterics.EventFlipFlop"
                    canonical_name="eu.asterics.component.processor.eventflipflop.EventFlipFlopInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -7254,7 +7336,8 @@
     </componentType>
 
 
- <componentType id="asterics.EventRouter"
+
+    <componentType id="asterics.EventRouter"
                    canonical_name="eu.asterics.component.processor.eventrouter.EventRouterInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -7485,7 +7568,8 @@
 
     </componentType>
 
- <componentType id="asterics.EventStateMachine"
+
+    <componentType id="asterics.EventStateMachine"
                    canonical_name="eu.asterics.component.processor.eventstatemachine.EventStateMachineInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -7559,7 +7643,8 @@
 
     </componentType>
 
- <componentType id="asterics.FABI"
+
+    <componentType id="asterics.FABI"
                    canonical_name="eu.asterics.component.processor.fabi.FABIInstance">
         <type subtype="Microcontroller Interface">processor</type>
         <singleton>false</singleton>
@@ -7707,7 +7792,8 @@
 
     </componentType>
 
- <componentType id="asterics.FabiCronusMax"
+
+    <componentType id="asterics.FabiCronusMax"
                    canonical_name="eu.asterics.component.processor.fabicronusmax.FabiCronusMaxInstance">
         <type subtype="Microcontroller Interface">processor</type>
         <singleton>false</singleton>
@@ -7787,7 +7873,8 @@
 
     </componentType>
 
- <componentType id="asterics.Filter"
+
+    <componentType id="asterics.Filter"
                    canonical_name="com.starlab.component.processor.filter.FilterInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>false</singleton>
@@ -7847,7 +7934,8 @@
 
     </componentType>
 
- <componentType id="asterics.FS20CommandInterpreter"
+
+    <componentType id="asterics.FS20CommandInterpreter"
                    canonical_name="eu.asterics.component.processor.fs20commandinterpreter.FS20CommandInterpreterInstance">
         <type subtype="Home Control">processor</type>
         <singleton>false</singleton>
@@ -7964,7 +8052,8 @@
 
     </componentType>
 
- <componentType id="asterics.HRVAnalysis"
+
+    <componentType id="asterics.HRVAnalysis"
                    canonical_name="eu.asterics.component.processor.hrvanalysis.HRVAnalysisInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>false</singleton>
@@ -8031,7 +8120,8 @@
 
     </componentType>
 
- <componentType id="asterics.IIRFilter"
+
+    <componentType id="asterics.IIRFilter"
                    canonical_name="eu.asterics.component.processor.iirfilter.IIRFilterInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>false</singleton>
@@ -8093,7 +8183,8 @@
 
     </componentType>
 
- <componentType id="asterics.Integrate"
+
+    <componentType id="asterics.Integrate"
                    canonical_name="eu.asterics.component.processor.integrate.IntegrateInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -8136,7 +8227,8 @@
     </componentType>
 
 
- <componentType id="asterics.IntToString"
+
+    <componentType id="asterics.IntToString"
                    canonical_name="eu.asterics.component.processor.inttostring.IntToStringInstance">
         <type subtype="Data Converters">processor</type>
         <singleton>false</singleton>
@@ -8168,7 +8260,8 @@
 
     </componentType>
 
- <componentType id="asterics.MathEvaluator"
+
+    <componentType id="asterics.MathEvaluator"
                    canonical_name="eu.asterics.component.processor.mathevaluator.MathEvaluatorInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -8209,7 +8302,8 @@
     </componentType>
 
 
- <componentType id="asterics.MinMax"
+
+    <componentType id="asterics.MinMax"
                    canonical_name="eu.asterics.component.processor.minmax.MinmaxInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -8246,7 +8340,8 @@
         </properties>      
     </componentType>
 
- <componentType id="asterics.MotionAnalysis"
+
+    <componentType id="asterics.MotionAnalysis"
                    canonical_name="eu.asterics.component.processor.motionanalysis.MotionAnalysisInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>false</singleton>
@@ -8382,7 +8477,8 @@
 
     </componentType>
 
- <componentType id="asterics.MultiSource"
+
+    <componentType id="asterics.MultiSource"
                    canonical_name="eu.asterics.component.processor.multisource.MultiSourceInstance">
         <type subtype="Signal Pathways">processor</type>
         <singleton>false</singleton>
@@ -8425,7 +8521,8 @@
 
     </componentType>
 
- <componentType id="asterics.MultiSourceString"
+
+    <componentType id="asterics.MultiSourceString"
                    canonical_name="eu.asterics.component.processor.multisourcestring.MultiSourceStringInstance">
         <type subtype="Signal Pathways">processor</type>
         <singleton>false</singleton>
@@ -8468,7 +8565,8 @@
 
     </componentType>
 
- <componentType id="asterics.NeuralNetworkLoader"
+
+    <componentType id="asterics.NeuralNetworkLoader"
                    canonical_name="eu.asterics.component.processor.neuralnetworkloader.NeuralNetworkLoaderInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>false</singleton>
@@ -8780,7 +8878,8 @@
 
     </componentType>
 
- <componentType id="asterics.NexusConnector"
+
+    <componentType id="asterics.NexusConnector"
                    canonical_name="eu.asterics.component.processor.nexusconnector.NexusConnectorInstance">
         <type subtype="Web">processor</type>
         <singleton>false</singleton>
@@ -8876,7 +8975,8 @@
     </componentType>
 
 
- <componentType id="asterics.OneEventManyActions"
+
+    <componentType id="asterics.OneEventManyActions"
                    canonical_name="eu.asterics.component.processor.oneeventmanyactions.OneEventManyActionsInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -8975,7 +9075,8 @@
 
     </componentType>
 
- <componentType id="asterics.openHAB"
+
+    <componentType id="asterics.openHAB"
                    canonical_name="eu.asterics.component.processor.openhab.openHABInstance">
         <type subtype="Home Control">processor</type>
         <singleton>false</singleton>
@@ -9173,7 +9274,8 @@
 
     </componentType>
 
- <componentType id="asterics.OscGestureFollower"
+
+    <componentType id="asterics.OscGestureFollower"
                    canonical_name="eu.asterics.component.processor.oscgesturefollower.OscGestureFollowerInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>false</singleton>
@@ -9259,7 +9361,8 @@
 
     </componentType>
 
- <componentType id="OskaInternalScanning"
+
+    <componentType id="OskaInternalScanning"
                    canonical_name="eu.asterics.component.processor.oska.OskaInstance">
         <type subtype="OSKA">processor</type>
         <singleton>false</singleton>
@@ -9645,7 +9748,8 @@
 
 
 
- <componentType id="asterics.PathMultiplexer"
+
+    <componentType id="asterics.PathMultiplexer"
                    canonical_name="eu.asterics.component.processor.pathmultiplexer.PathmultiplexerInstance">
         <type subtype="Signal Pathways">processor</type>
         <singleton>false</singleton>
@@ -9707,7 +9811,8 @@
     </componentType>
 
 
- <componentType id="asterics.PathSelector"
+
+    <componentType id="asterics.PathSelector"
                    canonical_name="eu.asterics.component.processor.pathselector.PathselectorInstance">
         <type subtype="Signal Pathways">processor</type>
         <singleton>false</singleton>
@@ -9766,7 +9871,8 @@
     </componentType>
 
 
- <componentType id="asterics.PeakDetector"
+
+    <componentType id="asterics.PeakDetector"
                    canonical_name="eu.asterics.component.processor.peakdetector.PeakDetectorInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -9830,7 +9936,8 @@
 
     </componentType>
 
- <componentType id="asterics.ProtocolSSVEPTrain"
+
+    <componentType id="asterics.ProtocolSSVEPTrain"
                    canonical_name="com.starlab.component.processor.protocolssveptrain.ProtocolSSVEPTrainInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>true</singleton>
@@ -9958,7 +10065,8 @@
 
     </componentType>
 
- <componentType id="asterics.Quantizer"
+
+    <componentType id="asterics.Quantizer"
                    canonical_name="eu.asterics.component.processor.quantizer.QuantizerInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -9990,7 +10098,8 @@
 
     </componentType>
 
- <componentType id="asterics.RegularExpression"
+
+    <componentType id="asterics.RegularExpression"
                    canonical_name="eu.asterics.component.processor.regularexpression.RegularExpressionInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -10042,7 +10151,8 @@
 
     </componentType>
 
- <componentType id="asterics.RelativeMoveSampler"
+
+    <componentType id="asterics.RelativeMoveSampler"
                    canonical_name="eu.asterics.component.processor.relativemovesampler.RelativeMoveSamplerInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -10092,7 +10202,8 @@
 
     </componentType>
 
- <componentType id="asterics.SampleAndHold"
+
+    <componentType id="asterics.SampleAndHold"
                    canonical_name="eu.asterics.component.processor.sampleandhold.SampleAndHoldInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -10144,7 +10255,8 @@
     </componentType>
 
 
- <componentType id="asterics.Sampler"
+
+    <componentType id="asterics.Sampler"
                    canonical_name="eu.asterics.component.processor.sampler.SamplerInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -10184,7 +10296,8 @@
 
     </componentType>
 
- <componentType id="asterics.SerialPort"
+
+    <componentType id="asterics.SerialPort"
                    canonical_name="eu.asterics.component.processor.serialport.SerialPortInstance">
         <type subtype="Communication">processor</type>
         <singleton>false</singleton>
@@ -10239,7 +10352,8 @@
         </properties>
     </componentType>
 
- <componentType id="asterics.SignalTranslation"
+
+    <componentType id="asterics.SignalTranslation"
                    canonical_name="eu.asterics.component.processor.signaltranslation.SignalTranslationInstance">
         <type subtype="Signal Shaping">processor</type>
         <singleton>false</singleton>
@@ -10287,7 +10401,8 @@
     </componentType>
 
 
- <componentType id="asterics.SpeechProcessor"
+
+    <componentType id="asterics.SpeechProcessor"
                    canonical_name="eu.asterics.component.processor.speechprocessor.SpeechProcessorInstance">
         <type subtype="Audio and Voice">processor</type>
         <singleton>true</singleton>
@@ -10534,7 +10649,8 @@
 
     </componentType>
 
- <componentType id="asterics.SSVEPDetect"
+
+    <componentType id="asterics.SSVEPDetect"
                    canonical_name="com.starlab.component.processor.ssvepdetect.SSVEPDetectInstance">
         <type subtype="DSP and Feature Detection">processor</type>
         <singleton>true</singleton>
@@ -10710,7 +10826,8 @@
 
     </componentType>
 
- <componentType id="asterics.StringAppend"
+
+    <componentType id="asterics.StringAppend"
                    canonical_name="eu.asterics.component.processor.stringappend.StringAppendInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -10767,7 +10884,8 @@
 
     </componentType>
 
- <componentType id="asterics.StringDelay"
+
+    <componentType id="asterics.StringDelay"
                    canonical_name="eu.asterics.component.processor.stringdelay.StringDelayInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -10799,7 +10917,8 @@
 
     </componentType>
 
- <componentType id="asterics.StringDispatcher"
+
+    <componentType id="asterics.StringDispatcher"
                    canonical_name="eu.asterics.component.processor.stringdispatcher.StringDispatcherInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -10983,7 +11102,8 @@
     </componentType>
 
 
- <componentType id="asterics.StringExpander"
+
+    <componentType id="asterics.StringExpander"
                    canonical_name="eu.asterics.component.processor.stringexpander.StringExpanderInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -11033,7 +11153,8 @@
 
     </componentType>
 
- <componentType id="asterics.StringFilter"
+
+    <componentType id="asterics.StringFilter"
                    canonical_name="eu.asterics.component.processor.stringfilter.StringFilterInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -11073,7 +11194,8 @@
 
     </componentType>
 
- <componentType id="asterics.StringFormatter"
+
+    <componentType id="asterics.StringFormatter"
                    canonical_name="eu.asterics.component.processor.stringformatter.StringFormatterInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -11147,7 +11269,8 @@
 
     </componentType>
 
- <componentType id="asterics.StringPathMultiplexer"
+
+    <componentType id="asterics.StringPathMultiplexer"
                    canonical_name="eu.asterics.component.processor.stringpathmultiplexer.StringPathMultiplexerInstance">
         <type subtype="Signal Pathways">processor</type>
         <singleton>false</singleton>
@@ -11209,7 +11332,8 @@
     </componentType>
 
 
- <componentType id="asterics.StringPathSelector"
+
+    <componentType id="asterics.StringPathSelector"
                    canonical_name="eu.asterics.component.processor.stringpathselector.StringPathselectorInstance">
         <type subtype="Signal Pathways">processor</type>
         <singleton>false</singleton>
@@ -11237,6 +11361,22 @@
                 <description>Path 4</description>
                 <dataType>string</dataType>
             </outputPort>
+            <outputPort id="out5">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out6">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out7">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out8">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
         </ports>
         <events>
             <eventListenerPort id="select1">
@@ -11251,6 +11391,18 @@
             <eventListenerPort id="select4">
                 <description>selects out-port 4</description>
             </eventListenerPort>
+            <eventListenerPort id="select5">
+                <description>selects out-port 5</description>
+            </eventListenerPort>
+            <eventListenerPort id="select6">
+                <description>selects out-port 6</description>
+            </eventListenerPort>
+            <eventListenerPort id="select7">
+                <description>selects out-port 7</description>
+            </eventListenerPort>
+            <eventListenerPort id="select8">
+                <description>selects out-port 8</description>
+            </eventListenerPort>
             <eventListenerPort id="selectNext">
                 <description>selects next out-port</description>
             </eventListenerPort>
@@ -11262,13 +11414,14 @@
             <property name="activePorts"
                       type="integer"
                       value="1"
-                      combobox="1//2//3//4"
+                      combobox="1//2//3//4//5//6//7//8"
                       description="number of connected (and active) ports"/>
         </properties>
     </componentType>
 
 
- <componentType id="asterics.StringSplitter"
+
+    <componentType id="asterics.StringSplitter"
                    canonical_name="eu.asterics.component.processor.stringsplitter.StringSplitterInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -11360,7 +11513,8 @@
 
     </componentType>
 
- <componentType id="asterics.StringToDouble"
+
+    <componentType id="asterics.StringToDouble"
                    canonical_name="eu.asterics.component.processor.stringtodouble.StringToDoubleInstance">
         <type subtype="Data Converters">processor</type>
         <singleton>false</singleton>
@@ -11388,7 +11542,8 @@
 
     </componentType>
 
- <componentType id="asterics.StringToInt"
+
+    <componentType id="asterics.StringToInt"
                    canonical_name="eu.asterics.component.processor.stringtoint.StringToIntInstance">
         <type subtype="Data Converters">processor</type>
         <singleton>false</singleton>
@@ -11420,7 +11575,8 @@
 
     </componentType>
 
- <componentType id="asterics.TextSender"
+
+    <componentType id="asterics.TextSender"
                    canonical_name="eu.asterics.component.processor.textsender.TextSenderInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
@@ -11451,7 +11607,8 @@
     </componentType>
 
 
- <componentType id="asterics.Threshold"
+
+    <componentType id="asterics.Threshold"
             canonical_name="eu.asterics.component.processor.threshold.ThresholdInstance">
         <type subtype="Basic Math">processor</type>
         <singleton>false</singleton>
@@ -11508,7 +11665,8 @@
     </componentType>
 
 
- <componentType id="asterics.UniversalRemoteControl"
+
+    <componentType id="asterics.UniversalRemoteControl"
                    canonical_name="eu.asterics.component.processor.universalremotecontrol.UniversalRemoteControlInstance">
         <type subtype="Microcontroller Interface">processor</type>
         <singleton>false</singleton>
@@ -11557,7 +11715,8 @@
 
     </componentType>
 
- <componentType id="asterics.WebSocket"
+
+    <componentType id="asterics.WebSocket"
                    canonical_name="eu.asterics.component.processor.websocket.WebSocketInstance">
         <type subtype="Web">processor</type>
         <singleton>false</singleton>
@@ -11595,7 +11754,8 @@
 
     </componentType>
 
- <componentType id="asterics.Yaak"
+
+    <componentType id="asterics.Yaak"
                    canonical_name="eu.asterics.component.processor.yaak.YaakInstance">
         <type subtype="Phone Interface">processor</type>
         <singleton>false</singleton>
@@ -11629,7 +11789,8 @@
 
     </componentType>
 
- <componentType id="asterics.Acceleration"
+
+    <componentType id="asterics.Acceleration"
                    canonical_name="eu.asterics.component.sensor.acceleration.AccelerationInstance">
         <type subtype="Inertial Measurement">sensor</type>
         <singleton>false</singleton>
@@ -11691,7 +11852,8 @@
     </componentType>
 
 
- <componentType id="asterics.AnalogIn"
+
+    <componentType id="asterics.AnalogIn"
                    canonical_name="eu.asterics.component.sensor.analogin.AnalogInInstance">
         <type subtype="Generic Control Input">sensor</type>
         <singleton>false</singleton>
@@ -11829,7 +11991,8 @@
     
 
 
- <componentType id="asterics.AutostartEvent"
+
+    <componentType id="asterics.AutostartEvent"
                    canonical_name="eu.asterics.component.sensor.autostartevent.AutostartEventInstance">
         <type subtype="Simulation">sensor</type>
         <singleton>false</singleton>
@@ -11855,7 +12018,8 @@
 
     </componentType>
 
- <componentType id="asterics.ButtonGrid"
+
+    <componentType id="asterics.ButtonGrid"
                    canonical_name="eu.asterics.component.sensor.buttongrid.ButtonGridInstance">
         <type subtype="Graphical User Interface">sensor</type>
         <singleton>false</singleton>
@@ -12135,7 +12299,8 @@
     </componentType>
 
 
- <componentType id="asterics.CellBoard"
+
+    <componentType id="asterics.CellBoard"
                    canonical_name="eu.asterics.component.sensor.cellboard.CellBoardInstance">
         <type subtype="Graphical User Interface">sensor</type>
         <singleton>false</singleton>
@@ -12853,7 +13018,8 @@
 
     </componentType>
 
- <componentType id="asterics.DigitalIn"
+
+    <componentType id="asterics.DigitalIn"
                    canonical_name="eu.asterics.component.sensor.digitalin.DigitalInInstance">
         <type subtype="Generic Control Input">sensor</type>
         <singleton>false</singleton>
@@ -13045,7 +13211,8 @@
     
     
 
- <componentType id="asterics.EditBox"
+
+    <componentType id="asterics.EditBox"
                    canonical_name="eu.asterics.component.sensor.editbox.EditBoxInstance">
         <type subtype="Graphical User Interface">sensor</type>
         <singleton>false</singleton>
@@ -13107,7 +13274,8 @@
 
     </componentType>
 
- <componentType id="asterics.Enobio"
+
+    <componentType id="asterics.Enobio"
                    canonical_name="com.starlab.component.sensor.enobio.EnobioInstance">
         <type subtype="Bioelectric Measurement">sensor</type>
         <singleton>true</singleton>
@@ -13183,7 +13351,8 @@
     </componentType>
 
 
- <componentType id="asterics.EOG"
+
+    <componentType id="asterics.EOG"
                    canonical_name="eu.asterics.component.sensor.eog.EogInstance">
         <type subtype="Bioelectric Measurement">sensor</type>
         <singleton>true</singleton>
@@ -13214,7 +13383,8 @@
 
     </componentType>
 
- <componentType id="asterics.EShoe"
+
+    <componentType id="asterics.EShoe"
                    canonical_name="eu.asterics.component.sensor.eshoe.EShoeInstance">
         <type subtype="Sensor Modules">sensor</type>
         <singleton>false</singleton>
@@ -13304,7 +13474,8 @@
 
     </componentType>
 
- <componentType id="asterics.EventGenerator"
+
+    <componentType id="asterics.EventGenerator"
                    canonical_name="eu.asterics.component.sensor.event_generator.EventGeneratorInstance">
         <type subtype="Simulation">sensor</type>
         <singleton>false</singleton>
@@ -13330,7 +13501,8 @@
     </componentType>
 
 
- <componentType id="asterics.Eyetracker"
+
+    <componentType id="asterics.Eyetracker"
                    canonical_name="eu.asterics.component.sensor.eyetracker.EyetrackerInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>true</singleton>
@@ -13499,7 +13671,8 @@
         </gui>
     </componentType>
 
- <componentType id="asterics.EyeTribe"
+
+    <componentType id="asterics.EyeTribe"
                    canonical_name="eu.asterics.component.sensor.eyetribe.EyeTribeInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>true</singleton>
@@ -13591,7 +13764,8 @@
 
     </componentType>
 
- <componentType id="asterics.EyeX"
+
+    <componentType id="asterics.EyeX"
                    canonical_name="eu.asterics.component.sensor.eyex.EyeXInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>true</singleton>
@@ -13726,7 +13900,8 @@
 
     </componentType>
 
- <componentType id="asterics.FacetrackerCLM"
+
+    <componentType id="asterics.FacetrackerCLM"
                    canonical_name="eu.asterics.component.sensor.facetrackerCLM2.FacetrackerCLM2Instance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>true</singleton>
@@ -13794,7 +13969,8 @@
         	<width>2000</width>
         	<height>1500</height></gui></componentType>
 
- <componentType id="asterics.FacetrackerLK"
+
+    <componentType id="asterics.FacetrackerLK"
                    canonical_name="eu.asterics.component.sensor.facetrackerLK.FacetrackerLKInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>true</singleton>
@@ -13856,7 +14032,8 @@
     </componentType>
 
 
- <componentType id="asterics.FolderBrowser"
+
+    <componentType id="asterics.FolderBrowser"
                    canonical_name="eu.asterics.component.sensor.folderbrowser.FolderBrowserInstance">
         <type subtype="File System">sensor</type>
         <singleton>false</singleton>
@@ -13932,7 +14109,8 @@
 
     </componentType>
 
- <componentType id="asterics.FourDJoystick"
+
+    <componentType id="asterics.FourDJoystick"
                    canonical_name="eu.asterics.component.sensor.fourdjoystick.FourDJoystickInstance">
         <type subtype="Others">sensor</type>
         <singleton>false</singleton>
@@ -13983,7 +14161,8 @@
 
     </componentType>
 
- <componentType id="asterics.FS20Receiver"
+
+    <componentType id="asterics.FS20Receiver"
                    canonical_name="eu.asterics.component.sensor.fs20receiver.FS20ReceiverInstance">
         <type subtype="Home Control">sensor</type>
         <singleton>true</singleton>
@@ -14098,7 +14277,8 @@
         </properties>
     </componentType>
 
- <componentType id="asterics.HeadPositionHC"
+
+    <componentType id="asterics.HeadPositionHC"
                    canonical_name="eu.asterics.component.sensor.headpositionhc.HeadPositionHCInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>false</singleton>
@@ -14196,7 +14376,8 @@
         </gui>
     </componentType>
 
- <componentType id="asterics.HoverPanel"
+
+    <componentType id="asterics.HoverPanel"
                    canonical_name="eu.asterics.component.sensor.hoverpanel.HoverPanelInstance">
         <type subtype="Graphical User Interface">sensor</type>
         <singleton>false</singleton>
@@ -14290,7 +14471,8 @@
                 
     </componentType>
 
- <componentType id="asterics.IntelRealSense"
+
+    <componentType id="asterics.IntelRealSense"
                    canonical_name="eu.asterics.component.sensor.intelrealsense.IntelRealSenseInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>false</singleton>
@@ -14460,7 +14642,8 @@
 
     </componentType>
 
- <componentType id="asterics.JoystickCapture"
+
+    <componentType id="asterics.JoystickCapture"
                    canonical_name="eu.asterics.component.sensor.joystickcapture.JoystickCaptureInstance">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>
@@ -14630,7 +14813,8 @@
 
     </componentType>
 
- <componentType id="asterics.KeyboardCapture" 
+
+    <componentType id="asterics.KeyboardCapture" 
                    canonical_name="eu.asterics.component.sensor.keyboardcapture.KeyboardCaptureInstance">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>
@@ -14732,7 +14916,8 @@
     </componentType>
 
 
- <componentType id="asterics.KeyCapture"
+
+    <componentType id="asterics.KeyCapture"
                    canonical_name="eu.asterics.component.sensor.keycapture.KeyCaptureInstance">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>false</singleton>
@@ -14782,7 +14967,8 @@
 
     </componentType>
 
- <componentType id="asterics.Kinect"
+
+    <componentType id="asterics.Kinect"
                    canonical_name="eu.asterics.component.sensor.kinect.KinectInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>true</singleton>
@@ -14867,7 +15053,8 @@
 
     </componentType>
 
- <componentType id="asterics.KinectJ4K"
+
+    <componentType id="asterics.KinectJ4K"
                    canonical_name="eu.asterics.component.sensor.kinectj4k.KinectJ4KInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>false</singleton>
@@ -15126,7 +15313,8 @@
 
     </componentType>
 
- <componentType id="asterics.LineReader"
+
+    <componentType id="asterics.LineReader"
                    canonical_name="eu.asterics.component.sensor.linereader.LineReaderInstance">
         <type subtype="File System">sensor</type>
         <singleton>false</singleton>
@@ -15167,7 +15355,8 @@
 
     </componentType>
 
- <componentType id="asterics.Lipmouse"
+
+    <componentType id="asterics.Lipmouse"
                    canonical_name="eu.asterics.component.sensor.lipmouse.LipmouseInstance">
         <type subtype="Sensor Modules">sensor</type>
         <singleton>false</singleton>
@@ -15298,7 +15487,8 @@
 
     </componentType>
 
- <componentType id="asterics.LipmouseIR"
+
+    <componentType id="asterics.LipmouseIR"
                    canonical_name="eu.asterics.component.sensor.lipmouseir.LipmouseIRInstance">
         <type subtype="Sensor Modules">sensor</type>
         <singleton>false</singleton>
@@ -15451,7 +15641,8 @@
 
     </componentType>
 
- <componentType id="asterics.MicGPI"
+
+    <componentType id="asterics.MicGPI"
                    canonical_name="eu.asterics.component.sensor.micgpi.MicGPIInstance">
         <type subtype="Generic Control Input">sensor</type>
         <singleton>false</singleton>
@@ -15533,7 +15724,8 @@
 
     </componentType>
 
- <componentType id="asterics.MouseCapture"
+
+    <componentType id="asterics.MouseCapture"
                    canonical_name="eu.asterics.component.sensor.mousecapture.MouseCaptureInstance">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>
@@ -15593,7 +15785,8 @@
     </componentType>
 
 
- <componentType id="asterics.openBCI"
+
+    <componentType id="asterics.openBCI"
                    canonical_name="eu.asterics.component.sensor.openBCI.openBCIInstance">
         <type subtype="Bioelectric Measurement">sensor</type>
         <singleton>false</singleton>
@@ -15662,7 +15855,8 @@
         </properties>
     </componentType>
 
- <componentType id="asterics.OpenViBE"
+
+    <componentType id="asterics.OpenViBE"
                    canonical_name="eu.asterics.component.sensor.openvibe.OpenViBEInstance">
         <type subtype="Bioelectric Measurement">sensor</type>
         <singleton>false</singleton>
@@ -15905,7 +16099,8 @@
 
     </componentType>
 
- <componentType id="asterics.OscServer"
+
+    <componentType id="asterics.OscServer"
                    canonical_name="eu.asterics.component.sensor.oscserver.OscServerInstance">
         <type subtype="Communication">sensor</type>
         <singleton>false</singleton>
@@ -16072,7 +16267,8 @@
 
     </componentType>
 
- <componentType id="asterics.p2_parser"
+
+    <componentType id="asterics.p2_parser"
                    canonical_name="eu.asterics.component.sensor.p2_parser.P2_parserInstance">
         <type subtype="Bioelectric Measurement">sensor</type>
         <singleton>false</singleton>
@@ -16123,7 +16319,8 @@
 
     </componentType>
 
- <componentType id="asterics.PlatformAnalogIn"
+
+    <componentType id="asterics.PlatformAnalogIn"
                    canonical_name="eu.asterics.component.sensor.platformanalogin.PlatformAnalogInInstance">
         <type subtype="Personal Platform">sensor</type>
         <singleton>false</singleton>
@@ -16161,7 +16358,8 @@
     </componentType>
 
 
- <componentType id="asterics.PlatformDigitalIn"
+
+    <componentType id="asterics.PlatformDigitalIn"
                    canonical_name="eu.asterics.component.sensor.platformdigitalin.PlatformDigitalInInstance">
         <type subtype="Personal Platform">sensor</type>
         <singleton>true</singleton>
@@ -16221,7 +16419,8 @@
     </componentType>
 
 
- <componentType id="asterics.Proximity"
+
+    <componentType id="asterics.Proximity"
                    canonical_name="eu.asterics.component.sensor.proximity.ProximityInstance">
         <type subtype="Sensor Modules">sensor</type>
         <singleton>false</singleton>
@@ -16266,7 +16465,8 @@
 
     </componentType>
 
- <componentType id="asterics.RandomNumber"
+
+    <componentType id="asterics.RandomNumber"
                    canonical_name="eu.asterics.component.sensor.randomnumber.RandomNumberInstance">
         <type subtype="Simulation">sensor</type>
         <singleton>false</singleton>
@@ -16295,12 +16495,17 @@
 				type="integer"
 				value="1"
 				description="Maximum random value"/>
+            <property name="autostart"
+                      type="boolean"
+                      value="true"
+                      description="automatically generate random number at startup"/>
 
         </properties>
 
     </componentType>
 
- <componentType id="asterics.RazorIMU"
+
+    <componentType id="asterics.RazorIMU"
                    canonical_name="eu.asterics.component.sensor.razorimu.RazorImuInstance">
         <type subtype="Inertial Measurement">sensor</type>
         <singleton>true</singleton>
@@ -16335,7 +16540,8 @@
     </componentType>
 
 
- <componentType id="asterics.ReadCSV"
+
+    <componentType id="asterics.ReadCSV"
                    canonical_name="eu.asterics.component.sensor.readcsv.ReadCSVInstance">
         <type subtype="File System">sensor</type>
         <singleton>false</singleton>
@@ -16360,7 +16566,8 @@
 
     </componentType>
 
- <componentType id="asterics.ReadEDF"
+
+    <componentType id="asterics.ReadEDF"
                    canonical_name="eu.asterics.component.sensor.readedf.ReadEDFInstance">
         <type subtype="File System">sensor</type>
         <singleton>false</singleton>
@@ -16446,7 +16653,8 @@
 
     </componentType>
 
- <componentType id="asterics.RFIDReader"
+
+    <componentType id="asterics.RFIDReader"
                    canonical_name="eu.asterics.component.sensor.rfidreader.RFIDReaderInstance">
         <type subtype="Sensor Modules">sensor</type>
         <singleton>false</singleton>
@@ -16477,7 +16685,8 @@
 
     </componentType>
 
- <componentType id="asterics.SensorBoard"
+
+    <componentType id="asterics.SensorBoard"
                    canonical_name="eu.asterics.component.sensor.sensorboard.SensorboardInstance">
         <type subtype="Sensor Modules">sensor</type>
         <singleton>false</singleton>
@@ -16572,7 +16781,8 @@
 
     </componentType>
 
- <componentType id="asterics.SignalGenerator"
+
+    <componentType id="asterics.SignalGenerator"
                    canonical_name="eu.asterics.component.sensor.signalgenerator.SignalGeneratorInstance">
         <type subtype="Simulation">sensor</type>
         <singleton>false</singleton>
@@ -16613,7 +16823,8 @@
     </componentType>
 
 
- <componentType id="asterics.SignalShaper"
+
+    <componentType id="asterics.SignalShaper"
                    canonical_name="eu.asterics.component.sensor.signalshaper.SignalShaperInstance">
         <type subtype="Simulation">sensor</type>
         <singleton>false</singleton>
@@ -16713,7 +16924,8 @@
 
     </componentType>
 
- <componentType id="asterics.Slider"
+
+    <componentType id="asterics.Slider"
                    canonical_name="eu.asterics.component.sensor.slider.SliderInstance">
         <type subtype="Graphical User Interface">sensor</type>
         <singleton>false</singleton>
@@ -16799,7 +17011,8 @@
         </gui>        
     </componentType>
 
- <componentType id="asterics.SpaceNavigator3DMouse"
+
+    <componentType id="asterics.SpaceNavigator3DMouse"
                    canonical_name="eu.asterics.component.sensor.spacenavigtor3Dmouse.SpaceNavigtor3DMouseInstance">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>
@@ -16840,7 +17053,8 @@
     </componentType>
 
 
- <componentType id="asterics.TextfieldReader" 
+
+    <componentType id="asterics.TextfieldReader" 
                    canonical_name="eu.asterics.component.sensor.textfieldreader.TextfieldreaderInstance">
         <type subtype="Graphical User Interface">sensor</type>
         <singleton>true</singleton>
@@ -16916,7 +17130,8 @@
     </componentType>
 
 
- <componentType id="asterics.Timer"
+
+    <componentType id="asterics.Timer"
                    canonical_name="eu.asterics.component.sensor.timer.TimerInstance">
         <type subtype="Simulation">sensor</type>
         <singleton>false</singleton>
@@ -16977,7 +17192,8 @@
     </componentType>
 
 
- <componentType id="asterics.Tobii4CHeadTracker"
+
+    <componentType id="asterics.Tobii4CHeadTracker"
                    canonical_name="eu.asterics.component.sensor.tobii4cheadtracker.Tobii4CHeadTrackerInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>true</singleton>
@@ -17057,7 +17273,8 @@
 
     </componentType>
 
- <componentType id="asterics.TobiTiC"
+
+    <componentType id="asterics.TobiTiC"
                    canonical_name="eu.asterics.component.sensor.tobitic.TobiTiCInstance">
         <type subtype="Bioelectric Measurement">sensor</type>
         <singleton>false</singleton>
@@ -17119,7 +17336,8 @@
         </properties>
     </componentType>
 
- <componentType id="asterics.TrueSense"
+
+    <componentType id="asterics.TrueSense"
                    canonical_name="eu.asterics.component.sensor.truesense.TrueSenseInstance">
         <type subtype="Bioelectric Measurement">sensor</type>
         <singleton>false</singleton>
@@ -17172,7 +17390,8 @@
 
     </componentType>
 
- <componentType id="asterics.TuioReactivision"
+
+    <componentType id="asterics.TuioReactivision"
                    canonical_name="eu.asterics.component.sensor.tuioreactivision.TuioReactivisionInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>false</singleton>
@@ -17264,7 +17483,8 @@
 
     </componentType>
 
- <componentType id="asterics.WiiMote"
+
+    <componentType id="asterics.WiiMote"
                    canonical_name="eu.asterics.component.sensor.wiimote.WiiMoteInstance">
         <type subtype="Standard Input Devices">sensor</type>
         <singleton>true</singleton>
@@ -17399,7 +17619,8 @@
         </properties>
     </componentType>
 
- <componentType id="asterics.XFacetrackerLK"
+
+    <componentType id="asterics.XFacetrackerLK"
                    canonical_name="eu.asterics.component.sensor.XfacetrackerLK.XFacetrackerLKInstance">
         <type subtype="Computer Vision">sensor</type>
         <singleton>false</singleton>
