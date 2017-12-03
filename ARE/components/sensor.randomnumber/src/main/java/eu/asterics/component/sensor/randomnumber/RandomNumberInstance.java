@@ -53,6 +53,7 @@ public class RandomNumberInstance extends AbstractRuntimeComponentInstance {
 
     int propMin = 0;
     int propMax = 1;
+    boolean propAutostart = true;
 
     // declare member variables here
 
@@ -133,8 +134,11 @@ public class RandomNumberInstance extends AbstractRuntimeComponentInstance {
         if ("min".equalsIgnoreCase(propertyName)) {
             return propMin;
         }
-        if ("max".equalsIgnoreCase(propertyName)) {
+        else if ("max".equalsIgnoreCase(propertyName)) {
             return propMax;
+        }
+        else if ("autostart".equalsIgnoreCase(propertyName)) {
+            return propAutostart;
         }
 
         return null;
@@ -155,12 +159,20 @@ public class RandomNumberInstance extends AbstractRuntimeComponentInstance {
             propMin = Integer.parseInt(newValue.toString());
             return oldValue;
         }
-        if ("max".equalsIgnoreCase(propertyName)) {
+        else if ("max".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propMax;
             propMax = Integer.parseInt(newValue.toString());
             return oldValue;
         }
-
+        else if ("autostart".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propAutostart;
+            if ("true".equalsIgnoreCase((String) newValue)) {
+                propAutostart = true;
+            } else if ("false".equalsIgnoreCase((String) newValue)) {
+                propAutostart = false;
+            }
+            return oldValue;
+        }
         return null;
     }
 
@@ -185,7 +197,8 @@ public class RandomNumberInstance extends AbstractRuntimeComponentInstance {
     public void start() {
 
         super.start();
-        generateNumber();
+        if (propAutostart==true)
+           generateNumber();
     }
 
     /**

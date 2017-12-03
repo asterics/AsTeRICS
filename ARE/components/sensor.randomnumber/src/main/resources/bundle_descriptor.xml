@@ -31,6 +31,10 @@
 				type="integer"
 				value="1"
 				description="Maximum random value"/>
+            <property name="autostart"
+                      type="boolean"
+                      value="true"
+                      description="automatically generate random number at startup"/>
 
         </properties>
 
