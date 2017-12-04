@@ -35,6 +35,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.opencv_core.IplImage;
@@ -86,6 +87,8 @@ public class SharedFrameGrabber {
     private Map<String, String[]> defaultGrabberList = new HashMap<String, String[]>();
 
     private int[][] RESOLUTIONS = new int[][] { { 160, 120 }, { 320, 240 }, { 352, 288 }, { 640, 480 }, { 800, 600 }, { 1024, 768 }, { 1600, 1200 } };
+    
+    Logger logger=AstericsErrorHandling.instance.getLogger();
 
     public SharedFrameGrabber() {
         // The framegrabbers are checked in the list of available ones.
@@ -107,9 +110,10 @@ public class SharedFrameGrabber {
      * @param userWidth
      * @param userHeight
      * @param grabberFormat
+     * @param frameRate TODO
      * @throws Exception
      */
-    private void init(String grabberName, String deviceKey, int userWidth, int userHeight, String grabberFormat) throws Exception {
+    private void init(String grabberName, String deviceKey, int userWidth, int userHeight, String grabberFormat, int frameRate) throws Exception {
         FrameGrabber grabber = null;
 
         // on RPi we did not need it, but on windows we needed to set it, but maybe it is different with the new version of ffmpeg.
@@ -117,15 +121,15 @@ public class SharedFrameGrabber {
             grabberFormat = "dshow";
         }
 
-        AstericsErrorHandling.instance.reportInfo(null, "Available grabber: " + Arrays.toString(defaultGrabberList.get(OSUtils.getOsName())));
-        AstericsErrorHandling.instance.reportInfo(null, "Default FrameGrabber: " + getDefaultFrameGrabberName());
-        AstericsErrorHandling.instance.reportInfo(null, "FrameGrabber: " + grabberName);
-        AstericsErrorHandling.instance.reportInfo(null, "DeviceKey: " + deviceKey);
-        AstericsErrorHandling.instance.reportInfo(null, "Resolution: " + userWidth + "x" + userHeight);
-        AstericsErrorHandling.instance.reportInfo(null, "grabberFormat: " + grabberFormat);
+        logger.info("Available grabber: " + Arrays.toString(defaultGrabberList.get(OSUtils.getOsName())));
+        logger.info("Default FrameGrabber: " + getDefaultFrameGrabberName());
+        logger.info("FrameGrabber: " + grabberName);
+        logger.info("DeviceKey: " + deviceKey);
+        logger.info("Resolution: " + userWidth + "x" + userHeight);
+        logger.info("grabberFormat: " + grabberFormat);
 
         if (device2FrameGrabber.containsKey(deviceKey)) {
-            AstericsErrorHandling.instance.getLogger().fine("Removing old FrameGrabber with key <" + deviceKey + ">");
+            logger.fine("Removing old FrameGrabber with key <" + deviceKey + ">");
             stopGrabbing(deviceKey);
             FrameGrabber _grabber = device2FrameGrabber.get(deviceKey);
             _grabber.release();
@@ -138,7 +142,7 @@ public class SharedFrameGrabber {
 
         // Set default grabber key, if the given one is null or empty or has the value of DEFAULT_GRABBER_KEY
         grabberName = getDefaultFrameGrabberName(grabberName);
-        AstericsErrorHandling.instance.reportInfo(null, "Using FrameGrabber: " + grabberName);
+        logger.info("Using FrameGrabber: " + grabberName);
 
         // System.out.println("Using grabber: "+grabberName+", and camIdx:
         // "+camIdx);
@@ -158,13 +162,13 @@ public class SharedFrameGrabber {
         doSanityChecks(grabberName, deviceKey);
 
         if (isDevNr) {
-            AstericsErrorHandling.instance.reportInfo(null, "Setting deviceNr <" + camIdx + ">");
+            logger.info("Setting deviceNr <" + camIdx + ">");
             devSet.setDeviceNumber(camIdx);
         } else if (new File(deviceKey).exists()) {
-            AstericsErrorHandling.instance.reportInfo(null, "Setting device filename <" + deviceKey + ">");
+            logger.info("Setting device filename <" + deviceKey + ">");
             devSet.setDeviceFilename(deviceKey);
         } else {
-            AstericsErrorHandling.instance.reportInfo(null, "Setting device path <" + deviceKey + ">");
+            logger.info("Setting device path <" + deviceKey + ">");
             devSet.setDevicePath(deviceKey);
         }
 
@@ -182,7 +186,10 @@ public class SharedFrameGrabber {
         CameraDevice dev = new CameraDevice(devSet);
         grabber = dev.createFrameGrabber();
         // enable setting framerate
-        grabber.setFrameRate(DEFAULT_FRAME_RATE);
+        if(frameRate > 0) {
+            logger.info("Setting frame rate to "+frameRate);
+            grabber.setFrameRate(frameRate);
+        }
 
         // FFmpegFrameGrabber grabber =new FFmpegFrameGrabber("video=Integrated
         // Camera");
@@ -243,7 +250,7 @@ public class SharedFrameGrabber {
         // standard device paths with /dev/video<devNr>
         if (OSUtils.isUnix() && FFMPEG_GRABBER_KEY.equals(grabberName) && isDevNr) {
             deviceKey = "/dev/video" + camIdx;
-            AstericsErrorHandling.instance.reportInfo(null, "Mapping camIdx <" + camIdx + "> to device path: " + deviceKey);
+            logger.info("Mapping camIdx <" + camIdx + "> to device path: " + deviceKey);
         }
         return deviceKey;
     }
@@ -257,7 +264,7 @@ public class SharedFrameGrabber {
     public List<String> getDeviceList(String grabberName) {
         String[] s = null;
         try {
-            AstericsErrorHandling.instance.reportDebugInfo(null, "Retrieving device list");
+            logger.fine("Retrieving device list");
             Class<? extends FrameGrabber> c = FrameGrabber.get(getDefaultFrameGrabberName(grabberName));
             c.getMethod("tryLoad").invoke(null);
             try {
@@ -280,7 +287,7 @@ public class SharedFrameGrabber {
      */
     public List<String> getFrameGrabberList() {
         if (grabberList == null) {
-            AstericsErrorHandling.instance.reportDebugInfo(null, "Creating list of available frame grabbers on this platform");
+            logger.fine("Creating list of available frame grabbers on this platform");
             grabberList = new ArrayList<String>();
             for (String grabberName : defaultGrabberList.get(OSUtils.getOsName())) {
                 try {
@@ -350,7 +357,7 @@ public class SharedFrameGrabber {
             int w = 320;
             int h = 240;
 
-            AstericsErrorHandling.instance.reportDebugInfo(null, "Showing camera settings for device: " + deviceKey);
+            logger.fine("Showing camera settings for device: " + deviceKey);
             vi.setupDevice(camIdx, w, h);
             vi.showSettingsWindow(camIdx);
 
@@ -358,7 +365,7 @@ public class SharedFrameGrabber {
             BytePointer bgrImageData = null;
             SharedCanvasFrame.instance.createCanvasFrame("showCameraSettings", "Preview Camera Settings", 1, new Point(0, 0), new Dimension(200, 200));
 
-            AstericsErrorHandling.instance.reportDebugInfo(null, "Showing camera preview for 500 frames");
+            logger.fine("Showing camera preview for 500 frames");
             for (int i = 0; i < 500; i++) {
                 if (bgrImage == null || bgrImage.width() != w || bgrImage.height() != h) {
                     bgrImage = AbstractIplImage.create(w, h, IPL_DEPTH_8U, 3);
@@ -383,6 +390,25 @@ public class SharedFrameGrabber {
 
     /**
      * Returns the FrameGrabber instance for the given parameters.
+     * @param deviceKey
+     * @param grabberName
+     * @param resolutionIdx
+     * @param grabberFormat
+     * @param frameRate
+     * @return
+     * @throws Exception
+     */
+    public FrameGrabber getFrameGrabber(String deviceKey, String grabberName, int resolutionIdx, String grabberFormat, int frameRate) throws Exception {
+        if (device2FrameGrabber.containsKey(deviceKey)) {
+            return device2FrameGrabber.get(deviceKey);
+        }
+
+        init(grabberName, deviceKey, RESOLUTIONS[resolutionIdx][0], RESOLUTIONS[resolutionIdx][1], grabberFormat, frameRate);
+        return device2FrameGrabber.get(deviceKey);
+    }    
+    
+    /**
+     * Returns the FrameGrabber instance for the given parameters.
      * 
      * @param deviceKey
      * @param grabberName
@@ -396,7 +422,7 @@ public class SharedFrameGrabber {
             return device2FrameGrabber.get(deviceKey);
         }
 
-        init(grabberName, deviceKey, RESOLUTIONS[resolutionIdx][0], RESOLUTIONS[resolutionIdx][1], grabberFormat);
+        init(grabberName, deviceKey, RESOLUTIONS[resolutionIdx][0], RESOLUTIONS[resolutionIdx][1], grabberFormat, 0);
         return device2FrameGrabber.get(deviceKey);
     }
 
@@ -415,7 +441,7 @@ public class SharedFrameGrabber {
             return device2FrameGrabber.get(deviceKey);
         }
 
-        init(grabberName, deviceKey, width, height, "");
+        init(grabberName, deviceKey, width, height, "", 0);
         return device2FrameGrabber.get(deviceKey);
     }
 
@@ -433,7 +459,7 @@ public class SharedFrameGrabber {
             return device2FrameGrabber.get(deviceKey);
         }
 
-        init(null, deviceKey, width, height, "");
+        init(null, deviceKey, width, height, "", 0);
         return device2FrameGrabber.get(deviceKey);
     }
 
@@ -449,7 +475,7 @@ public class SharedFrameGrabber {
             return device2FrameGrabber.get(deviceKey);
         }
 
-        init(null, deviceKey, 320, 240, "");
+        init(null, deviceKey, 320, 240, "", 0);
         return device2FrameGrabber.get(deviceKey);
     }
 
@@ -477,7 +503,7 @@ public class SharedFrameGrabber {
         }
         deviceListeners.add(listener);
         listeners.put(deviceKey, deviceListeners);
-        AstericsErrorHandling.instance.reportDebugInfo(null, "After registering: Registered grabbing listeners: " + deviceListeners);
+        logger.fine("After registering: Registered grabbing listeners: " + deviceListeners);
     }
 
     /**
@@ -500,7 +526,7 @@ public class SharedFrameGrabber {
                 try {
                     grabber.stop();
                     grabber.release();
-                    AstericsErrorHandling.instance.reportDebugInfo(null, "frame grabber for device <" + deviceKey + "> stopped and released.");
+                    logger.fine("frame grabber for device <" + deviceKey + "> stopped and released.");
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -509,7 +535,7 @@ public class SharedFrameGrabber {
                 }
             }
         }
-        AstericsErrorHandling.instance.reportDebugInfo(null, "After deregistering: Registered grabbing listeners: " + deviceListeners);
+        logger.fine("After deregistering: Registered grabbing listeners: " + deviceListeners);
     }
 
     /**
@@ -532,12 +558,12 @@ public class SharedFrameGrabber {
      * @param deviceKey
      */
     public void stopGrabbing(String deviceKey) {
-        AstericsErrorHandling.instance.reportDebugInfo(null, "Stop grabbing for devicekey <" + deviceKey + ">");
+        logger.fine("Stop grabbing for devicekey <" + deviceKey + ">");
         GrabberThread grabberThread = grabberThreads.get(deviceKey);
         if (grabberThread != null) {
             grabberThread.stopGrabbing();
             try {
-                AstericsErrorHandling.instance.reportDebugInfo(null, "Waiting for thread to die...");
+                logger.fine("Waiting for thread to die...");
                 grabberThread.join(GRABBER_STOP_TIMEOUT);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
@@ -594,7 +620,7 @@ public class SharedFrameGrabber {
             List<GrabbedImageListener> deviceListeners = listeners.get(deviceKey);
             try {
                 grabber = getFrameGrabber(deviceKey);
-                AstericsErrorHandling.instance.reportDebugInfo(null, "Start grabbing for devicekey <" + deviceKey + ">, grabber <" + grabber + ">");
+                logger.fine("Start grabbing for devicekey <" + deviceKey + ">, grabber <" + grabber + ">");
                 if (grabber != null) {
                     grabber.start();
                     while (!stopGrabbing) {
@@ -612,7 +638,7 @@ public class SharedFrameGrabber {
                     // Grabbing can be safely stopped now
                     grabber.stop();
                     grabber.release();
-                    AstericsErrorHandling.instance.reportDebugInfo(null, "Grabbing stopped in grabber thread.");
+                    logger.fine("Grabbing stopped in grabber thread.");
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
