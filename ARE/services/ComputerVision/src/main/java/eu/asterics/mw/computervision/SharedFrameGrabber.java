@@ -122,7 +122,7 @@ public class SharedFrameGrabber {
         // DC1394FrameGrabber, FlyCaptureFrameGrabber, OpenKinectFrameGrabber,
         // PS3EyeFrameGrabber, VideoInputFrameGrabber, and FFmpegFrameGrabber.
 
-        //Set default grabber key, if the given one is null or empty or has the value of DEFAULT_GRABBER_KEY
+        // Set default grabber key, if the given one is null or empty or has the value of DEFAULT_GRABBER_KEY
         grabberName = getDefaultFrameGrabberName(grabberName);
         AstericsErrorHandling.instance.reportInfo(null, "Using FrameGrabber: " + grabberName);
 
@@ -131,36 +131,28 @@ public class SharedFrameGrabber {
         // grabber = FrameGrabber.create(grabberName,camIdx);
 
         CameraDevice.Settings devSet = new CameraDevice.SettingsImplementation();
-        
-        boolean isDevNr=false;
-        int camIdx=0;
+
+        // Check if it is a device nr or a device path
+        boolean isDevNr = false;
+        int camIdx = 0;
         try {
             camIdx = Integer.parseInt(deviceKey);
-            isDevNr=true;            
+            isDevNr = true;
         } catch (NumberFormatException ne) {
         }
-        
-        //Generally the ffmpeg grabber does not support device numbers but device paths.
-        //On Linux ffmpeg is our default choice, so if the user only entered a devNr, map it to
-        //standard device paths with /dev/video<devNr>
-        if(OSUtils.isUnix() && FFMPEG_GRABBER_KEY.equals(grabberName) && isDevNr) {
-			deviceKey="/dev/video"+camIdx;
-			AstericsErrorHandling.instance.reportInfo(null, "Mapping camIdx <"+camIdx+"> to device path: " + deviceKey);
-		}
-		
+
         doSanityChecks(grabberName, deviceKey);
-		
-		if(!FFMPEG_GRABBER_KEY.equals(grabberName) && isDevNr) {
-			AstericsErrorHandling.instance.reportInfo(null, "Setting deviceNr <"+camIdx+">");
-			devSet.setDeviceNumber(camIdx);			
-		} else if (new File(deviceKey).exists()) {
-			AstericsErrorHandling.instance.reportInfo(null, "Setting device filename <"+deviceKey+">");
+
+        if (isDevNr) {
+            AstericsErrorHandling.instance.reportInfo(null, "Setting deviceNr <" + camIdx + ">");
+            devSet.setDeviceNumber(camIdx);
+        } else if (new File(deviceKey).exists()) {
+            AstericsErrorHandling.instance.reportInfo(null, "Setting device filename <" + deviceKey + ">");
             devSet.setDeviceFilename(deviceKey);
         } else {
-			AstericsErrorHandling.instance.reportInfo(null, "Setting device path <"+deviceKey+">");
+            AstericsErrorHandling.instance.reportInfo(null, "Setting device path <" + deviceKey + ">");
             devSet.setDevicePath(deviceKey);
         }
-
 
         devSet.setName(deviceKey);
         devSet.setFrameGrabber(FrameGrabber.get(grabberName));
@@ -185,7 +177,7 @@ public class SharedFrameGrabber {
         // grabber.setFormat("vfwcap");
 
         AstericsErrorHandling.instance.getLogger().fine("Adding FrameGrabber with key <" + deviceKey + ">, grabber <" + grabber + ">");
-        device2FrameGrabber.put(deviceKey, grabber);        
+        device2FrameGrabber.put(deviceKey, grabber);
     }
 
     private void doSanityChecks(String grabberName, String deviceKey) throws Exception {
@@ -201,6 +193,28 @@ public class SharedFrameGrabber {
             } catch (NumberFormatException e) {
             }
         }
+    }
+
+    public String mapDeviceNrToDeviceKey(String deviceKey, String grabberName) {
+        // map the DEFAULT framegrabber value to a real framegrabber.
+        grabberName = getDefaultFrameGrabberName(grabberName);
+
+        boolean isDevNr = false;
+        int camIdx = 0;
+        try {
+            camIdx = Integer.parseInt(deviceKey);
+            isDevNr = true;
+        } catch (NumberFormatException ne) {
+        }
+
+        // Generally the ffmpeg grabber does not support device numbers but device paths.
+        // On Linux ffmpeg is our default choice, so if the user only entered a devNr, map it to
+        // standard device paths with /dev/video<devNr>
+        if (OSUtils.isUnix() && FFMPEG_GRABBER_KEY.equals(grabberName) && isDevNr) {
+            deviceKey = "/dev/video" + camIdx;
+            AstericsErrorHandling.instance.reportInfo(null, "Mapping camIdx <" + camIdx + "> to device path: " + deviceKey);
+        }
+        return deviceKey;
     }
 
     public List<String> getDeviceList(String grabberName) {

@@ -233,6 +233,8 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         } else if ("cameraSelection".equalsIgnoreCase(propertyName)) {
             oldValue = propCameraSelection;
             propCameraSelection = (String) newValue;
+            //map an eventual device nr to a real device key dependeing on the used frame grabber
+            propCameraSelection=SharedFrameGrabber.instance.mapDeviceNrToDeviceKey(propCameraSelection, propFrameGrabber);
         } else if ("cameraResolution".equalsIgnoreCase(propertyName)) {
             oldValue = propCameraResolution;
             propCameraResolution = Integer.parseInt((String) newValue);
@@ -315,7 +317,9 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         try {
             resetVariables();
             // Get default grabber for this platform (VideoInput for Windows,
-            // OpenCV for Linux,...) using default camera (device 0)
+            // FFmpeg for Linux, OpenCV for Mac...) using default camera (device 0)
+            //mapping device nr to device key in case of FFmpeg framegrabber
+            propCameraSelection=SharedFrameGrabber.instance.mapDeviceNrToDeviceKey(propCameraSelection, propFrameGrabber);
             FrameGrabber grabber = SharedFrameGrabber.instance.getFrameGrabber(propCameraSelection, propFrameGrabber,
                     propCameraResolution, propFrameGrabberFormat);
             // register this as listener for grabbed images
@@ -363,6 +367,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         // System.out.println("Stopping XFaceTrackerLK, Executed in:
         // "+Thread.currentThread().getName());
 
+        propCameraSelection=SharedFrameGrabber.instance.mapDeviceNrToDeviceKey(propCameraSelection, propFrameGrabber);
         SharedFrameGrabber.instance.stopGrabbing(propCameraSelection);
         SharedFrameGrabber.instance.deregisterGrabbedImageListener(propCameraSelection, this);
         SharedCanvasFrame.instance.disposeFrame(instanceId);
