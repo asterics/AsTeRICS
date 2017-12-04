@@ -41,6 +41,8 @@ import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.videoInputLib.videoInput;
 import org.bytedeco.javacpp.helper.opencv_core.AbstractIplImage;
 import org.bytedeco.javacv.CameraDevice;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.FrameConverter;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.OpenCVFrameConverter;
 
@@ -57,7 +59,6 @@ import eu.asterics.mw.utils.OSUtils;
 public class SharedFrameGrabber {
     public static final int DEFAULT_FRAME_RATE = 15;
     private static final int DEFAULT_GRABBER_KEY_INDEX = 1;
-    // timeout for grabber thread to die in ms.
     public static final String DEFAULT_GRABBER_KEY = "Default";
     public static final String OPENCV_GRABBER_KEY = "OpenCV";
     public static final String VIDEOINPUT_GRABBER_KEY = "VideoInput";
@@ -71,9 +72,11 @@ public class SharedFrameGrabber {
     public static final String FLYCAPTURE_GRABBER_KEY = "FlyCapture";
     public static final String FLYCAPTURE2_GRABBER_KEY = "FlyCapture2";
 
+    // timeout for grabber thread to die in ms.
     private static final long GRABBER_STOP_TIMEOUT = 10000;
     public static SharedFrameGrabber instance = new SharedFrameGrabber();
 
+    // maps for mapping between deviceKey and frame grabber, image listener and grabber threads.
     private Map<String, FrameGrabber> device2FrameGrabber = new HashMap<String, FrameGrabber>();
     private Map<String, List<GrabbedImageListener>> listeners = new HashMap<String, List<GrabbedImageListener>>();
     private Map<String, GrabberThread> grabberThreads = new HashMap<String, GrabberThread>();
@@ -95,6 +98,17 @@ public class SharedFrameGrabber {
 
     }
 
+    /**
+     * This method is used to actually create and initialize a frame grabber with the given parameters. Also sanity checks are done to prevent crashes of native
+     * libs.
+     * 
+     * @param grabberName
+     * @param deviceKey
+     * @param userWidth
+     * @param userHeight
+     * @param grabberFormat
+     * @throws Exception
+     */
     private void init(String grabberName, String deviceKey, int userWidth, int userHeight, String grabberFormat) throws Exception {
         FrameGrabber grabber = null;
 
@@ -103,7 +117,7 @@ public class SharedFrameGrabber {
             grabberFormat = "dshow";
         }
 
-        AstericsErrorHandling.instance.reportInfo(null, "Available grabber: " + getFrameGrabberList());
+        AstericsErrorHandling.instance.reportInfo(null, "Available grabber: " + Arrays.toString(defaultGrabberList.get(OSUtils.getOsName())));
         AstericsErrorHandling.instance.reportInfo(null, "Default FrameGrabber: " + getDefaultFrameGrabberName());
         AstericsErrorHandling.instance.reportInfo(null, "FrameGrabber: " + grabberName);
         AstericsErrorHandling.instance.reportInfo(null, "DeviceKey: " + deviceKey);
@@ -180,6 +194,14 @@ public class SharedFrameGrabber {
         device2FrameGrabber.put(deviceKey, grabber);
     }
 
+    /**
+     * Do sanity checks to prevent a crash of the selected frame grabber. On Linux this checks for existence of the video device which should be used for the
+     * OpenCVFrameGrabber.
+     * 
+     * @param grabberName
+     * @param deviceKey
+     * @throws Exception
+     */
     private void doSanityChecks(String grabberName, String deviceKey) throws Exception {
         // Some dirty checks to prevent a crash of OpenCV on Linux if the device
         // does not exist.
@@ -195,6 +217,15 @@ public class SharedFrameGrabber {
         }
     }
 
+    /**
+     * Maps a given device number to a device path, if possible and dependent on the given frame grabber. e.g. if grabberName == {@link #FFMPEG_GRABBER_KEY} map
+     * the device number to /dev/video<deviceNr>. The caller is responsible to use this newly generated deviceKey for all subsequent calls of methods from
+     * {@link SharedFrameGrabber}.
+     * 
+     * @param deviceKey
+     * @param grabberName
+     * @return
+     */
     public String mapDeviceNrToDeviceKey(String deviceKey, String grabberName) {
         // map the DEFAULT framegrabber value to a real framegrabber.
         grabberName = getDefaultFrameGrabberName(grabberName);
@@ -217,6 +248,12 @@ public class SharedFrameGrabber {
         return deviceKey;
     }
 
+    /**
+     * Returns a list of available devices, when using the given grabber.
+     * 
+     * @param grabberName
+     * @return
+     */
     public List<String> getDeviceList(String grabberName) {
         String[] s = null;
         try {
@@ -236,14 +273,14 @@ public class SharedFrameGrabber {
     }
 
     /**
-     * Returns a list of theoretically available framegrabbers for the current platform depending on {@link OSUtils#getOsName(). The frame grabber are not
-     * actually tested if they ca be loaded on the platform.
+     * Returns a list of theoretically available frame grabbers for the current platform depending on {@link OSUtils#getOsName(). The frame grabber are not
+     * actually tested if they can be loaded on the platform, because this could sometimes lead to a crash of the ARE.
      * 
      * @return
      */
     public List<String> getFrameGrabberList() {
         if (grabberList == null) {
-            AstericsErrorHandling.instance.reportDebugInfo(null, "Creating list of available frame grabbers");
+            AstericsErrorHandling.instance.reportDebugInfo(null, "Creating list of available frame grabbers on this platform");
             grabberList = new ArrayList<String>();
             for (String grabberName : defaultGrabberList.get(OSUtils.getOsName())) {
                 try {
@@ -254,14 +291,14 @@ public class SharedFrameGrabber {
                     Class<? extends FrameGrabber> c = FrameGrabber.get(grabberName);
 
                     if (c != null) {
-                        // Don't do testing of grabber loading now, because it can be very time-consuming.
+                        // Don't do testing of grabber loading now, because it can be very time-consuming, and sometimes if the library is buggy it can
+                        // crash the ARE.
                         /*
-                         * System.out.println("\n\n++++++++++Trying to load "+grabberName+"++++++\n\n"); c.getMethod("tryLoad").invoke(null); boolean
-                         * mayContainCameras = false; try { String[] s = (String[])c.getMethod("getDeviceDescriptions").invoke(null); if (s.length > 0) {
+                         * System.out.println("\n\n++++++++++Trying to load " + grabberName + "++++++\n\n"); c.getMethod("tryLoad").invoke(null); boolean
+                         * mayContainCameras = false; try { String[] s = (String[]) c.getMethod("getDeviceDescriptions").invoke(null); if (s.length > 0) {
                          * mayContainCameras = true; } } catch (Throwable t) { if (t.getCause() instanceof UnsupportedOperationException) { mayContainCameras =
-                         * true; } } if(!mayContainCameras) { continue; }
+                         * true; } } if (!mayContainCameras) { continue; }
                          */
-
                         grabberList.add(grabberName);
                     }
                 } catch (Throwable t) {
@@ -344,6 +381,16 @@ public class SharedFrameGrabber {
 
     }
 
+    /**
+     * Returns the FrameGrabber instance for the given parameters.
+     * 
+     * @param deviceKey
+     * @param grabberName
+     * @param resolutionIdx
+     * @param grabberFormat
+     * @return
+     * @throws Exception
+     */
     public FrameGrabber getFrameGrabber(String deviceKey, String grabberName, int resolutionIdx, String grabberFormat) throws Exception {
         if (device2FrameGrabber.containsKey(deviceKey)) {
             return device2FrameGrabber.get(deviceKey);
@@ -353,6 +400,16 @@ public class SharedFrameGrabber {
         return device2FrameGrabber.get(deviceKey);
     }
 
+    /**
+     * Returns the FrameGrabber instance for the given parameters.
+     * 
+     * @param deviceKey
+     * @param grabberName
+     * @param width
+     * @param height
+     * @return
+     * @throws Exception
+     */
     public FrameGrabber getFrameGrabber(String deviceKey, String grabberName, int width, int height) throws Exception {
         if (device2FrameGrabber.containsKey(deviceKey)) {
             return device2FrameGrabber.get(deviceKey);
@@ -362,6 +419,15 @@ public class SharedFrameGrabber {
         return device2FrameGrabber.get(deviceKey);
     }
 
+    /**
+     * Returns the FrameGrabber instance for the given parameters.
+     * 
+     * @param deviceKey
+     * @param width
+     * @param height
+     * @return
+     * @throws Exception
+     */
     public FrameGrabber getFrameGrabber(String deviceKey, int width, int height) throws Exception {
         if (device2FrameGrabber.containsKey(deviceKey)) {
             return device2FrameGrabber.get(deviceKey);
@@ -371,6 +437,13 @@ public class SharedFrameGrabber {
         return device2FrameGrabber.get(deviceKey);
     }
 
+    /**
+     * Returns the FrameGrabber instance for the given parameters.
+     * 
+     * @param deviceKey
+     * @return
+     * @throws Exception
+     */
     public FrameGrabber getFrameGrabber(String deviceKey) throws Exception {
         if (device2FrameGrabber.containsKey(deviceKey)) {
             return device2FrameGrabber.get(deviceKey);
@@ -380,10 +453,23 @@ public class SharedFrameGrabber {
         return device2FrameGrabber.get(deviceKey);
     }
 
+    /**
+     * Returns the default FrameGrabber for the first device.
+     * 
+     * @return
+     * @throws Exception
+     */
     public FrameGrabber getDefaultFrameGrabber() throws Exception {
         return getFrameGrabber("0");
     }
 
+    /**
+     * Registers the given {@link GrabbedImageListener} for the given deviceKey to listen for grabbed frames. If grabbing was started with
+     * {@link #startGrabbing(String)}, the listener gets notified with each new frame.
+     * 
+     * @param deviceKey
+     * @param listener
+     */
     public void registerGrabbedImageListener(String deviceKey, GrabbedImageListener listener) {
         List<GrabbedImageListener> deviceListeners = listeners.get(deviceKey);
         if (deviceListeners == null) {
@@ -394,6 +480,13 @@ public class SharedFrameGrabber {
         AstericsErrorHandling.instance.reportDebugInfo(null, "After registering: Registered grabbing listeners: " + deviceListeners);
     }
 
+    /**
+     * Unregisters the given {@link GrabbedImageListener} for the given deviceKey. If no listener is registered for the given deviceKey any more, the grabber
+     * thread is stopped and the associated grabber instance is stopped and released.
+     * 
+     * @param deviceKey
+     * @param listener
+     */
     public void deregisterGrabbedImageListener(String deviceKey, GrabbedImageListener listener) {
         List<GrabbedImageListener> deviceListeners = listeners.get(deviceKey);
         if (deviceListeners != null) {
@@ -407,6 +500,7 @@ public class SharedFrameGrabber {
                 try {
                     grabber.stop();
                     grabber.release();
+                    AstericsErrorHandling.instance.reportDebugInfo(null, "frame grabber for device <" + deviceKey + "> stopped and released.");
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -418,6 +512,11 @@ public class SharedFrameGrabber {
         AstericsErrorHandling.instance.reportDebugInfo(null, "After deregistering: Registered grabbing listeners: " + deviceListeners);
     }
 
+    /**
+     * Starts grabbing for the device with the given deviceKey.
+     * 
+     * @param deviceKey
+     */
     public void startGrabbing(final String deviceKey) {
         GrabberThread grabberThread = grabberThreads.get(deviceKey);
         if (grabberThread == null) {
@@ -427,6 +526,11 @@ public class SharedFrameGrabber {
         }
     }
 
+    /**
+     * Stops grabbing for the device with the given deviceKey.
+     * 
+     * @param deviceKey
+     */
     public void stopGrabbing(String deviceKey) {
         AstericsErrorHandling.instance.reportDebugInfo(null, "Stop grabbing for devicekey <" + deviceKey + ">");
         GrabberThread grabberThread = grabberThreads.get(deviceKey);
@@ -444,15 +548,39 @@ public class SharedFrameGrabber {
         }
     }
 
-    private void notifyGrabbedImageListener(List<GrabbedImageListener> deviceListeners, IplImage image) {
+    /**
+     * Notifies the registered {@link GrabbedImageListener} if new frames are available. if there are more than 1 listeners for a device, the frame is cloned
+     * (still experimental and not really working).
+     * 
+     * @param deviceListeners
+     * @param frame
+     * @param converter
+     */
+    private void notifyGrabbedImageListener(List<GrabbedImageListener> deviceListeners, Frame frame, FrameConverter<IplImage> converter) {
+        int counter = 0;
         for (GrabbedImageListener listener : deviceListeners) {
+            if (++counter > 1) {
+                // System.out.print("c");
+                frame = frame.clone();
+            }
+            IplImage image = converter.convert(frame);
             listener.imageGrabbed(image);
         }
     }
 
-    class GrabberThread extends Thread {
+    /**
+     * This is a private class which does the actual grabbing in a new thread.
+     * 
+     * @author mad <deinhofe@technikum-wien.at
+     * @date 04.12.2017
+     *
+     */
+    private class GrabberThread extends Thread {
         private volatile boolean stopGrabbing = false;
         private String deviceKey;
+        // CanvasFrame, FrameGrabber, and FrameRecorder use Frame objects to communicate image data.
+        // We need a FrameConverter to interface with other APIs (Android, Java 2D, or OpenCV).
+        OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
 
         public GrabberThread(String deviceKey) {
             super();
@@ -462,9 +590,6 @@ public class SharedFrameGrabber {
         @Override
         public void run() {
             FrameGrabber grabber;
-            // CanvasFrame, FrameGrabber, and FrameRecorder use Frame objects to communicate image data.
-            // We need a FrameConverter to interface with other APIs (Android, Java 2D, or OpenCV).
-            OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
 
             List<GrabbedImageListener> deviceListeners = listeners.get(deviceKey);
             try {
@@ -481,12 +606,13 @@ public class SharedFrameGrabber {
                         // Java2DFrameConverter and OpenCVFrameConverter, one after the other.
                         // - Java2DFrameConverter also has static copy() methods that we can use to transfer
                         // data more directly between BufferedImage and IplImage or Mat via Frame objects.
-                        IplImage image = converter.convert(grabber.grab());
-                        notifyGrabbedImageListener(deviceListeners, image);
+                        Frame frame = grabber.grab();
+                        notifyGrabbedImageListener(deviceListeners, frame, converter);
                     }
+                    // Grabbing can be safely stopped now
                     grabber.stop();
                     grabber.release();
-                    AstericsErrorHandling.instance.reportDebugInfo(null, "Grabbing stopped");
+                    AstericsErrorHandling.instance.reportDebugInfo(null, "Grabbing stopped in grabber thread.");
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
