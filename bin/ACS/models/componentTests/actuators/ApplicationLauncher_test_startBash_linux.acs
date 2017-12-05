@@ -23,7 +23,7 @@
       <properties>
         <property name="executeOnPlatform" value="LINUX" />
         <property name="executionMode" value="START_APPLICATION" />
-        <property name="defaultApplication" value="/bin/bash" />
+        <property name="defaultApplication" value="lxterminal" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
         <property name="closeCmd" value="" />

@@ -134,9 +134,9 @@ public class OSUtils {
             return null;
         }
         // quote command if it is with spaces
-        // if(applicationPath.contains(" ")) {
-        applicationPath = "\"" + applicationPath + "\"";
-        // }
+        if(applicationPath.contains(" ")) {
+			applicationPath = "\"" + applicationPath + "\"";
+        }
         // File applicationPathFile = ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.getInstance().getAREBaseURI(), applicationPath);
         // applicationPath=FilenameUtils.separatorsToSystem("\""+applicationPath+"\"");
         // return startApplication("\"" + applicationPathFile.getPath() + "\"" + " " + arguments, workingDirectory, executeOnPlatform);
@@ -174,12 +174,13 @@ public class OSUtils {
                         cmdEndIndex = cmdEndIndex + 2;
                     }
                 } else {
-                    // a cmd without quotes is split by a space.
+                    // a cmd without quotes is split by a space or can be without arguments.
                     cmdEndIndex = applicationPathAndArguments.indexOf(" ");
                 }
+                //if the cmdEndIndex < 0, we did not find a space or endQuote, so treat the whole string as command.
                 if (cmdEndIndex < 0) {
-                    logger.warning("Could not find command string in: " + applicationPathAndArguments);
-                    return null;
+                    logger.warning("Only command, no arguments: " + applicationPathAndArguments);
+                    cmdEndIndex=applicationPathAndArguments.length();                 
                 }
                 // cmdEndIndex++;
                 String cmdString = applicationPathAndArguments.substring(0, cmdEndIndex);
