@@ -27,7 +27,8 @@ package eu.asterics.mw.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.sql.Timestamp;
+import java.text.*;
+import java.util.*;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -53,8 +54,8 @@ public class ErrorLogPane extends JPanel {
     }
 
     public static void appendLog(String error) {
-
-        textArea.append(new Timestamp(System.currentTimeMillis()) + ": " + error + "\n");
+		Date now=new Date(System.currentTimeMillis());
+        textArea.append(MessageFormat.format("{0}: {1}\n",new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()),error));
         textArea.setCaretPosition(textArea.getDocument().getLength());
 
     }
