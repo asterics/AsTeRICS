@@ -7,7 +7,7 @@
 </HEAD>
 <BODY>
 <H1>XFacetrackerLK</H1> 
-<H3>Component Type: Sensor (Subcategory: Computer Vision) <p>OS: Windows, Linux, Mac OSX</H3>
+<H3>Component Type: Sensor (Subcategory: Computer Vision) <p>OS: Windows (x86, x64), Linux (x86, x64, RPi3), Mac OSX</H3>
 <p>
 This component provides a cross-platform face tracking computer vision algorithm which puts out estimated movement of a users’ nose and chin in x and y coordinates. 
 The underlying mechanism builds upon the JavaCV (OpenCV) library (in particular a trained cascade of haar-like features in combination with a Lukas Kanade optical flow algorithm is used to track a face and its movement). 
@@ -20,6 +20,18 @@ A camera has to be available (this can be any webcam or a camera which is availa
 Also the camera device of a Kinect sensor or PS3Eye should work. Furthermore, a video stream of an IP camera can be used for tracking.
 <div class="image"><img src="img/webcam.jpg" alt="Logitech Webcam 9000 Pro" title="Logitech Webcam 9000 Pro" /><br>
 Logitech Webcam 9000 Pro</div>
+
+<h3>Note for Raspberry Pi</h3>
+The plugin can be used on a Raspberry Pi 3 (tested on Raspbian Pixels) with USB cameras, the Kinect camera or the raspi cam.
+
+<p>
+In order for the raspi cam to work the following steps are necessary:
+<ol>
+	<li>Enable the camera with 
+		<p>sudo raspi-config</li>
+	<li>Add the v4l driver for the camera:
+		<p>sudo modprobe bcm2835-v4l2 max_video_width=2592 max_video_height=1944</li>
+</ol>
 <H2>Output Port Description</H2>
 <ul>
 <li><STRONG>noseX [integer]:</STRONG> This value specifies the relative change in the x coordinate of the user's nose with respect to the previous image frame.</li>
@@ -40,19 +52,16 @@ Logitech Webcam 9000 Pro</div>
 <li><STRONG>cameraSelection [string]:</STRONG> The camera device to be used - use camdIdx e.g. '0' (VideoInput, OpenCV, OpenKinect, PS3Eye), or camName e.g. 'video=Integrated Camera' or 'desktop' (FFmpeg), stream-url for IPCamera.</li>
 <li><STRONG>cameraResolution [string, combobox selection]:</STRONG> This selection box provides several standard camera resolutions. Changing the resolution affects accuracy and performance (CPU load of the runtime system). 
 Provided selections include “160x120”, “320x240”, “640x480”, “800x600”, “1024x768” and “1600x1200”.</li>
+<li><STRONG>frameRate [integer]:</STRONG>The frame rate to use for frame grabbing. In case of 0 or a negative value, the maximum frame rate will be used.
 <li><STRONG>titleVideoFrameWindow [string]:</STRONG>The title of the window showing the video frame.</li>
+<li><STRONG>displayGUI [boolean]:</STRONG>if selected, the GUI window will be shown.</li>
+<li><STRONG>enableOverlaySettings [boolean]:</STRONG>if selected, the video frame shows the current frame rate and device name as overlayed text.</li>
 </ul>
 
 <H2>Example Configuraitons</H2>
 
 <H3>Default</H3>
-Let the plugin probe available framegrabbers and choose the first available one.
-The following grabber are tried in the following order:
-<ol>
-<li>OpenCV</li>
-<li>VideoInput</li>
-<li>FFmpeg</li>
-</ol>
+Selects the best frame grabber for the platform the ARE is running on. (Linux: FFmpeg, Mac OSX: OpenCV, Windows: VideoInput)
 <p>Configuration
 <ul>
 <li>frameGrabber:Default</li>
@@ -65,17 +74,17 @@ The following grabber are tried in the following order:
 <li>cameraSelection:0</li>
 </ul>
 
-<H3>VideoInput</H3>
+<H3>VideoInput (Windows only)</H3>
 <ul>
 <li>frameGrabber:VideoInput</li>
 <li>cameraSelection:0</li>
 </ul>
 
-<H3>FFmpeg</H3>
+<H3>FFmpeg (Linux only)</H3>
 <ul>
 <li>frameGrabber:FFmpeg</li>
-<li>frameGrabberFormat (or vfwcap):dshow</li>
-<li>cameraSelection (device name as of device manager):video=Integrated Camera</li>
+<li>frameGrabberFormat (optional): e.g. vfwcap or dshow</li>
+<li>cameraSelection (device name or device number): e.g. /dev/video0 or 0 (will be mapped to /dev/video0)</li>
 </ul>
 
 <H3>MJPEG stream of SmartPhone camera</H3>
