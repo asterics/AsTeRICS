@@ -75,6 +75,10 @@
                       type="boolean"
                       value="true"                      
                       description="if selected, the GUI window will be shown"/>                      
+            <property name="enableOverlaySettings"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the video frame shows the current frame rate and device name as overlayed text."/>                      
                       <!-- 
             <property name="cameraDisplayUpdate"
                       type="integer"
