@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\HeadSound.acs_2015_10_9_14_14" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS\bin\ARE\models\HeadSound.acs_2017_12_5_15_29" version="20130320">
   <modelDescription>
     <shortDescription>A head-movement controlled musical instrument</shortDescription>
     <requirements>A midi-capabable soundcard must be installed and a webcamera must be connected to an USB port</requirements>
@@ -8,8 +8,8 @@ up/down movements increase/decrease the volume
 left/right movements influence the tone height</description>
   </modelDescription>
   <components>
-    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
-      <description>Webcamera-based face tracking sensor</description>
+    <component id="XFacetrackerLK.1" type_id="asterics.XFacetrackerLK">
+      <description>X-platform webcamera-based face tracking sensor</description>
       <ports>
         <outputPort portTypeID="noseX">
           <properties />
@@ -25,20 +25,25 @@ left/right movements influence the tone height</description>
         </outputPort>
       </ports>
       <properties>
+        <property name="frameGrabber" value="Default" />
+        <property name="frameGrabberFormat" value="" />
+        <property name="deviceList" value="" />
         <property name="cameraSelection" value="0" />
         <property name="cameraResolution" value="1" />
-        <property name="cameraDisplayUpdate" value="100" />
-        <property name="cameraProfile" value="" />
+        <property name="frameRate" value="0" />
+        <property name="titleVideoFrameWindow" value="" />
+        <property name="displayGUI" value="true" />
+        <property name="enableOverlaySettings" value="true" />
       </properties>
       <layout>
-        <posX>0</posX>
-        <posY>135</posY>
+        <posX>4</posX>
+        <posY>161</posY>
       </layout>
       <gui>
-        <posX>7350</posX>
-        <posY>533</posY>
-        <width>2150</width>
-        <height>2933</height>
+        <posX>0</posX>
+        <posY>0</posY>
+        <width>2000</width>
+        <height>1500</height>
       </gui>
     </component>
     <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
@@ -124,13 +129,13 @@ left/right movements influence the tone height</description>
         </outputPort>
       </ports>
       <properties>
-        <property name="resetValue" value="250" />
-        <property name="upperLimit" value="500" />
+        <property name="resetValue" value="350" />
+        <property name="upperLimit" value="700" />
         <property name="lowerLimit" value="0" />
         <property name="wrapAround" value="false" />
       </properties>
       <layout>
-        <posX>153</posX>
+        <posX>154</posX>
         <posY>210</posY>
       </layout>
     </component>
@@ -145,13 +150,13 @@ left/right movements influence the tone height</description>
         </outputPort>
       </ports>
       <properties>
-        <property name="resetValue" value="250" />
-        <property name="upperLimit" value="500" />
+        <property name="resetValue" value="350" />
+        <property name="upperLimit" value="700" />
         <property name="lowerLimit" value="0" />
         <property name="wrapAround" value="false" />
       </properties>
       <layout>
-        <posX>241</posX>
+        <posX>243</posX>
         <posY>47</posY>
       </layout>
     </component>
@@ -306,14 +311,14 @@ left/right movements influence the tone height</description>
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.0">
+    <channel id="binding.9">
       <source>
-        <component id="FacetrackerLK.1" />
-        <port id="noseX" />
+        <component id="XFacetrackerLK.1" />
+        <port id="noseY" />
       </source>
       <target>
-        <component id="Integrate.1" />
-        <port id="in" />
+        <component id="MathEvaluator.1" />
+        <port id="inA" />
       </target>
     </channel>
     <channel id="binding.2">
@@ -326,14 +331,14 @@ left/right movements influence the tone height</description>
         <port id="pitch" />
       </target>
     </channel>
-    <channel id="binding.4">
+    <channel id="binding.8">
       <source>
-        <component id="FacetrackerLK.1" />
-        <port id="noseY" />
+        <component id="XFacetrackerLK.1" />
+        <port id="noseX" />
       </source>
       <target>
-        <component id="MathEvaluator.1" />
-        <port id="inA" />
+        <component id="Integrate.1" />
+        <port id="in" />
       </target>
     </channel>
     <channel id="binding.5">

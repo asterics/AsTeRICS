@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\OskaWriting.acs_2015_10_9_14_14" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS\bin\ARE\models\OskaWriting.acs_2017_12_5_15_43" version="20130320">
   <modelDescription>
     <shortDescription>Camera controlled mouse for writing with OSKA</shortDescription>
     <requirements>Webcam connected to USB port.
@@ -11,39 +11,6 @@ The camera mouse sensitivity and the dwell time can be selected via a GUI slider
 OSKA and Notepad are automatically started for the writing task.</description>
   </modelDescription>
   <components>
-    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
-      <description>Webcamera-based face tracking sensor</description>
-      <ports>
-        <outputPort portTypeID="noseX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="noseY">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="chinX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="chinY">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="cameraSelection" value="0" />
-        <property name="cameraResolution" value="1" />
-        <property name="cameraDisplayUpdate" value="100" />
-        <property name="cameraProfile" value="" />
-      </properties>
-      <layout>
-        <posX>30</posX>
-        <posY>86</posY>
-      </layout>
-      <gui>
-        <posX>8825</posX>
-        <posY>0</posY>
-        <width>1175</width>
-        <height>1511</height>
-      </gui>
-    </component>
     <component id="Mouse.1" type_id="asterics.Mouse">
       <description>Local mouse actuator, emulates mouse activity on local system</description>
       <ports>
@@ -398,7 +365,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <property name="displayGUI" value="true" />
         <property name="buttonCaption1" value="reset cam" />
         <property name="buttonCaption2" value="show cam settings" />
-        <property name="buttonCaption3" value="save cam profile" />
+        <property name="buttonCaption3" value="" />
         <property name="buttonCaption4" value="" />
         <property name="buttonCaption5" value="" />
         <property name="buttonCaption6" value="" />
@@ -438,8 +405,8 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <property name="toolTip20" value="" />
       </properties>
       <layout>
-        <posX>33</posX>
-        <posY>262</posY>
+        <posX>8</posX>
+        <posY>268</posY>
       </layout>
       <gui>
         <posX>1112</posX>
@@ -617,6 +584,44 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <posY>441</posY>
       </layout>
     </component>
+    <component id="XFacetrackerLK.1" type_id="asterics.XFacetrackerLK">
+      <description>X-platform webcamera-based face tracking sensor</description>
+      <ports>
+        <outputPort portTypeID="noseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="noseY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="frameGrabber" value="Default" />
+        <property name="frameGrabberFormat" value="" />
+        <property name="deviceList" value="" />
+        <property name="cameraSelection" value="0" />
+        <property name="cameraResolution" value="1" />
+        <property name="frameRate" value="0" />
+        <property name="titleVideoFrameWindow" value="" />
+        <property name="displayGUI" value="true" />
+        <property name="enableOverlaySettings" value="true" />
+      </properties>
+      <layout>
+        <posX>23</posX>
+        <posY>61</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>0</posY>
+        <width>2000</width>
+        <height>1500</height>
+      </gui>
+    </component>
   </components>
   <channels>
     <channel id="binding.17">
@@ -731,7 +736,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
     </channel>
     <channel id="binding.16">
       <source>
-        <component id="FacetrackerLK.1" />
+        <component id="XFacetrackerLK.1" />
         <port id="noseX" />
       </source>
       <target>
@@ -741,7 +746,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
     </channel>
     <channel id="binding.19">
       <source>
-        <component id="FacetrackerLK.1" />
+        <component id="XFacetrackerLK.1" />
         <port id="noseY" />
       </source>
       <target>
@@ -873,48 +878,6 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button1_init">
-      <sources>
-        <source>
-          <component id="ButtonGrid.2" />
-          <eventPort id="button1" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="FacetrackerLK.1" />
-          <eventPort id="init" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button2_showCameraSettings">
-      <sources>
-        <source>
-          <component id="ButtonGrid.2" />
-          <eventPort id="button2" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="FacetrackerLK.1" />
-          <eventPort id="showCameraSettings" />
-        </target>
-      </targets>
-    </eventChannel>
-    <eventChannel id="button3_saveProfile">
-      <sources>
-        <source>
-          <component id="ButtonGrid.2" />
-          <eventPort id="button3" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="FacetrackerLK.1" />
-          <eventPort id="saveProfile" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="eventOut1_switchModel">
       <sources>
         <source>
@@ -940,6 +903,36 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <target>
           <component id="Mouse.1" />
           <eventPort id="leftClick" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_init">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.2" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="XFacetrackerLK.1" />
+          <eventPort id="init" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_showCameraSettings">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.2" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="XFacetrackerLK.1" />
+          <eventPort id="showCameraSettings" />
         </target>
       </targets>
     </eventChannel>
