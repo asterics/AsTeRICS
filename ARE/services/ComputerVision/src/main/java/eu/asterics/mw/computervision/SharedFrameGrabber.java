@@ -46,7 +46,6 @@ import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameConverter;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.OpenCVFrameConverter;
-import org.bytedeco.javacv.VideoInputFrameGrabber;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.utils.OSUtils;
