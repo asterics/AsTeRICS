@@ -46,6 +46,7 @@ import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameConverter;
 import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.OpenCVFrameConverter;
+import org.bytedeco.javacv.VideoInputFrameGrabber;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.utils.OSUtils;
@@ -87,8 +88,8 @@ public class SharedFrameGrabber {
     private Map<String, String[]> defaultGrabberList = new HashMap<String, String[]>();
 
     private int[][] RESOLUTIONS = new int[][] { { 160, 120 }, { 320, 240 }, { 352, 288 }, { 640, 480 }, { 800, 600 }, { 1024, 768 }, { 1600, 1200 } };
-    
-    Logger logger=AstericsErrorHandling.instance.getLogger();
+
+    Logger logger = AstericsErrorHandling.instance.getLogger();
 
     public SharedFrameGrabber() {
         // The framegrabbers are checked in the list of available ones.
@@ -110,7 +111,8 @@ public class SharedFrameGrabber {
      * @param userWidth
      * @param userHeight
      * @param grabberFormat
-     * @param frameRate TODO
+     * @param frameRate
+     *            TODO
      * @throws Exception
      */
     private void init(String grabberName, String deviceKey, int userWidth, int userHeight, String grabberFormat, int frameRate) throws Exception {
@@ -186,8 +188,8 @@ public class SharedFrameGrabber {
         CameraDevice dev = new CameraDevice(devSet);
         grabber = dev.createFrameGrabber();
         // enable setting framerate
-        if(frameRate > 0) {
-            logger.info("Setting frame rate to "+frameRate);
+        if (frameRate > 0) {
+            logger.info("Setting frame rate to " + frameRate);
             grabber.setFrameRate(frameRate);
         }
 
@@ -343,17 +345,25 @@ public class SharedFrameGrabber {
     }
 
     /**
-     * Shows camera settings by using VideoInput showCameraSettings method. This method is only available on Windows.
+     * Shows camera settings by using VideoInput showCameraSettings method. This method is only available on Windows when using the VideoInput frame grabber.
      * 
      * @param deviceKey
      */
     public void showCameraSettings(String deviceKey) {
-        stopGrabbing(deviceKey);
+        int camIdx=-1;
         try {
-            int camIdx = Integer.parseInt(deviceKey);
+            camIdx = Integer.parseInt(deviceKey);
+        } catch (NumberFormatException ne) {
+            logger.warning("showCameraSettings failed: Could not parse camera index of device key: "+deviceKey);
+            return;
+        }
+        
+        stopGrabbing(deviceKey);
+        
+        videoInput vi = new videoInput();
+        try {
             // this is very ugly because we open the device twice, hopefully no
             // crash
-            videoInput vi = new videoInput();
             int w = 320;
             int h = 240;
 
@@ -377,19 +387,21 @@ public class SharedFrameGrabber {
                 }
                 SharedCanvasFrame.instance.showImage("showCameraSettings", bgrImage);
             }
-            vi.stopDevice(camIdx);
-            SharedCanvasFrame.instance.disposeFrame("showCameraSettings");
-            vi = null;
-        } catch (NumberFormatException ne) {
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        }catch (Exception e) {
+            logger.fine("Could not show camera settings, reason: "+e.getMessage());
+        } finally {
+            if(vi!=null) {
+                vi.stopDevice(camIdx);
+                vi=null;
+                SharedCanvasFrame.instance.disposeFrame("showCameraSettings");
+            }
         }
 
     }
 
     /**
      * Returns the FrameGrabber instance for the given parameters.
+     * 
      * @param deviceKey
      * @param grabberName
      * @param resolutionIdx
@@ -405,8 +417,8 @@ public class SharedFrameGrabber {
 
         init(grabberName, deviceKey, RESOLUTIONS[resolutionIdx][0], RESOLUTIONS[resolutionIdx][1], grabberFormat, frameRate);
         return device2FrameGrabber.get(deviceKey);
-    }    
-    
+    }
+
     /**
      * Returns the FrameGrabber instance for the given parameters.
      * 
