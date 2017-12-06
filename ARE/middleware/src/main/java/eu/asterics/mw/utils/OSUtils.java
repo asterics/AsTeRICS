@@ -31,6 +31,9 @@ package eu.asterics.mw.utils;
  * @author Martin Deinhofer [deinhofe@technikum-wien.at] Date: May 28, 2015
  */
 public class OSUtils {
+    public static final String LINUX = "linux";
+    public static final String MACOSX = "macosx";
+    public static final String WINDOWS = "windows";
     private static String OS = System.getProperty("os.name").toLowerCase();
 
     /**
@@ -67,11 +70,11 @@ public class OSUtils {
      */
     public static String getOsName() {
         if (isWindows()) {
-            return "windows";
+            return WINDOWS;
         } else if (isMac()) {
-            return "macosx";
+            return MACOSX;
         } else if (isUnix()) {
-            return "linux";
+            return LINUX;
         }
         return "unknown";
     }

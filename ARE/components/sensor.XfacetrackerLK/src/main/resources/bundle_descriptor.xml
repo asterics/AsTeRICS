@@ -63,11 +63,22 @@
                       value="1"
                       combobox="160x120//320x240//352x288//640x480//800x600//1024x768//1600x1200"
                       description="Desired camera resolution"/>
+            <property name="frameRate"
+                      type="integer"
+                      value="0"
+                      description="The frame rate to use for frame grabbing. In case of 0 or a negative value, the maximum frame rate will be used."/>
             <property name="titleVideoFrameWindow"
                       type="string"
                       value=""
                       description="The title of the window showing the video frame."/>
-                      
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>                      
+            <property name="enableOverlaySettings"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the video frame shows the current frame rate and device name as overlayed text."/>                      
                       <!-- 
             <property name="cameraDisplayUpdate"
                       type="integer"

@@ -15,7 +15,7 @@
         <pathelement location="${osgi}/org.eclipse.osgi_3.6.0.v20100517.jar"/>
         <pathelement location="${middleware}/asterics.ARE.jar"/>
        	<pathelement location="${services}/asterics.mw.computervision.jar"/>
-       	<pathelement location="${services}/javacv-0.10.0-basic-windows.jar" />       	
+       	<pathelement location="${services}/javacv-1.3.0-basic-windows.jar" />       	
     </path>
     
     <property name="resources" location="src/main/resources"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\Ergotherapie\Ergo-Kopf-Musik.acs_2015_10_9_14_15" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS\bin\ARE\models\Ergotherapie\Ergo-Kopf-Musik.acs_2017_12_5_15_34" version="20130320">
   <modelDescription>
     <shortDescription>A head-movement controlled musical instrument</shortDescription>
     <requirements>A midi-capabable soundcard must be installed and a webcamera must be connected to an USB port</requirements>
@@ -8,39 +8,6 @@ up/down movements increase/decrease the volume
 left/right movements influence the tone height</description>
   </modelDescription>
   <components>
-    <component id="FacetrackerLK.1" type_id="asterics.FacetrackerLK">
-      <description>Webcamera-based face tracking sensor</description>
-      <ports>
-        <outputPort portTypeID="noseX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="noseY">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="chinX">
-          <properties />
-        </outputPort>
-        <outputPort portTypeID="chinY">
-          <properties />
-        </outputPort>
-      </ports>
-      <properties>
-        <property name="cameraSelection" value="0" />
-        <property name="cameraResolution" value="1" />
-        <property name="cameraDisplayUpdate" value="100" />
-        <property name="cameraProfile" value="" />
-      </properties>
-      <layout>
-        <posX>2</posX>
-        <posY>74</posY>
-      </layout>
-      <gui>
-        <posX>7662</posX>
-        <posY>222</posY>
-        <width>2263</width>
-        <height>2800</height>
-      </gui>
-    </component>
     <component id="MidiPlayer.1" type_id="asterics.MidiPlayer">
       <description>This plugin is used for MIDI applications</description>
       <ports>
@@ -491,8 +458,8 @@ left/right movements influence the tone height</description>
         <property name="number" value="1" />
       </properties>
       <layout>
-        <posX>310</posX>
-        <posY>119</posY>
+        <posX>322</posX>
+        <posY>117</posY>
       </layout>
     </component>
     <component id="MathEvaluator.2" type_id="asterics.MathEvaluator">
@@ -1163,6 +1130,44 @@ left/right movements influence the tone height</description>
         <posY>688</posY>
       </layout>
     </component>
+    <component id="XFacetrackerLK.1" type_id="asterics.XFacetrackerLK">
+      <description>X-platform webcamera-based face tracking sensor</description>
+      <ports>
+        <outputPort portTypeID="noseX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="noseY">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinX">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="chinY">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="frameGrabber" value="Default" />
+        <property name="frameGrabberFormat" value="" />
+        <property name="deviceList" value="" />
+        <property name="cameraSelection" value="0" />
+        <property name="cameraResolution" value="1" />
+        <property name="frameRate" value="0" />
+        <property name="titleVideoFrameWindow" value="" />
+        <property name="displayGUI" value="true" />
+        <property name="enableOverlaySettings" value="true" />
+      </properties>
+      <layout>
+        <posX>16</posX>
+        <posY>55</posY>
+      </layout>
+      <gui>
+        <posX>0</posX>
+        <posY>0</posY>
+        <width>2000</width>
+        <height>1500</height>
+      </gui>
+    </component>
   </components>
   <channels>
     <channel id="binding.19">
@@ -1225,9 +1230,9 @@ left/right movements influence the tone height</description>
         <port id="in" />
       </target>
     </channel>
-    <channel id="binding.12">
+    <channel id="binding.32">
       <source>
-        <component id="FacetrackerLK.1" />
+        <component id="XFacetrackerLK.1" />
         <port id="noseX" />
       </source>
       <target>
@@ -1255,9 +1260,9 @@ left/right movements influence the tone height</description>
         <port id="input2" />
       </target>
     </channel>
-    <channel id="binding.17">
+    <channel id="binding.34">
       <source>
-        <component id="FacetrackerLK.1" />
+        <component id="XFacetrackerLK.1" />
         <port id="noseY" />
       </source>
       <target>
@@ -1265,9 +1270,9 @@ left/right movements influence the tone height</description>
         <port id="input1" />
       </target>
     </channel>
-    <channel id="binding.15">
+    <channel id="binding.33">
       <source>
-        <component id="FacetrackerLK.1" />
+        <component id="XFacetrackerLK.1" />
         <port id="noseY" />
       </source>
       <target>
@@ -1275,9 +1280,9 @@ left/right movements influence the tone height</description>
         <port id="inA" />
       </target>
     </channel>
-    <channel id="binding.16">
+    <channel id="binding.35">
       <source>
-        <component id="FacetrackerLK.1" />
+        <component id="XFacetrackerLK.1" />
         <port id="chinY" />
       </source>
       <target>
@@ -1357,7 +1362,7 @@ left/right movements influence the tone height</description>
     </channel>
     <channel id="binding.27">
       <source>
-        <component id="FacetrackerLK.1" />
+        <component id="XFacetrackerLK.1" />
         <port id="noseX" />
       </source>
       <target>
@@ -1367,7 +1372,7 @@ left/right movements influence the tone height</description>
     </channel>
     <channel id="binding.28">
       <source>
-        <component id="FacetrackerLK.1" />
+        <component id="XFacetrackerLK.1" />
         <port id="noseY" />
       </source>
       <target>
@@ -1845,20 +1850,6 @@ left/right movements influence the tone height</description>
         </target>
       </targets>
     </eventChannel>
-    <eventChannel id="button3_init">
-      <sources>
-        <source>
-          <component id="ButtonGrid.1.2.1" />
-          <eventPort id="button3" />
-        </source>
-      </sources>
-      <targets>
-        <target>
-          <component id="FacetrackerLK.1" />
-          <eventPort id="init" />
-        </target>
-      </targets>
-    </eventChannel>
     <eventChannel id="button1_switchModel">
       <sources>
         <source>
@@ -1870,6 +1861,21 @@ left/right movements influence the tone height</description>
         <target>
           <component id="modelSwitcher.1" />
           <eventPort id="switchModel" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_init">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1.2.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="XFacetrackerLK.1" />
+          <eventPort id="init" />
         </target>
       </targets>
     </eventChannel>

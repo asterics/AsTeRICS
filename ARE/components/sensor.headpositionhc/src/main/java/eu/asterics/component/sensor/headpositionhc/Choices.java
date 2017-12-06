@@ -25,20 +25,20 @@
 
 package eu.asterics.component.sensor.headpositionhc;
 
-import static org.bytedeco.javacpp.opencv_core.CV_AA;
-import static org.bytedeco.javacpp.opencv_core.CV_FILLED;
-import static org.bytedeco.javacpp.opencv_core.CV_FONT_HERSHEY_SIMPLEX;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_AA;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_FILLED;
+import static org.bytedeco.javacpp.opencv_imgproc.CV_FONT_HERSHEY_SIMPLEX;
 import static org.bytedeco.javacpp.opencv_core.cvAddWeighted;
-import static org.bytedeco.javacpp.opencv_core.cvInitFont;
+import static org.bytedeco.javacpp.opencv_imgproc.cvInitFont;
 import static org.bytedeco.javacpp.opencv_core.cvPoint;
-import static org.bytedeco.javacpp.opencv_core.cvPutText;
-import static org.bytedeco.javacpp.opencv_core.cvRectangle;
+import static org.bytedeco.javacpp.opencv_imgproc.cvPutText;
+import static org.bytedeco.javacpp.opencv_imgproc.cvRectangle;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
-import org.bytedeco.javacpp.opencv_core.CvFont;
+import org.bytedeco.javacpp.opencv_imgproc.CvFont;
 import org.bytedeco.javacpp.opencv_core.CvScalar;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.helper.opencv_core.AbstractCvScalar;
