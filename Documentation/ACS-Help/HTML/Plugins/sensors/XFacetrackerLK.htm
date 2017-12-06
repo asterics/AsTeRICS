@@ -8,7 +8,7 @@
 <H1>XFacetrackerLK</H1> 
 <H3>Component Type: Sensor (Subcategory: Computer Vision) <p>OS: Windows (x86, x64), Linux (x86, x64, RPi3), Mac OSX</H3>
 <p>
-This component provides a cross-platform face tracking computer vision algorithm which puts out estimated movement of a users’ nose and chin in x and y coordinates. 
+This component provides a cross-platform face tracking computer vision algorithm which puts out estimated movement of a user's nose and chin in x and y coordinates. 
 The underlying mechanism builds upon the <a href="https://github.com/bytedeco/javacv">JavaCV library</a> for frame grabbing and computer vision processing. In particular a trained cascade of haar-like features is used in combination with a Lukas Kanade optical flow algorithm to track a face and its movement. 
 The x- and y- coordinates can be used in camera-mouse configurations or to enable selection or control tasks. The values are only provided if a face can be tracked by the algorithm. 
 Note that the x- and y- values represent relative movement in pixels and have to be accumulated (e.g. via the integrate component) to generate e.g. absolute mouse positions.
