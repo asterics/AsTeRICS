@@ -10,7 +10,7 @@
 <H3>Component Type: Sensor (Subcategory: Computer Vision) <p>OS: Windows (x86, x64), Linux (x86, x64, RPi3), Mac OSX</H3>
 <p>
 This component provides a cross-platform face tracking computer vision algorithm which puts out estimated movement of a users’ nose and chin in x and y coordinates. 
-The underlying mechanism builds upon the JavaCV (OpenCV) library (in particular a trained cascade of haar-like features in combination with a Lukas Kanade optical flow algorithm is used to track a face and its movement). 
+The underlying mechanism builds upon the <a href="https://github.com/bytedeco/javacv">JavaCV library</a> for frame grabbing and computer vision processing. In particular a trained cascade of haar-like features is used in combination with a Lukas Kanade optical flow algorithm to track a face and its movement. 
 The x- and y- coordinates can be used in camera-mouse configurations or to enable selection or control tasks. The values are only provided if a face can be tracked by the algorithm. 
 Note that the x- and y- values represent relative movement in pixels and have to be accumulated (e.g. via the integrate component) to generate e.g. absolute mouse positions.
 <p>
@@ -22,14 +22,14 @@ Also the camera device of a Kinect sensor or PS3Eye should work. Furthermore, a 
 Logitech Webcam 9000 Pro</div>
 
 <h3>Note for Raspberry Pi</h3>
-The plugin can be used on a Raspberry Pi 3 (tested on Raspbian Pixels) with USB cameras, the Kinect camera or the raspi cam.
+The plugin can be used on a Raspberry Pi 3 (tested with Raspbian Jessie) with USB cameras, the Kinect camera or the <a href="https://www.raspberrypi.org/products/camera-module-v2/">Raspberry Pi camera module</a>.
 
 <p>
-In order for the raspi cam to work the following steps are necessary:
+In order for the raspi cam to work, the following steps are necessary:
 <ol>
 	<li>Enable the camera with 
 		<p>sudo raspi-config</li>
-	<li>Add the v4l driver for the camera:
+	<li>Add the v4l driver for the camera, to make it accessible as /dev/videoXX device:
 		<p>sudo modprobe bcm2835-v4l2 max_video_width=2592 max_video_height=1944</li>
 </ol>
 <H2>Output Port Description</H2>
