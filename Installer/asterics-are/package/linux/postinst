@@ -55,6 +55,7 @@ case "$1" in
 		if [ "$(dpkg --print-architecture)" == "armhf" ]; then
                     echo linking libudev for hid4java library (only on ARM)
                     ln -sf /lib/arm-linux-gnueabihf/libudev.so.1 /lib/arm-linux-gnueabihf/libudev.so.0
+		    ln -s /usr/lib/arm-linux-gnueabihf/libhidapi-libusb.so /usr/lib/arm-linux-gnueabihf/libhidapi.so
                 fi
 		
 	

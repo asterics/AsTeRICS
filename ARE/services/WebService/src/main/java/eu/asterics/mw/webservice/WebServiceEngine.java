@@ -101,7 +101,7 @@ public class WebServiceEngine {
         restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.getInstance().getBaseUriREST(), rc);
  
         // Normal Web server configuration (document root)
-        String docRoot=ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("/",RES_TYPE.WEB_DOCUMENT_ROOT));
+        String docRoot=ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource(RES_TYPE.WEB_DOCUMENT_ROOT));
         logger.info("Registering webserver document root at "+docRoot);
         restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(docRoot), "/");
         /*

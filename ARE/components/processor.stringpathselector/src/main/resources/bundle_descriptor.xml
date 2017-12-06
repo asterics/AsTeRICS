@@ -30,6 +30,22 @@
                 <description>Path 4</description>
                 <dataType>string</dataType>
             </outputPort>
+            <outputPort id="out5">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out6">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out7">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="out8">
+                <description>Path 4</description>
+                <dataType>string</dataType>
+            </outputPort>
         </ports>
         <events>
             <eventListenerPort id="select1">
@@ -44,6 +60,18 @@
             <eventListenerPort id="select4">
                 <description>selects out-port 4</description>
             </eventListenerPort>
+            <eventListenerPort id="select5">
+                <description>selects out-port 5</description>
+            </eventListenerPort>
+            <eventListenerPort id="select6">
+                <description>selects out-port 6</description>
+            </eventListenerPort>
+            <eventListenerPort id="select7">
+                <description>selects out-port 7</description>
+            </eventListenerPort>
+            <eventListenerPort id="select8">
+                <description>selects out-port 8</description>
+            </eventListenerPort>
             <eventListenerPort id="selectNext">
                 <description>selects next out-port</description>
             </eventListenerPort>
@@ -55,7 +83,7 @@
             <property name="activePorts"
                       type="integer"
                       value="1"
-                      combobox="1//2//3//4"
+                      combobox="1//2//3//4//5//6//7//8"
                       description="number of connected (and active) ports"/>
         </properties>
     </componentType>
