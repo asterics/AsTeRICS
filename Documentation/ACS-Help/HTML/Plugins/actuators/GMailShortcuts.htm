@@ -1,70 +1,63 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>GMailShortcuts</Title>
-</HEAD>
-<BODY>
-<H1>GMailShortcuts</H1> 
-<H3>Component Type: Actuator (Subcategory: Others)</H3>
-<p>The GMailShortcuts component was developed to operate the e-mail client of GMail via Keystroke combinations (Shortcuts).The component emulates local keyboard inputs that are sent to the window currently having the focus. Please ensure that the GMail tab in your webbrowser has the input focus.</p>
-<div class="image"><img src="img/GMailShortcuts.jpg" alt="Screenshot: GMailShortcuts plugin" title="Screenshot: GMailShortcuts plugin" /><br>
-GMailShortcuts plugin</div>
-
-<H2>Requirements</H2>
-Works best with the Opera internet browser (http://www.opera.com/de) and the Gmail client (https://www.google.com/intl/en/mail/help/about.html)
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>KeyCode [string]:</STRONG> Input port for incoming strings which consists of alphanumeric characters. The keys are sequentially generated as local keystrokes as the string is received.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>keyCodeString [string]:</STRONG>If the KeyCode Input recieves a Character between A-Z or 1-9 it generates the corresbonding Keystroke for A-Z or 1-9.
-<p>To generate the required shortcuts for the Gmail client, the follwing strings are used:
-<p>
-<STRONG>NAVIGATION</STRONG><p>
-<ul>
-<li>UP equals the Arrow up key
-<li>DOWN equals the Arrow down key
-<li>LEFT equals the Arrow left key
-<li>RIGHT equals the Arrow right key
-<li>ESC equals the Escape key
-<li>TAB equals the Tabulator key
-<li>ENTER equals the Enter key
-<li>BACKSPACE equals the Backspace key
-</ul>
-<p>
-<STRONG>SPECIAL SIGNS</STRONG><p>
-
-<ul>
-<li>. equals the full stop key
-<li>@ equals the at sign key
-<li>: equals the colon key
-<li>; equals the semicolon key
-<li>, equals the comma key
-<li>! equals the exclemationmarl key
-<li>? equals the questionmark key
-<li>_ equals the underscore key
-</ul>
-
-<p>
-<STRONG>GMAIL KEYCOMBINATIONS</STRONG><p>
-
-<ul>
-<li>SENDEN sends a written email if in a compose or replay window
-<li>CC if in a compose or reply window enters the CC area
-<li>NEW opens a email compose window
-<li>SEARCH sets the courser in the searchbar
-<li>INBOX swithces to the inbox window
-<li>REPLY enters the replay window when previously in an opened email
-<li>SELECT selects the email currentl marked blue
-<li>ENTER opens the currently marked email
-<li>SHIFT is the shift lock key (pressing once all chars a generated in capital letters pressing again undos the caption)
-</ul>
-
-</li>
-
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>GMailShortcuts</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>GMailShortcuts</H1> 
+		<H2>Component Type: Actuator (Subcategory: Others)</H2>
+		<p>The GMailShortcuts component was developed to operate the e-mail client of GMail via Keystroke combinations (Shortcuts).The component emulates local keyboard inputs that are sent to the window currently having the focus. Please ensure that the GMail tab in your webbrowser has the input focus.</p>
+		<figure>
+			<img class="medium_image" src="img/GMailShortcuts.jpg" alt="Screenshot: GMailShortcuts plugin" title="Screenshot: GMailShortcuts plugin" />
+			<figcaption>GMailShortcuts plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		Works best with the Opera internet browser (http://www.opera.com/de) and the Gmail client (https://www.google.com/intl/en/mail/help/about.html)
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>KeyCode [string]:</STRONG> Input port for incoming strings which consists of alphanumeric characters. The keys are sequentially generated as local keystrokes as the string is received.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li>
+				<STRONG>keyCodeString [string]:</STRONG>If the KeyCode Input recieves a Character between A-Z or 1-9 it generates the corresbonding Keystroke for A-Z or 1-9.
+				<p>To generate the required shortcuts for the Gmail client, the follwing strings are used:</p>
+				<h3>NAVIGATION</h3>
+				<ul>
+					<li>UP equals the Arrow up key</li>
+					<li>DOWN equals the Arrow down key</li>
+					<li>LEFT equals the Arrow left key</li>
+					<li>RIGHT equals the Arrow right key</li>
+					<li>ESC equals the Escape key</li>
+					<li>TAB equals the Tabulator key</li>
+					<li>ENTER equals the Enter key</li>
+					<li>BACKSPACE equals the Backspace key</li>
+				</ul>
+				<h3>SPECIAL SIGNS</h3>
+				<ul>
+					<li>. equals the full stop key</li>
+					<li>@ equals the at sign key</li>
+					<li>: equals the colon key</li>
+					<li>; equals the semicolon key</li>
+					<li>, equals the comma key</li>
+					<li>! equals the exclemationmarl key</li>
+					<li>? equals the questionmark key</li>
+					<li>_ equals the underscore key</li>
+				</ul>
+				<h3>GMAIL KEYCOMBINATIONS</h3>
+				<ul>
+					<li>SENDEN sends a written email if in a compose or replay window</li>
+					<li>CC if in a compose or reply window enters the CC area</li>
+					<li>NEW opens a email compose window</li>
+					<li>SEARCH sets the courser in the searchbar</li>
+					<li>INBOX swithces to the inbox window</li>
+					<li>REPLY enters the replay window when previously in an opened email</li>
+					<li>SELECT selects the email currentl marked blue</li>
+					<li>ENTER opens the currently marked email</li>
+					<li>SHIFT is the shift lock key (pressing once all chars a generated in capital letters pressing again undos the caption)</li>
+				</ul>
+			</li>
+		</ul>
+	</BODY>
 </HTML>

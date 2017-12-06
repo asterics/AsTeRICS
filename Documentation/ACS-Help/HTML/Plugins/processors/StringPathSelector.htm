@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>StringPathSelector</title>
+  </head>
+  <body class="innerBody">
+    <h1>String Path Selector</h1>
+    <span class="componentType">Component Type: Processor (Subcategory: Signal Pathways)</span>
+    <p>The StringPathSelector component allows routing of incoming
+      strings between up to 4 output ports. The desired output port can
+      be directly selected by a dedicated event listener port, or the
+      strings can be switched to the next or previous output port. <br>
+    </p>
+    <figure>
+		<img class="image" src="img/StringPathSelector.jpg" alt="Screenshot: StringPathSelector plugin" title="Screenshot: StringPathSelector plugin">
+		<figcaption>StringPathSelector plugin</figcaption>
+	</figure>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>in [string]:</strong> The incoming string port to be
+        routed.</li>
+    </ul>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>out1 to out4:</strong> Four output ports where the
+        incoming strings can be routed to.</li>
+    </ul>
+    <h2>Event Listener Description</h2>
+    <ul>
+      <li><strong>select1 to select4:</strong> An incoming event at
+        these ports directly activates the associated output path (e.g.
+        as an event comes in at select 3, the input string port will be
+        routed to out3.</li>
+      <li><strong>selectNext:</strong> The next output port is selected
+        for string output. The maximum number of active ports is set via
+        the activePorts property. If the current number is already the
+        maximum one, the select next event will wrap around the active
+        port number and port 1 will be selected.</li>
+      <li><strong>selectPrevious:</strong> The previous output port is
+        selected for string output. If the current port is out1, the
+        maximum port number (given by the activePorts property) will be
+        selected.</li>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>activePorts [integer]:</strong> The maximum port
+        number in use (can be 1 to 4).</li>
+    </ul>
+  </body>
+</html>

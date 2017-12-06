@@ -18,6 +18,12 @@
     </path>
     
     <property name="resources" location="src/main/resources"/>
+	
+	<!-- Define encoding of Java source files
+	This property should be used in all build files, currently it is probably not used everywhere.
+	-->
+	<property name="java.source.encoding" value="UTF-8" />
+
 
   <target name="init">
     <!-- Create the time stamp -->
@@ -27,7 +33,7 @@
   </target>
 
   <target name="compile" depends="init" description="compile the source ">
-    <javac source="${javac.source}" target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build}" verbose="true" debug="${debug}" 
+    <javac encoding="${java.source.encoding}" source="${javac.source}" target="${javac.target}"  includeantruntime="false" srcdir="${src.java}" destdir="${build}" verbose="true" debug="${debug}" 
            classpath="${classpath}"> <classpath refid="asterics.classpath"/>
      </javac>
   </target>

@@ -1,7 +1,6 @@
 package eu.asterics.ape.packaging;
 
-import static eu.asterics.ape.main.APEProperties.P_APE_DATA_COPY_MODE;
-import static eu.asterics.ape.main.APEProperties.P_APE_PROJECT_DIR;
+import static eu.asterics.ape.main.APEProperties.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,11 +20,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.xml.sax.SAXException;
 
 import eu.asterics.ape.main.APEConfigurationException;
 import eu.asterics.ape.main.APEProperties;
-import eu.asterics.ape.main.APEProperties.DATA_COPY_MODE;
+import eu.asterics.ape.main.APEProperties.APE_BUILD_MODE;
+import eu.asterics.ape.main.APEProperties.APE_DATA_COPY_MODE;
 import eu.asterics.ape.main.Notifier;
 import eu.asterics.ape.parse.ModelInspector;
 import eu.asterics.mw.are.exceptions.BundleManagementException;
@@ -84,6 +85,7 @@ public class Packager {
     private File projectDir = null;
     private File buildDir = null;
     private File buildMergedDir = null;
+    private APEProperties.APE_BUILD_MODE buildMode=APEProperties.DEFAULT_APE_BUILD_MODE;
 
     /**
      * Constructs a Packager and configures it with the given Properties
@@ -105,6 +107,10 @@ public class Packager {
         buildMergedDir = ResourceRegistry.resolveRelativeFilePath(buildDir, MERGED_FOLDER);
 
         Notifier.info("ApeProp[" + APEProperties.P_APE_BUILD_DIR + "]=" + buildDir);
+        
+        buildMode = APE_BUILD_MODE
+                .valueOf(apeProperties.getProperty(P_APE_BUILD_MODE, DEFAULT_APE_BUILD_MODE.toString()).toUpperCase());
+        Notifier.info("ApeProp[" + APEProperties.P_APE_BUILD_MODE + "]=" + buildMode);
     }
 
     /**
@@ -123,67 +129,105 @@ public class Packager {
     public void copyFiles()
             throws URISyntaxException, MalformedURLException, IOException, ParseException, ParserConfigurationException,
             SAXException, TransformerException, BundleManagementException, APEConfigurationException {
-        //
+        //Create path to merged/bin/ARE folder: the target folder for merging all stuff.
         File buildMergedAREDir = ResourceRegistry.resolveRelativeFilePath(buildMergedDir, BIN_ARE_FOLDER);
-        Notifier.info("Copying files to " + buildMergedAREDir);
+        if(buildMode.equals(APE_BUILD_MODE.RELEASE) || !buildMergedAREDir.exists()) {
+			Notifier.info("Copying files to " + buildMergedAREDir);
 
-        Set<URI> modelURIs = modelInspector.getModelURIsFromProperty();
-        Notifier.info("Found model URIs: " + modelURIs);
-        if (modelURIs.size() == 0) {
-            throw new APEConfigurationException("STOPPING: No model URIs found. Please check value of property "
-                    + APEProperties.P_APE_MODELS + ": " + apeProperties.getProperty(APEProperties.P_APE_MODELS));
-        }
+			Set<URI> modelURIs = modelInspector.getModelURIsFromProperty();
+			Notifier.info("Found model URIs: " + modelURIs);
+			if (modelURIs.size() == 0) {
+			    /* Don't panic if no model URIs were provided, but print out a warning!! */
+				//throw new APEConfigurationException("STOPPING: No model URIs found. Please check value of property "
+				//		+ APEProperties.P_APE_MODELS + ": " + apeProperties.getProperty(APEProperties.P_APE_MODELS));
+			    
+			    Notifier.warning("No model URIs found - Your solution might NOT be runnable! Please check value of property "+ APEProperties.P_APE_MODELS + ": " + apeProperties.getProperty(APEProperties.P_APE_MODELS),null);
+			}
 
-        // get model instances
-        Set<IRuntimeModel> modelInstances = modelInspector.getIRuntimeModelsOfModelURIs(modelURIs);
+			// get model instances
+			Set<IRuntimeModel> modelInstances = modelInspector.getIRuntimeModelsOfModelURIs(modelURIs);
 
-        // Remember all jar URIs we copied, we need this for fetching the
-        // respective license URIs afterwards.
-        Set<URI> allJarURIs = new HashSet<URI>();
-        Set<URI> componentJarURIs = modelInspector.getComponentTypeJarURIsOfModels(modelInstances);
-        allJarURIs.addAll(componentJarURIs);
-        copyURIs(componentJarURIs, buildMergedAREDir);
+			// Remember all jar URIs we copied, we need this for fetching the
+			// respective license URIs afterwards.
+			Set<URI> allJarURIs = new HashSet<URI>();
+			Collection<URI> uriList = new HashSet<URI>();
 
-        Collection<URI> uriList = copyServices(buildMergedAREDir);
-        allJarURIs.addAll(uriList);
+			if (buildMode.equals(APE_BUILD_MODE.RELEASE)) {
+				// Copy only jar URIs of referenced plugins and services.
+				copyReferencedJarsOnly(buildMergedAREDir, modelInstances);
+			} else {
+				// Copy all jar URIs
+				allJarURIs.addAll(ResourceRegistry.getInstance().getAllJarList(false));
+				copyURIs(allJarURIs, buildMergedAREDir);
+			}
 
-        uriList = ResourceRegistry.getInstance().getOtherJarList(false);
-        allJarURIs.addAll(uriList);
-        copyURIs(uriList, buildMergedAREDir);
+			APE_DATA_COPY_MODE dataCopyMode = APE_DATA_COPY_MODE.valueOf(
+					apeProperties.getProperty(P_APE_DATA_COPY_MODE, APE_DATA_COPY_MODE.ALL.toString()).toUpperCase());
+			Notifier.info("ApeProp[" + P_APE_DATA_COPY_MODE + "]=" + dataCopyMode);
 
-        DATA_COPY_MODE dataCopyMode = DATA_COPY_MODE
-                .valueOf(apeProperties.getProperty(P_APE_DATA_COPY_MODE, DATA_COPY_MODE.ALL.toString()).toUpperCase());
-        Notifier.info("ApeProp[" + P_APE_DATA_COPY_MODE + "]=" + dataCopyMode);
-        if (DATA_COPY_MODE.ALL.equals(dataCopyMode)) {
-            Notifier.info("Copying all data files");
-            uriList = ResourceRegistry.getInstance().getDataList(false);
-            copyURIs(uriList, buildMergedAREDir);
-        } else if (DATA_COPY_MODE.FOLDER.equals(dataCopyMode) || DATA_COPY_MODE.SINGLE.equals(dataCopyMode)) {
-            uriList = modelInspector.getPropertyReferredURIs(modelInstances);
-            Notifier.info("Copying the following data files: " + uriList);
-            copyURIs(uriList, buildMergedAREDir);
+			if (APE_DATA_COPY_MODE.ALL.equals(dataCopyMode)) {
+				Notifier.info("Copying all data files");
+				uriList = ResourceRegistry.getInstance().getDataList(false);
+				copyURIs(uriList, buildMergedAREDir);
+			} else if (APE_DATA_COPY_MODE.FOLDER.equals(dataCopyMode)
+					|| APE_DATA_COPY_MODE.SINGLE.equals(dataCopyMode)) {
+				uriList = modelInspector.getPropertyReferredURIs(modelInstances);
+				Notifier.info("Copying the following data files: " + uriList);
+				copyURIs(uriList, buildMergedAREDir);
+			} else {
+				Notifier.info("Don't copy any data files");
+			}
+			
+			
+            APE_WEB_COPY_MODE webCopyMode = APE_WEB_COPY_MODE.valueOf(
+                    apeProperties.getProperty(P_APE_WEB_COPY_MODE, APE_WEB_COPY_MODE.ALL.toString()).toUpperCase());
+            Notifier.info("ApeProp[" + P_APE_WEB_COPY_MODE + "]=" + webCopyMode);
+
+            if (APE_WEB_COPY_MODE.ALL.equals(webCopyMode)) {			
+                Notifier.info("Copying ALL web files of "+ResourceRegistry.getInstance().getResource("/", RES_TYPE.WEB_DOCUMENT_ROOT));
+                uriList = ResourceRegistry.getInstance().getWebDocumentRootContentList(false);
+                copyURIs(uriList, buildMergedAREDir);
+            } else {
+                Notifier.info("Don't copy web files of "+ ResourceRegistry.getInstance().getResource("/", RES_TYPE.WEB_DOCUMENT_ROOT));
+            }
+
+			uriList = ResourceRegistry.getInstance().getLicenseURIsofAsTeRICSJarURIs(allJarURIs);
+			copyURIs(uriList, buildMergedAREDir);
+
+			uriList = ResourceRegistry.getInstance().getMandatoryProfileConfigFileList(false);
+			copyURIs(uriList, buildMergedAREDir);
+
+			uriList = ResourceRegistry.getInstance().getAppImagesList(false);
+			copyURIs(uriList, buildMergedAREDir);
+
+			uriList = ResourceRegistry.getInstance().getOtherFilesList(false);
+			copyURIs(uriList, buildMergedAREDir);
+
+			copyModels(modelURIs, buildMergedAREDir);
         } else {
-            Notifier.info("Don't copy any data files");
+			Notifier.info("Only copying custom files to " + buildMergedAREDir);
         }
-
-        uriList = ResourceRegistry.getInstance().getLicenseURIsofAsTeRICSJarURIs(allJarURIs);
-        copyURIs(uriList, buildMergedAREDir);
-
-        uriList = ResourceRegistry.getInstance().getMandatoryProfileConfigFileList(false);
-        copyURIs(uriList, buildMergedAREDir);
-
-        uriList = ResourceRegistry.getInstance().getAppImagesList(false);
-        copyURIs(uriList, buildMergedAREDir);
-
-        uriList = ResourceRegistry.getInstance().getOtherFilesList(false);
-        copyURIs(uriList, buildMergedAREDir);
-
-        copyModels(modelURIs, buildMergedAREDir);
 
         // Finally copy all custom files from APE.projectDir/bin
         copyCustomFiles(buildDir);
     }
 
+    public Set<URI> copyReferencedJarsOnly(File buildMergedAREDir, Set<IRuntimeModel> modelInstances) throws URISyntaxException, IOException {
+		Set<URI> allJarURIs = new HashSet<URI>();
+		
+    	Set<URI> componentJarURIs = modelInspector.getComponentTypeJarURIsOfModels(modelInstances);
+		allJarURIs.addAll(componentJarURIs);
+		copyURIs(componentJarURIs, buildMergedAREDir);
+
+		Collection<URI> uriList = copyServices(buildMergedAREDir);
+		allJarURIs.addAll(uriList);
+
+		uriList = ResourceRegistry.getInstance().getOtherJarList(false);
+		allJarURIs.addAll(uriList);
+		copyURIs(uriList, buildMergedAREDir);
+
+		return allJarURIs;
+    }
     /**
      * Copies all the custom files of the folder APE.projectDir/bin to
      * APE.buildDir/merged/bin
@@ -376,8 +420,12 @@ public class Packager {
     public void makeAll() throws IOException, URISyntaxException, ParseException, ParserConfigurationException,
             SAXException, TransformerException, BundleManagementException, APEConfigurationException {
         try {
-            Notifier.debug("Deleting APE.buildDir before copying: " + buildDir, null);
-            FileUtils.forceDelete(buildDir);
+        	if(buildMode.equals(APE_BUILD_MODE.RELEASE)) {
+        		Notifier.debug(P_APE_BUILD_MODE+"=["+buildMode+"]: Deleting APE.buildDir before copying: " + buildDir, null);
+        		FileUtils.forceDelete(buildDir);
+        	} else {
+        		Notifier.debug(P_APE_BUILD_MODE+"=["+buildMode+"]: Don't delete APE.buildDir before copying: " + buildDir, null);	
+        	}
         } catch (IOException e) {
             Notifier.warning("Could not delete APE.buildDir: " + buildDir, e);
         }

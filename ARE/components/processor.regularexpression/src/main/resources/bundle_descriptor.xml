@@ -6,16 +6,16 @@
                    canonical_name="eu.asterics.component.processor.regularexpression.RegularExpressionInstance">
         <type subtype="Event and String Processing">processor</type>
         <singleton>false</singleton>
-        <description>Process the string with regular expressions.</description>
+        <description>Match the input port string to the defined regular expression (see Java class Pattern).</description>
         <ports>
 			<inputPort id="input">
-				<description>Input port.</description>
+				<description>String to match against the regular expression.</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
 
 			<outputPort id="output">
-				<description>Output port.</description>
+				<description>If property replace=false, sends out input string in case of a match. if property replace=true, sends out replaced string.</description>
 				<dataType>string</dataType>
 			</outputPort>
 
@@ -23,16 +23,16 @@
 		<events>
 
 			<eventTriggererPort id="match">
-				<description>The string match to  the pattern.</description>
+				<description>The input string matches the pattern.</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="notMatch">
-				<description>The string do not match to the pattern.</description>
+				<description>The input string does not match the pattern.</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="replace">
-				<description>The string was changed.</description>
+				<description>The string was replaced according to the replaceString.</description>
 			</eventTriggererPort>
 			<eventTriggererPort id="notReplace">
-				<description>The string was not changed</description>
+				<description>The string was not replaced.</description>
 			</eventTriggererPort>
 
 		</events>			
@@ -40,11 +40,11 @@
 			<property name="pattern"
 				type="string"
 				value=""
-				description="The match pattern"/>
+				description="The regular expression pattern (see Java class Pattern)"/>
 			<property name="replace"
 				type="boolean"
 				value="false"
-				description="Defines if the string parts that match to the pattern should be replace by the replaceString"/>
+				description="Defines if string parts that match to the pattern should be replaced by the replaceString"/>
 			<property name="replaceString"
 				type="string"
 				value=""

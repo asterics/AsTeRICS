@@ -1,50 +1,47 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>OskaInternalScanning</Title>
-</HEAD>
-<BODY>
-<H1>Oska Internal Scanning</H1> 
-<H3>Component Type: Processor (Subcategory: OSKA)</H3>
-<p>This component interacts with the On Screen Keyboard Application (OSKA) and forwards key selections and command (action-) strings to other ARE plugins.
- OSKA is set to use its internal scanning methods and the component exposes the two button input events that Oska can work with.</p>
-<div class="image"><img src="img/OskaInternalScanning.jpg" alt="Screenshot: OskaInternalScanning plugin" title="Screenshot: OskaInternalScanning plugin" /><br>
-OskaInternalScanning plugin</div>
-
-
-<H2>Requirements</H2>
-This component requires Sensory Software's OSKA keyboard. OSKA is automatically started by the plugin if it is located in the expected path ("../OSKA/Start Keyboard.exe").
-
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>action [string]:</STRONG> This output sends the action string which is attached to a specific key on the keyboard to connected components.</li>
-<li><STRONG>keycodes [string]:</STRONG> This output sends the key codes which are attached to a key via the @KDB command.</li>
-</ul>
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>increaseScanspeed:</STRONG> Incoming events will increase the internal scanning speed of OSKA.</li>
-<li><STRONG>decreaseScanspeed:</STRONG> Incoming events will decrease the internal scanning speed of OSKA.</li>
-<li><STRONG>pressSwitch1:</STRONG> Incoming events start the automatic scanning or switch to the next selection (to speed up the scanning).</li>
-<li><STRONG>pressSwitch2:</STRONG> Incoming events switch from column- to row scanning (or in the next step select the cell). If the scanning is stopped, it will be started.</li>
-</ul>
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>eventOut1-eventOut10:</STRONG> These events can be triggered by selecting a cell which contains an @OSKA,event .. action string, (for example @OSKA,event 3).</li>
-</ul>
-
-<H2>Properties</H2>
-<ul>
-<li><STRONG>port [integer]:</STRONG> This property defines the TCP port that the component listens on for connections of the OSKA.</li>
-<li><STRONG>title [string]:</STRONG> This property defines the caption to be displayed in OSKA?s title bar.</li>
-<li><STRONG>oskaPath [string]:</STRONG> The absolute path to the OSKA player as well as the program name is needed in order for the component to start OSKA by itself.</li>
-<li><STRONG>keyboardPath [string]:</STRONG> If this property does not hold an empty string, the component will ask OSKA to load the keyboard referred to by this property. When the ACS is synchronized with the ARE (connected and model deployed) available keyboards can be selected from a drop-down listbox. (dynamic property)</li>
-<li><STRONG>scanSpeed [integer]:</STRONG> This property relates to the internal row column scanning method of OSKA and sets the speed of scanning, the value range is between 1 and 10.</li>
-<li><STRONG>highlightStyle [integer]:</STRONG> This property selects the style of highlighting used in OSKA, the value range is from 0 to 2.</li>
-<li><STRONG>settingsFile [string]:</STRONG> if this property is not empty OSKA will be started with this settings file as a command line parameter. When the ACS is synchronized with the ARE (connected and model deployed) available settings files can be selected from a drop-down listbox. (dynamic property)</li>
-<li><STRONG>windowDecorated [boolean]:</STRONG> if true, Oska will display a decorated window frame, otherwise only a lightweight frame.</li>
-<li><STRONG>resizeEnabled [boolean]:</STRONG> if true, the Oska will be resized to the dimensions specified in the GUI designer (slower).</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>OskaInternalScanning</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Oska Internal Scanning</H1> 
+		<span class="componentType">Component Type: Processor (Subcategory: OSKA)</span>
+		<p>This component interacts with the On Screen Keyboard Application (OSKA) and forwards key selections and command (action-) strings to other ARE plugins.
+		 OSKA is set to use its internal scanning methods and the component exposes the two button input events that Oska can work with.</p>
+		<figure>
+			<img class="image" src="img/OskaInternalScanning.jpg" alt="Screenshot: OskaInternalScanning plugin" title="Screenshot: OskaInternalScanning plugin" />
+			<figcaption>OskaInternalScanning plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		This component requires Sensory Software's OSKA keyboard. OSKA is automatically started by the plugin if it is located in the expected path ("../OSKA/Start Keyboard.exe").
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>action [string]:</STRONG> This output sends the action string which is attached to a specific key on the keyboard to connected components.</li>
+			<li><STRONG>keycodes [string]:</STRONG> This output sends the key codes which are attached to a key via the @KDB command.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>increaseScanspeed:</STRONG> Incoming events will increase the internal scanning speed of OSKA.</li>
+			<li><STRONG>decreaseScanspeed:</STRONG> Incoming events will decrease the internal scanning speed of OSKA.</li>
+			<li><STRONG>pressSwitch1:</STRONG> Incoming events start the automatic scanning or switch to the next selection (to speed up the scanning).</li>
+			<li><STRONG>pressSwitch2:</STRONG> Incoming events switch from column- to row scanning (or in the next step select the cell). If the scanning is stopped, it will be started.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>eventOut1-eventOut10:</STRONG> These events can be triggered by selecting a cell which contains an @OSKA,event .. action string, (for example @OSKA,event 3).</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>port [integer]:</STRONG> This property defines the TCP port that the component listens on for connections of the OSKA.</li>
+			<li><STRONG>title [string]:</STRONG> This property defines the caption to be displayed in OSKA?s title bar.</li>
+			<li><STRONG>oskaPath [string]:</STRONG> The absolute path to the OSKA player as well as the program name is needed in order for the component to start OSKA by itself.</li>
+			<li><STRONG>keyboardPath [string]:</STRONG> If this property does not hold an empty string, the component will ask OSKA to load the keyboard referred to by this property. When the ACS is synchronized with the ARE (connected and model deployed) available keyboards can be selected from a drop-down listbox. (dynamic property)</li>
+			<li><STRONG>scanSpeed [integer]:</STRONG> This property relates to the internal row column scanning method of OSKA and sets the speed of scanning, the value range is between 1 and 10.</li>
+			<li><STRONG>highlightStyle [integer]:</STRONG> This property selects the style of highlighting used in OSKA, the value range is from 0 to 2.</li>
+			<li><STRONG>settingsFile [string]:</STRONG> if this property is not empty OSKA will be started with this settings file as a command line parameter. When the ACS is synchronized with the ARE (connected and model deployed) available settings files can be selected from a drop-down listbox. (dynamic property)</li>
+			<li><STRONG>windowDecorated [boolean]:</STRONG> if true, Oska will display a decorated window frame, otherwise only a lightweight frame.</li>
+			<li><STRONG>resizeEnabled [boolean]:</STRONG> if true, the Oska will be resized to the dimensions specified in the GUI designer (slower).</li>
+		</ul>
+	</BODY>
 </HTML>

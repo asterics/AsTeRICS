@@ -1,27 +1,28 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>Decimation</Title>
-</HEAD>
-<BODY>
-<H1>Decimation</H1>
-<H3>Component Type: Processor (Subcategory: Basic Math)</H3>
-<p>The decimation operation performed by this component consists in an anti-aliasing low band pass filter plus a down-sampling. The component outputs a computed sample after receiving a certain number of input samples according to the down-sampling-ratio property value. So the resultant signal is like the original signal, but sampled to a lower ratio determined by the mentioned property.</p>
-<div class="image"><img src="img/Decimation.jpg" alt="Screenshot: Decimation plugin" title="Screenshot: Decimation plugin" /><br>
-Decimation plugin</div>
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>input [double]:</STRONG> Input port for the signal to be decimated.</li>
-</ul>
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>output [double]:</STRONG> Output port of the decimated signal.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>DownSamplingRatio [integer]:</STRONG> Defines the ratio between the number of samples in the input and output ports.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Decimation</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Decimation</H1>
+		<span class="componentType">Component Type: Processor (Subcategory: Basic Math)</span>
+		<p>The decimation operation performed by this component consists in an anti-aliasing low band pass filter plus a down-sampling. The component outputs a computed sample after receiving a certain number of input samples according to the down-sampling-ratio property value. So the resultant signal is like the original signal, but sampled to a lower ratio determined by the mentioned property.</p>
+		<figure>
+			<img class="image" src="img/Decimation.jpg" alt="Screenshot: Decimation plugin" title="Screenshot: Decimation plugin" />
+			<figcaption>Decimation plugin</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>input [double]:</STRONG> Input port for the signal to be decimated.</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>output [double]:</STRONG> Output port of the decimated signal.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>DownSamplingRatio [integer]:</STRONG> Defines the ratio between the number of samples in the input and output ports.</li>
+		</ul>
+	</BODY>
 </HTML>

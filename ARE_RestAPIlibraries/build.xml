@@ -1,25 +1,26 @@
 <!-- This is the bootstrap build file for the whole AsTeRICS framework -->
 <project name="ARE_REST_API" basedir="." default="buildAllNoClean">
 	<property name="runtime" location="../bin/ARE"/>
+	<property name="web.docroot" location="${runtime}/web/"/>
 
 	<target name="clean">
-		<delete includeemptydirs="true">
-		    <fileset dir="${runtime}/data/webservice">
+		<delete includeemptydirs="true" failonerror="false">
+		    <fileset dir="${web.docroot}">
 				<include name="AsTeRICS_rest_API.html"/>
 			</fileset>
-			<fileset dir="${runtime}/data/webservice/clientExample"/>
+			<fileset dir="${web.docroot}/clientExample"/>
 		</delete>
 	</target>
 
 	<target name="buildAll" depends="buildAllNoClean"/>
-	<target name="buildAll-release" depends="buildAllNoClean"/>
+	<target name="buildAll-release" depends="clean, buildAllNoClean"/>
 	<target name="buildAllNoClean">
-		<copy todir="${runtime}/data/webservice">
+		<copy todir="${web.docroot}">
 		    <fileset dir=".">
 				<include name="AsTeRICS_rest_API.html"/>
 			</fileset>			
 		</copy>
-		<copy todir="${runtime}/data/webservice/clientExample">
+		<copy todir="${web.docroot}/clientExample">
 			<fileset dir="clientExample"/>
 		</copy>
 	</target>

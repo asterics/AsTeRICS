@@ -1,29 +1,28 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>ReadCSV</Title>
-</HEAD>
-<BODY>
-<H1>CSV Reader</H1> 
-<H3>Component Type: Sensor (Subcategory: File System)</H3>
-<p>This plugin reads a whole .csv file and sends the seperate lines as strings to the output port.</p>
-<div class="image"><img src="img/ReadCSV.png" alt="Screenshot: ReadCSV plugin" title="Screenshot: ReadCSV plugin" /><br>
-ReadCSV</div>
-
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>read:</STRONG> Opens a file-chooser menu to select a csv-file which should be opened and read. The file is read immideately after selection (attention: this blocks the ARE model execution until the file contents are read completely !)</li>
-</ul>
-<H2>Output port Description</H2>
-<ul>
-<li><STRONG>Output[string]:</STRONG> The port sends the individual lines of the file as strings. An example for the string is: "data1;data2;data3". To seperate the string into individual strin values, the StringSplitter can be used.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>FilePath[string]:</STRONG>  Defines the default Path were the file is located. (TBD: add property for default FileName and line-by-line read option)</b></li>
-</ul>
-
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>ReadCSV</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>CSV Reader</H1> 
+		<span class="componentType">Component Type: Sensor (Subcategory: File System)</span>
+		<p>This plugin reads a whole .csv file and sends the seperate lines as strings to the output port.</p>
+		<figure>
+			<img class="image" src="img/ReadCSV.png" alt="Screenshot: ReadCSV plugin" title="Screenshot: ReadCSV plugin" />
+			<figcaption>ReadCSV</figcaption>
+		</figure>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>read:</STRONG> Opens a file-chooser menu to select a csv-file which should be opened and read. The file is read immideately after selection (attention: this blocks the ARE model execution until the file contents are read completely !)</li>
+		</ul>
+		<H2>Output port Description</H2>
+		<ul>
+			<li><STRONG>Output[string]:</STRONG> The port sends the individual lines of the file as strings. An example for the string is: "data1;data2;data3". To seperate the string into individual strin values, the StringSplitter can be used.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>FilePath[string]:</STRONG>  Defines the default Path were the file is located. (TBD: add property for default FileName and line-by-line read option)</strong></li>
+		</ul>
+	</BODY>
 </HTML>

@@ -178,7 +178,7 @@ public class KeyCaptureInstance extends AbstractRuntimeComponentInstance impleme
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
         if ("keyCode".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propKeyCode;
-            propKeyCode = Integer.parseInt(newValue.toString());
+            propKeyCode = Integer.parseInt(newValue.toString().trim());
             return oldValue;
         }
         if ("block".equalsIgnoreCase(propertyName)) {

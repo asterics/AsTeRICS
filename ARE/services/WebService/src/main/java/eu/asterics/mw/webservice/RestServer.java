@@ -55,13 +55,14 @@ import eu.asterics.mw.model.deployment.IEventChannel;
 import eu.asterics.mw.model.deployment.IPort;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 import eu.asterics.mw.webservice.serverUtils.AstericsAPIEncoding;
 import eu.asterics.mw.webservice.serverUtils.ObjectTransformation;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 /**
  * The implementation of the Rest Server class.
- * 
+ *
  * @author Marios Komodromos (mkomod05@cs.ucy.ac.cy)
  *
  */
@@ -207,6 +208,24 @@ public class RestServer {
         return response;
     }
 
+    @Path("/runtime/model/name")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getCurrentModelName() {
+        String response;
+        String errorMessage;
+
+        try {
+            response = asapiSupport.getCurrentModelName();
+        } catch (Exception e) {
+            errorMessage = MessageFormat.format("Could not get model name! error: {0}", e.getMessage());
+            logger.log(Level.WARNING, errorMessage, e);
+            response = "error:" + errorMessage;
+        }
+
+        return response;
+    }
+
     @Path("/runtime/model/autorun/{filepath}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
@@ -324,7 +343,7 @@ public class RestServer {
 
         return response;
     }
-    
+
 
     @Path("/runtime/model/components/properties")
     @PUT
@@ -334,7 +353,7 @@ public class RestServer {
         String response = "";
         String errorMessage = "";
         Set<String> changedValues = new HashSet<String>();
-        
+
         try {
             Map<String, Map<String, String>> propertyMap = new HashMap<String, Map<String, String>>();
             propertyMap = (Map<String, Map<String, String>>) ObjectTransformation.JSONToObject(bodyContent, Map.class);
@@ -367,7 +386,7 @@ public class RestServer {
         }
     }
 
-    
+
     @Path("/runtime/model/components/{componentId}/ports/input/ids")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -744,8 +763,7 @@ public class RestServer {
         String decodedFilepath = "";
 
         if ((modelInXML == "") || (modelInXML == null)) {
-            errorMessage = "invalid parameters";
-            response = "error:" + errorMessage;
+            return "error: invalid parameters";
         }
 
         try {
@@ -759,6 +777,85 @@ public class RestServer {
             response = "error:" + errorMessage;
         }
 
+        return response;
+    }
+
+    @Path("/storage/data/{filepath}")
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String storeData(@PathParam("filepath") String filepath, String data) {
+        String response;
+        String errorMessage;
+        String decodedFilepath = "";
+
+        if (data == null || data.isEmpty() || filepath == null || filepath.isEmpty()) {
+            return "error: invalid parameters";
+        }
+
+        try {
+            decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+            asapiSupport.storeData(data, decodedFilepath);
+            response = "OK";
+        } catch (Exception e) {
+            e.printStackTrace();
+            errorMessage = "Could not store data to " + decodedFilepath + "' (" + e.getMessage() + ")";
+            response = "error:" + errorMessage;
+        }
+
+        return response;
+    }
+
+    @Path("/storage/webapps/{webappName}/{filepath}")
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String storeWebappData(@PathParam("webappName") String webappName, @PathParam("filepath") String filepath, String data) {
+        String response;
+        String errorMessage;
+        String decodedFilepath = "";
+        String decodedWebappName = "";
+
+        if (data == null || data.isEmpty() || filepath == null || filepath.isEmpty() || webappName == null || webappName.isEmpty()) {
+            return "error: invalid parameters";
+        }
+
+        try {
+            decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+            decodedWebappName = astericsAPIEncoding.decodeString(webappName);
+            asapiSupport.storeWebappData(data, decodedFilepath, decodedWebappName);
+            response = "OK";
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "could not store webapp data!", e);
+            errorMessage = MessageFormat.format("Could not store webapp data to <{0}> ({1}).", decodedFilepath, e.getMessage());
+            response = "error:" + errorMessage;
+        }
+        return response;
+    }
+
+    @Path("/storage/webapps/{webappName}/{filepath}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getWebappData(@PathParam("webappName") String webappName, @PathParam("filepath") String filepath) {
+        String response;
+        String errorMessage;
+        String decodedFilepath = "";
+        String decodedWebappName = "";
+
+        if (filepath == null || filepath.isEmpty() || webappName == null || webappName.isEmpty()) {
+            return "error: invalid parameters";
+        }
+
+        try {
+            decodedFilepath = astericsAPIEncoding.decodeString(filepath);
+            decodedWebappName = astericsAPIEncoding.decodeString(webappName);
+            String fullFilepath = ResourceRegistry.WEBAPP_FOLDER + decodedWebappName + "/" + ResourceRegistry.WEBAPP_SUBFOLDER_DATA + decodedFilepath;
+            response = ResourceRegistry.getInstance().getResourceContentAsString(fullFilepath, ResourceRegistry.RES_TYPE.WEB_DOCUMENT_ROOT);
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "could get webapp data!", e);
+            errorMessage = MessageFormat.format("Could not get webapp data from <{0}> ({1}).", decodedFilepath, e.getMessage());
+            response = "error:" + errorMessage;
+        }
         return response;
     }
 
@@ -841,7 +938,7 @@ public class RestServer {
         String errorMessage;
 
         try {
-            List<String> array = asapiSupport.getBundelDescriptors();
+            List<String> array = asapiSupport.getBundleDescriptors();
             response = ObjectTransformation.objectToJSON(Arrays.asList(array));
             if (response.equals("")) {
                 response = "{'error':'Could not retrieve the components descriptors (Object serialization failure)'}";
@@ -855,26 +952,26 @@ public class RestServer {
         return response;
     }
 
-    @Path("/runtime/model/components/input/{componentId}/{inputKey}")
+    @Path("/runtime/model/components/{componentId}/ports/{portId}/data")
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String sendDataToInputPort(String value, @PathParam("componentId") String componentId,
-            @PathParam("inputKey") String componentKey) {
+            @PathParam("portId") String portId) {
         String response;
         String errorMessage = "";
-        String decodedId = "", decodedKey = "";
+        String decodedCompId = "", decodedPortId = "";
 
         try {
-            decodedId = astericsAPIEncoding.decodeString(componentId);
-            decodedKey = astericsAPIEncoding.decodeString(componentKey);
-            logger.info(MessageFormat.format("sending data <{0}> to {1}-{2}", value, decodedId, decodedKey));
-            asapiSupport.sendData(decodedId, decodedKey, value.getBytes());
+            decodedCompId = astericsAPIEncoding.decodeString(componentId);
+            decodedPortId = astericsAPIEncoding.decodeString(portId);
+            logger.info(MessageFormat.format("sending data <{0}> to {1}-{2}", value, decodedCompId, decodedPortId));
+            asapiSupport.sendData(decodedCompId, decodedPortId, value.getBytes());
             response = "success";
         } catch (Exception e) {
             logger.log(Level.WARNING, "could not send data!", e);
-            errorMessage = "Couldn't set '" + value + "' value to '" + decodedKey + "' from '" + decodedId + "' ("
-                    + e.getMessage() + ")";
+            errorMessage = MessageFormat.format("Couldnt set port <{0}> of component <{1}> to value <{2}> (Exception: {3})", decodedPortId, decodedCompId,
+                    value, e.getMessage());
             response = "error:" + errorMessage;
         }
 

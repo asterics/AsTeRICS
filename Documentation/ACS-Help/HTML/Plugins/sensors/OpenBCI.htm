@@ -1,27 +1,28 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>OpenBCI</Title>
-</HEAD>
-<BODY>
-<H1>OpenBCI</H1>
-<H3>Component Type: Sensor (Subcategory: Bioelectric Measurement)</H3>
-<p>This component provides an interface to bioelectric amplifiers which are compatible to the openBCI packet fromat. For more information please refer to the <a href="http://www.openbci.com/">OpenBCI</a> website. The COM Port number where the device is connected must be specified in the plugin properties.</p>
-<div class="image"><img src="img/OpenBCI.jpg" alt="Screenshot: OpenBCI plugin" title="Screenshot: OpenBCI plugin" /><br>
-OpenBCI plugin</div>
-<H2>Requirements</H2>
-This software component requires an Open BCI compatible device connected to a COM Port, which sends packet protocol for channel data. 
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>Channel1 to Channel8 [integer]:</STRONG> Each output corresponds to the sampled data from its corresponding channel. A calibration procedure to obtain the factor for calculation of microvolts must be performed with the amplifier device.</li>
-<li><STRONG>AccX, AccY, AccZ [integer]:</STRONG> The current values of the 3 axis of the acceleration sensor.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>COMPort [String]:</STRONG> The name of the COM port, for example COM2 or COM17.</li>
-<li><STRONG>Baudrate [Integer]:</STRONG> The baud rate for the transmission. Standard is 115200.</li> 
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>OpenBCI</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>OpenBCI</H1>
+		<span class="componentType">Component Type: Sensor (Subcategory: Bioelectric Measurement)</span>
+		<p>This component provides an interface to bioelectric amplifiers which are compatible to the openBCI packet fromat. For more information please refer to the <a href="http://www.openbci.com/">OpenBCI</a> website. The COM Port number where the device is connected must be specified in the plugin properties.</p>
+		<figure>
+			<img class="image" src="img/OpenBCI.jpg" alt="Screenshot: OpenBCI plugin" title="Screenshot: OpenBCI plugin" />
+			<figcaption>OpenBCI plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		This software component requires an Open BCI compatible device connected to a COM Port, which sends packet protocol for channel data. 
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>Channel1 to Channel8 [integer]:</STRONG> Each output corresponds to the sampled data from its corresponding channel. A calibration procedure to obtain the factor for calculation of microvolts must be performed with the amplifier device.</li>
+			<li><STRONG>AccX, AccY, AccZ [integer]:</STRONG> The current values of the 3 axis of the acceleration sensor.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>COMPort [String]:</STRONG> The name of the COM port, for example COM2 or COM17.</li>
+			<li><STRONG>Baudrate [Integer]:</STRONG> The baud rate for the transmission. Standard is 115200.</li> 
+		</ul>
+	</BODY>
 </HTML>

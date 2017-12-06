@@ -1,0 +1,63 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>AcousticScanning</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>AcousticScannning</H1> 
+		<span class="componentType">Component Type: Processor (Subcategory: Audio and Voice)</span>
+		<p>The purpose of this component is to provide a stepwise, voice assisted selection of a large number of options. Examples for use cases are the selection of individual letters for text composition or selection of spoken phrases (eg. for environmental control via the amazon echo device).
+		The component uses the MaryTTS text-to-speech library which supports multiple languages and voices. Currently, the component is in beta stage and only one english female voice and one german male voice are included.</p>
+		<p>The component provides up to 6 selectionSets. A selectionSet contains a number of individal items, seperated by commas (e.g. a number of letters for spelling words).
+		When a selectionSet is started (by an incoming event), every selection item is spoken with an adjustable pause between the items. If an event is received at the "selection" event listener port during the presentation or pause time of a particular item, this item is added to the "preview string" output port. When the preview string contains the finalized word/phrase/sentence, it can be sent to the "selection" output port. </p>
+		<p>Additional functionalities can be given to the selection items via commands strings which are added to a selection item (seperated by the #-character). Supported command strings allow the deletion of the last character, the speaking of the currently composed text and other functions which are described below, thereby increasing the flexibility of the plugin. For more information see the demo model (ACS/models/componentTests/processors/AcousticScanning_test.acs)</p>
+		<figure>
+			<img class="image" src="img/AcousticScanning.jpg" alt="Screenshot: AcousticScanning plugin" title="Screenshot: AcousticScanning plugin" />
+			<figcaption>AcousticScanning plugin</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>loadSetFile [string]:</STRONG> Path/name of a file which contains alternative selectionSets (which override the default selectionSets defined in the properties "selectionSet1"-"selectionSet6". The selectionSets are provided as individual lines, terminated with a newline character. (This functionality is currently not supported.)</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>selectionPreview [string]:</STRONG> Output of preview string. This output port shows the current word/phrase/sentence which is composed or spelled using the stepwise scanning process.</li>
+			<li><STRONG>selection [string]:</STRONG> The finalized word/phrase/sentence is sent to this output port when an item containing the #commit command string has been selected.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>selectionSet1-selectionSet6:</STRONG> an incoming event starts the acoustic scanning process of the given selection set.</li>
+			<li><STRONG>select:</STRONG> selects the currently spoken item and adds the item text to the preview string (or executes the command associated with the selected item)</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>event1-event10:</STRONG> These events are triggerd if the currently selected item contains the command string "event1", "event2", etc.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>language [string]:</STRONG> The languge of the text-to-speech engine (currently only "en" and "de" are supported).</li>
+			<li><STRONG>voice [string]:</STRONG> The voice for the given language (currently this property is ignored, there is only one german and one english voice which are selected automatically due to the value of the language property).</li>
+			<li><STRONG>selectionSet1 [string]:</STRONG> The items of selectionSet1, separated by commas. </li>
+			<li>
+				<STRONG>selectionSet2-selectionSet6 [string]:</STRONG> The items of selection sets 2-6. 
+				In the following a list of all currently supported command strings is given:
+				<ul>
+					<li><EM>#del:</EM> deletes one charater from the preview string.</li>
+					<li><EM>#clear:</EM> clear the preview string.</li>
+					<li><EM>#space:</EM> adds a space key to the preview string.</li>
+					<li><EM>#enter:</EM> adds the text {ENTER} to the preview string (this generates an enter key when sent to the keyboard actuator plugin).</li>
+					<li><EM>#speak:</EM> speaks the preview string.</li>
+					<li><EM>#commit:</EM> sends the preview string to the output port "selection" and clears the preview string. This can be used to write the composed word/phrase to a keybaord actuator etc.</li>
+					<li><EM>#event1:</EM> sends an event via event trigger port "event1".</li>
+					<li><EM>#event2:</EM> sends an event via event trigger port "event2".</li>
+					<li><EM>#event3 - #event10:</EM> sends an events via event trigger ports event2 - 10.</li>
+					<li><EM>other text which follows a hash character will be spoken when the item is selected</EM></li>
+				</ul>
+			</li>
+			<li><EM>An example of a valid selection set:</EM> "a,b,c,d,e,f,g" for the first 7 letters of the alphabet.</li> 
+			<li><EM>Another example including command strings:</EM> "backspace#del,start music#event1".</li> 
+			<li><EM>Note</EM> that the selectionSet is specified without the double quotation marks and without spaces after the commas.</li>
+		</ul>
+	</BODY>
+</HTML>

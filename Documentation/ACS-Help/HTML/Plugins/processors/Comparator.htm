@@ -1,39 +1,38 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>Comparator</Title>
-</HEAD>
-<BODY>
-<H1>Comparator</H1>
-<H3>Component Type: Processor (Subcategory: Basic Math)</H3>
-<p>This component compares the numerical values of two input ports and provides output depending on the result of the comparison.</p>
-
-<div class="image"><img src="img/Comparator.jpg" alt="Screenshot: Comparator plugin" title="Screenshot: Comparator plugin" /><br>
-Comparator plugin</div>
-
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>inA [double]:</STRONG> Input port for signal a. <b>This input port supports synchronization</b></li>
-<li><STRONG>inB [double]:</STRONG> Input port for signal b. <b>This input port supports synchronization</b></li>
-</ul>
-<H2>Output Port description</H2>
-<ul>
-<li><STRONG>out [double]:</STRONG> Output port of the comparator (value according to condition and operational mode).</li>
-</ul>
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>conditionTrue:</STRONG> This event is triggered when the comparator condition switches from false to true.</li>
-<li><STRONG>comparatorFalse:</STRONG> This event is triggered when the comparator condition switches from true to false.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>condition [integer]:</STRONG> Defines the condition to be met. Available conditions are "a greater b", "a equals b", "a lower b", "a greater threshold", "a equals threshold", "a lower threshold" and "a between threshold and threshold2".</li>
-<li><STRONG>outputMode [integer]:</STRONG> Defines the mode of operation, respectively which values are put to the output port of the plugin. Following modes are available: "output min", "output max" and "output a if condition met".</li>
-<li><STRONG>eventMode [integer]:</STRONG> Defines the mode of event generation (if events are created on every comparison of input values or only if the output condition changes).</li>
-<li><STRONG>threshold [double]:</STRONG> Defines the threshold value for the condition modes "a greater than threshold", "a equals threshold" and "a lower than threshold".</li>
-<li><STRONG>threshold2 [double]:</STRONG> Defines the threshold2 value for the condition mode "a between threshold and threshold2".</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Comparator</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Comparator</H1>
+		<span class="componentType">Component Type: Processor (Subcategory: Basic Math)</span>
+		<p>This component compares the numerical values of two input ports and provides output depending on the result of the comparison.</p>
+		<figure>
+			<img class="image" src="img/Comparator.jpg" alt="Screenshot: Comparator plugin" title="Screenshot: Comparator plugin" />
+			<figcaption>Comparator plugin</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>inA [double]:</STRONG> Input port for signal a. <strong>This input port supports synchronization</strong></li>
+			<li><STRONG>inB [double]:</STRONG> Input port for signal b. <strong>This input port supports synchronization</strong></li>
+		</ul>
+		<H2>Output Port description</H2>
+		<ul>
+			<li><STRONG>out [double]:</STRONG> Output port of the comparator (value according to condition and operational mode).</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>conditionTrue:</STRONG> This event is triggered when the comparator condition switches from false to true.</li>
+			<li><STRONG>comparatorFalse:</STRONG> This event is triggered when the comparator condition switches from true to false.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>condition [integer]:</STRONG> Defines the condition to be met. Available conditions are "a greater b", "a equals b", "a lower b", "a greater threshold", "a equals threshold", "a lower threshold" and "a between threshold and threshold2".</li>
+			<li><STRONG>outputMode [integer]:</STRONG> Defines the mode of operation, respectively which values are put to the output port of the plugin. Following modes are available: "output min", "output max" and "output a if condition met".</li>
+			<li><STRONG>eventMode [integer]:</STRONG> Defines the mode of event generation (if events are created on every comparison of input values or only if the output condition changes).</li>
+			<li><STRONG>threshold [double]:</STRONG> Defines the threshold value for the condition modes "a greater than threshold", "a equals threshold" and "a lower than threshold".</li>
+			<li><STRONG>threshold2 [double]:</STRONG> Defines the threshold2 value for the condition mode "a between threshold and threshold2".</li>
+		</ul>
+	</BODY>
 </HTML>

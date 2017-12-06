@@ -2,6 +2,22 @@
 	<condition property="license.prefix" value="${component.id}-" else="">
 		<isset property="component.id" />
 	</condition>
+	
+	<!-- 
+	Define os.name for Bundle-NativeCode statement in MANIFEST of plugins:
+	As on Windows the alias os.name (win32) is not correctly matched, we have to manually define the property
+	so that the native bundles start on windows 10.
+	@see https://github.com/asterics/AsTeRICS/issues/17
+	
+	Note: Maybe we should also set the alias for Linux and Mac manually, because here we hardcode the
+	runtime os.name at build time. So the os.names could actually differ, although according to the list of os.names 
+	(https://www.osgi.org/developer/specifications/reference/)
+	for Linux there is only 1 name and for Mac OSX also.
+	-->
+	<condition property="org.osgi.framework.os.name" value="win32" else="${os.name}">
+		<os family="windows" />
+	</condition>
+	
 
 	<!-- <property name="license.prefix" value="${component.id}-"/>-->
 	<property name="javac.source" value="1.7"/>

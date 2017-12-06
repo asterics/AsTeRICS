@@ -17,6 +17,10 @@
                 <description>Received Command when IR command is received by IRTrans</description>
                 <dataType>string</dataType>
             </outputPort>
+			<outputPort id="outputResult">
+                <description>Result of a command that was sent to action-port before</description>
+                <dataType>string</dataType>
+            </outputPort>
         </ports>
         <events>
             <eventListenerPort id="sendprop1">

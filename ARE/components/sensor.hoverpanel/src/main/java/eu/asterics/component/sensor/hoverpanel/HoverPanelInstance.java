@@ -29,6 +29,11 @@ package eu.asterics.component.sensor.hoverpanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import javax.swing.SwingUtilities;
 
@@ -41,6 +46,8 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
 import eu.asterics.mw.services.AREServices;
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsModelExecutionThreadPool;
 import eu.asterics.mw.services.AstericsThreadPool;
 
 /**
@@ -51,7 +58,7 @@ import eu.asterics.mw.services.AstericsThreadPool;
  * 
  * @author <your name> [<your email address>] Date: Time:
  */
-public class HoverPanelInstance extends AbstractRuntimeComponentInstance {
+public class HoverPanelInstance extends AbstractRuntimeComponentInstance implements MouseListener, MouseMotionListener {
     // Usage of an output port e.g.:
     // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
@@ -377,9 +384,7 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance {
                             }
                         }
                         if ((hoverState == 1) && (active == true)) {
-                            selected = 1;
-                            etpSelected.raiseEvent();
-                            setPanelBackground(Color.CYAN);
+                            performClick();
                         } else {
                             setPanelBackground(getColorProperty(propBackgroundColor));
                         }
@@ -429,6 +434,13 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance {
         }
     }
 
+    private void performClick() {
+        // TODO Auto-generated method stub
+        selected = 1;
+        etpSelected.raiseEvent();
+        setPanelBackground(getColorProperty(propActivationColor));
+    }
+    
     void setPanelBackground(final Color c) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -472,7 +484,10 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance {
         active = true;
 
         gui = new GUI(this, position, dimension);
-
+        if(gui!=null) {
+			gui.addMouseListener(this);
+			gui.addMouseMotionListener(this);
+        }
         super.start();
     }
 
@@ -481,7 +496,12 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void pause() {
+		if (gui != null) {
+			gui.removeMouseListener(this);
+			gui.removeMouseMotionListener(this);
+		}
         super.pause();
+        
     }
 
     /**
@@ -489,6 +509,10 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void resume() {
+		if (gui != null) {
+			gui.addMouseListener(this);
+			gui.addMouseMotionListener(this);
+		}
         super.resume();
     }
 
@@ -504,20 +528,111 @@ public class HoverPanelInstance extends AbstractRuntimeComponentInstance {
         hoverState = 0;
         idleState = 0;
 
-        System.out.println("HoverPanel " + propCaption + " Stop called !!");
+        AstericsErrorHandling.instance.getLogger().fine("HoverPanel " + propCaption + " Stop called !!");
 
         // gui.dispatchEvent(new WindowEvent(gui, WindowEvent.WINDOW_CLOSING));
         // System.out.println("HoverPanel "+propCaption+"after dispatch !!");
 
+        //first hand the gui object over to a new temp variable. This assignment is threadsafe and besides
+        //start/stop/pause/resume methods are guaranteed to be called within the same thread.
+        final GUI guiToDestroy=gui;
+        gui=null;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if (gui != null) {
-                    gui.setVisible(false);
-                    gui.dispose();
-                    gui = null;
-                    System.out.println("HoverPanel " + propCaption + "after dispatch !!");
+            	//now the cleanup of the window can be done at any time in the event dispatch thread wihtout interfering the other code.
+                if (guiToDestroy != null) {
+                	guiToDestroy.removeMouseListener(HoverPanelInstance.this);
+                	guiToDestroy.removeMouseMotionListener(HoverPanelInstance.this);
+                	guiToDestroy.setVisible(false);
+                	guiToDestroy.dispose();
+                    AstericsErrorHandling.instance.getLogger().fine("HoverPanel " + propCaption + "after dispatch !!");
                 }
+            }
+        });
+    }
+
+    /*** Start support for normal mouse hovering and clicking ***/
+    
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+        //mouse was clicked in GUI, so emulate hoverclick        
+        performClick();        
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseEntered(final MouseEvent e) {            
+        AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                currentX = e.getXOnScreen();
+                currentY = e.getYOnScreen();
+                checkHoverState();
+            }
+        });
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseExited(final MouseEvent e) {
+        AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
+            @Override
+            public void run() {
+                currentX = e.getXOnScreen();
+                currentY = e.getYOnScreen();
+                checkHoverState();
+            }
+        });
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseMoved(final MouseEvent e) {
+        AstericsModelExecutionThreadPool.instance.execute(new Runnable() {
+            @Override
+            public void run() {
+                currentX = e.getXOnScreen();
+                currentY = e.getYOnScreen();
+                checkHoverState();
             }
         });
     }

@@ -1,34 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>Signal Translation</Title>
-</HEAD>
-<BODY>
-<H1>Signal Translation</H1>
-<H3>Component Type: Processor (Subcategory: Signal Shaping)</H3>
-<p>The signal translation component is used to translate an input value which resides in a certain value range to a given output range. Interpolation of the position in the output range is done linearly. The component provides two inputs which allow other components to set the minimum and maximum value of the input range.</p>
-<div class="image"><img src="img/SignalTranslation.jpg" alt="Screenshot: SignalTranslation plugin" title="Screenshot: SignalTranslation plugin" /><br>
-SignalTranslation plugin</div>
-
-
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>in [double]:</STRONG> This port receives the input values which will be translated to the new range.</li>
-<li><STRONG>setMax [double]:</STRONG> This port sets the value of the maximum property in the component.</li>
-<li><STRONG>setMin [double]:</STRONG> This port sets the value of the minimum property in the component.</li>
-</ul>
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>out [double]:</STRONG> This port sends the translated values corresponding to the output range.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>inMin [double]:</STRONG> Sets the minimum value of the input range, input values below this value will be clipped to the minimum.</li>
-<li><STRONG>inMax [double]:</STRONG> Sets the maximum value of the input range, input values above this value will be clipped to the maximum.</li>
-<li><STRONG>outMin [double]:</STRONG> Sets the minimum value of the output range.</li>
-<li><STRONG>outMax [double]:</STRONG> Sets the maximum value of the output range.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Signal Translation</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Signal Translation</H1>
+		<span class="componentType">Component Type: Processor (Subcategory: Signal Shaping)</span>
+		<p>The signal translation component is used to translate an input value which resides in a certain value range to a given output range. Interpolation of the position in the output range is done linearly. The component provides two inputs which allow other components to set the minimum and maximum value of the input range.</p>
+		<figure>
+			<img class="image" src="img/SignalTranslation.jpg" alt="Screenshot: SignalTranslation plugin" title="Screenshot: SignalTranslation plugin" />
+			<figcaption>SignalTranslation plugin</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>in [double]:</STRONG> This port receives the input values which will be translated to the new range.</li>
+			<li><STRONG>setMax [double]:</STRONG> This port sets the value of the maximum property in the component.</li>
+			<li><STRONG>setMin [double]:</STRONG> This port sets the value of the minimum property in the component.</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>out [double]:</STRONG> This port sends the translated values corresponding to the output range.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>inMin [double]:</STRONG> Sets the minimum value of the input range, input values below this value will be clipped to the minimum.</li>
+			<li><STRONG>inMax [double]:</STRONG> Sets the maximum value of the input range, input values above this value will be clipped to the maximum.</li>
+			<li><STRONG>outMin [double]:</STRONG> Sets the minimum value of the output range.</li>
+			<li><STRONG>outMax [double]:</STRONG> Sets the maximum value of the output range.</li>
+		</ul>
+	</BODY>
 </HTML>

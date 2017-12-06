@@ -4,10 +4,12 @@
   <property name="dist" location=".."/>
   <property name="runtime" location="../bin/ARE"/>
   <property name="osgi" location="osgi"/>
-
+  <property name="web.docroot" location="${runtime}/web/"/>
+	
 	<target name="cleanProfile">
-	    <delete dir =  "../bin/ARE/profile/org.eclipse.osgi"/>
-	    <delete file =  "../bin/ARE/profile/loader_componentlist.ini"/>
+	    <delete dir =  "${runtime}/profile/org.eclipse.osgi" failonerror="false"/>
+	    <delete dir =  "${runtime}/tmp/caching/" failonerror="false"/>
+		<delete dir =  "${web.docroot}/componentCollections/" failonerror="false"/>
 	</target>
 
 	<target name="buildARE" depends="cleanProfile">
@@ -62,13 +64,54 @@
           </subant>
     </target>
 	
-	<target name="clean">
+	<target name="run" depends="buildAllNoClean" description="Peforms buildAllNoClean and starts the ARE.">
+		<java jar="${runtime}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${runtime}" fork="true" failonerror="true">			
+			<sysproperty key="osgi.configuration.area" value="profile" />
+			<sysproperty key="osgi.clean" value="true" />
+			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
+			<sysproperty key="org.osgi.framework.system.packages.extra" value="sun.misc" />
+			<sysproperty key="Ansi" value="true" />
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
+			<!--
+			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
+			-->
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="" />
+			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
+		</java>	
+	</target>	
+	
+	<target name="run-debug" depends="buildAllNoCleanNoCopyLicenses" description="Peforms buildAllNoCleanNoCopyLicenses and starts the ARE with debug options.">
+		<antcall target="run-quick"/>
+	</target>	
+	
+	<target name="run-quick" description="Starts the ARE with debug options without compiling.">
+		<java jar="${runtime}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${runtime}" fork="true" failonerror="true">			
+			<sysproperty key="osgi.configuration.area" value="profile" />
+			<sysproperty key="osgi.clean" value="true" />
+			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
+			<sysproperty key="org.osgi.framework.system.packages.extra" value="sun.misc" />
+			<sysproperty key="Ansi" value="true" />
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
+			<sysproperty key="eu.asterics.mw.services.AstericsErrorHandling.consoleLogLevel" value="FINE"/>
+			<!--
+			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
+			-->
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="" />		
+			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
+			<jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044"/>
+		</java>	
+	</target>
+	
+	<target name="clean" depends="cleanProfile">
         <subant target="clean">
           <fileset dir="." includes="*/build.xml"/>
         </subant>
 		<delete verbose="true" includeemptydirs="true">
 			<fileset dir="." includes="bin/**"/>
 		</delete>
+		<delete verbose="true">
+			<fileset dir="${runtime}" includes="asterics*.jar"></fileset>
+		</delete>	
     </target>
 	
 	<target name="copyLicensesAll" depends="cleanLicenses">

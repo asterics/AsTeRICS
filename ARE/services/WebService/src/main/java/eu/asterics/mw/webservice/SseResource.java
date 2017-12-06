@@ -100,10 +100,11 @@ public class SseResource {
         runtimeListener.clearDataChannelList();
 
         // initialize accordint to the new model
-        for (IChannel channel : DeploymentManager.instance.getCurrentRuntimeModel().getChannels()) {
-            dataChannelBroadcaster.put(channel.getChannelID(), new HashSet<EventOutput>());
+        if (DeploymentManager.instance.getCurrentRuntimeModel() != null) {
+            for (IChannel channel : DeploymentManager.instance.getCurrentRuntimeModel().getChannels()) {
+                dataChannelBroadcaster.put(channel.getChannelID(), new HashSet<EventOutput>());
+            }
         }
-
     }
 
     /***********************************
@@ -184,8 +185,7 @@ public class SseResource {
      **********************************/
 
     /**
-     * Static method that broadcasts an event to clients who were subscribed to
-     * deployment events.
+     * Static method that broadcasts an event to clients who were subscribed to deployment events.
      * 
      * @param eventMessage
      *            - the message of the event
@@ -207,8 +207,7 @@ public class SseResource {
     }
 
     /**
-     * Static method that broadcasts an event to clients who were subscribed to
-     * model state events.
+     * Static method that broadcasts an event to clients who were subscribed to model state events.
      * 
      * @param eventMessage
      *            - the message of the event
@@ -230,8 +229,7 @@ public class SseResource {
     }
 
     /**
-     * Static method that broadcasts an event to clients who were subscribed to
-     * eventChannel events.
+     * Static method that broadcasts an event to clients who were subscribed to eventChannel events.
      * 
      * @param channelId
      *            - the id of the channel
@@ -260,8 +258,7 @@ public class SseResource {
     }
 
     /**
-     * Static method that broadcasts an event to clients who were subscribed to
-     * dataChannel events.
+     * Static method that broadcasts an event to clients who were subscribed to dataChannel events.
      * 
      * @param channelId
      *            - the id of the channel
@@ -310,8 +307,7 @@ public class SseResource {
     }
 
     /**
-     * Static method that broadcasts an event to clients who were subscribed to
-     * property changes events
+     * Static method that broadcasts an event to clients who were subscribed to property changes events
      * 
      * @param componentId
      *            - the id of the component that changed it's property

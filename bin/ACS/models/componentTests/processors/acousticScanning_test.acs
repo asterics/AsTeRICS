@@ -1,0 +1,552 @@
+<?xml version="1.0"?>
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\acousticScanning_test.acs_2017_10_23_0_53" version="20130320">
+  <components>
+    <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="SelectionSets" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="a b c d e f g h" />
+        <property name="buttonCaption2" value="i j k l m n o p" />
+        <property name="buttonCaption3" value="q r s t u v w x y z" />
+        <property name="buttonCaption4" value="1 2 3 4 5 6 7 8 9 0" />
+        <property name="buttonCaption5" value="Aktionen" />
+        <property name="buttonCaption6" value="Events" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>129</posX>
+        <posY>64</posY>
+      </layout>
+      <gui>
+        <posX>510</posX>
+        <posY>1010</posY>
+        <width>2000</width>
+        <height>3444</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Keyboard Output " />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="10" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>511</posX>
+        <posY>190</posY>
+      </layout>
+      <gui>
+        <posX>2572</posX>
+        <posY>2121</posY>
+        <width>2812</width>
+        <height>889</height>
+      </gui>
+    </component>
+    <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="input">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="Preview" />
+        <property name="default" value="" />
+        <property name="textPosition" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>499</posX>
+        <posY>22</posY>
+      </layout>
+      <gui>
+        <posX>2572</posX>
+        <posY>1121</posY>
+        <width>2812</width>
+        <height>889</height>
+      </gui>
+    </component>
+    <component id="Keyboard.1" type_id="asterics.Keyboard">
+      <description>Local Keyboard actuator</description>
+      <ports>
+        <inputPort portTypeID="keyCodes">
+          <properties />
+        </inputPort>
+      </ports>
+      <properties>
+        <property name="keyCodeString" value="a" />
+        <property name="inputMethod" value="1" />
+        <property name="waitTime" value="1000" />
+      </properties>
+      <layout>
+        <posX>639</posX>
+        <posY>218</posY>
+      </layout>
+    </component>
+    <component id="AcousticScanning.1" type_id="asterics.AcousticScanning">
+      <description>Acoustic scanning of selection sets (words, letters) for composition of text or commands</description>
+      <ports>
+        <inputPort portTypeID="loadSetFile">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="selectionPreview">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="selection">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="language" value="de" />
+        <property name="voice" value="voice-cmu-slt-hsmm-5.2" />
+        <property name="delayTime" value="50" />
+        <property name="selectionSet1" value="a,b,c,d,e,f,g,h" />
+        <property name="selectionSet2" value="i,j,k,l,m,n,o,p" />
+        <property name="selectionSet3" value="q,r,s,t,u,v,w,x,y,z" />
+        <property name="selectionSet4" value="1,2,3,4,5,6,7,8,9,0" />
+        <property name="selectionSet5" value="löschen#del,leertaste#space,enter#enter,aussprechen#speak,senden#commit,alles löschen#clear" />
+        <property name="selectionSet6" value="Funktion1#event1,Funktion2#event2,Licht einschalten#Echo schalte das Licht ein,Licht ausschalten#Echo schalte das Licht aus" />
+      </properties>
+      <layout>
+        <posX>320</posX>
+        <posY>68</posY>
+      </layout>
+    </component>
+    <component id="ButtonGrid.2" type_id="asterics.ButtonGrid">
+      <description>Keyboard which sends event after button press</description>
+      <ports />
+      <properties>
+        <property name="caption" value="" />
+        <property name="horizontalOrientation" value="false" />
+        <property name="textColor" value="13" />
+        <property name="backgroundColor" value="13" />
+        <property name="borderColor" value="13" />
+        <property name="borderThickness" value="2" />
+        <property name="selectionFrameColor" value="13" />
+        <property name="selectionFrameThickness" value="4" />
+        <property name="displayGUI" value="true" />
+        <property name="buttonCaption1" value="Select!" />
+        <property name="buttonCaption2" value="" />
+        <property name="buttonCaption3" value="" />
+        <property name="buttonCaption4" value="" />
+        <property name="buttonCaption5" value="" />
+        <property name="buttonCaption6" value="" />
+        <property name="buttonCaption7" value="" />
+        <property name="buttonCaption8" value="" />
+        <property name="buttonCaption9" value="" />
+        <property name="buttonCaption10" value="" />
+        <property name="buttonCaption11" value="" />
+        <property name="buttonCaption12" value="" />
+        <property name="buttonCaption13" value="" />
+        <property name="buttonCaption14" value="" />
+        <property name="buttonCaption15" value="" />
+        <property name="buttonCaption16" value="" />
+        <property name="buttonCaption17" value="" />
+        <property name="buttonCaption18" value="" />
+        <property name="buttonCaption19" value="" />
+        <property name="buttonCaption20" value="" />
+        <property name="toolTip1" value="" />
+        <property name="toolTip2" value="" />
+        <property name="toolTip3" value="" />
+        <property name="toolTip4" value="" />
+        <property name="toolTip5" value="" />
+        <property name="toolTip6" value="" />
+        <property name="toolTip7" value="" />
+        <property name="toolTip8" value="" />
+        <property name="toolTip9" value="" />
+        <property name="toolTip10" value="" />
+        <property name="toolTip11" value="" />
+        <property name="toolTip12" value="" />
+        <property name="toolTip13" value="" />
+        <property name="toolTip14" value="" />
+        <property name="toolTip15" value="" />
+        <property name="toolTip16" value="" />
+        <property name="toolTip17" value="" />
+        <property name="toolTip18" value="" />
+        <property name="toolTip19" value="" />
+        <property name="toolTip20" value="" />
+      </properties>
+      <layout>
+        <posX>144</posX>
+        <posY>243</posY>
+      </layout>
+      <gui>
+        <posX>2572</posX>
+        <posY>3787</posY>
+        <width>1125</width>
+        <height>667</height>
+      </gui>
+    </component>
+    <component id="EventVisualizer.1" type_id="asterics.EventVisualizer">
+      <description>Simple Event Visualizer</description>
+      <ports />
+      <properties>
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>402</posX>
+        <posY>240</posY>
+      </layout>
+      <gui>
+        <posX>3822</posX>
+        <posY>3121</posY>
+        <width>1562</width>
+        <height>1333</height>
+      </gui>
+    </component>
+  </components>
+  <channels>
+    <channel id="binding.0">
+      <source>
+        <component id="AcousticScanning.1" />
+        <port id="selectionPreview" />
+      </source>
+      <target>
+        <component id="TextDisplay.1.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.1">
+      <source>
+        <component id="AcousticScanning.1" />
+        <port id="selection" />
+      </source>
+      <target>
+        <component id="TextDisplay.1" />
+        <port id="input" />
+      </target>
+    </channel>
+    <channel id="binding.2">
+      <source>
+        <component id="AcousticScanning.1" />
+        <port id="selection" />
+      </source>
+      <target>
+        <component id="Keyboard.1" />
+        <port id="keyCodes" />
+      </target>
+    </channel>
+  </channels>
+  <eventChannels>
+    <eventChannel id="button1_selectionSet1">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AcousticScanning.1" />
+          <eventPort id="selectionSet1" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button2_selectionSet2">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AcousticScanning.1" />
+          <eventPort id="selectionSet2" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button3_selectionSet3">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AcousticScanning.1" />
+          <eventPort id="selectionSet3" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button4_selectionSet4">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AcousticScanning.1" />
+          <eventPort id="selectionSet4" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button5_selectionSet5">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AcousticScanning.1" />
+          <eventPort id="selectionSet5" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button6_selectionSet6">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.1" />
+          <eventPort id="button6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AcousticScanning.1" />
+          <eventPort id="selectionSet6" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event1_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="AcousticScanning.1" />
+          <eventPort id="event1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event2_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="AcousticScanning.1" />
+          <eventPort id="event2" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event3_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="AcousticScanning.1" />
+          <eventPort id="event3" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event4_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="AcousticScanning.1" />
+          <eventPort id="event4" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event5_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="AcousticScanning.1" />
+          <eventPort id="event5" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event6_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="AcousticScanning.1" />
+          <eventPort id="event6" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event7_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="AcousticScanning.1" />
+          <eventPort id="event7" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event8_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="AcousticScanning.1" />
+          <eventPort id="event8" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event9_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="AcousticScanning.1" />
+          <eventPort id="event9" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="event10_eventDisplay">
+      <description />
+      <sources>
+        <source>
+          <component id="AcousticScanning.1" />
+          <eventPort id="event10" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="EventVisualizer.1" />
+          <eventPort id="eventDisplay" />
+        </target>
+      </targets>
+    </eventChannel>
+    <eventChannel id="button1_select">
+      <description />
+      <sources>
+        <source>
+          <component id="ButtonGrid.2" />
+          <eventPort id="button1" />
+        </source>
+      </sources>
+      <targets>
+        <target>
+          <component id="AcousticScanning.1" />
+          <eventPort id="select" />
+        </target>
+      </targets>
+    </eventChannel>
+  </eventChannels>
+  <modelGUI>
+    <Decoration>true</Decoration>
+    <Fullscreen>false</Fullscreen>
+    <AlwaysOnTop>false</AlwaysOnTop>
+    <ToSystemTray>false</ToSystemTray>
+    <ShopControlPanel>true</ShopControlPanel>
+    <AREGUIWindow>
+      <posX>385</posX>
+      <posY>378</posY>
+      <width>5500</width>
+      <height>4333</height>
+    </AREGUIWindow>
+  </modelGUI>
+</model>

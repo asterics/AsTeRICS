@@ -68,7 +68,6 @@ public class TestResourceRegistry {
         modelValidator = new ModelValidator();
         deploymentModelParser = DefaultDeploymentModelParser.create(modelValidator);
         bundleManager = new BundleManager(modelValidator);
-        bundleManager.createComponentListCache();
         DeploymentManager.instance.setBundleManager(bundleManager);
     }
 
@@ -90,6 +89,16 @@ public class TestResourceRegistry {
             // and returned as URI instance.
             String testURIString = ResourceRegistry.getInstance().getAREBaseURI().toString();
             URI actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.ANY);
+            assertTrue(ResourceRegistry.equalsNormalizedURIs(areBaseURI, actual));
+            
+            //Test null URI
+            try {
+                actual=ResourceRegistry.getInstance().getResource(null, null);
+                fail("null resource String not handled correctly");
+            }catch(URISyntaxException e) {                
+            }
+            //Test null RES_TYPE. The result should be the same as above with RES_TYPE.ANY
+            actual=ResourceRegistry.getInstance().getResource(testURIString, null);
             assertTrue(ResourceRegistry.equalsNormalizedURIs(areBaseURI, actual));
 
             // Test http:// URL
@@ -160,6 +169,13 @@ public class TestResourceRegistry {
             }
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.ANY, null, null);
             assertTrue(ResourceRegistry.equalsNormalizedURIs(new File(testURIString).toURI(), actual));
+            
+            //Test webserver document root URI
+            testURIString = "index.html";
+            actual = areBaseURI.resolve("data/webservice/index.html");
+            assertTrue(ResourceRegistry.equalsNormalizedURIs(
+            		ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.WEB_DOCUMENT_ROOT, null, null), actual));
+
 
             // System.out.println("testGetResource: "+arebaseURI);
         } catch (URISyntaxException e) {

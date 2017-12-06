@@ -40,7 +40,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
  * Implements GSM modem plugin
  * 
  * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Feb 11, 2011 Time: 4:27:47
- *         PM
+ *         PM  
  */
 
 public class GSMModemInstance extends AbstractRuntimeComponentInstance {

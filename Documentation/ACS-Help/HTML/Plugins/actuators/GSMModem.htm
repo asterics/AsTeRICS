@@ -1,39 +1,29 @@
-<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <html>
   <head>
-    <meta http-equiv="content-type" content="text/html;
-      charset=ISO-8859-2">
-    <meta name="GENERATOR" content="Microsoft&#174; HTML Help Workshop 4.1">
-    <link rel="stylesheet" type="text/css"
-      href="../../stylesheet/help.css" media="screen">
+    <meta charset="UTF-8">
     <title>GSMModem</title>
   </head>
-  <body>
+  <body class="innerBody">
     <h1>GSM Modem</h1>
-    <h3>Component Type: Actuator (Subcategory: Communication)</h3>
-    <p>This component can perform send and receive SMS action through
-      the GSM modem.<br>
-    </p>
-    <div class="image"><img src="img/GSMModem.jpg" alt="Screenshot:
-        GSMModem plugin" title="Screenshot: GSMModem plugin"><br>
-      GSMModem plugin</div>
+    <h2>Component Type: Actuator (Subcategory: Communication)</h2>
+    <p>This component can perform send and receive SMS action through the GSM modem.</p>
+    <figure>
+		<img class="image" src="img/GSMModem.jpg" alt="Screenshot: GSMModem plugin" title="Screenshot: GSMModem plugin">
+		<figcaption>GSMModem plugin</figcaption>
+	</figure>
     <h2>Requirements</h2>
     A GSM modem with SMS option connected to the platform.
     <h2>Input Port Description</h2>
     <ul>
-      <li><strong>phoneID [string]:</strong> Phone number which will be
-        used for the send SMS action.</li>
-      <li><strong>SMSContent [string]:</strong> SMS content which will
-        be used for the send SMS action.</li>
+      <li><strong>phoneID [string]:</strong> Phone number which will be used for the send SMS action.</li>
+      <li><strong>SMSContent [string]:</strong> SMS content which will be used for the send SMS action.</li>
     </ul>
     <h2>Output Port Description</h2>
     <ul>
-      <li><strong>remotePhoneID [string]:</strong> This is a phone
-        number of the SMS sender.</li>
-      <li><strong>receivedSMS [string]:</strong> This is the content of
-        the incoming SMS.</li>
-      <li><strong>errorNumber [integer]:</strong> The number of the
-        error.</li>
+      <li><strong>remotePhoneID [string]:</strong> This is a phone number of the SMS sender.</li>
+      <li><strong>receivedSMS [string]:</strong> This is the content of the incoming SMS.</li>
+      <li><strong>errorNumber [integer]:</strong> The number of the error.</li>
     </ul>
     <h2>Event Listener Description</h2>
     <ul>
@@ -46,16 +36,10 @@
     </ul>
     <h2>Properties</h2>
     <ul>
-      <li><strong>serialPort [string]:</strong> The modem COM port. If
-        this parameter is empty, the component uses the port of the
-        first modem found.<br>
-      </li>
-      <li><strong>pin [string]:</strong>The PIN code for the SIM card.
-        If the PIN is not needed this property should be empty.</li>
-      <li><strong>smsCenterID [string]:</strong> SMS Center ID. If the
-        Center ID is not needed this property should be empty.</li>
-      <li><strong>defaultPhoneID [string]:</strong> This is a default
-        phone number, which will be used for the send SMS actions.</li>
+      <li><strong>serialPort [string]:</strong> The modem COM port. If this parameter is empty, the component uses the port of the first modem found.</li>
+      <li><strong>pin [string]:</strong>The PIN code for the SIM card. If the PIN is not needed this property should be empty.</li>
+      <li><strong>smsCenterID [string]:</strong> SMS Center ID. If the Center ID is not needed this property should be empty.</li>
+      <li><strong>defaultPhoneID [string]:</strong> This is a default phone number, which will be used for the send SMS actions.</li>
     </ul>
   </body>
 </html>

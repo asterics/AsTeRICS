@@ -21,6 +21,14 @@ int etp_count=0,act_etp=-1;
 int prop_count=0,act_prop=-1;
 
 
+void SD_OnSize(HWND hwnd, UINT state, int cx, int cy);
+void SD_OnHScroll(HWND hwnd, HWND hwndCtl, UINT code, int pos);
+void SD_OnVScroll(HWND hwnd, HWND hwndCtl, UINT code, int pos);
+void SD_OnHVScroll(HWND hwnd, int bar, UINT code);
+void SD_ScrollClient(HWND hwnd, int bar, int pos);
+int SD_GetScrollPos(HWND hwnd, int bar, UINT code);
+
+
 int read_file(char * templatefilepath, char* filename)
 {
 		char filepath[1024];
@@ -65,6 +73,22 @@ int write_file(char * targetfilepath,char * filename)
 		{   MessageBox(NULL, targetfilepath, "Error creating  file", MB_OK);
 			return FALSE;
 		}
+
+		int l=strlen(buffer);
+		for (int i=0; i<l;i++) {
+			if (buffer[i] & (1<<7))
+			{
+				memmove (buffer+i+1,buffer+i,l+2-i);
+				if (buffer[i] & (1<<6))
+				{
+					buffer[i] = (char)0xc3;
+					buffer[i+1] &= ~(1<<6);
+				} 
+				else buffer[i] = (char)0xc2;
+				i++; l++;
+			}
+		}
+
 		WriteFile(wfile,buffer,strlen(buffer),&dwWritten,NULL);
 		CloseHandle(wfile);
 		return TRUE;
@@ -119,15 +143,38 @@ void convert_to_lowercase(char * name)
 	}
 }
 
-LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam )
+INT_PTR CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam )
 {
 	int i;
 	int exists;
-
+	HWND hwnd=hDlg;
 
 	switch( message )
 	{
+		HANDLE_MSG(hwnd, WM_SIZE, SD_OnSize);
+		HANDLE_MSG(hwnd, WM_HSCROLL, SD_OnHScroll);
+		HANDLE_MSG(hwnd, WM_VSCROLL, SD_OnVScroll);
+
 		case WM_INITDIALOG:
+			{
+					RECT rc = {};
+					GetClientRect(hwnd, &rc);
+
+					const SIZE sz = { rc.right - rc.left, rc.bottom - rc.top };
+
+					SCROLLINFO si = {};
+					si.cbSize = sizeof(SCROLLINFO);
+					si.fMask = SIF_PAGE | SIF_POS | SIF_RANGE;
+					si.nPos = si.nMin = 1;
+
+					si.nMax = sz.cx;
+					si.nPage = sz.cx;
+					SetScrollInfo(hwnd, SB_HORZ, &si, FALSE);
+
+					si.nMax = sz.cy;
+					si.nPage = sz.cy;
+					SetScrollInfo(hwnd, SB_VERT, &si, FALSE);
+
 			    ghWndBrowser=hDlg;
 				SendDlgItemMessage( hDlg, IDC_PLUGINTYPECOMBO, CB_ADDSTRING, 0,(LPARAM) (LPSTR) "sensor" ) ;
 				SendDlgItemMessage( hDlg, IDC_PLUGINTYPECOMBO, CB_ADDSTRING, 0,(LPARAM) (LPSTR) "processor" ) ;
@@ -174,14 +221,12 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
 				SetDlgItemText(hDlg,IDC_GUI_XSIZE,"30");
 				SetDlgItemText(hDlg,IDC_GUI_YSIZE,"20");
 
-
 				SetDlgItemText(hDlg,IDC_AREPATH,"C:\\asterics\\are\\components\\");
-
       			return TRUE;
+			}
 		case WM_CLOSE:
 				EndDialog(hDlg,LOWORD(wParam));
 				return TRUE;
-
 
 		case WM_COMMAND:
 			switch (LOWORD(wParam)) {
@@ -972,3 +1017,134 @@ LRESULT CALLBACK BROWSEDlghandler( HWND hDlg, UINT message, WPARAM wParam, LPARA
     return FALSE;
 }
 
+
+void SD_OnSize(HWND hwnd, UINT state, int cx, int cy)
+{
+    if(state != SIZE_RESTORED && state != SIZE_MAXIMIZED)
+        return;
+
+    SCROLLINFO si = {};
+    si.cbSize = sizeof(SCROLLINFO);
+
+    const int bar[] = { SB_HORZ, SB_VERT };
+    const int page[] = { cx, cy };
+
+    for(size_t i = 0; i < ARRAYSIZE(bar); ++i)
+    {
+        si.fMask = SIF_PAGE;
+        si.nPage = page[i];
+        SetScrollInfo(hwnd, bar[i], &si, TRUE);
+
+        si.fMask = SIF_RANGE | SIF_POS;
+        GetScrollInfo(hwnd, bar[i], &si);
+
+        const int maxScrollPos = si.nMax - (page[i] - 1);
+
+        // Scroll client only if scroll bar is visible and window's
+        // content is fully scrolled toward right and/or bottom side.
+        // Also, update window's content on maximize.
+        const bool needToScroll =
+            (si.nPos != si.nMin && si.nPos == maxScrollPos) ||
+            (state == SIZE_MAXIMIZED);
+
+        if(needToScroll)
+        {
+            SD_ScrollClient(hwnd, bar[i], si.nPos);
+        }
+    }
+}
+
+void SD_OnHScroll(HWND hwnd, HWND /*hwndCtl*/, UINT code, int /*pos*/)
+{
+    SD_OnHVScroll(hwnd, SB_HORZ, code);
+}
+
+void SD_OnVScroll(HWND hwnd, HWND /*hwndCtl*/, UINT code, int /*pos*/)
+{
+    SD_OnHVScroll(hwnd, SB_VERT, code);
+}
+
+void SD_OnHVScroll(HWND hwnd, int bar, UINT code)
+{
+    const int scrollPos = SD_GetScrollPos(hwnd, bar, code);
+
+    if(scrollPos == -1)
+        return;
+
+    SetScrollPos(hwnd, bar, scrollPos, TRUE);
+    SD_ScrollClient(hwnd, bar, scrollPos);
+}
+
+void SD_ScrollClient(HWND hwnd, int bar, int pos)
+{
+    static int s_prevx = 1;
+    static int s_prevy = 1;
+
+    int cx = 0;
+    int cy = 0;
+
+    int& delta = (bar == SB_HORZ ? cx : cy);
+    int& prev = (bar == SB_HORZ ? s_prevx : s_prevy);
+
+    delta = prev - pos;
+    prev = pos;
+
+    if(cx || cy)
+    {
+        ScrollWindow(hwnd, cx, cy, NULL, NULL);
+    }
+}
+
+int SD_GetScrollPos(HWND hwnd, int bar, UINT code)
+{
+    SCROLLINFO si = {};
+    si.cbSize = sizeof(SCROLLINFO);
+    si.fMask = SIF_PAGE | SIF_POS | SIF_RANGE | SIF_TRACKPOS;
+    GetScrollInfo(hwnd, bar, &si);
+
+    const int minPos = si.nMin;
+    const int maxPos = si.nMax - (si.nPage - 1);
+
+    int result = -1;
+
+    switch(code)
+    {
+    case SB_LINEUP /*SB_LINELEFT*/:
+        result = max(si.nPos - 1, minPos);
+        break;
+
+    case SB_LINEDOWN /*SB_LINERIGHT*/:
+        result = min(si.nPos + 1, maxPos);
+        break;
+
+    case SB_PAGEUP /*SB_PAGELEFT*/:
+        result = max(si.nPos - (int)si.nPage, minPos);
+        break;
+
+    case SB_PAGEDOWN /*SB_PAGERIGHT*/:
+        result = min(si.nPos + (int)si.nPage, maxPos);
+        break;
+
+    case SB_THUMBPOSITION:
+        // do nothing
+        break;
+
+    case SB_THUMBTRACK:
+        result = si.nTrackPos;
+        break;
+
+    case SB_TOP /*SB_LEFT*/:
+        result = minPos;
+        break;
+
+    case SB_BOTTOM /*SB_RIGHT*/:
+        result = maxPos;
+        break;
+
+    case SB_ENDSCROLL:
+        // do nothing
+        break;
+    }
+
+    return result;
+}

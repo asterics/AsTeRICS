@@ -186,6 +186,22 @@ function getModelState(successCallback, errorCallback) {
 	});
 }
 
+function getModelName(successCallback, errorCallback) {
+    $.ajax({
+        type: "GET",
+        url: _baseURI + "runtime/model/name",
+        datatype: "text",
+        crossDomain: true,
+        success:
+            function (data, textStatus, jqXHR){
+                successCallback(jqXHR.responseText, textStatus);
+            },
+        error:
+            function (jqXHR, textStatus, errorThrown) {
+                errorCallback(errorThrown,jqXHR.responseText);
+            }
+    });
+}
 
 function deployModelFromFile(successCallback, errorCallback, filepath) {
 	
@@ -552,6 +568,30 @@ function getPortDatatype(successCallback, errorCallback, componentId, portId) {
 	});
 }
 
+function sendDataToInputPort(successCallback, errorCallback, componentId, portId, value) {
+    if ( !componentId || !portId || !value) return;
+
+    $.ajax({
+        type: "PUT",
+        beforeSend: function(request) {
+            request.setRequestHeader("Content-Type", "text/plain");
+        },
+        url: _baseURI + "runtime/model/components/" + encodeParam(componentId) + "/ports/" + encodeParam(portId) + "/data",
+        datatype: "text",
+        crossDomain: true,
+		data: value,
+        success:
+            function (data, textStatus, jqXHR){
+                jsonString = jqXHR.responseText;
+                successCallback(jsonString, textStatus);
+            },
+        error:
+            function (jqXHR, textStatus, errorThrown) {
+                errorCallback(errorThrown,jqXHR.responseText);
+            }
+    });
+}
+
 
 /*************************************
  *	Storage/ARE-repository resources
@@ -587,6 +627,70 @@ function storeModel(successCallback, errorCallback, filepath, modelInXML) {
 		url: _baseURI + "storage/models/" + encodeParam(filepath),
 		contentType: "text/xml",									//content-type of the request
 		data: modelInXML,	
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(jqXHR.responseText, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+function storeData(successCallback, errorCallback, filepath, data) {
+	
+	if (!filepath || !data) return;
+	
+	$.ajax({
+		type: "POST",
+		url: _baseURI + "storage/data/" + encodeParam(filepath),
+		contentType: "text/plain",
+		data: data,	
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(jqXHR.responseText, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+function storeWebappData(successCallback, errorCallback, webappId, filepath, data) {
+	
+	if (!webappId || !filepath || !data) return;
+	
+	$.ajax({
+		type: "POST",
+		url: _baseURI + "storage/webapps/" + encodeParam(webappId) + "/"  + encodeParam(filepath),
+		contentType: "text/plain",
+		data: data,	
+		datatype: "text",
+		crossDomain: true,
+		success:
+				function (data, textStatus, jqXHR){
+					successCallback(jqXHR.responseText, textStatus);
+				},
+		error: 
+				function (jqXHR, textStatus, errorThrown) {
+					errorCallback(errorThrown,jqXHR.responseText);
+				}
+	});
+}
+
+function getWebappData(successCallback, errorCallback, webappId, filepath) {
+	
+	if (!webappId || !filepath) return;
+	
+	$.ajax({
+		type: "GET",
+		url: _baseURI + "storage/webapps/" + encodeParam(webappId) + "/"  + encodeParam(filepath),
 		datatype: "text",
 		crossDomain: true,
 		success:

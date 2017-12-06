@@ -1,6 +1,8 @@
 package eu.asterics.mw.are;
 
 import java.awt.EventQueue;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JDialog;
@@ -70,6 +72,15 @@ public class Main implements BundleActivator {
     @Override
     public void start(final BundleContext context) throws Exception {
         logger = AstericsErrorHandling.instance.getLogger();
+
+        //set default uncaught exception handler to get logged messages in case of exception.
+        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                logger.log(Level.SEVERE, "in Thread <" + t.getName() + ">: " + e.getMessage(), e);
+            }
+        });
+
         // Check if not 32bit
         String bits = System.getProperty("sun.arch.data.model");
         if (OSUtils.isWindows() && bits.compareTo("64") == 0) {
@@ -113,10 +124,6 @@ public class Main implements BundleActivator {
                     DeploymentManager.instance.setStatus(AREStatus.OK);
                     AstericsErrorHandling.instance.setStatusObject(AREStatus.OK.toString(), "", "");
 
-                    AsapiSupport as = new AsapiSupport();
-                    // System.out.println("*** starting model !");
-                    as.autostart(startModel);
-
                     if (!AREProperties.instance.containsKey(ASAPI_ENABLE_ACS_PORT_CONNECTION)
                             || AREProperties.instance.checkProperty(ASAPI_ENABLE_ACS_PORT_CONNECTION, "1")) {
                         // set default value, if property was not in file.
@@ -150,6 +157,10 @@ public class Main implements BundleActivator {
                     // file including comments
                     AREProperties.instance.storeProperties();
 
+                    // Finally autostart model, everything else should now be initialized correctly, if not the code should have thrown an exception already
+                    AsapiSupport as = new AsapiSupport();
+                    // System.out.println("*** starting model !");
+                    as.autostart(startModel);
                 } catch (Throwable e) {
                     // In case of a startup error show the ARE gui panel, so
                     // that the user is able to select a model manually.
@@ -159,7 +170,7 @@ public class Main implements BundleActivator {
 
                     String reason = e.getMessage() != null ? ":\n\n" + e.getMessage() : "";
                     String message = "The AsTeRICS Runtime Environment started with errors" + reason;
-                    logger.severe(message);
+                    logger.log(Level.SEVERE, message, e);
                     startupMessage(message, JOptionPane.ERROR_MESSAGE, false);
                 }
             }

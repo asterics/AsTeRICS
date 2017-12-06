@@ -1,0 +1,53 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Tobii4CHeadTracker</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Tobii4CHeadTracker</H1> 
+		<span class="componentType">Component Type: Sensor (Subcategory: Computer Vision)<br><br>OS: Windows</span>
+		<p>This component provides access to the raw head tracking data of the <a href="https://tobiigaming.com/eye-tracker-4c/">Tobii Tracker 4C</a> eye tracking device. The data includes the head position (x/y/z) in mm and the head rotation (x/y/z) in Euler angles. The Tobii4CHeadTracker plugin can be combined with the <a href="http://asterics.github.io/AsTeRICS/AsTeRICS-Help/master/Plugins/sensors/EyeX.htm">EyeX</a> plugin to also get the eye gaze data.</p>
+		<p>The plugin connects to the device via the <a href="https://tobiigaming.com/getstarted/">Tobii Eye Tracking Core Software</a>.</p>
+		<H2>Requirements</H2>
+		<ul>
+			<li>OS: Windows</li>
+			<li>USB port: The Tracker 4C needs at least a USB 2.0 port. Preferably don't use a USB hub, or only use a <a href="https://help.tobii.com/hc/en-us/articles/212907389-Recommended-USB-2-0-hubs">recommended hub from Tobii</a>.</li>
+			<li><a href="https://tobiigaming.com/getstarted/">Tobii Eye Tracking Core Software</a> must be installed and running.</li>
+		</ul>
+		<figure>
+			<img class="image" src="img/Tobiigaming_Product_4c.png" alt="Screenshot: Tobii Tracker 4C plugin" title="Screenshot: Tobii Tracker 4C plugin" />
+			<figcaption>Tobii Tracker 4C</figcaption>
+		</figure>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>headRotX [double]:</STRONG>Head rotation x angle (Euler).</li>
+			<li><STRONG>headRotY [double]:</STRONG>Head rotation y angle (Euler).</li>
+			<li><STRONG>headRotZ [double]:</STRONG>Head rotation z angle (Euler).</li>
+			<li><STRONG>headPosX [double]:</STRONG>Head position x coordinate (mm).</li>
+			<li><STRONG>headPosY [double]:</STRONG>Head position y coordinate (mm).</li>
+			<li><STRONG>headPosZ [double]:</STRONG>Head position y coordinate (mm).</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>activate:</STRONG> Activates (Turns on) the eye tracker device.</li>
+			<li><STRONG>deactivate</STRONG> Deactivates (Pauses) the eye tracker device.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>userPresenceStatusAway:</STRONG> Indicates that no user is sitting in front of the tracker.</li>
+			<li><STRONG>userPresenceStatusPresent:</STRONG> Indicates that a user is sitting in front of the tracker.</li>
+			<li><STRONG>calibrationStarted:</STRONG> Indicates that the tracker calibration has been started.</li>
+			<li><STRONG>calibrationFinished:</STRONG> Indicates that the tracker calibration has been finished.</li>
+			<li><STRONG>displayAreaChanged:</STRONG> Indicates that the assigned display has been changed.</li>
+			<li><STRONG>powerSaveStateTrue:</STRONG> Indicates that the tracker is in power save mode.</li>
+			<li><STRONG>powerSaveStateFalse:</STRONG> Indicates that the tracker is not in power save mode.</li>
+			<li><STRONG>deviceOff:</STRONG> Indicates that the tracker is currently paused.</li>
+			<li><STRONG>deviceOn:</STRONG> Indicates that the tracker is currently  enabled.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>enabled [boolean]:</STRONG> Selects if the tracker is enabled at startup.</li>
+		</ul>
+	</BODY>
+</HTML>

@@ -4,16 +4,8 @@ Bundle-Name: asterics.keyboard
 Bundle-SymbolicName: eu.asterics.component.actuator.keyboard
 Bundle-Version: 0.1.0
 Require-Bundle: eu.asterics.mw.jnativehook
-Bundle-NativeCode: lib/native/kbdevent.dll;
- osname=win32;processor=x86;
- osname=win;processor=x86-64;
- osname=win8;processor=x86;
- osname=win8;processor=x86-64;
- osname=windows 8;processor=x86;
- osname=windows 8;processor=x86-64;
- osname=windows8;processor=x86;
- osname=windows8;processor=x86-64;
- osname=Windows 8.1;processor=x86;
- osname=Windows 8.1;processor=x86-64
+Bundle-NativeCode: lib/native/windows/x86/kbdevent.dll;
+ osname=win32;processor=x86,
+ lib/native/windows/x64/kbdevent.dll;
+ osname=win32;processor=x86_64
 DynamicImport-Package: *
-

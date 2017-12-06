@@ -1,50 +1,50 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>Deadzone</Title>
-</HEAD>
-<BODY>
-<H1>Deadzone</H1> 
-<H3>Component Type: Processor (Subcategory: Signal Shaping)</H3>
-<p>
-The purpose of this component is to define active and passive areas (zones) for one- or two dimensional sensor values. This function could also be called "resting zone" or "centerzone". It can be useful for example when a mouse pointer should not move before a certain value of a sensor (displacement of an analogue sensor, strength of activity) is reached. 
-</p>
-<div class="image"><img src="img/Deadzone.jpg" alt="Screenshot: Deadzone plugin" title="Screenshot: Deadzone plugin" /><br>
-Deadzone plugin</div>
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>inX [double]:</STRONG> Input of x values. <b>This input port supports synchronization</b></li>
-<li><STRONG>inY [double]:</STRONG> Input of y values. <b>This input port supports synchronization</b></li>
-<li><STRONG>radius [double]:</STRONG> The radius of the active/passive zone around the centre point.</li>
-</ul>
-<H2>Output Port Description</H2>
-<ul>
-<li><STRONG>outX [double]:</STRONG> Output of modified x values.</li>
-<li><STRONG>outY [double]:</STRONG> Output of modified y values.</li>
-</ul>
-<H2>Event Listener Description</H2>
-<ul>
-<li><STRONG>setCenter:</STRONG> An incoming event stores the current x- and y- input values to represent the centre (It defines them as offset values). This can be useful for sensor calibration because it defines the "baseline" or resting position.</li>
-</ul>
-<H2>Event Trigger Description</H2>
-<ul>
-<li><STRONG>enterZone:</STRONG> This event is triggered when the x or x- and y- values enter the specified radius around the centre.</li>
-<li><STRONG>exitZone:</STRONG> This event is triggered when the x or x- and y- values leave the specified radius around the centre.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>xCenter [double]:</STRONG> This value defines the x- position of the centre (the middle of the active/passive zones).</li>
-<li><STRONG>yCenter [double]:</STRONG> This value defines the y- position of the centre (the middle of the active/passive zones).</li>
-<li><STRONG>radius [double]:</STRONG> The radius of the active/passive zone around the centre point.</li>
-<li><STRONG>mode [integer]:</STRONG> Selects the mode of operation of the centerzone component, following modes are available:
-<ul>
-<li><EM>"only inner values":</EM> x- and y- values are passed to the output ports only if the distance to the centre is lower than the given radius.</li>
-<li><EM>"only outer values":</EM> x- and y- values are passed to the output ports only if the distance to the centre is greater than the given radius.</li>
-<li><EM>"deadzone":</EM> x- and y- values are passed to the output ports only if the distance to the center is lower than the given radius, and additionally a correction of the values is performed so that they start with 0 when leaving the inner zone. This is useful for defining a "deadzone" for sensor values, where an inactive area shall be provided and no sudden acceleration is desired when leaving this inactive area.</li>
-</ul>
-</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Deadzone</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Deadzone</H1> 
+		<span class="componentType">Component Type: Processor (Subcategory: Signal Shaping)</span>
+		<p>The purpose of this component is to define active and passive areas (zones) for one- or two dimensional sensor values. This function could also be called "resting zone" or "centerzone". It can be useful for example when a mouse pointer should not move before a certain value of a sensor (displacement of an analogue sensor, strength of activity) is reached.</p>
+		<figure>
+			<img class="image" src="img/Deadzone.jpg" alt="Screenshot: Deadzone plugin" title="Screenshot: Deadzone plugin" />
+			<figcaption>Deadzone plugin</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>inX [double]:</STRONG> Input of x values. <strong>This input port supports synchronization</strong></li>
+			<li><STRONG>inY [double]:</STRONG> Input of y values. <strong>This input port supports synchronization</strong></li>
+			<li><STRONG>radius [double]:</STRONG> The radius of the active/passive zone around the centre point.</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>outX [double]:</STRONG> Output of modified x values.</li>
+			<li><STRONG>outY [double]:</STRONG> Output of modified y values.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>setCenter:</STRONG> An incoming event stores the current x- and y- input values to represent the centre (It defines them as offset values). This can be useful for sensor calibration because it defines the "baseline" or resting position.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>enterZone:</STRONG> This event is triggered when the x or x- and y- values enter the specified radius around the centre.</li>
+			<li><STRONG>exitZone:</STRONG> This event is triggered when the x or x- and y- values leave the specified radius around the centre.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>xCenter [double]:</STRONG> This value defines the x- position of the centre (the middle of the active/passive zones).</li>
+			<li><STRONG>yCenter [double]:</STRONG> This value defines the y- position of the centre (the middle of the active/passive zones).</li>
+			<li><STRONG>radius [double]:</STRONG> The radius of the active/passive zone around the centre point.</li>
+			<li>
+				<STRONG>mode [integer]:</STRONG> Selects the mode of operation of the centerzone component, following modes are available:
+				<ul>
+					<li><EM>"only inner values":</EM> x- and y- values are passed to the output ports only if the distance to the centre is lower than the given radius.</li>
+					<li><EM>"only outer values":</EM> x- and y- values are passed to the output ports only if the distance to the centre is greater than the given radius.</li>
+					<li><EM>"deadzone":</EM> x- and y- values are passed to the output ports only if the distance to the center is lower than the given radius, and additionally a correction of the values is performed so that they start with 0 when leaving the inner zone. This is useful for defining a "deadzone" for sensor values, where an inactive area shall be provided and no sudden acceleration is desired when leaving this inactive area.</li>
+				</ul>
+			</li>
+		</ul>
+	</BODY>
 </HTML>

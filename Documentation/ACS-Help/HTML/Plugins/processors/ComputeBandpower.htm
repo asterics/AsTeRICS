@@ -1,32 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>Compute Bandpower</Title>
-</HEAD>
-<BODY>
-<H1>Compute Bandpower</H1>
-<H3>Component Type: Processor (Subcategory: DSP and Feature Detection)</H3>
-<p>This component computes the power that an input signal has in a specific frequency band. The plugin stores as many values as the DataLen property indicates before providing a new value in the output port. This solution is based on the FFT so only the bins corresponding to the specified band are considered. This approach removes the contribution of the out-band frequencies to the final value. This approach improves the power output of the filter plugin which uses the filtered signal for computing the output value so the frequencies out of the pass band contributes to the final value since the filter is implemented as FIR filter with a finite number of coefficients so the frequency response will not never be perfect.</p>
-<div class="image"><img src="img/ComputeBandpower.jpg" alt="Screenshot: Compute Bandpower plugin" title="Screenshot: Compute Bandpower plugin" /><br>
-Compute Bandpower plugin</div>
-<H2>Requirements</H2>
-The values in the input port shall correspond to a time series. 
-<H2>Input Port Description</H2>
-<ul>
-<li><STRONG>input [double]:</STRONG> Input port for the values of time series which power in band is computed.</li>
-</ul>
-<H2>Output Port description</H2>
-<ul>
-<li><STRONG>output [double]:</STRONG> Output of the value that corresponds to the power of the signal present in the last DataLen samples. If the input signal is expressed in volts, then the output is expressed in squared volts.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>DataLen [integer]:</STRONG> Defines the length of the time series over which the band power computation is performed. Only power of two values are allowed for this property.</li>
-<li><STRONG>SampleRate [integer]:</STRONG> Defines the sample rate of the input time series. It is defined in samples per second.</li>
-<li><STRONG>StartBandFrequency [integer]:</STRONG> Defines the beginning of the band to be analysed. It is defined in Hertz.</li>
-<li><STRONG>EndBandFrequency [integer]:</STRONG> Defines the end of the band to be analysed. It is defined in Hertz.</li>
-</ul>
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Compute Bandpower</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Compute Bandpower</H1>
+		<span class="componentType">Component Type: Processor (Subcategory: DSP and Feature Detection)</span>
+		<p>This component computes the power that an input signal has in a specific frequency band. The plugin stores as many values as the DataLen property indicates before providing a new value in the output port. This solution is based on the FFT so only the bins corresponding to the specified band are considered. This approach removes the contribution of the out-band frequencies to the final value. This approach improves the power output of the filter plugin which uses the filtered signal for computing the output value so the frequencies out of the pass band contributes to the final value since the filter is implemented as FIR filter with a finite number of coefficients so the frequency response will not never be perfect.</p>
+		<figure>
+			<img class="image" src="img/ComputeBandpower.jpg" alt="Screenshot: Compute Bandpower plugin" title="Screenshot: Compute Bandpower plugin" />
+			<figcaption>Compute Bandpower plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		The values in the input port shall correspond to a time series. 
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>input [double]:</STRONG> Input port for the values of time series which power in band is computed.</li>
+		</ul>
+		<H2>Output Port description</H2>
+		<ul>
+			<li><STRONG>output [double]:</STRONG> Output of the value that corresponds to the power of the signal present in the last DataLen samples. If the input signal is expressed in volts, then the output is expressed in squared volts.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>DataLen [integer]:</STRONG> Defines the length of the time series over which the band power computation is performed. Only power of two values are allowed for this property.</li>
+			<li><STRONG>SampleRate [integer]:</STRONG> Defines the sample rate of the input time series. It is defined in samples per second.</li>
+			<li><STRONG>StartBandFrequency [integer]:</STRONG> Defines the beginning of the band to be analysed. It is defined in Hertz.</li>
+			<li><STRONG>EndBandFrequency [integer]:</STRONG> Defines the end of the band to be analysed. It is defined in Hertz.</li>
+		</ul>
+	</BODY>
 </HTML>

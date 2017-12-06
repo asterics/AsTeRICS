@@ -1,36 +1,32 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<!doctype html>
 <HTML>
-<HEAD>
-<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
-<link rel="stylesheet" type="text/css" href="../../stylesheet/help.css" media="screen" />
-<Title>WriteEDF</Title>
-</HEAD>
-<BODY>
-<H1>EDF Writer</H1> 
-<H3>Component Type: Actuator (Subcategory: File System)</H3>
-<p>This plugin writes the incoming data into an .edf file (http://www.edfplus.info/specs/edf.html)</p>
-<p>The data gets live recorded, so it can be viewed simulaneously in the EDF-Browser ( http://www.teuniz.net/edfbrowser/ )</p>
-<div class="image"><img src="img/WriteEDF.png" alt="Screenshot: WriteEDF plugin" title="Screenshot: WriteEDF plugin" /><br>
-WriteEDF</div>
-
-<H2>Input port Description</H2>
-<ul>
-
- 
-
-<li><STRONG>CH1 - CH8[double]:</STRONG> these ports get the data, which will be recorded.</li>
-</ul>
-<H2>Properties</H2>
-<ul>
-<li><STRONG>PatientID[string]:</STRONG> specifies the name of the subject. Maximum number of characters: 80</li>
-<li><STRONG>FileName[string]:</STRONG>  specifies the name of the file (without extension ), in which the data will be recorded</li>
-<li><STRONG>reSampling[boolean]:</STRONG>  If this box is checked, the incoming data will be resampled with the chosen frequency of the properties samplingRateCH1 - CH8. This could be neccessary, if the incoming data frequency is not known</li>
-<li><STRONG>SamplingRateCH1 - CH8[integer]:</STRONG> specifies the frequency of the incoming data. Values smaller than 1 will deactivate the corresponding channel</li>
-<li><STRONG>PhysicalMinimum CH1 - CH8 [integer]:</STRONG> specifies the minimum values of the incoming data</li>
-<li><STRONG>PhysicalMaximum CH1 - CH8 [integer]:</STRONG> specifies the maximum values of the incoming data</li>
-<li><STRONG>DigitalMinimum CH1 - CH8 [integer]:</STRONG> specifies the minimum values of the stored data</li>
-<li><STRONG>DigitalMaximum CH1 - CH8 [integer]:</STRONG> specifies the maximum values of the stored data</li>
-</ul>
-
-</BODY>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>WriteEDF</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>EDF Writer</H1> 
+		<span class="componentType">Component Type: Actuator (Subcategory: File System)</span>
+		<p>This plugin writes the incoming data into an .edf file (http://www.edfplus.info/specs/edf.html)</p>
+		<p>The data gets live recorded, so it can be viewed simulaneously in the EDF-Browser ( http://www.teuniz.net/edfbrowser/ )</p>
+		<figure>
+			<img class="image" src="img/WriteEDF.png" alt="Screenshot: WriteEDF plugin" title="Screenshot: WriteEDF plugin" />
+			<figcaption>WriteEDF</figcaption>
+		</figure>
+		<H2>Input port Description</H2>
+		<ul>
+			<li><STRONG>CH1 - CH8[double]:</STRONG> these ports get the data, which will be recorded.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>PatientID[string]:</STRONG> specifies the name of the subject. Maximum number of characters: 80</li>
+			<li><STRONG>FileName[string]:</STRONG>  specifies the name of the file (without extension ), in which the data will be recorded</li>
+			<li><STRONG>reSampling[boolean]:</STRONG>  If this box is checked, the incoming data will be resampled with the chosen frequency of the properties samplingRateCH1 - CH8. This could be neccessary, if the incoming data frequency is not known</li>
+			<li><STRONG>SamplingRateCH1 - CH8[integer]:</STRONG> specifies the frequency of the incoming data. Values smaller than 1 will deactivate the corresponding channel</li>
+			<li><STRONG>PhysicalMinimum CH1 - CH8 [integer]:</STRONG> specifies the minimum values of the incoming data</li>
+			<li><STRONG>PhysicalMaximum CH1 - CH8 [integer]:</STRONG> specifies the maximum values of the incoming data</li>
+			<li><STRONG>DigitalMinimum CH1 - CH8 [integer]:</STRONG> specifies the minimum values of the stored data</li>
+			<li><STRONG>DigitalMaximum CH1 - CH8 [integer]:</STRONG> specifies the maximum values of the stored data</li>
+		</ul>
+	</BODY>
 </HTML>

@@ -328,8 +328,8 @@ public class FolderBrowserInstance extends AbstractRuntimeComponentInstance {
             }
             if ((actFolders.size() == 0) || (currentIndex < 0)) {
                 System.out.println("no subfolder");
-                opFolderName.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
-                opFolderPath.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
+               // opFolderName.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
+               // opFolderPath.sendData(ConversionUtils.stringToBytes(propNoFolderMessage));
                 return;
             }
             if (currentIndex >= 0) {

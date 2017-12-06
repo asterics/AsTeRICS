@@ -17,12 +17,25 @@ import java.util.Stack;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import eu.asterics.mw.are.exceptions.BundleManagementException;
 import eu.asterics.mw.are.exceptions.DeploymentException;
+import eu.asterics.mw.are.parsers.ModelValidator;
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.gui.AstericsGUI;
 import eu.asterics.mw.model.DataType;
@@ -35,6 +48,8 @@ import eu.asterics.mw.model.deployment.IEventEdge;
 import eu.asterics.mw.model.deployment.IInputPort;
 import eu.asterics.mw.model.deployment.IRuntimeModel;
 import eu.asterics.mw.model.deployment.impl.AREGUIElement;
+import eu.asterics.mw.model.deployment.impl.DefaultACSGroup;
+import eu.asterics.mw.model.deployment.impl.ModelGUIInfo;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeComponentInstance;
 import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
@@ -44,6 +59,7 @@ import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.IAREEventListener;
+import eu.asterics.mw.services.ResourceRegistry;
 import eu.asterics.mw.services.RuntimeDataEvent;
 
 /*
@@ -156,8 +172,8 @@ public class DeploymentManager {
 
         modelStartupFinished = false;
         if (runtimeModel == null) {
-            logger.severe(this.getClass().getName() + ": install-> Illegal null argument");
-            throw new RuntimeException("Illegal null argument");
+            logger.severe(this.getClass().getName() + ".deployModel: runtime model object null.");
+            throw new RuntimeException("Can not deploy null model object.");
         }
 
         // Very important undeploy previous model, just to be sure that no
@@ -803,6 +819,143 @@ public class DeploymentManager {
     public IRuntimeModel getCurrentRuntimeModel() {
         return currentRuntimeModel;
     }
+    
+    /**
+     * Return the currently deployed IRuntimeModel as XML string.
+     * @return
+     * @throws TransformerException
+     * @throws ParserConfigurationException
+     */
+    public String getCurrentRuntimeModelAsXMLString() throws TransformerException, ParserConfigurationException {
+        // Get the current runtime model instance
+        final IRuntimeModel currentRuntimeModel = DeploymentManager.instance.getCurrentRuntimeModel();
+        if(currentRuntimeModel==null) {
+            return null;
+        }
+        return modelToXMLString(currentRuntimeModel);
+    }
+    
+    /**
+     * This method converts a given IRuntimeModel instance into an XML representation.
+     * The method is not threadsafe and must only be called within the model executor thread.
+     * @return
+     * @throws TransformerException
+     * @throws ParserConfigurationException
+     */
+    public static String modelToXMLString(IRuntimeModel modelAsObject) throws TransformerException, ParserConfigurationException {
+        // We need a Document
+        DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder;
+        docBuilder = dbfac.newDocumentBuilder();
+
+        DOMImplementation impl = docBuilder.getDOMImplementation();
+        Document doc = impl.createDocument(null, null, null);
+
+        // Create the root
+        Element model = doc.createElement("model");
+        doc.appendChild(model);
+        model.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        model.setAttribute("xsi:noNamespaceSchemaLocation", "deployment_model.xsd");
+        model.setAttribute("modelName", modelAsObject.getModelName());
+        model.setAttribute("modelVersion", modelAsObject.getModelVersion());
+        // model.setAttribute ("modelDescription",
+        // currentRuntimeModel.getModelDescription() );
+
+        // Add description
+        Element descElement = doc.createElement("modelDescription");
+        model.appendChild(descElement);
+        Element shortDescElement = doc.createElement("shortDescription");
+        descElement.appendChild(shortDescElement);
+        shortDescElement.setTextContent(modelAsObject.getModelShortDescription());
+        Element reqElement = doc.createElement("requirements");
+        descElement.appendChild(reqElement);
+        reqElement.setTextContent(modelAsObject.getModelRequirements());
+        Element descriptionElement = doc.createElement("description");
+        descElement.appendChild(descriptionElement);
+        descriptionElement.setTextContent(modelAsObject.getModelDescription());
+
+        // End of channels
+
+        // Add components
+        Element components = doc.createElement("components");
+
+        model.appendChild(components);
+
+        Set<IComponentInstance> componentInstances = modelAsObject.getComponentInstances();
+
+        for (IComponentInstance ci : componentInstances) {
+
+            ci.appendXMLElements(doc);
+
+        }
+
+        // End of components
+        // Add channels
+        Set<IChannel> channels = modelAsObject.getChannels();
+        if (channels.size() > 0) {
+            Element channelsElement = doc.createElement("channels");
+            model.appendChild(channelsElement);
+            for (IChannel channel : channels) {
+                channel.appendXMLElements(doc);
+            }
+        }
+        // End of channels
+
+        // Add event channels
+
+        Set<IEventChannel> ecentChannels = modelAsObject.getEventChannels();
+        if (ecentChannels.size() > 0) {
+            Element eventChannelsElement = doc.createElement("eventChannels");
+            model.appendChild(eventChannelsElement);
+
+            for (IEventChannel eventChannel : ecentChannels) {
+                eventChannel.appendXMLElements(doc);
+            }
+        }
+
+        // Add Groups
+        ArrayList<DefaultACSGroup> groups = modelAsObject.getACSGroups();
+        if (groups.size() > 0) {
+
+            Element groupsElement = doc.createElement("groups");
+            model.appendChild(groupsElement);
+            Iterator<DefaultACSGroup> itr = groups.iterator();
+            while (itr.hasNext()) {
+                DefaultACSGroup group = itr.next();
+                group.appendXMLElements(doc);
+            }
+
+        }
+        // End of channels
+
+        ModelGUIInfo modelGUIInfo = modelAsObject.getModelGuiInfo();
+        if (modelGUIInfo != null) {
+            Element modelGUI = doc.createElement("modelGUI");
+            model.appendChild(modelGUI);
+            modelGUIInfo.appendXMLElements(doc);
+        }
+
+        // transform the Document into a String
+        DOMSource domSource = new DOMSource(doc);
+
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.ENCODING, ResourceRegistry.ARE_FILE_ENCODING);
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+        java.io.StringWriter sw = new java.io.StringWriter();
+        StreamResult sr = new StreamResult(sw);
+        transformer.transform(domSource, sr);
+        String xml = sw.toString();
+        AstericsErrorHandling.instance.getLogger().fine(DeploymentManager.class.getName() + ".modelToXML: OK\n");
+
+        // System.out.println ("AsapiSupport.getModel():"+xml);
+        return xml;
+    }
 
     private class EventListenerDetails {
         private final String componentID;
@@ -1058,7 +1211,12 @@ public class DeploymentManager {
 
     public void displayPanel(JPanel panel, IRuntimeComponentInstance componentInstance, boolean display) {
 
-        Set<IComponentInstance> componentInstances = getCurrentRuntimeModel().getComponentInstances();
+        IRuntimeModel currentModel=getCurrentRuntimeModel();
+        if(currentModel==null||panel==null||componentInstance==null) {
+            logger.warning("DeploymentManager.displayPanel: returning: currentRuntimeModel: "+currentModel+", panel: "+panel+", componentInstance: "+componentInstance);
+            return;
+        }
+        Set<IComponentInstance> componentInstances = currentModel.getComponentInstances();
 
         AREGUIElement ele;
         String id = getIRuntimeComponentInstanceIDFromIRuntimeComponentInstance(componentInstance);

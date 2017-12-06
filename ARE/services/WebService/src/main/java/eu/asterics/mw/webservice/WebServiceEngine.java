@@ -26,6 +26,7 @@ package eu.asterics.mw.webservice;
  */
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -50,11 +51,12 @@ import org.osgi.service.http.HttpService;
 import org.osgi.service.http.NamespaceException;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
+import eu.asterics.mw.services.ResourceRegistry.RES_TYPE;
 import eu.asterics.mw.webservice.serverUtils.ServerRepository;
 
 /**
- * This class initializes the web services of the AsTeRICS framework. This
- * includes an http-server, a REST interface and a websocket.
+ * This class initializes the web services of the AsTeRICS framework. This includes an http-server, a REST interface and a websocket.
  * 
  * @author mad
  *
@@ -69,8 +71,7 @@ public class WebServiceEngine {
     private AstericsDataApplication astericsApplication = null;
 
     /**
-     * Method that returns the instance of this class, based on the Singleton
-     * Design pattern.
+     * Method that returns the instance of this class, based on the Singleton Design pattern.
      * 
      * @return - The {@link WebServiceEngine} object of this class.
      */
@@ -86,28 +87,37 @@ public class WebServiceEngine {
      * 
      * @param bc
      * @throws IOException
+     * @throws URISyntaxException 
      */
-    public void initGrizzlyHttpService(BundleContext bc) throws IOException {
+    public void initGrizzlyHttpService(BundleContext bc) throws IOException, URISyntaxException {
 
-        logger.fine("Starting grizzly HTTP-server, " + ServerRepository.BASE_URI_REST);
+        logger.fine("Starting REST API at " + ServerRepository.getInstance().getBaseUriREST());
 
         ResourceConfig rc = new ResourceConfig();
 
         // REST SERVER CONFIGURATION
         rc.registerClasses(RestServer.class, SseResource.class, SseFeature.class);
         rc.register(new ResponseFilter());
-        restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.BASE_URI_REST, rc);
-        restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler("./data/webservice"), "/");
+        restServer = GrizzlyHttpServerFactory.createHttpServer(ServerRepository.getInstance().getBaseUriREST(), rc);
+ 
+        // Normal Web server configuration (document root)
+        String docRoot=ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("/",RES_TYPE.WEB_DOCUMENT_ROOT));
+        logger.info("Registering webserver document root at "+docRoot);
+        restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(docRoot), "/");
+        /*
+        //Code to register data and models folder as virtual subpaths?
+        restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("/",RES_TYPE.MODEL))), "models/");
+        restServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler(ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().getResource("/",RES_TYPE.DATA))), "data/");
+        /**/
         for (NetworkListener l : restServer.getListeners()) {
             l.getFileCache().setEnabled(false);
         }
 
         restServer.start();
 
-        logger.fine("Starting grizzly WS-server, " + ServerRepository.BASE_URI_WS);
-
-        // WEB SERVICE SERVER CONFIGURATION
-        wsServer = HttpServer.createSimpleServer("./data/webservice", "0.0.0.0", ServerRepository.PORT_WS);
+        // Websocket configuration
+        logger.fine("Initializing Websocket... ");
+        wsServer = HttpServer.createSimpleServer(docRoot, "0.0.0.0", ServerRepository.getInstance().getPortWebsocket());
 
         final WebSocketAddOn addon = new WebSocketAddOn();
         for (NetworkListener listener : wsServer.getListeners()) {
@@ -116,17 +126,14 @@ public class WebServiceEngine {
         }
         astericsApplication = new AstericsDataApplication();
 
-        logger.fine(
-                "Registering Websocket URI: " + ServerRepository.BASE_URI_WS + ServerRepository.PATH_WS_ASTERICS_DATA);
-        WebSocketEngine.getEngine().register(ServerRepository.PATH_WS, ServerRepository.PATH_WS_ASTERICS_DATA,
-                astericsApplication);
+        logger.fine("Registering Websocket URI: " + ServerRepository.getInstance().getBaseUriWebsocket() + ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA);
+        WebSocketEngine.getEngine().register(ServerRepository.PATH_WEBSOCKET, ServerRepository.PATH_WEBSOCKET_ASTERICS_DATA, astericsApplication);
 
         wsServer.start();
     }
 
     /**
-     * Returns the instance of the AsTeRICS websocket application containing
-     * IRuntimInputPort and IRuntimeOutputPort instances.
+     * Returns the instance of the AsTeRICS websocket application containing IRuntimInputPort and IRuntimeOutputPort instances.
      * 
      * @return
      */
@@ -135,8 +142,7 @@ public class WebServiceEngine {
     }
 
     /**
-     * This is just an example of how to use the OSGI HttpService lookup
-     * mechanism to register a URI
+     * This is just an example of how to use the OSGI HttpService lookup mechanism to register a URI
      * 
      * @param bc
      * @throws NamespaceException
@@ -153,10 +159,8 @@ public class WebServiceEngine {
                 http.registerServlet("/time", new HttpServlet() {
 
                     @Override
-                    protected void service(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
-                        final SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz",
-                                Locale.US);
+                    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                        final SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
                         final String date = format.format(new Date(System.currentTimeMillis()));
                         resp.setContentType("text/plain");
                         resp.setContentLength(date.length());
