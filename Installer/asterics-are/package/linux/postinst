@@ -30,39 +30,47 @@ case "$1" in
     echo $DPKG_MAINTSCRIPT_PACKAGE
         echo Adding shortcut to the menu
 
-#In case of the asterics-are installer, we have a customized .desktop file.
-#If java is not embedded the start.sh file is used to start the program
-#		if [ -d "$APPPATH/../runtime" ]; then
-			echo "Creating desktop menu entry $APPNAME"
-        		xdg-desktop-menu install --novendor $APPINSTALLDIR/$APPNAME.desktop
-#	        fi
-
+		echo "Creating desktop menu entry $APPNAME"
+		xdg-desktop-menu install --novendor $APPINSTALLDIR/$APPNAME.desktop
+		
+		#irtrans preparations
+		mkdir -p $APPPATH/tools/remotes #needed for irtrans server to work
 
 		echo creating symlinks for models, profile and data folders to tmp folder
 		rm -Rf $WRITEDIR
 		mkdir -p $WRITEDIR
+		mkdir -p $APPPATH/tmp
 		mv $APPPATH/models  $WRITEDIR
 		mv $APPPATH/profile $WRITEDIR 
 		mv $APPPATH/data $WRITEDIR
-		[ -e $APPPATH/areProperties ] && mv $APPPATH/areProperties $WRITEDIR || touch $APPPATH/areProperties
-		
-                # component FS20
+		mv $APPPATH/web $WRITEDIR
+		mv $APPPATH/tmp $WRITEDIR
+		[ -e $APPPATH/areProperties ] && mv $APPPATH/areProperties $WRITEDIR || touch $WRITEDIR/areProperties
+
+		# component FS20 udev rules
 		echo creating udev rule 50-asterics-fs20.rules for FS20 devices
 		echo 'ATTRS{idProduct}=="e015", ATTRS{idVendor}=="18ef", MODE="0660", GROUP="plugdev"' > /etc/udev/rules.d/50-asterics-fs20.rules
+		
+		# component IrTrans udev rules
+		echo creating udev rule 49-asterics-irtrans.rules for IRTrans devices
+		echo 'SUBSYSTEMS=="usb", ATTRS{idProduct}=="0001", ATTRS{idVendor}=="1d6b",SYMLINK+="ttyIRTrans", MODE="0666"' > /etc/udev/rules.d/49-asterics-irtrans.rules
 		
 		# soft-link for FS20 component, according to:
 		# https://github.com/gary-rowe/hid4java
 		if [ "$(dpkg --print-architecture)" == "armhf" ]; then
-                    echo linking libudev for hid4java library (only on ARM)
-                    ln -sf /lib/arm-linux-gnueabihf/libudev.so.1 /lib/arm-linux-gnueabihf/libudev.so.0
-		    ln -s /usr/lib/arm-linux-gnueabihf/libhidapi-libusb.so /usr/lib/arm-linux-gnueabihf/libhidapi.so
-                fi
-		
+			echo "linking libudev for hid4java library (only on ARM)"
+			ln -sf /lib/arm-linux-gnueabihf/libudev.so.1 /lib/arm-linux-gnueabihf/libudev.so.0
+			if [ ! -e /usr/lib/arm-linux-gnueabihf/libhidapi.so ]; then
+				ln -s /usr/lib/arm-linux-gnueabihf/libhidapi-libusb.so.0 /usr/lib/arm-linux-gnueabihf/libhidapi.so
+			fi
+		fi
 	
 		chmod -R o+w $WRITEDIR
 		ln -sf $WRITEDIR/models $APPPATH/models
 		ln -sf $WRITEDIR/profile $APPPATH/profile
 		ln -sf $WRITEDIR/data $APPPATH/data
+		ln -sf $WRITEDIR/web $APPPATH/web
+		ln -sf $WRITEDIR/tmp $APPPATH/tmp
 		ln -sf $WRITEDIR/areProperties $APPPATH/areProperties
 	
 		chmod +x $APPPATH/start*.sh
@@ -71,9 +79,6 @@ case "$1" in
 		echo ""
 		echo "You need a Java Runtime, oracle java 8 is recommended, but openjdk should work as well:"
 		echo sudo apt-get install oracle-java8-installer
-		echo ""
-		echo "For xfacetrackerlk (XCameraMouse) to work, please install libgstreamer0.10:"
-		echo "sudo apt-get install libgstreamer0.10-0 libgstreamer0.10-dev gstreamer0.10-tools gstreamer0.10-plugins-base libgstreamer-plugins-base0.10-dev gstreamer0.10-plugins-good"
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
