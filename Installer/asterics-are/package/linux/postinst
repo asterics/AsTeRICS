@@ -26,8 +26,8 @@ WRITEDIR="/var/opt/$APPNAME/"
 
 case "$1" in
     configure)
-    echo "Executing Postinst in dir $PWD"
-    echo $DPKG_MAINTSCRIPT_PACKAGE
+        echo "Executing Postinst in dir $PWD"
+        echo $DPKG_MAINTSCRIPT_PACKAGE
         echo Adding shortcut to the menu
 
 		echo "Creating desktop menu entry $APPNAME"
