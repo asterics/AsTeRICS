@@ -63,6 +63,8 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.osgi.framework.BundleContext;
 
 import eu.asterics.mw.are.AREProperties;
@@ -76,14 +78,13 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.IAREEventListener;
 
 /**
- * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Konstantinos Kakousis
- *         [kakousis@cs.ucy.ac.cy] Chris Veigl [veigl@technikum-wien.at] Date:
- *         Aug 20, 2010 Time: 2:14:37 PM
+ * @author Nearchos Paspallis [nearchos@cs.ucy.ac.cy] Konstantinos Kakousis [kakousis@cs.ucy.ac.cy] Chris Veigl [veigl@technikum-wien.at] Date: Aug 20, 2010
+ *         Time: 2:14:37 PM
  */
 public class AstericsGUI implements IAREEventListener {
     private static int DEFAULT_FONT_SIZE = 18;
     private static String DEFAULT_FONT_SIZE_PROPERTY = "ARE.gui.font.size";
-    public final static String ARE_VERSION = "2.9master";
+    public final static String ARE_VERSION = "3.0alpha1";
     static int DEFAULT_SCREEN_X = 0;
     static int DEFAULT_SCREEN_Y = 0;
     static int DEFAULT_SCREEN_W = 60;
@@ -120,8 +121,7 @@ public class AstericsGUI implements IAREEventListener {
     public AstericsGUI(BundleContext bundleContext) {
         super();
 
-        DEFAULT_FONT_SIZE = new Integer(
-                AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY, String.valueOf(DEFAULT_FONT_SIZE)));
+        DEFAULT_FONT_SIZE = new Integer(AREProperties.instance.getProperty(DEFAULT_FONT_SIZE_PROPERTY, String.valueOf(DEFAULT_FONT_SIZE)));
         AstericsErrorHandling.instance.getLogger().info(DEFAULT_FONT_SIZE_PROPERTY + "=" + DEFAULT_FONT_SIZE);
         AREProperties.instance.setProperty(DEFAULT_FONT_SIZE_PROPERTY, Integer.toString(DEFAULT_FONT_SIZE));
 
@@ -173,21 +173,11 @@ public class AstericsGUI implements IAREEventListener {
         final URL iconPath = bundleContext.getBundle().getResource(ICON_PATH);
 
         as = new AsapiSupport();
-        String hostname = "", ip = "";
-
-        try {
-            hostname = InetAddress.getLocalHost().getHostName();
-            ip = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
 
         mainFrame = new JFrame();
+        setTitle();
         mainFrame.setVisible(false);
         mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(iconPath));
-        String versionString = "AsTeRICS Runtime Environment " + ARE_VERSION + "   Host: " + hostname + "  IP:" + ip;
-        System.out.println(versionString);
-        mainFrame.setTitle(versionString);
         mainFrame.addComponentListener(new ResizeListener());
         mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         mainFrame.addWindowListener(new WindowAdapter() {
@@ -228,6 +218,33 @@ public class AstericsGUI implements IAREEventListener {
         mainFrame.setSize(defaultSize);
         // aboutFrame = new AboutFrame (this, mainFrame);
 
+    }
+
+    private void setTitle() {
+        String hostname = "", ip = "";
+
+        try {
+            hostname = InetAddress.getLocalHost().getHostName();
+            ip = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        IRuntimeModel currentModel = DeploymentManager.instance.getCurrentRuntimeModel();
+        String modelName = null;
+        if (currentModel != null) {
+            try {
+                modelName = FilenameUtils.getBaseName(FilenameUtils.separatorsToUnix(currentModel.getModelName())).split("_")[0];
+            } catch (Exception e) {
+                // ignore, in this case don't show name.
+            }
+        }
+        String versionString = "ARE " + ARE_VERSION + " - Host: " + hostname + "  IP:" + ip;
+        String title = modelName != null ? modelName + " - " + versionString : versionString;
+        System.out.println(title);
+        if (mainFrame != null) {
+            mainFrame.setTitle(title);
+        }
     }
 
     private class ResizeListener extends ComponentAdapter {
@@ -464,8 +481,7 @@ public class AstericsGUI implements IAREEventListener {
         return this.desktop;
     }
 
-    public void displayPanel(final JPanel panel, final int posX, final int posY, final int width, final int height,
-            final boolean display) {
+    public void displayPanel(final JPanel panel, final int posX, final int posY, final int width, final int height, final boolean display) {
         // x, y, w and h are given in % we need to convert them to absolute
         // values based on the screen dimension
         SwingUtilities.invokeLater(new Runnable() {
@@ -558,14 +574,11 @@ public class AstericsGUI implements IAREEventListener {
                 if (extension.equals("xml") || extension.equals("acs")) {
                     selectedModelFile = file.getAbsolutePath();
                     /*
-                     * try { as.deployFile(file.getAbsolutePath());
-                     * //as.runModel(); } catch (AREAsapiException e) {
-                     * AstericsErrorHandling.instance.reportError(null,
-                     * e.getMessage()); }
+                     * try { as.deployFile(file.getAbsolutePath()); //as.runModel(); } catch (AREAsapiException e) {
+                     * AstericsErrorHandling.instance.reportError(null, e.getMessage()); }
                      */
                 } else {
-                    JOptionPane.showMessageDialog(mainFrame, "The selected file is not a valid AsTeRICS model.",
-                            "Invalid file", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(mainFrame, "The selected file is not a valid AsTeRICS model.", "Invalid file", JOptionPane.WARNING_MESSAGE);
                 }
             }
         } else if (returnVal == JFileChooser.CANCEL_OPTION) {
@@ -623,7 +636,7 @@ public class AstericsGUI implements IAREEventListener {
     }
 
     private void applyChanges(ModelGUIInfo modelGUIInfo) {
-
+        setTitle();
         mainFrame.setVisible(false);
         AREProperties props = AREProperties.instance;
         // mad: this is experimental, and currently not activated. we could
@@ -672,11 +685,8 @@ public class AstericsGUI implements IAREEventListener {
             size = new Dimension((int) (screenSize.width + 10), (int) (screenSize.height + 10));
             position = new Point((int) (-2), (int) (-2));
         } else {
-            size = new Dimension(
-                    (int) (screenSize.width * modelGUIInfo.getDimension().width / 10000f) + controlPanelPaddingW
-                            + decorationPadding,
-                    (int) (screenSize.height * modelGUIInfo.getDimension().height / 10000f) + controlPanelPaddingH
-                            + decorationPadding);
+            size = new Dimension((int) (screenSize.width * modelGUIInfo.getDimension().width / 10000f) + controlPanelPaddingW + decorationPadding,
+                    (int) (screenSize.height * modelGUIInfo.getDimension().height / 10000f) + controlPanelPaddingH + decorationPadding);
 
             position = new Point((int) (screenSize.width * modelGUIInfo.getPosition().x / 10000f),
                     (int) (screenSize.height * modelGUIInfo.getPosition().y / 10000f));
@@ -832,37 +842,27 @@ public class AstericsGUI implements IAREEventListener {
  * 
  * @Override public void hierarchyChanged(HierarchyEvent e) {
  * 
- * if ((HierarchyEvent.SHOWING_CHANGED & e.getChangeFlags()) !=0 &&
- * mainFrame.isShowing()) { setPostDisplayableOptions(); } } });
+ * if ((HierarchyEvent.SHOWING_CHANGED & e.getChangeFlags()) !=0 && mainFrame.isShowing()) { setPostDisplayableOptions(); } } });
  */
 
 /*
  * mainFrame.addComponentListener(new ComponentAdapter() {
  * 
  * 
- * @Override public void componentResized(ComponentEvent e) { if
- * (mainFrame.isShowing()) { setDesktopSize("both"); } } public void
- * componentMoved(ComponentEvent e) {
+ * @Override public void componentResized(ComponentEvent e) { if (mainFrame.isShowing()) { setDesktopSize("both"); } } public void componentMoved(ComponentEvent
+ * e) {
  * 
  * if (mainFrame.isShowing()) { setDesktopSize("both"); } } });
  * 
- * mainFrame.addWindowStateListener(new WindowStateListener() { public void
- * windowStateChanged(WindowEvent e) { if (e.getNewState() == JFrame.ICONIFIED)
- * { if (areOptions.get("iconify")!=null) {
- * if(areOptions.get("iconify").equals("1")) { setSystemTray();
- * mainFrame.setVisible(false); } } } } });
+ * mainFrame.addWindowStateListener(new WindowStateListener() { public void windowStateChanged(WindowEvent e) { if (e.getNewState() == JFrame.ICONIFIED) { if
+ * (areOptions.get("iconify")!=null) { if(areOptions.get("iconify").equals("1")) { setSystemTray(); mainFrame.setVisible(false); } } } } });
  */
 
 /*
  * public void setDesktopSize(String mode) { BufferedWriter out = null;
  * 
- * try { out = new BufferedWriter(new FileWriter(WINDOW_PROPERTIES)); if
- * (mode.equals("both")) {
- * out.write(mainFrame.getSize().width+","+mainFrame.getSize().height);
- * out.newLine(); int x = mainFrame.getLocationOnScreen().x; if (x<0) x=0; int y
- * = mainFrame.getLocationOnScreen().y; if (y<0) y=0; out.write(x+","+y); }
- * out.close(); } catch (IOException ioe) {
- * logger.warning(this.getClass().getName()+"." +
- * "setDesktopSize: IO Exception while writting window properties."
- * +"Details:"+ioe.getMessage()); } }
+ * try { out = new BufferedWriter(new FileWriter(WINDOW_PROPERTIES)); if (mode.equals("both")) {
+ * out.write(mainFrame.getSize().width+","+mainFrame.getSize().height); out.newLine(); int x = mainFrame.getLocationOnScreen().x; if (x<0) x=0; int y =
+ * mainFrame.getLocationOnScreen().y; if (y<0) y=0; out.write(x+","+y); } out.close(); } catch (IOException ioe) { logger.warning(this.getClass().getName()+"."
+ * + "setDesktopSize: IO Exception while writting window properties." +"Details:"+ioe.getMessage()); } }
  */
