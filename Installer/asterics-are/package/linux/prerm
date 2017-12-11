@@ -25,16 +25,24 @@ WRITEDIR="/var/opt/$APPNAME/"
 
 case "$1" in
     remove|upgrade|deconfigure)
-       echo Removing shortcut for $APPNAME
+		echo Removing shortcut for $APPNAME
 
-       xdg-desktop-menu uninstall --novendor $APPINSTALLDIR/$APPNAME.desktop
-
-	   echo Removing symbolic links and write dir
-	   rm -Rf $WRITEDIR
-	   rm -f $APPPATH/modules
-	   rm -f $APPPATH/profile
-	   rm -f $APPPATH/data
-	   rm -f $APPPATH/areProperties
+		xdg-desktop-menu uninstall --novendor $APPINSTALLDIR/$APPNAME.desktop
+	
+		echo Removing symbolic links and write dir
+		rm -Rf $WRITEDIR
+		rm -f $APPPATH/modules
+		rm -f $APPPATH/profile
+		rm -f $APPPATH/data
+		rm -f $APPPATH/web
+		rm -f $APPPATH/tmp
+		rm -f $APPPATH/areProperties
+		rm -rf $APPPATH/tools/remotes
+	   
+		# component FS20 udev rules
+		echo removing udev rules for FS20 and IrTrans
+		rm -f /etc/udev/rules.d/50-asterics-fs20.rules
+		rm -f /etc/udev/rules.d/49-asterics-irtrans.rules
 
     ;;
 

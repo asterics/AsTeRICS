@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=asterics-application
+Comment=Assistive Technology Application
+Exec=/opt/asterics-application/app/start.sh
+Icon=/opt/asterics-application/asterics-application.png
+Terminal=false
+Type=Application
+Categories=Assistive Technology
+
