@@ -110,10 +110,10 @@ public class PCSDevice {
         Future<Void> closeFuture=timerExecutorSend.submit(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                HidManager.getHidServices().shutdown();                
                 if (dev != null) {
                     dev.close();
                 }
+                HidManager.getHidServices().shutdown();
                 return null;
             }
             
