@@ -87,7 +87,6 @@ public class Main implements BundleActivator {
             String message = bits
                     + "bit Java Runtime detected! Many plugins of the ARE need a 32bit Java Runtime.\nJava Download: http://www.java.com/de/download/manual.jsp";
             logger.warning(message);
-            startupMessage(message, JOptionPane.WARNING_MESSAGE, false);
         }
         logger.info("JVM " + bits + " bit detected");
         final String startModel = context.getProperty("eu.asterics.ARE.startModel");
