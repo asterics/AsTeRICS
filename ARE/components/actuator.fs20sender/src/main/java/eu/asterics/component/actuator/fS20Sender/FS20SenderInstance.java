@@ -26,9 +26,11 @@
 
 package eu.asterics.component.actuator.fS20Sender;
 
+import java.io.IOException;
 import java.util.StringTokenizer;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.data.ConversionUtils;
@@ -296,13 +298,10 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
             action = action.trim();
 
             /*
-             * Parse the action string! If it has a valid format send the
-             * corresponding command to the specified device Format is as
-             * follows: hc_address_command example: 11111112_1234_18 would send
-             * the toggle command with housecode=11111112 and address=1234
+             * Parse the action string! If it has a valid format send the corresponding command to the specified device Format is as follows: hc_address_command
+             * example: 11111112_1234_18 would send the toggle command with housecode=11111112 and address=1234
              *
-             * update: now also delimiters ' ' and ',' can be used between hc,
-             * address and command !
+             * update: now also delimiters ' ' and ',' can be used between hc, address and command !
              */
 
             final String ACTION_STRING_PREFIX = "@FS20:";
@@ -564,71 +563,45 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
     }
 
     /**
-     * Open the USB HID Device
+     * Open the USB HID Device. If opening fails a RuntimeException is thrown to stop the start of the plugin. 
      */
     private void openDevice() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                String curThread = Thread.currentThread().getName();
-                logger.fine("[" + curThread + "]" + "Trying to open device");
+        logger.fine("Trying to open device");
 
-                if (pcs != null) {
-                    logger.fine("[" + curThread + "]" + "PCSDevice already open");
-                    closeDevice();
-                }
-
-                pcs = new PCSDevice();
-                if (!pcs.open()) {
-                    logger.warning("[" + curThread + "]"
-                            + "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
-                    AstericsErrorHandling.instance.reportError(FS20SenderInstance.this,
-                            "Could not open/find FS20 PCS Device. Please verify that the FS20 Transceiver is connected to a USB port.");
-                    return;
-                }
-            }
-        };
-
-        try {
-            AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(runnable);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            logger.warning("Could not execute openDevice in ModelExecutor thread: " + e.getMessage());
+        if (pcs != null) {
+            logger.fine("PCSDevice already open");
+            closeDevice();
         }
 
+        pcs = new PCSDevice();
+        try {
+            pcs.open();
+        } catch (Exception e) {
+            logger.logp(Level.WARNING, FS20SenderInstance.class.getName(), "openDevice()", e.getMessage(), e);
+            throw new RuntimeException("Could not open/find FS20 PCS device. Please verify that the FS20 device is connected to a USB port.");
+        }
     }
 
     /**
-     * Close the USB HID Device
+     * Close the USB HID Device. If closing fails a RuntimeException is thrown.
      */
     private void closeDevice() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                String curThread = Thread.currentThread().getName();
-                logger.fine("[" + curThread + "]" + "Trying to close device");
-
-                if (pcs != null) {
-                    if (!pcs.close()) {
-                        AstericsErrorHandling.instance.reportInfo(FS20SenderInstance.this,
-                                "[" + curThread + "]" + "Could not close PCS Device");
-                        return;
-                    }
-                    // Set to null anyway
-                    pcs = null;
-                }
+        logger.fine("Trying to close device");
+        if (pcs != null) {
+            try {
+                pcs.close();
+            } catch (InterruptedException | ExecutionException | TimeoutException | IOException e) {
+                logger.logp(Level.WARNING, FS20SenderInstance.class.getName(), "closeDevice()", e.getMessage(), e);
+                throw new RuntimeException("Could not close FS20 PCS device. Is the FS20 device still connected to the USB port?");                
+            } finally {
+                // Set to null in any case. maybe it can still be cleaned up.
+                pcs = null;
             }
-        };
-        try {
-            AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(runnable);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            logger.warning("Could not execute closeDevice in ModelExecutor thread: " + e.getMessage());
         }
-
     }
 
     /**
-     * Send data to FS20 device. The method is executed in the ModelExecutor
-     * thread to prevent thread safety issues.
+     * Send data to FS20 device. The method is executed in the ModelExecutor thread to prevent thread safety issues.
      *
      * @param houseCode
      * @param addr

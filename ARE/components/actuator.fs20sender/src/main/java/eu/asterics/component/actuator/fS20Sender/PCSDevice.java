@@ -25,6 +25,7 @@
 
 package eu.asterics.component.actuator.fS20Sender;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -43,6 +44,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 
 public class PCSDevice {
 
+    private static final int PCSDEVICE_TIMEOUT = 5000;
     private Logger logger = AstericsErrorHandling.instance.getLogger();
     private ScheduledExecutorService timerExecutorSend = Executors.newSingleThreadScheduledExecutor();
     private int vid = 0x18EF;
@@ -53,33 +55,85 @@ public class PCSDevice {
     public PCSDevice() {
     }
 
-    public boolean open() {
-
+    /**
+     * Opens a FS20 device with the internal executor service.
+     * Throws one of the following exceptions if the opening fails.
+     * @throws InterruptedException
+     * @throws ExecutionException
+     * @throws TimeoutException
+     * @throws IOException
+     */
+    public void open() throws InterruptedException, ExecutionException, TimeoutException, IOException {
         if (dev != null) {
             dev.close();
         }
-        List<HidDevice> list = HidManager.getHidServices().getAttachedHidDevices();
-        for (HidDevice device : list) {
-            if (device.getVendorId() == (short) vid && device.getProductId() == (short) pid) {
-                dev = device;
+        
+        Future<Boolean> openFuture=timerExecutorSend.submit(new Callable<Boolean>() {
+
+            @Override
+            public Boolean call() throws Exception {
+                List<HidDevice> list = HidManager.getHidServices().getAttachedHidDevices();
+                for (HidDevice device : list) {
+                    if (device.getVendorId() == (short) vid && device.getProductId() == (short) pid) {
+                        dev = device;
+                    }
+                }
+                if (dev == null) {
+                    return false;
+                }
+                dev.open();
+                if(dev.isOpen()) {
+                    logger.fine("Opened FS20 device successfully: Vendor: "+dev.getManufacturer()+", Product: "+dev.getProduct()+", Id: "+dev.getId()+", Serial: "+dev.getSerialNumber());
+                }
+                return dev.isOpen();
+            }            
+        });
+        boolean openSuccess=openFuture.get(PCSDEVICE_TIMEOUT, TimeUnit.MILLISECONDS);
+        if(!openSuccess) {
+            throw new IOException("Could not open FS20 device.");
+        }
+    }
+
+    /**
+     * Closes the FS20 device.
+     * Throws one of the following exceptions, if closing fails.
+     * @throws InterruptedException
+     * @throws ExecutionException
+     * @throws TimeoutException
+     * @throws IOException
+     */
+    public void close() throws InterruptedException, ExecutionException, TimeoutException, IOException {
+        String devString="";
+        if(dev!=null) {
+            devString="Vendor: "+dev.getManufacturer()+", Product: "+dev.getProduct()+", Id: "+dev.getId()+", Serial: "+dev.getSerialNumber();
+        }
+        Future<Void> closeFuture=timerExecutorSend.submit(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                HidManager.getHidServices().shutdown();                
+                if (dev != null) {
+                    dev.close();
+                }
+                return null;
             }
-        }
-        if (dev == null) {
-            return false;
-        }
-        dev.open();
-        return dev.isOpen();
-    }
-
-    public boolean close() {
-        HidManager.getHidServices().shutdown();
+            
+        }); 
+        closeFuture.get(PCSDEVICE_TIMEOUT, TimeUnit.MILLISECONDS);
         timerExecutorSend.shutdownNow();
-        if (dev != null) {
-            dev.close();
+        if(!timerExecutorSend.awaitTermination(PCSDEVICE_TIMEOUT, TimeUnit.MILLISECONDS)) {
+            throw new IOException("Could not close FS20 device");
         }
-        return true;
+        logger.fine("Successfully closed FS20 device. "+devString);
     }
 
+    /**
+     * Sends a command to the FS20 device.
+     * Returns -1 if sending fails, e.g. times out.
+     * @param houseCode
+     * @param addr
+     * @param command
+     * @return
+     */
     public int send(int houseCode, int addr, int command) {
         byte[] buf = new byte[11];
         buf[0] = 0x01; // hid report id
