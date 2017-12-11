@@ -1,0 +1,6 @@
+# Declare files that will always have CRLF line endings on checkout.
+**/postinst text eol=lf
+**/prerm text eol=lf
+**/control text eol=lf
+*.sh text eol=lf
+*.desktop text eol=lf
