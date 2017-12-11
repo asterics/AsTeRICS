@@ -1,10 +1,10 @@
-Package: asterics-are
-Version: 3.0-alpha1
+Package: asterics-application
+Version: 0.1
 Section: unknown
 Maintainer: Asterics Foundation
 Priority: optional
 Architecture: all
 Homepage: https://github.com/asterics/AsTeRICS
-Provides: asterics-are
+Provides: asterics-application
 Description: AsTeRICS Runtime Environment (ARE) - http://www.asterics.org
 Depends: oracle-java8-installer, libgstreamer0.10-0, libgstreamer0.10-dev, gstreamer0.10-tools, gstreamer0.10-plugins-base, libgstreamer-plugins-base0.10-dev, gstreamer0.10-plugins-good, libttspico-utils, libhidapi-libusb0

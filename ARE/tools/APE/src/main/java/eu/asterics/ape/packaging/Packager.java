@@ -154,9 +154,10 @@ public class Packager {
 
 			if (buildMode.equals(APE_BUILD_MODE.RELEASE)) {
 				// Copy only jar URIs of referenced plugins and services.
-				copyReferencedJarsOnly(buildMergedAREDir, modelInstances);
+				allJarURIs=copyReferencedJarsOnly(buildMergedAREDir, modelInstances);
 			} else {
 				// Copy all jar URIs
+				allJarURIs.clear();
 				allJarURIs.addAll(ResourceRegistry.getInstance().getAllJarList(false));
 				copyURIs(allJarURIs, buildMergedAREDir);
 			}
@@ -184,11 +185,11 @@ public class Packager {
             Notifier.info("ApeProp[" + P_APE_WEB_COPY_MODE + "]=" + webCopyMode);
 
             if (APE_WEB_COPY_MODE.ALL.equals(webCopyMode)) {			
-                Notifier.info("Copying ALL web files of "+ResourceRegistry.getInstance().getResource("/", RES_TYPE.WEB_DOCUMENT_ROOT));
+                Notifier.info("Copying ALL web files of "+ResourceRegistry.getInstance().getResource(RES_TYPE.WEB_DOCUMENT_ROOT));
                 uriList = ResourceRegistry.getInstance().getWebDocumentRootContentList(false);
                 copyURIs(uriList, buildMergedAREDir);
             } else {
-                Notifier.info("Don't copy web files of "+ ResourceRegistry.getInstance().getResource("/", RES_TYPE.WEB_DOCUMENT_ROOT));
+                Notifier.info("Don't copy web files of "+ ResourceRegistry.getInstance().getResource(RES_TYPE.WEB_DOCUMENT_ROOT));
             }
 
 			uriList = ResourceRegistry.getInstance().getLicenseURIsofAsTeRICSJarURIs(allJarURIs);

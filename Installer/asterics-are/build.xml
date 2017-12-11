@@ -1,10 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="asterics-application" default="before-deploy" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
-	<import file="../../bin/APE/template/imported.xml"/>
-	
+<project name="asterics-application" default="run" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
 	<property name="asterics.root" location="../../"/>
 	<property name="runtime" location="${asterics.root}/bin/ARE"/>
+
+	<!-- import generic APE functionality from APE accompanied to the ARE.baseURI -->
+	<property name="APE.propertiesFile" value="APE.properties"></property>	
+	<loadproperties srcFile="${APE.propertiesFile}" />
 	
+	<!-- if ARE.baseURI is not set, try to find a default value in the following order:
+	1) dependencies/AsTeRICS/bin/ARE (if Asterics is added as submodule)
+	2) ../AsTeRICS/bin/ARE (if it's an APE projectdir withouth FABI and FLipMouse folder structure)
+	3) ../../AsTeRICS/bin/ARE (if it's an AT solution folder structure)
+	4) C:/Program Files (x86)/AsTeRICS/ARE/ (if there is an Asterics installation on windows)
+	-->
+	<condition property="ARE.baseURI" value="dependencies/AsTeRICS/bin/ARE/">
+		<available file="dependencies/AsTeRICS/bin/ARE/" type="dir"/>
+	</condition>
+	<condition property="ARE.baseURI" value="../../ARE/">
+		<available file="../../ARE/" type="dir"/>
+	</condition>
+	<condition property="ARE.baseURI" value="../AsTeRICS/bin/ARE/">
+		<available file="../AsTeRICS/bin/ARE/" type="dir"/>
+	</condition>
+	<condition property="ARE.baseURI" value="../../AsTeRICS/bin/ARE/">
+		<available file="../../AsTeRICS/bin/ARE/" type="dir"/>
+	</condition>
+	<condition property="ARE.baseURI" value="C:/Program Files (x86)/AsTeRICS/ARE/">
+		<available file="C:/Program Files (x86)/AsTeRICS/ARE/" type="dir"/>
+	</condition>
+	
+	<!-- if ARE.baseURI is not set assume that APE is located in the parent folder of basedir -->
+	<condition property="APE.baseURI" else="${ARE.baseURI}/../APE/" value="${basedir}/../">
+		<not>
+			<isset property="ARE.baseURI" />
+		</not>
+	</condition>
+
+	<condition property="APE.imported.build.file" value="imported.xml" else="${APE.baseURI}/template/imported.xml">
+		<available file="imported.xml" type="file"/>
+	</condition>
+	
+	<echo>
+  If no JRE is found, try to set the path manually in APE.properties (fx.platform.basedir).
+  If no AsTeRICS framework can be found or the used version is incompatible with your solution, define the path manually in APE.properties (ARE.baseURI) 
+  or ensure to clone the current snapshot to the parallel folder:	
+    git clone https://github.com/asterics/AsTeRICS.git		
+  
+  Using ARE.baseURI: ${ARE.baseURI}
+  Using imported.xml from: ${APE.imported.build.file}</echo>
+
+	<import file="${APE.imported.build.file}"/>
+	<!-- finished imported APE functionality -->
+	
+	<!-- do platform specific preparations before deployment: here you can delete some platform specific files -->
 	<target name="before-deploy-windows" if="APE.isWindows">
 	    <delete verbose="true">
 	        <fileset dir="${build.merged.ARE}" includes="javacv-*-linux.jar, javacv-*-macosx.jar"/>
@@ -20,20 +68,19 @@
 	        <fileset dir="${build.merged.ARE}" includes="javacv-*-windows.jar, javacv-*-linux.jar"/>
 	    </delete>	    
 	</target>
+
+
 	<!-- if you want to compile and modify something on your own, before the installer is created -->
 	<target name='before-deploy'>
-
-		<subant target="buildAll" verbose="true" inheritall="false" buildpath="${asterics.root}" antfile="build.xml">
-			<!--  <fileset dir="${asterics.root}" includes="build.xml"> </fileset>-->
-		</subant>	    
-
+		<!-- APE-copy-release is called before this target, so we can be sure that the ARE was built cleanly. -->
+		<!-- Now we can simply copy the whole ARE folder to the build directory -->
+		<!-- TODO: APE needs a mode that allows to include either all plugins or only platfornm dependent ones. -->
 		<copy todir="${build.merged.ARE}">
 			<fileset dir="${runtime}"/>
 		</copy> 
 		<fixcrlf srcdir="${build.merged.ARE}" includes="*.sh"/>
-		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx"/>		
+		<chmod dir="${build.merged.ARE}" includes="*.sh" perm="ugo+rx"/>				
 	</target>
-	
-	<target name="deploy" depends="init-fx-tasks, cleanup, setup-staging-area, before-deploy, before-deploy-windows, before-deploy-linux, before-deploy-macosx, make-installer-only">
+	<target name="deploy" depends="init-fx-tasks, cleanup, setup-staging-area, APE-copy-release, before-deploy, before-deploy-windows, before-deploy-linux, before-deploy-macosx, make-installer-only" description="Creates installer packages for this APE project. The result can be found in the build/deploy folder.">
 	</target>
 </project>
