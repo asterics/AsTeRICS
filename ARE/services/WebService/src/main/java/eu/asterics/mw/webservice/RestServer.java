@@ -977,4 +977,31 @@ public class RestServer {
 
         return response;
     }
+
+    @Path("/runtime/model/components/{componentId}/events/{eventId}")
+    @PUT
+    @Produces(MediaType.TEXT_PLAIN)
+    public String triggerEvent(@PathParam("componentId") String componentId,
+                               @PathParam("eventId") String eventId) {
+        String response;
+        String errorMessage = "";
+        String decodedCompId = "", decodedEventId = "";
+
+        try {
+            decodedCompId = astericsAPIEncoding.decodeString(componentId);
+            decodedEventId = astericsAPIEncoding.decodeString(eventId);
+            logger.info(MessageFormat.format("trigger event on component <{0}>, eventId <{1}>", decodedCompId, decodedEventId));
+
+            //send event with empty data because sending data with event is currently not supported in ACS / model XML
+            asapiSupport.triggerEvent(decodedCompId, decodedEventId, "");
+            response = "success";
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "could not send data!", e);
+            errorMessage = MessageFormat.format("Couldnt trigger event on eventPort <{0}> of component <{1}> with data <{2}> (Exception: {3})", decodedEventId, decodedCompId,
+                    "", e.getMessage());
+            response = "error:" + errorMessage;
+        }
+
+        return response;
+    }
 }
