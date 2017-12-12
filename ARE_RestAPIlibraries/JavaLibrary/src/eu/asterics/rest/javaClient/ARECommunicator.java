@@ -418,6 +418,23 @@ public class ARECommunicator {
 	}
 
 	/**
+	 * sends data to a input port of a component of the currently deployed model
+	 *
+	 * @param componentId id of the component to send data to
+	 * @param eventPortId port of the component to send data to
+	 * @return
+	 * @throws Exception
+	 */
+	public String triggerEvent(String componentId, String eventPortId) throws Exception {
+		String encodedId = astericsAPIEncoding.encodeString(componentId);
+		String encodedPortId = astericsAPIEncoding.encodeString(eventPortId);
+		String url = MessageFormat.format("/runtime/model/components/{0}/events/{1}", encodedId, encodedPortId);
+		HttpResponse httpResponse = httpCommunicator.putRequest(url,
+				HttpCommunicator.DATATYPE_TEXT_PLAIN);
+		return httpResponse != null ? httpResponse.getBody() : null;
+	}
+
+	/**
 	 * Returns a list with all the available rest functions provided via this API
 	 *
 	 * @return - an ArrayList of RestFunction objects that describe the available functions
