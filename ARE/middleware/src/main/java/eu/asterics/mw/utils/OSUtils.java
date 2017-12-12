@@ -36,6 +36,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.ResourceRegistry;
 
 /**
  * Helper class to find OS ARE is running on.
@@ -125,6 +126,20 @@ public class OSUtils {
      * @throws IOException
      */
     public static Process startApplication(String applicationPath, String arguments, String workingDirectory, OS_NAMES executeOnPlatform) throws IOException {
+        if (applicationPath == null) {
+            return null;
+        }
+        applicationPath = applicationPath.trim();
+        if ("".equals(applicationPath)) {
+            return null;
+        }
+        // quote command if it is with spaces
+        // if(applicationPath.contains(" ")) {
+        applicationPath = "\"" + applicationPath + "\"";
+        // }
+        // File applicationPathFile = ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.getInstance().getAREBaseURI(), applicationPath);
+        // applicationPath=FilenameUtils.separatorsToSystem("\""+applicationPath+"\"");
+        // return startApplication("\"" + applicationPathFile.getPath() + "\"" + " " + arguments, workingDirectory, executeOnPlatform);
         return startApplication(applicationPath + " " + arguments, workingDirectory, executeOnPlatform);
     }
 
@@ -140,29 +155,69 @@ public class OSUtils {
      */
     public static Process startApplication(String applicationPathAndArguments, String workingDirectory, OS_NAMES executeOnPlatform) throws IOException {
         if (executeOnPlatform != null && getOsName().equalsIgnoreCase(executeOnPlatform.toString()) || executeOnPlatform.equals(OS_NAMES.ALL)) {
-            List<String> command = new ArrayList<String>();
-
-            StringTokenizer st = new StringTokenizer(applicationPathAndArguments);
-            while (st.hasMoreTokens()) {
-                String act = st.nextToken();
-                command.add(act);
-                logger.fine("adding argument: " + act);
-            }
-            if (command.size() == 0) {
+            if (applicationPathAndArguments == null) {
                 return null;
             }
-            // The command can be an absolute path, so ensure that it has proper system separators (\ or \\ or /)
-            command.set(0, FilenameUtils.separatorsToSystem(command.get(0)));
-
-            ProcessBuilder builder = new ProcessBuilder(command);
-            if (workingDirectory != null && !"".equals(workingDirectory)) {
-                workingDirectory = FilenameUtils.separatorsToSystem(workingDirectory);
-                logger.fine("Setting workingDirectory to: " + workingDirectory);
-                builder.directory(new File(workingDirectory));
+            applicationPathAndArguments = applicationPathAndArguments.trim();
+            if ("".equals(applicationPathAndArguments)) {
+                return null;
             }
 
-            logger.fine("Starting command: " + command);
-            return builder.start();
+            try {
+                List<String> command = new ArrayList<String>();
+
+                int cmdEndIndex = 0;
+                // if cmd starts with quotes, extract the cmd with quotes.
+                if (applicationPathAndArguments.indexOf("\"") == 0) {
+                    cmdEndIndex = applicationPathAndArguments.substring(1).indexOf('"');
+                    if (cmdEndIndex > -1) {
+                        cmdEndIndex = cmdEndIndex + 2;
+                    }
+                } else {
+                    // a cmd without quotes is split by a space.
+                    cmdEndIndex = applicationPathAndArguments.indexOf(" ");
+                }
+                if (cmdEndIndex < 0) {
+                    logger.warning("Could not find command string in: " + applicationPathAndArguments);
+                    return null;
+                }
+                // cmdEndIndex++;
+                String cmdString = applicationPathAndArguments.substring(0, cmdEndIndex);
+                // The command can be an absolute path, so ensure that it has proper system separators (\ or \\ or /)
+                command.add(FilenameUtils.separatorsToSystem(cmdString));
+
+                String arguments = "";
+                try {
+                    arguments = applicationPathAndArguments.substring(cmdEndIndex + 1);
+                } catch (IndexOutOfBoundsException e) {
+                    logger.fine("No cmd arguments found.");
+                }
+
+                StringTokenizer st = new StringTokenizer(arguments);
+                while (st.hasMoreTokens()) {
+                    String act = st.nextToken();
+                    command.add(act);
+                    logger.fine("adding argument: " + act);
+                }
+                if (command.size() == 0) {
+                    logger.warning("Could not find command string in: " + applicationPathAndArguments);
+                    return null;
+                }
+
+                ProcessBuilder builder = new ProcessBuilder(command);
+                if (workingDirectory != null && !"".equals(workingDirectory)) {
+                    workingDirectory = FilenameUtils.separatorsToSystem(workingDirectory);
+                    // File workingDirFile=ResourceRegistry.resolveRelativeFilePath(ResourceRegistry.getInstance().getAREBaseURI(),workingDirectory);
+                    File workingDirFile = new File(workingDirectory);
+                    logger.fine("Setting workingDirectory to: " + workingDirFile);
+                    builder.directory(workingDirFile);
+                }
+
+                logger.fine("Finally constructed command: " + command);
+                return builder.start();
+            } catch (Exception e) {
+                throw new RuntimeException("Could not construct command string: " + e.getMessage());
+            }
         }
         return null;
     }

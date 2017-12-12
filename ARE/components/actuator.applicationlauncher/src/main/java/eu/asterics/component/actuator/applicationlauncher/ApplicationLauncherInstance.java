@@ -30,9 +30,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+
+import com.sun.org.apache.bcel.internal.generic.IRETURN;
 
 import eu.asterics.mw.data.ConversionUtils;
 import eu.asterics.mw.model.runtime.AbstractRuntimeComponentInstance;
@@ -40,27 +47,35 @@ import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import eu.asterics.mw.model.runtime.IRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.IRuntimeInputPort;
 import eu.asterics.mw.model.runtime.IRuntimeOutputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeEventTriggererPort;
 import eu.asterics.mw.model.runtime.impl.DefaultRuntimeInputPort;
+import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
+import eu.asterics.mw.utils.OSUtils;
+import eu.asterics.mw.utils.OSUtils.OS_NAMES;
 
 /**
  * 
- * ApplicationLauncherInstance can external software applications via full path
- * and filename. A default application is given as property, which can be
- * replace by an incoming application name at the input port. The Launch can be
- * performed automatically at startup, at incoming filename or only via incoming
- * event trigger.
+ * ApplicationLauncherInstance can external software applications via full path and filename. A default application is given as property, which can be replace
+ * by an incoming application name at the input port. The Launch can be performed automatically at startup, at incoming filename or only via incoming event
+ * trigger.
  * 
  * @author Chris Veigl [veigl@technikum-wien.at]
  * 
  */
 public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstance {
+    Logger logger = AstericsErrorHandling.instance.getLogger();
     // Usage of an output port e.g.:
     // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
     // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
+    enum EXECUTION_MODES {
+        START_APPLICATION, OPEN_URL;
+    }
 
+    String propExecuteOnPlatform = OSUtils.OS_NAMES.ALL.toString();
+    String propExecutionMode = EXECUTION_MODES.START_APPLICATION.toString();
     String propDefaultApplication = "c:\\windows\\notepad.exe";
     String propArguments = "";
     String propWorkingDirectory = ".";
@@ -73,8 +88,17 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
     // declare member variables here
     Process process = null;
     boolean processStarted = false;
+    Future<?> stdOutFuture;
+    Future<?> stdErrFuture;
 
-    private boolean endThread = false;
+    String stdInString = "";
+
+    IRuntimeOutputPort opStdOut = new DefaultRuntimeOutputPort();
+    IRuntimeOutputPort opStdErr = new DefaultRuntimeOutputPort();
+    IRuntimeOutputPort opExitValue = new DefaultRuntimeOutputPort();
+
+    IRuntimeEventTriggererPort etpStartedSuccessfully = new DefaultRuntimeEventTriggererPort();
+    IRuntimeEventTriggererPort etpStartedWithError = new DefaultRuntimeEventTriggererPort();
 
     /**
      * The class constructor.
@@ -95,6 +119,12 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
         if ("filename".equalsIgnoreCase(portID)) {
             return ipFilename;
         }
+        if ("arguments".equalsIgnoreCase(portID)) {
+            return ipArguments;
+        }        
+        if ("stdIn".equalsIgnoreCase(portID)) {
+            return ipStdIn;
+        }
 
         return null;
     }
@@ -108,7 +138,15 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
      */
     @Override
     public IRuntimeOutputPort getOutputPort(String portID) {
-
+        if ("stdErr".equalsIgnoreCase(portID)) {
+            return opStdErr;
+        }
+        if ("stdOut".equalsIgnoreCase(portID)) {
+            return opStdOut;
+        }
+        if ("exitValue".equalsIgnoreCase(portID)) {
+            return opExitValue;
+        }
         return null;
     }
 
@@ -140,7 +178,12 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
      */
     @Override
     public IRuntimeEventTriggererPort getEventTriggererPort(String eventPortID) {
-
+        if ("startedSuccessfully".equalsIgnoreCase(eventPortID)) {
+            return etpStartedSuccessfully;
+        }
+        if ("startedWithError".equalsIgnoreCase(eventPortID)) {
+            return etpStartedWithError;
+        }
         return null;
     }
 
@@ -153,6 +196,12 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
      */
     @Override
     public Object getRuntimePropertyValue(String propertyName) {
+        if ("executeOnPlatform".equalsIgnoreCase(propertyName)) {
+            return propExecuteOnPlatform;
+        }
+        if ("executionMode".equalsIgnoreCase(propertyName)) {
+            return propExecutionMode;
+        }
         if ("defaultApplication".equalsIgnoreCase(propertyName)) {
             return propDefaultApplication;
         }
@@ -189,6 +238,16 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
      */
     @Override
     public Object setRuntimePropertyValue(String propertyName, Object newValue) {
+        if ("executeOnPlatform".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propExecuteOnPlatform;
+            propExecuteOnPlatform = (String) newValue;
+            return oldValue;
+        }
+        if ("executionMode".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propExecutionMode;
+            propExecutionMode = (String) newValue;
+            return oldValue;
+        }
         if ("defaultApplication".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propDefaultApplication;
             propDefaultApplication = (String) newValue;
@@ -244,108 +303,145 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
         return null;
     }
 
-    private final void launchNow() {
-        if (processStarted == true) {
+    private final void launchNow(boolean throwException) {
+        if (process != null || processStarted == true) {
             closeNow();
         }
         try {
-            // String[] args={"cmd","/c","start","\"C:/Program Files (x86)/Vocal
-            // Joystick/vjapp/bin/win/run\"","vj"};
-            // process = Runtime.getRuntime().exec(propDefaultApplication);
-            // System.out.println("starting :" + args[0]);
+            if (EXECUTION_MODES.valueOf(propExecutionMode).equals(EXECUTION_MODES.START_APPLICATION)) {
+                logger.fine("Starting application: " + propDefaultApplication);
+                process = OSUtils.startApplication(propDefaultApplication, propArguments, propWorkingDirectory, OS_NAMES.valueOf(propExecuteOnPlatform));
+            } else if (EXECUTION_MODES.valueOf(propExecutionMode).equals(EXECUTION_MODES.OPEN_URL)) {
+                logger.fine("Opening URL: " + propArguments);
+                process = OSUtils.openURL(propArguments, OS_NAMES.valueOf(propExecuteOnPlatform));
+            } else {
+                // execution mode not supported
+                logger.warning("Execution mode not supported: " + propExecutionMode);
+                return;
+            }
 
-            // File dirpath = new File("\"C:/Program Files (x86)/Vocal
-            // Joystick/vjapp/bin/win/\"");
-            // process = Runtime.getRuntime().exec(args); //,null,dirpath);
-
-            {
-                List<String> command = new ArrayList<String>();
-                // command.add("\"C:/Program Files (x86)/Vocal
-                // Joystick/vjapp/bin/win/run.bat\"");
-                // command.add("vj");
-                // command.add("--controlType");
-                // command.add("key");
-
-                command.add(propDefaultApplication);
-                StringTokenizer st = new StringTokenizer(propArguments);
-                while (st.hasMoreTokens()) {
-                    String act = st.nextToken();
-                    command.add(act);
-                    System.out.println("adding argument :" + act);
-                }
-
-                ProcessBuilder builder = new ProcessBuilder(command);
-
-                builder.environment();
-
-                // builder.directory(new File("C:/Program Files (x86)/Vocal
-                // Joystick/vjapp/bin/win/"));
-                builder.directory(new File(propWorkingDirectory));
-
-                process = builder.start();
-                processStarted = true;
-
-                endThread = false;
-                AstericsThreadPool.instance.execute(new Runnable() {
+            // Attach standard out and standard error streams and send data to output ports.
+            if (process != null) {
+                stdOutFuture = AstericsThreadPool.instance.execute(new Runnable() {
                     @Override
                     public void run() {
-                        String s;
-                        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-                        try {
-                            while (((s = in.readLine()) != null) && (endThread == false)) {
-                                System.out.println(s);
+                        try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));) {
+                            String s;
+                            while ((s = in.readLine()) != null) {
+                                opStdOut.sendData(ConversionUtils.stringToBytes(s));
                                 Thread.sleep(5);
-
                             }
-                        } catch (InterruptedException e) {
-                        } catch (IOException e) {
+                        } catch (Exception e) {
+                            // can be ignored, means either interrupted or the process was killed.
                         }
                     }
                 });
+                stdErrFuture = AstericsThreadPool.instance.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getErrorStream()));) {
+                            String s;
+                            while ((s = in.readLine()) != null) {
+                                opStdErr.sendData(ConversionUtils.stringToBytes(s));
+                                Thread.sleep(5);
+                            }
+                        } catch (Exception e) {
+                            // can be ignored, means either interrupted or the process was killed.
+                        }
+                    }
+                });
+
+                // Send string received through ipStdIn to the input of the process.
+                if (stdInString != null && !"".equals(stdInString)) {
+                    logger.fine("Sending input string: " + stdInString);
+                    new PrintWriter(new OutputStreamWriter(process.getOutputStream())).println(stdInString);
+                    // mark string as being sent.
+                    stdInString = null;
+                }
+                // Check for exit value, in case of error the process should already have terminated.
+                try {
+                    process.waitFor(1000, TimeUnit.MILLISECONDS);
+                } catch (InterruptedException e) {
+                    // can be ignored
+                }
+
+                if (!process.isAlive()) {
+                    // Process has already terminated, check exit value to determine success
+                    int exitValue = process.exitValue();
+                    logger.fine("Process already terminated with exit value: " + exitValue);
+                    opExitValue.sendData(ConversionUtils.intToBytes(exitValue));
+
+                    // cleanup
+                    closeProcessAndCleanup();
+
+                    if (exitValue == 0) {
+                        etpStartedSuccessfully.raiseEvent();
+                        processStarted = true;
+                    } else {
+                        etpStartedWithError.raiseEvent();
+                        processStarted = false;
+                        return;
+                    }
+                } else {
+                    // Process is still running --> started successfully
+                    etpStartedSuccessfully.raiseEvent();
+                    processStarted = true;
+                }
             }
-        } catch (IOException e) {
-            AstericsErrorHandling.instance.reportError(this, "IOException: problem starting " + propDefaultApplication);
-        } catch (IllegalArgumentException e) {
-            AstericsErrorHandling.instance.reportError(this,
-                    "IllegalArgument: problem starting " + propDefaultApplication);
+        } catch (Exception e) {
+            logger.warning("Could not start: " + propDefaultApplication + " " + propArguments);
+            processStarted = false;
+            opExitValue.sendData(ConversionUtils.intToBytes(1));
+            opStdErr.sendData(ConversionUtils.stringToBytes(e.getMessage()));
+            etpStartedWithError.raiseEvent();
+            closeProcessAndCleanup();
+            if (throwException) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     private final void closeNow() {
-        if (process != null) {
-            System.out.println("closing Process");
-            endThread = true;
+        closeProcessAndCleanup();
+
+        if (propCloseCmd != null && !"".equals(propCloseCmd)) {
+            logger.fine("Executing close cmd: " + propCloseCmd);
             try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-            }
-
-            process.destroy();
-            process = null;
-            if (propCloseCmd != null && !"".equals(propCloseCmd)) {
-                System.out.println("Close cmd defined: " + propCloseCmd);
-
-                List<String> command = new ArrayList<String>();
-                StringTokenizer st = new StringTokenizer(propCloseCmd);
-                while (st.hasMoreTokens()) {
-                    String act = st.nextToken();
-                    command.add(act);
-                    System.out.println("adding argument :" + act);
-                }
-
-                System.out.println("commad: " + command);
-                ProcessBuilder builder = new ProcessBuilder(command);
+                Process destroyProcess = OSUtils.startApplication(propCloseCmd, null, OS_NAMES.valueOf(propExecuteOnPlatform));
                 try {
-                    builder.start();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    destroyProcess.waitFor(3000, TimeUnit.MILLISECONDS);
+                } catch (InterruptedException e) {
+                    // can be safely ignored
                 }
+                if (destroyProcess != null) {
+                    destroyProcess.destroy();
+                }
+            } catch (Exception e1) {
+                logger.warning("Error executing close cmd: " + propCloseCmd + ", reason: " + e1.getMessage());
             }
-        }
-        processStarted = false;
 
+        }
+
+        processStarted = false;
+    }
+
+    private void closeProcessAndCleanup() {
+        if (process != null) {
+            logger.fine("Closing process for: " + propDefaultApplication + " " + propArguments);
+            if (stdOutFuture != null) {
+                stdOutFuture.cancel(true);
+            }
+            if (stdErrFuture != null) {
+                stdErrFuture.cancel(true);
+            }
+            process.destroy();
+            try {
+                process.waitFor(500, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e1) {
+                // can be safely ignored.
+            }
+            process = null;
+        }
     }
 
     /**
@@ -355,8 +451,35 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
         @Override
         public void receiveData(byte[] data) {
             propDefaultApplication = ConversionUtils.stringFromBytes(data);
+            logger.fine("Setting new command: " + propDefaultApplication);
             if (propOnlyByEvent == false) {
-                launchNow();
+                launchNow(false);
+            }
+        }
+
+    };
+
+    private final IRuntimeInputPort ipArguments = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            propArguments = ConversionUtils.stringFromBytes(data);
+            logger.fine("Setting new arguments: " + propArguments);
+            if (propOnlyByEvent == false) {
+                launchNow(false);
+            }
+        }
+
+    };
+    
+    private final IRuntimeInputPort ipStdIn = new DefaultRuntimeInputPort() {
+        @Override
+        public void receiveData(byte[] data) {
+            stdInString = ConversionUtils.stringFromBytes(data);
+            if (processStarted && process != null) {
+                logger.fine("Sending input string to process: " + stdInString);
+                new PrintWriter(new OutputStreamWriter(process.getOutputStream())).println(stdInString);
+                // mark string as being sent.
+                stdInString = null;
             }
         }
 
@@ -368,7 +491,7 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
     final IRuntimeEventListenerPort elpLaunchNow = new IRuntimeEventListenerPort() {
         @Override
         public void receiveEvent(final String data) {
-            launchNow();
+            launchNow(false);
         }
     };
     final IRuntimeEventListenerPort elpCloseNow = new IRuntimeEventListenerPort() {
@@ -384,7 +507,7 @@ public class ApplicationLauncherInstance extends AbstractRuntimeComponentInstanc
     @Override
     public void start() {
         if (propAutoLaunch == true) {
-            launchNow();
+            launchNow(true);
         }
         super.start();
     }
