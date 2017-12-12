@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS\bin\ARE\models\Ergotherapie\Ergo-Kopf-Schreiben.acs_2017_12_5_15_40" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS\bin\ARE\models\Ergotherapie\Ergo-Kopf-Schreiben.acs_2017_12_12_16_58" version="20130320">
   <modelDescription>
     <shortDescription>Camera controlled mouse for writing with OSKA</shortDescription>
     <requirements>Webcam connected to USB port.
@@ -489,8 +489,25 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <inputPort portTypeID="filename">
           <properties />
         </inputPort>
+        <inputPort portTypeID="arguments">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stdIn">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="stdOut">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stdErr">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="exitValue">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
+        <property name="executeOnPlatform" value="ALL" />
+        <property name="executionMode" value="START_APPLICATION" />
         <property name="defaultApplication" value="c:/windows/notepad.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
@@ -500,8 +517,8 @@ OSKA and Notepad are automatically started for the writing task.</description>
         <property name="onlyByEvent" value="false" />
       </properties>
       <layout>
-        <posX>428</posX>
-        <posY>614</posY>
+        <posX>504</posX>
+        <posY>683</posY>
       </layout>
     </component>
     <component id="modelSwitcher.1" type_id="asterics.modelSwitcher">
