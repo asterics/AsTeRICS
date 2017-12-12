@@ -7,8 +7,7 @@
 /bin/ARE/tmp/
 /bin/ARE/profile/org.eclipse.osgi/
 /bin/ARE/profile/loader_componentlist.ini
-/bin/ARE/data/webservice/clientExample/
-/bin/ARE/data/webservice/AsTeRICS_rest_API.html
+/bin/ARE/web/webapps/startpage/clientExample/
 
 /bin/APE/defProjectDir
 /bin/APE/lib
