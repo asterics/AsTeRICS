@@ -4,13 +4,11 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="http://asterics.github.io/AsTeRICS/stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="http://asterics.github.io/AsTeRICS/stylesheets/pygment_trac.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="http://asterics.github.io/AsTeRICS/stylesheets/print.css" media="print">
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script src="clientExample/javascript/JSmap.js"></script> 
-		<script src="clientExample/javascript/areCommunicator.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+
+      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="clientExample/javascript/JSmap.js"></script>
+    <script src="clientExample/javascript/areCommunicator.js"></script>
 	<script src="http://smoothiecharts.org/smoothie.js"></script>
 
 
@@ -67,14 +65,8 @@
 	var dataPacketCounter=0;
 
 	var wsUri = "ws://localhost:8082/ws/astericsData";
-	var output;
-	function init() {
-		output = document.getElementById("output");
-		//testWebSocket();
-	}
 
 	function initSocket() {
-		init();
 		websocket = new WebSocket(wsUri);
 		websocket.onopen = function(evt) {
 			onOpen(evt)
@@ -130,17 +122,20 @@
 		window.data1 = dataNum; //AccX graphData
 	}
 	function onError(evt) {
-		writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+		writeToScreen('ERROR:' + evt.data);
 	}
 	function doSend(message) {
-		<!-- writeToScreen("SENT: " + message);-->
+		writeToScreen("SENT: " + message);
 		websocket.send(message);
 	}
 	function writeToScreen(message) {
-		var pre = document.createElement("p");
-		pre.style.wordWrap = "break-word";
-		pre.innerHTML = message;
-		output.appendChild(pre);
+        var output = document.getElementById("output");
+	    var linebreak = '\n';
+	    if(output.value) {
+	        output.value += linebreak + message;
+        } else {
+            output.value = message;
+        }
 	}
 
 	function initGraph1() //Initialize Graph 1
@@ -465,14 +460,15 @@
 <p>
 
 <div>
-<img src="images/Websockets-main.PNG" alt="Visualization of sine signal"/>
+<img src="img/Websockets-main.PNG" alt="Visualization of sine signal"/>
 </div>
 <div id="gPanel" align="vertical">
 <div align="horizontal">
 <p>
 <button onclick="DepMFAndStart('WebSocket_test.acs');connectToWebsocket();" class="button">Start demo</button>
 <p>
-Websocket: <div id="output"/>
+    Websocket status: <br/>
+    <textarea id="output" rows="4" cols="50"></textarea>
 </div>
 		<h2>Received signal data</h2>
 		<div align="horizontal">
@@ -487,7 +483,7 @@ Websocket: <div id="output"/>
 	<button onclick="doSend('Test')">Send test message</button>
 </div>
 <h4>Requirements</h4>OS: Windows, Linux, Mac OSX
-<h4>Plugins</h4><a href="AsTeRICS-Help/master/Plugins/processors/WebSocket.htm">WebSocket</a>
+<h4>Plugins</h4><a target="_blank" href="../../help/index.html?plugins&processors/WebSocket.htm">WebSocket</a>
         </section>
       </div>
     </div>
