@@ -5,7 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" type="text/css" href="style.css">
 
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="javascript/JSmap.js"></script> 
 		<script src="javascript/areCommunicator.js"></script>
 		 
@@ -122,10 +122,8 @@
 	<body>
 
 		<div id="header">
-			
-			<img src="./img/logo.png">
-			<h1> Rest client - Runtime model components </h1>
-
+			<h1>REST API Demos</h1>
+			<h2>Runtime model components</h2>
 		</div>
 
 		<div id="content">
@@ -149,7 +147,8 @@
 			<br/>
 
 			<button onclick="SET_RUNTIME_COMPONENT_PROPERTIES()" title=""> Set runtime component properties </button>
-			<textarea id="propertyMap" placeholder='{
+			<div style="display: inline-flex; margin-bottom: 2em">
+			<textarea id="propertyMap">{
    "Component_id_1":{
       "key_1_1":"val_1_1",
       "key_1_2":"val_1_2"
@@ -158,7 +157,7 @@
       "key_2_1":"val_2_1",
       "key_2_2":"val_2_2"
    }
-}'></textarea>
+}</textarea></div>
 			<br/>
 
 			<button onclick="GET_COMPONENT_INPUT_PORT_IDS()" title="Description: returns the input port ids of the specified component as a json array &#013;Ouput: alert"> Get component input ports </button>
