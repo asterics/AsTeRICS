@@ -1,18 +1,21 @@
 body {
 	width: 100%;
 	margin: auto;
-}
-
-#header {
-	width: 100%; text-align: center; 
-	border-bottom: 2px solid gray; 
-	padding-top: 10px; 
-	box-shadow: 0px 5px 10px gray;
-	margin-bottom: 50px;
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 90%;
 }
 
 #content {
 	padding: 15px;
+}
+
+ul {
+	padding-left: 0;
+}
+
+li {
+	margin-bottom: 1em;
+	list-style: none;
 }
 
 button {
@@ -26,9 +29,14 @@ button {
 	margin-right: 5px;
 }
 
+code {
+	font-size: larger;
+}
+
 input {
 	padding: 10px;
 	border-radius: 10px;
+	margin-bottom: 20px;
 }
 
 .inlineText {
