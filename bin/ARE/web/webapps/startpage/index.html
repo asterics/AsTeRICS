@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+
+		<!-- favicon: -->
+		<link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+		<link rel="manifest" href="favicons/manifest.json">
+		<link rel="mask-icon" href="favicons/safari-pinned-tab.svg" color="#5bbad5">
+		<link rel="shortcut icon" href="favicons/favicon.ico">
+		<meta name="msapplication-config" content="favicons/browserconfig.xml">
+		<meta name="theme-color" content="#ffffff">
+		
+		<!-- styles: -->
+		<link rel="stylesheet" type="text/css" href="styles/main.css">
+
+		<!-- external libraries: -->
+		<script type="text/javascript" language="javascript" src="lib/jquery-3.2.1.min.js"></script>
+		
+		<!-- main script: -->
+		<script type="text/javascript" language="javascript" src="startpage.js"></script>
+		
+		<title>AsTeRICS Webserver Startpage</title>		
+  </head>
+
+  <body>
+  	<nav id="page_areas">
+		<h6 class="hidden">Page Areas:</h6>
+		<ul>
+			<li><a href="#content" accesskey="0">Content (Accesskey 0)</a></li>
+			<li><a href="#navigation" accesskey="1">Navigation (Accesskey 1)</a></li>
+		</ul>
+	</nav>
+	
+	<div id="container" class="startpageContainer">
+
+<!-- ****************************************************** header *********************************************************** -->	
+		<header>
+			<a href="index.html"><img src="img/asterics_logo.png" alt="Logo: AsTeRICS Project" title="Logo: AsTeRICS Project" class="headerLogo"/></a>
+			<div class="headerText">AsTeRICS Webserver Startpage</div>
+		</header>
+		
+<!-- ****************************************************** menu panel *********************************************************** -->
+		<nav>
+			<h6><a name="navigation" id="navigation"><span class="hidden">Navigation:</span></a></h6>
+			<div id="menuBlock">
+				<h3>Demos</h3>
+				<ul id="menu1" class="menuList mainList">
+					<li>
+						<a href="#" onclick="startpage.openRestDemos()">AsTeRICS REST API</a>
+						<ul id="submenuRest" hidden="true">
+							<li>
+								<a href="#" onclick="startpage.setContent('./clientExample/are_repository.html')">Repository</a>
+							</li>
+							<li>
+								<a href="#" onclick="startpage.setContent('./clientExample/runtime_model_channels.html')">Model Channels</a>
+							</li>
+							<li>
+								<a href="#" onclick="startpage.setContent('./clientExample/runtime_model_components.html')">Model Components</a>
+							</li>
+							<li>
+								<a href="#" onclick="startpage.setContent('./clientExample/runtime_model_deployment.html')">Model Deployment</a>
+							</li>
+							<li>
+								<a href="#" onclick="startpage.setContent('./clientExample/runtime_model_state.html')">Model State</a>
+							</li>
+							<li>
+								<a href="#" onclick="startpage.setContent('./clientExample/sse.html')">Server Sent Events</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" onclick="startpage.setContent('websockettest.html')">Websockets</a>
+					</li>
+					<li>
+						<a target="_blank" href="http://asterics.github.io/AsTeRICS/demos.html">Online Demos</a>
+					</li>
+				</ul>
+
+				<h3>Applications</h3>
+				<ul id="menu2" class="menuList mainList">
+					<li>
+						<a target="_blank" href="../WebACS/index.html">WebACS</a>
+					</li>
+				</ul>
+
+				<h3>Help</h3>
+				<ul id="menu3" class="menuList mainList">
+					<li>
+						<a target="_blank" href="../../help/index.html">AsTeRICS Help</a>
+					</li>
+					<li>
+						<a target="_blank" href="https://github.com/asterics/AsTeRICS/wiki/AsTeRICS-Packaging-Environment-(APE)">APE Wiki</a>
+					</li>
+				</ul>
+				<!-- At this point the HTML-snippet for the quickselect field will be injected. -->
+			</div>
+		</nav>
+		
+<!-- ****************************************************** content area ********************************************************* -->
+	<section>
+		<h6><a name="content" id="content"><span class="hidden">Content:</span></a></h6>
+		<iframe src="start.html" name="contentFrame" id="mainContent" onload="javascript:startpage.resizeIframe(this);"></iframe>
+	</section>
+		
+	</div>
+	
+<!-- ****************************************************** main script ********************************************************** -->	
+    <noscript>
+      <div>
+        Your web browser must have JavaScript enabled
+        in order for this application to display correctly.
+      </div>
+    </noscript>
+   </body>
+</html>
