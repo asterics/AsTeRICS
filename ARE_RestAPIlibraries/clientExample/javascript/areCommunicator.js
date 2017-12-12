@@ -592,6 +592,26 @@ function sendDataToInputPort(successCallback, errorCallback, componentId, portId
     });
 }
 
+function triggerEvent(successCallback, errorCallback, componentId, eventPortId) {
+    if (!componentId || !eventPortId) return;
+
+    $.ajax({
+        type: "PUT",
+        url: _baseURI + "runtime/model/components/" + encodeParam(componentId) + "/events/" + encodeParam(eventPortId),
+        datatype: "text",
+        crossDomain: true,
+        success:
+            function (data, textStatus, jqXHR){
+                jsonString = jqXHR.responseText;
+                successCallback(jsonString, textStatus);
+            },
+        error:
+            function (jqXHR, textStatus, errorThrown) {
+                errorCallback(errorThrown,jqXHR.responseText);
+            }
+    });
+}
+
 
 /*************************************
  *	Storage/ARE-repository resources
