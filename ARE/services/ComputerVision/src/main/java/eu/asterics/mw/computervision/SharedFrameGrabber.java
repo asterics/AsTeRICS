@@ -25,10 +25,6 @@
 
 package eu.asterics.mw.computervision;
 
-import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
-
-import java.awt.Dimension;
-import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,10 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.videoInputLib.videoInput;
-import org.bytedeco.javacpp.helper.opencv_core.AbstractIplImage;
 import org.bytedeco.javacv.CameraDevice;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.FrameConverter;
@@ -347,8 +340,12 @@ public class SharedFrameGrabber {
      * Shows camera settings by using VideoInput showCameraSettings method. This method is only available on Windows when using the VideoInput frame grabber.
      * 
      * @param deviceKey
+     * @throws Exception 
      */
-    public void showCameraSettings(String deviceKey) {
+    public void showCameraSettings(String deviceKey) throws Exception {
+        throw new RuntimeException("The showSettings method is not supported by now.");
+
+        /*
         int camIdx=-1;
         try {
             camIdx = Integer.parseInt(deviceKey);
@@ -382,20 +379,22 @@ public class SharedFrameGrabber {
                 }
 
                 if (!vi.getPixels(camIdx, bgrImageData, false, true)) {
+                    SharedCanvasFrame.instance.disposeFrame("showCameraSettings");
                     throw new Exception("videoInput.getPixels() Error: Could not get pixels.");
                 }
                 SharedCanvasFrame.instance.showImage("showCameraSettings", bgrImage);
             }
         }catch (Exception e) {
             logger.fine("Could not show camera settings, reason: "+e.getMessage());
+            throw e;
         } finally {
             if(vi!=null) {
                 vi.stopDevice(camIdx);
-                vi=null;
-                SharedCanvasFrame.instance.disposeFrame("showCameraSettings");
+                vi=null;                
             }
+            SharedCanvasFrame.instance.disposeFrame("showCameraSettings");
         }
-
+        */
     }
 
     /**
@@ -626,7 +625,7 @@ public class SharedFrameGrabber {
 
         @Override
         public void run() {
-            FrameGrabber grabber;
+            FrameGrabber grabber=null;
 
             List<GrabbedImageListener> deviceListeners = listeners.get(deviceKey);
             try {
@@ -646,14 +645,21 @@ public class SharedFrameGrabber {
                         Frame frame = grabber.grab();
                         notifyGrabbedImageListener(deviceListeners, frame, converter);
                     }
-                    // Grabbing can be safely stopped now
-                    grabber.stop();
-                    grabber.release();
-                    logger.fine("Grabbing stopped in grabber thread.");
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.warning("Could not start frame grabbing with grabber: "+grabber+", reason: "+e.getMessage());
+            } finally {
+                if(grabber!=null) {
+                    // Grabbing can be safely stopped now
+                    try {
+                        grabber.stop();
+                        grabber.release();
+                        logger.fine("Grabbing stopped in grabber thread.");
+                    } catch (Exception e) {
+                        logger.warning("Could not stop and release framegrabber: "+grabber);
+                    }
+                }
             }
         }
 

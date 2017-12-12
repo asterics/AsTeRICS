@@ -78,6 +78,7 @@ import eu.asterics.mw.model.runtime.impl.DefaultRuntimeOutputPort;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 
+
 /**
  * Impelements a haardcascade combined with Lukas Kanade flow algorithm to detect face tracking. Based on FacetrackerLK from Chris Veigl.
  * 
@@ -344,9 +345,13 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
             if (wasRunning) {
                 stop();
             }
-            SharedFrameGrabber.instance.showCameraSettings(propCameraSelection);
-            if (wasRunning) {
-                start();
+            try {
+                SharedFrameGrabber.instance.showCameraSettings(propCameraSelection);
+                if (wasRunning) {
+                    start();
+                }
+            } catch (Exception e) {
+                AstericsErrorHandling.instance.getLogger().warning(e.getMessage());
             }
         }
     };
