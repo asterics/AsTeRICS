@@ -1,4 +1,6 @@
-<?xml version="1.0"?><componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"> <componentType id="asterics.AnalogOut"
+<?xml version="1.0"?><componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <componentType id="asterics.AnalogOut"
                    canonical_name="eu.asterics.component.actuator.analogout.AnalogOutInstance">
         <type subtype="Generic Control Output">actuator</type>
         <singleton>false</singleton>
@@ -126,12 +128,32 @@
         <description>starts external software applications via path and  filename (.exe)</description>
         <ports>
 			<inputPort id="filename">
-				<description>File name of executable file which shall be started</description>
+				<description>File name of executable file which shall be started without arguments. The application is started automatically, if onlyByEvent is false.</description>
 				<mustBeConnected>false</mustBeConnected>
 				<dataType>string</dataType>
 			</inputPort>
-
-
+			<inputPort id="arguments">
+				<description>Sets the arguments of the command. The application is started automatically, if onlyByEvent is false.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>			
+			<inputPort id="stdIn">
+				<description>Sends the incoming string to the standard input stream of the started process.</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+            <outputPort id="stdOut">
+                <description>The standard output stream of the started process.</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="stdErr">
+                <description>The standard error stream of the started process.</description>
+                <dataType>string</dataType>
+            </outputPort>
+            <outputPort id="exitValue">
+                <description>The exit value of the started process.</description>
+                <dataType>integer</dataType>
+            </outputPort>            
         </ports>
 		<events>
 			<eventListenerPort id="launchNow">
@@ -140,10 +162,24 @@
 			<eventListenerPort id="closeNow">
 				<description>an incoming event closes a launched application</description>
 			</eventListenerPort>
-
-
+            <eventTriggererPort id="startedSuccessfully">
+                <description>The process started successfully.</description>
+            </eventTriggererPort>
+            <eventTriggererPort id="startedWithError">
+                <description>The process started with error.</description>
+            </eventTriggererPort>
 		</events>			
         <properties>
+            <property name="executeOnPlatform"
+                      type="string"
+                      value="ALL"
+                      combobox="ALL//WINDOWS//LINUX//MACOSX"
+                      description="If != ALL, the application will only be launched if the ARE runs on the defined platform."/>
+            <property name="executionMode"
+                      type="string"
+                      value="START_APPLICATION"
+                      combobox="START_APPLICATION//OPEN_URL"
+                      description="If != ALL, the application will only be launched if the ARE runs on the defined platform."/>        
 			<property name="defaultApplication"
 				type="string"
 				value="c:\windows\notepad.exe"
@@ -17681,11 +17717,22 @@
                       value="1"
                       combobox="160x120//320x240//352x288//640x480//800x600//1024x768//1600x1200"
                       description="Desired camera resolution"/>
+            <property name="frameRate"
+                      type="integer"
+                      value="0"
+                      description="The frame rate to use for frame grabbing. In case of 0 or a negative value, the maximum frame rate will be used."/>
             <property name="titleVideoFrameWindow"
                       type="string"
                       value=""
                       description="The title of the window showing the video frame."/>
-                      
+            <property name="displayGUI"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the GUI window will be shown"/>                      
+            <property name="enableOverlaySettings"
+                      type="boolean"
+                      value="true"                      
+                      description="if selected, the video frame shows the current frame rate and device name as overlayed text."/>                      
                       <!-- 
             <property name="cameraDisplayUpdate"
                       type="integer"
@@ -17704,6 +17751,5 @@
             <height>1500</height>
         </gui>
     </componentType>
-
 
 </componentTypes>
