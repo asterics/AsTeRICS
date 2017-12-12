@@ -534,6 +534,19 @@ public class AstericsGUI implements IAREEventListener {
         });
 
     }
+    
+    public void cleanupPanel() {
+        SwingUtilities.invokeLater(new Runnable() {
+            
+            @Override
+            public void run() {
+                AstericsErrorHandling.instance.getLogger().fine("Cleaning Desktop panel...");
+                desktop.removeAll();
+                desktop.revalidate();
+                desktop.repaint();
+            }
+        });
+    }
 
     public void closeAction() { // if (mainFrame.isShowing())
                                 // setDesktopSize("both");

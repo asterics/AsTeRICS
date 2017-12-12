@@ -156,6 +156,9 @@ public class DeploymentManager {
         modelStartupFinished = false;
         modelLifecycleTaskPending = false;
 
+        if(gui!=null) {
+            gui.cleanupPanel();
+        }
         // todo unget components
     }
 
@@ -467,7 +470,10 @@ public class DeploymentManager {
                     }
                 }
             }
-
+            
+            if(gui!=null) {
+                gui.cleanupPanel();
+            }
         } catch (Throwable e) {
             String reason = e.getCause() != null && e.getCause().getMessage() != null ? e.getCause().getMessage()
                     : e.getMessage();
@@ -1212,8 +1218,9 @@ public class DeploymentManager {
     public void displayPanel(JPanel panel, IRuntimeComponentInstance componentInstance, boolean display) {
 
         IRuntimeModel currentModel=getCurrentRuntimeModel();
+        
         if(currentModel==null||panel==null||componentInstance==null) {
-            logger.warning("DeploymentManager.displayPanel: returning: currentRuntimeModel: "+currentModel+", panel: "+panel+", componentInstance: "+componentInstance);
+            logger.warning("\n!!DeploymentManager.displayPanel: returning: currentRuntimeModel: "+currentModel+", panel: "+panel+", componentInstance: "+componentInstance+"\n");
             return;
         }
         Set<IComponentInstance> componentInstances = currentModel.getComponentInstances();
