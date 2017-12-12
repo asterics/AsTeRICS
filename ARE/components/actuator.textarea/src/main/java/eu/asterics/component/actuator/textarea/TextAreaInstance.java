@@ -48,8 +48,7 @@ enum TextPosition {
  * Implements the Text GUI component
  * 
  * 
- * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Dec 19, 2011 Time: 12:31:41
- *         AM
+ * @author Karol Pecyna [kpecyna@harpo.com.pl] Date: Dec 19, 2011 Time: 12:31:41 AM
  */
 public class TextAreaInstance extends AbstractRuntimeComponentInstance {
     // Usage of an output port e.g.:
@@ -337,20 +336,15 @@ public class TextAreaInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void start() {
-        if(gui!=null) {
+        if (gui != null) {
             stop();
         }
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                gui = new GUI(TextAreaInstance.this, AREServices.instance.getAvailableSpace(TextAreaInstance.this));
-                if (propDisplayGUI) {
-                    AREServices.instance.displayPanel(gui, TextAreaInstance.this, true);
-                }
-                guiReady = true;
-            }
-        });
-        
+        gui = new GUI(TextAreaInstance.this, AREServices.instance.getAvailableSpace(TextAreaInstance.this));
+        if (propDisplayGUI) {
+            AREServices.instance.displayPanel(gui, TextAreaInstance.this, true);
+        }
+        guiReady = true;
+
         super.start();
     }
 
@@ -359,7 +353,7 @@ public class TextAreaInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void pause() {
-        guiReady=false;
+        guiReady = false;
         super.pause();
 
     }
@@ -369,8 +363,8 @@ public class TextAreaInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void resume() {
-        if(gui!=null) {
-            guiReady=true;
+        if (gui != null) {
+            guiReady = true;
         }
         super.resume();
 
@@ -386,7 +380,7 @@ public class TextAreaInstance extends AbstractRuntimeComponentInstance {
             @Override
             public void run() {
                 AREServices.instance.displayPanel(gui, TextAreaInstance.this, false);
-                gui=null;
+                gui = null;
             }
         });
         super.stop();
