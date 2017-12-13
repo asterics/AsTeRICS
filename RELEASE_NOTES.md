@@ -204,3 +204,19 @@ Release with major changes under the hood regarding ARE licensing and customized
     * javacv: Reorganized into platform specific bundles to get smaller packages; Removed ffmpeg lib in javacv-*-basic-*.jar. Optionally a bigger javacv-*-full-*.jar including ffmpeg can be created.
     * JNativeHook service: Upgraded to version 2.0.3
     * grizzly-http-service: upgraded to version 2.3.23
+    
+### Version 3.0
+* Activation of embedded webserver (including websocket and REST API) by default. No flag --webservice needed any more.
+* Restructuring of folder structure in the ARE:
+  * Implementation of the new webserver document root specification: https://github.com/asterics/AsTeRICS/wiki/AsTeRICS-webserver-document-root-specification
+  * Integration of [WebACS](https://github.com/asterics/WebACS) as webapp
+  * Integration of the new [webbased help system](https://github.com/asterics/AsTeRICS-help) for ARE and for WebACS
+* The C# ACS now also uses the new help system instead of the windows only version.
+* ARE startup automatically detectes plugin jar changes through MD5 hashes. If changes are detected new cache files and a new component collection is generated.
+* XFacetrackerLK upgraded to [JavaCV 1.3](https://github.com/bytedeco/javacv/tree/1.3) and now works on all platforms (Linux, RPi, Mac, Windows) x86 and x64
+* Improved x64 support for many plugins
+* Improved AppplicationLauncher plugin to support crossplatform invocation of applications and URLs.
+* Added shortcut and gui buttons to control panel of ARE to open webserver hp and currently deployed model in WebACS.
+* Reworked ARE webpage.
+* Improved many plugins.
+  
