@@ -149,7 +149,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
     public void start() {
         logger.fine("BundleManager.start");
         // init properties of BundleManager
-        AREProperties.instance.getProperty(ARE_GENERATE_CACHES_FROM_INSTALLABLE_BUNDLES_PROP_KEY, "false",
+        AREProperties.instance.setDefaultPropertyValue(ARE_GENERATE_CACHES_FROM_INSTALLABLE_BUNDLES_PROP_KEY, "false",
                 "Enable/Disable if bundles should be tested for being installable on this platform via OSGI");
 
         installServices();
