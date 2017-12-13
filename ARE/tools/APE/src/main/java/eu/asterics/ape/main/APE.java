@@ -134,7 +134,7 @@ public class APE {
         URI defaultAPEBaseURI = new File(".").toURI();
         Notifier.debug("Current working dir: " + defaultAPEBaseURI, null);
         try {
-            defaultAPEBaseURI = ResourceRegistry
+            defaultAPEBaseURI = ResourceRegistry.getInstance()
                     .toFile(APE.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile()
                     .toURI();
             Notifier.debug("Location of APE.jar: " + defaultAPEBaseURI, null);
@@ -185,7 +185,7 @@ public class APE {
             SAXException, TransformerException, BundleManagementException, APEConfigurationException {
         ResourceRegistry.getInstance().setOSGIMode(false);
 
-        projectDir = ResourceRegistry.resolveRelativeFilePath(getAPEBaseURI(), DEFAULT_PROJECT_DIR);
+        projectDir = ResourceRegistry.getInstance().resolveRelativeFilePath(getAPEBaseURI(), DEFAULT_PROJECT_DIR);
 
         String customProjectDir = System.getProperty(P_APE_PROJECT_DIR);
         if (customProjectDir != null && !"".equals(customProjectDir)) {
@@ -198,17 +198,17 @@ public class APE {
             Notifier.info("Project folder does not exist, copying template to: " + projectDir);
             // If the projectDir does not exist, we should copy the template dir
             // to the projectDir
-            FileUtils.copyDirectory(ResourceRegistry.resolveRelativeFilePath(getAPEBaseURI(), Packager.TEMPLATE_FOLDER),
+            FileUtils.copyDirectory(ResourceRegistry.getInstance().resolveRelativeFilePath(getAPEBaseURI(), Packager.TEMPLATE_FOLDER),
                     projectDir);
         }
 
         initProperties();
 
         String newAreBaseURIString = apeProperties.getProperty(APEProperties.P_ARE_BASE_URI,
-                ResourceRegistry.resolveRelativeFilePath(getAPEBaseURI(), "../ARE/").getPath());
+                ResourceRegistry.getInstance().resolveRelativeFilePath(getAPEBaseURI(), "../ARE/").getPath());
 
         if (newAreBaseURIString != null) {
-            URI newAREBaseURI = ResourceRegistry.resolveRelativeFilePath(projectDir, newAreBaseURIString).toURI();
+            URI newAREBaseURI = ResourceRegistry.getInstance().resolveRelativeFilePath(projectDir, newAreBaseURIString).toURI();
             Notifier.debug("ApeProp[" + APEProperties.P_ARE_BASE_URI + "]=" + newAREBaseURI, null);
             ResourceRegistry.getInstance().setAREBaseURI(newAREBaseURI);
         }
@@ -238,7 +238,7 @@ public class APE {
 
         try {
             // APE.properties is expected to be in the project directory
-            URI apePropFileURI = ResourceRegistry.resolveRelativeFilePath(projectDir, "APE.properties").toURI();
+            URI apePropFileURI = ResourceRegistry.getInstance().resolveRelativeFilePath(projectDir, "APE.properties").toURI();
 
             defaultProperties.load(new BufferedReader(new InputStreamReader(apePropFileURI.toURL().openStream())));
             Notifier.debug("defaultProperties: " + defaultProperties.toString(), null);
@@ -273,7 +273,7 @@ public class APE {
             // Now adding default models search path to APE.models property
             Notifier.debug("Adding APE.projectDir/" + Packager.CUSTOM_BIN_ARE_FOLDER
                     + " as search path for model files to " + APEProperties.P_APE_MODELS, null);
-            String projectDirSearchPath = ResourceRegistry
+            String projectDirSearchPath = ResourceRegistry.getInstance()
                     .resolveRelativeFilePath(projectDir, Packager.CUSTOM_BIN_ARE_MODELS_FOLDER).getPath();
             apeProperties.setProperty(APEProperties.P_APE_MODELS,
                     apeProperties.getProperty(APEProperties.P_APE_MODELS, "") + ";" + projectDirSearchPath);
@@ -300,7 +300,7 @@ public class APE {
             // If the path is relative it will be resolved against the CWD
             // otherwise the absolute path is returned
             resolvedPaths
-                    .append(ResourceRegistry.resolveRelativeFilePath(new File(".").getAbsoluteFile(), splitPaths[i]));
+                    .append(ResourceRegistry.getInstance().resolveRelativeFilePath(new File(".").getAbsoluteFile(), splitPaths[i]));
             if (i < (splitPaths.length - 1)) {
                 resolvedPaths.append(";");
             }

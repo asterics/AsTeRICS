@@ -1,14 +1,11 @@
 package eu.asterics.mw.are.parsers;
 
 import java.awt.Point;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -152,7 +149,7 @@ public class DefaultDeploymentModelParser {
      */
     public DefaultRuntimeModel parseModel(final InputStream modelInputStream)
             throws ParseException, BundleManagementException, IOException {
-        String modelAsXMLString=ResourceRegistry.getResourceContentAsString(modelInputStream);
+        String modelAsXMLString= ResourceRegistry.getInstance().getResourceContentAsString(modelInputStream);
         return parseModelAsXMLString(modelAsXMLString);
     }
     
