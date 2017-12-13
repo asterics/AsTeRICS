@@ -60,7 +60,7 @@
                       type="string"
                       value="START_APPLICATION"
                       combobox="START_APPLICATION//OPEN_URL"
-                      description="If != ALL, the application will only be launched if the ARE runs on the defined platform."/>        
+                      description="If START_APPLICATION, the command defined in defaultApplication will be launched with the given arguments. If OPEN_URL, the URL defined in arguments will be launched with the platform default browser. The platform-specific browser launch commands are configurable in the file areProperties."/>        
 			<property name="defaultApplication"
 				type="string"
 				value="c:\windows\notepad.exe"
