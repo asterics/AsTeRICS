@@ -182,6 +182,9 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
         if ("toggle".equalsIgnoreCase(eventPortID)) {
             return elpToggle;
         }
+        if ("learn".equalsIgnoreCase(eventPortID)) {
+            return elpLearn;
+        }
         if ("dimUp".equalsIgnoreCase(eventPortID)) {
             return elpDimUp;
         }
@@ -461,6 +464,12 @@ public class FS20SenderInstance extends AbstractRuntimeComponentInstance {
         @Override
         public void receiveEvent(final String data) {
             sendDataToFS20(houseCode, address, FS20Utils.Toggle);
+        }
+    };
+    final IRuntimeEventListenerPort elpLearn = new IRuntimeEventListenerPort() {
+        @Override
+        public void receiveEvent(final String data) {
+            sendDataToFS20(houseCode, address, FS20Utils.Learn);
         }
     };
     final IRuntimeEventListenerPort elpDimUp = new IRuntimeEventListenerPort() {

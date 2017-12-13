@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 
+import eu.asterics.mw.model.runtime.IRuntimeEventListenerPort;
 import org.osgi.framework.BundleException;
 
 import eu.asterics.mw.are.asapi.StatusObject;
@@ -1015,6 +1016,41 @@ public class AsapiSupport {
                     }
 
                     inputPort.receiveData(sendData);
+                    return null;
+                }
+            });
+        } catch (AREAsapiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw (new AREAsapiException(e.getMessage()));
+        }
+    }
+
+    /**
+     * Triggers an event on a given eventPort and given component and sends given data with the event.
+     *
+     * @param targetComponentID the ID of the target component
+     * @param targetEventID     the ID of the eventPort to trigger
+     * @param data              data that should be sent with the event
+     * @throws AREAsapiException if the specified component ID or event port ID are not available
+     */
+    public void triggerEvent(final String targetComponentID, final String targetEventID, final String data) throws AREAsapiException {
+        try {
+            AstericsModelExecutionThreadPool.instance.execAndWaitOnModelExecutorLifecycleThread(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    // get runtime instances
+                    IRuntimeComponentInstance componentInstance = DeploymentManager.instance.getComponentRuntimeInstance(targetComponentID);
+                    IRuntimeEventListenerPort eventListenerPort = null;
+                    if (componentInstance != null) {
+                        eventListenerPort = componentInstance.getEventListenerPort(targetEventID);
+                    }
+                    if (componentInstance == null || eventListenerPort == null) {
+                        throw new AREAsapiException(
+                                MessageFormat.format("trigger event failed! componentInstance: {0}, eventPort: {1}", componentInstance, eventListenerPort));
+                    }
+
+                    eventListenerPort.receiveEvent(data);
                     return null;
                 }
             });
