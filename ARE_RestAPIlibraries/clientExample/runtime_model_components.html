@@ -95,6 +95,13 @@
                 sendDataToInputPort(defaultSuccessCallback, defaultErrorCallback, componentId, portId, value);
             }
 
+            function TRIGGER_EVENT() {
+                var componentId = document.getElementById("triggerEventComponent").value;
+                var portId = document.getElementById("triggerEventPort").value;
+
+                triggerEvent(defaultSuccessCallback, defaultErrorCallback, componentId, portId);
+            }
+
 			//getComponentEventChannelsIds
 			function GET_COMPONENT_EVENT_CHANNEL_IDS() {
 				var componentId = document.getElementById("GCECIid").value;
@@ -177,6 +184,11 @@
 			<input placeholder="componentId" type="text" id="SDTIPcid"/>
 			<input placeholder="portId" type="text" id="SDTIPpid"/>
 			<input placeholder="value" type="text" id="SDTIPval"/>
+			<br/>
+
+			<button onclick="TRIGGER_EVENT()" title="Triggers a event on given component and eventPort;Ouput: alert"> Trigger event </button>
+			<input placeholder="componentId" type="text" id="triggerEventComponent"/>
+			<input placeholder="eventPortId" type="text" id="triggerEventPort"/>
 			<br/>
 
 			<button onclick="GET_COMPONENT_DATA_CHANNEL_IDS()" title="Description: returns all the data channel ids of the given component (as JSON array) &#013;Ouput: alert"> Get component data channel ids </button>

@@ -72,7 +72,7 @@ public class FS20Utils {
     public static byte DimDown = 0x14;
     public static byte DimUpDown = 0x15;
     public static byte TimeSet = 0x16;
-    public static byte SendStatus = 0x17;
+    public static byte Learn = 0x17;
     public static byte OffForTimeOld = 0x18;
     public static byte OnForTimeOff = 0x19;
     public static byte OnOldForTimeOff = 0x1A;

@@ -1327,6 +1327,16 @@ public class DeploymentManager {
     }
 
     /**
+     * returns a runtimecomponentInstance by ID
+     *
+     * @param instanceId
+     * @return
+     */
+    public IRuntimeComponentInstance getComponentRuntimeInstance(String instanceId) {
+        return runtimeComponentInstances.get(instanceId);
+    }
+
+    /**
      * Sync
      * 
      * @param data
