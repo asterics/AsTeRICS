@@ -7,23 +7,40 @@
 	<body class="innerBody">
 		<H1>Application Launcher</H1>
 		<span class="componentType">Component Type: Actuator (Subcategory: File System)</span>
-		<p>The ApplicationLauncher component can be used to run an external executable application. The application name is given to the plugin via an input port. A default application can be started via an incoming event.
-		Togehter with the Keyboard- or RemoteKeyboard components, the ApplicationLauncher plugin can perform complex automation tasks, for example open Skype, choose a contact and make a call.</p>
+		<p>The ApplicationLauncher component can be used to run an external executable application or to open a URL in the platform default browser. The command and arguments values can either be set as property or dynamically configured through the respective input ports. The launch of the application or the opening of the URL can also be triggered by an incoming event (launchNow).
+		The property executeOnPlatform selects the platforms on which the configured application or URL will be launched.
+		<p>Together with the Keyboard- or RemoteKeyboard components, the ApplicationLauncher plugin can perform complex automation tasks, for example open Skype, choose a contact and make a call.</p>
 		<figure>
 			<img class="image" src="img/ApplicationLauncher.jpg" alt="Screenshot: ApplicationLauncher plugin" title="Screenshot: ApplicationLauncher plugin" />
 			<figcaption>ApplicationLauncher plugin</figcaption>
 		</figure>
 		<H2>Input Port Description</H2>
 		<ul>
-			<li><STRONG>filename [integer]:</STRONG> The filename of the application to be started (including path).</li>
+			<li><STRONG>filename [string]:</STRONG> File name of executable file which shall be started without arguments. The application is started automatically, if onlyByEvent is false.</li>
+			<li><STRONG>arguments [string]:</STRONG> Sets the arguments of the command. The application is started automatically, if onlyByEvent is false.</li>
+			<li><STRONG>stdIn [string]:</STRONG> Sends the incoming string to the standard input stream of the started process.</li>
 		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>stdOut [string]:</STRONG> The standard output stream of the started process.</li>
+			<li><STRONG>stdErr [string]:</STRONG> The standard error stream of the started process.</li>
+			<li><STRONG>exitValue [integer]:</STRONG> The exit value of the started process.</li>
+		</ul>		
+	
 		<H2>Event Listener Description</H2>
 		<ul>
 			<li><STRONG>launchNow:</STRONG> An incoming event on this port will start the (default or lastest received) application</li>
 			<li><STRONG>closeNow:</STRONG> An incoming event on this port will close the current application</li>
 		</ul>
+		<H2>Event Triggerer Description</H2>
+		<ul>
+			<li><STRONG>startedSuccessfully:</STRONG> The process started successfully.</li>
+			<li><STRONG>startedWithError:</STRONG> The process started with error.</li>
+		</ul>		
 		<H2>Properties</H2>
 		<ul>
+			<li><STRONG>executeOnPlatform [combobox (ALL, WINDOWS, LINUX, MACOSX)]:</STRONG> If != ALL, the application will only be launched if the ARE runs on the defined platform.</li>
+			<li><STRONG>executionMode [combobox (START_APPLICATION, OPEN_URL)]:</STRONG> If START_APPLICATION, the command defined in defaultApplication will be launched with the given arguments. If OPEN_URL, the URL defined in arguments will be launched with the platform default browser. The platform-specific browser launch commands are configurable in the file areProperties.</li>
 			<li><STRONG>defaultApplication [string]:</STRONG> Full path and filename of the default application</li>
 			<li><STRONG>arguments [string]:</STRONG> the commandline arguments for the application</li>
 			<li><STRONG>workingDirectory [string]:</STRONG> the working directory for the application (. is used for home directory of the application)</li>
