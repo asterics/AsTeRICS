@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\mouthmouse_switch_assignment.acs_2015_10_9_14_9" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\LipMouse\mouthmouse_switch_assignment.acs_2017_12_13_12_45" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />
@@ -18,6 +18,9 @@
         <outputPort portTypeID="pressure">
           <properties />
         </outputPort>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="uniqueID" value="not used" />
@@ -63,7 +66,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\17.WAV" />
+        <property name="filename" value="data/sounds/17.WAV" />
       </properties>
       <layout>
         <posX>402</posX>
@@ -401,7 +404,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\15.WAV" />
+        <property name="filename" value="data/sounds/15.WAV" />
       </properties>
       <layout>
         <posX>424</posX>
@@ -583,7 +586,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\7.wav" />
+        <property name="filename" value="data/sounds/7.wav" />
       </properties>
       <layout>
         <posX>1327</posX>
@@ -764,7 +767,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="C:\Windows\System32\taskkill.exe" />
+        <property name="defaultApplication" value="C:/Windows/System32/taskkill.exe" />
         <property name="arguments" value="/IM &quot;OSKA Keyboard.exe&quot;" />
         <property name="workingDirectory" value="." />
         <property name="closeCmd" value="" />

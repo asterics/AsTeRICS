@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\others\RemoteBlink_Scanning.acs_2015_10_9_14_12" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\others\RemoteBlink_Scanning.acs_2017_12_13_12_46" version="20130320">
   <components>
     <component id="FacetrackerCLM.1" type_id="asterics.FacetrackerCLM">
       <description>Facetracker plugin. Ideal in mouse control models. It also implements a blink detection system.</description>
@@ -29,6 +29,9 @@
           <properties />
         </outputPort>
         <outputPort portTypeID="BrowLift">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="LipDistance">
           <properties />
         </outputPort>
       </ports>
@@ -225,6 +228,9 @@
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
+        <outputPort portTypeID="outputResult">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="port" value="21000" />
@@ -273,11 +279,11 @@
       <properties>
         <property name="port" value="4546" />
         <property name="title" value="OSKA keyboard" />
-        <property name="oskaPath" value="..\oska\start keyboard.exe" />
-        <property name="keyboardPath" value="keyboards\combinedGrids\TV_Keyboard\menu.xml" />
+        <property name="oskaPath" value="../oska/start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards/combinedGrids/TV_Keyboard/menu.xml" />
         <property name="scanSpeed" value="12" />
         <property name="highlightStyle" value="1" />
-        <property name="settingsFile" value="settings\internalscanning.kst" />
+        <property name="settingsFile" value="settings/internalscanning.kst" />
         <property name="windowDecorated" value="False" />
         <property name="resizeEnabled" value="false" />
       </properties>
@@ -323,7 +329,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\6.wav" />
+        <property name="filename" value="data/sounds/6.wav" />
       </properties>
       <layout>
         <posX>901</posX>

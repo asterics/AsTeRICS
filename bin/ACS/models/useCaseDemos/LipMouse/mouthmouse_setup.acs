@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\mouthmouse_setup.acs_2015_10_9_14_9" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\LipMouse\mouthmouse_setup.acs_2017_12_13_12_45" version="20130320">
   <components>
     <component id="BarDisplay.1" type_id="asterics.BarDisplay">
       <description>Bar-display</description>
@@ -46,6 +46,9 @@
         <outputPort portTypeID="pressure">
           <properties />
         </outputPort>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="uniqueID" value="not used" />

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\Enobio_Visualization.acs_2015_10_9_14_6" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\EEG&amp;EMG\Enobio_Visualization.acs_2017_12_13_12_43" version="20130320">
   <modelDescription>
     <shortDescription>This model displays the four EEG signals from Enobio component in real time, 
 so that the user can check that the signals are being received and are correctly 

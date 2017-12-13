@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\Openvibe_IRTrans_2P.acs_2015_10_9_14_6" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\EEG&amp;EMG\Openvibe_IRTrans_2P.acs_2017_12_13_12_43" version="20130320">
   <components>
     <component id="OpenViBE.1" type_id="asterics.OpenViBE">
       <description>UDP Server for transfer of OSC data</description>
@@ -141,6 +141,9 @@
           <properties />
         </inputPort>
         <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputResult">
           <properties />
         </outputPort>
       </ports>

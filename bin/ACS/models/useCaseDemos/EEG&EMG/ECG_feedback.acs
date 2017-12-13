@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\ECG_feedback.acs_2015_10_9_14_6" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\EEG&amp;EMG\ECG_feedback.acs_2017_12_13_12_43" version="20130320">
   <components>
     <component id="IIRFilter.1" type_id="asterics.IIRFilter">
       <description>This plugin provides various filter implementations</description>
@@ -196,7 +196,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\edf\Osas2002.edf" />
+        <property name="filename" value="data/edf/Osas2002.edf" />
       </properties>
       <layout>
         <posX>14</posX>

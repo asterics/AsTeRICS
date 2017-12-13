@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\SerialPort_test.acs_2015_10_9_10_35" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\SerialPort_test.acs_2017_12_13_12_39" version="20130320">
   <components>
     <component id="SerialPort.1" type_id="asterics.SerialPort">
       <description>This plugin can send and receive data from a serial (COM) port.</description>
@@ -7,7 +7,13 @@
         <inputPort portTypeID="send">
           <properties />
         </inputPort>
+        <inputPort portTypeID="sendBytes">
+          <properties />
+        </inputPort>
         <outputPort portTypeID="received">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="receivedBytes">
           <properties />
         </outputPort>
       </ports>
@@ -16,6 +22,7 @@
         <property name="BaudRate" value="9600" />
         <property name="sendStringTerminator" value="0" />
         <property name="receiveStringTerminator" value="0" />
+        <property name="sendBytesBufferSize" value="1" />
       </properties>
       <layout>
         <posX>310</posX>

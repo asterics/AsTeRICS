@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\HeadPositionHC-Example.acs_2015_10_9_10_38" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\HeadPositionHC-Example.acs_2017_12_13_12_40" version="20130320">
   <components>
     <component id="CellBoard.1" type_id="asterics.CellBoard">
       <description>Adjustable matrix of button cells with scanning support</description>
@@ -189,7 +189,7 @@
       <properties>
         <property name="command1" value="A-Z" />
         <property name="command2" value="0-9 - / =" />
-        <property name="command3" value=", ; . \ Enter" />
+        <property name="command3" value=", ; . / Enter" />
         <property name="command4" value="Zurück" />
         <property name="command5" value="X Q" />
         <property name="command6" value="" />

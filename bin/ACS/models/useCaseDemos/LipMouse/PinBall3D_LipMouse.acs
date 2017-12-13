@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\PinBall3D_LipMouse.acs_2015_10_9_14_9" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\LipMouse\PinBall3D_LipMouse.acs_2017_12_13_12_45" version="20130320">
   <components>
     <component id="Keyboard.1" type_id="asterics.Keyboard">
       <description>Local Keyboard actuator</description>
@@ -60,7 +60,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="&quot;C:\Program Files (x86)\Microsoft Games\Pinball\pinball.exe&quot;" />
+        <property name="defaultApplication" value="&quot;C:/Program Files (x86)/Microsoft Games/Pinball/pinball.exe&quot;" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
         <property name="closeCmd" value="" />
@@ -102,6 +102,9 @@
         <outputPort portTypeID="pressure">
           <properties />
         </outputPort>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="uniqueID" value="not used" />

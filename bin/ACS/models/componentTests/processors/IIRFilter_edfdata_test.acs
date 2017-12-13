@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\IIRFilter_edfdata_test.acs_2015_10_9_10_34" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\IIRFilter_edfdata_test.acs_2017_12_13_12_38" version="20130320">
   <components>
     <component id="IIRFilter.1" type_id="asterics.IIRFilter">
       <description>This plugin provides various filter implementations</description>
@@ -173,9 +173,15 @@
         <outputPort portTypeID="CH9">
           <properties />
         </outputPort>
+        <outputPort portTypeID="CH10">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="CH11">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\edf\Osas2002.edf" />
+        <property name="filename" value="data/edf/Osas2002.edf" />
       </properties>
       <layout>
         <posX>24</posX>

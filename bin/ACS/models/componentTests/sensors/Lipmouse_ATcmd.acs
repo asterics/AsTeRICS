@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\lipmouse_atcmd_test.acs_2017_4_23_20_57" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\Lipmouse_ATcmd.acs_2017_12_13_12_41" version="20130320">
   <components>
     <component id="Lipmouse.1" type_id="asterics.Lipmouse">
       <description>Lipmouse CIM</description>

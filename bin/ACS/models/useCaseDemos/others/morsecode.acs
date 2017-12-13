@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\others\morsecode.acs_2015_10_9_14_12" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\others\morsecode.acs_2017_12_13_12_46" version="20130320">
   <components>
     <component id="EventStateMachine.1" type_id="asterics.EventStateMachine">
       <description>Compares incoming events with a given  sequence, fired an event  when the sequence is completed </description>

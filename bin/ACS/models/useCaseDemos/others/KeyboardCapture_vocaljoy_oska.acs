@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\others\KeyboardCapture_vocaljoy_oska.acs_2015_10_9_14_12" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\others\KeyboardCapture_vocaljoy_oska.acs_2017_12_13_12_46" version="20130320">
   <modelDescription>
     <shortDescription>controls oska selections via vocal tone input</shortDescription>
     <requirements>the vocal joystick application must be installed in the folder
-C:\Program Files (x86)\Vocal Joystick\vjapp\bin\win\</requirements>
+C:/Program Files (x86)/Vocal Joystick/vjapp/bin/win/</requirements>
     <description />
   </modelDescription>
   <components>
@@ -105,11 +105,11 @@ C:\Program Files (x86)\Vocal Joystick\vjapp\bin\win\</requirements>
       <properties>
         <property name="port" value="4546" />
         <property name="title" value="OSKA keyboard" />
-        <property name="oskaPath" value="..\oska\start keyboard.exe" />
-        <property name="keyboardPath" value="keyboards\default.xml" />
+        <property name="oskaPath" value="../oska/start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards/default.xml" />
         <property name="highlightStyle" value="1" />
         <property name="highlightResetPosition" value="0" />
-        <property name="settingsFile" value="settings\default.kst" />
+        <property name="settingsFile" value="settings/default.kst" />
         <property name="windowDecorated" value="true" />
         <property name="eventScanningEnabled" value="true" />
         <property name="valueScanningEnabled" value="true" />
@@ -271,9 +271,9 @@ C:\Program Files (x86)\Vocal Joystick\vjapp\bin\win\</requirements>
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="C:\Program Files (x86)\Vocal Joystick\vjapp\bin\win\run.bat" />
+        <property name="defaultApplication" value="C:/Program Files (x86)/Vocal Joystick/vjapp/bin/win/run.bat" />
         <property name="arguments" value="vj --controlType key" />
-        <property name="workingDirectory" value="C:\Program Files (x86)\Vocal Joystick\vjapp\bin\win\" />
+        <property name="workingDirectory" value="C:/Program Files (x86)/Vocal Joystick/vjapp/bin/win/" />
         <property name="closeCmd" value="" />
         <property name="autoLaunch" value="False" />
         <property name="autoClose" value="true" />

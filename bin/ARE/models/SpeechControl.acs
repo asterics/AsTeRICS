@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ARE\models\SpeechControl.acs_2015_10_9_14_14" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ARE\SpeechControl.acs_2017_12_13_12_47" version="20130320">
   <modelDescription>
     <shortDescription>A demonstration of the speech processing capabilities.</shortDescription>
     <requirements>The Microsoft Speech Server Runtime and the english language packs for speech recognition and speech synthesis must be installed. Please refer to the SpeechProcessor plugin help section in the ACS for details.</requirements>
@@ -170,7 +170,7 @@ Please note that the actuators for environemntal control are not connected in th
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\7.wav" />
+        <property name="filename" value="data/sounds/7.wav" />
       </properties>
       <layout>
         <posX>455</posX>
@@ -185,7 +185,7 @@ Please note that the actuators for environemntal control are not connected in th
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\8.wav" />
+        <property name="filename" value="data/sounds/8.wav" />
       </properties>
       <layout>
         <posX>587</posX>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\LipmouseIR.acs_2015_10_9_10_39" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\LipmouseIR.acs_2017_12_13_12_41" version="20130320">
   <components>
     <component id="LipmouseIR.1" type_id="asterics.LipmouseIR">
       <description>LipmouseIR CIM</description>
@@ -30,7 +30,7 @@
         <property name="sipTime" value="700" />
         <property name="puffThreshold" value="520" />
         <property name="puffTime" value="700" />
-        <property name="IRCodeFilePath" value=".\data\Lipmouse\IRCodes.csv" />
+        <property name="IRCodeFilePath" value="./data/Lipmouse/IRCodes.csv" />
       </properties>
       <layout>
         <posX>463</posX>

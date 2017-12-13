@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\gaming&amp;Toys\ardroneFacetrackerOska.acs_2015_10_9_14_8" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\gaming&amp;Toys\ardroneFacetrackerOska.acs_2017_12_13_12_44" version="20130320">
   <components>
     <component id="TextDisplay.1.1" type_id="asterics.TextDisplay">
       <description>GUI component, which displays text.</description>
@@ -282,11 +282,11 @@
       <properties>
         <property name="port" value="4546" />
         <property name="title" value="OSKA keyboard" />
-        <property name="oskaPath" value="..\oska\start keyboard.exe" />
-        <property name="keyboardPath" value="keyboards\gameDevices\parrotDroneSwitch.xml" />
+        <property name="oskaPath" value="../oska/start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards/gameDevices/parrotDroneSwitch.xml" />
         <property name="highlightStyle" value="0" />
         <property name="highlightResetPosition" value="0" />
-        <property name="settingsFile" value="settings\hover3.kst" />
+        <property name="settingsFile" value="settings/hover3.kst" />
         <property name="windowDecorated" value="True" />
         <property name="eventScanningEnabled" value="true" />
         <property name="valueScanningEnabled" value="true" />

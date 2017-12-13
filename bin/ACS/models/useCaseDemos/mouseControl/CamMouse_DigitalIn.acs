@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\mouseControl\CamMouse_DigitalIn.acs_2015_10_9_14_10" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\mouseControl\CamMouse_DigitalIn.acs_2017_12_13_12_45" version="20130320">
   <modelDescription>
     <shortDescription>Camera controlled mouse</shortDescription>
     <requirements>Webcam connected.
@@ -304,7 +304,7 @@ The camera mouse sensitivity and the dwell time can be selected via a GUI slider
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\2.wav" />
+        <property name="filename" value="data/sounds/2.wav" />
       </properties>
       <layout>
         <posX>767</posX>

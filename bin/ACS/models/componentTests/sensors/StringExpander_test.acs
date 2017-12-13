@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\StringExpander_test.acs_2015_10_9_10_40" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\StringExpander_test.acs_2017_12_13_12_42" version="20130320">
   <components>
     <component id="StringExpander.1" type_id="asterics.StringExpander">
       <description>Adds the preString and postString strings to the incoming string and sends the new string to the output port.</description>

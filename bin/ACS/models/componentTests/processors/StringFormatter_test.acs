@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS\bin\ACS\models\componentTests\processors\StringFormatter_test.acs_2017_5_2_17_8" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\StringFormatter_test.acs_2017_12_13_12_39" version="20130320">
   <components>
     <component id="StringFormatter.1" type_id="asterics.StringFormatter">
       <description>Uses the defined format string and converts the values of the input ports according to that format string. See Java Class Formatter.</description>

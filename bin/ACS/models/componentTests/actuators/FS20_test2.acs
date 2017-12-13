@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\actuators\FS20_test2.acs_2015_10_9_10_31" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\FS20_test2.acs_2017_12_13_12_36" version="20130320">
   <components>
     <component id="FS20Sender.1" type_id="asterics.FS20Sender">
       <description>Sends FS20 commands</description>
@@ -13,6 +13,9 @@
         <inputPort portTypeID="Action">
           <properties />
         </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="Housecode" value="11111111" />

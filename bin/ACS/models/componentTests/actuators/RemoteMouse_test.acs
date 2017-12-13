@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\actuators\RemoteMouse_test.acs_2015_10_9_10_32" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\RemoteMouse_test.acs_2017_12_13_12_37" version="20130320">
   <components>
     <component id="SignalGenerator.1" type_id="asterics.SignalGenerator">
       <description>Signal Generator</description>

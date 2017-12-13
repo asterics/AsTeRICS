@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\gaming&amp;Toys\FabiCronusMax\PC.acs_2015_10_9_14_9" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\gaming&amp;Toys\FabiCronusMax\PC.acs_2017_12_13_12_44" version="20130320">
   <components>
     <component id="FabiCronusMax.1" type_id="asterics.FabiCronusMax">
       <description>Plugin for the combination of the Fabi and the CronusMax</description>
@@ -31,7 +31,7 @@
       </ports>
       <properties>
         <property name="ComPort" value="9" />
-        <property name="ModeFilePath" value="..\ACS\models\componentTests\processors\FabiCronusMax\config.csv" />
+        <property name="ModeFilePath" value="../ACS/models/componentTests/processors/FabiCronusMax/config.csv" />
       </properties>
       <layout>
         <posX>468</posX>
@@ -298,7 +298,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="preString" value="..\ACS\models\componentTests\processors\FabiCronusMax\" />
+        <property name="preString" value="../ACS/models/componentTests/processors/FabiCronusMax/" />
         <property name="postString" value=".jpeg" />
         <property name="trim" value="True" />
       </properties>
@@ -324,7 +324,7 @@
         </outputPort>
       </ports>
       <properties>
-        <property name="preString" value="..\ACS\models\componentTests\processors\FabiCronusMax\" />
+        <property name="preString" value="../ACS/models/componentTests/processors/FabiCronusMax/" />
         <property name="postString" value=".jpeg" />
         <property name="trim" value="True" />
       </properties>
@@ -396,7 +396,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="..\..\ACS\models\componentTests\processors\FabiCronusMax\FabiCronusMaxMain.acs" />
+        <property name="model" value="../../ACS/models/componentTests/processors/FabiCronusMax/FabiCronusMaxMain.acs" />
       </properties>
       <layout>
         <posX>425</posX>
@@ -637,6 +637,9 @@
         <outputPort portTypeID="pressure">
           <properties />
         </outputPort>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="uniqueID" value="not used" />
@@ -882,7 +885,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="..\..\ACS\models\componentTests\processors\FabiCronusMax\eyex_lipmouse_combined_biggui_german.acs" />
+        <property name="model" value="../../ACS/models/componentTests/processors/FabiCronusMax/eyex_lipmouse_combined_biggui_german.acs" />
       </properties>
       <layout>
         <posX>1086</posX>
@@ -1043,7 +1046,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="model" value="..\..\ACS\models\componentTests\processors\FabiCronusMax\FabiCronusMaxMain.acs" />
+        <property name="model" value="../../ACS/models/componentTests/processors/FabiCronusMax/FabiCronusMaxMain.acs" />
       </properties>
       <layout>
         <posX>899</posX>

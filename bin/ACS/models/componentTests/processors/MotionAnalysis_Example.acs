@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\MotionAnalysis_Example.acs_2015_10_9_10_34" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\MotionAnalysis_Example.acs_2017_12_13_12_38" version="20130320">
   <components>
     <component id="MotionAnalysis.1" type_id="asterics.MotionAnalysis">
       <description>Display to visualize and compare data form different sensors</description>
@@ -37,7 +37,7 @@
         <property name="fontSize" value="25" />
         <property name="caption" value="Example" />
         <property name="filename" value="Example" />
-        <property name="filepath" value=".\\data\\actuator.motionanalysis\\" />
+        <property name="filepath" value=".//data//actuator.motionanalysis//" />
         <property name="diviation" value="20" />
         <property name="limitation" value="80" />
       </properties>

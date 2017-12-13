@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\others\application_input_control_demo.acs_2015_10_9_14_11" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\others\application_input_control_demo.acs_2017_12_13_12_46" version="20130320">
   <components>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
       <description>Keyboard which sends event after button press</description>
@@ -119,7 +119,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="keyCodeString" value="hello this is a test: -+.,*&lt;:#_()[]{};/&gt;?!&amp;$&quot;'\@ yes !!" />
+        <property name="keyCodeString" value="hello this is a test: -+.,*&lt;:#_()[]{};/&gt;?!&amp;$&quot;'/@ yes !!" />
         <property name="inputMethod" value="1" />
         <property name="waitTime" value="1000" />
       </properties>
@@ -138,7 +138,7 @@
       <properties>
         <property name="defaultApplication" value="notepad.exe" />
         <property name="arguments" value="" />
-        <property name="workingDirectory" value="c:\windows\" />
+        <property name="workingDirectory" value="c:/windows/" />
         <property name="closeCmd" value="" />
         <property name="autoLaunch" value="false" />
         <property name="autoClose" value="true" />
@@ -202,9 +202,9 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="C:\Program Files (x86)\Skype\Phone\Skype.exe" />
+        <property name="defaultApplication" value="C:/Program Files (x86)/Skype/Phone/Skype.exe" />
         <property name="arguments" value="" />
-        <property name="workingDirectory" value="C:\Program Files (x86)\Skype\Phone\" />
+        <property name="workingDirectory" value="C:/Program Files (x86)/Skype/Phone/" />
         <property name="closeCmd" value="" />
         <property name="autoLaunch" value="false" />
         <property name="autoClose" value="true" />

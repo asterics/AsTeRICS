@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\eyetracking\eyex_music.acs_2015_10_9_14_8" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\eyetracking\eyex_music.acs_2017_12_13_12_44" version="20130320">
   <modelDescription>
     <shortDescription />
     <requirements />
@@ -153,6 +153,9 @@
         <outputPort portTypeID="pressure">
           <properties />
         </outputPort>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="uniqueID" value="not used" />
@@ -392,9 +395,9 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="c:\data\works\launch_all.bat" />
+        <property name="defaultApplication" value="c:/data/works/launch_all.bat" />
         <property name="arguments" value="" />
-        <property name="workingDirectory" value="c:\data\works\" />
+        <property name="workingDirectory" value="c:/data/works/" />
         <property name="closeCmd" value="" />
         <property name="autoLaunch" value="False" />
         <property name="autoClose" value="true" />

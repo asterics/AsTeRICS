@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\eyetracking\eyex_writing.acs_2015_10_9_14_8" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\eyetracking\eyex_writing.acs_2017_12_13_12_44" version="20130320">
   <components>
     <component id="EyeX.1" type_id="asterics.EyeX">
       <description>interfaces to the EyeX Gaze tracking system</description>
@@ -61,10 +61,10 @@
       <properties>
         <property name="port" value="4546" />
         <property name="title" value="OSKA keyboard" />
-        <property name="oskaPath" value="..\oska\start keyboard.exe" />
-        <property name="keyboardPath" value="keyboards\default.xml" />
+        <property name="oskaPath" value="../oska/start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards/default.xml" />
         <property name="highlightStyle" value="0" />
-        <property name="settingsFile" value="settings\predict_german.kst" />
+        <property name="settingsFile" value="settings/predict_german.kst" />
         <property name="windowDecorated" value="true" />
         <property name="eventScanningEnabled" value="true" />
         <property name="valueScanningEnabled" value="true" />
@@ -317,7 +317,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="c:\windows\notepad.exe" />
+        <property name="defaultApplication" value="c:/windows/notepad.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
         <property name="closeCmd" value="" />
@@ -338,7 +338,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="C:\Program Files (x86)\Mozilla Firefox\firefox.exe" />
+        <property name="defaultApplication" value="C:/Program Files (x86)/Mozilla Firefox/firefox.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
         <property name="closeCmd" value="" />
@@ -359,7 +359,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="C:\Program Files (x86)\Mozilla Thunderbird\thunderbird.exe" />
+        <property name="defaultApplication" value="C:/Program Files (x86)/Mozilla Thunderbird/thunderbird.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
         <property name="closeCmd" value="" />

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\mouseControl\scan_mouse.acs_2015_10_9_14_11" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\mouseControl\scan_mouse.acs_2017_12_13_12_45" version="20130320">
   <components>
     <component id="Keyboard.1" type_id="asterics.Keyboard">
       <description>Local Keyboard actuator</description>
@@ -269,7 +269,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="tools\crosshair\crosshair.exe" />
+        <property name="defaultApplication" value="tools/crosshair/crosshair.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
         <property name="closeCmd" value="" />

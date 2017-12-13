@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\SSVEPTrainProtocol.acs_2015_10_9_14_7" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\EEG&amp;EMG\SSVEPTrainProtocol.acs_2017_12_13_12_43" version="20130320">
   <modelDescription>
     <shortDescription>This model carries out the SSVEP training protocol recording necessary to carry out the SSVEP Detection</shortDescription>
     <requirements>Enobio (cap montage)
@@ -302,7 +302,7 @@ This training process shall be done at least once for every subject to use an SS
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\6.wav" />
+        <property name="filename" value="data/sounds/6.wav" />
       </properties>
       <layout>
         <posX>391</posX>
@@ -317,7 +317,7 @@ This training process shall be done at least once for every subject to use an SS
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\7.wav" />
+        <property name="filename" value="data/sounds/7.wav" />
       </properties>
       <layout>
         <posX>547</posX>

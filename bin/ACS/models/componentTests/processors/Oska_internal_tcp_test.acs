@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\Oska_internal_tcp_test.acs_2015_10_9_10_35" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\Oska_internal_tcp_test.acs_2017_12_13_12_39" version="20130320">
   <components>
     <component id="OskaInternalScanning.1" type_id="OskaInternalScanning">
       <description>Component communicating with OSKA</description>
@@ -14,11 +14,11 @@
       <properties>
         <property name="port" value="4546" />
         <property name="title" value="OSKA keyboard" />
-        <property name="oskaPath" value="..\oska\start keyboard.exe" />
-        <property name="keyboardPath" value="keyboards\writing\abc.xml" />
+        <property name="oskaPath" value="../oska/start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards/writing/abc.xml" />
         <property name="scanSpeed" value="5" />
         <property name="highlightStyle" value="2" />
-        <property name="settingsFile" value="settings\internal_tcp.kst" />
+        <property name="settingsFile" value="settings/internal_tcp.kst" />
         <property name="windowDecorated" value="true" />
         <property name="resizeEnabled" value="false" />
       </properties>

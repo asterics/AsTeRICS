@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\UniversalRemoteControl.acs_2015_10_9_10_36" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\UniversalRemoteControl.acs_2017_12_13_12_39" version="20130320">
   <components>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
       <description>Keyboard which sends event after button press</description>
@@ -692,7 +692,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="IRCodeFilePath" value=".\data\processor.UniversalRemoteControl\IRCodes.csv" />
+        <property name="IRCodeFilePath" value="./data/processor.UniversalRemoteControl/IRCodes.csv" />
       </properties>
       <layout>
         <posX>1007</posX>

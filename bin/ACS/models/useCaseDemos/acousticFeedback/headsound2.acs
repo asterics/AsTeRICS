@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\acousticFeedback\headsound2.acs_2015_10_9_14_6" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\acousticFeedback\headsound2.acs_2017_12_13_12_43" version="20130320">
   <modelDescription>
     <shortDescription>A head-movement controlled musical instrument</shortDescription>
     <requirements>A midi-capabable soundcard must be installed and a webcamera must be connected to an USB port</requirements>

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\SSVEPMusicPlayer.acs_2015_10_9_14_7" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\EEG&amp;EMG\SSVEPMusicPlayer.acs_2017_12_13_12_43" version="20130320">
   <modelDescription>
     <shortDescription>This model implements a SSVEP music player that manages a pre-defined playlist
 </shortDescription>
     <requirements>Enobio (cap montage)
-Music .wav files in: bin\ARE\data\music 
-Training recording (SSVEPTrain.acs model output) in: bin\ARE\data\SSVEPTrainFiles
+Music .wav files in: bin/ARE/data/music 
+Training recording (SSVEPTrain.acs model output) in: bin/ARE/data/SSVEPTrainFiles
 External flickering SSVEP Stimulation Panels</requirements>
     <description>The subject shall double blink to interact with the music player. 
 Once that the double blink has been detected the SSVEP stimulation will be presented for a short-time period.
@@ -112,7 +112,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\music\Eagle_Eye_Cherry_Are_You_Still_Having_Fun.wav" />
+        <property name="filename" value="data/music/Eagle_Eye_Cherry_Are_You_Still_Having_Fun.wav" />
       </properties>
       <layout>
         <posX>1356</posX>
@@ -327,7 +327,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Play.png" />
+        <property name="default" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/Play.png" />
         <property name="backgroundColor" value="11" />
         <property name="displayGUI" value="true" />
       </properties>
@@ -351,7 +351,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Stop.png" />
+        <property name="default" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/Stop.png" />
         <property name="backgroundColor" value="11" />
         <property name="displayGUI" value="true" />
       </properties>
@@ -377,7 +377,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         </inputPort>
       </ports>
       <properties>
-        <property name="text" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Play.png" />
+        <property name="text" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/Play.png" />
       </properties>
       <layout>
         <posX>1125</posX>
@@ -395,7 +395,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         </inputPort>
       </ports>
       <properties>
-        <property name="text" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Stop.png" />
+        <property name="text" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/Stop.png" />
       </properties>
       <layout>
         <posX>1119</posX>
@@ -411,7 +411,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s4.jpg" />
+        <property name="default" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/s4.jpg" />
         <property name="backgroundColor" value="11" />
         <property name="displayGUI" value="true" />
       </properties>
@@ -437,7 +437,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         </inputPort>
       </ports>
       <properties>
-        <property name="text" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s4.jpg" />
+        <property name="text" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/s4.jpg" />
       </properties>
       <layout>
         <posX>743</posX>
@@ -453,7 +453,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s2.jpg" />
+        <property name="default" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/s2.jpg" />
         <property name="backgroundColor" value="11" />
         <property name="displayGUI" value="true" />
       </properties>
@@ -479,7 +479,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         </inputPort>
       </ports>
       <properties>
-        <property name="text" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s2.jpg" />
+        <property name="text" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/s2.jpg" />
       </properties>
       <layout>
         <posX>734</posX>
@@ -497,7 +497,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         </inputPort>
       </ports>
       <properties>
-        <property name="text" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s1.jpg" />
+        <property name="text" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/s1.jpg" />
       </properties>
       <layout>
         <posX>115</posX>
@@ -513,7 +513,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s1.jpg" />
+        <property name="default" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/s1.jpg" />
         <property name="backgroundColor" value="11" />
         <property name="displayGUI" value="true" />
       </properties>
@@ -537,7 +537,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s3.jpg" />
+        <property name="default" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/s3.jpg" />
         <property name="backgroundColor" value="11" />
         <property name="displayGUI" value="true" />
       </properties>
@@ -563,7 +563,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         </inputPort>
       </ports>
       <properties>
-        <property name="text" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\s3.jpg" />
+        <property name="text" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/s3.jpg" />
       </properties>
       <layout>
         <posX>122</posX>

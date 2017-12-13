@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\AlphaMusicPlayer.acs_2015_10_9_14_6" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\EEG&amp;EMG\AlphaMusicPlayer.acs_2017_12_13_12_43" version="20130320">
   <modelDescription>
     <shortDescription>This model allows the user to start/stop an audio player by measuring his/her
 relaxation level.</shortDescription>
     <requirements>Enobio (cap montage)
-.wav audio file placed in AsTeRICS\bin\ARE\data\music</requirements>
+.wav audio file placed in AsTeRICS/bin/ARE/data/music</requirements>
     <description>When the user closes his eyes and relaxes, the increase in the power of the alpha 
 frequency band (8-13 Hz) will toggle the audio reproduction between start/stop 
 state.</description>
@@ -18,7 +18,7 @@ state.</description>
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\music\Eagle_Eye_Cherry_Are_You_Still_Having_Fun.wav" />
+        <property name="filename" value="data/music/Eagle_Eye_Cherry_Are_You_Still_Having_Fun.wav" />
       </properties>
       <layout>
         <posX>661</posX>
@@ -139,7 +139,7 @@ state.</description>
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Play.png" />
+        <property name="default" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/Play.png" />
         <property name="backgroundColor" value="11" />
         <property name="displayGUI" value="true" />
       </properties>
@@ -163,7 +163,7 @@ state.</description>
       </ports>
       <properties>
         <property name="caption" value="" />
-        <property name="default" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Stop.png" />
+        <property name="default" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/Stop.png" />
         <property name="backgroundColor" value="11" />
         <property name="displayGUI" value="true" />
       </properties>
@@ -189,7 +189,7 @@ state.</description>
         </inputPort>
       </ports>
       <properties>
-        <property name="text" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Play.png" />
+        <property name="text" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/Play.png" />
       </properties>
       <layout>
         <posX>769</posX>
@@ -207,7 +207,7 @@ state.</description>
         </inputPort>
       </ports>
       <properties>
-        <property name="text" value="C:\Documents and Settings\enobio\Mis documentos\DIS\AsTeRICS\bin\ARE\data\pictures\Stop.png" />
+        <property name="text" value="C:/Documents and Settings/enobio/Mis documentos/DIS/AsTeRICS/bin/ARE/data/pictures/Stop.png" />
       </properties>
       <layout>
         <posX>633</posX>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\actuators\ImageBox_test.acs_2015_10_9_10_31" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\ImageBox_test.acs_2017_12_13_12_36" version="20130320">
   <components>
     <component id="ImageBox.1" type_id="asterics.ImageBox">
       <description>GUI component, which displays a picture.</description>
@@ -102,10 +102,10 @@
       </ports>
       <properties>
         <property name="delay" value="300" />
-        <property name="slot1" value=".\data\pictures\s1.jpg" />
-        <property name="slot2" value=".\data\pictures\s2.jpg" />
-        <property name="slot3" value=".\data\pictures\s3.jpg" />
-        <property name="slot4" value=".\data\pictures\s4.jpg" />
+        <property name="slot1" value="./data/pictures/s1.jpg" />
+        <property name="slot2" value="./data/pictures/s2.jpg" />
+        <property name="slot3" value="./data/pictures/s3.jpg" />
+        <property name="slot4" value="./data/pictures/s4.jpg" />
         <property name="slot5" value="" />
         <property name="slot6" value="" />
         <property name="slot7" value="" />

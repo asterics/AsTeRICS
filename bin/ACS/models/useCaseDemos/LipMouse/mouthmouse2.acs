@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\mouthmouse2.acs_2015_10_9_14_9" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\LipMouse\mouthmouse2.acs_2017_12_13_12_45" version="20130320">
   <components>
     <component id="Lipmouse.1" type_id="asterics.Lipmouse">
       <description>Lipmouse CIM</description>
@@ -13,6 +13,9 @@
         <outputPort portTypeID="pressure">
           <properties />
         </outputPort>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="uniqueID" value="not used" />
@@ -58,7 +61,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\17.WAV" />
+        <property name="filename" value="data/sounds/17.WAV" />
       </properties>
       <layout>
         <posX>554</posX>
@@ -396,7 +399,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\15.WAV" />
+        <property name="filename" value="data/sounds/15.WAV" />
       </properties>
       <layout>
         <posX>682</posX>
@@ -578,7 +581,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\7.wav" />
+        <property name="filename" value="data/sounds/7.wav" />
       </properties>
       <layout>
         <posX>932</posX>

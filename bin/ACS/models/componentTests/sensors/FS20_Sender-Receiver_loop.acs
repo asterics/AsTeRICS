@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" modelName="D:\AsTeRICS\AsTeRICS_master\bin\ACS\models\componentTests\sensors\FS20_Sender-Receiver_loop.acs_2016_6_24_14_15" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\FS20_Sender-Receiver_loop.acs_2017_12_13_12_40" version="20130320">
   <components>
     <component id="FS20Receiver.1" type_id="asterics.FS20Receiver">
       <description>Receiver Plugin for the FS20 Home automatisation system</description>
@@ -137,6 +137,9 @@
         <inputPort portTypeID="Action">
           <properties />
         </inputPort>
+        <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="Housecode" value="11111111" />

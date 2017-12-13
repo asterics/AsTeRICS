@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\Cammouse_CLM_test_demo.acs_2015_10_9_10_37" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\Cammouse_CLM_test_demo.acs_2017_12_13_12_40" version="20130320">
   <components>
     <component id="FacetrackerCLM.1" type_id="asterics.FacetrackerCLM">
       <description>Facetracker plugin. Ideal in mouse control models. It also implements a blink detection system.</description>
@@ -29,6 +29,9 @@
           <properties />
         </outputPort>
         <outputPort portTypeID="BrowLift">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="LipDistance">
           <properties />
         </outputPort>
       </ports>
@@ -263,7 +266,7 @@
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\2.wav" />
+        <property name="filename" value="data/sounds/2.wav" />
       </properties>
       <layout>
         <posX>522</posX>

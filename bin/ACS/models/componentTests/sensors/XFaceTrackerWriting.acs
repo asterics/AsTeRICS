@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\XFaceTrackerWriting.acs_2015_10_9_10_41" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\XFaceTrackerWriting.acs_2017_12_13_12_42" version="20130320">
   <modelDescription>
     <shortDescription>Camera controlled mouse for writing with OSKA</shortDescription>
     <requirements>Webcam connected to USB port.
@@ -269,7 +269,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </inputPort>
       </ports>
       <properties>
-        <property name="filename" value="data\sounds\2.wav" />
+        <property name="filename" value="data/sounds/2.wav" />
       </properties>
       <layout>
         <posX>999</posX>
@@ -328,11 +328,11 @@ OSKA and Notepad are automatically started for the writing task.</description>
       <properties>
         <property name="port" value="4546" />
         <property name="title" value="OSKA keyboard" />
-        <property name="oskaPath" value="..\oska\start keyboard.exe" />
-        <property name="keyboardPath" value="keyboards\default.xml" />
+        <property name="oskaPath" value="../oska/start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards/default.xml" />
         <property name="highlightStyle" value="0" />
         <property name="highlightResetPosition" value="0" />
-        <property name="settingsFile" value="settings\default.kst" />
+        <property name="settingsFile" value="settings/default.kst" />
         <property name="windowDecorated" value="true" />
         <property name="eventScanningEnabled" value="true" />
         <property name="valueScanningEnabled" value="true" />
@@ -526,7 +526,7 @@ OSKA and Notepad are automatically started for the writing task.</description>
         </inputPort>
       </ports>
       <properties>
-        <property name="defaultApplication" value="c:\windows\notepad.exe" />
+        <property name="defaultApplication" value="c:/windows/notepad.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
         <property name="closeCmd" value="" />

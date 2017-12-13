@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\gaming&amp;Toys\PS3_MonkeyIsland_Camera.acs_2015_10_9_14_8" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\gaming&amp;Toys\PS3_MonkeyIsland_Camera.acs_2017_12_13_12_44" version="20130320">
   <modelDescription>
     <shortDescription>PS3 controller emulation via OSKA grids, Switch controlled scanning and face tracking
 for the Monkey Island adventure game.
@@ -10,7 +10,7 @@ HID actuator connected to USB port
 </requirements>
     <description>The Head movement controls the steering of a joystick (X/Y direction)
 The active joystick can be changed via a selection on the OSKA keyboard.
-(the utilized grid is ps3\ps3_MonkeyIsland_control.xml)
+(the utilized grid is ps3/ps3_MonkeyIsland_control.xml)
 
 The DigitalIn CIM connects 4 switches with the following functions:
 Switch 1 controls the R2-Button
@@ -654,11 +654,11 @@ Switch 4 presses the currently highlighted key on the on-screen keyboard to sele
       <properties>
         <property name="port" value="4546" />
         <property name="title" value="OSKA keyboard" />
-        <property name="oskaPath" value="..\oska\start keyboard.exe" />
-        <property name="keyboardPath" value="keyboards\ps3\ps3_MonkeyIsland_control.xml" />
+        <property name="oskaPath" value="../oska/start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards/ps3/ps3_MonkeyIsland_control.xml" />
         <property name="highlightStyle" value="0" />
         <property name="highlightResetPosition" value="0" />
-        <property name="settingsFile" value="settings\default.kst" />
+        <property name="settingsFile" value="settings/default.kst" />
         <property name="windowDecorated" value="False" />
         <property name="eventScanningEnabled" value="true" />
         <property name="valueScanningEnabled" value="true" />

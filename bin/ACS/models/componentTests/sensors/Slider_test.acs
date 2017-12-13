@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\Slider_test.acs_2015_10_9_10_40" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\Slider_test.acs_2017_12_13_12_42" version="20130320">
   <components>
     <component id="Slider.2" type_id="asterics.Slider">
       <description>a slider GUI element which provides the slider value at an output port</description>

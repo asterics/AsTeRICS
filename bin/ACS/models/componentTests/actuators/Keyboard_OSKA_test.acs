@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\actuators\Keyboard_OSKA_test.acs_2015_10_9_10_31" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\Keyboard_OSKA_test.acs_2017_12_13_12_36" version="20130320">
   <modelDescription>
     <shortDescription>Camera controlled mouse for writing with OSKA</shortDescription>
     <requirements>Webcam connected.
@@ -69,11 +69,11 @@ OSKA and Notepad are automatically started for the writing task.</description>
       <properties>
         <property name="port" value="4546" />
         <property name="title" value="OSKA keyboard" />
-        <property name="oskaPath" value="..\oska\start keyboard.exe" />
-        <property name="keyboardPath" value="keyboards\writing\HIDkeys_fullscreen.xml" />
+        <property name="oskaPath" value="../oska/start keyboard.exe" />
+        <property name="keyboardPath" value="keyboards/writing/HIDkeys_fullscreen.xml" />
         <property name="scanSpeed" value="8" />
         <property name="highlightStyle" value="0" />
-        <property name="settingsFile" value="settings\internalscanning.kst" />
+        <property name="settingsFile" value="settings/internalscanning.kst" />
         <property name="windowDecorated" value="true" />
         <property name="resizeEnabled" value="True" />
       </properties>
