@@ -96,8 +96,8 @@ public class ControlPane extends JPanel {
     private JLabel exitLabel;
     private ImageIcon exitIcon;
     private ImageIcon exitIcon_ro;
-    private JLabel globeLabel;
-    private JLabel pencilLabel;
+    private ControlPanelLabel globeLabel;
+    private ControlPanelLabel pencilLabel;
     private ImageIcon statusIcon;
     private JLabel statusLabel;
     private ErrorLogPane errorLogPane;
@@ -586,6 +586,8 @@ public class ControlPane extends JPanel {
             exitIcon.setImage(exitIconImg.getScaledInstance(newSize, newSize, Image.SCALE_DEFAULT));
             exitIcon_ro.setImage(exitIconImg_ro.getScaledInstance(newSize, newSize, Image.SCALE_DEFAULT));
             statusIcon.setImage(actStatusImg.getScaledInstance(newSize, newSize, Image.SCALE_DEFAULT));
+            pencilLabel.resizeImage(newSize);
+            globeLabel.resizeImage(newSize);
 
             if (orientation == BoxLayout.Y_AXIS) {
                 mainPanel.setPreferredSize(new Dimension(newSize, astericsGUI.screenSize.height));

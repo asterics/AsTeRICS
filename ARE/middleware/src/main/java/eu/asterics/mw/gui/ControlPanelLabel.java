@@ -27,6 +27,7 @@ package eu.asterics.mw.gui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -38,21 +39,27 @@ import java.net.URL;
  */
 public abstract class ControlPanelLabel extends JLabel {
 
+    private BufferedImage iconImage;
+    private BufferedImage iconImageHover;
+    private final ImageIcon iconNormal;
+    private final ImageIcon iconHover;
+
     /**
      * creates a new ControlPanelLabel
      *
-     * @param iconPath path to the image that should be used for the normal icon
+     * @param iconPath      path to the image that should be used for the normal icon
      * @param iconPathHover path to the image that should be used for the icon on mouse hover over the label
-     * @param tooltipText tooltip text to show on hover
+     * @param tooltipText   tooltip text to show on hover
      * @throws IOException if images from given URL paths cannot be read
      */
     public ControlPanelLabel(URL iconPath, URL iconPathHover, String tooltipText) throws IOException {
         super();
         this.setToolTipText(tooltipText);
-        BufferedImage iconImage = ImageIO.read(iconPath);
-        BufferedImage iconImageHover = ImageIO.read(iconPathHover);
-        final ImageIcon iconNormal = new ImageIcon(iconImage);
-        final ImageIcon iconHover = new ImageIcon(iconImageHover);
+
+        iconImage = ImageIO.read(iconPath);
+        iconImageHover = ImageIO.read(iconPathHover);
+        iconNormal = new ImageIcon(iconImage);
+        iconHover = new ImageIcon(iconImageHover);
         this.setIcon(iconNormal);
 
         this.addMouseListener(new MouseAdapter() {
@@ -72,6 +79,16 @@ public abstract class ControlPanelLabel extends JLabel {
 
             }
         });
+    }
+
+    /**
+     * sets the image icons to a new size
+     *
+     * @param size
+     */
+    public void resizeImage(int size) {
+        iconNormal.setImage(iconImage.getScaledInstance(size, size, Image.SCALE_DEFAULT));
+        iconHover.setImage(iconImageHover.getScaledInstance(size, size, Image.SCALE_DEFAULT));
     }
 
     /**

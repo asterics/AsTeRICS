@@ -235,7 +235,12 @@ public class OSUtils {
     public static Process openURL(String urlToOpen, OS_NAMES executeOnPlatform) throws IOException {
         if (executeOnPlatform != null && getOsName().equalsIgnoreCase(executeOnPlatform.toString()) || executeOnPlatform.equals(OS_NAMES.ALL)) {
             String browserStartCmd = AREProperties.instance.getProperty(ARE_OPEN_URL_CMD_KEY_PREFIX + getOsName());
-            String urlToOpenQuoted = "\"" + urlToOpen + "\"";
+            
+            
+            String urlToOpenQuoted = urlToOpen;
+            if(isWindows()) {
+				urlToOpenQuoted="\"" + urlToOpen + "\"";
+			}
             return startApplication(browserStartCmd, urlToOpenQuoted, null, executeOnPlatform);
         }
         return null;
