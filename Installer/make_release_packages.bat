@@ -14,7 +14,12 @@ ECHO.
 ECHO Press any key to start !
 pause
 REM git clone -b v2.8RC1 https://github.com/asterics/AsTeRICS
-git clone https://github.com/asterics/AsTeRICS
+REM clone Asterics including submodules and submodules of submodules
+git clone --recurse-submodules https://github.com/asterics/AsTeRICS.git
+cd AsTeRICS/bin/ARE/web/webapps/WebACS/
+git submodule update --init
+cd ../../../../../../
+
 rm -r AsTeRICS/NativeASAPIlibraries
 rm -r AsTeRICS/BNCIevaluationSuite
 rm -r AsTeRICS/Android/AsTeRICSPhoneServer
