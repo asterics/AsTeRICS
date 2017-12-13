@@ -53,9 +53,9 @@ public class OSUtils {
     public static final String ARE_OPEN_URL_CMD_KEY_PREFIX = "ARE.openURL.cmd.";
 
     static {
-        AREProperties.instance.getProperty(ARE_OPEN_URL_CMD_KEY_PREFIX + LINUX, "sensible-browser", "Default Linux command to start a browser.");
-        AREProperties.instance.getProperty(ARE_OPEN_URL_CMD_KEY_PREFIX + WINDOWS, "explorer", "Default Windows command to start a browser.");
-        AREProperties.instance.getProperty(ARE_OPEN_URL_CMD_KEY_PREFIX + MACOSX, "open", "Default Mac OSX command to start a browser.");
+        AREProperties.instance.setDefaultPropertyValue(ARE_OPEN_URL_CMD_KEY_PREFIX + LINUX, "sensible-browser", "Default Linux command to start a browser.");
+        AREProperties.instance.setDefaultPropertyValue(ARE_OPEN_URL_CMD_KEY_PREFIX + WINDOWS, "explorer", "Default Windows command to start a browser.");
+        AREProperties.instance.setDefaultPropertyValue(ARE_OPEN_URL_CMD_KEY_PREFIX + MACOSX, "open", "Default Mac OSX command to start a browser.");
     }
 
     public static enum OS_NAMES {
