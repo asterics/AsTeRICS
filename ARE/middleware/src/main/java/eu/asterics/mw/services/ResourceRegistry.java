@@ -99,8 +99,8 @@ public class ResourceRegistry {
     static {
         URI defaultAREBaseURI = Paths.get(".").toUri();
         try {
-            defaultAREBaseURI = ResourceRegistry.toPath(ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toURI())
-                    .getParent().toUri();
+            defaultAREBaseURI = ResourceRegistry
+                    .toPathInternal(ResourceRegistry.instance.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().toUri();
         } catch (URISyntaxException e) {
         }
         ARE_BASE_URI = URI.create(System.getProperty("eu.asterics.ARE.baseURI", defaultAREBaseURI.toString()));
@@ -151,7 +151,7 @@ public class ResourceRegistry {
     public List<String> toStringList(Collection<URI> uris) {
         List<String> result = new ArrayList<String>();
         for (URI uri : uris) {
-            result.add(ResourceRegistry.toString(uri));
+            result.add(ResourceRegistry.getInstance().toString(uri));
         }
         return result;
     }
@@ -165,7 +165,7 @@ public class ResourceRegistry {
     public Set<String> toStringSet(Collection<URI> uris) {
         Set<String> result = new TreeSet<String>();
         for (URI uri : uris) {
-            result.add(ResourceRegistry.toString(uri));
+            result.add(ResourceRegistry.getInstance().toString(uri));
         }
         return result;
     }
@@ -180,7 +180,7 @@ public class ResourceRegistry {
         String[] result = new String[uris.size()];
         int i = 0;
         for (URI uri : uris) {
-            result[i] = ResourceRegistry.toString(uri);
+            result[i] = ResourceRegistry.getInstance().toString(uri);
             i++;
         }
         return result;
@@ -206,13 +206,34 @@ public class ResourceRegistry {
         return URIs;
     }
 
-    public Path toPath(URI uri) throws URISyntaxException {
+    static Path toPathInternal(URI uri) throws URISyntaxException {
         String scheme = uri.getScheme();
         if (scheme != null && !scheme.startsWith("file")) {
             throw new URISyntaxException(uri.toString(), "The uri does not start with the scheme <file>");
         }
-        Path p = ResourceRegistry.getInstance().toFile(uri).toPath();
+        Path p = ResourceRegistry.toFileInternal(uri).toPath();
         return p;
+    }
+
+    /**
+     * Converts the given URI object into a Patch object. Checks if the given URI has the file protocol as scheme and otherwise throws a @link
+     * {@link URISyntaxException}.
+     * 
+     * @param uri
+     * @return
+     * @throws URISyntaxException
+     */
+    public Path toPath(URI uri) throws URISyntaxException {
+        return toPathInternal(uri);
+    }
+
+    static File toFileInternal(URI uri) throws URISyntaxException {
+        String scheme = uri.getScheme();
+        if (scheme != null && !scheme.startsWith("file")) {
+            throw new URISyntaxException(uri.toString(), "The uri does not start with the scheme <file>");
+        }
+        File f = new File(uri.getPath());
+        return f;
     }
 
     /**
@@ -224,12 +245,7 @@ public class ResourceRegistry {
      * @throws URISyntaxException
      */
     public File toFile(URI uri) throws URISyntaxException {
-        String scheme = uri.getScheme();
-        if (scheme != null && !scheme.startsWith("file")) {
-            throw new URISyntaxException(uri.toString(), "The uri does not start with the scheme <file>");
-        }
-        File f = new File(uri.getPath());
-        return f;
+        return toFileInternal(uri);
     }
 
     /**
@@ -308,7 +324,7 @@ public class ResourceRegistry {
      * @throws IOException
      */
     public void storeResource(String data, URI storeResourceURI) throws URISyntaxException, IOException {
-        storeResource(data, ResourceRegistry.toFile(storeResourceURI));
+        storeResource(data, ResourceRegistry.getInstance().toFile(storeResourceURI));
     }
 
     /**
@@ -344,7 +360,7 @@ public class ResourceRegistry {
      */
     public boolean resourceExists(URI uri) {
         try {
-            if (ResourceRegistry.toFile(uri).exists()) {
+            if (ResourceRegistry.getInstance().toFile(uri).exists()) {
                 return true;
             }
         } catch (URISyntaxException e) {
@@ -597,7 +613,7 @@ public class ResourceRegistry {
                      * resolve against the given resourceName, if it exists return
                      */
                     URI dataFolderURI = toAbsolute(DATA_FOLDER);
-                    File dataFolderFile = ResourceRegistry.toFile(dataFolderURI);
+                    File dataFolderFile = ResourceRegistry.getInstance().toFile(dataFolderURI);
 
                     // 1) Check resourceName directly, if it exists return
                     resFilePath = resolveRelativeFilePath(dataFolderFile, resourcePathSlashified, false);
@@ -822,8 +838,7 @@ public class ResourceRegistry {
      * @throws IOException
      * @throws FileNotFoundException
      */
-    public void storeResource(String data, String resourcePath, RES_TYPE resourceType)
-            throws URISyntaxException, FileNotFoundException, IOException {
+    public void storeResource(String data, String resourcePath, RES_TYPE resourceType) throws URISyntaxException, FileNotFoundException, IOException {
         storeResource(data, ResourceRegistry.getInstance().getResource(resourcePath, resourceType));
     }
 
@@ -1225,9 +1240,10 @@ public class ResourceRegistry {
         });
         return URIs;
     }
-    
+
     /**
-     * Returns a list of URIs of all web 
+     * Returns a list of URIs of all web
+     * 
      * @param relative
      * @return
      */
@@ -1240,7 +1256,7 @@ public class ResourceRegistry {
                 return true;
             }
         });
-        return URIs;        
+        return URIs;
     }
 
     /**

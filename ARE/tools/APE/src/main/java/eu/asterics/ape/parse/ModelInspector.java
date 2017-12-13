@@ -322,7 +322,7 @@ public class ModelInspector {
                 continue;
             }
 
-            File testFile = ResourceRegistry.resolveRelativeFilePath(new File(projectDirPath), modelsPropVal);
+            File testFile = ResourceRegistry.getInstance().resolveRelativeFilePath(new File(projectDirPath), modelsPropVal);
             URI testURI = testFile.toURI();
 
             if (!testFile.exists()) {
@@ -332,7 +332,7 @@ public class ModelInspector {
 
             List<URI> URIs = new ArrayList();
             if (testFile.isDirectory()) {
-                URIs = ResourceRegistry.getModelList(testURI, false);
+                URIs = ResourceRegistry.getInstance().getModelList(testURI, false);
             } else {
                 URIs.add(testURI);
             }
@@ -402,7 +402,7 @@ public class ModelInspector {
                                 // for all types of URIs,
                                 // also URLs, but actually we only wanna copy
                                 // local files.
-                                File propValFile = ResourceRegistry.toFile(propValURI);
+                                File propValFile = ResourceRegistry.getInstance().toFile(propValURI);
 
                                 if (propValFile.exists()) {
                                     // Ok, got it, File exists so we can copy it

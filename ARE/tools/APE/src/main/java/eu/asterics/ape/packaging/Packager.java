@@ -102,9 +102,9 @@ public class Packager {
         this.modelInspector = modelInspector;
         this.projectDir = new File(apeProperties.getProperty(P_APE_PROJECT_DIR));
 
-        buildDir = ResourceRegistry.resolveRelativeFilePath(projectDir,
+        buildDir = ResourceRegistry.getInstance().resolveRelativeFilePath(projectDir,
                 apeProperties.getProperty(APEProperties.P_APE_BUILD_DIR, APEProperties.DEFAULT_BUILD_DIR));
-        buildMergedDir = ResourceRegistry.resolveRelativeFilePath(buildDir, MERGED_FOLDER);
+        buildMergedDir = ResourceRegistry.getInstance().resolveRelativeFilePath(buildDir, MERGED_FOLDER);
 
         Notifier.info("ApeProp[" + APEProperties.P_APE_BUILD_DIR + "]=" + buildDir);
         
@@ -130,7 +130,7 @@ public class Packager {
             throws URISyntaxException, MalformedURLException, IOException, ParseException, ParserConfigurationException,
             SAXException, TransformerException, BundleManagementException, APEConfigurationException {
         //Create path to merged/bin/ARE folder: the target folder for merging all stuff.
-        File buildMergedAREDir = ResourceRegistry.resolveRelativeFilePath(buildMergedDir, BIN_ARE_FOLDER);
+        File buildMergedAREDir = ResourceRegistry.getInstance().resolveRelativeFilePath(buildMergedDir, BIN_ARE_FOLDER);
         if(buildMode.equals(APE_BUILD_MODE.RELEASE) || !buildMergedAREDir.exists()) {
 			Notifier.info("Copying files to " + buildMergedAREDir);
 
@@ -236,8 +236,8 @@ public class Packager {
      * @param buildDir
      */
     public void copyCustomFiles(File buildDir) {
-        File customBinDir = ResourceRegistry.resolveRelativeFilePath(projectDir, CUSTOM_BIN_FOLDER);
-        File buildMergedBinDir = ResourceRegistry.resolveRelativeFilePath(buildMergedDir, BIN_FOLDER);
+        File customBinDir = ResourceRegistry.getInstance().resolveRelativeFilePath(projectDir, CUSTOM_BIN_FOLDER);
+        File buildMergedBinDir = ResourceRegistry.getInstance().resolveRelativeFilePath(buildMergedDir, BIN_FOLDER);
         try {
             Notifier.info("Copying custom files from <" + customBinDir + "> to <" + buildMergedBinDir + ">");
             FileUtils.copyDirectory(customBinDir, buildMergedBinDir);
@@ -261,7 +261,7 @@ public class Packager {
         // starting with services (excluding config.ini and other files)
         // 2) if no files were found there, use the services files of the
         // ARE.baseURI
-        File servicesFileDir = ResourceRegistry.resolveRelativeFilePath(projectDir,
+        File servicesFileDir = ResourceRegistry.getInstance().resolveRelativeFilePath(projectDir,
                 CUSTOM_BIN_ARE_FOLDER + ResourceRegistry.PROFILE_FOLDER);
 
         FilenameFilter servicesFilesFilter = new FilenameFilter() {
@@ -276,7 +276,7 @@ public class Packager {
         Collection<URI> servicesFilesURIs = ComponentUtils.findFiles(servicesFileDir.toURI(), false, 1,
                 servicesFilesFilter);
 
-        URI areBaseURIProfileFolder = ResourceRegistry.resolveRelativeFilePath(
+        URI areBaseURIProfileFolder = ResourceRegistry.getInstance().resolveRelativeFilePath(
                 ResourceRegistry.getInstance().getAREBaseURI(), ResourceRegistry.PROFILE_FOLDER).toURI();
         String message = "Using services files in " + areBaseURIProfileFolder;
         if (servicesFilesURIs.size() == 0) {
@@ -322,14 +322,14 @@ public class Packager {
      * @param targetSubDir
      */
     public void copyModels(Set<URI> modelURIs, File targetSubDir) {
-        URI customURI = ResourceRegistry.resolveRelativeFilePath(projectDir, CUSTOM_BIN_ARE_MODELS_FOLDER).toURI();
+        URI customURI = ResourceRegistry.getInstance().resolveRelativeFilePath(projectDir, CUSTOM_BIN_ARE_MODELS_FOLDER).toURI();
         for (URI modelURI : modelURIs) {
             // Check if it is a model URI based on ARE base URI, if not copy
             // file directly
             try {
                 // Don't resolve against ARE.baseURI because we just wanna copy
                 // the model files to the bin/ARE/models dir.
-                if (ResourceRegistry.isSubURI(customURI, modelURI)) {
+                if (ResourceRegistry.getInstance().isSubURI(customURI, modelURI)) {
                     Notifier.debug(
                             "Don't copy custom model in copyModels, will be copied in copyCustomFiles: " + modelURI,
                             null);
@@ -372,7 +372,7 @@ public class Packager {
             throws URISyntaxException, IOException {
         try {
             File targetSubDir = targetDir;
-            File src = ResourceRegistry.toFile(srcURI);
+            File src = ResourceRegistry.getInstance().toFile(srcURI);
 
             // If we should resolve against ARE subfolders
             if (resolveAREBaseURISubDirs) {
@@ -380,14 +380,14 @@ public class Packager {
                 // ARE.baseURI.
                 // Determine relative src dir which will then be resolved
                 // against the base target dir.
-                File relativeSrc = ResourceRegistry.toFile(ResourceRegistry.getInstance().toRelative(srcURI));
+                File relativeSrc = ResourceRegistry.getInstance().toFile(ResourceRegistry.getInstance().toRelative(srcURI));
 
                 // Determine parent folder of relativeSrc File
                 targetSubDir = src.isDirectory() ? relativeSrc : relativeSrc.getParentFile();
 
                 if (targetSubDir != null) {
                     // Resolve targetSubDir against targetDir
-                    targetSubDir = ResourceRegistry.resolveRelativeFilePath(targetDir, targetSubDir.getPath());
+                    targetSubDir = ResourceRegistry.getInstance().resolveRelativeFilePath(targetDir, targetSubDir.getPath());
                 } else {
                     targetSubDir = targetDir;
                 }
