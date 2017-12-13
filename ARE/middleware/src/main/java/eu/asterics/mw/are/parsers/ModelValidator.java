@@ -69,10 +69,10 @@ public class ModelValidator {
     private static ModelValidator instance = null;
 
     public ModelValidator() throws MalformedURLException {
-        this(ResourceRegistry
+        this(ResourceRegistry.getInstance()
                 .toJarInternalURI(ResourceRegistry.getInstance().getAREJarURI(false), BUNDLE_DESCRIPTOR_SCHEMA_URL)
                 .toURL(),
-                ResourceRegistry.toJarInternalURI(ResourceRegistry.getInstance().getAREJarURI(false),
+                ResourceRegistry.getInstance().toJarInternalURI(ResourceRegistry.getInstance().getAREJarURI(false),
                         DEPLOYMENT_DESCRIPTOR_SCHEMA_URL).toURL());
     }
 

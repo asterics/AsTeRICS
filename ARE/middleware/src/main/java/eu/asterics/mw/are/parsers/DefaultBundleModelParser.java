@@ -2,12 +2,10 @@ package eu.asterics.mw.are.parsers;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -132,7 +130,7 @@ public class DefaultBundleModelParser {
      * @throws IOException 
      */
     public Set<IComponentType> parseModel(InputStream inputStream) throws ParseException, IOException {
-        String bundleDescriptorAsXMLString=ResourceRegistry.getResourceContentAsString(inputStream);
+        String bundleDescriptorAsXMLString= ResourceRegistry.getInstance().getResourceContentAsString(inputStream);
         return parseModelAsXMLString(bundleDescriptorAsXMLString);        
     }
 
@@ -193,7 +191,7 @@ public class DefaultBundleModelParser {
      */
     public String getBundleDescriptionOfComponentTypeId(String componentTypeId, InputStream inputStream)
             throws ParserConfigurationException, SAXException, IOException {
-        String bundleDescriptorAsXMLString=ResourceRegistry.getResourceContentAsString(inputStream);
+        String bundleDescriptorAsXMLString= ResourceRegistry.getInstance().getResourceContentAsString(inputStream);
         
         final DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 

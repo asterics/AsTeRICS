@@ -118,6 +118,351 @@ public class ResourceRegistry {
         AstericsErrorHandling.instance.getLogger().fine("Setting OSGI_MODE to <" + OSGI_MODE + ">");
     }
 
+    /**
+     * Creates an absolute URI defining a resource within a jarFileURI.
+     *
+     * @param jarFileURI
+     *            The jarFileURI that contains the resource.
+     * @param relativeInternalURI
+     *            The relative path to the resource within the jar file. The relative path must have a leading / (e.g. /bundle_descriptor.xml)
+     * @return
+     */
+    public URI toJarInternalURI(URI jarFileURI, String relativeInternalURI) {
+        String jarInternalURI = "jar:" + jarFileURI + "!" + relativeInternalURI;
+        return URI.create(jarInternalURI);
+    }
+
+    /**
+     * Return the String representation of the given URI.
+     *
+     * @param uri
+     * @return
+     */
+    public String toString(URI uri) {
+        return uri.getPath();
+    }
+
+    /**
+     * Returns a List of Strings representing URI paths.
+     *
+     * @param uris
+     * @return
+     */
+    public List<String> toStringList(Collection<URI> uris) {
+        List<String> result = new ArrayList<String>();
+        for (URI uri : uris) {
+            result.add(ResourceRegistry.toString(uri));
+        }
+        return result;
+    }
+
+    /**
+     * Returns a Set of Strings representing URI paths.
+     *
+     * @param uris
+     * @return
+     */
+    public Set<String> toStringSet(Collection<URI> uris) {
+        Set<String> result = new TreeSet<String>();
+        for (URI uri : uris) {
+            result.add(ResourceRegistry.toString(uri));
+        }
+        return result;
+    }
+
+    /**
+     * Returns an array of Strings representing URI paths.
+     *
+     * @param uris
+     * @return
+     */
+    public String[] toStringArray(Collection<URI> uris) {
+        String[] result = new String[uris.size()];
+        int i = 0;
+        for (URI uri : uris) {
+            result[i] = ResourceRegistry.toString(uri);
+            i++;
+        }
+        return result;
+    }
+
+    /**
+     * Returns a list of model URIs in the given model dir URI.
+     *
+     * @param modelDirURI
+     * @param relative
+     *            true: Only return name without absolute path.
+     * @return
+     */
+    public List<URI> getModelList(URI modelDirURI, boolean relative) {
+        // get asterics involved model files
+        // Not sure how deep we should search, but 10 seems to be enough
+        List<URI> URIs = ComponentUtils.findFiles(modelDirURI, relative, RECURSIVE_FILE_SEARCH_DEPTH, new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name != null && name.endsWith(".acs");
+            }
+        });
+        return URIs;
+    }
+
+    public Path toPath(URI uri) throws URISyntaxException {
+        String scheme = uri.getScheme();
+        if (scheme != null && !scheme.startsWith("file")) {
+            throw new URISyntaxException(uri.toString(), "The uri does not start with the scheme <file>");
+        }
+        Path p = ResourceRegistry.getInstance().toFile(uri).toPath();
+        return p;
+    }
+
+    /**
+     * Returns a File object representing the given URI if possible. This only works if the given URI is a relative path or is a path with a file scheme
+     * (starting with: file)
+     *
+     * @param uri
+     * @return
+     * @throws URISyntaxException
+     */
+    public File toFile(URI uri) throws URISyntaxException {
+        String scheme = uri.getScheme();
+        if (scheme != null && !scheme.startsWith("file")) {
+            throw new URISyntaxException(uri.toString(), "The uri does not start with the scheme <file>");
+        }
+        File f = new File(uri.getPath());
+        return f;
+    }
+
+    /**
+     * Checks whether the given URI is a URL or not.
+     *
+     * @param uriToCheck
+     *            true: URI is a URL, false: URI is not a URL but probably a file (relative or absolute)
+     * @return
+     */
+    public boolean isURL(URI uriToCheck) {
+        try {
+            uriToCheck.toURL();
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Returns the file/directory name of a given URI. This method simply splits the URI.getPath into elements seperated by a slash (/) and returns the last
+     * element.
+     *
+     * @param absolutePath
+     * @return
+     */
+    public String getLastElementOfURI(URI absolutePath) {
+        String[] elems = absolutePath.getPath().split("/");
+        if (elems != null && elems.length > 0) {
+            return elems[elems.length - 1];
+        }
+        return "";
+    }
+
+    /**
+     * Stores the given data to the given OutputStream and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}. The OutputStream is automatically closed
+     * afterwards.
+     *
+     * @param data
+     * @param outputStream
+     * @throws IOException
+     */
+    public void storeResource(String data, OutputStream outputStream) throws IOException {
+        try {
+            IOUtils.write(data, outputStream, ResourceRegistry.ARE_FILE_ENCODING);
+        } finally {
+            outputStream.flush();
+            outputStream.close();
+        }
+    }
+
+    /**
+     * Stores the given data at the given File object and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}.
+     *
+     * @param data
+     * @param storeResourceFile
+     * @throws IOException
+     */
+    // Made this method private to not tempt developers to directly create File object paths and store to it.
+    private void storeResource(String data, File storeResourceFile) throws IOException {
+        File parentDir = storeResourceFile.getParentFile();
+        if (!parentDir.exists()) {
+            if (!parentDir.mkdirs()) {
+                logger.severe("Could not create parent directories for data file: " + storeResourceFile);
+                throw new IOException("Could not create parent directories for data file.");
+            }
+        }
+        storeResource(data, new FileOutputStream(storeResourceFile));
+    }
+
+    /**
+     * Stores the given data at the given URI and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}.
+     *
+     * @param data
+     * @param storeResourceURI
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    public void storeResource(String data, URI storeResourceURI) throws URISyntaxException, IOException {
+        storeResource(data, ResourceRegistry.toFile(storeResourceURI));
+    }
+
+    /**
+     * Helper method to convert an InputStream to a String. The content of the InputStream is expected to be encoded in
+     * {@link ResourceRegistry#ARE_FILE_ENCODING}. The method automatically closes the given InputStream instance.
+     *
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
+    public String getResourceContentAsString(InputStream inputStream) throws IOException {
+        /*
+         * Use the IOUtils class of apache commons, makes it easier to deal with encodings. We encapsulate the inputStream into a BOMInputStream to exclude an
+         * optional BOM:
+         *
+         * @link http://www.rgagnon.com/javadetails/java-handle-utf8-file-with-bom.html
+         *
+         * @link https://commons.apache.org/proper/commons-io/javadocs/api-2.5/org/apache/commons/io/input/BOMInputStream.html
+         */
+        try {
+            String modelAsString = IOUtils.toString(new BOMInputStream(inputStream), ResourceRegistry.ARE_FILE_ENCODING);
+            return modelAsString;
+        } finally {
+            inputStream.close();
+        }
+    }
+
+    /**
+     * Tests whether the given URI exists by 1) testing if it is a File and invoking the File.exists method 2) trying to open an InputStream
+     *
+     * @param uri
+     * @return
+     */
+    public boolean resourceExists(URI uri) {
+        try {
+            if (ResourceRegistry.toFile(uri).exists()) {
+                return true;
+            }
+        } catch (URISyntaxException e) {
+            InputStream in = null;
+            try {
+                in = uri.toURL().openStream();
+                return true;
+            } catch (IOException e1) {
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e1) {
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the given uri points to a subpath of the given baseURI URI.
+     *
+     * @param baseURI
+     * @param toTest
+     * @return
+     */
+    public boolean isSubURI(URI baseURI, URI toTest) {
+        URI relativeURI = baseURI.normalize().relativize(toTest.normalize());
+        return !relativeURI.isAbsolute();
+    }
+
+    /**
+     * Compares equalness of the given URIs. Before comparison the URIs are normalized.
+     *
+     * @param first
+     * @param second
+     * @return
+     */
+    public boolean equalsNormalizedURIs(URI first, URI second) {
+        first.normalize();
+        second.normalize();
+        return first.normalize().equals(second.normalize());
+    }
+
+    /**
+     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
+     * as seperators if parameter slashify=true
+     *
+     * @param baseURIPath
+     * @param nonURIConformingFilePath
+     * @param slashify
+     *            true: Convert seperators to unix-style /
+     * @return
+     */
+    public File resolveRelativeFilePath(File baseURIPath, String nonURIConformingFilePath, boolean slashify) {
+        if (slashify) {
+            nonURIConformingFilePath = FilenameUtils.separatorsToUnix(nonURIConformingFilePath);
+        }
+
+        File absFile = new File(nonURIConformingFilePath);
+        if (!absFile.isAbsolute()) {
+            absFile = new File(baseURIPath, nonURIConformingFilePath);
+        }
+        return absFile;
+    }
+
+    /**
+     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
+     * as seperators.
+     *
+     * @param baseURIPath
+     * @param nonURIConformingFilePath
+     * @return
+     */
+    public File resolveRelativeFilePath(File baseURIPath, String nonURIConformingFilePath) {
+        return resolveRelativeFilePath(baseURIPath, nonURIConformingFilePath, true);
+    }
+
+    /**
+     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
+     * as seperators if parameter slashify=true
+     *
+     * @param baseURIPath
+     * @param nonURIConformingFilePath
+     * @param slashify
+     *            true: Convert seperators to unix-style /
+     * @return
+     */
+    public File resolveRelativeFilePath(URI baseURIPath, String nonURIConformingFilePath, boolean slashify) {
+        if (slashify) {
+            nonURIConformingFilePath = FilenameUtils.separatorsToUnix(nonURIConformingFilePath);
+        }
+        // File resolvedFile=new File(new
+        // File(baseURI),nonURIConformingFilePath);
+        // return resolvedFile;
+
+        File absFile = new File(nonURIConformingFilePath);
+        if (!absFile.isAbsolute()) {
+            absFile = new File(new File(baseURIPath), nonURIConformingFilePath);
+        }
+        return absFile;
+
+    }
+
+    /**
+     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
+     * as seperators.
+     *
+     * @param baseURI
+     * @param nonURIConformingFilePath
+     * @return
+     */
+    public File resolveRelativeFilePath(URI baseURI, String nonURIConformingFilePath) {
+        return resolveRelativeFilePath(baseURI, nonURIConformingFilePath, true);
+    }
+
     public enum RES_TYPE {
         ANY, MODEL, DATA, JAR, PROFILE, STORAGE, LICENSE, IMAGE, TMP, WEB_DOCUMENT_ROOT
     };
@@ -161,6 +506,7 @@ public class ResourceRegistry {
      * @return
      */
     public static ResourceRegistry getInstance() {
+
         return instance;
     }
 
@@ -372,78 +718,6 @@ public class ResourceRegistry {
     }
 
     /**
-     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
-     * as seperators.
-     * 
-     * @param baseURI
-     * @param nonURIConformingFilePath
-     * @return
-     */
-    public static File resolveRelativeFilePath(URI baseURI, String nonURIConformingFilePath) {
-        return resolveRelativeFilePath(baseURI, nonURIConformingFilePath, true);
-    }
-
-    /**
-     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
-     * as seperators if parameter slashify=true
-     * 
-     * @param baseURIPath
-     * @param nonURIConformingFilePath
-     * @param slashify
-     *            true: Convert seperators to unix-style /
-     * @return
-     */
-    public static File resolveRelativeFilePath(URI baseURIPath, String nonURIConformingFilePath, boolean slashify) {
-        if (slashify) {
-            nonURIConformingFilePath = FilenameUtils.separatorsToUnix(nonURIConformingFilePath);
-        }
-        // File resolvedFile=new File(new
-        // File(baseURI),nonURIConformingFilePath);
-        // return resolvedFile;
-
-        File absFile = new File(nonURIConformingFilePath);
-        if (!absFile.isAbsolute()) {
-            absFile = new File(new File(baseURIPath), nonURIConformingFilePath);
-        }
-        return absFile;
-
-    }
-
-    /**
-     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
-     * as seperators.
-     * 
-     * @param baseURIPath
-     * @param nonURIConformingFilePath
-     * @return
-     */
-    public static File resolveRelativeFilePath(File baseURIPath, String nonURIConformingFilePath) {
-        return resolveRelativeFilePath(baseURIPath, nonURIConformingFilePath, true);
-    }
-
-    /**
-     * Resolves the given nonURIConformingFilePath to the given baseURI URI. The string may contain normal file path characters like space and supports \\ and /
-     * as seperators if parameter slashify=true
-     * 
-     * @param baseURIPath
-     * @param nonURIConformingFilePath
-     * @param slashify
-     *            true: Convert seperators to unix-style /
-     * @return
-     */
-    public static File resolveRelativeFilePath(File baseURIPath, String nonURIConformingFilePath, boolean slashify) {
-        if (slashify) {
-            nonURIConformingFilePath = FilenameUtils.separatorsToUnix(nonURIConformingFilePath);
-        }
-
-        File absFile = new File(nonURIConformingFilePath);
-        if (!absFile.isAbsolute()) {
-            absFile = new File(baseURIPath, nonURIConformingFilePath);
-        }
-        return absFile;
-    }
-
-    /**
      * Compares equalness of the given uri to the ARE.baseURI. Before comparison the URIs are normalized.
      * 
      * @param uri
@@ -461,61 +735,6 @@ public class ResourceRegistry {
      */
     public boolean isSubURIOfAREBaseURI(URI uri) {
         return isSubURI(getAREBaseURI(), uri);
-    }
-
-    /**
-     * Compares equalness of the given URIs. Before comparison the URIs are normalized.
-     * 
-     * @param first
-     * @param second
-     * @return
-     */
-    public static boolean equalsNormalizedURIs(URI first, URI second) {
-        first.normalize();
-        second.normalize();
-        return first.normalize().equals(second.normalize());
-    }
-
-    /**
-     * Checks if the given uri points to a subpath of the given baseURI URI.
-     * 
-     * @param baseURI
-     * @param toTest
-     * @return
-     */
-    public static boolean isSubURI(URI baseURI, URI toTest) {
-        URI relativeURI = baseURI.normalize().relativize(toTest.normalize());
-        return !relativeURI.isAbsolute();
-    }
-
-    /**
-     * Tests whether the given URI exists by 1) testing if it is a File and invoking the File.exists method 2) trying to open an InputStream
-     * 
-     * @param uri
-     * @return
-     */
-    public static boolean resourceExists(URI uri) {
-        try {
-            if (ResourceRegistry.toFile(uri).exists()) {
-                return true;
-            }
-        } catch (URISyntaxException e) {
-            InputStream in = null;
-            try {
-                in = uri.toURL().openStream();
-                return true;
-            } catch (IOException e1) {
-            } finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (IOException e1) {
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -589,31 +808,6 @@ public class ResourceRegistry {
     }
 
     /**
-     * Helper method to convert an InputStream to a String. The content of the InputStream is expected to be encoded in
-     * {@link ResourceRegistry#ARE_FILE_ENCODING}. The method automatically closes the given InputStream instance.
-     *
-     * @param inputStream
-     * @return
-     * @throws IOException
-     */
-    public static String getResourceContentAsString(InputStream inputStream) throws IOException {
-        /*
-         * Use the IOUtils class of apache commons, makes it easier to deal with encodings. We encapsulate the inputStream into a BOMInputStream to exclude an
-         * optional BOM:
-         * 
-         * @link http://www.rgagnon.com/javadetails/java-handle-utf8-file-with-bom.html
-         * 
-         * @link https://commons.apache.org/proper/commons-io/javadocs/api-2.5/org/apache/commons/io/input/BOMInputStream.html
-         */
-        try {
-            String modelAsString = IOUtils.toString(new BOMInputStream(inputStream), ResourceRegistry.ARE_FILE_ENCODING);
-            return modelAsString;
-        } finally {
-            inputStream.close();
-        }
-    }
-
-    /**
      * Stores data to a given resource path in a given resource-Type directory defined by {@link ResourceRegistry#RES_TYPE}.
      *
      * @param data
@@ -631,54 +825,6 @@ public class ResourceRegistry {
     public void storeResource(String data, String resourcePath, RES_TYPE resourceType)
             throws URISyntaxException, FileNotFoundException, IOException {
         storeResource(data, ResourceRegistry.getInstance().getResource(resourcePath, resourceType));
-    }
-
-    /**
-     * Stores the given data at the given URI and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}.
-     * 
-     * @param data
-     * @param storeResourceURI
-     * @throws URISyntaxException
-     * @throws IOException
-     */
-    public static void storeResource(String data, URI storeResourceURI) throws URISyntaxException, IOException {
-        storeResource(data, ResourceRegistry.toFile(storeResourceURI));
-    }
-
-    /**
-     * Stores the given data at the given File object and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}.
-     * 
-     * @param data
-     * @param storeResourceFile
-     * @throws IOException
-     */
-    // Made this method private to not tempt developers to directly create File object paths and store to it.
-    private static void storeResource(String data, File storeResourceFile) throws IOException {
-        File parentDir = storeResourceFile.getParentFile();
-        if (!parentDir.exists()) {
-            if (!parentDir.mkdirs()) {
-                logger.severe("Could not create parent directories for data file: " + storeResourceFile);
-                throw new IOException("Could not create parent directories for data file.");
-            }
-        }
-        storeResource(data, new FileOutputStream(storeResourceFile));
-    }
-
-    /**
-     * Stores the given data to the given OutputStream and encoded as {@link ResourceRegistry#ARE_FILE_ENCODING}. The OutputStream is automatically closed
-     * afterwards.
-     * 
-     * @param data
-     * @param outputStream
-     * @throws IOException
-     */
-    public static void storeResource(String data, OutputStream outputStream) throws IOException {
-        try {
-            IOUtils.write(data, outputStream, ResourceRegistry.ARE_FILE_ENCODING);
-        } finally {
-            outputStream.flush();
-            outputStream.close();
-        }
     }
 
     // public void setAREBaseURI()
@@ -767,21 +913,6 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns the file/directory name of a given URI. This method simply splits the URI.getPath into elements seperated by a slash (/) and returns the last
-     * element.
-     * 
-     * @param absolutePath
-     * @return
-     */
-    public static String getLastElementOfURI(URI absolutePath) {
-        String[] elems = absolutePath.getPath().split("/");
-        if (elems != null && elems.length > 0) {
-            return elems[elems.length - 1];
-        }
-        return "";
-    }
-
-    /**
      * Converts the given relativePath to an absolute path by resolving with the ARE base URI {@link getAREBaseURI}.
      * 
      * @param relativePath
@@ -799,48 +930,6 @@ public class ResourceRegistry {
      */
     public URI toAbsolute(URI relativePath) {
         return getAREBaseURI().resolve(relativePath);
-    }
-
-    /**
-     * Checks whether the given URI is a URL or not.
-     * 
-     * @param uriToCheck
-     *            true: URI is a URL, false: URI is not a URL but probably a file (relative or absolute)
-     * @return
-     */
-    public static boolean isURL(URI uriToCheck) {
-        try {
-            uriToCheck.toURL();
-            return true;
-        } catch (MalformedURLException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Returns a File object representing the given URI if possible. This only works if the given URI is a relative path or is a path with a file scheme
-     * (starting with: file)
-     * 
-     * @param uri
-     * @return
-     * @throws URISyntaxException
-     */
-    public static File toFile(URI uri) throws URISyntaxException {
-        String scheme = uri.getScheme();
-        if (scheme != null && !scheme.startsWith("file")) {
-            throw new URISyntaxException(uri.toString(), "The uri does not start with the scheme <file>");
-        }
-        File f = new File(uri.getPath());
-        return f;
-    }
-
-    public static Path toPath(URI uri) throws URISyntaxException {
-        String scheme = uri.getScheme();
-        if (scheme != null && !scheme.startsWith("file")) {
-            throw new URISyntaxException(uri.toString(), "The uri does not start with the scheme <file>");
-        }
-        Path p = toFile(uri).toPath();
-        return p;
     }
 
     /**
@@ -1166,26 +1255,6 @@ public class ResourceRegistry {
     }
 
     /**
-     * Returns a list of model URIs in the given model dir URI.
-     * 
-     * @param modelDirURI
-     * @param relative
-     *            true: Only return name without absolute path.
-     * @return
-     */
-    public static List<URI> getModelList(URI modelDirURI, boolean relative) {
-        // get asterics involved model files
-        // Not sure how deep we should search, but 10 seems to be enough
-        List<URI> URIs = ComponentUtils.findFiles(modelDirURI, relative, RECURSIVE_FILE_SEARCH_DEPTH, new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name != null && name.endsWith(".acs");
-            }
-        });
-        return URIs;
-    }
-
-    /**
      * Returns the ARE base URI as a File object, if possible.
      * 
      * @return
@@ -1199,71 +1268,4 @@ public class ResourceRegistry {
         // return null;
     }
 
-    /**
-     * Returns an array of Strings representing URI paths.
-     * 
-     * @param uris
-     * @return
-     */
-    public static String[] toStringArray(Collection<URI> uris) {
-        String[] result = new String[uris.size()];
-        int i = 0;
-        for (URI uri : uris) {
-            result[i] = ResourceRegistry.toString(uri);
-            i++;
-        }
-        return result;
-    }
-
-    /**
-     * Returns a Set of Strings representing URI paths.
-     * 
-     * @param uris
-     * @return
-     */
-    public static Set<String> toStringSet(Collection<URI> uris) {
-        Set<String> result = new TreeSet<String>();
-        for (URI uri : uris) {
-            result.add(ResourceRegistry.toString(uri));
-        }
-        return result;
-    }
-
-    /**
-     * Returns a List of Strings representing URI paths.
-     * 
-     * @param uris
-     * @return
-     */
-    public static List<String> toStringList(Collection<URI> uris) {
-        List<String> result = new ArrayList<String>();
-        for (URI uri : uris) {
-            result.add(ResourceRegistry.toString(uri));
-        }
-        return result;
-    }
-
-    /**
-     * Return the String representation of the given URI.
-     * 
-     * @param uri
-     * @return
-     */
-    public static String toString(URI uri) {
-        return uri.getPath();
-    }
-
-    /**
-     * Creates an absolute URI defining a resource within a jarFileURI.
-     * 
-     * @param jarFileURI
-     *            The jarFileURI that contains the resource.
-     * @param relativeInternalURI
-     *            The relative path to the resource within the jar file. The relative path must have a leading / (e.g. /bundle_descriptor.xml)
-     * @return
-     */
-    public static URI toJarInternalURI(URI jarFileURI, String relativeInternalURI) {
-        String jarInternalURI = "jar:" + jarFileURI + "!" + relativeInternalURI;
-        return URI.create(jarInternalURI);
-    }
 }

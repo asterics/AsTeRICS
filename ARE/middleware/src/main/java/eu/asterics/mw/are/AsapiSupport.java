@@ -135,7 +135,7 @@ public class AsapiSupport {
                     logger.fine("getComponentDescriptorsAsXml()");
                     String response = "";
                     try {
-                        response = ResourceRegistry.getResourceContentAsString(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI.toURL().openStream());
+                        response = ResourceRegistry.getInstance().getResourceContentAsString(BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI.toURL().openStream());
                     } catch (IOException e) {
                         logger.severe("Error reading cached component collection from file <" + BundleManager.COMPONENT_COLLECTION_CACHE_FILE_URI
                                 + ">, reason: " + e.getMessage());
@@ -1092,7 +1092,7 @@ public class AsapiSupport {
     public boolean deleteModelFile(String filename) throws AREAsapiException {
         File f;
         try {
-            f = ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(filename, RES_TYPE.MODEL));
+            f = ResourceRegistry.getInstance().toFile(ResourceRegistry.getInstance().getResource(filename, RES_TYPE.MODEL));
 
             // Make sure the file or directory exists and isn't write protected
             if (!f.exists()) {
@@ -1129,7 +1129,7 @@ public class AsapiSupport {
      */
     public String[] listAllStoredModels() throws AREAsapiException {
         List<URI> storedModelList = ResourceRegistry.getInstance().getModelList(true);
-        return ResourceRegistry.toStringArray(storedModelList);
+        return ResourceRegistry.getInstance().toStringArray(storedModelList);
     }
 
     /**
@@ -1180,7 +1180,7 @@ public class AsapiSupport {
         String webappPath = ResourceRegistry.WEBAPP_FOLDER + webappId;
         try {
             URI webappUri = ResourceRegistry.getInstance().getResource(webappPath, RES_TYPE.WEB_DOCUMENT_ROOT);
-            if(!ResourceRegistry.resourceExists(webappUri)) {
+            if(!ResourceRegistry.getInstance().resourceExists(webappUri)) {
                 String msg = MessageFormat.format("tried to store data for webapp with ID <{0}>, but it does not exist. Aborting...", webappId);
                 logger.log(Level.WARNING, msg);
                 throw new AREAsapiException(msg);
@@ -1257,7 +1257,7 @@ public class AsapiSupport {
             try {
                 // try to find autostart model
                 // First look for a model file names autostart.acs
-                File autostartModel = ResourceRegistry.toFile(ResourceRegistry.getInstance().getResource(AUTO_START_MODEL, RES_TYPE.MODEL));
+                File autostartModel = ResourceRegistry.getInstance().toFile(ResourceRegistry.getInstance().getResource(AUTO_START_MODEL, RES_TYPE.MODEL));
                 if (autostartModel.exists()) {
                     startModel = autostartModel.getPath();
                 } else {
@@ -1265,7 +1265,7 @@ public class AsapiSupport {
                     // only one existing or throw an error message
                     List<URI> models = ResourceRegistry.getInstance().getModelList(false);
                     if (models.size() == 1) {
-                        startModel = ResourceRegistry.toString(models.get(0));
+                        startModel = ResourceRegistry.getInstance().toString(models.get(0));
                     } else {
                         throw new AREAsapiException(
                                 "No model found for autostart. To define autostart model, either\n\ncreate model " + ResourceRegistry.MODELS_FOLDER

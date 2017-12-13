@@ -1,10 +1,7 @@
 package eu.asterics.mw.are;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -188,11 +185,11 @@ public class BundleManager implements BundleListener, FrameworkListener {
             componentTypeIDToJarName.clear();
             List<URI> jarNameURIList = ResourceRegistry.getInstance().getComponentJarList(false);
             for (URI jarNameURI : jarNameURIList) {
-                URI bundleDescriptorURI = ResourceRegistry.toJarInternalURI(jarNameURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
-                String bundleDescriptorAsXMLString = ResourceRegistry.getResourceContentAsString(bundleDescriptorURI.toURL().openStream());
+                URI bundleDescriptorURI = ResourceRegistry.getInstance().toJarInternalURI(jarNameURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+                String bundleDescriptorAsXMLString = ResourceRegistry.getInstance().getResourceContentAsString(bundleDescriptorURI.toURL().openStream());
                 Set<IComponentType> componentTypeSet = DefaultBundleModelParser.instance.parseModelAsXMLString(bundleDescriptorAsXMLString);
                 for (IComponentType componentType : componentTypeSet) {
-                    componentTypeIDToJarName.put(componentType.getID(), ResourceRegistry.toString(ResourceRegistry.getInstance().toRelative(jarNameURI)));
+                    componentTypeIDToJarName.put(componentType.getID(), ResourceRegistry.getInstance().toString(ResourceRegistry.getInstance().toRelative(jarNameURI)));
                     ComponentRepository.instance.install(componentType);
                 }
             }
@@ -207,7 +204,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
      */
     private boolean cacheFileMissing() {
         logger.fine("Checking missing cache files");
-        if (!ResourceRegistry.resourceExists(LOADER_COMPONENTLIST_CACHE_FILE_URI) || !ResourceRegistry.resourceExists(COMPONENT_COLLECTION_CACHE_FILE_URI)) {
+        if (!ResourceRegistry.getInstance().resourceExists(LOADER_COMPONENTLIST_CACHE_FILE_URI) || !ResourceRegistry.getInstance().resourceExists(COMPONENT_COLLECTION_CACHE_FILE_URI)) {
             return true;
         }
         return false;
@@ -420,7 +417,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
         }
 
         try {
-            return ResourceRegistry.resourceExists(bundleDescriptorUrl.toURI());
+            return ResourceRegistry.getInstance().resourceExists(bundleDescriptorUrl.toURI());
         } catch (URISyntaxException e) {
             logger.warning("Could not check for Asterics metadata (bundle_descriptor.xml) due to invalid URI: " + bundleDescriptorUrl);
             return false;
@@ -448,7 +445,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
         List<URI> bundleDescriptorURIs = new ArrayList<URI>();
         List<URI> componentJarURIs = ResourceRegistry.getInstance().getComponentJarList(false);
         for (URI componentJarURI : componentJarURIs) {
-            URI jarInternalURI = ResourceRegistry.toJarInternalURI(componentJarURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+            URI jarInternalURI = ResourceRegistry.getInstance().toJarInternalURI(componentJarURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
 
             try {
                 if (checkForAstericsMetadata(jarInternalURI.toURL(), jarInternalURI.toString())) {
@@ -562,7 +559,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
      */
     public URI getBundleDescriptorURIFromComponentTypeId(String componentTypeId) throws BundleManagementException {
         URI jarNameURI = getJarNameURIFromComponentTypeId(componentTypeId);
-        URI bundleDescriptorURI = ResourceRegistry.toJarInternalURI(jarNameURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+        URI bundleDescriptorURI = ResourceRegistry.getInstance().toJarInternalURI(jarNameURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
         return bundleDescriptorURI;
     }
 
@@ -796,9 +793,9 @@ public class BundleManager implements BundleListener, FrameworkListener {
 
         StringWriter loaderComponentListWriter = new StringWriter();
         for (URI bundleURI : bundleURIList) {
-            URL bundleDescriptor = ResourceRegistry.toJarInternalURI(bundleURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI).toURL();
+            URL bundleDescriptor = ResourceRegistry.getInstance().toJarInternalURI(bundleURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI).toURL();
 
-            String bundleDescriptorAsXMLString = ResourceRegistry.getResourceContentAsString(bundleDescriptor.openStream());
+            String bundleDescriptorAsXMLString = ResourceRegistry.getInstance().getResourceContentAsString(bundleDescriptor.openStream());
             Set<IComponentType> componentTypeSet = DefaultBundleModelParser.instance.parseModelAsXMLString(bundleDescriptorAsXMLString);
 
             // update big bundle descriptors string
@@ -818,11 +815,11 @@ public class BundleManager implements BundleListener, FrameworkListener {
             }
         }
         // Write component list cache
-        ResourceRegistry.storeResource(loaderComponentListWriter.toString(), LOADER_COMPONENTLIST_CACHE_FILE_URI);
+        ResourceRegistry.getInstance().storeResource(loaderComponentListWriter.toString(), LOADER_COMPONENTLIST_CACHE_FILE_URI);
 
         // Finalize bundle descriptors string and store it into the cache file.
         bundleDescriptorsXMLBuilder.append("</componentTypes>");
-        ResourceRegistry.storeResource(bundleDescriptorsXMLBuilder.toString(), COMPONENT_COLLECTION_CACHE_FILE_URI);
+        ResourceRegistry.getInstance().storeResource(bundleDescriptorsXMLBuilder.toString(), COMPONENT_COLLECTION_CACHE_FILE_URI);
     }
 
     /**
@@ -880,7 +877,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
         try {
             // String inputFilePath = "jar:file://" + serviceBundleURI.getPath()
             // + "!/bundle_descriptor.xml" ;
-            URI jarInternalURI = ResourceRegistry.toJarInternalURI(serviceBundleURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
+            URI jarInternalURI = ResourceRegistry.getInstance().toJarInternalURI(serviceBundleURI, DefaultBundleModelParser.BUNDLE_DESCRIPTOR_RELATIVE_URI);
 
             if (checkForAstericsMetadata(jarInternalURI.toURL(), jarInternalURI.toString())) {
                 // if it has a bundle_descirptor it can only be a component
@@ -890,7 +887,7 @@ public class BundleManager implements BundleListener, FrameworkListener {
 
             // inputFilePath = "jar:file://" + serviceBundleURI.getPath() +
             // "!/META-INF/MANIFEST.MF" ;
-            jarInternalURI = ResourceRegistry.toJarInternalURI(serviceBundleURI, "/META-INF/MANIFEST.MF");
+            jarInternalURI = ResourceRegistry.getInstance().toJarInternalURI(serviceBundleURI, "/META-INF/MANIFEST.MF");
 
             try (BufferedReader in = new BufferedReader(new InputStreamReader(jarInternalURI.toURL().openStream()))) {
                 String actLine = "";
