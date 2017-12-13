@@ -1,13 +1,16 @@
 *.class
 *.iml
+*.log
 
 /bin/ARE/LICENSE/*.*
 /bin/ARE/*.jar
 /bin/ARE/areProperties
 /bin/ARE/tmp/
+/bin/ARE/log/
 /bin/ARE/profile/org.eclipse.osgi/
 /bin/ARE/profile/loader_componentlist.ini
 /bin/ARE/web/webapps/startpage/clientExample/
+/bin/ARE/web/componentCollections/
 
 /bin/APE/defProjectDir
 /bin/APE/lib
