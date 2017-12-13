@@ -264,7 +264,7 @@ public class ControlPane extends JPanel {
 
             actStatusImg = neutralIconImg;
 
-            pencilLabel = new ControlPanelLabel(getFullURL(PENCIL_ICON_PATH), getFullURL(PENCIL_ICON_PATH_RO), "Open current model in WebACS") {
+            pencilLabel = new ControlPanelLabel(getFullURL(PENCIL_ICON_PATH), getFullURL(PENCIL_ICON_PATH_RO), "Edit current model in WebACS") {
                 @Override
                 public void onMouseClick() {
                     String webACSPath = "webapps/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
@@ -659,34 +659,38 @@ public class ControlPane extends JPanel {
     }
 
     public void setStartKeyName(String key) {
-        // TODO Auto-generated method stub
-        if (key != null && !"".equals("key")) {
-            String[] elems = key.split("_");
-            if (elems.length >= 2) {
-                startLabel.setToolTipText("Start Model [" + elems[1] + "]");
-            }
-        }
+        String fKey = getFKeyFromNativeKeyCode(key);
+        String tooltipText = MessageFormat.format("Start Model [{0}]", fKey);
+        startLabel.setToolTipText(tooltipText);
     }
 
     public void setPauseKeyName(String key) {
-        // TODO Auto-generated method stub
-        if (key != null && !"".equals("key")) {
-            String[] elems = key.split("_");
-            if (elems.length >= 2) {
-                pauseLabel.setToolTipText("Pause Model [" + elems[1] + "]");
-            }
-        }
+        String fKey = getFKeyFromNativeKeyCode(key);
+        String tooltipText = MessageFormat.format("Pause Model [{0}]", fKey);
+        pauseLabel.setToolTipText(tooltipText);
 
     }
 
     public void setStopKeyName(String key) {
-        // TODO Auto-generated method stub
-        if (key != null && !"".equals("key")) {
-            String[] elems = key.split("_");
+        String fKey = getFKeyFromNativeKeyCode(key);
+        String tooltipText = MessageFormat.format("Stop Model [{0}]", fKey);
+        stopLabel.setToolTipText(tooltipText);
+    }
+
+    public void setEditKeyName(String key) {
+        String fKey = getFKeyFromNativeKeyCode(key);
+        String tooltipText = MessageFormat.format("Edit current model in WebACS [{0}]", fKey);
+        pencilLabel.setToolTipText(tooltipText);
+    }
+
+    private String getFKeyFromNativeKeyCode(String nativeKeycode) {
+        if (nativeKeycode != null && !"".equals("key")) {
+            String[] elems = nativeKeycode.split("_");
             if (elems.length >= 2) {
-                stopLabel.setToolTipText("Stop Model [" + elems[1] + "]");
+                return elems[1];
             }
         }
+        return "";
     }
 
     private URL getFullURL(String relativePath) {
