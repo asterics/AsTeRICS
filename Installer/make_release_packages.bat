@@ -98,6 +98,10 @@ rm -r AsTeRICS/Installer
 cp ../../asterics_make_release/vcredist_x86.exe Installer/vcredist_x86.exe
 cp -r  ../../asterics_make_release/java Installer/java 
 cp ../../asterics_make_release/dotNetFx40_setup.exe Installer/dotNetFx40_setup.exe
+
+REM copy icons
+cp Installer/*.ico AsTeRICS
+
 cd Installer
 call iscc setup.iss
 cd ..
