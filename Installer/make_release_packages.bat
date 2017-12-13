@@ -19,7 +19,7 @@ rm -r AsTeRICS/NativeASAPIlibraries
 rm -r AsTeRICS/BNCIevaluationSuite
 rm -r AsTeRICS/Android/AsTeRICSPhoneServer
 cd AsTeRICS
-call ant buildAll
+call ant buildAll-release
 cd ..
 rm AsTeRICS/ReadMe.md
 rm -r AsTeRICS/ACS
