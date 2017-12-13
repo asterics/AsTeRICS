@@ -848,6 +848,10 @@ public class AstericsGUI implements IAREEventListener {
         controlPane.setStopKeyName(key);
     }
 
+    public void setEditKeyName(String key) {
+        controlPane.setEditKeyName(key);
+    }
+
 }
 
 /*

@@ -36,6 +36,9 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -52,6 +55,8 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
+import eu.asterics.mw.are.AREProperties;
+import eu.asterics.mw.utils.OSUtils;
 import org.osgi.framework.BundleContext;
 
 import eu.asterics.mw.are.AREStatus;
@@ -62,6 +67,9 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class ControlPane extends JPanel {
 
     private static final int CONTROLPANEL_WIDTH = 30;
+    private Logger logger = AstericsErrorHandling.instance.getLogger();
+    private static final String DEFAULT_REST_PORT = "8081";
+    private static final String PROPTERTY_REST_PORT = "ARE.webservice.port.REST";
 
     private BundleContext bundleContext;
     private JPanel jplPanel, iconPanel, mainPanel;
@@ -88,6 +96,8 @@ public class ControlPane extends JPanel {
     private JLabel exitLabel;
     private ImageIcon exitIcon;
     private ImageIcon exitIcon_ro;
+    private JLabel globeLabel;
+    private JLabel pencilLabel;
     private ImageIcon statusIcon;
     private JLabel statusLabel;
     private ErrorLogPane errorLogPane;
@@ -106,6 +116,10 @@ public class ControlPane extends JPanel {
     static String OPTIONS_ICON_PATH_RO = "/images/options_ro.png";
     static String EXIT_ICON_PATH = "/images/exit.png";
     static String EXIT_ICON_PATH_RO = "/images/exit_ro.png";
+    static String GLOBE_ICON_PATH = "/images/globe.png";
+    static String GLOBE_ICON_PATH_RO = "/images/globe_ro.png";
+    static String PENCIL_ICON_PATH = "/images/pencil.png";
+    static String PENCIL_ICON_PATH_RO = "/images/pencil_ro.png";
 
     static String ERROR_ICON_PATH = "/images/are_error.png";
     static String RUNNING_ICON_PATH = "/images/are_running.png";
@@ -176,23 +190,23 @@ public class ControlPane extends JPanel {
 
         this.add(jplPanel);
 
-        deployIconPath = bundleContext.getBundle().getResource(DEPLOY_ICON_PATH);
-        deployIconPath_ro = bundleContext.getBundle().getResource(DEPLOY_ICON_PATH_RO);
-        startIconPath = bundleContext.getBundle().getResource(START_ICON_PATH);
-        startIconPath_ro = bundleContext.getBundle().getResource(START_ICON_PATH_RO);
-        pauseIconPath = bundleContext.getBundle().getResource(PAUSE_ICON_PATH);
-        pauseIconPath_ro = bundleContext.getBundle().getResource(PAUSE_ICON_PATH_RO);
-        stopIconPath = bundleContext.getBundle().getResource(STOP_ICON_PATH);
-        stopIconPath_ro = bundleContext.getBundle().getResource(STOP_ICON_PATH_RO);
-        optionsIconPath = bundleContext.getBundle().getResource(OPTIONS_ICON_PATH);
-        optionsIconPath_ro = bundleContext.getBundle().getResource(OPTIONS_ICON_PATH_RO);
-        exitIconPath = bundleContext.getBundle().getResource(EXIT_ICON_PATH);
-        exitIconPath_ro = bundleContext.getBundle().getResource(EXIT_ICON_PATH_RO);
+        deployIconPath = getFullURL(DEPLOY_ICON_PATH);
+        deployIconPath_ro = getFullURL(DEPLOY_ICON_PATH_RO);
+        startIconPath = getFullURL(START_ICON_PATH);
+        startIconPath_ro = getFullURL(START_ICON_PATH_RO);
+        pauseIconPath = getFullURL(PAUSE_ICON_PATH);
+        pauseIconPath_ro = getFullURL(PAUSE_ICON_PATH_RO);
+        stopIconPath = getFullURL(STOP_ICON_PATH);
+        stopIconPath_ro = getFullURL(STOP_ICON_PATH_RO);
+        optionsIconPath = getFullURL(OPTIONS_ICON_PATH);
+        optionsIconPath_ro = getFullURL(OPTIONS_ICON_PATH_RO);
+        exitIconPath = getFullURL(EXIT_ICON_PATH);
+        exitIconPath_ro = getFullURL(EXIT_ICON_PATH_RO);
 
-        unknownIconPath = bundleContext.getBundle().getResource(UNKNOWN_ICON_PATH);
-        errorIconPath = bundleContext.getBundle().getResource(ERROR_ICON_PATH);
-        runningIconPath = bundleContext.getBundle().getResource(RUNNING_ICON_PATH);
-        neutralIconPath = bundleContext.getBundle().getResource(NEUTRAL_ICON_PATH);
+        unknownIconPath = getFullURL(UNKNOWN_ICON_PATH);
+        errorIconPath = getFullURL(ERROR_ICON_PATH);
+        runningIconPath = getFullURL(RUNNING_ICON_PATH);
+        neutralIconPath = getFullURL(NEUTRAL_ICON_PATH);
 
         iconPanel = new JPanel();
         iconPanel.setLayout(new BoxLayout(iconPanel, axis));
@@ -249,6 +263,31 @@ public class ControlPane extends JPanel {
             neutralIconImg = ImageIO.read(neutralIconPath);
 
             actStatusImg = neutralIconImg;
+
+            pencilLabel = new ControlPanelLabel(getFullURL(PENCIL_ICON_PATH), getFullURL(PENCIL_ICON_PATH_RO), "Edit current model in WebACS") {
+                @Override
+                public void onMouseClick() {
+                    String webACSPath = "webapps/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
+                    String url = MessageFormat.format("http://localhost:{0}/{1}", getCurrentRestPort(), webACSPath);
+                    try {
+                        OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
+                    } catch (IOException e) {
+                        logger.log(Level.SEVERE, "error opening WebACS for current model.", e);
+                    }
+                }
+            };
+
+            globeLabel = new ControlPanelLabel(getFullURL(GLOBE_ICON_PATH), getFullURL(GLOBE_ICON_PATH_RO), "Open ARE Webserver Startpage") {
+                @Override
+                public void onMouseClick() {
+                    String url = MessageFormat.format("http://localhost:{0}/", getCurrentRestPort());
+                    try {
+                        OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
+                    } catch (IOException e) {
+                        logger.log(Level.SEVERE, "error opening ARE Webserver Startpage.", e);
+                    }
+                }
+            };
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -504,10 +543,12 @@ public class ControlPane extends JPanel {
         });
 
         iconPanel.add(deployLabel);
+        iconPanel.add(pencilLabel);
         iconPanel.add(startLabel);
         iconPanel.add(pauseLabel);
         iconPanel.add(stopLabel);
         iconPanel.add(optionsLabel);
+        iconPanel.add(globeLabel);
         iconPanel.add(statusLabel);
         iconPanel.add(exitLabel);
 
@@ -618,33 +659,49 @@ public class ControlPane extends JPanel {
     }
 
     public void setStartKeyName(String key) {
-        // TODO Auto-generated method stub
-        if (key != null && !"".equals("key")) {
-            String[] elems = key.split("_");
-            if (elems.length >= 2) {
-                startLabel.setToolTipText("Start Model [" + elems[1] + "]");
-            }
-        }
+        String fKey = getFKeyFromNativeKeyCode(key);
+        String tooltipText = MessageFormat.format("Start Model [{0}]", fKey);
+        startLabel.setToolTipText(tooltipText);
     }
 
     public void setPauseKeyName(String key) {
-        // TODO Auto-generated method stub
-        if (key != null && !"".equals("key")) {
-            String[] elems = key.split("_");
-            if (elems.length >= 2) {
-                pauseLabel.setToolTipText("Pause Model [" + elems[1] + "]");
-            }
-        }
+        String fKey = getFKeyFromNativeKeyCode(key);
+        String tooltipText = MessageFormat.format("Pause Model [{0}]", fKey);
+        pauseLabel.setToolTipText(tooltipText);
 
     }
 
     public void setStopKeyName(String key) {
-        // TODO Auto-generated method stub
-        if (key != null && !"".equals("key")) {
-            String[] elems = key.split("_");
+        String fKey = getFKeyFromNativeKeyCode(key);
+        String tooltipText = MessageFormat.format("Stop Model [{0}]", fKey);
+        stopLabel.setToolTipText(tooltipText);
+    }
+
+    public void setEditKeyName(String key) {
+        String fKey = getFKeyFromNativeKeyCode(key);
+        String tooltipText = MessageFormat.format("Edit current model in WebACS [{0}]", fKey);
+        pencilLabel.setToolTipText(tooltipText);
+    }
+
+    private String getFKeyFromNativeKeyCode(String nativeKeycode) {
+        if (nativeKeycode != null && !"".equals("key")) {
+            String[] elems = nativeKeycode.split("_");
             if (elems.length >= 2) {
-                stopLabel.setToolTipText("Stop Model [" + elems[1] + "]");
+                return elems[1];
             }
         }
+        return "";
+    }
+
+    private URL getFullURL(String relativePath) {
+        return bundleContext.getBundle().getResource(relativePath);
+    }
+
+    private String getCurrentRestPort() {
+        String port = AREProperties.instance.getProperty(PROPTERTY_REST_PORT);
+        if(port == null || port.isEmpty()) {
+            port = DEFAULT_REST_PORT;
+        }
+        return port;
     }
 }

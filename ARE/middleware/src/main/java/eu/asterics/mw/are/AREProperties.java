@@ -73,18 +73,29 @@ public class AREProperties extends Properties {
     }
 
     /**
-     * This method returns the value of the given property and the given defaultValue, if the property was not found in the file. Additionally, the given
+     * This method saves the given default value, if the property was not set. Additionally, the given
      * propertyComment is registered for being stored right before the property in the {{@link #PROPERTY_FILENAME} file when {{@link #storeProperties()} is
      * called.
-     * 
+     *
      * @param key
      * @param defaultValue
      * @param propertyComment
      * @return
      */
-    public String getProperty(String key, String defaultValue, String propertyComment) {
+    public void setDefaultPropertyValue(String key, String defaultValue, String propertyComment) {
         propertyComments.put(key, propertyComment);
-        return getProperty(key, defaultValue);
+        getProperty(key, defaultValue);
+    }
+
+    /**
+     * This method saves the given default value, if the property was not set.
+     *
+     * @param key
+     * @param defaultValue
+     * @return
+     */
+    public void setDefaultPropertyValue(String key, String defaultValue) {
+        getProperty(key, defaultValue);
     }
 
     /**

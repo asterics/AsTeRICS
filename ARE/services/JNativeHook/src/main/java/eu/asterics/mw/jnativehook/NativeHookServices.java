@@ -27,8 +27,13 @@ package eu.asterics.mw.jnativehook;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.MessageFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import eu.asterics.mw.utils.OSUtils;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
@@ -50,13 +55,20 @@ import eu.asterics.mw.services.AstericsErrorHandling;
  *
  */
 public class NativeHookServices implements NativeKeyListener {
+    private static Logger logger = AstericsErrorHandling.instance.getLogger();
+
+    private static final String DEFAULT_REST_PORT = "8081";
+    private static final String PROPTERTY_REST_PORT = "ARE.webservice.port.REST";
+
     private static final String ARE_HOT_KEY_START_MODEL = "ARE.hotKey.startModel";
     private static final String ARE_HOT_KEY_PAUSE_MODEL = "ARE.hotKey.pauseModel";
     private static final String ARE_HOT_KEY_STOP_MODEL = "ARE.hotKey.stopModel";
+    private static final String ARE_HOT_KEY_EDIT_MODEL = "ARE.hotKey.editModel";
 
     private int keyCodeStartModel = -1;
     private int keyCodePauseModel = -1;
     private int keyCodeStopModel = -1;
+    private int keyCodeEditModel = -1;
 
     public static NativeHookServices instance = null;
 
@@ -115,6 +127,7 @@ public class NativeHookServices implements NativeKeyListener {
         keyCodeStartModel = initHotKey(ARE_HOT_KEY_START_MODEL);
         keyCodePauseModel = initHotKey(ARE_HOT_KEY_PAUSE_MODEL);
         keyCodeStopModel = initHotKey(ARE_HOT_KEY_STOP_MODEL);
+        keyCodeEditModel = initHotKey(ARE_HOT_KEY_EDIT_MODEL);
     }
 
     private int initHotKey(String key) {
@@ -126,7 +139,7 @@ public class NativeHookServices implements NativeKeyListener {
             Class<?> t = f.getType();
             if (t == int.class) {
                 try {
-                    AstericsErrorHandling.instance.getLogger().fine("Hotkey for " + key + "=" + val);
+                    AstericsErrorHandling.instance.getLogger().fine("setting Hotkey for " + key + "=" + val);
                     switch (key) {
                     case ARE_HOT_KEY_START_MODEL:
                         DeploymentManager.instance.getGUI().setStartKeyName(val);
@@ -136,6 +149,9 @@ public class NativeHookServices implements NativeKeyListener {
                         break;
                     case ARE_HOT_KEY_STOP_MODEL:
                         DeploymentManager.instance.getGUI().setStopKeyName(val);
+                        break;
+                    case ARE_HOT_KEY_EDIT_MODEL:
+                        DeploymentManager.instance.getGUI().setEditKeyName(val);
                         break;
                     }
                     return f.getInt(null);
@@ -151,15 +167,11 @@ public class NativeHookServices implements NativeKeyListener {
     private void storeDefaultProperties() {
         AREProperties props = AREProperties.instance;
 
-        if (!props.containsKey(ARE_HOT_KEY_START_MODEL)) {
-            props.setProperty(ARE_HOT_KEY_START_MODEL, "VC_F5");
-        }
-        if (!props.containsKey(ARE_HOT_KEY_PAUSE_MODEL)) {
-            props.setProperty(ARE_HOT_KEY_PAUSE_MODEL, "VC_F6");
-        }
-        if (!props.containsKey(ARE_HOT_KEY_STOP_MODEL)) {
-            props.setProperty(ARE_HOT_KEY_STOP_MODEL, "VC_F7");
-        }
+        props.setDefaultPropertyValue(ARE_HOT_KEY_START_MODEL, "VC_F5");
+        props.setDefaultPropertyValue(ARE_HOT_KEY_PAUSE_MODEL, "VC_F6");
+        props.setDefaultPropertyValue(ARE_HOT_KEY_STOP_MODEL, "VC_F7");
+        props.setDefaultPropertyValue(ARE_HOT_KEY_EDIT_MODEL, "VC_F8");
+
         props.storeProperties();
     }
 
@@ -206,23 +218,28 @@ public class NativeHookServices implements NativeKeyListener {
             try {
                 as.runModel();
             } catch (AREAsapiException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.log(Level.WARNING, "error start model by F-key", e);
             }
 
         } else if (nke.getKeyCode() == keyCodePauseModel) {
             try {
                 as.pauseModel();
             } catch (AREAsapiException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.log(Level.WARNING, "error pause model by F-key", e);
             }
         } else if (nke.getKeyCode() == keyCodeStopModel) {
             try {
                 as.stopModel();
             } catch (AREAsapiException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.log(Level.WARNING, "error stop model by F-key", e);
+            }
+        } else if (nke.getKeyCode() == keyCodeEditModel) {
+            try {
+                String webACSPath = "webapps/WebACS/index.html?autoConnect=true&autoDownloadModel=true";
+                String url = MessageFormat.format("http://localhost:{0}/{1}", getCurrentRestPort(), webACSPath);
+                OSUtils.openURL(url, OSUtils.OS_NAMES.ALL);
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "error opening WebACS for current model by F-key.", e);
             }
         }
     }
@@ -231,5 +248,13 @@ public class NativeHookServices implements NativeKeyListener {
     public void nativeKeyTyped(NativeKeyEvent nke) {
         // TODO Auto-generated method stub
         // System.out.println("Native key typed: "+nke);
+    }
+
+    private String getCurrentRestPort() {
+        String port = AREProperties.instance.getProperty(PROPTERTY_REST_PORT);
+        if(port == null || port.isEmpty()) {
+            port = DEFAULT_REST_PORT;
+        }
+        return port;
     }
 }
