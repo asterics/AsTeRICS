@@ -230,7 +230,7 @@ public class AstericsGUI implements IAREEventListener {
                 // ignore, in this case don't show name.
             }
         }
-        String versionString = "ARE " + ARE_VERSION;
+        String versionString = "AsTeRICS ARE " + ARE_VERSION;
         String title = modelName != null ? modelName + " - " + versionString : versionString;
         System.out.println(title);
         if (mainFrame != null) {
