@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS\bin\ARE\models\XFaceTrackerMouse.acs_2017_12_5_17_3" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ARE\XFaceTrackerMouse.acs_2017_12_14_11_55" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 

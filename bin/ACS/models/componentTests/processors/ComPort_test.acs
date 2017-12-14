@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\processors\ComPort_test.acs_2015_10_28_9_33" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\processors\ComPort_test.acs_2017_12_14_11_44" version="20130320">
   <components>
     <component id="ComPort.1" type_id="asterics.ComPort">
       <description>interfaces a (virtual) COM Port for data send/receive  operations</description>

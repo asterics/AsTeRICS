@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\others\communicatorHeadmouse_german.acs_2015_10_9_14_11" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\others\communicatorHeadmouse_german.acs_2017_12_14_11_53" version="20130320">
   <modelDescription>
     <shortDescription>Camera controlled mouse for writing with OSKA</shortDescription>
     <requirements>Webcam connected.
@@ -617,6 +617,9 @@ OSKA and Notepad are automatically started for the writing task.</description>
           <properties />
         </outputPort>
         <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
           <properties />
         </outputPort>
       </ports>

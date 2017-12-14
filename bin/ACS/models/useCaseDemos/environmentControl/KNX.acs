@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\environmentControl\KNX.acs_2015_10_9_14_7" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\environmentControl\KNX.acs_2017_12_14_11_50" version="20130320">
   <modelDescription>
     <shortDescription>KNX Demo application
 This model controls the lightning of the KNX Gamma Trainingskit.</shortDescription>
@@ -307,9 +307,9 @@ individually with other string formatting plugins.
       </gui>
     </component>
     <component id="Knx.1" type_id="asterics.Knx">
-      <description>My Plugin description</description>
+      <description>Enables the ARE to communicate with a KNX network</description>
       <ports>
-        <inputPort portTypeID="command">
+        <inputPort portTypeID="actionString">
           <properties />
         </inputPort>
         <inputPort portTypeID="slider1">
@@ -330,41 +330,77 @@ individually with other string formatting plugins.
         <inputPort portTypeID="slider6">
           <properties />
         </inputPort>
+        <outputPort portTypeID="data1">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="data2">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="data3">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="data4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="data5">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="data6">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="localIP" value="172.22.0.213" />
         <property name="KNXNetIP" value="172.22.0.20" />
         <property name="NAT" value="true" />
         <property name="groupAddress1" value="1/1/0" />
-        <property name="dataType1" value="boolean" />
         <property name="dataValue1" value="1" />
+        <property name="DPTEvent1" value="" />
         <property name="groupAddress2" value="1/1/0" />
-        <property name="dataType2" value="boolean" />
         <property name="dataValue2" value="0" />
+        <property name="DPTEvent2" value="" />
         <property name="groupAddress3" value="1/1/4" />
-        <property name="dataType3" value="boolean" />
         <property name="dataValue3" value="1" />
+        <property name="DPTEvent3" value="" />
         <property name="groupAddress4" value="1/1/4" />
-        <property name="dataType4" value="boolean" />
         <property name="dataValue4" value="0" />
+        <property name="DPTEvent4" value="" />
         <property name="groupAddress5" value="1/1/5" />
-        <property name="dataType5" value="boolean" />
         <property name="dataValue5" value="1" />
+        <property name="DPTEvent5" value="" />
         <property name="groupAddress6" value="1/1/5" />
-        <property name="dataType6" value="boolean" />
         <property name="dataValue6" value="0" />
+        <property name="DPTEvent6" value="" />
         <property name="groupAddressSlider1" value="1/1/100" />
+        <property name="DPTSlider1" value="" />
         <property name="groupAddressSlider2" value="1/1/101" />
+        <property name="DPTSlider2" value="" />
         <property name="groupAddressSlider3" value="1/1/102" />
+        <property name="DPTSlider3" value="" />
         <property name="groupAddressSlider4" value="1/1/103" />
+        <property name="DPTSlider4" value="" />
         <property name="groupAddressSlider5" value="1/1/104" />
+        <property name="DPTSlider5" value="" />
         <property name="groupAddressSlider6" value="1/1/105" />
+        <property name="DPTSlider6" value="" />
         <property name="groupAddressTrigger1" value="1/1/94" />
         <property name="groupAddressTrigger2" value="1/1/95" />
         <property name="groupAddressTrigger3" value="1/1/1" />
         <property name="groupAddressTrigger4" value="1/1/1" />
         <property name="groupAddressTrigger5" value="1/1/1" />
         <property name="groupAddressTrigger6" value="1/1/1" />
+        <property name="groupAddressOutput1" value="1/1/1" />
+        <property name="DPTOutput1" value="" />
+        <property name="groupAddressOutput2" value="1/1/1" />
+        <property name="DPTOutput2" value="" />
+        <property name="groupAddressOutput3" value="1/1/1" />
+        <property name="DPTOutput3" value="" />
+        <property name="groupAddressOutput4" value="1/1/1" />
+        <property name="DPTOutput4" value="" />
+        <property name="groupAddressOutput5" value="1/1/1" />
+        <property name="DPTOutput5" value="" />
+        <property name="groupAddressOutput6" value="1/1/1" />
+        <property name="DPTOutput6" value="" />
       </properties>
       <layout>
         <posX>409</posX>
@@ -489,16 +525,6 @@ individually with other string formatting plugins.
       <target>
         <component id="Knx.1" />
         <port id="slider6" />
-      </target>
-    </channel>
-    <channel id="binding.6">
-      <source>
-        <component id="TextSender.1" />
-        <port id="output" />
-      </source>
-      <target>
-        <component id="Knx.1" />
-        <port id="command" />
       </target>
     </channel>
   </channels>

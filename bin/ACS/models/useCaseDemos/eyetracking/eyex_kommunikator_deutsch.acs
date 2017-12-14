@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\eyetracking\eyex_kommunikator_deutsch.acs_2015_10_9_14_7" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\eyetracking\eyex_kommunikator_deutsch.acs_2017_12_14_11_51" version="20130320">
   <components>
     <component id="EyeX.1" type_id="asterics.EyeX">
       <description>interfaces to the EyeX Gaze tracking system</description>
@@ -372,6 +372,9 @@
           <properties />
         </outputPort>
         <outputPort portTypeID="out4">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="out5">
           <properties />
         </outputPort>
       </ports>
