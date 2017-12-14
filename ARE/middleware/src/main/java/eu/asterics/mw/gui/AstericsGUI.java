@@ -84,7 +84,7 @@ import eu.asterics.mw.services.IAREEventListener;
 public class AstericsGUI implements IAREEventListener {
     private static int DEFAULT_FONT_SIZE = 18;
     private static String DEFAULT_FONT_SIZE_PROPERTY = "ARE.gui.font.size";
-    public final static String ARE_VERSION = "3.0alpha1";
+    public final static String ARE_VERSION = "3.0";
     static int DEFAULT_SCREEN_X = 0;
     static int DEFAULT_SCREEN_Y = 0;
     static int DEFAULT_SCREEN_W = 60;
@@ -221,15 +221,6 @@ public class AstericsGUI implements IAREEventListener {
     }
 
     private void setTitle() {
-        String hostname = "", ip = "";
-
-        try {
-            hostname = InetAddress.getLocalHost().getHostName();
-            ip = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
         IRuntimeModel currentModel = DeploymentManager.instance.getCurrentRuntimeModel();
         String modelName = null;
         if (currentModel != null) {
@@ -239,7 +230,7 @@ public class AstericsGUI implements IAREEventListener {
                 // ignore, in this case don't show name.
             }
         }
-        String versionString = "ARE " + ARE_VERSION + " - Host: " + hostname + "  IP:" + ip;
+        String versionString = "ARE " + ARE_VERSION;
         String title = modelName != null ? modelName + " - " + versionString : versionString;
         System.out.println(title);
         if (mainFrame != null) {
