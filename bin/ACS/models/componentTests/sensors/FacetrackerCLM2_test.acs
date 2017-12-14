@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\sensors\FacetrackerCLM2_test.acs_2015_10_9_10_38" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\FacetrackerCLM2_test.acs_2017_12_14_11_47" version="20130320">
   <components>
     <component id="Oscilloscope.1" type_id="asterics.Oscilloscope">
       <description>Oscilloscope display for one signal channel</description>
@@ -206,6 +206,9 @@
           <properties />
         </outputPort>
         <outputPort portTypeID="BrowLift">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="LipDistance">
           <properties />
         </outputPort>
       </ports>

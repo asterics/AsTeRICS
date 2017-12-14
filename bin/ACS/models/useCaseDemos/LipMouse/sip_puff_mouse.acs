@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\LipMouse\sip_puff_mouse.acs_2015_10_9_14_9" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\LipMouse\sip_puff_mouse.acs_2017_12_14_11_52" version="20130320">
   <modelDescription>
     <shortDescription>Sip/Puff controlled local mouse</shortDescription>
     <requirements>Sip/Puff sensor connected to A0 of the Arduino Uno or Duemilanove.
@@ -574,6 +574,9 @@ Sensitivity and Dwell time can be selected via two GUI sliders.</description>
         <outputPort portTypeID="output">
           <properties />
         </outputPort>
+        <outputPort portTypeID="outputResult">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
         <property name="hostname" value="localhost" />
@@ -621,6 +624,9 @@ Sensitivity and Dwell time can be selected via two GUI sliders.</description>
         <outputPort portTypeID="pressure">
           <properties />
         </outputPort>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="uniqueID" value="not used" />

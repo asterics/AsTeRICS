@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\environmentControl\Oska_webcam_irtrans.acs_2015_10_9_14_7" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\environmentControl\Oska_webcam_irtrans.acs_2017_12_14_11_50" version="20130320">
   <modelDescription>
     <shortDescription>Infrared Remote Control functions via OSKA and head-mouse + Sip/Puff sensor.
 </shortDescription>
@@ -36,6 +36,9 @@ rc_stop</description>
           <properties />
         </inputPort>
         <outputPort portTypeID="output">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="outputResult">
           <properties />
         </outputPort>
       </ports>

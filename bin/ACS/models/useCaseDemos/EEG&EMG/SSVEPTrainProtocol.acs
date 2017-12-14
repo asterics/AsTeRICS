@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\SSVEPTrainProtocol.acs_2015_10_9_14_7" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\EEG&amp;EMG\SSVEPTrainProtocol.acs_2017_12_14_11_50" version="20130320">
   <modelDescription>
     <shortDescription>This model carries out the SSVEP training protocol recording necessary to carry out the SSVEP Detection</shortDescription>
     <requirements>Enobio (cap montage)
@@ -254,7 +254,7 @@ This training process shall be done at least once for every subject to use an SS
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
-        <property name="sendDefaultValue" value="0" />
+        <property name="sendDefaultValue" value="false" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>

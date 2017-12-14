@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\EEG&amp;EMG\SSVEPMusicPlayer.acs_2015_10_9_14_7" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\EEG&amp;EMG\SSVEPMusicPlayer.acs_2017_12_14_11_50" version="20130320">
   <modelDescription>
     <shortDescription>This model implements a SSVEP music player that manages a pre-defined playlist
 </shortDescription>
@@ -583,7 +583,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
-        <property name="sendDefaultValue" value="0" />
+        <property name="sendDefaultValue" value="false" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
@@ -610,7 +610,7 @@ The user shall look during the visual stimulation to the stimulation panel assoc
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
-        <property name="sendDefaultValue" value="0" />
+        <property name="sendDefaultValue" value="false" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>

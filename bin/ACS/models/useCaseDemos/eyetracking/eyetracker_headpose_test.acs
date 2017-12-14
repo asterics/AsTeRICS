@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\eyetracking\eyetracker_headpose_test.acs_2015_10_9_14_7" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\eyetracking\eyetracker_headpose_test.acs_2017_12_14_11_50" version="20130320">
   <components>
     <component id="Eyetracker.1" type_id="asterics.Eyetracker">
       <description>Webcamera-based eye tracking sensor with gaze tracking support</description>
@@ -362,8 +362,25 @@
         <inputPort portTypeID="filename">
           <properties />
         </inputPort>
+        <inputPort portTypeID="arguments">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stdIn">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="stdOut">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stdErr">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="exitValue">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
+        <property name="executeOnPlatform" value="ALL" />
+        <property name="executionMode" value="START_APPLICATION" />
         <property name="defaultApplication" value="c:\windows\notepad.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />
