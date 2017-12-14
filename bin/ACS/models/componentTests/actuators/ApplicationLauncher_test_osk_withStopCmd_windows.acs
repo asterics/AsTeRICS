@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS\bin\ACS\models\componentTests\actuators\ApplicationLauncher_test_osk_withStopCmd_windows.acs_2017_12_12_17_0" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\ApplicationLauncher_test_osk_withStopCmd_windows.acs_2017_12_14_11_43" version="20130320">
   <components>
     <component id="ApplicationLauncher.1" type_id="asterics.ApplicationLauncher">
       <description>starts external software applications via path and  filename (.exe)</description>
@@ -226,7 +226,7 @@
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
-        <property name="sendDefaultValue" value="0" />
+        <property name="sendDefaultValue" value="false" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
@@ -253,7 +253,7 @@
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
-        <property name="sendDefaultValue" value="0" />
+        <property name="sendDefaultValue" value="false" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>

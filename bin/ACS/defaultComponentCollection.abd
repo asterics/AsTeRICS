@@ -1,6 +1,4 @@
-<?xml version="1.0"?><componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-
-    <componentType id="asterics.AnalogOut"
+<?xml version="1.0"?><componentTypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"> <componentType id="asterics.AnalogOut"
                    canonical_name="eu.asterics.component.actuator.analogout.AnalogOutInstance">
         <type subtype="Generic Control Output">actuator</type>
         <singleton>false</singleton>
@@ -179,7 +177,7 @@
                       type="string"
                       value="START_APPLICATION"
                       combobox="START_APPLICATION//OPEN_URL"
-                      description="If != ALL, the application will only be launched if the ARE runs on the defined platform."/>        
+                      description="If START_APPLICATION, the command defined in defaultApplication will be launched with the given arguments. If OPEN_URL, the URL defined in arguments will be launched with the platform default browser. The platform-specific browser launch commands are configurable in the file areProperties."/>        
 			<property name="defaultApplication"
 				type="string"
 				value="c:\windows\notepad.exe"
@@ -13277,7 +13275,7 @@
 			<property name="default"
 				type="string"
 				value=""
-				description="Defalult text"/>
+				description="Default text"/>
 			<property name="textColor"
                 type="integer"
                 value="0"
@@ -13295,7 +13293,7 @@
                 description="defines behaviour of the component after text insert"/>
 			<property name="sendDefaultValue"
                 type="boolean"
-                value="0"
+                value="false"
                 description="defines if the initial value should be sent at model startup"/>
             <property name="displayGUI"
                       type="boolean"
@@ -17751,5 +17749,6 @@
             <height>1500</height>
         </gui>
     </componentType>
+
 
 </componentTypes>

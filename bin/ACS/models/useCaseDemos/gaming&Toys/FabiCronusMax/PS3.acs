@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\gaming&amp;Toys\FabiCronusMax\PS3.acs_2015_10_9_14_9" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\gaming&amp;Toys\FabiCronusMax\PS3.acs_2017_12_14_11_51" version="20130320">
   <components>
     <component id="FabiCronusMax.1" type_id="asterics.FabiCronusMax">
       <description>Plugin for the combination of the Fabi and the CronusMax</description>
@@ -653,6 +653,9 @@
         <outputPort portTypeID="pressure">
           <properties />
         </outputPort>
+        <inputPort portTypeID="AtCmd">
+          <properties />
+        </inputPort>
       </ports>
       <properties>
         <property name="uniqueID" value="not used" />
@@ -993,8 +996,25 @@
         <inputPort portTypeID="filename">
           <properties />
         </inputPort>
+        <inputPort portTypeID="arguments">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="stdIn">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="stdOut">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="stdErr">
+          <properties />
+        </outputPort>
+        <outputPort portTypeID="exitValue">
+          <properties />
+        </outputPort>
       </ports>
       <properties>
+        <property name="executeOnPlatform" value="ALL" />
+        <property name="executionMode" value="START_APPLICATION" />
         <property name="defaultApplication" value="C:\Program Files (x86)\CronusPRO\Cronus.exe" />
         <property name="arguments" value="" />
         <property name="workingDirectory" value="." />

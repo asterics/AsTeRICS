@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # postinst script
 #
 # see: dh_installdeb(1)
@@ -53,13 +53,15 @@ case "$1" in
 		
 		# component IrTrans udev rules
 		echo creating udev rule 49-asterics-irtrans.rules for IRTrans devices
-		echo 'SUBSYSTEMS=="usb", ATTRS{idProduct}=="0001", ATTRS{idVendor}=="1d6b",SYMLINK+="ttyIRTrans", MODE="0666"' > /etc/udev/rules.d/49-asterics-irtrans.rules
+		echo 'SUBSYSTEMS=="usb", ATTRS{idProduct}=="fc60", ATTRS{idVendor}=="0403",SYMLINK+="ttyIRTrans", MODE="0666"' > /etc/udev/rules.d/49-asterics-irtrans.rules
 		
 		# soft-link for FS20 component, according to:
 		# https://github.com/gary-rowe/hid4java
 		if [ "$(dpkg --print-architecture)" == "armhf" ]; then
 			echo "linking libudev for hid4java library (only on ARM)"
-			ln -sf /lib/arm-linux-gnueabihf/libudev.so.1 /lib/arm-linux-gnueabihf/libudev.so.0
+			if [ ! -e /lib/arm-linux-gnueabihf/libudev.so.0 ]; then
+				ln -sf /lib/arm-linux-gnueabihf/libudev.so.1 /lib/arm-linux-gnueabihf/libudev.so.0
+			fi
 			if [ ! -e /usr/lib/arm-linux-gnueabihf/libhidapi.so ]; then
 				ln -s /usr/lib/arm-linux-gnueabihf/libhidapi-libusb.so.0 /usr/lib/arm-linux-gnueabihf/libhidapi.so
 			fi

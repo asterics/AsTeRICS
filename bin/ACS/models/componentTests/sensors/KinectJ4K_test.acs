@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_master\AsTeRICS\bin\ACS\models\componentTests\sensors\KinectJ4K_test.acs_2015_11_13_10_19" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\sensors\KinectJ4K_test.acs_2017_12_14_11_48" version="20130320">
   <components>
     <component id="KinectJ4K.1" type_id="asterics.KinectJ4K">
       <description>My Plugin description</description>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\useCaseDemos\others\osc_in_a_loop.acs_2015_10_9_14_12" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\useCaseDemos\others\osc_in_a_loop.acs_2017_12_14_11_53" version="20130320">
   <modelDescription>
     <shortDescription>An example model which demonstrates the usage of the Open Sound Control (OSC) plugins.
 The OscOutClient plugin broadcast via OSC data which are received by the OscServer plugin.

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=irtrans-server
+Comment=IrTrans Server USB
+Exec=sudo bash /opt/asterics-ergo/app/tools/start_irserver.sh
+Icon=/opt/asterics-ergo/app/tools/irtrans.png
+Terminal=true
+Type=Application
+Categories=Hardware Tool

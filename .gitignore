@@ -2,6 +2,8 @@
 *.iml
 *.log
 
+Installer/asterics-are/build/
+
 /bin/ARE/LICENSE/*.*
 /bin/ARE/*.jar
 /bin/ARE/areProperties

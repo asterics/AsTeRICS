@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\AsTeRICS\bin\ACS\models\componentTests\actuators\RemoteWindow_test.acs_2015_10_9_10_32" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ACS\componentTests\actuators\RemoteWindow_test.acs_2017_12_14_11_44" version="20130320">
   <components>
     <component id="ButtonGrid.1" type_id="asterics.ButtonGrid">
       <description>Keyboard which sends event after button press</description>
@@ -79,7 +79,7 @@
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
-        <property name="sendDefaultValue" value="0" />
+        <property name="sendDefaultValue" value="false" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
@@ -106,7 +106,7 @@
         <property name="textColor" value="0" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
-        <property name="sendDefaultValue" value="0" />
+        <property name="sendDefaultValue" value="false" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
@@ -158,7 +158,7 @@
         <property name="textColor" value="10" />
         <property name="backgroundColor" value="11" />
         <property name="insertAction" value="0" />
-        <property name="sendDefaultValue" value="0" />
+        <property name="sendDefaultValue" value="false" />
         <property name="displayGUI" value="true" />
       </properties>
       <layout>

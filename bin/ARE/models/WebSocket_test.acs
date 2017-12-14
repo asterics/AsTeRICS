@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\AsTeRICS\AsTeRICS_Licensing_Packaging_Asterics_2_8_Prep\bin\ARE\models\merged\bin\ARE\models\NetworkIO\WebSocket\WebSocket-SignalGeneratorDemo(WLM).acs_2016_2_11_16_7" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="C:\modelconvert\ARE\WebSocket_test.acs_2017_12_14_11_54" version="20130320">
   <components>
     <component id="WebSocket.1" type_id="asterics.WebSocket">
       <description>This plugin uses a websocket connection to send and read data</description>
