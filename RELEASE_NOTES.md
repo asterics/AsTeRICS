@@ -219,4 +219,8 @@ Release with major changes under the hood regarding ARE licensing and customized
 * Added shortcut and gui buttons to control panel of ARE to open webserver hp and currently deployed model in WebACS.
 * Reworked ARE webpage.
 * Improved many plugins.
+* Reworked loading and storing model files to ensure UTF-8 encoding.
+* Many plugin improvements.
+* Made REST API ports configurable in areProperties.
+* For further changes see the (Milestone 3.0)[https://github.com/asterics/AsTeRICS/milestone/5] and issues
   
