@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # postinst script
 #
 # see: dh_installdeb(1)
@@ -20,9 +20,9 @@ set -e
 #source appname
 #. APE.properties
 APPNAME="$DPKG_MAINTSCRIPT_PACKAGE"
-APPPATH="/opt/$APPNAME/app/"
+APPPATH="/opt/$APPNAME/app"
 APPINSTALLDIR="/opt/$APPNAME"
-WRITEDIR="/var/opt/$APPNAME/"
+WRITEDIR="/var/opt/$APPNAME"
 
 case "$1" in
     configure)

@@ -37,12 +37,7 @@ case "$1" in
 		rm -f $APPPATH/web
 		rm -f $APPPATH/tmp
 		rm -f $APPPATH/areProperties
-		rm -rf $APPPATH/tools/remotes
 	   
-		# component FS20 udev rules
-		echo removing udev rules for FS20 and IrTrans
-		rm -f /etc/udev/rules.d/50-asterics-fs20.rules
-		rm -f /etc/udev/rules.d/49-asterics-irtrans.rules
 
     ;;
 
