@@ -4,7 +4,7 @@
 	<ul class="menuList">
 		<!--Each menu item has to have a special attribute "data-filename", containing the relative path
 		(below the path specified in "helpPaths.json") and the complete filename.-->
-		<li class="menuItem" data-filename="acs_basic_functions.htm">ACS Basic Functions</li>
+		<li class="menuItem" data-filename="ACS_Basic_Functions.htm">ACS Basic Functions</li>
 		<li class="menuItem">
 			Create and Edit a Model
 			<ul class="menuList">
