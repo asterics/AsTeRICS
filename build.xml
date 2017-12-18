@@ -52,8 +52,6 @@
 			<arg value="--recursive"/>
 		</exec>
 		
-		<ant antfile="${web.docroot}/webapps/WebACS/build.xml" target="copyHelpFiles" useNativeBaseDir="true"/>
-		
 		<!-- copy help files for ARE help on ${web.docroot}/help/ -->
 		<mkdir dir="${web.docroot}/help/help_files"/>
 		<copy todir="${web.docroot}/help/help_files/ARE/" failonerror="true">
