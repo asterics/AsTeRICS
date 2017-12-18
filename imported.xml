@@ -53,7 +53,15 @@
 		<move file="LICENSE/LICENSE_dual.txt" tofile="LICENSE/LICENSE_MITOrGPLv3WithException.txt" verbose="true">
 		</move>
 	</target>
-
 	
+	<!-- update git submodules -->
+	<target name="updateGitSubmodules" description="Updates (and inits) all git submodules.">
+		<exec executable="git">
+			<arg value="submodule"/>
+			<arg value="update"/>
+			<arg value="--init"/>
+			<arg value="--recursive"/>
+		</exec>
+	</target>
 	
 </project>
