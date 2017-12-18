@@ -45,6 +45,15 @@
 	</target>
 	
 	<target name="copyHelpFiles" description="Copy all help files to the webserver document root help path and the legacy ACS.">
+		<exec executable="git">
+			<arg value="submodule"/>
+			<arg value="update"/>
+			<arg value="--init"/>
+			<arg value="--recursive"/>
+		</exec>
+		
+		<ant antfile="${web.docroot}/webapps/WebACS/build.xml" target="copyHelpFiles" useNativeBaseDir="true"/>
+		
 		<!-- copy help files for ARE help on ${web.docroot}/help/ -->
 		<mkdir dir="${web.docroot}/help/help_files"/>
 		<copy todir="${web.docroot}/help/help_files/ARE/" failonerror="true">
