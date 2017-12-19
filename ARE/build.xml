@@ -65,7 +65,7 @@
           </subant>
     </target>
 	
-	<target name="run" depends="buildAllNoClean" description="Peforms buildAllNoClean and starts the ARE.">
+	<target name="run" depends="buildAllNoClean, updateGitSubmodules" description="Peforms buildAllNoClean and starts the ARE.">
 		<java jar="${runtime}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${runtime}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
@@ -85,7 +85,7 @@
 		<antcall target="run-quick"/>
 	</target>	
 	
-	<target name="run-quick" description="Starts the ARE with debug options without compiling.">
+	<target name="run-quick" depends="updateGitSubmodules" description="Starts the ARE with debug options without compiling.">
 		<java jar="${runtime}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${runtime}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
@@ -128,7 +128,7 @@
 	<target name="test"  description="Calls unit tests">
 	</target>
 	
-	<target name="copyHelpFiles" depends="updateGitSubmodules" description="Copy all help files to the webserver document root help path and the legacy ACS.">
+	<target name="copyHelpFiles" depends="initGitSubmodules" description="Copy all help files to the webserver document root help path and the legacy ACS.">
 		
 		<!-- copy help files for ARE help on ${web.docroot}/help/ -->
 		<mkdir dir="${web.docroot}/help/help_files"/>

@@ -44,7 +44,7 @@
 		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
 	
-	<target name="copyHelpFiles" depends="updateGitSubmodules" description="Copy all help files to the webserver document root help path and the legacy ACS.">
+	<target name="copyHelpFiles" depends="initGitSubmodules" description="Copy all help files to the webserver document root help path and the legacy ACS.">
 		
 		<!-- copy help files for C# ACS help on ${web.docroot}/help/ -->
 		<mkdir dir="${ACS.bin}/help/help_files"/>
