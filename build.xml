@@ -44,29 +44,7 @@
 		<!-- TODO: add Copy help files, ACS stuff, CIM stuff,... -->
 	</target>
 	
-	<target name="copyHelpFiles" description="Copy all help files to the webserver document root help path and the legacy ACS.">
-		<!-- copy help files for ARE help on ${web.docroot}/help/ -->
-		<mkdir dir="${web.docroot}/help/help_files"/>
-		<copy todir="${web.docroot}/help/help_files/ARE/" failonerror="true">
-		    <fileset dir="Documentation/ACS-Help/HTML/ARE"/>
-		</copy>
-		<copy todir="${web.docroot}/help/help_files/Plugins/" failonerror="true">
-		    <fileset dir="Documentation/ACS-Help/HTML/Plugins"/>
-		</copy>
-		<copy todir="${web.docroot}/help/help_files/ACS/" failonerror="true">
-		    <fileset dir="Documentation/ACS-Help/HTML/ACS"/>
-		</copy>
-		<copy tofile="${web.docroot}/help/help_files/helpPaths-hosted.json" failonerror="true">
-		    <fileset dir="Documentation/ACS-Help/HTML/" includes="helpPaths-hosted.ARE.json"/>
-		</copy>
-		
-		<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
-		<subant target="copyHelpFiles" failonerror="true">
-			<fileset dir="${WebACS.bin}" includes="**/build.xml"></fileset>
-		</subant>
-		<copy tofile="${WebACS.bin}/help/help_files/helpPaths-hosted.json" failonerror="true" verbose="true" overwrite="true">
-		    <fileset dir="Documentation/ACS-Help/HTML/" includes="helpPaths-hosted.WebACS.json"/>
-		</copy>
+	<target name="copyHelpFiles" depends="initGitSubmodules" description="Copy all help files to the webserver document root help path and the legacy ACS.">
 		
 		<!-- copy help files for C# ACS help on ${web.docroot}/help/ -->
 		<mkdir dir="${ACS.bin}/help/help_files"/>

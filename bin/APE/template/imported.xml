@@ -323,7 +323,7 @@
 	<!-- build ARE if the ARE.baseURI points to an Astercis sourcecode repository -->
 	<target name="build-dependencies-release" description="Builds an AsTeRICS snapshot, if ARE.baseURI points to one." if="ARE.baseURI.is.snapshot">
 		<!-- Ensure to call buildAll-release target of AsTERICS framework -->
-		<subant target="buildAll-release" buildpath="${ARE.baseURI}/../../ARE/"/>		
+		<subant target="buildAll-release" buildpath="${ARE.baseURI}/../../"/>
     </target>	
 
 	<target name="run" depends="build-all" description="Peforms build-all and starts the ARE.">

@@ -5,6 +5,7 @@
   <property name="runtime" location="../bin/ARE"/>
   <property name="osgi" location="osgi"/>
   <property name="web.docroot" location="${runtime}/web/"/>
+  <property name="WebACS.bin" location="${web.docroot}/webapps/WebACS"/>
 	
 	<target name="cleanProfile">
 	    <delete dir =  "${runtime}/profile/org.eclipse.osgi" failonerror="false"/>
@@ -12,7 +13,7 @@
 		<delete dir =  "${web.docroot}/componentCollections/" failonerror="false"/>
 	</target>
 
-	<target name="buildARE" depends="cleanProfile">
+	<target name="buildARE" depends="cleanProfile, copyHelpFiles">
       <subant target="jar">
           <property name="debug" value="${debug}"/>
           <fileset dir="." includes="middleware/build.xml"/>
@@ -126,6 +127,34 @@
 	
 	<target name="test"  description="Calls unit tests">
 	</target>
+	
+	<target name="copyHelpFiles" depends="initGitSubmodules" description="Copy all help files to the webserver document root help path and the legacy ACS.">
+		
+		<!-- copy help files for ARE help on ${web.docroot}/help/ -->
+		<mkdir dir="${web.docroot}/help/help_files"/>
+		<copy todir="${web.docroot}/help/help_files/ARE/" failonerror="true">
+		    <fileset dir="../Documentation/ACS-Help/HTML/ARE"/>
+		</copy>
+		<copy todir="${web.docroot}/help/help_files/Plugins/" failonerror="true">
+		    <fileset dir="../Documentation/ACS-Help/HTML/Plugins"/>
+		</copy>
+		<copy todir="${web.docroot}/help/help_files/ACS/" failonerror="true">
+		    <fileset dir="../Documentation/ACS-Help/HTML/ACS"/>
+		</copy>
+		<copy tofile="${web.docroot}/help/help_files/helpPaths-hosted.json" failonerror="true">
+		    <fileset dir="../Documentation/ACS-Help/HTML/" includes="helpPaths-hosted.ARE.json"/>
+		</copy>
+		
+		<copy tofile="${WebACS.bin}/help/help_files/helpPaths-hosted.json" failonerror="true" verbose="true" overwrite="true">
+		    <fileset dir="../Documentation/ACS-Help/HTML/" includes="helpPaths-hosted.WebACS.json"/>
+		</copy>
+		
+		<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
+		<subant target="copyHelpFiles" failonerror="true">
+			<fileset dir="${WebACS.bin}" includes="**/build.xml"></fileset>
+		</subant>
+	</target>
+	
 	<import file="imported.xml"/>
     <include file="included.xml"/>
 	
