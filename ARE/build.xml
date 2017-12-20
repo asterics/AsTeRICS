@@ -65,7 +65,7 @@
           </subant>
     </target>
 	
-	<target name="run" depends="buildAllNoClean, updateGitSubmodules" description="Peforms buildAllNoClean and starts the ARE.">
+	<target name="run" depends="buildAllNoClean" description="Peforms buildAllNoClean and starts the ARE.">
 		<java jar="${runtime}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${runtime}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
@@ -81,7 +81,7 @@
 		</java>	
 	</target>	
 	
-	<target name="run-debug" depends="buildAllNoCleanNoCopyLicenses, updateGitSubmodules" description="Peforms buildAllNoCleanNoCopyLicenses and starts the ARE with debug options.">
+	<target name="run-debug" depends="buildAllNoCleanNoCopyLicenses" description="Peforms buildAllNoCleanNoCopyLicenses and starts the ARE with debug options.">
 		<antcall target="run-quick"/>
 	</target>	
 	
