@@ -25,12 +25,12 @@
 
 package eu.asterics.component.processor.serialport;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import eu.asterics.mw.cimcommunication.CIMPortController;
 import eu.asterics.mw.cimcommunication.CIMPortManager;
@@ -56,6 +56,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     private final OutputPort opReceived = new OutputPort();
     private final OutputPort opReceivedBytes = new OutputPort();
+    private final Logger logger = AstericsErrorHandling.instance.getLogger();
 
     // Usage of an output port e.g.:
     // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
@@ -66,11 +67,12 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     private OutputStream out = null;
     private Thread readerThread = null;
     private boolean running = false;
-    String propComPort = "COM4";
-    int propBaudRate = 9600;
-    int propSendStringTerminator = 0;
-    int propReceiveStringTerminator = 0;
-    int propSendBytesBufferSize=1;
+    private String propComPort = "COM4";
+    private int propBaudRate = 9600;
+    private int propSendStringTerminator = 0;
+    private int propReceiveStringTerminator = 0;
+    private int propSendBytesBufferSize=1;
+    private Short propCimId = null;
     
     private ByteBuffer sendBytesBuffer=ByteBuffer.allocate(propSendBytesBufferSize);
     
@@ -209,7 +211,16 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
             propSendBytesBufferSize = Integer.parseInt(newValue.toString());
             sendBytesBuffer=ByteBuffer.allocate(propSendBytesBufferSize);
             return oldValue;
-        }        
+        }
+        if ("cimId".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propCimId;
+            String s = newValue.toString();
+            if(s.contains("0x")) {
+                s = s.substring(2);
+            }
+            propCimId = (short) Integer.parseInt(s, 16);
+            return oldValue;
+        }
 
         return null;
     }
@@ -318,50 +329,50 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
 
         //First directly send the byte to the receivedBytes output port.
         opReceivedBytes.sendData(ConversionUtils.byteToBytes(actbyte));
-        
+
         // System.out.println("received " + Integer.toHexString(0x000000ff &
         // actbyte) +" hex");
-        
+
         switch (propSendStringTerminator) {
-        case 0:
-            received += (char) actbyte;
-            finished = true;
-            break;
-        case 1:
-            if (actbyte != 13) {
+            case 0:
                 received += (char) actbyte;
-            } else {
                 finished = true;
-            }
-            break;
-        case 2:
-            if (actbyte != 10) {
-                received += (char) actbyte;
-            } else {
-                finished = true;
-            }
-            break;
-        case 3:
-            if ((actbyte != 13) && (actbyte != 10)) {
-                endflag = false;
-                received += (char) actbyte;
-            } else {
-                if (actbyte == 13) {
-                    endflag = true;
-                }
-                if ((endflag == true) && (actbyte == 10)) {
-                    endflag = false;
+                break;
+            case 1:
+                if (actbyte != 13) {
+                    received += (char) actbyte;
+                } else {
                     finished = true;
                 }
-            }
-            break;
-        case 4:
-            if (actbyte != 0) {
-                received += (char) actbyte;
-            } else {
-                finished = true;
-            }
-            break;
+                break;
+            case 2:
+                if (actbyte != 10) {
+                    received += (char) actbyte;
+                } else {
+                    finished = true;
+                }
+                break;
+            case 3:
+                if ((actbyte != 13) && (actbyte != 10)) {
+                    endflag = false;
+                    received += (char) actbyte;
+                } else {
+                    if (actbyte == 13) {
+                        endflag = true;
+                    }
+                    if ((endflag == true) && (actbyte == 10)) {
+                        endflag = false;
+                        finished = true;
+                    }
+                }
+                break;
+            case 4:
+                if (actbyte != 0) {
+                    received += (char) actbyte;
+                } else {
+                    finished = true;
+                }
+                break;
         }
 
         if (finished) {
@@ -382,7 +393,13 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
             stop();
         }
 
-        portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
+        if(propCimId != null) {
+            propComPort = CIMPortManager.getInstance().getCOMPortByCIMId(propCimId);
+            logger.info(MessageFormat.format("Opening device with cimID <{0}> on COM Port <{1}>", Integer.toHexString(propCimId), propComPort));
+            portController = CIMPortManager.getInstance().getRawConnection(propCimId, propBaudRate);
+        } else {
+            portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
+        }
         received = "";
 
         if (portController == null) {
@@ -397,22 +414,12 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
                 public void run() {
                     running = true;
                     while (running) {
-
-                        try {
-                            if (in.available() > 0) {
-                                handlePacketReceived((byte) in.read());
-                            } else {
-                                Thread.sleep(10);
-                            }
-                        } catch (InterruptedException ie) {
-                            ie.printStackTrace();
-                        } catch (IOException io) {
-                            io.printStackTrace();
+                        Byte read = portController.poll();
+                        if (read != null) {
+                            handlePacketReceived(read);
                         }
-
                     }
                 }
-
             });
             readerThread.start();
 
