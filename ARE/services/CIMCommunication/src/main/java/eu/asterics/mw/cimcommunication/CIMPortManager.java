@@ -39,6 +39,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
 import eu.asterics.mw.services.AstericsThreadPool;
@@ -47,12 +48,13 @@ import eu.asterics.mw.systemstatechange.SystemChangeListener;
 import eu.asterics.mw.systemstatechange.SystemChangeNotifier;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
+import gnu.io.SerialPort;
 
 /**
  * The CIMPortManager controls all the connections to CIMs on the AsTeRICS
  * platform. The class is implemented as a singleton and is the only way to
  * access the connected CIMs.
- * 
+ *
  * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
@@ -68,20 +70,26 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
 
     private final String IGNORE_PORT_FILNAME = "data/cimcommunication/ignore_ports.txt";
     private final String CIMID_FILENAME = "data/cimcommunication/cimids.txt";
+    private final String PROPERTY_CIM_RAW_MODE = "CIM.mode.raw";
     private List<String> ignoredComPorts = new ArrayList<String>();
     private HashMap<Long, String> cimIdToName = new HashMap<Long, String>();
+    private HashMap<Short, String> cimIdToComPortName = new HashMap<>();
     private Logger logger = null;
     // Indicate that new devices have been attached since the last rescan
     private boolean usbDevicesAttached = false;
     // Indicate that devices have been detached since the last rescan
     private boolean usbDevicesRemoved = false;
     private boolean modelRunning = false;
+    private boolean cimRawMode = false;
 
     /**
      * Sets up the port manager instance and scans for attached CIMs
      */
     private CIMPortManager() {
         logger = AstericsErrorHandling.instance.getLogger();
+        AREProperties.instance.setDefaultPropertyValue(PROPERTY_CIM_RAW_MODE, "false", "If true the CIMPortManager starts in raw mode, where COM connections can be used directly without CIM protocol");
+        this.cimRawMode = Boolean.valueOf(AREProperties.instance.getProperty(PROPERTY_CIM_RAW_MODE));
+        logger.info("started CIMPortManager with rawMode = " + cimRawMode);
         // logger.fine("Constructing CIM Port Manager");
 
         comPorts = new Hashtable<CIMUniqueIdentifier, CIMPortController>();
@@ -99,7 +107,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
 
     /**
      * Method to access the CIMPortManager singleton
-     * 
+     *
      * @return the common port manager instance
      */
     public synchronized static CIMPortManager getInstance() {
@@ -287,22 +295,8 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     }
 
     /**
-     * Adds a serial port controller for a certain CIM id to the list
-     * 
-     * @param cimId
-     *            ID of the CIM
-     * @param ctrl
-     *            instance of the controller
-     */
-    synchronized void addConnection(CIMUniqueIdentifier cuid, CIMPortController ctrl) {
-        if ((ctrl != null) && (comPorts.get(cuid) == null)) {
-            comPorts.put(cuid, ctrl);
-        }
-    }
-
-    /**
      * Removes a specified CIM from the list
-     * 
+     *
      * @param cimId
      *            the ID of the CIM to be removed
      */
@@ -312,7 +306,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
 
     /**
      * Removes a specified CIM from the list
-     * 
+     *
      * @param cimId
      *            the ID of the CIM to be removed
      */
@@ -323,7 +317,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     /**
      * Returns a connection to a specified CIM. This works for only one CIM of
      * one ID, as there is no way to identify the CIM's unique number.
-     * 
+     *
      * @param cimId
      *            the ID of the requested CIM
      * @return the instance of the controller for the requested CIM
@@ -343,7 +337,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
      * Id and the unique number of the CIM . At the moment this works for only
      * one CIM of one ID, as there is no way to identify the CIM's unique
      * number.
-     * 
+     *
      * @param cimId
      *            the ID of the requested CIM
      * @param uniqueNumber
@@ -365,7 +359,26 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
      * Opens a serial port at a certain baud rate. This is used to connect to
      * devices that use serial communication but do not adhere to the CIM
      * protocol
-     * 
+     *
+     * @param cimId
+     *            the cimId of the device to connect to
+     * @param baudRate
+     *            the baud rate of the connection
+     * @return a controller instance of the opened connection, null on error
+     */
+    public CIMPortController getRawConnection(short cimId, int baudRate) {
+        String portName = this.getCOMPortByCIMId(cimId);
+        if(portName != null && !portName.isEmpty()) {
+            return getRawConnection(portName, baudRate, false);
+        }
+        return null;
+    }
+
+    /**
+     * Opens a serial port at a certain baud rate. This is used to connect to
+     * devices that use serial communication but do not adhere to the CIM
+     * protocol
+     *
      * @param portName
      *            the name of the port the device is connected to
      * @param baudRate
@@ -399,7 +412,6 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
                         ret = new CIMHighSpeedRawPortController(portIdentifier, baudRate);
                     } else {
                         ret = new CIMRawPortController(portIdentifier, baudRate);
-                        AstericsThreadPool.instance.execute((CIMRawPortController) ret);
                     }
                     comRawPorts.put(portName, ret);
                 } catch (CIMException e) {
@@ -414,7 +426,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     /**
      * Closes the serial connection on the specified port, if it exists. The
      * connection listeners have to be removed.
-     * 
+     *
      * @param portName
      *            name of the port to be closed
      */
@@ -469,7 +481,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     /**
      * Checks whether there are multiple CIMs of one specified ID. Once called
      * method will search through all detected CIMs.
-     * 
+     *
      * @param cimId
      *            the cimId to be checked for multiple CIMs
      * @return true if two or more CIMs of the specified ID are found, false
@@ -494,7 +506,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     /**
      * Generates a Vector of all the unique identifier numbers of a certain CIM
      * id.
-     * 
+     *
      * @param cimId
      *            the CIM Id of the desired CIM
      * @return a Vector instance holding the unique Ids of the CIMs or null if
@@ -658,12 +670,35 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
 
     }
 
-    public boolean addWirelessConnection(CIMWirelessHubPortController ctrl) {
-        if (wirelessHub == null) {
-            this.wirelessHub = ctrl;
-            return true;
+    synchronized boolean reportFoundCim(CIMUniqueIdentifier cuid, String comPortName, SerialPort port, CIMPortEventListener eventListener, byte nextPacketNumber) {
+        boolean shouldCloseResources = true;
+        if(!this.cimRawMode) {
+            shouldCloseResources = false;
+            if (cuid.getCIMId() == 0xa01) {
+                CIMWirelessHubPortController ctrl = new CIMWirelessHubPortController(
+                        comPortName, port, eventListener);
+                ctrl.cuid = cuid;
+                ctrl.setNextExpectedIncomingSerialNumber(nextPacketNumber);
+                this.wirelessHub = ctrl;
+                AstericsThreadPool.instance.execute(ctrl);
+            } else {
+                CIMSerialPortController ctrl = new CIMSerialPortController(comPortName, port,
+                        eventListener);
+                ctrl.cuid = cuid;
+                ctrl.setNextExpectedIncomingSerialNumber(nextPacketNumber);
+                if ((ctrl != null) && (comPorts.get(cuid) == null)) {
+                    comPorts.put(cuid, ctrl);
+                }
+                AstericsThreadPool.instance.execute(ctrl);
+            }
+        } else {
+            cimIdToComPortName.put(cuid.getCIMId(), comPortName);
         }
-        return false;
+        return shouldCloseResources;
+    }
+
+    public String getCOMPortByCIMId(short cimId) {
+        return cimIdToComPortName.get(cimId);
     }
 
     public Vector<Long> getUniqueIdentifiersofWirelessCIMs(short cimId) {
