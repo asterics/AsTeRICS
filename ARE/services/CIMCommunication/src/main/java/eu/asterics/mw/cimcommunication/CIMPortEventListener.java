@@ -28,6 +28,8 @@ package eu.asterics.mw.cimcommunication;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 import gnu.io.SerialPortEvent;
@@ -49,9 +51,7 @@ class CIMPortEventListener implements SerialPortEventListener {
 
     /**
      * Constructs the listener
-     * 
-     * @param controller
-     *            the controller that data should be sent to
+     *
      * @param in
      *            the input stream from the RXTX serial port
      * @param dataSink
@@ -60,6 +60,37 @@ class CIMPortEventListener implements SerialPortEventListener {
     public CIMPortEventListener(InputStream in, BlockingQueue<Byte> dataSink) {
         this.in = in;
         this.dataSink = dataSink;
+    }
+
+    /**
+     * Constructs the listener
+     *
+     * @param in
+     *            the input stream from the RXTX serial port
+     */
+    public CIMPortEventListener(InputStream in) {
+        this.in = in;
+        this.dataSink = new LinkedBlockingQueue<>();
+    }
+
+    /**
+     * gets the input stream
+     * @return
+     */
+    public InputStream getInputStream() {
+        return this.in;
+    }
+
+    /**
+     * polls the data sink up to a given maximum time
+     *
+     * @param timeout the amount of time in unit given by param unit
+     * @param unit the time unit of the timeout
+     * @return the next byte
+     * @throws InterruptedException
+     */
+    public Byte poll(long timeout, TimeUnit unit) throws InterruptedException {
+        return dataSink.poll(timeout, unit);
     }
 
     /**
