@@ -35,6 +35,10 @@ public class CIMUniqueIdentifier {
         this.CIMUniqueNumber = CIMUniqueNumber;
     }
 
+    public short getCIMId() {
+        return this.CIMId;
+    }
+
     @Override
     public String toString() {
         return String.format("CIM Id: 0x%x, UniqueNumber: 0x%x", CIMId, CIMUniqueNumber);
