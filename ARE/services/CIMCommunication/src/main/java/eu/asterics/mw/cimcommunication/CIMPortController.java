@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
@@ -87,12 +88,42 @@ public abstract class CIMPortController {
         }
     }
 
+    /**
+     * gets the input stream of the implementing CIMPortController
+     * @return
+     * @RuntimeException if the subclass does not implement this method
+     */
     public InputStream getInputStream() {
-        return null;
+        throw new RuntimeException("method eu.asterics.mw.cimcommunication.CIMPortController.getInputStream() not implemented");
     }
 
+    /**
+     * gets the output stream of the implementing CIMPortController
+     * @return
+     * @RuntimeException if the subclass does not implement this method
+     */
     public OutputStream getOutputStream() {
-        return null;
+        throw new RuntimeException("method eu.asterics.mw.cimcommunication.CIMPortController.getOutputStream() not implemented");
+    }
+
+    /**
+     * tries to read from the input stream for 1 second and returns the read byte
+     * @return the read byte or null, if no byte was read within 1 second
+     * @RuntimeException if the subclass does not implement this method
+     */
+    public Byte poll() {
+        throw new RuntimeException("method eu.asterics.mw.cimcommunication.CIMPortController.poll() not implemented");
+    }
+
+    /**
+     * tries to read from the input stream with the given timout and returns the read byte
+     * @param timeout the timeout, unit specified by unit
+     * @param unit the TimeUnit of the given timeout
+     * @return the read byte or null, if no byte was read within the timeout
+     * @RuntimeException if the subclass does not implement this method
+     */
+    public Byte poll(long timeout, TimeUnit unit) {
+        throw new RuntimeException("method eu.asterics.mw.cimcommunication.CIMPortController.poll(long timeout, TimeUnit unit) not implemented");
     }
 
     /**
