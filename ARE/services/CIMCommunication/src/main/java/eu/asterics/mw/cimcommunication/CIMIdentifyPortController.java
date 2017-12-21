@@ -26,17 +26,14 @@
 package eu.asterics.mw.cimcommunication;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.TooManyListenersException;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import eu.asterics.mw.services.AstericsThreadPool;
 import gnu.io.CommPortIdentifier;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
-import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
 
 class CIMIdentifyPortController extends CIMPortController implements Runnable {
@@ -48,20 +45,15 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
 
     private static final long PACKET_DETECT_TIMEOUT = 3000;
 
-    BlockingQueue<Byte> dataSource = null;
     SerialPort port;
     long timeOfCreation;
     final int BAUD_RATE = 115200;
     private boolean threadRunning = true;
     private boolean threadEnded = false;
-    private boolean identifiedCIM = false;
     private boolean connectionLost;
 
     private String name;
-
-    private InputStream inputStream;
-    private SerialPortEventListener eventListener;
-    private long lastPacketSent;
+    private CIMPortEventListener eventListener;
 
     public String getName() {
         return name;
@@ -78,8 +70,6 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
         super(portIdentifier.getName());
         name = "Identify" + portIdentifier.getName();
 
-        dataSource = new LinkedBlockingQueue<Byte>();
-
         try {
             port = (SerialPort) portIdentifier.open(this.getClass().getName() + comPortName, 2000);
 
@@ -91,8 +81,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
             // https://github.com/asterics/AsTeRICS/issues/116
             port.enableReceiveTimeout(RXTX_PORT_ENABLE_RECEIVE_TIMEOUT);
 
-            inputStream = port.getInputStream();
-            eventListener = new CIMPortEventListener(inputStream, dataSource);
+            eventListener = new CIMPortEventListener(port.getInputStream());
             port.addEventListener(eventListener);
             port.notifyOnDataAvailable(true);
             timeOfCreation = System.currentTimeMillis();
@@ -138,6 +127,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
         CIMProtocolPacket packet = null;
 
         connectionLost = false;
+        boolean closeResources = true;
 
         AstericsThreadPool.instance.execute(new Runnable() {
 
@@ -167,76 +157,62 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
         while (threadRunning) {
             try {
                 // wait for next byte in queue
-                Byte b = dataSource.poll(1000L, TimeUnit.MILLISECONDS);
+                Byte b = eventListener.poll(1000L, TimeUnit.MILLISECONDS);
                 if (System.currentTimeMillis() - timeOfCreation > PACKET_DETECT_TIMEOUT) {
                     logger.fine(this.getClass().getName() + ".run: Did not "
                             + "receive identifiable CIM protocol packet during " + "identification phase on port "
                             + comPortName + "\n");
                     threadRunning = false;
+                    closeResources(port, eventListener);
                 }
 
                 if (b != null) {
                     // System.out.println(String.format("Port: " + comPortName +
                     // " Recv: 0x%2x ('%c')", b, b));
                     switch (searchState) {
-                    case SEARCH_START:
-                        if (b == '@') {
-                            searchState = SearchState.DETECTING_CIM;
-                        }
-                        break;
-                    case DETECTING_CIM:
-                        if (b == 'T') {
-                            // found the packet header, start parsing the packet
-                            // content
-                            searchState = SearchState.FOUND_CIM;
-                            packet = new CIMProtocolPacket();
-                            // System.out.println("Created new packet");
-                        } else {
-                            searchState = SearchState.SEARCH_START;
-                        }
-
-                        break;
-                    case FOUND_CIM:
-                        synchronized (this) {
-                            if (packet.parsePacket(b)) {
-                                if (packet.getFeatureAddress() == CIMProtocolPacket.FEATURE_UNIQUE_SERIAL_NUMBER
-                                        && (packet.getData() != null)) {
-                                    // finished parsing the packet
-                                    short cimId = packet.getAreCimID();
-                                    long uid = 0;
-                                    byte[] data = packet.getData();
-                                    for (int i = 3; i >= 0; i--) {
-                                        uid = (uid << 8) | (((int) data[i]) & 0xff);
-                                    }
-
-                                    CIMUniqueIdentifier cuid = new CIMUniqueIdentifier(cimId, uid);
-
-                                    logger.fine(this.getClass().getName() + ".run: Thread " + comPortName
-                                            + ": CIM identified as " + cuid.toString());
-
-                                    if (cimId == 0xa01) {
-                                        CIMWirelessHubPortController ctrl = new CIMWirelessHubPortController(
-                                                comPortName, port, (CIMPortEventListener) eventListener);
-                                        ctrl.cuid = cuid;
-                                        ctrl.setNextExpectedIncomingSerialNumber((byte) (packet.getSerialNumber() + 1));
-                                        CIMPortManager.getInstance().addWirelessConnection(ctrl);
-                                        AstericsThreadPool.instance.execute(ctrl);
-                                    } else {
-                                        CIMSerialPortController ctrl = new CIMSerialPortController(comPortName, port,
-                                                (CIMPortEventListener) eventListener);
-                                        ctrl.cuid = cuid;
-                                        ctrl.setNextExpectedIncomingSerialNumber((byte) (packet.getSerialNumber() + 1));
-
-                                        CIMPortManager.getInstance().addConnection(cuid, ctrl);
-                                        AstericsThreadPool.instance.execute(ctrl);
-                                    }
-                                    threadRunning = false;
-                                    identifiedCIM = true;
-                                }
-                                searchState = SearchState.SEARCH_START;
+                        case SEARCH_START:
+                            if (b == '@') {
+                                searchState = SearchState.DETECTING_CIM;
                             }
                             break;
-                        }
+                        case DETECTING_CIM:
+                            if (b == 'T') {
+                                // found the packet header, start parsing the packet
+                                // content
+                                searchState = SearchState.FOUND_CIM;
+                                packet = new CIMProtocolPacket();
+                                // System.out.println("Created new packet");
+                            } else {
+                                searchState = SearchState.SEARCH_START;
+                            }
+
+                            break;
+                        case FOUND_CIM:
+                            synchronized (this) {
+                                if (packet.parsePacket(b)) {
+                                    if (packet.getFeatureAddress() == CIMProtocolPacket.FEATURE_UNIQUE_SERIAL_NUMBER
+                                            && (packet.getData() != null)) {
+                                        // finished parsing the packet
+                                        short cimId = packet.getAreCimID();
+                                        long uid = 0;
+                                        byte[] data = packet.getData();
+                                        for (int i = 3; i >= 0; i--) {
+                                            uid = (uid << 8) | (((int) data[i]) & 0xff);
+                                        }
+
+                                        CIMUniqueIdentifier cuid = new CIMUniqueIdentifier(cimId, uid);
+
+                                        logger.fine(this.getClass().getName() + ".run: Thread " + comPortName
+                                                + ": CIM identified as " + cuid.toString());
+
+                                        byte nextSerialNumber = (byte) (packet.getSerialNumber() + 1);
+                                        closeResources = CIMPortManager.getInstance().reportFoundCim(cuid, comPortName, port, eventListener, nextSerialNumber);
+                                        threadRunning = false;
+                                    }
+                                    searchState = SearchState.SEARCH_START;
+                                }
+                                break;
+                            }
                     }
                 } // if (b != null)
                 Thread.yield();
@@ -247,25 +223,23 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
         logger.fine(this.getClass().getName() + ".run: Identifier thread " + comPortName
                 + " main loop ended, cleaning up \n");
 
-        if (!identifiedCIM) {
-            // thread ends, clean up
-            port.notifyOnDataAvailable(false);
-            port.removeEventListener();
-            synchronized (eventHandlers) {
-                eventHandlers.clear();
-            }
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            port.close();
-        }
-
         logger.fine(
                 this.getClass().getName() + ".run: Identifier thread on " + "serial port " + comPortName + " ended \n");
-
+        if(closeResources) {
+            closeResources(port, eventListener);
+        }
         threadEnded = true;
+    }
+
+    private void closeResources(SerialPort port, CIMPortEventListener eventListener) {
+        port.notifyOnDataAvailable(false);
+        port.removeEventListener();
+        try {
+            eventListener.getInputStream().close();
+        } catch (IOException e) {
+            logger.log(Level.WARNING, "error closing eventListener input stream");
+        }
+        port.close();
     }
 
     @Override
@@ -298,8 +272,6 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                         + "NullPointerException trying to send packet #" + serialNumber + " -> \n" + npe.getMessage());
                 return -1;
             }
-
-            lastPacketSent = System.currentTimeMillis();
 
             ret = serialNumber;
             if (serialNumber == 127) {
