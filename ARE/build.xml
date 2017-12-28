@@ -103,7 +103,7 @@
 		</java>	
 	</target>
 	
-	<target name="clean" depends="cleanProfile">
+	<target name="clean" depends="cleanProfile, cleanHelpFiles">
         <subant target="clean">
           <fileset dir="." includes="*/build.xml"/>
         </subant>
@@ -128,6 +128,10 @@
 	<target name="test"  description="Calls unit tests">
 	</target>
 	
+	<target name="cleanHelpFiles" description="Cleans the help_files folders in the help folders">
+		<delete dir="${web.docroot}/help/help_files/"/>
+		<delete dir="${WebACS.bin}/help/help_files/"/>
+	</target>	
 	<target name="copyHelpFiles" depends="initGitSubmodules" description="Copy all help files to the webserver document root help path and the legacy ACS.">
 		
 		<!-- copy help files for ARE help on ${web.docroot}/help/ -->

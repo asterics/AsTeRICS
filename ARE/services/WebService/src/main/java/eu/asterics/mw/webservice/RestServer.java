@@ -978,6 +978,20 @@ public class RestServer {
         return response;
     }
 
+    /**
+     * this method is the same as sendDataToInputPort(), but with HTTP GET for compatibility reasons for clients
+     * which do not support HTTP PUT
+     */
+    @Path("/runtime/model/components/{componentId}/ports/{portId}/data/{value}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String sendDataToInputPortGet(@PathParam("value")String value, @PathParam("componentId") String componentId,
+                                      @PathParam("portId") String portId) {
+
+        String decodedValue = astericsAPIEncoding.decodeString(value);
+        return sendDataToInputPort(decodedValue, componentId, portId);
+    }
+
     @Path("/runtime/model/components/{componentId}/events/{eventId}")
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
