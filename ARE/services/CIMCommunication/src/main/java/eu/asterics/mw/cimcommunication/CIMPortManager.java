@@ -28,6 +28,7 @@ package eu.asterics.mw.cimcommunication;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -81,6 +82,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     private boolean usbDevicesRemoved = false;
     private boolean modelRunning = false;
     private boolean cimRawMode = false;
+    private long scanStartTime = 0;
 
     /**
      * Sets up the port manager instance and scans for attached CIMs
@@ -126,6 +128,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
      */
     private void rescan(int timeout) {
         logger.info("Starting rescan of COM ports");
+        scanStartTime = System.currentTimeMillis();
         boolean waitForResponses = false;
 
         Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
@@ -174,7 +177,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
             }
         }
         usbDevicesAttached = false;
-        logger.info("Finished rescan of COM ports");
+        logger.info(MessageFormat.format("Finished rescan of COM ports in {}ms", System.currentTimeMillis() - scanStartTime));
     }
 
     private void printActiveCimControllers() {
