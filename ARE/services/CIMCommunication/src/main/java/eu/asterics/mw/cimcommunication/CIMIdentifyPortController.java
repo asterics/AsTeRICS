@@ -163,7 +163,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                             + "receive identifiable CIM protocol packet during " + "identification phase on port "
                             + comPortName + "\n");
                     threadRunning = false;
-                    closeResources(port, eventListener);
+                    closeResources = true;
                 }
 
                 if (b != null) {
@@ -232,8 +232,12 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
     }
 
     private void closeResources(SerialPort port, CIMPortEventListener eventListener) {
-        port.notifyOnDataAvailable(false);
-        port.removeEventListener();
+        try {
+            port.notifyOnDataAvailable(false); //sometimes throws NPE?!
+            port.removeEventListener();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "error preparing port for closing: " + e.getClass().getName());
+        }
         try {
             eventListener.getInputStream().close();
         } catch (IOException e) {
