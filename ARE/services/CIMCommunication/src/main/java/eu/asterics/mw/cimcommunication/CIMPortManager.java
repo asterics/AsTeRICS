@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.concurrent.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.are.AREProperties;
@@ -62,9 +64,8 @@ import gnu.io.SerialPort;
 public class CIMPortManager implements IAREEventListener, SystemChangeListener {
 
     final int AUTODETECT_WAIT_TIME = 3500;
-    final int RESCAN_WAIT_TIME = 2500;
 
-    static CIMPortManager instance = new CIMPortManager();
+    static CIMPortManager instance = null;
     Hashtable<CIMUniqueIdentifier, CIMPortController> comPorts;
     HashMap<String, CIMPortController> comRawPorts;
     CIMWirelessHubPortController wirelessHub = null;
@@ -98,13 +99,6 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
         comRawPorts = new HashMap<String, CIMPortController>();
         generateIgnoredPortList();
         generateCIMDescriptionMap();
-
-        rescan(AUTODETECT_WAIT_TIME);
-
-        logger.fine("Scanning of ports successful, so register for ARE events, and systemstate changes");
-        AREServices.instance.registerAREEventListener(this);
-        SystemChangeNotifier.instance.addListener(this);
-
     }
 
     /**
@@ -119,8 +113,14 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
         return instance;
     }
 
-    private void rescan() {
-        rescan(RESCAN_WAIT_TIME);
+    /**
+     * starts a port rescan with a timeout of 3500 milliseconds
+     */
+    public void rescan() {
+        rescan(AUTODETECT_WAIT_TIME);
+        logger.fine("Scanning of ports successful, so register for ARE events, and systemstate changes");
+        AREServices.instance.registerAREEventListener(this);
+        SystemChangeNotifier.instance.addListener(this);
     }
 
     /**
@@ -131,6 +131,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
         scanStartTime = System.currentTimeMillis();
         boolean waitForResponses = false;
 
+        List<Future> futures = new ArrayList<>();
         Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
         while (portEnum.hasMoreElements()) {
             boolean ignorePort = false;
@@ -152,15 +153,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
 
                 try {
                     CIMIdentifyPortController ctrl = new CIMIdentifyPortController(portIdentifier);
-                    AstericsThreadPool.instance.execute(ctrl);
-
-                    // logger.fine(this.getClass().getName()+".rescan: " +
-                    // "CIM Port " + portIdentifier.getName() +
-                    // " identifier thread started \n");
-                    waitForResponses = true;
-
-                    // added sleep before request of ID packet, for detection of
-                    // HID CIM
+                    futures.add(AstericsThreadPool.instance.execute(ctrl));
                 } catch (CIMException e) {
                     logger.warning(this.getClass().getName() + "." + "CIMPortManager: Could not create port controller "
                             + "on CIM Port " + portIdentifier.getName() + " thread started \n");
@@ -168,14 +161,15 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
             }
         }
 
-        if (waitForResponses) {
+        logger.fine(this.getClass().getName() + "." + "CIMPortManager: waiting for auto detect responses \n");
+        for (Future f : futures) {
             try {
-                logger.fine(this.getClass().getName() + "." + "CIMPortManager: waiting for auto detect responses \n");
-                Thread.sleep(timeout);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                f.get(timeout, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                logger.log(Level.WARNING, "error waiting von CIMPortManager scan responses", e);
             }
         }
+
         usbDevicesAttached = false;
         logger.info(MessageFormat.format("Finished rescan of COM ports in {0}ms", System.currentTimeMillis() - scanStartTime));
         System.exit(0);
