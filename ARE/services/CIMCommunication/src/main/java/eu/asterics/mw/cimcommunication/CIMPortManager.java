@@ -177,7 +177,8 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
             }
         }
         usbDevicesAttached = false;
-        logger.info(MessageFormat.format("Finished rescan of COM ports in {}ms", System.currentTimeMillis() - scanStartTime));
+        logger.info(MessageFormat.format("Finished rescan of COM ports in {0}ms", System.currentTimeMillis() - scanStartTime));
+        System.exit(0);
     }
 
     private void printActiveCimControllers() {
