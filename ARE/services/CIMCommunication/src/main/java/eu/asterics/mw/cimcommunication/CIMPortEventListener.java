@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
 import gnu.io.SerialPortEvent;
@@ -48,6 +49,7 @@ class CIMPortEventListener implements SerialPortEventListener {
 
     BlockingQueue<Byte> dataSink;
     InputStream in;
+    private boolean hadI0Exception = false;
 
     /**
      * Constructs the listener
@@ -88,8 +90,13 @@ class CIMPortEventListener implements SerialPortEventListener {
      * @param unit the time unit of the timeout
      * @return the next byte
      * @throws InterruptedException
+     * @throws IOException if IOException occured on the last reading on the class member input stream
      */
-    public Byte poll(long timeout, TimeUnit unit) throws InterruptedException {
+    public Byte poll(long timeout, TimeUnit unit) throws InterruptedException, IOException {
+        if(dataSink.isEmpty() && hadI0Exception) {
+            hadI0Exception = false;
+            throw new IOException("IOException on input stream of CIMPortEventListener");
+        }
         return dataSink.poll(timeout, unit);
     }
 
@@ -113,10 +120,9 @@ class CIMPortEventListener implements SerialPortEventListener {
                     dataSink.add((byte) data);
                 }
             } catch (IOException e) {
-                AstericsErrorHandling.instance.getLogger().warning("Exception on serial monitor thread");
-                e.printStackTrace();
+                AstericsErrorHandling.instance.getLogger().log(Level.WARNING, "Exception on serial monitor thread", e);
+                hadI0Exception = true;
             }
-
             break;
         }
     }
