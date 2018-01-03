@@ -107,7 +107,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
     }
 
     @Override
-    void closePort() {
+    public void closePort() {
         threadRunning = false;
         while (!threadEnded) {
             Thread.yield();
@@ -216,8 +216,8 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                     }
                 } // if (b != null)
                 Thread.yield();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException | IOException e) {
+                logger.log(Level.WARNING, "error in CIMIdentity port controller", e);
             }
         }
         logger.fine(this.getClass().getName() + ".run: Identifier thread " + comPortName

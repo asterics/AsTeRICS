@@ -41,7 +41,7 @@ public class CIMWirelessPortController extends CIMPortController {
     }
 
     @Override
-    void closePort() {
+    public void closePort() {
     }
 
     void receivePacket(byte[] d) {

@@ -152,7 +152,7 @@ class CIMHighSpeedRawPortController extends CIMPortController {
     }
 
     @Override
-    void closePort() {
+    public void closePort() {
         if (port != null) {
             try {
                 port.notifyOnDataAvailable(false);

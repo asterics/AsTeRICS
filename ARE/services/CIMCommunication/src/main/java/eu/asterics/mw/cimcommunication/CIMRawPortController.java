@@ -29,10 +29,12 @@ package eu.asterics.mw.cimcommunication;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.TooManyListenersException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
@@ -136,10 +138,9 @@ class CIMRawPortController extends CIMPortController {
     }
 
     @Override
-    void closePort() {
+    public void closePort() {
         if (port != null) {
             try {
-                port.notifyOnDataAvailable(false);
                 port.removeEventListener();
                 port.getOutputStream().close();
                 port.getInputStream().close();
@@ -147,7 +148,7 @@ class CIMRawPortController extends CIMPortController {
                 port = null;
                 logger.fine(this.getClass().getName() + ".run: Port " + comPortName + " closed \n");
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, MessageFormat.format("error on closing port {0}.", comPortName), e);
             }
         }
         threadRunning = false;
@@ -180,12 +181,12 @@ class CIMRawPortController extends CIMPortController {
     }
 
     @Override
-    public Byte poll() {
+    public Byte poll() throws IOException {
         return poll(1000L, TimeUnit.MILLISECONDS);
     }
 
     @Override
-    public Byte poll(long timeout, TimeUnit unit) {
+    public Byte poll(long timeout, TimeUnit unit) throws IOException {
         try {
             return eventListener.poll(timeout, unit);
         } catch (InterruptedException e) {
