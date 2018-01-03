@@ -25,6 +25,7 @@
 
 package eu.asterics.mw.cimcommunication;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
@@ -110,8 +111,9 @@ public abstract class CIMPortController {
      * tries to read from the input stream for 1 second and returns the read byte
      * @return the read byte or null, if no byte was read within 1 second
      * @RuntimeException if the subclass does not implement this method
+     * @IOException if IOException occured on the polling data source
      */
-    public Byte poll() {
+    public Byte poll() throws IOException {
         throw new RuntimeException("method eu.asterics.mw.cimcommunication.CIMPortController.poll() not implemented");
     }
 
@@ -121,8 +123,9 @@ public abstract class CIMPortController {
      * @param unit the TimeUnit of the given timeout
      * @return the read byte or null, if no byte was read within the timeout
      * @RuntimeException if the subclass does not implement this method
+     * @IOException if IOException occured on the polling data source
      */
-    public Byte poll(long timeout, TimeUnit unit) {
+    public Byte poll(long timeout, TimeUnit unit) throws IOException {
         throw new RuntimeException("method eu.asterics.mw.cimcommunication.CIMPortController.poll(long timeout, TimeUnit unit) not implemented");
     }
 
@@ -130,7 +133,7 @@ public abstract class CIMPortController {
      * Closes the port. Tells the thread to run out and returns only after the
      * thread has ended.
      */
-    abstract void closePort();
+    public abstract void closePort();
 
     /**
      * Sends a packet to the connected device.
