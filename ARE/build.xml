@@ -105,12 +105,11 @@
 	
 	<target name="clean" depends="cleanProfile, cleanHelpFiles">
 		<subant target="clean">
-          <fileset dir=".">
-			<include name="./**/build.xml"/>
+		<fileset dir=".">
+			<include name="*/build.xml"/>
 			<include name="tools/**/build.xml"/>
-			<include name="components/build.xml"/>
-		  </fileset>
-        </subant>
+		</fileset>
+		</subant>
 		<delete verbose="true" includeemptydirs="true">
 			<fileset dir="." includes="bin/**"/>
 		</delete>
