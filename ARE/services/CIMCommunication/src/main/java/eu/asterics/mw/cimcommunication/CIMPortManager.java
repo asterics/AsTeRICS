@@ -119,7 +119,12 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
      * Rescan is done in an own thread so this call is non-blocking
      */
     public void rescan() {
+        if(System.currentTimeMillis() - scanStartTime < 500) {
+            logger.log(Level.INFO, "do not rescan because last rescan was started only {0}ms ago", System.currentTimeMillis() - scanStartTime);
+            return;
+        }
         waitForActiveRescan();
+        cimIdToComPortName.clear();
         rescanFuture = AstericsThreadPool.getInstance().execute(new Runnable() {
             @Override
             public void run() {
@@ -172,6 +177,14 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
                 SystemChangeNotifier.instance.addListener(getInstance());
             }
         });
+    }
+
+    /**
+     * returns true if there is a currently running rescan, otherwise false
+     * @return
+     */
+    public boolean inRescan() {
+        return rescanFuture != null && !rescanFuture.isDone();
     }
 
     /**
@@ -408,6 +421,18 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
         return getRawConnection(portName, baudRate, false);
     }
 
+    /**
+     * Opens a serial port at a certain baud rate. This is used to connect to
+     * devices that use serial communication but do not adhere to the CIM
+     * protocol
+     *
+     * @param portName
+     *            the name of the port the device is connected to
+     * @param baudRate
+     *            the baud rate of the connection
+     * @param highSpeed if true, a highspeed raw port is used
+     * @return a controller instance of the opened connection, null on error
+     */
     public CIMPortController getRawConnection(String portName, int baudRate, boolean highSpeed) {
         waitForActiveRescan();
         CIMPortController ret = comRawPorts.get(portName);
@@ -435,7 +460,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
                     }
                     comRawPorts.put(portName, ret);
                 } catch (CIMException e) {
-                    e.printStackTrace();
+                    logger.log(Level.WARNING, "error creating RawPortController", e);
                     return null;
                 }
             }
@@ -615,7 +640,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     public void usbDevicesAttached() {
         logger.fine("usbDevicesAttached callback");
         usbDevicesAttached = true;
-        // rescan();
+        rescan();
     }
 
     /**
@@ -624,9 +649,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
      */
     @Override
     public void usbDevicesRemoved() {
-        // logger.fine("usbDevicesRemoved callback");
         usbDevicesRemoved = true;
-
         if (!modelRunning) {
             stopCIMThreads();
             // usbDevicesRemoved = false;
