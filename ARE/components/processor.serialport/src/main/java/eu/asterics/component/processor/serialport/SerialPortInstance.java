@@ -63,6 +63,9 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
 
     // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
+    private final static String IN_PORT_RESCAN = "IN_PORT_RESCAN";
+    private final static String NEW_PORT_RESCAN = "NEW_PORT_RESCAN";
+
     private InputStream in = null;
     private OutputStream out = null;
     private Thread readerThread = null;
@@ -252,7 +255,9 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
             // stringBuffer.append(new String(data));
             // opActResult.sendData
             // (ConversionUtils.stringToBytes(stringBuffer.toString()));
-
+            if(out == null) {
+                init();
+            }
             if (out != null) {
                 try {
                     out.write(data);
@@ -291,7 +296,9 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
             // stringBuffer.append(new String(data));
             // opActResult.sendData
             // (ConversionUtils.stringToBytes(stringBuffer.toString()));
-
+            if(out == null) {
+                init();
+            }
             if (out != null && data != null) {
                 try {
                     if(sendBytesBuffer.hasRemaining()) {
@@ -392,43 +399,78 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void start() {
-        //Sanity check: if portController != null stop the connection first.
-        if(portController!=null) {
-            stop();
-        }
+        init();
+        super.start();
+    }
 
-        if(propCimId != null) {
-            propComPort = CIMPortManager.getInstance().getCOMPortByCIMId(propCimId);
-            logger.info(MessageFormat.format("Opening device with cimID <{0}> on COM Port <{1}>", Integer.toHexString(propCimId), propComPort));
-            portController = CIMPortManager.getInstance().getRawConnection(propCimId, propBaudRate);
-        } else {
-            portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
-        }
+    private void init() {
+
         received = "";
-
+        initComPort();
         if (portController == null) {
             AstericsErrorHandling.instance.reportError(this,
                     "SerialPort-plugin: Could not construct raw port controller, please verify that the COM port is valid.");
-        } else {
-            in = portController.getInputStream();
-            out = portController.getOutputStream();
-            readerThread = new Thread(new Runnable() {
+            return;
+        }
+        in = portController.getInputStream();
+        out = portController.getOutputStream();
+        readerThread = new Thread(new Runnable() {
 
-                @Override
-                public void run() {
-                    running = true;
+            @Override
+            public void run() {
+                running = true;
+                try {
                     while (running) {
                         Byte read = portController.poll();
                         if (read != null) {
                             handlePacketReceived(read);
                         }
                     }
+                } catch (IOException e) {
+                    logger.log(Level.WARNING, "IOException in polling data in SerialPort module.");
+                    closeAll();
                 }
-            });
-            readerThread.start();
+                logger.log(Level.FINE, "SerialPort module: stopped reading thread.");
+            }
+        });
+        readerThread.start();
+        logger.log(Level.FINE, "SerialPort module: started reading thread.");
 
+    }
+
+    private void initComPort() {
+        //Sanity check: if portController != null stop the connection first.
+        if (portController != null) {
+            stop();
         }
-        super.start();
+
+        if (propCimId != null) { //mode with given CIM id
+            initComPortByCimID();
+        } else { //mode with given COM Port
+            portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
+        }
+    }
+
+    private void initComPortByCimID() {
+        if(CIMPortManager.getInstance().inRescan()) {
+            logger.info("do not try open COM port by CIM id, because currently rescanning");
+            opReceived.sendData(IN_PORT_RESCAN.getBytes());
+            opReceivedBytes.sendData(IN_PORT_RESCAN.getBytes());
+            return;
+        }
+
+        propComPort = CIMPortManager.getInstance().getCOMPortByCIMId(propCimId);
+        boolean foundComPort = propComPort != null && !propComPort.isEmpty();
+        if (foundComPort) {
+            logger.info(MessageFormat.format("Opening device with cimID <{0}> on COM Port <{1}>", Integer.toHexString(propCimId), propComPort));
+            portController = CIMPortManager.getInstance().getRawConnection(propCimId, propBaudRate);
+        }
+        if(portController == null) {
+            logger.info(MessageFormat.format("could not find or open COM port for CIM id {0}. starting rescan...", propCimId));
+            CIMPortManager.getInstance().rescan();
+            opReceived.sendData(NEW_PORT_RESCAN.getBytes());
+            opReceivedBytes.sendData(NEW_PORT_RESCAN.getBytes());
+        }
     }
 
     /**
@@ -436,12 +478,7 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void pause() {
-        if (portController != null) {
-            CIMPortManager.getInstance().closeRawConnection(propComPort);
-            portController = null;
-            out = null;
-            AstericsErrorHandling.instance.reportInfo(this, "SerialPort controller closed");
-        }
+        closeAll();
         running = false;
         super.pause();
 
@@ -467,12 +504,29 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void stop() {
         super.stop();
-        if (portController != null) {
+        closeAll();
+        running = false;
+    }
 
-            CIMPortManager.getInstance().closeRawConnection(propComPort);
-            portController = null;
-            AstericsErrorHandling.instance.reportInfo(this, "SerialPort connection closed");
-            running = false;
+    private void closeAll() {
+        running = false;
+        if(readerThread != null) {
+            readerThread.interrupt();
+            readerThread = null;
         }
+        if (portController != null) {
+            CIMPortManager.getInstance().closeRawConnection(propComPort);
+            portController.closePort();
+            try {
+                if(out != null) out.close();
+                if(in != null) in.close();
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "error closing streams in SerialPortInstance", e);
+            }
+            out = null;
+            in = null;
+            portController = null;
+        }
+        AstericsErrorHandling.instance.reportInfo(this, "SerialPort connection closed");
     }
 }
