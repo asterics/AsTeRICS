@@ -736,15 +736,13 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
             shouldCloseResources = false;
             if (cuid.getCIMId() == 0xa01) {
                 CIMWirelessHubPortController ctrl = new CIMWirelessHubPortController(
-                        comPortName, port, eventListener);
-                ctrl.cuid = cuid;
+                        comPortName, port, eventListener, cuid);
                 ctrl.setNextExpectedIncomingSerialNumber(nextPacketNumber);
                 this.wirelessHub = ctrl;
                 AstericsThreadPool.instance.execute(ctrl);
             } else {
                 CIMSerialPortController ctrl = new CIMSerialPortController(comPortName, port,
-                        eventListener);
-                ctrl.cuid = cuid;
+                        eventListener, cuid);
                 ctrl.setNextExpectedIncomingSerialNumber(nextPacketNumber);
                 if ((ctrl != null) && (comPorts.get(cuid) == null)) {
                     comPorts.put(cuid, ctrl);
