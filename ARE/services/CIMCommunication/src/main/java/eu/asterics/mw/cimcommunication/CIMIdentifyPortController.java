@@ -26,6 +26,7 @@
 package eu.asterics.mw.cimcommunication;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.TooManyListenersException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -73,8 +74,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
         try {
             port = (SerialPort) portIdentifier.open(this.getClass().getName() + comPortName, 2000);
 
-            logger.fine(
-                    this.getClass().getName() + ".CIMIdentifyPortController:" + " Opened serial port " + comPortName);
+            logger.fine("Opened serial port " + comPortName);
             port.setSerialPortParams(BAUD_RATE, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
             // bug fix high cpu load on Win10:
@@ -86,13 +86,11 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
             port.notifyOnDataAvailable(true);
             timeOfCreation = System.currentTimeMillis();
         } catch (UnsupportedCommOperationException ucoe) {
-            logger.severe(this.getClass().getName() + "." + "CIMSerialPortController: Could not set serial port "
-                    + "parameters -> \n" + ucoe.getMessage());
+            logger.severe("Could not set serial port parameters -> " + ucoe.getMessage());
             port.close();
             throw new CIMException();
         } catch (PortInUseException piue) {
-            logger.warning(this.getClass().getName() + "." + "CIMSerialPortController: "
-                    + String.format("Port %s already in use", comPortName) + " -> \n" + piue.getMessage());
+            logger.warning(MessageFormat.format("Port {0} already in use -> {1}", comPortName, piue.getMessage()));
             throw new CIMException();
         } catch (IOException ioe) {
             logger.severe(this.getClass().getName() + "." + "CIMSerialPortController: Could not get input stream"
@@ -100,8 +98,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
             port.close();
             throw new CIMException();
         } catch (TooManyListenersException tmle) {
-            logger.warning(this.getClass().getName() + "." + "CIMSerialPortController: "
-                    + String.format("Too many listeners on port %s", comPortName) + " -> \n" + tmle.getMessage());
+            logger.warning(MessageFormat.format("Too many listeners on port {0} -> {1}", comPortName, tmle.getMessage()));
             throw new CIMException();
         }
     }
@@ -133,8 +130,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
 
             @Override
             public void run() {
-                logger.fine(this.getClass().getName() + ".run: Identify packet " + "injector thread started for "
-                        + "port " + comPortName + "\n");
+                logger.fine("Identify packet injector thread started for port " + comPortName);
 
                 while (threadRunning) {
 
@@ -147,7 +143,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                     sendPacket(null, CIMProtocolPacket.FEATURE_UNIQUE_SERIAL_NUMBER,
                             CIMProtocolPacket.COMMAND_REQUEST_READ_FEATURE, false);
                 }
-                logger.fine(this.getClass().getName() + ".run: injector thread ended on port " + comPortName + "\n");
+                logger.fine("injector thread ended on port " + comPortName);
 
             }
 
@@ -159,9 +155,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                 // wait for next byte in queue
                 Byte b = eventListener.poll(1000L, TimeUnit.MILLISECONDS);
                 if (System.currentTimeMillis() - timeOfCreation > PACKET_DETECT_TIMEOUT) {
-                    logger.fine(this.getClass().getName() + ".run: Did not "
-                            + "receive identifiable CIM protocol packet during " + "identification phase on port "
-                            + comPortName + "\n");
+                    logger.fine("Did not receive identifiable CIM protocol packet during identification phase on port " + comPortName);
                     threadRunning = false;
                     closeResources = true;
                 }
@@ -202,8 +196,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
 
                                         CIMUniqueIdentifier cuid = new CIMUniqueIdentifier(cimId, uid);
 
-                                        logger.fine(this.getClass().getName() + ".run: Thread " + comPortName
-                                                + ": CIM identified as " + cuid.toString());
+                                        logger.fine(MessageFormat.format("{0}: CIM identified as {1}", comPortName, cuid.toString()));
 
                                         byte nextSerialNumber = (byte) (packet.getSerialNumber() + 1);
                                         closeResources = CIMPortManager.getInstance().reportFoundCim(cuid, comPortName, port, eventListener, nextSerialNumber);
@@ -220,18 +213,17 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                 logger.log(Level.WARNING, "error in CIMIdentity port controller", e);
             }
         }
-        logger.fine(this.getClass().getName() + ".run: Identifier thread " + comPortName
-                + " main loop ended, cleaning up \n");
+        logger.fine(MessageFormat.format("Identifier thread {0} main loop ended, cleaning up", comPortName));
 
-        logger.fine(
-                this.getClass().getName() + ".run: Identifier thread on " + "serial port " + comPortName + " ended \n");
         if(closeResources) {
             closeResources(port, eventListener);
         }
         threadEnded = true;
+        logger.fine(MessageFormat.format("Identifier thread {0} ended", comPortName));
     }
 
     private void closeResources(SerialPort port, CIMPortEventListener eventListener) {
+        logger.warning(eventListener.completionMap.toString());
         try {
             port.notifyOnDataAvailable(false); //sometimes throws NPE?!
             port.removeEventListener();
@@ -264,16 +256,13 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                 port.getOutputStream().close();
             } catch (IOException ioe) {
                 if (connectionLost == false) {
-                    logger.severe(this.getClass().getName() + ".sendPacket: could " + "not send packet #" + serialNumber
-                            + ", " + packet.toString() + " on port " + comPortName
-                            + " (if port related to Windows Bluetooth stack, " + "ignore error -> \n"
-                            + ioe.getMessage());
+                    logger.severe(MessageFormat.format("Could not send packte #{0}, {1} on port {2}. (if port related to Windows Bluetooth stack, ignore error -> {3}",
+                            serialNumber, packet.toString(), comPortName, ioe.getMessage()));
                     connectionLost = true;
                 }
                 return -1;
             } catch (NullPointerException npe) {
-                logger.severe(this.getClass().getName() + ".sendPacket: "
-                        + "NullPointerException trying to send packet #" + serialNumber + " -> \n" + npe.getMessage());
+                logger.severe(MessageFormat.format("NullPointerException trying to send packet #{0} -> \n {1}", serialNumber, npe.getMessage()));
                 return -1;
             }
 
@@ -284,8 +273,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                 serialNumber++;
             }
         } else {
-            logger.warning(
-                    this.getClass().getName() + ".sendPacket: " + "sendPacket called while thread was set to end \n");
+            logger.warning(MessageFormat.format("called sendPacket while thread was set to end ({0})", this.comPortName));
         }
         return ret;
     }
