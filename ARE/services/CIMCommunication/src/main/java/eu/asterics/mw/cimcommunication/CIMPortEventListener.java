@@ -25,16 +25,16 @@
 
 package eu.asterics.mw.cimcommunication;
 
+import eu.asterics.mw.services.AstericsErrorHandling;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-
-import eu.asterics.mw.services.AstericsErrorHandling;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
 
 /**
  * Implementation of RXTX listener interface to transfer data from the serial
@@ -106,25 +106,18 @@ class CIMPortEventListener implements SerialPortEventListener {
      */
     @Override
     public void serialEvent(SerialPortEvent ev) {
-
         int data;
-
         switch (ev.getEventType()) {
-        case SerialPortEvent.DATA_AVAILABLE:
-            try {
-                while ((data = in.read()) > -1) {
-                    //
-                    // System.out.println(String.format("Recv: 0x%2x ('%c')",
-                    // data, data));
-                    //
-                    dataSink.add((byte) data);
+            case SerialPortEvent.DATA_AVAILABLE:
+                try {
+                    while (!hadI0Exception && (data = in.read()) > -1) {
+                        dataSink.add((byte) data);
+                    }
+                } catch (IOException e) {
+                    AstericsErrorHandling.instance.getLogger().log(Level.WARNING, "Exception on serial monitor thread", e);
+                    hadI0Exception = true;
                 }
-            } catch (IOException e) {
-                AstericsErrorHandling.instance.getLogger().log(Level.WARNING, "Exception on serial monitor thread", e);
-                hadI0Exception = true;
-            }
-            break;
+                break;
         }
     }
-
 }
