@@ -25,23 +25,6 @@
 
 package eu.asterics.mw.cimcommunication;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.Vector;
-import java.util.concurrent.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import eu.asterics.mw.are.AREProperties;
 import eu.asterics.mw.services.AREServices;
 import eu.asterics.mw.services.AstericsErrorHandling;
@@ -52,6 +35,18 @@ import eu.asterics.mw.systemstatechange.SystemChangeNotifier;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.SerialPort;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The CIMPortManager controls all the connections to CIMs on the AsTeRICS
@@ -73,7 +68,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     private final String IGNORE_PORT_FILNAME = "data/cimcommunication/ignore_ports.txt";
     private final String CIMID_FILENAME = "data/cimcommunication/cimids.txt";
     private final String PROPERTY_CIM_RAW_MODE = "CIM.mode.raw";
-    private List<String> ignoredComPorts = new ArrayList<String>();
+    private Set<String> ignoredComPorts = new HashSet<>();
     private HashMap<Long, String> cimIdToName = new HashMap<Long, String>();
     private HashMap<Short, String> cimIdToComPortName = new HashMap<>();
     private Logger logger = null;
@@ -100,6 +95,8 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
         comRawPorts = new HashMap<String, CIMPortController>();
         generateIgnoredPortList();
         generateCIMDescriptionMap();
+        AREServices.instance.registerAREEventListener(this);
+        SystemChangeNotifier.instance.addListener(this);
     }
 
     /**
@@ -131,52 +128,76 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
                 logger.info("Starting rescan of COM ports");
                 scanStartTime = System.currentTimeMillis();
 
-                List<Future> futures = new ArrayList<>();
+                Map<String,Future> futures = new HashMap<>();
                 Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
                 while (portEnum.hasMoreElements()) {
-                    boolean ignorePort = false;
                     CommPortIdentifier portIdentifier = (CommPortIdentifier) portEnum.nextElement();
-                    if (!portIdentifier.isCurrentlyOwned()
-                            && (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL)) {
-                        logger.fine(this.getClass().getName()+".rescan: CIM scanning on port <" + portIdentifier.getName()+">");
-                        for (String s : ignoredComPorts) {
-                            if (portIdentifier.getName().trim().equals(s.trim())) {
-                                // this port be ignored, nothing has been opened so far
-                                logger.fine("Ignoring COM port " + portIdentifier.getName());
-                                ignorePort = true;
-                            }
-                        }
-
-                        if (ignorePort) {
-                            continue;
-                        }
-
+                    boolean ignorePort = ignorePortForRescan(portIdentifier);
+                    if(ignorePort) {
+                        logger.fine(MessageFormat.format("Ignored port {0} for rescanning", portIdentifier.getName()));
+                    } else {
+                        logger.fine(MessageFormat.format("Starting CIM scanning on port <{0}>", portIdentifier.getName()));
                         try {
                             CIMIdentifyPortController ctrl = new CIMIdentifyPortController(portIdentifier);
-                            futures.add(AstericsThreadPool.instance.execute(ctrl));
+                            Future future = AstericsThreadPool.instance.execute(ctrl);
+                            futures.put(portIdentifier.getName(), future);
                         } catch (CIMException e) {
-                            logger.warning(this.getClass().getName() + "." + "CIMPortManager: Could not create port controller "
-                                    + "on CIM Port " + portIdentifier.getName() + " thread started \n");
+                            logger.warning(MessageFormat.format("Could not create port controller on CIM Port {1}.", portIdentifier.getName()));
                         }
                     }
                 }
-
-                logger.fine(this.getClass().getName() + "." + "CIMPortManager: waiting for auto detect responses \n");
-                for (Future f : futures) {
+                for (Map.Entry<String, Future> entry : futures.entrySet()) {
                     try {
-                        f.get(AUTODETECT_WAIT_TIME, TimeUnit.MILLISECONDS);
-                    } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                        logger.log(Level.WARNING, "error waiting von CIMPortManager scan responses", e);
+                        logger.fine(MessageFormat.format("waiting for result of port {0}", entry.getKey()));
+                        entry.getValue().get(AUTODETECT_WAIT_TIME, TimeUnit.MILLISECONDS);
+                    } catch (InterruptedException | ExecutionException e) {
+                        logger.log(Level.WARNING, MessageFormat.format("Error waiting on CIMPortManager scan response for {0}", entry.getKey()));
+                    } catch (TimeoutException e) {
+                        logger.log(Level.WARNING, MessageFormat.format("Timeout on scanning Port {0}", entry.getKey()));
                     }
                 }
 
                 usbDevicesAttached = false;
                 logger.info(MessageFormat.format("Finished rescan of COM ports in {0}ms", System.currentTimeMillis() - scanStartTime));
-                logger.fine("Scanning of ports successful, so register for ARE events, and systemstate changes");
-                AREServices.instance.registerAREEventListener(getInstance());
-                SystemChangeNotifier.instance.addListener(getInstance());
+                printActiveCimControllers();
             }
         });
+    }
+
+    private boolean ignorePortForRescan(CommPortIdentifier portIdentifier) {
+        return portIdentifier.isCurrentlyOwned() || (portIdentifier.getPortType() != CommPortIdentifier.PORT_SERIAL)
+                || ignorePortConfigured(portIdentifier) || portCurrentlyOpen(portIdentifier);
+    }
+
+    /**
+     * returns true if the given commPortIdentifier is ignored by configuration file
+     * @param commPortIdentifier
+     * @return
+     */
+    private boolean ignorePortConfigured(CommPortIdentifier commPortIdentifier) {
+        for (String s : ignoredComPorts) {
+            if (commPortIdentifier.getName().trim().equals(s.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * returns if the given commPort is currently open (rawCommPort or CIM comPort)
+     * @param commPortIdentifier
+     * @return
+     */
+    private boolean portCurrentlyOpen(CommPortIdentifier commPortIdentifier) {
+        List<CIMPortController> controllers = new ArrayList<>();
+        controllers.addAll(comPorts.values());
+        controllers.addAll(comRawPorts.values());
+        for(CIMPortController controller: controllers) {
+            if(controller.getComPortName().trim().equals(commPortIdentifier.getName().trim())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -203,7 +224,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
         }
     }
 
-    private void printActiveCimControllers() {
+    public void printActiveCimControllers() {
         StringBuffer buf = new StringBuffer();
         buf.append("Currently active COM ports:\n");
         for (CIMUniqueIdentifier cuid : comPorts.keySet()) {
@@ -269,8 +290,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
                 }
             }
         } catch (IOException ioe) {
-            logger.severe(this.getClass().getName() + "." + "generateIgnoredPortList: IO Exception while handling "
-                    + "ignore ports file");
+            logger.severe("IO Exception while handling CIM ID file");
         }
 
     }
@@ -285,7 +305,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     private void generateIgnoredPortList() {
         // logger.fine(this.getClass().getName()+".generateIgnoredPortList: " +
         // "Reading port ignore list \n");
-        ignoredComPorts = new ArrayList<String>();
+        ignoredComPorts = new HashSet<>();
         String lineInput = null;
 
         try {
@@ -316,8 +336,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
             }
 
         } catch (IOException ioe) {
-            logger.severe(this.getClass().getName() + "." + "generateIgnoredPortList: IO Exception while handling "
-                    + "ignore ports file");
+            logger.severe("IO Exception while handling ignore ports file");
         }
     }
 
@@ -334,7 +353,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     /**
      * Removes a specified CIM from the list
      *
-     * @param cimId
+     * @param cuid
      *            the ID of the CIM to be removed
      */
     synchronized void removeConnection(CIMUniqueIdentifier cuid) {
@@ -441,13 +460,11 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
             try {
                 portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
                 if (portIdentifier.isCurrentlyOwned()) {
-                    logger.severe(this.getClass().getName() + "." + "getRawConnection: Could not open raw port, "
-                            + "port currently owned by " + portIdentifier.getCurrentOwner());
+                    logger.severe("Could not open raw port, port currently owned by " + portIdentifier.getCurrentOwner());
                     return null;
                 }
             } catch (NoSuchPortException e) {
-                logger.severe(this.getClass().getName() + "." + "getRawConnection: Could not open raw port, "
-                        + "no port by the name of " + portName);
+                logger.severe("Could not open raw port, no port by the name of " + portName);
                 return null;
             }
 
@@ -506,8 +523,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
         if (ctrl != null) {
             return ctrl.sendPacket(data, featureAddress, requestCode, crc);
         }
-        logger.severe(this.getClass().getName() + "."
-                + "sendPacket: Could not find requested port, method called with ctrl=null");
+        logger.severe("sendPacket: Could not find requested port, method called with ctrl=null");
         return -1;
     }
 
