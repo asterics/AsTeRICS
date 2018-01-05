@@ -56,6 +56,10 @@ public abstract class CIMPortController {
         this.comPortName = comPortName;
     }
 
+    public String getComPortName() {
+        return comPortName;
+    }
+
     /**
      * Adds a CIM event handler to the list of event handlers
      * 
