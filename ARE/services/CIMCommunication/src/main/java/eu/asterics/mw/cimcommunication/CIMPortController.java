@@ -151,6 +151,7 @@ public abstract class CIMPortController {
         }
         closePortInternal();
         CIMPortManager.getInstance().removeConnection(cuid);
+        CIMPortManager.getInstance().printActiveCimControllers();
     }
 
     /**

@@ -259,10 +259,7 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
 
         // thread ends, clean up
         closePort();
-        CIMPortManager.getInstance().removeConnection(cuid);
-
         logger.fine(this.getClass().getName() + ".run: Thread on serial port " + comPortName + " ended \n");
-        CIMPortManager.getInstance().printActiveCimControllers();
         threadEnded = true;
     }
 
