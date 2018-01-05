@@ -65,9 +65,7 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
     long lastPacketSent = 0;
 
     InputStream inputStream = null;
-    CIMUniqueIdentifier cuid = null;
     boolean constructionSuccess = false;
-    boolean connectionLost = false;
 
     long timeOfCreation;
 
@@ -77,8 +75,8 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
      *
      * @param portIdentifier
      */
-    CIMSerialPortController(String comPortName, SerialPort port, CIMPortEventListener listener) {
-        super(comPortName);
+    CIMSerialPortController(String comPortName, SerialPort port, CIMPortEventListener listener, CIMUniqueIdentifier cuid) {
+        super(comPortName, cuid);
         this.port = port;
 
         inputStream = listener.in;
@@ -98,7 +96,6 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
     public void run() {
         PacketState searchState = PacketState.PACKET_SEARCH_1;
         CIMProtocolPacket packet = null;
-        connectionLost = false;
 
         // near endless loop
         while (threadRunning) {
@@ -275,14 +272,10 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
      * @see eu.asterics.mw.cimcommunication.CIMPortController#closePort()
      */
     @Override
-    public void closePort() {
+    public void closePortInternal() {
         logger.fine(this.getClass().getName() + ".closePort on " + comPortName
                 + ": This method currently waits until the port thread ends, "
                 + "which might result in a deadlock but should not through " + "the timeouts of blocking \n");
-        if(connectionLost) {
-            return; //do not close port again if aleady closed
-        }
-        connectionLost = true;
         threadRunning = false;
         port.removeEventListener();
         synchronized (eventHandlers) {
@@ -325,16 +318,8 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
                 port.getOutputStream().write(packet.toBytes());
                 port.getOutputStream().flush();
                 port.getOutputStream().close();
-                // for (byte b : packet.toBytes())
-                // {
-                // System.out.println(String.format("Sent: 0x%2x ('%c')", b,
-                // b));
-                // }
             } catch (IOException ioe) {
-                if (connectionLost == false) {
-                    logger.severe(this.getClass().getName() + ".sendPacket:could" + " not send packet #" + serialNumber
-                            + ", " + packet.toString() + " -> \n" + ioe.getMessage());
-                }
+                logger.severe("could not send packet #" + serialNumber + ", " + packet.toString() + " -> " + ioe.getMessage());
                 closePort();
                 return -1;
             } catch (NullPointerException npe) {

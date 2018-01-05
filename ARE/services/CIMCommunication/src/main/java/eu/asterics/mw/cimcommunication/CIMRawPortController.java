@@ -79,7 +79,7 @@ class CIMRawPortController extends CIMPortController {
      * @throws CIMException
      */
     CIMRawPortController(CommPortIdentifier portIdentifier, int baudRate) throws CIMException {
-        super(portIdentifier.getName());
+        super(portIdentifier.getName(), null);
 
         try {
             port = (SerialPort) portIdentifier.open(this.getClass().getName() + comPortName, 2000);
@@ -138,7 +138,7 @@ class CIMRawPortController extends CIMPortController {
     }
 
     @Override
-    public void closePort() {
+    public void closePortInternal() {
         if (port != null) {
             try {
                 port.removeEventListener();

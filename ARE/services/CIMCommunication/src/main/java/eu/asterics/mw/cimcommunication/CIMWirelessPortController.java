@@ -31,17 +31,15 @@ import java.io.IOException;
 public class CIMWirelessPortController extends CIMPortController {
 
     CIMWirelessHubPortController hubCtrl;
-    CIMUniqueIdentifier cuid;
 
     public CIMWirelessPortController(CIMUniqueIdentifier cuid, CIMWirelessHubPortController hubCtrl) {
-        super(cuid.toIdentifierString());
-        this.cuid = cuid;
+        super(cuid.toIdentifierString(), cuid);
         this.hubCtrl = hubCtrl;
         logger.fine("WirelessPortCtrl " + comPortName + " constructed");
     }
 
     @Override
-    public void closePort() {
+    public void closePortInternal() {
     }
 
     void receivePacket(byte[] d) {

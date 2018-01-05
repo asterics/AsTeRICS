@@ -68,7 +68,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
      * @throws CIMException
      */
     CIMIdentifyPortController(CommPortIdentifier portIdentifier) throws CIMException {
-        super(portIdentifier.getName());
+        super(portIdentifier.getName(), null);
         name = "Identify" + portIdentifier.getName();
 
         try {
@@ -104,7 +104,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
     }
 
     @Override
-    public void closePort() {
+    public void closePortInternal() {
         threadRunning = false;
         while (!threadEnded) {
             Thread.yield();
@@ -223,7 +223,6 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
     }
 
     private void closeResources(SerialPort port, CIMPortEventListener eventListener) {
-        logger.warning(eventListener.completionMap.toString());
         try {
             port.notifyOnDataAvailable(false); //sometimes throws NPE?!
             port.removeEventListener();
@@ -256,7 +255,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                 port.getOutputStream().close();
             } catch (IOException ioe) {
                 if (connectionLost == false) {
-                    logger.severe(MessageFormat.format("Could not send packte #{0}, {1} on port {2}. (if port related to Windows Bluetooth stack, ignore error -> {3}",
+                    logger.severe(MessageFormat.format("Could not send packet #{0}, {1} on port {2}. (if port related to Windows Bluetooth stack, ignore error -> {3}",
                             serialNumber, packet.toString(), comPortName, ioe.getMessage()));
                     connectionLost = true;
                 }
