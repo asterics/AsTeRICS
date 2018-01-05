@@ -56,7 +56,7 @@ import java.util.logging.Logger;
  * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
-public class CIMPortManager implements IAREEventListener, SystemChangeListener {
+public class CIMPortManager implements SystemChangeListener {
 
     final int AUTODETECT_WAIT_TIME = 3500;
 
@@ -72,11 +72,6 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
     private HashMap<Long, String> cimIdToName = new HashMap<Long, String>();
     private HashMap<Short, String> cimIdToComPortName = new HashMap<>();
     private Logger logger = null;
-    // Indicate that new devices have been attached since the last rescan
-    private boolean usbDevicesAttached = false;
-    // Indicate that devices have been detached since the last rescan
-    private boolean usbDevicesRemoved = false;
-    private boolean modelRunning = false;
     private boolean cimRawMode = false;
     private long scanStartTime = 0;
     private Future rescanFuture = null;
@@ -95,7 +90,6 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
         comRawPorts = new HashMap<String, CIMPortController>();
         generateIgnoredPortList();
         generateCIMDescriptionMap();
-        AREServices.instance.registerAREEventListener(this);
         SystemChangeNotifier.instance.addListener(this);
     }
 
@@ -142,7 +136,7 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
                             Future future = AstericsThreadPool.instance.execute(ctrl);
                             futures.put(portIdentifier.getName(), future);
                         } catch (CIMException e) {
-                            logger.warning(MessageFormat.format("Could not create port controller on CIM Port {1}.", portIdentifier.getName()));
+                            logger.warning(MessageFormat.format("Could not create port controller on CIM Port {0}.", portIdentifier.getName()));
                         }
                     }
                 }
@@ -157,7 +151,6 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
                     }
                 }
 
-                usbDevicesAttached = false;
                 logger.info(MessageFormat.format("Finished rescan of COM ports in {0}ms", System.currentTimeMillis() - scanStartTime));
                 printActiveCimControllers();
             }
@@ -244,34 +237,6 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
 
     String getDescriptionForCIMId(long l) {
         return cimIdToName.get(l);
-    }
-
-    private void stopCIMThreads() {
-        waitForActiveRescan();
-        logger.info("Begin: Stopping currently active COM ports:\n");
-        printActiveCimControllers();
-        Iterator<CIMUniqueIdentifier> it = comPorts.keySet().iterator();
-        while (it.hasNext()) {
-            CIMUniqueIdentifier cuid = it.next();
-            if (cuid.CIMId != (short) 0x0602) {
-                CIMPortController ctrl = comPorts.get(cuid);
-                ctrl.closePort();
-                it.remove();
-            }
-        }
-        /*
-         * for ( CIMUniqueIdentifier cuid : comPorts.keySet()) {
-         * CIMPortController ctrl = comPorts.get(cuid); ctrl.closePort();
-         * buf.append("  Stopped: " + ctrl.comPortName + "\n"); }
-         */
-
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        usbDevicesRemoved = false;
-        logger.info("End: Stopping currently active COM ports");
     }
 
     private void generateCIMDescriptionMap() {
@@ -589,131 +554,20 @@ public class CIMPortManager implements IAREEventListener, SystemChangeListener {
         }
         return vector;
     }
-
-    @Override
-    public void preDeployModel() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void postDeployModel() {
-        // TODO Auto-generated method stub
-
-    }
-
-    /**
-     * Performs a CIM rescan if USB devices have been altered. Called before
-     * start of model
-     */
-    @Override
-    public void preStartModel() {
-        logger.fine("Begin preStartModel: usbDevicesRemoved: " + usbDevicesRemoved + ", usbDevicesAttached: "
-                + usbDevicesAttached);
-        if (usbDevicesRemoved || usbDevicesAttached) {
-            stopCIMThreads();
-            // usbDevicesRemoved = false;
-            rescan();
-        }
-        modelRunning = true;
-        printActiveCimControllers();
-        logger.fine("End preStartModel: usbDevicesRemoved: " + usbDevicesRemoved + ", usbDevicesAttached: "
-                + usbDevicesAttached);
-    }
-
-    @Override
-    public void postStartModel() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void preStopModel() {
-        // TODO Auto-generated method stub
-
-    }
-
-    /**
-     * Performs a CIM rescan if USB devices have been altered. Called after stop
-     * of model
-     */
-    @Override
-    public void postStopModel() {
-        logger.fine("Begin postStopModel: usbDevicesRemoved: " + usbDevicesRemoved);
-        if (usbDevicesRemoved) {
-            stopCIMThreads();
-            // usbDevicesRemoved = false;
-            // rescan();
-        }
-        modelRunning = false;
-        logger.fine("End postStopModel: usbDevicesRemoved: " + usbDevicesRemoved);
-    }
-
     /**
      * Performs a rescan of the CIM ports. Called when USB devices are attached.
      */
     @Override
     public void usbDevicesAttached() {
-        logger.fine("usbDevicesAttached callback");
-        usbDevicesAttached = true;
+        logger.fine("starting rescan after USB attach event");
         rescan();
     }
 
     /**
-     * Stops CIM threads if ARE is currently not running. Called when USB
-     * devices are removed.
+     * Called when USB devices are removed.
      */
     @Override
     public void usbDevicesRemoved() {
-        usbDevicesRemoved = true;
-        if (!modelRunning) {
-            stopCIMThreads();
-            // usbDevicesRemoved = false;
-            // rescan();
-        }
-
-    }
-
-    @Override
-    public void prePauseModel() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void postPauseModel() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void preResumeModel() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void postResumeModel() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void preBundlesInstalled() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void postBundlesInstalled() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onAreError(String msg) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
