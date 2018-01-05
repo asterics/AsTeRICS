@@ -25,20 +25,21 @@
 
 package eu.asterics.mw.cimcommunication;
 
+import gnu.io.SerialPort;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.BlockingQueue;
+import java.text.MessageFormat;
 import java.util.concurrent.TimeUnit;
-
-import gnu.io.SerialPort;
+import java.util.logging.Level;
 
 /**
  * The CIMSerialPortController communicates with one CIM attached to the
  * platform. The controller is running in its own thread and permanently
  * listening for new data from the serial port.
- * 
+ *
  * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
- *         Time: 02:22:08 PM
+ * Time: 02:22:08 PM
  */
 class CIMSerialPortController extends CIMPortController implements Runnable {
     private final int PACKET_TIMEOUT = 3000;
@@ -54,18 +55,17 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
     // Java and communication related
     boolean threadRunning = true;
     boolean threadEnded = false;
-    BlockingQueue<Byte> dataSource;
 
     // serial port handling
     SerialPort port;
     int baudRate = 115200;
+    private CIMPortEventListener listener;
 
     // packet handling
     long lastPacketSent = 0;
 
     InputStream inputStream = null;
     CIMUniqueIdentifier cuid = null;
-    short cimId = 0;
     boolean constructionSuccess = false;
     boolean connectionLost = false;
 
@@ -74,15 +74,15 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
     /**
      * Creates the port controller from the COM port identifier for an available
      * COM port.
-     * 
+     *
      * @param portIdentifier
      */
     CIMSerialPortController(String comPortName, SerialPort port, CIMPortEventListener listener) {
         super(comPortName);
         this.port = port;
 
-        dataSource = listener.dataSink;
         inputStream = listener.in;
+        this.listener = listener;
         timeOfCreation = System.currentTimeMillis();
 
         logger.fine(comPortName + " controller thread created");
@@ -104,7 +104,7 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
         while (threadRunning) {
             try {
                 // wait for next byte in queue
-                Byte b = dataSource.poll(1000L, TimeUnit.MILLISECONDS);
+                Byte b = listener.poll(1000L, TimeUnit.MILLISECONDS);
                 if (b != null) {
                     System.currentTimeMillis();
                     switch (searchState) {
@@ -253,26 +253,19 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
                 Thread.yield();
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } catch (IOException e) {
+                logger.log(Level.WARNING, MessageFormat.format("error on polling CIM for COM port {0}", comPortName), e);
+                closePort();
             }
         }
         logger.fine(this.getClass().getName() + ".run: Thread " + comPortName + " main loop ended, cleaning up \n");
 
         // thread ends, clean up
-        port.notifyOnDataAvailable(false);
-        port.removeEventListener();
-        synchronized (eventHandlers) {
-            eventHandlers.clear();
-        }
-        try {
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            port.close();
-        }
-        CIMPortManager.getInstance().removeConnection(cimId);
+        closePort();
+        CIMPortManager.getInstance().removeConnection(cuid);
 
         logger.fine(this.getClass().getName() + ".run: Thread on serial port " + comPortName + " ended \n");
+        CIMPortManager.getInstance().printActiveCimControllers();
         threadEnded = true;
     }
 
@@ -286,15 +279,28 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
         logger.fine(this.getClass().getName() + ".closePort on " + comPortName
                 + ": This method currently waits until the port thread ends, "
                 + "which might result in a deadlock but should not through " + "the timeouts of blocking \n");
+        if(connectionLost) {
+            return; //do not close port again if aleady closed
+        }
+        connectionLost = true;
         threadRunning = false;
+        port.removeEventListener();
+        synchronized (eventHandlers) {
+            eventHandlers.clear();
+        }
         try {
-            while (!threadEnded) {
-                Thread.yield();
-            }
+            port.notifyOnDataAvailable(false);
+        } catch (Exception e) {
+            logger.fine("error on setting notifiOnDataAvailable to false: " + e.getClass().getName());
+        }
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             port.close();
-            logger.fine("Port: " + port.getName() + " closed");
         }
+        logger.fine("Port: " + port.getName() + " closed");
     }
 
     /*
@@ -328,8 +334,8 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
                 if (connectionLost == false) {
                     logger.severe(this.getClass().getName() + ".sendPacket:could" + " not send packet #" + serialNumber
                             + ", " + packet.toString() + " -> \n" + ioe.getMessage());
-                    connectionLost = true;
                 }
+                closePort();
                 return -1;
             } catch (NullPointerException npe) {
                 logger.severe(this.getClass().getName() + ".sendPacket: "
@@ -346,8 +352,7 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
                 serialNumber++;
             }
         } else {
-            logger.warning(
-                    this.getClass().getName() + ".sendPacket: " + "sendPacket called while thread was set to end \n");
+            logger.warning(MessageFormat.format("called sendPacket while thread was set to end ({0})", this.comPortName));
         }
         return ret;
     }
