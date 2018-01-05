@@ -219,18 +219,26 @@ public class CIMPortManager implements SystemChangeListener {
 
     public void printActiveCimControllers() {
         StringBuffer buf = new StringBuffer();
-        buf.append("Currently active COM ports:\n");
-        for (CIMUniqueIdentifier cuid : comPorts.keySet()) {
-            CIMPortController ctrl = comPorts.get(cuid);
-            String descr = cimIdToName.get(((long) cuid.CIMId) & 0x0000ffff);
-            if (descr != null) {
-                buf.append("\t" + ctrl.comPortName + ":\t" + descr + ",\tUniqueNumber: "
-                        + String.format("0x%x", cuid.CIMUniqueNumber) + "\n");
+        if(!cimRawMode) {
+            buf.append("Currently active COM ports:\n");
+            for (CIMUniqueIdentifier cuid : comPorts.keySet()) {
+                CIMPortController ctrl = comPorts.get(cuid);
+                String descr = cimIdToName.get(((long) cuid.CIMId) & 0x0000ffff);
+                if (descr != null) {
+                    buf.append("\t" + ctrl.comPortName + ":\t" + descr + ",\tUniqueNumber: "
+                            + String.format("0x%x", cuid.CIMUniqueNumber) + "\n");
+                }
             }
-        }
 
-        if (wirelessHub != null) {
-            buf.append(wirelessHub.getAvailableWirelessCIMsAsString());
+            if (wirelessHub != null) {
+                buf.append(wirelessHub.getAvailableWirelessCIMsAsString());
+            }
+        } else {
+            buf.append("found CIM Port mapping for CIM raw mode:\n");
+            for(Map.Entry<Short, String> entry: cimIdToComPortName.entrySet()) {
+                String hex = String.format("0x%x", entry.getKey());
+                buf.append(MessageFormat.format("\t{0} -> {1}\n", hex, entry.getValue()));
+            }
         }
         logger.info(buf.toString());
     }
@@ -322,7 +330,9 @@ public class CIMPortManager implements SystemChangeListener {
      *            the ID of the CIM to be removed
      */
     synchronized void removeConnection(CIMUniqueIdentifier cuid) {
-        comPorts.remove(cuid);
+        if(cuid != null) {
+            comPorts.remove(cuid);
+        }
     }
 
     /**
