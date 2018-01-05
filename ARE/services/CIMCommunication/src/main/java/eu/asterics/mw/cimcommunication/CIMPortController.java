@@ -51,9 +51,12 @@ public abstract class CIMPortController {
     byte nextExpectedIncomingSerialNumber = 0;
     byte nextExpectedCIMIssuedSerialNumber = 0;
 
-    public CIMPortController(String comPortName) {
+    private boolean hasClosed = false;
+
+    public CIMPortController(String comPortName, CIMUniqueIdentifier cuid) {
         logger = AstericsErrorHandling.instance.getLogger();
         this.comPortName = comPortName;
+        this.cuid = cuid;
     }
 
     public String getComPortName() {
@@ -137,7 +140,18 @@ public abstract class CIMPortController {
      * Closes the port. Tells the thread to run out and returns only after the
      * thread has ended.
      */
-    public abstract void closePort();
+    abstract void closePortInternal();
+
+    public final void closePort() {
+        synchronized (this) {
+            if(hasClosed) {
+                return; // do not close again, if already closing or closed
+            }
+            hasClosed = true;
+        }
+        closePortInternal();
+        CIMPortManager.getInstance().removeConnection(cuid);
+    }
 
     /**
      * Sends a packet to the connected device.
