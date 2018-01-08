@@ -54,7 +54,7 @@ public class APEProperties extends Properties {
     public static String DEFAULT_PROJECT_DIR = "defProjectDir/";
     public static String DEFAULT_BUILD_DIR = "build/";
     public static String DEFAULT_APE_LOG_LEVEL = "INFO";
-    public static APE_BUILD_MODE DEFAULT_APE_BUILD_MODE = APE_BUILD_MODE.RELEASE;
+    public static APE_BUILD_MODE DEFAULT_APE_BUILD_MODE = APE_BUILD_MODE.DEVEL;
     public static APE_WEB_COPY_MODE DEFAULT_WEB_COPY_MODE=APE_WEB_COPY_MODE.ALL;
 
     public static URI APE_BASE_URI = null;
