@@ -58,7 +58,7 @@ import java.util.logging.Logger;
  */
 public class CIMPortManager implements SystemChangeListener {
 
-    final int AUTODETECT_WAIT_TIME = 3500;
+    final int AUTODETECT_WAIT_TIME = 5000;
 
     static CIMPortManager instance = null;
     Hashtable<CIMUniqueIdentifier, CIMPortController> comPorts;
@@ -145,7 +145,7 @@ public class CIMPortManager implements SystemChangeListener {
                         logger.fine(MessageFormat.format("waiting for result of port {0}", entry.getKey()));
                         entry.getValue().get(AUTODETECT_WAIT_TIME, TimeUnit.MILLISECONDS);
                     } catch (InterruptedException | ExecutionException e) {
-                        logger.log(Level.WARNING, MessageFormat.format("Error waiting on CIMPortManager scan response for {0}", entry.getKey()));
+                        logger.log(Level.WARNING, MessageFormat.format("Error waiting on CIMPortManager scan response for {0}", entry.getKey()), e);
                     } catch (TimeoutException e) {
                         logger.log(Level.WARNING, MessageFormat.format("Timeout on scanning Port {0}", entry.getKey()));
                     }
@@ -318,9 +318,10 @@ public class CIMPortManager implements SystemChangeListener {
      *
      * @param cimId
      *            the ID of the CIM to be removed
+     * @return true if an connection was actually removed, otherwise false
      */
-    synchronized void removeConnection(short cimId) {
-        comPorts.remove(cimId);
+    synchronized boolean removeConnection(short cimId) {
+        return comPorts.remove(cimId) != null;
     }
 
     /**
@@ -328,11 +329,13 @@ public class CIMPortManager implements SystemChangeListener {
      *
      * @param cuid
      *            the ID of the CIM to be removed
+     * @return true if an connection was actually removed, otherwise false
      */
-    synchronized void removeConnection(CIMUniqueIdentifier cuid) {
+    synchronized boolean removeConnection(CIMUniqueIdentifier cuid) {
         if(cuid != null) {
-            comPorts.remove(cuid);
+            return comPorts.remove(cuid) != null;
         }
+        return false;
     }
 
     /**
