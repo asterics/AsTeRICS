@@ -28,7 +28,6 @@ package eu.asterics.mw.cimcommunication;
 import gnu.io.SerialPort;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -44,6 +43,9 @@ import java.util.logging.Level;
 class CIMSerialPortController extends CIMPortController implements Runnable {
     private final int PACKET_TIMEOUT = 3000;
     private final int PACKET_DETECT_SEND_OVERHEAD = 1000;
+    private final int EXCEPTION_COUNT_THRESHOLD = 10;
+
+    private int sendPacketExceptionCounter = 0;
 
     // local definitions
     enum PacketState {
@@ -53,8 +55,7 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
     final short areVersion = 0x1; // TODO replace with utility function
 
     // Java and communication related
-    boolean threadRunning = true;
-    boolean threadEnded = false;
+    volatile boolean threadRunning = true;
 
     // serial port handling
     SerialPort port;
@@ -64,7 +65,6 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
     // packet handling
     long lastPacketSent = 0;
 
-    InputStream inputStream = null;
     boolean constructionSuccess = false;
 
     long timeOfCreation;
@@ -79,7 +79,6 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
         super(comPortName, cuid);
         this.port = port;
 
-        inputStream = listener.in;
         this.listener = listener;
         timeOfCreation = System.currentTimeMillis();
 
@@ -98,135 +97,136 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
         CIMProtocolPacket packet = null;
 
         // near endless loop
-        while (threadRunning) {
-            try {
+        try {
+            while (threadRunning) {
+
                 // wait for next byte in queue
                 Byte b = listener.poll(1000L, TimeUnit.MILLISECONDS);
                 if (b != null) {
                     System.currentTimeMillis();
                     switch (searchState) {
-                    case PACKET_SEARCH_1:
-                        if (b == '@') {
-                            searchState = PacketState.PACKET_SEARCH_2;
-                        }
-                        break;
-                    case PACKET_SEARCH_2:
-                        if (b == 'T') {
-                            // found the packet header, start parsing the packet
-                            // content
-                            searchState = PacketState.PACKET_FOUND;
-                            packet = new CIMProtocolPacket();
-                        } else {
-                            searchState = PacketState.PACKET_SEARCH_1;
-                        }
+                        case PACKET_SEARCH_1:
+                            if (b == '@') {
+                                searchState = PacketState.PACKET_SEARCH_2;
+                            }
+                            break;
+                        case PACKET_SEARCH_2:
+                            if (b == 'T') {
+                                // found the packet header, start parsing the packet
+                                // content
+                                searchState = PacketState.PACKET_FOUND;
+                                packet = new CIMProtocolPacket();
+                            } else {
+                                searchState = PacketState.PACKET_SEARCH_1;
+                            }
 
-                        break;
-                    case PACKET_FOUND:
-                        synchronized (this) {
-                            if (packet.parsePacket(b)) {
-                                // finished parsing the packet
-                                int errorCode = packet.receivedWithoutErrors();
-                                if (errorCode != CIMProtocolPacket.ERRORSTATE_DROP_PACKET
-                                        && errorCode != CIMProtocolPacket.ERRORSTATE_NOT_READY) {
-                                    byte receivedSerialNumber = packet.getSerialNumber();
+                            break;
+                        case PACKET_FOUND:
+                            synchronized (this) {
+                                if (packet.parsePacket(b)) {
+                                    // finished parsing the packet
+                                    int errorCode = packet.receivedWithoutErrors();
+                                    if (errorCode != CIMProtocolPacket.ERRORSTATE_DROP_PACKET
+                                            && errorCode != CIMProtocolPacket.ERRORSTATE_NOT_READY) {
+                                        byte receivedSerialNumber = packet.getSerialNumber();
 
-                                    if ((receivedSerialNumber & 0x80) != 0) {
-                                        // this is a CIM generated packet
-                                        if (nextExpectedCIMIssuedSerialNumber == 0) {
-                                            nextExpectedCIMIssuedSerialNumber = receivedSerialNumber;
-                                        }
-
-                                        if (nextExpectedCIMIssuedSerialNumber != receivedSerialNumber) {
-                                            // Logger.getAnonymousLogger().warning("Did
-                                            // not receive correct packet serial
-                                            // number on CIM generated packet,
-                                            // potentially lost packets, " +
-                                            // packet.toString());
-                                            logger.warning(this.getClass().getName()
-                                                    + ".run: Did not receive correct packet serial number on CIM generated packet, potentially lost packets, "
-                                                    + packet.toString());
-                                            nextExpectedCIMIssuedSerialNumber = receivedSerialNumber;
-                                        }
-
-                                        if (nextExpectedCIMIssuedSerialNumber == -1) {
-                                            nextExpectedCIMIssuedSerialNumber = -128;
-                                        } else {
-                                            nextExpectedCIMIssuedSerialNumber++;
-                                        }
-
-                                        synchronized (eventHandlers) {
-                                            for (CIMEventHandler eventHandler : eventHandlers) {
-                                                eventHandler
-                                                        .handlePacketReceived(new CIMEventPacketReceived(this, packet));
+                                        if ((receivedSerialNumber & 0x80) != 0) {
+                                            // this is a CIM generated packet
+                                            if (nextExpectedCIMIssuedSerialNumber == 0) {
+                                                nextExpectedCIMIssuedSerialNumber = receivedSerialNumber;
                                             }
-                                        }
-                                    } else {
-                                        // this is a reply to an ARE generated
-                                        // packet
-                                        if (nextExpectedIncomingSerialNumber != receivedSerialNumber) {
-                                            // some packets have been lost
-                                            // Logger.getAnonymousLogger().severe("Lost
-                                            // one or more packets: expected: #"
-                                            // +
-                                            // nextExpectedIncomingSerialNumber
-                                            // + ", received: #" +
-                                            // receivedSerialNumber);
-                                            logger.severe(this.getClass().getName()
-                                                    + ".run: Lost one or more packets: expected: #"
-                                                    + nextExpectedIncomingSerialNumber + ", received: #"
-                                                    + receivedSerialNumber);
-                                            if (!eventHandlers.isEmpty()) {
-                                                // notify the caller about all
-                                                // missing packets
-                                                while (nextExpectedIncomingSerialNumber != receivedSerialNumber) {
-                                                    synchronized (eventHandlers) {
-                                                        for (CIMEventHandler eventHandler : eventHandlers) {
-                                                            eventHandler.handlePacketError(new CIMEventErrorPacketLost(
-                                                                    this, nextExpectedIncomingSerialNumber));
-                                                        }
-                                                    }
-                                                    nextExpectedIncomingSerialNumber = (byte) ((nextExpectedIncomingSerialNumber
-                                                            + 1) % 128);
-                                                }
+
+                                            if (nextExpectedCIMIssuedSerialNumber != receivedSerialNumber) {
+                                                // Logger.getAnonymousLogger().warning("Did
+                                                // not receive correct packet serial
+                                                // number on CIM generated packet,
+                                                // potentially lost packets, " +
+                                                // packet.toString());
+                                                logger.warning(this.getClass().getName()
+                                                        + ".run: Did not receive correct packet serial number on CIM generated packet, potentially lost packets, "
+                                                        + packet.toString());
+                                                nextExpectedCIMIssuedSerialNumber = receivedSerialNumber;
+                                            }
+
+                                            if (nextExpectedCIMIssuedSerialNumber == -1) {
+                                                nextExpectedCIMIssuedSerialNumber = -128;
                                             } else {
-                                                // no need to notify just skip
-                                                // the missing numbers
-                                                nextExpectedIncomingSerialNumber = receivedSerialNumber;
-                                                nextExpectedIncomingSerialNumber++;
+                                                nextExpectedCIMIssuedSerialNumber++;
                                             }
-                                        } else {
-                                            nextExpectedIncomingSerialNumber = (byte) ((nextExpectedIncomingSerialNumber
-                                                    + 1) % 128);
 
                                             synchronized (eventHandlers) {
                                                 for (CIMEventHandler eventHandler : eventHandlers) {
-                                                    eventHandler.handlePacketReceived(
-                                                            new CIMEventPacketReceived(this, packet));
+                                                    eventHandler
+                                                            .handlePacketReceived(new CIMEventPacketReceived(this, packet));
+                                                }
+                                            }
+                                        } else {
+                                            // this is a reply to an ARE generated
+                                            // packet
+                                            if (nextExpectedIncomingSerialNumber != receivedSerialNumber) {
+                                                // some packets have been lost
+                                                // Logger.getAnonymousLogger().severe("Lost
+                                                // one or more packets: expected: #"
+                                                // +
+                                                // nextExpectedIncomingSerialNumber
+                                                // + ", received: #" +
+                                                // receivedSerialNumber);
+                                                logger.severe(this.getClass().getName()
+                                                        + ".run: Lost one or more packets: expected: #"
+                                                        + nextExpectedIncomingSerialNumber + ", received: #"
+                                                        + receivedSerialNumber);
+                                                if (!eventHandlers.isEmpty()) {
+                                                    // notify the caller about all
+                                                    // missing packets
+                                                    while (nextExpectedIncomingSerialNumber != receivedSerialNumber) {
+                                                        synchronized (eventHandlers) {
+                                                            for (CIMEventHandler eventHandler : eventHandlers) {
+                                                                eventHandler.handlePacketError(new CIMEventErrorPacketLost(
+                                                                        this, nextExpectedIncomingSerialNumber));
+                                                            }
+                                                        }
+                                                        nextExpectedIncomingSerialNumber = (byte) ((nextExpectedIncomingSerialNumber
+                                                                + 1) % 128);
+                                                    }
+                                                } else {
+                                                    // no need to notify just skip
+                                                    // the missing numbers
+                                                    nextExpectedIncomingSerialNumber = receivedSerialNumber;
+                                                    nextExpectedIncomingSerialNumber++;
+                                                }
+                                            } else {
+                                                nextExpectedIncomingSerialNumber = (byte) ((nextExpectedIncomingSerialNumber
+                                                        + 1) % 128);
+
+                                                synchronized (eventHandlers) {
+                                                    for (CIMEventHandler eventHandler : eventHandlers) {
+                                                        eventHandler.handlePacketReceived(
+                                                                new CIMEventPacketReceived(this, packet));
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
-                                } else // received with errors
-                                {
-                                    synchronized (eventHandlers) {
-                                        for (CIMEventHandler eventHandler : eventHandlers) {
-                                            eventHandler.handlePacketError(new CIMEventErrorPacketFault(this, packet));
+                                    } else // received with errors
+                                    {
+                                        synchronized (eventHandlers) {
+                                            for (CIMEventHandler eventHandler : eventHandlers) {
+                                                eventHandler.handlePacketError(new CIMEventErrorPacketFault(this, packet));
+                                            }
                                         }
+
+                                        // Logger.getAnonymousLogger().severe("Error
+                                        // in packet #" + packet.getSerialNumber() +
+                                        // "on port " + comPortName);
+                                        logger.severe(this.getClass().getName() + ".run: Error in packet #"
+                                                + packet.getSerialNumber() + "on port " + comPortName);
+
+                                        // TODO what if serial number got distorted
+                                        nextExpectedIncomingSerialNumber = (byte) ((packet.getSerialNumber() + 1) % 128);
                                     }
-
-                                    // Logger.getAnonymousLogger().severe("Error
-                                    // in packet #" + packet.getSerialNumber() +
-                                    // "on port " + comPortName);
-                                    logger.severe(this.getClass().getName() + ".run: Error in packet #"
-                                            + packet.getSerialNumber() + "on port " + comPortName);
-
-                                    // TODO what if serial number got distorted
-                                    nextExpectedIncomingSerialNumber = (byte) ((packet.getSerialNumber() + 1) % 128);
+                                    searchState = PacketState.PACKET_SEARCH_1;
                                 }
-                                searchState = PacketState.PACKET_SEARCH_1;
+                                break;
                             }
-                            break;
-                        }
                     }
                 } else {
                     // timeout happened
@@ -248,19 +248,16 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
                     }
                 }
                 Thread.yield();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                logger.log(Level.WARNING, MessageFormat.format("error on polling CIM for COM port {0}", comPortName), e);
-                closePort();
             }
+        } catch (InterruptedException e) {
+            logger.log(Level.WARNING, "InterruptedException in SerialPortController " + comPortName, e);
+        } catch (IOException e) {
+            logger.log(Level.WARNING, MessageFormat.format("error on polling CIM for COM port {0}", comPortName), e);
+        } finally {
+            logger.fine(this.getClass().getName() + ".run: Thread " + comPortName + " main loop ended, cleaning up \n");
+            closePort();
         }
-        logger.fine(this.getClass().getName() + ".run: Thread " + comPortName + " main loop ended, cleaning up \n");
-
-        // thread ends, clean up
-        closePort();
         logger.fine(this.getClass().getName() + ".run: Thread on serial port " + comPortName + " ended \n");
-        threadEnded = true;
     }
 
     /*
@@ -270,27 +267,19 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
      */
     @Override
     public void closePortInternal() {
-        logger.fine(this.getClass().getName() + ".closePort on " + comPortName
-                + ": This method currently waits until the port thread ends, "
-                + "which might result in a deadlock but should not through " + "the timeouts of blocking \n");
         threadRunning = false;
-        port.removeEventListener();
-        synchronized (eventHandlers) {
-            eventHandlers.clear();
-        }
-        try {
-            port.notifyOnDataAvailable(false);
-        } catch (Exception e) {
-            logger.fine("error on setting notifiOnDataAvailable to false: " + e.getClass().getName());
-        }
-        try {
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+        if(port != null) {
+            port.removeEventListener();
+            try {
+                port.notifyOnDataAvailable(false); //sometimes NPE
+            } catch (Exception e) {
+                logger.fine("error on setting notifiOnDataAvailable to false: " + e.getClass().getName());
+            }
             port.close();
+            port = null;
         }
-        logger.fine("Port: " + port.getName() + " closed");
+        listener = null;
+        logger.fine("Port: " + comPortName + " closed");
     }
 
     /*
@@ -314,10 +303,17 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
             try {
                 port.getOutputStream().write(packet.toBytes());
                 port.getOutputStream().flush();
-                port.getOutputStream().close();
             } catch (IOException ioe) {
                 logger.severe("could not send packet #" + serialNumber + ", " + packet.toString() + " -> " + ioe.getMessage());
-                closePort();
+
+                //counting exceptions because of bluetooth HID actuator: it sometimes throws an exception once,
+                //and works fine afterwards -> we do not want to close the port in this case, but we want to close it,
+                //if exceptions occur periodically (e.g. if USB device was deattached).
+                sendPacketExceptionCounter++;
+                if (sendPacketExceptionCounter >= EXCEPTION_COUNT_THRESHOLD) {
+                    logger.warning(MessageFormat.format("counted {0} exceptions, therefore closing port {1}", sendPacketExceptionCounter, comPortName));
+                    closePort();
+                }
                 return -1;
             } catch (NullPointerException npe) {
                 logger.severe(this.getClass().getName() + ".sendPacket: "
