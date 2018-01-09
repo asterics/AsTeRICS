@@ -155,16 +155,22 @@ class CIMHighSpeedRawPortController extends CIMPortController {
     public void closePortInternal() {
         if (port != null) {
             try {
-                port.notifyOnDataAvailable(false);
+                port.notifyOnDataAvailable(false); //sometimes thows NPE
+            } catch (Exception e) {
+                logger.warning("Exception on notifyOnDataAvailable: " + e.getClass().getName());
+            }
+            try {
+
                 port.removeEventListener();
                 port.getOutputStream().close();
                 port.getInputStream().close();
                 port.close();
-                port = null;
                 logger.fine(this.getClass().getName() + ".run: Port " + comPortName + " closed \n");
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.warning("Exception closing port: " + e.getClass().getName());
             }
+            port = null;
+            eventListener = null;
         }
     }
 
