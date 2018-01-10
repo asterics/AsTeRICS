@@ -184,7 +184,7 @@ public abstract class CIMPortController {
      * @param crc
      * @return the serial number of the packet or -1 on error
      */
-    byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
+    final byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
         return sendPacket(data, featureAddress, requestCode, crc, RXTX_PORT_DEFAULT_SEND_TIMEOUT);
     }
 
@@ -202,7 +202,7 @@ public abstract class CIMPortController {
      * @param timeoutMillis the maximum time in milliseconds to wait for successful sending
      * @return the serial number of the packet or -1 on error (e.g. if timeout exceeded)
      */
-    byte sendPacket(final byte[] data, final short featureAddress, final short requestCode, final boolean crc, final long timeoutMillis) {
+    final byte sendPacket(final byte[] data, final short featureAddress, final short requestCode, final boolean crc, final long timeoutMillis) {
         synchronized (this) {
             if(hasClosed) {
                 logger.warning("called sendPacket, but port is already closed or in closing: " + comPortName);
