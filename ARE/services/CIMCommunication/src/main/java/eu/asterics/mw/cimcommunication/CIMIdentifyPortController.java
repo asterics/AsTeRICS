@@ -118,6 +118,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
 
     @Override
     public void closePortInternal() {
+        threadRunning = false;
         if(port != null) {
             try {
                 port.close();
