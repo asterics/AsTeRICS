@@ -25,20 +25,23 @@
 
 package eu.asterics.mw.cimcommunication;
 
+import eu.asterics.mw.services.AstericsErrorHandling;
+import eu.asterics.mw.services.AstericsThreadPool;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.logging.Logger;
-
-import eu.asterics.mw.services.AstericsErrorHandling;
 
 public abstract class CIMPortController {
     // This timeout must be set to avoid a high CPU load on Win10
     // Use @see RXTXPort#enableReceiveTimeout
     public static final int RXTX_PORT_ENABLE_RECEIVE_TIMEOUT = 500;
+    public static final int RXTX_PORT_DEFAULT_SEND_TIMEOUT = 2000;
 
     List<CIMEventHandler> eventHandlers = new LinkedList<CIMEventHandler>();
     protected Logger logger = null;
@@ -144,14 +147,17 @@ public abstract class CIMPortController {
 
     public final void closePort() {
         synchronized (this) {
-            if(hasClosed) {
+            if (hasClosed) {
                 return; // do not close again, if already closing or closed
             }
             hasClosed = true;
         }
+        eventHandlers.clear();
         closePortInternal();
-        CIMPortManager.getInstance().removeConnection(cuid);
-        CIMPortManager.getInstance().printActiveCimControllers();
+        boolean removedConnection = CIMPortManager.getInstance().removeConnection(cuid);
+        if(removedConnection) {
+            CIMPortManager.getInstance().printActiveCimControllers();
+        }
     }
 
     /**
@@ -167,6 +173,62 @@ public abstract class CIMPortController {
      *            true if crc should be attached to packet
      * @return the serial number of the packet or -1 on error
      */
-    abstract byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc);
+    abstract byte sendPacketInternal(byte[] data, short featureAddress, short requestCode, boolean crc) throws Exception;
 
+    /**
+     * Sends a packet to the connected device with a timeout of 2000ms
+     *
+     * @param data
+     * @param featureAddress
+     * @param requestCode
+     * @param crc
+     * @return the serial number of the packet or -1 on error
+     */
+    byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
+        return sendPacket(data, featureAddress, requestCode, crc, RXTX_PORT_DEFAULT_SEND_TIMEOUT);
+    }
+
+    /**
+     * Sends a packet to the connected device.
+     *
+     * @param data
+     *            a byte array of data to be transferred
+     * @param featureAddress
+     *            the feature address to send the data to
+     * @param requestCode
+     *            the request code for the transfer
+     * @param crc
+     *            true if crc should be attached to packet
+     * @param timeoutMillis the maximum time in milliseconds to wait for successful sending
+     * @return the serial number of the packet or -1 on error (e.g. if timeout exceeded)
+     */
+    byte sendPacket(final byte[] data, final short featureAddress, final short requestCode, final boolean crc, final long timeoutMillis) {
+        synchronized (this) {
+            if(hasClosed) {
+                logger.warning("called sendPacket, but port is already closed or in closing: " + comPortName);
+                return 0;
+            }
+        }
+        Future<Byte> future;
+        future = AstericsThreadPool.getInstance().execute(new Callable<Byte>() {
+            @Override
+            public Byte call() throws Exception {
+                try {
+                    return sendPacketInternal(data, featureAddress, requestCode, crc);
+                } catch (Exception e) {
+                    logger.warning(MessageFormat.format("error on send packet for port {0}: {1} -> closing port...", comPortName, e.getClass().getName()));
+                    closePort();
+                }
+                return -1;
+            }
+        });
+
+        byte returnValue = -1;
+        try {
+            returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            logger.warning("error in getting return value of sendPacket: " + e.getClass().getName());
+        }
+        return returnValue;
+    }
 }
