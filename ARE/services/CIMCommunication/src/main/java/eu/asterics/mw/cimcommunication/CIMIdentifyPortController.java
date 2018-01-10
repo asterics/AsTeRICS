@@ -235,7 +235,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
         logger.info(MessageFormat.format("waiting on injector thread to stop ({0})...", comPortName));
         threadRunning = false;
         injectorThreadFuture.cancel(true);
-        for(int i=0; i<700 && !injectorThreadEnded; i++) {
+        for(int i=0; i<7 && !injectorThreadEnded; i++) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
