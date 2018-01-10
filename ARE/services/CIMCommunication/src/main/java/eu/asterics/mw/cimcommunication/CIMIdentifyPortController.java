@@ -55,6 +55,8 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
     private boolean connectionLost;
 
     private String name;
+    private String taskIdIdentifierTask;
+    private String taskIdInjectorTask;
     private CIMPortEventListener eventListener;
 
     public String getName() {
@@ -143,9 +145,8 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                 try {
                     Thread.sleep(500);
                     logger.fine("Identify packet injector thread started for port " + comPortName);
-
                     while (threadRunning) {
-                        sendPacket(null, CIMProtocolPacket.FEATURE_UNIQUE_SERIAL_NUMBER,
+                        sendPacketInternal(null, CIMProtocolPacket.FEATURE_UNIQUE_SERIAL_NUMBER,
                                 CIMProtocolPacket.COMMAND_REQUEST_READ_FEATURE, false);
                         Thread.sleep(500);
                     }
@@ -224,14 +225,14 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
         logger.info(MessageFormat.format("waiting on injector thread to stop ({0})...", comPortName));
         threadRunning = false;
         injectorThreadFuture.cancel(true);
-        for(int i=0; i<5 && !injectorThreadEnded; i++) {
+        for(int i=0; i<700 && !injectorThreadEnded; i++) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
             }
         }
         if(!injectorThreadEnded) {
-            logger.warning("Injector Thread did not end after 500ms: " + comPortName);
+            logger.warning("Injector Thread did not end after 700ms: " + comPortName);
         }
 
         logger.fine(MessageFormat.format("Injector thread ended. Cleaning up resources and stopping Identifier thread ({0})", comPortName));
@@ -242,7 +243,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
     }
 
     @Override
-    synchronized byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
+    synchronized byte sendPacketInternal(byte[] data, short featureAddress, short requestCode, boolean crc) {
         byte ret = -1;
         if (threadRunning) {
             CIMProtocolPacket packet = new CIMProtocolPacket();

@@ -289,48 +289,39 @@ class CIMSerialPortController extends CIMPortController implements Runnable {
      * short, short, boolean)
      */
     @Override
-    synchronized byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
+    synchronized byte sendPacketInternal(byte[] data, short featureAddress, short requestCode, boolean crc) throws Exception {
         byte ret = -1;
-        if (threadRunning) {
-            CIMProtocolPacket packet = new CIMProtocolPacket();
-            packet.useCrc(crc);
-            packet.setAreCimID(areVersion);
-            packet.setSerialNumber(serialNumber);
-            packet.setFeatureAddress(featureAddress);
-            packet.setRequestReplyCode(requestCode);
-            packet.setData(data);
+        CIMProtocolPacket packet = new CIMProtocolPacket();
+        packet.useCrc(crc);
+        packet.setAreCimID(areVersion);
+        packet.setSerialNumber(serialNumber);
+        packet.setFeatureAddress(featureAddress);
+        packet.setRequestReplyCode(requestCode);
+        packet.setData(data);
+        try {
+            port.getOutputStream().write(packet.toBytes());
+            port.getOutputStream().flush();
+        } catch (IOException ioe) {
+            logger.severe("could not send packet #" + serialNumber + ", " + packet.toString() + " -> " + ioe.getMessage());
 
-            try {
-                port.getOutputStream().write(packet.toBytes());
-                port.getOutputStream().flush();
-            } catch (IOException ioe) {
-                logger.severe("could not send packet #" + serialNumber + ", " + packet.toString() + " -> " + ioe.getMessage());
-
-                //counting exceptions because of bluetooth HID actuator: it sometimes throws an exception once,
-                //and works fine afterwards -> we do not want to close the port in this case, but we want to close it,
-                //if exceptions occur periodically (e.g. if USB device was deattached).
-                sendPacketExceptionCounter++;
-                if (sendPacketExceptionCounter >= EXCEPTION_COUNT_THRESHOLD) {
-                    logger.warning(MessageFormat.format("counted {0} exceptions, therefore closing port {1}", sendPacketExceptionCounter, comPortName));
-                    closePort();
-                }
-                return -1;
-            } catch (NullPointerException npe) {
-                logger.severe(this.getClass().getName() + ".sendPacket: "
-                        + "NullPointerException trying to send packet #" + serialNumber + " -> \n" + npe.getMessage());
-                return -1;
+            //counting exceptions because of bluetooth HID actuator: it sometimes throws an exception once,
+            //and works fine afterwards -> we do not want to close the port in this case, but we want to close it,
+            //if exceptions occur periodically (e.g. if USB device was deattached).
+            sendPacketExceptionCounter++;
+            if (sendPacketExceptionCounter >= EXCEPTION_COUNT_THRESHOLD) {
+                logger.warning(MessageFormat.format("counted {0} exceptions, therefore closing port {1}", sendPacketExceptionCounter, comPortName));
+                closePort();
             }
+            return -1;
+        }
 
-            lastPacketSent = System.currentTimeMillis();
+        lastPacketSent = System.currentTimeMillis();
 
-            ret = serialNumber;
-            if (serialNumber == 127) {
-                serialNumber = 0;
-            } else {
-                serialNumber++;
-            }
+        ret = serialNumber;
+        if (serialNumber == 127) {
+            serialNumber = 0;
         } else {
-            logger.warning(MessageFormat.format("called sendPacket while thread was set to end ({0})", this.comPortName));
+            serialNumber++;
         }
         return ret;
     }

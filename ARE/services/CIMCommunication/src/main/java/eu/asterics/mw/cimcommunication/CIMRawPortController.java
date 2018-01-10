@@ -139,6 +139,7 @@ class CIMRawPortController extends CIMPortController {
 
     @Override
     public void closePortInternal() {
+        threadRunning = false;
         if (port != null) {
             try {
                 port.removeEventListener();
@@ -151,22 +152,12 @@ class CIMRawPortController extends CIMPortController {
                 logger.log(Level.WARNING, MessageFormat.format("error on closing port {0}.", comPortName), e);
             }
         }
-        threadRunning = false;
     }
 
     @Override
-    byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
-        try {
-            // for (byte b : data)
-            // {
-            // System.out.println(String.format("Sent: 0x%2x ('%c')", b, b));
-            // }
-            port.getOutputStream().write(data);
-            port.getOutputStream().flush();
-            port.getOutputStream().close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    byte sendPacketInternal(byte[] data, short featureAddress, short requestCode, boolean crc) throws Exception {
+        port.getOutputStream().write(data);
+        port.getOutputStream().flush();
         return 0;
     }
 

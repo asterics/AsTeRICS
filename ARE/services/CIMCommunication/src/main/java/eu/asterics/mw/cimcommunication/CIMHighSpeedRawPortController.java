@@ -175,13 +175,9 @@ class CIMHighSpeedRawPortController extends CIMPortController {
     }
 
     @Override
-    byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
-        try {
-            outputStream.write(data);
-            outputStream.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    byte sendPacketInternal(byte[] data, short featureAddress, short requestCode, boolean crc) throws Exception {
+        outputStream.write(data);
+        outputStream.flush();
         return 0;
     }
 

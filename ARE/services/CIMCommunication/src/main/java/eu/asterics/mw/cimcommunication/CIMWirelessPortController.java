@@ -57,7 +57,7 @@ public class CIMWirelessPortController extends CIMPortController {
     }
 
     @Override
-    byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
+    byte sendPacketInternal(byte[] data, short featureAddress, short requestCode, boolean crc) {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         LEDataOutputStream dos = new LEDataOutputStream(bos);
