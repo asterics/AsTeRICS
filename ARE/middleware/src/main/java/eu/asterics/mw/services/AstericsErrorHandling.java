@@ -31,14 +31,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.logging.*;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import eu.asterics.mw.services.logging.CustomLogFormatter;
 import org.apache.commons.io.FileUtils;
 
 import eu.asterics.mw.are.AREProperties;
@@ -317,12 +321,11 @@ public class AstericsErrorHandling implements IAstericsErrorHandling {
                 logger.addHandler(consoleHandler);
 
                 // Create formatters for the handlers (optional)
-                Formatter formatter = new CustomLogFormatter();
-                consoleHandler.setFormatter(formatter);
-                severeFileHandler.setFormatter(formatter);
-                warningFileHandler.setFormatter(formatter);
-                infoFileHandler.setFormatter(formatter);
-                fineFileHandler.setFormatter(formatter);
+                severeFileHandler.setFormatter(new SimpleFormatter());
+                warningFileHandler.setFormatter(new SimpleFormatter());
+                infoFileHandler.setFormatter(new SimpleFormatter());
+                fineFileHandler.setFormatter(new SimpleFormatter());
+                consoleHandler.setFormatter(new SimpleFormatter());
 
                 logger.setLevel(Level.ALL);
                 logger.setUseParentHandlers(false);

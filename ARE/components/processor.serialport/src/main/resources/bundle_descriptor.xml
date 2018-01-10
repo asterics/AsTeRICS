@@ -53,11 +53,7 @@
 			<property name="sendBytesBufferSize"
 				type="integer"
 				value="1"
-				description="Wait for the given number of bytes before sending them to the serial port."/>
-			<property name="cimId"
-					  type="string"
-					  value=""
-					  description="CIMId of the device to connect to"/>
-		</properties>
+				description="Wait for the given number of bytes before sending them to the serial port."/>                							
+        </properties>
     </componentType>
 </componentTypes>
