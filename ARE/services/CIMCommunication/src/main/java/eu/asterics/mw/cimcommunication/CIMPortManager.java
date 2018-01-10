@@ -58,6 +58,10 @@ import java.util.logging.Logger;
  */
 public class CIMPortManager implements SystemChangeListener {
 
+    public static final String TASK_ID_CIM = "TASK_CIM_";
+    public static final String TASK_ID_CIM_TEMP = TASK_ID_CIM + "TEMP_";
+    public static final String TASK_ID_CIM_SERIALPORT= TASK_ID_CIM + "SERIALPORT_";
+
     final int AUTODETECT_WAIT_TIME = 5000;
 
     static CIMPortManager instance = null;
@@ -84,7 +88,6 @@ public class CIMPortManager implements SystemChangeListener {
         AREProperties.instance.setDefaultPropertyValue(PROPERTY_CIM_RAW_MODE, "false", "If true the CIMPortManager starts in raw mode, where COM connections can be used directly without CIM protocol");
         this.cimRawMode = Boolean.valueOf(AREProperties.instance.getProperty(PROPERTY_CIM_RAW_MODE));
         logger.info("started CIMPortManager with rawMode = " + cimRawMode);
-        // logger.fine("Constructing CIM Port Manager");
 
         comPorts = new Hashtable<CIMUniqueIdentifier, CIMPortController>();
         comRawPorts = new HashMap<String, CIMPortController>();
@@ -133,7 +136,7 @@ public class CIMPortManager implements SystemChangeListener {
                         logger.fine(MessageFormat.format("Starting CIM scanning on port <{0}>", portIdentifier.getName()));
                         try {
                             CIMIdentifyPortController ctrl = new CIMIdentifyPortController(portIdentifier);
-                            Future future = AstericsThreadPool.instance.execute(ctrl);
+                            Future future = AstericsThreadPool.instance.execute(ctrl, ctrl.getTaskIdIdentifierTask());
                             futures.put(portIdentifier.getName(), future);
                         } catch (CIMException e) {
                             logger.warning(MessageFormat.format("Could not create port controller on CIM Port {0}.", portIdentifier.getName()));
@@ -241,6 +244,11 @@ public class CIMPortManager implements SystemChangeListener {
             }
         }
         logger.info(buf.toString());
+        String runningTempCimTasks = AstericsThreadPool.getInstance().getFormattedRunningNamedTasks(TASK_ID_CIM_TEMP);
+        if(runningTempCimTasks != null && !runningTempCimTasks.isEmpty()) {
+            logger.warning("the following temporary CIM tasks are still running although they maybe should have already ended:\n");
+            logger.warning(runningTempCimTasks);
+        }
     }
 
     String getDescriptionForCIMId(long l) {
@@ -614,7 +622,8 @@ public class CIMPortManager implements SystemChangeListener {
                 if ((ctrl != null) && (comPorts.get(cuid) == null)) {
                     comPorts.put(cuid, ctrl);
                 }
-                AstericsThreadPool.instance.execute(ctrl);
+                String taskIdSerialPort = MessageFormat.format("{0}{1}_{2}", TASK_ID_CIM_SERIALPORT, System.currentTimeMillis(), comPortName);
+                AstericsThreadPool.instance.execute(ctrl, taskIdSerialPort);
             }
         } else {
             cimIdToComPortName.put(cuid.getCIMId(), comPortName);
