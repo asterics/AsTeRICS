@@ -46,6 +46,8 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
     }
 
     private static final long PACKET_DETECT_TIMEOUT = 4000;
+    private static final String TASK_ID_CIM_IDENTIFIER = CIMPortManager.TASK_ID_CIM_TEMP + "IDENTIFIER_";
+    private static final String TASK_ID_CIM_INJECTOR = CIMPortManager.TASK_ID_CIM_TEMP + "INJECTOR_";
 
     SerialPort port;
     long timeOfCreation;
@@ -55,12 +57,16 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
     private boolean connectionLost;
 
     private String name;
-    private String taskIdIdentifierTask;
-    private String taskIdInjectorTask;
+    private final String taskIdIdentifierTask;
+    private final String taskIdInjectorTask;
     private CIMPortEventListener eventListener;
 
     public String getName() {
         return name;
+    }
+
+    public String getTaskIdIdentifierTask() {
+        return taskIdIdentifierTask;
     }
 
     /**
@@ -73,6 +79,9 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
     CIMIdentifyPortController(CommPortIdentifier portIdentifier) throws CIMException {
         super(portIdentifier.getName(), null);
         name = "Identify" + portIdentifier.getName();
+        long currentTime = System.currentTimeMillis();
+        taskIdIdentifierTask = MessageFormat.format("{0}{1}_{2}", TASK_ID_CIM_IDENTIFIER, currentTime, comPortName);
+        taskIdInjectorTask = MessageFormat.format("{0}{1}_{2}", TASK_ID_CIM_INJECTOR, currentTime, comPortName);
 
         try {
             port = (SerialPort) portIdentifier.open(this.getClass().getName() + comPortName, 2000);
@@ -155,7 +164,7 @@ class CIMIdentifyPortController extends CIMPortController implements Runnable {
                 }
                 injectorThreadEnded = true;
             }
-        });
+        }, taskIdInjectorTask);
 
         // near endless loop
         try {
