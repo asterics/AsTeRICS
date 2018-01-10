@@ -42,6 +42,7 @@ public abstract class CIMPortController {
     // Use @see RXTXPort#enableReceiveTimeout
     public static final int RXTX_PORT_ENABLE_RECEIVE_TIMEOUT = 500;
     public static final int RXTX_PORT_DEFAULT_SEND_TIMEOUT = 2000;
+    private static final String TASK_ID_CIM_SENDPACKET = CIMPortManager.TASK_ID_CIM_TEMP + "SENDPACKET_";
 
     List<CIMEventHandler> eventHandlers = new LinkedList<CIMEventHandler>();
     protected Logger logger = null;
@@ -209,6 +210,7 @@ public abstract class CIMPortController {
                 return 0;
             }
         }
+        String taskIdSendPacket = MessageFormat.format("{0}{1}_{2}", TASK_ID_CIM_SENDPACKET, System.currentTimeMillis(), comPortName);
         Future<Byte> future;
         future = AstericsThreadPool.getInstance().execute(new Callable<Byte>() {
             @Override
@@ -221,7 +223,7 @@ public abstract class CIMPortController {
                 }
                 return -1;
             }
-        });
+        }, taskIdSendPacket);
 
         byte returnValue = -1;
         try {
