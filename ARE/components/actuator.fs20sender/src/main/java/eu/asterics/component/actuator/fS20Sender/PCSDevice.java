@@ -64,14 +64,13 @@ public class PCSDevice {
      * @throws IOException
      */
     public void open() throws InterruptedException, ExecutionException, TimeoutException, IOException {
-        if (dev != null) {
-            dev.close();
-        }
-        
         Future<Boolean> openFuture=timerExecutorSend.submit(new Callable<Boolean>() {
 
             @Override
             public Boolean call() throws Exception {
+                if (dev != null) {
+                    dev.close();
+                }
                 List<HidDevice> list = HidManager.getHidServices().getAttachedHidDevices();
                 for (HidDevice device : list) {
                     if (device.getVendorId() == (short) vid && device.getProductId() == (short) pid) {
@@ -84,13 +83,22 @@ public class PCSDevice {
                 dev.open();
                 if(dev.isOpen()) {
                     logger.fine("Opened FS20 device successfully: Vendor: "+dev.getManufacturer()+", Product: "+dev.getProduct()+", Id: "+dev.getId()+", Serial: "+dev.getSerialNumber());
+                } else {
+                    logger.warning("Opening FS20 device was not successful");
                 }
                 return dev.isOpen();
             }            
         });
-        boolean openSuccess=openFuture.get(PCSDEVICE_TIMEOUT, TimeUnit.MILLISECONDS);
+        boolean openSuccess;
+        try {
+            openSuccess = openFuture.get(PCSDEVICE_TIMEOUT, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            openSuccess = false;
+        }
         if(!openSuccess) {
-            throw new IOException("Could not open FS20 device.");
+            String msg = "Timeout opening FS20 device.";
+            logger.warning(msg);
+            throw new IOException(msg);
         }
     }
 
@@ -117,11 +125,18 @@ public class PCSDevice {
                 return null;
             }
             
-        }); 
-        closeFuture.get(PCSDEVICE_TIMEOUT, TimeUnit.MILLISECONDS);
+        });
+        boolean error = false;
+        try {
+            closeFuture.get(PCSDEVICE_TIMEOUT, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            error = true;
+        }
         timerExecutorSend.shutdownNow();
-        if(!timerExecutorSend.awaitTermination(PCSDEVICE_TIMEOUT, TimeUnit.MILLISECONDS)) {
-            throw new IOException("Could not close FS20 device");
+        if(!timerExecutorSend.awaitTermination(PCSDEVICE_TIMEOUT, TimeUnit.MILLISECONDS) || error) {
+            String msg = "Could not close FS20 device";
+            logger.warning(msg);
+            throw new IOException(msg);
         }
         logger.fine("Successfully closed FS20 device. "+devString);
     }
