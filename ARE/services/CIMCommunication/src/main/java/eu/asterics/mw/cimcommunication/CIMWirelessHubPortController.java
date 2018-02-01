@@ -47,8 +47,8 @@ import gnu.io.SerialPort;
 class CIMWirelessHubPortController extends CIMSerialPortController implements Runnable, CIMEventHandler {
     List<CIMEventHandler> zigbeeEventHandlers = new LinkedList<CIMEventHandler>();
 
-    CIMWirelessHubPortController(String comPortName, SerialPort port, CIMPortEventListener listener) {
-        super(comPortName, port, listener);
+    CIMWirelessHubPortController(String comPortName, SerialPort port, CIMPortEventListener listener, CIMUniqueIdentifier cuid) {
+        super(comPortName, port, listener, cuid);
         super.addEventListener(this);
 
         logger.finest("CIMWirelessHubPortController constructed");

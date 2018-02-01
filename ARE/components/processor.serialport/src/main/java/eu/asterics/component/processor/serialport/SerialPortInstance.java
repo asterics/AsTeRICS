@@ -25,12 +25,12 @@
 
 package eu.asterics.component.processor.serialport;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import eu.asterics.mw.cimcommunication.CIMPortController;
 import eu.asterics.mw.cimcommunication.CIMPortManager;
@@ -56,21 +56,26 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     private final OutputPort opReceived = new OutputPort();
     private final OutputPort opReceivedBytes = new OutputPort();
+    private final Logger logger = AstericsErrorHandling.instance.getLogger();
 
     // Usage of an output port e.g.:
     // opMyOutPort.sendData(ConversionUtils.intToBytes(10));
 
     // Usage of an event trigger port e.g.: etpMyEtPort.raiseEvent();
 
+    private final static String IN_PORT_RESCAN = "IN_PORT_RESCAN";
+    private final static String NEW_PORT_RESCAN = "NEW_PORT_RESCAN";
+
     private InputStream in = null;
     private OutputStream out = null;
     private Thread readerThread = null;
     private boolean running = false;
-    String propComPort = "COM4";
-    int propBaudRate = 9600;
-    int propSendStringTerminator = 0;
-    int propReceiveStringTerminator = 0;
-    int propSendBytesBufferSize=1;
+    private String propComPort = "COM4";
+    private int propBaudRate = 9600;
+    private int propSendStringTerminator = 0;
+    private int propReceiveStringTerminator = 0;
+    private int propSendBytesBufferSize=1;
+    private Short propCimId = null;
     
     private ByteBuffer sendBytesBuffer=ByteBuffer.allocate(propSendBytesBufferSize);
     
@@ -209,7 +214,20 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
             propSendBytesBufferSize = Integer.parseInt(newValue.toString());
             sendBytesBuffer=ByteBuffer.allocate(propSendBytesBufferSize);
             return oldValue;
-        }        
+        }
+        if ("cimId".equalsIgnoreCase(propertyName)) {
+            final Object oldValue = propCimId;
+            String s = newValue.toString();
+            if(s.contains("0x")) {
+                s = s.substring(2);
+            }
+            try {
+                propCimId = (short) Integer.parseInt(s, 16);
+            } catch (NumberFormatException e) {
+                logger.warning("could not format cimId, value is: " + s);
+            }
+            return oldValue;
+        }
 
         return null;
     }
@@ -237,7 +255,9 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
             // stringBuffer.append(new String(data));
             // opActResult.sendData
             // (ConversionUtils.stringToBytes(stringBuffer.toString()));
-
+            if(out == null) {
+                init();
+            }
             if (out != null) {
                 try {
                     out.write(data);
@@ -276,7 +296,9 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
             // stringBuffer.append(new String(data));
             // opActResult.sendData
             // (ConversionUtils.stringToBytes(stringBuffer.toString()));
-
+            if(out == null) {
+                init();
+            }
             if (out != null && data != null) {
                 try {
                     if(sendBytesBuffer.hasRemaining()) {
@@ -318,50 +340,50 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
 
         //First directly send the byte to the receivedBytes output port.
         opReceivedBytes.sendData(ConversionUtils.byteToBytes(actbyte));
-        
+
         // System.out.println("received " + Integer.toHexString(0x000000ff &
         // actbyte) +" hex");
-        
+
         switch (propSendStringTerminator) {
-        case 0:
-            received += (char) actbyte;
-            finished = true;
-            break;
-        case 1:
-            if (actbyte != 13) {
+            case 0:
                 received += (char) actbyte;
-            } else {
                 finished = true;
-            }
-            break;
-        case 2:
-            if (actbyte != 10) {
-                received += (char) actbyte;
-            } else {
-                finished = true;
-            }
-            break;
-        case 3:
-            if ((actbyte != 13) && (actbyte != 10)) {
-                endflag = false;
-                received += (char) actbyte;
-            } else {
-                if (actbyte == 13) {
-                    endflag = true;
-                }
-                if ((endflag == true) && (actbyte == 10)) {
-                    endflag = false;
+                break;
+            case 1:
+                if (actbyte != 13) {
+                    received += (char) actbyte;
+                } else {
                     finished = true;
                 }
-            }
-            break;
-        case 4:
-            if (actbyte != 0) {
-                received += (char) actbyte;
-            } else {
-                finished = true;
-            }
-            break;
+                break;
+            case 2:
+                if (actbyte != 10) {
+                    received += (char) actbyte;
+                } else {
+                    finished = true;
+                }
+                break;
+            case 3:
+                if ((actbyte != 13) && (actbyte != 10)) {
+                    endflag = false;
+                    received += (char) actbyte;
+                } else {
+                    if (actbyte == 13) {
+                        endflag = true;
+                    }
+                    if ((endflag == true) && (actbyte == 10)) {
+                        endflag = false;
+                        finished = true;
+                    }
+                }
+                break;
+            case 4:
+                if (actbyte != 0) {
+                    received += (char) actbyte;
+                } else {
+                    finished = true;
+                }
+                break;
         }
 
         if (finished) {
@@ -377,47 +399,78 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void start() {
-        //Sanity check: if portController != null stop the connection first.
-        if(portController!=null) {
-            stop();
-        }
+        init();
+        super.start();
+    }
 
-        portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
+    private void init() {
+
         received = "";
-
+        initComPort();
         if (portController == null) {
             AstericsErrorHandling.instance.reportError(this,
                     "SerialPort-plugin: Could not construct raw port controller, please verify that the COM port is valid.");
-        } else {
-            in = portController.getInputStream();
-            out = portController.getOutputStream();
-            readerThread = new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    running = true;
-                    while (running) {
-
-                        try {
-                            if (in.available() > 0) {
-                                handlePacketReceived((byte) in.read());
-                            } else {
-                                Thread.sleep(10);
-                            }
-                        } catch (InterruptedException ie) {
-                            ie.printStackTrace();
-                        } catch (IOException io) {
-                            io.printStackTrace();
-                        }
-
-                    }
-                }
-
-            });
-            readerThread.start();
-
+            return;
         }
-        super.start();
+        in = portController.getInputStream();
+        out = portController.getOutputStream();
+        readerThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                running = true;
+                try {
+                    while (running) {
+                        Byte read = portController.poll();
+                        if (read != null) {
+                            handlePacketReceived(read);
+                        }
+                    }
+                } catch (IOException e) {
+                    logger.log(Level.WARNING, "IOException in polling data in SerialPort module.");
+                    closeAll();
+                }
+                logger.log(Level.FINE, "SerialPort module: stopped reading thread.");
+            }
+        });
+        readerThread.start();
+        logger.log(Level.FINE, "SerialPort module: started reading thread.");
+
+    }
+
+    private void initComPort() {
+        //Sanity check: if portController != null stop the connection first.
+        if (portController != null) {
+            stop();
+        }
+
+        if (propCimId != null) { //mode with given CIM id
+            initComPortByCimID();
+        } else { //mode with given COM Port
+            portController = CIMPortManager.getInstance().getRawConnection(propComPort, propBaudRate, true);
+        }
+    }
+
+    private void initComPortByCimID() {
+        if(CIMPortManager.getInstance().inRescan()) {
+            logger.info("do not try open COM port by CIM id, because currently rescanning");
+            opReceived.sendData(IN_PORT_RESCAN.getBytes());
+            opReceivedBytes.sendData(IN_PORT_RESCAN.getBytes());
+            return;
+        }
+
+        propComPort = CIMPortManager.getInstance().getCOMPortByCIMId(propCimId);
+        boolean foundComPort = propComPort != null && !propComPort.isEmpty();
+        if (foundComPort) {
+            logger.info(MessageFormat.format("Opening device with cimID <{0}> on COM Port <{1}>", Integer.toHexString(propCimId), propComPort));
+            portController = CIMPortManager.getInstance().getRawConnection(propCimId, propBaudRate);
+        }
+        if(portController == null) {
+            logger.info(MessageFormat.format("could not find or open COM port for CIM id {0}. starting rescan...", propCimId));
+            CIMPortManager.getInstance().rescan();
+            opReceived.sendData(NEW_PORT_RESCAN.getBytes());
+            opReceivedBytes.sendData(NEW_PORT_RESCAN.getBytes());
+        }
     }
 
     /**
@@ -425,12 +478,7 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
      */
     @Override
     public void pause() {
-        if (portController != null) {
-            CIMPortManager.getInstance().closeRawConnection(propComPort);
-            portController = null;
-            out = null;
-            AstericsErrorHandling.instance.reportInfo(this, "SerialPort controller closed");
-        }
+        closeAll();
         running = false;
         super.pause();
 
@@ -456,12 +504,29 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     @Override
     public void stop() {
         super.stop();
-        if (portController != null) {
+        closeAll();
+        running = false;
+    }
 
-            CIMPortManager.getInstance().closeRawConnection(propComPort);
-            portController = null;
-            AstericsErrorHandling.instance.reportInfo(this, "SerialPort connection closed");
-            running = false;
+    private void closeAll() {
+        running = false;
+        if(readerThread != null) {
+            readerThread.interrupt();
+            readerThread = null;
         }
+        if (portController != null) {
+            CIMPortManager.getInstance().closeRawConnection(propComPort);
+            portController.closePort();
+            try {
+                if(out != null) out.close();
+                if(in != null) in.close();
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "error closing streams in SerialPortInstance", e);
+            }
+            out = null;
+            in = null;
+            portController = null;
+        }
+        AstericsErrorHandling.instance.reportInfo(this, "SerialPort connection closed");
     }
 }

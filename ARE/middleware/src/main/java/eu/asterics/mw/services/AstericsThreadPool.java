@@ -25,14 +25,11 @@
 
 package eu.asterics.mw.services;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.*;
 import java.util.logging.Logger;
 
 /*
@@ -79,6 +76,8 @@ public class AstericsThreadPool {
     public static final AstericsThreadPool instance = new AstericsThreadPool();
     protected static final String THREAD_POOL_PREFIX = "OtherTasks";
     private ExecutorService pool;
+    private Set<String> runningNamedTasks = Collections.synchronizedSet(new HashSet<String>());
+
 
     private AstericsThreadPool() {
         pool = Executors.newCachedThreadPool(new ThreadFactory() {
@@ -120,16 +119,103 @@ public class AstericsThreadPool {
     }
 
     /**
+     * Executes (non-blocking) the given Runnable in the thread pool and returns
+     * a {@link Future} instance for the task. The Future can be used to get
+     * return values, receive Exceptions of the task or cancel the task.
+     *
+     * @param r
+     * @param taskId an ID associated to the given task
+     * @return {@link Future}: The Future object of the task.
+     */
+    public Future<?> execute(final Runnable r, final String taskId) {
+        runningNamedTasks.add(taskId);
+        Future future = pool.submit(new Runnable() {
+            @Override
+            public void run() {
+                r.run();
+                runningNamedTasks.remove(taskId);
+            }
+        });
+        return future;
+    }
+
+    /**
+     * returns all ids of running and not finished tasks started with {@link AstericsThreadPool#execute(Runnable, String)}
+     * or {@link AstericsThreadPool#execute(Callable, String)}
+     * @return
+     */
+    public Set<String> getRunningTaskIds() {
+        return new HashSet<>(runningNamedTasks);
+    }
+
+    /**
+     * returns all ids of running and not finished tasks started with {@link AstericsThreadPool#execute(Runnable, String)}
+     * or {@link AstericsThreadPool#execute(Callable, String)}, where the taskIdOfTask.contains(containedInTaskId)
+     * @param containedInTaskId the taskIds to search for
+     * @return
+     */
+    public Set<String> getRunningTaskIds(String containedInTaskId) {
+        Set<String> returnSet = new HashSet<>();
+        for (String taskId : runningNamedTasks) {
+            if (taskId.contains(containedInTaskId)) {
+                returnSet.add(taskId);
+            }
+        }
+        return returnSet;
+    }
+
+    /**
+     * returns a formatted String containing all running and not finished tasks started with {@link AstericsThreadPool#execute(Runnable, String)}
+     * or {@link AstericsThreadPool#execute(Callable, String)}, where the taskIdOfTask.contains(containedInTaskId)
+     * @param containedInTaskId the taskIds to search for
+     * @return the formatted string, or an empty string if no running taskIds for the search string were found
+     */
+    public String getFormattedRunningNamedTasks(String containedInTaskId) {
+        StringBuffer buffer = new StringBuffer();
+        Set<String> runningTasks = getRunningTaskIds(containedInTaskId);
+        if (!runningTasks.isEmpty()) {
+            buffer.append(MessageFormat.format("running named tasks where taskId contains <{0}>:\n", containedInTaskId));
+            for (String taskId : runningTasks) {
+                buffer.append("\t" + taskId + "\n");
+            }
+        }
+        return buffer.toString();
+    }
+
+    /**
      * Executes (non-blocking) the given {@link Callable} in the thread pool and
      * returns a {@link Future} instance for the task. The Future can be used to
      * get return values, receive Exceptions of the task or cancel the task.
-     * 
+     *
      * @param <V>
      * @param c
      * @return
      */
     public <V> Future<V> execute(Callable<V> c) {
         return pool.submit(c);
+    }
+
+    /**
+     * Executes (non-blocking) the given {@link Callable} in the thread pool and
+     * returns a {@link Future} instance for the task. The Future can be used to
+     * get return values, receive Exceptions of the task or cancel the task.
+     *
+     * @param <V>
+     * @param c
+     * @param taskId
+     * @return
+     */
+    public <V> Future<V> execute(final Callable<V> c, final String taskId) {
+        runningNamedTasks.add(taskId);
+        Future<V> future = pool.submit(new Callable<V>() {
+            @Override
+            public V call() throws Exception {
+                V returnValue = c.call();
+                runningNamedTasks.remove(taskId);
+                return returnValue;
+            }
+        });
+        return future;
     }
 
     /**

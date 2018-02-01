@@ -28,10 +28,13 @@ package eu.asterics.mw.cimcommunication;
 //import eu.asterics.mw.services.AstericsLogger;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.TooManyListenersException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import eu.asterics.mw.services.AstericsErrorHandling;
@@ -49,10 +52,11 @@ import gnu.io.UnsupportedCommOperationException;
  * @author Christoph Weiss [christoph.weiss@technikum-wien.at] Date: Nov 3, 2010
  *         Time: 02:22:08 PM
  */
-class CIMRawPortController extends CIMPortController implements Runnable {
+class CIMRawPortController extends CIMPortController {
     private int baudRate = 115200;
 
     InputStream inputStream;
+    OutputStream outputStream;
     CIMPortEventListener eventListener;
 
     private Logger logger = AstericsErrorHandling.instance.getLogger();
@@ -60,7 +64,6 @@ class CIMRawPortController extends CIMPortController implements Runnable {
     // Java and communication related
     boolean threadRunning = true;
     CIMEventHandler eventHandler;
-    BlockingQueue<Byte> dataSource;
 
     // serial port handling
     SerialPort port;
@@ -76,9 +79,7 @@ class CIMRawPortController extends CIMPortController implements Runnable {
      * @throws CIMException
      */
     CIMRawPortController(CommPortIdentifier portIdentifier, int baudRate) throws CIMException {
-        super(portIdentifier.getName());
-
-        dataSource = new LinkedBlockingQueue<Byte>();
+        super(portIdentifier.getName(), null);
 
         try {
             port = (SerialPort) portIdentifier.open(this.getClass().getName() + comPortName, 2000);
@@ -90,7 +91,8 @@ class CIMRawPortController extends CIMPortController implements Runnable {
             port.enableReceiveTimeout(RXTX_PORT_ENABLE_RECEIVE_TIMEOUT);
 
             inputStream = port.getInputStream();
-            eventListener = new CIMPortEventListener(inputStream, dataSource);
+            outputStream = port.getOutputStream();
+            eventListener = new CIMPortEventListener(inputStream);
             port.addEventListener(eventListener);
             port.notifyOnDataAvailable(true);
 
@@ -136,39 +138,10 @@ class CIMRawPortController extends CIMPortController implements Runnable {
     }
 
     @Override
-    public void run() {
-
-        // near endless loop
-        CIMEventRawPacket rp = new CIMEventRawPacket(this, null);
-
-        while (threadRunning) {
-            try {
-                // wait for next byte in queue
-                Byte b = dataSource.poll(1000L, TimeUnit.MILLISECONDS);
-
-                if (b != null) {
-                    for (CIMEventHandler handler : eventHandlers) {
-                        rp.b = b;
-                        handler.handlePacketReceived(rp);
-                    }
-                }
-                Thread.yield();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        logger.fine(this.getClass().getName() + ".run: Thread " + comPortName + " main loop ended, cleaning up \n");
-
-        closePort();
-
-        logger.fine(this.getClass().getName() + ".run: Thread on serial port " + comPortName + " ended \n");
-    }
-
-    @Override
-    void closePort() {
+    public void closePortInternal() {
+        threadRunning = false;
         if (port != null) {
             try {
-                port.notifyOnDataAvailable(false);
                 port.removeEventListener();
                 port.getOutputStream().close();
                 port.getInputStream().close();
@@ -176,26 +149,39 @@ class CIMRawPortController extends CIMPortController implements Runnable {
                 port = null;
                 logger.fine(this.getClass().getName() + ".run: Port " + comPortName + " closed \n");
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, MessageFormat.format("error on closing port {0}.", comPortName), e);
             }
         }
-        threadRunning = false;
     }
 
     @Override
-    byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
-        try {
-            // for (byte b : data)
-            // {
-            // System.out.println(String.format("Sent: 0x%2x ('%c')", b, b));
-            // }
-            port.getOutputStream().write(data);
-            port.getOutputStream().flush();
-            port.getOutputStream().close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    byte sendPacketInternal(byte[] data, short featureAddress, short requestCode, boolean crc) throws Exception {
+        port.getOutputStream().write(data);
+        port.getOutputStream().flush();
         return 0;
     }
 
+    @Override
+    public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    @Override
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    @Override
+    public Byte poll() throws IOException {
+        return poll(1000L, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public Byte poll(long timeout, TimeUnit unit) throws IOException {
+        try {
+            return eventListener.poll(timeout, unit);
+        } catch (InterruptedException e) {
+            return null;
+        }
+    }
 }

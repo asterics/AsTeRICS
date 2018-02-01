@@ -23,23 +23,19 @@ Check out our demos [here](http://asterics.github.io/AsTeRICS/demos.html)
 If you just want to use the current snapshot.
 Clone the repository and ensure that all submodules (help, WebACS) and submodules of submodules (WebACS/help) are cloned as well.
 
-1. Clone Repository (including submodules)
+1. Clone Repository
   ```
-  git clone --recurse-submodules https://github.com/asterics/AsTeRICS.git
-  cd <installdir>/AsTeRICS/bin/ARE/web/webapps/WebACS/
-  git submodule update --init
-  cd <installdir>/AsTeRICS/  
+  git clone https://github.com/asterics/AsTeRICS.git
   ```
 2. Install the [**Java Development Kit (JDK, 32bit version) >= 7**](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
   * Ensure to set “JAVA_HOME” to the folder where you installed the Java JDK and add the JDK bin path to the  Environment Variable “Path”
 3. Install the [**apache ant build framework (version >= 1.9.1)**](http://ant.apache.org/bindownload.cgi)
   * Ensure to set “ANT_HOME” to the folder where you installed ant and add the ant bin path to the Environment Variable “Path”
-4. Open a terminal and go to the ```ARE``` subfolder
-5. Compile the ARE by calling
+4. Open a terminal an start the ARE by calling
   ```
-  ant
+  cd AsTeRICS/ARE
+  ant run
   ```
-6. Go to the ```bin/ARE```folder and start the ARE by executing ```start.bat```
 
 If you want to modify/add a plugin or generally want to contribute to the project, please consult the [Developer Manual](https://github.com/asterics/AsTeRICS/blob/master/Documentation/DeveloperManual.pdf?raw=true])
 

@@ -81,7 +81,7 @@ class CIMHighSpeedRawPortController extends CIMPortController {
      * @throws CIMException
      */
     CIMHighSpeedRawPortController(CommPortIdentifier portIdentifier, int baudRate) throws CIMException {
-        super(portIdentifier.getName());
+        super(portIdentifier.getName(), null);
 
         try {
             port = (SerialPort) portIdentifier.open(this.getClass().getName() + comPortName, 2000);
@@ -152,30 +152,32 @@ class CIMHighSpeedRawPortController extends CIMPortController {
     }
 
     @Override
-    void closePort() {
+    public void closePortInternal() {
         if (port != null) {
             try {
-                port.notifyOnDataAvailable(false);
+                port.notifyOnDataAvailable(false); //sometimes thows NPE
+            } catch (Exception e) {
+                logger.warning("Exception on notifyOnDataAvailable: " + e.getClass().getName());
+            }
+            try {
+
                 port.removeEventListener();
                 port.getOutputStream().close();
                 port.getInputStream().close();
                 port.close();
-                port = null;
                 logger.fine(this.getClass().getName() + ".run: Port " + comPortName + " closed \n");
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.warning("Exception closing port: " + e.getClass().getName());
             }
+            port = null;
+            eventListener = null;
         }
     }
 
     @Override
-    byte sendPacket(byte[] data, short featureAddress, short requestCode, boolean crc) {
-        try {
-            outputStream.write(data);
-            outputStream.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    byte sendPacketInternal(byte[] data, short featureAddress, short requestCode, boolean crc) throws Exception {
+        outputStream.write(data);
+        outputStream.flush();
         return 0;
     }
 

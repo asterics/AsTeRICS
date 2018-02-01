@@ -33,7 +33,7 @@ public class CIMCommunicationBundleActivator implements BundleActivator {
     @Override
     public void start(BundleContext arg0) throws Exception {
         System.out.println("cim start");
-        CIMPortManager.getInstance();
+        CIMPortManager.getInstance().rescan();
     }
 
     @Override
