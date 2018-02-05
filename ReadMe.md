@@ -19,28 +19,29 @@ For more information see our website http://www.asterics.eu.
 ## Demos
 Check out our demos [here](http://asterics.github.io/AsTeRICS/demos.html)
 
-## Quick Build Instructions for Windows
-If you just want to use the current snapshot.
-Clone the repository and ensure that all submodules (help, WebACS) and submodules of submodules (WebACS/help) are cloned as well.
+## Quick Build Instructions
+To clone and compile the AsTeRICS framework, please execute the following steps:
 
-1. Clone Repository
+1. Clone Repository (submodules will be cloned during build)
   ```
   git clone https://github.com/asterics/AsTeRICS.git
   ```
-2. Install the [**Java Development Kit (JDK, 32bit version) >= 7**](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+2. Install the [**Java Development Kit (JDK, 32bit preferred) >= 8**](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
   * Ensure to set “JAVA_HOME” to the folder where you installed the Java JDK and add the JDK bin path to the  Environment Variable “Path”
-3. Install the [**apache ant build framework (version >= 1.9.1)**](http://ant.apache.org/bindownload.cgi)
+3. [apache ant build framework (version >= 1.9.1)](http://ant.apache.org/bindownload.cgi) **or** an IDE for Java Developers, e.g. [Eclipse](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/neon3) (already contains ant)
   * Ensure to set “ANT_HOME” to the folder where you installed ant and add the ant bin path to the Environment Variable “Path”
-4. Open a terminal an start the ARE by calling
+4. Open a terminal and start the AsTeRICS Runtime Environment (ARE) by calling
   ```
-  cd AsTeRICS/ARE
   ant run
   ```
+4a. Use your IDE, select the build file ```build.xml``` and execute the target ```run```.
 
-If you want to modify/add a plugin or generally want to contribute to the project, please consult the [Developer Manual](https://github.com/asterics/AsTeRICS/blob/master/Documentation/DeveloperManual.pdf?raw=true])
+If you want to modify/add a plugin or generally want to contribute to the project, please consult the [Developer Manual](https://github.com/asterics/AsTeRICS/blob/master/Documentation/DeveloperManual.pdf?raw=true]).
+Then fork the project and create a pull request.
 
 ## Documentation
 
+* [AsTeRICS Tutorial with screencasts](https://ds.gpii.net/learn/tutorials/integration-alternative-input-modalities)
 * [Quickstart Guide](https://github.com/asterics/AsTeRICS/blob/master/Documentation/QuickStart.pdf?raw=true)
 * [User Manual](https://github.com/asterics/AsTeRICS/blob/master/Documentation/UserManual.pdf?raw=true)
 * [Developer Manual](https://github.com/asterics/AsTeRICS/blob/master/Documentation/DeveloperManual.pdf?raw=true)
