@@ -217,14 +217,16 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
         }
         if ("cimId".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propCimId;
-            String s = newValue.toString();
-            if(s.contains("0x")) {
-                s = s.substring(2);
-            }
-            try {
-                propCimId = (short) Integer.parseInt(s, 16);
-            } catch (NumberFormatException e) {
-                logger.warning("could not format cimId, value is: " + s);
+            if(newValue != null) {
+                String s = newValue.toString().trim();
+                if (s.startsWith("0x")) {
+                    s = s.substring(2);
+                    try {
+                        propCimId = (short) Integer.parseInt(s, 16);
+                    } catch (NumberFormatException e) {
+                        logger.warning("could not format cimId, value is: " + s);
+                    }
+                }
             }
             return oldValue;
         }
