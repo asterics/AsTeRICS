@@ -221,7 +221,7 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
         if ("cimId".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propCimId;
             if(newValue != null) {
-                String s = newValue.toString().trim();
+                String s = newValue.toString().trim().toLowerCase();
                 if (s.startsWith("0x")) {
                     s = s.substring(2);
                     try {
