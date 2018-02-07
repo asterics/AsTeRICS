@@ -25,7 +25,11 @@
 			<outputPort id="receivedBytes">
 				<description>received bytes from the serial port</description>
 				<dataType>byte</dataType>
-			</outputPort>			
+			</outputPort>
+			<outputPort id="opPortStatus">
+				<description>output port for status messages</description>
+				<dataType>string</dataType>
+			</outputPort>
         </ports>
 		<events>
 
@@ -57,7 +61,7 @@
 			<property name="cimId"
 					  type="string"
 					  value=""
-					  description="CIMId of the device to connect to"/>
+					  description="CIMId of the device to connect to in HEX format with prefix '0x'. For example '0xa401' for FLipMouse."/>
 		</properties>
     </componentType>
 </componentTypes>
