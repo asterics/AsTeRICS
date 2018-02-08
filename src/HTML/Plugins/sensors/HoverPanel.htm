@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>HoverPanel</title>
+  </head>
+  <body class="innerBody">
+    <h1>HoverPanel</h1>
+    <span class="componentType">Component Type: Sensor (Subcategory: Graphical User Interface)</span>
+    <p>This component creates a panel window with selectable opacity which can be placed anywhere on the screen/desktop.
+	  No window decoration is used. The plugin provides x/y input port for coordinates and the panel reacts if these
+	  coordinates are located within the panel. Via a selectable hover time, events can be triggered if the coordinates 
+	  stay within the panel for a given time. Note that the hoverPanel represents a seperate window and is not a child window 
+	  of the ARE window.</p>
+    <figure>
+		<img class="image" src="img/HoverPanel.jpg" alt="Screenshot: HoverPanel plugin" title="Screenshot: HoverPanel plugin">
+		<figcaption>HoverPanel plugin</figcaption>
+	</figure>	  
+    <figure>
+		<img class="image" src="img/HoverPanelScreen.jpg" alt="Screenshot: 2 HoverPanels on screen" title="Screenshot: 2 HoverPanels on screen">
+		<figcaption>2 HoverPanels on screen</figcaption>
+	</figure>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>x [integer]:</strong> x coordinate</li>
+      <li><strong>y [integer]:</strong> y coordinate</li>
+    </ul>
+    <h2>Event Listener Description</h2>
+    <ul>
+      <li><strong>activate:</strong> activates the hover panel.</li>
+	  <li><strong>deactivate:</strong> deactivates the hover panel.</li>
+    </ul>
+    <h2>Event Trigger Description</h2>
+    <ul>
+      <li><strong>selected:</strong> triggered if coordinates are in range of the panel position for the hover time period.</li>
+	  <li><strong>enter:</strong>  triggered if coordinates enter the range/location of the panel.</li>
+	  <li><strong>exit:</strong> triggered if coordinates exit the range/location of the panel.</li>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>dataSource [integer, combobox selection]:</strong> If "mouse coursor" is selected, the coordinates are grabbed from the
+	   current position of the mouse cursor. If "coordinateInputs" is selected, the input ports (x/y) are used.</li>
+      <li><strong>caption [string]:</strong> The caption of the hover panel.<br>
+      </li>
+      <li><strong>fontSize [integer]:</strong> The size of the caption text.<br>
+      </li>
+      <li><strong>textColor [integer]:</strong> Defines color of the caption text.</li>
+      <li><strong>backgroundColor [integer]:</strong> Defines background color.</li>
+      <li><strong>activationColor [integer]:</strong> Defines color for the hover selection process.</li>
+      <li><strong>dwellTime [integer]:</strong> The hover time for a selection.</li>
+      <li><strong>idleTime [integer]:</strong> The time how long the panel will stay inactive after a selection.</li>
+	  <li><strong>opacity [integer]:</strong> the opacity of the hver panel (0-100%).</li>
+	  <li><strong>stayActive [boolean]:</strong> If selected, the hover panel will remain in active state after a selection (deactivation via event).</li>
+    </ul>
+  </body>
+</html>

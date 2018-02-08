@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+
+		<script type="text/javascript" src="javascript/jquery-3.2.1.min.js"></script>
+		<script src="javascript/JSmap.js"></script> 
+		<script src="javascript/areCommunicator.js"></script>
+		 
+		<title>Rest client - ARE Runtime</title>
+		
+		
+		<script type="text/javascript">
+			/* This is an example of how to use the ARE Javascipt framework for the communication
+				with the ARE Restful Services.
+				
+				The location of the server should be defined with the 'setBaseURI(<url>)' method.
+				
+				A success-callback function and an error-callback function should be passed as an argument
+				for every function.
+			*/
+		
+			setBaseURI("http://localhost:8081/rest/");
+		
+		
+			//downloadDeployedModel
+			function myFunction() {
+				downloadDeployedModel(consoleSuccessCallback, defaultErrorCallback);
+			}
+			
+
+			function defaultSuccessCallback(data, HTTPstatus) { alert(data); }
+			function defaultErrorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+			function consoleSuccessCallback(data, HTTPstatus) { console.log(data); }
+			function consoleErrorCallback(HTTPstatus, AREerrorMessage) { console.log(AREerrorMessage); }
+
+		</script>
+		
+	</head>
+	
+	<body>
+
+		<div id="header">
+			<h1>REST API Demos</h1>
+			<h2>ARE Runtime</h2>
+		</div>
+
+		<div id="content">
+
+			<ul>
+				<li>
+					<h3> <a href="runtime_model_state.html" target="_blank"> Model state </a> </h3>
+				</li>
+
+				<li>
+					<h3> <a href="runtime_model_deployment.html" target="_blank"> Model deployment </a> </h3>
+				</li>
+
+				<li>
+					<h3> <a href="runtime_model_components.html" target="_blank"> Model components </a> </h3>
+				</li>
+
+				<li>
+					<h3> <a href="runtime_model_channels.html" target="_blank"> Model channels </a> </h3>
+				</li>
+			</ul>
+
+
+		</div>
+		
+	</body>
+	
+</html>

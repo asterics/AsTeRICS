@@ -1,0 +1,40 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Osc Out Client</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Osc Out Client</H1> 
+		<span class="componentType">Component Type: actuator (Subcategory: Communication)</span>
+		<p>The OscOutClient plugin enables the ARE to broadcast messages using the OpenSoundControl (OSC) protocol. This plugin utilizes the NetUtil java library (http://www.sciss.de/netutil/) for the OSC implementation, it is (C)opyrighted 2004-2011 by Hanns Holger Rutz and released under the GNU Lesser General Public License. </p>
+		<figure>
+			<img class="medium_image" src="img/OscOutClient.jpg" alt="Screenshot: OscServer plugin" title="Screenshot: OscServer plugin" />
+			<figcaption>OscOutClient plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		<ul>
+			<li>Nothing, works sand-alone within ARE</li>
+			<li>Check your firewall configuration and network settings to ensure that OSC messages are not blocked.  </li>
+		</ul>
+		<H2>Functional Description</H2>
+		The OscOutClient collects data form the inputs CH1-4 and assamble it to one OSC message with 4 arguments. The address for the OSC channel is set by the property AddressCh1. Furthermore the plugin has a StringIN input port. If the plugin receives a string it broadcast one OSC message with one string argument. The address for the string OSC channel is set by the property AddressStringCh.
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>CH[1-4] [double]:</STRONG> Input port for the data, eg. a oszilloscope or any other double value.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>Port [integer]:</STRONG> This value specifies the OscOutClient port.</li>
+			<li><STRONG>PeerAddress [string]:</STRONG> Specifies the IP where the OSC server is listening.</li>
+			<li><STRONG>AddressCH1 [string]:</STRONG> This value specifies the OSC data output address e.g. "/path/to/receiver/accxyz".</li>
+			<li><STRONG>AddressStringCh [string]:</STRONG> This value specifies the OSC string output address.</li>
+		</ul>
+		<H2>Referred Plugins</H2>
+		<ul>
+			<li>OscServer </li>
+			<li>OpenVibe </li>
+			<li>OscGestureFollower </li>
+		</ul>
+	</BODY>
+</HTML>

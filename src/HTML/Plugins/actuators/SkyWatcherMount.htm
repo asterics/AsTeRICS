@@ -1,0 +1,53 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>SkyWatcher Mount</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>SkyWatcherMount</H1> 
+		<span class="componentType">Component Type: Actuator (Subcategory: Others)</span>
+		<p>The SkyWatcher plugin can be used to control telescope mounts using the Nexstar 5 protocol, e.g. Skywatcher AllView, Skywatcher Merlin via Synscan hand control.</p> 
+		<figure>
+			<img class="image" src="img/skywatcher.png" alt="Screenshot: SkyWatcherMount plugin" title="Screenshot: SkyWatcherMount plugin" />
+			<figcaption>SkyWatcherMount plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		A Nexstar5 compatible telescope mount connected to the target computer via a serial connection
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>speed [integer]:</STRONG> defines the movement speed of the mount (range: 0-9)</li>
+			<li><STRONG>panPosition [integer]:</STRONG> defines the target position in steps for the pan axis for the goto command</li>
+			<li><STRONG>tiltPosition [integer]:</STRONG> defines the target position in steps for the tilt axis for the goto command</li>
+			<li><STRONG>endPointLeft [integer]:</STRONG> defines the maximum position the pan axis can move to the left</li>
+			<li><STRONG>endPointRight [integer]:</STRONG> defines the maximum position the pan axis can move to the right</li>
+			<li><STRONG>endPointUp [integer]:</STRONG> defines the maximum position the tilt axis can move up</li>
+			<li><STRONG>endPointDown [integer]:</STRONG> defines the maximum position the tilt axis can move down</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>posX [integer]:</STRONG> the actual position of the pan axis in steps</li>
+			<li><STRONG>posY [integer]:</STRONG> the actual position of the tilt axis in steps</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>goLeft:</STRONG> moves the mount endless to the left</li>
+			<li><STRONG>goRight:</STRONG> moves the mount endless to the right</li>
+			<li><STRONG>goUp:</STRONG> moves the mount endless upwards</li>
+			<li><STRONG>goDown:</STRONG> moves the mount endless downwards</li>
+			<li><STRONG>stopPan:</STRONG> stops the movement of the pan axis</li>
+			<li><STRONG>stopTilt:</STRONG> stops the movement of the tilt axis</li>
+			<li><STRONG>stop:</STRONG> stops the movement of the pan and tilt axis</li>
+			<li><STRONG>goToPanPosition:</STRONG> move the pan axis to the step position specified by the panPosition input port</li>
+			<li><STRONG>goToTiltPosition:</STRONG> move the tilt axis to the step position specified by the tiltPosition input port</li>
+			<li><STRONG>triggerOn:</STRONG> if the mount has a shutter for a digital camera, the shutter is set to 1</li>
+			<li><STRONG>triggerOff:</STRONG> if the mount has a shutter for a digital camera, the shutter is set to 0</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>SerialPort [string]:</STRONG> The serial port of the mount, e.g. COM1</li>
+			<li><STRONG>EndPointsActive [boolean]:</STRONG> defines if the movement boundaries set by the endpoints are active or not.</li>
+		</ul>
+	</BODY>
+</HTML>
+

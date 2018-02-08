@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>String Dispatcher</title>
+  </head>
+  <body class="innerBody">
+    <h1>String Dispatcher </h1>
+    <span class="componentType">Component Type: Processor (Subcategory: Event and String Processing)</span>
+    <p>This component has twenty slots for text strings. These strings can be sent to the output port
+	   via incoming events or by directly addressing a slot number using the input port.</p>
+    <figure>
+		<img class="image" src="img/StringDispatcher.jpg" alt="Screenshot: StringDispatcher plugin" title="Screenshot: StringDispatcher plugin">
+		<figcaption>StringDispatcher plugin</figcaption>
+	</figure>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>slotDispatch [integer]:</strong> Sends the string from
+        the slot defined by number.</li>
+    </ul>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>output [string]:</strong> String output port.</li>
+    </ul>
+    <h2>Event Listener Description</h2>
+    <ul>
+      <li><strong>dispatchSlot1...dispatchSlot20:</strong> These events
+        cause text from the slot: 1..20 to be sent.</li>
+      <li><strong>dispatchNextSlot:</strong> This event causes text from
+        the next (not empty) slot to be sent.</li>
+      <li><strong>dispatchCurrentSlot:</strong> This event causes text
+        from the current slot to be sent.</li>
+      <li><strong>dispatchPreviousSlot:</strong> This event causes text
+        from the previous (not empty) slot to be sent.</li>
+      <li><strong>resetToFirstSlot:</strong> This event resets the internal 
+	    slot counter (for next/previous) to the first slot. </li>
+      <li><strong>dispatchSlotSeries:</strong> This event causes text in
+        sequence from all not empty slots to be sent, with a delay
+        defined by the delay property. </li>
+      <strong></strong>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>delay [integer]:</strong> The interval (in milliseconds) which will
+        be used for sending strings sequentially from all slots.</li>
+      <li><strong>slot1...slot20 [string]:</strong> 20 slots which contains the text
+        to be sent<br>
+      </li>
+    </ul>
+  </body>
+</html>

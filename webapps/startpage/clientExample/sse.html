@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+
+		<script type="text/javascript" src="javascript/jquery-3.2.1.min.js"></script>
+		<script src="javascript/JSmap.js"></script> 
+		<script src="javascript/areCommunicator.js"></script>
+		 
+		<title>Rest client - Server Sent Events</title>
+		
+		
+		<script type="text/javascript">
+			/* This is an example of how to use the ARE Javascipt framework for the communication
+				with the ARE Restful Services.
+				
+				The location of the server should be defined with the 'setBaseURI(<url>)' method.
+				
+				A success-callback function and an error-callback function should be passed as an argument
+				for every function.
+			*/
+		
+			setBaseURI("http://localhost:8081/rest/");
+		
+		
+			//subscribe to model deployment events
+			function SUBSCRIBE_DEPLOYMENT_EVENTS() {
+				var eventType = ServerEventTypes.MODEL_CHANGED;
+
+				subscribe(SDE_successCallback, consoleErrorCallback, eventType);
+			}
+
+			function SDE_successCallback(data, HTTPstatus) {
+				var eventsBox = document.getElementById("eventBox1"); 
+				eventsBox.innerHTML = data + "<br>" + eventsBox.innerHTML;
+			}
+
+			function UNSUBSCRIBE_DEPLOYMENT_EVENTS() {
+				var eventType = ServerEventTypes.MODEL_CHANGED;
+				unsubscribe(eventType);
+			}
+
+			//subscribe to model state events
+			function SUBSCRIBE_MODEL_STATE_EVENTS() {
+				var eventType = ServerEventTypes.MODEL_STATE_CHANGED;
+
+				subscribe(SMSE_successCallback, consoleErrorCallback, eventType);
+			}
+
+			function SMSE_successCallback(data, HTTPstatus) {
+				var eventsBox = document.getElementById("eventBox2"); 
+				eventsBox.innerHTML = data + "<br>" + eventsBox.innerHTML;
+			}
+
+			function UNSUBSCRIBE_MODEL_STATE_EVENTS() {
+				var eventType = ServerEventTypes.MODEL_STATE_CHANGED;
+				unsubscribe(eventType);
+			}
+
+
+			//subscribe to eventChannel events
+			function SUBSCRIBE_EVENTCHANNEL_EVENTS() {
+				var eventType = ServerEventTypes.EVENT_CHANNEL_TRANSMISSION;
+
+				subscribe(SECE_successCallback, consoleErrorCallback, eventType);
+			}
+
+			function SECE_successCallback(data, HTTPstatus) {
+				var eventsBox = document.getElementById("eventBox3"); 
+				eventsBox.innerHTML = data + "<br>" + eventsBox.innerHTML;
+			}
+			
+			function UNSUBSCRIBE_EVENTCHANNEL_EVENTS() {
+				var eventType = ServerEventTypes.EVENT_CHANNEL_TRANSMISSION;
+				unsubscribe(eventType);
+			}
+
+			//subscribe to dataChannel events
+			function SUBSCRIBE_DATACHANNEL_EVENTS() {
+				var eventType = ServerEventTypes.DATA_CHANNEL_TRANSMISSION;
+				var channelId = document.getElementById("SDCEid").value;
+
+				subscribe(SDCE_successCallback, consoleErrorCallback, eventType, channelId);
+			}
+
+			function SDCE_successCallback(data, HTTPstatus) {
+				var eventsBox = document.getElementById("eventBox4"); 
+				eventsBox.innerHTML = data + "<br>" + eventsBox.innerHTML;
+			}
+			
+			function UNSUBSCRIBE_DATACHANNEL_EVENTS() {
+				var eventType = ServerEventTypes.DATA_CHANNEL_TRANSMISSION;
+				var channelId = document.getElementById("SDCEid").value;
+				unsubscribe(eventType, channelId);
+			}
+
+
+			//subscribe to dataChannel events
+			function SUBSCRIBE_PROPERTY_CHANGES() {
+				var eventType = ServerEventTypes.PROPERTY_CHANGED;
+
+				subscribe(SPC_successCallback, consoleErrorCallback, eventType);
+			}
+
+			function SPC_successCallback(data, HTTPstatus) {
+				var eventsBox = document.getElementById("eventBox5"); 
+				eventsBox.innerHTML = data + "<br>" + eventsBox.innerHTML;
+			}
+						
+			function UNSUBSCRIBE_PROPERTY_CHANGES() {
+				var eventType = ServerEventTypes.PROPERTY_CHANGE;
+				unsubscribe(eventType);
+			}
+
+			
+
+			function defaultSuccessCallback(data, HTTPstatus) { alert(data); }
+			function defaultErrorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+			function consoleSuccessCallback(data, HTTPstatus) { console.log(data); }
+			function consoleErrorCallback(HTTPstatus, AREerrorMessage) { console.log(AREerrorMessage); }
+
+		</script>
+		
+	</head>
+	
+	<body>
+
+		<div id="header">
+			<h1>REST API Demos</h1>
+			<h2>Server Sent Events</h2>
+		</div>
+
+		<div id="content">
+
+			<h4 class="inlineText"> Deployment events: </h4>
+			<button onclick="SUBSCRIBE_DEPLOYMENT_EVENTS()" title="Description: Opens a persistent connection with ARE and listens for Model Deployment Events &#013;Ouput: box below"> Subscribe</button>
+			<button onclick="UNSUBSCRIBE_DEPLOYMENT_EVENTS()" title="Description: Stops receiving the events &#013;"> Unsubscribe </button>
+			<div id="eventBox1" class="eventDisplay"> </div>
+
+			<br/>
+			
+			<h4 class="inlineText"> Model state events: </h4>
+			<button onclick="SUBSCRIBE_MODEL_STATE_EVENTS()" title="Description: Opens a persistent connection with ARE and listens for Model State Change Events &#013;Ouput: box below"> Subscribe</button>
+			<button onclick="UNSUBSCRIBE_MODEL_STATE_EVENTS()" title="Description: Stops receiving the events &#013;"> Unsubscribe </button>
+			<div id="eventBox2" class="eventDisplay"> </div>
+
+			<br/>
+
+			<h4 class="inlineText"> EventChannel events: </h4>
+			<button onclick="SUBSCRIBE_EVENTCHANNEL_EVENTS()" title="Description: Opens a persistent connection with ARE and listens for EventChannel Transmissions &#013;Ouput: box below"> Subscribe</button>
+			<button onclick="UNSUBSCRIBE_EVENTCHANNEL_EVENTS()" title="Description: Stops receiving the events &#013;"> Unsubscribe </button>
+			<div id="eventBox3" class="eventDisplay"> </div>
+
+			<br/>
+
+			<h4 class="inlineText"> DataChannel events: </h4>
+			<button onclick="SUBSCRIBE_DATACHANNEL_EVENTS()" title="Description: Opens a persistent connection with ARE and listens for DataChannel Transmissions &#013;Ouput: box below"> Subscribe</button>
+			<button onclick="UNSUBSCRIBE_DATACHANNEL_EVENTS()" title="Description: Stops receiving the events &#013;"> Unsubscribe </button>
+			<input placeholder="channelId" type="text" id="SDCEid"/>
+			<div id="eventBox4" class="eventDisplay"> </div>
+
+			<br/>
+
+			<h4 class="inlineText"> Poperty changes events: </h4>
+			<button onclick="SUBSCRIBE_PROPERTY_CHANGES()" title="Description: Opens a persistent connection with ARE and listens for Property Changes Events &#013;Ouput: box below"> Subscribe</button>
+			<button onclick="UNSUBSCRIBE_PROPERTY_CHANGES()" title="Description: Stops receiving the events &#013;"> Unsubscribe </button>
+			<div id="eventBox5" class="eventDisplay"> </div>
+
+			<br/>
+
+		</div>
+		
+	</body>
+	
+</html>

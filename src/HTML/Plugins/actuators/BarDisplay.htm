@@ -1,0 +1,38 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Bar Display</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Bar Display</H1> 
+		<span class="componentType">Component Type: Actuator (Subcategory: Graphical User Interface)</span>
+		<p>The Bar display generates a coloured bar graph to visualise a current signal value in the ARE environment (of course the LC - display or a computer monitor have to be connected to the platform). The Bar display features auto-scale of value range, display of a threshold value and selectable update rate and foreground / background colours.</p> 
+		<figure>
+			<img class="image" src="img/BarDisplay.jpg" alt="Screenshot: BarDisplay plugin" title="Screenshot: BarDisplay plugin" />
+			<figcaption>BarDisplay plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		Computer Monitor or LC-Display available for graphics output. 
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>input [double]:</STRONG> The input port for the signal to be displayed.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>displayBuffer [integer]:</STRONG> This number specifies how often an update of the bar graph is performed. For example if the display buffer is set to 10, ten values are accumulated and the average value is displayed after the tenth incoming value.</li>
+			<li><STRONG>min [double]:</STRONG> The default minimum of the signal range at model start (this value is automatically updated as lower values come in).</li>
+			<li><STRONG>max [double]:</STRONG> The default maximum of the signal range at model start (this value is automatically updated as higher values come in).</li>
+			<li><STRONG>threshold [double]:</STRONG> This value will be displayed with a marker in the bar graph (if enabled).</li>
+			<li><STRONG>displayThreshold [boolean]:</STRONG> This property enables (true) or disables (false) the threshold marker in the bar graph.</li>
+			<li><STRONG>integerDisplay [boolean]:</STRONG> This property selects if double values are rounded to integral values before being displayed in the bar graph.</li>
+			<li><STRONG>mode [integer]:</STRONG> Via this property the way how values which exceed the current min/max range of the bar graph component are handled: "clip to min and max" crops incoming values to the min/max range, "autoupdate min and max" scales the bar graph window and updates the min/max values to cover the incoming value.</li>
+			<li><STRONG>gridColor [integer]:</STRONG> The colour of the bar graph grid and descriptions.</li>
+			<li><STRONG>barColor [integer]:</STRONG> The colour of the bar display.</li>
+			<li><STRONG>backgroundColour [integer]:</STRONG> The colour of the window background.</li>
+			<li><STRONG>fontSize [integer]:</STRONG> The font size of the display's caption.</li>
+			<li><STRONG>caption [string]:</STRONG> The text of the display's caption.</li>
+			<li><strong>displayGUI [boolean]:</strong> If selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.</li>	   
+		</ul>
+	</BODY>
+</HTML>

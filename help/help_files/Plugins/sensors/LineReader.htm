@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>LineReader</title>
+  </head>
+  <body class="innerBody">
+    <h1>LineReader</h1>
+    <span class="componentType">Component Type: Sensor (Subcategory: File System)</span>
+    <p>This component reads lines from a text file and sends them to an output port. The line reading can be triggered by an incoming event.</p>
+    <figure>
+		<img class="image" src="img/LineReader.jpg" alt="Screenshot: LineReader plugin" title="Screenshot: LineReader plugin">
+		<figcaption>ButtonGrid plugin</figcaption>
+	</figure>
+    <h2>Input port Description</h2>
+    <ul>
+      <li><strong>skipLines (integer):</strong> When an integer number is received at this port, the component tries to skip this number of lines. The next line will be read from the resulting position.
+	</ul>
+    <h2>Output port Description</h2>
+    <ul>
+      <li><strong>actLine (string):</strong> A line of text which has been read from the file (as line termination character, the "enter"-key (\n) is used.
+	</ul>
+    <h2>Event Listener Description</h2>
+    <ul>
+      <li><strong>readNextLine:</strong> When this event is triggered, the component tries to read one line of text from the file and sends it to the output port.</li>
+      <li><strong>resetToFirstLine:</strong> When this event is triggered, the internal file pointer is reset ot the beginning of the file.</li>
+    </ul>
+    <h2>Event Trigger Description</h2>
+    <ul>
+      <li><strong>endOfFile:</strong> This event is fired when no line can be read from the file
+        (file end or other error occurred)</li>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>fileName [string]:</strong> The full path and file name of the text file to read. The path can be given
+	    as absolute path or relative to the ARE executable's directory</li>
+    </ul>
+  </body>
+</html>

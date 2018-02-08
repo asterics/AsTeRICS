@@ -1,0 +1,42 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>HRVAnalysis</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>HRVAnalysis</H1>
+		<span class="componentType">Component Type: Processor (Subcategory: DSP and feature extraction)</span>
+		<p>This component calculates various Heart Rate Variability (HRV) parameters from an incoming signal of raw ECG-data. 
+		For a detailed description of the HRV parameters and a guide how to use optical and electrical heart rate sensors see the work 
+		of Andreas Schreiber (in /documentation/DIYGuides/HRVAnalysis_Schreiber.pdf and /documentation/OpticalPulseSensor_Schreiber.pdf)</p>
+		<figure>
+			<img class="image" src="img/HRVAnalysis.jpg" alt="Screenshot: HRVAnalysis plugin" title="Screenshot: HRVAnalysis plugin" />
+			<figcaption>HRVAnalysis plugin</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>HRVInput [double]:</STRONG> Input port for the raw signal</li>
+		</ul>
+		<H2>Output Port description</H2>
+		<ul>
+			<li><STRONG>runtime [double]:</STRONG> the current time, since the first sample, in seconds</li>
+			<li><STRONG>pulserate [double]:</STRONG> the current calculated pulserate</li>
+			<li><STRONG>SDNN [double]:</STRONG> the standard deviation of all RR-intervals</li>
+			<li><STRONG>rMSSD [double]:</STRONG> the square-root of the average sum of the quadratic differences between neighboring RR-intervals</li>
+			<li><STRONG>SDSD [double]:</STRONG> the current standard deviation of successive differences between neighbouring RR-intervals</li>
+			<li><STRONG>pNN50 [double]:</STRONG> the numer of successive RR-intervales that differ by more than 50ms (expressed as percentage of all RR-intervals)</li>
+			<li><STRONG>pNN20 [double]:</STRONG> the numer of successive RR-intervales that differ by more than 20ms (expressed as percentage of all RR-intervals)</li>
+			<li><STRONG>DD [double]:</STRONG> the deviation of 2 succesive RR-intervals</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>start:</STRONG> An incoming event starts the HRV analysis</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>samplerate [double]:</STRONG> specifies the sample rate of the incoming signal.</li>
+			<li><STRONG>outlierRange [double]:</STRONG> Defines factor of the mean R-amplitudes which is used as a threshold to detect spikes / signal artefacts.</li>
+		</ul>
+	</BODY>
+</HTML>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>StringAppend</title>
+  </head>
+  <body class="innerBody">
+    <h1>String Append</h1>
+    <span class="componentType">Component Type: Processor (Subcategory: Event and String Processing)</span>
+    <p>Appends an incoming string or ASCII character to a stringbuffer,
+      the updated stringbuffer is sent to an output port. Incoming events are 
+	  available to send the final string to a dedicated output port and 
+	  to clear the stringbuffer (or set it to a default value respectively).</p>
+    <figure>
+		<img class="image" src="img/StringAppend.jpg" alt="Screenshot: StringAppend plugin" title="Screenshot: StringAppend plugin">
+		<figcaption>StringAppend plugin</figcaption>
+	</figure>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>inStr [string]:</strong> String input port.</li>
+      <li><strong>inChar [integer]:</strong> ASCII code input port.</li>
+    </ul>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>actResult [string]:</strong> String output port for current stringbuffer content.</li>
+      <li><strong>finalResult [string]:</strong> String output port for final stringbuffer content (triggered by event or enter).</li>
+    </ul>
+    <h2>Event Listener Ports</h2>
+    <ul>
+      <li><strong>sendNow:</strong> sends the current content of the stringbuffer to the "finalResult" output port.</li>
+      <li><strong>sendNowAndClear:</strong> sends the current content of the stringbuffer to the "finalResult" output port and sets the stringbuffer to the default value.</li>
+      <li><strong>deleteCharacter:</strong> deletes the last character of the stringbuffer.</li>
+      <li><strong>clear:</strong> sets the stringbuffer to the default value.</li>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>autoSendAtEnter [boolean]:</strong> If true, the stringbuffer is sent and cleared when the ASCII value for Enter/Return is received by the inChar input port.<br>
+      </li>
+      <li><strong>defaultValue [string]:</strong> An optional string text which is used a initial value for the stringbuffer.<br>
+      </li>
+    </ul>
+  </body>
+</html>

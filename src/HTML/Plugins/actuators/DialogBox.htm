@@ -1,0 +1,35 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>DialogBox</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>DialogBox</H1> 
+		<span class="componentType">Component Type: Actuator (Subcategory: Graphical User Interface)</span>
+		<p>Creates a popup dialog box with configurable text message and button texts. Can be used to inform the user or get user input.</p> 
+		<H2>Requirements</H2>
+		No special requirements.
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>setText [string]:</STRONG> Updates the text to be displayed.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>caption [string]:</STRONG> The caption of the window.</li>
+			<li><STRONG>text [string]:</STRONG> the text message of the dialog box</li>
+			<li><STRONG>alwaysOnTop [boolean]:</STRONG> if true, dialog stays on top, no matter if other windows are put to front.</li>
+			<li><STRONG>messageType [integer]:</STRONG> the message type of the dialog box, one of: plain,information,question,warning,error</li>
+			<li><STRONG>buttonText[1-5] [string]:</STRONG> The button text</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>displayBox</STRONG>: Displays the dialog box.</li>
+			<li><STRONG>hideBox</STRONG>: Disposes the dialog box.</li>
+		</ul>
+		<H2>Event Triggerer Description</H2>
+		<ul>
+			<li><STRONG>button[1-5]</STRONG>: Button[1-5] pressed</li>
+		</ul>
+	</BODY>
+</HTML>

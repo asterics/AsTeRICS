@@ -1,0 +1,29 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Yaak</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Yaak</H1>
+		<span class="componentType">Component Type: Processor </span>
+		<p>Yaak is a flexible on-screen-keyboard for the Android operating system. More information can be found in the pdf documentation in the Android/Yaak folder within the release package.</p>
+		<figure>
+			<img class="image" src="img/yaak.png" alt="Yaak plugin in the ACS" title="Yaak plugin in the ACS" />
+			<figcaption>Yaak plugin in the ACS</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		<ul>
+			<li>The Android based mobile device running Yaak must be connected to the AsTeRICS system over a TCP/IP connection and the used port must not be blocked by a firewall</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>action [string]:</STRONG> gives the action string whenever a button of the keyboard gets triggered. The string for each button can be stored in the xml layout for the keyboards.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>hostname [string]:</STRONG> The hostname of the mobile device (IP or hostname is valid)</li>
+			<li><STRONG>port [integer]:</STRONG> The port Yaak listens for incoming messages. This can be set in the xml file of a keyboard.</li>
+		</ul>
+	</BODY>
+</HTML>

@@ -1,0 +1,40 @@
+<!-- The following HTML-snippet represents the menu entries for the plugin-help. -->
+<li class="menuItem">
+	Plugins
+	<ul class="menuList">
+		<li class="menuItem" data-filename="Introduction.htm">Introduction</li>
+		<li class="menuItem">
+			Sensors
+			<ul id="sensorsList" class="menuList">
+				<!--Each menu item has to have a special attribute "data-filename",
+				containing the relative path (below the path specified in "helpPaths.json") and the complete filename. The filenames
+				must be identical with the componenttypeId of the component, without the "asterics."-prefix, and end with ".htm".-->	
+			</ul>
+		</li>
+		<li class="menuItem">
+			Processors
+			<ul id="processorsList" class="menuList">
+				<!--Each menu item has to have a special attribute "data-filename",
+				containing the relative path (below the path specified in "helpPaths.json") and the complete filename. The filenames
+				must be identical with the componenttypeId of the component, without the "asterics."-prefix, and end with ".htm".-->		
+			</ul>
+		</li>
+		<li class="menuItem">
+			Actuators
+			<ul id="actuatorsList" class="menuList">
+				<!--Each menu item has to have a special attribute "data-filename",
+				containing the relative path (below the path specified in "helpPaths.json") and the complete filename. The filenames
+				must be identical with the componenttypeId of the component, without the "asterics."-prefix, and end with ".htm".-->		
+			</ul>
+		</li>
+	</ul>
+</li>
+<!-- The following HTML-snippet represents the quickselect field for the plugin-help. -->
+<hr />
+<div id="quickselectGroup">
+	<label for="quickselect" id="quickselectLabel">Plugin-Quickselect</label>
+	<input id="quickselect" list="componentsDataList">
+	<datalist id="componentsDataList">
+	</datalist>
+	<input id="showButton" type="button" value="Show"></input>			
+</div>

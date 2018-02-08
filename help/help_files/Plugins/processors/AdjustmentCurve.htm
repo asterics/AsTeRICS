@@ -1,0 +1,48 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>AdjustmentCurve</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>AdjustmentCurve</H1>
+		<span class="componentType">Component Type: Processor (Subcategory: Signal Shaping)</span>
+		<p>The AdjustmentCurve component allows transformation of an incoming signal to an outgoing signal. The signal mapping can be freely arranged in a drawing window (GUI) during runtime of the model. The resulting mapping can be saved as a curve file. The GUI is optional - an existing curve can be loaded to perform the signal mapping without the GUI.</p>
+		<figure>
+			<img class="image" src="img/AdjustmentCurve.jpg" alt="Screenshot: AdjustmentCurve plugin" title="Screenshot: AdjustmentCurve plugin" />
+			<figcaption>AdjustmentCurve plugin</figcaption>
+		</figure>
+		<figure>
+			<img class="image" src="img/AdjustmentCurve1.jpg" alt="Screenshot: AdjustmentCurve GUI during runtime" title="Screenshot: AdjustmentCurve GUI during runtime" />
+			<figcaption>AdjustmentCurve GUI during runtime</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>in [double]:</STRONG> This port receives the input values which will be mapped to output values.</li>
+			<li><STRONG>CurveName [string]:</STRONG> When this port receives a string, the plugin tries to load a curve file of this name from the plugin's data subdirectory (ARE/data/processor.adjustmentcurve).</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>out [double]:</STRONG> This port provides the resulting output value.</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>displayGui:</STRONG> An incoming event makes the GUI visible.</li>
+			<li><STRONG>hideGui:</STRONG> An incoming event makes the GUI invisible.</li>
+			<li><STRONG>loadCurve:</STRONG> An incoming event loads a curve of the current filename (as given in the plugin property or received from the input port "curveName").</li>
+			<li><STRONG>saveCurve:</STRONG> An incoming event saves the current mapping curve under the given filename. This event has teh same function like the "save"-button which is available in the GUI window of the plugin.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>filename [string]:</STRONG> The filename of the curve file. If the curve file exists in the plugin's subdirectory (ARE/data/processor.adjustmentcurve), this curve is loaded. If the file does not exist, a new curve can be drawn in the GUI and saved under this name into the plugin's data subfolder (ARE/data/processor.adjustmentcurve).</li>
+			<li><STRONG>display GUI [boolean]:</STRONG> If checked, the GUI of the adjustment curve plugin will be shown and the user can modify and save the curve in real time by dragging, creating or deleting curve points.</li>
+			<li><STRONG>intMin [double]:</STRONG> Sets the minimum value of the input range.</li>
+			<li><STRONG>outMax [double]:</STRONG> Sets the maximum value of the input range.</li>
+			<li><STRONG>outMin [double]:</STRONG> Sets the minimum value of the output range.</li>
+			<li><STRONG>outMax [double]:</STRONG> Sets the maximum value of the output range.</li>
+			<li><STRONG>mode [combobox]:</STRONG> "autoupdate min and max" modifies the input range if incoming values exceed the current minimum or maximum, "clip to min and max" which keeps the values as set by the min/max properties.</li>
+			<li><STRONG>fontSize [integer]:</STRONG> The size of the font for dispaying text in the GUI.</li>
+			<li><STRONG>caption [string]:</STRONG> The caption of the AdjustmentCurve GUI.</li>
+		</ul>
+	</BODY>
+</HTML>

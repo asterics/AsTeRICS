@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+
+		<script type="text/javascript" src="javascript/jquery-3.2.1.min.js"></script>
+		<script src="javascript/JSmap.js"></script> 
+		<script src="javascript/areCommunicator.js"></script>
+		 
+		<title>Rest client - Runtime model components</title>
+		
+		
+		<script type="text/javascript">
+			/* This is an example of how to use the ARE Javascipt framework for the communication
+				with the ARE Restful Services.
+				
+				The location of the server should be defined with the 'setBaseURI(<url>)' method.
+				
+				A success-callback function and an error-callback function should be passed as an argument
+				for every function.
+			*/
+		
+			setBaseURI("http://localhost:8081/rest/");
+		
+
+			//getRuntimeComponentIds
+			function GET_RUNTIME_COMPONENT_IDS() {
+				getRuntimeComponentIds(consoleSuccessCallback, defaultErrorCallback);
+			}
+		
+
+			//getRuntimeComponentPropertyKeys
+			function GET_RUNTIME_COMPONENT_PROPERTY_KEYS() {
+				var componentId = document.getElementById("GRCPKid").value;
+				getRuntimeComponentPropertyKeys(consoleSuccessCallback, defaultErrorCallback, componentId);
+			}
+
+
+			//getRuntimeComponentProperty
+			function GET_RUNTIME_COMPONENT_PROPERTY() {
+				var componentId = document.getElementById("GRCPid").value;
+				var componentKey = document.getElementById("GRCPkey").value;
+				getRuntimeComponentProperty(defaultSuccessCallback, defaultErrorCallback, componentId, componentKey);
+			}
+
+			
+			//setRuntimeComponentProperty
+			function SET_RUNTIME_COMPONENT_PROPERTY() {
+				var componentId = document.getElementById("SRCPid").value;
+				var componentKey = document.getElementById("SRCPkey").value;
+				var componentValue = document.getElementById("SRCPvalue").value;
+				setRuntimeComponentProperty(defaultSuccessCallback, defaultErrorCallback, componentId, componentKey, componentValue);
+			}
+
+
+
+			//setRuntimeComponentProperties
+			function SET_RUNTIME_COMPONENT_PROPERTIES() {
+				var propertyMap = document.getElementById("propertyMap").value;
+				setRuntimeComponentProperties(defaultSuccessCallback, defaultErrorCallback, propertyMap);
+			}
+
+
+			//getComponentInputPortIds
+			function GET_COMPONENT_INPUT_PORT_IDS() {
+				var componentId = document.getElementById("GCIPIid").value;
+
+				getComponentInputPortIds(defaultSuccessCallback, defaultErrorCallback, componentId);
+			}
+
+
+			//getComponentOutputPortIds
+			function GET_COMPONENT_OUTPUT_PORT_IDS() {
+				var componentId = document.getElementById("GCOPIid").value;
+
+				getComponentOutputPortIds(defaultSuccessCallback, defaultErrorCallback, componentId);
+			}
+
+
+			//getPortDatatype
+			function GET_PORT_DATATYPE() {
+				var componentId = document.getElementById("GCPDTid").value;
+				var portId = document.getElementById("GCPDTpid").value;
+
+				getPortDatatype(defaultSuccessCallback, defaultErrorCallback, componentId, portId);
+			}
+
+            function SEND_DATA_TO_INPUT_PORT() {
+                var componentId = document.getElementById("SDTIPcid").value;
+                var portId = document.getElementById("SDTIPpid").value;
+                var value = document.getElementById("SDTIPval").value;
+
+                sendDataToInputPort(defaultSuccessCallback, defaultErrorCallback, componentId, portId, value);
+            }
+
+            function TRIGGER_EVENT() {
+                var componentId = document.getElementById("triggerEventComponent").value;
+                var portId = document.getElementById("triggerEventPort").value;
+
+                triggerEvent(defaultSuccessCallback, defaultErrorCallback, componentId, portId);
+            }
+
+			//getComponentEventChannelsIds
+			function GET_COMPONENT_EVENT_CHANNEL_IDS() {
+				var componentId = document.getElementById("GCECIid").value;
+				getComponentEventChannelsIds(defaultSuccessCallback, defaultErrorCallback, componentId);
+			}
+
+
+			//getComponentDataChannelsIds
+			function GET_COMPONENT_DATA_CHANNEL_IDS() {
+				var componentId = document.getElementById("GCDCIid").value;
+				getComponentDataChannelsIds(defaultSuccessCallback, defaultErrorCallback, componentId);
+			}
+
+
+			function defaultSuccessCallback(data, HTTPstatus) { alert(data); }
+			function defaultErrorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+			function consoleSuccessCallback(data, HTTPstatus) { console.log(data); }
+			function consoleErrorCallback(HTTPstatus, AREerrorMessage) { console.log(AREerrorMessage); }
+
+		</script>
+		
+	</head>
+	
+	<body>
+
+		<div id="header">
+			<h1>REST API Demos</h1>
+			<h2>Runtime model components</h2>
+		</div>
+
+		<div id="content">
+
+			<button onclick="GET_RUNTIME_COMPONENT_IDS()" title="Description: Retrieves all the component Ids contained in the currently deployed model (as JSON array) &#013;Ouput: alert"> Get runtime component Ids </button>
+			<br/>
+			
+			<button onclick="GET_RUNTIME_COMPONENT_PROPERTY_KEYS()" title="Description: Returns all property keys of the component with the given componentId in the currently deployed model (as JSON array) &#013;Ouput: alert"> Get runtime component property keys </button>
+			<input placeholder="componentId" type="text" id="GRCPKid"/>
+			<br/>
+			
+			<button onclick="GET_RUNTIME_COMPONENT_PROPERTY()" title="Description: Retrieves property value of a specific component, in the currently deployed model &#013;Ouput: alert"> Get runtime component property </button>
+			<input placeholder="componentId" type="text" id="GRCPid"/>
+			<input placeholder="componentKey"type="text" id="GRCPkey"/>
+			<br/>
+			
+			<button onclick="SET_RUNTIME_COMPONENT_PROPERTY()" title="Description: Changes a property value of a specific component,  in the currently deployed model &#013;Ouput: alert"> Set runtime component property </button>
+			<input placeholder="componentId" type="text" id="SRCPid"/>
+			<input placeholder="componentKey" type="text" id="SRCPkey"/>
+			<input placeholder="componentKeyValue" type="text" id="SRCPvalue"/>
+			<br/>
+
+			<button onclick="SET_RUNTIME_COMPONENT_PROPERTIES()" title=""> Set runtime component properties </button>
+			<div style="display: inline-flex; margin-bottom: 2em">
+			<textarea id="propertyMap">{
+   "Component_id_1":{
+      "key_1_1":"val_1_1",
+      "key_1_2":"val_1_2"
+   },
+   "Component_id_2":{
+      "key_2_1":"val_2_1",
+      "key_2_2":"val_2_2"
+   }
+}</textarea></div>
+			<br/>
+
+			<button onclick="GET_COMPONENT_INPUT_PORT_IDS()" title="Description: returns the input port ids of the specified component as a json array &#013;Ouput: alert"> Get component input ports </button>
+			<input placeholder="channelId" type="text" id="GCIPIid"/>
+			<br/>
+			
+			<button onclick="GET_COMPONENT_OUTPUT_PORT_IDS()" title="Description: returns the output port ids of the specified component as a json array &#013;Ouput: alert"> Get component output ports </button>
+			<input placeholder="channelId" type="text" id="GCOPIid"/>
+			<br/>
+
+			<button onclick="GET_PORT_DATATYPE()" title="Description: returns the datatype of the specified port &#013;Ouput: alert"> Get port datatype </button>
+			<input placeholder="componentId" type="text" id="GCPDTid"/>
+			<input placeholder="componentId" type="text" id="GCPDTpid"/>
+			<br/>
+
+			<button onclick="SEND_DATA_TO_INPUT_PORT()" title="Description: sends given data to a input port of a component;Ouput: alert"> Send data to input port </button>
+			<input placeholder="componentId" type="text" id="SDTIPcid"/>
+			<input placeholder="portId" type="text" id="SDTIPpid"/>
+			<input placeholder="value" type="text" id="SDTIPval"/>
+			<br/>
+
+			<button onclick="TRIGGER_EVENT()" title="Triggers a event on given component and eventPort;Ouput: alert"> Trigger event </button>
+			<input placeholder="componentId" type="text" id="triggerEventComponent"/>
+			<input placeholder="eventPortId" type="text" id="triggerEventPort"/>
+			<br/>
+
+			<button onclick="GET_COMPONENT_DATA_CHANNEL_IDS()" title="Description: returns all the data channel ids of the given component (as JSON array) &#013;Ouput: alert"> Get component data channel ids </button>
+			<input placeholder="componentId" type="text" id="GCDCIid"/>
+			<br/>
+
+			<button onclick="GET_COMPONENT_EVENT_CHANNEL_IDS()" title="Description: returns all the event channel ids of the given component (as JSON array) &#013;Ouput: alert"> Get component event channel ids </button>
+			<input placeholder="componentId" type="text" id="GCECIid"/>
+			<br/>
+			
+		</div>
+		
+	</body>
+	
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SerialSender</title>
+  </head>
+  <body class="innerBody">
+    <h1>SerialSender</h1>
+    <span class="componentType">Component Type: Processor (Subcategory: Serial Communication)</span>
+    <p>The Serialsender can be used to send structured data to Serial devices. It has 16 data slots. Whenever a send event occurs the plugin sends every slot which is active to the device, beginning with slot0</p>
+    <figure>
+		<img class="image" src="img/SerialSender.png" alt="Screenshot: SerialSender plugin" title="Screenshot: SerialSender plugin">
+		<figcaption>SerialSender plugin</figcaption>
+	</figure>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>slot0 - slot15 [int]:</strong> Input data for each slot. The lower 8 Bit of the input will be sent when the slot is set Active and a send event occurs</li>
+    </ul>
+    <h2>Properties </h2>
+    <ul>
+      <li><strong>COMPort [string]:</strong> Defines the COM Port of the target serial device. e.g. COM0</li>
+      <li><strong>BaudRate [integer]:</strong> Defines the Baudrate for the communication. It must match the baudrate of the target device</li>
+	  <li><strong>Slot[0-15] [int]:</strong>Defines the default value of a slot. This value will be overridden if there is data available at the corresponding input slot</li>
+      <li><strong>Slot[0-15]Active [boolean]:</strong>Activate a Slot. Whenever a send event occurs the SerialSender will iterate over all Slots beginning with slot 0 and send the data of every Active Slot</li>
+      <li><strong>Slot[0-15]Delay [int]:</strong>Defines the delay the plugin should wait before sending data to a slot.</li>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Filter</title>
+  </head>
+  <body class="innerBody">
+    <h1>Filter</h1>
+    <span class="componentType">Component Type: Processor (Subcategory: DSP and Feature Detection)</span>
+    <p>This plugin implements a FIR Filter</p>
+    <figure>
+		<img class="image" src="img/Filter.jpg" alt="Screenshot: Filter plugin" title="Screenshot: Filter plugin" />
+		<figcaption>Filter plugin</figcaption>
+	</figure>
+    <H2>Input Port Description</H2>
+    <ul>
+		<li><STRONG>Input [double]:</STRONG> The signal to be filtered.</li>
+    </ul>
+    <H2>Output Port Description</H2>
+    <ul>
+		<li><STRONG>Output [double]:</STRONG> The filtered signal.</li>
+		<li><STRONG>SignalPower [double]:</STRONG> Signal Power on the band pass.</li>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>Order [integer]:</strong> Order of the filter. It is recommended to use orders around the sampling rate.<br>
+      </li>
+      <li><strong>CutoffFreq1 [double]:</strong> Cutoff frequecy for low and high pass filter types. In case of band pass filters it is the low cutoff frequency of the band.<br>
+      </li>
+      <li><strong>CutoffFreq2 [double]:</strong> In case of band pass filters it is the high cutoff frequency of the band.<br>
+      </li>
+      <li><strong>SamplingRate [integer]:</strong> Sampling rate of the input signal.<br>
+      </li>
+      <li><strong>Type [integer]:</strong> Type of filter (low, high or band pass filter).<br>
+      </li>
+      <li><strong>SignalPowerUpdateRate [integer]:</strong> Update ratio for the SignalPower output port. The SignalPower output port provides a new value every time the Output port has provided N values, where N is the value of this property.<br>
+      </li>
+      <li><strong>SignalPowerBufferSize [integer]:</strong> Length of the buffer that keeps the filtered signal that is used to compute the power of the signal.<br>
+      </li>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+
+		<script type="text/javascript" src="javascript/jquery-3.2.1.min.js"></script>
+		<script src="javascript/JSmap.js"></script> 
+		<script src="javascript/areCommunicator.js"></script>
+		 
+		<title>Rest client - Runtime model channels</title>
+		
+		
+		<script type="text/javascript">
+			/* This is an example of how to use the ARE Javascipt framework for the communication
+				with the ARE Restful Services.
+				
+				The location of the server should be defined with the 'setBaseURI(<url>)' method.
+				
+				A success-callback function and an error-callback function should be passed as an argument
+				for every function.
+			*/
+		
+			setBaseURI("http://localhost:8081/rest/");
+		
+		
+			//getEventChannelsIds
+			function GET_EVENT_CHANNEL_IDS() {
+				getEventChannelsIds(defaultSuccessCallback, defaultErrorCallback);
+			}
+
+
+			//getEventChannelSource
+			function GET_EVENT_CHANNEL_SOURCE() {
+				var channelId = document.getElementById("GECSid").value;
+				getEventChannelSource(GECS_successCallback, defaultErrorCallback, channelId);
+			}
+
+			function GECS_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
+				
+
+			//getEventChannelTarget
+			function GET_EVENT_CHANNEL_TARGET() {
+				var channelId = document.getElementById("GECTid").value;
+				getEventChannelTarget(GECT_successCallback, defaultErrorCallback, channelId);
+			}
+
+			function GECT_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
+
+
+			//getDataChannelsIds
+			function GET_DATA_CHANNEL_IDS() {
+				getDataChannelsIds(defaultSuccessCallback, defaultErrorCallback);
+			}
+
+
+			//getDataChannelSource
+			function GET_DATA_CHANNEL_SOURCE() {
+				var channelId = document.getElementById("GDCSid").value;
+				getDataChannelSource(GDCS_successCallback, defaultErrorCallback, channelId);
+			}
+
+			function GDCS_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
+				
+
+			//getDataChannelTarget
+			function GET_DATA_CHANNEL_TARGET() {
+				var channelId = document.getElementById("GDCTid").value;
+				getDataChannelTarget(GDCT_successCallback, defaultErrorCallback, channelId);
+			}
+
+			function GDCT_successCallback(data, HTTPstatus) { alert(JSON.stringify(data)); }
+
+			
+
+			function defaultSuccessCallback(data, HTTPstatus) { alert(data); }
+			function defaultErrorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+			function consoleSuccessCallback(data, HTTPstatus) { console.log(data); }
+			function consoleErrorCallback(HTTPstatus, AREerrorMessage) { console.log(AREerrorMessage); }
+
+		</script>
+		
+	</head>
+	
+	<body>
+
+		<div id="header">
+			<h1>REST API Demos</h1>
+			<h2>Runtime model channels</h2>
+		</div>
+
+		<div id="content">
+
+			<h4> Event channels </h4>
+
+			<button onclick="GET_EVENT_CHANNEL_IDS()" title="Description: returns all the event channel ids of the current model (as JSON array) &#013;Ouput: alert"> Get event channels ids </button>
+			<br/>
+
+			<button onclick="GET_EVENT_CHANNEL_SOURCE()" title="Description: returns the source (component id and port) a of a specific event channel &#013;Ouput: alert"> Get event channel source </button>
+			<input placeholder="channelId" type="text" id="GECSid"/>
+			<br/>
+			
+			<button onclick="GET_EVENT_CHANNEL_TARGET()" title="Description: returns the target (component id and port) a of a specific event channel &#013;Ouput: alert"> Get event channel target </button>
+			<input placeholder="channelId" type="text" id="GECTid"/>
+			<br/>
+
+
+			<h4> Data channels </h4>
+
+			<button onclick="GET_DATA_CHANNEL_IDS()" title="Description: returns all the data channel ids of the current model (as JSON array) &#013;Ouput: alert"> Get data channels ids </button>
+			<br/>
+
+			<button onclick="GET_DATA_CHANNEL_SOURCE()" title="Description: returns the source (component id and port) a of a specific data channel &#013;Ouput: alert"> Get data channel source </button>
+			<input placeholder="channelId" type="text" id="GDCSid"/>
+			<br/>
+			
+			<button onclick="GET_DATA_CHANNEL_TARGET()" title="Description: returns the target (component id and port) a of a specific data channel &#013;Ouput: alert"> Get data channel target </button>
+			<input placeholder="channelId" type="text" id="GDCTid"/>
+			<br/>
+
+		</div>
+		
+	</body>
+	
+</html>

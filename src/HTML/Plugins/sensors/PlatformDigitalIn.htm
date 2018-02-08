@@ -1,0 +1,32 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>PlatformDigitalIn</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Platform Digital In</H1>
+		<span class="componentType">Component Type: Sensor (Subcategory: Personal Platform)</span>
+		<p>The PlatformDigitalIn component provides an interface to read the digital inputs of the AsTeRICS Personal Platform. 
+		On state changes of the connected signals (transitions to high or low level), the component generates corresponding trigger events.</p>
+		<figure>
+			<img class="image" src="img/PlatformDigitalIn.jpg" alt="Screenshot: PlatformDigitalIn plugin" title="Screenshot: PlatformDigitalIn plugin" />
+			<figcaption>PlatformDigitalIn plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		This component requires the Core CIM (CIM Id: 0x0602) of the AsTeRICS Personal Platform.
+		<figure>
+			<img class="image" src="img/PersonalPlatform.jpg" alt="The AsteRICS Personal Platform (preliminary version)" title="The AsteRICS Personal Platform (preliminary version)" />
+			<figcaption>The AsteRICS Personal Platform</figcaption>
+		</figure>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>in1High to in3High:</STRONG> Each of these event ports is linked to one input port, if the device connection to this input port delivers a signal which changes to high level, an event will be raised on the corresponding port.</li>
+			<li><STRONG>in1Low to in3Low:</STRONG> Each of these event ports is linked to one input port, if the device connection to this input port delivers a signal which changes to low level, an event will be raised on the corresponding port.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>activateEventIn1 to activateEventIn3 [Boolean]:</STRONG> These properties declare for each port whether or not a signal transition on the actual input port should result in an event being triggered in the ARE. If a property is set true for one input, it will raise events on signal transitions, if it is set to false it will not.</li>
+		</ul>
+	</BODY>
+</HTML>

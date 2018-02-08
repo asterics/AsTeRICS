@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SignalShaper</title>
+  </head>
+  <body class="innerBody">
+    <h1>Signal Shaper</h1>
+    <span class="componentType">Component Type: Sensor (Subcategory: Simulation)</span>
+    <p>The SignalShaper component can be used to generate signal
+      composed from basic linear functions. </p>
+    <figure>
+		<img class="image" src="img/SignalShaper.jpg" alt="Screenshot: SignalShaper plugin" title="Screenshot: SignalShaper plugin">
+		<figcaption>SignalShaper plugin</figcaption>
+	</figure>
+    <figure>
+		<img class="image" src="img/SignalShaper.png" alt="Example composed signal created from three linear signals" title="Example composed signal">
+		<figcaption>Example composed signal created from three linear signals</figcaption>
+	</figure>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>output [double]:</strong> The output port for the
+        signal.</li>
+    </ul>
+    <h2>Event Listener Description</h2>
+    <ul>
+      <li><strong>start:</strong> Start the signal generation. If this
+        event is received during signal generation, the signal
+        generation is restarted.<br>
+      </li>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>interval [integer]:</strong> The sampling&nbsp; rate
+        in milliseconds.<br>
+      </li>
+      <li><strong>numberOfLines [integer]:</strong> The number of linear
+        signals used to shape the output signal.<br>
+      </li>
+      <li><strong>behaviourAfterFinish [</strong><strong>integer</strong><strong>]:</strong>
+        Defines the component behaviour after all signal lines have been
+        sent:<br>
+        <ul>
+          <li><strong>do nothing:</strong> stop any action.<br>
+          </li>
+          <li><strong>repeat:</strong> Send the signal lines from
+            beginning.<br>
+          </li>
+          <li><strong>send the last value:</strong> <span
+              id="result_box" class="short_text" lang="en"><span
+                class="hps">Continue</span></span> to send the last
+            value of the signal.<br>
+          </li>
+        </ul>
+      </li>
+      <li><strong>beginValue1...beginValue5 [double]:</strong> The begin
+        value of the linear signals.</li>
+      <li><strong>endValue1...endValue5 [double]:</strong> The end value
+        of the linear signals.</li>
+      <li><strong>time1...time5 [integer]:</strong> The duration of the
+        linear signals in milliseconds.</li>
+    </ul>
+  </body>
+</html>

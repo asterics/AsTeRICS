@@ -1,0 +1,77 @@
+<project name="asterics.imported" basedir=".">
+	<condition property="license.prefix" value="${component.id}-" else="">
+		<isset property="component.id" />
+	</condition>
+	
+	<!-- 
+	Define os.name for Bundle-NativeCode statement in MANIFEST of plugins:
+	As on Windows the alias os.name (win32) is not correctly matched, we have to manually define the property
+	so that the native bundles start on windows 10.
+	@see https://github.com/asterics/AsTeRICS/issues/17
+	
+	Note: Maybe we should also set the alias for Linux and Mac manually, because here we hardcode the
+	runtime os.name at build time. So the os.names could actually differ, although according to the list of os.names 
+	(https://www.osgi.org/developer/specifications/reference/)
+	for Linux there is only 1 name and for Mac OSX also.
+	-->
+	<condition property="org.osgi.framework.os.name" value="win32" else="${os.name}">
+		<os family="windows" />
+	</condition>
+	
+
+	<!-- <property name="license.prefix" value="${component.id}-"/>-->
+	<property name="javac.source" value="1.7"/>
+	<property name="javac.target" value="1.7"/>
+	<!-- just to be sure also set the default values to the above ones -->	
+	<property name="ant.build.javac.source" value="${javac.source}"/>
+	<property name="ant.build.javac.target" value="${javac.target}"/>
+	
+	<property name="source.license" value="D:\AsTeRICS\AsTeRICS_Licensing_Packaging_Asterics_2_8_Prep\ARE-LICENSE_MITOrGPLv3WithException.txt"/>
+	
+	
+    <target name="copyLicenses" >
+		<mkdir dir="${runtime}/LICENSE"/>
+		<copy todir="${runtime}/LICENSE" failonerror="false">
+		    <fileset dir="LICENSE" includes="**/*.txt"/>
+		    <globmapper from="*" to="${license.prefix}*"/>
+		</copy>	
+	</target>
+	
+	<!-- check existence of license file -->
+	<target name="checkLicenseFile">
+		<available file="LICENSE/LICENSE_dual.txt" property="license.exists"></available>
+	</target>
+	
+	<!-- Replace license file with new one, if a target file already exists -->
+	<target name="findAndReplaceLicenseFile" depends="checkLicenseFile" if="${license.exists}">
+		<copy  file="${source.license}" tofile="LICENSE/LICENSE_dual.txt" verbose="true">			
+		</copy>
+	</target>
+
+	<!-- Rename license file -->
+	<target name="renameLicenseFile">
+		<move file="LICENSE/LICENSE_dual.txt" tofile="LICENSE/LICENSE_MITOrGPLv3WithException.txt" verbose="true">
+		</move>
+	</target>
+	
+	<!-- update git submodules -->
+	<target name="updateGitSubmodules" description="Inits all git submodules and updates them to the latest revision that is available remote.">
+		<exec executable="git">
+			<arg value="submodule"/>
+			<arg value="update"/>
+			<arg value="--init"/>
+			<arg value="--recursive"/>
+			<arg value="--remote"/>
+		</exec>
+	</target>
+	
+	<target name="initGitSubmodules" description="Inits all submodules to the current revision saved in this repository.">
+		<exec executable="git">
+			<arg value="submodule"/>
+			<arg value="update"/>
+			<arg value="--init"/>
+			<arg value="--recursive"/>
+		</exec>
+	</target>
+	
+</project>

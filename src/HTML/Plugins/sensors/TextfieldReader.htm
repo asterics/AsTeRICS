@@ -1,0 +1,32 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>TextfieldReader</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Textfield Reader</H1>
+		<span class="componentType">Component Type: Sensor (Subcategory: Graphical User Interface)</span>
+		<p>Similar to the Keyboard Hook component, this component provides access to keystrokes coming from a standard keyboard or injected via software. The difference to the Keyboard Hook is that the Text Field Reader opens a GUI element with a text input filed and processes key input only from this text field. The keycodes of the pressed keys and accumulated words (multiple keys separated by <space>) are provided at the output ports of this component. Possible applications include triggering functions by keyboard input or remapping keys to other keycodes.</p>
+		<figure>
+			<img class="image" src="img/TextfieldReader.jpg" alt="Screenshot: TextfieldReader plugin" title="Screenshot: TextfieldReader plugin" />
+			<figcaption>TextfieldReader plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		A keyboard which generates keystrokes or a software component which injects keystrokes into the operating system?s message queue. 
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>keys [integer]:</STRONG> This port sends the virtual keycode of the last pressed key as an integer value.</li>
+			<li><STRONG>words [string]:</STRONG> This ports accumulates keystrokes and sends them as a string as soon as a blank separator (space key) appears in the key input stream.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>recognizedCommand1 - recognizedCommand7:</STRONG> These event ports fire an event if one of seven command strings has been detected in the current input stream of keys.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>command1 [string] - command7 [string]:</STRONG> Seven string properties to specify command strings. The component looks for these command strings in the input stream of keystrokes. If a command string matches, the corresponding event trigger port is raised. This can be useful for example to define voice commands which should trigger certain actions in other ARE plugins.</li>
+			<li><strong>displayGUI [boolean]:</strong> If selected, the GUI of this component will be displayed - if not, the GUI will be hidden and disabled.</li>
+		</ul>
+	</BODY>
+</HTML>

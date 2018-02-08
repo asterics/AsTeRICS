@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>EventCounter</title>
+  </head>
+  <body class="innerBody">
+    <h1>Event Counter</h1>
+    <span class="componentType">Component Type: Processor (Subcategory: Event and String Processing)</span>
+    <p>This component counts events. It can increase and decrease a counts via incoming
+      events.</p>
+    <figure>
+		<img class="image" src="img/EventCounter.jpg" alt="Screenshot: EventCounter plugin" title="Screenshot: EventCounter plugin">
+		<figcaption>EventCounter plugin</figcaption>
+	</figure>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>setValue [integer]:</strong> Sets the event counter to the incoming value. Note that this value is not propagated to the output port (to avoid loops).</li>
+    </ul>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>output [integer]:</strong> Sends the number of events.</li>
+    </ul>
+    <h2>Event Listener Description</h2>
+    <ul>
+      <li><strong>increase:</strong> Increases the number of events.</li>
+      <li><strong>decrease:</strong> Decreases the number of events.</li>
+      <li><strong>resetToZero:</strong> Sets the event counter to zero.</li>
+      <li><strong>resetToInitial:</strong> Sets the event counter to the initial value (property).</li>
+      <li><strong>sendNow:</strong> sendes the current value of the counter to the output port</li>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>mode [integer]:</strong> Defines counting mode:</li>
+      <ul>
+        <li><em>no limit:</em> The component counts events without any
+          limitation.</li>
+        <li><em>limit maximum:</em> In this mode, the maximum value of
+          the counter is limited by the maxValue property.</li>
+        <li><em>limit minimum:</em> In this mode, the minimum value of
+          the counter is limited by the minValue property.</li>
+        <li><em>limit minimum and maximum:</em> In this mode, both
+          maximum and minimum values of the counter are limited by the
+          maxValue amd minValue properties.</li>
+      </ul>
+      <li><strong>minValue [integer]:</strong> Defines the minimum value
+        of the counter.</li>
+      <li><strong>maxValue [integer]:</strong> Defines the maximum value
+        of the counter.</li>
+      <li><strong>initialValue [integer]:</strong> Defines the initial
+        value of the counter.</li>
+      <li><strong>wrapAround [boolean]:</strong> if selected and the
+        appropriate mode is set, exceeding the maximum value will wrap
+        to the minimum value and vice versa.</li>
+      <li><strong>sendInitialValue [boolean]:</strong> if selected, the
+        initial value is sent at the startup.</li>
+      <li><strong>autoSend [boolean]:</strong> if selected, the
+        changes of the event counter are sent immediately to the output port</li>
+    </ul>
+  </body>
+</html>

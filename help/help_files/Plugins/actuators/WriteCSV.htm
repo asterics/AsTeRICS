@@ -1,0 +1,31 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>WriteCSV</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>CSV Writer</H1> 
+		<span class="componentType">Component Type: Actuator (Subcategory: File System)</span>
+		<p>This plugin writes incoming strings into an .csv file.</p>
+		<p>The data gets live recorded, so it can be viewed simultaneously in an oscilloscope.</p>
+		<figure>
+			<img class="image" src="img/WriteCSV.png" alt="Screenshot: WriteCSV plugin" title="Screenshot: WriteCSV plugin" />
+			<figcaption>WriteCSV</figcaption>
+		</figure>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>StartWriting:</STRONG> Creates a new file to save the data.</li>
+			<li><STRONG>StopWriting:</STRONG> Stops a saving process.</li>
+		</ul>
+		<H2>Input port Description</H2>
+		<ul>
+			<li><STRONG>Input[string]:</STRONG> The string contains the data. Example of one string: "data1;data2;data3". To get data values and separators into this string, the StringExpander plugin can be used. After each string, a line separator (newline) is appended.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>FileName[string]:</STRONG>  Specifies the name of the file (without extension), in which the data will be recorded. Current date and time information are added to the filename.</li>
+			<li><STRONG>FilePath[string]:</STRONG>  Defines the Path were the File shoud be saved (relative from the ARE folder). If not existing, the path will be created.</li>
+		</ul>
+	</BODY>
+</HTML>

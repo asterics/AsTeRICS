@@ -1,0 +1,54 @@
+<!-- This is the bootstrap build file for the whole AsTeRICS framework -->
+<project name="asterics-demopage" basedir="." default="copyHelpFiles">
+	<property name="debug" value="true"/>
+	<property name="src.dir" location="src"/>
+	<property name="web.docroot" location="."/>
+	<property name="WebACS.bin" location="${web.docroot}/webapps/WebACS"/>
+
+	<target name="clean" description="Clean the whole project" depends="cleanHelpFiles">
+	</target>
+	
+	<target name="cleanHelpFiles" description="Cleans the help_files folders in the help folders">
+		<delete dir="${web.docroot}/help"/>
+		<delete dir="${WebACS.bin}"/>
+	</target>
+	
+	<target name="copySubModulesToTarget" depends="initGitSubmodules">
+		<copy todir="${web.docroot}/help" failonerror="true">
+		    <fileset dir="${src.dir}/AsTeRICS-help"/>
+		</copy>
+
+		<copy todir="${web.docroot}/webapps/WebACS" failonerror="true">
+		    <fileset dir="${src.dir}/WebACS"/>
+		</copy>
+	
+		<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
+		<subant target="copyHelpFiles" failonerror="true">
+			<fileset dir="${WebACS.bin}" includes="**/build.xml"></fileset>
+		</subant>		
+	</target>
+	
+	<target name="copyHelpFiles" depends="copySubModulesToTarget" description="Copy all help files to the ARE and WebACS help locations.">
+		<!-- copy help files for ARE help on ${web.docroot}/help/ -->
+		<mkdir dir="${web.docroot}/help/help_files"/>
+		<copy todir="${web.docroot}/help/help_files/ARE/" failonerror="true">
+		    <fileset dir="${src.dir}/HTML/ARE"/>
+		</copy>
+		<copy todir="${web.docroot}/help/help_files/Plugins/" failonerror="true">
+		    <fileset dir="${src.dir}/HTML/Plugins"/>
+		</copy>
+		<copy todir="${web.docroot}/help/help_files/ACS/" failonerror="true">
+		    <fileset dir="${src.dir}/HTML/ACS"/>
+		</copy>
+		<copy tofile="${web.docroot}/help/help_files/helpPaths-hosted.json" failonerror="true">
+		    <fileset dir="${src.dir}/HTML/" includes="helpPaths-hosted.ARE.json"/>
+		</copy>
+		
+		<copy tofile="${WebACS.bin}/help/help_files/helpPaths-hosted.json" failonerror="true" verbose="true" overwrite="true">
+		    <fileset dir="${src.dir}/HTML/" includes="helpPaths-hosted.WebACS.json"/>
+		</copy>
+		
+	</target>	
+	<import file="imported.xml"/>
+	<include file="included.xml"/>
+</project>

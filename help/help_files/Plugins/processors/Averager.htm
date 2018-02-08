@@ -1,0 +1,36 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>Averager</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Averager</H1> 
+		<span class="componentType">Component Type: Processor (Subcategory: Basic Math)</span>
+		<p>The averager component takes an input stream and forwards the average of certain amount of buffered last inputs. The size of the buffer can be set via a property. The component can be used to eliminate spikes in an input data stream. Furthermore the unit can also be used as an accumulator which accumulates all inputs within a certain time interval.</p> 
+		<figure>
+			<img class="image" src="img/Averager.jpg" alt="Screenshot: Averager plugin" title="Screenshot: Averager plugin" />
+			<figcaption>Averager plugin</figcaption>
+		</figure>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>input [double]:</STRONG> This port reads the inputs to be averaged.</li>
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>output [double]:</STRONG> This port provides the current average of the buffered inputs.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li>
+				<STRONG>mode [integer]:</STRONG> Denotes the operating mode of the unit, three modes are available:
+				<ul>
+					<li><EM>average:</EM> unit performs averaging calculations and emits double values average with integer.</li>
+					<li><EM>output:</EM> unit performs calculations and rounds result to integer.</li>
+					<li><EM>accumulate:</EM> unit accumulates inputs for certain amount of time.</li>
+				</ul>
+			</li>
+			<li><STRONG>bufferSize [integer]:</STRONG> Specifies the size of the buffer in the averaging modes or the amount of milliseconds to accumulate in the accumulator mode.</li>
+		</ul>
+	</BODY>
+</HTML>

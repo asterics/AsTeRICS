@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+
+		<script type="text/javascript" src="javascript/jquery-3.2.1.min.js"></script>
+		<script src="javascript/JSmap.js"></script> 
+		<script src="javascript/areCommunicator.js"></script>
+		 
+		<title>Rest client example</title>
+		
+		
+		<script type="text/javascript">
+			/* This is an example of how to use the ARE Javascipt framework for the communication
+				with the ARE Restful Services.
+				
+				The location of the server should be defined with the 'setBaseURI(<url>)' method.
+				
+				A success-callback function and an error-callback function should be passed as an argument
+				for every function.
+			*/
+		
+			setBaseURI("http://localhost:8081/rest/");
+		
+		
+			//downloadDeployedModel
+			function myFunction() {
+				downloadDeployedModel(consoleSuccessCallback, defaultErrorCallback);
+			}
+			
+
+			function defaultSuccessCallback(data, HTTPstatus) { alert(data); }
+			function defaultErrorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+			function consoleSuccessCallback(data, HTTPstatus) { console.log(data); }
+			function consoleErrorCallback(HTTPstatus, AREerrorMessage) { console.log(AREerrorMessage); }
+
+		</script>
+		
+	</head>
+	
+	<body>
+
+		<div id="header">
+			<h1>AsTeRICS REST API</h1>
+		</div>
+
+		<div>
+			<h2>General Information</h2>
+			<p>
+				AsTeRICS ARE provides a REST API with several functionalities. The base REST URI is:
+			</p>
+			<strong><code>http://localhost:8081/rest/&lt;restmethod&gt;</code></strong>
+			<p>
+				In order to get a list of all available rest methods use:
+			</p>
+			<strong><code><a target="_blank" href="http://localhost:8081/rest/restfunctions">http://localhost:8081/rest/restfunctions</a></code></strong>
+
+			<h2>Examples</h2>
+			<p>One way to use the REST API ist to use the Javascript library <a target="_blank" href="./javascript/areCommunicator.js">areCommunicator.js</a>. Use the following links to navigate to examples using this library:</p>
+			<ul>
+				<li>
+					<a href="are_repository.html"><strong>ARE Repository</strong></a><br/>
+					<span>REST methods to interact with the ARE model repository (list, store, delete).</span>
+				</li>
+				<li>
+					<a href="runtime_model_channels.html"><strong>ARE Model Channels</strong></a><br/>
+					<span>Interact with data channels and event channels of the ARE model.</span>
+				</li>
+				<li>
+					<a href="runtime_model_components.html"><strong>ARE Model Components</strong></a><br/>
+					<span>Interact with components of the current ARE model.</span>
+				</li>
+				<li>
+					<a href="runtime_model_deployment.html"><strong>ARE Model Deployment</strong></a><br/>
+					<span>Deploy and upload ARE models.</span>
+				</li>
+				<li>
+					<a href="runtime_model_state.html"><strong>ARE Model State</strong></a><br/>
+					<span>Get information and change the state of the current ARE model.</span>
+				</li>
+				<li>
+					<a href="sse.html"><strong>Server Sent Events</strong></a><br/>
+					<span>Subscribe to server sent events (SSE) of the current ARE model.</span>
+				</li>
+			</ul>
+
+		</div>
+		
+	</body>
+	
+</html>

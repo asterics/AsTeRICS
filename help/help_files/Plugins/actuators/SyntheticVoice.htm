@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+     <title>SyntheticVoice</title>
+  </head>
+  <body class="innerBody">
+    <h1>Synthetic Voice</h1>
+    <span class="componentType">Component Type: Actuator (Subcategory: Audio and Voice)</span>
+    <p>The Synthetic Voice component uses the SAPI 5 technology to
+      generate synthetic voice.</p>
+    <figure>
+		<img class="image" src="img/SyntheticVoice.jpg" alt="Screenshot: SyntheticVoice plugin" title="Screenshot: SyntheticVoice plugin">
+		<figcaption>SyntheticVoice plugin</figcaption>
+	</figure>
+    <h2>Requirements</h2>
+    The appropriate voice should be installed on the platform.
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>input [string]:</strong> The text sentence, which will
+        be converted into speech.</li>
+    </ul>
+    <h2>Properties </h2>
+    <ul>
+      <li><strong>volume [integer]:</strong> Defines the volume of the
+        voice. The volume propety values should be in range from 0 to
+        100.</li>
+      <li><strong>speed [integer]:</strong> Defines the speed of the
+        voice. The speed propety values should be in range from -10 to
+        10.</li>
+      <li><strong>voice [string]:</strong> Specifies the voice used for
+        the speech <span id="result_box" class="short_text" lang="en"><span
+            class="hps">synthesis</span></span>.</li>
+      <li><strong>xmlTags [boolean]:</strong> Defines if the XML tags in
+        the input text will be suported.</li>
+    </ul>
+  </body>
+</html>

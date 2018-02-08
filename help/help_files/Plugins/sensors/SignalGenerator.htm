@@ -1,0 +1,29 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>SignalGenerator</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>Signal Generator</H1> 
+		<span class="componentType">Component Type: Sensor (Subcategory: Simulation)</span>
+		<p>The SignalGenerator component can generate several output waveforms for component tests or other purposes like timing or event generation. Available waveforms are sine, sawtooth, rectangle and random signal data.</p>
+		<figure>
+			<img class="image" src="img/SignalGenerator.jpg" alt="Screenshot: SignalGenerator plugin" title="Screenshot: SignalGenerator plugin" />
+			<figcaption>SignalGenerator plugin</figcaption>
+		</figure>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>out [double]:</STRONG> The generated waveform is provided at this port.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>sendInterval [integer]:</STRONG> This value specifies the output rate in milliseconds. Please note that the output rate has to be fast enough to assemble the selected output frequency. For example if a frequency of 2 Hz is set, the send_interval should not be greater than 125 milliseconds according to the sample theorem.</li>
+			<li><STRONG>waveForm [integer]:</STRONG> The waveform types random, sine, sawtooth and rectangle can be selected.</li>
+			<li><STRONG>frequency [double]:</STRONG> The frequency of the output signal in Hertz.</li>
+			<li><STRONG>amplitude [double]:</STRONG> The amplitude of the output signal.</li>
+			<li><STRONG>phaseShift [double]:</STRONG> The output signal is phase-shifted by this value (in milliseconds).</li>
+			<li><STRONG>offset [double]:</STRONG> Amplitude-offset of the output signal (this value is added to each generated waveform value).</li>
+		</ul>
+	</BODY>
+</HTML>

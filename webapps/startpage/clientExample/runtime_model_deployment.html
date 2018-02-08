@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="style.css">
+
+		<script type="text/javascript" src="javascript/jquery-3.2.1.min.js"></script>
+		<script src="javascript/JSmap.js"></script> 
+		<script src="javascript/areCommunicator.js"></script>
+		 
+		<title>Rest client - Runtime model deployment</title>
+		
+		
+		<script type="text/javascript">
+			/* This is an example of how to use the ARE Javascipt framework for the communication
+				with the ARE Restful Services.
+				
+				The location of the server should be defined with the 'setBaseURI(<url>)' method.
+				
+				A success-callback function and an error-callback function should be passed as an argument
+				for every function.
+			*/
+		
+			setBaseURI("http://localhost:8081/rest/");
+		
+		
+			//downloadDeployedModel
+			function DOWNLOAD_DEPLOYED_MODEL() {
+				downloadDeployedModel(consoleSuccessCallback, defaultErrorCallback);
+			}
+			
+			
+			//deployModelFromFile
+			function DEPLOY_MODEL_FROM_FILE() {
+				var filepath = document.getElementById("DepMFfilepath").value;
+				deployModelFromFile(defaultSuccessCallback, defaultErrorCallback, filepath);
+			}
+			
+			
+			//uploadModel
+			function UPLOAD_MODEL() {
+				var modelInXML = document.getElementById("UMmodel").value;
+				uploadModel(defaultSuccessCallback, defaultErrorCallback, modelInXML);
+			}
+			
+			
+			//autorun
+			function AUTORUN() {
+				var filepath = document.getElementById("AUTOfilepath").value;
+				autorun(defaultSuccessCallback, defaultErrorCallback, filepath);
+			}
+
+			
+
+			function defaultSuccessCallback(data, HTTPstatus) { alert(data); }
+			function defaultErrorCallback(HTTPstatus, AREerrorMessage) { alert(AREerrorMessage); }
+
+			function consoleSuccessCallback(data, HTTPstatus) { console.log(data); }
+			function consoleErrorCallback(HTTPstatus, AREerrorMessage) { console.log(AREerrorMessage); }
+
+		</script>
+		
+	</head>
+	
+	<body>
+
+		<div id="header">
+			<h1>REST API Demos</h1>
+			<h2>Runtime model deployment</h2>
+		</div>
+
+		<div id="content">
+
+			<button onclick="DOWNLOAD_DEPLOYED_MODEL()" title="Description: Retrieves the currently deployed model in XML &#013;Ouput: alert"> Download deployed model </button>
+			<br/>
+			
+			<button onclick="UPLOAD_MODEL()" title="Description: Deploys the model given as a parameter &#013;Ouput: alert"> Upload model </button>
+			<input placeholder="modelInXML" type="text" id="UMmodel"/>
+			<br/>
+			
+			<button onclick="AUTORUN()" title="Description: Deploys and starts the model in the given filepath &#013;Ouput: alert"> Autorun </button>
+			<input placeholder="filepath" type="text" id="AUTOfilepath"/>
+			<br/>
+					
+			<button onclick="DEPLOY_MODEL_FROM_FILE()" title="Description: Deploys the model contained in the given filepath &#013;Ouput: alert"> Deploy model from file </button>
+			<input placeholder="filepath" type="text" id="DepMFfilepath"/>
+			<br/>
+
+		</div>
+		
+	</body>
+	
+</html>

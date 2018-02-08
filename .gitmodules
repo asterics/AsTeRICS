@@ -1,0 +1,6 @@
+[submodule "src/AsTeRICS-help"]
+	path = src/AsTeRICS-help
+	url = https://github.com/asterics/AsTeRICS-help.git
+[submodule "src/WebACS"]
+	path = src/WebACS
+	url = https://github.com/asterics/WebACS.git

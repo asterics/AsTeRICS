@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Basic Tremor Reduction algorithms</title>
+  </head>
+  <body class="innerBody">
+    <h1>Basic Tremor Reduction algorithms</h1>
+    <span class="componentType">Component Type: Processor (Subcategory: Singal Shaping)</span>
+    <p>This plugin contains three algorithms for user hand tremor
+      reduction: Arithmetic Mean, Outlier Reduction and Exponential
+      Smoothing. The Arithmetic Mean algorithm calculates the cursor
+      position as an average of the past n cursor positions. N is
+      defined by the bufferSize parameter. The Outlier Reduction
+      algorithm keeps the maximum distance between two followed cursor
+      positions. The maximum distance is defined by the maxDistance
+      parameter. If the distance between two cursor positions is greater
+      than maxDistance, it is reduced to the value of maxDistance. The
+      Exponential Smoothing algorithm implements the 
+	  <a href="http://en.wikipedia.org/wiki/Exponential_smoothing">Exponential smoothing</a> 
+	  technique. The factor parameter defines the
+      Exponential Smoothing and the degree parameters define the degree
+      of the equation. </p>
+    <figure>
+		<img class="image" src="img/BasicTRalgorithms.jpg" alt="Screenshot: Basic Tremor Reduction algorithms plugin" title="Screenshot: Basic Tremor Reduction algorithms plugin">
+		<figcaption>Basic Tremor Reduction algorithms plugin</figcaption>
+	</figure>
+    <h2>Input Port Description</h2>
+    <ul>
+      <li><strong>inputX [integer]:</strong> Input mouse X position.</li>
+      <li><strong>inputY [integer]:</strong> Input mouse Y position.</li>
+      <li><strong>bufferSize [integer]:</strong> The new buffer size
+        value for the Arithmetic Mean algorithm.</li>
+      <li><strong>maxDistance [double]:</strong> The new maximum
+        distance value for the Outlier Reduction algorithm.</li>
+      <li><strong>factor [double]:</strong> The new factor value for
+        Exponential Smoothing algorithm.</li>
+    </ul>
+    <h2>Output Port Description</h2>
+    <ul>
+      <li><strong>outputX [</strong><strong>integer</strong><strong>]:</strong>
+        Output mouse X position.</li>
+      <li><strong>outputY [</strong><strong>integer</strong><strong>]:</strong>
+        Output mouse Y position.</li>
+    </ul>
+    <h2>Properties</h2>
+    <ul>
+      <li><strong>algorithm [integer]:</strong> Defines the algorithm
+        used for the tremor reduction.</li>
+      <li><strong>eventsType [integer]:</strong> Defines if the mouse
+        coordinates are absolute or relative.</li>
+      <li><strong>bufferSize [integer]:</strong> The buffer size value
+        for the Arithmetic Mean algorithm.</li>
+      <li><strong>maxDistance [double]:</strong> The maximum distance
+        value for the Outlier Reduction algorithm.</li>
+      <li><strong>factor [double]:</strong> The factor value for
+        Exponential Smoothing algorithm.</li>
+      <li><strong>degree [integer]:</strong> The degree of the equation
+        for Exponential Smoothing algorithm.</li>
+    </ul>
+  </body>
+</html>
