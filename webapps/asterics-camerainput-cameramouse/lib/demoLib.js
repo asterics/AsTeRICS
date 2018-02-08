@@ -17,7 +17,7 @@ function loadModelFileFromWebServer(relFilePath, successCallback) {
 	console.log("location.origin: "+location.origin);
 	
 	var pathFix='';
-	if(Object.is(location.origin, 'https://asterics.github.io')) {
+	if(Object.is(location.origin, 'https://asterics.github.io') || Object.is(location.origin, 'http://asterics.github.io')) {
 		pathFix='/AsTeRICS';
 		console.log("Adding pathFix: "+pathFix);
 	}
