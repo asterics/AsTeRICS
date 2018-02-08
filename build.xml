@@ -13,7 +13,7 @@
 		<delete dir="${WebACS.bin}"/>
 	</target>
 	
-	<target name="copySubModulesToTarget" depends="initGitSubmodules">
+	<target name="copySubModulesToTarget">
 		<copy todir="${web.docroot}/help" failonerror="true">
 		    <fileset dir="${src.dir}/AsTeRICS-help"/>
 		</copy>
@@ -28,7 +28,7 @@
 		<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
 		<subant target="copyHelpFiles" failonerror="true">
 			<fileset dir="${WebACS.bin}" includes="**/build.xml"></fileset>
-		</subant>		
+		</subant>
 	</target>
 	
 	<target name="copyHelpFiles" depends="copySubModulesToTarget" description="Copy all help files to the ARE and WebACS help locations.">
