@@ -14,7 +14,14 @@ setBaseURI("http://localhost:8081/rest/");
 //helper functions for loading xml model file
 function loadModelFileFromWebServer(relFilePath, successCallback) {
 	var httpReq = new XMLHttpRequest();
-	relFilePath=location.origin+'/'+relFilePath;
+	console.log("location.origin: "+location.origin);
+	
+	var pathFix='';
+	if(Object.is(location.origin, 'https://asterics.github.io')) {
+		pathFix='/AsTeRICS';
+		console.log("Adding pathFix: "+pathFix);
+	}
+	relFilePath=location.origin+pathFix+'/'+relFilePath;
 	console.log('Fetching model file from webserver: '+relFilePath);
 	httpReq.onreadystatechange = function() {
 		if (httpReq.readyState === XMLHttpRequest.DONE && (httpReq.status === 404 || httpReq.status === 0)) {						
