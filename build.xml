@@ -21,7 +21,10 @@
 		<copy todir="${web.docroot}/webapps/WebACS" failonerror="true">
 		    <fileset dir="${src.dir}/WebACS"/>
 		</copy>
-	
+
+		<copy todir="${web.docroot}/webapps/asterics-camerainput-cameramouse" failonerror="true">
+		    <fileset dir="${src.dir}/asterics-camerainput-cameramouse/custom/bin/ARE/web/webapps/asterics-camerainput-cameramouse"/>
+		</copy>		
 		<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
 		<subant target="copyHelpFiles" failonerror="true">
 			<fileset dir="${WebACS.bin}" includes="**/build.xml"></fileset>
