@@ -4,3 +4,6 @@
 [submodule "src/WebACS"]
 	path = src/WebACS
 	url = https://github.com/asterics/WebACS.git
+[submodule "webapps/asterics-camerainput-cameramouse"]
+	path = webapps/asterics-camerainput-cameramouse
+	url = https://github.com/asterics/asterics-camerainput-cameramouse.git
