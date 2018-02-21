@@ -3,10 +3,12 @@
 	<property name="help.files.dir" value="help_files/"/>
 	<property name="help.system.dir" value="help/"/>
 	
-	<target name="copyHelpFiles" depends="initGitSubmodules" description="Copy the help files of the WebACS to the help system.">
+	<target name="copyHelpFilesNoInitGitSubmodules" description="Copy the help files of the WebACS to the help system without initializing the git submodules first.">
 		<copy todir="${help.system.dir}/${help.files.dir}" failonerror="true">
 		    <fileset dir="${help.files.dir}"/>
 		</copy>
+	</target>	
+	<target name="copyHelpFiles" depends="initGitSubmodules, copyHelpFilesNoInitGitSubmodules" description="Copy the help files of the WebACS to the help system.">
 	</target>
 	<target name="clean" description="Cleans all temporary files.">
 		<delete dir="${help.system.dir}/${help.files.dir}"/>
