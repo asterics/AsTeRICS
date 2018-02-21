@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" type="text/css" href="../startpage/styles/main.css">
 
-      <script type="text/javascript" src="../startpage/lib/jquery-3.2.1.min.js"></script>
+	<!-- provided from AsTeRICS 3.0 -->
+	<script type="text/javascript" src="../startpage/lib/jquery-3.2.1.min.js"></script>
     <script src="../startpage/clientExample/javascript/JSmap.js"></script>
     <script src="../startpage/clientExample/javascript/areCommunicator.js"></script>
+	<!-- provided by this repository, should be part of the framework later -->
 	<script src="lib/demoLib.js"></script>
 
     <!--[if lt IE 9]>
@@ -17,31 +19,32 @@
 
 	<script type="text/javascript">
 		/*
-		Camera mouse parametrization
-		*/
-		
-		function applySettingsToModel() {
+		Deploy model file which is hosted on a webserver, apply settings (camera device, speed) and start the model.
+		*/		
+		function applyAndStart() {
 			var cameraSource = document.getElementById("cameraSource");
 			var cameraSourceIdx = cameraSource.options[cameraSource.selectedIndex].value;
-			setRuntimeComponentProperty(apply1_successCallback, errorCallback, 'XFacetrackerLK.1', 'cameraSelection', cameraSourceIdx);
-		}
-		
-		function apply1_successCallback(data, HTTPstatus) {
 			var speed = document.getElementById("speed").value;
-			setRuntimeComponentProperty(apply4_successCallback, errorCallback, 'Slider.1', 'default', speed);				
-		}
-
-		function apply4_successCallback(data, HTTPstatus) {
-			//left click: don't know how to set it by now
 		
-		
-			//Finally start model! - Yippie!!
-			startModel(Empty_successCallback, errorCallback);
-		}			
+			//The JSON object must be sent as JSON string, the keys and values must be Strings as well.
+			var propertyMap=JSON.stringify(
+			{
+				"XFacetrackerLK.1":{
+					"cameraSelection":String(cameraSourceIdx)
+				},
+				"Slider.1":{
+				  "default":String(speed)
+				}
+			});
+			console.log("Setting model properties:"+propertyMap);
+			
+			//Here is an example of how you could store a file from the webserver to the ARE/data folder.
+			/*
+			storeFileFromWebserverOnARE('webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs', 'testModel/testModel.acs', Empty_successCallback);
+			*/
 
-		//-------------------------------------
-		function applyAndStart() {
-			loadModelFileFromWebServerAndUploadModel('webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs', applySettingsToModel);
+			//Now let's deploy the model file, apply all settings the user selected and start the model.
+			deployModelFromWebserverApplySettingsAndStartModel('webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs',propertyMap);
 		}
 	</script>
 
@@ -52,12 +55,6 @@
     <header>
       <div class="inner">
         <h1>AsTeRICS Camera Mouse</h1>
-		<!--
-        <a href="https://github.com/asterics/AsTeRICS" class="button"><small>View project on</small> GitHub</a>
-        <h1>P4AllBuildingBlocks</h1>
-        <h2></h2>
-        <a href="https://github.com/asterics/P4AllBuildingBlocks" class="button"><small>View project on</small> GitHub</a>
--->
       </div>
     </header>
 
@@ -85,7 +82,12 @@
 			<br>
 			<button onclick="applyAndStart()" title="Description: Applies all settings and starts the model" class="button"> Apply and Start Model </button>
 			<p>
-			<h4>Requirements</h4>Integrated Webcam or USB camera. OS: Windows, Linux, Mac OSX
+			<h4>Requirements</h4>
+			<ul>
+				<li>Integrated Webcam or USB camera</li>
+				<li><a href="https://github.com/asterics/AsTeRICS/releases/tag/v3.0" target="_blank">AsTeRICS 3.0</a> installed and ARE running</li>
+				<li>OS: Windows, Linux (incl. RPi), Mac OSX</li>
+			</ul>
 			<h4>Major Plugins</h4>
 			<ul>
 				<li><a target="_blank" href="http://asterics.github.io/AsTeRICS/webapps/WebACS/help/index.html?plugins&sensors/XFacetrackerLK.htm">XFacetrackerLK</a></li>
@@ -94,7 +96,7 @@
 			<h4>Edit Model</h4>
 			<a target="_blank" href="http://asterics.github.io/AsTeRICS/webapps/WebACS/?areBaseURI=http://localhost:8081&openFile=http://asterics.github.io/AsTeRICS/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs">Open in WebACS</a>
 			<h4>Source Repository</h4>
-			<a target="_blank" href="https://github.com/asterics/asterics-camerainput-cameramouse">asterics-camerainput-cameramouse</a>
+				You can fork and modify this <a target="_blank" href="https://github.com/asterics/asterics-camerainput-cameramouse">repository</a>.
 			<h4>Related Videos</h4>
 			<a target="_blank" href="https://youtu.be/P9qJAWegkFM?t=1955">Camera Mouse Demo Screencast</a>
 			<p>
@@ -104,7 +106,5 @@
 			</section>
       </div>
     </div>
-
-  
   </body>
 </html>
