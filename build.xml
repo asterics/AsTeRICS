@@ -26,7 +26,7 @@
 		    <fileset dir="${src.dir}/asterics-camerainput-cameramouse/custom/bin/ARE/web/webapps/asterics-camerainput-cameramouse"/>
 		</copy>		
 		<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
-		<subant target="copyHelpFiles" failonerror="true">
+		<subant target="copyHelpFilesNoInitGitSubmodules" failonerror="true">
 			<fileset dir="${WebACS.bin}" includes="**/build.xml"></fileset>
 		</subant>
 	</target>
