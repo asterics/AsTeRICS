@@ -977,7 +977,7 @@
     <value>Model updated successful to current version. Please reload the model to use it.</value>
   </data>
   <data name="UpdateModelVersionQuestion" xml:space="preserve">
-    <value>Should the system try to update the model to the currend model version?</value>
+    <value>Should the system try to update the model to the current model version?</value>
   </data>
   <data name="CheckASAPIConnectionHeader" xml:space="preserve">
     <value>ARE Disconnected</value>
