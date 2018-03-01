@@ -1,5 +1,13 @@
 var startpage = {};
 
+window.onload = function() {
+	var subPath=document.location.hash.split('#')[1];
+	if (typeof subPath != 'undefined') {
+		console.log("Loading subPath: "+subPath);
+		startpage.setContent(subPath);		
+	}
+}
+
 startpage.resizeIframe = function(obj) {	
 	try {
 		var win = obj.contentWindow || obj.contentDocument;
@@ -16,4 +24,8 @@ startpage.setContent = function(path) {
 startpage.openRestDemos = function() {
 	startpage.setContent('./clientExample/client.html');
     $("#submenuRest").attr("hidden", false);
+};
+
+startpage.openSolutionDemos = function() {
+    $("#submenuSolutionDemos").attr("hidden", false);
 };
