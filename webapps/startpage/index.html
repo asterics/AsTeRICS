@@ -50,32 +50,32 @@
 				<ul id="menu1" class="menuList mainList">
 					<li>
 						<a href="#submenuRest" onclick="startpage.openRestDemos()">AsTeRICS REST API</a>
-						<ul id="submenuRest" hidden="true">
+						<ul id="submenuRestUL" hidden="true">
 							<li>
-								<a href="#submenuRest/are_repository" onclick="startpage.setContent('./clientExample/are_repository.html')">Repository</a>
+								<a href="#submenuRest:are_repository" id="submenuRest:are_repository" onclick="startpage.setContent('./clientExample/are_repository.html')">Repository</a>
 							</li>
 							<li>
-								<a href="#submenuRest/runtime_model_channels" onclick="startpage.setContent('./clientExample/runtime_model_channels.html')">Model Channels</a>
+								<a href="#submenuRest:runtimemodel_channels" id="submenuRest:runtimemodel_channels" onclick="startpage.setContent('./clientExample/runtime_model_channels.html')">Model Channels</a>
 							</li>
 							<li>
-								<a href="#submenuRest/runtime_model_components" onclick="startpage.setContent('./clientExample/runtime_model_components.html')">Model Components</a>
+								<a href="#submenuRest:runtime_model_components" id="submenuRest:runtime_model_components" onclick="startpage.setContent('./clientExample/runtime_model_components.html')">Model Components</a>
 							</li>
 							<li>
-								<a href="#submenuRest/runtime_model_deployment" onclick="startpage.setContent('./clientExample/runtime_model_deployment.html')">Model Deployment</a>
+								<a href="#submenuRest:runtime_model_deployment" id="submenuRest:runtime_model_deployment" onclick="startpage.setContent('./clientExample/runtime_model_deployment.html')">Model Deployment</a>
 							</li>
 							<li>
-								<a href="#submenuRest/runtime_model_state" onclick="startpage.setContent('./clientExample/runtime_model_state.html')">Model State</a>
+								<a href="#submenuRest:runtime_model_state" id="submenuRest:runtime_model_state" onclick="startpage.setContent('./clientExample/runtime_model_state.html')">Model State</a>
 							</li>
 							<li>
-								<a href="#submenuRest/sse" onclick="startpage.setContent('./clientExample/sse.html')">Server Sent Events</a>
+								<a href="#submenuRest:sse" id="submenuRest:sse" onclick="startpage.setContent('./clientExample/sse.html')">Server Sent Events</a>
 							</li>
 						</ul>
 					</li>
 					<li>
-						<a href="#submenuSolutionDemos" onclick="startpage.openSolutionDemos()">AsTeRICS Solution Demos</a>
-						<ul id="submenuSolutionDemos" hidden="true">
+						<a href="#submenuSolutionDemos" id="submenuSolutionDemos" onclick="startpage.openSolutionDemos()">AsTeRICS Solution Demos</a>
+						<ul id="submenuSolutionDemosUL" hidden="true">
 							<li>
-								<a href="#submenuSolutionDemos/asterics-camerainput-cameramouse" onclick="startpage.setContent('../asterics-camerainput-cameramouse/')">Camera Mouse</a>
+								<a href="#submenuSolutionDemos:asterics-camerainput-cameramouse" id="submenuSolutionDemos:asterics-camerainput-cameramouse" onclick="startpage.setContent('../asterics-camerainput-cameramouse/')">Camera Mouse</a>
 							</li>
 						</ul>
 					</li>

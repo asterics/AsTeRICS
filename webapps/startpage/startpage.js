@@ -2,10 +2,7 @@ var startpage = {};
 
 window.onload = function() {
 	var subPath=document.location.hash.split('#')[1];
-	if (typeof subPath != 'undefined') {
-		console.log("Loading subPath: "+subPath);
-		startpage.setContent(subPath);		
-	}
+	document.getElementById(subPath).click();
 }
 
 startpage.resizeIframe = function(obj) {	
@@ -23,9 +20,9 @@ startpage.setContent = function(path) {
 
 startpage.openRestDemos = function() {
 	startpage.setContent('./clientExample/client.html');
-    $("#submenuRest").attr("hidden", false);
+    $("#submenuRestUL").attr("hidden", false);
 };
 
 startpage.openSolutionDemos = function() {
-    $("#submenuSolutionDemos").attr("hidden", false);
+    $("#submenuSolutionDemosUL").attr("hidden", false);
 };
