@@ -1,5 +1,5 @@
 <!-- This is the bootstrap build file for the whole AsTeRICS framework -->
-<project name="asterics-demopage" basedir="." default="copyHelpFiles">
+<project name="asterics-demopage" basedir="." default="copySubModulesToTarget">
 	<property name="debug" value="true"/>
 	<property name="src.dir" location="src"/>
 	<property name="web.docroot" location="."/>
@@ -13,7 +13,7 @@
 		<delete dir="${WebACS.bin}"/>
 	</target>
 	
-	<target name="copySubModulesToTarget">
+	<target name="copySubModulesToTarget" description="Copyies the relevant parts of the submodules to the webapps folder.">
 		<copy todir="${web.docroot}/help" failonerror="true">
 		    <fileset dir="${src.dir}/AsTeRICS-help"/>
 		</copy>
@@ -24,6 +24,9 @@
 
 		<copy todir="${web.docroot}/webapps/asterics-camerainput-cameramouse" failonerror="true">
 		    <fileset dir="${src.dir}/asterics-camerainput-cameramouse/custom/bin/ARE/web/webapps/asterics-camerainput-cameramouse"/>
+		</copy>
+		<copy todir="${web.docroot}/webapps/asterics-networkio-websocket" failonerror="true">
+		    <fileset dir="${src.dir}/asterics-networkio-websocket/custom/bin/ARE/web/webapps/asterics-networkio-websocket"/>
 		</copy>		
 		<!-- copy help files (helpPaths-hosted.json) for WebACS help on ${web.docroot}/webapps/WebACS/help/ -->		
 		<subant target="copyHelpFilesNoInitGitSubmodules" failonerror="true">

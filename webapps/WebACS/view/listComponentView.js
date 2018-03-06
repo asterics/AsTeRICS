@@ -266,6 +266,11 @@
 		}
 	}
 	
+	var componentIdChangedEventHandler = function() {
+		$listElem.contents().filter(function(){return this.nodeType === 3; }).first().replaceWith(component.getId());
+		$listElem.attr('id', containerId + '_' + component.getId().replace(/\s+/g, '').replace(/\.+/g, ''));
+	}
+	
 // ***********************************************************************************************************************
 // ************************************************** public stuff *******************************************************
 // ***********************************************************************************************************************
@@ -528,6 +533,7 @@
 	}
 	
 	listView.events.registerHandler('listKeyboardModeChangedEvent', listKeyboardModeChangedEventHandler);
+	component.events.registerHandler('componentIdChangedEvent', componentIdChangedEventHandler);
 
 	return returnObj;
 }

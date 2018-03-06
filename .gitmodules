@@ -7,3 +7,6 @@
 [submodule "src/asterics-camerainput-cameramouse"]
 	path = src/asterics-camerainput-cameramouse
 	url = https://github.com/asterics/asterics-camerainput-cameramouse.git
+[submodule "src/asterics-networkio-websocket"]
+	path = src/asterics-networkio-websocket
+	url = https://github.com/asterics/asterics-networkio-websocket.git

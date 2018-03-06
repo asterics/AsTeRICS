@@ -1,0 +1,221 @@
+<!-- this is an example for an AsTeRICS demo solution startpage. Please edit it for your needs. -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="../startpage/styles/main.css">
+
+	<!-- provided from AsTeRICS 3.0 -->
+	<script type="text/javascript" src="../startpage/lib/jquery-3.2.1.min.js"></script>
+	<script src="../startpage/lib/smoothie.js"></script>
+	
+    <script src="../startpage/clientExample/javascript/JSmap.js"></script>
+    <script src="../startpage/clientExample/javascript/areCommunicator.js"></script>
+	<!-- provided by this repository, should be part of the framework later -->
+	<script src="../startpage/lib/demoLib.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+	<script type="text/javascript">
+		/*
+		Deploy model file which is hosted on a webserver, apply settings (camera device, speed) and start the model.
+		*/		
+		function applyAndStart() {
+			
+			var signalType = document.getElementById("signal-type");
+			var signalTypeIdx = signalType.options[signalType.selectedIndex].value;
+			var signalFrequency = document.getElementById("signal-frequency").value;
+			var signalAmplitude = document.getElementById("signal-amplitude").value;
+			
+			//The JSON object must be sent as JSON string, the keys and values must be Strings as well.
+			var propertyMap=JSON.stringify(
+			{
+				
+				"SignalGenerator.1":{
+					"waveForm":String(signalTypeIdx),
+					"frequency":String(signalFrequency),
+					"amplitude":String(signalAmplitude)
+				}
+				
+			});
+			console.log("Setting model properties:"+propertyMap);
+			
+			//Here is an example of how you could store a file from the webserver to the ARE/data folder.
+			/*
+			storeFileFromWebserverOnARE('webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs', 'testModel/testModel.acs', Empty_successCallback);
+			*/
+
+			//Now let's deploy the model file, apply all settings the user selected and start the model.
+			deployModelFromWebserverApplySettingsAndStartModel('webapps/asterics-networkio-websocket/models/WebSocket-SignalGeneratorDemo(WLM).acs',propertyMap);
+			
+			initSocket();
+		}
+		
+		
+		/* ------------------ Websocket initialization and callback handler ---------------------- */
+		var wsUri = "ws://localhost:8082/ws/astericsData";
+		
+		function initSocket() {
+			websocket = new WebSocket(wsUri);
+			websocket.onopen = function(evt) {
+				writeToScreen("CONNECTED");
+				websocket.send("CONNECTED");
+			};
+			websocket.onclose = function(evt) {
+				writeToScreen("DISCONNECTED");
+			};
+			websocket.onmessage = function(evt) {
+				//update value field
+				var receivedValueElem = document.getElementById("received-value");
+				receivedValueElem.value = evt.data;
+
+				//update graph with new value
+				graph1.data = Number(evt.data);
+			};
+			websocket.onerror = function(evt) {
+				writeToScreen("ERROR: "+evt.data);
+			};
+		}
+
+		function sendTestMessage() {
+			var testMessageElem = document.getElementById("test-message");
+			writeToScreen("SENT: " + testMessageElem.value);
+			websocket.send(testMessageElem.value);
+		}
+
+		function writeToScreen(message) {
+			var output = document.getElementById("websocket-status");
+			var linebreak = '\n';
+			if(output.value) {
+				output.value += linebreak + message;
+			} else {
+				output.value = message;
+			}
+		}
+		
+		/* -------------- Smoothie live chart ---------------------- */
+		var graph1 = {
+			smoothie:new SmoothieChart(),
+			plot:new TimeSeries(),
+			data:0
+		};
+		
+		function initGraph1() //Initialize Graph 1
+		{
+			graph1.smoothie.streamTo(document.getElementById("myGraph1"),100);
+			graph1.smoothie.addTimeSeries(graph1.plot, {
+				strokeStyle : 'rgb(0, 255, 0)',
+				lineWidth : 2
+			});
+
+			setInterval(function() {
+				graph1.plot.append(new Date().getTime(), graph1.data);
+			}, 10);
+		}
+
+		window.onload = function() {
+			initSocket();
+			initGraph1();
+		};
+	</script>
+	
+    <title>Asterics Websocket Demo</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Asterics Websocket Demo</h1>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+			<h2>Objective</h2>Visualization of signal data in a web live chart using Javascript.
+			<h2>Description</h2>The demo model generates a signal of choice by using the SignalGenerator plugin and broadcasts the data through a websocket <strong>(ws://localhost:8082/ws/astericsData)</strong> to the web client. The data is visualized in a Javascript live chart.
+			<p>
+			You can select the type of signal, frequency and amplitude with html widgets. By clicking "Apply and Start Model" the model is deployed to the ARE and parametrized with the selected signal properties.
+			<p>
+			You can also send data to the model by pressing the "Send message" button.
+			<p>
+
+			<div>
+			<img src="img/Websockets-main.PNG" alt="Visualization of sine signal"/>
+			</div>
+			<p>
+			<div align="horizontal">
+				<label for="signal-type">Choose Signal Type: </label>
+				<select id="signal-type">
+				  <option value="0">Random</option>
+				  <option selected="selected" value="1">Sine</option>
+				  <option value="2">Sawtooth</option>
+				  <option value="3">Rectangle</option>
+				</select>
+			</div>
+			<div align="horizontal">					
+				<label for="signal-frequency">Frequency: </label>
+				<input title="Signal Frequency" type="range" id="signal-frequency" value="1" min="1" max="10" step="1"/>
+			</div>
+			<div align="horizontal">					
+				<label for="signal-amplitude">Amplitude: </label>
+				<input title="Signal Amplitude" type="range" id="signal-amplitude" value="100" min="1" max="1000" step="1"/>
+			</div>			
+			<br>
+			
+			<button onclick="applyAndStart()" title="Description: Applies all settings and starts the model" class="button"> Apply and Start Model </button>
+			<p>
+			<div align="horizontal">
+				<button onclick="sendTestMessage()">Send message</button>
+				<input title="Test Message" type="text" id="test-message" value="Test">
+			</div>				
+			<p>
+			<div id="gPanel" align="vertical">
+				<h3>Visualization of Signal</h3>				
+				<div align="vertical">
+					<canvas id="myGraph1" width="400" height="100"></canvas>
+					<div align="horizontal">
+						<label for="received-value">Received value: </label>
+						<input id="received-value" type="text" readOnly="true">
+					</div>
+				</div>
+				<p>
+				<div align="horizontal">
+					<label for="websocket-status">Websocket status: </label>
+					<textarea id="websocket-status" readOnly="true"></textarea>
+				</div>				
+			</div>
+			<h2>Requirements</h2>
+			<ul>
+				<li><a href="https://github.com/asterics/AsTeRICS/releases/tag/v3.0" target="_blank">AsTeRICS 3.0</a> installed and ARE running</li>
+				<li>OS: Windows, Linux (incl. RPi), Mac OSX</li>
+			</ul>
+			<h2>Major Plugins</h2>
+			<ul>
+				<li><a target="_blank" href="http://asterics.github.io/AsTeRICS/webapps/WebACS/help/index.html?plugins&processors/WebSocket.htm">WebSocket</a></li>
+				<li><a target="_blank" href="http://asterics.github.io/AsTeRICS/webapps/WebACS/help/index.html?plugins&sensors/SignalGenerator.htm">SignalGenerator</a></li>
+			</ul>
+			<h2>Edit Model</h2>
+			<a target="_blank" href="http://asterics.github.io/AsTeRICS/webapps/WebACS/?areBaseURI=http://localhost:8081&openFile=http://asterics.github.io/AsTeRICS/webapps/asterics-networkio-websocket/models/WebSocket-SignalGeneratorDemo(WLM).acs">Open in WebACS</a>
+			<h2>Source Repository</h2>
+				You can fork and modify this <a target="_blank" href="https://github.com/asterics/asterics-networkio-websocket">repository</a>.
+			<!--
+			<h4>Related Videos</h4>
+			<a target="_blank" href="https://youtu.be/P9qJAWegkFM?t=1955">Camera Mouse Demo Screencast</a>
+			<p>
+			<a target="_blank" href="https://youtu.be/P9qJAWegkFM?t=2228">Camera Mouse Model Creation Screencast</a>
+			-->
+			<h2>Related Tutorials</h2>
+			<!--
+			<a target="_blank" href="https://github.com/asterics/AsTeRICS/blob/master/Documentation/AsTeRICS_CameraMouseCreation_StepbyStep_Tutorial.pdf">Camera Mouse Creation StepbyStep Tutorial</a>
+			-->
+			</section>
+      </div>
+    </div>
+  </body>
+</html>

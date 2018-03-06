@@ -72,6 +72,12 @@
 																		editorProperties)});
 				componentGUIs[componentGUIs.length - 1].guiViewElement.setParent(areGUI);
 				areGUI.addChildElement(componentGUIs[componentGUIs.length - 1].guiViewElement);
+				// add handler for changing componentID
+				componentGUIs[componentGUIs.length - 1].component.events.registerHandler('componentIdChangedEvent', function(compGui) {
+					return function() {
+						compGui.guiViewElement.setName(compGui.component.getId());
+					};
+				}(componentGUIs[componentGUIs.length - 1]));
 			}
 		}
 	}
