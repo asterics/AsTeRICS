@@ -56,6 +56,7 @@ import eu.asterics.mw.services.AstericsErrorHandling;
 public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     private final OutputPort opReceived = new OutputPort();
     private final OutputPort opReceivedBytes = new OutputPort();
+    private final OutputPort opPortStatus = new OutputPort();
     private final Logger logger = AstericsErrorHandling.instance.getLogger();
 
     // Usage of an output port e.g.:
@@ -121,6 +122,8 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
             return opReceived;
         } else if ("receivedBytes".equalsIgnoreCase(portID)) {
             return opReceivedBytes;
+        } else if ("opPortStatus".equalsIgnoreCase(portID)) {
+            return opPortStatus;
         }
 
         return null;
@@ -217,14 +220,16 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
         }
         if ("cimId".equalsIgnoreCase(propertyName)) {
             final Object oldValue = propCimId;
-            String s = newValue.toString();
-            if(s.contains("0x")) {
-                s = s.substring(2);
-            }
-            try {
-                propCimId = (short) Integer.parseInt(s, 16);
-            } catch (NumberFormatException e) {
-                logger.warning("could not format cimId, value is: " + s);
+            if(newValue != null) {
+                String s = newValue.toString().trim().toLowerCase();
+                if (s.startsWith("0x")) {
+                    s = s.substring(2);
+                    try {
+                        propCimId = (short) Integer.parseInt(s, 16);
+                    } catch (NumberFormatException e) {
+                        logger.warning("could not format cimId, value is: " + s);
+                    }
+                }
             }
             return oldValue;
         }
@@ -454,8 +459,7 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
     private void initComPortByCimID() {
         if(CIMPortManager.getInstance().inRescan()) {
             logger.info("do not try open COM port by CIM id, because currently rescanning");
-            opReceived.sendData(IN_PORT_RESCAN.getBytes());
-            opReceivedBytes.sendData(IN_PORT_RESCAN.getBytes());
+            opPortStatus.sendData(IN_PORT_RESCAN.getBytes());
             return;
         }
 
@@ -468,8 +472,7 @@ public class SerialPortInstance extends AbstractRuntimeComponentInstance {
         if(portController == null) {
             logger.info(MessageFormat.format("could not find or open COM port for CIM id {0}. starting rescan...", propCimId));
             CIMPortManager.getInstance().rescan();
-            opReceived.sendData(NEW_PORT_RESCAN.getBytes());
-            opReceivedBytes.sendData(NEW_PORT_RESCAN.getBytes());
+            opPortStatus.sendData(NEW_PORT_RESCAN.getBytes());
         }
     }
 
