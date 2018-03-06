@@ -14,3 +14,7 @@
 	path = src/asterics-networkio-websocket
 	url = https://github.com/asterics/asterics-networkio-websocket.git
 	ignore = dirty
+[submodule "src/asterics-solution-template"]
+	path = src/asterics-solution-template
+	url = https://github.com/asterics/asterics-solution-template.git
+	ignore = dirty
