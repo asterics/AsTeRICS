@@ -79,9 +79,9 @@ public class TestResourceRegistry {
     public void testGetResource() {
         try {
             URI areBaseURI = ResourceRegistry.getInstance().getAREBaseURI();
-            URI dataBaseURI = ResourceRegistry.resolveRelativeFilePath(areBaseURI, ResourceRegistry.DATA_FOLDER)
+            URI dataBaseURI = ResourceRegistry.getInstance().resolveRelativeFilePath(areBaseURI, ResourceRegistry.DATA_FOLDER)
                     .toURI();
-            URI modelBaseURI = ResourceRegistry.resolveRelativeFilePath(areBaseURI, ResourceRegistry.MODELS_FOLDER)
+            URI modelBaseURI = ResourceRegistry.getInstance().resolveRelativeFilePath(areBaseURI, ResourceRegistry.MODELS_FOLDER)
                     .toURI();
 
             // Test absolute file URI:
@@ -89,7 +89,7 @@ public class TestResourceRegistry {
             // and returned as URI instance.
             String testURIString = ResourceRegistry.getInstance().getAREBaseURI().toString();
             URI actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.ANY);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(areBaseURI, actual));
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(areBaseURI, actual));
             
             //Test null URI
             try {
@@ -99,67 +99,67 @@ public class TestResourceRegistry {
             }
             //Test null RES_TYPE. The result should be the same as above with RES_TYPE.ANY
             actual=ResourceRegistry.getInstance().getResource(testURIString, null);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(areBaseURI, actual));
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(areBaseURI, actual));
 
             // Test http:// URL
             testURIString = "http://www.asterics-academy.net/test";
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.ANY);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(new URI(testURIString), actual));
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(new URI(testURIString), actual));
 
             // Test relative resource, will be treated as a file
             // Should be found pictures subfolder directly through step1
             testURIString = "pictures/slide7.jpg";
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(
-                    ResourceRegistry.resolveRelativeFilePath(dataBaseURI, testURIString, true).toURI(), actual));
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(
+                    ResourceRegistry.getInstance().resolveRelativeFilePath(dataBaseURI, testURIString, true).toURI(), actual));
 
             // Should be found in pictures subfolder, through step2
             testURIString = "slide7.jpg";
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA, "pictures", null);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(
-                    ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "pictures/" + testURIString, true).toURI(),
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(
+                    ResourceRegistry.getInstance().resolveRelativeFilePath(dataBaseURI, "pictures/" + testURIString, true).toURI(),
                     actual));
 
             // Should be found in pictures subfolder, through step3
             testURIString = "slide7.jpg";
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA, "Pic", null);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(
-                    ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "pictures/" + testURIString, true).toURI(),
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(
+                    ResourceRegistry.getInstance().resolveRelativeFilePath(dataBaseURI, "pictures/" + testURIString, true).toURI(),
                     actual));
 
             // Should be found in pictures subfolder, through step4
             testURIString = "slide7.jpg";
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(
-                    ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "pictures/" + testURIString, true).toURI(),
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(
+                    ResourceRegistry.getInstance().resolveRelativeFilePath(dataBaseURI, "pictures/" + testURIString, true).toURI(),
                     actual));
 
             // Test spaces and \\ in string (also interesting to test it on
             // Linux)
             testURIString = "symbols\\fill glass with water.png";
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(
-                    ResourceRegistry.resolveRelativeFilePath(dataBaseURI, "pictures\\" + testURIString, true).toURI(),
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(
+                    ResourceRegistry.getInstance().resolveRelativeFilePath(dataBaseURI, "pictures\\" + testURIString, true).toURI(),
                     actual));
 
             // Test providing componentTypeId of facetrackerLK
             testURIString = "haarcascade_frontalface_alt.xml";
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.DATA, "asterics.FacetrackerLK",
                     null);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(ResourceRegistry
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(ResourceRegistry.getInstance()
                     .resolveRelativeFilePath(dataBaseURI, "sensor.facetrackerLK/" + testURIString, true).toURI(),
                     actual));
 
             // Test models
             testURIString = "CameraMouse.acs";
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.MODEL, null, null);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(
-                    ResourceRegistry.resolveRelativeFilePath(modelBaseURI, testURIString, true).toURI(), actual));
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(
+                    ResourceRegistry.getInstance().resolveRelativeFilePath(modelBaseURI, testURIString, true).toURI(), actual));
 
             testURIString = "grids\\eyeX_Environment\\eyeX_Environment.acs";
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.MODEL, null, null);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(
-                    ResourceRegistry.resolveRelativeFilePath(modelBaseURI, testURIString, true).toURI(), actual));
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(
+                    ResourceRegistry.getInstance().resolveRelativeFilePath(modelBaseURI, testURIString, true).toURI(), actual));
 
             // Test absolute file path, should be returned as valid absolute URI
             if (OSUtils.isWindows()) {
@@ -168,12 +168,12 @@ public class TestResourceRegistry {
                 testURIString = "/var/log/messages";
             }
             actual = ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.ANY, null, null);
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(new File(testURIString).toURI(), actual));
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(new File(testURIString).toURI(), actual));
             
             //Test webserver document root URI
             testURIString = "index.html";
             actual = areBaseURI.resolve("data/webservice/index.html");
-            assertTrue(ResourceRegistry.equalsNormalizedURIs(
+            assertTrue(ResourceRegistry.getInstance().equalsNormalizedURIs(
             		ResourceRegistry.getInstance().getResource(testURIString, RES_TYPE.WEB_DOCUMENT_ROOT, null, null), actual));
 
 
@@ -349,12 +349,12 @@ public class TestResourceRegistry {
     public void testGetLastElementOfURI() throws URISyntaxException {
         ResourceRegistry.getInstance().setAREBaseURI(new File("../bin/ARE").toURI().normalize());
         System.out.println("last part of AREBaseURI: "
-                + ResourceRegistry.getLastElementOfURI(ResourceRegistry.getInstance().getAREBaseURI()));
+                + ResourceRegistry.getInstance().getLastElementOfURI(ResourceRegistry.getInstance().getAREBaseURI()));
 
         URI jarURI = ResourceRegistry.getInstance().getResource("javacv-0.10.0-merged-jars.jar", RES_TYPE.JAR);
-        System.out.println("last part of javacv jarURI: " + ResourceRegistry.getLastElementOfURI(jarURI));
+        System.out.println("last part of javacv jarURI: " + ResourceRegistry.getInstance().getLastElementOfURI(jarURI));
         System.out.println("last part of relative javacv jarURI: "
-                + ResourceRegistry.getLastElementOfURI(ResourceRegistry.getInstance().toRelative(jarURI)));
+                + ResourceRegistry.getInstance().getLastElementOfURI(ResourceRegistry.getInstance().toRelative(jarURI)));
     }
 
     @Test
@@ -412,7 +412,7 @@ public class TestResourceRegistry {
     @Test
     public void testGetToPath() throws URISyntaxException {
         System.out.println(
-                "getAREBaseURIPath(): " + ResourceRegistry.toPath(ResourceRegistry.getInstance().getAREBaseURI()));
+                "getAREBaseURIPath(): " + ResourceRegistry.getInstance().toPath(ResourceRegistry.getInstance().getAREBaseURI()));
     }
 
     @Test
@@ -424,11 +424,11 @@ public class TestResourceRegistry {
         int i = 0;
         for (String path : paths) {
             URI uri = new File(path).toURI();
-            absPaths[i] = ResourceRegistry.toString(uri);
+            absPaths[i] = ResourceRegistry.getInstance().toString(uri);
             uris.add(uri);
             i++;
         }
-        String[] result = ResourceRegistry.toStringArray(uris);
+        String[] result = ResourceRegistry.getInstance().toStringArray(uris);
         assertArrayEquals(absPaths, result);
     }
 
@@ -440,10 +440,10 @@ public class TestResourceRegistry {
 
         for (String path : paths) {
             URI uri = new File(path).toURI();
-            absPaths.add(ResourceRegistry.toString(uri));
+            absPaths.add(ResourceRegistry.getInstance().toString(uri));
             uris.add(uri);
         }
-        Set<String> result = ResourceRegistry.toStringSet(uris);
+        Set<String> result = ResourceRegistry.getInstance().toStringSet(uris);
         assertEquals(absPaths, result);
     }
 
@@ -455,10 +455,10 @@ public class TestResourceRegistry {
 
         for (String path : paths) {
             URI uri = new File(path).toURI();
-            absPaths.add(ResourceRegistry.toString(uri));
+            absPaths.add(ResourceRegistry.getInstance().toString(uri));
             uris.add(uri);
         }
-        List<String> result = ResourceRegistry.toStringList(uris);
+        List<String> result = ResourceRegistry.getInstance().toStringList(uris);
         assertEquals(absPaths, result);
     }
 
@@ -466,13 +466,13 @@ public class TestResourceRegistry {
     public void testToStringCollections() throws URISyntaxException {
         Collection<URI> uris = ResourceRegistry.getInstance().getModelList(true);
 
-        String[] pathsArray = ResourceRegistry.toStringArray(uris);
+        String[] pathsArray = ResourceRegistry.getInstance().toStringArray(uris);
         System.out.println("toStringArray: " + Arrays.toString(pathsArray));
 
-        List<String> pathsList = ResourceRegistry.toStringList(uris);
+        List<String> pathsList = ResourceRegistry.getInstance().toStringList(uris);
         System.out.println("toStringList: " + pathsList);
 
-        Set<String> pathsSet = ResourceRegistry.toStringSet(uris);
+        Set<String> pathsSet = ResourceRegistry.getInstance().toStringSet(uris);
         System.out.println("toStringSet: " + pathsSet);
     }
 
