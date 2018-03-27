@@ -52,6 +52,9 @@
 	</target>
 	
 	<target name="buildAllNoCleanNoCopyLicenses" depends="buildServices, buildTools, buildComponents, fix-shell-scripts" description="Build all but don't call clean and don't copy the license files. This is ONLY for plugin developers to shorten build time during development, don't use it otherwise!!">
+		<subant target="buildAllNoClean">
+			<fileset dir="../ARE_RestAPIlibraries" includes="build.xml"> </fileset>
+		</subant>
 	</target>
 	
 	<target name="buildAll" depends="clean,buildServices, buildTools, buildComponents, copyLicensesAll, fix-shell-scripts">
