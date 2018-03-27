@@ -321,12 +321,12 @@
     </target>
 
 	<!-- build ARE if the ARE.baseURI points to an Astercis sourcecode repository -->
-	<target name="build-dependencies-release" description="Builds an AsTeRICS snapshot, if ARE.baseURI points to one." if="ARE.baseURI.is.snapshot">
+	<target name="build-dependencies-release" description="Builds an AsTeRICS snapshot with buildAll-release, if ARE.baseURI points to one." if="ARE.baseURI.is.snapshot">
 		<!-- Ensure to call buildAll-release target of AsTERICS framework -->
 		<subant target="buildAll-release" buildpath="${ARE.baseURI}/../../"/>
     </target>	
 
-	<target name="run" depends="build-all" description="Peforms build-all and starts the ARE.">
+	<target name="run" depends="build-all" description="Peforms build-all (builds all dependencies) and starts the ARE.">
 		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
@@ -342,11 +342,7 @@
 		</java>	
 	</target>
 
-	<target name="run-debug" depends="build-all" description="Peforms build-all and starts the ARE with debug options (port 1044).">
-		<antcall target="run-quick"/>
-	</target>
-	
-	<target name="run-quick" description="Starts the ARE with debug options (port 1044).">
+	<target name="run-debug" depends="build-all" description="Peforms build-all (builds all dependencies) and starts the ARE with debug options (port 1044).">
 		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
 			<sysproperty key="osgi.configuration.area" value="profile" />
 			<sysproperty key="osgi.clean" value="true" />
@@ -361,6 +357,23 @@
 			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles}" />		
 			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
 			<jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044"/>
+		</java>
+	</target>
+	
+	<target name="run-quick" depends="APE-copy" description="Copies custom files (calls APE-copy) and starts the ARE. This target is for quick testing of changes in the custom folder.">
+		<java jvm="${APE.jre.bin.path}" jar="${build.merged.ARE}/org.eclipse.osgi_3.6.0.v20100517.jar" dir="${build.merged.ARE}" fork="true" failonerror="true">			
+			<sysproperty key="osgi.configuration.area" value="profile" />
+			<sysproperty key="osgi.clean" value="true" />
+			<sysproperty key="org.osgi.framework.bootdelegation" value="*" />
+			<sysproperty key="org.osgi.framework.system.packages.extra" value="sun.misc" />
+			<sysproperty key="Ansi" value="true" />
+			<sysproperty key="java.util.logging.config.file" value="logging.properties" />
+			<sysproperty key="eu.asterics.mw.services.AstericsErrorHandling.consoleLogLevel" value="FINE"/>
+			<!--
+			<sysproperty key="eu.asterics.ARE.startModel" value="autostart.acs" />
+			-->
+			<sysproperty key="eu.asterics.ARE.ServicesFiles" value="${APE.servicesFiles}" />		
+			<sysproperty key="org.osgi.framework.os.name" value="${org.osgi.framework.os.name}"/>
 		</java>	
 	</target>	
 
