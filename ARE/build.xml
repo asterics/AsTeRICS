@@ -46,6 +46,9 @@
                 <chmod dir="${runtime}" includes="*.sh" perm="ugo+rx"/>
 	</target>
 	<target name="buildAllNoClean" depends="buildServices, buildTools, buildComponents, copyLicensesAll, fix-shell-scripts" description="Build all but don't clean">
+		<subant target="buildAllNoClean">
+			<fileset dir="../ARE_RestAPIlibraries" includes="build.xml"> </fileset>
+		</subant>
 	</target>
 	
 	<target name="buildAllNoCleanNoCopyLicenses" depends="buildServices, buildTools, buildComponents, fix-shell-scripts" description="Build all but don't call clean and don't copy the license files. This is ONLY for plugin developers to shorten build time during development, don't use it otherwise!!">
@@ -56,6 +59,10 @@
             <property name="debug" value="true"/>
             <fileset dir="." includes="components/build.xml"/>
           </subant>
+  		<subant target="buildAll">
+			<fileset dir="../ARE_RestAPIlibraries" includes="build.xml"> </fileset>
+		</subant>
+
     </target>
 	
 	<target name="buildAll-release" depends="clean,buildServices, buildTools, buildComponents, copyLicensesAll, fix-shell-scripts">
@@ -63,6 +70,9 @@
             <property name="debug" value="false"/>
             <fileset dir="." includes="components/build.xml"/>
           </subant>
+		<subant target="buildAll-release">
+			<fileset dir="../ARE_RestAPIlibraries" includes="build.xml"> </fileset>
+		</subant>
     </target>
 	
 	<target name="run" depends="buildAllNoClean" description="Peforms buildAllNoClean and starts the ARE.">
@@ -115,7 +125,10 @@
 		</delete>
 		<delete verbose="true">
 			<fileset dir="${runtime}" includes="asterics*.jar"></fileset>
-		</delete>	
+		</delete>
+		<subant target="clean">
+			<fileset dir="../ARE_RestAPIlibraries" includes="build.xml"> </fileset>
+		</subant>		
     </target>
 	
 	<target name="copyLicensesAll" depends="cleanLicenses">
@@ -129,6 +142,9 @@
 	</target>
 	
 	<target name="test"  description="Calls unit tests">
+		<subant target="test">
+			<fileset dir="../ARE_RestAPIlibraries" includes="build.xml"> </fileset>
+		</subant>
 	</target>
 	
 	<target name="cleanHelpFiles" description="Cleans the help_files folders in the help folders">
