@@ -18,33 +18,258 @@
     <![endif]-->
 
 	<script type="text/javascript">
-		/*
-		Deploy model file which is hosted on a webserver, apply settings (camera device, speed) and start the model.
-		*/		
-		function applyAndStart() {
-			var cameraSource = document.getElementById("cameraSource");
-			var cameraSourceIdx = cameraSource.options[cameraSource.selectedIndex].value;
-			var speed = document.getElementById("speed").value;
+		var modelFilePathOnWebserver='webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs';
 		
-			//The JSON object must be sent as JSON string, the keys and values must be Strings as well.
-			var propertyMap=JSON.stringify(
+		//Define mapping between widget ids and property keys. This way both can be synced automatically.
+		var widgetIdToPropertyKeyMap = [
 			{
-				"XFacetrackerLK.1":{
-					"cameraSelection":String(cameraSourceIdx)
-				},
-				"Slider.1":{
-				  "default":String(speed)
-				}
-			});
-			console.log("Setting model properties:"+propertyMap);
-			
-			//Here is an example of how you could store a file from the webserver to the ARE/data folder.
-			/*
-			storeFileFromWebserverOnARE('webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs', 'testModel/testModel.acs', Empty_successCallback);
-			*/
+				widgetId:"cameraSource",
+				componentKey:"XFacetrackerLK.1",
+				propertyKey:"cameraSelection"
+			},
+			{
+				widgetId:"speed",
+				componentKey:"Slider.1",
+				propertyKey:"default"
+			},
+			{
+				widgetId:"averager",
+				componentKey:"AveragerX",
+				propertyKey:"bufferSize"
+			},
+			{
+				widgetId:"averager",
+				componentKey:"AveragerY",
+				propertyKey:"bufferSize"
+			},
+			{
+				widgetId:"deadzone",
+				componentKey:"Deadzone.1",
+				propertyKey:"radius"
+			},
+			{
+				widgetId:"dwelltime",
+				componentKey:"DwellTimer",
+				propertyKey:"timePeriod"
+			},
+			//switch inputs
+			{
+				widgetId:"switch1Key",
+				componentKey:"KeySwitch1",
+				propertyKey:"keyCode"
+			},
+			{
+				widgetId:"switch2Key",
+				componentKey:"KeySwitch2",
+				propertyKey:"keyCode"
+			},
+			//CommandPanel configuration
+			{
+				widgetId:"cmdPanelBtn1",
+				componentKey:"CommandPanel",
+				propertyKey:"cellText1"
+			},
+			{
+				widgetId:"cmdPanelBtn2",
+				componentKey:"CommandPanel",
+				propertyKey:"cellText2"
+			},
+			{
+				widgetId:"cmdPanelBtn3",
+				componentKey:"CommandPanel",
+				propertyKey:"cellText3"
+			},
+			{
+				widgetId:"cmdPanelBtn4",
+				componentKey:"CommandPanel",
+				propertyKey:"cellText4"
+			},
+			{
+				widgetId:"cmdPanelBtn5",
+				componentKey:"CommandPanel",
+				propertyKey:"cellText5"
+			},
+			{
+				widgetId:"cmdPanelBtn5LaunchCmd",
+				componentKey:"Launch-OSK",
+				propertyKey:"defaultApplication"
+			},
+			{
+				widgetId:"cmdPanelBtn5LaunchArgs",
+				componentKey:"Launch-OSK",
+				propertyKey:"arguments"
+			},
+			{
+				widgetId:"cmdPanelBtn5CloseCmd",
+				componentKey:"Launch-OSK",
+				propertyKey:"closeCmd"
+			},			
+			{
+				widgetId:"cmdPanelBtn6",
+				componentKey:"CommandPanel",
+				propertyKey:"cellText6"
+			},
+			{
+				widgetId:"cmdPanelBtn6LaunchCmd",
+				componentKey:"Launch-Custom",
+				propertyKey:"defaultApplication"
+			},
+			{
+				widgetId:"cmdPanelBtn6LaunchArgs",
+				componentKey:"Launch-Custom",
+				propertyKey:"arguments"
+			},
+			{
+				widgetId:"cmdPanelBtn6CloseCmd",
+				componentKey:"Launch-Custom",
+				propertyKey:"closeCmd"
+			},
+			{
+				widgetId:"cmdPanelBtn7",
+				componentKey:"CommandPanel",
+				propertyKey:"cellText7"
+			},
+			{
+				widgetId:"cmdPanelBtn8",
+				componentKey:"CommandPanel",
+				propertyKey:"cellText8"
+			},
+			{
+				widgetId:"unlockPattern",
+				componentKey:"PatternRecognition",
+				propertyKey:"stateSequence"
+			},
+			{
+				widgetId:"unlockPattern",
+				componentKey:"PatternVisualization",
+				propertyKey:"default"
+			}			
+		];
+		
+		/*
+		Deploy model file which is hosted on a webserver, apply settings (camera device, speed,...) and start the model.
+		*/		
+		function applyAndStart() {			
+			loadFileFromWebServer(modelFilePathOnWebserver, function(modelInXML){
+				modelInXML=updateModelPropertiesFromWidgets(modelInXML);
+				
+				//Finally upload and start modified model.
+				uploadModel(function(data, HTTPstatus) {					
+					startModel(function(data,HTTPStatus) {
+						//We now have to manually change the event routes from the swith inputs to the assigned mouse events.
+						triggerEvent(function(data,HTTPStatus){
+							triggerEvent(Empty_successCallback,errorCallback,"KeySwitch2EventRouter",$("#switch2Action").val());
+						},errorCallback,"KeySwitch1EventRouter",$("#switch1Action").val());
+					},errorCallback);					
+				}, errorCallback, modelInXML);
+			});	
+		}
+		
+		function saveAsAutostart() {
+			loadFileFromWebServer(modelFilePathOnWebserver, function(modelInXML){
+				modelInXML=updateModelPropertiesFromWidgets(modelInXML);
+				
+				storeModel(function(data,HTTPStatus) {
+					alert('Successfully saved settings as autostart!');
+				},errorCallback,'autostart.acs',modelInXML);
+			});			
+		}
+		
+		function setPropertyValueInXMLModel(componentKey, propertyKey, propertyValue, xmlDoc) {
+			var commandPanel=xmlDoc.getElementsByTagName('component');
 
-			//Now let's deploy the model file, apply all settings the user selected and start the model.
-			deployModelFromWebserverApplySettingsAndStartModel('webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs',propertyMap);
+			var found=false;
+			for(var i=0;i<commandPanel.length; i++) {
+				var currentValue=commandPanel.item(i);
+				if(currentValue.attributes.getNamedItem('id').textContent == componentKey) {
+					
+					var commandPanelProperties=currentValue.getElementsByTagName('property');
+					
+					for(var j=0;j<commandPanelProperties.length; j++) {
+						var curProperty=commandPanelProperties.item(j);
+						if(curProperty.getAttribute("name")==propertyKey) {
+							curProperty.setAttribute("value",propertyValue);
+							console.log("Property ["+componentKey+"."+propertyKey+"="+propertyValue+"] set");											
+							found=true;
+						}
+					}					
+				} 
+			}
+			if(!found) {
+				console.log("Property ["+componentKey+"."+propertyKey+"="+propertyValue+"] not set");				
+			}
+		}
+
+		function getPropertyValueFromXMLModel(componentKey, propertyKey, xmlDoc) {
+			var commandPanel=xmlDoc.getElementsByTagName('component');
+
+			for(var i=0;i<commandPanel.length; i++) {
+				var currentValue=commandPanel.item(i);
+				if(currentValue.attributes.getNamedItem('id').textContent == componentKey) {
+					
+					var commandPanelProperties=currentValue.getElementsByTagName('property');
+					
+					for(var j=0;j<commandPanelProperties.length; j++) {
+						var curProperty=commandPanelProperties.item(j);
+						if(curProperty.getAttribute("name")==propertyKey) {
+							var propVal=curProperty.getAttribute("value");
+							console.log("Property ["+componentKey+"."+propertyKey+"="+propVal+"]");
+							return propVal;
+						}
+					}					
+				} 
+			}
+			console.log("Property ["+componentKey+"."+propertyKey+"] not found");
+			return undefined;
+		}
+		
+		function updateModelPropertiesFromWidgets(modelInXML) {
+			//parse template modelInXML to document object
+			var xmlDoc = $.parseXML( modelInXML );
+			
+			//Update property values with values of input widgets.
+			for(var i=0;i<widgetIdToPropertyKeyMap.length;i++) {
+				setPropertyValueInXMLModel(widgetIdToPropertyKeyMap[i]["componentKey"],widgetIdToPropertyKeyMap[i]["propertyKey"],$("#"+widgetIdToPropertyKeyMap[i]["widgetId"]).val(),xmlDoc);				
+			}
+			
+			//Convert back XML document to XML string.
+			modelInXML=xmlToString(xmlDoc);
+			return modelInXML;
+		}
+
+		function updateWidgetsFromModelProperties(modelInXML) {
+			//parse template modelInXML to document object
+			var xmlDoc = $.parseXML( modelInXML );
+			
+			//Update property values with values of input widgets.
+			for(var i=0;i<widgetIdToPropertyKeyMap.length;i++) {
+				var propVal=getPropertyValueFromXMLModel(widgetIdToPropertyKeyMap[i]["componentKey"],widgetIdToPropertyKeyMap[i]["propertyKey"],xmlDoc);
+				if(propVal!=undefined) {
+					console.log("Updating widget["+widgetIdToPropertyKeyMap[i]["widgetId"]+"]: "+propVal);
+					$("#"+widgetIdToPropertyKeyMap[i]["widgetId"]).val(propVal);					
+				}
+			}			
+		}		
+		
+		function xmlToString(xmlData) { 
+		    var xmlString;
+		    //IE
+		    if (window.ActiveXObject){
+		        xmlString = xmlData.xml;
+		    }
+		    // code for Mozilla, Firefox, Opera, etc.
+		    else{
+		        xmlString = (new XMLSerializer()).serializeToString(xmlData);
+		    }
+		    return xmlString;
+		}
+		
+		window.onload=function() {
+			downloadDeployedModel(function(data, HTTPStatus) {
+				//TODO: Check if the modelName is identical to the modelName of the template model, otherwise we should not
+				//update the widgets from a wrong model.
+				updateWidgetsFromModelProperties(data);
+			},errorCallback);
 		}
 	</script>
 
@@ -67,20 +292,174 @@
 
 			<div>
 			<img src="img/facetrackerLK-videoframe.png" alt="Video frame showing face with tracked nose and chin"/>
-			<img src="img/facetrackermouse.PNG" alt="GUI with buttons and slider"/>
 			</div>
+			<h3>General Settings</h3>
 			<p>
-					<label for="cameraSource">Choose Camera: </label>
-					<select id="cameraSource">
-					  <option value="0">First camera</option>
-					  <option value="1">Second camera</option>
-					  <option value="2">Third camera</option>
-					  <option value="3">Fourth camera</option>
-					</select>			
-					<label for="speed">Mouse Speed: </label>
-					<input title="Mouse speed" type="range" id="speed" value="50">
-			<br>
+			<label for="cameraSource">Choose Camera: </label>
+			<select id="cameraSource">
+			  <option value="0">First camera</option>
+			  <option value="1">Second camera</option>
+			  <option value="2">Third camera</option>
+			  <option value="3">Fourth camera</option>
+			</select>
+			<p>
+			<label for="speed">Mouse Speed: </label>
+			<input title="Mouse speed" type="range" id="speed" value="50" min="1" max="100">
+			<p>
+			<label for="averager">Moving Average Values: </label>
+			<input title="Moving Average Values" type="range" id="averager" value="5" min="1" max="50">
+			<p>
+			<label for="deadzone">Movement Deadzone: </label>
+			<input title="Movement Deadzone" type="range" id="deadzone" value="3" min="1" max="20">
+			<p>
+			<label for="dwelltime">Dwell Time [ms]: </label>
+			<input title="Dwell Time [ms]" type="range" id="dwelltime" value="500" min="100" max="5000">	
+			
+			<h3>Switch Inputs</h3>
+			<label for="switch1Key">Switch1 Key: </label>
+			<select id="switch1Key">
+			  <option value="0">-----</option>
+			  <option value="57" selected>SPACE</option>
+			  <option value="28">ENTER</option>
+			  <option value="67">F9</option>
+			  <option value="68">F10</option>
+			  <option value="87">F11</option>
+			  <option value="88">F12</option>
+			  <option value="91">F13</option>
+			  <option value="92">F14</option>
+			  <option value="93">F15</option>
+			  <option value="99">F16</option>
+			  <option value="100">F17</option>
+			  <option value="101">F18</option>
+			  <option value="102">F19</option>
+			  <option value="103">F20</option>
+			  <option value="104">F21</option>
+			  <option value="105">F22</option>
+			  <option value="106">F23</option>
+			  <option value="107">F24</option>
+			</select>
+			<label for="switch1Action">Switch1 Action: </label>
+			<select id="switch1Action">
+			  <option value="select1">Left Click</option>
+			  <option value="select2">Double Click</option>			
+			  <option value="select3">Middle Click</option>			
+			  <option value="select4">Right Click</option>			
+			  <option value="select5">Wheel Up</option>
+			  <option value="select6">Wheel Down</option>			
+			  <option value="select7">Toggle Mouse On/Off</option>			
+			</select>
+			<p>
+			<label for="switch2Key">Switch1 Key: </label>
+			<select id="switch2Key">
+			  <option value="0">-----</option>
+			  <option value="57">SPACE</option>
+			  <option value="28">ENTER</option>
+			  <option value="67">F9</option>
+			  <option value="68">F10</option>
+			  <option value="87">F11</option>
+			  <option value="88">F12</option>
+			  <option value="91">F13</option>
+			  <option value="92">F14</option>
+			  <option value="93">F15</option>
+			  <option value="99">F16</option>
+			  <option value="100">F17</option>
+			  <option value="101">F18</option>
+			  <option value="102">F19</option>
+			  <option value="103">F20</option>
+			  <option value="104">F21</option>
+			  <option value="105">F22</option>
+			  <option value="106">F23</option>
+			  <option value="107">F24</option>
+			</select>
+			<label for="switch2Action">Switch1 Action: </label>
+			<select id="switch2Action">
+			  <option value="select1">Left Click</option>
+			  <option value="select2">Double Click</option>			
+			  <option value="select3">Middle Click</option>			
+			  <option value="select4">Right Click</option>			
+			  <option value="select5">Wheel Up</option>
+			  <option value="select6">Wheel Down</option>			
+			  <option value="select7">Toggle Mouse On/Off</option>
+			</select>
+			
+			<h3>Command Panel</h3>
+			<label for="cmdPanelBtn1">Button1 Text: </label>
+			<input id="cmdPanelBtn1" type="text" placeholder="Right Click" value="Right Click">
+			<p>
+			<label for="cmdPanelBtn2">Button2 Text: </label>
+			<input id="cmdPanelBtn2" type="text" placeholder="Double Click" value="Double Click">
+			<p>
+			<label for="cmdPanelBtn3">Button3 Text: </label>
+			<input id="cmdPanelBtn3" type="text" placeholder="Drag Click" value="Drag Click">
+			<p>
+			<label for="cmdPanelBtn4">Button4 Text: </label>
+			<input id="cmdPanelBtn4" type="text" placeholder="Middle Click" value="Middle Click">
+			<p><p>
+			<label for="cmdPanelBtn5">Button5 Text: </label>
+			<input id="cmdPanelBtn5" type="text" placeholder="Keyboard On/Off" value="Keyboard On/Off">
+			<p>
+			<label for="cmdPanelBtn5LaunchCmd">Launch Command: </label>
+			<input id="cmdPanelBtn5LaunchCmd" type="text" placeholder="osk" value="osk">
+			<label for="cmdPanelBtn5LaunchArgs">Launch Arguments: </label>
+			<input id="cmdPanelBtn5LaunchArgs" type="text" placeholder="e.g. URL">
+			<p>
+			<label for="cmdPanelBtn5CloseCmd">Close Command: </label>
+			<input id="cmdPanelBtn5CloseCmd" type="text" placeholder="taskkill /im osk.exe" value="taskkill /im osk.exe">	
+			<p><p>
+			<label for="cmdPanelBtn6">Button6 Text: </label>
+			<input id="cmdPanelBtn6" type="text" placeholder="Editor On/Off" value="Editor On/Off">
+			<p>
+			<label for="cmdPanelBtn6LaunchCmd">Launch Command: </label>
+			<input id="cmdPanelBtn6LaunchCmd" type="text" placeholder="c:\windows\notepad.exe" value="c:\windows\notepad.exe">
+			<label for="cmdPanelBtn6LaunchArgs">Launch Arguments: </label>
+			<input id="cmdPanelBtn6LaunchArgs" type="text" placeholder="e.g. URL">
+			<p>
+			<label for="cmdPanelBtn6CloseCmd">Close Command: </label>
+			<input id="cmdPanelBtn6CloseCmd" type="text" placeholder="" value="">
+			<p><p>
+			<label for="cmdPanelBtn7">Button7 Text: </label>
+			<input id="cmdPanelBtn7" type="text" placeholder="Settings" value="Settings">
+			<p>
+			<label for="cmdPanelBtn8">Button8 Text: </label>
+			<input id="cmdPanelBtn8" type="text" placeholder="Mouse On/Off" value="Mouse On/Off">
+			
+			<h3>Mouse Activation Pattern</h3>
+			Click on screen quadrants to create a mouse activation pattern.
+			<p>
+			<!-- Use svg to draw 4 quadrants to create unlock pattern  -->
+			<svg width="100" height="100">
+			  <a onclick="document.getElementById('unlockPattern').value+='1,'">
+			  <rect width="50" height="50" 
+			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
+			  <text x="17" y="35" font-size="32">1</text>
+			  </a>
+			  
+			  <a onclick="document.getElementById('unlockPattern').value+='2,'">
+			  <rect width="50" height="50" x="51"
+			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
+			  <text x="67" y="35" font-size="32">2</text>
+			  </a>
+			  
+			  <a onclick="document.getElementById('unlockPattern').value+='3,'">
+			  <rect width="50" height="50" y="51"
+			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
+			  <text x="17" y="85" font-size="32">3</text>
+			  </a>
+			  
+			  <a onclick="document.getElementById('unlockPattern').value+='4,'">
+			  <rect width="50" height="50" x="51" y="51"
+			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
+			  <text x="67" y="85" font-size="32">4</text>
+			  </a>
+			Sorry, your browser does not support inline SVG.
+			</svg>
+			<p>
+			<label for="unlockPattern" title="Enter sequence of screen quadrant numbers, e.g. 1,2,3">Mouse Activation Pattern: </label>
+			<input id="unlockPattern" type="text" placeholder="1,2,4,3" value="1,2,4,3">
+			<p>
 			<button onclick="applyAndStart()" title="Description: Applies all settings and starts the model" class="button"> Apply and Start Model </button>
+	 		<button onclick="saveAsAutostart()" title="Description: Applies all settings and sets the model as autostart model" class="button"> Save Settings as Autostart </button>	
+
 			<p>
 			<h2>Requirements</h2>
 			<ul>
