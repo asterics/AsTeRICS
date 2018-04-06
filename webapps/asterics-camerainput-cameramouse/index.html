@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" type="text/css" href="../startpage/styles/main.css">
+    
 
 	<!-- provided from AsTeRICS 3.0 -->
 	<script type="text/javascript" src="../startpage/lib/jquery-3.2.1.min.js"></script>
@@ -23,124 +24,124 @@
 		//Define mapping between widget ids and property keys. This way both can be synced automatically.
 		var widgetIdToPropertyKeyMap = [
 			{
-				widgetId:"cameraSource",
+				widgetId:"#cameraSource",
 				componentKey:"XFacetrackerLK.1",
 				propertyKey:"cameraSelection"
 			},
 			{
-				widgetId:"speed",
+				widgetId:"#speed",
 				componentKey:"Slider.1",
 				propertyKey:"default"
 			},
 			{
-				widgetId:"averager",
+				widgetId:"#averager",
 				componentKey:"AveragerX",
 				propertyKey:"bufferSize"
 			},
 			{
-				widgetId:"averager",
+				widgetId:"#averager",
 				componentKey:"AveragerY",
 				propertyKey:"bufferSize"
 			},
 			{
-				widgetId:"deadzone",
+				widgetId:"#deadzone",
 				componentKey:"Deadzone.1",
 				propertyKey:"radius"
 			},
 			{
-				widgetId:"dwelltime",
+				widgetId:"#dwelltime",
 				componentKey:"DwellTimer",
 				propertyKey:"timePeriod"
 			},
 			//switch inputs
 			{
-				widgetId:"switch1Key",
+				widgetId:"#switch1Key",
 				componentKey:"KeySwitch1",
 				propertyKey:"keyCode"
 			},
 			{
-				widgetId:"switch2Key",
+				widgetId:"#switch2Key",
 				componentKey:"KeySwitch2",
 				propertyKey:"keyCode"
 			},
 			//CommandPanel configuration
 			{
-				widgetId:"cmdPanelBtn1",
+				widgetId:"#cmdPanelBtn1",
 				componentKey:"CommandPanel",
 				propertyKey:"cellText1"
 			},
 			{
-				widgetId:"cmdPanelBtn2",
+				widgetId:"#cmdPanelBtn2",
 				componentKey:"CommandPanel",
 				propertyKey:"cellText2"
 			},
 			{
-				widgetId:"cmdPanelBtn3",
+				widgetId:"#cmdPanelBtn3",
 				componentKey:"CommandPanel",
 				propertyKey:"cellText3"
 			},
 			{
-				widgetId:"cmdPanelBtn4",
+				widgetId:"#cmdPanelBtn4",
 				componentKey:"CommandPanel",
 				propertyKey:"cellText4"
 			},
 			{
-				widgetId:"cmdPanelBtn5",
+				widgetId:"#cmdPanelBtn5",
 				componentKey:"CommandPanel",
 				propertyKey:"cellText5"
 			},
 			{
-				widgetId:"cmdPanelBtn5LaunchCmd",
+				widgetId:"#cmdPanelBtn5LaunchCmd",
 				componentKey:"Launch-OSK",
 				propertyKey:"defaultApplication"
 			},
 			{
-				widgetId:"cmdPanelBtn5LaunchArgs",
+				widgetId:"#cmdPanelBtn5LaunchArgs",
 				componentKey:"Launch-OSK",
 				propertyKey:"arguments"
 			},
 			{
-				widgetId:"cmdPanelBtn5CloseCmd",
+				widgetId:"#cmdPanelBtn5CloseCmd",
 				componentKey:"Launch-OSK",
 				propertyKey:"closeCmd"
 			},			
 			{
-				widgetId:"cmdPanelBtn6",
+				widgetId:"#cmdPanelBtn6",
 				componentKey:"CommandPanel",
 				propertyKey:"cellText6"
 			},
 			{
-				widgetId:"cmdPanelBtn6LaunchCmd",
+				widgetId:"#cmdPanelBtn6LaunchCmd",
 				componentKey:"Launch-Custom",
 				propertyKey:"defaultApplication"
 			},
 			{
-				widgetId:"cmdPanelBtn6LaunchArgs",
+				widgetId:"#cmdPanelBtn6LaunchArgs",
 				componentKey:"Launch-Custom",
 				propertyKey:"arguments"
 			},
 			{
-				widgetId:"cmdPanelBtn6CloseCmd",
+				widgetId:"#cmdPanelBtn6CloseCmd",
 				componentKey:"Launch-Custom",
 				propertyKey:"closeCmd"
 			},
 			{
-				widgetId:"cmdPanelBtn7",
+				widgetId:"#cmdPanelBtn7",
 				componentKey:"CommandPanel",
 				propertyKey:"cellText7"
 			},
 			{
-				widgetId:"cmdPanelBtn8",
+				widgetId:"#cmdPanelBtn8",
 				componentKey:"CommandPanel",
 				propertyKey:"cellText8"
 			},
 			{
-				widgetId:"unlockPattern",
+				widgetId:"#unlockPattern",
 				componentKey:"PatternRecognition",
 				propertyKey:"stateSequence"
 			},
 			{
-				widgetId:"unlockPattern",
+				widgetId:"#unlockPattern",
 				componentKey:"PatternVisualization",
 				propertyKey:"default"
 			}			
@@ -229,7 +230,7 @@
 			
 			//Update property values with values of input widgets.
 			for(var i=0;i<widgetIdToPropertyKeyMap.length;i++) {
-				setPropertyValueInXMLModel(widgetIdToPropertyKeyMap[i]["componentKey"],widgetIdToPropertyKeyMap[i]["propertyKey"],$("#"+widgetIdToPropertyKeyMap[i]["widgetId"]).val(),xmlDoc);				
+				setPropertyValueInXMLModel(widgetIdToPropertyKeyMap[i]["componentKey"],widgetIdToPropertyKeyMap[i]["propertyKey"],$(widgetIdToPropertyKeyMap[i]["widgetId"]).val(),xmlDoc);				
 			}
 			
 			//Convert back XML document to XML string.
@@ -246,7 +247,7 @@
 				var propVal=getPropertyValueFromXMLModel(widgetIdToPropertyKeyMap[i]["componentKey"],widgetIdToPropertyKeyMap[i]["propertyKey"],xmlDoc);
 				if(propVal!=undefined) {
 					console.log("Updating widget["+widgetIdToPropertyKeyMap[i]["widgetId"]+"]: "+propVal);
-					$("#"+widgetIdToPropertyKeyMap[i]["widgetId"]).val(propVal);					
+					$(widgetIdToPropertyKeyMap[i]["widgetId"]).val(propVal);					
 				}
 			}			
 		}		
@@ -293,9 +294,28 @@
 			<div>
 			<img src="img/facetrackerLK-videoframe.png" alt="Video frame showing face with tracked nose and chin"/>
 			</div>
+			<h2>Requirements</h2>
+			<ul>
+				<li>Integrated Webcam or USB camera</li>
+				<li><a href="https://github.com/asterics/AsTeRICS/releases/tag/v3.0" target="_blank">AsTeRICS 3.0</a> installed and ARE running</li>
+				<li>OS: Windows, Linux (incl. RPi), Mac OSX</li>
+			</ul>
+			<h2>Start Model</h2>							
+				<ol>
+					<li>Start AsTeRICS Runtime Environment (ARE)</li>
+					<ul>
+						<li>Windows: C:\Program Files (x86)\AsTeRICS\ARE\start.bat</li>
+						<li>Linux / Mac OSX: asterics-are</li>
+					</ul>
+					<li><button onclick="applyAndStart()" title="Description: Applies all settings and starts the model" class="button"> Start Model </button></li>
+				</ol>				
+				
+				You can adjust the many settings below and save them as default for the next ARE start.
+				<p>
+		 		<button onclick="saveAsAutostart()" title="Description: Applies all settings and sets the model as autostart model" class="button"> Save Settings as Autostart </button>	
 			<h3>General Settings</h3>
 			<p>
-			<label for="cameraSource">Choose Camera: </label>
+			<label for="cameraSource">Camera: </label>
 			<select id="cameraSource">
 			  <option value="0">First camera</option>
 			  <option value="1">Second camera</option>
@@ -303,18 +323,54 @@
 			  <option value="3">Fourth camera</option>
 			</select>
 			<p>
+			<h4>Mouse Movement</h4>
 			<label for="speed">Mouse Speed: </label>
-			<input title="Mouse speed" type="range" id="speed" value="50" min="1" max="100">
+			1 <input title="Mouse speed" type="range" id="speed" value="60" min="1" max="100"> 100
 			<p>
-			<label for="averager">Moving Average Values: </label>
-			<input title="Moving Average Values" type="range" id="averager" value="5" min="1" max="50">
+			<label for="averager">Smoothing Degree: </label>
+			1 <input title="Smoothing Degree" type="range" id="averager" value="5" min="1" max="50"> 50
 			<p>
-			<label for="deadzone">Movement Deadzone: </label>
-			<input title="Movement Deadzone" type="range" id="deadzone" value="3" min="1" max="20">
+			<h4>Clicking</h4>
+			<label for="deadzone">Movement Radius: </label>
+			1 <input title="Movement Radius" type="range" id="deadzone" value="3" min="1" max="20"> 20
 			<p>
 			<label for="dwelltime">Dwell Time [ms]: </label>
-			<input title="Dwell Time [ms]" type="range" id="dwelltime" value="500" min="100" max="5000">	
-			
+			1 <input title="Dwell Time [ms]" type="range" id="dwelltime" value="500" min="100" max="5000"> 5000	
+			<h4>Mouse Activation Pattern</h4>
+			Click on screen quadrants to create a mouse activation pattern.
+			<p>
+			<!-- Use svg to draw 4 quadrants to create unlock pattern  -->
+			<svg width="100" height="100">
+			  <a onclick="document.getElementById('unlockPattern').value+='1,'">
+			  <rect width="50" height="50" 
+			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
+			  <text x="17" y="35" font-size="32">1</text>
+			  </a>
+			  
+			  <a onclick="document.getElementById('unlockPattern').value+='2,'">
+			  <rect width="50" height="50" x="51"
+			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
+			  <text x="67" y="35" font-size="32">2</text>
+			  </a>
+			  
+			  <a onclick="document.getElementById('unlockPattern').value+='3,'">
+			  <rect width="50" height="50" y="51"
+			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
+			  <text x="17" y="85" font-size="32">3</text>
+			  </a>
+			  
+			  <a onclick="document.getElementById('unlockPattern').value+='4,'">
+			  <rect width="50" height="50" x="51" y="51"
+			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
+			  <text x="67" y="85" font-size="32">4</text>
+			  </a>
+			Sorry, your browser does not support inline SVG.
+			</svg>
+			<p>
+			<button onclick="$('#unlockPattern').val('');" title="Clears the current activation pattern." class="button"> Clear pattern </button>
+			<p>
+			<label for="unlockPattern" title="Enter sequence of screen quadrant numbers, e.g. 1,2,3">Mouse Activation Pattern: </label>
+			<input id="unlockPattern" type="text" placeholder="1,2,4,3" value="1,2,4,3">			
 			<h3>Switch Inputs</h3>
 			<label for="switch1Key">Switch1 Key: </label>
 			<select id="switch1Key">
@@ -382,18 +438,26 @@
 			  <option value="select7">Toggle Mouse On/Off</option>
 			</select>
 			
-			<h3>Command Panel</h3>
-			<h4>Button Actions</h4>
-			<h5>Button 5</h5>
+			<h3>Button Actions</h3>
+			<h4>On-Screen Keyboard</h4>
+			Install an On-Screen Keyboard of your choice and enter the path of the executable here.
+			<p>
+			Recommendations:
+			<ul>
+				<li><a href="https://support.microsoft.com/de-at/help/10762/windows-use-on-screen-keyboard">osk.exe</a>: Windows default On-Screen Keyboard.</li>
+				<li><a href="https://github.com/OptiKey/OptiKey/wiki">OptiKey</a>: On-Screen Keyboard optimized for Eyetracking.</li>
+				<li><a href="http://www.staggeredspeech.org/">Staggered Speech</a>: On-Screen Keyboard from Boston College.</li>
+				<li><a href="http://www.midastouch.org/">Midas Touch</a>: On-Screen Keyboard from Boston College.</li>				
+			</ul>
 			<label for="cmdPanelBtn5LaunchCmd">Launch Command: </label>
-			<input id="cmdPanelBtn5LaunchCmd" type="text" placeholder="osk" value="osk">
+			<input id="cmdPanelBtn5LaunchCmd" type="text" placeholder="osk.exe" value="osk.exe">
 			<label for="cmdPanelBtn5LaunchArgs">Launch Arguments: </label>
 			<input id="cmdPanelBtn5LaunchArgs" type="text" placeholder="e.g. URL">
 			<p>
 			<label for="cmdPanelBtn5CloseCmd">Close Command: </label>
 			<input id="cmdPanelBtn5CloseCmd" type="text" placeholder="taskkill /im osk.exe" value="taskkill /im osk.exe">	
 			<p>
-			<h5>Button 6</h5>
+			<h4>Editor</h4>
 			<label for="cmdPanelBtn6LaunchCmd">Launch Command: </label>
 			<input id="cmdPanelBtn6LaunchCmd" type="text" placeholder="c:\windows\notepad.exe" value="c:\windows\notepad.exe">
 			<label for="cmdPanelBtn6LaunchArgs">Launch Arguments: </label>
@@ -401,8 +465,8 @@
 			<p>
 			<label for="cmdPanelBtn6CloseCmd">Close Command: </label>
 			<input id="cmdPanelBtn6CloseCmd" type="text" placeholder="" value="">
-			
-			<h4>Button Labels</h4>
+
+			<h3>Button Labels</h3>
 			<label for="cmdPanelBtn1">Button1 Text: </label>
 			<input id="cmdPanelBtn1" type="text" placeholder="Right Click" value="Right Click">
 			<p>
@@ -427,50 +491,12 @@
 			<label for="cmdPanelBtn8">Button8 Text: </label>
 			<input id="cmdPanelBtn8" type="text" placeholder="Mouse On/Off" value="Mouse On/Off">
 						
-			<h3>Mouse Activation Pattern</h3>
-			Click on screen quadrants to create a mouse activation pattern.
-			<p>
-			<!-- Use svg to draw 4 quadrants to create unlock pattern  -->
-			<svg width="100" height="100">
-			  <a onclick="document.getElementById('unlockPattern').value+='1,'">
-			  <rect width="50" height="50" 
-			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
-			  <text x="17" y="35" font-size="32">1</text>
-			  </a>
-			  
-			  <a onclick="document.getElementById('unlockPattern').value+='2,'">
-			  <rect width="50" height="50" x="51"
-			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
-			  <text x="67" y="35" font-size="32">2</text>
-			  </a>
-			  
-			  <a onclick="document.getElementById('unlockPattern').value+='3,'">
-			  <rect width="50" height="50" y="51"
-			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
-			  <text x="17" y="85" font-size="32">3</text>
-			  </a>
-			  
-			  <a onclick="document.getElementById('unlockPattern').value+='4,'">
-			  <rect width="50" height="50" x="51" y="51"
-			  style="fill:rgb(255,255,255);stroke-width:5;stroke:rgb(0,0,0)" />
-			  <text x="67" y="85" font-size="32">4</text>
-			  </a>
-			Sorry, your browser does not support inline SVG.
-			</svg>
-			<p>
-			<label for="unlockPattern" title="Enter sequence of screen quadrant numbers, e.g. 1,2,3">Mouse Activation Pattern: </label>
-			<input id="unlockPattern" type="text" placeholder="1,2,4,3" value="1,2,4,3">
-			<p>
-			<button onclick="applyAndStart()" title="Description: Applies all settings and starts the model" class="button"> Apply and Start Model </button>
-	 		<button onclick="saveAsAutostart()" title="Description: Applies all settings and sets the model as autostart model" class="button"> Save Settings as Autostart </button>	
 
+			
 			<p>
-			<h2>Requirements</h2>
-			<ul>
-				<li>Integrated Webcam or USB camera</li>
-				<li><a href="https://github.com/asterics/AsTeRICS/releases/tag/v3.0" target="_blank">AsTeRICS 3.0</a> installed and ARE running</li>
-				<li>OS: Windows, Linux (incl. RPi), Mac OSX</li>
-			</ul>
+			<button onclick="applyAndStart()" title="Description: Applies all settings and starts the model" class="button"> Start Model </button>
+	 		<button onclick="saveAsAutostart()" title="Description: Applies all settings and sets the model as autostart model" class="button"> Save Settings as Autostart </button>	
+			<p>
 			<h2>Major Plugins</h2>
 			<ul>
 				<li><a target="_blank" href="http://asterics.github.io/AsTeRICS/webapps/WebACS/help/index.html?plugins&sensors/XFacetrackerLK.htm">XFacetrackerLK</a></li>

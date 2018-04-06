@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\P4All\asterics-camerainput-cameramouse\custom\bin\ARE\web\webapps\asterics-camerainput-cameramouse\models\XFaceTrackerMouse(WLM).acs_2018_3_31_21_10" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\P4All\asterics-camerainput-cameramouse\custom\bin\ARE\web\webapps\asterics-camerainput-cameramouse\models\XFaceTrackerMouse(WLM).acs_2018_4_6_23_9" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 
@@ -322,7 +322,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </outputPort>
       </ports>
       <properties>
-        <property name="caption" value="Commands" />
+        <property name="caption" value="" />
         <property name="rows" value="7" />
         <property name="columns" value="0" />
         <property name="textColor" value="11" />
@@ -485,7 +485,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="executeOnPlatform" value="ALL" />
         <property name="executionMode" value="OPEN_URL" />
         <property name="defaultApplication" value="" />
-        <property name="arguments" value="http://localhost:8081/" />
+        <property name="arguments" value="http://localhost:8081/webapps/startpage/" />
         <property name="workingDirectory" value="." />
         <property name="closeCmd" value="" />
         <property name="autoLaunch" value="false" />
