@@ -304,7 +304,7 @@
 				<ol>
 					<li>Start AsTeRICS Runtime Environment (ARE)</li>
 					<ul>
-						<li>Windows: C:\Program Files (x86)\AsTeRICS\ARE\start.bat</li>
+						<li>Windows: ARE.exe</li>
 						<li>Linux / Mac OSX: asterics-are</li>
 					</ul>
 					<li><button onclick="applyAndStart()" title="Description: Applies all settings and starts the model" class="button"> Start Model </button></li>
@@ -444,13 +444,13 @@
 			<p>
 			Recommendations:
 			<ul>
-				<li><a href="https://support.microsoft.com/de-at/help/10762/windows-use-on-screen-keyboard">osk.exe</a>: Windows default On-Screen Keyboard.</li>
+				<li><a href="https://support.microsoft.com/de-at/help/10762/windows-use-on-screen-keyboard">osk.exe</a>: Windows default On-Screen Keyboard. <button onclick="$('#cmdPanelBtn5LaunchCmd').val('C:\\Windows\\Sysnative\\osk.exe');"> Use Windows default </button></li>
 				<li><a href="https://github.com/OptiKey/OptiKey/wiki">OptiKey</a>: On-Screen Keyboard optimized for Eyetracking.</li>
 				<li><a href="http://www.staggeredspeech.org/">Staggered Speech</a>: On-Screen Keyboard from Boston College.</li>
 				<li><a href="http://www.midastouch.org/">Midas Touch</a>: On-Screen Keyboard from Boston College.</li>				
 			</ul>
 			<label for="cmdPanelBtn5LaunchCmd">Launch Command: </label>
-			<input id="cmdPanelBtn5LaunchCmd" type="text" placeholder="osk.exe" value="osk.exe">
+			<input id="cmdPanelBtn5LaunchCmd" type="text" placeholder="C:\Windows\Sysnative\osk.exe" value="C:\Windows\Sysnative\osk.exe">
 			<label for="cmdPanelBtn5LaunchArgs">Launch Arguments: </label>
 			<input id="cmdPanelBtn5LaunchArgs" type="text" placeholder="e.g. URL">
 			<p>
