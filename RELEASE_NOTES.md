@@ -223,4 +223,10 @@ Release with major changes under the hood regarding ARE licensing and customized
 * Many plugin improvements.
 * Made REST API ports configurable in areProperties.
 * For further changes see the (Milestone 3.0)[https://github.com/asterics/AsTeRICS/milestone/5] and issues
+
+### Version 3.0.1: Bug fix release
+* Download deployment model: wrong attribute modelVersion: https://github.com/asterics/AsTeRICS/issues/240
+* Improved tracking quality of XFaceTrackerLK plugin, don't reinit tracker that often: https://github.com/asterics/AsTeRICS/issues/238
+* Fixed ACS in case it is started with a file as parameter: https://github.com/asterics/AsTeRICS/issues/232
+* ARE is not dependent on JRE 8 but JRE7 was embedded in installer: https://github.com/asterics/AsTeRICS/issues/241
   
