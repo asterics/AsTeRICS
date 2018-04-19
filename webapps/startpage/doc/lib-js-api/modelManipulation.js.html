@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modelManipulation.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modelManipulation.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file
+ * This Javascript library provides functions that simplify manipulation of an AsTeRICS model in XML representation.
+ * The lib provides functions for setting and getting a property value.
+ * 
+ * @author Martin Deinhofer
+ * @version 0.1
+ */
+
+/**
+ * Sets the property componentKey.propertyKey to the given propertyValue.
+ * @param {string} componentKey - The component instance id.
+ * @param {string} propertyKey - The property key of the component.
+ * @param {string} propertyValue - The new value.
+ * @param {string} xmlDoc - The XML model as string to be updated. 
+ */
+function setPropertyValueInXMLModel(componentKey, propertyKey, propertyValue, xmlDoc) {
+	var commandPanel=xmlDoc.getElementsByTagName('component');
+
+	var found=false;
+	for(var i=0;i&lt;commandPanel.length; i++) {
+		var currentValue=commandPanel.item(i);
+		if(currentValue.attributes.getNamedItem('id').textContent == componentKey) {
+			
+			var commandPanelProperties=currentValue.getElementsByTagName('property');
+			
+			for(var j=0;j&lt;commandPanelProperties.length; j++) {
+				var curProperty=commandPanelProperties.item(j);
+				if(curProperty.getAttribute("name")==propertyKey) {
+					curProperty.setAttribute("value",propertyValue);
+					//console.log("Property ["+componentKey+"."+propertyKey+"="+propertyValue+"] set");											
+					found=true;
+				}
+			}					
+		} 
+	}
+	if(!found) {
+		console.log("Property ["+componentKey+"."+propertyKey+"="+propertyValue+"] not set");				
+	}
+}
+
+/**
+ * Gets the property value of property componentKey.propertyKey.
+ * @param {string} componentKey - The component instance id.
+ * @param {string} propertyKey - The property key of the component.
+ * @param {string} xmlDoc - The XML model as string to be updated. 
+ * @returns {string} The property value.
+ */
+function getPropertyValueFromXMLModel(componentKey, propertyKey, xmlDoc) {
+	var commandPanel=xmlDoc.getElementsByTagName('component');
+
+	for(var i=0;i&lt;commandPanel.length; i++) {
+		var currentValue=commandPanel.item(i);
+		if(currentValue.attributes.getNamedItem('id').textContent == componentKey) {
+			
+			var commandPanelProperties=currentValue.getElementsByTagName('property');
+			
+			for(var j=0;j&lt;commandPanelProperties.length; j++) {
+				var curProperty=commandPanelProperties.item(j);
+				if(curProperty.getAttribute("name")==propertyKey) {
+					var propVal=curProperty.getAttribute("value");
+					//console.log("Property ["+componentKey+"."+propertyKey+"="+propVal+"]");
+					return propVal;
+				}
+			}					
+		} 
+	}
+	console.log("Property ["+componentKey+"."+propertyKey+"] not found");
+	return undefined;
+}
+
+/**
+ * Converts the given XML document object to an XML string.
+ * @param {Document} xmlData - The XML document object. 
+ * @returns {string} The XML document as string.
+ */
+function xmlToString(xmlData) { 
+    var xmlString;
+    //IE
+    if (window.ActiveXObject){
+        xmlString = xmlData.xml;
+    }
+    // code for Mozilla, Firefox, Opera, etc.
+    else{
+        xmlString = (new XMLSerializer()).serializeToString(xmlData);
+    }
+    return xmlString;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#applySettingsInXMLModelAndStart">applySettingsInXMLModelAndStart</a></li><li><a href="global.html#dataAttrAstericsModelBinding">dataAttrAstericsModelBinding</a></li><li><a href="global.html#deployModelFromWebserver">deployModelFromWebserver</a></li><li><a href="global.html#deployModelFromWebserverApplySettingsAndStartModel">deployModelFromWebserverApplySettingsAndStartModel</a></li><li><a href="global.html#generateWidgetIdToPropertyKeyMap">generateWidgetIdToPropertyKeyMap</a></li><li><a href="global.html#getErrorCallback">getErrorCallback</a></li><li><a href="global.html#getPropertyValueFromXMLModel">getPropertyValueFromXMLModel</a></li><li><a href="global.html#getSuccessCallback">getSuccessCallback</a></li><li><a href="global.html#loadFileFromWebServer">loadFileFromWebServer</a></li><li><a href="global.html#saveSettingsAsAutostartModel">saveSettingsAsAutostartModel</a></li><li><a href="global.html#setPropertyValueInXMLModel">setPropertyValueInXMLModel</a></li><li><a href="global.html#storeFileFromWebserverOnARE">storeFileFromWebserverOnARE</a></li><li><a href="global.html#updateModelPropertiesFromWidgets">updateModelPropertiesFromWidgets</a></li><li><a href="global.html#updateWidgetsFromDeployedModel">updateWidgetsFromDeployedModel</a></li><li><a href="global.html#updateWidgetsFromModelProperties">updateWidgetsFromModelProperties</a></li><li><a href="global.html#xmlToString">xmlToString</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Apr 17 2018 15:30:50 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
