@@ -15,44 +15,26 @@
     <script src="../startpage/clientExample/javascript/JSmap.js"></script>
     <script src="../startpage/clientExample/javascript/areCommunicator.js"></script>
 	<!-- provided by this repository, should be part of the framework later -->
-	<script src="../startpage/lib/demoLib.js"></script>
+	<script src="../startpage/lib/webAppUtils.js"></script>
+	<script src="../startpage/lib/modelManipulation.js"></script>
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
 	<script type="text/javascript">
+		//Set the base URI of the running ARE instance.     
+		//You could also make this configurable by the user.
+		setBaseURI("http://localhost:8081/rest/");
+	
+		//Define path of model file on the webserver.
+		var modelFilePathOnWebserver='webapps/asterics-networkio-websocket/models/WebSocket-SignalGeneratorDemo(WLM).acs';
+	
 		/*
-		Deploy model file which is hosted on a webserver, apply settings (camera device, speed) and start the model.
+		Deploy model file which is hosted on a webserver, apply settings (e.g. camera device, speed) and start the model.
 		*/		
 		function applyAndStart() {
-			
-			var signalType = document.getElementById("signal-type");
-			var signalTypeIdx = signalType.options[signalType.selectedIndex].value;
-			var signalFrequency = document.getElementById("signal-frequency").value;
-			var signalAmplitude = document.getElementById("signal-amplitude").value;
-			
-			//The JSON object must be sent as JSON string, the keys and values must be Strings as well.
-			var propertyMap=JSON.stringify(
-			{
-				
-				"SignalGenerator.1":{
-					"waveForm":String(signalTypeIdx),
-					"frequency":String(signalFrequency),
-					"amplitude":String(signalAmplitude)
-				}
-				
-			});
-			console.log("Setting model properties:"+propertyMap);
-			
-			//Here is an example of how you could store a file from the webserver to the ARE/data folder.
-			/*
-			storeFileFromWebserverOnARE('webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs', 'testModel/testModel.acs', Empty_successCallback);
-			*/
-
-			//Now let's deploy the model file, apply all settings the user selected and start the model.
-			deployModelFromWebserverApplySettingsAndStartModel('webapps/asterics-networkio-websocket/models/WebSocket-SignalGeneratorDemo(WLM).acs',propertyMap);
-			
+			applySettingsInXMLModelAndStart(modelFilePathOnWebserver);
 			initSocket();
 		}
 		
@@ -121,6 +103,9 @@
 		window.onload = function() {
 			initSocket();
 			initGraph1();
+			
+			//Init window.onload function to automatically update all widgets with a model binding with the values of the currently deployed model.
+			updateWidgetsFromDeployedModel();
 		};
 	</script>
 	
@@ -151,7 +136,7 @@
 			<p>
 			<div align="horizontal">
 				<label for="signal-type">Choose Signal Type: </label>
-				<select id="signal-type">
+				<select id="signal-type" data-asterics-model-binding-1='{"componentKey": "SignalGenerator.1","propertyKey": "waveForm"}'>
 				  <option value="0">Random</option>
 				  <option selected="selected" value="1">Sine</option>
 				  <option value="2">Sawtooth</option>
@@ -160,11 +145,11 @@
 			</div>
 			<div align="horizontal">					
 				<label for="signal-frequency">Frequency: </label>
-				<input title="Signal Frequency" type="range" id="signal-frequency" value="1" min="1" max="10" step="1"/>
+				<input title="Signal Frequency" type="range" id="signal-frequency" value="1" min="1" max="10" step="1" data-asterics-model-binding-1='{"componentKey": "SignalGenerator.1","propertyKey": "frequency"}'/>
 			</div>
 			<div align="horizontal">					
 				<label for="signal-amplitude">Amplitude: </label>
-				<input title="Signal Amplitude" type="range" id="signal-amplitude" value="100" min="1" max="1000" step="1"/>
+				<input title="Signal Amplitude" type="range" id="signal-amplitude" value="100" min="1" max="1000" step="1" data-asterics-model-binding-1='{"componentKey": "SignalGenerator.1","propertyKey": "amplitude"}'/>
 			</div>			
 			<br>
 			
