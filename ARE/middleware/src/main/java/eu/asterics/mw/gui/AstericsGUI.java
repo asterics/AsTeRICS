@@ -84,7 +84,7 @@ import eu.asterics.mw.services.IAREEventListener;
 public class AstericsGUI implements IAREEventListener {
     private static int DEFAULT_FONT_SIZE = 18;
     private static String DEFAULT_FONT_SIZE_PROPERTY = "ARE.gui.font.size";
-    public final static String ARE_VERSION = "3.0";
+    public final static String ARE_VERSION = "3.0.1";
     static int DEFAULT_SCREEN_X = 0;
     static int DEFAULT_SCREEN_Y = 0;
     static int DEFAULT_SCREEN_W = 60;

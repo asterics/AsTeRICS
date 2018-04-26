@@ -863,7 +863,7 @@ public class DeploymentManager {
         model.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
         model.setAttribute("xsi:noNamespaceSchemaLocation", "deployment_model.xsd");
         model.setAttribute("modelName", modelAsObject.getModelName());
-        model.setAttribute("modelVersion", modelAsObject.getModelVersion());
+        model.setAttribute("version", modelAsObject.getModelVersion());
         // model.setAttribute ("modelDescription",
         // currentRuntimeModel.getModelDescription() );
 

@@ -661,8 +661,8 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         double relDistChin2Nosetip = magnitude(pointsB, CHIN_L, NOSE_TIP) / initDistChin2Nosetip;
         // double
         // relDistNoseroot2Nosetip=magnitude(pointsB,NOSE_ROOT,NOSE_TIP)/initDistNoseroot2Nosetip;
-        double lowerDistChin2NosetipTresh = 0.85;
-        double upperDistChin2NosetipTresh = 1.4;
+        double lowerDistChin2NosetipTresh = 0.4;
+        double upperDistChin2NosetipTresh = 1.8;
         if (!(lowerDistChin2NosetipTresh <= relDistChin2Nosetip && relDistChin2Nosetip <= upperDistChin2NosetipTresh)) {
             System.out.println("chin y-disp out of range: " + lowerDistChin2NosetipTresh + " <= " + relDistChin2Nosetip + " <= " + upperDistChin2NosetipTresh);
             needToInit = true;
@@ -678,7 +678,7 @@ public class XFacetrackerLKInstance extends AbstractRuntimeComponentInstance imp
         // double angleChin2Nosetip=angleVertical(pointsB, CHIN_L, NOSE_TIP)*-1;
         double angleChin2Nosetip = angleVertical(pointsB, CHIN_L, NOSE_TIP);
         // System.out.println("angle chin2nosetip: "+angleChin2Nosetip);
-        double angleTolerance = 25;
+        double angleTolerance = 45;
         if (!((-1 * angleTolerance) <= angleChin2Nosetip && angleChin2Nosetip <= angleTolerance)) {
             System.out.println("angle chin2nosetip out of range: " + (-1 * angleTolerance) + " <= " + angleChin2Nosetip + " <= " + angleTolerance);
             needToInit = true;

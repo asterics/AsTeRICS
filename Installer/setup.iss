@@ -1,7 +1,7 @@
 ; -- AsTeRICS Installer --
 [Setup]
 AppName=AsTeRICS
-AppVersion=3.0
+AppVersion=3.0.1
 DefaultDirName={pf}\AsTeRICS
 DefaultGroupName=AsTeRICS
 UninstallDisplayIcon=
@@ -35,7 +35,7 @@ Name: "{app}\CIMs"; Permissions: users-full;
 
 [Components]
 Name: "AsTeRICS"; Description: "AsTeRICS Core Files"; Types: full compact custom; Flags: fixed
-Name: "jre"; Description: "Java Runtime Environment version 7."; Types: full
+Name: "jre"; Description: "Java Runtime Environment version 8."; Types: full
 
 [Run]
 ; install if frameworks needed - Check: CheckForFramework;
