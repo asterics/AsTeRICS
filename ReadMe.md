@@ -27,9 +27,10 @@ To clone and compile the AsTeRICS framework, please execute the following steps:
   git clone https://github.com/asterics/AsTeRICS.git
   ```
 2. Install the [**Java Development Kit (JDK, 32bit preferred) >= 8**](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-  * Ensure to set “JAVA_HOME” to the folder where you installed the Java JDK and add the JDK bin path to the  Environment Variable “Path”
+  * Ensure to set ```JAVA_HOME``` to the folder where you installed the Java JDK and add the JDK bin path to the  Environment Variable “Path”
 3. [apache ant build framework (version >= 1.9.1)](http://ant.apache.org/bindownload.cgi) **or** an IDE for Java Developers, e.g. [Eclipse](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/neon3) (already contains ant)
-  * Ensure to set “ANT_HOME” to the folder where you installed ant and add the ant bin path to the Environment Variable “Path”
+  * Ensure to set ```ANT_HOME``` to the folder where you installed ant and add the ant bin path to the Environment Variable ```Path```
+  * The ```git``` command line tool must be available from within ant, ensure to set the Environment Variable ```Path``` to the respective ```bin``` folder.
 4. Open a terminal and start the AsTeRICS Runtime Environment (ARE) by calling (Alternatively, use your IDE, select the build file ```build.xml``` and execute the target ```run```):
 
   ```
