@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\P4All\asterics-camerainput-cameramouse\custom\bin\ARE\web\webapps\asterics-camerainput-cameramouse\models\XFaceTrackerMouse(WLM).acs_2018_4_9_9_59" version="20130320">
+<model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" modelName="D:\P4All\asterics-camerainput-cameramouse\custom\bin\ARE\web\webapps\asterics-camerainput-cameramouse\models\XFaceTrackerMouse(WLM).acs_2018_5_14_16_40" version="20130320">
   <modelDescription>
     <shortDescription>Mouse-replacement solution via Camera and Head Tracking.
 This model is described in the AsTeRICS User Manual 
@@ -224,7 +224,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </outputPort>
       </ports>
       <properties>
-        <property name="caption" value="Activation" />
+        <property name="caption" value="" />
         <property name="default" value="1,2,4,3" />
         <property name="editable" value="false" />
         <property name="fontSize" value="14" />
@@ -233,14 +233,14 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="displayGUI" value="true" />
       </properties>
       <layout>
-        <posX>672</posX>
-        <posY>821</posY>
+        <posX>679</posX>
+        <posY>808</posY>
       </layout>
       <gui>
-        <posX>9322</posX>
-        <posY>8232</posY>
-        <width>625</width>
-        <height>444</height>
+        <posX>9135</posX>
+        <posY>8454</posY>
+        <width>812</width>
+        <height>333</height>
       </gui>
     </component>
     <component id="AveragerX" type_id="asterics.Averager">
@@ -325,8 +325,8 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <property name="caption" value="" />
         <property name="rows" value="7" />
         <property name="columns" value="0" />
-        <property name="textColor" value="11" />
-        <property name="backgroundColor" value="1" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
         <property name="scanColor" value="4" />
         <property name="scanMode" value="0" />
         <property name="scanCycles" value="3" />
@@ -453,9 +453,9 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <posY>149</posY>
       </layout>
       <gui>
-        <posX>9312</posX>
-        <posY>3445</posY>
-        <width>625</width>
+        <posX>9135</posX>
+        <posY>3343</posY>
+        <width>812</width>
         <height>4667</height>
       </gui>
     </component>
@@ -779,10 +779,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <posY>213</posY>
       </layout>
       <gui>
-        <posX>9322</posX>
-        <posY>2010</posY>
-        <width>500</width>
-        <height>889</height>
+        <posX>9197</posX>
+        <posY>1787</posY>
+        <width>625</width>
+        <height>1333</height>
       </gui>
     </component>
     <component id="ThresholdY" type_id="asterics.Threshold">
@@ -881,7 +881,7 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         </outputPort>
       </ports>
       <properties>
-        <property name="caption" value="Quadrants" />
+        <property name="caption" value="" />
         <property name="rows" value="1" />
         <property name="columns" value="1" />
         <property name="textColor" value="0" />
@@ -1012,9 +1012,9 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <posY>978</posY>
       </layout>
       <gui>
-        <posX>9322</posX>
-        <posY>8676</posY>
-        <width>625</width>
+        <posX>9135</posX>
+        <posY>8787</posY>
+        <width>812</width>
         <height>667</height>
       </gui>
     </component>
@@ -1089,6 +1089,39 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
         <posX>1156</posX>
         <posY>885</posY>
       </layout>
+    </component>
+    <component id="PatternVisualizationLabel" type_id="asterics.TextArea">
+      <description>GUI component, which displays text.</description>
+      <ports>
+        <inputPort portTypeID="setText">
+          <properties />
+        </inputPort>
+        <inputPort portTypeID="appendText">
+          <properties />
+        </inputPort>
+        <outputPort portTypeID="text">
+          <properties />
+        </outputPort>
+      </ports>
+      <properties>
+        <property name="caption" value="" />
+        <property name="default" value="Pattern" />
+        <property name="editable" value="false" />
+        <property name="fontSize" value="14" />
+        <property name="textColor" value="0" />
+        <property name="backgroundColor" value="11" />
+        <property name="displayGUI" value="true" />
+      </properties>
+      <layout>
+        <posX>795</posX>
+        <posY>814</posY>
+      </layout>
+      <gui>
+        <posX>9135</posX>
+        <posY>8121</posY>
+        <width>812</width>
+        <height>333</height>
+      </gui>
     </component>
   </components>
   <channels>
@@ -1933,10 +1966,10 @@ A ButtonGrid GUI elements allows to select the type of the next mouse click. </d
     <ToSystemTray>false</ToSystemTray>
     <ShopControlPanel>false</ShopControlPanel>
     <AREGUIWindow>
-      <posX>9250</posX>
-      <posY>3378</posY>
-      <width>750</width>
-      <height>6000</height>
+      <posX>9075</posX>
+      <posY>3311</posY>
+      <width>938</width>
+      <height>6222</height>
     </AREGUIWindow>
   </modelGUI>
 </model>
