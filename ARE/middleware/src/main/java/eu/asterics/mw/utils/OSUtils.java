@@ -25,18 +25,17 @@
 
 package eu.asterics.mw.utils;
 
+import eu.asterics.mw.are.AREProperties;
+import eu.asterics.mw.services.AstericsErrorHandling;
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.logging.Logger;
-
-import org.apache.commons.io.FilenameUtils;
-
-import eu.asterics.mw.are.AREProperties;
-import eu.asterics.mw.services.AstericsErrorHandling;
-import eu.asterics.mw.services.ResourceRegistry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Helper class to find OS ARE is running on.
@@ -194,12 +193,13 @@ public class OSUtils {
                     logger.fine("No cmd arguments found.");
                 }
 
-                StringTokenizer st = new StringTokenizer(arguments);
-                while (st.hasMoreTokens()) {
-                    String act = st.nextToken();
-                    command.add(act);
-                    logger.fine("adding argument: " + act);
+                Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(arguments);
+                while (m.find()) {
+                    String token = m.group(1).replace("\"", "");
+                    command.add(token);
+                    logger.fine("adding argument: " + token);
                 }
+
                 if (command.size() == 0) {
                     logger.warning("Could not find command string in: " + applicationPathAndArguments);
                     return null;
