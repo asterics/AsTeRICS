@@ -18,3 +18,6 @@
 	path = src/asterics-solution-template
 	url = https://github.com/asterics/asterics-solution-template.git
 	ignore = dirty
+[submodule "src/asterics-microcontroller-arduino"]
+	path = src/asterics-microcontroller-arduino
+	url = https://github.com/asterics/asterics-microcontroller-arduino.git
