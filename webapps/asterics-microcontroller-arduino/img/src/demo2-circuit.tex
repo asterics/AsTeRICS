@@ -1,0 +1,25 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{circuits.ee.IEC}
+
+\begin{document}
+    \begin{tikzpicture}[circuit ee IEC]
+        % Background
+        \draw[draw=none,fill=white] (1,0.5) rectangle ++(6.5,5);
+
+        % Labels
+        \node[anchor=west,font=\sffamily] at (4.2,5) {Digital\textcolor{gray!50}{/PWM}: 2};
+        \node[anchor=west,font=\sffamily] at (4.2,1) {Power: GND};
+        
+        % Components
+        \draw (2,5) to [resistor={info'=$R_{1}$,ohm=220}] (2,3);
+        \draw (2,3) to [diode={light emitting,fill=red!20,fill=none,info'=$D_{1}$}] (2,1);
+
+        % Circuit
+        \foreach \y in {1,5} {
+            \draw (4.1,\y) circle(1mm);
+            \draw (4,\y) -- ++(-2,0);
+        }
+        
+    \end{tikzpicture}
+\end{document}    

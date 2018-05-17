@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="../startpage/styles/main.css">
+    
+
+	<!-- provided from AsTeRICS 3.0 -->
+	<script type="text/javascript" src="../startpage/lib/jquery-3.2.1.min.js"></script>
+    <script src="../startpage/clientExample/javascript/JSmap.js"></script>
+    <script src="../startpage/clientExample/javascript/areCommunicator.js"></script>
+	<!-- provided by this repository, should be part of the framework later -->
+	<script src="../startpage/lib/webAppUtils.js"></script>
+	<script src="../startpage/lib/modelManipulation.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+	<script type="text/javascript">
+		//Set the base URI of the running ARE instance.     
+		//You could also make this configurable by the user.
+		setBaseURI("http://localhost:8081/rest/");
+
+		//Define path of model file on the webserver.
+		var modelFilePathOnWebserver='webapps/asterics-solution-template/models/nameOfModelFile.acs';
+		//Init window.onload function to automatically update all widgets with a model binding with the values of the currently deployed model.
+		window.onload=updateWidgetsFromDeployedModel;		
+	</script>
+
+    <title><!-- AsTeRICS Solution --></title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1><!-- AsTeRICS Solution --> </h1>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+			<h2>Objective</h2>
+			<h2>Description</h2>
+			<h2>Requirements</h2>
+			<ul>
+				<li><a href="https://github.com/asterics/AsTeRICS/releases/tag/v3.0" target="_blank">AsTeRICS 3.0</a> installed and ARE running</li>
+				<li>OS: Windows, Linux (incl. RPi), Mac OSX</li>
+			</ul>
+			<h2>Start Model</h2>							
+				<ol>
+					<li>Start AsTeRICS Runtime Environment (ARE)</li>
+					<ul>
+						<li>Windows: ARE.exe</li>
+						<li>Linux / Mac OSX: asterics-are</li>
+					</ul>
+					<li><button onclick="applySettingsInXMLModelAndStart(modelFilePathOnWebserver)" title="Description: Applies all settings and starts the model" class="button"> Start Model </button></li>
+				</ol>				
+				
+				You can adjust the many settings below and save them as default for the next ARE start.
+				<p>
+		 		<button onclick="saveSettingsAsAutostartModel(modelFilePathOnWebserver)" title="Description: Applies all settings and sets the model as autostart model" class="button"> Save Settings as Autostart </button>
+			<!-- provide your input widgets here
+			<h4>Mouse Movement</h4>
+			<label for="speed">Mouse Speed: </label>
+			1 <input title="Mouse speed" type="range" id="speed" value="60" min="1" max="100" data-asterics-model-binding-1='{"componentKey": "Slider.1","propertyKey": "default"}'> 100
+			-->
+			<p>
+			<button onclick="applySettingsInXMLModelAndStart(modelFilePathOnWebserver)" title="Description: Applies all settings and starts the model" class="button"> Start Model </button>
+	 		<button onclick="saveSettingsAsAutostartModel(modelFilePathOnWebserver)" title="Description: Applies all settings and sets the model as autostart model" class="button"> Save Settings as Autostart </button>	
+			<p>
+			<h2>Major Plugins</h2>
+			<!-- Link to the help files of major plugins used in the model.-->
+			<h2>Edit Model</h2>
+			<!-- Call the WebACS with the http-URL as parameter
+			<a target="_blank" href="http://asterics.github.io/AsTeRICS/webapps/WebACS/?areBaseURI=http://localhost:8081&openFile=http://asterics.github.io/AsTeRICS/webapps/asterics-camerainput-cameramouse/models/XFaceTrackerMouse(WLM).acs">Open in WebACS</a>
+			-->
+			<h2>Source Repository</h2>
+			<!-- Provide link to source repository -->
+			<h2>Related Videos</h2>
+			<h2>Related Tutorials</h2>
+			</section>
+      </div>
+    </div>
+  </body>
+</html>
