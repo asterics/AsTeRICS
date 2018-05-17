@@ -1,5 +1,5 @@
 <!-- This is the bootstrap build file for the whole AsTeRICS framework -->
-<project name="asterics-demopage" basedir="." default="copySubModulesToTarget">
+<project name="asterics-demopage" basedir="." default="copyAll">
 	<property name="debug" value="true"/>
 	<property name="src.dir" location="src"/>
 	<property name="web.docroot" location="."/>
@@ -59,6 +59,9 @@
 		</copy>
 		
 	</target>	
+	
+	<target name="copyAll" depends="copyHelpFiles" description="Copies the respective files of the submodules to the webapps subfolders including the help files. If you want to update the submodules to their remote HEAD, call 'ant updateGitSubmodules' first.">
+	</target>
 	<import file="imported.xml"/>
 	<include file="included.xml"/>
 </project>
