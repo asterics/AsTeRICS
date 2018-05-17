@@ -9,8 +9,8 @@
 	</target>
 	
 	<target name="cleanHelpFiles" description="Cleans the help_files folders in the help folders">
-		<delete dir="${web.docroot}/help"/>
-		<delete dir="${WebACS.bin}"/>
+		<delete dir="${web.docroot}/help/help_files/"/>
+		<delete dir="${WebACS.bin}/help/help_files/"/>
 	</target>
 	
 	<target name="copySubModulesToTarget" description="Copyies the relevant parts of the submodules to the webapps folder.">
@@ -22,8 +22,8 @@
 		    <fileset dir="${src.dir}/WebACS"/>
 		</copy>
 
-		<copy todir="${web.docroot}/webapps/" failonerror="true">
-		    <fileset dir="${src.dir}/asterics-solution-template/custom/bin/ARE/web/webapps/"/>
+		<copy todir="${web.docroot}/webapps/startpage/lib" failonerror="true">
+		    <fileset dir="${src.dir}/asterics-solution-template/custom/bin/ARE/web/webapps/startpage/lib"/>
 		</copy>		
 		
 		<copy todir="${web.docroot}/webapps/asterics-camerainput-cameramouse" failonerror="true">
