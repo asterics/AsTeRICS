@@ -28,15 +28,17 @@ To clone and compile the AsTeRICS framework, please execute the following steps:
   ```
 2. Install the [**Java Development Kit (JDK, 32bit preferred) >= 8**](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
   * Ensure to set ```JAVA_HOME``` to the folder where you installed the Java JDK and add the JDK bin path to the  Environment Variable “Path”
-3. [apache ant build framework (version >= 1.9.1)](http://ant.apache.org/bindownload.cgi) **or** an IDE for Java Developers, e.g. [Eclipse](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/neon3) (already contains ant)
+3. [apache ant build framework (version >= 1.9.1)](http://ant.apache.org/bindownload.cgi)
   * Ensure to set ```ANT_HOME``` to the folder where you installed ant and add the ant bin path to the Environment Variable ```Path```
   * The ```git``` command line tool must be available from within ant, ensure to set the Environment Variable ```Path``` to the respective ```bin``` folder.
-4. Open a terminal and start the AsTeRICS Runtime Environment (ARE) by calling (Alternatively, use your IDE, select the build file ```build.xml``` and execute the target ```run```):
+4. Open a terminal and start the AsTeRICS Runtime Environment (ARE) by calling:
 
   ```
   ant run
   ```
   
+ If you don't need commandline support, you can use an IDE for Java Developers, e.g. [Eclipse](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/neon3), which already contains ant. There you can directly execute ant targets by selecting the build file ```build.xml``` and select the target of choice, e.g. ```run```.
+ 
 If you want to modify/add a plugin or generally want to contribute to the project, please consult the [Developer Manual](https://github.com/asterics/AsTeRICS/blob/master/Documentation/DeveloperManual.pdf?raw=true]).
 Then fork the project and create a pull request.
 
