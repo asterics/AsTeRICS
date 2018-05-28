@@ -39,9 +39,6 @@ To clone and compile the AsTeRICS framework, please execute the following steps:
   
  If you don't need commandline support, you can use an IDE for Java Developers, e.g. [Eclipse](http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/neon3), which already contains ant. There you can directly execute ant targets by selecting the build file ```build.xml``` and select the target of choice, e.g. ```run```.
  
-If you want to modify/add a plugin or generally want to contribute to the project, please consult the [Developer Manual](https://github.com/asterics/AsTeRICS/blob/master/Documentation/DeveloperManual.pdf?raw=true]).
-Then fork the project and create a pull request.
-
 ## Documentation
 
 * [AsTeRICS Tutorial with screencasts](https://ds.gpii.net/learn/tutorials/integration-alternative-input-modalities)
