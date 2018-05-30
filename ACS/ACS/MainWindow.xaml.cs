@@ -2610,8 +2610,9 @@ namespace Asterics.ACS {
             }
             else
             {
-                String absoluteURL = new Uri(Environment.CurrentDirectory + "/" + relativeHelpPath).AbsoluteUri + queryString;
-                logger.Log(LogLevel.Debug, "ACS is not connected, so starting local help with URL " + absoluteURL);
+                String baseURL = ini.IniReadValue("Options", "acsOnlineHelpBaseURL");
+                String absoluteURL = baseURL + relativeHelpPath + queryString;
+                logger.Log(LogLevel.Debug, "ACS is not connected, so starting online help with URL " + absoluteURL);
                 Process.Start(browserPath, absoluteURL);
             }
         }
@@ -7928,39 +7929,10 @@ namespace Asterics.ACS {
         /// Finds the path to the systems default webbrowser.
         /// </summary>
         /// <returns>String, containing that path.</returns>
-        private static string GetStandardBrowserPath() {
-            string browserPath = string.Empty;
-            RegistryKey browserKey = null;
-
-            try {
-                //Read default browser path from Win XP registry key
-                browserKey = Registry.ClassesRoot.OpenSubKey(@"HTTP\shell\open\command", false);
- 
-                //If browser path wasn't found, try Win Vista (and newer) registry key
-                if (browserKey == null) {
-                    browserKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http", false); ;
-                }
- 
-                //If browser path was found, clean it
-                if (browserKey != null) {
-                    //Remove quotation marks
-                    browserPath = (browserKey.GetValue(null) as string).ToLower().Replace("\"", "");
- 
-                    //Cut off optional parameters
-                    if (!browserPath.EndsWith("exe")) {
-                        browserPath = browserPath.Substring(0, browserPath.LastIndexOf(".exe") + 4);
-                    }
- 
-                    //Close registry key
-                    browserKey.Close();
-                }
-            }
-            catch {
-                //Return empty string, if no path was found
-                return string.Empty;
-            }
+        private string GetStandardBrowserPath() {
             //Return default browsers path
-            return browserPath;
+            String path = ini.IniReadValue("Options", "helpBrowserCommand");
+            return String.IsNullOrEmpty(path) ? "explorer" : path;
         }
 
         #endregion // Internal functions
