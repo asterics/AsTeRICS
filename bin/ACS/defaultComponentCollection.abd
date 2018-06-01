@@ -8295,6 +8295,64 @@
     </componentType>
 
 
+    <componentType id="asterics.IRMicro"
+                   canonical_name="eu.asterics.component.processor.irmicro.IRMicroInstance">
+        <type subtype="Home Control">processor</type>
+        <singleton>false</singleton>
+        <description>Infrared (IR) sender and receiver. Stores recorded IR codes locally</description>
+        <ports>
+			<inputPort id="sendName">
+				<description>Name of IR code to be sent</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+			<inputPort id="recordName">
+				<description>Name of IR code to be recorded</description>
+				<mustBeConnected>false</mustBeConnected>
+				<dataType>string</dataType>
+			</inputPort>
+
+			<outputPort id="receivedName">
+				<description>Sends the name of received and already stored IR code</description>
+				<dataType>string</dataType>
+			</outputPort>
+			<outputPort id="receivedHex">
+				<description>Sends the received Hex code, even if remote is not recorded to database</description>
+				<dataType>string</dataType>
+			</outputPort>
+
+        </ports>
+		<events>
+			<eventListenerPort id="clearAll">
+				<description>Clear all stored IR codes</description>
+			</eventListenerPort>
+			<eventListenerPort id="clearLast">
+				<description>Clear last received/sent IR code from database</description>
+			</eventListenerPort>
+
+			<eventTriggererPort id="recordFinish">
+				<description>Recording finished</description>
+			</eventTriggererPort>
+			<eventTriggererPort id="recordTimeout">
+				<description>Recording was not finished within timeout</description>
+			</eventTriggererPort>
+
+		</events>			
+        <properties>
+			<property name="ComPort"
+				type="string"
+				value="COM2"
+				description="Select the COM port of the Arduino module"/>
+			<property name="Timeout"
+				type="integer"
+				value="10000"
+				description="Timeout of a started recording before firing recordTimeout event"/>
+
+        </properties>
+
+    </componentType>
+
+
     <componentType id="asterics.MathEvaluator"
                    canonical_name="eu.asterics.component.processor.mathevaluator.MathEvaluatorInstance">
         <type subtype="Basic Math">processor</type>

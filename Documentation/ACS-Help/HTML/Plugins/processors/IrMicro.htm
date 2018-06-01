@@ -1,0 +1,47 @@
+<!doctype html>
+<HTML>
+	<HEAD>
+		<meta charset="UTF-8">
+		<Title>IR Trans</Title>
+	</HEAD>
+	<body class="innerBody">
+		<H1>IrMicro</H1> 
+		<H2>Component Type: Processor (Subcategory: Home Control)</H2>
+		<p>The IRMicro plugin connects to a Microcontroller via a COM port in order to receive and sent infrared (IR-) remote control commands (raw timing values).
+           The values are stored in (or loded from) .csv file (one file per command, given the command's name as filename.csv) in the ARE subfolder ./data/processor.IRMicro
+		</p>
+		<figure>
+			<img class="image" src="img/IrMicro.jpg" alt="Screenshot: IrMicro plugin" title="Screenshot: IrMicro plugin" />
+			<figcaption>IrMicro plugin</figcaption>
+		</figure>
+		<H2>Requirements</H2>
+		A connection to a microcontroller running the IrMicro firmware is required. The IrMicro firmware is provided in folder /CIMS/IrMicro. 
+		This firmware is an Arduino Sketch for record/replay of infrared commands. Connect a TSOP module (e.g. TSOP4838) to pin 11 and an IR led with current-limiting resistor 
+		to send pin of a compatible microcontroller (for examle pin 3 for the Arduino Uno). For a list of compatible controllers and default send pins see: <a href="https://github.com/z3t0/Arduino-IRremote">IR-Remote Github repository</a>
+		<H2>Input Port Description</H2>
+		<ul>
+			<li><STRONG>sendName[string]:</STRONG> A string which contains a known command name. The existing (recorded) commands are stored in .csv files in the folder ARE/data/processor.IRMicro. If the command file is found, the stored timing codes are replayed by the connected microcontroller</br></li>
+			<li><STRONG>recordName[string]:</STRONG> A string which contains the name of a command which shall be recorded. The microcontroller is put into recording mode and waits (until a given timeout) for an IR code to be received via the TSOP module. After a command has been recorded, the codes are stored in a .csv file (filename is the command name) in the folder ARE/data/processor.IRMicro. </br></li>			
+		</ul>
+		<H2>Output Port Description</H2>
+		<ul>
+			<li><STRONG>receivedName[string]:</STRONG> If a known IR command has been received via the microcontroller's TSOP module, the command name is put out on this port as a string</li>
+			<li><STRONG>receivedHex[string]:</STRONG> The timing values of a known or unknown command are sent to this output port as a string</li>
+		</ul>
+		<H2>Event Listener Description</H2>
+		<ul>
+			<li><STRONG>clearAll:</STRONG> all stored IR-commands are cleared.</li>
+			<li><STRONG>clearLast:</STRONG> the last recorded IR-command is cleared.</li>
+		</ul>
+		<H2>Event Trigger Description</H2>
+		<ul>
+			<li><STRONG>recordFinished:</STRONG> a new command was recorded successfully.</li>
+			<li><STRONG>recordTimeout:</STRONG> the timeout value was reched when trying to record a new command.</li>
+		</ul>
+		<H2>Properties</H2>
+		<ul>
+			<li><STRONG>ComPort[string]:</STRONG> The name of the Comunication port which shall be opened in order to communicte with the microcontroller.</li>
+			<li><STRONG>Timeout[integer]:</STRONG> The timeout for recording a new IR-command (in milliseconds).</li>
+		</ul>
+	</BODY>
+</HTML>
